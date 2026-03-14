@@ -5,8 +5,6 @@ import '../models/product_status.dart';
 /// 商品一覧の状態を保持する ChangeNotifier。
 /// 追加・編集・削除はここを経由し、永続化レイヤーは後から差し替え可能。
 class ProductListProvider extends ChangeNotifier {
-  ProductListProvider() : _products = [];
-
   final List<Product> _products = [];
 
   List<Product> get products => List.unmodifiable(_products);
