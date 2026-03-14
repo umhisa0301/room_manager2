@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'theme/app_theme.dart';
 import 'app_shell.dart';
+import 'state/product_list_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +13,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // providers が空の MultiProvider は Nested のアサートで落ちるため、
-    // プロバイダーを追加するまでは MaterialApp のみ返す。
-    return MaterialApp(
-      title: '楽天ROOM運用補助',
-      theme: AppTheme.lightTheme,
-      home: const AppShell(),
+    return ChangeNotifierProvider(
+      create: (_) => ProductListProvider(),
+      child: MaterialApp(
+        title: '楽天ROOM運用補助',
+        theme: AppTheme.lightTheme,
+        home: const AppShell(),
+      ),
     );
   }
 }

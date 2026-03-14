@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
-import '../models/product_item.dart';
+import '../models/product.dart';
+import '../models/product_status.dart';
 
-/// 商品一覧用のカード。楽天ROOM風の白カード＋角丸＋やさしい影。
-/// 画像エリア・商品名・ショップ/URL・タグ・ステータス・コメント余白を表示。
+/// 商品一覧用カード。左に画像・右に詳細の横並び（楽天・Amazon検索結果風）。
+/// 白カード＋角丸＋やわらかい影で一覧の視認性を優先。
 class ProductCard extends StatelessWidget {
   const ProductCard({
     super.key,
-    required this.item,
+    required this.product,
     this.onTap,
   });
 
-  final ProductItem item;
+  final Product product;
   final VoidCallback? onTap;
+
+  static const double _thumbnailSize = 88;
+  static const double _cardPadding = 12;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +26,7 @@ class ProductCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         child: Container(
+          padding: const EdgeInsets.all(_cardPadding),
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -29,67 +34,17 @@ class ProductCard extends StatelessWidget {
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.06),
                 offset: const Offset(0, 2),
-                blurRadius: 8,
+                blurRadius: 6,
                 spreadRadius: 0,
               ),
             ],
           ),
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildImageArea(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppDimensions.spacingMd,
-                  AppDimensions.spacingSm,
-                  AppDimensions.spacingMd,
-                  AppDimensions.spacingMd,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.name,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: AppColors.textPrimary,
-                          ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: AppDimensions.spacingXs),
-                    Text(
-                      item.shopOrUrl,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if (item.tags.isNotEmpty) ...[
-                      const SizedBox(height: AppDimensions.spacingSm),
-                      _buildTags(context),
-                    ],
-                    const SizedBox(height: AppDimensions.spacingSm),
-                    Row(
-                      children: [
-                        _buildStatusChip(context),
-                        const Spacer(),
-                        // コメント有無用の余白（将来アイコン等を表示）
-                        if (item.hasComment)
-                          Icon(
-                            Icons.chat_bubble_outline,
-                            size: 18,
-                            color: AppColors.accentPrimary.withValues(alpha: 0.8),
-                          )
-                        else
-                          const SizedBox(width: 18, height: 18),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              _buildThumbnail(),
+              const SizedBox(width: 12),
+              Expanded(child: _buildDetails(context)),
             ],
           ),
         ),
@@ -97,98 +52,148 @@ class ProductCard extends StatelessWidget {
     );
   }
 
-  Widget _buildImageArea() {
-    const double imageHeight = 140;
-    return Container(
-      height: imageHeight,
-      width: double.infinity,
-      color: AppColors.surfaceVariant,
-      child: item.imageUrl != null && item.imageUrl!.isNotEmpty
-          ? Image.network(
-              item.imageUrl!,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => _buildPlaceholderImage(imageHeight),
-            )
-          : _buildPlaceholderImage(imageHeight),
+  Widget _buildThumbnail() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: SizedBox(
+        width: _thumbnailSize,
+        height: _thumbnailSize,
+        child: product.imageUrl != null && product.imageUrl!.isNotEmpty
+            ? Image.network(
+                product.imageUrl!,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => _placeholder(),
+              )
+            : _placeholder(),
+      ),
     );
   }
 
-  Widget _buildPlaceholderImage(double height) {
-    return Center(
+  Widget _placeholder() {
+    return Container(
+      color: AppColors.surfaceVariant,
       child: Icon(
         Icons.image_outlined,
-        size: 48,
+        size: 32,
         color: AppColors.textTertiary.withValues(alpha: 0.6),
       ),
     );
   }
 
+  Widget _buildDetails(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          product.productName,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                color: AppColors.textPrimary,
+                fontSize: 14,
+                height: 1.3,
+              ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          product.displayUrlOrShop,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+                fontSize: 12,
+              ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        if (product.tags.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          _buildTags(context),
+        ],
+        const SizedBox(height: 6),
+        Row(
+          children: [
+            _buildStatusChip(context),
+            if (product.quickComment != null && product.quickComment!.isNotEmpty) ...[
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  product.quickComment!,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontSize: 11,
+                        fontStyle: FontStyle.italic,
+                      ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ] else
+              const SizedBox(width: 18, height: 18),
+          ],
+        ),
+      ],
+    );
+  }
+
   Widget _buildTags(BuildContext context) {
     return Wrap(
-      spacing: AppDimensions.spacingXs,
-      runSpacing: AppDimensions.spacingXs,
-      children: item.tags
-          .map(
-            (tag) => Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 4,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.accentLightest,
-                borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
-              ),
-              child: Text(
-                tag,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.accentPrimary,
-                      fontSize: 11,
-                    ),
-              ),
-            ),
-          )
-          .toList(),
+      spacing: 4,
+      runSpacing: 4,
+      children: product.tags.take(3).map((tag) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          decoration: BoxDecoration(
+            color: AppColors.accentLightest,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            tag,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.accentPrimary,
+                  fontSize: 10,
+                ),
+          ),
+        );
+      }).toList(),
     );
   }
 
   Widget _buildStatusChip(BuildContext context) {
+    final status = product.status;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: _statusBackgroundColor(item.status),
+        color: _statusBg(status),
         borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
       ),
       child: Text(
-        item.status,
+        status.label,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: _statusTextColor(item.status),
+              color: _statusFg(status),
               fontWeight: FontWeight.w500,
-              fontSize: 12,
+              fontSize: 11,
             ),
       ),
     );
   }
 
-  Color _statusBackgroundColor(String status) {
-    switch (status) {
-      case 'コレ済':
+  Color _statusBg(ProductStatus s) {
+    switch (s) {
+      case ProductStatus.collected:
         return AppColors.accentLight;
-      case 'アーカイブ':
+      case ProductStatus.archived:
         return AppColors.surfaceVariant;
       default:
         return AppColors.accentLightest;
     }
   }
 
-  Color _statusTextColor(String status) {
-    switch (status) {
-      case 'コレ済':
-      case '候補':
-        return AppColors.accentPrimary;
-      case 'アーカイブ':
+  Color _statusFg(ProductStatus s) {
+    switch (s) {
+      case ProductStatus.archived:
         return AppColors.textSecondary;
       default:
-        return AppColors.textPrimary;
+        return AppColors.accentPrimary;
     }
   }
 }
