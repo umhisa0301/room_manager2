@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'theme/app_theme.dart';
 import 'screens/home_placeholder_screen.dart';
 import 'screens/products_placeholder_screen.dart';
-import 'screens/collected_placeholder_screen.dart';
 import 'screens/comments_placeholder_screen.dart';
+import 'screens/activity_placeholder_screen.dart';
+import 'screens/mypage_placeholder_screen.dart';
 
-/// 下部ナビゲーション＋タブ切り替えのメインシェル。
+/// 下部ナビゲーション＋5タブのメインシェル。
+/// 選択中はアクセント色＋背景ピルで視覚的に明確にする。
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
 
@@ -19,8 +21,9 @@ class _AppShellState extends State<AppShell> {
   static const List<Widget> _screens = [
     HomePlaceholderScreen(),
     ProductsPlaceholderScreen(),
-    CollectedPlaceholderScreen(),
     CommentsPlaceholderScreen(),
+    ActivityPlaceholderScreen(),
+    MypagePlaceholderScreen(),
   ];
 
   @override
@@ -32,7 +35,7 @@ class _AppShellState extends State<AppShell> {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: AppTheme.surfaceColor,
+          color: AppColors.surface,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.06),
@@ -43,33 +46,47 @@ class _AppShellState extends State<AppShell> {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppDimensions.spacingSm,
+              vertical: AppDimensions.spacingSm,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _NavItem(
                   icon: Icons.dashboard_outlined,
+                  selectedIcon: Icons.dashboard,
                   label: 'ホーム',
                   isSelected: _currentIndex == 0,
                   onTap: () => setState(() => _currentIndex = 0),
                 ),
                 _NavItem(
                   icon: Icons.shopping_bag_outlined,
-                  label: '商品候補',
+                  selectedIcon: Icons.shopping_bag,
+                  label: '商品管理',
                   isSelected: _currentIndex == 1,
                   onTap: () => setState(() => _currentIndex = 1),
                 ),
                 _NavItem(
-                  icon: Icons.bookmark_border,
-                  label: 'コレ済',
+                  icon: Icons.chat_bubble_outline,
+                  selectedIcon: Icons.chat_bubble,
+                  label: 'コメント',
                   isSelected: _currentIndex == 2,
                   onTap: () => setState(() => _currentIndex = 2),
                 ),
                 _NavItem(
-                  icon: Icons.chat_bubble_outline,
-                  label: 'コメント',
+                  icon: Icons.analytics_outlined,
+                  selectedIcon: Icons.analytics,
+                  label: '活動',
                   isSelected: _currentIndex == 3,
                   onTap: () => setState(() => _currentIndex = 3),
+                ),
+                _NavItem(
+                  icon: Icons.person_outline,
+                  selectedIcon: Icons.person,
+                  label: 'マイページ',
+                  isSelected: _currentIndex == 4,
+                  onTap: () => setState(() => _currentIndex = 4),
                 ),
               ],
             ),
@@ -83,36 +100,47 @@ class _AppShellState extends State<AppShell> {
 class _NavItem extends StatelessWidget {
   const _NavItem({
     required this.icon,
+    required this.selectedIcon,
     required this.label,
     required this.isSelected,
     required this.onTap,
   });
 
   final IconData icon;
+  final IconData selectedIcon;
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected ? AppTheme.accentPrimary : AppTheme.textSecondary;
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(AppTheme.radiusChip),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimensions.spacingMd,
+          vertical: AppDimensions.spacingSm,
+        ),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.accentLight : Colors.transparent,
+          borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 26, color: color),
-            const SizedBox(height: 4),
+            Icon(
+              isSelected ? selectedIcon : icon,
+              size: AppDimensions.iconNav,
+              color: isSelected ? AppColors.accentPrimary : AppColors.textSecondary,
+            ),
+            const SizedBox(height: AppDimensions.spacingXs),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 11,
-                color: color,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-              ),
+              style: isSelected
+                  ? AppTextStyles.navLabelSelected
+                  : AppTextStyles.navLabel,
             ),
           ],
         ),

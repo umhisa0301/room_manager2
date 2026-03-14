@@ -8,33 +8,32 @@ class HomePlaceholderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundLight,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.all(AppDimensions.spacingLg),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.dashboard_outlined,
-                  size: 64,
-                  color: AppTheme.accentPrimary.withValues(alpha: 0.6),
+                  size: AppDimensions.iconPlaceholder,
+                  color: AppColors.accentPrimary.withValues(alpha: 0.6),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppDimensions.spacingMd),
                 Text(
                   'ホーム',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppTheme.textPrimary,
-                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
                       ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppDimensions.spacingSm),
                 Text(
                   '活動ログ・ダッシュボードはここに表示されます',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppTheme.textSecondary,
+                        color: AppColors.textSecondary,
                       ),
                 ),
               ],

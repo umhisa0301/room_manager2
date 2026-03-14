@@ -1,59 +1,112 @@
 import 'package:flutter/material.dart';
+import 'app_colors.dart';
+import 'app_text_styles.dart';
+import 'app_dimensions.dart';
 
-/// 楽天ROOM風のアプリテーマ定義。
-/// 明るい背景・白〜薄グレー、アクセントはピンク〜マゼンタ系。
+// 他ファイルから theme を一括 import しやすくするため再エクスポート
+export 'app_colors.dart';
+export 'app_text_styles.dart';
+export 'app_dimensions.dart';
+
+/// 楽天ROOM風のアプリテーマ。
+/// ThemeData を一元管理し、色・テキスト・角丸を統一する。
 class AppTheme {
   AppTheme._();
-
-  /// ベース背景（白〜ごく薄いグレー）
-  static const Color backgroundLight = Color(0xFFFAFAFA);
-  static const Color surfaceColor = Color(0xFFFFFFFF);
-
-  /// アクセント（楽天ROOM風ピンク〜マゼンタ）
-  static const Color accentPrimary = Color(0xFFE91E8C);
-  static const Color accentSecondary = Color(0xFFFF6090);
-  static const Color accentLight = Color(0xFFFFE5F0);
-
-  /// テキスト
-  static const Color textPrimary = Color(0xFF1A1A1A);
-  static const Color textSecondary = Color(0xFF666666);
-
-  /// 角丸（大きめのカード・チップ用）
-  static const double radiusCard = 16.0;
-  static const double radiusChip = 20.0;
 
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      scaffoldBackgroundColor: backgroundLight,
+      scaffoldBackgroundColor: AppColors.background,
       colorScheme: ColorScheme.light(
-        primary: accentPrimary,
-        secondary: accentSecondary,
-        surface: surfaceColor,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onSurface: textPrimary,
-        onSurfaceVariant: textSecondary,
+        primary: AppColors.accentPrimary,
+        secondary: AppColors.accentSecondary,
+        surface: AppColors.surface,
+        error: AppColors.error,
+        onPrimary: AppColors.textOnAccent,
+        onSecondary: AppColors.textOnAccent,
+        onSurface: AppColors.textPrimary,
+        onSurfaceVariant: AppColors.textSecondary,
+        onError: Colors.white,
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: surfaceColor,
-        foregroundColor: textPrimary,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textPrimary,
         elevation: 0,
         centerTitle: true,
-      ),
-      cardTheme: CardThemeData(
-        color: surfaceColor,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radiusCard),
+        titleTextStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
         ),
       ),
+      cardTheme: CardThemeData(
+        color: AppColors.surface,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        ),
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.surfaceVariant,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
+          borderSide: const BorderSide(color: AppColors.accentPrimary, width: 1.5),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textTertiary),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.accentPrimary,
+          foregroundColor: AppColors.textOnAccent,
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+          ),
+          textStyle: AppTextStyles.button,
+        ),
+      ),
+      textTheme: TextTheme(
+        titleLarge: AppTextStyles.titleLarge,
+        titleMedium: AppTextStyles.titleMedium,
+        titleSmall: AppTextStyles.titleSmall,
+        bodyLarge: AppTextStyles.bodyLarge,
+        bodyMedium: AppTextStyles.bodyMedium,
+        bodySmall: AppTextStyles.bodySmall,
+        labelLarge: AppTextStyles.label,
+        labelMedium: AppTextStyles.caption,
+        labelSmall: AppTextStyles.caption,
+      ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: surfaceColor,
-        selectedItemColor: accentPrimary,
-        unselectedItemColor: textSecondary,
+        backgroundColor: AppColors.surface,
+        selectedItemColor: AppColors.accentPrimary,
+        unselectedItemColor: AppColors.textSecondary,
         type: BottomNavigationBarType.fixed,
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: AppColors.textPrimary,
+        contentTextStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+        ),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: AppColors.accentPrimary,
+        foregroundColor: AppColors.textOnAccent,
+        elevation: 2,
       ),
     );
   }
