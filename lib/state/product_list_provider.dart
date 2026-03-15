@@ -42,8 +42,9 @@ class ProductListProvider extends ChangeNotifier {
 
   /// 削除用（詳細・一覧から削除する際に利用）
   void deleteProduct(Product product) {
-    final removed = _products.removeWhere((p) => p.id == product.id);
-    if (removed > 0) {
+    final had = _products.any((p) => p.id == product.id);
+    if (had) {
+      _products.removeWhere((p) => p.id == product.id);
       _persist();
       notifyListeners();
     }
