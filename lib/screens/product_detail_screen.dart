@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../models/product.dart';
 import '../models/product_status.dart';
 import '../state/product_list_provider.dart';
+import '../state/comment_template_provider.dart';
 import 'product_edit_screen.dart';
 
 /// 商品詳細画面。表示・編集・削除・ステータス変更。
@@ -110,7 +112,35 @@ class _DetailBody extends StatelessWidget {
           const SizedBox(height: AppDimensions.spacingMd),
           _Section(
             title: 'ひとことコメント',
-            child: Text(product.quickComment ?? '—', style: _bodyStyle(context)),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    product.quickComment ?? '—',
+                    style: _bodyStyle(context),
+                  ),
+                ),
+                if (product.quickComment != null &&
+                    product.quickComment!.trim().isNotEmpty)
+                  IconButton(
+                    icon: const Icon(Icons.copy, size: 18),
+                    tooltip: 'コピー',
+                    onPressed: () async {
+                      final text = product.quickComment!.trim();
+                      await Clipboard.setData(ClipboardData(text: text));
+                      if (context.mounted) {
+                        context
+                            .read<CommentTemplateProvider>()
+                            .setLastCopiedComment(text);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('コピーしました')),
+                        );
+                      }
+                    },
+                  ),
+              ],
+            ),
           ),
           const SizedBox(height: AppDimensions.spacingMd),
           _Section(
