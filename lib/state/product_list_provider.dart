@@ -1,11 +1,17 @@
 import 'package:flutter/foundation.dart';
 import '../models/product.dart';
 import '../models/product_status.dart';
+import '../repository/product_repository.dart';
 
 /// 商品一覧の状態を保持する ChangeNotifier。
-/// 追加・編集・削除はここを経由し、永続化レイヤーは後から差し替え可能。
+/// 追加・編集・削除はここを経由し、永続化は ProductRepository に委譲する。
 class ProductListProvider extends ChangeNotifier {
-  final List<Product> _products = [];
+  ProductListProvider({required ProductRepository repository})
+      : _repository = repository,
+        _products = List.from(repository.loadProducts());
+
+  final ProductRepository _repository;
+  final List<Product> _products;
 
   List<Product> get products => List.unmodifiable(_products);
 
@@ -14,8 +20,13 @@ class ProductListProvider extends ChangeNotifier {
     return _products.where((p) => p.status == status).toList();
   }
 
+  void _persist() {
+    _repository.saveProducts(_products);
+  }
+
   void addProduct(Product product) {
     _products.add(product);
+    _persist();
     notifyListeners();
   }
 
@@ -24,6 +35,16 @@ class ProductListProvider extends ChangeNotifier {
     final i = _products.indexWhere((p) => p.id == product.id);
     if (i >= 0) {
       _products[i] = product;
+      _persist();
+      notifyListeners();
+    }
+  }
+
+  /// 削除用（詳細・一覧から削除する際に利用）
+  void deleteProduct(Product product) {
+    final removed = _products.removeWhere((p) => p.id == product.id);
+    if (removed > 0) {
+      _persist();
       notifyListeners();
     }
   }

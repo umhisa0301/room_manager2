@@ -17,4 +17,16 @@ extension ProductStatusExtension on ProductStatus {
         return 'アーカイブ';
     }
   }
+
+  /// JSON 保存用の文字列（enum 名と一致）
+  String get value => name;
+
+  /// JSON から復元。不正値は candidate にフォールバック。
+  static ProductStatus fromString(String? v) {
+    if (v == null) return ProductStatus.candidate;
+    return ProductStatus.values.firstWhere(
+      (e) => e.name == v,
+      orElse: () => ProductStatus.candidate,
+    );
+  }
 }

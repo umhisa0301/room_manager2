@@ -37,6 +37,68 @@ class Product {
     return productUrl.length > 30 ? '${productUrl.substring(0, 30)}…' : productUrl;
   }
 
+  /// ローカル保存用 JSON に変換
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'productName': productName,
+      'productUrl': productUrl,
+      'imageUrl': imageUrl,
+      'memo': memo,
+      'tags': tags,
+      'status': status.value,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      'quickComment': quickComment,
+    };
+  }
+
+  /// JSON から復元。不正・欠損時は null を返す（呼び出し側でガード）
+  static Product? fromJson(Map<String, dynamic>? json) {
+    if (json == null) return null;
+    try {
+      final id = json['id'] as String?;
+      final productName = json['productName'] as String?;
+      final productUrl = json['productUrl'] as String?;
+      if (id == null || id.isEmpty || productName == null || productUrl == null) {
+        return null;
+      }
+      final createdAt = _parseDateTime(json['createdAt']);
+      final updatedAt = _parseDateTime(json['updatedAt']);
+      if (createdAt == null || updatedAt == null) return null;
+
+      final tags = json['tags'];
+      final tagList = tags is List<dynamic>
+          ? tags.map((e) => e?.toString() ?? '').where((s) => s.isNotEmpty).toList()
+          : <String>[];
+
+      return Product(
+        id: id,
+        productName: productName,
+        productUrl: productUrl,
+        imageUrl: json['imageUrl'] as String?,
+        memo: json['memo'] as String?,
+        tags: tagList,
+        status: ProductStatusExtension.fromString(json['status'] as String?),
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        quickComment: json['quickComment'] as String?,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static DateTime? _parseDateTime(dynamic v) {
+    if (v == null) return null;
+    if (v is DateTime) return v;
+    try {
+      return DateTime.parse(v.toString());
+    } catch (_) {
+      return null;
+    }
+  }
+
   Product copyWith({
     String? id,
     String? productName,
