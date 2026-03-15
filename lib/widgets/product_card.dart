@@ -15,7 +15,7 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback? onTap;
 
-  static const double _thumbnailSize = 88;
+  static const double _thumbnailSize = 80;
   static const double _cardPadding = 12;
 
   @override
@@ -43,7 +43,7 @@ class ProductCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildThumbnail(),
-              const SizedBox(width: 12),
+              const SizedBox(width: 10),
               Expanded(child: _buildDetails(context)),
             ],
           ),
@@ -95,7 +95,7 @@ class ProductCard extends StatelessWidget {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 3),
         Text(
           product.displayUrlOrShop,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -106,10 +106,10 @@ class ProductCard extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         if (product.tags.isNotEmpty) ...[
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           _buildTags(context),
         ],
-        const SizedBox(height: 6),
+        const SizedBox(height: 4),
         Row(
           children: [
             _buildStatusChip(context),

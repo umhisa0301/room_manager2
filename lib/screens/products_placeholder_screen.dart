@@ -5,6 +5,7 @@ import '../models/product.dart';
 import '../models/product_status.dart';
 import '../state/product_list_provider.dart';
 import 'product_add_screen.dart';
+import 'product_detail_screen.dart';
 import '../widgets/product_card.dart';
 import '../widgets/empty_state_view.dart';
 
@@ -194,19 +195,21 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(
         AppDimensions.screenPaddingH,
-        AppDimensions.spacingMd,
+        AppDimensions.spacingSm,
         AppDimensions.screenPaddingH,
         80,
       ),
       itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: AppDimensions.spacingMd),
+      separatorBuilder: (_, __) => const SizedBox(height: 10),
       itemBuilder: (context, index) {
         final product = items[index];
         return ProductCard(
           product: product,
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('${product.productName} 詳細は未実装')),
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (context) => ProductDetailScreen(productId: product.id),
+              ),
             );
           },
         );
