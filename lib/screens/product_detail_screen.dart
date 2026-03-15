@@ -24,8 +24,10 @@ class ProductDetailScreen extends StatelessWidget {
       builder: (context, provider, _) {
         final product = provider.findById(productId);
         if (product == null) {
+          // 削除済みなどで商品が無い場合は一覧へ戻す（pop は 1 回だけ・mounted を確認）
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (context.mounted) Navigator.of(context).pop();
+            if (!context.mounted) return;
+            Navigator.of(context).maybePop();
           });
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
@@ -145,27 +147,35 @@ class _DetailBody extends StatelessWidget {
   Future<void> _showDeleteConfirm(BuildContext context) async {
     final ok = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('削除の確認'),
         content: const Text('本当に削除しますか？'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
             child: const Text('キャンセル'),
           ),
           TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             child: Text('削除', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),
     );
     if (ok != true || !context.mounted) return;
-    context.read<ProductListProvider>().deleteProduct(product);
-    if (context.mounted) {
-      Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('削除しました')));
-    }
+
+    // 削除前に必要な参照を取得。pop 後に context を使わない。
+    final navigator = Navigator.of(context);
+    final provider = context.read<ProductListProvider>();
+    final messenger = ScaffoldMessenger.of(context);
+    final productToDelete = product;
+
+    // 1. 先に詳細画面を閉じる（削除済みデータで rebuild させない）
+    navigator.pop();
+
+    // 2. 一覧に戻ったあとで state とローカル保存から削除
+    provider.deleteProduct(productToDelete);
+    messenger.showSnackBar(const SnackBar(content: Text('削除しました')));
   }
 }
 
