@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../state/comment_template_provider.dart';
 import '../models/comment_template.dart';
+import '../services/app_action_service.dart';
 import 'comment_template_edit_screen.dart';
 
 /// コメントテンプレ一覧画面。
@@ -27,7 +27,7 @@ class CommentsPlaceholderScreen extends StatelessWidget {
             return ListView(
               padding: const EdgeInsets.fromLTRB(
                 AppDimensions.screenPaddingH,
-                AppDimensions.spacingMd,
+                AppDimensions.spacingSm,
                 AppDimensions.screenPaddingH,
                 80,
               ),
@@ -73,13 +73,11 @@ class CommentsPlaceholderScreen extends StatelessWidget {
         _CommentTemplateCard(
           template: t,
           onCopy: () async {
-            await Clipboard.setData(ClipboardData(text: t.body));
-            provider.setLastCopiedComment(t.body);
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('コピーしました')),
-              );
-            }
+            await AppActionService.copyText(
+              context,
+              text: t.body,
+              onSuccess: () => provider.setLastCopiedComment(t.body),
+            );
           },
           onEdit: () {
             Navigator.of(context).push(
@@ -166,7 +164,9 @@ class _RecentCopiedCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            text == null || text!.isEmpty ? '—' : text!,
+            text == null || text!.isEmpty
+                ? 'まだコピー履歴がありません。テンプレか商品のコメントをコピーするとここに表示されます。'
+                : text!,
             style: Theme.of(context)
                 .textTheme
                 .bodyMedium
@@ -288,6 +288,14 @@ class _CommentTemplateCard extends StatelessWidget {
                                   fontSize: 11,
                                 ),
                           ),
+                        const Spacer(),
+                        Text(
+                          'タップでコピー',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: AppColors.textTertiary,
+                                fontSize: 11,
+                              ),
+                        ),
                       ],
                     ),
                   ],

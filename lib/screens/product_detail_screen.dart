@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../models/product.dart';
 import '../models/product_status.dart';
+import '../models/comment_template.dart';
 import '../state/product_list_provider.dart';
 import '../state/comment_template_provider.dart';
+import '../services/app_action_service.dart';
 import 'product_edit_screen.dart';
 
 /// 商品詳細画面。表示・編集・削除・ステータス変更。
@@ -51,6 +52,12 @@ class _DetailBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final commentProvider = context.watch<CommentTemplateProvider>();
+    final templates = commentProvider.templates;
+    final recentCopied = commentProvider.lastCopiedComment;
+    final hasQuickComment =
+        product.quickComment != null && product.quickComment!.trim().isNotEmpty;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -77,80 +84,202 @@ class _DetailBody extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(AppDimensions.screenPaddingH),
         children: [
-          _Section(title: '商品名', child: Text(product.productName, style: _bodyStyle(context))),
-          const SizedBox(height: AppDimensions.spacingMd),
-          _Section(
-            title: '商品URL',
+          _SectionCard(
+            title: '商品基本情報',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.productName,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () => AppActionService.openUrl(
+                    context,
+                    url: product.productUrl,
+                  ),
+                  child: Text(
+                    product.productUrl,
+                    style: _bodyStyle(context)?.copyWith(
+                      color: AppColors.accentPrimary,
+                      decoration: TextDecoration.underline,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _StatusChunks(product: product),
+                const SizedBox(height: 8),
+                product.tags.isEmpty
+                    ? Text('タグなし', style: _captionStyle(context))
+                    : Wrap(
+                        spacing: 6,
+                        runSpacing: 4,
+                        children:
+                            product.tags.map((t) => _chip(context, t)).toList(),
+                      ),
+                const SizedBox(height: 10),
+                OutlinedButton.icon(
+                  onPressed: () => AppActionService.openUrl(
+                    context,
+                    url: product.productUrl,
+                  ),
+                  icon: const Icon(Icons.open_in_new, size: 16),
+                  label: const Text('商品URLを開く'),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          _SectionCard(
+            title: 'メモ',
             child: Text(
-              product.productUrl,
+              (product.memo ?? '').trim().isEmpty
+                  ? 'メモはまだありません'
+                  : product.memo!,
+              style: _bodyStyle(context),
+            ),
+          ),
+          const SizedBox(height: 10),
+          _SectionCard(
+            title: 'ひとことコメント',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.accentLightest,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    hasQuickComment
+                        ? product.quickComment!.trim()
+                        : 'まだ設定されていません',
+                    style: _bodyStyle(context),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: hasQuickComment
+                          ? () => AppActionService.copyText(
+                                context,
+                                text: product.quickComment!.trim(),
+                                onSuccess: () => context
+                                    .read<CommentTemplateProvider>()
+                                    .setLastCopiedComment(
+                                        product.quickComment!.trim()),
+                              )
+                          : null,
+                      icon: const Icon(Icons.copy, size: 16),
+                      label: const Text('コピー'),
+                    ),
+                    const SizedBox(width: 8),
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (context) =>
+                                ProductEditScreen(product: product),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.edit, size: 16),
+                      label: const Text('編集'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          _SectionCard(
+            title: '最近コピーしたコメント',
+            child: Text(
+              (recentCopied ?? '').trim().isEmpty
+                  ? 'まだコピー履歴がありません'
+                  : recentCopied!,
               style: _bodyStyle(context),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(height: AppDimensions.spacingMd),
-          _Section(
-            title: 'メモ',
-            child: Text(product.memo ?? '—', style: _bodyStyle(context)),
-          ),
-          const SizedBox(height: AppDimensions.spacingMd),
-          _Section(
-            title: 'タグ',
-            child: product.tags.isEmpty
-                ? Text('—', style: _bodyStyle(context))
-                : Wrap(
-                    spacing: 6,
-                    runSpacing: 4,
-                    children: product.tags.map((t) => _chip(context, t)).toList(),
-                  ),
-          ),
-          const SizedBox(height: AppDimensions.spacingMd),
-          _Section(
-            title: 'ステータス',
-            child: _StatusChunks(product: product),
-          ),
-          const SizedBox(height: AppDimensions.spacingMd),
-          _Section(
-            title: 'ひとことコメント',
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          const SizedBox(height: 10),
+          _SectionCard(
+            title: 'コメント関連アクション',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  child: Text(
-                    product.quickComment ?? '—',
-                    style: _bodyStyle(context),
-                  ),
+                OutlinedButton.icon(
+                  onPressed: templates.isEmpty
+                      ? null
+                      : () => _showTemplatePicker(
+                            context,
+                            templates,
+                          ),
+                  icon: const Icon(Icons.article_outlined, size: 16),
+                  label: const Text('テンプレから選ぶ'),
                 ),
-                if (product.quickComment != null &&
-                    product.quickComment!.trim().isNotEmpty)
-                  IconButton(
-                    icon: const Icon(Icons.copy, size: 18),
-                    tooltip: 'コピー',
-                    onPressed: () async {
-                      final text = product.quickComment!.trim();
-                      await Clipboard.setData(ClipboardData(text: text));
-                      if (context.mounted) {
-                        context
-                            .read<CommentTemplateProvider>()
-                            .setLastCopiedComment(text);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('コピーしました')),
-                        );
-                      }
-                    },
-                  ),
+                const SizedBox(height: 8),
+                ElevatedButton.icon(
+                  onPressed: hasQuickComment
+                      ? () => AppActionService.copyThenOpenUrl(
+                            context,
+                            text: product.quickComment!.trim(),
+                            url: product.productUrl,
+                            onCopied: () => context
+                                .read<CommentTemplateProvider>()
+                                .setLastCopiedComment(
+                                    product.quickComment!.trim()),
+                          )
+                      : null,
+                  icon: const Icon(Icons.rocket_launch_outlined, size: 16),
+                  label: const Text('コメントをコピーしてURLを開く'),
+                ),
               ],
             ),
           ),
-          const SizedBox(height: AppDimensions.spacingMd),
-          _Section(
-            title: '作成日',
-            child: Text(_formatDate(product.createdAt), style: _captionStyle(context)),
-          ),
-          const SizedBox(height: AppDimensions.spacingSm),
-          _Section(
-            title: '更新日',
-            child: Text(_formatDate(product.updatedAt), style: _captionStyle(context)),
+          const SizedBox(height: 10),
+          _SectionCard(
+            title: '管理アクション',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (context) => ProductEditScreen(product: product),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.edit_outlined, size: 16),
+                  label: const Text('商品を編集'),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  onPressed: () => _showDeleteConfirm(context),
+                  icon: const Icon(Icons.delete_outline, size: 16),
+                  label: const Text('商品を削除'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.error,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '作成: ${_formatDate(product.createdAt)}\n更新: ${_formatDate(product.updatedAt)}',
+                  style: _captionStyle(context),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -171,6 +300,58 @@ class _DetailBody extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
       ),
       child: Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.accentPrimary)),
+    );
+  }
+
+  Future<void> _showTemplatePicker(
+    BuildContext context,
+    List<CommentTemplate> templates,
+  ) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      backgroundColor: AppColors.surface,
+      builder: (sheetContext) {
+        return SafeArea(
+          child: ListView.separated(
+            shrinkWrap: true,
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            itemCount: templates.length,
+            separatorBuilder: (_, __) => const Divider(height: 1),
+            itemBuilder: (context, index) {
+              final t = templates[index];
+              return ListTile(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                title: Text(
+                  t.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                subtitle: Text(
+                  t.body,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                trailing: t.isFavorite
+                    ? const Icon(Icons.star, color: AppColors.accentSecondary)
+                    : null,
+                onTap: () async {
+                  Navigator.of(sheetContext).pop();
+                  await AppActionService.copyText(
+                    context,
+                    text: t.body,
+                    onSuccess: () => context
+                        .read<CommentTemplateProvider>()
+                        .setLastCopiedComment(t.body),
+                  );
+                },
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -209,28 +390,41 @@ class _DetailBody extends StatelessWidget {
   }
 }
 
-class _Section extends StatelessWidget {
-  const _Section({required this.title, required this.child});
+class _SectionCard extends StatelessWidget {
+  const _SectionCard({required this.title, required this.child});
 
   final String title;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w600,
-              ),
-        ),
-        const SizedBox(height: 4),
-        child,
-      ],
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            offset: const Offset(0, 2),
+            blurRadius: 6,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          const SizedBox(height: 8),
+          child,
+        ],
+      ),
     );
   }
 }
