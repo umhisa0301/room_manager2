@@ -5,18 +5,22 @@ import 'theme/app_theme.dart';
 import 'app_shell.dart';
 import 'repository/product_repository.dart';
 import 'repository/comment_template_repository.dart';
+import 'repository/activity_log_repository.dart';
 import 'state/product_list_provider.dart';
 import 'state/comment_template_provider.dart';
+import 'state/activity_log_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final productRepository = ProductRepository(prefs);
   final commentRepository = CommentTemplateRepository(prefs);
+  final activityRepository = ActivityLogRepository(prefs);
   runApp(
     MyApp(
       productRepository: productRepository,
       commentRepository: commentRepository,
+      activityRepository: activityRepository,
     ),
   );
 }
@@ -26,10 +30,12 @@ class MyApp extends StatelessWidget {
     super.key,
     required this.productRepository,
     required this.commentRepository,
+    required this.activityRepository,
   });
 
   final ProductRepository productRepository;
   final CommentTemplateRepository commentRepository;
+  final ActivityLogRepository activityRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +47,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) =>
               CommentTemplateProvider(repository: commentRepository),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ActivityLogProvider(repository: activityRepository),
         ),
       ],
       child: MaterialApp(
