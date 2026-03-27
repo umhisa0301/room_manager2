@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 /// コメントテンプレートのモデル。
 /// 楽天ROOM用コメントの定型文を表現する。
 class CommentTemplate {
