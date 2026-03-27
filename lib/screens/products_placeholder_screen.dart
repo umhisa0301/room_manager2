@@ -11,6 +11,7 @@ import '../widgets/empty_state_view.dart';
 import '../widgets/product_card.dart';
 import 'product_add_screen.dart';
 import 'product_detail_screen.dart';
+import 'rakuten_search_screen.dart';
 
 /// 商品管理画面。検索・タブ・フィルタチップ・商品一覧カード。
 /// 「これコレしたっけ？」を素早く確認できる検索体験を優先する。
@@ -66,6 +67,19 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         title: const Text('商品管理'),
         backgroundColor: AppColors.surface,
         foregroundColor: AppColors.textPrimary,
+        actions: [
+          IconButton(
+            tooltip: '楽天検索',
+            icon: const Icon(Icons.travel_explore_outlined),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const RakutenSearchScreen(),
+                ),
+              );
+            },
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
           child: Align(
