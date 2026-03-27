@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../models/product.dart';
 import '../models/product_status.dart';
+import '../models/product_search_hit.dart';
 
 /// 商品一覧用カード。左に画像・右に詳細の横並び（楽天・Amazon検索結果風）。
 /// 白カード＋角丸＋やわらかい影で一覧の視認性を優先。
@@ -10,10 +11,14 @@ class ProductCard extends StatelessWidget {
     super.key,
     required this.product,
     this.onTap,
+    this.matchKinds = const [],
+    this.highlightSearchState = false,
   });
 
   final Product product;
   final VoidCallback? onTap;
+  final List<ProductMatchKind> matchKinds;
+  final bool highlightSearchState;
 
   static const double _thumbnailSize = 80;
   static const double _cardPadding = 12;
@@ -105,6 +110,10 @@ class ProductCard extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
+        if (matchKinds.isNotEmpty) ...[
+          const SizedBox(height: 4),
+          _buildMatchKinds(context),
+        ],
         if (product.tags.isNotEmpty) ...[
           const SizedBox(height: 4),
           _buildTags(context),
@@ -131,6 +140,32 @@ class ProductCard extends StatelessWidget {
               const SizedBox(width: 18, height: 18),
           ],
         ),
+      ],
+    );
+  }
+
+  Widget _buildMatchKinds(BuildContext context) {
+    final labels = matchKinds.take(2).map((e) => e.label).toList();
+    return Wrap(
+      spacing: 4,
+      runSpacing: 3,
+      children: [
+        for (final label in labels)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: AppColors.accentLight,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.accentPrimary,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ),
       ],
     );
   }
@@ -165,9 +200,12 @@ class ProductCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: _statusBg(status),
         borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+        border: highlightSearchState
+            ? Border.all(color: AppColors.accentPrimary.withValues(alpha: 0.45))
+            : null,
       ),
       child: Text(
-        status.label,
+        highlightSearchState ? '状態: ${status.label}' : status.label,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: _statusFg(status),
               fontWeight: FontWeight.w500,
