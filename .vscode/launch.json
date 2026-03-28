@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "room_manager2",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "toolArgs": [
+        "--dart-define=RAKUTEN_APP_ID=${env:RAKUTEN_APP_ID}",
+        "--dart-define=RAKUTEN_AFFILIATE_ID=${env:RAKUTEN_AFFILIATE_ID}"
+      ]
+    },
+    {
+      "name": "room_manager2 (楽天なし)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart"
+    }
+  ]
+}

@@ -43,6 +43,7 @@ class RakutenSearchRepository {
 
     final itemPrice = (json['itemPrice'] as num?)?.toInt() ?? 0;
     final shopName = (json['shopName'] ?? '').toString().trim();
+    final affiliateUrl = (json['affiliateUrl'] ?? '').toString().trim();
     final imageUrl = _extractImageUrl(json);
 
     return RakutenSearchItem(
@@ -50,6 +51,7 @@ class RakutenSearchRepository {
       itemName: itemName,
       itemPrice: itemPrice,
       itemUrl: itemUrl,
+      affiliateUrl: affiliateUrl,
       imageUrl: imageUrl,
       shopName: shopName,
     );

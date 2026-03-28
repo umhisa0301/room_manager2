@@ -67,8 +67,10 @@ class RakutenSearchResultCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: OutlinedButton(
-                    onPressed: () =>
-                        AppActionService.openUrl(context, url: item.itemUrl),
+                    onPressed: () => AppActionService.openUrl(
+                      context,
+                      url: item.browserLaunchUrl,
+                    ),
                     child: const Text('楽天で見る'),
                   ),
                 ),

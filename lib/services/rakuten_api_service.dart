@@ -44,6 +44,9 @@ class RakutenApiService {
 
     if (response.statusCode != 200) {
       final detail = _rakutenErrorMessage(bodyMap) ?? _truncateBody(response.body);
+      if (_isInvalidApplicationIdError(detail, httpStatus: response.statusCode)) {
+        throw Exception(_invalidApplicationIdUserMessage(detail));
+      }
       throw Exception(
         '楽天API呼び出しに失敗しました (${response.statusCode})'
         '${detail.isNotEmpty ? ': $detail' : ''}',
@@ -54,6 +57,9 @@ class RakutenApiService {
     }
     final errMsg = _rakutenErrorMessage(bodyMap);
     if (errMsg != null) {
+      if (_isInvalidApplicationIdError(errMsg, httpStatus: response.statusCode)) {
+        throw Exception(_invalidApplicationIdUserMessage(errMsg));
+      }
       throw Exception('楽天API: $errMsg');
     }
     return bodyMap;
@@ -78,5 +84,23 @@ String _truncateBody(String body, [int max = 200]) {
   if (t.isEmpty) return '';
   if (t.length <= max) return t;
   return '${t.substring(0, max)}…';
+}
+
+bool _isInvalidApplicationIdError(String detail, {required int httpStatus}) {
+  final d = detail.toLowerCase();
+  if (d.contains('specify valid applicationid')) return true;
+  if (httpStatus == 400 &&
+      (d.contains('applicationid') || d.contains('application id'))) {
+    return true;
+  }
+  return false;
+}
+
+String _invalidApplicationIdUserMessage(String technicalDetail) {
+  return '楽天のアプリIDが無効です（$technicalDetail）。'
+      '楽天ウェブサービスで発行した「アプリID」を、'
+      'ターミナルなら flutter run --dart-define=RAKUTEN_APP_ID=（アプリID） のように渡し、'
+      'Cursor/VS Code なら環境変数 RAKUTEN_APP_ID を設定するか .vscode/launch.json の toolArgs を編集してから '
+      'アプリを再ビルド（ホットリロードでは反映されません）してください。';
 }
 
