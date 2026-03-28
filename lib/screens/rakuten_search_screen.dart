@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/rakuten_api_config.dart';
+import '../state/rakuten_managed_product_provider.dart';
 import '../state/rakuten_search_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/rakuten_search_result_card.dart';
@@ -32,8 +33,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen> {
         title: const Text('楽天商品検索'),
       ),
       body: SafeArea(
-        child: Consumer<RakutenSearchProvider>(
-          builder: (context, provider, _) {
+        child: Consumer2<RakutenSearchProvider, RakutenManagedProductProvider>(
+          builder: (context, search, managed, _) {
             return Column(
               children: [
                 Padding(
@@ -53,7 +54,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen> {
                       ),
                       const SizedBox(width: 8),
                       ElevatedButton(
-                        onPressed: provider.status == RakutenSearchStatus.loading
+                        onPressed: search.status == RakutenSearchStatus.loading
                             ? null
                             : () => _runSearch(context),
                         child: const Text('検索'),
@@ -62,7 +63,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen> {
                   ),
                 ),
                 Expanded(
-                  child: _buildResultArea(provider),
+                  child: _buildResultArea(context, search, managed),
                 ),
               ],
             );
@@ -76,32 +77,50 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen> {
     context.read<RakutenSearchProvider>().search(_keywordController.text);
   }
 
-  Widget _buildResultArea(RakutenSearchProvider provider) {
-    switch (provider.status) {
+  Widget _buildResultArea(
+    BuildContext context,
+    RakutenSearchProvider search,
+    RakutenManagedProductProvider managed,
+  ) {
+    switch (search.status) {
       case RakutenSearchStatus.idle:
         return _centerText('キーワードを入力して検索してください');
       case RakutenSearchStatus.loading:
         return const Center(child: CircularProgressIndicator());
       case RakutenSearchStatus.error:
         return _centerText(
-          '検索に失敗しました。\n${provider.errorMessage}',
+          '検索に失敗しました。\n${search.errorMessage}',
           isError: true,
         );
       case RakutenSearchStatus.success:
-        if (provider.results.isEmpty) {
+        if (search.results.isEmpty) {
           return _centerText('検索結果は0件でした');
         }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (kDebugMode) _buildAffiliateDebugBanner(provider),
+            if (kDebugMode) _buildAffiliateDebugBanner(search),
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 90),
-                itemCount: provider.results.length,
+                itemCount: search.results.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {
-                  return RakutenSearchResultCard(item: provider.results[index]);
+                  final item = search.results[index];
+                  return RakutenSearchResultCard(
+                    item: item,
+                    localStatus: managed.statusForProduct(item.productId),
+                    isRegistering: managed.isRegistering(item.productId),
+                    onRegisterCandidate: () async {
+                      final err = await managed.registerCandidate(item);
+                      if (!context.mounted) return;
+                      if (err != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(err)),
+                        );
+                      }
+                    },
+                  );
                 },
               ),
             ),
