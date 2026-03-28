@@ -50,6 +50,7 @@ class CommentsPlaceholderScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'fab_comments_template_add',
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute<void>(

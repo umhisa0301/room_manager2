@@ -126,6 +126,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'fab_products_add',
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute<void>(

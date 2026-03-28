@@ -44,6 +44,7 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(title: const Text('活動')),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'fab_activity_today',
         onPressed: () => _openTodayEditor(context),
         icon: const Icon(Icons.edit_note),
         label: const Text('今日を記録'),
