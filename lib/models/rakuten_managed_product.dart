@@ -22,6 +22,9 @@ class RakutenManagedProduct {
     required this.affiliateUrl,
     required this.imageUrl,
     required this.shopName,
+    required this.shopCode,
+    required this.shopUrl,
+    required this.genreId,
     required this.status,
     required this.createdAt,
     required this.updatedAt,
@@ -35,6 +38,9 @@ class RakutenManagedProduct {
   final String affiliateUrl;
   final String imageUrl;
   final String shopName;
+  final String shopCode;
+  final String shopUrl;
+  final String genreId;
   final RakutenManagedProductStatus status;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -53,6 +59,9 @@ class RakutenManagedProduct {
       affiliateUrl: item.affiliateUrl,
       imageUrl: item.imageUrl,
       shopName: item.shopName,
+      shopCode: item.shopCode,
+      shopUrl: item.shopUrl,
+      genreId: item.genreId,
       status: status,
       createdAt: t,
       updatedAt: t,
@@ -68,6 +77,9 @@ class RakutenManagedProduct {
       'affiliateUrl': affiliateUrl,
       'imageUrl': imageUrl,
       'shopName': shopName,
+      'shopCode': shopCode,
+      'shopUrl': shopUrl,
+      'genreId': genreId,
       'status': status.name,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
@@ -113,6 +125,9 @@ class RakutenManagedProduct {
       affiliateUrl: (json['affiliateUrl'] ?? '').toString(),
       imageUrl: (json['imageUrl'] ?? '').toString(),
       shopName: (json['shopName'] ?? '').toString(),
+      shopCode: (json['shopCode'] ?? '').toString(),
+      shopUrl: (json['shopUrl'] ?? '').toString(),
+      genreId: (json['genreId'] ?? '').toString(),
       status: status,
       createdAt: createdAt,
       updatedAt: updatedAt,

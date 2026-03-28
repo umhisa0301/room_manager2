@@ -8,6 +8,9 @@ class RakutenSearchItem {
     required this.affiliateUrl,
     required this.imageUrl,
     required this.shopName,
+    this.shopCode = '',
+    this.shopUrl = '',
+    this.genreId = '',
   });
 
   final String productId;
@@ -22,6 +25,15 @@ class RakutenSearchItem {
 
   final String imageUrl;
   final String shopName;
+
+  /// 店舗コード（楽天API `shopCode`）。
+  final String shopCode;
+
+  /// 店舗URL（楽天API `shopUrl`）。
+  final String shopUrl;
+
+  /// ジャンルID（楽天API `genreId`。数値でも文字列として保持）。
+  final String genreId;
 
   /// 「楽天で見る」で開くURL（アフィリエイトURLを優先）。
   String get browserLaunchUrl =>
