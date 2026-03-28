@@ -13,6 +13,14 @@ class RakutenManagedProductRepository {
 
   static const String _keyList = 'rakuten_room_managed_products_v1';
 
+  /// [status] に一致する商品だけを返す（更新日時の新しい順）。
+  List<RakutenManagedProduct> loadByStatus(RakutenManagedProductStatus status) {
+    final list =
+        loadAll().where((e) => e.status == status).toList(growable: false);
+    list.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    return list;
+  }
+
   /// 保存済みの一覧を読み込む。破損時は空。
   List<RakutenManagedProduct> loadAll() {
     try {

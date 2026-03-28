@@ -45,6 +45,10 @@ class RakutenManagedProduct {
   final DateTime createdAt;
   final DateTime updatedAt;
 
+  /// ブラウザで開くURL（アフィリエイトURLを優先）。
+  String get browserLaunchUrl =>
+      affiliateUrl.trim().isNotEmpty ? affiliateUrl.trim() : itemUrl;
+
   factory RakutenManagedProduct.fromSearchItem(
     RakutenSearchItem item, {
     required RakutenManagedProductStatus status,

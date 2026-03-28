@@ -11,6 +11,7 @@ import '../widgets/empty_state_view.dart';
 import '../widgets/product_card.dart';
 import 'product_add_screen.dart';
 import 'product_detail_screen.dart';
+import 'rakuten_collection_list_screen.dart';
 import 'rakuten_search_screen.dart';
 
 /// 商品管理画面。検索・タブ・フィルタチップ・商品一覧カード。
@@ -68,6 +69,17 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         backgroundColor: AppColors.surface,
         foregroundColor: AppColors.textPrimary,
         actions: [
+          IconButton(
+            tooltip: 'ROOM コレ管理',
+            icon: const Icon(Icons.collections_bookmark_outlined),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const RakutenCollectionListScreen(),
+                ),
+              );
+            },
+          ),
           IconButton(
             tooltip: '楽天検索',
             icon: const Icon(Icons.travel_explore_outlined),

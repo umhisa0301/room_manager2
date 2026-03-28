@@ -4,6 +4,14 @@ import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 
+/// 楽天ROOM管理の一覧画面用ロード状態。
+enum RakutenManagedProductListUiStatus {
+  idle,
+  loading,
+  ready,
+  error,
+}
+
 /// 楽天検索由来のローカル管理商品の状態（UI向け）。
 class RakutenManagedProductProvider extends ChangeNotifier {
   RakutenManagedProductProvider({required RakutenManagedProductRepository repository})
@@ -15,8 +23,44 @@ class RakutenManagedProductProvider extends ChangeNotifier {
 
   List<RakutenManagedProduct> _items = const [];
   final Set<String> _registeringProductIds = {};
+  RakutenManagedProductListUiStatus _listUiStatus =
+      RakutenManagedProductListUiStatus.idle;
+  String? _listUiErrorMessage;
 
   List<RakutenManagedProduct> get items => List.unmodifiable(_items);
+
+  RakutenManagedProductListUiStatus get listUiStatus => _listUiStatus;
+  String? get listUiErrorMessage => _listUiErrorMessage;
+
+  /// [status] ごとの一覧（メモリ上の [_items] から。更新日時降順）。
+  List<RakutenManagedProduct> sortedItemsForStatus(
+    RakutenManagedProductStatus status,
+  ) {
+    final filtered = _items.where((e) => e.status == status).toList();
+    filtered.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    return List.unmodifiable(filtered);
+  }
+
+  /// 一覧画面の再読込（ローディング・エラー状態を更新）。
+  /// [showLoadingIndicator] が false のときは [RakutenManagedProductListUiStatus.loading] にしない（初回同期用）。
+  Future<void> refreshManagedProductList({
+    bool showLoadingIndicator = true,
+  }) async {
+    if (showLoadingIndicator) {
+      _listUiStatus = RakutenManagedProductListUiStatus.loading;
+      _listUiErrorMessage = null;
+      notifyListeners();
+    }
+    try {
+      await Future<void>.delayed(Duration.zero);
+      _items = _repository.loadAll();
+      _listUiStatus = RakutenManagedProductListUiStatus.ready;
+    } catch (e) {
+      _listUiStatus = RakutenManagedProductListUiStatus.error;
+      _listUiErrorMessage = e.toString();
+    }
+    notifyListeners();
+  }
 
   /// 永続化一覧に無い場合は [RakutenManagedProductStatus.none]。
   RakutenManagedProductStatus statusForProduct(String productId) {
@@ -50,6 +94,8 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     try {
       await _repository.registerCandidateFromSearchItem(item);
       _reloadFromStorage();
+      _listUiStatus = RakutenManagedProductListUiStatus.ready;
+      _listUiErrorMessage = null;
       return null;
     } on Exception catch (e) {
       return e.toString();
