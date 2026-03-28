@@ -26,5 +26,8 @@ class RakutenSearchItem {
   /// 「楽天で見る」で開くURL（アフィリエイトURLを優先）。
   String get browserLaunchUrl =>
       affiliateUrl.trim().isNotEmpty ? affiliateUrl.trim() : itemUrl;
+
+  /// API が `affiliateUrl` を返したか（リクエストの affiliateId が有効なときに付く）。
+  bool get hasAffiliateUrlInResponse => affiliateUrl.trim().isNotEmpty;
 }
 

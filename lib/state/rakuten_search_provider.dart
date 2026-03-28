@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/rakuten_api_config.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/rakuten_search_repository.dart';
 
@@ -28,6 +29,11 @@ class RakutenSearchProvider extends ChangeNotifier {
   String get errorMessage => _errorMessage;
   String get lastKeyword => _lastKeyword;
 
+  /// 直近の成功結果のうち `affiliateUrl` が空でない件数（API側のアフィリエイト応答の目安）。
+  int get resultsWithAffiliateUrlCount => _results
+      .where((e) => e.hasAffiliateUrlInResponse)
+      .length;
+
   Future<void> search(String keyword) async {
     final q = keyword.trim();
     if (q.isEmpty) {
@@ -47,6 +53,12 @@ class RakutenSearchProvider extends ChangeNotifier {
       final fetched = await _repository.search(keyword: q);
       _results = fetched;
       _status = RakutenSearchStatus.success;
+      final withAff = fetched.where((e) => e.hasAffiliateUrlInResponse).length;
+      debugPrint(
+        '[Rakuten] affiliateIdをリクエストに付与: '
+        '${RakutenApiConfig.requestIncludesAffiliateId} / '
+        'affiliateUrlあり: $withAff / ${fetched.length} 件',
+      );
     } catch (e) {
       _results = const [];
       _status = RakutenSearchStatus.error;

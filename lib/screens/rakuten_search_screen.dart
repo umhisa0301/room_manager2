@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config/rakuten_api_config.dart';
 import '../state/rakuten_search_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/rakuten_search_result_card.dart';
@@ -89,15 +91,41 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen> {
         if (provider.results.isEmpty) {
           return _centerText('検索結果は0件でした');
         }
-        return ListView.separated(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 90),
-          itemCount: provider.results.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 10),
-          itemBuilder: (context, index) {
-            return RakutenSearchResultCard(item: provider.results[index]);
-          },
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (kDebugMode) _buildAffiliateDebugBanner(provider),
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 90),
+                itemCount: provider.results.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                itemBuilder: (context, index) {
+                  return RakutenSearchResultCard(item: provider.results[index]);
+                },
+              ),
+            ),
+          ],
         );
     }
+  }
+
+  Widget _buildAffiliateDebugBanner(RakutenSearchProvider provider) {
+    final req = RakutenApiConfig.requestIncludesAffiliateId;
+    final n = provider.resultsWithAffiliateUrlCount;
+    final total = provider.results.length;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 6),
+      child: Text(
+        'DEBUG: リクエストにaffiliateId付与=$req / レスポンスaffiliateUrlあり $n/$total 件 '
+        '（APIはaffiliateId文字列を返しません。affiliateUrlの有無で判断）',
+        style: TextStyle(
+          fontSize: 11,
+          height: 1.25,
+          color: AppColors.textTertiary,
+        ),
+      ),
+    );
   }
 
   Widget _centerText(String text, {bool isError = false}) {
