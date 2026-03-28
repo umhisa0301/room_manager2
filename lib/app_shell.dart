@@ -6,7 +6,7 @@ import 'screens/comments_placeholder_screen.dart';
 import 'screens/activity_placeholder_screen.dart';
 import 'screens/mypage_placeholder_screen.dart';
 
-/// 下部ナビゲーション＋5タブのメインシェル。
+/// 下部ナビゲーション＋5タブのメインシェル（2番目は ROOMコレ管理）。
 /// 選択中はアクセント色＋背景ピルで視覚的に明確にする。
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -61,9 +61,9 @@ class _AppShellState extends State<AppShell> {
                   onTap: () => setState(() => _currentIndex = 0),
                 ),
                 _NavItem(
-                  icon: Icons.shopping_bag_outlined,
-                  selectedIcon: Icons.shopping_bag,
-                  label: '商品管理',
+                  icon: Icons.collections_bookmark_outlined,
+                  selectedIcon: Icons.collections_bookmark,
+                  label: 'ROOMコレ管理',
                   isSelected: _currentIndex == 1,
                   onTap: () => setState(() => _currentIndex = 1),
                 ),

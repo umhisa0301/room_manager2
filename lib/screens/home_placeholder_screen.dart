@@ -6,9 +6,9 @@ import '../models/product.dart';
 import '../models/product_status.dart';
 import '../screens/comments_placeholder_screen.dart';
 import '../screens/activity_placeholder_screen.dart';
-import '../screens/product_add_screen.dart';
 import '../screens/product_detail_screen.dart';
 import '../screens/products_placeholder_screen.dart';
+import '../screens/rakuten_search_screen.dart';
 import '../services/app_action_service.dart';
 import '../state/activity_log_provider.dart';
 import '../state/comment_template_provider.dart';
@@ -121,12 +121,12 @@ class HomePlaceholderScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
-                              builder: (_) => const ProductAddScreen(),
+                              builder: (_) => const RakutenSearchScreen(),
                             ),
                           );
                         },
-                        icon: const Icon(Icons.add, size: 16),
-                        label: const Text('商品を追加'),
+                        icon: const Icon(Icons.travel_explore_outlined, size: 16),
+                        label: const Text('楽天で検索'),
                       ),
                       OutlinedButton.icon(
                         onPressed: () {
@@ -136,8 +136,8 @@ class HomePlaceholderScreen extends StatelessWidget {
                             ),
                           );
                         },
-                        icon: const Icon(Icons.shopping_bag_outlined, size: 16),
-                        label: const Text('商品管理へ'),
+                        icon: const Icon(Icons.collections_bookmark_outlined, size: 16),
+                        label: const Text('ROOMコレ管理へ'),
                       ),
                       OutlinedButton.icon(
                         onPressed: () {

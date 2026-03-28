@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/product.dart';
-import '../models/product_search_hit.dart';
-import '../models/product_status.dart';
-import '../services/product_search_service.dart';
-import '../state/product_list_provider.dart';
+import '../models/rakuten_managed_product.dart';
+import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
-import '../widgets/empty_state_view.dart';
-import '../widgets/product_card.dart';
-import 'product_add_screen.dart';
-import 'product_detail_screen.dart';
-import 'rakuten_collection_list_screen.dart';
+import '../widgets/rakuten_managed_product_card.dart';
 import 'rakuten_search_screen.dart';
 
-/// 商品管理画面。検索・タブ・フィルタチップ・商品一覧カード。
-/// 「これコレしたっけ？」を素早く確認できる検索体験を優先する。
+/// ROOMコレ管理画面。楽天検索で登録したコレ候補・コレ済をタブで表示する。
 class ProductsPlaceholderScreen extends StatefulWidget {
   const ProductsPlaceholderScreen({super.key});
 
@@ -26,37 +18,23 @@ class ProductsPlaceholderScreen extends StatefulWidget {
 
 class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
-
-  static const List<String> _tabLabels = ['候補', 'コレ済', 'アーカイブ'];
-  static const List<ProductStatus> _tabStatuses = [
-    ProductStatus.candidate,
-    ProductStatus.collected,
-    ProductStatus.archived,
-  ];
-
-  static const List<String> _filterChipLabels = [
-    'すべて',
-    '育児',
-    'インテリア',
-    'キッチン',
-    'ガジェット',
-  ];
-
-  int _selectedChipIndex = 0;
+  late final TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _tabLabels.length, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<RakutenManagedProductProvider>().refreshManagedProductList(
+            showLoadingIndicator: false,
+          );
+    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -65,21 +43,10 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('商品管理'),
+        title: const Text('ROOMコレ管理'),
         backgroundColor: AppColors.surface,
         foregroundColor: AppColors.textPrimary,
         actions: [
-          IconButton(
-            tooltip: 'ROOM コレ管理',
-            icon: const Icon(Icons.collections_bookmark_outlined),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => const RakutenCollectionListScreen(),
-                ),
-              );
-            },
-          ),
           IconButton(
             tooltip: '楽天検索',
             icon: const Icon(Icons.travel_explore_outlined),
@@ -92,234 +59,202 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
             },
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              labelColor: AppColors.accentPrimary,
-              unselectedLabelColor: AppColors.textSecondary,
-              indicatorColor: AppColors.accentPrimary,
-              indicatorSize: TabBarIndicatorSize.label,
-              labelStyle: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-              unselectedLabelStyle: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-              ),
-              tabs: _tabLabels.map((label) => Tab(text: label)).toList(),
+        bottom: TabBar(
+          controller: _tabController,
+          labelColor: const Color(0xFF1565C0),
+          unselectedLabelColor: AppColors.textSecondary,
+          indicatorColor: const Color(0xFF1565C0),
+          tabs: const [
+            Tab(
+              icon: Icon(Icons.bookmark_outline),
+              text: 'コレ候補',
             ),
-          ),
+            Tab(
+              icon: Icon(Icons.check_circle_outline),
+              text: 'コレ済',
+            ),
+          ],
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildSearchBar(),
-          _buildSearchHint(),
-          _buildFilterChips(),
-          Expanded(
-            child: Consumer<ProductListProvider>(
-              builder: (context, provider, _) {
-                return TabBarView(
-                  controller: _tabController,
-                  children: _tabStatuses
-                      .map((status) => _buildProductList(provider.byStatus(status)))
-                      .toList(),
-                );
-              },
-            ),
+      body: TabBarView(
+        controller: _tabController,
+        children: const [
+          _RoomManagedProductListTab(
+            status: RakutenManagedProductStatus.candidate,
+            variant: RakutenManagedProductCardVariant.candidate,
+            emptyTitle: 'まだコレ候補はありません',
+            emptySubtitle:
+                '画面上部の「楽天検索」から商品を探し、「コレ候補へ登録」するとここに表示されます。',
+            accentColor: Color(0xFF1565C0),
+          ),
+          _RoomManagedProductListTab(
+            status: RakutenManagedProductStatus.done,
+            variant: RakutenManagedProductCardVariant.done,
+            emptyTitle: 'まだコレ済の商品はありません',
+            emptySubtitle: '今後のステップでコレ済に移せるようになります。',
+            accentColor: Color(0xFF2E7D32),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'fab_products_add',
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (context) => const ProductAddScreen(),
+    );
+  }
+}
+
+class _RoomManagedProductListTab extends StatelessWidget {
+  const _RoomManagedProductListTab({
+    required this.status,
+    required this.variant,
+    required this.emptyTitle,
+    required this.emptySubtitle,
+    required this.accentColor,
+  });
+
+  final RakutenManagedProductStatus status;
+  final RakutenManagedProductCardVariant variant;
+  final String emptyTitle;
+  final String emptySubtitle;
+  final Color accentColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<RakutenManagedProductProvider>(
+      builder: (context, provider, _) {
+        final ui = provider.listUiStatus;
+
+        if (ui == RakutenManagedProductListUiStatus.loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (ui == RakutenManagedProductListUiStatus.error) {
+          return _RoomCollectionErrorState(
+            message: provider.listUiErrorMessage ?? '読み込みに失敗しました',
+            onRetry: () => provider.refreshManagedProductList(
+              showLoadingIndicator: true,
             ),
           );
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
+        }
 
-  Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        AppDimensions.screenPaddingH,
-        AppDimensions.spacingMd,
-        AppDimensions.screenPaddingH,
-        AppDimensions.spacingSm,
-      ),
-      child: TextField(
-        controller: _searchController,
-        onChanged: (value) => setState(() => _searchQuery = value),
-        decoration: InputDecoration(
-          hintText: '商品名・URL・タグ・メモ・コメントで検索',
-          prefixIcon: Icon(
-            Icons.search,
-            color: AppColors.textTertiary,
-            size: 22,
+        final list = provider.sortedItemsForStatus(status);
+
+        if (list.isEmpty) {
+          return _RoomCollectionEmptyState(
+            title: emptyTitle,
+            subtitle: emptySubtitle,
+            accentColor: accentColor,
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () => provider.refreshManagedProductList(
+            showLoadingIndicator: true,
           ),
-          suffixIcon: _searchQuery.trim().isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.close, size: 20),
-                  onPressed: () {
-                    _searchController.clear();
-                    setState(() => _searchQuery = '');
-                  },
-                )
-              : null,
-          isDense: true,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSearchHint() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        AppDimensions.screenPaddingH,
-        0,
-        AppDimensions.screenPaddingH,
-        AppDimensions.spacingSm,
-      ),
-      child: Text(
-        'ヒント: URL貼り付けで重複確認 / 商品名やタグでも検索できます',
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              fontSize: 11,
-            ),
-      ),
-    );
-  }
-
-  Widget _buildFilterChips() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppDimensions.spacingSm),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        padding:
-            const EdgeInsets.symmetric(horizontal: AppDimensions.screenPaddingH),
-        child: Row(
-          children: List.generate(_filterChipLabels.length, (index) {
-            final isSelected = _selectedChipIndex == index;
-            return Padding(
-              padding: const EdgeInsets.only(right: AppDimensions.spacingSm),
-              child: FilterChip(
-                label: Text(_filterChipLabels[index]),
-                selected: isSelected,
-                onSelected: (selected) {
-                  setState(() => _selectedChipIndex = index);
-                },
-                selectedColor: AppColors.accentLight,
-                checkmarkColor: AppColors.accentPrimary,
-                labelStyle: TextStyle(
-                  fontSize: 13,
-                  fontWeight:
-                      isSelected ? FontWeight.w600 : FontWeight.normal,
-                  color:
-                      isSelected ? AppColors.accentPrimary : AppColors.textPrimary,
-                ),
-                backgroundColor: AppColors.surface,
-                side: BorderSide(
-                  color: isSelected ? AppColors.accentPrimary : AppColors.divider,
-                  width: isSelected ? 1.5 : 1,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
-                ),
-              ),
-            );
-          }),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProductList(List<Product> items) {
-    final isSearching = _searchQuery.trim().isNotEmpty;
-    final hits = isSearching
-        ? ProductSearchService.search(items, _searchQuery)
-        : items
-            .map((p) => ProductSearchHit(product: p, matchKinds: const []))
-            .toList();
-
-    if (!isSearching && items.isEmpty) {
-      return const EmptyStateView(
-        message: 'まだ商品がありません',
-        detail: '右下ボタンから追加',
-        icon: Icons.shopping_bag_outlined,
-      );
-    }
-
-    if (isSearching && hits.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimensions.spacingLg),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.search_off_outlined,
-                size: AppDimensions.iconPlaceholder,
-                color: AppColors.accentPrimary.withValues(alpha: 0.6),
-              ),
-              const SizedBox(height: AppDimensions.spacingMd),
-              Text(
-                '一致する商品は見つかりませんでした',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppDimensions.spacingSm),
-              Text(
-                'URLで登録されていないか確認してください。\n商品名やタグ、メモでも検索できます。',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+          child: ListView.separated(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+            itemCount: list.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              return RakutenManagedProductCard(
+                product: list[index],
+                variant: variant,
+              );
+            },
           ),
-        ),
-      );
-    }
-
-    return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(
-        AppDimensions.screenPaddingH,
-        AppDimensions.spacingSm,
-        AppDimensions.screenPaddingH,
-        80,
-      ),
-      itemCount: hits.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 10),
-      itemBuilder: (context, index) {
-        final hit = hits[index];
-        final product = hit.product;
-        return ProductCard(
-          product: product,
-          matchKinds: hit.matchKinds,
-          highlightSearchState: isSearching,
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (context) => ProductDetailScreen(productId: product.id),
-              ),
-            );
-          },
         );
       },
+    );
+  }
+}
+
+class _RoomCollectionEmptyState extends StatelessWidget {
+  const _RoomCollectionEmptyState({
+    required this.title,
+    required this.subtitle,
+    required this.accentColor,
+  });
+
+  final String title;
+  final String subtitle;
+  final Color accentColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      children: [
+        SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.45,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.inventory_2_outlined,
+                    size: 56,
+                    color: accentColor.withValues(alpha: 0.45),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    subtitle,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.4,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _RoomCollectionErrorState extends StatelessWidget {
+  const _RoomCollectionErrorState({
+    required this.message,
+    required this.onRetry,
+  });
+
+  final String message;
+  final Future<void> Function() onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, size: 48, color: AppColors.error),
+            const SizedBox(height: 12),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 20),
+            FilledButton(
+              onPressed: () => onRetry(),
+              child: const Text('再試行'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
