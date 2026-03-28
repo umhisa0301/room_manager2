@@ -51,42 +51,56 @@ class _AppShellState extends State<AppShell> {
               vertical: AppDimensions.spacingSm,
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _NavItem(
-                  icon: Icons.dashboard_outlined,
-                  selectedIcon: Icons.dashboard,
-                  label: 'ホーム',
-                  isSelected: _currentIndex == 0,
-                  onTap: () => setState(() => _currentIndex = 0),
+                Expanded(
+                  child: _NavItem(
+                    icon: Icons.dashboard_outlined,
+                    selectedIcon: Icons.dashboard,
+                    label: 'ホーム',
+                    tooltip: null,
+                    isSelected: _currentIndex == 0,
+                    onTap: () => setState(() => _currentIndex = 0),
+                  ),
                 ),
-                _NavItem(
-                  icon: Icons.collections_bookmark_outlined,
-                  selectedIcon: Icons.collections_bookmark,
-                  label: 'ROOMコレ管理',
-                  isSelected: _currentIndex == 1,
-                  onTap: () => setState(() => _currentIndex = 1),
+                Expanded(
+                  child: _NavItem(
+                    icon: Icons.collections_bookmark_outlined,
+                    selectedIcon: Icons.collections_bookmark,
+                    label: 'ROOM',
+                    tooltip: 'ROOMコレ管理',
+                    isSelected: _currentIndex == 1,
+                    onTap: () => setState(() => _currentIndex = 1),
+                  ),
                 ),
-                _NavItem(
-                  icon: Icons.chat_bubble_outline,
-                  selectedIcon: Icons.chat_bubble,
-                  label: 'コメント',
-                  isSelected: _currentIndex == 2,
-                  onTap: () => setState(() => _currentIndex = 2),
+                Expanded(
+                  child: _NavItem(
+                    icon: Icons.chat_bubble_outline,
+                    selectedIcon: Icons.chat_bubble,
+                    label: 'コメント',
+                    tooltip: null,
+                    isSelected: _currentIndex == 2,
+                    onTap: () => setState(() => _currentIndex = 2),
+                  ),
                 ),
-                _NavItem(
-                  icon: Icons.analytics_outlined,
-                  selectedIcon: Icons.analytics,
-                  label: '活動',
-                  isSelected: _currentIndex == 3,
-                  onTap: () => setState(() => _currentIndex = 3),
+                Expanded(
+                  child: _NavItem(
+                    icon: Icons.analytics_outlined,
+                    selectedIcon: Icons.analytics,
+                    label: '活動',
+                    tooltip: null,
+                    isSelected: _currentIndex == 3,
+                    onTap: () => setState(() => _currentIndex = 3),
+                  ),
                 ),
-                _NavItem(
-                  icon: Icons.person_outline,
-                  selectedIcon: Icons.person,
-                  label: 'マイページ',
-                  isSelected: _currentIndex == 4,
-                  onTap: () => setState(() => _currentIndex = 4),
+                Expanded(
+                  child: _NavItem(
+                    icon: Icons.person_outline,
+                    selectedIcon: Icons.person,
+                    label: 'マイページ',
+                    tooltip: null,
+                    isSelected: _currentIndex == 4,
+                    onTap: () => setState(() => _currentIndex = 4),
+                  ),
                 ),
               ],
             ),
@@ -102,6 +116,7 @@ class _NavItem extends StatelessWidget {
     required this.icon,
     required this.selectedIcon,
     required this.label,
+    required this.tooltip,
     required this.isSelected,
     required this.onTap,
   });
@@ -109,18 +124,19 @@ class _NavItem extends StatelessWidget {
   final IconData icon;
   final IconData selectedIcon;
   final String label;
+  final String? tooltip;
   final bool isSelected;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    final child = InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.symmetric(
-          horizontal: AppDimensions.spacingMd,
+          horizontal: 2,
           vertical: AppDimensions.spacingSm,
         ),
         decoration: BoxDecoration(
@@ -133,18 +149,29 @@ class _NavItem extends StatelessWidget {
             Icon(
               isSelected ? selectedIcon : icon,
               size: AppDimensions.iconNav,
-              color: isSelected ? AppColors.accentPrimary : AppColors.textSecondary,
+              color:
+                  isSelected ? AppColors.accentPrimary : AppColors.textSecondary,
             ),
             const SizedBox(height: AppDimensions.spacingXs),
-            Text(
-              label,
-              style: isSelected
-                  ? AppTextStyles.navLabelSelected
-                  : AppTextStyles.navLabel,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                label,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: isSelected
+                    ? AppTextStyles.navLabelSelected
+                    : AppTextStyles.navLabel,
+              ),
             ),
           ],
         ),
       ),
     );
+
+    if (tooltip != null && tooltip!.isNotEmpty) {
+      return Tooltip(message: tooltip!, child: child);
+    }
+    return child;
   }
 }

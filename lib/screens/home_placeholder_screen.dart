@@ -51,6 +51,8 @@ class HomePlaceholderScreen extends StatelessWidget {
                 90,
               ),
               children: [
+                _HomeQuickActionsSection(),
+                const SizedBox(height: 12),
                 _HeaderSection(),
                 const SizedBox(height: 12),
                 _SummaryGrid(
@@ -66,7 +68,8 @@ class HomePlaceholderScreen extends StatelessWidget {
                   title: '最近追加した商品',
                   child: recentProducts.isEmpty
                       ? _EmptyHint(
-                          text: 'まだ商品がありません。まずは商品を追加してみましょう。',
+                          text:
+                              'まだ商品がありません。上部の「楽天で検索」からコレ候補を登録してみましょう。',
                         )
                       : Column(
                           children: [
@@ -110,49 +113,6 @@ class HomePlaceholderScreen extends StatelessWidget {
                           ],
                         ),
                 ),
-                const SizedBox(height: 12),
-                _SectionCard(
-                  title: 'ショートカット',
-                  child: Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => const RakutenSearchScreen(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.travel_explore_outlined, size: 16),
-                        label: const Text('楽天で検索'),
-                      ),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => const ProductsPlaceholderScreen(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.collections_bookmark_outlined, size: 16),
-                        label: const Text('ROOMコレ管理へ'),
-                      ),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => const CommentsPlaceholderScreen(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.chat_bubble_outline, size: 16),
-                        label: const Text('コメントへ'),
-                      ),
-                    ],
-                  ),
-                ),
                 if (products.isEmpty && templateCount == 0) ...[
                   const SizedBox(height: 12),
                   _SectionCard(
@@ -174,6 +134,131 @@ class HomePlaceholderScreen extends StatelessWidget {
     final items = List<Product>.from(all);
     items.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
     return items.take(3).toList();
+  }
+}
+
+/// ホーム最上部：コレ候補増やしの主導線（楽天検索）を前面に出す。
+class _HomeQuickActionsSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppColors.accentLight.withValues(alpha: 0.85),
+            const Color(0xFFE8F4FD),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            offset: const Offset(0, 2),
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.auto_awesome,
+                size: 20,
+                color: AppColors.accentPrimary,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'コレ候補を増やす',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            '楽天の商品を検索して「コレ候補へ登録」できます。まずは検索から始めましょう。',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                ),
+          ),
+          const SizedBox(height: 14),
+          FilledButton.icon(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const RakutenSearchScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.travel_explore, size: 22),
+            label: const Text(
+              '楽天で検索',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.accentPrimary,
+              foregroundColor: AppColors.textOnAccent,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const ProductsPlaceholderScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'ROOMコレ管理',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const CommentsPlaceholderScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'コメント',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 

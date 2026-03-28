@@ -105,13 +105,14 @@ class RakutenManagedProductCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          Align(
-            alignment: Alignment.centerRight,
+          SizedBox(
+            width: double.infinity,
             child: isCandidate
                 ? FilledButton.tonal(
                     style: FilledButton.styleFrom(
                       foregroundColor: _candidateAccent,
                       backgroundColor: _candidateSurface,
+                      minimumSize: const Size.fromHeight(40),
                     ),
                     onPressed: () => AppActionService.openUrl(
                       context,
@@ -123,6 +124,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       foregroundColor: _doneAccent,
                       side: BorderSide(color: Colors.grey.shade500),
+                      minimumSize: const Size.fromHeight(40),
                     ),
                     onPressed: () => AppActionService.openUrl(
                       context,
@@ -158,11 +160,12 @@ class RakutenManagedProductCard extends StatelessWidget {
         ),
       );
     }
-    return Row(
-      mainAxisSize: MainAxisSize.min,
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 4,
+      runSpacing: 4,
       children: [
         Icon(Icons.check_circle, size: 18, color: accent),
-        const SizedBox(width: 4),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
