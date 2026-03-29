@@ -14,16 +14,21 @@ class RoomUrlExtractionService {
     if (sel == null) {
       throw Exception('設定に $_defaultSelectorName が見つかりません');
     }
-    if (sel.type.toLowerCase() != 'xpath') {
-      throw Exception('未対応のセレクタ種別です: ${sel.type}');
+    final t = sel.type.toLowerCase().trim();
+    if (t != 'xpath' && t != 'css') {
+      throw Exception('未対応のセレクタ種別です: ${sel.type}（xpath または css）');
     }
-    final xp = sel.value.trim();
-    if (xp.isEmpty) {
-      throw Exception('XPath が空です');
+    final v = sel.value.trim();
+    if (v.isEmpty) {
+      throw Exception('セレクタの value が空です');
     }
 
-    final out = await RoomUrlExtractionCoordinator.instance
-        .extractWithXPath(pageUrl, xp);
+    final out = await RoomUrlExtractionCoordinator.instance.extract(
+      pageUrl,
+      t,
+      v,
+      postLoadDelayMs: sel.postLoadDelayMs,
+    );
     if (out == null || out.trim().isEmpty) {
       throw Exception('抽出結果が空です');
     }

@@ -7,7 +7,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../services/room_url_extraction_coordinator.dart';
 
-/// 画面外相当の極小 WebView で商品ページを読み XPath 評価を行うホスト。
+/// 画面外相当の極小 WebView で商品ページを読み XPath / CSS 評価を行うホスト。
 /// [MaterialApp.builder] などルート付近に1つだけ置く。
 class RoomUrlExtractionHost extends StatefulWidget {
   const RoomUrlExtractionHost({super.key, required this.child});
@@ -66,8 +66,19 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
     RoomUrlExtractionCoordinator.instance.attach(_enqueueAndRun);
   }
 
-  Future<String?> _enqueueAndRun(String url, String xpath) async {
-    final job = _QueuedExtraction(url, xpath, Completer<String?>());
+  Future<String?> _enqueueAndRun(
+    String url,
+    String selectorType,
+    String selectorValue,
+    int postLoadDelayMs,
+  ) async {
+    final job = _QueuedExtraction(
+      url,
+      selectorType,
+      selectorValue,
+      postLoadDelayMs,
+      Completer<String?>(),
+    );
     _queue.add(job);
     unawaited(_drainQueue());
     return job.completer.future;
@@ -80,7 +91,12 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
       while (_queue.isNotEmpty && mounted) {
         final job = _queue.removeFirst();
         try {
-          final result = await _runOne(job.url, job.xpath);
+          final result = await _runOne(
+            job.url,
+            job.selectorType,
+            job.selectorValue,
+            job.postLoadDelayMs,
+          );
           if (!job.completer.isCompleted) {
             job.completer.complete(result);
           }
@@ -98,7 +114,12 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
     }
   }
 
-  Future<String?> _runOne(String url, String xpath) async {
+  Future<String?> _runOne(
+    String url,
+    String selectorType,
+    String selectorValue,
+    int postLoadDelayMs,
+  ) async {
     final c = _controller;
     if (c == null) return null;
 
@@ -116,7 +137,18 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
       onTimeout: () => throw TimeoutException('ページの読み込みがタイムアウトしました'),
     );
 
-    final script = _buildXPathScript(xpath);
+    if (postLoadDelayMs > 0) {
+      await Future<void>.delayed(Duration(milliseconds: postLoadDelayMs));
+    }
+
+    final t = selectorType.toLowerCase().trim();
+    final String script;
+    if (t == 'css') {
+      script = _buildCssScript(selectorValue);
+    } else {
+      script = _buildXPathScript(selectorValue);
+    }
+
     final raw = await c.runJavaScriptReturningResult(script).timeout(
       const Duration(seconds: 15),
     );
@@ -125,7 +157,7 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
     if (parsed.ok && (parsed.value ?? '').trim().isNotEmpty) {
       return parsed.value!.trim();
     }
-    throw Exception(parsed.err ?? 'XPathの結果が空です');
+    throw Exception(parsed.err ?? '抽出結果が空です');
   }
 
   static String _buildXPathScript(String xpath) {
@@ -142,10 +174,40 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
     var v = null;
     if (n.nodeType === 2) {
       v = n.nodeValue;
+    } else if (n.nodeType === 1 && n.tagName === 'A' && n.href) {
+      v = n.href;
     } else if (n.nodeValue) {
       v = n.nodeValue;
     } else {
       v = (n.textContent || '').trim();
+    }
+    if (!v) {
+      return JSON.stringify({ ok: false, err: 'empty value' });
+    }
+    return JSON.stringify({ ok: true, value: v });
+  } catch (e) {
+    return JSON.stringify({ ok: false, err: String(e) });
+  }
+})()
+''';
+  }
+
+  /// [document.querySelector](css) で要素を取り、リンクなら絶対 URL を優先。
+  static String _buildCssScript(String cssSelector) {
+    final lit = jsonEncode(cssSelector);
+    return '''
+(function() {
+  try {
+    var sel = $lit;
+    var el = document.querySelector(sel);
+    if (!el) {
+      return JSON.stringify({ ok: false, err: 'no element' });
+    }
+    var v = '';
+    if (el.tagName === 'A' && el.href) {
+      v = el.href;
+    } else {
+      v = (el.getAttribute('href') || el.textContent || '').trim();
     }
     if (!v) {
       return JSON.stringify({ ok: false, err: 'empty value' });
@@ -208,10 +270,18 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
 }
 
 class _QueuedExtraction {
-  _QueuedExtraction(this.url, this.xpath, this.completer);
+  _QueuedExtraction(
+    this.url,
+    this.selectorType,
+    this.selectorValue,
+    this.postLoadDelayMs,
+    this.completer,
+  );
 
   final String url;
-  final String xpath;
+  final String selectorType;
+  final String selectorValue;
+  final int postLoadDelayMs;
   final Completer<String?> completer;
 }
 

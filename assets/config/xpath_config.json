@@ -2,8 +2,9 @@
   "selectors": [
     {
       "name": "roomTargetUrl",
-      "type": "xpath",
-      "value": "//link[@rel='canonical']/@href"
+      "type": "css",
+      "value": "a[aria-label=\"ROOMに投稿\"]",
+      "postLoadDelayMs": 1200
     }
   ]
 }
