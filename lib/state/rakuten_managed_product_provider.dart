@@ -128,18 +128,25 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         await Future<void>.delayed(const Duration(milliseconds: 50));
       }
       if (!RoomUrlExtractionCoordinator.instance.isReady) {
-        await _repository.completeExtractionFailed(
-          productId,
-          'URL抽出エンジンが初期化されませんでした',
+        const msg = 'URL抽出エンジンが初期化されませんでした';
+        debugPrint(
+          '[RoomUrlExtraction] 失敗 [登録フロー] productId=$productId: $msg',
         );
+        await _repository.completeExtractionFailed(productId, msg);
       } else {
         try {
           final url =
               await RoomUrlExtractionService.extractRoomTargetUrl(pageUrl);
           await _repository.completeExtractionSuccess(productId, url);
         } on Exception catch (e) {
+          debugPrint(
+            '[RoomUrlExtraction] 失敗 [登録フロー] productId=$productId: $e',
+          );
           await _repository.completeExtractionFailed(productId, e.toString());
         } catch (e) {
+          debugPrint(
+            '[RoomUrlExtraction] 失敗 [登録フロー] productId=$productId: $e',
+          );
           await _repository.completeExtractionFailed(productId, e.toString());
         }
       }

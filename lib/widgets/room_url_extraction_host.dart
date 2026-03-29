@@ -19,10 +19,52 @@ class RoomUrlExtractionHost extends StatefulWidget {
 }
 
 class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
+  static const String _logTag = '[RoomUrlExtraction]';
+
   WebViewController? _controller;
   final Queue<_QueuedExtraction> _queue = Queue<_QueuedExtraction>();
   bool _draining = false;
   Completer<void>? _loadCompleter;
+
+  /// JS 側の [err] をログ用に補足説明付きへ。
+  static String _explainJsErr(String? err) {
+    switch (err) {
+      case 'no node':
+        return 'XPathがどのノードにも一致しません（ページ構造・セレクタ・遅延描画を確認）';
+      case 'no element':
+        return 'CSSセレクタに一致する要素がありません';
+      case 'empty value':
+        return '要素は一致しましたが href/テキストが空です';
+      case 'null result':
+        return 'JSの戻り値がnullです';
+      default:
+        if (err == null || err.isEmpty) return '理由コードなし';
+        if (err.startsWith('parse error')) {
+          return 'JS結果のJSON解析に失敗しました: $err';
+        }
+        return err;
+    }
+  }
+
+  void _logFailure({
+    required String phase,
+    required String summary,
+    required String pageUrl,
+    required String selectorType,
+    required String selectorValue,
+    Object? cause,
+  }) {
+    final sel = selectorValue.length > 160
+        ? '${selectorValue.substring(0, 160)}…'
+        : selectorValue;
+    final url = pageUrl.length > 200 ? '${pageUrl.substring(0, 200)}…' : pageUrl;
+    debugPrint(
+      '$_logTag 失敗 [$phase] $summary | type=$selectorType | selector=$sel | url=$url',
+    );
+    if (cause != null) {
+      debugPrint('$_logTag 原因: $cause');
+    }
+  }
 
   @override
   void initState() {
@@ -121,21 +163,52 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
     int postLoadDelayMs,
   ) async {
     final c = _controller;
-    if (c == null) return null;
+    if (c == null) {
+      debugPrint(
+        '$_logTag 失敗 [WebView] controller が未初期化のため実行できません',
+      );
+      return null;
+    }
 
-    final uri = Uri.tryParse(url.trim());
+    final trimmedUrl = url.trim();
+    final uri = Uri.tryParse(trimmedUrl);
     if (uri == null ||
         (uri.scheme != 'http' && uri.scheme != 'https')) {
+      debugPrint(
+        '$_logTag 失敗 [URL検証] http(s) でない、または解析不能: $trimmedUrl',
+      );
       throw Exception('商品URLが不正です');
     }
 
     _loadCompleter = Completer<void>();
     await c.loadRequest(uri);
 
-    await _loadCompleter!.future.timeout(
-      const Duration(seconds: 30),
-      onTimeout: () => throw TimeoutException('ページの読み込みがタイムアウトしました'),
-    );
+    try {
+      await _loadCompleter!.future.timeout(
+        const Duration(seconds: 30),
+        onTimeout: () => throw TimeoutException('ページの読み込みがタイムアウトしました'),
+      );
+    } on TimeoutException catch (e) {
+      _logFailure(
+        phase: 'ページ読み込み',
+        summary: '30秒でタイムアウト（ネットワーク・リダイレクト過多など）',
+        pageUrl: trimmedUrl,
+        selectorType: selectorType,
+        selectorValue: selectorValue,
+        cause: e,
+      );
+      rethrow;
+    } catch (e) {
+      _logFailure(
+        phase: 'ページ読み込み',
+        summary: 'WebViewの読み込みエラー',
+        pageUrl: trimmedUrl,
+        selectorType: selectorType,
+        selectorValue: selectorValue,
+        cause: e,
+      );
+      rethrow;
+    }
 
     if (postLoadDelayMs > 0) {
       await Future<void>.delayed(Duration(milliseconds: postLoadDelayMs));
@@ -149,17 +222,53 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
       script = _buildXPathScript(selectorValue);
     }
 
-    final raw = await c.runJavaScriptReturningResult(script).timeout(
-      const Duration(seconds: 15),
-    );
+    Object? raw;
+    try {
+      raw = await c.runJavaScriptReturningResult(script).timeout(
+        const Duration(seconds: 15),
+      );
+    } on TimeoutException catch (e) {
+      _logFailure(
+        phase: 'JS実行',
+        summary: 'runJavaScript が15秒でタイムアウト',
+        pageUrl: trimmedUrl,
+        selectorType: selectorType,
+        selectorValue: selectorValue,
+        cause: e,
+      );
+      rethrow;
+    } catch (e) {
+      _logFailure(
+        phase: 'JS実行',
+        summary: 'runJavaScript 実行中に例外',
+        pageUrl: trimmedUrl,
+        selectorType: selectorType,
+        selectorValue: selectorValue,
+        cause: e,
+      );
+      rethrow;
+    }
 
     final parsed = _parseJsPayload(raw);
     if (parsed.ok && (parsed.value ?? '').trim().isNotEmpty) {
       final extracted = parsed.value!.trim();
-      debugPrint('[RoomUrlExtraction] 取得結果: $extracted');
+      debugPrint('$_logTag 取得結果: $extracted');
       return extracted;
     }
-    throw Exception(parsed.err ?? '抽出結果が空です');
+
+    final code = parsed.err;
+    final human = _explainJsErr(code);
+    _logFailure(
+      phase: 'DOM抽出',
+      summary: human,
+      pageUrl: trimmedUrl,
+      selectorType: selectorType,
+      selectorValue: selectorValue,
+      cause: code,
+    );
+    throw Exception(
+      code != null && code.isNotEmpty ? '$human (code: $code)' : human,
+    );
   }
 
   static String _buildXPathScript(String xpath) {
