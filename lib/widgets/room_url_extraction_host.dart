@@ -7,6 +7,13 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../services/room_url_extraction_coordinator.dart';
 
+/// デバッグ時のみ `--dart-define=DEBUG_ROOM_EXTRACTION_WEBVIEW_VISIBLE=true` で有効化。
+/// 抽出用 WebView を画面下に表示し、実際の表示・遷移を確認できる。
+const bool kDebugRoomExtractionWebViewVisible = bool.fromEnvironment(
+  'DEBUG_ROOM_EXTRACTION_WEBVIEW_VISIBLE',
+  defaultValue: false,
+);
+
 /// 画面外相当の極小 WebView で商品ページを読み XPath / CSS 評価を行うホスト。
 /// [MaterialApp.builder] などルート付近に1つだけ置く。
 class RoomUrlExtractionHost extends StatefulWidget {
@@ -179,6 +186,8 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
       );
       throw Exception('商品URLが不正です');
     }
+
+    debugPrint('$_logTag 読み込み開始: $trimmedUrl');
 
     _loadCompleter = Completer<void>();
     await c.loadRequest(uri);
@@ -356,6 +365,50 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
 
   @override
   Widget build(BuildContext context) {
+    final web = _controller != null
+        ? WebViewWidget(controller: _controller!)
+        : const SizedBox.shrink();
+
+    if (kDebugRoomExtractionWebViewVisible) {
+      final h = MediaQuery.sizeOf(context).height * 0.45;
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          widget.child,
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: h.clamp(120.0, 600.0),
+            child: Material(
+              elevation: 12,
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ColoredBox(
+                    color: Colors.amber.shade100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 6,
+                      ),
+                      child: Text(
+                        'DEBUG: ROOM URL 抽出用 WebView\n'
+                        'オフにする: DEBUG_ROOM_EXTRACTION_WEBVIEW_VISIBLE を外して再ビルド',
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                    ),
+                  ),
+                  Expanded(child: web),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -369,9 +422,7 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
             opacity: 0.01,
             child: IgnorePointer(
               ignoring: true,
-              child: _controller != null
-                  ? WebViewWidget(controller: _controller!)
-                  : const SizedBox.shrink(),
+              child: web,
             ),
           ),
         ),

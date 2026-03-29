@@ -8,11 +8,29 @@ class RoomUrlExtractionService {
   RoomUrlExtractionService._();
 
   static const String _defaultSelectorName = 'roomTargetUrl';
-
-  /// [pageUrl] を読み込み、設定の XPath で最初の文字列結果を返す。
   static const String _logTag = '[RoomUrlExtraction]';
 
+  /// 楽天アフィリエイト中間ページ（`hb.afl.rakuten.co.jp` の `pc` / `m`）を商品URLへ展開。
+  static String _resolveRakutenLandingUrl(String url) {
+    final uri = Uri.tryParse(url);
+    if (uri == null) return url;
+    final host = uri.host.toLowerCase();
+    if (!host.contains('hb.afl.rakuten.co.jp')) return url;
+    final pc = uri.queryParameters['pc']?.trim();
+    if (pc != null && pc.isNotEmpty) return pc;
+    final m = uri.queryParameters['m']?.trim();
+    if (m != null && m.isNotEmpty) return m;
+    return url;
+  }
+
+  /// [pageUrl] を読み込み、設定の XPath / CSS で最初の文字列結果を返す。
   static Future<String> extractRoomTargetUrl(String pageUrl) async {
+    final trimmed = pageUrl.trim();
+    final resolved = _resolveRakutenLandingUrl(trimmed);
+    if (resolved != trimmed) {
+      debugPrint('$_logTag URL正規化（アフィリエイト中間→商品ページ）: $resolved');
+    }
+
     final sel =
         await XPathConfigRepository.loadSelectorNamed(_defaultSelectorName);
     if (sel == null) {
@@ -38,7 +56,7 @@ class RoomUrlExtractionService {
     final String? out;
     try {
       out = await RoomUrlExtractionCoordinator.instance.extract(
-        pageUrl,
+        resolved,
         t,
         v,
         postLoadDelayMs: sel.postLoadDelayMs,
@@ -53,7 +71,7 @@ class RoomUrlExtractionService {
     if (out == null || out.trim().isEmpty) {
       debugPrint(
         '$_logTag 失敗 [結果] WebView から null/空文字が返りました '
-        '(pageUrl=${pageUrl.length > 120 ? '${pageUrl.substring(0, 120)}…' : pageUrl})',
+        '(url=${resolved.length > 120 ? '${resolved.substring(0, 120)}…' : resolved})',
       );
       throw Exception('抽出結果が空です');
     }
