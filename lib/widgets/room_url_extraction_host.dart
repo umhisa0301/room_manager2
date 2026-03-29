@@ -105,6 +105,14 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
             }
           },
           onWebResourceError: (WebResourceError err) {
+            // 副リソース（画像・XHR 等）の ORB 等は本体表示と無関係なことが多い。
+            // メイン以外のエラーで completeError すると、実際は描画できても抽出が失敗する。
+            if (err.isForMainFrame == false) {
+              debugPrint(
+                '$_logTag 副リソース読込エラー(無視): ${err.description}',
+              );
+              return;
+            }
             final comp = _loadCompleter;
             if (comp != null && !comp.isCompleted) {
               comp.completeError(Exception(err.description));
