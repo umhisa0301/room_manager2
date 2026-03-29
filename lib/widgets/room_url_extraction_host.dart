@@ -155,7 +155,9 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
 
     final parsed = _parseJsPayload(raw);
     if (parsed.ok && (parsed.value ?? '').trim().isNotEmpty) {
-      return parsed.value!.trim();
+      final extracted = parsed.value!.trim();
+      debugPrint('[RoomUrlExtraction] 取得結果: $extracted');
+      return extracted;
     }
     throw Exception(parsed.err ?? '抽出結果が空です');
   }
