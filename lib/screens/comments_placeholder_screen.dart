@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../theme/app_theme.dart';
-import '../state/comment_template_provider.dart';
+
 import '../models/comment_template.dart';
 import '../services/app_action_service.dart';
+import '../state/comment_template_provider.dart';
+import '../theme/app_theme.dart';
 import 'comment_template_edit_screen.dart';
 
-/// コメントテンプレ一覧画面。
-/// ・最近コピーしたコメント
-/// ・テンプレ一覧
-/// ・テンプレ追加 FAB
+/// 楽天ROOM投稿用コメントの作成・保存・コピーを行う画面。
 class CommentsPlaceholderScreen extends StatelessWidget {
   const CommentsPlaceholderScreen({super.key});
 
@@ -17,9 +15,7 @@ class CommentsPlaceholderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('コメント'),
-      ),
+      appBar: AppBar(title: const Text('コメント')),
       body: SafeArea(
         child: Consumer<CommentTemplateProvider>(
           builder: (context, provider, _) {
@@ -32,16 +28,12 @@ class CommentsPlaceholderScreen extends StatelessWidget {
                 80,
               ),
               children: [
+                const _CommentScreenPurposeHeader(),
+                const SizedBox(height: AppDimensions.spacingMd),
                 _RecentCopiedCard(text: provider.lastCopiedComment),
                 const SizedBox(height: AppDimensions.spacingMd),
                 if (templates.isEmpty)
-                  Text(
-                    'まだコメントテンプレがありません。\n右下のボタンから追加できます。',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: AppColors.textSecondary),
-                  )
+                  _CommentTemplatesEmptyGuide()
                 else
                   ..._buildTemplateCards(context, provider, templates),
               ],
@@ -101,8 +93,7 @@ class CommentsPlaceholderScreen extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () => Navigator.of(dialogContext).pop(true),
-                    child:
-                        Text('削除', style: TextStyle(color: AppColors.error)),
+                    child: Text('削除', style: TextStyle(color: AppColors.error)),
                   ),
                 ],
               ),
@@ -110,9 +101,9 @@ class CommentsPlaceholderScreen extends StatelessWidget {
             if (ok == true) {
               provider.deleteTemplate(t);
               if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('削除しました')),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('削除しました')));
               }
             }
           },
@@ -120,6 +111,111 @@ class CommentsPlaceholderScreen extends StatelessWidget {
         const SizedBox(height: 10),
       ],
     ];
+  }
+}
+
+/// この画面の目的を冒頭で伝える。
+class _CommentScreenPurposeHeader extends StatelessWidget {
+  const _CommentScreenPurposeHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(color: AppColors.divider),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            offset: const Offset(0, 2),
+            blurRadius: 6,
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.chat_bubble_outline_rounded,
+            size: 26,
+            color: AppColors.accentPrimary,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '楽天ROOMに投稿するコメントを作成・保存できます',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                        height: 1.35,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '保存した文は一覧からワンタップでコピーし、ROOMの投稿欄に貼り付けられます。',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        height: 1.45,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// テンプレがまだないときのガイド。
+class _CommentTemplatesEmptyGuide extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(
+          color: AppColors.accentLight.withValues(alpha: 0.6),
+        ),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            Icons.post_add_outlined,
+            size: 40,
+            color: AppColors.accentPrimary.withValues(alpha: 0.75),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'コメントを作成して保存すると、すぐにコピーできます',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w700,
+                  height: 1.35,
+                ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '右下の＋ボタンから、よく使う投稿文をテンプレートとして登録してください。一覧ではタップまたはコピーアイコンでクリップボードに送れます。',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.45,
+                ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -149,11 +245,7 @@ class _RecentCopiedCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.history,
-                size: 18,
-                color: AppColors.textSecondary,
-              ),
+              Icon(Icons.history, size: 18, color: AppColors.textSecondary),
               const SizedBox(width: 6),
               Text(
                 '最近コピーしたコメント',
@@ -168,10 +260,9 @@ class _RecentCopiedCard extends StatelessWidget {
             text == null || text!.isEmpty
                 ? 'まだコピー履歴がありません。テンプレか商品のコメントをコピーするとここに表示されます。'
                 : text!,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: AppColors.textPrimary),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textPrimary,
+                ),
           ),
         ],
       ),
@@ -225,9 +316,7 @@ class _CommentTemplateCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             template.title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
+                            style: Theme.of(context).textTheme.titleSmall
                                 ?.copyWith(
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w600,
@@ -247,10 +336,9 @@ class _CommentTemplateCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       template.body,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(color: AppColors.textSecondary),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -269,9 +357,7 @@ class _CommentTemplateCard extends StatelessWidget {
                             ),
                             child: Text(
                               template.category!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
+                              style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
                                     color: AppColors.accentPrimary,
                                     fontSize: 11,
@@ -281,9 +367,7 @@ class _CommentTemplateCard extends StatelessWidget {
                         else
                           Text(
                             'カテゴリーなし',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
+                            style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
                                   color: AppColors.textTertiary,
                                   fontSize: 11,
@@ -292,7 +376,8 @@ class _CommentTemplateCard extends StatelessWidget {
                         const Spacer(),
                         Text(
                           'タップでコピー',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
                                 color: AppColors.textTertiary,
                                 fontSize: 11,
                               ),
@@ -330,4 +415,3 @@ class _CommentTemplateCard extends StatelessWidget {
     );
   }
 }
-
