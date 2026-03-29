@@ -42,6 +42,10 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) return;
+      if (mounted) setState(() {});
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<RakutenManagedProductProvider>().refreshManagedProductList(
@@ -66,16 +70,30 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         backgroundColor: AppColors.surface,
         foregroundColor: AppColors.textPrimary,
         actions: [
-          IconButton(
-            tooltip: '楽天検索',
-            icon: const Icon(Icons.travel_explore_outlined),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => const RakutenSearchScreen(),
+          Padding(
+            padding: const EdgeInsets.only(right: 4),
+            child: TextButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const RakutenSearchScreen(),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.travel_explore_rounded,
+                size: 20,
+                color: AppColors.accentPrimary,
+              ),
+              label: Text(
+                '楽天で検索',
+                style: TextStyle(
+                  color: AppColors.accentPrimary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13,
                 ),
-              );
-            },
+              ),
+            ),
           ),
         ],
       ),
@@ -92,23 +110,28 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                 final nDone = managed
                     .sortedItemsForStatus(RakutenManagedProductStatus.done)
                     .length;
+                final idx = _tabController.index;
                 return TabBar(
                   controller: _tabController,
                   isScrollable: true,
                   tabAlignment: TabAlignment.start,
-                  labelColor: const Color(0xFF1565C0),
+                  labelColor: AppColors.textPrimary,
                   unselectedLabelColor: AppColors.textSecondary,
-                  indicatorColor: const Color(0xFF1565C0),
+                  indicatorColor: AppColors.accentPrimary,
+                  indicatorWeight: 3,
+                  dividerColor: AppColors.divider,
                   tabs: [
-                    Tab(
-                      icon: const Icon(Icons.bookmark_outline, size: 20),
-                      text: 'コレ候補（$nCand件）',
-                      height: 48,
+                    _RoomTabChip(
+                      selected: idx == 0,
+                      accent: RoomListAccent.candidate,
+                      icon: Icons.bookmark_outline_rounded,
+                      label: 'コレ候補（$nCand件）',
                     ),
-                    Tab(
-                      icon: const Icon(Icons.check_circle_outline, size: 20),
-                      text: 'コレ済（$nDone件）',
-                      height: 48,
+                    _RoomTabChip(
+                      selected: idx == 1,
+                      accent: RoomListAccent.done,
+                      icon: Icons.task_alt_rounded,
+                      label: 'コレ済（$nDone件）',
                     ),
                   ],
                 );
@@ -151,11 +174,12 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                   filterQuery: _searchQuery,
                   emptyTitle: 'コレ候補はまだありません',
                   emptySubtitle:
-                      '① 画面上部の「楽天検索」で商品を探す\n'
+                      '① 画面上部の「楽天で検索」で商品を探す\n'
                       '② 検索結果から「コレ候補へ登録」\n'
                       '③ URL取得後に「コレする」でコレ済へ移動',
-                  emptyHint: 'まずは右上の虫眼鏡アイコンから検索してみてください。',
-                  accentColor: const Color(0xFF1565C0),
+                  emptyHint:
+                      'まずは右上の「楽天で検索」から商品を探してみてください。',
+                  accentColor: RoomListAccent.candidate,
                 ),
                 _RoomManagedProductListTab(
                   status: RakutenManagedProductStatus.done,
@@ -166,9 +190,47 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                       'コレ候補一覧で ROOM の URL を開き「コレする」を押すと、'
                       'このアプリの一覧ではコレ済に移動します。',
                   emptyHint: '※ ROOM への実際の投稿完了までは、このアプリでは確認できません。',
-                  accentColor: const Color(0xFF2E7D32),
+                  accentColor: RoomListAccent.done,
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RoomTabChip extends StatelessWidget {
+  const _RoomTabChip({
+    required this.selected,
+    required this.accent,
+    required this.icon,
+    required this.label,
+  });
+
+  final bool selected;
+  final Color accent;
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final iconColor = selected ? accent : AppColors.textTertiary;
+    final textColor = selected ? accent : AppColors.textSecondary;
+    return Tab(
+      height: 48,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 20, color: iconColor),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: TextStyle(
+              color: textColor,
+              fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
+              fontSize: 13,
             ),
           ),
         ],
