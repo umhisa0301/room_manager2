@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/rakuten_api_config.dart';
+import '../navigation/app_route_observer.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/rakuten_search_provider.dart';
 import '../theme/app_theme.dart';
@@ -16,13 +17,47 @@ class RakutenSearchScreen extends StatefulWidget {
   State<RakutenSearchScreen> createState() => _RakutenSearchScreenState();
 }
 
-class _RakutenSearchScreenState extends State<RakutenSearchScreen> {
+class _RakutenSearchScreenState extends State<RakutenSearchScreen>
+    with RouteAware {
   final TextEditingController _keywordController = TextEditingController();
+  bool _routeSubscribed = false;
+
+  void _resetSearchUi() {
+    _keywordController.clear();
+    context.read<RakutenSearchProvider>().resetTransientState();
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _resetSearchUi();
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_routeSubscribed) return;
+    final route = ModalRoute.of(context);
+    if (route is PageRoute<dynamic>) {
+      appRouteObserver.subscribe(this, route);
+      _routeSubscribed = true;
+    }
+  }
 
   @override
   void dispose() {
+    appRouteObserver.unsubscribe(this);
     _keywordController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    _resetSearchUi();
   }
 
   @override
@@ -162,4 +197,3 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen> {
     );
   }
 }
-

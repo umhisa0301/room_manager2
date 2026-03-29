@@ -137,6 +137,46 @@ class RakutenManagedProductRepository {
     });
   }
 
+  /// コレ候補をコレ済に移す（ROOM 抽出 URL 利用後）。
+  Future<void> markCollectedDone(String productId) async {
+    final now = DateTime.now();
+    await _mapProduct(productId, (e) {
+      if (e.status != RakutenManagedProductStatus.candidate) {
+        throw Exception('コレ候補ではない商品です');
+      }
+      return e.copyWith(
+        status: RakutenManagedProductStatus.done,
+        doneAt: now,
+        updatedAt: now,
+      );
+    });
+  }
+
+  /// コレ候補を永続化一覧から削除する（再検索からの登録を再度可能にする）。
+  Future<void> removeCandidateProduct(String productId) async {
+    final list = List<RakutenManagedProduct>.from(loadAll());
+    final id = productId.trim();
+    if (id.isEmpty) {
+      throw Exception('商品IDが空です');
+    }
+    final next = <RakutenManagedProduct>[];
+    var removed = false;
+    for (final e in list) {
+      if (e.productId == id) {
+        if (e.status != RakutenManagedProductStatus.candidate) {
+          throw Exception('コレ候補の商品のみ候補から外せます');
+        }
+        removed = true;
+        continue;
+      }
+      next.add(e);
+    }
+    if (!removed) {
+      throw Exception('商品が見つかりません');
+    }
+    await _saveAll(next);
+  }
+
   Future<void> _saveAll(List<RakutenManagedProduct> items) async {
     try {
       final encoded =

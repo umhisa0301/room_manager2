@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/rakuten_managed_product_repository.dart';
+import '../services/app_action_service.dart';
 import '../services/room_url_extraction_coordinator.dart';
 import '../services/room_url_extraction_service.dart';
 
@@ -159,5 +160,98 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     }
     _reloadFromStorage();
     notifyListeners();
+  }
+
+  /// 楽天の商品ページ URL（itemUrl）を外部ブラウザで開く。
+  Future<String?> openRakutenItemPage(
+    BuildContext context,
+    String productId,
+  ) async {
+    final id = productId.trim();
+    if (id.isEmpty) return '商品IDが空です';
+    final p = _repository.getByProductId(id);
+    if (p == null) return '商品が見つかりません';
+    final url = p.itemUrl.trim().isNotEmpty
+        ? p.itemUrl.trim()
+        : p.browserLaunchUrl.trim();
+    if (url.isEmpty) return '商品URLがありません';
+    await AppActionService.openUrl(context, url: url);
+    return null;
+  }
+
+  bool canCollectRoomUrl(String productId) {
+    final p = _repository.getByProductId(productId.trim());
+    if (p == null) return false;
+    return p.extractionStatus == RakutenUrlExtractionStatus.success &&
+        p.extractedUrl.trim().isNotEmpty;
+  }
+
+  /// コレ済に更新してから ROOM（抽出 URL）を開く。抽出 URL 不備時は [SnackBar] で通知。
+  Future<void> collectRoomAndLaunch(BuildContext context, String productId) async {
+    final id = productId.trim();
+    if (id.isEmpty) {
+      _snack(context, '商品IDが空です');
+      return;
+    }
+    final p = _repository.getByProductId(id);
+    if (p == null) {
+      _snack(context, '商品が見つかりません');
+      return;
+    }
+    if (p.extractionStatus != RakutenUrlExtractionStatus.success ||
+        p.extractedUrl.trim().isEmpty) {
+      _snack(context, 'ROOM用URLがまだ取得できていません');
+      return;
+    }
+    final roomUrl = p.extractedUrl.trim();
+    try {
+      await _repository.markCollectedDone(id);
+      _reloadFromStorage();
+      _listUiStatus = RakutenManagedProductListUiStatus.ready;
+      _listUiErrorMessage = null;
+      notifyListeners();
+    } on Exception catch (e) {
+      if (context.mounted) {
+        _snack(context, e.toString());
+      }
+      return;
+    } catch (e) {
+      if (context.mounted) {
+        _snack(context, e.toString());
+      }
+      return;
+    }
+    if (!context.mounted) return;
+    await AppActionService.openUrl(context, url: roomUrl);
+  }
+
+  void _snack(BuildContext context, String message) {
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  /// コレ候補を一覧から削除する。
+  Future<String?> removeCandidate(BuildContext context, String productId) async {
+    final id = productId.trim();
+    if (id.isEmpty) return '商品IDが空です';
+    try {
+      await _repository.removeCandidateProduct(id);
+      _reloadFromStorage();
+      _listUiStatus = RakutenManagedProductListUiStatus.ready;
+      _listUiErrorMessage = null;
+      notifyListeners();
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('候補から外しました')),
+        );
+      }
+      return null;
+    } on Exception catch (e) {
+      return e.toString();
+    } catch (e) {
+      return '候補から外せませんでした: $e';
+    }
   }
 }

@@ -15,6 +15,7 @@ import 'state/activity_log_provider.dart';
 import 'state/rakuten_managed_product_provider.dart';
 import 'state/rakuten_search_provider.dart';
 import 'widgets/room_url_extraction_host.dart';
+import 'navigation/app_route_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -85,6 +86,7 @@ class MyApp extends StatelessWidget {
             child: child ?? const SizedBox.shrink(),
           );
         },
+        navigatorObservers: <NavigatorObserver>[appRouteObserver],
         home: const AppShell(),
       ),
     );

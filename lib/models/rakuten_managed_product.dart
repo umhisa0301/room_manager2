@@ -40,6 +40,7 @@ class RakutenManagedProduct {
     required this.extractionStatus,
     required this.extractionErrorMessage,
     this.extractedAt,
+    this.doneAt,
   });
 
   /// 楽天の itemCode（アプリ内の [RakutenSearchItem.productId] と同一）。
@@ -62,6 +63,9 @@ class RakutenManagedProduct {
   final RakutenUrlExtractionStatus extractionStatus;
   final String extractionErrorMessage;
   final DateTime? extractedAt;
+
+  /// コレ済に移した日時（候補時は null）。
+  final DateTime? doneAt;
 
   /// ブラウザで開くURL（アフィリエイトURLを優先）。
   String get browserLaunchUrl =>
@@ -86,6 +90,8 @@ class RakutenManagedProduct {
     String? extractionErrorMessage,
     DateTime? extractedAt,
     bool clearExtractedAt = false,
+    DateTime? doneAt,
+    bool clearDoneAt = false,
   }) {
     return RakutenManagedProduct(
       productId: productId ?? this.productId,
@@ -106,6 +112,7 @@ class RakutenManagedProduct {
       extractionErrorMessage:
           extractionErrorMessage ?? this.extractionErrorMessage,
       extractedAt: clearExtractedAt ? null : (extractedAt ?? this.extractedAt),
+      doneAt: clearDoneAt ? null : (doneAt ?? this.doneAt),
     );
   }
 
@@ -133,6 +140,7 @@ class RakutenManagedProduct {
       extractionStatus: RakutenUrlExtractionStatus.notStarted,
       extractionErrorMessage: '',
       extractedAt: null,
+      doneAt: null,
     );
   }
 
@@ -155,6 +163,7 @@ class RakutenManagedProduct {
       'extractionStatus': extractionStatus.name,
       'extractionErrorMessage': extractionErrorMessage,
       'extractedAt': extractedAt?.toIso8601String(),
+      'doneAt': doneAt?.toIso8601String(),
     };
   }
 
@@ -207,6 +216,12 @@ class RakutenManagedProduct {
       extractedAt = parseDt(extAt);
     }
 
+    DateTime? doneAt;
+    final dAt = json['doneAt']?.toString();
+    if (dAt != null && dAt.isNotEmpty) {
+      doneAt = parseDt(dAt);
+    }
+
     return RakutenManagedProduct(
       productId: productId,
       itemName: itemName,
@@ -226,6 +241,7 @@ class RakutenManagedProduct {
       extractionErrorMessage:
           (json['extractionErrorMessage'] ?? '').toString(),
       extractedAt: extractedAt,
+      doneAt: doneAt,
     );
   }
 }

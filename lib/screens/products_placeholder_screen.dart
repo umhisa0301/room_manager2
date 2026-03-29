@@ -149,7 +149,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                   variant: RakutenManagedProductCardVariant.done,
                   filterQuery: _searchQuery,
                   emptyTitle: 'まだコレ済の商品はありません',
-                  emptySubtitle: '今後のステップでコレ済に移せるようになります。',
+                  emptySubtitle:
+                      '候補一覧で「コレする」と、ROOMのURLを開いたうえでコレ済に移動します。',
                   accentColor: const Color(0xFF2E7D32),
                 ),
               ],

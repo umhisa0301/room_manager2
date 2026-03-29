@@ -66,5 +66,14 @@ class RakutenSearchProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  /// 検索画面の一覧・ローディング・エラーなど一時状態だけを初期化する（永続データは変更しない）。
+  void resetTransientState() {
+    _status = RakutenSearchStatus.idle;
+    _results = const [];
+    _errorMessage = '';
+    _lastKeyword = '';
+    notifyListeners();
+  }
 }
 
