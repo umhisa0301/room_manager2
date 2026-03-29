@@ -1,6 +1,6 @@
 import '../models/rakuten_managed_product.dart';
 
-/// ホーム画面用の集計（ROOM 管理データの一覧から算出。UI とは分離）。
+/// ROOM 管理データ一覧からの集計（ホーム・活動ダッシュボード等。UI とは分離）。
 class RakutenRoomHomeStats {
   RakutenRoomHomeStats._();
 
@@ -49,5 +49,22 @@ class RakutenRoomHomeStats {
         all.where((e) => e.status == RakutenManagedProductStatus.candidate).toList();
     list.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
     return list;
+  }
+
+  /// 直近 [dayCount] 日分（[anchor] のローカル暦日を「今日」とし、さかのぼる）の日ごとのコレ件数。
+  /// 先頭がいちばん古い日、末尾が当日。
+  static List<({DateTime day, int count})> doneCountsRollingDays(
+    List<RakutenManagedProduct> all,
+    DateTime anchor,
+    int dayCount,
+  ) {
+    final today = DateTime(anchor.year, anchor.month, anchor.day);
+    final out = <({DateTime day, int count})>[];
+    for (var i = dayCount - 1; i >= 0; i--) {
+      final day = today.subtract(Duration(days: i));
+      final count = countDoneOnLocalCalendarDay(all, day);
+      out.add((day: day, count: count));
+    }
+    return out;
   }
 }
