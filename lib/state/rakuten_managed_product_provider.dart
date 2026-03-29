@@ -104,8 +104,10 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         await _repository.markExtractionExtracting(id);
         _reloadFromStorage();
         notifyListeners();
-        final launch = item.browserLaunchUrl;
-        unawaited(_runPostRegisterExtraction(id, launch));
+        final extractionPageUrl = item.itemUrl.trim().isNotEmpty
+            ? item.itemUrl.trim()
+            : item.browserLaunchUrl;
+        unawaited(_runPostRegisterExtraction(id, extractionPageUrl));
       }
       return null;
     } on Exception catch (e) {
