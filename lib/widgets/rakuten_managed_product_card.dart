@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/rakuten_managed_product.dart';
+import '../models/rakuten_managed_product.dart'
+    show RakutenManagedProduct, RakutenUrlExtractionStatus;
 import '../services/app_action_service.dart';
 import '../theme/app_theme.dart';
 
@@ -99,6 +100,10 @@ class RakutenManagedProductCard extends StatelessWidget {
                             color: AppColors.textTertiary,
                           ),
                     ),
+                    if (isCandidate) ...[
+                      const SizedBox(height: 6),
+                      _extractionStatusRow(context),
+                    ],
                   ],
                 ),
               ),
@@ -136,6 +141,54 @@ class RakutenManagedProductCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _extractionStatusRow(BuildContext context) {
+    final label = _extractionLabel(product.extractionStatus);
+    final color = _extractionColor(product.extractionStatus);
+    return Row(
+      children: [
+        Icon(Icons.link, size: 14, color: color),
+        const SizedBox(width: 4),
+        Expanded(
+          child: Text(
+            label,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: color,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static String _extractionLabel(RakutenUrlExtractionStatus s) {
+    switch (s) {
+      case RakutenUrlExtractionStatus.notStarted:
+        return '抽出URL: 未開始';
+      case RakutenUrlExtractionStatus.extracting:
+        return 'URL準備中…';
+      case RakutenUrlExtractionStatus.success:
+        return 'URL取得済み';
+      case RakutenUrlExtractionStatus.failed:
+        return 'URL取得失敗';
+    }
+  }
+
+  static Color _extractionColor(RakutenUrlExtractionStatus s) {
+    switch (s) {
+      case RakutenUrlExtractionStatus.notStarted:
+        return AppColors.textTertiary;
+      case RakutenUrlExtractionStatus.extracting:
+        return const Color(0xFF1565C0);
+      case RakutenUrlExtractionStatus.success:
+        return AppColors.success;
+      case RakutenUrlExtractionStatus.failed:
+        return AppColors.error;
+    }
   }
 
   Widget _statusBadge(

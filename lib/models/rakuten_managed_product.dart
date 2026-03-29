@@ -12,9 +12,17 @@ enum RakutenManagedProductStatus {
   done,
 }
 
+/// 商品ページからの URL 抽出ジョブの状態。
+enum RakutenUrlExtractionStatus {
+  notStarted,
+  extracting,
+  success,
+  failed,
+}
+
 /// 楽天検索結果を元にローカル保存する用の商品エンティティ（API生JSONは保持しない）。
 class RakutenManagedProduct {
-  const RakutenManagedProduct({
+  RakutenManagedProduct({
     required this.productId,
     required this.itemName,
     required this.itemPrice,
@@ -28,6 +36,10 @@ class RakutenManagedProduct {
     required this.status,
     required this.createdAt,
     required this.updatedAt,
+    this.extractedUrl = '',
+    this.extractionErrorMessage = '',
+    this.extractionStatus = RakutenUrlExtractionStatus.notStarted,
+    this.extractedAt,
   });
 
   /// 楽天の itemCode（アプリ内の [RakutenSearchItem.productId] と同一）。
@@ -45,13 +57,61 @@ class RakutenManagedProduct {
   final DateTime createdAt;
   final DateTime updatedAt;
 
+  final String extractedUrl;
+  final String extractionErrorMessage;
+  final RakutenUrlExtractionStatus extractionStatus;
+  final DateTime? extractedAt;
+
   /// ブラウザで開くURL（アフィリエイトURLを優先）。
   String get browserLaunchUrl =>
       affiliateUrl.trim().isNotEmpty ? affiliateUrl.trim() : itemUrl;
 
+  RakutenManagedProduct copyWith({
+    String? productId,
+    String? itemName,
+    int? itemPrice,
+    String? itemUrl,
+    String? affiliateUrl,
+    String? imageUrl,
+    String? shopName,
+    String? shopCode,
+    String? shopUrl,
+    String? genreId,
+    RakutenManagedProductStatus? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? extractedUrl,
+    String? extractionErrorMessage,
+    RakutenUrlExtractionStatus? extractionStatus,
+    DateTime? extractedAt,
+  }) {
+    return RakutenManagedProduct(
+      productId: productId ?? this.productId,
+      itemName: itemName ?? this.itemName,
+      itemPrice: itemPrice ?? this.itemPrice,
+      itemUrl: itemUrl ?? this.itemUrl,
+      affiliateUrl: affiliateUrl ?? this.affiliateUrl,
+      imageUrl: imageUrl ?? this.imageUrl,
+      shopName: shopName ?? this.shopName,
+      shopCode: shopCode ?? this.shopCode,
+      shopUrl: shopUrl ?? this.shopUrl,
+      genreId: genreId ?? this.genreId,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      extractedUrl: extractedUrl ?? this.extractedUrl,
+      extractionErrorMessage:
+          extractionErrorMessage ?? this.extractionErrorMessage,
+      extractionStatus: extractionStatus ?? this.extractionStatus,
+      extractedAt: extractedAt ?? this.extractedAt,
+    );
+  }
+
   factory RakutenManagedProduct.fromSearchItem(
     RakutenSearchItem item, {
     required RakutenManagedProductStatus status,
+    RakutenUrlExtractionStatus initialExtractionStatus =
+        RakutenUrlExtractionStatus.extracting,
     DateTime? now,
   }) {
     final t = now ?? DateTime.now();
@@ -69,6 +129,10 @@ class RakutenManagedProduct {
       status: status,
       createdAt: t,
       updatedAt: t,
+      extractedUrl: '',
+      extractionErrorMessage: '',
+      extractionStatus: initialExtractionStatus,
+      extractedAt: null,
     );
   }
 
@@ -87,7 +151,18 @@ class RakutenManagedProduct {
       'status': status.name,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
+      'extractedUrl': extractedUrl,
+      'extractionErrorMessage': extractionErrorMessage,
+      'extractionStatus': extractionStatus.name,
+      if (extractedAt != null) 'extractedAt': extractedAt!.toIso8601String(),
     };
+  }
+
+  static RakutenUrlExtractionStatus _parseExtractionStatus(String? raw) {
+    return RakutenUrlExtractionStatus.values.firstWhere(
+      (e) => e.name == (raw ?? '').toString(),
+      orElse: () => RakutenUrlExtractionStatus.notStarted,
+    );
   }
 
   static RakutenManagedProduct? fromJson(Map<String, dynamic>? json) {
@@ -121,6 +196,12 @@ class RakutenManagedProduct {
       orElse: () => RakutenManagedProductStatus.candidate,
     );
 
+    DateTime? extractedAt;
+    final extRaw = json['extractedAt']?.toString();
+    if (extRaw != null && extRaw.isNotEmpty) {
+      extractedAt = parseDt(extRaw);
+    }
+
     return RakutenManagedProduct(
       productId: productId,
       itemName: itemName,
@@ -135,6 +216,12 @@ class RakutenManagedProduct {
       status: status,
       createdAt: createdAt,
       updatedAt: updatedAt,
+      extractedUrl: (json['extractedUrl'] ?? '').toString(),
+      extractionErrorMessage: (json['extractionErrorMessage'] ?? '').toString(),
+      extractionStatus: _parseExtractionStatus(
+        json['extractionStatus']?.toString(),
+      ),
+      extractedAt: extractedAt,
     );
   }
 }

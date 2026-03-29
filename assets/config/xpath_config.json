@@ -1,0 +1,9 @@
+{
+  "selectors": [
+    {
+      "name": "roomTargetUrl",
+      "type": "xpath",
+      "value": "//a[contains(@class,'target-link')]/@href"
+    }
+  ]
+}

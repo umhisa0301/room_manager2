@@ -52,6 +52,7 @@ class RakutenManagedProductRepository {
   }
 
   /// 検索結果1件をコレ候補として保存。同一 [RakutenSearchItem.productId] が既にあれば何もしない（重複防止）。
+  /// 保存時点で [RakutenUrlExtractionStatus.extracting] とする（URL抽出は別処理）。
   Future<void> registerCandidateFromSearchItem(RakutenSearchItem item) async {
     final list = List<RakutenManagedProduct>.from(loadAll());
     for (final e in list) {
@@ -63,8 +64,18 @@ class RakutenManagedProductRepository {
       RakutenManagedProduct.fromSearchItem(
         item,
         status: RakutenManagedProductStatus.candidate,
+        initialExtractionStatus: RakutenUrlExtractionStatus.extracting,
       ),
     );
+    await _saveAll(list);
+  }
+
+  /// [productId] 一致の行を置換（抽出結果の反映用）。
+  Future<void> replaceProduct(RakutenManagedProduct updated) async {
+    final list = List<RakutenManagedProduct>.from(loadAll());
+    final i = list.indexWhere((e) => e.productId == updated.productId);
+    if (i < 0) return;
+    list[i] = updated;
     await _saveAll(list);
   }
 
