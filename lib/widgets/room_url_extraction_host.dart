@@ -14,6 +14,12 @@ const bool kDebugRoomExtractionWebViewVisible = bool.fromEnvironment(
   defaultValue: false,
 );
 
+/// 抽出用 WebView 向け User-Agent（モバイル表記なし）。
+/// 楽天市場等が PC 版 HTML / セレクタを返すようにする。
+const String _desktopChromeUserAgent =
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+    '(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 RoomManager/1.0';
+
 /// 画面外相当の極小 WebView で商品ページを読み XPath / CSS 評価を行うホスト。
 /// [MaterialApp.builder] などルート付近に1つだけ置く。
 class RoomUrlExtractionHost extends StatefulWidget {
@@ -89,10 +95,7 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
     final c = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
-      ..setUserAgent(
-        'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 '
-        '(KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36 RoomManager/1.0',
-      )
+      ..setUserAgent(_desktopChromeUserAgent)
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (_) {
