@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/rakuten_managed_product_repository.dart';
-import '../services/rakuten_url_extraction_scheduler.dart';
+import '../services/room_url_extraction_coordinator.dart';
+import '../services/room_url_extraction_service.dart';
 
 /// 楽天ROOM管理の一覧画面用ロード状態。
 enum RakutenManagedProductListUiStatus {
@@ -15,16 +18,12 @@ enum RakutenManagedProductListUiStatus {
 
 /// 楽天検索由来のローカル管理商品の状態（UI向け）。
 class RakutenManagedProductProvider extends ChangeNotifier {
-  RakutenManagedProductProvider({
-    required RakutenManagedProductRepository repository,
-    RakutenUrlExtractionScheduler? extractionScheduler,
-  })  : _repository = repository,
-        _extractionScheduler = extractionScheduler {
+  RakutenManagedProductProvider({required RakutenManagedProductRepository repository})
+      : _repository = repository {
     _reloadFromStorage();
   }
 
   final RakutenManagedProductRepository _repository;
-  final RakutenUrlExtractionScheduler? _extractionScheduler;
 
   List<RakutenManagedProduct> _items = const [];
   final Set<String> _registeringProductIds = {};
@@ -84,14 +83,8 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     _items = _repository.loadAll();
   }
 
-  /// バックグラウンドの URL 抽出が保存を終えたあと一覧を同期する。
-  void syncAfterExtractionWrite() {
-    _reloadFromStorage();
-    notifyListeners();
-  }
-
   /// コレ候補として登録。成功時は null、失敗時はエラーメッセージ。
-  /// 既に候補・コレ済の場合は重複せず成功扱い（null）。
+  /// 既に候補・コレ済の場合は重複せず成功扱い（null）。URL抽出は新規登録時のみ非同期で開始。
   Future<String?> registerCandidate(RakutenSearchItem item) async {
     final id = item.productId.trim();
     if (id.isEmpty) {
@@ -103,11 +96,17 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     _registeringProductIds.add(id);
     notifyListeners();
     try {
-      await _repository.registerCandidateFromSearchItem(item);
+      final added = await _repository.registerCandidateFromSearchItem(item);
       _reloadFromStorage();
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
       _listUiErrorMessage = null;
-      _extractionScheduler?.scheduleExtraction(item.productId, item.itemUrl);
+      if (added) {
+        await _repository.markExtractionExtracting(id);
+        _reloadFromStorage();
+        notifyListeners();
+        final launch = item.browserLaunchUrl;
+        unawaited(_runPostRegisterExtraction(id, launch));
+      }
       return null;
     } on Exception catch (e) {
       return e.toString();
@@ -117,5 +116,39 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       _registeringProductIds.remove(id);
       notifyListeners();
     }
+  }
+
+  Future<void> _runPostRegisterExtraction(
+    String productId,
+    String pageUrl,
+  ) async {
+    try {
+      for (var i = 0; i < 120; i++) {
+        if (RoomUrlExtractionCoordinator.instance.isReady) break;
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+      }
+      if (!RoomUrlExtractionCoordinator.instance.isReady) {
+        await _repository.completeExtractionFailed(
+          productId,
+          'URL抽出エンジンが初期化されませんでした',
+        );
+      } else {
+        try {
+          final url =
+              await RoomUrlExtractionService.extractRoomTargetUrl(pageUrl);
+          await _repository.completeExtractionSuccess(productId, url);
+        } on Exception catch (e) {
+          await _repository.completeExtractionFailed(productId, e.toString());
+        } catch (e) {
+          await _repository.completeExtractionFailed(productId, e.toString());
+        }
+      }
+    } catch (e) {
+      try {
+        await _repository.completeExtractionFailed(productId, e.toString());
+      } catch (_) {}
+    }
+    _reloadFromStorage();
+    notifyListeners();
   }
 }

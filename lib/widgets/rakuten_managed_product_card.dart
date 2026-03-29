@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/rakuten_managed_product.dart'
-    show RakutenManagedProduct, RakutenUrlExtractionStatus;
+import '../models/rakuten_managed_product.dart';
 import '../services/app_action_service.dart';
 import '../theme/app_theme.dart';
 
@@ -65,6 +64,10 @@ class RakutenManagedProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _statusBadge(context, accent, isCandidate),
+                    if (isCandidate) ...[
+                      const SizedBox(height: 6),
+                      _extractionStatusLine(context),
+                    ],
                     const SizedBox(height: 6),
                     Text(
                       product.itemName,
@@ -100,10 +103,6 @@ class RakutenManagedProductCard extends StatelessWidget {
                             color: AppColors.textTertiary,
                           ),
                     ),
-                    if (isCandidate) ...[
-                      const SizedBox(height: 6),
-                      _extractionStatusRow(context),
-                    ],
                   ],
                 ),
               ),
@@ -143,52 +142,43 @@ class RakutenManagedProductCard extends StatelessWidget {
     );
   }
 
-  Widget _extractionStatusRow(BuildContext context) {
-    final label = _extractionLabel(product.extractionStatus);
-    final color = _extractionColor(product.extractionStatus);
-    return Row(
-      children: [
-        Icon(Icons.link, size: 14, color: color),
-        const SizedBox(width: 4),
-        Expanded(
-          child: Text(
-            label,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
-        ),
-      ],
+  Widget _extractionStatusLine(BuildContext context) {
+    final s = product.extractionStatus;
+    late final String label;
+    late final Color bg;
+    late final Color fg;
+    switch (s) {
+      case RakutenUrlExtractionStatus.notStarted:
+        label = 'URL準備: 待機';
+        bg = AppColors.surfaceVariant;
+        fg = AppColors.textSecondary;
+      case RakutenUrlExtractionStatus.extracting:
+        label = 'URL準備中…';
+        bg = const Color(0xFFFFF8E1);
+        fg = const Color(0xFFF57F17);
+      case RakutenUrlExtractionStatus.success:
+        label = 'URL取得済み';
+        bg = const Color(0xFFE8F5E9);
+        fg = _doneAccent;
+      case RakutenUrlExtractionStatus.failed:
+        label = 'URL取得失敗';
+        bg = AppColors.error.withValues(alpha: 0.1);
+        fg = AppColors.error;
+    }
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: fg,
+              fontWeight: FontWeight.w600,
+            ),
+      ),
     );
-  }
-
-  static String _extractionLabel(RakutenUrlExtractionStatus s) {
-    switch (s) {
-      case RakutenUrlExtractionStatus.notStarted:
-        return '抽出URL: 未開始';
-      case RakutenUrlExtractionStatus.extracting:
-        return 'URL準備中…';
-      case RakutenUrlExtractionStatus.success:
-        return 'URL取得済み';
-      case RakutenUrlExtractionStatus.failed:
-        return 'URL取得失敗';
-    }
-  }
-
-  static Color _extractionColor(RakutenUrlExtractionStatus s) {
-    switch (s) {
-      case RakutenUrlExtractionStatus.notStarted:
-        return AppColors.textTertiary;
-      case RakutenUrlExtractionStatus.extracting:
-        return const Color(0xFF1565C0);
-      case RakutenUrlExtractionStatus.success:
-        return AppColors.success;
-      case RakutenUrlExtractionStatus.failed:
-        return AppColors.error;
-    }
   }
 
   Widget _statusBadge(

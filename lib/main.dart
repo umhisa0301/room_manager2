@@ -9,14 +9,12 @@ import 'repository/comment_template_repository.dart';
 import 'repository/activity_log_repository.dart';
 import 'repository/rakuten_managed_product_repository.dart';
 import 'repository/rakuten_search_repository.dart';
-import 'services/rakuten_url_extraction_scheduler.dart';
-import 'services/xpath_config_loader.dart';
 import 'state/product_list_provider.dart';
 import 'state/comment_template_provider.dart';
 import 'state/activity_log_provider.dart';
 import 'state/rakuten_managed_product_provider.dart';
 import 'state/rakuten_search_provider.dart';
-import 'widgets/rakuten_url_extraction_host.dart';
+import 'widgets/room_url_extraction_host.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,8 +26,6 @@ void main() async {
       RakutenSearchRepository(apiService: RakutenApiService());
   final rakutenManagedProductRepository =
       RakutenManagedProductRepository(prefs);
-  final extractionScheduler = RakutenUrlExtractionSchedulerImpl();
-  final xpathLoader = XpathConfigLoader();
   runApp(
     MyApp(
       productRepository: productRepository,
@@ -37,8 +33,6 @@ void main() async {
       activityRepository: activityRepository,
       rakutenSearchRepository: rakutenSearchRepository,
       rakutenManagedProductRepository: rakutenManagedProductRepository,
-      extractionScheduler: extractionScheduler,
-      xpathLoader: xpathLoader,
     ),
   );
 }
@@ -51,8 +45,6 @@ class MyApp extends StatelessWidget {
     required this.activityRepository,
     required this.rakutenSearchRepository,
     required this.rakutenManagedProductRepository,
-    required this.extractionScheduler,
-    required this.xpathLoader,
   });
 
   final ProductRepository productRepository;
@@ -60,8 +52,6 @@ class MyApp extends StatelessWidget {
   final ActivityLogRepository activityRepository;
   final RakutenSearchRepository rakutenSearchRepository;
   final RakutenManagedProductRepository rakutenManagedProductRepository;
-  final RakutenUrlExtractionSchedulerImpl extractionScheduler;
-  final XpathConfigLoader xpathLoader;
 
   @override
   Widget build(BuildContext context) {
@@ -84,41 +74,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => RakutenManagedProductProvider(
             repository: rakutenManagedProductRepository,
-            extractionScheduler: extractionScheduler,
           ),
         ),
       ],
       child: MaterialApp(
         title: '楽天ROOM運用補助',
         theme: AppTheme.lightTheme,
-        home: const AppShell(),
         builder: (context, child) {
-          return Stack(
-            fit: StackFit.expand,
-            children: [
-              if (child != null) child,
-              Positioned(
-                left: -3200,
-                top: 0,
-                width: 400,
-                height: 620,
-                child: RakutenUrlExtractionHost(
-                  scheduler: extractionScheduler,
-                  repository: rakutenManagedProductRepository,
-                  xpathLoader: xpathLoader,
-                  onPersisted: () {
-                    try {
-                      Provider.of<RakutenManagedProductProvider>(
-                        context,
-                        listen: false,
-                      ).syncAfterExtractionWrite();
-                    } catch (_) {}
-                  },
-                ),
-              ),
-            ],
+          return RoomUrlExtractionHost(
+            child: child ?? const SizedBox.shrink(),
           );
         },
+        home: const AppShell(),
       ),
     );
   }

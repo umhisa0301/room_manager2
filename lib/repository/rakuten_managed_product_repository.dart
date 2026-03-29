@@ -52,31 +52,89 @@ class RakutenManagedProductRepository {
   }
 
   /// 検索結果1件をコレ候補として保存。同一 [RakutenSearchItem.productId] が既にあれば何もしない（重複防止）。
-  /// 保存時点で [RakutenUrlExtractionStatus.extracting] とする（URL抽出は別処理）。
-  Future<void> registerCandidateFromSearchItem(RakutenSearchItem item) async {
+  /// 新規追加した場合は true。
+  Future<bool> registerCandidateFromSearchItem(RakutenSearchItem item) async {
     final list = List<RakutenManagedProduct>.from(loadAll());
     for (final e in list) {
       if (e.productId == item.productId) {
-        return;
+        return false;
       }
     }
     list.add(
       RakutenManagedProduct.fromSearchItem(
         item,
         status: RakutenManagedProductStatus.candidate,
-        initialExtractionStatus: RakutenUrlExtractionStatus.extracting,
       ),
     );
     await _saveAll(list);
+    return true;
   }
 
-  /// [productId] 一致の行を置換（抽出結果の反映用）。
-  Future<void> replaceProduct(RakutenManagedProduct updated) async {
+  Future<void> _mapProduct(
+    String productId,
+    RakutenManagedProduct Function(RakutenManagedProduct e) mapper,
+  ) async {
     final list = List<RakutenManagedProduct>.from(loadAll());
-    final i = list.indexWhere((e) => e.productId == updated.productId);
-    if (i < 0) return;
-    list[i] = updated;
-    await _saveAll(list);
+    final id = productId.trim();
+    if (id.isEmpty) {
+      throw Exception('商品IDが空です');
+    }
+    var found = false;
+    final out = <RakutenManagedProduct>[];
+    for (final e in list) {
+      if (e.productId == id) {
+        found = true;
+        out.add(mapper(e));
+      } else {
+        out.add(e);
+      }
+    }
+    if (!found) {
+      throw Exception('商品が見つかりません');
+    }
+    await _saveAll(out);
+  }
+
+  /// URL 抽出開始（コレ候補登録直後）。
+  Future<void> markExtractionExtracting(String productId) async {
+    await _mapProduct(productId, (e) {
+      return e.copyWith(
+        extractionStatus: RakutenUrlExtractionStatus.extracting,
+        extractionErrorMessage: '',
+        updatedAt: DateTime.now(),
+      );
+    });
+  }
+
+  /// URL 抽出成功。
+  Future<void> completeExtractionSuccess(
+    String productId,
+    String extractedUrl,
+  ) async {
+    final now = DateTime.now();
+    await _mapProduct(productId, (e) {
+      return e.copyWith(
+        extractionStatus: RakutenUrlExtractionStatus.success,
+        extractedUrl: extractedUrl,
+        extractionErrorMessage: '',
+        extractedAt: now,
+        updatedAt: now,
+      );
+    });
+  }
+
+  /// URL 抽出失敗（候補登録自体は維持）。
+  Future<void> completeExtractionFailed(
+    String productId,
+    String message,
+  ) async {
+    await _mapProduct(productId, (e) {
+      return e.copyWith(
+        extractionStatus: RakutenUrlExtractionStatus.failed,
+        extractionErrorMessage: message,
+        updatedAt: DateTime.now(),
+      );
+    });
   }
 
   Future<void> _saveAll(List<RakutenManagedProduct> items) async {
