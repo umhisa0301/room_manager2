@@ -46,8 +46,8 @@ class RakutenManagedProductCard extends StatelessWidget {
         border: Border.all(
           color: isCandidate
               ? _candidateAccent.withValues(alpha: 0.35)
-              : Colors.grey.shade400,
-          width: isCandidate ? 1.5 : 1,
+              : _doneAccent.withValues(alpha: 0.4),
+          width: isCandidate ? 1.5 : 1.2,
         ),
         boxShadow: [
           BoxShadow(
@@ -60,6 +60,7 @@ class RakutenManagedProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          if (!isCandidate) _doneCompletionStrip(context),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -71,7 +72,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                   children: [
                     _statusBadge(context, accent, isCandidate),
                     if (isCandidate) ...[
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 8),
                       _extractionStatusLine(context),
                     ],
                     const SizedBox(height: 6),
@@ -124,9 +125,50 @@ class RakutenManagedProductCard extends StatelessWidget {
     );
   }
 
+  Widget _doneCompletionStrip(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Material(
+        color: _doneSurface,
+        borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          child: Row(
+            children: [
+              Icon(Icons.verified_rounded, color: _doneAccent, size: 22),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'このアプリではコレ済です',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: _doneAccent,
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '一覧の整理用です。ROOMでの投稿完了は別途ご確認ください。',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.25,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   String _footerLine(bool isCandidate) {
     if (!isCandidate && product.doneAt != null) {
-      return 'コレ済: ${_formatDateTime(product.doneAt!)}';
+      return 'コレ済（このアプリ）: ${_formatDateTime(product.doneAt!)}';
     }
     return '更新: ${_formatDateTime(product.updatedAt)}';
   }
@@ -137,30 +179,42 @@ class RakutenManagedProductCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Tooltip(
-          message:
-              _canCollectRoom ? 'ROOMのURLを開き、コレ済に移します' : 'ROOM用URLが取得できるまでお待ちください',
-          child: FilledButton(
+          message: _canCollectRoom
+              ? 'ROOMのURLを開き、一覧をコレ済に移します。完了のお知らせはアプリに戻ったときに表示されます。'
+              : 'ROOM用のURLが取得できるまでお待ちください',
+          child: FilledButton.icon(
             style: FilledButton.styleFrom(
               foregroundColor: Colors.white,
               backgroundColor: _candidateAccent,
               disabledForegroundColor: AppColors.textTertiary,
               disabledBackgroundColor: AppColors.surfaceVariant,
-              minimumSize: const Size.fromHeight(44),
+              minimumSize: const Size.fromHeight(48),
+              elevation: _canCollectRoom ? 1.5 : 0,
             ),
             onPressed: _canCollectRoom
                 ? () => provider.collectRoomAndLaunch(context, product.productId)
                 : null,
-            child: Text(_canCollectRoom ? 'コレする' : 'コレする（URL未取得）'),
+            icon: Icon(
+              _canCollectRoom ? Icons.favorite_rounded : Icons.hourglass_top_rounded,
+              size: 20,
+            ),
+            label: Text(
+              _canCollectRoom ? 'コレする（主な操作）' : 'コレする（URL未取得）',
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
         Row(
           children: [
             Expanded(
+              flex: 3,
               child: OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
                   foregroundColor: _candidateAccent,
                   minimumSize: const Size.fromHeight(40),
+                  visualDensity: VisualDensity.compact,
+                  side: BorderSide(color: _candidateAccent.withValues(alpha: 0.45)),
                 ),
                 onPressed: () async {
                   final err = await provider.openRakutenItemPage(
@@ -174,19 +228,25 @@ class RakutenManagedProductCard extends StatelessWidget {
                     );
                   }
                 },
-                icon: const Icon(Icons.open_in_browser, size: 18),
-                label: const Text('楽天で見る'),
+                icon: const Icon(Icons.open_in_browser, size: 17),
+                label: const Text('楽天で見る', style: TextStyle(fontWeight: FontWeight.w500)),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Expanded(
+              flex: 2,
               child: TextButton(
                 style: TextButton.styleFrom(
-                  foregroundColor: AppColors.error,
+                  foregroundColor: AppColors.error.withValues(alpha: 0.9),
                   minimumSize: const Size.fromHeight(40),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  textStyle: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 onPressed: () => _confirmRemoveCandidate(context, provider),
-                child: const Text('候補から外す'),
+                child: const Text('外す'),
               ),
             ),
           ],
@@ -242,7 +302,7 @@ class RakutenManagedProductCard extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               foregroundColor: _doneAccent,
               side: BorderSide(color: Colors.grey.shade500),
-              minimumSize: const Size.fromHeight(40),
+              minimumSize: const Size.fromHeight(42),
             ),
             onPressed: () => AppActionService.openUrl(
               context,
@@ -260,7 +320,7 @@ class RakutenManagedProductCard extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               foregroundColor: _doneAccent,
               side: BorderSide(color: _doneAccent.withValues(alpha: 0.5)),
-              minimumSize: const Size.fromHeight(40),
+              minimumSize: const Size.fromHeight(42),
             ),
             onPressed: () => AppActionService.openUrl(
               context,
@@ -277,38 +337,72 @@ class RakutenManagedProductCard extends StatelessWidget {
   Widget _extractionStatusLine(BuildContext context) {
     final s = product.extractionStatus;
     late final String label;
+    late final String subtitle;
     late final Color bg;
     late final Color fg;
+    late final IconData icon;
     switch (s) {
       case RakutenUrlExtractionStatus.notStarted:
-        label = 'URL準備: 待機';
+        label = 'URL準備';
+        subtitle = '待機中（まもなく開始します）';
         bg = AppColors.surfaceVariant;
         fg = AppColors.textSecondary;
+        icon = Icons.schedule_rounded;
       case RakutenUrlExtractionStatus.extracting:
-        label = 'URL準備中…';
+        label = 'URL準備中';
+        subtitle = '商品ページからROOM用URLを取得しています';
         bg = const Color(0xFFFFF8E1);
         fg = const Color(0xFFF57F17);
+        icon = Icons.autorenew_rounded;
       case RakutenUrlExtractionStatus.success:
         label = 'URL取得済み';
+        subtitle = '「コレする」で ROOM を開けます';
         bg = const Color(0xFFE8F5E9);
         fg = _doneAccent;
+        icon = Icons.link_rounded;
       case RakutenUrlExtractionStatus.failed:
-        label = 'URL取得失敗';
+        label = 'URL取得に失敗';
+        subtitle = '候補のままです。必要なら「楽天で見る」でページを確認してください';
         bg = AppColors.error.withValues(alpha: 0.1);
         fg = AppColors.error;
+        icon = Icons.error_outline_rounded;
     }
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: fg.withValues(alpha: 0.25)),
       ),
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: fg,
-              fontWeight: FontWeight.w600,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: fg, size: 22),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: fg,
+                        fontWeight: FontWeight.w800,
+                      ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: fg.withValues(alpha: 0.92),
+                        height: 1.3,
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
+              ],
             ),
+          ),
+        ],
       ),
     );
   }
@@ -335,27 +429,32 @@ class RakutenManagedProductCard extends StatelessWidget {
         ),
       );
     }
-    return Wrap(
-      crossAxisAlignment: WrapCrossAlignment.center,
-      spacing: 4,
-      runSpacing: 4,
-      children: [
-        Icon(Icons.check_circle, size: 18, color: accent),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: accent.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            _doneAccent.withValues(alpha: 0.14),
+            _doneAccent.withValues(alpha: 0.06),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: _doneAccent.withValues(alpha: 0.35)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.task_alt_rounded, size: 20, color: accent),
+          const SizedBox(width: 6),
+          Text(
             'コレ済',
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   color: accent,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w800,
                 ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

@@ -14,8 +14,11 @@ import 'state/comment_template_provider.dart';
 import 'state/activity_log_provider.dart';
 import 'state/rakuten_managed_product_provider.dart';
 import 'state/rakuten_search_provider.dart';
+import 'app_messenger.dart';
+import 'widgets/pending_collect_resume_notice_host.dart';
 import 'widgets/room_url_extraction_host.dart';
 import 'navigation/app_route_observer.dart';
+import 'repository/pending_collect_notice_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +30,8 @@ void main() async {
       RakutenSearchRepository(apiService: RakutenApiService());
   final rakutenManagedProductRepository =
       RakutenManagedProductRepository(prefs);
+  final pendingCollectNoticeRepository =
+      PendingCollectNoticeRepository(prefs);
   runApp(
     MyApp(
       productRepository: productRepository,
@@ -34,6 +39,7 @@ void main() async {
       activityRepository: activityRepository,
       rakutenSearchRepository: rakutenSearchRepository,
       rakutenManagedProductRepository: rakutenManagedProductRepository,
+      pendingCollectNoticeRepository: pendingCollectNoticeRepository,
     ),
   );
 }
@@ -46,6 +52,7 @@ class MyApp extends StatelessWidget {
     required this.activityRepository,
     required this.rakutenSearchRepository,
     required this.rakutenManagedProductRepository,
+    required this.pendingCollectNoticeRepository,
   });
 
   final ProductRepository productRepository;
@@ -53,11 +60,15 @@ class MyApp extends StatelessWidget {
   final ActivityLogRepository activityRepository;
   final RakutenSearchRepository rakutenSearchRepository;
   final RakutenManagedProductRepository rakutenManagedProductRepository;
+  final PendingCollectNoticeRepository pendingCollectNoticeRepository;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<PendingCollectNoticeRepository>.value(
+          value: pendingCollectNoticeRepository,
+        ),
         ChangeNotifierProvider(
           create: (_) => ProductListProvider(repository: productRepository),
         ),
@@ -75,15 +86,19 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => RakutenManagedProductProvider(
             repository: rakutenManagedProductRepository,
+            pendingCollectNoticeRepository: pendingCollectNoticeRepository,
           ),
         ),
       ],
       child: MaterialApp(
         title: '楽天ROOM運用補助',
         theme: AppTheme.lightTheme,
+        scaffoldMessengerKey: appRootScaffoldMessengerKey,
         builder: (context, child) {
           return RoomUrlExtractionHost(
-            child: child ?? const SizedBox.shrink(),
+            child: PendingCollectResumeNoticeHost(
+              child: child ?? const SizedBox.shrink(),
+            ),
           );
         },
         navigatorObservers: <NavigatorObserver>[appRouteObserver],

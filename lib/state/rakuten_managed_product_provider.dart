@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
+import '../repository/pending_collect_notice_repository.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../services/app_action_service.dart';
 import '../services/room_url_extraction_coordinator.dart';
@@ -19,12 +20,16 @@ enum RakutenManagedProductListUiStatus {
 
 /// 楽天検索由来のローカル管理商品の状態（UI向け）。
 class RakutenManagedProductProvider extends ChangeNotifier {
-  RakutenManagedProductProvider({required RakutenManagedProductRepository repository})
-      : _repository = repository {
+  RakutenManagedProductProvider({
+    required RakutenManagedProductRepository repository,
+    required PendingCollectNoticeRepository pendingCollectNoticeRepository,
+  })  : _repository = repository,
+        _pendingCollectNoticeRepository = pendingCollectNoticeRepository {
     _reloadFromStorage();
   }
 
   final RakutenManagedProductRepository _repository;
+  final PendingCollectNoticeRepository _pendingCollectNoticeRepository;
 
   List<RakutenManagedProduct> _items = const [];
   final Set<String> _registeringProductIds = {};
@@ -204,8 +209,12 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       return;
     }
     final roomUrl = p.extractedUrl.trim();
+    final noticeName = p.itemName.trim().isNotEmpty ? p.itemName : id;
     try {
       await _repository.markCollectedDone(id);
+      await _pendingCollectNoticeRepository.enqueuePendingCollectNotice(
+        noticeName,
+      );
       _reloadFromStorage();
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
       _listUiErrorMessage = null;

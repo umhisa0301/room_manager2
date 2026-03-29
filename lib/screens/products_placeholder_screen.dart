@@ -84,25 +84,35 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         children: [
           Material(
             color: AppColors.surface,
-            child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              labelColor: const Color(0xFF1565C0),
-              unselectedLabelColor: AppColors.textSecondary,
-              indicatorColor: const Color(0xFF1565C0),
-              tabs: const [
-                Tab(
-                  icon: Icon(Icons.bookmark_outline, size: 20),
-                  text: 'コレ候補',
-                  height: 48,
-                ),
-                Tab(
-                  icon: Icon(Icons.check_circle_outline, size: 20),
-                  text: 'コレ済',
-                  height: 48,
-                ),
-              ],
+            child: Consumer<RakutenManagedProductProvider>(
+              builder: (context, managed, _) {
+                final nCand = managed
+                    .sortedItemsForStatus(RakutenManagedProductStatus.candidate)
+                    .length;
+                final nDone = managed
+                    .sortedItemsForStatus(RakutenManagedProductStatus.done)
+                    .length;
+                return TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.start,
+                  labelColor: const Color(0xFF1565C0),
+                  unselectedLabelColor: AppColors.textSecondary,
+                  indicatorColor: const Color(0xFF1565C0),
+                  tabs: [
+                    Tab(
+                      icon: const Icon(Icons.bookmark_outline, size: 20),
+                      text: 'コレ候補（$nCand件）',
+                      height: 48,
+                    ),
+                    Tab(
+                      icon: const Icon(Icons.check_circle_outline, size: 20),
+                      text: 'コレ済（$nDone件）',
+                      height: 48,
+                    ),
+                  ],
+                );
+              },
             ),
           ),
           Padding(
@@ -139,18 +149,23 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                   status: RakutenManagedProductStatus.candidate,
                   variant: RakutenManagedProductCardVariant.candidate,
                   filterQuery: _searchQuery,
-                  emptyTitle: 'まだコレ候補はありません',
+                  emptyTitle: 'コレ候補はまだありません',
                   emptySubtitle:
-                      '画面上部の「楽天検索」から商品を探し、「コレ候補へ登録」するとここに表示されます。',
+                      '① 画面上部の「楽天検索」で商品を探す\n'
+                      '② 検索結果から「コレ候補へ登録」\n'
+                      '③ URL取得後に「コレする」でコレ済へ移動',
+                  emptyHint: 'まずは右上の虫眼鏡アイコンから検索してみてください。',
                   accentColor: const Color(0xFF1565C0),
                 ),
                 _RoomManagedProductListTab(
                   status: RakutenManagedProductStatus.done,
                   variant: RakutenManagedProductCardVariant.done,
                   filterQuery: _searchQuery,
-                  emptyTitle: 'まだコレ済の商品はありません',
+                  emptyTitle: 'コレ済の商品はまだありません',
                   emptySubtitle:
-                      '候補一覧で「コレする」と、ROOMのURLを開いたうえでコレ済に移動します。',
+                      'コレ候補一覧で ROOM の URL を開き「コレする」を押すと、'
+                      'このアプリの一覧ではコレ済に移動します。',
+                  emptyHint: '※ ROOM への実際の投稿完了までは、このアプリでは確認できません。',
                   accentColor: const Color(0xFF2E7D32),
                 ),
               ],
@@ -169,6 +184,7 @@ class _RoomManagedProductListTab extends StatelessWidget {
     required this.filterQuery,
     required this.emptyTitle,
     required this.emptySubtitle,
+    required this.emptyHint,
     required this.accentColor,
   });
 
@@ -177,6 +193,7 @@ class _RoomManagedProductListTab extends StatelessWidget {
   final String filterQuery;
   final String emptyTitle;
   final String emptySubtitle;
+  final String emptyHint;
   final Color accentColor;
 
   @override
@@ -205,6 +222,7 @@ class _RoomManagedProductListTab extends StatelessWidget {
           return _RoomCollectionEmptyState(
             title: emptyTitle,
             subtitle: emptySubtitle,
+            hint: emptyHint,
             accentColor: accentColor,
           );
         }
@@ -290,11 +308,13 @@ class _RoomCollectionEmptyState extends StatelessWidget {
   const _RoomCollectionEmptyState({
     required this.title,
     required this.subtitle,
+    required this.hint,
     required this.accentColor,
   });
 
   final String title;
   final String subtitle;
+  final String hint;
   final Color accentColor;
 
   @override
@@ -330,7 +350,16 @@ class _RoomCollectionEmptyState extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.textSecondary,
-                          height: 1.4,
+                          height: 1.45,
+                        ),
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    hint,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textTertiary,
+                          height: 1.35,
                         ),
                   ),
                 ],
