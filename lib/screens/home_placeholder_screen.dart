@@ -657,7 +657,7 @@ class _ExtractionChip extends StatelessWidget {
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: fg,
               fontWeight: FontWeight.w700,
-            ),
+        ),
       ),
     );
   }
