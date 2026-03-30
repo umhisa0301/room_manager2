@@ -8,13 +8,13 @@ import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 import '../navigation/app_route_observer.dart';
-import '../services/app_action_service.dart';
 import '../services/shop_discovery_aggregator.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/rakuten_search_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/rakuten_search_result_card.dart';
 import '../widgets/shop_discovery_card.dart';
+import 'shop_discovery_detail_screen.dart';
 
 /// 楽天API商品検索画面（最小構成）。
 class RakutenSearchScreen extends StatefulWidget {
@@ -895,9 +895,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           separatorBuilder: (_, __) => const SizedBox(height: 10),
           itemBuilder: (context, index) {
             final summary = summaries[index];
+            final shopItems = search.results
+                .where((e) => _shopDiscoveryGroupKey(e) == summary.shopKey)
+                .toList(growable: false);
             return ShopDiscoveryCard(
               summary: summary,
-              onOpenShop: () => _openShop(context, summary),
+              onOpenShop: () => _openShopDetail(context, summary, shopItems),
               onSave: () => _saveDiscoveredShop(context, summary),
             );
           },
@@ -905,15 +908,27 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }
   }
 
-  Future<void> _openShop(BuildContext context, ShopDiscoverySummary summary) async {
-    final url = summary.shopUrl.trim();
-    if (url.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('このショップのURLが見つかりません')),
-      );
-      return;
-    }
-    await AppActionService.openUrl(context, url: url);
+  String _shopDiscoveryGroupKey(RakutenSearchItem item) {
+    final code = item.shopCode.trim();
+    if (code.isNotEmpty) return code;
+    final name = item.shopName.trim();
+    if (name.isNotEmpty) return name;
+    return 'unknown';
+  }
+
+  Future<void> _openShopDetail(
+    BuildContext context,
+    ShopDiscoverySummary summary,
+    List<RakutenSearchItem> items,
+  ) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => ShopDiscoveryDetailScreen(
+          summary: summary,
+          items: items,
+        ),
+      ),
+    );
   }
 
   void _saveDiscoveredShop(BuildContext context, ShopDiscoverySummary summary) {
