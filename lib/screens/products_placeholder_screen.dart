@@ -83,25 +83,28 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 4),
-            child: TextButton.icon(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const RakutenSearchScreen(),
-                  ),
-                );
-              },
-              icon: Icon(
-                Icons.travel_explore_rounded,
-                size: 20,
-                color: AppColors.accentPrimary,
-              ),
-              label: Text(
-                '楽天で検索',
-                style: TextStyle(
+            child: Tooltip(
+              message: '楽天の商品を検索し、コレ候補として登録できます',
+              child: TextButton.icon(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const RakutenSearchScreen(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.travel_explore_rounded,
+                  size: 20,
                   color: AppColors.accentPrimary,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 13,
+                ),
+                label: Text(
+                  '楽天で検索',
+                  style: TextStyle(
+                    color: AppColors.accentPrimary,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                  ),
                 ),
               ),
             ),
@@ -150,7 +153,40 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 8),
+            padding: const EdgeInsets.fromLTRB(
+              AppDimensions.screenPaddingH,
+              8,
+              AppDimensions.screenPaddingH,
+              6,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.info_outline_rounded,
+                  size: 18,
+                  color: AppColors.accentPrimary.withValues(alpha: 0.75),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    '商品追加：右上の「楽天で検索」　／　下の欄は保存済み一覧の絞り込みです',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.4,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppDimensions.screenPaddingH,
+              0,
+              AppDimensions.screenPaddingH,
+              8,
+            ),
             child: TextField(
               controller: _searchController,
               onChanged: (v) => setState(() => _searchQuery = v),
@@ -310,9 +346,14 @@ class _RoomManagedProductListTab extends StatelessWidget {
           ),
           child: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
+            padding: const EdgeInsets.fromLTRB(
+              AppDimensions.screenPaddingH,
+              4,
+              AppDimensions.screenPaddingH,
+              24,
+            ),
             itemCount: list.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            separatorBuilder: (_, __) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
               return RakutenManagedProductCard(
                 product: list[index],
