@@ -103,10 +103,17 @@ class RakutenManagedProductCard extends StatelessWidget {
     super.key,
     required this.product,
     required this.variant,
+    this.onCollectPressed,
+    this.emphasizeAsNext = false,
   });
 
   final RakutenManagedProduct product;
   final RakutenManagedProductCardVariant variant;
+  final Future<void> Function(
+    BuildContext context,
+    RakutenManagedProduct product,
+  )? onCollectPressed;
+  final bool emphasizeAsNext;
 
   static const double _thumbExtent = 80;
 
@@ -124,12 +131,17 @@ class RakutenManagedProductCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
+        border: Border.all(
+          color: emphasizeAsNext ? AppColors.accentPrimary : AppColors.divider,
+          width: emphasizeAsNext ? 1.5 : 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: emphasizeAsNext
+                ? AppColors.accentPrimary.withValues(alpha: 0.18)
+                : Colors.black.withValues(alpha: 0.05),
             offset: const Offset(0, 2),
-            blurRadius: 8,
+            blurRadius: emphasizeAsNext ? 12 : 8,
           ),
         ],
       ),
@@ -157,6 +169,17 @@ class RakutenManagedProductCard extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              if (emphasizeAsNext && isCandidate)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 6),
+                                  child: _StatusPill(
+                                    icon: Icons.navigation_rounded,
+                                    label: '次にコレする候補',
+                                    backgroundColor:
+                                        AppColors.accentPrimary.withValues(alpha: 0.12),
+                                    foregroundColor: AppColors.accentPrimary,
+                                  ),
+                                ),
                               if (!isCandidate) _compactDoneNote(context),
                               _badgeRow(context, isCandidate, stateAccent),
                               const SizedBox(height: 6),
@@ -292,8 +315,13 @@ class RakutenManagedProductCard extends StatelessWidget {
               enabled: _canCollectRoom,
             ),
             onPressed: _canCollectRoom
-                ? () =>
-                    provider.collectRoomAndLaunch(context, product.productId)
+                ? () async {
+                    if (onCollectPressed != null) {
+                      await onCollectPressed!(context, product);
+                      return;
+                    }
+                    await provider.collectRoomAndLaunch(context, product.productId);
+                  }
                 : null,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

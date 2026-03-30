@@ -39,14 +39,18 @@ class ProductsPlaceholderScreen extends StatefulWidget {
 }
 
 class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  bool _continuousCollectMode = false;
+  bool _awaitingContinuousResume = false;
+  String _lastCollectedName = '';
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     final initialIndex = widget.initialTabIndex.clamp(0, 1);
     _tabController = TabController(
       length: 2,
@@ -67,9 +71,62 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _tabController.dispose();
     _searchController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed) return;
+    if (!_continuousCollectMode || !_awaitingContinuousResume) return;
+    _awaitingContinuousResume = false;
+    if (!mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final provider = context.read<RakutenManagedProductProvider>();
+      final next = _nextCandidate(provider);
+      final moved = _truncateName(_lastCollectedName);
+      final message = next == null
+          ? '「$moved」をコレ済へ移動しました。次の候補はありません。'
+          : '「$moved」をコレ済へ移動しました。次の候補はこちら: 「${_truncateName(next.itemName)}」';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+      setState(() {});
+    });
+  }
+
+  RakutenManagedProduct? _nextCandidate(RakutenManagedProductProvider provider) {
+    final base =
+        provider.sortedItemsForStatus(RakutenManagedProductStatus.candidate);
+    final filtered = _filterManagedProductsByQuery(base, _searchQuery);
+    if (filtered.isEmpty) return null;
+    return filtered.first;
+  }
+
+  String _truncateName(String text, {int max = 24}) {
+    final t = text.trim();
+    if (t.length <= max) return t;
+    return '${t.substring(0, max)}...';
+  }
+
+  Future<void> _handleContinuousCollect(
+    BuildContext context,
+    RakutenManagedProduct product,
+  ) async {
+    final provider = context.read<RakutenManagedProductProvider>();
+    await provider.collectRoomAndLaunch(context, product.productId);
+    if (!mounted) return;
+    final moved = provider.statusForProduct(product.productId) ==
+        RakutenManagedProductStatus.done;
+    if (moved && _continuousCollectMode) {
+      setState(() {
+        _lastCollectedName = product.itemName;
+        _awaitingContinuousResume = true;
+      });
+    }
   }
 
   @override
@@ -219,6 +276,14 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                   status: RakutenManagedProductStatus.candidate,
                   variant: RakutenManagedProductCardVariant.candidate,
                   filterQuery: _searchQuery,
+                  continuousCollectMode: _continuousCollectMode,
+                  onContinuousModeChanged: (next) {
+                    setState(() {
+                      _continuousCollectMode = next;
+                      _awaitingContinuousResume = false;
+                    });
+                  },
+                  onCollectPressed: _handleContinuousCollect,
                   emptyTitle: 'コレ候補はまだありません',
                   emptySubtitle:
                       '① 画面上部の「楽天で検索」で商品を探す\n'
@@ -232,6 +297,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                   status: RakutenManagedProductStatus.done,
                   variant: RakutenManagedProductCardVariant.done,
                   filterQuery: _searchQuery,
+                  continuousCollectMode: false,
                   emptyTitle: 'コレ済の商品はまだありません',
                   emptySubtitle:
                       'コレ候補一覧で ROOM の URL を開き「コレする」を押すと、'
@@ -291,6 +357,9 @@ class _RoomManagedProductListTab extends StatelessWidget {
     required this.status,
     required this.variant,
     required this.filterQuery,
+    this.continuousCollectMode = false,
+    this.onContinuousModeChanged,
+    this.onCollectPressed,
     required this.emptyTitle,
     required this.emptySubtitle,
     required this.emptyHint,
@@ -300,6 +369,12 @@ class _RoomManagedProductListTab extends StatelessWidget {
   final RakutenManagedProductStatus status;
   final RakutenManagedProductCardVariant variant;
   final String filterQuery;
+  final bool continuousCollectMode;
+  final ValueChanged<bool>? onContinuousModeChanged;
+  final Future<void> Function(
+    BuildContext context,
+    RakutenManagedProduct product,
+  )? onCollectPressed;
   final String emptyTitle;
   final String emptySubtitle;
   final String emptyHint;
@@ -344,7 +419,7 @@ class _RoomManagedProductListTab extends StatelessWidget {
           onRefresh: () => provider.refreshManagedProductList(
             showLoadingIndicator: true,
           ),
-          child: ListView.separated(
+          child: ListView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(
               AppDimensions.screenPaddingH,
@@ -352,17 +427,113 @@ class _RoomManagedProductListTab extends StatelessWidget {
               AppDimensions.screenPaddingH,
               24,
             ),
-            itemCount: list.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 10),
-            itemBuilder: (context, index) {
-              return RakutenManagedProductCard(
-                product: list[index],
-                variant: variant,
-              );
-            },
+            children: [
+              if (status == RakutenManagedProductStatus.candidate)
+                _ContinuousCollectModePanel(
+                  enabled: continuousCollectMode,
+                  onChanged: onContinuousModeChanged ?? (_) {},
+                  hasNextCandidate: list.isNotEmpty,
+                  nextCandidateName:
+                      list.isNotEmpty ? list.first.itemName : null,
+                ),
+              if (status == RakutenManagedProductStatus.candidate)
+                const SizedBox(height: 10),
+              for (var i = 0; i < list.length; i++) ...[
+                RakutenManagedProductCard(
+                  product: list[i],
+                  variant: variant,
+                  onCollectPressed: onCollectPressed,
+                  emphasizeAsNext:
+                      status == RakutenManagedProductStatus.candidate &&
+                          continuousCollectMode &&
+                          i == 0,
+                ),
+                if (i != list.length - 1) const SizedBox(height: 10),
+              ],
+            ],
           ),
         );
       },
+    );
+  }
+}
+
+class _ContinuousCollectModePanel extends StatelessWidget {
+  const _ContinuousCollectModePanel({
+    required this.enabled,
+    required this.onChanged,
+    required this.hasNextCandidate,
+    required this.nextCandidateName,
+  });
+
+  final bool enabled;
+  final ValueChanged<bool> onChanged;
+  final bool hasNextCandidate;
+  final String? nextCandidateName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(
+          color: enabled ? AppColors.accentPrimary : AppColors.divider,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.autorenew_rounded,
+                size: 18,
+                color: enabled ? AppColors.accentPrimary : AppColors.textSecondary,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  '連続コレモード',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
+                ),
+              ),
+              Switch(
+                value: enabled,
+                onChanged: onChanged,
+                activeThumbColor: AppColors.accentPrimary,
+              ),
+            ],
+          ),
+          Text(
+            enabled
+                ? '「コレする」後に戻ると、次に処理する候補を案内します。'
+                : 'ONにすると、次にコレする候補を強調表示します。',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                ),
+          ),
+          if (enabled) ...[
+            const SizedBox(height: 8),
+            Text(
+              hasNextCandidate
+                  ? '次の候補: ${nextCandidateName ?? ''}'
+                  : '次の候補はありません',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: AppColors.accentPrimary,
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
