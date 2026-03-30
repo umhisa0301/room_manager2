@@ -66,7 +66,7 @@ class _AppShellState extends State<AppShell> {
                   child: _NavItem(
                     icon: Icons.collections_bookmark_outlined,
                     selectedIcon: Icons.collections_bookmark,
-                    label: 'ROOM',
+                    label: 'ROOMコレ',
                     tooltip: 'ROOMコレ管理',
                     isSelected: _currentIndex == 1,
                     onTap: () => setState(() => _currentIndex = 1),

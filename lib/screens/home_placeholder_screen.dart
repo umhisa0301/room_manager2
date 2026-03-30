@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
-import '../screens/products_placeholder_screen.dart';
-import '../screens/rakuten_search_screen.dart';
+import 'activity_placeholder_screen.dart';
+import 'products_placeholder_screen.dart';
+import 'rakuten_search_screen.dart';
 import '../services/rakuten_room_home_stats.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/home_primary_action_button.dart';
 
 /// ホーム（ダッシュボード）。ROOM コレ管理の導線と集計を中心に構成する。
 class HomePlaceholderScreen extends StatefulWidget {
@@ -28,10 +30,19 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     });
   }
 
-  void _openRoomList(BuildContext context) {
+  void _openRoomList(BuildContext context, {int initialTabIndex = 0}) {
+    final idx = initialTabIndex.clamp(0, 1);
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => const ProductsPlaceholderScreen(),
+        builder: (_) => ProductsPlaceholderScreen(initialTabIndex: idx),
+      ),
+    );
+  }
+
+  void _openActivity(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => const ActivityPlaceholderScreen(),
       ),
     );
   }
@@ -64,8 +75,12 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                 90,
               ),
               children: [
-                _MainSearchSection(
-                  onSearch: () {
+                const _MainSearchSection(),
+                const SizedBox(height: AppDimensions.spacingMd),
+                HomePrimaryActionButton(
+                  icon: Icons.travel_explore_rounded,
+                  label: '楽天で検索',
+                  onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute<void>(
                         builder: (_) => const RakutenSearchScreen(),
@@ -73,10 +88,16 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     );
                   },
                 ),
+                const SizedBox(height: AppDimensions.spacingSm),
+                HomePrimaryActionButton(
+                  icon: Icons.collections_bookmark_rounded,
+                  label: 'コレ一覧を開く',
+                  onPressed: () => _openRoomList(context),
+                ),
                 const SizedBox(height: AppDimensions.spacingLg),
                 _SectionIntro(
                   title: 'ROOMコレ管理',
-                  body: 'コレ候補・コレ済をまとめて管理します。数値は端末に保存された一覧から集計しています。',
+                  body: 'コレ候補・コレ済をまとめて管理します。数値は端末に保存された一覧から集計しています。下のカードをタップすると該当画面へ進みます。',
                 ),
                 const SizedBox(height: AppDimensions.spacingSm),
                 _RoomStatsCardGrid(
@@ -84,19 +105,10 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                   doneTotal: nDone,
                   todayDoneCount: nTodayDone,
                   lastDoneAt: lastDone,
-                ),
-                const SizedBox(height: AppDimensions.spacingMd),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton.tonalIcon(
-                    onPressed: () => _openRoomList(context),
-                    icon: const Icon(Icons.collections_bookmark_outlined),
-                    label: const Text('コレ一覧を開く'),
-                    style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      foregroundColor: const Color(0xFF1565C0),
-                    ),
-                  ),
+                  onCandidateTap: () => _openRoomList(context, initialTabIndex: 0),
+                  onDoneTap: () => _openRoomList(context, initialTabIndex: 1),
+                  onTodayTap: () => _openActivity(context),
+                  onLastCollectTap: () => _openActivity(context),
                 ),
                 const SizedBox(height: AppDimensions.spacingLg),
                 _SectionIntro(
@@ -117,32 +129,33 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   }
 }
 
-/// ① メインアクション：楽天検索
+/// ① ヒーロー：役割の説明（主ボタンは直下で統一スタイル）。
 class _MainSearchSection extends StatelessWidget {
-  const _MainSearchSection({required this.onSearch});
-
-  final VoidCallback onSearch;
+  const _MainSearchSection();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
             AppColors.accentLight.withValues(alpha: 0.9),
-            const Color(0xFFE8F4FD),
+            const Color(0xFFFFF5F9),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(
+          color: AppColors.accentPrimary.withValues(alpha: 0.12),
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.07),
-            offset: const Offset(0, 3),
-            blurRadius: 10,
+            color: Colors.black.withValues(alpha: 0.06),
+            offset: const Offset(0, 2),
+            blurRadius: 8,
           ),
         ],
       ),
@@ -152,7 +165,7 @@ class _MainSearchSection extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.travel_explore_rounded,
+              Icon(Icons.waving_hand_rounded,
                   size: 26, color: AppColors.accentPrimary),
               const SizedBox(width: 10),
               Expanded(
@@ -160,7 +173,7 @@ class _MainSearchSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'まずはここから',
+                      '次にやること',
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                             color: AppColors.accentPrimary,
                             fontWeight: FontWeight.w800,
@@ -169,10 +182,10 @@ class _MainSearchSection extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '楽天ROOMの「コレ」候補をこのアプリで集め、コレ済まで整理できます。',
+                      '1. 「楽天で検索」で商品を探して候補に追加\n2. 「コレ一覧」で URL 取得後にコレする\n3. 下の数字で活動を確認',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
-                            height: 1.45,
+                            height: 1.5,
                           ),
                     ),
                   ],
@@ -180,32 +193,16 @@ class _MainSearchSection extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          FilledButton.icon(
-            onPressed: onSearch,
-            icon: const Icon(Icons.search_rounded, size: 22),
-            label: const Text(
-              '楽天で検索',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-            ),
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.accentPrimary,
-              foregroundColor: AppColors.textOnAccent,
-              minimumSize: const Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 14),
           Text(
-            '商品を検索してコレ候補に追加',
+            '楽天ROOMの「コレ」候補をこのアプリで集め、コレ済まで整理できます。',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
+                  height: 1.4,
                 ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Text(
             '検索結果から「コレ候補へ登録」すると、ROOMコレ管理に表示されます。',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -250,72 +247,100 @@ class _SectionIntro extends StatelessWidget {
   }
 }
 
-/// ② 数値カード（候補・コレ済・今日のコレ・前回日時）
+/// ② 4 枚統一のコンパクトメトリクス（2×2、タップで遷移）。
 class _RoomStatsCardGrid extends StatelessWidget {
   const _RoomStatsCardGrid({
     required this.candidateTotal,
     required this.doneTotal,
     required this.todayDoneCount,
     required this.lastDoneAt,
+    required this.onCandidateTap,
+    required this.onDoneTap,
+    required this.onTodayTap,
+    required this.onLastCollectTap,
   });
 
   final int candidateTotal;
   final int doneTotal;
   final int todayDoneCount;
   final DateTime? lastDoneAt;
+  final VoidCallback onCandidateTap;
+  final VoidCallback onDoneTap;
+  final VoidCallback onTodayTap;
+  final VoidCallback onLastCollectTap;
 
   @override
   Widget build(BuildContext context) {
-    final lastLabel = lastDoneAt == null
-        ? 'まだありません'
+    final lastPrimary = lastDoneAt == null
+        ? '—'
         : _formatDateTime(lastDoneAt!);
 
     return Column(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: _StatNumberCard(
-                label: 'コレ候補',
-                value: candidateTotal,
-                caption: '候補の総数',
-                icon: Icons.bookmark_outline_rounded,
-                tint: const Color(0xFFE3F2FD),
-                accent: const Color(0xFF1565C0),
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: _RoomMetricTile(
+                  title: 'コレ候補',
+                  valueText: '$candidateTotal',
+                  caption: '候補の総数（タップで一覧）',
+                  icon: Icons.bookmark_outline_rounded,
+                  accent: const Color(0xFF1565C0),
+                  iconBackground: const Color(0xFFE3F2FD),
+                  emphasizeValue: true,
+                  onTap: onCandidateTap,
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _StatNumberCard(
-                label: 'コレ済',
-                value: doneTotal,
-                caption: 'コレ済の総数',
-                icon: Icons.task_alt_rounded,
-                tint: const Color(0xFFE8F5E9),
-                accent: const Color(0xFF2E7D32),
+              const SizedBox(width: 10),
+              Expanded(
+                child: _RoomMetricTile(
+                  title: 'コレ済',
+                  valueText: '$doneTotal',
+                  caption: 'コレ済の総数（タップで一覧）',
+                  icon: Icons.task_alt_rounded,
+                  accent: const Color(0xFF2E7D32),
+                  iconBackground: const Color(0xFFE8F5E9),
+                  emphasizeValue: true,
+                  onTap: onDoneTap,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        const SizedBox(height: 12),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: _StatNumberCard(
-                label: '今日のコレ',
-                value: todayDoneCount,
-                caption: '今日（0:00〜）にコレ済へ移した件数',
-                icon: Icons.today_rounded,
-                tint: AppColors.accentLightest,
-                accent: AppColors.accentPrimary,
+        const SizedBox(height: 10),
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: _RoomMetricTile(
+                  title: '今日のコレ',
+                  valueText: '$todayDoneCount',
+                  caption: '本日コレ済へ移した件数（タップで活動）',
+                  icon: Icons.today_rounded,
+                  accent: AppColors.accentPrimary,
+                  iconBackground: AppColors.accentLightest,
+                  emphasizeValue: true,
+                  onTap: onTodayTap,
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _LastCollectCard(lastLabel: lastLabel),
-            ),
-          ],
+              const SizedBox(width: 10),
+              Expanded(
+                child: _RoomMetricTile(
+                  title: '前回コレ日時',
+                  valueText: lastPrimary,
+                  caption: '最新の doneAt（タップで活動）',
+                  icon: Icons.history_rounded,
+                  accent: const Color(0xFF5C6BC0),
+                  iconBackground: const Color(0xFFE8EAF6),
+                  emphasizeValue: false,
+                  onTap: onLastCollectTap,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -323,145 +348,116 @@ class _RoomStatsCardGrid extends StatelessWidget {
 
   String _formatDateTime(DateTime d) {
     String two(int n) => n.toString().padLeft(2, '0');
-    return '${d.year}/${two(d.month)}/${two(d.day)} ${two(d.hour)}:${two(d.minute)}';
+    return '${d.month}/${d.day} ${two(d.hour)}:${two(d.minute)}';
   }
 }
 
-class _StatNumberCard extends StatelessWidget {
-  const _StatNumberCard({
-    required this.label,
-    required this.value,
+class _RoomMetricTile extends StatelessWidget {
+  const _RoomMetricTile({
+    required this.title,
+    required this.valueText,
     required this.caption,
     required this.icon,
-    required this.tint,
     required this.accent,
+    required this.iconBackground,
+    required this.emphasizeValue,
+    required this.onTap,
   });
 
-  final String label;
-  final int value;
+  final String title;
+  final String valueText;
   final String caption;
   final IconData icon;
-  final Color tint;
   final Color accent;
+  final Color iconBackground;
+  final bool emphasizeValue;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: accent.withValues(alpha: 0.22)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: tint,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, color: accent, size: 20),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(10, 10, 8, 10),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+            border: Border.all(color: AppColors.divider),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04),
+                blurRadius: 5,
+                offset: const Offset(0, 2),
               ),
-              const Spacer(),
             ],
           ),
-          const SizedBox(height: 10),
-          Text(
-            '$value',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
-                  height: 1.1,
-                ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: accent,
-                  fontWeight: FontWeight.w700,
-                ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            caption,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textTertiary,
-                  height: 1.35,
-                ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LastCollectCard extends StatelessWidget {
-  const _LastCollectCard({required this.lastLabel});
-
-  final String lastLabel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Icon(Icons.history_rounded,
-                  size: 20, color: AppColors.textSecondary),
-              const SizedBox(width: 6),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: iconBackground,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(icon, color: accent, size: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: accent,
+                            fontWeight: FontWeight.w800,
+                          ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    size: 20,
+                    color: AppColors.textTertiary,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
               Text(
-                '前回コレ日時',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
+                valueText,
+                textAlign: TextAlign.right,
+                maxLines: emphasizeValue ? 1 : 2,
+                overflow: TextOverflow.ellipsis,
+                style: emphasizeValue
+                    ? Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary,
+                          height: 1.05,
+                          fontSize: 30,
+                        )
+                    : Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary,
+                          height: 1.15,
+                          fontSize: 18,
+                        ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                caption,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.textTertiary,
+                      height: 1.35,
                     ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
-          Text(
-            lastLabel,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
-                ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            'このアプリでコレ済へ移した直近の日時（最新の doneAt）です。',
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textTertiary,
-                  height: 1.35,
-                ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -657,7 +653,7 @@ class _ExtractionChip extends StatelessWidget {
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: fg,
               fontWeight: FontWeight.w700,
-        ),
+            ),
       ),
     );
   }

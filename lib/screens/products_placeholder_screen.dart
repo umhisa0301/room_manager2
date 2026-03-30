@@ -25,7 +25,13 @@ List<RakutenManagedProduct> _filterManagedProductsByQuery(
 
 /// ROOMコレ管理画面。楽天検索で登録したコレ候補・コレ済をタブで表示する。
 class ProductsPlaceholderScreen extends StatefulWidget {
-  const ProductsPlaceholderScreen({super.key});
+  const ProductsPlaceholderScreen({
+    super.key,
+    this.initialTabIndex = 0,
+  });
+
+  /// 0: コレ候補、1: コレ済
+  final int initialTabIndex;
 
   @override
   State<ProductsPlaceholderScreen> createState() =>
@@ -41,7 +47,12 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    final initialIndex = widget.initialTabIndex.clamp(0, 1);
+    _tabController = TabController(
+      length: 2,
+      vsync: this,
+      initialIndex: initialIndex,
+    );
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) return;
       if (mounted) setState(() {});
