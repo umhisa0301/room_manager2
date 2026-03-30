@@ -1,0 +1,194 @@
+import 'package:flutter/material.dart';
+
+import '../models/shop_discovery_summary.dart';
+import '../theme/app_theme.dart';
+
+class ShopDiscoveryCard extends StatelessWidget {
+  const ShopDiscoveryCard({
+    super.key,
+    required this.summary,
+    required this.onOpenShop,
+    required this.onSave,
+  });
+
+  final ShopDiscoverySummary summary;
+  final VoidCallback onOpenShop;
+  final VoidCallback onSave;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(color: AppColors.divider),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  summary.shopName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              _ScorePill(score: summary.discoveryScore),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _MiniInfo(label: 'ヒット商品数', value: '${summary.hitItemCount}件'),
+              _MiniInfo(label: '最大評価数', value: '${summary.maxReviewCount}'),
+              _MiniInfo(
+                label: '平均評価点',
+                value: summary.avgReviewAverage.toStringAsFixed(2),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          _ThumbStrip(items: summary.representativeItems.take(3).toList()),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: onOpenShop,
+                  icon: const Icon(Icons.storefront_outlined, size: 18),
+                  label: const Text('このショップを見る'),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: FilledButton.icon(
+                  onPressed: onSave,
+                  icon: const Icon(Icons.bookmark_add_outlined, size: 18),
+                  label: const Text('保存する'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ScorePill extends StatelessWidget {
+  const _ScorePill({required this.score});
+  final double score;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      decoration: BoxDecoration(
+        color: AppColors.accentPrimary.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        '発掘 ${score.toStringAsFixed(1)}',
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: AppColors.accentPrimary,
+              fontWeight: FontWeight.w700,
+            ),
+      ),
+    );
+  }
+}
+
+class _MiniInfo extends StatelessWidget {
+  const _MiniInfo({required this.label, required this.value});
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceVariant,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        '$label: $value',
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w600,
+            ),
+      ),
+    );
+  }
+}
+
+class _ThumbStrip extends StatelessWidget {
+  const _ThumbStrip({required this.items});
+  final List<ShopRepresentativeItem> items;
+
+  @override
+  Widget build(BuildContext context) {
+    if (items.isEmpty) {
+      return Text(
+        '代表商品がありません',
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+            ),
+      );
+    }
+    return Row(
+      children: [
+        for (var i = 0; i < items.length; i++) ...[
+          Expanded(child: _ThumbItem(item: items[i])),
+          if (i != items.length - 1) const SizedBox(width: 8),
+        ],
+      ],
+    );
+  }
+}
+
+class _ThumbItem extends StatelessWidget {
+  const _ThumbItem({required this.item});
+  final ShopRepresentativeItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        height: 58,
+        color: AppColors.surfaceVariant,
+        child: item.imageUrl.trim().isEmpty
+            ? Icon(
+                Icons.image_outlined,
+                color: AppColors.textTertiary,
+              )
+            : Image.network(
+                item.imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Icon(
+                  Icons.broken_image_outlined,
+                  color: AppColors.textTertiary,
+                ),
+              ),
+      ),
+    );
+  }
+}
