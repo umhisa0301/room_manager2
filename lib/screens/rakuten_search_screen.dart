@@ -6,11 +6,15 @@ import '../config/rakuten_api_config.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
+import '../models/shop_discovery_summary.dart';
 import '../navigation/app_route_observer.dart';
+import '../services/app_action_service.dart';
+import '../services/shop_discovery_aggregator.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/rakuten_search_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/rakuten_search_result_card.dart';
+import '../widgets/shop_discovery_card.dart';
 
 /// 楽天API商品検索画面（最小構成）。
 class RakutenSearchScreen extends StatefulWidget {
@@ -40,7 +44,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   final TextEditingController _shopDiscoveryMinReviewAverageController =
       TextEditingController();
   final TextEditingController _shopDiscoveryShopLimitController =
-      TextEditingController(text: '20');
+      TextEditingController(text: '10');
   final TextEditingController _shopDiscoveryItemsPerShopController =
       TextEditingController(text: '5');
   String? _selectedShopCode;
@@ -66,7 +70,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _shopDiscoveryExcludeController.clear();
     _shopDiscoveryMinReviewCountController.clear();
     _shopDiscoveryMinReviewAverageController.clear();
-    _shopDiscoveryShopLimitController.text = '20';
+    _shopDiscoveryShopLimitController.text = '10';
     _shopDiscoveryItemsPerShopController.text = '5';
     _selectedShopCode = null;
     _selectedGenreId = null;
@@ -570,7 +574,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         SizedBox(
           height: 48,
           child: FilledButton.icon(
-            onPressed: () => _showComingSoon(context, 'ショップ発掘'),
+            onPressed: () => _runShopDiscovery(context),
             icon: const Icon(Icons.travel_explore_rounded),
             label: const Text(
               'ショップを発掘する',
@@ -586,6 +590,34 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('$featureは次ステップで有効化します')),
     );
+  }
+
+  void _runShopDiscovery(BuildContext context) {
+    final keyword = _shopDiscoveryKeywordController.text.trim();
+    final genreId = _selectedDiscoveryGenreId;
+    if (keyword.isEmpty && (genreId == null || genreId.isEmpty)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('キーワードまたはジャンルを指定してください')),
+      );
+      return;
+    }
+    final fallbackKeyword = _labelForGenre(genreId) ?? '楽天';
+    final condition = RakutenProductSearchCondition(
+      keyword: keyword.isNotEmpty ? keyword : fallbackKeyword,
+      excludeKeyword: _shopDiscoveryExcludeController.text,
+      minReviewCount: _parseInt(_shopDiscoveryMinReviewCountController.text),
+      minReviewAverage: _parseDouble(_shopDiscoveryMinReviewAverageController.text),
+      genreId: genreId,
+    ).normalized();
+    context.read<RakutenSearchProvider>().searchWithCondition(condition);
+  }
+
+  String? _labelForGenre(String? id) {
+    if (id == null) return null;
+    for (final g in _mockGenres) {
+      if (g.id == id) return g.label;
+    }
+    return null;
   }
 
   List<RakutenSearchItem> _applyLocalStatusFilters(
@@ -672,6 +704,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     RakutenSearchProvider search,
     RakutenManagedProductProvider managed,
   ) {
+    if (_mode == _RakutenSearchMode.shopDiscovery) {
+      return _buildShopDiscoveryResultArea(context, search);
+    }
     if (_mode != _RakutenSearchMode.product) {
       return _modePlaceholder();
     }
@@ -823,6 +858,68 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           ],
         );
     }
+  }
+
+  Widget _buildShopDiscoveryResultArea(
+    BuildContext context,
+    RakutenSearchProvider search,
+  ) {
+    switch (search.status) {
+      case RakutenSearchStatus.idle:
+        return _centerText('条件を入力して「ショップを発掘する」を押してください');
+      case RakutenSearchStatus.loading:
+        return const Center(child: CircularProgressIndicator());
+      case RakutenSearchStatus.error:
+        return _centerText(
+          'ショップ発掘に失敗しました。\n${search.errorMessage}',
+          isError: true,
+        );
+      case RakutenSearchStatus.success:
+        if (search.results.isEmpty) {
+          return _centerText('ショップ発掘の対象商品がありませんでした');
+        }
+        final shopLimit = _parseInt(_shopDiscoveryShopLimitController.text) ?? 10;
+        final itemsPerShop =
+            _parseInt(_shopDiscoveryItemsPerShopController.text) ?? 5;
+        final summaries = ShopDiscoveryAggregator.aggregate(
+          search.results,
+          shopLimit: shopLimit,
+          itemsPerShop: itemsPerShop,
+        );
+        if (summaries.isEmpty) {
+          return _centerText('ショップとして集約できる結果がありませんでした');
+        }
+        return ListView.separated(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+          itemCount: summaries.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 10),
+          itemBuilder: (context, index) {
+            final summary = summaries[index];
+            return ShopDiscoveryCard(
+              summary: summary,
+              onOpenShop: () => _openShop(context, summary),
+              onSave: () => _saveDiscoveredShop(context, summary),
+            );
+          },
+        );
+    }
+  }
+
+  Future<void> _openShop(BuildContext context, ShopDiscoverySummary summary) async {
+    final url = summary.shopUrl.trim();
+    if (url.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('このショップのURLが見つかりません')),
+      );
+      return;
+    }
+    await AppActionService.openUrl(context, url: url);
+  }
+
+  void _saveDiscoveredShop(BuildContext context, ShopDiscoverySummary summary) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('「${summary.shopName}」を保存候補に追加しました（仮）')),
+    );
   }
 
   Widget _buildAffiliateDebugBanner(RakutenSearchProvider provider) {
