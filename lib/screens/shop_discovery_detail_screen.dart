@@ -5,6 +5,7 @@ import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 import '../services/app_action_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
+import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/rakuten_search_result_card.dart';
 
@@ -31,8 +32,16 @@ class ShopDiscoveryDetailScreen extends StatefulWidget {
 }
 
 class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
-  bool _saved = false;
   _ShopDetailSort _sort = _ShopDetailSort.reviewCount;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<SavedShopProvider>().markViewed(widget.summary.shopKey);
+    });
+  }
 
   List<RakutenSearchItem> _sortedItems() {
     final out = List<RakutenSearchItem>.from(widget.items);
@@ -52,6 +61,8 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final items = _sortedItems();
+    final saved = context.watch<SavedShopProvider>();
+    final isSaved = saved.isSaved(widget.summary.shopKey);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -68,17 +79,20 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
         children: [
           _ShopDetailHeader(
             shopName: widget.summary.shopName,
-            isSaved: _saved,
-            onSaveToggle: () {
-              setState(() => _saved = !_saved);
+            isSaved: isSaved,
+            onSaveToggle: () async {
+              if (isSaved) {
+                await saved.removeShop(widget.summary.shopKey);
+              } else {
+                await saved.upsertShop(
+                  shopId: widget.summary.shopKey,
+                  shopName: widget.summary.shopName,
+                  shopUrl: widget.summary.shopUrl,
+                );
+              }
+              if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    _saved
-                        ? '「${widget.summary.shopName}」を保存しました（仮）'
-                        : '「${widget.summary.shopName}」の保存を解除しました（仮）',
-                  ),
-                ),
+                SnackBar(content: Text(isSaved ? '保存解除しました' : '保存しました')),
               );
             },
             onBackToSearch: () => Navigator.of(context).maybePop(),

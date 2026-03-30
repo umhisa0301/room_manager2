@@ -20,7 +20,9 @@ import 'widgets/room_url_extraction_host.dart';
 import 'navigation/app_route_observer.dart';
 import 'repository/pending_collect_notice_repository.dart';
 import 'repository/user_profile_repository.dart';
+import 'repository/saved_shop_repository.dart';
 import 'state/user_profile_provider.dart';
+import 'state/saved_shop_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +37,7 @@ void main() async {
   final pendingCollectNoticeRepository =
       PendingCollectNoticeRepository(prefs);
   final userProfileRepository = UserProfileRepository(prefs);
+  final savedShopRepository = SavedShopRepository(prefs);
   runApp(
     MyApp(
       productRepository: productRepository,
@@ -44,6 +47,7 @@ void main() async {
       rakutenManagedProductRepository: rakutenManagedProductRepository,
       pendingCollectNoticeRepository: pendingCollectNoticeRepository,
       userProfileRepository: userProfileRepository,
+      savedShopRepository: savedShopRepository,
     ),
   );
 }
@@ -58,6 +62,7 @@ class MyApp extends StatelessWidget {
     required this.rakutenManagedProductRepository,
     required this.pendingCollectNoticeRepository,
     required this.userProfileRepository,
+    required this.savedShopRepository,
   });
 
   final ProductRepository productRepository;
@@ -67,6 +72,7 @@ class MyApp extends StatelessWidget {
   final RakutenManagedProductRepository rakutenManagedProductRepository;
   final PendingCollectNoticeRepository pendingCollectNoticeRepository;
   final UserProfileRepository userProfileRepository;
+  final SavedShopRepository savedShopRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +104,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) =>
               UserProfileProvider(repository: userProfileRepository),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SavedShopProvider(repository: savedShopRepository),
         ),
       ],
       child: MaterialApp(

@@ -7,11 +7,13 @@ class ShopDiscoveryCard extends StatelessWidget {
   const ShopDiscoveryCard({
     super.key,
     required this.summary,
+    required this.isSaved,
     required this.onOpenShop,
     required this.onSave,
   });
 
   final ShopDiscoverySummary summary;
+  final bool isSaved;
   final VoidCallback onOpenShop;
   final VoidCallback onSave;
 
@@ -48,6 +50,22 @@ class ShopDiscoveryCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
+              if (isSaved)
+                Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.surfaceVariant,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Text(
+                    '保存済み',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                ),
               _ScorePill(score: summary.discoveryScore),
             ],
           ),
@@ -80,8 +98,11 @@ class ShopDiscoveryCard extends StatelessWidget {
               Expanded(
                 child: FilledButton.icon(
                   onPressed: onSave,
-                  icon: const Icon(Icons.bookmark_add_outlined, size: 18),
-                  label: const Text('保存する'),
+                  icon: Icon(
+                    isSaved ? Icons.bookmark_added_rounded : Icons.bookmark_add_outlined,
+                    size: 18,
+                  ),
+                  label: Text(isSaved ? '保存済み' : '保存する'),
                 ),
               ),
             ],

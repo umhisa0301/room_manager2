@@ -11,9 +11,11 @@ import '../navigation/app_route_observer.dart';
 import '../services/shop_discovery_aggregator.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/rakuten_search_provider.dart';
+import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/rakuten_search_result_card.dart';
 import '../widgets/shop_discovery_card.dart';
+import 'saved_shops_screen.dart';
 import 'shop_discovery_detail_screen.dart';
 
 /// 楽天API商品検索画面（最小構成）。
@@ -582,6 +584,18 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
           ),
         ),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const SavedShopsScreen(),
+              ),
+            );
+          },
+          icon: const Icon(Icons.bookmarks_outlined, size: 18),
+          label: const Text('保存ショップを見る'),
+        ),
       ],
     );
   }
@@ -889,19 +903,25 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         if (summaries.isEmpty) {
           return _centerText('ショップとして集約できる結果がありませんでした');
         }
-        return ListView.separated(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
-          itemCount: summaries.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 10),
-          itemBuilder: (context, index) {
-            final summary = summaries[index];
-            final shopItems = search.results
-                .where((e) => _shopDiscoveryGroupKey(e) == summary.shopKey)
-                .toList(growable: false);
-            return ShopDiscoveryCard(
-              summary: summary,
-              onOpenShop: () => _openShopDetail(context, summary, shopItems),
-              onSave: () => _saveDiscoveredShop(context, summary),
+        return Consumer<SavedShopProvider>(
+          builder: (context, saved, _) {
+            return ListView.separated(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+              itemCount: summaries.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 10),
+              itemBuilder: (context, index) {
+                final summary = summaries[index];
+                final shopItems = search.results
+                    .where((e) => _shopDiscoveryGroupKey(e) == summary.shopKey)
+                    .toList(growable: false);
+                final isSaved = saved.isSaved(summary.shopKey);
+                return ShopDiscoveryCard(
+                  summary: summary,
+                  isSaved: isSaved,
+                  onOpenShop: () => _openShopDetail(context, summary, shopItems),
+                  onSave: () => _saveDiscoveredShop(context, summary, isSaved),
+                );
+              },
             );
           },
         );
@@ -931,9 +951,24 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  void _saveDiscoveredShop(BuildContext context, ShopDiscoverySummary summary) {
+  Future<void> _saveDiscoveredShop(
+    BuildContext context,
+    ShopDiscoverySummary summary,
+    bool isSaved,
+  ) async {
+    final savedProvider = context.read<SavedShopProvider>();
+    if (isSaved) {
+      await savedProvider.removeShop(summary.shopKey);
+    } else {
+      await savedProvider.upsertShop(
+        shopId: summary.shopKey,
+        shopName: summary.shopName,
+        shopUrl: summary.shopUrl,
+      );
+    }
+    if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('「${summary.shopName}」を保存候補に追加しました（仮）')),
+      SnackBar(content: Text(isSaved ? '保存解除しました' : '保存しました')),
     );
   }
 
