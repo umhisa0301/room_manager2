@@ -19,6 +19,8 @@ import 'widgets/pending_collect_resume_notice_host.dart';
 import 'widgets/room_url_extraction_host.dart';
 import 'navigation/app_route_observer.dart';
 import 'repository/pending_collect_notice_repository.dart';
+import 'repository/user_profile_repository.dart';
+import 'state/user_profile_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +34,7 @@ void main() async {
       RakutenManagedProductRepository(prefs);
   final pendingCollectNoticeRepository =
       PendingCollectNoticeRepository(prefs);
+  final userProfileRepository = UserProfileRepository(prefs);
   runApp(
     MyApp(
       productRepository: productRepository,
@@ -40,6 +43,7 @@ void main() async {
       rakutenSearchRepository: rakutenSearchRepository,
       rakutenManagedProductRepository: rakutenManagedProductRepository,
       pendingCollectNoticeRepository: pendingCollectNoticeRepository,
+      userProfileRepository: userProfileRepository,
     ),
   );
 }
@@ -53,6 +57,7 @@ class MyApp extends StatelessWidget {
     required this.rakutenSearchRepository,
     required this.rakutenManagedProductRepository,
     required this.pendingCollectNoticeRepository,
+    required this.userProfileRepository,
   });
 
   final ProductRepository productRepository;
@@ -61,6 +66,7 @@ class MyApp extends StatelessWidget {
   final RakutenSearchRepository rakutenSearchRepository;
   final RakutenManagedProductRepository rakutenManagedProductRepository;
   final PendingCollectNoticeRepository pendingCollectNoticeRepository;
+  final UserProfileRepository userProfileRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +94,10 @@ class MyApp extends StatelessWidget {
             repository: rakutenManagedProductRepository,
             pendingCollectNoticeRepository: pendingCollectNoticeRepository,
           ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) =>
+              UserProfileProvider(repository: userProfileRepository),
         ),
       ],
       child: MaterialApp(
