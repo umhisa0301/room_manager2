@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/rakuten_api_config.dart';
+import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
+import '../models/rakuten_search_item.dart';
 import '../navigation/app_route_observer.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/rakuten_search_provider.dart';
@@ -32,6 +34,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   final TextEditingController _shopController = TextEditingController();
   String? _selectedShopCode;
   String? _selectedGenreId;
+  bool _excludeCandidate = false;
+  bool _excludeDone = false;
   bool _routeSubscribed = false;
 
   void _resetSearchUi() {
@@ -46,6 +50,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _shopController.clear();
     _selectedShopCode = null;
     _selectedGenreId = null;
+    _excludeCandidate = false;
+    _excludeDone = false;
     _mode = _RakutenSearchMode.product;
     context.read<RakutenSearchProvider>().resetTransientState();
     if (mounted) setState(() {});
@@ -426,6 +432,23 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
+  List<RakutenSearchItem> _applyLocalStatusFilters(
+    List<RakutenSearchItem> source,
+    RakutenManagedProductProvider managed,
+  ) {
+    if (!_excludeCandidate && !_excludeDone) return source;
+    return source.where((item) {
+      final status = managed.statusForProduct(item.productId);
+      if (_excludeCandidate && status == RakutenManagedProductStatus.candidate) {
+        return false;
+      }
+      if (_excludeDone && status == RakutenManagedProductStatus.done) {
+        return false;
+      }
+      return true;
+    }).toList();
+  }
+
   Widget _buildResultArea(
     BuildContext context,
     RakutenSearchProvider search,
@@ -448,33 +471,58 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         if (search.results.isEmpty) {
           return _centerText('検索結果は0件でした');
         }
+        final filteredResults = _applyLocalStatusFilters(search.results, managed);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (kDebugMode) _buildAffiliateDebugBanner(search),
-            Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 90),
-                itemCount: search.results.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
-                itemBuilder: (context, index) {
-                  final item = search.results[index];
-                  return RakutenSearchResultCard(
-                    item: item,
-                    localStatus: managed.statusForProduct(item.productId),
-                    isRegistering: managed.isRegistering(item.productId),
-                    onRegisterCandidate: () async {
-                      final err = await managed.registerCandidate(item);
-                      if (!context.mounted) return;
-                      if (err != null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(err)),
-                        );
-                      }
-                    },
-                  );
-                },
+            _SearchLocalFilterBar(
+              excludeCandidate: _excludeCandidate,
+              excludeDone: _excludeDone,
+              onExcludeCandidateChanged: (next) {
+                setState(() => _excludeCandidate = next);
+              },
+              onExcludeDoneChanged: (next) {
+                setState(() => _excludeDone = next);
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+              child: Text(
+                '表示 ${filteredResults.length} / 全${search.results.length}件',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
               ),
+            ),
+            Expanded(
+              child: filteredResults.isEmpty
+                  ? _centerText(
+                      '除外フィルタ条件に一致するため、表示できる商品がありません。\n'
+                      'フィルタをOFFにすると表示されます。',
+                    )
+                  : ListView.separated(
+                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 90),
+                      itemCount: filteredResults.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      itemBuilder: (context, index) {
+                        final item = filteredResults[index];
+                        return RakutenSearchResultCard(
+                          item: item,
+                          localStatus: managed.statusForProduct(item.productId),
+                          isRegistering: managed.isRegistering(item.productId),
+                          onRegisterCandidate: () async {
+                            final err = await managed.registerCandidate(item);
+                            if (!context.mounted) return;
+                            if (err != null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(err)),
+                              );
+                            }
+                          },
+                        );
+                      },
+                    ),
             ),
           ],
         );
@@ -642,6 +690,55 @@ class _SearchGenreOption {
   const _SearchGenreOption(this.id, this.label);
   final String? id;
   final String label;
+}
+
+class _SearchLocalFilterBar extends StatelessWidget {
+  const _SearchLocalFilterBar({
+    required this.excludeCandidate,
+    required this.excludeDone,
+    required this.onExcludeCandidateChanged,
+    required this.onExcludeDoneChanged,
+  });
+
+  final bool excludeCandidate;
+  final bool excludeDone;
+  final ValueChanged<bool> onExcludeCandidateChanged;
+  final ValueChanged<bool> onExcludeDoneChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          FilterChip(
+            selected: excludeCandidate,
+            onSelected: onExcludeCandidateChanged,
+            label: const Text('コレ候補登録済を除外'),
+            avatar: const Icon(Icons.bookmark_added_outlined, size: 18),
+            selectedColor: AppColors.accentPrimary.withValues(alpha: 0.15),
+            showCheckmark: false,
+            side: BorderSide(
+              color: excludeCandidate ? AppColors.accentPrimary : AppColors.divider,
+            ),
+          ),
+          FilterChip(
+            selected: excludeDone,
+            onSelected: onExcludeDoneChanged,
+            label: const Text('コレ済を除外'),
+            avatar: const Icon(Icons.check_circle_outline, size: 18),
+            selectedColor: AppColors.accentPrimary.withValues(alpha: 0.15),
+            showCheckmark: false,
+            side: BorderSide(
+              color: excludeDone ? AppColors.accentPrimary : AppColors.divider,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 const List<_SearchShopOption> _mockShops = [
