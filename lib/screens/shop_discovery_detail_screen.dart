@@ -97,6 +97,23 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
             },
             onBackToSearch: () => Navigator.of(context).maybePop(),
           ),
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+              border: Border.all(color: AppColors.divider),
+            ),
+            child: Text(
+              '使い方: 商品検索画面と同じく、各商品カードから「コレ候補へ登録」できます。',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.4,
+                  ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
             child: Row(
@@ -119,6 +136,22 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
           Expanded(
             child: Consumer<RakutenManagedProductProvider>(
               builder: (context, managed, _) {
+                if (items.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Text(
+                        'このショップの表示対象商品がありません。\n'
+                        '検索条件を変えて再発掘すると、商品が表示される場合があります。',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppColors.textSecondary,
+                              height: 1.5,
+                            ),
+                      ),
+                    ),
+                  );
+                }
                 return ListView.separated(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
                   itemCount: items.length,
@@ -206,7 +239,7 @@ class _ShopDetailHeader extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              OutlinedButton.icon(
+              FilledButton.icon(
                 onPressed: onSaveToggle,
                 icon: Icon(
                   isSaved ? Icons.bookmark_added_rounded : Icons.bookmark_add_outlined,
@@ -215,7 +248,7 @@ class _ShopDetailHeader extends StatelessWidget {
                 label: Text(isSaved ? '保存済み' : 'このショップを保存'),
               ),
               const SizedBox(width: 8),
-              TextButton.icon(
+              OutlinedButton.icon(
                 onPressed: onBackToSearch,
                 icon: const Icon(Icons.tune_rounded, size: 18),
                 label: const Text('条件を変えて再検索'),

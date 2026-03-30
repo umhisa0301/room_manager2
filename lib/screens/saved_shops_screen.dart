@@ -35,49 +35,93 @@ class SavedShopsScreen extends StatelessWidget {
               ),
             );
           }
-          return ListView.separated(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-            itemCount: shops.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 10),
-            itemBuilder: (context, index) {
-              final shop = shops[index];
-              return _SavedShopCard(
-                shopName: shop.shopName,
-                savedAt: shop.savedAt,
-                lastViewedAt: shop.lastViewedAt,
-                onOpen: () async {
-                  await saved.markViewed(shop.shopId);
-                  if (!context.mounted) return;
-                  final summary = ShopDiscoverySummary(
-                    shopKey: shop.shopId,
-                    shopName: shop.shopName,
-                    shopUrl: shop.shopUrl,
-                    hitItemCount: 0,
-                    maxReviewCount: 0,
-                    avgReviewAverage: 0,
-                    discoveryScore: 0,
-                    representativeItems: const [],
-                  );
-                  await Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => ShopDiscoveryDetailScreen(
-                        summary: summary,
-                        items: const <RakutenSearchItem>[],
-                      ),
-                    ),
-                  );
-                },
-                onRemove: () async {
-                  await saved.removeShop(shop.shopId);
-                  if (!context.mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('「${shop.shopName}」を保存解除しました')),
-                  );
-                },
-              );
-            },
+          final viewedCount = shops.where((e) => e.lastViewedAt != null).length;
+          return Column(
+            children: [
+              _SavedShopsSummaryCard(
+                totalCount: shops.length,
+                viewedCount: viewedCount,
+              ),
+              Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
+                  itemCount: shops.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 10),
+                  itemBuilder: (context, index) {
+                    final shop = shops[index];
+                    return _SavedShopCard(
+                      shopName: shop.shopName,
+                      savedAt: shop.savedAt,
+                      lastViewedAt: shop.lastViewedAt,
+                      onOpen: () async {
+                        await saved.markViewed(shop.shopId);
+                        if (!context.mounted) return;
+                        final summary = ShopDiscoverySummary(
+                          shopKey: shop.shopId,
+                          shopName: shop.shopName,
+                          shopUrl: shop.shopUrl,
+                          hitItemCount: 0,
+                          maxReviewCount: 0,
+                          avgReviewAverage: 0,
+                          discoveryScore: 0,
+                          representativeItems: const [],
+                        );
+                        await Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => ShopDiscoveryDetailScreen(
+                              summary: summary,
+                              items: const <RakutenSearchItem>[],
+                            ),
+                          ),
+                        );
+                      },
+                      onRemove: () async {
+                        await saved.removeShop(shop.shopId);
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('「${shop.shopName}」を保存解除しました')),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
+      ),
+    );
+  }
+}
+
+class _SavedShopsSummaryCard extends StatelessWidget {
+  const _SavedShopsSummaryCard({
+    required this.totalCount,
+    required this.viewedCount,
+  });
+
+  final int totalCount;
+  final int viewedCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Text(
+        '保存 $totalCount件 / 閲覧済み $viewedCount件\n'
+        '保存ショップから再訪して、候補登録を続けられます。',
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.4,
+              fontWeight: FontWeight.w600,
+            ),
       ),
     );
   }
@@ -135,7 +179,7 @@ class _SavedShopCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: OutlinedButton.icon(
+                child: FilledButton.icon(
                   onPressed: onOpen,
                   icon: const Icon(Icons.storefront_outlined, size: 18),
                   label: const Text('このショップを見る'),
@@ -143,7 +187,7 @@ class _SavedShopCard extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: TextButton.icon(
+                child: OutlinedButton.icon(
                   onPressed: onRemove,
                   icon: const Icon(Icons.delete_outline_rounded, size: 18),
                   label: const Text('保存解除'),

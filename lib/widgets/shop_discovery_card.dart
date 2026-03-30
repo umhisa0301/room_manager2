@@ -7,12 +7,14 @@ class ShopDiscoveryCard extends StatelessWidget {
   const ShopDiscoveryCard({
     super.key,
     required this.summary,
+    required this.rank,
     required this.isSaved,
     required this.onOpenShop,
     required this.onSave,
   });
 
   final ShopDiscoverySummary summary;
+  final int rank;
   final bool isSaved;
   final VoidCallback onOpenShop;
   final VoidCallback onSave;
@@ -38,6 +40,21 @@ class ShopDiscoveryCard extends StatelessWidget {
         children: [
           Row(
             children: [
+              Container(
+                margin: const EdgeInsets.only(right: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.accentPrimary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                child: Text(
+                  '#$rank',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.accentPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
               Expanded(
                 child: Text(
                   summary.shopName,
@@ -88,15 +105,15 @@ class ShopDiscoveryCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: OutlinedButton.icon(
+                child: FilledButton.icon(
                   onPressed: onOpenShop,
                   icon: const Icon(Icons.storefront_outlined, size: 18),
-                  label: const Text('このショップを見る'),
+                  label: const Text('商品を見て候補登録'),
                 ),
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: FilledButton.icon(
+                child: OutlinedButton.icon(
                   onPressed: onSave,
                   icon: Icon(
                     isSaved ? Icons.bookmark_added_rounded : Icons.bookmark_add_outlined,

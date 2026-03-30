@@ -200,6 +200,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const _DiscoveryFlowGuide(),
+          const SizedBox(height: 10),
           Text(
             '検索モード',
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -443,6 +445,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   Widget _buildShopDiscoveryInput(BuildContext context) {
+    final savedCount = context.watch<SavedShopProvider>().shops.length;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -594,7 +597,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             );
           },
           icon: const Icon(Icons.bookmarks_outlined, size: 18),
-          label: const Text('保存ショップを見る'),
+          label: Text('保存ショップを見る（$savedCount件）'),
         ),
       ],
     );
@@ -880,13 +883,19 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   ) {
     switch (search.status) {
       case RakutenSearchStatus.idle:
-        return _centerText('条件を入力して「ショップを発掘する」を押してください');
-      case RakutenSearchStatus.loading:
-        return const Center(child: CircularProgressIndicator());
-      case RakutenSearchStatus.error:
         return _centerText(
-          'ショップ発掘に失敗しました。\n${search.errorMessage}',
-          isError: true,
+          'ショップ発掘モードです。\n'
+          'キーワードまたはジャンルを指定して「ショップを発掘する」を押してください。',
+        );
+      case RakutenSearchStatus.loading:
+        return _loadingGuide(
+          title: 'ショップを分析中...',
+          subtitle: '売れ筋商品をショップ単位に集約しています',
+        );
+      case RakutenSearchStatus.error:
+        return _errorGuide(
+          message: 'ショップ発掘に失敗しました。\n${search.errorMessage}',
+          onRetry: () => _runShopDiscovery(context),
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
@@ -905,27 +914,114 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         }
         return Consumer<SavedShopProvider>(
           builder: (context, saved, _) {
-            return ListView.separated(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
-              itemCount: summaries.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
-              itemBuilder: (context, index) {
-                final summary = summaries[index];
-                final shopItems = search.results
-                    .where((e) => _shopDiscoveryGroupKey(e) == summary.shopKey)
-                    .toList(growable: false);
-                final isSaved = saved.isSaved(summary.shopKey);
-                return ShopDiscoveryCard(
-                  summary: summary,
-                  isSaved: isSaved,
-                  onOpenShop: () => _openShopDetail(context, summary, shopItems),
-                  onSave: () => _saveDiscoveredShop(context, summary, isSaved),
-                );
-              },
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 6, 20, 8),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                      border: Border.all(color: AppColors.divider),
+                    ),
+                    child: Text(
+                      '発掘結果 ${summaries.length}ショップ（スコア順）\n'
+                      'まずは上位ショップを開いて、商品を候補登録する流れがおすすめです。',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.4,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                    itemCount: summaries.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    itemBuilder: (context, index) {
+                      final summary = summaries[index];
+                      final shopItems = search.results
+                          .where((e) => _shopDiscoveryGroupKey(e) == summary.shopKey)
+                          .toList(growable: false);
+                      final isSaved = saved.isSaved(summary.shopKey);
+                      return ShopDiscoveryCard(
+                        summary: summary,
+                        rank: index + 1,
+                        isSaved: isSaved,
+                        onOpenShop: () => _openShopDetail(context, summary, shopItems),
+                        onSave: () => _saveDiscoveredShop(context, summary, isSaved),
+                      );
+                    },
+                  ),
+                ),
+              ],
             );
           },
         );
     }
+  }
+
+  Widget _loadingGuide({required String title, required String subtitle}) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 12),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: AppColors.textSecondary),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _errorGuide({
+    required String message,
+    required VoidCallback onRetry,
+  }) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: AppColors.error,
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 10),
+            OutlinedButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh_rounded, size: 18),
+              label: const Text('同じ条件で再実行'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   String _shopDiscoveryGroupKey(RakutenSearchItem item) {
@@ -1062,14 +1158,39 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 }
 
 enum _RakutenSearchMode {
-  product('商品検索', Icons.shopping_bag_outlined, '商品名・キーワードから商品を探します'),
-  genre('ジャンル検索', Icons.category_outlined, 'ジャンル名から商品を探します（UI先行）'),
-  shopDiscovery('ショップ発掘', Icons.storefront_outlined, '条件から有望なショップ候補を探します（UI先行）');
+  product('商品検索', Icons.shopping_bag_outlined, '商品を直接探して、そのまま候補登録します'),
+  genre('ジャンル検索', Icons.category_outlined, 'ジャンル起点で商品を探します（拡張準備中）'),
+  shopDiscovery('ショップ発掘', Icons.storefront_outlined, '強いショップを見つけて、継続的に候補発見します');
 
   const _RakutenSearchMode(this.label, this.icon, this.description);
   final String label;
   final IconData icon;
   final String description;
+}
+
+class _DiscoveryFlowGuide extends StatelessWidget {
+  const _DiscoveryFlowGuide();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Text(
+        'おすすめ導線: ショップ発掘 → ショップ詳細で商品比較 → 保存ショップで再訪',
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.4,
+              fontWeight: FontWeight.w600,
+            ),
+      ),
+    );
+  }
 }
 
 class _ModeSegmentedChips extends StatelessWidget {
