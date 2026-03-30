@@ -36,6 +36,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   String? _selectedGenreId;
   bool _excludeCandidate = false;
   bool _excludeDone = false;
+  bool _selectionMode = false;
+  bool _isBulkRegistering = false;
+  final Set<String> _selectedProductIds = <String>{};
   bool _routeSubscribed = false;
 
   void _resetSearchUi() {
@@ -52,6 +55,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _selectedGenreId = null;
     _excludeCandidate = false;
     _excludeDone = false;
+    _selectionMode = false;
+    _isBulkRegistering = false;
+    _selectedProductIds.clear();
     _mode = _RakutenSearchMode.product;
     context.read<RakutenSearchProvider>().resetTransientState();
     if (mounted) setState(() {});
@@ -122,6 +128,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   void _runSearch(BuildContext context) {
+    setState(() {
+      _selectionMode = false;
+      _selectedProductIds.clear();
+    });
     final condition = _buildProductCondition();
     context.read<RakutenSearchProvider>().searchWithCondition(condition);
   }
@@ -449,6 +459,68 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }).toList();
   }
 
+  bool _isSelectableForBulk(
+    RakutenSearchItem item,
+    RakutenManagedProductProvider managed,
+  ) {
+    final status = managed.statusForProduct(item.productId);
+    return status == RakutenManagedProductStatus.none;
+  }
+
+  String? _selectionDisabledReason(
+    RakutenSearchItem item,
+    RakutenManagedProductProvider managed,
+  ) {
+    final status = managed.statusForProduct(item.productId);
+    if (status == RakutenManagedProductStatus.candidate) {
+      return 'コレ候補登録済のため選択不可';
+    }
+    if (status == RakutenManagedProductStatus.done) {
+      return 'コレ済のため選択不可';
+    }
+    return null;
+  }
+
+  void _toggleSelectionMode() {
+    setState(() {
+      _selectionMode = !_selectionMode;
+      if (!_selectionMode) {
+        _selectedProductIds.clear();
+      }
+    });
+  }
+
+  Future<void> _bulkRegisterCandidates(
+    RakutenManagedProductProvider managed,
+    List<RakutenSearchItem> source,
+  ) async {
+    if (_isBulkRegistering || _selectedProductIds.isEmpty) return;
+    setState(() => _isBulkRegistering = true);
+    var success = 0;
+    var failed = 0;
+    final selectedItems = source
+        .where((e) => _selectedProductIds.contains(e.productId))
+        .toList();
+    for (final item in selectedItems) {
+      final err = await managed.registerCandidate(item);
+      if (err == null) {
+        success++;
+      } else {
+        failed++;
+      }
+    }
+    if (!mounted) return;
+    setState(() {
+      _isBulkRegistering = false;
+      _selectionMode = false;
+      _selectedProductIds.clear();
+    });
+    final failureText = failed > 0 ? ' / 失敗 $failed件' : '';
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('一括で候補登録しました: 成功 $success件$failureText')),
+    );
+  }
+
   Widget _buildResultArea(
     BuildContext context,
     RakutenSearchProvider search,
@@ -472,10 +544,41 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           return _centerText('検索結果は0件でした');
         }
         final filteredResults = _applyLocalStatusFilters(search.results, managed);
+        final selectableCount =
+            filteredResults.where((e) => _isSelectableForBulk(e, managed)).length;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (kDebugMode) _buildAffiliateDebugBanner(search),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+              child: Row(
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: _isBulkRegistering ? null : _toggleSelectionMode,
+                    icon: Icon(
+                      _selectionMode
+                          ? Icons.checklist_rtl_rounded
+                          : Icons.playlist_add_check_rounded,
+                    ),
+                    label: Text(_selectionMode ? '選択終了' : '選択モード'),
+                  ),
+                  const SizedBox(width: 8),
+                  if (_selectionMode)
+                    Expanded(
+                      child: Text(
+                        '選択中 ${_selectedProductIds.length}件 / 選択可能 $selectableCount件',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
             _SearchLocalFilterBar(
               excludeCandidate: _excludeCandidate,
               excludeDone: _excludeDone,
@@ -507,10 +610,27 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       separatorBuilder: (_, __) => const SizedBox(height: 10),
                       itemBuilder: (context, index) {
                         final item = filteredResults[index];
+                        final isSelectable = _isSelectableForBulk(item, managed);
                         return RakutenSearchResultCard(
                           item: item,
                           localStatus: managed.statusForProduct(item.productId),
                           isRegistering: managed.isRegistering(item.productId),
+                          selectionMode: _selectionMode,
+                          isSelected:
+                              _selectedProductIds.contains(item.productId),
+                          isSelectionEnabled: isSelectable && !_isBulkRegistering,
+                          selectionDisabledLabel:
+                              _selectionDisabledReason(item, managed),
+                          onToggleSelected: () {
+                            if (!isSelectable || _isBulkRegistering) return;
+                            setState(() {
+                              if (_selectedProductIds.contains(item.productId)) {
+                                _selectedProductIds.remove(item.productId);
+                              } else {
+                                _selectedProductIds.add(item.productId);
+                              }
+                            });
+                          },
                           onRegisterCandidate: () async {
                             final err = await managed.registerCandidate(item);
                             if (!context.mounted) return;
@@ -524,6 +644,36 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       },
                     ),
             ),
+            if (_selectionMode)
+              SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: _selectedProductIds.isEmpty || _isBulkRegistering
+                          ? null
+                          : () => _bulkRegisterCandidates(
+                                managed,
+                                filteredResults,
+                              ),
+                      icon: _isBulkRegistering
+                          ? const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.playlist_add_check_rounded),
+                      label: Text(
+                        _isBulkRegistering
+                            ? '一括登録中...'
+                            : 'まとめて候補登録（${_selectedProductIds.length}件）',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         );
     }

@@ -13,12 +13,22 @@ class RakutenSearchResultCard extends StatelessWidget {
     required this.localStatus,
     required this.isRegistering,
     required this.onRegisterCandidate,
+    this.selectionMode = false,
+    this.isSelected = false,
+    this.isSelectionEnabled = true,
+    this.onToggleSelected,
+    this.selectionDisabledLabel,
   });
 
   final RakutenSearchItem item;
   final RakutenManagedProductStatus localStatus;
   final bool isRegistering;
   final VoidCallback onRegisterCandidate;
+  final bool selectionMode;
+  final bool isSelected;
+  final bool isSelectionEnabled;
+  final VoidCallback? onToggleSelected;
+  final String? selectionDisabledLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +48,11 @@ class RakutenSearchResultCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (selectionMode)
+            Padding(
+              padding: const EdgeInsets.only(right: 8, top: 2),
+              child: _buildSelectionControl(context),
+            ),
           _buildImage(),
           const SizedBox(width: 10),
           Expanded(
@@ -71,6 +86,23 @@ class RakutenSearchResultCard extends StatelessWidget {
                       ),
                 ),
                 const SizedBox(height: 10),
+                if (selectionMode && !isSelectionEnabled) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppColors.surfaceVariant,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      selectionDisabledLabel ?? 'この商品は選択できません',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                ],
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -94,6 +126,27 @@ class RakutenSearchResultCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSelectionControl(BuildContext context) {
+    if (!isSelectionEnabled) {
+      return Icon(
+        Icons.block_rounded,
+        size: 22,
+        color: AppColors.textTertiary,
+      );
+    }
+    return InkWell(
+      borderRadius: BorderRadius.circular(99),
+      onTap: onToggleSelected,
+      child: Icon(
+        isSelected
+            ? Icons.check_circle_rounded
+            : Icons.radio_button_unchecked_rounded,
+        size: 24,
+        color: isSelected ? AppColors.accentPrimary : AppColors.textSecondary,
       ),
     );
   }
