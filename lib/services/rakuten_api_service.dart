@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../config/rakuten_api_config.dart';
+import '../models/rakuten_product_search_condition.dart';
 
 /// 楽天商品検索APIとの通信だけを担当するサービス。
 class RakutenApiService {
@@ -10,20 +11,42 @@ class RakutenApiService {
       'https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601';
 
   Future<Map<String, dynamic>> searchItems({
-    required String keyword,
+    required RakutenProductSearchCondition condition,
     int page = 1,
     int hits = 20,
   }) async {
     if (!RakutenApiConfig.hasValidAppId) {
       throw Exception('楽天APIのアプリIDが未設定です。');
     }
+    final normalized = condition.normalized();
     final params = <String, String>{
       'format': 'json',
       'applicationId': RakutenApiConfig.applicationId.trim(),
-      'keyword': keyword,
+      'keyword': normalized.keyword,
       'page': '$page',
       'hits': '$hits',
     };
+    if (normalized.minPrice != null) {
+      params['minPrice'] = '${normalized.minPrice}';
+    }
+    if (normalized.maxPrice != null) {
+      params['maxPrice'] = '${normalized.maxPrice}';
+    }
+    if (normalized.excludeKeyword.isNotEmpty) {
+      params['NGKeyword'] = normalized.excludeKeyword;
+    }
+    if (normalized.minReviewCount != null) {
+      params['minReviewCount'] = '${normalized.minReviewCount}';
+    }
+    if (normalized.minReviewAverage != null) {
+      params['minReviewAverage'] = '${normalized.minReviewAverage}';
+    }
+    if (normalized.shopCode != null) {
+      params['shopCode'] = normalized.shopCode!;
+    }
+    if (normalized.genreId != null) {
+      params['genreId'] = normalized.genreId!;
+    }
     final aff = RakutenApiConfig.affiliateId.trim();
     if (aff.isNotEmpty) {
       params['affiliateId'] = aff;

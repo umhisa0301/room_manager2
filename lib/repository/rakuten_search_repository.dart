@@ -1,3 +1,4 @@
+import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/rakuten_api_service.dart';
 
@@ -9,9 +10,10 @@ class RakutenSearchRepository {
   final RakutenApiService _apiService;
 
   Future<List<RakutenSearchItem>> search({
-    required String keyword,
+    required RakutenProductSearchCondition condition,
   }) async {
-    final raw = await _apiService.searchItems(keyword: keyword);
+    final normalized = condition.normalized();
+    final raw = await _apiService.searchItems(condition: normalized);
     final items = raw['Items'];
     if (items is! List) return [];
 
@@ -21,7 +23,7 @@ class RakutenSearchRepository {
       final item = _mapToModel(map);
       if (item != null) results.add(item);
     }
-    return results;
+    return _applyAppSideFilters(results, normalized);
   }
 
   Map<String, dynamic>? _unwrapItem(dynamic entry) {
@@ -43,6 +45,8 @@ class RakutenSearchRepository {
 
     final itemPrice = (json['itemPrice'] as num?)?.toInt() ?? 0;
     final shopName = (json['shopName'] ?? '').toString().trim();
+    final reviewCount = (json['reviewCount'] as num?)?.toInt() ?? 0;
+    final reviewAverage = (json['reviewAverage'] as num?)?.toDouble() ?? 0;
     final affiliateUrl = (json['affiliateUrl'] ?? '').toString().trim();
     final shopCode = (json['shopCode'] ?? '').toString().trim();
     final shopUrl = (json['shopUrl'] ?? '').toString().trim();
@@ -57,6 +61,8 @@ class RakutenSearchRepository {
       affiliateUrl: affiliateUrl,
       imageUrl: imageUrl,
       shopName: shopName,
+      reviewCount: reviewCount,
+      reviewAverage: reviewAverage,
       shopCode: shopCode,
       shopUrl: shopUrl,
       genreId: genreId,
@@ -83,6 +89,39 @@ class RakutenSearchRepository {
     }
 
     return '';
+  }
+
+  List<RakutenSearchItem> _applyAppSideFilters(
+    List<RakutenSearchItem> source,
+    RakutenProductSearchCondition condition,
+  ) {
+    final thresholdComment = condition.minCommentCount;
+    final thresholdReview = condition.minReviewCount;
+    final requiredReviewCount = switch ((thresholdComment, thresholdReview)) {
+      (null, null) => null,
+      (final c?, null) => c,
+      (null, final r?) => r,
+      (final c?, final r?) => c > r ? c : r,
+    };
+
+    return source.where((item) {
+      if (requiredReviewCount != null && item.reviewCount < requiredReviewCount) {
+        return false;
+      }
+      if (condition.minReviewAverage != null &&
+          item.reviewAverage < condition.minReviewAverage!) {
+        return false;
+      }
+      if (condition.shopCode != null &&
+          item.shopCode.trim() != condition.shopCode!.trim()) {
+        return false;
+      }
+      if (condition.genreId != null &&
+          !item.genreId.trim().contains(condition.genreId!.trim())) {
+        return false;
+      }
+      return true;
+    }).toList();
   }
 }
 

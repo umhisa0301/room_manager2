@@ -8,6 +8,8 @@ class RakutenSearchItem {
     required this.affiliateUrl,
     required this.imageUrl,
     required this.shopName,
+    this.reviewCount = 0,
+    this.reviewAverage = 0,
     this.shopCode = '',
     this.shopUrl = '',
     this.genreId = '',
@@ -25,6 +27,8 @@ class RakutenSearchItem {
 
   final String imageUrl;
   final String shopName;
+  final int reviewCount;
+  final double reviewAverage;
 
   /// 店舗コード（楽天API `shopCode`）。
   final String shopCode;

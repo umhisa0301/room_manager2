@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/rakuten_api_config.dart';
+import '../models/rakuten_product_search_condition.dart';
 import '../navigation/app_route_observer.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/rakuten_search_provider.dart';
@@ -21,14 +22,30 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     with RouteAware {
   _RakutenSearchMode _mode = _RakutenSearchMode.product;
   final TextEditingController _keywordController = TextEditingController();
+  final TextEditingController _minPriceController = TextEditingController();
+  final TextEditingController _maxPriceController = TextEditingController();
+  final TextEditingController _excludeKeywordController = TextEditingController();
+  final TextEditingController _minReviewCountController = TextEditingController();
+  final TextEditingController _minReviewAverageController = TextEditingController();
+  final TextEditingController _minCommentCountController = TextEditingController();
   final TextEditingController _genreController = TextEditingController();
   final TextEditingController _shopController = TextEditingController();
+  String? _selectedShopCode;
+  String? _selectedGenreId;
   bool _routeSubscribed = false;
 
   void _resetSearchUi() {
     _keywordController.clear();
+    _minPriceController.clear();
+    _maxPriceController.clear();
+    _excludeKeywordController.clear();
+    _minReviewCountController.clear();
+    _minReviewAverageController.clear();
+    _minCommentCountController.clear();
     _genreController.clear();
     _shopController.clear();
+    _selectedShopCode = null;
+    _selectedGenreId = null;
     _mode = _RakutenSearchMode.product;
     context.read<RakutenSearchProvider>().resetTransientState();
     if (mounted) setState(() {});
@@ -58,6 +75,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   void dispose() {
     appRouteObserver.unsubscribe(this);
     _keywordController.dispose();
+    _minPriceController.dispose();
+    _maxPriceController.dispose();
+    _excludeKeywordController.dispose();
+    _minReviewCountController.dispose();
+    _minReviewAverageController.dispose();
+    _minCommentCountController.dispose();
     _genreController.dispose();
     _shopController.dispose();
     super.dispose();
@@ -93,7 +116,34 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   void _runSearch(BuildContext context) {
-    context.read<RakutenSearchProvider>().search(_keywordController.text);
+    final condition = _buildProductCondition();
+    context.read<RakutenSearchProvider>().searchWithCondition(condition);
+  }
+
+  RakutenProductSearchCondition _buildProductCondition() {
+    return RakutenProductSearchCondition(
+      keyword: _keywordController.text,
+      minPrice: _parseInt(_minPriceController.text),
+      maxPrice: _parseInt(_maxPriceController.text),
+      excludeKeyword: _excludeKeywordController.text,
+      minReviewCount: _parseInt(_minReviewCountController.text),
+      minReviewAverage: _parseDouble(_minReviewAverageController.text),
+      minCommentCount: _parseInt(_minCommentCountController.text),
+      shopCode: _selectedShopCode,
+      genreId: _selectedGenreId,
+    ).normalized();
+  }
+
+  int? _parseInt(String raw) {
+    final t = raw.trim();
+    if (t.isEmpty) return null;
+    return int.tryParse(t);
+  }
+
+  double? _parseDouble(String raw) {
+    final t = raw.trim();
+    if (t.isEmpty) return null;
+    return double.tryParse(t);
   }
 
   Widget _buildModeAndInputArea(
@@ -144,25 +194,181 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context,
     RakutenSearchProvider search,
   ) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(
-          child: TextField(
-            controller: _keywordController,
-            textInputAction: TextInputAction.search,
-            onSubmitted: (_) => _runSearch(context),
-            decoration: const InputDecoration(
-              hintText: '商品キーワードを入力',
-              prefixIcon: Icon(Icons.search),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _keywordController,
+                textInputAction: TextInputAction.search,
+                onSubmitted: (_) => _runSearch(context),
+                decoration: const InputDecoration(
+                  hintText: '商品キーワードを入力',
+                  prefixIcon: Icon(Icons.search),
+                ),
+              ),
             ),
-          ),
+            const SizedBox(width: 8),
+            FilledButton(
+              onPressed: search.status == RakutenSearchStatus.loading
+                  ? null
+                  : () => _runSearch(context),
+              child: const Text('検索'),
+            ),
+          ],
         ),
-        const SizedBox(width: 8),
-        FilledButton(
-          onPressed: search.status == RakutenSearchStatus.loading
-              ? null
-              : () => _runSearch(context),
-          child: const Text('検索'),
+        const SizedBox(height: 8),
+        Text(
+          'キーワードに加えて、価格・評価・ショップ・ジャンル条件を指定できます。',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.4,
+              ),
+        ),
+        const SizedBox(height: 8),
+        Card(
+          color: AppColors.surface,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+            side: const BorderSide(color: AppColors.divider),
+          ),
+          child: ExpansionTile(
+            tilePadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+            childrenPadding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+            title: const Text(
+              '詳細条件を開く',
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
+            subtitle: const Text('価格・除外ワード・評価・ショップ・ジャンル'),
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _minPriceController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: '最低価格',
+                        hintText: '1000',
+                        prefixIcon: Icon(Icons.currency_yen),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: TextField(
+                      controller: _maxPriceController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: '最高価格',
+                        hintText: '5000',
+                        prefixIcon: Icon(Icons.currency_yen),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _excludeKeywordController,
+                decoration: const InputDecoration(
+                  labelText: '除外ワード',
+                  hintText: '中古 訳あり',
+                  prefixIcon: Icon(Icons.block_outlined),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _minReviewCountController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: '最低評価数',
+                        hintText: '50',
+                        prefixIcon: Icon(Icons.reviews_outlined),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: TextField(
+                      controller: _minReviewAverageController,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      decoration: const InputDecoration(
+                        labelText: '最低評価点数',
+                        hintText: '4.0',
+                        prefixIcon: Icon(Icons.star_outline_rounded),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _minCommentCountController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: '最低コメント数',
+                  hintText: '30',
+                  prefixIcon: Icon(Icons.comment_outlined),
+                ),
+              ),
+              const SizedBox(height: 8),
+              InputDecorator(
+                decoration: const InputDecoration(
+                  labelText: 'ショップ選択',
+                  prefixIcon: Icon(Icons.storefront_outlined),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String?>(
+                    isExpanded: true,
+                    value: _selectedShopCode,
+                    items: _mockShops
+                        .map(
+                          (e) => DropdownMenuItem<String?>(
+                            value: e.code,
+                            child: Text(e.label),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() => _selectedShopCode = value);
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              InputDecorator(
+                decoration: const InputDecoration(
+                  labelText: 'ジャンル選択',
+                  prefixIcon: Icon(Icons.category_outlined),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String?>(
+                    isExpanded: true,
+                    value: _selectedGenreId,
+                    items: _mockGenres
+                        .map(
+                          (e) => DropdownMenuItem<String?>(
+                            value: e.id,
+                            child: Text(e.label),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() => _selectedGenreId = value);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -425,3 +631,29 @@ class _ModeSegmentedChips extends StatelessWidget {
     );
   }
 }
+
+class _SearchShopOption {
+  const _SearchShopOption(this.code, this.label);
+  final String? code;
+  final String label;
+}
+
+class _SearchGenreOption {
+  const _SearchGenreOption(this.id, this.label);
+  final String? id;
+  final String label;
+}
+
+const List<_SearchShopOption> _mockShops = [
+  _SearchShopOption(null, '指定なし'),
+  _SearchShopOption('rakuten24', '楽天24'),
+  _SearchShopOption('book', '楽天ブックス'),
+  _SearchShopOption('biccamera', 'ビックカメラ楽天市場店'),
+];
+
+const List<_SearchGenreOption> _mockGenres = [
+  _SearchGenreOption(null, '指定なし'),
+  _SearchGenreOption('100939', 'インテリア・寝具・収納'),
+  _SearchGenreOption('551167', '家電'),
+  _SearchGenreOption('565004', '日用品雑貨・文房具・手芸'),
+];

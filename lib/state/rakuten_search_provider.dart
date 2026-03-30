@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../config/rakuten_api_config.dart';
+import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/rakuten_search_repository.dart';
 
@@ -35,8 +36,23 @@ class RakutenSearchProvider extends ChangeNotifier {
       .length;
 
   Future<void> search(String keyword) async {
-    final q = keyword.trim();
-    if (q.isEmpty) {
+    final condition = RakutenProductSearchCondition(keyword: keyword).normalized();
+    if (condition.keyword.isEmpty) {
+      _status = RakutenSearchStatus.idle;
+      _results = const [];
+      _errorMessage = '';
+      _lastKeyword = '';
+      notifyListeners();
+      return;
+    }
+    await searchWithCondition(condition);
+  }
+
+  Future<void> searchWithCondition(
+    RakutenProductSearchCondition condition,
+  ) async {
+    final normalized = condition.normalized();
+    if (normalized.keyword.isEmpty) {
       _status = RakutenSearchStatus.idle;
       _results = const [];
       _errorMessage = '';
@@ -46,11 +62,11 @@ class RakutenSearchProvider extends ChangeNotifier {
     }
     _status = RakutenSearchStatus.loading;
     _errorMessage = '';
-    _lastKeyword = q;
+    _lastKeyword = normalized.keyword;
     notifyListeners();
 
     try {
-      final fetched = await _repository.search(keyword: q);
+      final fetched = await _repository.search(condition: normalized);
       _results = fetched;
       _status = RakutenSearchStatus.success;
       final withAff = fetched.where((e) => e.hasAffiliateUrlInResponse).length;
