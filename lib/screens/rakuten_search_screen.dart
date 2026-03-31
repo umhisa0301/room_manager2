@@ -59,6 +59,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   final Set<String> _selectedProductIds = <String>{};
   bool _routeSubscribed = false;
   late final TabController _modeTabController;
+  _GenreSort _genreSort = _GenreSort.reviewCount;
 
   void _resetSearchUi() {
     _keywordController.clear();
@@ -84,6 +85,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _isBulkRegistering = false;
     _selectedProductIds.clear();
     _mode = _RakutenSearchMode.product;
+    _genreSort = _GenreSort.reviewCount;
     context.read<RakutenSearchProvider>().resetTransientState();
     if (mounted) setState(() {});
   }
@@ -298,23 +300,69 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   Widget _buildGenreInput(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(
-          child: TextField(
-            controller: _genreController,
-            textInputAction: TextInputAction.search,
-            decoration: const InputDecoration(
-              hintText: 'ジャンル名を入力（例: インテリア）',
-              prefixIcon: Icon(Icons.category_outlined),
+        Text(
+          'キーワードが思いつかないときに、ジャンルから次の候補商品を探すためのモードです。',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.4,
+              ),
+        ),
+        const SizedBox(height: 10),
+        InputDecorator(
+          decoration: const InputDecoration(
+            labelText: 'ジャンルを選択',
+            prefixIcon: Icon(Icons.category_outlined),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String?>(
+              isExpanded: true,
+              value: _selectedGenreId,
+              items: _mockGenres
+                  .map(
+                    (e) => DropdownMenuItem<String?>(
+                      value: e.id,
+                      child: Text(e.label),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                setState(() => _selectedGenreId = value);
+              },
             ),
-            onSubmitted: (_) => _showComingSoon(context, 'ジャンル検索'),
           ),
         ),
-        const SizedBox(width: 8),
-        OutlinedButton(
-          onPressed: () => _showComingSoon(context, 'ジャンル検索'),
-          child: const Text('検索'),
+        const SizedBox(height: 8),
+        TextField(
+          controller: _genreController,
+          textInputAction: TextInputAction.search,
+          decoration: const InputDecoration(
+            labelText: '補助キーワード（任意）',
+            hintText: '例: 収納 ボックス',
+            prefixIcon: Icon(Icons.search),
+          ),
+          onSubmitted: (_) => _runGenreSearch(context),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: () => _openProductConditionsSheet(context),
+                icon: const Icon(Icons.tune_rounded, size: 18),
+                label: const Text('詳細条件'),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => _runGenreSearch(context),
+                child: const Text('ジャンルで検索'),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -714,6 +762,25 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return null;
   }
 
+  Future<void> _runGenreSearch(BuildContext context) async {
+    if (_selectedGenreId == null || _selectedGenreId!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('ジャンルを選択してください')),
+      );
+      return;
+    }
+    final condition = RakutenProductSearchCondition(
+      keyword: _genreController.text,
+      minPrice: _parseInt(_minPriceController.text),
+      maxPrice: _parseInt(_maxPriceController.text),
+      excludeKeyword: _excludeKeywordController.text,
+      minReviewCount: _parseInt(_minReviewCountController.text),
+      minReviewAverage: _parseDouble(_minReviewAverageController.text),
+      genreId: _selectedGenreId,
+    ).normalized();
+    await context.read<RakutenSearchProvider>().searchWithCondition(condition);
+  }
+
   List<RakutenSearchItem> _applyLocalStatusFilters(
     List<RakutenSearchItem> source,
     RakutenManagedProductProvider managed,
@@ -801,8 +868,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (_mode == _RakutenSearchMode.shopDiscovery) {
       return _buildShopDiscoveryResultArea(context, search);
     }
-    if (_mode != _RakutenSearchMode.product) {
-      return _modePlaceholder();
+    if (_mode == _RakutenSearchMode.genre) {
+      return _buildGenreResultArea(context, search, managed);
     }
     switch (search.status) {
       case RakutenSearchStatus.idle:
@@ -949,6 +1016,107 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   ),
                 ),
               ),
+          ],
+        );
+    }
+  }
+
+  Widget _buildGenreResultArea(
+    BuildContext context,
+    RakutenSearchProvider search,
+    RakutenManagedProductProvider managed,
+  ) {
+    switch (search.status) {
+      case RakutenSearchStatus.idle:
+        return _centerText('ジャンルと必要なら補助キーワードを指定して検索してください');
+      case RakutenSearchStatus.loading:
+        return const Center(child: CircularProgressIndicator());
+      case RakutenSearchStatus.error:
+        return _centerText(
+          'ジャンル検索に失敗しました。\n${search.errorMessage}',
+          isError: true,
+        );
+      case RakutenSearchStatus.success:
+        if (search.results.isEmpty) {
+          return _centerText('指定したジャンルでは商品が見つかりませんでした');
+        }
+        final filteredResults = _applyLocalStatusFilters(search.results, managed);
+        if (filteredResults.isEmpty) {
+          return _centerText(
+            '除外条件やフィルタにより、表示できる商品がありませんでした。\n条件を緩めて再検索してください。',
+          );
+        }
+        final sorted = [...filteredResults];
+        switch (_genreSort) {
+          case _GenreSort.reviewCount:
+            sorted.sort(
+              (a, b) => b.reviewCount.compareTo(a.reviewCount),
+            );
+          case _GenreSort.reviewAverage:
+            sorted.sort(
+              (a, b) => b.reviewAverage.compareTo(a.reviewAverage),
+            );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+              child: Row(
+                children: [
+                  Text(
+                    'ジャンル検索結果（${sorted.length}件）',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  const Spacer(),
+                  DropdownButton<_GenreSort>(
+                    value: _genreSort,
+                    underline: const SizedBox.shrink(),
+                    onChanged: (next) {
+                      if (next == null) return;
+                      setState(() => _genreSort = next);
+                    },
+                    items: const [
+                      DropdownMenuItem(
+                        value: _GenreSort.reviewCount,
+                        child: Text('評価数順'),
+                      ),
+                      DropdownMenuItem(
+                        value: _GenreSort.reviewAverage,
+                        child: Text('評価点順'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+                itemCount: sorted.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                itemBuilder: (context, index) {
+                  final item = sorted[index];
+                  return RakutenSearchResultCard(
+                    item: item,
+                    localStatus: managed.statusForProduct(item.productId),
+                    isRegistering: managed.isRegistering(item.productId),
+                    onRegisterCandidate: () async {
+                      final err = await managed.registerCandidate(item);
+                      if (!context.mounted) return;
+                      if (err != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(err)),
+                        );
+                      }
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         );
     }
@@ -1327,6 +1495,11 @@ class _SearchGenreOption {
   const _SearchGenreOption(this.id, this.label);
   final String? id;
   final String label;
+}
+
+enum _GenreSort {
+  reviewCount,
+  reviewAverage,
 }
 
 class _SearchLocalFilterBar extends StatelessWidget {

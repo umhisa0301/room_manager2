@@ -52,7 +52,10 @@ class RakutenSearchProvider extends ChangeNotifier {
     RakutenProductSearchCondition condition,
   ) async {
     final normalized = condition.normalized();
-    if (normalized.keyword.isEmpty) {
+    // キーワード検索だけでなく、genreId 指定のみの検索（ジャンル検索・ショップ発掘）も許可する。
+    final hasKeyword = normalized.keyword.isNotEmpty;
+    final hasGenre = normalized.genreId != null && normalized.genreId!.isNotEmpty;
+    if (!hasKeyword && !hasGenre) {
       _status = RakutenSearchStatus.idle;
       _results = const [];
       _errorMessage = '';
