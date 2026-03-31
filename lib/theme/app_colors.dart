@@ -6,8 +6,9 @@ class AppColors {
   AppColors._();
 
   // --- 背景・サーフェス ---
-  /// アプリ全体のベース背景（ごく薄いグレー）
-  static const Color background = Color(0xFFFAFAFA);
+  /// アプリ全体のベース背景（少しだけ濃いグレー）
+  /// カードとのコントラストをわずかに強めて区切りを見やすくする。
+  static const Color background = Color(0xFFF4F4F7);
   /// カード・AppBar・ナビなどの表面
   static const Color surface = Color(0xFFFFFFFF);
   /// カードやチップのホバー/押下時の薄い背景
@@ -30,7 +31,8 @@ class AppColors {
   static const Color textOnAccent = Color(0xFFFFFFFF);
 
   // --- その他 ---
-  static const Color divider = Color(0xFFEEEEEE);
+  /// セクションやカードの境界線。背景との差を少しだけ強める。
+  static const Color divider = Color(0xFFE0E0E0);
   static const Color error = Color(0xFFD32F2F);
   static const Color success = Color(0xFF388E3C);
 }

@@ -45,6 +45,7 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+          side: const BorderSide(color: AppColors.divider),
         ),
         margin: EdgeInsets.zero,
         clipBehavior: Clip.antiAlias,

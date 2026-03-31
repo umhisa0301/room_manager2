@@ -19,6 +19,7 @@ class HomePlaceholderScreen extends StatefulWidget {
 }
 
 class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
+  bool _mainHelpExpanded = false;
   @override
   void initState() {
     super.initState();
@@ -75,7 +76,14 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                 90,
               ),
               children: [
-                const _MainSearchSection(),
+                _MainSearchSection(
+                  expanded: _mainHelpExpanded,
+                  onToggleExpanded: () {
+                    setState(() {
+                      _mainHelpExpanded = !_mainHelpExpanded;
+                    });
+                  },
+                ),
                 const SizedBox(height: AppDimensions.spacingMd),
                 HomePrimaryActionButton(
                   icon: Icons.travel_explore_rounded,
@@ -129,9 +137,14 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   }
 }
 
-/// ① ヒーロー：役割の説明（主ボタンは直下で統一スタイル）。
 class _MainSearchSection extends StatelessWidget {
-  const _MainSearchSection();
+  const _MainSearchSection({
+    required this.expanded,
+    required this.onToggleExpanded,
+  });
+
+  final bool expanded;
+  final VoidCallback onToggleExpanded;
 
   @override
   Widget build(BuildContext context) {
@@ -162,54 +175,57 @@ class _MainSearchSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(Icons.waving_hand_rounded,
-                  size: 26, color: AppColors.accentPrimary),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '次にやること',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: AppColors.accentPrimary,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 0.3,
-                          ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '1. 「楽天で検索」で商品を探して候補に追加\n2. 「コレ一覧」で URL 取得後にコレする\n3. 下の数字で活動を確認',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.5,
-                          ),
-                    ),
-                  ],
+          InkWell(
+            onTap: onToggleExpanded,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.info_outline_rounded,
+                  size: 22,
+                  color: AppColors.accentPrimary,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          Text(
-            '楽天ROOMの「コレ」候補をこのアプリで集め、コレ済まで整理できます。',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                  height: 1.4,
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'このアプリについて',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w800,
+                        ),
+                  ),
                 ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            '検索結果から「コレ候補へ登録」すると、ROOMコレ管理に表示されます。',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                Icon(
+                  expanded
+                      ? Icons.keyboard_arrow_up_rounded
+                      : Icons.keyboard_arrow_down_rounded,
                   color: AppColors.textSecondary,
-                  height: 1.4,
                 ),
+              ],
+            ),
           ),
+          if (expanded) ...[
+            const SizedBox(height: 10),
+            Text(
+              '楽天ROOMの「コレ」候補をこのアプリで集めておき、\nあとからコレ済まで整理しやすくするための補助アプリです。',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textPrimary,
+                    height: 1.45,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '基本の流れは次の3ステップです。\n'
+              '1. 「楽天で検索」で商品を探してコレ候補に追加\n'
+              '2. 「コレ一覧」で URL を取得して ROOM でコレする\n'
+              '3. 下のカードで候補数やコレ済の状況を確認（タップで画面移動）',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.5,
+                  ),
+            ),
+          ],
         ],
       ),
     );
@@ -331,7 +347,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                 child: _RoomMetricTile(
                   title: '前回コレ日時',
                   valueText: lastPrimary,
-                  caption: '最新の doneAt（タップで活動）',
+                  caption: 'このアプリで最後にコレした日時です。\nタップすると活動の詳細を確認できます。',
                   icon: Icons.history_rounded,
                   accent: const Color(0xFF5C6BC0),
                   iconBackground: const Color(0xFFE8EAF6),

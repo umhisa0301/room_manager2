@@ -601,7 +601,7 @@ class _LastCollectCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'アプリで最後にコレ済へ移した日時（最新の doneAt）',
+            'アプリで最後にコレ済へ移した日時です。\n最近いつコレしたかを振り返る目安になります。',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.textTertiary,
                   height: 1.35,

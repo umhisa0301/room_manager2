@@ -296,9 +296,9 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   String _footerText(bool isCandidate) {
     if (!isCandidate && product.doneAt != null) {
-      return 'コレ済（このアプリ）: ${_formatDateTime(product.doneAt!)}';
+      return 'このアプリでコレ済にした日: ${_formatDateTime(product.doneAt!)}';
     }
-    return '更新: ${_formatDateTime(product.updatedAt)}';
+    return '更新日時: ${_formatDateTime(product.updatedAt)}';
   }
 
   Widget _candidateActions(BuildContext context, Color stateAccent) {
