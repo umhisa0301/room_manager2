@@ -149,8 +149,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         title: const Text('楽天検索'),
       ),
       body: SafeArea(
-        child: Consumer2<RakutenSearchProvider, RakutenManagedProductProvider>(
-          builder: (context, search, managed, _) {
+        child: Consumer3<RakutenSearchProvider, RakutenManagedProductProvider,
+            SavedShopProvider>(
+          builder: (context, search, managed, saved, _) {
             return Column(
               children: [
                 Flexible(
@@ -162,7 +163,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   ),
                 ),
                 Expanded(
-                  child: _buildResultArea(context, search, managed),
+                  child: _buildResultArea(context, search, managed, saved),
                 ),
               ],
             );
@@ -798,6 +799,31 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }).toList();
   }
 
+  /// 候補済・コレ済の商品や保存済みショップの商品を優先的に除外したリストを返す。
+  /// ただし、除外しすぎて極端に件数が減る場合は元のリストをそのまま使う前提で呼び出し元でフォールバックする。
+  List<RakutenSearchItem> _applyPreferredExcludes(
+    List<RakutenSearchItem> source,
+    RakutenManagedProductProvider managed,
+    SavedShopProvider saved,
+  ) {
+    if (source.isEmpty) return source;
+    final out = <RakutenSearchItem>[];
+    for (final item in source) {
+      final status = managed.statusForProduct(item.productId);
+      final fromSavedShop =
+          item.shopCode.trim().isNotEmpty && saved.isSaved(item.shopCode.trim());
+      if (status == RakutenManagedProductStatus.candidate ||
+          status == RakutenManagedProductStatus.done ||
+          fromSavedShop) {
+        // 優先除外候補
+        continue;
+      }
+      out.add(item);
+    }
+    // 除外後が極端に少ないときは、呼び出し側で元リストにフォールバックさせる。
+    return out;
+  }
+
   bool _isSelectableForBulk(
     RakutenSearchItem item,
     RakutenManagedProductProvider managed,
@@ -864,6 +890,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context,
     RakutenSearchProvider search,
     RakutenManagedProductProvider managed,
+    SavedShopProvider saved,
   ) {
     if (_mode == _RakutenSearchMode.shopDiscovery) {
       return _buildShopDiscoveryResultArea(context, search);
@@ -885,7 +912,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         if (search.results.isEmpty) {
           return _centerText('検索結果は0件でした');
         }
-        final filteredResults = _applyLocalStatusFilters(search.results, managed);
+        final managedPreferred = _applyPreferredExcludes(
+          search.results,
+          managed,
+          saved,
+        );
+        final base = managedPreferred.isNotEmpty ? managedPreferred : search.results;
+        final filteredResults = _applyLocalStatusFilters(base, managed);
         final selectableCount =
             filteredResults.where((e) => _isSelectableForBulk(e, managed)).length;
         return Column(
@@ -1040,7 +1073,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         if (search.results.isEmpty) {
           return _centerText('指定したジャンルでは商品が見つかりませんでした');
         }
-        final filteredResults = _applyLocalStatusFilters(search.results, managed);
+        final managedPreferred = _applyPreferredExcludes(
+          search.results,
+          managed,
+          context.read<SavedShopProvider>(),
+        );
+        final base = managedPreferred.isNotEmpty ? managedPreferred : search.results;
+        final filteredResults = _applyLocalStatusFilters(base, managed);
         if (filteredResults.isEmpty) {
           return _centerText(
             '除外条件やフィルタにより、表示できる商品がありませんでした。\n条件を緩めて再検索してください。',

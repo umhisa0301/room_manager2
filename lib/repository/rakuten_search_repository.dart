@@ -13,15 +13,24 @@ class RakutenSearchRepository {
     required RakutenProductSearchCondition condition,
   }) async {
     final normalized = condition.normalized();
-    final raw = await _apiService.searchItems(condition: normalized);
-    final items = raw['Items'];
-    if (items is! List) return [];
-
     final results = <RakutenSearchItem>[];
-    for (final entry in items) {
-      final map = _unwrapItem(entry);
-      final item = _mapToModel(map);
-      if (item != null) results.add(item);
+    // 最大5ページ分（約100件）を取得
+    for (var page = 1; page <= 5; page++) {
+      final raw = await _apiService.searchItems(
+        condition: normalized,
+        page: page,
+        hits: 20,
+      );
+      final items = raw['Items'];
+      if (items is! List || items.isEmpty) {
+        break;
+      }
+      for (final entry in items) {
+        final map = _unwrapItem(entry);
+        final item = _mapToModel(map);
+        if (item != null) results.add(item);
+      }
+      // API側で総ページ数などを見て早期終了してもよいが、現在は空ページでbreakする前提。
     }
     return _applyAppSideFilters(results, normalized);
   }
