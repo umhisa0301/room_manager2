@@ -8,7 +8,7 @@ import '../services/app_action_service.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 
-/// ユーザー情報の登録・編集（将来の AI コメント生成向け。項目はすべて任意）。
+/// マイページ：ユーザー情報・ROOM情報・ジャンル・設定などをまとめる画面。
 class MypagePlaceholderScreen extends StatefulWidget {
   const MypagePlaceholderScreen({super.key});
 
@@ -22,8 +22,10 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
   late final TextEditingController _ageController;
   late final TextEditingController _occupationController;
   late final TextEditingController _genresController;
+  late final TextEditingController _roomUrlController;
   String? _genderKey;
   bool _bound = false;
+  bool _showOnboardingHint = false;
 
   @override
   void didChangeDependencies() {
@@ -37,7 +39,12 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
     );
     _occupationController = TextEditingController(text: p.occupation);
     _genresController = TextEditingController(text: p.favoriteGenres);
+     _roomUrlController = TextEditingController(text: p.roomUrl);
     _genderKey = p.genderKey;
+    final hasCoreProfile = p.displayName.trim().isNotEmpty ||
+        p.roomUrl.trim().isNotEmpty ||
+        p.favoriteGenres.trim().isNotEmpty;
+    _showOnboardingHint = !hasCoreProfile;
   }
 
   @override
@@ -46,6 +53,7 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
     _ageController.dispose();
     _occupationController.dispose();
     _genresController.dispose();
+    _roomUrlController.dispose();
     super.dispose();
   }
 
@@ -71,6 +79,7 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
       genderKey: _genderKey,
       occupation: _occupationController.text.trim(),
       favoriteGenres: _genresController.text.trim(),
+      roomUrl: _roomUrlController.text.trim(),
     );
 
     await context.read<UserProfileProvider>().saveProfile(next);
@@ -97,8 +106,62 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             100,
           ),
           children: [
+            if (_showOnboardingHint)
+              Container(
+                padding: const EdgeInsets.all(14),
+                margin: const EdgeInsets.only(bottom: AppDimensions.spacingMd),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                  border: Border.all(color: AppColors.divider),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.person_outline_rounded,
+                          size: 22,
+                          color: AppColors.accentPrimary,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'はじめにマイページを整えておきましょう',
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textPrimary,
+                              ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'ROOMのURLや好きなジャンルを登録しておくと、今後のおすすめ機能や検索補助に活かせます。',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.45,
+                          ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _showOnboardingHint = false;
+                            });
+                          },
+                          child: const Text('後で'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            // ROOM情報セクション
             Text(
-              'ユーザー情報',
+              'ROOM情報',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: AppColors.textPrimary,
@@ -106,108 +169,173 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             ),
             const SizedBox(height: 6),
             Text(
-              'すべて任意です。将来、AI によるコメント案の生成などに利用できるよう準備するための項目です。',
+              'あなたの楽天ROOMのURLを登録しておくと、すぐにROOMページを開けます。',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.45,
+                  ),
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: _roomUrlController,
+              textInputAction: TextInputAction.done,
+              keyboardType: TextInputType.url,
+              decoration: const InputDecoration(
+                labelText: '楽天ROOMのURL（任意）',
+                hintText: '例: https://room.rakuten.co.jp/xxxx',
+              ),
+              onChanged: (_) => setState(() {}),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: _roomUrlController.text.trim().isEmpty
+                    ? null
+                    : () => AppActionService.openUrl(
+                          context,
+                          url: _roomUrlController.text.trim(),
+                        ),
+                icon: const Icon(Icons.open_in_new_rounded, size: 20),
+                label: const Text('ROOMを開く'),
+              ),
+            ),
+            const SizedBox(height: AppDimensions.spacingLg),
+            // 好きなジャンルセクション
+            Text(
+              '好きなジャンル',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textPrimary,
+                  ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '複数のジャンルをカンマや読点で区切って入力できます。あとでおすすめや検索条件に活用します。',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.45,
+                  ),
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: _genresController,
+              minLines: 2,
+              maxLines: 4,
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(
+                labelText: '好きなジャンル（任意）',
+                hintText: '例: 美容、インテリア、グルメ',
+                alignLabelWithHint: true,
+              ),
+              onChanged: (_) => setState(() {}),
+            ),
+            const SizedBox(height: 8),
+            _GenresChipsPreview(rawText: _genresController.text),
+            const SizedBox(height: AppDimensions.spacingLg),
+            // プロフィール / ユーザー情報セクション
+            Text(
+              'プロフィール',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textPrimary,
+                  ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '将来のコメント生成やおすすめ表示の参考として使う予定の、基本的なユーザー情報です（すべて任意）。',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.45,
                   ),
             ),
             const SizedBox(height: AppDimensions.spacingMd),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                  TextFormField(
-                    controller: _nameController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'ユーザー名（任意）',
-                      hintText: 'ニックネームなど',
+            TextFormField(
+              controller: _nameController,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'ユーザー名（任意）',
+                hintText: 'ニックネームなど',
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: _ageController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(3),
+              ],
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: '年齢（任意）',
+                hintText: '例: 30',
+              ),
+            ),
+            const SizedBox(height: 12),
+            InputDecorator(
+              decoration: const InputDecoration(
+                labelText: '性別（任意）',
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String?>(
+                  value: _genderKey,
+                  isExpanded: true,
+                  hint: const Text('選択しない'),
+                  items: [
+                    const DropdownMenuItem<String?>(
+                      value: null,
+                      child: Text('選択しない'),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _ageController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(3),
-                    ],
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: '年齢（任意）',
-                      hintText: '例: 30',
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  InputDecorator(
-                    decoration: const InputDecoration(
-                      labelText: '性別（任意）',
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String?>(
-                        value: _genderKey,
-                        isExpanded: true,
-                        hint: const Text('選択しない'),
-                        items: [
-                          const DropdownMenuItem<String?>(
-                            value: null,
-                            child: Text('選択しない'),
+                    DropdownMenuItem(
+                      value: UserProfile.genderMale,
+                      child: Text(
+                            UserProfile.genderLabelJa(
+                              UserProfile.genderMale,
+                            ) ??
+                            '',
                           ),
-                          DropdownMenuItem(
-                            value: UserProfile.genderMale,
-                            child: Text(UserProfile.genderLabelJa(
-                                  UserProfile.genderMale,
-                                ) ??
-                                ''),
-                          ),
-                          DropdownMenuItem(
-                            value: UserProfile.genderFemale,
-                            child: Text(UserProfile.genderLabelJa(
-                                  UserProfile.genderFemale,
-                                ) ??
-                                ''),
-                          ),
-                          DropdownMenuItem(
-                            value: UserProfile.genderOther,
-                            child: Text(UserProfile.genderLabelJa(
-                                  UserProfile.genderOther,
-                                ) ??
-                                ''),
-                          ),
-                          DropdownMenuItem(
-                            value: UserProfile.genderPreferNot,
-                            child: Text(UserProfile.genderLabelJa(
-                                  UserProfile.genderPreferNot,
-                                ) ??
-                                ''),
-                          ),
-                        ],
-                        onChanged: (v) => setState(() => _genderKey = v),
-                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _occupationController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: '職業（任意）',
-                      hintText: '例: 会社員',
+                    DropdownMenuItem(
+                      value: UserProfile.genderFemale,
+                      child: Text(
+                            UserProfile.genderLabelJa(
+                              UserProfile.genderFemale,
+                            ) ??
+                            '',
+                          ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _genresController,
-                    minLines: 2,
-                    maxLines: 4,
-                    textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: '好きなジャンル（任意）',
-                      hintText: '例: 美容、インテリア、グルメ（複数はカンマ区切りでも可）',
-                      alignLabelWithHint: true,
+                    DropdownMenuItem(
+                      value: UserProfile.genderOther,
+                      child: Text(
+                            UserProfile.genderLabelJa(
+                              UserProfile.genderOther,
+                            ) ??
+                            '',
+                          ),
                     ),
-                  ),
-                ],
+                    DropdownMenuItem(
+                      value: UserProfile.genderPreferNot,
+                      child: Text(
+                            UserProfile.genderLabelJa(
+                              UserProfile.genderPreferNot,
+                            ) ??
+                            '',
+                          ),
+                    ),
+                  ],
+                  onChanged: (v) => setState(() => _genderKey = v),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: _occupationController,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: '職業（任意）',
+                hintText: '例: 会社員',
+              ),
             ),
             const SizedBox(height: AppDimensions.spacingLg),
             FilledButton(
@@ -218,6 +346,14 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
               child: const Text('保存'),
             ),
             const SizedBox(height: AppDimensions.spacingMd),
+            Text(
+              'その他',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
+            ),
+            const SizedBox(height: 6),
             OutlinedButton.icon(
               onPressed: () => AppActionService.openUrl(
                 context,
@@ -235,5 +371,52 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
         ),
       ),
     );
+  }
+}
+
+/// 好きなジャンル入力欄の下に表示する、簡易プレビュー用のチップ一覧。
+class _GenresChipsPreview extends StatelessWidget {
+  const _GenresChipsPreview({required this.rawText});
+
+  final String rawText;
+
+  @override
+  Widget build(BuildContext context) {
+    final genres = _parseGenres(rawText);
+    if (genres.isEmpty) {
+      return Text(
+        '入力したジャンルはここにタグとして表示されます。',
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: AppColors.textTertiary,
+            ),
+      );
+    }
+    return Wrap(
+      spacing: 6,
+      runSpacing: 6,
+      children: [
+        for (final g in genres)
+          Chip(
+            label: Text(
+              g,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+            ),
+            backgroundColor: AppColors.surfaceVariant,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
+            ),
+          ),
+      ],
+    );
+  }
+
+  List<String> _parseGenres(String text) {
+    final tokens = text.split(RegExp(r'[、,\n]'));
+    return tokens
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList(growable: false);
   }
 }

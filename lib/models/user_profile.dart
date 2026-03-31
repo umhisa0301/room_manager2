@@ -6,6 +6,7 @@ class UserProfile {
     this.genderKey,
     this.occupation = '',
     this.favoriteGenres = '',
+    this.roomUrl = '',
   });
 
   /// 表示用の性別キー（null = 未選択）
@@ -34,6 +35,8 @@ class UserProfile {
   final String? genderKey;
   final String occupation;
   final String favoriteGenres;
+  /// 楽天ROOMのプロフィールまたはトップページURL
+  final String roomUrl;
 
   Map<String, dynamic> toJson() {
     return {
@@ -42,6 +45,7 @@ class UserProfile {
       'genderKey': genderKey,
       'occupation': occupation,
       'favoriteGenres': favoriteGenres,
+      'roomUrl': roomUrl,
     };
   }
 
@@ -53,6 +57,7 @@ class UserProfile {
       genderKey: json['genderKey'] as String?,
       occupation: json['occupation'] as String? ?? '',
       favoriteGenres: json['favoriteGenres'] as String? ?? '',
+      roomUrl: json['roomUrl'] as String? ?? '',
     );
   }
 }
