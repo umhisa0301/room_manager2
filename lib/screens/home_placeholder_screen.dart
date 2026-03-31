@@ -5,8 +5,11 @@ import '../models/rakuten_managed_product.dart';
 import 'activity_placeholder_screen.dart';
 import 'products_placeholder_screen.dart';
 import 'rakuten_search_screen.dart';
+import 'today_recommendations_screen.dart';
 import '../services/rakuten_room_home_stats.dart';
 import '../state/rakuten_managed_product_provider.dart';
+import '../state/saved_shop_provider.dart';
+import '../state/today_recommendation_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/home_primary_action_button.dart';
@@ -49,6 +52,21 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     );
   }
 
+  Future<void> _openTodayRecommendations(BuildContext context) async {
+    final recommender = context.read<TodayRecommendationProvider>();
+    await recommender.ensureToday(
+      profile: context.read<UserProfileProvider>().profile,
+      managedItems: context.read<RakutenManagedProductProvider>().items,
+      savedShops: context.read<SavedShopProvider>().shops,
+    );
+    if (!context.mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => const TodayRecommendationsScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +75,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
         title: const Text('ホーム'),
       ),
       body: SafeArea(
-        child: Consumer2<RakutenManagedProductProvider, UserProfileProvider>(
-          builder: (context, roomProvider, userProfileProvider, _) {
+        child: Consumer3<RakutenManagedProductProvider, UserProfileProvider,
+            TodayRecommendationProvider>(
+          builder: (context, roomProvider, userProfileProvider, recProvider, _) {
             final items = roomProvider.items;
             final rawName = userProfileProvider.profile.displayName;
             final displayName =
@@ -106,6 +125,19 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                   icon: Icons.collections_bookmark_rounded,
                   label: 'コレ一覧を開く',
                   onPressed: () => _openRoomList(context),
+                ),
+                const SizedBox(height: AppDimensions.spacingSm),
+                HomePrimaryActionButton(
+                  icon: Icons.auto_awesome_rounded,
+                  label: '今日のおすすめコレ候補',
+                  onPressed: () => _openTodayRecommendations(context),
+                ),
+                const SizedBox(height: AppDimensions.spacingSm),
+                _TodayRecommendationsEntryCard(
+                  totalCount: recProvider.totalCount,
+                  pendingCount: recProvider.pendingCount,
+                  isCompleted: recProvider.isCompleted,
+                  onOpen: () => _openTodayRecommendations(context),
                 ),
                 const SizedBox(height: AppDimensions.spacingLg),
                 _SectionIntro(
@@ -285,6 +317,89 @@ class _SectionIntro extends StatelessWidget {
               ),
         ),
       ],
+    );
+  }
+}
+
+class _TodayRecommendationsEntryCard extends StatelessWidget {
+  const _TodayRecommendationsEntryCard({
+    required this.totalCount,
+    required this.pendingCount,
+    required this.isCompleted,
+    required this.onOpen,
+  });
+
+  final int totalCount;
+  final int pendingCount;
+  final bool isCompleted;
+  final VoidCallback onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    final body = totalCount == 0
+        ? '今日のおすすめ候補は未生成です。タップして10件を作成できます。'
+        : isCompleted
+            ? '本日の10件はチェック完了です。明日になると新しい候補が再生成されます。'
+            : '今日のおすすめは$totalCount件中、未処理が$pendingCount件です。';
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onOpen,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+            border: Border.all(color: AppColors.divider),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.accentLightest,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(
+                  Icons.auto_awesome_rounded,
+                  color: AppColors.accentPrimary,
+                  size: 18,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '今日のおすすめコレ候補',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      body,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.35,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.textTertiary,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

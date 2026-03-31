@@ -21,8 +21,10 @@ import 'navigation/app_route_observer.dart';
 import 'repository/pending_collect_notice_repository.dart';
 import 'repository/user_profile_repository.dart';
 import 'repository/saved_shop_repository.dart';
+import 'repository/today_recommendation_repository.dart';
 import 'state/user_profile_provider.dart';
 import 'state/saved_shop_provider.dart';
+import 'state/today_recommendation_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +40,7 @@ void main() async {
       PendingCollectNoticeRepository(prefs);
   final userProfileRepository = UserProfileRepository(prefs);
   final savedShopRepository = SavedShopRepository(prefs);
+  final todayRecommendationRepository = TodayRecommendationRepository(prefs);
   runApp(
     MyApp(
       productRepository: productRepository,
@@ -48,6 +51,7 @@ void main() async {
       pendingCollectNoticeRepository: pendingCollectNoticeRepository,
       userProfileRepository: userProfileRepository,
       savedShopRepository: savedShopRepository,
+      todayRecommendationRepository: todayRecommendationRepository,
     ),
   );
 }
@@ -63,6 +67,7 @@ class MyApp extends StatelessWidget {
     required this.pendingCollectNoticeRepository,
     required this.userProfileRepository,
     required this.savedShopRepository,
+    required this.todayRecommendationRepository,
   });
 
   final ProductRepository productRepository;
@@ -73,6 +78,7 @@ class MyApp extends StatelessWidget {
   final PendingCollectNoticeRepository pendingCollectNoticeRepository;
   final UserProfileRepository userProfileRepository;
   final SavedShopRepository savedShopRepository;
+  final TodayRecommendationRepository todayRecommendationRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +113,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => SavedShopProvider(repository: savedShopRepository),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TodayRecommendationProvider(
+            repository: todayRecommendationRepository,
+            searchRepository: rakutenSearchRepository,
+          ),
         ),
       ],
       child: MaterialApp(
