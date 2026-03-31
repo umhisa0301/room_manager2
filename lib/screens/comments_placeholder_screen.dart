@@ -30,6 +30,8 @@ class CommentsPlaceholderScreen extends StatelessWidget {
               children: [
                 const _CommentScreenPurposeHeader(),
                 const SizedBox(height: AppDimensions.spacingMd),
+                const _AiSuggestionFuturePlaceholder(),
+                const SizedBox(height: AppDimensions.spacingSm),
                 _RecentCopiedCard(text: provider.lastCopiedComment),
                 const SizedBox(height: AppDimensions.spacingMd),
                 if (templates.isEmpty)
@@ -173,6 +175,43 @@ class _CommentScreenPurposeHeader extends StatelessWidget {
   }
 }
 
+/// 将来のAI文案提案導線を差し込みやすくするためのプレースホルダ。
+class _AiSuggestionFuturePlaceholder extends StatelessWidget {
+  const _AiSuggestionFuturePlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.auto_awesome_rounded,
+            size: 18,
+            color: AppColors.accentPrimary,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              '今後、登録済みジャンルや最近の候補に合わせたAI文案提案をここに追加予定です。',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.4,
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// テンプレがまだないときのガイド。
 class _CommentTemplatesEmptyGuide extends StatelessWidget {
   @override
@@ -206,7 +245,9 @@ class _CommentTemplatesEmptyGuide extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            '右下の＋ボタンから、よく使う投稿文をテンプレートとして登録してください。一覧ではタップまたはコピーアイコンでクリップボードに送れます。',
+            '右下の＋ボタンから、よく使う投稿文をテンプレートとして登録してください。'
+            '一覧ではタップまたはコピーアイコンでクリップボードに送れます。'
+            'ジャンルごとに登録しておくと、将来のAI提案にもつなげやすくなります。',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
@@ -227,10 +268,11 @@ class _RecentCopiedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(color: AppColors.divider),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -251,6 +293,7 @@ class _RecentCopiedCard extends StatelessWidget {
                 '最近コピーしたコメント',
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w700,
                     ),
               ),
             ],
@@ -291,10 +334,11 @@ class _CommentTemplateCard extends StatelessWidget {
         onTap: onCopy,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         child: Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+            border: Border.all(color: AppColors.divider),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.06),
@@ -356,7 +400,7 @@ class _CommentTemplateCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
-                              template.category!,
+                              'ジャンル: ${template.category!}',
                               style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
                                     color: AppColors.accentPrimary,
@@ -366,7 +410,7 @@ class _CommentTemplateCard extends StatelessWidget {
                           )
                         else
                           Text(
-                            'カテゴリーなし',
+                            'ジャンル未設定',
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
                                   color: AppColors.textTertiary,
@@ -388,8 +432,11 @@ class _CommentTemplateCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              Column(
-                mainAxisSize: MainAxisSize.min,
+              SizedBox(
+                width: 40,
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   IconButton(
                     icon: const Icon(Icons.copy, size: 18),
@@ -407,6 +454,7 @@ class _CommentTemplateCard extends StatelessWidget {
                     tooltip: '削除',
                   ),
                 ],
+                ),
               ),
             ],
           ),
