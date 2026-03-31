@@ -42,12 +42,9 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
     );
     _occupationController = TextEditingController(text: p.occupation);
     _genresController = TextEditingController(text: p.favoriteGenres);
-     _roomUrlController = TextEditingController(text: p.roomUrl);
+    _roomUrlController = TextEditingController(text: p.roomUrl);
     _genderKey = p.genderKey;
-    final hasCoreProfile = p.displayName.trim().isNotEmpty ||
-        p.roomUrl.trim().isNotEmpty ||
-        p.favoriteGenres.trim().isNotEmpty;
-    _showOnboardingHint = !hasCoreProfile;
+    _showOnboardingHint = !p.hasCoreProfile;
   }
 
   @override
@@ -110,234 +107,222 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
           ),
           children: [
             if (_showOnboardingHint)
-              Container(
-                padding: const EdgeInsets.all(14),
-                margin: const EdgeInsets.only(bottom: AppDimensions.spacingMd),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-                  border: Border.all(color: AppColors.divider),
-                ),
+              _SectionCard(
+                marginBottom: AppDimensions.spacingMd,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
                         Icon(
-                          Icons.person_outline_rounded,
+                          Icons.flag_circle_outlined,
                           size: 22,
                           color: AppColors.accentPrimary,
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          'はじめにマイページを整えておきましょう',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.textPrimary,
-                              ),
+                        Expanded(
+                          child: Text(
+                            '最初に3つだけ設定しておくと運用しやすくなります',
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.textPrimary,
+                                ),
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'ROOMのURLや好きなジャンルを登録しておくと、今後のおすすめ機能や検索補助に活かせます。',
+                      'ユーザー名・ROOM URL・好きなジャンルを登録すると、'
+                      'ホーム表示やおすすめ候補の精度向上に活かせます。',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                             height: 1.45,
                           ),
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _showOnboardingHint = false;
-                            });
-                          },
-                          child: const Text('後で'),
-                        ),
-                      ],
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _showOnboardingHint = false;
+                        });
+                      },
+                      child: const Text('後で'),
                     ),
                   ],
                 ),
               ),
-            // ROOM情報セクション
-            Text(
-              'ROOM情報',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
+            _SectionHeader(
+              title: 'プロフィール / ユーザー情報',
+              body: 'ホーム表示や将来のおすすめ最適化で使う基本情報です（すべて任意）。',
+            ),
+            const SizedBox(height: 10),
+            _SectionCard(
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: _nameController,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                      labelText: 'ユーザー名（任意）',
+                      hintText: 'ニックネームなど',
+                    ),
                   ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              'あなたの楽天ROOMのURLを登録しておくと、すぐにROOMページを開けます。',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.45,
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _ageController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(3),
+                    ],
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                      labelText: '年齢（任意）',
+                      hintText: '例: 30',
+                    ),
                   ),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _roomUrlController,
-              textInputAction: TextInputAction.done,
-              keyboardType: TextInputType.url,
-              decoration: const InputDecoration(
-                labelText: '楽天ROOMのURL（任意）',
-                hintText: '例: https://room.rakuten.co.jp/xxxx',
-              ),
-              onChanged: (_) => setState(() {}),
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: _roomUrlController.text.trim().isEmpty
-                    ? null
-                    : () => AppActionService.openUrl(
-                          context,
-                          url: _roomUrlController.text.trim(),
-                        ),
-                icon: const Icon(Icons.open_in_new_rounded, size: 20),
-                label: const Text('ROOMを開く'),
+                  const SizedBox(height: 12),
+                  InputDecorator(
+                    decoration: const InputDecoration(
+                      labelText: '性別（任意）',
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String?>(
+                        value: _genderKey,
+                        isExpanded: true,
+                        hint: const Text('選択しない'),
+                        items: [
+                          const DropdownMenuItem<String?>(
+                            value: null,
+                            child: Text('選択しない'),
+                          ),
+                          DropdownMenuItem(
+                            value: UserProfile.genderMale,
+                            child: Text(
+                                  UserProfile.genderLabelJa(
+                                        UserProfile.genderMale,
+                                      ) ??
+                                      '',
+                                ),
+                          ),
+                          DropdownMenuItem(
+                            value: UserProfile.genderFemale,
+                            child: Text(
+                                  UserProfile.genderLabelJa(
+                                        UserProfile.genderFemale,
+                                      ) ??
+                                      '',
+                                ),
+                          ),
+                          DropdownMenuItem(
+                            value: UserProfile.genderOther,
+                            child: Text(
+                                  UserProfile.genderLabelJa(
+                                        UserProfile.genderOther,
+                                      ) ??
+                                      '',
+                                ),
+                          ),
+                          DropdownMenuItem(
+                            value: UserProfile.genderPreferNot,
+                            child: Text(
+                                  UserProfile.genderLabelJa(
+                                        UserProfile.genderPreferNot,
+                                      ) ??
+                                      '',
+                                ),
+                          ),
+                        ],
+                        onChanged: (v) => setState(() => _genderKey = v),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _occupationController,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                      labelText: '職業（任意）',
+                      hintText: '例: 会社員',
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: AppDimensions.spacingLg),
-            // 好きなジャンルセクション
-            Text(
-              '好きなジャンル',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
-                  ),
+            _SectionHeader(
+              title: 'ROOM情報',
+              body: '楽天ROOM URLを保存しておくと、すぐにROOMを開けます。'
+                  '将来の運用支援機能でも利用予定です。',
             ),
-            const SizedBox(height: 6),
-            Text(
-              '複数のジャンルをカンマや読点で区切って入力できます。あとでおすすめや検索条件に活用します。',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.45,
+            const SizedBox(height: 10),
+            _SectionCard(
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: _roomUrlController,
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.url,
+                    decoration: const InputDecoration(
+                      labelText: '楽天ROOMのURL（任意）',
+                      hintText: '例: https://room.rakuten.co.jp/xxxx',
+                    ),
+                    onChanged: (_) => setState(() {}),
                   ),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _genresController,
-              minLines: 2,
-              maxLines: 4,
-              textInputAction: TextInputAction.done,
-              decoration: const InputDecoration(
-                labelText: '好きなジャンル（任意）',
-                hintText: '例: 美容、インテリア、グルメ',
-                alignLabelWithHint: true,
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      _roomUrlController.text.trim().isEmpty
+                          ? 'URLを登録すると「ROOMを開く」が使えます。'
+                          : '登録したURLをすぐに開けます。',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: AppColors.textTertiary,
+                          ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: _roomUrlController.text.trim().isEmpty
+                          ? null
+                          : () => AppActionService.openUrl(
+                                context,
+                                url: _roomUrlController.text.trim(),
+                              ),
+                      icon: const Icon(Icons.open_in_new_rounded, size: 20),
+                      label: const Text('ROOMを開く'),
+                    ),
+                  ),
+                ],
               ),
-              onChanged: (_) => setState(() {}),
             ),
-            const SizedBox(height: 8),
-            _GenresChipsPreview(rawText: _genresController.text),
             const SizedBox(height: AppDimensions.spacingLg),
-            // プロフィール / ユーザー情報セクション
-            Text(
-              'プロフィール',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
+            _SectionHeader(
+              title: '好きなジャンル',
+              body: '複数ジャンルを登録すると、今後のおすすめ候補や検索補助に活用できます。',
+            ),
+            const SizedBox(height: 10),
+            _SectionCard(
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: _genresController,
+                    minLines: 2,
+                    maxLines: 4,
+                    textInputAction: TextInputAction.done,
+                    decoration: const InputDecoration(
+                      labelText: '好きなジャンル（任意）',
+                      hintText: '例: 美容、インテリア、グルメ',
+                      alignLabelWithHint: true,
+                    ),
+                    onChanged: (_) => setState(() {}),
                   ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              '将来のコメント生成やおすすめ表示の参考として使う予定の、基本的なユーザー情報です（すべて任意）。',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.45,
-                  ),
-            ),
-            const SizedBox(height: AppDimensions.spacingMd),
-            TextFormField(
-              controller: _nameController,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: 'ユーザー名（任意）',
-                hintText: 'ニックネームなど',
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _ageController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(3),
-              ],
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: '年齢（任意）',
-                hintText: '例: 30',
-              ),
-            ),
-            const SizedBox(height: 12),
-            InputDecorator(
-              decoration: const InputDecoration(
-                labelText: '性別（任意）',
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String?>(
-                  value: _genderKey,
-                  isExpanded: true,
-                  hint: const Text('選択しない'),
-                  items: [
-                    const DropdownMenuItem<String?>(
-                      value: null,
-                      child: Text('選択しない'),
-                    ),
-                    DropdownMenuItem(
-                      value: UserProfile.genderMale,
-                      child: Text(
-                            UserProfile.genderLabelJa(
-                              UserProfile.genderMale,
-                            ) ??
-                            '',
-                          ),
-                    ),
-                    DropdownMenuItem(
-                      value: UserProfile.genderFemale,
-                      child: Text(
-                            UserProfile.genderLabelJa(
-                              UserProfile.genderFemale,
-                            ) ??
-                            '',
-                          ),
-                    ),
-                    DropdownMenuItem(
-                      value: UserProfile.genderOther,
-                      child: Text(
-                            UserProfile.genderLabelJa(
-                              UserProfile.genderOther,
-                            ) ??
-                            '',
-                          ),
-                    ),
-                    DropdownMenuItem(
-                      value: UserProfile.genderPreferNot,
-                      child: Text(
-                            UserProfile.genderLabelJa(
-                              UserProfile.genderPreferNot,
-                            ) ??
-                            '',
-                          ),
-                    ),
-                  ],
-                  onChanged: (v) => setState(() => _genderKey = v),
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _occupationController,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: '職業（任意）',
-                hintText: '例: 会社員',
+                  const SizedBox(height: 8),
+                  _GenresChipsPreview(rawText: _genresController.text),
+                ],
               ),
             ),
             const SizedBox(height: AppDimensions.spacingLg),
@@ -349,68 +334,136 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
               child: const Text('保存'),
             ),
             const SizedBox(height: AppDimensions.spacingMd),
-            Text(
-              'その他',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
+            _SectionHeader(
+              title: 'アプリ設定や補助導線',
+              body: '運用中によく使う管理画面へ移動できます。',
             ),
-            const SizedBox(height: 6),
-            OutlinedButton.icon(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const SavedShopsScreen(),
+            const SizedBox(height: 10),
+            _SectionCard(
+              child: Column(
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const SavedShopsScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.bookmarks_outlined, size: 20),
+                    label: Consumer<SavedShopProvider>(
+                      builder: (context, saved, _) {
+                        return Text('保存ショップを管理する（${saved.shops.length}件）');
+                      },
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      foregroundColor: AppColors.textPrimary,
+                      side: BorderSide(color: AppColors.divider),
+                    ),
                   ),
-                );
-              },
-              icon: const Icon(Icons.bookmarks_outlined, size: 20),
-              label: Consumer<SavedShopProvider>(
-                builder: (context, saved, _) {
-                  return Text('保存ショップを管理する（${saved.shops.length}件）');
-                },
-              ),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                foregroundColor: AppColors.textPrimary,
-                side: BorderSide(color: AppColors.divider),
+                  const SizedBox(height: 8),
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const RakutenSearchScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.travel_explore_rounded, size: 20),
+                    label: const Text('ショップ発掘を開く'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      foregroundColor: AppColors.textPrimary,
+                      side: BorderSide(color: AppColors.divider),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 8),
-            OutlinedButton.icon(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const RakutenSearchScreen(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.travel_explore_rounded, size: 20),
-              label: const Text('ショップ発掘を開く'),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                foregroundColor: AppColors.textPrimary,
-                side: BorderSide(color: AppColors.divider),
-              ),
+            const SizedBox(height: AppDimensions.spacingLg),
+            _SectionHeader(
+              title: 'プライバシーポリシー',
+              body: '利用前に確認できるよう、いつでも開けます。',
             ),
-            const SizedBox(height: 8),
-            OutlinedButton.icon(
-              onPressed: () => AppActionService.openUrl(
-                context,
-                url: LegalUrls.privacyPolicy,
-              ),
-              icon: const Icon(Icons.policy_outlined, size: 20),
-              label: const Text('プライバシーポリシー'),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                foregroundColor: AppColors.textPrimary,
-                side: BorderSide(color: AppColors.divider),
+            const SizedBox(height: 10),
+            _SectionCard(
+              child: OutlinedButton.icon(
+                onPressed: () => AppActionService.openUrl(
+                  context,
+                  url: LegalUrls.privacyPolicy,
+                ),
+                icon: const Icon(Icons.policy_outlined, size: 20),
+                label: const Text('プライバシーポリシーを開く'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  foregroundColor: AppColors.textPrimary,
+                  side: BorderSide(color: AppColors.divider),
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({
+    required this.title,
+    required this.body,
+  });
+
+  final String title;
+  final String body;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: AppColors.textPrimary,
+              ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          body,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.45,
+              ),
+        ),
+      ],
+    );
+  }
+}
+
+class _SectionCard extends StatelessWidget {
+  const _SectionCard({
+    required this.child,
+    this.marginBottom,
+  });
+
+  final Widget child;
+  final double? marginBottom;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: marginBottom ?? 0),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: child,
     );
   }
 }
@@ -423,7 +476,7 @@ class _GenresChipsPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final genres = _parseGenres(rawText);
+    final genres = UserProfile(favoriteGenres: rawText).favoriteGenreList;
     if (genres.isEmpty) {
       return Text(
         '入力したジャンルはここにタグとして表示されます。',
@@ -453,11 +506,4 @@ class _GenresChipsPreview extends StatelessWidget {
     );
   }
 
-  List<String> _parseGenres(String text) {
-    final tokens = text.split(RegExp(r'[、,\n]'));
-    return tokens
-        .map((e) => e.trim())
-        .where((e) => e.isNotEmpty)
-        .toList(growable: false);
-  }
 }

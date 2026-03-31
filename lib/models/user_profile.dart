@@ -38,6 +38,31 @@ class UserProfile {
   /// 楽天ROOMのプロフィールまたはトップページURL
   final String roomUrl;
 
+  /// 主要情報（ホーム表示やおすすめ生成の起点）入力済み判定。
+  bool get hasCoreProfile {
+    return displayName.trim().isNotEmpty ||
+        roomUrl.trim().isNotEmpty ||
+        favoriteGenreList.isNotEmpty;
+  }
+
+  bool get hasRoomUrl => roomUrl.trim().isNotEmpty;
+
+  /// 好きなジャンルを正規化した配列（重複除去・空要素除去）。
+  List<String> get favoriteGenreList {
+    final tokens = favoriteGenres.split(RegExp(r'[、,\n]'));
+    final normalized = <String>[];
+    final seen = <String>{};
+    for (final token in tokens) {
+      final text = token.trim();
+      if (text.isEmpty) continue;
+      final key = text.toLowerCase();
+      if (seen.contains(key)) continue;
+      seen.add(key);
+      normalized.add(text);
+    }
+    return normalized;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'displayName': displayName,
