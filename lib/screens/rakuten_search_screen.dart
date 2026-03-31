@@ -27,7 +27,7 @@ class RakutenSearchScreen extends StatefulWidget {
 }
 
 class _RakutenSearchScreenState extends State<RakutenSearchScreen>
-    with RouteAware {
+    with RouteAware, SingleTickerProviderStateMixin {
   _RakutenSearchMode _mode = _RakutenSearchMode.product;
   final TextEditingController _keywordController = TextEditingController();
   final TextEditingController _minPriceController = TextEditingController();
@@ -58,6 +58,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   bool _isBulkRegistering = false;
   final Set<String> _selectedProductIds = <String>{};
   bool _routeSubscribed = false;
+  late final TabController _modeTabController;
 
   void _resetSearchUi() {
     _keywordController.clear();
@@ -90,6 +91,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   @override
   void initState() {
     super.initState();
+    _modeTabController = TabController(
+      length: _RakutenSearchMode.values.length,
+      vsync: this,
+      initialIndex: _mode.index,
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _resetSearchUi();
@@ -124,6 +130,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _shopDiscoveryMinReviewAverageController.dispose();
     _shopDiscoveryShopLimitController.dispose();
     _shopDiscoveryItemsPerShopController.dispose();
+    _modeTabController.dispose();
     super.dispose();
   }
 
@@ -144,7 +151,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           builder: (context, search, managed, _) {
             return Column(
               children: [
-                _buildModeAndInputArea(context, search),
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: SingleChildScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    child: _buildModeAndInputArea(context, search),
+                  ),
+                ),
                 Expanded(
                   child: _buildResultArea(context, search, managed),
                 ),
@@ -201,7 +215,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const _DiscoveryFlowGuide(),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Text(
             '検索モード',
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -210,15 +224,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 ),
           ),
           const SizedBox(height: 8),
-          _ModeSegmentedChips(
-            currentMode: _mode,
-            onChanged: (next) {
-              if (_mode == next) return;
-              setState(() => _mode = next);
-              context.read<RakutenSearchProvider>().resetTransientState();
-            },
+          _ModeTabBar(
+            controller: _modeTabController,
+            onChanged: _onModeChanged,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Text(
             _mode.description,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -226,7 +236,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   height: 1.4,
                 ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           switch (_mode) {
             _RakutenSearchMode.product => _buildProductInput(context, search),
             _RakutenSearchMode.genre => _buildGenreInput(context),
@@ -268,153 +278,19 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         ),
         const SizedBox(height: 8),
         Text(
-          'キーワードに加えて、価格・評価・ショップ・ジャンル条件を指定できます。',
+          'キーワードで商品を探し、必要なら詳細条件で絞り込みます。',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.4,
               ),
         ),
         const SizedBox(height: 8),
-        Card(
-          color: AppColors.surface,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-            side: const BorderSide(color: AppColors.divider),
-          ),
-          child: ExpansionTile(
-            tilePadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-            childrenPadding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-            title: const Text(
-              '詳細条件を開く',
-              style: TextStyle(fontWeight: FontWeight.w700),
-            ),
-            subtitle: const Text('価格・除外ワード・評価・ショップ・ジャンル'),
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _minPriceController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: '最低価格',
-                        hintText: '1000',
-                        prefixIcon: Icon(Icons.currency_yen),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: _maxPriceController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: '最高価格',
-                        hintText: '5000',
-                        prefixIcon: Icon(Icons.currency_yen),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _excludeKeywordController,
-                decoration: const InputDecoration(
-                  labelText: '除外ワード',
-                  hintText: '中古 訳あり',
-                  prefixIcon: Icon(Icons.block_outlined),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _minReviewCountController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: '最低評価数',
-                        hintText: '50',
-                        prefixIcon: Icon(Icons.reviews_outlined),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: _minReviewAverageController,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(
-                        labelText: '最低評価点数',
-                        hintText: '4.0',
-                        prefixIcon: Icon(Icons.star_outline_rounded),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _minCommentCountController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: '最低コメント数',
-                  hintText: '30',
-                  prefixIcon: Icon(Icons.comment_outlined),
-                ),
-              ),
-              const SizedBox(height: 8),
-              InputDecorator(
-                decoration: const InputDecoration(
-                  labelText: 'ショップ選択',
-                  prefixIcon: Icon(Icons.storefront_outlined),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String?>(
-                    isExpanded: true,
-                    value: _selectedShopCode,
-                    items: _mockShops
-                        .map(
-                          (e) => DropdownMenuItem<String?>(
-                            value: e.code,
-                            child: Text(e.label),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() => _selectedShopCode = value);
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              InputDecorator(
-                decoration: const InputDecoration(
-                  labelText: 'ジャンル選択',
-                  prefixIcon: Icon(Icons.category_outlined),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String?>(
-                    isExpanded: true,
-                    value: _selectedGenreId,
-                    items: _mockGenres
-                        .map(
-                          (e) => DropdownMenuItem<String?>(
-                            value: e.id,
-                            child: Text(e.label),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() => _selectedGenreId = value);
-                    },
-                  ),
-                ),
-              ),
-            ],
+        Align(
+          alignment: Alignment.centerLeft,
+          child: OutlinedButton.icon(
+            onPressed: () => _openProductConditionsSheet(context),
+            icon: const Icon(Icons.tune_rounded, size: 18),
+            label: const Text('詳細条件'),
           ),
         ),
       ],
@@ -450,7 +326,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'キーワードやジャンルから、売れ筋商品を扱うショップを探せます。',
+          'キーワードやジャンルから、売れ筋商品を扱うショップを探します。',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.4,
@@ -491,88 +367,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           ),
         ),
         const SizedBox(height: 8),
-        Card(
-          color: AppColors.surface,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-            side: const BorderSide(color: AppColors.divider),
-          ),
-          child: ExpansionTile(
-            tilePadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-            childrenPadding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-            title: const Text(
-              '詳細条件を開く',
-              style: TextStyle(fontWeight: FontWeight.w700),
-            ),
-            subtitle: const Text('除外ワード・評価条件・表示件数'),
-            children: [
-              TextField(
-                controller: _shopDiscoveryExcludeController,
-                decoration: const InputDecoration(
-                  labelText: '除外ワード',
-                  hintText: '例: 中古 訳あり',
-                  prefixIcon: Icon(Icons.block_outlined),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _shopDiscoveryMinReviewCountController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: '最低評価数',
-                        hintText: '100',
-                        prefixIcon: Icon(Icons.reviews_outlined),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: _shopDiscoveryMinReviewAverageController,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(
-                        labelText: '最低評価点',
-                        hintText: '4.2',
-                        prefixIcon: Icon(Icons.star_outline_rounded),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _shopDiscoveryShopLimitController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: '表示ショップ数',
-                        hintText: '20',
-                        prefixIcon: Icon(Icons.store_mall_directory_outlined),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: _shopDiscoveryItemsPerShopController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: '1ショップあたり表示商品数',
-                        hintText: '5',
-                        prefixIcon: Icon(Icons.view_stream_outlined),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+        Align(
+          alignment: Alignment.centerLeft,
+          child: OutlinedButton.icon(
+            onPressed: () => _openShopDiscoveryConditionsSheet(context),
+            icon: const Icon(Icons.tune_rounded, size: 18),
+            label: const Text('発掘条件'),
           ),
         ),
         const SizedBox(height: 10),
@@ -606,6 +406,283 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   void _showComingSoon(BuildContext context, String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('$featureは次ステップで有効化します')),
+    );
+  }
+
+  void _onModeChanged(_RakutenSearchMode next) {
+    if (_mode == next) return;
+    setState(() => _mode = next);
+    _modeTabController.animateTo(next.index);
+    context.read<RakutenSearchProvider>().resetTransientState();
+  }
+
+  Future<void> _openProductConditionsSheet(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              16,
+              8,
+              16,
+              MediaQuery.of(sheetContext).viewInsets.bottom + 16,
+            ),
+            child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'キーワード検索の詳細条件',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _minPriceController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: '最低価格',
+                            hintText: '1000',
+                            prefixIcon: Icon(Icons.currency_yen),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextField(
+                          controller: _maxPriceController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: '最高価格',
+                            hintText: '5000',
+                            prefixIcon: Icon(Icons.currency_yen),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: _excludeKeywordController,
+                    decoration: const InputDecoration(
+                      labelText: '除外ワード',
+                      hintText: '中古 訳あり',
+                      prefixIcon: Icon(Icons.block_outlined),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _minReviewCountController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: '最低評価数',
+                            hintText: '50',
+                            prefixIcon: Icon(Icons.reviews_outlined),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextField(
+                          controller: _minReviewAverageController,
+                          keyboardType:
+                              const TextInputType.numberWithOptions(decimal: true),
+                          decoration: const InputDecoration(
+                            labelText: '最低評価点数',
+                            hintText: '4.0',
+                            prefixIcon: Icon(Icons.star_outline_rounded),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: _minCommentCountController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: '最低コメント数',
+                      hintText: '30',
+                      prefixIcon: Icon(Icons.comment_outlined),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  InputDecorator(
+                    decoration: const InputDecoration(
+                      labelText: 'ショップ選択',
+                      prefixIcon: Icon(Icons.storefront_outlined),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String?>(
+                        isExpanded: true,
+                        value: _selectedShopCode,
+                        items: _mockShops
+                            .map(
+                              (e) => DropdownMenuItem<String?>(
+                                value: e.code,
+                                child: Text(e.label),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() => _selectedShopCode = value);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  InputDecorator(
+                    decoration: const InputDecoration(
+                      labelText: 'ジャンル選択',
+                      prefixIcon: Icon(Icons.category_outlined),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String?>(
+                        isExpanded: true,
+                        value: _selectedGenreId,
+                        items: _mockGenres
+                            .map(
+                              (e) => DropdownMenuItem<String?>(
+                                value: e.id,
+                                child: Text(e.label),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() => _selectedGenreId = value);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  FilledButton(
+                    onPressed: () => Navigator.of(sheetContext).pop(),
+                    child: const Text('閉じる'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _openShopDiscoveryConditionsSheet(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              16,
+              8,
+              16,
+              MediaQuery.of(sheetContext).viewInsets.bottom + 16,
+            ),
+            child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'ショップ発掘の詳細条件',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: _shopDiscoveryExcludeController,
+                    decoration: const InputDecoration(
+                      labelText: '除外ワード',
+                      hintText: '例: 中古 訳あり',
+                      prefixIcon: Icon(Icons.block_outlined),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _shopDiscoveryMinReviewCountController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: '最低評価数',
+                            hintText: '100',
+                            prefixIcon: Icon(Icons.reviews_outlined),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextField(
+                          controller: _shopDiscoveryMinReviewAverageController,
+                          keyboardType:
+                              const TextInputType.numberWithOptions(decimal: true),
+                          decoration: const InputDecoration(
+                            labelText: '最低評価点',
+                            hintText: '4.2',
+                            prefixIcon: Icon(Icons.star_outline_rounded),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _shopDiscoveryShopLimitController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: '表示ショップ数',
+                            hintText: '10',
+                            prefixIcon: Icon(Icons.store_mall_directory_outlined),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextField(
+                          controller: _shopDiscoveryItemsPerShopController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: '1ショップあたり表示商品数',
+                            hintText: '5',
+                            prefixIcon: Icon(Icons.view_stream_outlined),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  FilledButton(
+                    onPressed: () => Navigator.of(sheetContext).pop(),
+                    child: const Text('閉じる'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -1158,9 +1235,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 }
 
 enum _RakutenSearchMode {
-  product('商品検索', Icons.shopping_bag_outlined, '商品を直接探して、そのまま候補登録します'),
-  genre('ジャンル検索', Icons.category_outlined, 'ジャンル起点で商品を探します（拡張準備中）'),
-  shopDiscovery('ショップ発掘', Icons.storefront_outlined, '強いショップを見つけて、継続的に候補発見します');
+  product('キーワード検索', Icons.shopping_bag_outlined, 'キーワード中心で商品を探し、必要に応じて詳細条件で絞り込みます'),
+  genre('ジャンル検索', Icons.category_outlined, '楽天ジャンルを軸に商品を探します（順次機能拡張）'),
+  shopDiscovery('ショップ発掘', Icons.storefront_outlined, 'キーワードやジャンルから強いショップ候補を見つけます');
 
   const _RakutenSearchMode(this.label, this.icon, this.description);
   final String label;
@@ -1193,53 +1270,49 @@ class _DiscoveryFlowGuide extends StatelessWidget {
   }
 }
 
-class _ModeSegmentedChips extends StatelessWidget {
-  const _ModeSegmentedChips({
-    required this.currentMode,
+class _ModeTabBar extends StatelessWidget {
+  const _ModeTabBar({
+    required this.controller,
     required this.onChanged,
   });
 
-  final _RakutenSearchMode currentMode;
+  final TabController controller;
   final ValueChanged<_RakutenSearchMode> onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: _RakutenSearchMode.values.map((mode) {
-        final selected = currentMode == mode;
-        return ChoiceChip(
-          selected: selected,
-          onSelected: (_) => onChanged(mode),
-          avatar: Icon(
-            mode.icon,
-            size: 18,
-            color: selected ? AppColors.textOnAccent : AppColors.textSecondary,
-          ),
-          label: Text(
-            mode.label,
-            style: TextStyle(
-              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-              color: selected ? AppColors.textOnAccent : AppColors.textPrimary,
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: TabBar(
+        controller: controller,
+        onTap: (index) => onChanged(_RakutenSearchMode.values[index]),
+        tabs: [
+          for (final mode in _RakutenSearchMode.values)
+            Tab(
+              icon: Icon(mode.icon, size: 18),
+              text: mode.label,
             ),
-          ),
-          selectedColor: AppColors.accentPrimary,
-          backgroundColor: AppColors.surface,
-          side: BorderSide(
-            color: selected
-                ? AppColors.accentPrimary
-                : AppColors.divider,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
-          ),
-          showCheckmark: false,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          visualDensity: VisualDensity.compact,
-          labelPadding: const EdgeInsets.symmetric(horizontal: 6),
-        );
-      }).toList(),
+        ],
+        indicator: BoxDecoration(
+          color: AppColors.accentPrimary.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        ),
+        labelColor: AppColors.accentPrimary,
+        unselectedLabelColor: AppColors.textSecondary,
+        labelStyle: const TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 12,
+        ),
+        dividerColor: Colors.transparent,
+      ),
     );
   }
 }
