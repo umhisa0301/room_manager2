@@ -8,6 +8,7 @@ import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/rakuten_search_result_card.dart';
+import 'saved_shops_screen.dart';
 
 enum _ShopDetailSort {
   reviewCount,
@@ -252,6 +253,18 @@ class _ShopDetailHeader extends StatelessWidget {
                 onPressed: onBackToSearch,
                 icon: const Icon(Icons.tune_rounded, size: 18),
                 label: const Text('条件を変えて再検索'),
+              ),
+              const SizedBox(width: 4),
+              IconButton(
+                tooltip: '保存ショップ一覧を開く',
+                icon: const Icon(Icons.bookmarks_outlined, size: 20),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const SavedShopsScreen(),
+                    ),
+                  );
+                },
               ),
             ],
           ),

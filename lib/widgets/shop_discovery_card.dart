@@ -143,7 +143,7 @@ class _ScorePill extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
-        '発掘 ${score.toStringAsFixed(1)}',
+        '売れ筋度 ${score.toStringAsFixed(1)}',
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: AppColors.accentPrimary,
               fontWeight: FontWeight.w700,

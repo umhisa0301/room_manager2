@@ -60,6 +60,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   bool _routeSubscribed = false;
   late final TabController _modeTabController;
   _GenreSort _genreSort = _GenreSort.reviewCount;
+  bool _excludeSavedShops = true;
 
   void _resetSearchUi() {
     _keywordController.clear();
@@ -1198,10 +1199,18 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         }
         return Consumer<SavedShopProvider>(
           builder: (context, saved, _) {
+            final raw = summaries;
+            final filtered = raw
+                .where(
+                  (s) => _excludeSavedShops ? !saved.isSaved(s.shopKey) : true,
+                )
+                .toList(growable: false);
+            final visible = filtered.isEmpty ? raw : filtered;
+            final removedCount = raw.length - visible.length;
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 6, 20, 8),
+                  padding: const EdgeInsets.fromLTRB(20, 6, 20, 4),
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
@@ -1210,24 +1219,70 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                       border: Border.all(color: AppColors.divider),
                     ),
-                    child: Text(
-                      '発掘結果 ${summaries.length}ショップ（スコア順）\n'
-                      'まずは上位ショップを開いて、商品を候補登録する流れがおすすめです。',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.4,
-                            fontWeight: FontWeight.w600,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '発掘結果 ${visible.length}ショップ（スコア順）',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '売れ筋度は「ヒット商品数」「評価数」「評価点」から計算した、このアプリ独自のスコアです。',
+                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                color: AppColors.textSecondary,
+                                height: 1.35,
+                              ),
+                        ),
+                        if (_excludeSavedShops)
+                          Text(
+                            removedCount > 0
+                                ? '※ 保存済みショップを除外しています（除外 $removedCount件）。'
+                                : '※ 保存済みショップも含めて表示されています。',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(
+                                  color: AppColors.textTertiary,
+                                  height: 1.3,
+                                ),
                           ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: FilterChip(
+                      selected: _excludeSavedShops,
+                      onSelected: (next) {
+                        setState(() => _excludeSavedShops = next);
+                      },
+                      label: const Text('保存済ショップを除外'),
+                      avatar: const Icon(Icons.bookmarks_outlined, size: 18),
+                      selectedColor:
+                          AppColors.accentPrimary.withValues(alpha: 0.15),
+                      showCheckmark: false,
+                      side: BorderSide(
+                        color: _excludeSavedShops
+                            ? AppColors.accentPrimary
+                            : AppColors.divider,
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
                   child: ListView.separated(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-                    itemCount: summaries.length,
+                    itemCount: visible.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 10),
                     itemBuilder: (context, index) {
-                      final summary = summaries[index];
+                      final summary = visible[index];
                       final shopItems = search.results
                           .where((e) => _shopDiscoveryGroupKey(e) == summary.shopKey)
                           .toList(growable: false);
