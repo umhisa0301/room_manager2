@@ -887,6 +887,26 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
+  void _selectAllForBulk(
+    List<RakutenSearchItem> source,
+    RakutenManagedProductProvider managed,
+  ) {
+    setState(() {
+      _selectedProductIds.clear();
+      for (final item in source) {
+        if (_isSelectableForBulk(item, managed)) {
+          _selectedProductIds.add(item.productId);
+        }
+      }
+    });
+  }
+
+  void _clearBulkSelection() {
+    setState(() {
+      _selectedProductIds.clear();
+    });
+  }
+
   Widget _buildResultArea(
     BuildContext context,
     RakutenSearchProvider search,
@@ -922,6 +942,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         final filteredResults = _applyLocalStatusFilters(base, managed);
         final selectableCount =
             filteredResults.where((e) => _isSelectableForBulk(e, managed)).length;
+        final totalCount = search.results.length;
+        final showingCount = filteredResults.length;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -952,6 +974,22 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             ),
                       ),
                     ),
+                  if (_selectionMode) ...[
+                    const SizedBox(width: 8),
+                    TextButton(
+                      onPressed: filteredResults.isEmpty || _isBulkRegistering
+                          ? null
+                          : () => _selectAllForBulk(filteredResults, managed),
+                      child: const Text('全部選択'),
+                    ),
+                    const SizedBox(width: 4),
+                    TextButton(
+                      onPressed: _selectedProductIds.isEmpty || _isBulkRegistering
+                          ? null
+                          : _clearBulkSelection,
+                      child: const Text('全部解除'),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -968,7 +1006,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
               child: Text(
-                '表示 ${filteredResults.length} / 全${search.results.length}件',
+                totalCount >= 100
+                    ? '表示 $showingCount件 / 取得 $totalCount件（最大100件まで取得しています）'
+                    : '表示 $showingCount件 / 取得 $totalCount件',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -977,8 +1017,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             Expanded(
               child: filteredResults.isEmpty
                   ? _centerText(
-                      '除外フィルタ条件に一致するため、表示できる商品がありません。\n'
-                      'フィルタをOFFにすると表示されます。',
+                      '登録済みの候補・コレ済・保存ショップ由来の商品を優先的に除外した結果、'
+                      '表示できる商品がありません。\n'
+                      '除外フィルタをOFFにするか、条件を少し緩めて再検索してください。',
                     )
                   : ListView.separated(
                       padding: const EdgeInsets.fromLTRB(20, 8, 20, 90),
