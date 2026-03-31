@@ -7,6 +7,7 @@ import 'products_placeholder_screen.dart';
 import 'rakuten_search_screen.dart';
 import '../services/rakuten_room_home_stats.dart';
 import '../state/rakuten_managed_product_provider.dart';
+import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/home_primary_action_button.dart';
 
@@ -56,9 +57,12 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
         title: const Text('ホーム'),
       ),
       body: SafeArea(
-        child: Consumer<RakutenManagedProductProvider>(
-          builder: (context, roomProvider, _) {
+        child: Consumer2<RakutenManagedProductProvider, UserProfileProvider>(
+          builder: (context, roomProvider, userProfileProvider, _) {
             final items = roomProvider.items;
+            final rawName = userProfileProvider.profile.displayName;
+            final displayName =
+                rawName.trim().isEmpty ? null : rawName.trim();
             final nCandidate = RakutenRoomHomeStats.countCandidates(items);
             final nDone = RakutenRoomHomeStats.countDone(items);
             final now = DateTime.now();
@@ -77,6 +81,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
               ),
               children: [
                 _MainSearchSection(
+                  displayName: displayName,
                   expanded: _mainHelpExpanded,
                   onToggleExpanded: () {
                     setState(() {
@@ -121,7 +126,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                 const SizedBox(height: AppDimensions.spacingLg),
                 _SectionIntro(
                   title: '最近候補に追加した商品',
-                  body: '直近で候補登録した商品です。タップで一覧画面へ移動します。',
+                  body:
+                      '直近で候補登録した商品です。まだコレしていない候補だけが表示され、コレ済になるとここから外れます。',
                 ),
                 const SizedBox(height: AppDimensions.spacingSm),
                 _RecentCandidatesPanel(
@@ -139,10 +145,12 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
 
 class _MainSearchSection extends StatelessWidget {
   const _MainSearchSection({
+    required this.displayName,
     required this.expanded,
     required this.onToggleExpanded,
   });
 
+  final String? displayName;
   final bool expanded;
   final VoidCallback onToggleExpanded;
 
@@ -175,6 +183,24 @@ class _MainSearchSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (displayName != null) ...[
+            Text(
+              'ようこそ、$displayNameさん',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w800,
+                  ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              '$displayNameさんのROOM管理をサポートします。',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.35,
+                  ),
+            ),
+            const SizedBox(height: 10),
+          ],
           InkWell(
             onTap: onToggleExpanded,
             borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
