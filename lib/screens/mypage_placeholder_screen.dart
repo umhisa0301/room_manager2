@@ -5,8 +5,11 @@ import 'package:provider/provider.dart';
 import '../constants/legal_urls.dart';
 import '../models/user_profile.dart';
 import '../services/app_action_service.dart';
+import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import 'rakuten_search_screen.dart';
+import 'saved_shops_screen.dart';
 
 /// マイページ：ユーザー情報・ROOM情報・ジャンル・設定などをまとめる画面。
 class MypagePlaceholderScreen extends StatefulWidget {
@@ -354,6 +357,44 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                   ),
             ),
             const SizedBox(height: 6),
+            OutlinedButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const SavedShopsScreen(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.bookmarks_outlined, size: 20),
+              label: Consumer<SavedShopProvider>(
+                builder: (context, saved, _) {
+                  return Text('保存ショップを管理する（${saved.shops.length}件）');
+                },
+              ),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                foregroundColor: AppColors.textPrimary,
+                side: BorderSide(color: AppColors.divider),
+              ),
+            ),
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const RakutenSearchScreen(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.travel_explore_rounded, size: 20),
+              label: const Text('ショップ発掘を開く'),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                foregroundColor: AppColors.textPrimary,
+                side: BorderSide(color: AppColors.divider),
+              ),
+            ),
+            const SizedBox(height: 8),
             OutlinedButton.icon(
               onPressed: () => AppActionService.openUrl(
                 context,

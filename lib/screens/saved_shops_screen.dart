@@ -5,6 +5,7 @@ import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
+import 'rakuten_search_screen.dart';
 import 'shop_discovery_detail_screen.dart';
 
 class SavedShopsScreen extends StatelessWidget {
@@ -16,6 +17,19 @@ class SavedShopsScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('保存ショップ'),
+        actions: [
+          IconButton(
+            tooltip: 'ショップ発掘へ',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const RakutenSearchScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.travel_explore_rounded),
+          ),
+        ],
       ),
       body: Consumer<SavedShopProvider>(
         builder: (context, saved, _) {
@@ -24,13 +38,30 @@ class SavedShopsScreen extends StatelessWidget {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Text(
-                  '保存ショップはまだありません。\nショップ発掘結果から保存できます。',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.5,
-                      ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '保存ショップはまだありません。\nショップ発掘結果から保存できます。',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.5,
+                          ),
+                    ),
+                    const SizedBox(height: 10),
+                    FilledButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const RakutenSearchScreen(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.travel_explore_rounded, size: 18),
+                      label: const Text('ショップ発掘へ'),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -41,6 +72,13 @@ class SavedShopsScreen extends StatelessWidget {
               _SavedShopsSummaryCard(
                 totalCount: shops.length,
                 viewedCount: viewedCount,
+                onOpenDiscovery: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const RakutenSearchScreen(),
+                    ),
+                  );
+                },
               ),
               Expanded(
                 child: ListView.separated(
@@ -98,10 +136,12 @@ class _SavedShopsSummaryCard extends StatelessWidget {
   const _SavedShopsSummaryCard({
     required this.totalCount,
     required this.viewedCount,
+    required this.onOpenDiscovery,
   });
 
   final int totalCount;
   final int viewedCount;
+  final VoidCallback onOpenDiscovery;
 
   @override
   Widget build(BuildContext context) {
@@ -114,14 +154,28 @@ class _SavedShopsSummaryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         border: Border.all(color: AppColors.divider),
       ),
-      child: Text(
-        '保存 $totalCount件 / 閲覧済み $viewedCount件\n'
-        '保存ショップから再訪して、候補登録を続けられます。',
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.4,
-              fontWeight: FontWeight.w600,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '保存 $totalCount件 / 閲覧済み $viewedCount件\n'
+            '保存ショップから再訪して、候補登録を続けられます。',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.centerRight,
+            child: OutlinedButton.icon(
+              onPressed: onOpenDiscovery,
+              icon: const Icon(Icons.travel_explore_rounded, size: 18),
+              label: const Text('ショップ発掘へ戻る'),
             ),
+          ),
+        ],
       ),
     );
   }

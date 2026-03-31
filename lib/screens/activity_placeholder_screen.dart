@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/activity_log.dart';
+import '../models/rakuten_managed_product.dart';
 import '../services/rakuten_room_home_stats.dart';
-import '../state/activity_log_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
+import '../state/saved_shop_provider.dart';
+import '../state/today_recommendation_provider.dart';
 import '../theme/app_theme.dart';
 
 /// コレ活動のダッシュボード（アプリ内のコレ済データを集計して可視化）。
@@ -29,8 +30,6 @@ class ActivityPlaceholderScreen extends StatefulWidget {
 }
 
 class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen> {
-  bool _openedInitialEditor = false;
-
   @override
   void initState() {
     super.initState();
@@ -43,31 +42,16 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (widget.openTodayEditorOnStart && !_openedInitialEditor) {
-      _openedInitialEditor = true;
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => _openTodayEditor(context));
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('活動'),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'fab_activity_today',
-        onPressed: () => _openTodayEditor(context),
-        icon: const Icon(Icons.edit_note_rounded),
-        label: const Text('今日のメモ'),
+        title: const Text('ROOM運用ダッシュボード'),
       ),
       body: SafeArea(
-        child: Consumer<RakutenManagedProductProvider>(
-          builder: (context, room, _) {
+        child: Consumer3<RakutenManagedProductProvider, SavedShopProvider,
+            TodayRecommendationProvider>(
+          builder: (context, room, saved, rec, _) {
             final items = room.items;
             final now = DateTime.now();
             final todayCount =
@@ -76,6 +60,10 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen> {
             final lastDone = RakutenRoomHomeStats.latestDoneAt(items);
             final series =
                 RakutenRoomHomeStats.doneCountsRollingDays(items, now, 7);
+            final savedShopCount = saved.shops.length;
+            final recommendPending = rec.pendingCount;
+            final recommendTotal = rec.totalCount;
+            final recentCandidateCount = _countTodayCandidates(items, now);
             final maxInWeek = series
                 .map((e) => e.count)
                 .fold<int>(0, (a, b) => a > b ? a : b);
@@ -127,15 +115,46 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen> {
                     maxCount: maxInWeek,
                   ),
                   const SizedBox(height: AppDimensions.spacingMd),
-                  _LastCollectCard(lastDoneAt: lastDone),
-                  const SizedBox(height: AppDimensions.spacingMd),
-                  Consumer<ActivityLogProvider>(
-                    builder: (context, act, _) {
-                      final logs = act.logs;
-                      if (logs.isEmpty) return const SizedBox.shrink();
-                      return _ManualMemoExpansion(logs: logs);
-                    },
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: _SmallMetricCard(
+                          icon: Icons.bookmarks_outlined,
+                          iconColor: const Color(0xFF6A1B9A),
+                          title: '保存ショップ',
+                          valueText: '$savedShopCount件',
+                          caption: '発掘から再訪する基盤',
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _SmallMetricCard(
+                          icon: Icons.auto_awesome_rounded,
+                          iconColor: AppColors.accentPrimary,
+                          title: 'おすすめ残件',
+                          valueText: recommendTotal == 0
+                              ? '未生成'
+                              : '$recommendPending件',
+                          caption: recommendTotal == 0
+                              ? '今日のおすすめ未作成'
+                              : '今日のおすすめ未処理件数',
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _SmallMetricCard(
+                          icon: Icons.bookmark_add_outlined,
+                          iconColor: const Color(0xFF1565C0),
+                          title: '最近候補追加',
+                          valueText: '$recentCandidateCount件',
+                          caption: '今日追加した候補数',
+                        ),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: AppDimensions.spacingMd),
+                  _LastCollectCard(lastDoneAt: lastDone),
                 ],
               ),
             );
@@ -145,109 +164,15 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen> {
     );
   }
 
-  Future<void> _openTodayEditor(BuildContext context) async {
-    final provider = context.read<ActivityLogProvider>();
-    final current = provider.getTodayLog();
-    final collectedController = TextEditingController(
-      text: current?.collectedCount.toString() ?? '',
-    );
-    final commentController = TextEditingController(
-      text: current?.commentCount.toString() ?? '',
-    );
-    final memoController = TextEditingController(
-      text: current?.memo ?? '',
-    );
-
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      backgroundColor: AppColors.surface,
-      builder: (sheetContext) {
-        return Padding(
-          padding: EdgeInsets.fromLTRB(
-            AppDimensions.screenPaddingH,
-            AppDimensions.spacingSm,
-            AppDimensions.screenPaddingH,
-            MediaQuery.of(sheetContext).viewInsets.bottom +
-                AppDimensions.spacingLg,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                '手動メモ（任意）',
-                style: Theme.of(sheetContext).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                '上部のダッシュボードとは別に、ROOM でのコメント投稿数などを自分用に残せます。',
-                style: Theme.of(sheetContext).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.4,
-                    ),
-              ),
-              const SizedBox(height: 14),
-              TextField(
-                controller: collectedController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: '今日のコレ件数（手入力）',
-                  hintText: '例: 3',
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: commentController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: '今日のコメント件数',
-                  hintText: '例: 5',
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: memoController,
-                maxLines: 2,
-                decoration: const InputDecoration(
-                  labelText: 'メモ（任意）',
-                  hintText: '一言メモ',
-                ),
-              ),
-              const SizedBox(height: 12),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: () {
-                    final collected =
-                        int.tryParse(collectedController.text.trim()) ?? 0;
-                    final comments =
-                        int.tryParse(commentController.text.trim()) ?? 0;
-                    final memo = memoController.text.trim().isEmpty
-                        ? null
-                        : memoController.text.trim();
-                    provider.upsertToday(
-                      collectedCount: collected,
-                      commentCount: comments,
-                      memo: memo,
-                    );
-                    Navigator.of(sheetContext).pop();
-                  },
-                  child: const Text('保存'),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-
-    collectedController.dispose();
-    commentController.dispose();
-    memoController.dispose();
+  int _countTodayCandidates(List<RakutenManagedProduct> items, DateTime now) {
+    final target = DateTime(now.year, now.month, now.day);
+    var count = 0;
+    for (final e in items) {
+      if (e.status != RakutenManagedProductStatus.candidate) continue;
+      final d = DateTime(e.createdAt.year, e.createdAt.month, e.createdAt.day);
+      if (d == target) count++;
+    }
+    return count;
   }
 }
 
@@ -283,7 +208,7 @@ class _ActivityPurposeBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'あなたのコレが見える',
+                  'ROOM運用の進捗が見える',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w800,
                         color: AppColors.textPrimary,
@@ -291,7 +216,7 @@ class _ActivityPurposeBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'このアプリで「コレ済」に移した記録を集計しています。続きを積み重ねるほどバーが伸びます。',
+                  '候補管理とコレ済実績を1画面で確認できます。今日の動きと中長期の傾向を見ながら運用を調整できます。',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textSecondary,
                         height: 1.45,
@@ -299,6 +224,76 @@ class _ActivityPurposeBanner extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SmallMetricCard extends StatelessWidget {
+  const _SmallMetricCard({
+    required this.icon,
+    required this.iconColor,
+    required this.title,
+    required this.valueText,
+    required this.caption,
+  });
+
+  final IconData icon;
+  final Color iconColor;
+  final String title;
+  final String valueText;
+  final String caption;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 18, color: iconColor),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            valueText,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w800,
+                ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            caption,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.textTertiary,
+                  height: 1.3,
+                ),
           ),
         ],
       ),
@@ -630,62 +625,3 @@ class _LastCollectCard extends StatelessWidget {
   }
 }
 
-class _ManualMemoExpansion extends StatelessWidget {
-  const _ManualMemoExpansion({required this.logs});
-
-  final List<ActivityLog> logs;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-      ),
-      child: Theme(
-        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-        child: ExpansionTile(
-          tilePadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-          childrenPadding: const EdgeInsets.fromLTRB(14, 0, 14, 12),
-          title: Text(
-            '手動メモの履歴',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-          ),
-          subtitle: Text(
-            'ダッシュボードの数値とは別データです',
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textTertiary,
-                ),
-          ),
-          children: [
-            for (int i = 0; i < logs.length; i++) ...[
-              if (i > 0) const Divider(height: 16),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      logs[i].dateKey,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                  ),
-                  Text(
-                    'コレ ${logs[i].collectedCount} / コメ ${logs[i].commentCount}',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                  ),
-                ],
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
