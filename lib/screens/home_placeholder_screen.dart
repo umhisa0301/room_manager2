@@ -259,7 +259,7 @@ abstract final class _HomeUi {
       fontSize: 13,
       fontWeight: FontWeight.w600,
       height: 1.32,
-      color: AppColors.textSecondary,
+      color: HomeScreenColors.bodyOnSection,
     );
   }
 
@@ -313,7 +313,7 @@ abstract final class _HomeUi {
     return (base ?? const TextStyle()).copyWith(
       fontWeight: FontWeight.w600,
       height: 1.28,
-      color: AppColors.textPrimary,
+      color: HomeScreenColors.titlePrimary,
     );
   }
 }
@@ -1161,7 +1161,7 @@ class _HomeCollectionListLink extends StatelessWidget {
         ),
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.accentPrimary,
-          backgroundColor: AppColors.surface,
+          backgroundColor: HomeScreenColors.standaloneCardFill,
           side: BorderSide(
             color: HomeScreenColors.metricTileOutline,
           ),
