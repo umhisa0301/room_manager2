@@ -40,11 +40,11 @@ abstract final class _HomeUi {
 
   /// ROOMコレ管理：見出しブロック（一体感を保ちつつ縦だけ詰める）
   static EdgeInsets get paddingRoomSectionHeader =>
-      EdgeInsets.fromLTRB(insetSectionH, 11, insetSectionH, 7);
+      EdgeInsets.fromLTRB(insetSectionH, 10, insetSectionH, 6);
 
   /// 最近追加した候補：見出しブロック
   static EdgeInsets get paddingRecentSectionHeader =>
-      EdgeInsets.fromLTRB(insetSectionH, 11, insetSectionH, 7);
+      EdgeInsets.fromLTRB(insetSectionH, 10, insetSectionH, 6);
 
   /// 「このアプリについて」等：開閉ヘッダー（本文との縦リズムを他セクションに寄せる）
   static EdgeInsets get paddingExpandableHeader =>
@@ -52,11 +52,11 @@ abstract final class _HomeUi {
 
   /// ROOMコレ管理：メトリクスデッキの外周
   static EdgeInsets get paddingDeckOuterRoom =>
-      EdgeInsets.fromLTRB(insetSectionH, 0, insetSectionH, 10);
+      EdgeInsets.fromLTRB(insetSectionH, 0, insetSectionH, 9);
 
   /// 最近追加した候補：リストデッキの外周
   static EdgeInsets get paddingDeckOuterRecent =>
-      EdgeInsets.fromLTRB(insetSectionH, 0, insetSectionH, 8);
+      EdgeInsets.fromLTRB(insetSectionH, 0, insetSectionH, 7);
 
   /// 見出し行：先頭アイコンとタイトル列の間
   static const double gapIconToTitle = 12;
@@ -71,11 +71,11 @@ abstract final class _HomeUi {
 
   /// 今日のおすすめ候補：縦だけ抑えて要点＋10件文脈が間延びしないようにする
   static EdgeInsets get paddingTodayRecommendationsCard =>
-      EdgeInsets.fromLTRB(insetSectionH, 10, insetSectionH, 10);
+      EdgeInsets.fromLTRB(insetSectionH, 9, insetSectionH, 9);
 
   /// 最近候補セクション内「コレ一覧を開く」（主ブロックより一段薄く保つ）
   static EdgeInsets get paddingRecentListFooterAction =>
-      EdgeInsets.symmetric(horizontal: insetSectionH, vertical: 8);
+      EdgeInsets.symmetric(horizontal: insetSectionH, vertical: 7);
 
   /// セクション見出しと折りたたみ要約の間
   static const double gapTitleToSummary = 5;
@@ -84,16 +84,16 @@ abstract final class _HomeUi {
   static const double gapHeaderTitleToLead = 4;
 
   /// ROOMコレ管理：展開説明の下余白
-  static const double gapRoomDetailBottom = 5;
+  static const double gapRoomDetailBottom = 4;
 
   /// ROOMコレ管理：区切り線とタイルデッキの間
-  static const double gapRoomDividerToDeck = 5;
+  static const double gapRoomDividerToDeck = 4;
 
   /// ROOMコレ管理：タイルデッキ内のパディング
-  static const double paddingRoomTileDeck = 6;
+  static const double paddingRoomTileDeck = 5;
 
   /// ROOMコレ管理：グリッドの列・行間（統一）
-  static const double gapRoomGrid = 6;
+  static const double gapRoomGrid = 5;
 
   /// 最近候補：展開説明の下余白
   static const double gapRecentDetailBottom = 5;
@@ -102,7 +102,7 @@ abstract final class _HomeUi {
   static const double gapRecentDividerToDeck = 5;
 
   /// 最近候補：リストデッキの内側パディング
-  static const double paddingRecentListDeck = 5;
+  static const double paddingRecentListDeck = 4;
 
   /// 最近候補セクション：最下部の余白
   static const double paddingRecentSectionBottom = 2;
@@ -129,13 +129,13 @@ abstract final class _HomeUi {
   static const int todayRecommendationsMaxPerDay = 10;
 
   /// 今日のおすすめセクション：見出しとステータス行の間
-  static const double gapTodayRecTitleToStatus = 3;
+  static const double gapTodayRecTitleToStatus = 2;
 
   /// 今日のおすすめセクション：ステータスと脚注の間
-  static const double gapTodayRecStatusToFootnote = 3;
+  static const double gapTodayRecStatusToFootnote = 2;
 
   /// 今日のおすすめ：プログレスバー上余白（10件プログレも縦を取りすぎない）
-  static const double gapTodayRecBeforeProgress = 4;
+  static const double gapTodayRecBeforeProgress = 3;
 
   /// 標準リストの下余白（ナビバー押さえ以外）
   static const double listBottomExtra = 12;
@@ -1329,6 +1329,7 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                         statusLine,
                         style: _HomeUi.sectionBody(context).copyWith(
                           fontWeight: FontWeight.w600,
+                          height: 1.32,
                           color: done
                               ? AppColors.textSecondary
                               : AppColors.textPrimary,
@@ -1528,7 +1529,7 @@ class _RoomMetricTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final radius = compactDeck ? 12.0 : AppDimensions.radiusCard;
     final pad = compactDeck
-        ? const EdgeInsets.symmetric(horizontal: 8, vertical: 8)
+        ? const EdgeInsets.symmetric(horizontal: 7, vertical: 7)
         : const EdgeInsets.fromLTRB(11, 9, 11, 9);
     final titleSize = compactDeck ? 12.5 : 13.0;
     final valueLarge = compactDeck ? 23.0 : 25.0;
@@ -1580,7 +1581,7 @@ class _RoomMetricTile extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: compactDeck ? 5 : 7),
+              SizedBox(height: compactDeck ? 4 : 7),
               Text(
                 valueMain,
                 textAlign: TextAlign.left,
@@ -1601,7 +1602,7 @@ class _RoomMetricTile extends StatelessWidget {
                           fontSize: valueSmall,
                         ),
               ),
-              SizedBox(height: compactDeck ? 2 : 4),
+              SizedBox(height: compactDeck ? 1 : 4),
               Text(
                 caption,
                 maxLines: captionMaxLines,
@@ -1632,7 +1633,7 @@ class _RecentCandidatesPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tilePadding = embedInUnifiedSection
-        ? const EdgeInsets.symmetric(horizontal: 12, vertical: 7)
+        ? const EdgeInsets.symmetric(horizontal: 12, vertical: 6)
         : const EdgeInsets.symmetric(horizontal: 12, vertical: 9);
 
     if (candidates.isEmpty) {
@@ -1669,7 +1670,7 @@ class _RecentCandidatesPanel extends StatelessWidget {
             Divider(
               height: 1,
               thickness: 1,
-              indent: embedInUnifiedSection ? 72 : 72,
+              indent: embedInUnifiedSection ? 70 : 72,
               endIndent: embedInUnifiedSection ? 12 : 12,
               color: AppColors.divider.withValues(
                 alpha: embedInUnifiedSection ? 0.5 : 0.55,
@@ -1699,7 +1700,7 @@ class _RecentCandidatesPanel extends StatelessWidget {
 class _RecentCandidateTile extends StatelessWidget {
   const _RecentCandidateTile({
     required this.product,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
     required this.onTap,
   });
 
@@ -1766,10 +1767,10 @@ class _RecentCandidateTile extends StatelessWidget {
 
   Widget _thumb() {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(9),
+      borderRadius: BorderRadius.circular(8),
       child: Container(
-        width: 48,
-        height: 48,
+        width: 46,
+        height: 46,
         color: const Color(0xFFE3F2FD),
         child: product.imageUrl.isNotEmpty
             ? Image.network(
