@@ -175,7 +175,7 @@ class _CommentScreenPurposeHeader extends StatelessWidget {
   }
 }
 
-/// 将来のAI文案提案導線を差し込みやすくするためのプレースホルダ。
+/// テンプレート活用のヒント欄。
 class _AiSuggestionFuturePlaceholder extends StatelessWidget {
   const _AiSuggestionFuturePlaceholder();
 
@@ -192,14 +192,14 @@ class _AiSuggestionFuturePlaceholder extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            Icons.auto_awesome_rounded,
+            Icons.lightbulb_outline_rounded,
             size: 18,
             color: AppColors.accentPrimary,
           ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              '今後、登録済みジャンルや最近の候補に合わせたAI文案提案をここに追加予定です。',
+              'テンプレートをジャンルや用途別に分けておくと、投稿のたびに迷いにくくなります。',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.4,
@@ -247,7 +247,7 @@ class _CommentTemplatesEmptyGuide extends StatelessWidget {
           Text(
             '右下の＋ボタンから、よく使う投稿文をテンプレートとして登録してください。'
             '一覧ではタップまたはコピーアイコンでクリップボードに送れます。'
-            'ジャンルごとに登録しておくと、将来のAI提案にもつなげやすくなります。',
+            'ジャンルごとに登録しておくと、あとから整理しやすくなります。',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
