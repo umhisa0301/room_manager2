@@ -12,6 +12,7 @@ import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
 import '../widgets/home_primary_action_button.dart';
 
 // --- ホーム画面：レイアウト・タイポ・装飾の統一（画面ロジックとは分離）---
@@ -114,15 +115,14 @@ abstract final class _HomeUi {
   static const double gapSearchLeadToButton = 10;
 
   /// 区切り線の色（ホーム内で統一）
-  static Color dividerLineColor() =>
-      AppColors.divider.withValues(alpha: 0.52);
+  static Color dividerLineColor() => HomeScreenColors.inlineDivider;
 
   /// セクション外枠の境界線（アクセント薄いトーン / 通常）
   static Color sectionBorderColor({bool accentTint = false}) {
     if (accentTint) {
-      return AppColors.accentPrimary.withValues(alpha: 0.16);
+      return HomeScreenColors.sectionOutlineAccent;
     }
-    return AppColors.divider.withValues(alpha: 0.76);
+    return HomeScreenColors.sectionOutlineNeutral;
   }
 
   /// 今日のおすすめ：1日あたりの上限（表示・説明用。生成ロジックとも一致）
@@ -142,7 +142,7 @@ abstract final class _HomeUi {
 
   static List<BoxShadow> get cardShadow => [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.055),
+          color: HomeScreenColors.cardShadowColor,
           offset: const Offset(0, 2),
           blurRadius: 10,
         ),
@@ -152,16 +152,13 @@ abstract final class _HomeUi {
   static BoxDecoration todayRecommendationsSectionDecorationActive() {
     return BoxDecoration(
       gradient: LinearGradient(
-        colors: [
-          AppColors.accentLight.withValues(alpha: 0.55),
-          AppColors.surface,
-        ],
+        colors: HomeScreenColors.todayActiveGradientColors,
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
       borderRadius: BorderRadius.circular(radiusSectionOuter),
       border: Border.all(
-        color: AppColors.accentPrimary.withValues(alpha: 0.2),
+        color: HomeScreenColors.todayActiveBorder,
       ),
       boxShadow: cardShadow,
     );
@@ -170,13 +167,10 @@ abstract final class _HomeUi {
   /// 今日のおすすめ：本日完了（やり切り感・同一セクション内で弱めのトーン）
   static BoxDecoration todayRecommendationsSectionDecorationCompleted() {
     return BoxDecoration(
-      color: Color.alphaBlend(
-        AppColors.surfaceVariant.withValues(alpha: 0.52),
-        AppColors.surface,
-      ),
+      color: HomeScreenColors.todayDoneFill,
       borderRadius: BorderRadius.circular(radiusSectionOuter),
       border: Border.all(
-        color: sectionBorderColor(accentTint: false),
+        color: HomeScreenColors.todayDoneBorder,
       ),
       boxShadow: cardShadow,
     );
@@ -185,7 +179,7 @@ abstract final class _HomeUi {
   /// 楽天で検索：説明＋CTA を1ブロックに（先頭単独ボタンの唐突感を抑える）
   static BoxDecoration searchEntrySectionDecoration() {
     return BoxDecoration(
-      color: AppColors.surface,
+      color: HomeScreenColors.standaloneCardFill,
       borderRadius: BorderRadius.circular(radiusSectionOuter),
       border: Border.all(
         color: sectionBorderColor(accentTint: true),
@@ -197,10 +191,7 @@ abstract final class _HomeUi {
   /// ROOMコレ管理：見出し〜タイルまでを1ブロックに見せる外枠
   static BoxDecoration roomManagementSectionDecoration() {
     return BoxDecoration(
-      color: Color.alphaBlend(
-        AppColors.surfaceVariant.withValues(alpha: 0.4),
-        AppColors.background,
-      ),
+      color: HomeScreenColors.groupedSectionFill,
       borderRadius: BorderRadius.circular(radiusSectionOuter),
       border: Border.all(
         color: sectionBorderColor(accentTint: false),
@@ -212,10 +203,10 @@ abstract final class _HomeUi {
   /// ROOMコレ管理：4タイルをまとめる内側デッキ（見出しとは色を分ける）
   static BoxDecoration roomTileDeckDecoration() {
     return BoxDecoration(
-      color: AppColors.surface,
+      color: HomeScreenColors.deckFill,
       borderRadius: BorderRadius.circular(radiusSectionInner),
       border: Border.all(
-        color: AppColors.divider.withValues(alpha: 0.72),
+        color: HomeScreenColors.deckOutline,
       ),
     );
   }
@@ -223,10 +214,7 @@ abstract final class _HomeUi {
   /// 最近追加した候補：見出し〜一覧〜フッターを1つにまとめる外枠
   static BoxDecoration recentCandidatesSectionDecoration() {
     return BoxDecoration(
-      color: Color.alphaBlend(
-        AppColors.surfaceVariant.withValues(alpha: 0.4),
-        AppColors.background,
-      ),
+      color: HomeScreenColors.groupedSectionFill,
       borderRadius: BorderRadius.circular(radiusSectionOuter),
       border: Border.all(
         color: sectionBorderColor(accentTint: false),
@@ -237,7 +225,7 @@ abstract final class _HomeUi {
 
   /// セクション見出し：アクセント（ROOM・最近候補）— サイズは [sectionTitle] と揃え色だけ差す
   static TextStyle sectionTitleAccent(BuildContext context) {
-    return sectionTitle(context).copyWith(color: AppColors.accentPrimary);
+    return sectionTitle(context).copyWith(color: HomeScreenColors.sectionTitleAccent);
   }
 
   /// 見出し直下の一行リード（全セクションで統一）
@@ -248,7 +236,7 @@ abstract final class _HomeUi {
       fontWeight: FontWeight.w500,
       height: 1.35,
       letterSpacing: 0.02,
-      color: AppColors.textTertiary,
+      color: HomeScreenColors.leadOnSection,
     );
   }
 
@@ -260,7 +248,7 @@ abstract final class _HomeUi {
       fontWeight: FontWeight.w800,
       height: 1.22,
       letterSpacing: -0.15,
-      color: AppColors.textPrimary,
+      color: HomeScreenColors.titlePrimary,
     );
   }
 
@@ -281,7 +269,7 @@ abstract final class _HomeUi {
     return (base ?? const TextStyle()).copyWith(
       fontSize: 13,
       height: 1.38,
-      color: AppColors.textSecondary,
+      color: HomeScreenColors.bodyOnSection,
     );
   }
 
@@ -291,7 +279,7 @@ abstract final class _HomeUi {
     return (base ?? const TextStyle()).copyWith(
       fontSize: 11.5,
       height: 1.32,
-      color: AppColors.textTertiary,
+      color: HomeScreenColors.footnoteMuted,
     );
   }
 
@@ -303,7 +291,7 @@ abstract final class _HomeUi {
       fontWeight: FontWeight.w700,
       height: 1.2,
       letterSpacing: -0.08,
-      color: AppColors.accentPrimary,
+      color: HomeScreenColors.footerActionLabel,
     );
   }
 
@@ -415,7 +403,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: HomeScreenColors.canvas,
       body: SafeArea(
         child:
             Consumer3<
@@ -566,15 +554,15 @@ class _HomeExpandableSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(_HomeUi.radiusSectionOuter);
-    final splashColor = AppColors.accentPrimary.withValues(alpha: 0.14);
-    final highlightColor = AppColors.accentPrimary.withValues(alpha: 0.07);
-    const iconColor = AppColors.accentPrimary;
+    final splashColor = HomeScreenColors.inkAccentSplash;
+    final highlightColor = HomeScreenColors.inkAccentHighlight;
+    final iconColor = HomeScreenColors.sectionTitleAccent;
 
     final decoration = BoxDecoration(
       gradient: LinearGradient(
         colors: [
-          AppColors.accentLight.withValues(alpha: 0.88),
-          const Color(0xFFFFF5F9),
+          HomeScreenColors.aboutHeaderGradientStart,
+          HomeScreenColors.aboutHeaderGradientEnd,
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -680,7 +668,7 @@ class _HomeSearchEntrySection extends StatelessWidget {
                 child: Icon(
                   Icons.travel_explore_rounded,
                   size: 22,
-                  color: AppColors.accentPrimary.withValues(alpha: 0.9),
+                  color: HomeScreenColors.statusAccentStrong,
                 ),
               ),
               SizedBox(width: _HomeUi.gapIconToTitle),
@@ -757,8 +745,8 @@ class _RoomManagementSection extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: onToggle,
-              splashColor: AppColors.accentPrimary.withValues(alpha: 0.09),
-              highlightColor: AppColors.accentPrimary.withValues(alpha: 0.05),
+              splashColor: HomeScreenColors.inkAccentSplash,
+              highlightColor: HomeScreenColors.inkAccentHighlight,
               child: Padding(
                 padding: _HomeUi.paddingRoomSectionHeader,
                 child: Row(
@@ -769,7 +757,7 @@ class _RoomManagementSection extends StatelessWidget {
                       child: Icon(
                         Icons.collections_bookmark_outlined,
                         size: 22,
-                        color: AppColors.accentPrimary.withValues(alpha: 0.9),
+                        color: HomeScreenColors.statusAccentStrong,
                       ),
                     ),
                     SizedBox(width: _HomeUi.gapIconToTitle),
@@ -879,8 +867,8 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: onToggle,
-              splashColor: AppColors.accentPrimary.withValues(alpha: 0.09),
-              highlightColor: AppColors.accentPrimary.withValues(alpha: 0.05),
+              splashColor: HomeScreenColors.inkAccentSplash,
+              highlightColor: HomeScreenColors.inkAccentHighlight,
               child: Padding(
                 padding: _HomeUi.paddingRecentSectionHeader,
                 child: Row(
@@ -891,7 +879,7 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
                       child: Icon(
                         Icons.bookmark_added_outlined,
                         size: 22,
-                        color: AppColors.accentPrimary.withValues(alpha: 0.9),
+                        color: HomeScreenColors.statusAccentStrong,
                       ),
                     ),
                     SizedBox(width: _HomeUi.gapIconToTitle),
@@ -1039,7 +1027,7 @@ class _FlowStepLine extends StatelessWidget {
           height: 24,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: AppColors.accentPrimary.withValues(alpha: 0.15),
+            color: HomeScreenColors.flowStepBadgeFill,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
@@ -1096,8 +1084,8 @@ class _HomeCollectionListLink extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onPressed,
-          splashColor: AppColors.textPrimary.withValues(alpha: 0.06),
-          highlightColor: AppColors.textPrimary.withValues(alpha: 0.03),
+          splashColor: HomeScreenColors.inkNeutralSplash,
+          highlightColor: HomeScreenColors.inkNeutralHighlight,
           child: Container(
             width: double.infinity,
             padding: _HomeUi.paddingRecentListFooterAction,
@@ -1107,10 +1095,7 @@ class _HomeCollectionListLink extends StatelessWidget {
                   color: _HomeUi.dividerLineColor(),
                 ),
               ),
-              color: Color.alphaBlend(
-                AppColors.surfaceVariant.withValues(alpha: 0.32),
-                AppColors.surface,
-              ),
+              color: HomeScreenColors.subActionRowFill,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1178,7 +1163,7 @@ class _HomeCollectionListLink extends StatelessWidget {
           foregroundColor: AppColors.accentPrimary,
           backgroundColor: AppColors.surface,
           side: BorderSide(
-            color: AppColors.divider.withValues(alpha: 0.95),
+            color: HomeScreenColors.metricTileOutline,
           ),
           elevation: 0,
           shadowColor: Colors.transparent,
@@ -1223,7 +1208,7 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
         : _HomeUi.todayRecommendationsSectionDecorationActive();
 
     final titleStyle = _HomeUi.sectionTitle(context).copyWith(
-      color: done ? AppColors.textSecondary : AppColors.textPrimary,
+      color: done ? HomeScreenColors.bodyOnSection : HomeScreenColors.titlePrimary,
     );
 
     late final String statusLine;
@@ -1260,13 +1245,13 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
     Color leadingColor;
     if (done) {
       leadingIcon = Icons.check_circle_outline_rounded;
-      leadingColor = const Color(0xFF2E7D32).withValues(alpha: 0.75);
+      leadingColor = HomeScreenColors.statusSuccessIcon;
     } else if (isLoading && totalCount == 0) {
       leadingIcon = Icons.auto_awesome_outlined;
-      leadingColor = AppColors.accentPrimary.withValues(alpha: 0.55);
+      leadingColor = HomeScreenColors.statusAccentMuted;
     } else {
       leadingIcon = Icons.auto_awesome_outlined;
-      leadingColor = AppColors.accentPrimary.withValues(alpha: 0.88);
+      leadingColor = HomeScreenColors.statusAccentStrong;
     }
 
     return Material(
@@ -1274,11 +1259,11 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
       child: InkWell(
         onTap: onOpen,
         borderRadius: BorderRadius.circular(_HomeUi.radiusSectionOuter),
-        splashColor: AppColors.textPrimary.withValues(
-          alpha: done ? 0.05 : 0.08,
+        splashColor: HomeScreenColors.inkNeutralSplash.withValues(
+          alpha: done ? 0.06 : 0.09,
         ),
-        highlightColor: AppColors.textPrimary.withValues(
-          alpha: done ? 0.03 : 0.04,
+        highlightColor: HomeScreenColors.inkNeutralHighlight.withValues(
+          alpha: done ? 0.04 : 0.05,
         ),
         child: Opacity(
           opacity: done ? 0.96 : 1,
@@ -1297,9 +1282,7 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                           height: 22,
                           child: CircularProgressIndicator(
                             strokeWidth: 2.2,
-                            color: AppColors.accentPrimary.withValues(
-                              alpha: 0.75,
-                            ),
+                            color: HomeScreenColors.statusAccentStrong,
                           ),
                         )
                       : Icon(
@@ -1331,8 +1314,8 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                           height: 1.32,
                           color: done
-                              ? AppColors.textSecondary
-                              : AppColors.textPrimary,
+                              ? HomeScreenColors.bodyOnSection
+                              : HomeScreenColors.titlePrimary,
                         ),
                       ),
                       if (errorMessage != null &&
@@ -1358,11 +1341,8 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                           child: LinearProgressIndicator(
                             value: progress.clamp(0.0, 1.0),
                             minHeight: 4,
-                            backgroundColor:
-                                AppColors.divider.withValues(alpha: 0.45),
-                            color: AppColors.accentPrimary.withValues(
-                              alpha: 0.85,
-                            ),
+                            backgroundColor: HomeScreenColors.progressTrack,
+                            color: HomeScreenColors.progressValue,
                           ),
                         ),
                       ],
@@ -1541,14 +1521,14 @@ class _RoomMetricTile extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(radius),
-        splashColor: AppColors.textPrimary.withValues(alpha: 0.07),
+        splashColor: HomeScreenColors.inkNeutralSplash,
         child: Container(
           padding: pad,
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: HomeScreenColors.metricTileFill,
             borderRadius: BorderRadius.circular(radius),
             border: Border.all(
-              color: AppColors.divider.withValues(alpha: 0.88),
+              color: HomeScreenColors.metricTileOutline,
             ),
           ),
           child: Column(
@@ -1672,9 +1652,9 @@ class _RecentCandidatesPanel extends StatelessWidget {
               thickness: 1,
               indent: embedInUnifiedSection ? 70 : 72,
               endIndent: embedInUnifiedSection ? 12 : 12,
-              color: AppColors.divider.withValues(
-                alpha: embedInUnifiedSection ? 0.5 : 0.55,
-              ),
+              color: embedInUnifiedSection
+                  ? HomeScreenColors.listRowDivider
+                  : AppColors.divider.withValues(alpha: 0.55),
             ),
         ],
       ],
@@ -1686,10 +1666,10 @@ class _RecentCandidatesPanel extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: HomeScreenColors.standaloneCardFill,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         border: Border.all(
-          color: AppColors.divider.withValues(alpha: 0.88),
+          color: HomeScreenColors.metricTileOutline,
         ),
       ),
       child: list,
@@ -1714,8 +1694,8 @@ class _RecentCandidateTile extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        splashColor: AppColors.textPrimary.withValues(alpha: 0.06),
-        highlightColor: AppColors.textPrimary.withValues(alpha: 0.03),
+        splashColor: HomeScreenColors.inkNeutralSplash,
+        highlightColor: HomeScreenColors.inkNeutralHighlight,
         child: Padding(
           padding: contentPadding,
           child: Row(
@@ -1771,7 +1751,7 @@ class _RecentCandidateTile extends StatelessWidget {
       child: Container(
         width: 46,
         height: 46,
-        color: const Color(0xFFE3F2FD),
+        color: HomeScreenColors.candidateThumbPlaceholder,
         child: product.imageUrl.isNotEmpty
             ? Image.network(
                 product.imageUrl,
