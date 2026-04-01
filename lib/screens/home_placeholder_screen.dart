@@ -23,7 +23,9 @@ class HomePlaceholderScreen extends StatefulWidget {
 }
 
 class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
-  bool _mainHelpExpanded = false;
+  bool _aboutExpanded = false;
+  bool _roomIntroExpanded = false;
+  bool _recentIntroExpanded = false;
   @override
   void initState() {
     super.initState();
@@ -78,125 +80,186 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
               UserProfileProvider,
               TodayRecommendationProvider
             >(
-              builder:
-                  (context, roomProvider, userProfileProvider, recProvider, _) {
-                    final items = roomProvider.items;
-                    final rawName = userProfileProvider.profile.displayName;
-                    final displayName = rawName.trim().isEmpty
-                        ? null
-                        : rawName.trim();
-                    final nCandidate = RakutenRoomHomeStats.countCandidates(
+              builder: (context, roomProvider, userProfileProvider, recProvider, _) {
+                final items = roomProvider.items;
+                final rawName = userProfileProvider.profile.displayName;
+                final displayName = rawName.trim().isEmpty
+                    ? null
+                    : rawName.trim();
+                final nCandidate = RakutenRoomHomeStats.countCandidates(items);
+                final nDone = RakutenRoomHomeStats.countDone(items);
+                final now = DateTime.now();
+                final nTodayDone =
+                    RakutenRoomHomeStats.countDoneOnLocalCalendarDay(
                       items,
+                      now,
                     );
-                    final nDone = RakutenRoomHomeStats.countDone(items);
-                    final now = DateTime.now();
-                    final nTodayDone =
-                        RakutenRoomHomeStats.countDoneOnLocalCalendarDay(
-                          items,
-                          now,
-                        );
-                    final lastDone = RakutenRoomHomeStats.latestDoneAt(items);
-                    final recentCandidates =
-                        RakutenRoomHomeStats.candidatesNewestFirst(
-                          items,
-                        ).take(5).toList();
-                    final bottomInset = MediaQuery.paddingOf(context).bottom;
-                    const navBarReserve = 52.0;
+                final lastDone = RakutenRoomHomeStats.latestDoneAt(items);
+                final recentCandidates =
+                    RakutenRoomHomeStats.candidatesNewestFirst(
+                      items,
+                    ).take(5).toList();
+                final bottomInset = MediaQuery.paddingOf(context).bottom;
+                const navBarReserve = 52.0;
 
-                    return ListView(
-                      padding: EdgeInsets.fromLTRB(
-                        AppDimensions.screenPaddingH,
-                        AppDimensions.spacingSm,
-                        AppDimensions.screenPaddingH,
-                        bottomInset + navBarReserve,
+                return ListView(
+                  padding: EdgeInsets.fromLTRB(
+                    AppDimensions.screenPaddingH,
+                    AppDimensions.spacingSm,
+                    AppDimensions.screenPaddingH,
+                    bottomInset + navBarReserve,
+                  ),
+                  children: [
+                    HomePrimaryActionButton(
+                      emphasis: HomePrimaryActionEmphasis.hero,
+                      icon: Icons.travel_explore_rounded,
+                      label: '楽天で検索',
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const RakutenSearchScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: AppDimensions.spacingMd),
+                    _HomeExpandableSection(
+                      chrome: _HomeExpandableChrome.hero,
+                      expanded: _aboutExpanded,
+                      onToggle: () {
+                        setState(() {
+                          _aboutExpanded = !_aboutExpanded;
+                        });
+                      },
+                      title: 'このアプリについて',
+                      collapsedSummary: '商品を探す → 候補に追加 → ROOMでコレ（詳しく）',
+                      leadingIcon: Icons.info_outline_rounded,
+                      expandedChild: _AboutAppExpandedBody(
+                        displayName: displayName,
                       ),
-                      children: [
-                        HomePrimaryActionButton(
-                          emphasis: HomePrimaryActionEmphasis.hero,
-                          icon: Icons.travel_explore_rounded,
-                          label: '楽天で検索',
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const RakutenSearchScreen(),
-                              ),
-                            );
-                          },
+                    ),
+                    const SizedBox(height: AppDimensions.spacingMd),
+                    _TodayRecommendationsEntryCard(
+                      totalCount: recProvider.totalCount,
+                      pendingCount: recProvider.pendingCount,
+                      isCompleted: recProvider.isCompleted,
+                      onOpen: () => _openTodayRecommendations(context),
+                    ),
+                    const SizedBox(height: AppDimensions.spacingLg),
+                    _HomeExpandableSection(
+                      chrome: _HomeExpandableChrome.plain,
+                      expanded: _roomIntroExpanded,
+                      onToggle: () {
+                        setState(() {
+                          _roomIntroExpanded = !_roomIntroExpanded;
+                        });
+                      },
+                      title: 'ROOMコレ管理',
+                      collapsedSummary: '数値の見方・カードをタップしたときの動き',
+                      leadingIcon: Icons.collections_bookmark_outlined,
+                      expandedChild: Text(
+                        'コレ候補とコレ済をまとめて表示します。表示の数値は、この端末に保存した一覧から集計しています。下の各カードをタップすると、コレ候補またはコレ済の一覧、あるいは活動画面へ移動します。',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.5,
                         ),
-                        const SizedBox(height: AppDimensions.spacingMd),
-                        _MainFlowHintSection(
-                          displayName: displayName,
-                          expanded: _mainHelpExpanded,
-                          onToggleExpanded: () {
-                            setState(() {
-                              _mainHelpExpanded = !_mainHelpExpanded;
-                            });
-                          },
+                      ),
+                    ),
+                    const SizedBox(height: AppDimensions.spacingSm),
+                    _RoomStatsCardGrid(
+                      candidateTotal: nCandidate,
+                      doneTotal: nDone,
+                      todayDoneCount: nTodayDone,
+                      lastDoneAt: lastDone,
+                      onCandidateTap: () =>
+                          _openRoomList(context, initialTabIndex: 0),
+                      onDoneTap: () =>
+                          _openRoomList(context, initialTabIndex: 1),
+                      onTodayTap: () => _openActivity(context),
+                      onLastCollectTap: () => _openActivity(context),
+                    ),
+                    const SizedBox(height: AppDimensions.spacingLg),
+                    _HomeExpandableSection(
+                      chrome: _HomeExpandableChrome.plain,
+                      expanded: _recentIntroExpanded,
+                      onToggle: () {
+                        setState(() {
+                          _recentIntroExpanded = !_recentIntroExpanded;
+                        });
+                      },
+                      title: '最近追加した候補',
+                      collapsedSummary: 'コレ済に移すと、このリストから外れます。',
+                      leadingIcon: Icons.bookmark_added_outlined,
+                      expandedChild: Text(
+                        '直近でコレ候補に追加した商品を最大5件まで表示します。まだコレしていない候補だけが対象です。コレ済へ移すとここから消えます。行をタップするとコレ一覧を開きます。',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.5,
                         ),
-                        const SizedBox(height: AppDimensions.spacingMd),
-                        _TodayRecommendationsEntryCard(
-                          totalCount: recProvider.totalCount,
-                          pendingCount: recProvider.pendingCount,
-                          isCompleted: recProvider.isCompleted,
-                          onOpen: () => _openTodayRecommendations(context),
-                        ),
-                        const SizedBox(height: AppDimensions.spacingLg),
-                        _SectionIntro(title: 'ROOMコレ管理', body: null),
-                        const SizedBox(height: AppDimensions.spacingSm),
-                        _RoomStatsCardGrid(
-                          candidateTotal: nCandidate,
-                          doneTotal: nDone,
-                          todayDoneCount: nTodayDone,
-                          lastDoneAt: lastDone,
-                          onCandidateTap: () =>
-                              _openRoomList(context, initialTabIndex: 0),
-                          onDoneTap: () =>
-                              _openRoomList(context, initialTabIndex: 1),
-                          onTodayTap: () => _openActivity(context),
-                          onLastCollectTap: () => _openActivity(context),
-                        ),
-                        const SizedBox(height: AppDimensions.spacingLg),
-                        _SectionIntro(
-                          title: '最近追加した候補',
-                          body: 'コレ済になるとここから外れます。',
-                        ),
-                        const SizedBox(height: AppDimensions.spacingSm),
-                        _RecentCandidatesPanel(
-                          candidates: recentCandidates,
-                          onOpenList: () => _openRoomList(context),
-                        ),
-                        const SizedBox(height: AppDimensions.spacingLg),
-                        _HomeCollectionListLink(
-                          onPressed: () => _openRoomList(context),
-                        ),
-                        const SizedBox(height: AppDimensions.spacingMd),
-                      ],
-                    );
-                  },
+                      ),
+                    ),
+                    const SizedBox(height: AppDimensions.spacingSm),
+                    _RecentCandidatesPanel(
+                      candidates: recentCandidates,
+                      onOpenList: () => _openRoomList(context),
+                    ),
+                    const SizedBox(height: AppDimensions.spacingLg),
+                    _HomeCollectionListLink(
+                      onPressed: () => _openRoomList(context),
+                    ),
+                    const SizedBox(height: AppDimensions.spacingMd),
+                  ],
+                );
+              },
             ),
       ),
     );
   }
 }
 
-/// 折りたたみ式の「次に何をするか」ガイド（初期は閉じ、展開時のみ詳細）。
-class _MainFlowHintSection extends StatelessWidget {
-  const _MainFlowHintSection({
-    required this.displayName,
+/// ホームの折りたたみカードの見た目種別。
+enum _HomeExpandableChrome { hero, plain }
+
+/// ホーム共通：ヘッダー全面タップ・スプラッシュ・AnimatedSize で開閉。
+class _HomeExpandableSection extends StatelessWidget {
+  const _HomeExpandableSection({
+    required this.chrome,
     required this.expanded,
-    required this.onToggleExpanded,
+    required this.onToggle,
+    required this.title,
+    required this.collapsedSummary,
+    required this.leadingIcon,
+    required this.expandedChild,
   });
 
-  final String? displayName;
+  final _HomeExpandableChrome chrome;
   final bool expanded;
-  final VoidCallback onToggleExpanded;
+  final VoidCallback onToggle;
+  final String title;
+  final String collapsedSummary;
+  final IconData leadingIcon;
+  final Widget expandedChild;
+
+  static const Duration _animDuration = Duration(milliseconds: 280);
+  static const Curve _animCurve = Curves.easeInOutCubic;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
+    final radius = BorderRadius.circular(AppDimensions.radiusCard);
+    final isHero = chrome == _HomeExpandableChrome.hero;
+    final splashColor = isHero
+        ? AppColors.accentPrimary.withValues(alpha: 0.14)
+        : AppColors.textPrimary.withValues(alpha: 0.09);
+    final highlightColor = isHero
+        ? AppColors.accentPrimary.withValues(alpha: 0.07)
+        : AppColors.textPrimary.withValues(alpha: 0.05);
+    final iconColor = isHero
+        ? AppColors.accentPrimary
+        : AppColors.textSecondary;
+
+    final BoxDecoration decoration;
+    if (isHero) {
+      decoration = BoxDecoration(
         gradient: LinearGradient(
           colors: [
             AppColors.accentLight.withValues(alpha: 0.9),
@@ -205,7 +268,7 @@ class _MainFlowHintSection extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        borderRadius: radius,
         border: Border.all(
           color: AppColors.accentPrimary.withValues(alpha: 0.12),
         ),
@@ -216,83 +279,147 @@ class _MainFlowHintSection extends StatelessWidget {
             blurRadius: 8,
           ),
         ],
-      ),
+      );
+    } else {
+      decoration = BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: radius,
+        border: Border.all(color: AppColors.divider),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            offset: const Offset(0, 2),
+            blurRadius: 5,
+          ),
+        ],
+      );
+    }
+
+    return Container(
+      width: double.infinity,
+      decoration: decoration,
+      clipBehavior: Clip.antiAlias,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          InkWell(
-            onTap: onToggleExpanded,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.route_rounded,
-                  size: 22,
-                  color: AppColors.accentPrimary,
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    '使い方（3ステップ）',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w800,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onToggle,
+              borderRadius: radius,
+              splashColor: splashColor,
+              highlightColor: highlightColor,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(leadingIcon, size: 22, color: iconColor),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            title,
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(
+                                  color: AppColors.textPrimary,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                          ),
+                          if (collapsedSummary.isNotEmpty && !expanded) ...[
+                            const SizedBox(height: 6),
+                            Text(
+                              collapsedSummary,
+                              style: Theme.of(context).textTheme.labelMedium
+                                  ?.copyWith(
+                                    color: AppColors.textSecondary,
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.35,
+                                  ),
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
-                  ),
+                    Icon(
+                      expanded
+                          ? Icons.keyboard_arrow_up_rounded
+                          : Icons.keyboard_arrow_down_rounded,
+                      color: AppColors.textSecondary,
+                    ),
+                  ],
                 ),
-                Icon(
-                  expanded
-                      ? Icons.keyboard_arrow_up_rounded
-                      : Icons.keyboard_arrow_down_rounded,
-                  color: AppColors.textSecondary,
-                ),
-              ],
+              ),
             ),
           ),
-          if (expanded) ...[
-            const SizedBox(height: 12),
-            Text(
-              '商品を探す → 候補に追加 → ROOMでコレ',
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: AppColors.textSecondary,
+          AnimatedSize(
+            duration: _animDuration,
+            curve: _animCurve,
+            alignment: Alignment.topCenter,
+            child: expanded
+                ? Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    child: expandedChild,
+                  )
+                : const SizedBox(width: double.infinity),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AboutAppExpandedBody extends StatelessWidget {
+  const _AboutAppExpandedBody({required this.displayName});
+
+  final String? displayName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '商品を探す → 候補に追加 → ROOMでコレ',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            color: AppColors.textSecondary,
+            fontWeight: FontWeight.w600,
+            height: 1.35,
+          ),
+        ),
+        const SizedBox(height: 12),
+        if (displayName != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              '$displayNameさん、まずは検索から',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textPrimary,
                 fontWeight: FontWeight.w600,
                 height: 1.35,
               ),
             ),
-            const SizedBox(height: 12),
-            if (displayName != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Text(
-                  '$displayNameさん、まずは検索から',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w600,
-                    height: 1.35,
-                  ),
-                ),
-              ),
-            _FlowStepLine(
-              number: '1',
-              title: '商品を探す',
-              subtitle: '上の「楽天で検索」から探します。',
-            ),
-            const SizedBox(height: 8),
-            _FlowStepLine(
-              number: '2',
-              title: '候補に追加',
-              subtitle: '気になる商品をコレ候補として保存します。',
-            ),
-            const SizedBox(height: 8),
-            _FlowStepLine(
-              number: '3',
-              title: 'ROOMでコレ',
-              subtitle: 'コレ一覧でURLを開き、ROOMアプリでコレします。',
-            ),
-          ],
-        ],
-      ),
+          ),
+        const _FlowStepLine(
+          number: '1',
+          title: '商品を探す',
+          subtitle: '上の「楽天で検索」から探します。',
+        ),
+        const SizedBox(height: 8),
+        const _FlowStepLine(
+          number: '2',
+          title: '候補に追加',
+          subtitle: '気になる商品をコレ候補として保存します。',
+        ),
+        const SizedBox(height: 8),
+        const _FlowStepLine(
+          number: '3',
+          title: 'ROOMでコレ',
+          subtitle: 'コレ一覧でURLを開き、ROOMアプリでコレします。',
+        ),
+      ],
     );
   }
 }
@@ -353,39 +480,6 @@ class _FlowStepLine extends StatelessWidget {
             ],
           ),
         ),
-      ],
-    );
-  }
-}
-
-class _SectionIntro extends StatelessWidget {
-  const _SectionIntro({required this.title, this.body});
-
-  final String title;
-  final String? body;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        if (body != null && body!.isNotEmpty) ...[
-          const SizedBox(height: 6),
-          Text(
-            body!,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.45,
-            ),
-          ),
-        ],
       ],
     );
   }
