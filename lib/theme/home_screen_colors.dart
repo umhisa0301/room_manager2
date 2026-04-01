@@ -8,24 +8,61 @@ import 'app_colors.dart';
 ///
 /// **階層**
 /// 1. [canvas] … 画面全体の土台
-/// 2. [groupedSectionFill] … ROOM / 最近候補など「セクションのまとまり」
-/// 3. [standaloneCardFill] … 楽天検索など単独カード
-/// 4. [deckFill] / [deckOutline] … セクション内のデッキ（メトリクス枠・一覧枠）
-/// 5. [metricTileFill] / [metricTileOutline] … デッキ内の1タイル
-/// 6. [accentPrimary] 系（[AppColors.accentPrimary]）… 主CTA・強調見出し（ボタンは既存ウィジェット）
-/// 7. [subActionRowFill] … コレ一覧などサブ導線行
-/// 8. テキスト … [titlePrimary] / [leadOnSection] / [bodyOnSection] / [footnoteMuted]
-/// 9. 状態 … [statusSuccessIcon] / [statusAccentMuted] / [statusAccentStrong]
+/// 2. [groupedSectionFill] … 汎用グループの基調（ベース）
+/// 3. [roomGroupedShellFill] / [recentGroupedShellFill] … セクションごとのまとまり（微差）
+/// 4. [roomSectionHeaderBand] / [recentSectionHeaderBand] … 見出し行（親）
+/// 5. [roomContentWellFill] … 見出し直下〜デッキまでの「中身ゾーン」
+/// 6. [standaloneCardFill] … 楽天検索など単独カード
+/// 7. [deckFill] / [deckOutline] … デッキ枠
+/// 8. [metricTileFill] … タイル面（読みやすさ優先で白基調）
+/// 9. テキスト … [accentSectionHeading] / [leadOnSection] / [groupedSectionBody] / …
+/// 10. [subActionRowFill] … サブ導線行
 abstract final class HomeScreenColors {
   HomeScreenColors._();
 
   // --- 1. 画面土台 ---
   static Color get canvas => AppColors.background;
 
-  // --- 2. セクションのまとまり（外枠ごと薄く沈める）---
+  // --- 2. セクションのまとまり（基調）---
   static Color get groupedSectionFill => Color.alphaBlend(
         AppColors.surfaceVariant.withValues(alpha: 0.58),
         AppColors.background,
+      );
+
+  /// ROOM：ほんの少しピンク寄り（一覧ブロックと「ひとかたまり」に見せる）
+  static Color get roomGroupedShellFill => Color.alphaBlend(
+        AppColors.accentLight.withValues(alpha: 0.16),
+        groupedSectionFill,
+      );
+
+  /// 最近候補：ROOM より薄く、別セクションだが同じ世界観
+  static Color get recentGroupedShellFill => Color.alphaBlend(
+        AppColors.accentLight.withValues(alpha: 0.09),
+        groupedSectionFill,
+      );
+
+  /// ROOM 見出し帯（タイトル＝親）
+  static Color get roomSectionHeaderBand => Color.alphaBlend(
+        AppColors.accentLight.withValues(alpha: 0.34),
+        roomGroupedShellFill,
+      );
+
+  /// 最近候補 見出し帯
+  static Color get recentSectionHeaderBand => Color.alphaBlend(
+        AppColors.accentLight.withValues(alpha: 0.26),
+        recentGroupedShellFill,
+      );
+
+  /// ROOM：区切り下〜デッキ手前のわずかな沈み（中身ブロック）
+  static Color get roomContentWellFill => Color.alphaBlend(
+        AppColors.surface.withValues(alpha: 0.2),
+        roomGroupedShellFill,
+      );
+
+  /// 最近候補：一覧デッキ周辺
+  static Color get recentContentWellFill => Color.alphaBlend(
+        AppColors.surface.withValues(alpha: 0.16),
+        recentGroupedShellFill,
       );
 
   /// 単独カード（検索ブロック）：セクション群より一段明るく浮かせる
@@ -48,36 +85,74 @@ abstract final class HomeScreenColors {
   static Color get listRowDivider =>
       AppColors.divider.withValues(alpha: 0.56);
 
-  // --- 今日のおすすめ（アクティブ / 完了）---
+  // --- 今日のおすすめ（独立セクション・グラデでまとまり）---
   static List<Color> get todayActiveGradientColors => [
-        AppColors.accentLight.withValues(alpha: 0.92),
-        AppColors.surface,
+        AppColors.accentLight.withValues(alpha: 0.94),
+        Color.alphaBlend(
+          AppColors.accentLight.withValues(alpha: 0.32),
+          AppColors.surface,
+        ),
       ];
   static Color get todayActiveBorder =>
-      AppColors.accentPrimary.withValues(alpha: 0.28);
+      AppColors.accentPrimary.withValues(alpha: 0.32);
   static Color get todayDoneFill => Color.alphaBlend(
-        AppColors.surfaceVariant.withValues(alpha: 0.64),
-        AppColors.surface,
+        AppColors.accentLight.withValues(alpha: 0.1),
+        Color.alphaBlend(
+          AppColors.surfaceVariant.withValues(alpha: 0.58),
+          AppColors.surface,
+        ),
       );
   static Color get todayDoneBorder => sectionOutlineNeutral;
 
-  // --- 「このアプリについて」ヘッダー ---
+  // --- 「このアプリについて」（見出し〜本文が同カード内の塊）---
   static Color get aboutHeaderGradientStart =>
       AppColors.accentLight.withValues(alpha: 0.96);
-  static Color get aboutHeaderGradientEnd => const Color(0xFFFFF0F4);
+  static Color get aboutHeaderGradientEnd =>
+      Color.alphaBlend(AppColors.accentLight.withValues(alpha: 0.2), canvas);
+
+  static List<Color> get aboutSectionGradientColors => [
+        aboutHeaderGradientStart,
+        aboutHeaderGradientEnd,
+      ];
+
+  /// 展開本文エリア（ヘッダーより一段沈めて「中身」）
+  static Color get aboutExpandedWellFill => Color.alphaBlend(
+        AppColors.accentLightest.withValues(alpha: 0.72),
+        canvas,
+      );
 
   // --- テキスト階層（ホーム）---
   static Color get titlePrimary => AppColors.textPrimary;
+
+  /// アクセントセクション見出し（ROOM・最近候補）：ブランドより一段濃く
+  static Color get accentSectionHeading => Color.alphaBlend(
+        const Color(0xFF240010).withValues(alpha: 0.14),
+        AppColors.accentPrimary,
+      );
+
   static Color get sectionTitleAccent => AppColors.accentPrimary;
-  static Color get leadOnSection => const Color(0xFF5C5C5C);
+  static Color get leadOnSection => const Color(0xFF6E6E6E);
   static Color get bodyOnSection => AppColors.textSecondary;
-  static Color get footnoteMuted => const Color(0xFF757575);
-  static Color get footerActionLabel => AppColors.accentPrimary;
+
+  /// グループセクション内の説明文（中身：読みやすさ）
+  static Color get groupedSectionBody => const Color(0xFF565656);
+  static Color get footnoteMuted => const Color(0xFF7A7A7A);
+  static Color get footerActionLabel =>
+      AppColors.accentPrimary.withValues(alpha: 0.92);
+
+  /// 補助アイコン（シェブロン等）
+  static Color get chevronOnSection => leadOnSection;
 
   // --- サブ導線行 ---
   static Color get subActionRowFill => Color.alphaBlend(
         AppColors.surfaceVariant.withValues(alpha: 0.48),
         AppColors.surface,
+      );
+
+  /// 最近候補セクション末尾の「コレ一覧を開く」（シェルと同色味で親子関係を補助）
+  static Color get recentFooterRowFill => Color.alphaBlend(
+        recentGroupedShellFill.withValues(alpha: 0.42),
+        subActionRowFill,
       );
 
   // --- 状態アイコン ---

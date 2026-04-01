@@ -191,7 +191,7 @@ abstract final class _HomeUi {
   /// ROOMコレ管理：見出し〜タイルまでを1ブロックに見せる外枠
   static BoxDecoration roomManagementSectionDecoration() {
     return BoxDecoration(
-      color: HomeScreenColors.groupedSectionFill,
+      color: HomeScreenColors.roomGroupedShellFill,
       borderRadius: BorderRadius.circular(radiusSectionOuter),
       border: Border.all(
         color: sectionBorderColor(accentTint: false),
@@ -214,7 +214,7 @@ abstract final class _HomeUi {
   /// 最近追加した候補：見出し〜一覧〜フッターを1つにまとめる外枠
   static BoxDecoration recentCandidatesSectionDecoration() {
     return BoxDecoration(
-      color: HomeScreenColors.groupedSectionFill,
+      color: HomeScreenColors.recentGroupedShellFill,
       borderRadius: BorderRadius.circular(radiusSectionOuter),
       border: Border.all(
         color: sectionBorderColor(accentTint: false),
@@ -225,7 +225,14 @@ abstract final class _HomeUi {
 
   /// セクション見出し：アクセント（ROOM・最近候補）— サイズは [sectionTitle] と揃え色だけ差す
   static TextStyle sectionTitleAccent(BuildContext context) {
-    return sectionTitle(context).copyWith(color: HomeScreenColors.sectionTitleAccent);
+    return sectionTitle(context).copyWith(
+      color: HomeScreenColors.accentSectionHeading,
+    );
+  }
+
+  /// グループセクション内の展開説明（中身本文）
+  static TextStyle sectionBodyGrouped(BuildContext context) {
+    return sectionBody(context).copyWith(color: HomeScreenColors.groupedSectionBody);
   }
 
   /// 見出し直下の一行リード（全セクションで統一）
@@ -560,10 +567,7 @@ class _HomeExpandableSection extends StatelessWidget {
 
     final decoration = BoxDecoration(
       gradient: LinearGradient(
-        colors: [
-          HomeScreenColors.aboutHeaderGradientStart,
-          HomeScreenColors.aboutHeaderGradientEnd,
-        ],
+        colors: HomeScreenColors.aboutSectionGradientColors,
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
@@ -620,7 +624,7 @@ class _HomeExpandableSection extends StatelessWidget {
                       expanded
                           ? Icons.keyboard_arrow_up_rounded
                           : Icons.keyboard_arrow_down_rounded,
-                      color: AppColors.textSecondary,
+                      color: HomeScreenColors.chevronOnSection,
                       size: 22,
                     ),
                   ],
@@ -633,9 +637,12 @@ class _HomeExpandableSection extends StatelessWidget {
             curve: _animCurve,
             alignment: Alignment.topCenter,
             child: expanded
-                ? Padding(
-                    padding: _HomeUi.paddingSectionExpandedOnly,
-                    child: expandedChild,
+                ? ColoredBox(
+                    color: HomeScreenColors.aboutExpandedWellFill,
+                    child: Padding(
+                      padding: _HomeUi.paddingSectionExpandedOnly,
+                      child: expandedChild,
+                    ),
                   )
                 : const SizedBox(width: double.infinity),
           ),
@@ -741,50 +748,53 @@ class _RoomManagementSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: onToggle,
-              splashColor: HomeScreenColors.inkAccentSplash,
-              highlightColor: HomeScreenColors.inkAccentHighlight,
-              child: Padding(
-                padding: _HomeUi.paddingRoomSectionHeader,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 1),
-                      child: Icon(
-                        Icons.collections_bookmark_outlined,
+          ColoredBox(
+            color: HomeScreenColors.roomSectionHeaderBand,
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: onToggle,
+                splashColor: HomeScreenColors.inkAccentSplash,
+                highlightColor: HomeScreenColors.inkAccentHighlight,
+                child: Padding(
+                  padding: _HomeUi.paddingRoomSectionHeader,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 1),
+                        child: Icon(
+                          Icons.collections_bookmark_outlined,
+                          size: 22,
+                          color: HomeScreenColors.statusAccentStrong,
+                        ),
+                      ),
+                      SizedBox(width: _HomeUi.gapIconToTitle),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'ROOMコレ管理',
+                              style: _HomeUi.sectionTitleAccent(context),
+                            ),
+                            SizedBox(height: _HomeUi.gapHeaderTitleToLead),
+                            Text(
+                              '端末に保存した一覧の集計です。下のカードで一覧・活動へ。',
+                              style: _HomeUi.sectionHeaderLead(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        expanded
+                            ? Icons.keyboard_arrow_up_rounded
+                            : Icons.keyboard_arrow_down_rounded,
+                        color: HomeScreenColors.chevronOnSection,
                         size: 22,
-                        color: HomeScreenColors.statusAccentStrong,
                       ),
-                    ),
-                    SizedBox(width: _HomeUi.gapIconToTitle),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'ROOMコレ管理',
-                            style: _HomeUi.sectionTitleAccent(context),
-                          ),
-                          SizedBox(height: _HomeUi.gapHeaderTitleToLead),
-                          Text(
-                            '端末に保存した一覧の集計です。下のカードで一覧・活動へ。',
-                            style: _HomeUi.sectionHeaderLead(context),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      expanded
-                          ? Icons.keyboard_arrow_up_rounded
-                          : Icons.keyboard_arrow_down_rounded,
-                      color: AppColors.textSecondary,
-                      size: 22,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -802,29 +812,32 @@ class _RoomManagementSection extends StatelessWidget {
                     ),
                     child: Text(
                       '下の数は端末に保存した一覧の集計です。カードをタップで一覧・活動へ移動します。',
-                      style: _HomeUi.sectionBody(context),
+                      style: _HomeUi.sectionBodyGrouped(context),
                     ),
                   )
                 : const SizedBox(width: double.infinity),
           ),
           _HomeUi.sectionDivider(),
           SizedBox(height: _HomeUi.gapRoomDividerToDeck),
-          Padding(
-            padding: _HomeUi.paddingDeckOuterRoom,
-            child: DecoratedBox(
-              decoration: _HomeUi.roomTileDeckDecoration(),
-              child: Padding(
-                padding: const EdgeInsets.all(_HomeUi.paddingRoomTileDeck),
-                child: _RoomStatsCardGrid(
-                  unifiedRoomSection: true,
-                  candidateTotal: candidateTotal,
-                  doneTotal: doneTotal,
-                  todayDoneCount: todayDoneCount,
-                  lastDoneAt: lastDoneAt,
-                  onCandidateTap: onCandidateTap,
-                  onDoneTap: onDoneTap,
-                  onTodayTap: onTodayTap,
-                  onLastCollectTap: onLastCollectTap,
+          ColoredBox(
+            color: HomeScreenColors.roomContentWellFill,
+            child: Padding(
+              padding: _HomeUi.paddingDeckOuterRoom,
+              child: DecoratedBox(
+                decoration: _HomeUi.roomTileDeckDecoration(),
+                child: Padding(
+                  padding: const EdgeInsets.all(_HomeUi.paddingRoomTileDeck),
+                  child: _RoomStatsCardGrid(
+                    unifiedRoomSection: true,
+                    candidateTotal: candidateTotal,
+                    doneTotal: doneTotal,
+                    todayDoneCount: todayDoneCount,
+                    lastDoneAt: lastDoneAt,
+                    onCandidateTap: onCandidateTap,
+                    onDoneTap: onDoneTap,
+                    onTodayTap: onTodayTap,
+                    onLastCollectTap: onLastCollectTap,
+                  ),
                 ),
               ),
             ),
@@ -863,50 +876,53 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: onToggle,
-              splashColor: HomeScreenColors.inkAccentSplash,
-              highlightColor: HomeScreenColors.inkAccentHighlight,
-              child: Padding(
-                padding: _HomeUi.paddingRecentSectionHeader,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 1),
-                      child: Icon(
-                        Icons.bookmark_added_outlined,
+          ColoredBox(
+            color: HomeScreenColors.recentSectionHeaderBand,
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: onToggle,
+                splashColor: HomeScreenColors.inkAccentSplash,
+                highlightColor: HomeScreenColors.inkAccentHighlight,
+                child: Padding(
+                  padding: _HomeUi.paddingRecentSectionHeader,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 1),
+                        child: Icon(
+                          Icons.bookmark_added_outlined,
+                          size: 22,
+                          color: HomeScreenColors.statusAccentStrong,
+                        ),
+                      ),
+                      SizedBox(width: _HomeUi.gapIconToTitle),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '最近追加した候補',
+                              style: _HomeUi.sectionTitleAccent(context),
+                            ),
+                            SizedBox(height: _HomeUi.gapHeaderTitleToLead),
+                            Text(
+                              '直近5件まで。行タップで一覧の該当へ。コレ済で消えます。',
+                              style: _HomeUi.sectionHeaderLead(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        expanded
+                            ? Icons.keyboard_arrow_up_rounded
+                            : Icons.keyboard_arrow_down_rounded,
+                        color: HomeScreenColors.chevronOnSection,
                         size: 22,
-                        color: HomeScreenColors.statusAccentStrong,
                       ),
-                    ),
-                    SizedBox(width: _HomeUi.gapIconToTitle),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '最近追加した候補',
-                            style: _HomeUi.sectionTitleAccent(context),
-                          ),
-                          SizedBox(height: _HomeUi.gapHeaderTitleToLead),
-                          Text(
-                            '直近5件まで。行タップで一覧の該当へ。コレ済で消えます。',
-                            style: _HomeUi.sectionHeaderLead(context),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      expanded
-                          ? Icons.keyboard_arrow_up_rounded
-                          : Icons.keyboard_arrow_down_rounded,
-                      color: AppColors.textSecondary,
-                      size: 22,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -924,23 +940,26 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
                     ),
                     child: Text(
                       '直近の候補を最大5件表示。コレ済にすると消えます。行タップでコレ一覧の該当商品へ移動します。',
-                      style: _HomeUi.sectionBody(context),
+                      style: _HomeUi.sectionBodyGrouped(context),
                     ),
                   )
                 : const SizedBox(width: double.infinity),
           ),
           _HomeUi.sectionDivider(),
           SizedBox(height: _HomeUi.gapRecentDividerToDeck),
-          Padding(
-            padding: _HomeUi.paddingDeckOuterRecent,
-            child: DecoratedBox(
-              decoration: _HomeUi.roomTileDeckDecoration(),
-              child: Padding(
-                padding: const EdgeInsets.all(_HomeUi.paddingRecentListDeck),
-                child: _RecentCandidatesPanel(
-                  embedInUnifiedSection: true,
-                  candidates: candidates,
-                  onOpenCandidateTap: onOpenCandidateTap,
+          ColoredBox(
+            color: HomeScreenColors.recentContentWellFill,
+            child: Padding(
+              padding: _HomeUi.paddingDeckOuterRecent,
+              child: DecoratedBox(
+                decoration: _HomeUi.roomTileDeckDecoration(),
+                child: Padding(
+                  padding: const EdgeInsets.all(_HomeUi.paddingRecentListDeck),
+                  child: _RecentCandidatesPanel(
+                    embedInUnifiedSection: true,
+                    candidates: candidates,
+                    onOpenCandidateTap: onOpenCandidateTap,
+                  ),
                 ),
               ),
             ),
@@ -1095,7 +1114,7 @@ class _HomeCollectionListLink extends StatelessWidget {
                   color: _HomeUi.dividerLineColor(),
                 ),
               ),
-              color: HomeScreenColors.subActionRowFill,
+              color: HomeScreenColors.recentFooterRowFill,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1105,7 +1124,7 @@ class _HomeCollectionListLink extends StatelessWidget {
                   child: Icon(
                     Icons.playlist_add_check_outlined,
                     size: 22,
-                    color: AppColors.textSecondary,
+                    color: HomeScreenColors.leadOnSection,
                   ),
                 ),
                 SizedBox(width: _HomeUi.gapIconToTitle),
@@ -1129,7 +1148,7 @@ class _HomeCollectionListLink extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 6, top: 2),
                   child: Icon(
                     Icons.chevron_right_rounded,
-                    color: AppColors.textTertiary.withValues(alpha: 0.9),
+                    color: HomeScreenColors.chevronOnSection,
                     size: 22,
                   ),
                 ),
