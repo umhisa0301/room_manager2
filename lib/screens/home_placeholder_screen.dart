@@ -14,6 +14,118 @@ import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/home_primary_action_button.dart';
 
+// --- ホーム画面：レイアウト・タイポ・装飾の統一（画面ロジックとは分離）---
+
+/// ホーム専用の余白・行間・装飾ルール。
+abstract final class _HomeUi {
+  const _HomeUi._();
+
+  /// 主要ブロック同士（CTA・セクション・グループ）
+  static const double gapSection = 20;
+
+  /// 見出しカードと、その直下の「まとまり」本体の距離
+  static const double gapHeadingToContent = 10;
+
+  /// セクション見出しと折りたたみ要約の間
+  static const double gapTitleToSummary = 8;
+
+  /// 囲み（well）の内側パディング
+  static const double paddingGroupedWell = 12;
+
+  /// コンパクトな縦の詰まり（チップ上など）
+  static const double gapTight = 6;
+
+  /// 標準リストの下余白（ナビバー押さえ以外）
+  static const double listBottomExtra = 16;
+
+  static List<BoxShadow> get cardShadow => [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.055),
+          offset: const Offset(0, 2),
+          blurRadius: 10,
+        ),
+      ];
+
+  /// 単体カード（今日のおすすめなど）
+  static BoxDecoration elevatedCardDecoration() {
+    return BoxDecoration(
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+      border: Border.all(
+        color: AppColors.divider.withValues(alpha: 0.92),
+      ),
+      boxShadow: cardShadow,
+    );
+  }
+
+  /// メトリクス・最近候補の「親」の囲み（背景差でまとまりを示す）
+  static BoxDecoration groupedWellDecoration() {
+    return BoxDecoration(
+      color: Color.alphaBlend(
+        AppColors.surfaceVariant.withValues(alpha: 0.48),
+        AppColors.background,
+      ),
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(
+        color: AppColors.divider.withValues(alpha: 0.78),
+      ),
+    );
+  }
+
+  /// セクション・カード見出し（何が見出しかを揃える）
+  static TextStyle sectionTitle(BuildContext context) {
+    final base = Theme.of(context).textTheme.titleSmall;
+    return (base ?? const TextStyle()).copyWith(
+      fontSize: 15,
+      fontWeight: FontWeight.w800,
+      height: 1.28,
+      letterSpacing: -0.15,
+      color: AppColors.textPrimary,
+    );
+  }
+
+  /// 折りたたみ時の一行サマリー
+  static TextStyle sectionCollapsedSummary(BuildContext context) {
+    final base = Theme.of(context).textTheme.labelMedium;
+    return (base ?? const TextStyle()).copyWith(
+      fontSize: 13,
+      fontWeight: FontWeight.w600,
+      height: 1.45,
+      color: AppColors.textSecondary,
+    );
+  }
+
+  /// 展開した説明文・補足
+  static TextStyle sectionBody(BuildContext context) {
+    final base = Theme.of(context).textTheme.bodySmall;
+    return (base ?? const TextStyle()).copyWith(
+      fontSize: 13,
+      height: 1.5,
+      color: AppColors.textSecondary,
+    );
+  }
+
+  /// タップ可能な補足・キャプション
+  static TextStyle tapHint(BuildContext context) {
+    final base = Theme.of(context).textTheme.labelSmall;
+    return (base ?? const TextStyle()).copyWith(
+      fontSize: 11,
+      height: 1.4,
+      color: AppColors.textTertiary,
+    );
+  }
+
+  /// 空状態・リスト内のサブ見出し
+  static TextStyle bodyEmphasis(BuildContext context) {
+    final base = Theme.of(context).textTheme.bodyMedium;
+    return (base ?? const TextStyle()).copyWith(
+      fontWeight: FontWeight.w600,
+      height: 1.35,
+      color: AppColors.textPrimary,
+    );
+  }
+}
+
 /// ホーム（ダッシュボード）。ROOM コレ管理の導線と集計を中心に構成する。
 class HomePlaceholderScreen extends StatefulWidget {
   const HomePlaceholderScreen({super.key});
@@ -135,9 +247,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     return ListView(
                       padding: EdgeInsets.fromLTRB(
                         AppDimensions.screenPaddingH,
-                        AppDimensions.spacingSm,
+                        AppDimensions.screenPaddingV,
                         AppDimensions.screenPaddingH,
-                        bottomInset + navBarReserve,
+                        bottomInset + navBarReserve + _HomeUi.listBottomExtra,
                       ),
                       children: [
                         HomePrimaryActionButton(
@@ -152,7 +264,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                             );
                           },
                         ),
-                        const SizedBox(height: AppDimensions.spacingMd),
+                        const SizedBox(height: _HomeUi.gapSection),
                         _HomeExpandableSection(
                           chrome: _HomeExpandableChrome.hero,
                           expanded: _aboutExpanded,
@@ -168,14 +280,14 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                             displayName: displayName,
                           ),
                         ),
-                        const SizedBox(height: AppDimensions.spacingMd),
+                        const SizedBox(height: _HomeUi.gapSection),
                         _TodayRecommendationsEntryCard(
                           totalCount: recProvider.totalCount,
                           pendingCount: recProvider.pendingCount,
                           isCompleted: recProvider.isCompleted,
                           onOpen: () => _openTodayRecommendations(context),
                         ),
-                        const SizedBox(height: AppDimensions.spacingLg),
+                        const SizedBox(height: _HomeUi.gapSection),
                         _HomeExpandableSection(
                           chrome: _HomeExpandableChrome.plain,
                           expanded: _roomIntroExpanded,
@@ -189,31 +301,34 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                           leadingIcon: Icons.collections_bookmark_outlined,
                           expandedChild: Text(
                             '下の数は端末に保存した一覧の集計です。カードをタップで一覧・活動へ移動します。',
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  height: 1.45,
-                                ),
+                            style: _HomeUi.sectionBody(context),
                           ),
                         ),
-                        const SizedBox(height: AppDimensions.spacingSm),
-                        _RoomStatsCardGrid(
-                          candidateTotal: nCandidate,
-                          doneTotal: nDone,
-                          todayDoneCount: nTodayDone,
-                          lastDoneAt: lastDone,
-                          onCandidateTap: () =>
-                              _openRoomList(context, initialTabIndex: 0),
-                          onDoneTap: () =>
-                              _openRoomList(context, initialTabIndex: 1),
-                          onTodayTap: () => _openRoomList(
-                            context,
-                            initialTabIndex: 1,
-                            doneFilterLocalDay: todayLocalDay,
+                        const SizedBox(height: _HomeUi.gapHeadingToContent),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(
+                            _HomeUi.paddingGroupedWell,
                           ),
-                          onLastCollectTap: () => _openActivity(context),
+                          decoration: _HomeUi.groupedWellDecoration(),
+                          child: _RoomStatsCardGrid(
+                            candidateTotal: nCandidate,
+                            doneTotal: nDone,
+                            todayDoneCount: nTodayDone,
+                            lastDoneAt: lastDone,
+                            onCandidateTap: () =>
+                                _openRoomList(context, initialTabIndex: 0),
+                            onDoneTap: () =>
+                                _openRoomList(context, initialTabIndex: 1),
+                            onTodayTap: () => _openRoomList(
+                              context,
+                              initialTabIndex: 1,
+                              doneFilterLocalDay: todayLocalDay,
+                            ),
+                            onLastCollectTap: () => _openActivity(context),
+                          ),
                         ),
-                        const SizedBox(height: AppDimensions.spacingLg),
+                        const SizedBox(height: _HomeUi.gapSection),
                         _HomeExpandableSection(
                           chrome: _HomeExpandableChrome.plain,
                           expanded: _recentIntroExpanded,
@@ -227,26 +342,28 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                           leadingIcon: Icons.bookmark_added_outlined,
                           expandedChild: Text(
                             '直近の候補を最大5件表示。コレ済にすると消えます。行タップでコレ一覧。',
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  height: 1.45,
-                                ),
+                            style: _HomeUi.sectionBody(context),
                           ),
                         ),
-                        const SizedBox(height: AppDimensions.spacingSm),
-                        _RecentCandidatesPanel(
-                          candidates: recentCandidates,
-                          onOpenCandidateTap: (productId) => _openRoomList(
-                            context,
-                            focusCandidateProductId: productId,
+                        const SizedBox(height: _HomeUi.gapHeadingToContent),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(
+                            _HomeUi.paddingGroupedWell,
+                          ),
+                          decoration: _HomeUi.groupedWellDecoration(),
+                          child: _RecentCandidatesPanel(
+                            candidates: recentCandidates,
+                            onOpenCandidateTap: (productId) => _openRoomList(
+                              context,
+                              focusCandidateProductId: productId,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: AppDimensions.spacingLg),
+                        const SizedBox(height: _HomeUi.gapSection),
                         _HomeCollectionListLink(
                           onPressed: () => _openRoomList(context),
                         ),
-                        const SizedBox(height: AppDimensions.spacingMd),
                       ],
                     );
                   },
@@ -288,7 +405,7 @@ class _HomeExpandableSection extends StatelessWidget {
     final isHero = chrome == _HomeExpandableChrome.hero;
     final splashColor = isHero
         ? AppColors.accentPrimary.withValues(alpha: 0.14)
-        : AppColors.textPrimary.withValues(alpha: 0.09);
+        : AppColors.textPrimary.withValues(alpha: 0.08);
     final highlightColor = isHero
         ? AppColors.accentPrimary.withValues(alpha: 0.07)
         : AppColors.textPrimary.withValues(alpha: 0.05);
@@ -309,29 +426,12 @@ class _HomeExpandableSection extends StatelessWidget {
         ),
         borderRadius: radius,
         border: Border.all(
-          color: AppColors.accentPrimary.withValues(alpha: 0.12),
+          color: AppColors.accentPrimary.withValues(alpha: 0.14),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            offset: const Offset(0, 2),
-            blurRadius: 8,
-          ),
-        ],
+        boxShadow: _HomeUi.cardShadow,
       );
     } else {
-      decoration = BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: radius,
-        border: Border.all(color: AppColors.divider),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            offset: const Offset(0, 2),
-            blurRadius: 5,
-          ),
-        ],
-      );
+      decoration = _HomeUi.elevatedCardDecoration();
     }
 
     return Container(
@@ -349,7 +449,7 @@ class _HomeExpandableSection extends StatelessWidget {
               splashColor: splashColor,
               highlightColor: highlightColor,
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -361,22 +461,13 @@ class _HomeExpandableSection extends StatelessWidget {
                         children: [
                           Text(
                             title,
-                            style: Theme.of(context).textTheme.titleSmall
-                                ?.copyWith(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.w800,
-                                ),
+                            style: _HomeUi.sectionTitle(context),
                           ),
                           if (collapsedSummary.isNotEmpty && !expanded) ...[
-                            const SizedBox(height: 6),
+                            const SizedBox(height: _HomeUi.gapTitleToSummary),
                             Text(
                               collapsedSummary,
-                              style: Theme.of(context).textTheme.labelMedium
-                                  ?.copyWith(
-                                    color: AppColors.textSecondary,
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.35,
-                                  ),
+                              style: _HomeUi.sectionCollapsedSummary(context),
                             ),
                           ],
                         ],
@@ -387,6 +478,7 @@ class _HomeExpandableSection extends StatelessWidget {
                           ? Icons.keyboard_arrow_up_rounded
                           : Icons.keyboard_arrow_down_rounded,
                       color: AppColors.textSecondary,
+                      size: 22,
                     ),
                   ],
                 ),
@@ -423,22 +515,24 @@ class _AboutAppExpandedBody extends StatelessWidget {
         Text(
           '検索 → 候補 → コレ',
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w600,
-            height: 1.35,
-          ),
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+                height: 1.4,
+              ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: _HomeUi.gapTitleToSummary),
         if (displayName != null)
           Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(bottom: _HomeUi.gapTight),
             child: Text(
               '$displayNameさん、まずは検索から',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w600,
-                height: 1.35,
-              ),
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                    height: 1.45,
+                    fontSize: 13,
+                  ),
             ),
           ),
         const _FlowStepLine(
@@ -446,13 +540,13 @@ class _AboutAppExpandedBody extends StatelessWidget {
           title: '商品を探す',
           subtitle: '「楽天で検索」から。',
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
         const _FlowStepLine(
           number: '2',
           title: '候補に追加',
           subtitle: '検索結果から候補登録。',
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
         const _FlowStepLine(
           number: '3',
           title: 'ROOMでコレ',
@@ -490,9 +584,9 @@ class _FlowStepLine extends StatelessWidget {
           child: Text(
             number,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: AppColors.accentPrimary,
-              fontWeight: FontWeight.w800,
-            ),
+                  color: AppColors.accentPrimary,
+                  fontWeight: FontWeight.w800,
+                ),
           ),
         ),
         const SizedBox(width: 10),
@@ -503,18 +597,16 @@ class _FlowStepLine extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w800,
-                  height: 1.25,
-                ),
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w800,
+                      height: 1.28,
+                      fontSize: 14,
+                    ),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 3),
               Text(
                 subtitle,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.4,
-                ),
+                style: _HomeUi.sectionBody(context),
               ),
             ],
           ),
@@ -532,30 +624,39 @@ class _HomeCollectionListLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(
-        Icons.collections_bookmark_outlined,
-        size: 20,
-        color: AppColors.accentPrimary,
-      ),
-      label: Text(
-        'コレ一覧を開く',
-        style: TextStyle(
-          fontWeight: FontWeight.w600,
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+      child: OutlinedButton.icon(
+        onPressed: onPressed,
+        icon: Icon(
+          Icons.collections_bookmark_outlined,
+          size: 20,
           color: AppColors.accentPrimary,
         ),
-      ),
-      style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.accentPrimary,
-        side: BorderSide(
-          color: AppColors.accentPrimary.withValues(alpha: 0.45),
+        label: Text(
+          'コレ一覧を開く',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+            color: AppColors.accentPrimary,
+            height: 1.25,
+          ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        minimumSize: const Size(double.infinity, 48),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.accentPrimary,
+          backgroundColor: AppColors.surface,
+          side: BorderSide(
+            color: AppColors.divider.withValues(alpha: 0.95),
+          ),
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          minimumSize: const Size(double.infinity, 50),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+          ),
         ),
       ),
     );
@@ -580,29 +681,29 @@ class _TodayRecommendationsEntryCard extends StatelessWidget {
     final body = totalCount == 0
         ? 'タップで候補を作成'
         : isCompleted
-        ? '本日は完了・明日更新'
-        : '未処理 $pendingCount / $totalCount';
+            ? '本日は完了・明日更新'
+            : '未処理 $pendingCount / $totalCount';
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onOpen,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        splashColor: AppColors.textPrimary.withValues(alpha: 0.06),
+        splashColor: AppColors.textPrimary.withValues(alpha: 0.07),
         highlightColor: AppColors.textPrimary.withValues(alpha: 0.04),
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-            border: Border.all(color: AppColors.divider),
-          ),
+          padding: const EdgeInsets.fromLTRB(16, 14, 14, 14),
+          decoration: _HomeUi.elevatedCardDecoration(),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                Icons.auto_awesome_outlined,
-                size: 22,
-                color: AppColors.textSecondary,
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Icon(
+                  Icons.auto_awesome_outlined,
+                  size: 22,
+                  color: AppColors.accentPrimary.withValues(alpha: 0.85),
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -611,26 +712,24 @@ class _TodayRecommendationsEntryCard extends StatelessWidget {
                   children: [
                     Text(
                       '今日のおすすめコレ候補',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: _HomeUi.sectionTitle(context),
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: _HomeUi.gapTight),
                     Text(
                       body,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.35,
-                      ),
+                      style: _HomeUi.sectionBody(context),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
-              const Icon(
-                Icons.chevron_right_rounded,
-                color: AppColors.textTertiary,
+              const SizedBox(width: 4),
+              const Padding(
+                padding: EdgeInsets.only(top: 2),
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  color: AppColors.textTertiary,
+                  size: 22,
+                ),
               ),
             ],
           ),
@@ -676,7 +775,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                 child: _RoomMetricTile(
                   title: 'コレ候補',
                   valueMain: '$candidateTotal件',
-                  caption: '(タップで一覧)',
+                  caption: 'タップで一覧を開く',
                   icon: Icons.bookmark_outline_rounded,
                   accent: const Color(0xFF1565C0),
                   iconBackground: const Color(0xFFE3F2FD),
@@ -684,12 +783,12 @@ class _RoomStatsCardGrid extends StatelessWidget {
                   onTap: onCandidateTap,
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: _HomeUi.gapTight + 2),
               Expanded(
                 child: _RoomMetricTile(
                   title: 'コレ済',
                   valueMain: '$doneTotal件',
-                  caption: '(タップで一覧)',
+                  caption: 'タップで一覧を開く',
                   icon: Icons.task_alt_rounded,
                   accent: const Color(0xFF2E7D32),
                   iconBackground: const Color(0xFFE8F5E9),
@@ -700,7 +799,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: _HomeUi.gapTight + 2),
         IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -709,7 +808,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                 child: _RoomMetricTile(
                   title: '今日のコレ',
                   valueMain: '$todayDoneCount件',
-                  caption: '(タップで一覧)',
+                  caption: 'タップで一覧を開く',
                   icon: Icons.today_rounded,
                   accent: AppColors.accentPrimary,
                   iconBackground: AppColors.accentLightest,
@@ -717,12 +816,12 @@ class _RoomStatsCardGrid extends StatelessWidget {
                   onTap: onTodayTap,
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: _HomeUi.gapTight + 2),
               Expanded(
                 child: _RoomMetricTile(
                   title: '前回コレ日時',
                   valueMain: lastPrimary,
-                  caption: '(タップすると活動)',
+                  caption: 'タップで活動を開く',
                   icon: Icons.history_rounded,
                   accent: const Color(0xFF5C6BC0),
                   iconBackground: const Color(0xFFE8EAF6),
@@ -771,20 +870,15 @@ class _RoomMetricTile extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        splashColor: AppColors.textPrimary.withValues(alpha: 0.06),
+        splashColor: AppColors.textPrimary.withValues(alpha: 0.07),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+          padding: const EdgeInsets.fromLTRB(12, 10, 10, 10),
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-            border: Border.all(color: AppColors.divider),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 4,
-                offset: const Offset(0, 1),
-              ),
-            ],
+            border: Border.all(
+              color: AppColors.divider.withValues(alpha: 0.88),
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -807,15 +901,16 @@ class _RoomMetricTile extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: accent,
-                        fontWeight: FontWeight.w800,
-                        height: 1.2,
-                      ),
+                            color: accent,
+                            fontWeight: FontWeight.w800,
+                            height: 1.22,
+                            fontSize: 13,
+                          ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 10),
               Text(
                 valueMain,
                 textAlign: TextAlign.left,
@@ -823,26 +918,24 @@ class _RoomMetricTile extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: valueProminent
                     ? Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
-                        height: 1.1,
-                        fontSize: 26,
-                        letterSpacing: -0.5,
-                      )
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary,
+                          height: 1.12,
+                          fontSize: 25,
+                          letterSpacing: -0.45,
+                        )
                     : Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
-                        height: 1.2,
-                        fontSize: 17,
-                      ),
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary,
+                          height: 1.22,
+                          fontSize: 16,
+                        ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Text(
                 caption,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textTertiary,
-                  height: 1.3,
-                ),
+                maxLines: 2,
+                style: _HomeUi.tapHint(context),
               ),
             ],
           ),
@@ -864,49 +957,32 @@ class _RecentCandidatesPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (candidates.isEmpty) {
-      return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-          border: Border.all(color: AppColors.divider),
-        ),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               '候補はまだありません',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
-              ),
+              style: _HomeUi.bodyEmphasis(context),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: _HomeUi.gapTight),
             Text(
               'まずは「楽天で検索」から追加してください。',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.4,
-              ),
+              style: _HomeUi.sectionBody(context),
             ),
           ],
         ),
       );
     }
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: AppColors.divider.withValues(alpha: 0.88),
+        ),
       ),
       child: Column(
         children: [
@@ -915,7 +991,14 @@ class _RecentCandidatesPanel extends StatelessWidget {
               product: candidates[i],
               onTap: () => onOpenCandidateTap(candidates[i].productId),
             ),
-            if (i < candidates.length - 1) const Divider(height: 1, indent: 72),
+            if (i < candidates.length - 1)
+              Divider(
+                height: 1,
+                thickness: 1,
+                indent: 72,
+                endIndent: 12,
+                color: AppColors.divider.withValues(alpha: 0.55),
+              ),
           ],
         ],
       ),
@@ -931,45 +1014,56 @@ class _RecentCandidateTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _thumb(),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.itemName,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                      height: 1.25,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        splashColor: AppColors.textPrimary.withValues(alpha: 0.06),
+        highlightColor: AppColors.textPrimary.withValues(alpha: 0.03),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(14, 12, 12, 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _thumb(),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.itemName,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                            height: 1.32,
+                            fontSize: 14,
+                          ),
                     ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    product.shopName.isEmpty ? 'ショップ名なし' : product.shopName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
+                    const SizedBox(height: 5),
+                    Text(
+                      product.shopName.isEmpty ? 'ショップ名なし' : product.shopName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: _HomeUi.sectionBody(context),
                     ),
-                  ),
-                  const SizedBox(height: 6),
-                  _ExtractionChip(status: product.extractionStatus),
-                ],
+                    const SizedBox(height: 5),
+                    _ExtractionChip(status: product.extractionStatus),
+                  ],
+                ),
               ),
-            ),
-            Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
-          ],
+              const Padding(
+                padding: EdgeInsets.only(left: 4, top: 2),
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  color: AppColors.textTertiary,
+                  size: 22,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1039,9 +1133,10 @@ class _ExtractionChip extends StatelessWidget {
       child: Text(
         label,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: fg,
-          fontWeight: FontWeight.w700,
-        ),
+              color: fg,
+              fontWeight: FontWeight.w700,
+              height: 1.25,
+            ),
       ),
     );
   }
