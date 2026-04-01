@@ -182,7 +182,6 @@ class RakutenManagedProductCard extends StatelessWidget {
                                     foregroundColor: AppColors.accentPrimary,
                                   ),
                                 ),
-                              if (!isCandidate) _compactDoneNote(context),
                               _badgeRow(context, isCandidate, stateAccent),
                               const SizedBox(height: 6),
                               Text(
@@ -252,30 +251,6 @@ class RakutenManagedProductCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  /// コレ済のみ：カード上部のコンパクトな状態説明（候補のバッジ行と同じ帯の高さ感）。
-  Widget _compactDoneNote(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(Icons.verified_rounded,
-              size: 16, color: RoomListAccent.done.withValues(alpha: 0.88)),
-          const SizedBox(width: 6),
-          Expanded(
-            child: Text(
-              'このアプリではコレ済です。ROOM投稿の完了は別途ご確認ください。',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.35,
-                  ),
-            ),
-          ),
-        ],
       ),
     );
   }
