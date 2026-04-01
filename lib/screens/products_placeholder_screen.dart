@@ -877,8 +877,14 @@ class _DoneTabCollapsibleNotice extends StatefulWidget {
 }
 
 class _DoneTabCollapsibleNoticeState extends State<_DoneTabCollapsibleNotice> {
-  late bool _suppressed = widget.repository.isSuppressed;
+  bool _suppressed = false;
   bool _expanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _suppressed = widget.repository.isSuppressed;
+  }
 
   static const String _summary =
       'このアプリの「コレ済」とROOMの投稿は別です（詳しくは展開）。';
@@ -912,12 +918,8 @@ class _DoneTabCollapsibleNoticeState extends State<_DoneTabCollapsibleNotice> {
             children: [
               InkWell(
                 onTap: () => setState(() => _expanded = !_expanded),
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(AppDimensions.radiusCard),
-                  bottom: Radius.circular(
-                    _expanded ? AppDimensions.radiusCard : 0,
-                  ),
-                ),
+                borderRadius:
+                    BorderRadius.circular(AppDimensions.radiusCard),
                 child: SizedBox(
                   height: 48,
                   child: Padding(
