@@ -71,6 +71,18 @@ abstract final class _HomeUi {
   /// 楽天で検索ブロック：説明文とボタンの間
   static const double gapSearchLeadToButton = 14;
 
+  /// 今日のおすすめ：1日あたりの上限（表示・説明用。生成ロジックとも一致）
+  static const int todayRecommendationsMaxPerDay = 10;
+
+  /// 今日のおすすめセクション：見出しとステータス行の間
+  static const double gapTodayRecTitleToStatus = 8;
+
+  /// 今日のおすすめセクション：ステータスと脚注の間
+  static const double gapTodayRecStatusToFootnote = 6;
+
+  /// 今日のおすすめ：プログレスバー上余白
+  static const double gapTodayRecBeforeProgress = 10;
+
   /// 標準リストの下余白（ナビバー押さえ以外）
   static const double listBottomExtra = 16;
 
@@ -82,13 +94,35 @@ abstract final class _HomeUi {
         ),
       ];
 
-  /// 単体カード（今日のおすすめなど）
-  static BoxDecoration elevatedCardDecoration() {
+  /// 今日のおすすめ：処理途中・未完了（日替わり特典感のある軽いトーン）
+  static BoxDecoration todayRecommendationsSectionDecorationActive() {
     return BoxDecoration(
-      color: AppColors.surface,
-      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+      gradient: LinearGradient(
+        colors: [
+          AppColors.accentLight.withValues(alpha: 0.55),
+          AppColors.surface,
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      borderRadius: BorderRadius.circular(16),
       border: Border.all(
-        color: AppColors.divider.withValues(alpha: 0.92),
+        color: AppColors.accentPrimary.withValues(alpha: 0.22),
+      ),
+      boxShadow: cardShadow,
+    );
+  }
+
+  /// 今日のおすすめ：本日完了（やり切り感・同一セクション内で弱めのトーン）
+  static BoxDecoration todayRecommendationsSectionDecorationCompleted() {
+    return BoxDecoration(
+      color: Color.alphaBlend(
+        AppColors.surfaceVariant.withValues(alpha: 0.52),
+        AppColors.surface,
+      ),
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(
+        color: AppColors.divider.withValues(alpha: 0.78),
       ),
       boxShadow: cardShadow,
     );
@@ -251,11 +285,16 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
-      context.read<RakutenManagedProductProvider>().refreshManagedProductList(
-        showLoadingIndicator: false,
-      );
+      final room = context.read<RakutenManagedProductProvider>();
+      await room.refreshManagedProductList(showLoadingIndicator: false);
+      if (!mounted) return;
+      await context.read<TodayRecommendationProvider>().ensureToday(
+            profile: context.read<UserProfileProvider>().profile,
+            managedItems: room.items,
+            savedShops: context.read<SavedShopProvider>().shops,
+          );
     });
   }
 
@@ -387,10 +426,13 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                           },
                         ),
                         const SizedBox(height: _HomeUi.gapSection),
-                        _TodayRecommendationsEntryCard(
+                        _TodayRecommendationsHomeSection(
                           totalCount: recProvider.totalCount,
                           pendingCount: recProvider.pendingCount,
                           isCompleted: recProvider.isCompleted,
+                          isLoading: recProvider.isLoading,
+                          dateLabel: recProvider.activeDateLabelJp,
+                          errorMessage: recProvider.errorMessage,
                           onOpen: () => _openTodayRecommendations(context),
                         ),
                         const SizedBox(height: _HomeUi.gapSection),
@@ -1114,75 +1156,192 @@ class _HomeCollectionListLink extends StatelessWidget {
   }
 }
 
-class _TodayRecommendationsEntryCard extends StatelessWidget {
-  const _TodayRecommendationsEntryCard({
+/// 今日のおすすめ：日替わり提案の文脈・残件・完了・最大10件を1ブロックで提示する。
+class _TodayRecommendationsHomeSection extends StatelessWidget {
+  const _TodayRecommendationsHomeSection({
     required this.totalCount,
     required this.pendingCount,
     required this.isCompleted,
+    required this.isLoading,
+    required this.dateLabel,
+    this.errorMessage,
     required this.onOpen,
   });
 
   final int totalCount;
   final int pendingCount;
   final bool isCompleted;
+  final bool isLoading;
+  final String? dateLabel;
+  final String? errorMessage;
   final VoidCallback onOpen;
 
   @override
   Widget build(BuildContext context) {
-    final body = totalCount == 0
-        ? 'タップで候補を作成'
-        : isCompleted
-            ? '本日は完了・明日更新'
-            : '未処理 $pendingCount / $totalCount';
+    final maxN = _HomeUi.todayRecommendationsMaxPerDay;
+    final done = isCompleted && totalCount > 0;
+    final deco = done
+        ? _HomeUi.todayRecommendationsSectionDecorationCompleted()
+        : _HomeUi.todayRecommendationsSectionDecorationActive();
+
+    final titleStyle = _HomeUi.sectionTitle(context).copyWith(
+      color: done ? AppColors.textSecondary : AppColors.textPrimary,
+    );
+
+    late final String statusLine;
+    late final String footnote;
+    if (isLoading && totalCount == 0) {
+      statusLine = '今日の提案を用意しています…';
+      footnote =
+          '1日あたり最大$maxN件まで。日付が変わると、新しいセットに切り替わります。';
+    } else if (errorMessage != null &&
+        errorMessage!.isNotEmpty &&
+        totalCount == 0) {
+      statusLine = 'いま一度お試しください';
+      footnote =
+          'タップで再試行できます。1日あたり最大$maxN件まで提案します（日付が変わると更新）。';
+    } else if (totalCount == 0) {
+      statusLine = 'タップして、今日のおすすめを最大$maxN件まで用意できます';
+      footnote =
+          '毎日替わる提案です。ここでの内容は本日中だけ有効で、最大$maxN件です。';
+    } else if (done) {
+      statusLine = '本日のおすすめはすべて完了しました';
+      footnote =
+          '今日の分はここまでです。日付が変わると、また最大$maxN件まで新しくなります。';
+    } else {
+      statusLine =
+          '残り $pendingCount 件 · 本日は最大$maxN件まで';
+      footnote = '未処理の提案だけがカウントされます。今日だけのセットです。';
+    }
+
+    final progress = totalCount > 0 && !done
+        ? (totalCount - pendingCount) / totalCount
+        : 0.0;
+
+    IconData leadingIcon;
+    Color leadingColor;
+    if (done) {
+      leadingIcon = Icons.check_circle_outline_rounded;
+      leadingColor = const Color(0xFF2E7D32).withValues(alpha: 0.75);
+    } else if (isLoading && totalCount == 0) {
+      leadingIcon = Icons.auto_awesome_outlined;
+      leadingColor = AppColors.accentPrimary.withValues(alpha: 0.55);
+    } else {
+      leadingIcon = Icons.auto_awesome_outlined;
+      leadingColor = AppColors.accentPrimary.withValues(alpha: 0.88);
+    }
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onOpen,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        splashColor: AppColors.textPrimary.withValues(alpha: 0.07),
-        highlightColor: AppColors.textPrimary.withValues(alpha: 0.04),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(16, 14, 14, 14),
-          decoration: _HomeUi.elevatedCardDecoration(),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: Icon(
-                  Icons.auto_awesome_outlined,
-                  size: 22,
-                  color: AppColors.accentPrimary.withValues(alpha: 0.85),
+        borderRadius: BorderRadius.circular(16),
+        splashColor: AppColors.textPrimary.withValues(
+          alpha: done ? 0.05 : 0.08,
+        ),
+        highlightColor: AppColors.textPrimary.withValues(
+          alpha: done ? 0.03 : 0.04,
+        ),
+        child: Opacity(
+          opacity: done ? 0.96 : 1,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.fromLTRB(16, 15, 12, 14),
+            decoration: deco,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 1),
+                  child: isLoading && totalCount == 0
+                      ? SizedBox(
+                          width: 22,
+                          height: 22,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.2,
+                            color: AppColors.accentPrimary.withValues(
+                              alpha: 0.75,
+                            ),
+                          ),
+                        )
+                      : Icon(
+                          leadingIcon,
+                          size: 22,
+                          color: leadingColor,
+                        ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '今日のおすすめコレ候補',
-                      style: _HomeUi.sectionTitle(context),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '今日のおすすめコレ候補',
+                        style: titleStyle,
+                      ),
+                      if (dateLabel != null && dateLabel!.isNotEmpty) ...[
+                        const SizedBox(height: 3),
+                        Text(
+                          '${dateLabel!}の提案（日替わり）',
+                          style: _HomeUi.tapHint(context),
+                        ),
+                      ],
+                      SizedBox(height: _HomeUi.gapTodayRecTitleToStatus),
+                      Text(
+                        statusLine,
+                        style: _HomeUi.sectionBody(context).copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: done
+                              ? AppColors.textSecondary
+                              : AppColors.textPrimary,
+                        ),
+                      ),
+                      if (errorMessage != null &&
+                          errorMessage!.trim().isNotEmpty) ...[
+                        const SizedBox(height: 6),
+                        Text(
+                          errorMessage!.trim(),
+                          style: _HomeUi.sectionBody(context).copyWith(
+                            color: AppColors.error.withValues(alpha: 0.9),
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                      SizedBox(height: _HomeUi.gapTodayRecStatusToFootnote),
+                      Text(
+                        footnote,
+                        style: _HomeUi.tapHint(context),
+                      ),
+                      if (totalCount > 0 && !done && !isLoading) ...[
+                        SizedBox(height: _HomeUi.gapTodayRecBeforeProgress),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: LinearProgressIndicator(
+                            value: progress.clamp(0.0, 1.0),
+                            minHeight: 5,
+                            backgroundColor:
+                                AppColors.divider.withValues(alpha: 0.45),
+                            color: AppColors.accentPrimary.withValues(
+                              alpha: 0.85,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 4, top: 2),
+                  child: Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.textTertiary.withValues(
+                      alpha: done ? 0.5 : 0.85,
                     ),
-                    const SizedBox(height: _HomeUi.gapTight),
-                    Text(
-                      body,
-                      style: _HomeUi.sectionBody(context),
-                    ),
-                  ],
+                    size: 22,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 4),
-              const Padding(
-                padding: EdgeInsets.only(top: 2),
-                child: Icon(
-                  Icons.chevron_right_rounded,
-                  color: AppColors.textTertiary,
-                  size: 22,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

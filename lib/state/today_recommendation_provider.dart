@@ -34,6 +34,21 @@ class TodayRecommendationProvider extends ChangeNotifier {
   int get pendingCount => _bundle?.pendingCount ?? 0;
   bool get isCompleted => _bundle?.isCompleted ?? false;
 
+  /// 本日バンドルのローカル日キー（YYYY-MM-DD）。永続化・日付またぎ判定に使用。
+  String? get activeLocalDateKey => _bundle?.localDateKey;
+
+  /// ホーム等の短い日付表記（例: 4月1日）。バンドルが無いときは null。
+  String? get activeDateLabelJp {
+    final key = _bundle?.localDateKey;
+    if (key == null || key.isEmpty) return null;
+    final p = key.split('-');
+    if (p.length != 3) return null;
+    final m = int.tryParse(p[1]);
+    final d = int.tryParse(p[2]);
+    if (m == null || d == null) return null;
+    return '$m月$d日';
+  }
+
   Future<void> ensureToday({
     required UserProfile profile,
     required List<RakutenManagedProduct> managedItems,
