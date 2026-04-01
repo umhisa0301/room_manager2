@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'navigation/app_shell_controller.dart';
 import 'theme/app_theme.dart';
 import 'screens/home_placeholder_screen.dart';
 import 'screens/products_placeholder_screen.dart';
@@ -16,8 +19,6 @@ class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
-  int _currentIndex = 0;
-
   static const List<Widget> _screens = [
     HomePlaceholderScreen(),
     ProductsPlaceholderScreen(),
@@ -28,8 +29,10 @@ class _AppShellState extends State<AppShell> {
 
   @override
   Widget build(BuildContext context) {
+    final shell = context.watch<AppShellController>();
+    final idx = shell.currentIndex;
     return Scaffold(
-      body: IndexedStack(index: _currentIndex, children: _screens),
+      body: IndexedStack(index: idx, children: _screens),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,
@@ -61,8 +64,8 @@ class _AppShellState extends State<AppShell> {
                     selectedIcon: Icons.dashboard,
                     label: 'ホーム',
                     tooltip: null,
-                    isSelected: _currentIndex == 0,
-                    onTap: () => setState(() => _currentIndex = 0),
+                    isSelected: idx == 0,
+                    onTap: () => context.read<AppShellController>().selectTab(0),
                   ),
                 ),
                 Expanded(
@@ -71,8 +74,8 @@ class _AppShellState extends State<AppShell> {
                     selectedIcon: Icons.collections_bookmark,
                     label: 'ROOMコレ',
                     tooltip: 'ROOMコレ管理',
-                    isSelected: _currentIndex == 1,
-                    onTap: () => setState(() => _currentIndex = 1),
+                    isSelected: idx == 1,
+                    onTap: () => context.read<AppShellController>().selectTab(1),
                   ),
                 ),
                 Expanded(
@@ -81,8 +84,8 @@ class _AppShellState extends State<AppShell> {
                     selectedIcon: Icons.chat_bubble,
                     label: 'コメント',
                     tooltip: null,
-                    isSelected: _currentIndex == 2,
-                    onTap: () => setState(() => _currentIndex = 2),
+                    isSelected: idx == 2,
+                    onTap: () => context.read<AppShellController>().selectTab(2),
                   ),
                 ),
                 Expanded(
@@ -91,8 +94,8 @@ class _AppShellState extends State<AppShell> {
                     selectedIcon: Icons.analytics,
                     label: '活動',
                     tooltip: null,
-                    isSelected: _currentIndex == 3,
-                    onTap: () => setState(() => _currentIndex = 3),
+                    isSelected: idx == 3,
+                    onTap: () => context.read<AppShellController>().selectTab(3),
                   ),
                 ),
                 Expanded(
@@ -101,8 +104,8 @@ class _AppShellState extends State<AppShell> {
                     selectedIcon: Icons.person,
                     label: 'マイページ',
                     tooltip: null,
-                    isSelected: _currentIndex == 4,
-                    onTap: () => setState(() => _currentIndex = 4),
+                    isSelected: idx == 4,
+                    onTap: () => context.read<AppShellController>().selectTab(4),
                   ),
                 ),
               ],

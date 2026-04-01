@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
-import 'activity_placeholder_screen.dart';
-import 'products_placeholder_screen.dart';
+import '../navigation/app_shell_controller.dart';
 import 'rakuten_search_screen.dart';
 import 'today_recommendations_screen.dart';
 import '../services/rakuten_room_home_stats.dart';
@@ -361,23 +360,15 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
             idx == 0
         ? focusCandidateProductId
         : null;
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => ProductsPlaceholderScreen(
+    context.read<AppShellController>().openRoomCollect(
           initialTabIndex: idx,
-          initialDoneFilterLocalDay: dayNorm,
-          initialFocusCandidateProductId: focusId,
-        ),
-      ),
-    );
+          doneFilterLocalDay: dayNorm,
+          focusCandidateProductId: focusId,
+        );
   }
 
   void _openActivity(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => const ActivityPlaceholderScreen(),
-      ),
-    );
+    context.read<AppShellController>().openActivityTab();
   }
 
   Future<void> _openTodayRecommendations(BuildContext context) async {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
+import '../navigation/app_shell_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_screen_status.dart';
@@ -77,21 +78,33 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   Timer? _flashTimer;
   String? _flashProductId;
   bool _candidateFocusHandled = false;
+  String? _shellFocusCandidateProductId;
+  late final AppShellController _shellCtrl;
+
+  String? get _focusCandidateTargetId {
+    final w = widget.initialFocusCandidateProductId;
+    if (w != null && w.isNotEmpty) return w;
+    final s = _shellFocusCandidateProductId;
+    if (s != null && s.isNotEmpty) return s;
+    return null;
+  }
 
   GlobalKey _keyForCandidateRow(String productId) =>
       _candidateRowKeys.putIfAbsent(productId, GlobalKey.new);
 
   void _onCandidateFocusListReady() {
     if (_candidateFocusHandled) return;
-    final id = widget.initialFocusCandidateProductId;
+    final id = _focusCandidateTargetId;
     if (id == null || id.isEmpty) return;
     _candidateFocusHandled = true;
+    setState(() => _shellFocusCandidateProductId = null);
     _runScrollToCandidate(id, 0);
   }
 
   void _onCandidateFocusProductMissing() {
     if (_candidateFocusHandled) return;
     _candidateFocusHandled = true;
+    setState(() => _shellFocusCandidateProductId = null);
   }
 
   void _runScrollToCandidate(String productId, int attempt) {
@@ -143,16 +156,60 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       if (_tabController.indexIsChanging) return;
       if (mounted) setState(() {});
     });
+    _shellCtrl = context.read<AppShellController>();
+    _shellCtrl.addListener(_onShellCtrlChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<RakutenManagedProductProvider>().refreshManagedProductList(
         showLoadingIndicator: false,
       );
+      _tryConsumeRoomCollectIntent();
     });
+  }
+
+  void _onShellCtrlChanged() {
+    _tryConsumeRoomCollectIntent();
+  }
+
+  void _tryConsumeRoomCollectIntent() {
+    if (!mounted) return;
+    final intent = _shellCtrl.takePendingRoomCollectIntent();
+    if (intent != null) {
+      _applyRoomCollectIntent(intent);
+    }
+  }
+
+  void _applyRoomCollectIntent(RoomCollectNavigationIntent intent) {
+    final idx = intent.initialTabIndex.clamp(0, 1);
+    final focusRaw = intent.focusCandidateProductId;
+    final focusId = (focusRaw != null && focusRaw.isNotEmpty && idx == 0)
+        ? focusRaw
+        : null;
+
+    setState(() {
+      if (idx == 0) {
+        _doneLocalDayFilter = null;
+        if (focusId != null) {
+          _searchController.clear();
+          _searchQuery = '';
+        }
+      } else {
+        final d = intent.doneFilterLocalDay;
+        _doneLocalDayFilter =
+            d == null ? null : DateTime(d.year, d.month, d.day);
+      }
+      _shellFocusCandidateProductId = focusId;
+      _candidateFocusHandled = false;
+    });
+
+    if (_tabController.index != idx) {
+      _tabController.animateTo(idx);
+    }
   }
 
   @override
   void dispose() {
+    _shellCtrl.removeListener(_onShellCtrlChanged);
     WidgetsBinding.instance.removeObserver(this);
     _flashTimer?.cancel();
     _candidateScrollController.dispose();
@@ -400,16 +457,15 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     listScrollController: _candidateScrollController,
                     flashHighlightProductId: _flashProductId,
                     rowKeyFor: _keyForCandidateRow,
-                    focusCandidateProductId:
-                        widget.initialFocusCandidateProductId,
+                    focusCandidateProductId: _focusCandidateTargetId,
                     onCandidateFocusListReady:
-                        widget.initialFocusCandidateProductId != null &&
-                                widget.initialFocusCandidateProductId!.isNotEmpty
+                        _focusCandidateTargetId != null &&
+                                _focusCandidateTargetId!.isNotEmpty
                             ? _onCandidateFocusListReady
                             : null,
                     onCandidateFocusProductMissing:
-                        widget.initialFocusCandidateProductId != null &&
-                                widget.initialFocusCandidateProductId!.isNotEmpty
+                        _focusCandidateTargetId != null &&
+                                _focusCandidateTargetId!.isNotEmpty
                             ? _onCandidateFocusProductMissing
                             : null,
                   ),

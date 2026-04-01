@@ -25,6 +25,7 @@ import 'repository/today_recommendation_repository.dart';
 import 'state/user_profile_provider.dart';
 import 'state/saved_shop_provider.dart';
 import 'state/today_recommendation_provider.dart';
+import 'navigation/app_shell_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -84,6 +85,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => AppShellController(),
+        ),
         Provider<PendingCollectNoticeRepository>.value(
           value: pendingCollectNoticeRepository,
         ),
