@@ -82,15 +82,12 @@ class ProductsPlaceholderScreen extends StatefulWidget {
 }
 
 class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+    with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
   final ScrollController _candidateScrollController = ScrollController();
   final Map<String, GlobalKey> _candidateRowKeys = <String, GlobalKey>{};
   String _searchQuery = '';
-  bool _continuousCollectMode = false;
-  bool _awaitingContinuousResume = false;
-  String _lastCollectedName = '';
   DateTime? _doneLocalDayFilter;
   Timer? _flashTimer;
   String? _flashProductId;
@@ -151,7 +148,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     final d = widget.initialDoneFilterLocalDay;
     if (d != null) {
       _doneLocalDayFilter = DateTime(d.year, d.month, d.day);
@@ -228,69 +224,11 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   @override
   void dispose() {
     _shellCtrl.removeListener(_onShellCtrlChanged);
-    WidgetsBinding.instance.removeObserver(this);
     _flashTimer?.cancel();
     _candidateScrollController.dispose();
     _tabController.dispose();
     _searchController.dispose();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state != AppLifecycleState.resumed) return;
-    if (!_continuousCollectMode || !_awaitingContinuousResume) return;
-    _awaitingContinuousResume = false;
-    if (!mounted) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      final provider = context.read<RakutenManagedProductProvider>();
-      final next = _nextCandidate(provider);
-      final moved = _truncateName(_lastCollectedName);
-      final message = next == null
-          ? '「$moved」をコレ済へ移動しました。次の候補はありません。'
-          : '「$moved」をコレ済へ移動しました。次の候補はこちら: 「${_truncateName(next.itemName)}」';
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(message)));
-      setState(() {});
-    });
-  }
-
-  RakutenManagedProduct? _nextCandidate(
-    RakutenManagedProductProvider provider,
-  ) {
-    final base = provider.sortedItemsForStatus(
-      RakutenManagedProductStatus.candidate,
-    );
-    final urlScoped = _filterExcludeUrlNotReady(base, _excludeUrlNotReady);
-    final filtered = _filterManagedProductsByQuery(urlScoped, _searchQuery);
-    if (filtered.isEmpty) return null;
-    return filtered.first;
-  }
-
-  String _truncateName(String text, {int max = 24}) {
-    final t = text.trim();
-    if (t.length <= max) return t;
-    return '${t.substring(0, max)}...';
-  }
-
-  Future<void> _handleContinuousCollect(
-    BuildContext context,
-    RakutenManagedProduct product,
-  ) async {
-    final provider = context.read<RakutenManagedProductProvider>();
-    await provider.collectRoomAndLaunch(context, product.productId);
-    if (!mounted) return;
-    final moved =
-        provider.statusForProduct(product.productId) ==
-        RakutenManagedProductStatus.done;
-    if (moved && _continuousCollectMode) {
-      setState(() {
-        _lastCollectedName = product.itemName;
-        _awaitingContinuousResume = true;
-      });
-    }
   }
 
   @override
@@ -488,14 +426,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     variant: RakutenManagedProductCardVariant.candidate,
                     filterQuery: _searchQuery,
                     excludeUrlNotReady: _excludeUrlNotReady,
-                    continuousCollectMode: _continuousCollectMode,
-                    onContinuousModeChanged: (next) {
-                      setState(() {
-                        _continuousCollectMode = next;
-                        _awaitingContinuousResume = false;
-                      });
-                    },
-                    onCollectPressed: _handleContinuousCollect,
                     emptyTitle: 'コレ候補はまだありません',
                     emptySubtitle: '',
                     emptyHint: '',
@@ -520,7 +450,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     variant: RakutenManagedProductCardVariant.done,
                     filterQuery: _searchQuery,
                     excludeUrlNotReady: _excludeUrlNotReady,
-                    continuousCollectMode: false,
                     doneAtLocalDayFilter: _doneLocalDayFilter,
                     onClearDoneDayFilter: _doneLocalDayFilter == null
                         ? null
@@ -591,9 +520,6 @@ class _RoomManagedProductListTab extends StatelessWidget {
     required this.variant,
     required this.filterQuery,
     this.excludeUrlNotReady = false,
-    this.continuousCollectMode = false,
-    this.onContinuousModeChanged,
-    this.onCollectPressed,
     this.doneAtLocalDayFilter,
     this.onClearDoneDayFilter,
     required this.emptyTitle,
@@ -614,13 +540,6 @@ class _RoomManagedProductListTab extends StatelessWidget {
   final RakutenManagedProductCardVariant variant;
   final String filterQuery;
   final bool excludeUrlNotReady;
-  final bool continuousCollectMode;
-  final ValueChanged<bool>? onContinuousModeChanged;
-  final Future<void> Function(
-    BuildContext context,
-    RakutenManagedProduct product,
-  )?
-  onCollectPressed;
   final DateTime? doneAtLocalDayFilter;
   final VoidCallback? onClearDoneDayFilter;
   final String emptyTitle;
@@ -740,26 +659,10 @@ class _RoomManagedProductListTab extends StatelessWidget {
                 _DoneTabCollapsibleNotice(
                   repository: context.read<DoneTabNoticeRepository>(),
                 ),
-              if (status == RakutenManagedProductStatus.candidate)
-                _ContinuousCollectModePanel(
-                  enabled: continuousCollectMode,
-                  onChanged: onContinuousModeChanged ?? (_) {},
-                  hasNextCandidate: list.isNotEmpty,
-                  nextCandidateName: list.isNotEmpty
-                      ? list.first.itemName
-                      : null,
-                ),
-              if (status == RakutenManagedProductStatus.candidate)
-                const SizedBox(height: 10),
               for (var i = 0; i < list.length; i++) ...[
                 _KeyedCandidateProductRow(
                   product: list[i],
                   variant: variant,
-                  onCollectPressed: onCollectPressed,
-                  emphasizeAsNext:
-                      status == RakutenManagedProductStatus.candidate &&
-                      continuousCollectMode &&
-                      i == 0,
                   rowKey: rowKeyFor?.call(list[i].productId),
                   flash: flashHighlightProductId == list[i].productId,
                 ),
@@ -777,17 +680,12 @@ class _KeyedCandidateProductRow extends StatelessWidget {
   const _KeyedCandidateProductRow({
     required this.product,
     required this.variant,
-    required this.onCollectPressed,
-    required this.emphasizeAsNext,
     this.rowKey,
     this.flash = false,
   });
 
   final RakutenManagedProduct product;
   final RakutenManagedProductCardVariant variant;
-  final Future<void> Function(BuildContext context, RakutenManagedProduct p)?
-  onCollectPressed;
-  final bool emphasizeAsNext;
   final GlobalKey? rowKey;
   final bool flash;
 
@@ -796,8 +694,6 @@ class _KeyedCandidateProductRow extends StatelessWidget {
     Widget card = RakutenManagedProductCard(
       product: product,
       variant: variant,
-      onCollectPressed: onCollectPressed,
-      emphasizeAsNext: emphasizeAsNext,
     );
     if (flash) {
       card = AnimatedContainer(
@@ -989,79 +885,6 @@ class _DoneTabCollapsibleNoticeState extends State<_DoneTabCollapsibleNotice> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _ContinuousCollectModePanel extends StatelessWidget {
-  const _ContinuousCollectModePanel({
-    required this.enabled,
-    required this.onChanged,
-    required this.hasNextCandidate,
-    required this.nextCandidateName,
-  });
-
-  final bool enabled;
-  final ValueChanged<bool> onChanged;
-  final bool hasNextCandidate;
-  final String? nextCandidateName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(
-          color: enabled ? AppColors.accentPrimary : AppColors.divider,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.autorenew_rounded,
-                size: 18,
-                color: enabled
-                    ? AppColors.accentPrimary
-                    : AppColors.textSecondary,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  '連続コレモード',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-              ),
-              Switch(
-                value: enabled,
-                onChanged: onChanged,
-                activeThumbColor: AppColors.accentPrimary,
-              ),
-            ],
-          ),
-          if (enabled) ...[
-            const SizedBox(height: 8),
-            Text(
-              hasNextCandidate
-                  ? '次の候補: ${nextCandidateName ?? ''}'
-                  : '次の候補はありません',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: AppColors.accentPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
-        ],
       ),
     );
   }
