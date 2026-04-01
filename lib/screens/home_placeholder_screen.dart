@@ -40,11 +40,11 @@ abstract final class _HomeUi {
 
   /// セクション先頭（見出し＋補足・折りたたみ行）の統一パディング
   static EdgeInsets get paddingSectionHeader =>
-      EdgeInsets.fromLTRB(insetSectionH, 14, insetSectionH, 10);
+      EdgeInsets.fromLTRB(insetSectionH, 12, insetSectionH, 9);
 
   /// 「このアプリについて」等：開閉ヘッダー（本文との縦リズムを他セクションに寄せる）
   static EdgeInsets get paddingExpandableHeader =>
-      EdgeInsets.fromLTRB(insetSectionH, 14, insetSectionH, 12);
+      EdgeInsets.fromLTRB(insetSectionH, 12, insetSectionH, 10);
 
   /// グリッド・リスト「デッキ」の外側（下のみ余白を厚めに）
   static EdgeInsets get paddingDeckOuter =>
@@ -59,17 +59,17 @@ abstract final class _HomeUi {
 
   /// 楽天検索・今日のおすすめ等：単独カード内のパディング（横は [insetSectionH] に揃える）
   static EdgeInsets get paddingDenseCard =>
-      EdgeInsets.fromLTRB(insetSectionH, 14, insetSectionH, 14);
+      EdgeInsets.fromLTRB(insetSectionH, 12, insetSectionH, 12);
 
   /// セクション末尾サブアクション行
   static EdgeInsets get paddingSectionFooterAction =>
-      EdgeInsets.symmetric(horizontal: insetSectionH, vertical: 12);
+      EdgeInsets.symmetric(horizontal: insetSectionH, vertical: 10);
 
   /// セクション見出しと折りたたみ要約の間
-  static const double gapTitleToSummary = 6;
+  static const double gapTitleToSummary = 5;
 
   /// 見出し直下の一行リード（ROOM・最近候補・検索で共通）
-  static const double gapHeaderTitleToLead = 5;
+  static const double gapHeaderTitleToLead = 4;
 
   /// ROOMコレ管理：展開説明の下余白
   static const double gapRoomDetailBottom = 8;
@@ -78,7 +78,7 @@ abstract final class _HomeUi {
   static const double gapRoomDividerToDeck = 8;
 
   /// ROOMコレ管理：タイルデッキ内のパディング
-  static const double paddingRoomTileDeck = 8;
+  static const double paddingRoomTileDeck = 7;
 
   /// ROOMコレ管理：グリッドの列・行間（統一）
   static const double gapRoomGrid = 8;
@@ -90,7 +90,7 @@ abstract final class _HomeUi {
   static const double gapRecentDividerToDeck = 8;
 
   /// 最近候補：リストデッキの内側パディング
-  static const double paddingRecentListDeck = 8;
+  static const double paddingRecentListDeck = 7;
 
   /// 最近候補セクション：最下部の余白
   static const double paddingRecentSectionBottom = 4;
@@ -99,7 +99,7 @@ abstract final class _HomeUi {
   static const double gapTight = 6;
 
   /// 楽天で検索ブロック：説明文とボタンの間
-  static const double gapSearchLeadToButton = 12;
+  static const double gapSearchLeadToButton = 10;
 
   /// 区切り線の色（ホーム内で統一）
   static Color dividerLineColor() =>
@@ -117,13 +117,13 @@ abstract final class _HomeUi {
   static const int todayRecommendationsMaxPerDay = 10;
 
   /// 今日のおすすめセクション：見出しとステータス行の間
-  static const double gapTodayRecTitleToStatus = 6;
+  static const double gapTodayRecTitleToStatus = 5;
 
   /// 今日のおすすめセクション：ステータスと脚注の間
-  static const double gapTodayRecStatusToFootnote = 5;
+  static const double gapTodayRecStatusToFootnote = 4;
 
   /// 今日のおすすめ：プログレスバー上余白
-  static const double gapTodayRecBeforeProgress = 8;
+  static const double gapTodayRecBeforeProgress = 6;
 
   /// 標準リストの下余白（ナビバー押さえ以外）
   static const double listBottomExtra = 12;
@@ -234,7 +234,7 @@ abstract final class _HomeUi {
     return (base ?? const TextStyle()).copyWith(
       fontSize: 12,
       fontWeight: FontWeight.w500,
-      height: 1.45,
+      height: 1.35,
       letterSpacing: 0.02,
       color: AppColors.textTertiary,
     );
@@ -246,7 +246,7 @@ abstract final class _HomeUi {
     return (base ?? const TextStyle()).copyWith(
       fontSize: 15,
       fontWeight: FontWeight.w800,
-      height: 1.28,
+      height: 1.22,
       letterSpacing: -0.15,
       color: AppColors.textPrimary,
     );
@@ -258,7 +258,7 @@ abstract final class _HomeUi {
     return (base ?? const TextStyle()).copyWith(
       fontSize: 13,
       fontWeight: FontWeight.w600,
-      height: 1.42,
+      height: 1.32,
       color: AppColors.textSecondary,
     );
   }
@@ -268,7 +268,7 @@ abstract final class _HomeUi {
     final base = Theme.of(context).textTheme.bodySmall;
     return (base ?? const TextStyle()).copyWith(
       fontSize: 13,
-      height: 1.48,
+      height: 1.38,
       color: AppColors.textSecondary,
     );
   }
@@ -278,7 +278,7 @@ abstract final class _HomeUi {
     final base = Theme.of(context).textTheme.labelSmall;
     return (base ?? const TextStyle()).copyWith(
       fontSize: 11.5,
-      height: 1.42,
+      height: 1.32,
       color: AppColors.textTertiary,
     );
   }
@@ -289,7 +289,7 @@ abstract final class _HomeUi {
     return (base ?? const TextStyle()).copyWith(
       fontSize: 14,
       fontWeight: FontWeight.w700,
-      height: 1.28,
+      height: 1.2,
       letterSpacing: -0.08,
       color: AppColors.accentPrimary,
     );
@@ -312,7 +312,7 @@ abstract final class _HomeUi {
     final base = Theme.of(context).textTheme.bodyMedium;
     return (base ?? const TextStyle()).copyWith(
       fontWeight: FontWeight.w600,
-      height: 1.35,
+      height: 1.28,
       color: AppColors.textPrimary,
     );
   }
@@ -979,7 +979,7 @@ class _AboutAppExpandedBody extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
-                    height: 1.45,
+                    height: 1.35,
                     fontSize: 13,
                   ),
             ),
@@ -1048,11 +1048,11 @@ class _FlowStepLine extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w800,
-                      height: 1.28,
+                      height: 1.22,
                       fontSize: 14,
                     ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 3),
               Text(
                 subtitle,
                 style: _HomeUi.sectionBody(context),
@@ -1120,7 +1120,7 @@ class _HomeCollectionListLink extends StatelessWidget {
                         'コレ一覧を開く',
                         style: _HomeUi.sectionFooterActionTitle(context),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 3),
                       Text(
                         '候補とコレ済の全体を表示',
                         style: _HomeUi.tapHint(context),
@@ -1324,7 +1324,7 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                       ),
                       if (errorMessage != null &&
                           errorMessage!.trim().isNotEmpty) ...[
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 4),
                         Text(
                           errorMessage!.trim(),
                           style: _HomeUi.sectionBody(context).copyWith(
@@ -1516,8 +1516,8 @@ class _RoomMetricTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final radius = compactDeck ? 12.0 : AppDimensions.radiusCard;
     final pad = compactDeck
-        ? const EdgeInsets.symmetric(horizontal: 10, vertical: 10)
-        : const EdgeInsets.fromLTRB(12, 10, 12, 10);
+        ? const EdgeInsets.symmetric(horizontal: 9, vertical: 9)
+        : const EdgeInsets.fromLTRB(11, 9, 11, 9);
     final titleSize = compactDeck ? 12.5 : 13.0;
     final valueLarge = compactDeck ? 24.0 : 25.0;
     final valueSmall = compactDeck ? 15.5 : 16.0;
@@ -1545,14 +1545,14 @@ class _RoomMetricTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       color: iconBackground,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(icon, color: accent, size: 17),
+                    child: Icon(icon, color: accent, size: 16),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 7),
                   Expanded(
                     child: Text(
                       title,
@@ -1561,14 +1561,14 @@ class _RoomMetricTile extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                             color: accent,
                             fontWeight: FontWeight.w800,
-                            height: 1.22,
+                            height: 1.12,
                             fontSize: titleSize,
                           ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: compactDeck ? 8 : 9),
+              SizedBox(height: compactDeck ? 6 : 7),
               Text(
                 valueMain,
                 textAlign: TextAlign.left,
@@ -1578,18 +1578,18 @@ class _RoomMetricTile extends StatelessWidget {
                     ? Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,
-                          height: 1.12,
+                          height: 1.06,
                           fontSize: valueLarge,
                           letterSpacing: -0.45,
                         )
                     : Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,
-                          height: 1.22,
+                          height: 1.14,
                           fontSize: valueSmall,
                         ),
               ),
-              SizedBox(height: compactDeck ? 4 : 5),
+              SizedBox(height: compactDeck ? 3 : 4),
               Text(
                 caption,
                 maxLines: captionMaxLines,
@@ -1620,8 +1620,8 @@ class _RecentCandidatesPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tilePadding = embedInUnifiedSection
-        ? const EdgeInsets.symmetric(horizontal: 12, vertical: 10)
-        : const EdgeInsets.symmetric(horizontal: 12, vertical: 10);
+        ? const EdgeInsets.symmetric(horizontal: 12, vertical: 9)
+        : const EdgeInsets.symmetric(horizontal: 12, vertical: 9);
 
     if (candidates.isEmpty) {
       return Padding(
@@ -1687,7 +1687,7 @@ class _RecentCandidatesPanel extends StatelessWidget {
 class _RecentCandidateTile extends StatelessWidget {
   const _RecentCandidateTile({
     required this.product,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
     required this.onTap,
   });
 
@@ -1721,18 +1721,18 @@ class _RecentCandidateTile extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
-                            height: 1.32,
+                            height: 1.24,
                             fontSize: 14,
                           ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 3),
                     Text(
                       product.shopName.isEmpty ? 'ショップ名なし' : product.shopName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: _HomeUi.sectionBody(context),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 3),
                     _ExtractionChip(status: product.extractionStatus),
                   ],
                 ),
@@ -1808,7 +1808,7 @@ class _ExtractionChip extends StatelessWidget {
         fg = AppColors.error;
     }
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(8),
@@ -1818,7 +1818,7 @@ class _ExtractionChip extends StatelessWidget {
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: fg,
               fontWeight: FontWeight.w700,
-              height: 1.25,
+              height: 1.18,
             ),
       ),
     );
