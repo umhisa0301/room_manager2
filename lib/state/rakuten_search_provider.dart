@@ -103,9 +103,12 @@ class RakutenSearchProvider extends ChangeNotifier {
       return body;
     }
     if (body.startsWith('楽天API:')) {
-      return '検索条件を見直して、もう一度お試しください。\n（$body）';
+      if (kDebugMode) {
+        debugPrint('[Rakuten] API rejected params (not shown in UI): $body');
+      }
+      return '検索条件が通らない可能性があります。キーワードや条件を少し変えて、もう一度お試しください。';
     }
-    return '検索に失敗しました。通信状況をご確認のうえ、もう一度お試しください。';
+    return '通信状況やキーワード・条件をご確認のうえ、もう一度お試しください。';
   }
 
   /// 検索画面の一覧・ローディング・エラーなど一時状態だけを初期化する（永続データは変更しない）。

@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../config/rakuten_api_config.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
@@ -13,6 +11,7 @@ import '../state/rakuten_managed_product_provider.dart';
 import '../state/rakuten_search_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/rakuten_search_feedback.dart';
 import '../widgets/rakuten_search_result_card.dart';
 import '../widgets/shop_discovery_card.dart';
 import 'saved_shops_screen.dart';
@@ -243,8 +242,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           const SizedBox(height: 8),
           switch (_mode) {
             _RakutenSearchMode.product => _buildProductInput(context, search),
-            _RakutenSearchMode.genre => _buildGenreInput(context),
-            _RakutenSearchMode.shopDiscovery => _buildShopDiscoveryInput(context),
+            _RakutenSearchMode.genre => _buildGenreInput(context, search),
+            _RakutenSearchMode.shopDiscovery =>
+              _buildShopDiscoveryInput(context, search),
           },
         ],
       ),
@@ -301,7 +301,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  Widget _buildGenreInput(BuildContext context) {
+  Widget _buildGenreInput(
+    BuildContext context,
+    RakutenSearchProvider search,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -360,7 +363,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             const SizedBox(width: 8),
             Expanded(
               child: OutlinedButton(
-                onPressed: () => _runGenreSearch(context),
+                onPressed: search.status == RakutenSearchStatus.loading
+                    ? null
+                    : () => _runGenreSearch(context),
                 child: const Text('ジャンルで検索'),
               ),
             ),
@@ -370,7 +375,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  Widget _buildShopDiscoveryInput(BuildContext context) {
+  Widget _buildShopDiscoveryInput(
+    BuildContext context,
+    RakutenSearchProvider search,
+  ) {
     final savedCount = context.watch<SavedShopProvider>().shops.length;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -429,7 +437,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         SizedBox(
           height: 48,
           child: FilledButton.icon(
-            onPressed: () => _runShopDiscovery(context),
+            onPressed: search.status == RakutenSearchStatus.loading
+                ? null
+                : () => _runShopDiscovery(context),
             icon: const Icon(Icons.travel_explore_rounded),
             label: const Text(
               'ショップを発掘する',
@@ -921,18 +931,42 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }
     switch (search.status) {
       case RakutenSearchStatus.idle:
-        return _centerText('商品名やキーワードを入力して検索してください');
+        return const RakutenSearchIdleView(
+          icon: Icons.manage_search_outlined,
+          title: 'キーワード検索の準備ができています',
+          subtitle:
+              'キーワードを入力し「検索」を押すか、上の「詳細条件」で価格帯・ショップ・ジャンルなどを指定できます。',
+        );
       case RakutenSearchStatus.loading:
-        return const Center(child: CircularProgressIndicator());
+        return const RakutenSearchLoadingView(
+          title: '商品を探しています',
+          subtitle: '楽天の商品データを読み込んでいます。通信状況により30秒ほどかかることがあります。',
+          footnote: '複数ページ（最大約100件）を順に取得しています。この画面を閉じずにお待ちください。',
+        );
       case RakutenSearchStatus.error:
-        return _searchErrorPanel(
-          context,
+        return RakutenSearchErrorView(
+          title: 'キーワード検索に失敗しました',
           message: search.errorMessage,
           onRetry: () => _runSearch(context),
+          onAdjustConditions: () => _openProductConditionsSheet(context),
+          retryLabel: '同じ条件で再試行',
+          adjustLabel: '詳細条件を開く',
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
-          return _centerText('検索結果は0件でした');
+          return RakutenSearchEmptyView(
+            icon: Icons.inventory_2_outlined,
+            title: '条件に合う商品が見つかりませんでした',
+            body:
+                '楽天側に該当する商品がないか、詳細条件・除外ワードが厳しすぎる可能性があります。',
+            hints: const [
+              'キーワードを変えてみる',
+              '詳細条件の下限（評価数・価格など）を緩める',
+              '除外ワードを減らす・空にする',
+            ],
+            onRefine: () => _openProductConditionsSheet(context),
+            refineLabel: '詳細条件を調整',
+          );
         }
         final managedPreferred = _applyPreferredExcludes(
           search.results,
@@ -948,7 +982,28 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (kDebugMode) _buildAffiliateDebugBanner(search),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 4, 20, 6),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.check_circle_outline_rounded,
+                    size: 18,
+                    color: AppColors.accentPrimary.withValues(alpha: 0.9),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '検索が完了しました（$totalCount件を取得）',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
               child: Row(
@@ -1017,10 +1072,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
             Expanded(
               child: filteredResults.isEmpty
-                  ? _centerText(
-                      '登録済みの候補・コレ済・保存ショップ由来の商品を優先的に除外した結果、'
-                      '表示できる商品がありません。\n'
-                      '除外フィルタをOFFにするか、条件を少し緩めて再検索してください。',
+                  ? RakutenSearchEmptyView(
+                      icon: Icons.filter_alt_off_outlined,
+                      title: 'この一覧では表示できる商品がありません',
+                      body:
+                          '検索自体は成功していますが、一覧上の除外フィルタや、すでに登録済みの候補・コレ済・保存ショップの商品を避ける設定の影響で、表示が0件になっています。',
+                      hints: const [
+                        '「コレ候補を除外」「コレ済を除外」のチェックをオフにする',
+                        '詳細条件やキーワードを変えて再検索する',
+                      ],
+                      onRefine: () => _openProductConditionsSheet(context),
+                      refineLabel: '詳細条件を開く',
                     )
                   : ListView.separated(
                       padding: const EdgeInsets.fromLTRB(20, 8, 20, 90),
@@ -1104,21 +1166,42 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   ) {
     switch (search.status) {
       case RakutenSearchStatus.idle:
-        return _centerText('ジャンルと必要なら補助キーワードを指定して検索してください');
+        return const RakutenSearchIdleView(
+          icon: Icons.category_outlined,
+          title: 'ジャンル検索の準備ができています',
+          subtitle:
+              'ジャンルを選び、必要なら補助キーワードを入力してから「ジャンルで検索」を押してください。詳細条件は「詳細条件」から開けます。',
+        );
       case RakutenSearchStatus.loading:
-        return const Center(child: CircularProgressIndicator());
+        return const RakutenSearchLoadingView(
+          title: 'ジャンルに沿った商品を読み込んでいます',
+          subtitle: '楽天の商品データを読み込んでいます。通信状況により30秒ほどかかることがあります。',
+          footnote: '複数ページ（最大約100件）を順に取得しています。この画面を閉じずにお待ちください。',
+        );
       case RakutenSearchStatus.error:
-        return _searchErrorPanel(
-          context,
-          message:
-              'ジャンル検索を完了できませんでした。\n${search.errorMessage}',
-          onRetry: () {
-            _runGenreSearch(context);
-          },
+        return RakutenSearchErrorView(
+          title: 'ジャンル検索に失敗しました',
+          message: search.errorMessage,
+          onRetry: () => _runGenreSearch(context),
+          onAdjustConditions: () => _openProductConditionsSheet(context),
+          retryLabel: '同じ条件で再試行',
+          adjustLabel: '詳細条件を開く',
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
-          return _centerText('指定したジャンルでは商品が見つかりませんでした');
+          return RakutenSearchEmptyView(
+            icon: Icons.category_outlined,
+            title: 'このジャンルでは商品が見つかりませんでした',
+            body:
+                '条件が厳しすぎるか、この組み合わせではヒットがない可能性があります。',
+            hints: const [
+              '補助キーワードを空にするか、別の言い方に変える',
+              '詳細条件の評価数・価格帯を緩める',
+              '別のジャンルを選ぶ',
+            ],
+            onRefine: () => _openProductConditionsSheet(context),
+            refineLabel: '詳細条件を調整',
+          );
         }
         final managedPreferred = _applyPreferredExcludes(
           search.results,
@@ -1128,8 +1211,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         final base = managedPreferred.isNotEmpty ? managedPreferred : search.results;
         final filteredResults = _applyLocalStatusFilters(base, managed);
         if (filteredResults.isEmpty) {
-          return _centerText(
-            '除外条件やフィルタにより、表示できる商品がありませんでした。\n条件を緩めて再検索してください。',
+          return RakutenSearchEmptyView(
+            icon: Icons.filter_alt_off_outlined,
+            title: '表示できる商品がありません',
+            body:
+                '検索は成功していますが、一覧の除外や登録済み商品の扱いの影響で、表示が0件です。',
+            hints: const [
+              '詳細条件を緩めて再検索する',
+              'キーワード検索タブで別の切り口を試す',
+            ],
+            onRefine: () => _openProductConditionsSheet(context),
+            refineLabel: '詳細条件を開く',
           );
         }
         final sorted = [...filteredResults];
@@ -1146,6 +1238,28 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 4, 20, 6),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.check_circle_outline_rounded,
+                    size: 18,
+                    color: AppColors.accentPrimary.withValues(alpha: 0.9),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '検索が完了しました（${search.results.length}件を取得）',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
               child: Row(
@@ -1214,24 +1328,42 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   ) {
     switch (search.status) {
       case RakutenSearchStatus.idle:
-        return _centerText(
-          'ショップ発掘モードです。\n'
-          'キーワードまたはジャンルを指定して「ショップを発掘する」を押してください。',
+        return const RakutenSearchIdleView(
+          icon: Icons.storefront_outlined,
+          title: 'ショップ発掘の準備ができています',
+          subtitle:
+              'キーワードまたはジャンルを指定し、「ショップを発掘する」を押すと、商品から有望なショップ候補をリスト化します。発掘条件は「発掘条件」から調整できます。',
         );
       case RakutenSearchStatus.loading:
-        return _loadingGuide(
-          title: 'ショップを分析中...',
-          subtitle: '売れ筋商品をショップ単位に集約しています',
+        return const RakutenSearchLoadingView(
+          title: 'ショップを発掘しています',
+          subtitle: 'まず商品を読み込み、ショップ単位に集計しています。全体で少し時間がかかることがあります。',
+          footnote: 'データ取得中はこの画面を開いたままお待ちください。長時間応答がない場合は通信環境をご確認ください。',
         );
       case RakutenSearchStatus.error:
-        return _errorGuide(
-          message:
-              'ショップ発掘を完了できませんでした。\n${search.errorMessage}',
+        return RakutenSearchErrorView(
+          title: 'ショップ発掘に失敗しました',
+          message: search.errorMessage,
           onRetry: () => _runShopDiscovery(context),
+          onAdjustConditions: () => _openShopDiscoveryConditionsSheet(context),
+          retryLabel: '同じ条件で再試行',
+          adjustLabel: '発掘条件を開く',
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
-          return _centerText('ショップ発掘の対象商品がありませんでした');
+          return RakutenSearchEmptyView(
+            icon: Icons.travel_explore_outlined,
+            title: '発掘できる商品がありませんでした',
+            body:
+                '検索条件にヒットする商品が無いか、条件が厳しすぎる可能性があります。',
+            hints: const [
+              'キーワードを広げる、または別のジャンルも試す',
+              '発掘条件の評価数・評価点を緩める',
+              '除外ワードを減らす',
+            ],
+            onRefine: () => _openShopDiscoveryConditionsSheet(context),
+            refineLabel: '発掘条件を調整',
+          );
         }
         final shopLimit = _parseInt(_shopDiscoveryShopLimitController.text) ?? 10;
         final itemsPerShop =
@@ -1242,7 +1374,18 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           itemsPerShop: itemsPerShop,
         );
         if (summaries.isEmpty) {
-          return _centerText('ショップとして集約できる結果がありませんでした');
+          return RakutenSearchEmptyView(
+            icon: Icons.groups_outlined,
+            title: 'ショップ候補を表示できませんでした',
+            body:
+                '商品データは取得できていますが、ショップ単位の集約結果が空でした。しばらくしてから同じ条件でもう一度お試しください。',
+            hints: const [
+              '発掘条件を緩めて再実行する',
+              'キーワードやジャンルを変えて商品数を増やす',
+            ],
+            onRefine: () => _openShopDiscoveryConditionsSheet(context),
+            refineLabel: '発掘条件を開く',
+          );
         }
         return Consumer<SavedShopProvider>(
           builder: (context, saved, _) {
@@ -1257,7 +1400,29 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 6, 20, 4),
+                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 6),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle_outline_rounded,
+                        size: 18,
+                        color: AppColors.accentPrimary.withValues(alpha: 0.9),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          '商品の取得が完了しました（${search.results.length}件からショップを集計）',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
@@ -1351,96 +1516,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }
   }
 
-  Widget _loadingGuide({required String title, required String subtitle}) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircularProgressIndicator(),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: AppColors.textSecondary),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _searchErrorPanel(
-    BuildContext context, {
-    required String message,
-    required VoidCallback onRetry,
-  }) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.error,
-                height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 10),
-            OutlinedButton.icon(
-              onPressed: onRetry,
-              icon: const Icon(Icons.refresh_rounded, size: 18),
-              label: const Text('もう一度試す'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _errorGuide({
-    required String message,
-    required VoidCallback onRetry,
-  }) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColors.error,
-                height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 10),
-            OutlinedButton.icon(
-              onPressed: onRetry,
-              icon: const Icon(Icons.refresh_rounded, size: 18),
-              label: const Text('同じ条件で再実行'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   String _shopDiscoveryGroupKey(RakutenSearchItem item) {
     final code = item.shopCode.trim();
     if (code.isNotEmpty) return code;
@@ -1482,39 +1557,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(isSaved ? '保存解除しました' : '保存しました')),
-    );
-  }
-
-  Widget _buildAffiliateDebugBanner(RakutenSearchProvider provider) {
-    final req = RakutenApiConfig.requestIncludesAffiliateId;
-    final n = provider.resultsWithAffiliateUrlCount;
-    final total = provider.results.length;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 6),
-      child: Text(
-        'DEBUG: リクエストにaffiliateId付与=$req / レスポンスaffiliateUrlあり $n/$total 件 '
-        '（APIはaffiliateId文字列を返しません。affiliateUrlの有無で判断）',
-        style: TextStyle(
-          fontSize: 11,
-          height: 1.25,
-          color: AppColors.textTertiary,
-        ),
-      ),
-    );
-  }
-
-  Widget _centerText(String text, {bool isError = false}) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: isError ? AppColors.error : AppColors.textSecondary,
-          ),
-        ),
-      ),
     );
   }
 
