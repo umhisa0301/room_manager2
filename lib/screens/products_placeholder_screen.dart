@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../navigation/app_shell_controller.dart';
+import '../repository/done_tab_notice_repository.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_screen_status.dart';
@@ -735,6 +736,10 @@ class _RoomManagedProductListTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
               ],
+              if (status == RakutenManagedProductStatus.done)
+                _DoneTabCollapsibleNotice(
+                  repository: context.read<DoneTabNoticeRepository>(),
+                ),
               if (status == RakutenManagedProductStatus.candidate)
                 _ContinuousCollectModePanel(
                   enabled: continuousCollectMode,
@@ -854,6 +859,133 @@ class _DoneDayFilterBanner extends StatelessWidget {
               child: const Text('すべて表示'),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// コレ済タブ先頭に1つだけ置く注意書き（折りたたみ・今後表示しないで永続的に非表示）。
+class _DoneTabCollapsibleNotice extends StatefulWidget {
+  const _DoneTabCollapsibleNotice({required this.repository});
+
+  final DoneTabNoticeRepository repository;
+
+  @override
+  State<_DoneTabCollapsibleNotice> createState() =>
+      _DoneTabCollapsibleNoticeState();
+}
+
+class _DoneTabCollapsibleNoticeState extends State<_DoneTabCollapsibleNotice> {
+  late bool _suppressed = widget.repository.isSuppressed;
+  bool _expanded = false;
+
+  static const String _summary =
+      'このアプリの「コレ済」とROOMの投稿は別です（詳しくは展開）。';
+  static const String _body =
+      'このアプリではコレ済です。ROOM投稿の完了は別途ご確認ください。';
+
+  Future<void> _onSuppressForever() async {
+    await widget.repository.suppressForever();
+    if (mounted) setState(() => _suppressed = true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_suppressed) return const SizedBox.shrink();
+
+    final borderColor = RoomListAccent.done.withValues(alpha: 0.38);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Material(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+            border: Border.all(color: borderColor),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InkWell(
+                onTap: () => setState(() => _expanded = !_expanded),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(AppDimensions.radiusCard),
+                  bottom: Radius.circular(
+                    _expanded ? AppDimensions.radiusCard : 0,
+                  ),
+                ),
+                child: SizedBox(
+                  height: 48,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline_rounded,
+                          size: 22,
+                          color: RoomListAccent.done.withValues(alpha: 0.95),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            _summary,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                  color: AppColors.textPrimary,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.25,
+                                ),
+                          ),
+                        ),
+                        Icon(
+                          _expanded
+                              ? Icons.expand_less_rounded
+                              : Icons.expand_more_rounded,
+                          color: AppColors.textSecondary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              if (_expanded) ...[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                  child: Text(
+                    _body,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.45,
+                        ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: _onSuppressForever,
+                      style: TextButton.styleFrom(
+                        foregroundColor: AppColors.textSecondary,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        minimumSize: const Size(48, 48),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: const Text('今後表示しない'),
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
       ),
     );

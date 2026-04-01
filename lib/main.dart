@@ -52,6 +52,7 @@ void main() async {
       rakutenSearchRepository: rakutenSearchRepository,
       rakutenManagedProductRepository: rakutenManagedProductRepository,
       pendingCollectNoticeRepository: pendingCollectNoticeRepository,
+      doneTabNoticeRepository: doneTabNoticeRepository,
       userProfileRepository: userProfileRepository,
       savedShopRepository: savedShopRepository,
       todayRecommendationRepository: todayRecommendationRepository,
