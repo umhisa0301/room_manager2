@@ -21,10 +21,13 @@ abstract final class _HomeUi {
   const _HomeUi._();
 
   /// 主要ブロック同士（CTA・セクション・グループ）
-  static const double gapSection = 20;
+  static const double gapSection = 14;
 
   /// ホーム ListView の左右（アプリ全体の [AppDimensions.screenPaddingH] より一段狭めて表示領域を確保）
   static const double screenPaddingH = 14;
+
+  /// ホーム ListView の上下（画面端との距離を少し詰めつつ窮屈にならない程度）
+  static const double screenPaddingV = 14;
 
   /// セクション外枠の角丸（`AppDimensions.radiusCard` と一致）
   static double get radiusSectionOuter => AppDimensions.radiusCard;
@@ -37,66 +40,66 @@ abstract final class _HomeUi {
 
   /// セクション先頭（見出し＋補足・折りたたみ行）の統一パディング
   static EdgeInsets get paddingSectionHeader =>
-      EdgeInsets.fromLTRB(insetSectionH, 16, insetSectionH, 12);
+      EdgeInsets.fromLTRB(insetSectionH, 14, insetSectionH, 10);
 
   /// 「このアプリについて」等：開閉ヘッダー（本文との縦リズムを他セクションに寄せる）
   static EdgeInsets get paddingExpandableHeader =>
-      EdgeInsets.fromLTRB(insetSectionH, 16, insetSectionH, 14);
+      EdgeInsets.fromLTRB(insetSectionH, 14, insetSectionH, 12);
 
   /// グリッド・リスト「デッキ」の外側（下のみ余白を厚めに）
   static EdgeInsets get paddingDeckOuter =>
-      EdgeInsets.fromLTRB(insetSectionH, 0, insetSectionH, 16);
+      EdgeInsets.fromLTRB(insetSectionH, 0, insetSectionH, 12);
 
   /// 見出し行：先頭アイコンとタイトル列の間
   static const double gapIconToTitle = 12;
 
   /// 折りたたみセクション：展開ブロックのみ（上はヘッダーで確保）
   static EdgeInsets get paddingSectionExpandedOnly =>
-      EdgeInsets.fromLTRB(insetSectionH, 0, insetSectionH, 16);
+      EdgeInsets.fromLTRB(insetSectionH, 0, insetSectionH, 12);
 
   /// 楽天検索・今日のおすすめ等：単独カード内のパディング（横は [insetSectionH] に揃える）
   static EdgeInsets get paddingDenseCard =>
-      EdgeInsets.fromLTRB(insetSectionH, 16, insetSectionH, 16);
+      EdgeInsets.fromLTRB(insetSectionH, 14, insetSectionH, 14);
 
   /// セクション末尾サブアクション行
   static EdgeInsets get paddingSectionFooterAction =>
-      EdgeInsets.symmetric(horizontal: insetSectionH, vertical: 14);
+      EdgeInsets.symmetric(horizontal: insetSectionH, vertical: 12);
 
   /// セクション見出しと折りたたみ要約の間
-  static const double gapTitleToSummary = 8;
+  static const double gapTitleToSummary = 6;
 
   /// 見出し直下の一行リード（ROOM・最近候補・検索で共通）
-  static const double gapHeaderTitleToLead = 6;
+  static const double gapHeaderTitleToLead = 5;
 
   /// ROOMコレ管理：展開説明の下余白
-  static const double gapRoomDetailBottom = 12;
+  static const double gapRoomDetailBottom = 8;
 
   /// ROOMコレ管理：区切り線とタイルデッキの間
-  static const double gapRoomDividerToDeck = 12;
+  static const double gapRoomDividerToDeck = 8;
 
   /// ROOMコレ管理：タイルデッキ内のパディング
-  static const double paddingRoomTileDeck = 10;
+  static const double paddingRoomTileDeck = 8;
 
   /// ROOMコレ管理：グリッドの列・行間（統一）
   static const double gapRoomGrid = 8;
 
   /// 最近候補：展開説明の下余白
-  static const double gapRecentDetailBottom = 12;
+  static const double gapRecentDetailBottom = 8;
 
   /// 最近候補：区切り線とリストデッキの間
-  static const double gapRecentDividerToDeck = 12;
+  static const double gapRecentDividerToDeck = 8;
 
   /// 最近候補：リストデッキの内側パディング
-  static const double paddingRecentListDeck = 10;
+  static const double paddingRecentListDeck = 8;
 
   /// 最近候補セクション：最下部の余白
-  static const double paddingRecentSectionBottom = 8;
+  static const double paddingRecentSectionBottom = 4;
 
   /// コンパクトな縦の詰まり（チップ上など）
   static const double gapTight = 6;
 
   /// 楽天で検索ブロック：説明文とボタンの間
-  static const double gapSearchLeadToButton = 16;
+  static const double gapSearchLeadToButton = 12;
 
   /// 区切り線の色（ホーム内で統一）
   static Color dividerLineColor() =>
@@ -114,16 +117,16 @@ abstract final class _HomeUi {
   static const int todayRecommendationsMaxPerDay = 10;
 
   /// 今日のおすすめセクション：見出しとステータス行の間
-  static const double gapTodayRecTitleToStatus = 8;
+  static const double gapTodayRecTitleToStatus = 6;
 
   /// 今日のおすすめセクション：ステータスと脚注の間
-  static const double gapTodayRecStatusToFootnote = 6;
+  static const double gapTodayRecStatusToFootnote = 5;
 
   /// 今日のおすすめ：プログレスバー上余白
-  static const double gapTodayRecBeforeProgress = 10;
+  static const double gapTodayRecBeforeProgress = 8;
 
   /// 標準リストの下余白（ナビバー押さえ以外）
-  static const double listBottomExtra = 16;
+  static const double listBottomExtra = 12;
 
   static List<BoxShadow> get cardShadow => [
         BoxShadow(
@@ -441,7 +444,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     return ListView(
                       padding: EdgeInsets.fromLTRB(
                         _HomeUi.screenPaddingH,
-                        AppDimensions.screenPaddingV,
+                        _HomeUi.screenPaddingV,
                         _HomeUi.screenPaddingH,
                         bottomInset + navBarReserve + _HomeUi.listBottomExtra,
                       ),
@@ -986,13 +989,13 @@ class _AboutAppExpandedBody extends StatelessWidget {
           title: '商品を探す',
           subtitle: '「楽天で検索」から。',
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         const _FlowStepLine(
           number: '2',
           title: '候補に追加',
           subtitle: '検索結果から候補登録。',
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         const _FlowStepLine(
           number: '3',
           title: 'ROOMでコレ',
@@ -1303,7 +1306,7 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                         style: titleStyle,
                       ),
                       if (dateLabel != null && dateLabel!.isNotEmpty) ...[
-                        const SizedBox(height: 3),
+                        const SizedBox(height: 2),
                         Text(
                           '${dateLabel!}の提案（日替わり）',
                           style: _HomeUi.tapHint(context),
@@ -1565,7 +1568,7 @@ class _RoomMetricTile extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: compactDeck ? 9 : 10),
+              SizedBox(height: compactDeck ? 8 : 9),
               Text(
                 valueMain,
                 textAlign: TextAlign.left,
@@ -1586,7 +1589,7 @@ class _RoomMetricTile extends StatelessWidget {
                           fontSize: valueSmall,
                         ),
               ),
-              SizedBox(height: compactDeck ? 5 : 6),
+              SizedBox(height: compactDeck ? 4 : 5),
               Text(
                 caption,
                 maxLines: captionMaxLines,
@@ -1617,14 +1620,14 @@ class _RecentCandidatesPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tilePadding = embedInUnifiedSection
-        ? const EdgeInsets.symmetric(horizontal: 12, vertical: 11)
-        : const EdgeInsets.symmetric(horizontal: 12, vertical: 11);
+        ? const EdgeInsets.symmetric(horizontal: 12, vertical: 10)
+        : const EdgeInsets.symmetric(horizontal: 12, vertical: 10);
 
     if (candidates.isEmpty) {
       return Padding(
         padding: embedInUnifiedSection
-            ? const EdgeInsets.symmetric(vertical: 6, horizontal: 2)
-            : const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+            ? const EdgeInsets.symmetric(vertical: 4, horizontal: 2)
+            : const EdgeInsets.symmetric(vertical: 3, horizontal: 2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1684,7 +1687,7 @@ class _RecentCandidatesPanel extends StatelessWidget {
 class _RecentCandidateTile extends StatelessWidget {
   const _RecentCandidateTile({
     required this.product,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
     required this.onTap,
   });
 
@@ -1722,14 +1725,14 @@ class _RecentCandidateTile extends StatelessWidget {
                             fontSize: 14,
                           ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 4),
                     Text(
                       product.shopName.isEmpty ? 'ショップ名なし' : product.shopName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: _HomeUi.sectionBody(context),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 4),
                     _ExtractionChip(status: product.extractionStatus),
                   ],
                 ),
