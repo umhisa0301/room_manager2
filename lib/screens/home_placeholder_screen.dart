@@ -41,6 +41,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     BuildContext context, {
     int initialTabIndex = 0,
     DateTime? doneFilterLocalDay,
+    String? focusCandidateProductId,
   }) {
     final idx = initialTabIndex.clamp(0, 1);
     DateTime? dayNorm;
@@ -51,11 +52,17 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
         doneFilterLocalDay.day,
       );
     }
+    final focusId = focusCandidateProductId != null &&
+            focusCandidateProductId.isNotEmpty &&
+            idx == 0
+        ? focusCandidateProductId
+        : null;
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => ProductsPlaceholderScreen(
           initialTabIndex: idx,
           initialDoneFilterLocalDay: dayNorm,
+          initialFocusCandidateProductId: focusId,
         ),
       ),
     );
@@ -230,7 +237,10 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                         const SizedBox(height: AppDimensions.spacingSm),
                         _RecentCandidatesPanel(
                           candidates: recentCandidates,
-                          onOpenList: () => _openRoomList(context),
+                          onOpenCandidateTap: (productId) => _openRoomList(
+                            context,
+                            focusCandidateProductId: productId,
+                          ),
                         ),
                         const SizedBox(height: AppDimensions.spacingLg),
                         _HomeCollectionListLink(
@@ -845,11 +855,11 @@ class _RoomMetricTile extends StatelessWidget {
 class _RecentCandidatesPanel extends StatelessWidget {
   const _RecentCandidatesPanel({
     required this.candidates,
-    required this.onOpenList,
+    required this.onOpenCandidateTap,
   });
 
   final List<RakutenManagedProduct> candidates;
-  final VoidCallback onOpenList;
+  final void Function(String productId) onOpenCandidateTap;
 
   @override
   Widget build(BuildContext context) {
@@ -901,7 +911,10 @@ class _RecentCandidatesPanel extends StatelessWidget {
       child: Column(
         children: [
           for (int i = 0; i < candidates.length; i++) ...[
-            _RecentCandidateTile(product: candidates[i], onTap: onOpenList),
+            _RecentCandidateTile(
+              product: candidates[i],
+              onTap: () => onOpenCandidateTap(candidates[i].productId),
+            ),
             if (i < candidates.length - 1) const Divider(height: 1, indent: 72),
           ],
         ],

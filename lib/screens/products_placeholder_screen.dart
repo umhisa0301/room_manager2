@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,6 +46,7 @@ class ProductsPlaceholderScreen extends StatefulWidget {
     super.key,
     this.initialTabIndex = 0,
     this.initialDoneFilterLocalDay,
+    this.initialFocusCandidateProductId,
   });
 
   /// 0: コレ候補、1: コレ済
@@ -51,6 +54,9 @@ class ProductsPlaceholderScreen extends StatefulWidget {
 
   /// 指定したローカル暦日に [doneAt] があるコレ済のみ表示（コレ済タブ向け）。
   final DateTime? initialDoneFilterLocalDay;
+
+  /// コレ候補タブで、この商品IDの行へスクロールし、約1秒ハイライトする。
+  final String? initialFocusCandidateProductId;
 
   @override
   State<ProductsPlaceholderScreen> createState() =>
@@ -61,11 +67,55 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _candidateScrollController = ScrollController();
+  final Map<String, GlobalKey> _candidateRowKeys = <String, GlobalKey>{};
   String _searchQuery = '';
   bool _continuousCollectMode = false;
   bool _awaitingContinuousResume = false;
   String _lastCollectedName = '';
   DateTime? _doneLocalDayFilter;
+  Timer? _flashTimer;
+  String? _flashProductId;
+  bool _candidateFocusHandled = false;
+
+  GlobalKey _keyForCandidateRow(String productId) =>
+      _candidateRowKeys.putIfAbsent(productId, GlobalKey.new);
+
+  void _onCandidateFocusListReady() {
+    if (_candidateFocusHandled) return;
+    final id = widget.initialFocusCandidateProductId;
+    if (id == null || id.isEmpty) return;
+    _candidateFocusHandled = true;
+    _runScrollToCandidate(id, 0);
+  }
+
+  void _onCandidateFocusProductMissing() {
+    if (_candidateFocusHandled) return;
+    _candidateFocusHandled = true;
+  }
+
+  void _runScrollToCandidate(String productId, int attempt) {
+    if (!mounted || attempt > 16) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final ctx = _candidateRowKeys[productId]?.currentContext;
+      if (ctx != null) {
+        Scrollable.ensureVisible(
+          ctx,
+          alignment: 0.12,
+          duration: const Duration(milliseconds: 320),
+          curve: Curves.easeOutCubic,
+        );
+        setState(() => _flashProductId = productId);
+        _flashTimer?.cancel();
+        _flashTimer = Timer(const Duration(seconds: 1), () {
+          if (mounted) setState(() => _flashProductId = null);
+        });
+        return;
+      }
+      _runScrollToCandidate(productId, attempt + 1);
+    });
+  }
 
   @override
   void initState() {
@@ -74,6 +124,14 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     final d = widget.initialDoneFilterLocalDay;
     if (d != null) {
       _doneLocalDayFilter = DateTime(d.year, d.month, d.day);
+    }
+    final focusId = widget.initialFocusCandidateProductId;
+    final idx0 = widget.initialTabIndex.clamp(0, 1);
+    if (focusId != null &&
+        focusId.isNotEmpty &&
+        idx0 == 0) {
+      _searchController.clear();
+      _searchQuery = '';
     }
     final initialIndex = widget.initialTabIndex.clamp(0, 1);
     _tabController = TabController(
@@ -96,6 +154,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _flashTimer?.cancel();
+    _candidateScrollController.dispose();
     _tabController.dispose();
     _searchController.dispose();
     super.dispose();
@@ -337,6 +397,21 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                         '③ URL取得後に「コレする」でコレ済へ移動',
                     emptyHint: 'まずは上の「楽天で検索」から商品を探してみてください。',
                     accentColor: RoomListAccent.candidate,
+                    listScrollController: _candidateScrollController,
+                    flashHighlightProductId: _flashProductId,
+                    rowKeyFor: _keyForCandidateRow,
+                    focusCandidateProductId:
+                        widget.initialFocusCandidateProductId,
+                    onCandidateFocusListReady:
+                        widget.initialFocusCandidateProductId != null &&
+                                widget.initialFocusCandidateProductId!.isNotEmpty
+                            ? _onCandidateFocusListReady
+                            : null,
+                    onCandidateFocusProductMissing:
+                        widget.initialFocusCandidateProductId != null &&
+                                widget.initialFocusCandidateProductId!.isNotEmpty
+                            ? _onCandidateFocusProductMissing
+                            : null,
                   ),
                   _RoomManagedProductListTab(
                     status: RakutenManagedProductStatus.done,
@@ -420,6 +495,12 @@ class _RoomManagedProductListTab extends StatelessWidget {
     this.dayFilterEmptyTitle,
     this.dayFilterEmptySubtitle,
     required this.accentColor,
+    this.listScrollController,
+    this.flashHighlightProductId,
+    this.rowKeyFor,
+    this.focusCandidateProductId,
+    this.onCandidateFocusListReady,
+    this.onCandidateFocusProductMissing,
   });
 
   final RakutenManagedProductStatus status;
@@ -440,6 +521,12 @@ class _RoomManagedProductListTab extends StatelessWidget {
   final String? dayFilterEmptyTitle;
   final String? dayFilterEmptySubtitle;
   final Color accentColor;
+  final ScrollController? listScrollController;
+  final String? flashHighlightProductId;
+  final GlobalKey Function(String productId)? rowKeyFor;
+  final String? focusCandidateProductId;
+  final VoidCallback? onCandidateFocusListReady;
+  final VoidCallback? onCandidateFocusProductMissing;
 
   @override
   Widget build(BuildContext context) {
@@ -502,10 +589,29 @@ class _RoomManagedProductListTab extends StatelessWidget {
             doneAtLocalDayFilter != null &&
             onClearDoneDayFilter != null;
 
+        final fid = focusCandidateProductId;
+        if (status == RakutenManagedProductStatus.candidate &&
+            fid != null &&
+            fid.isNotEmpty &&
+            onCandidateFocusListReady != null &&
+            onCandidateFocusProductMissing != null) {
+          final inList = list.any((e) => e.productId == fid);
+          if (inList) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              onCandidateFocusListReady!();
+            });
+          } else if (baseList.isNotEmpty) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              onCandidateFocusProductMissing!();
+            });
+          }
+        }
+
         return RefreshIndicator(
           onRefresh: () =>
               provider.refreshManagedProductList(showLoadingIndicator: true),
           child: ListView(
+            controller: listScrollController,
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(
               AppDimensions.screenPaddingH,
@@ -533,7 +639,7 @@ class _RoomManagedProductListTab extends StatelessWidget {
               if (status == RakutenManagedProductStatus.candidate)
                 const SizedBox(height: 10),
               for (var i = 0; i < list.length; i++) ...[
-                RakutenManagedProductCard(
+                _KeyedCandidateProductRow(
                   product: list[i],
                   variant: variant,
                   onCollectPressed: onCollectPressed,
@@ -541,6 +647,8 @@ class _RoomManagedProductListTab extends StatelessWidget {
                       status == RakutenManagedProductStatus.candidate &&
                       continuousCollectMode &&
                       i == 0,
+                  rowKey: rowKeyFor?.call(list[i].productId),
+                  flash: flashHighlightProductId == list[i].productId,
                 ),
                 if (i != list.length - 1) const SizedBox(height: 10),
               ],
@@ -549,6 +657,51 @@ class _RoomManagedProductListTab extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class _KeyedCandidateProductRow extends StatelessWidget {
+  const _KeyedCandidateProductRow({
+    required this.product,
+    required this.variant,
+    required this.onCollectPressed,
+    required this.emphasizeAsNext,
+    this.rowKey,
+    this.flash = false,
+  });
+
+  final RakutenManagedProduct product;
+  final RakutenManagedProductCardVariant variant;
+  final Future<void> Function(BuildContext context, RakutenManagedProduct p)?
+  onCollectPressed;
+  final bool emphasizeAsNext;
+  final GlobalKey? rowKey;
+  final bool flash;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget card = RakutenManagedProductCard(
+      product: product,
+      variant: variant,
+      onCollectPressed: onCollectPressed,
+      emphasizeAsNext: emphasizeAsNext,
+    );
+    if (flash) {
+      card = AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+        decoration: BoxDecoration(
+          color: AppColors.accentLight.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+          border: Border.all(color: AppColors.accentPrimary, width: 2),
+        ),
+        child: card,
+      );
+    }
+    if (rowKey != null) {
+      return KeyedSubtree(key: rowKey, child: card);
+    }
+    return card;
   }
 }
 
