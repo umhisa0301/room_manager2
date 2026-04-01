@@ -925,9 +925,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       case RakutenSearchStatus.loading:
         return const Center(child: CircularProgressIndicator());
       case RakutenSearchStatus.error:
-        return _centerText(
-          '検索に失敗しました。\n${search.errorMessage}',
-          isError: true,
+        return _searchErrorPanel(
+          context,
+          message: search.errorMessage,
+          onRetry: () => _runSearch(context),
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
@@ -1107,9 +1108,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       case RakutenSearchStatus.loading:
         return const Center(child: CircularProgressIndicator());
       case RakutenSearchStatus.error:
-        return _centerText(
-          'ジャンル検索に失敗しました。\n${search.errorMessage}',
-          isError: true,
+        return _searchErrorPanel(
+          context,
+          message:
+              'ジャンル検索を完了できませんでした。\n${search.errorMessage}',
+          onRetry: () {
+            _runGenreSearch(context);
+          },
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
@@ -1220,7 +1225,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         );
       case RakutenSearchStatus.error:
         return _errorGuide(
-          message: 'ショップ発掘に失敗しました。\n${search.errorMessage}',
+          message:
+              'ショップ発掘を完了できませんでした。\n${search.errorMessage}',
           onRetry: () => _runShopDiscovery(context),
         );
       case RakutenSearchStatus.success:
@@ -1367,6 +1373,37 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               subtitle,
               textAlign: TextAlign.center,
               style: const TextStyle(color: AppColors.textSecondary),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _searchErrorPanel(
+    BuildContext context, {
+    required String message,
+    required VoidCallback onRetry,
+  }) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: AppColors.error,
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 10),
+            OutlinedButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh_rounded, size: 18),
+              label: const Text('もう一度試す'),
             ),
           ],
         ),

@@ -1,11 +1,33 @@
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
+
 import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 
 /// 商品検索結果をショップ単位に集約し、発掘用ランキングへ変換する。
 abstract final class ShopDiscoveryAggregator {
   static List<ShopDiscoverySummary> aggregate(
+    List<RakutenSearchItem> items, {
+    required int shopLimit,
+    required int itemsPerShop,
+  }) {
+    try {
+      return _aggregateImpl(
+        items,
+        shopLimit: shopLimit,
+        itemsPerShop: itemsPerShop,
+      );
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[Rakuten] shop aggregation failed: $e');
+        debugPrint('$st');
+      }
+      return const [];
+    }
+  }
+
+  static List<ShopDiscoverySummary> _aggregateImpl(
     List<RakutenSearchItem> items, {
     required int shopLimit,
     required int itemsPerShop,

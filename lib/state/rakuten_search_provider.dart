@@ -55,7 +55,8 @@ class RakutenSearchProvider extends ChangeNotifier {
     // キーワード検索だけでなく、genreId 指定のみの検索（ジャンル検索・ショップ発掘）も許可する。
     final hasKeyword = normalized.keyword.isNotEmpty;
     final hasGenre = normalized.genreId != null && normalized.genreId!.isNotEmpty;
-    if (!hasKeyword && !hasGenre) {
+    final hasShop = normalized.shopCode != null && normalized.shopCode!.trim().isNotEmpty;
+    if (!hasKeyword && !hasGenre && !hasShop) {
       _status = RakutenSearchStatus.idle;
       _results = const [];
       _errorMessage = '';
@@ -78,12 +79,33 @@ class RakutenSearchProvider extends ChangeNotifier {
         '${RakutenApiConfig.requestIncludesAffiliateId} / '
         'affiliateUrlあり: $withAff / ${fetched.length} 件',
       );
-    } catch (e) {
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[Rakuten] searchWithCondition failed: $e');
+        debugPrint('$st');
+      }
       _results = const [];
       _status = RakutenSearchStatus.error;
-      _errorMessage = e.toString();
+      _errorMessage = _userFacingError(e);
     }
     notifyListeners();
+  }
+
+  String _userFacingError(Object e) {
+    final raw = e.toString();
+    final body = raw.startsWith('Exception: ')
+        ? raw.substring('Exception: '.length).trim()
+        : raw.trim();
+    if (body.contains('楽天APIのアプリIDが未設定')) {
+      return '楽天APIの設定（アプリID）がまだありません。ビルド設定をご確認ください。';
+    }
+    if (body.contains('楽天のアプリIDが無効です')) {
+      return body;
+    }
+    if (body.startsWith('楽天API:')) {
+      return '検索条件を見直して、もう一度お試しください。\n（$body）';
+    }
+    return '検索に失敗しました。通信状況をご確認のうえ、もう一度お試しください。';
   }
 
   /// 検索画面の一覧・ローディング・エラーなど一時状態だけを初期化する（永続データは変更しない）。
@@ -95,4 +117,3 @@ class RakutenSearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-

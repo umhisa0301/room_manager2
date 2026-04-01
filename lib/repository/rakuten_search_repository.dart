@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/rakuten_api_service.dart';
@@ -14,52 +16,116 @@ class RakutenSearchRepository {
   }) async {
     final normalized = condition.normalized();
     final results = <RakutenSearchItem>[];
-    // 最大5ページ分（約100件）を取得
+    // 最大5ページ分（約100件）を取得 — 逐次・1ページ失敗時は可能な範囲で継続
     for (var page = 1; page <= 5; page++) {
-      final raw = await _apiService.searchItems(
-        condition: normalized,
-        page: page,
-        hits: 20,
-      );
-      final items = raw['Items'];
-      if (items is! List || items.isEmpty) {
+      try {
+        if (page > 1) {
+          await Future<void>.delayed(const Duration(milliseconds: 180));
+        }
+        final raw = await _apiService.searchItems(
+          condition: normalized,
+          page: page,
+          hits: 20,
+        );
+        final items = raw['Items'];
+        if (items is! List || items.isEmpty) {
+          if (kDebugMode) {
+            debugPrint('[Rakuten] page=$page empty Items — stop pagination');
+          }
+          break;
+        }
+        var parsedOnPage = 0;
+        for (final entry in items) {
+          try {
+            final map = _unwrapItem(entry);
+            final item = _mapToModel(map);
+            if (item != null) {
+              results.add(item);
+              parsedOnPage++;
+            }
+          } catch (e, st) {
+            if (kDebugMode) {
+              debugPrint('[Rakuten] item map/parse skipped page=$page: $e');
+              debugPrint('$st');
+            }
+          }
+        }
+        if (kDebugMode) {
+          debugPrint(
+            '[Rakuten] page=$page parsedItems=$parsedOnPage / raw=${items.length}',
+          );
+        }
+      } catch (e, st) {
+        if (kDebugMode) {
+          debugPrint('[Rakuten] page fetch failed page=$page: $e');
+          debugPrint('$st');
+        }
+        if (page == 1) {
+          rethrow;
+        }
         break;
       }
-      for (final entry in items) {
-        final map = _unwrapItem(entry);
-        final item = _mapToModel(map);
-        if (item != null) results.add(item);
-      }
-      // API側で総ページ数などを見て早期終了してもよいが、現在は空ページでbreakする前提。
     }
-    return _applyAppSideFilters(results, normalized);
+    if (kDebugMode) {
+      debugPrint('[Rakuten] repository search total mapped=${results.length}');
+    }
+    try {
+      return _applyAppSideFilters(results, normalized);
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[Rakuten] app-side filter failed: $e');
+        debugPrint('$st');
+      }
+      return results;
+    }
   }
 
   Map<String, dynamic>? _unwrapItem(dynamic entry) {
-    if (entry is Map<String, dynamic>) {
-      // API仕様で "Item": {...} の場合とフラットな場合を吸収
-      final nested = entry['Item'];
-      if (nested is Map<String, dynamic>) return nested;
-      return entry;
+    if (entry is! Map) return null;
+    final flat = Map<String, dynamic>.from(entry);
+    final nested = flat['Item'];
+    if (nested is Map) {
+      return Map<String, dynamic>.from(nested);
     }
-    return null;
+    return flat;
   }
 
   RakutenSearchItem? _mapToModel(Map<String, dynamic>? json) {
     if (json == null) return null;
-    final productId = (json['itemCode'] ?? '').toString().trim();
-    final itemName = (json['itemName'] ?? '').toString().trim();
-    final itemUrl = (json['itemUrl'] ?? '').toString().trim();
-    if (productId.isEmpty || itemName.isEmpty || itemUrl.isEmpty) return null;
 
-    final itemPrice = (json['itemPrice'] as num?)?.toInt() ?? 0;
-    final shopName = (json['shopName'] ?? '').toString().trim();
-    final reviewCount = (json['reviewCount'] as num?)?.toInt() ?? 0;
-    final reviewAverage = (json['reviewAverage'] as num?)?.toDouble() ?? 0;
-    final affiliateUrl = (json['affiliateUrl'] ?? '').toString().trim();
-    final shopCode = (json['shopCode'] ?? '').toString().trim();
-    final shopUrl = (json['shopUrl'] ?? '').toString().trim();
-    final genreId = (json['genreId'] ?? '').toString().trim();
+    var productId = _stringField(json['itemCode']).trim();
+    var itemName = _stringField(json['itemName']).trim();
+    var affiliateUrl = _stringField(json['affiliateUrl']).trim();
+    var itemUrl = _stringField(json['itemUrl']).trim();
+    if (itemUrl.isEmpty && affiliateUrl.isNotEmpty) {
+      itemUrl = affiliateUrl;
+    }
+    if (itemName.isEmpty) {
+      itemName = '（商品名なし）';
+    }
+    if (productId.isEmpty) {
+      if (itemUrl.isNotEmpty) {
+        productId = itemUrl;
+      } else if (itemName.isNotEmpty) {
+        productId = 'noid:${itemName.hashCode}';
+      } else {
+        return null;
+      }
+    }
+    if (itemUrl.isEmpty) {
+      return null;
+    }
+
+    final itemPrice = _parseIntLoose(json['itemPrice']);
+    var shopName = _stringField(json['shopName']).trim();
+    if (shopName.isEmpty) {
+      shopName = 'ショップ名不明';
+    }
+    final reviewCount = _parseIntLoose(json['reviewCount']);
+    final reviewAverage = _parseDoubleLoose(json['reviewAverage']);
+    final shopCode = _stringField(json['shopCode']).trim();
+    final shopUrl = _stringField(json['shopUrl']).trim();
+    final genreId = _stringField(json['genreId']).trim();
     final imageUrl = _extractImageUrl(json);
 
     return RakutenSearchItem(
@@ -78,24 +144,48 @@ class RakutenSearchRepository {
     );
   }
 
+  String _stringField(dynamic v) {
+    if (v == null) return '';
+    return v.toString();
+  }
+
+  int _parseIntLoose(dynamic v) {
+    if (v == null) return 0;
+    if (v is int) return v;
+    if (v is double) return v.round();
+    final s = v.toString().trim();
+    if (s.isEmpty) return 0;
+    return int.tryParse(s) ?? double.tryParse(s)?.round() ?? 0;
+  }
+
+  double _parseDoubleLoose(dynamic v) {
+    if (v == null) return 0;
+    if (v is double) return v;
+    if (v is int) return v.toDouble();
+    final s = v.toString().trim();
+    if (s.isEmpty) return 0;
+    return double.tryParse(s) ?? 0;
+  }
+
   String _extractImageUrl(Map<String, dynamic> json) {
-    final medium = json['mediumImageUrls'];
-    if (medium is List && medium.isNotEmpty) {
-      final first = medium.first;
-      if (first is Map<String, dynamic>) {
-        return (first['imageUrl'] ?? '').toString();
+    String fromList(dynamic list) {
+      if (list is! List || list.isEmpty) return '';
+      final first = list.first;
+      if (first is Map) {
+        final m = Map<String, dynamic>.from(first);
+        return _stringField(m['imageUrl']).trim();
       }
-      return first.toString();
+      return _stringField(first).trim();
     }
 
-    final small = json['smallImageUrls'];
-    if (small is List && small.isNotEmpty) {
-      final first = small.first;
-      if (first is Map<String, dynamic>) {
-        return (first['imageUrl'] ?? '').toString();
-      }
-      return first.toString();
-    }
+    final medium = fromList(json['mediumImageUrls']);
+    if (medium.isNotEmpty) return medium;
+
+    final small = fromList(json['smallImageUrls']);
+    if (small.isNotEmpty) return small;
+
+    final single = _stringField(json['imageUrl']).trim();
+    if (single.isNotEmpty) return single;
 
     return '';
   }
@@ -133,4 +223,3 @@ class RakutenSearchRepository {
     }).toList();
   }
 }
-
