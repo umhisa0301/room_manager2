@@ -24,11 +24,11 @@ class HomePrimaryActionButton extends StatelessWidget {
   final VoidCallback onPressed;
   final HomePrimaryActionEmphasis emphasis;
 
-  static const double height = 52;
-  static const double heightHero = 58;
+  static const double height = 50;
+  static const double heightHero = 54;
   static const double iconSize = 22;
   static const double iconSizeHero = 24;
-  static const double iconLabelGap = 10;
+  static const double iconLabelGap = 8;
 
   double get _height =>
       emphasis == HomePrimaryActionEmphasis.hero ? heightHero : height;
@@ -58,7 +58,7 @@ class HomePrimaryActionButton extends StatelessWidget {
           shadowColor: emphasis == HomePrimaryActionEmphasis.hero
               ? HomeScreenColors.heroCtaShadow
               : AppColors.accentPrimary.withValues(alpha: 0.35),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
           minimumSize: Size(double.infinity, _height),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: RoundedRectangleBorder(
