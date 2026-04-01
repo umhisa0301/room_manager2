@@ -32,6 +32,21 @@ abstract final class _HomeUi {
   /// 囲み（well）の内側パディング
   static const double paddingGroupedWell = 12;
 
+  /// ROOMコレ管理セクション：見出しと補足行の間
+  static const double gapRoomTitleToLead = 6;
+
+  /// ROOMコレ管理：展開説明の下余白
+  static const double gapRoomDetailBottom = 10;
+
+  /// ROOMコレ管理：区切り線とタイルデッキの間
+  static const double gapRoomDividerToDeck = 10;
+
+  /// ROOMコレ管理：タイルデッキ内のパディング
+  static const double paddingRoomTileDeck = 10;
+
+  /// ROOMコレ管理：グリッドの列・行間（統一）
+  static const double gapRoomGrid = 8;
+
   /// コンパクトな縦の詰まり（チップ上など）
   static const double gapTight = 6;
 
@@ -69,6 +84,55 @@ abstract final class _HomeUi {
       border: Border.all(
         color: AppColors.divider.withValues(alpha: 0.78),
       ),
+    );
+  }
+
+  /// ROOMコレ管理：見出し〜タイルまでを1ブロックに見せる外枠
+  static BoxDecoration roomManagementSectionDecoration() {
+    return BoxDecoration(
+      color: Color.alphaBlend(
+        AppColors.surfaceVariant.withValues(alpha: 0.44),
+        AppColors.background,
+      ),
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(
+        color: AppColors.divider.withValues(alpha: 0.82),
+      ),
+      boxShadow: cardShadow,
+    );
+  }
+
+  /// ROOMコレ管理：4タイルをまとめる内側デッキ（見出しとは色を分ける）
+  static BoxDecoration roomTileDeckDecoration() {
+    return BoxDecoration(
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(
+        color: AppColors.divider.withValues(alpha: 0.68),
+      ),
+    );
+  }
+
+  /// ROOMコレ管理セクション見出し（タイルと同列のカードに見えないようアクセント基調）
+  static TextStyle roomManagementSectionTitle(BuildContext context) {
+    final base = Theme.of(context).textTheme.titleSmall;
+    return (base ?? const TextStyle()).copyWith(
+      fontSize: 16,
+      fontWeight: FontWeight.w800,
+      height: 1.22,
+      letterSpacing: -0.2,
+      color: AppColors.accentPrimary,
+    );
+  }
+
+  /// ROOMコレ管理：常時表示の一行リード（小さく薄く）
+  static TextStyle roomManagementSectionLead(BuildContext context) {
+    final base = Theme.of(context).textTheme.labelSmall;
+    return (base ?? const TextStyle()).copyWith(
+      fontSize: 11.5,
+      fontWeight: FontWeight.w500,
+      height: 1.45,
+      color: AppColors.textTertiary,
     );
   }
 
@@ -288,45 +352,27 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                           onOpen: () => _openTodayRecommendations(context),
                         ),
                         const SizedBox(height: _HomeUi.gapSection),
-                        _HomeExpandableSection(
-                          chrome: _HomeExpandableChrome.plain,
+                        _RoomManagementSection(
                           expanded: _roomIntroExpanded,
                           onToggle: () {
                             setState(() {
                               _roomIntroExpanded = !_roomIntroExpanded;
                             });
                           },
-                          title: 'ROOMコレ管理',
-                          collapsedSummary: '',
-                          leadingIcon: Icons.collections_bookmark_outlined,
-                          expandedChild: Text(
-                            '下の数は端末に保存した一覧の集計です。カードをタップで一覧・活動へ移動します。',
-                            style: _HomeUi.sectionBody(context),
+                          candidateTotal: nCandidate,
+                          doneTotal: nDone,
+                          todayDoneCount: nTodayDone,
+                          lastDoneAt: lastDone,
+                          onCandidateTap: () =>
+                              _openRoomList(context, initialTabIndex: 0),
+                          onDoneTap: () =>
+                              _openRoomList(context, initialTabIndex: 1),
+                          onTodayTap: () => _openRoomList(
+                            context,
+                            initialTabIndex: 1,
+                            doneFilterLocalDay: todayLocalDay,
                           ),
-                        ),
-                        const SizedBox(height: _HomeUi.gapHeadingToContent),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(
-                            _HomeUi.paddingGroupedWell,
-                          ),
-                          decoration: _HomeUi.groupedWellDecoration(),
-                          child: _RoomStatsCardGrid(
-                            candidateTotal: nCandidate,
-                            doneTotal: nDone,
-                            todayDoneCount: nTodayDone,
-                            lastDoneAt: lastDone,
-                            onCandidateTap: () =>
-                                _openRoomList(context, initialTabIndex: 0),
-                            onDoneTap: () =>
-                                _openRoomList(context, initialTabIndex: 1),
-                            onTodayTap: () => _openRoomList(
-                              context,
-                              initialTabIndex: 1,
-                              doneFilterLocalDay: todayLocalDay,
-                            ),
-                            onLastCollectTap: () => _openActivity(context),
-                          ),
+                          onLastCollectTap: () => _openActivity(context),
                         ),
                         const SizedBox(height: _HomeUi.gapSection),
                         _HomeExpandableSection(
@@ -495,6 +541,148 @@ class _HomeExpandableSection extends StatelessWidget {
                     child: expandedChild,
                   )
                 : const SizedBox(width: double.infinity),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// ROOMコレ管理：見出し・補足・4タイルを1セクションとして囲う。
+class _RoomManagementSection extends StatelessWidget {
+  const _RoomManagementSection({
+    required this.expanded,
+    required this.onToggle,
+    required this.candidateTotal,
+    required this.doneTotal,
+    required this.todayDoneCount,
+    required this.lastDoneAt,
+    required this.onCandidateTap,
+    required this.onDoneTap,
+    required this.onTodayTap,
+    required this.onLastCollectTap,
+  });
+
+  final bool expanded;
+  final VoidCallback onToggle;
+  final int candidateTotal;
+  final int doneTotal;
+  final int todayDoneCount;
+  final DateTime? lastDoneAt;
+  final VoidCallback onCandidateTap;
+  final VoidCallback onDoneTap;
+  final VoidCallback onTodayTap;
+  final VoidCallback onLastCollectTap;
+
+  static const Duration _animDuration = Duration(milliseconds: 280);
+  static const Curve _animCurve = Curves.easeInOutCubic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.roomManagementSectionDecoration(),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onToggle,
+              splashColor: AppColors.accentPrimary.withValues(alpha: 0.09),
+              highlightColor: AppColors.accentPrimary.withValues(alpha: 0.05),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 14, 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.collections_bookmark_outlined,
+                      size: 22,
+                      color: AppColors.accentPrimary.withValues(alpha: 0.9),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'ROOMコレ管理',
+                            style: _HomeUi.roomManagementSectionTitle(context),
+                          ),
+                          const SizedBox(height: _HomeUi.gapRoomTitleToLead),
+                          Text(
+                            '端末に保存した一覧の集計です。下のカードで一覧・活動へ。',
+                            style: _HomeUi.roomManagementSectionLead(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      expanded
+                          ? Icons.keyboard_arrow_up_rounded
+                          : Icons.keyboard_arrow_down_rounded,
+                      color: AppColors.textSecondary,
+                      size: 22,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          AnimatedSize(
+            duration: _animDuration,
+            curve: _animCurve,
+            alignment: Alignment.topCenter,
+            child: expanded
+                ? Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      16,
+                      0,
+                      16,
+                      _HomeUi.gapRoomDetailBottom,
+                    ),
+                    child: Text(
+                      '下の数は端末に保存した一覧の集計です。カードをタップで一覧・活動へ移動します。',
+                      style: _HomeUi.sectionBody(context),
+                    ),
+                  )
+                : const SizedBox(width: double.infinity),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Divider(
+              height: 1,
+              thickness: 1,
+              color: AppColors.divider.withValues(alpha: 0.5),
+            ),
+          ),
+          SizedBox(height: _HomeUi.gapRoomDividerToDeck),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              12,
+              0,
+              12,
+              12,
+            ),
+            child: DecoratedBox(
+              decoration: _HomeUi.roomTileDeckDecoration(),
+              child: Padding(
+                padding: const EdgeInsets.all(_HomeUi.paddingRoomTileDeck),
+                child: _RoomStatsCardGrid(
+                  unifiedRoomSection: true,
+                  candidateTotal: candidateTotal,
+                  doneTotal: doneTotal,
+                  todayDoneCount: todayDoneCount,
+                  lastDoneAt: lastDoneAt,
+                  onCandidateTap: onCandidateTap,
+                  onDoneTap: onDoneTap,
+                  onTodayTap: onTodayTap,
+                  onLastCollectTap: onLastCollectTap,
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -742,6 +930,7 @@ class _TodayRecommendationsEntryCard extends StatelessWidget {
 /// ② 4 枚統一のメトリクス（2×2、タップで遷移）。値・補足は改行で区切る。
 class _RoomStatsCardGrid extends StatelessWidget {
   const _RoomStatsCardGrid({
+    this.unifiedRoomSection = false,
     required this.candidateTotal,
     required this.doneTotal,
     required this.todayDoneCount,
@@ -751,6 +940,9 @@ class _RoomStatsCardGrid extends StatelessWidget {
     required this.onTodayTap,
     required this.onLastCollectTap,
   });
+
+  /// true のとき ROOM セクション内デッキ用（グリッド間隔・タイル形状を統一）
+  final bool unifiedRoomSection;
 
   final int candidateTotal;
   final int doneTotal;
@@ -764,6 +956,8 @@ class _RoomStatsCardGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lastPrimary = lastDoneAt == null ? '—' : _formatDateTime(lastDoneAt!);
+    final g = unifiedRoomSection ? _HomeUi.gapRoomGrid : _HomeUi.gapTight + 2;
+    final deck = unifiedRoomSection;
 
     return Column(
       children: [
@@ -780,10 +974,11 @@ class _RoomStatsCardGrid extends StatelessWidget {
                   accent: const Color(0xFF1565C0),
                   iconBackground: const Color(0xFFE3F2FD),
                   valueProminent: true,
+                  compactDeck: deck,
                   onTap: onCandidateTap,
                 ),
               ),
-              SizedBox(width: _HomeUi.gapTight + 2),
+              SizedBox(width: g),
               Expanded(
                 child: _RoomMetricTile(
                   title: 'コレ済',
@@ -793,13 +988,14 @@ class _RoomStatsCardGrid extends StatelessWidget {
                   accent: const Color(0xFF2E7D32),
                   iconBackground: const Color(0xFFE8F5E9),
                   valueProminent: true,
+                  compactDeck: deck,
                   onTap: onDoneTap,
                 ),
               ),
             ],
           ),
         ),
-        SizedBox(height: _HomeUi.gapTight + 2),
+        SizedBox(height: g),
         IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -813,10 +1009,11 @@ class _RoomStatsCardGrid extends StatelessWidget {
                   accent: AppColors.accentPrimary,
                   iconBackground: AppColors.accentLightest,
                   valueProminent: true,
+                  compactDeck: deck,
                   onTap: onTodayTap,
                 ),
               ),
-              SizedBox(width: _HomeUi.gapTight + 2),
+              SizedBox(width: g),
               Expanded(
                 child: _RoomMetricTile(
                   title: '前回コレ日時',
@@ -826,6 +1023,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                   accent: const Color(0xFF5C6BC0),
                   iconBackground: const Color(0xFFE8EAF6),
                   valueProminent: false,
+                  compactDeck: deck,
                   onTap: onLastCollectTap,
                 ),
               ),
@@ -851,6 +1049,7 @@ class _RoomMetricTile extends StatelessWidget {
     required this.accent,
     required this.iconBackground,
     required this.valueProminent,
+    this.compactDeck = false,
     required this.onTap,
   });
 
@@ -861,21 +1060,32 @@ class _RoomMetricTile extends StatelessWidget {
   final Color accent;
   final Color iconBackground;
   final bool valueProminent;
+  /// ROOM セクション内デッキ用：角丸・余白・キャプション行を揃える
+  final bool compactDeck;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    final radius = compactDeck ? 12.0 : AppDimensions.radiusCard;
+    final pad = compactDeck
+        ? const EdgeInsets.fromLTRB(10, 10, 9, 9)
+        : const EdgeInsets.fromLTRB(12, 10, 10, 10);
+    final titleSize = compactDeck ? 12.5 : 13.0;
+    final valueLarge = compactDeck ? 24.0 : 25.0;
+    final valueSmall = compactDeck ? 15.5 : 16.0;
+    final captionMaxLines = compactDeck ? 1 : 2;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        borderRadius: BorderRadius.circular(radius),
         splashColor: AppColors.textPrimary.withValues(alpha: 0.07),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(12, 10, 10, 10),
+          padding: pad,
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+            borderRadius: BorderRadius.circular(radius),
             border: Border.all(
               color: AppColors.divider.withValues(alpha: 0.88),
             ),
@@ -904,13 +1114,13 @@ class _RoomMetricTile extends StatelessWidget {
                             color: accent,
                             fontWeight: FontWeight.w800,
                             height: 1.22,
-                            fontSize: 13,
+                            fontSize: titleSize,
                           ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: compactDeck ? 9 : 10),
               Text(
                 valueMain,
                 textAlign: TextAlign.left,
@@ -921,20 +1131,21 @@ class _RoomMetricTile extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,
                           height: 1.12,
-                          fontSize: 25,
+                          fontSize: valueLarge,
                           letterSpacing: -0.45,
                         )
                     : Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,
                           height: 1.22,
-                          fontSize: 16,
+                          fontSize: valueSmall,
                         ),
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: compactDeck ? 5 : 6),
               Text(
                 caption,
-                maxLines: 2,
+                maxLines: captionMaxLines,
+                overflow: TextOverflow.ellipsis,
                 style: _HomeUi.tapHint(context),
               ),
             ],
