@@ -1386,7 +1386,9 @@ class _RoomStatsCardGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lastPrimary = lastDoneAt == null ? '—' : _formatDateTime(lastDoneAt!);
+    final lastPrimary = lastDoneAt == null
+        ? '—'
+        : _formatLastCollectForTile(lastDoneAt!);
     final g = unifiedRoomSection ? _HomeUi.gapRoomGrid : _HomeUi.gapTight + 2;
     final deck = unifiedRoomSection;
 
@@ -1461,9 +1463,10 @@ class _RoomStatsCardGrid extends StatelessWidget {
     );
   }
 
-  String _formatDateTime(DateTime d) {
+  /// 前回コレ日時タイル用。1行を短くして値のフォントを上げても折り返し・切れを起こしにくくする。
+  String _formatLastCollectForTile(DateTime d) {
     String two(int n) => n.toString().padLeft(2, '0');
-    return '${d.month}/${d.day} ${two(d.hour)}:${two(d.minute)}';
+    return '${d.month}/${d.day}\n${two(d.hour)}:${two(d.minute)}';
   }
 }
 
@@ -1523,8 +1526,11 @@ class _RoomMetricTile extends StatelessWidget {
     final titleSize = compactDeck ? 12.5 : 13.0;
     final valueLarge = compactDeck ? 24.0 : 26.0;
     final valueSmall = compactDeck ? 16.0 : 16.5;
+    /// 前回コレ日時：数値タイルより一回り小さく、従来の valueSmall より一段大きく（2行表示と組み合わせ）
+    final valueHistory = compactDeck ? 18.5 : 19.5;
     final captionMaxLines = compactDeck ? 1 : 2;
     final (accent, iconBackground) = _roleBadgeColors();
+    final isHistoryTile = role == _RoomMetricTileRole.history;
 
     return Material(
       color: Colors.transparent,
@@ -1590,9 +1596,9 @@ class _RoomMetricTile extends StatelessWidget {
                     : Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w800,
                           color: HomeScreenColors.metricTileValueColor,
-                          height: 1.12,
-                          fontSize: valueSmall,
-                          letterSpacing: -0.25,
+                          height: isHistoryTile ? 1.08 : 1.12,
+                          fontSize: isHistoryTile ? valueHistory : valueSmall,
+                          letterSpacing: isHistoryTile ? -0.35 : -0.25,
                         ),
               ),
               SizedBox(height: compactDeck ? 1 : 4),
