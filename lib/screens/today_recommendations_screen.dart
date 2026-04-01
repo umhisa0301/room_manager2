@@ -7,6 +7,7 @@ import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_screen_status.dart';
 
 class TodayRecommendationsScreen extends StatefulWidget {
   const TodayRecommendationsScreen({super.key});
@@ -60,60 +61,34 @@ class _TodayRecommendationsScreenState extends State<TodayRecommendationsScreen>
       body: Consumer<TodayRecommendationProvider>(
         builder: (context, rec, _) {
           if (rec.isLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const AppScreenLoadingCenter(
+              title: '今日のおすすめを準備しています',
+              subtitle: '保存済みのプロフィールや検索履歴に基づき、候補を集めています。通信状況により少し時間がかかることがあります。',
+            );
           }
           if (rec.errorMessage != null) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      rec.errorMessage!,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.4,
-                          ),
-                    ),
-                    const SizedBox(height: 12),
-                    FilledButton.icon(
-                      onPressed: _regenerate,
-                      icon: const Icon(Icons.refresh_rounded, size: 18),
-                      label: const Text('再生成する'),
-                    ),
-                  ],
-                ),
-              ),
+            return AppScreenErrorCenter(
+              title: 'おすすめを表示できませんでした',
+              message: rec.errorMessage!,
+              onRetry: _regenerate,
+              retryLabel: 'もう一度生成する',
             );
           }
 
           final bundle = rec.bundle;
           if (bundle == null || bundle.entries.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '本日のおすすめ候補がありません。\n再生成すると10件を提案します。',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.5,
-                          ),
-                    ),
-                    const SizedBox(height: 12),
-                    FilledButton.icon(
-                      onPressed: _regenerate,
-                      icon: const Icon(Icons.auto_awesome_rounded, size: 18),
-                      label: const Text('今日のおすすめを作る'),
-                    ),
-                  ],
+            return AppScreenEmptyCenter(
+              icon: Icons.auto_awesome_outlined,
+              title: 'まだ今日のおすすめがありません',
+              body:
+                  '下のボタンで最大10件のコレ候補を提案します。マイページでプロフィールや好きなジャンルを入れておくと、より合った候補になりやすくなります。',
+              actions: [
+                FilledButton.icon(
+                  onPressed: _regenerate,
+                  icon: const Icon(Icons.auto_awesome_rounded, size: 20),
+                  label: const Text('今日のおすすめを作る'),
                 ),
-              ),
+              ],
             );
           }
 

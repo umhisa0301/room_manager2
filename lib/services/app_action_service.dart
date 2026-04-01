@@ -25,10 +25,11 @@ class AppActionService {
   static Future<bool> openUrl(
     BuildContext context, {
     required String url,
+    bool showUserFeedback = true,
   }) async {
     final uri = Uri.tryParse(url.trim());
     if (uri == null || (uri.scheme != 'http' && uri.scheme != 'https')) {
-      if (context.mounted) {
+      if (showUserFeedback && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('URLが不正です')),
         );
@@ -37,14 +38,14 @@ class AppActionService {
     }
     try {
       final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
-      if (!ok && context.mounted) {
+      if (!ok && showUserFeedback && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('URLを開けませんでした')),
         );
       }
       return ok;
     } catch (_) {
-      if (context.mounted) {
+      if (showUserFeedback && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('URLを開けませんでした')),
         );
@@ -60,13 +61,20 @@ class AppActionService {
     VoidCallback? onCopied,
   }) async {
     if (text.trim().isEmpty) return;
-    final messenger = ScaffoldMessenger.of(context);
+    final messenger = ScaffoldMessenger.maybeOf(context);
     await Clipboard.setData(ClipboardData(text: text.trim()));
     onCopied?.call();
     if (!context.mounted) return;
-    await openUrl(context, url: url);
-    messenger.showSnackBar(
-      const SnackBar(content: Text('コピーしてURLを開きました')),
+    final opened = await openUrl(context, url: url, showUserFeedback: false);
+    if (!context.mounted) return;
+    messenger?.showSnackBar(
+      SnackBar(
+        content: Text(
+          opened
+              ? 'コピーしました。ブラウザで開きました'
+              : 'コピーしました。URLを開けない場合は、ブラウザのアドレス欄に貼り付けてお試しください',
+        ),
+      ),
     );
   }
 }

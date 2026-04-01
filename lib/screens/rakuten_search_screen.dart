@@ -463,12 +463,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  void _showComingSoon(BuildContext context, String feature) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$featureは次ステップで有効化します')),
-    );
-  }
-
   void _onModeChanged(_RakutenSearchMode next) {
     if (_mode == next) return;
     setState(() => _mode = next);
@@ -1560,65 +1554,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  Widget _modePlaceholder() {
-    final title = switch (_mode) {
-      _RakutenSearchMode.genre => 'ジャンル検索の結果はここに表示されます',
-      _RakutenSearchMode.shopDiscovery => 'ショップ発掘の結果はここに表示されます',
-      _RakutenSearchMode.product => '',
-    };
-    final guide = switch (_mode) {
-      _RakutenSearchMode.genre =>
-        '上部でジャンル名を入力し検索すると、ジャンルに沿った商品一覧を表示する予定です。',
-      _RakutenSearchMode.shopDiscovery =>
-        '上部の条件を指定して実行すると、有望なショップ候補を表示する予定です。',
-      _RakutenSearchMode.product => '',
-    };
-    return Column(
-      children: [
-        Expanded(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    _mode.icon,
-                    size: 52,
-                    color: AppColors.textTertiary.withValues(alpha: 0.55),
-                  ),
-                  const SizedBox(height: 14),
-                  Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    guide,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      height: 1.4,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 enum _RakutenSearchMode {
   product('キーワード検索', Icons.shopping_bag_outlined, 'キーワード中心で商品を探し、必要に応じて詳細条件で絞り込みます'),
-  genre('ジャンル検索', Icons.category_outlined, '楽天ジャンルを軸に商品を探します（順次機能拡張）'),
+  genre('ジャンル検索', Icons.category_outlined, '楽天のジャンルIDを軸に、商品をまとめて探します'),
   shopDiscovery('ショップ発掘', Icons.storefront_outlined, 'キーワードやジャンルから強いショップ候補を見つけます');
 
   const _RakutenSearchMode(this.label, this.icon, this.description);

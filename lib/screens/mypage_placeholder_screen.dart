@@ -253,8 +253,8 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             const SizedBox(height: AppDimensions.spacingLg),
             _SectionHeader(
               title: 'ROOM情報',
-              body: '楽天ROOM URLを保存しておくと、すぐにROOMを開けます。'
-                  '将来の運用支援機能でも利用予定です。',
+              body: '楽天ROOMのURLを保存しておくと、このアプリからすぐに開けます。'
+                  'プロフィールとあわせて、おすすめ候補の参考にも使います。',
             ),
             const SizedBox(height: 10),
             _SectionCard(

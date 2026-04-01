@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../models/rakuten_managed_product.dart';
@@ -65,9 +66,14 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       await Future<void>.delayed(Duration.zero);
       _items = _repository.loadAll();
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
-    } catch (e) {
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[RakutenManagedProduct] refreshManagedProductList failed: $e');
+        debugPrint('$st');
+      }
       _listUiStatus = RakutenManagedProductListUiStatus.error;
-      _listUiErrorMessage = e.toString();
+      _listUiErrorMessage =
+          '一覧データの読み込みに失敗しました。少し待ってから「再試行」を押してください。';
     }
     notifyListeners();
   }
@@ -117,9 +123,15 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       }
       return null;
     } on Exception catch (e) {
-      return e.toString();
+      if (kDebugMode) {
+        debugPrint('[RakutenManagedProduct] registerCandidate failed: $e');
+      }
+      return '候補の登録に失敗しました。しばらく待ってからもう一度お試しください。';
     } catch (e) {
-      return '登録に失敗しました: $e';
+      if (kDebugMode) {
+        debugPrint('[RakutenManagedProduct] registerCandidate failed: $e');
+      }
+      return '候補の登録に失敗しました。しばらく待ってからもう一度お試しください。';
     } finally {
       _registeringProductIds.remove(id);
       notifyListeners();
@@ -220,13 +232,25 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       _listUiErrorMessage = null;
       notifyListeners();
     } on Exception catch (e) {
+      if (kDebugMode) {
+        debugPrint('[RakutenManagedProduct] collectRoomAndLaunch failed: $e');
+      }
       if (context.mounted) {
-        _snack(context, e.toString());
+        _snack(
+          context,
+          'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。',
+        );
       }
       return;
     } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[RakutenManagedProduct] collectRoomAndLaunch failed: $e');
+      }
       if (context.mounted) {
-        _snack(context, e.toString());
+        _snack(
+          context,
+          'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。',
+        );
       }
       return;
     }
@@ -258,9 +282,15 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       }
       return null;
     } on Exception catch (e) {
-      return e.toString();
+      if (kDebugMode) {
+        debugPrint('[RakutenManagedProduct] removeCandidate failed: $e');
+      }
+      return '候補から外せませんでした。しばらく待ってからもう一度お試しください。';
     } catch (e) {
-      return '候補から外せませんでした: $e';
+      if (kDebugMode) {
+        debugPrint('[RakutenManagedProduct] removeCandidate failed: $e');
+      }
+      return '候補から外せませんでした。しばらく待ってからもう一度お試しください。';
     }
   }
 }

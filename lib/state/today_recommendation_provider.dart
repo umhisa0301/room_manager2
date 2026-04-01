@@ -66,8 +66,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
       );
       _bundle = generated;
       await _repository.save(generated);
-    } catch (e) {
-      _errorMessage = 'おすすめ生成に失敗しました: $e';
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[TodayRecommendation] regenerateToday failed: $e');
+        debugPrint('$st');
+      }
+      _errorMessage =
+          '今日のおすすめを用意できませんでした。通信状況を確認し、もう一度「再生成」をお試しください。';
     } finally {
       _isLoading = false;
       notifyListeners();

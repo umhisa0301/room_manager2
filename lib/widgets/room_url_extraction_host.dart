@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -380,7 +381,7 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
         ? WebViewWidget(controller: _controller!)
         : const SizedBox.shrink();
 
-    if (kDebugRoomExtractionWebViewVisible) {
+    if (kDebugMode && kDebugRoomExtractionWebViewVisible) {
       final h = MediaQuery.sizeOf(context).height * 0.45;
       return Stack(
         fit: StackFit.expand,

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/rakuten_managed_product.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_screen_status.dart';
 import '../widgets/rakuten_managed_product_card.dart';
 import 'rakuten_search_screen.dart';
 
@@ -387,12 +388,16 @@ class _RoomManagedProductListTab extends StatelessWidget {
         final ui = provider.listUiStatus;
 
         if (ui == RakutenManagedProductListUiStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return const AppScreenLoadingCenter(
+            title: 'コレ一覧を読み込んでいます',
+            subtitle: 'この端末に保存した候補・コレ済のデータを表示しています。',
+          );
         }
 
         if (ui == RakutenManagedProductListUiStatus.error) {
           return _RoomCollectionErrorState(
-            message: provider.listUiErrorMessage ?? '読み込みに失敗しました',
+            message: provider.listUiErrorMessage ??
+                '一覧データの読み込みに失敗しました。',
             onRetry: () => provider.refreshManagedProductList(
               showLoadingIndicator: true,
             ),
@@ -681,16 +686,27 @@ class _RoomCollectionErrorState extends StatelessWidget {
                   Icon(Icons.error_outline, size: 48, color: AppColors.error),
                   const SizedBox(height: 12),
                   Text(
+                    '一覧を表示できませんでした',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
                     message,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: AppColors.textSecondary),
-                    maxLines: 8,
-                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.45,
+                        ),
                   ),
                   const SizedBox(height: 20),
-                  FilledButton(
+                  FilledButton.icon(
                     onPressed: () => onRetry(),
-                    child: const Text('再試行'),
+                    icon: const Icon(Icons.refresh_rounded, size: 20),
+                    label: const Text('もう一度読み込む'),
                   ),
                 ],
               ),

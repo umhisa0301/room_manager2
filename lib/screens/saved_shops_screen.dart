@@ -5,6 +5,7 @@ import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_screen_status.dart';
 import 'rakuten_search_screen.dart';
 import 'shop_discovery_detail_screen.dart';
 
@@ -35,35 +36,24 @@ class SavedShopsScreen extends StatelessWidget {
         builder: (context, saved, _) {
           final shops = saved.shops;
           if (shops.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '保存ショップはまだありません。\nショップ発掘結果から保存できます。',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.5,
-                          ),
-                    ),
-                    const SizedBox(height: 10),
-                    FilledButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const RakutenSearchScreen(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.travel_explore_rounded, size: 18),
-                      label: const Text('ショップ発掘へ'),
-                    ),
-                  ],
+            return AppScreenEmptyCenter(
+              icon: Icons.bookmarks_outlined,
+              title: '保存ショップはまだありません',
+              body:
+                  '楽天検索の「ショップ発掘」で候補を探し、気に入ったショップを保存すると、ここからすぐ開けます。',
+              actions: [
+                FilledButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const RakutenSearchScreen(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.travel_explore_rounded, size: 20),
+                  label: const Text('ショップ発掘を開く'),
                 ),
-              ),
+              ],
             );
           }
           final viewedCount = shops.where((e) => e.lastViewedAt != null).length;
@@ -210,6 +200,8 @@ class _SavedShopCard extends StatelessWidget {
         children: [
           Text(
             shopName,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w700,
