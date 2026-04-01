@@ -29,18 +29,21 @@ class _AppShellState extends State<AppShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,
+          border: Border(
+            top: BorderSide(
+              color: AppColors.divider.withValues(alpha: 0.85),
+              width: 1,
+            ),
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.06),
-              offset: const Offset(0, -2),
-              blurRadius: 8,
+              color: Colors.black.withValues(alpha: 0.05),
+              offset: const Offset(0, -1),
+              blurRadius: 6,
             ),
           ],
         ),
@@ -48,7 +51,7 @@ class _AppShellState extends State<AppShell> {
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: AppDimensions.spacingSm,
-              vertical: AppDimensions.spacingSm,
+              vertical: 4,
             ),
             child: Row(
               children: [
@@ -133,38 +136,40 @@ class _NavItem extends StatelessWidget {
     final child = InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 2,
-          vertical: AppDimensions.spacingSm,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.accentLight : Colors.transparent,
-          borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              isSelected ? selectedIcon : icon,
-              size: AppDimensions.iconNav,
-              color:
-                  isSelected ? AppColors.accentPrimary : AppColors.textSecondary,
-            ),
-            const SizedBox(height: AppDimensions.spacingXs),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                label,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: isSelected
-                    ? AppTextStyles.navLabelSelected
-                    : AppTextStyles.navLabel,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 48),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.accentLight : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                isSelected ? selectedIcon : icon,
+                size: AppDimensions.iconNav,
+                color: isSelected
+                    ? AppColors.accentPrimary
+                    : AppColors.textSecondary,
               ),
-            ),
-          ],
+              const SizedBox(height: 2),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  style: isSelected
+                      ? AppTextStyles.navLabelSelected
+                      : AppTextStyles.navLabel,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

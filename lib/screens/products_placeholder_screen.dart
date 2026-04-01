@@ -26,10 +26,7 @@ List<RakutenManagedProduct> _filterManagedProductsByQuery(
 
 /// ROOMコレ管理画面。楽天検索で登録したコレ候補・コレ済をタブで表示する。
 class ProductsPlaceholderScreen extends StatefulWidget {
-  const ProductsPlaceholderScreen({
-    super.key,
-    this.initialTabIndex = 0,
-  });
+  const ProductsPlaceholderScreen({super.key, this.initialTabIndex = 0});
 
   /// 0: コレ候補、1: コレ済
   final int initialTabIndex;
@@ -65,8 +62,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<RakutenManagedProductProvider>().refreshManagedProductList(
-            showLoadingIndicator: false,
-          );
+        showLoadingIndicator: false,
+      );
     });
   }
 
@@ -92,16 +89,19 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       final message = next == null
           ? '「$moved」をコレ済へ移動しました。次の候補はありません。'
           : '「$moved」をコレ済へ移動しました。次の候補はこちら: 「${_truncateName(next.itemName)}」';
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
       setState(() {});
     });
   }
 
-  RakutenManagedProduct? _nextCandidate(RakutenManagedProductProvider provider) {
-    final base =
-        provider.sortedItemsForStatus(RakutenManagedProductStatus.candidate);
+  RakutenManagedProduct? _nextCandidate(
+    RakutenManagedProductProvider provider,
+  ) {
+    final base = provider.sortedItemsForStatus(
+      RakutenManagedProductStatus.candidate,
+    );
     final filtered = _filterManagedProductsByQuery(base, _searchQuery);
     if (filtered.isEmpty) return null;
     return filtered.first;
@@ -120,7 +120,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     final provider = context.read<RakutenManagedProductProvider>();
     await provider.collectRoomAndLaunch(context, product.productId);
     if (!mounted) return;
-    final moved = provider.statusForProduct(product.productId) ==
+    final moved =
+        provider.statusForProduct(product.productId) ==
         RakutenManagedProductStatus.done;
     if (moved && _continuousCollectMode) {
       setState(() {
@@ -132,184 +133,202 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
 
   @override
   Widget build(BuildContext context) {
+    final canPop = Navigator.canPop(context);
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('ROOMコレ管理'),
-        backgroundColor: AppColors.surface,
-        foregroundColor: AppColors.textPrimary,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 4),
-            child: Tooltip(
-              message: '楽天の商品を検索し、コレ候補として登録できます',
-              child: TextButton.icon(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => const RakutenSearchScreen(),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                0,
+                AppDimensions.spacingSm,
+                AppDimensions.screenPaddingH,
+                0,
+              ),
+              child: Row(
+                children: [
+                  if (canPop)
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const Icon(Icons.arrow_back_rounded),
+                      color: AppColors.textPrimary,
+                      tooltip: '戻る',
                     ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Tooltip(
+                        message: '楽天の商品を検索し、コレ候補として登録できます',
+                        child: TextButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const RakutenSearchScreen(),
+                              ),
+                            );
+                          },
+                          icon: Icon(
+                            Icons.travel_explore_rounded,
+                            size: 20,
+                            color: AppColors.accentPrimary,
+                          ),
+                          label: Text(
+                            '楽天で検索',
+                            style: TextStyle(
+                              color: AppColors.accentPrimary,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Material(
+              color: AppColors.surface,
+              child: Consumer<RakutenManagedProductProvider>(
+                builder: (context, managed, _) {
+                  final nCand = managed
+                      .sortedItemsForStatus(
+                        RakutenManagedProductStatus.candidate,
+                      )
+                      .length;
+                  final nDone = managed
+                      .sortedItemsForStatus(RakutenManagedProductStatus.done)
+                      .length;
+                  final idx = _tabController.index;
+                  return TabBar(
+                    controller: _tabController,
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.start,
+                    labelColor: AppColors.textPrimary,
+                    unselectedLabelColor: AppColors.textSecondary,
+                    indicatorColor: AppColors.accentPrimary,
+                    indicatorWeight: 3,
+                    dividerColor: AppColors.divider,
+                    tabs: [
+                      _RoomTabChip(
+                        selected: idx == 0,
+                        accent: RoomListAccent.candidate,
+                        icon: Icons.bookmark_outline_rounded,
+                        label: 'コレ候補（$nCand件）',
+                      ),
+                      _RoomTabChip(
+                        selected: idx == 1,
+                        accent: RoomListAccent.done,
+                        icon: Icons.task_alt_rounded,
+                        label: 'コレ済（$nDone件）',
+                      ),
+                    ],
                   );
                 },
-                icon: Icon(
-                  Icons.travel_explore_rounded,
-                  size: 20,
-                  color: AppColors.accentPrimary,
-                ),
-                label: Text(
-                  '楽天で検索',
-                  style: TextStyle(
-                    color: AppColors.accentPrimary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppDimensions.screenPaddingH,
+                6,
+                AppDimensions.screenPaddingH,
+                4,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.info_outline_rounded,
+                    size: 18,
+                    color: AppColors.accentPrimary.withValues(alpha: 0.75),
                   ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '追加：上の「楽天で検索」／下欄は一覧の絞り込み',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        height: 1.35,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppDimensions.screenPaddingH,
+                0,
+                AppDimensions.screenPaddingH,
+                6,
+              ),
+              child: TextField(
+                controller: _searchController,
+                onChanged: (v) => setState(() => _searchQuery = v),
+                textInputAction: TextInputAction.search,
+                decoration: InputDecoration(
+                  hintText: '商品名・ショップ・商品IDで絞り込み',
+                  isDense: true,
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: AppColors.textTertiary,
+                    size: 22,
+                  ),
+                  suffixIcon: _searchQuery.trim().isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.close, size: 20),
+                          onPressed: () {
+                            _searchController.clear();
+                            setState(() => _searchQuery = '');
+                          },
+                        )
+                      : null,
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Material(
-            color: AppColors.surface,
-            child: Consumer<RakutenManagedProductProvider>(
-              builder: (context, managed, _) {
-                final nCand = managed
-                    .sortedItemsForStatus(RakutenManagedProductStatus.candidate)
-                    .length;
-                final nDone = managed
-                    .sortedItemsForStatus(RakutenManagedProductStatus.done)
-                    .length;
-                final idx = _tabController.index;
-                return TabBar(
-                  controller: _tabController,
-                  isScrollable: true,
-                  tabAlignment: TabAlignment.start,
-                  labelColor: AppColors.textPrimary,
-                  unselectedLabelColor: AppColors.textSecondary,
-                  indicatorColor: AppColors.accentPrimary,
-                  indicatorWeight: 3,
-                  dividerColor: AppColors.divider,
-                  tabs: [
-                    _RoomTabChip(
-                      selected: idx == 0,
-                      accent: RoomListAccent.candidate,
-                      icon: Icons.bookmark_outline_rounded,
-                      label: 'コレ候補（$nCand件）',
-                    ),
-                    _RoomTabChip(
-                      selected: idx == 1,
-                      accent: RoomListAccent.done,
-                      icon: Icons.task_alt_rounded,
-                      label: 'コレ済（$nDone件）',
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppDimensions.screenPaddingH,
-              8,
-              AppDimensions.screenPaddingH,
-              6,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.info_outline_rounded,
-                  size: 18,
-                  color: AppColors.accentPrimary.withValues(alpha: 0.75),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    '商品追加：右上の「楽天で検索」　／　下の欄は保存済み一覧の絞り込みです',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.4,
-                        ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _RoomManagedProductListTab(
+                    status: RakutenManagedProductStatus.candidate,
+                    variant: RakutenManagedProductCardVariant.candidate,
+                    filterQuery: _searchQuery,
+                    continuousCollectMode: _continuousCollectMode,
+                    onContinuousModeChanged: (next) {
+                      setState(() {
+                        _continuousCollectMode = next;
+                        _awaitingContinuousResume = false;
+                      });
+                    },
+                    onCollectPressed: _handleContinuousCollect,
+                    emptyTitle: 'コレ候補はまだありません',
+                    emptySubtitle:
+                        '① 画面上部の「楽天で検索」で商品を探す\n'
+                        '② 検索結果から「コレ候補へ登録」\n'
+                        '③ URL取得後に「コレする」でコレ済へ移動',
+                    emptyHint: 'まずは上の「楽天で検索」から商品を探してみてください。',
+                    accentColor: RoomListAccent.candidate,
                   ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppDimensions.screenPaddingH,
-              0,
-              AppDimensions.screenPaddingH,
-              8,
-            ),
-            child: TextField(
-              controller: _searchController,
-              onChanged: (v) => setState(() => _searchQuery = v),
-              textInputAction: TextInputAction.search,
-              decoration: InputDecoration(
-                hintText: '商品名・ショップ・商品IDで絞り込み',
-                isDense: true,
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: AppColors.textTertiary,
-                  size: 22,
-                ),
-                suffixIcon: _searchQuery.trim().isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.close, size: 20),
-                        onPressed: () {
-                          _searchController.clear();
-                          setState(() => _searchQuery = '');
-                        },
-                      )
-                    : null,
+                  _RoomManagedProductListTab(
+                    status: RakutenManagedProductStatus.done,
+                    variant: RakutenManagedProductCardVariant.done,
+                    filterQuery: _searchQuery,
+                    continuousCollectMode: false,
+                    emptyTitle: 'コレ済の商品はまだありません',
+                    emptySubtitle:
+                        'コレ候補一覧で ROOM の URL を開き「コレする」を押すと、'
+                        'このアプリの一覧ではコレ済に移動します。',
+                    emptyHint: '※ ROOM への実際の投稿完了までは、このアプリでは確認できません。',
+                    accentColor: RoomListAccent.done,
+                  ),
+                ],
               ),
             ),
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _RoomManagedProductListTab(
-                  status: RakutenManagedProductStatus.candidate,
-                  variant: RakutenManagedProductCardVariant.candidate,
-                  filterQuery: _searchQuery,
-                  continuousCollectMode: _continuousCollectMode,
-                  onContinuousModeChanged: (next) {
-                    setState(() {
-                      _continuousCollectMode = next;
-                      _awaitingContinuousResume = false;
-                    });
-                  },
-                  onCollectPressed: _handleContinuousCollect,
-                  emptyTitle: 'コレ候補はまだありません',
-                  emptySubtitle:
-                      '① 画面上部の「楽天で検索」で商品を探す\n'
-                      '② 検索結果から「コレ候補へ登録」\n'
-                      '③ URL取得後に「コレする」でコレ済へ移動',
-                  emptyHint:
-                      'まずは右上の「楽天で検索」から商品を探してみてください。',
-                  accentColor: RoomListAccent.candidate,
-                ),
-                _RoomManagedProductListTab(
-                  status: RakutenManagedProductStatus.done,
-                  variant: RakutenManagedProductCardVariant.done,
-                  filterQuery: _searchQuery,
-                  continuousCollectMode: false,
-                  emptyTitle: 'コレ済の商品はまだありません',
-                  emptySubtitle:
-                      'コレ候補一覧で ROOM の URL を開き「コレする」を押すと、'
-                      'このアプリの一覧ではコレ済に移動します。',
-                  emptyHint: '※ ROOM への実際の投稿完了までは、このアプリでは確認できません。',
-                  accentColor: RoomListAccent.done,
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -375,7 +394,8 @@ class _RoomManagedProductListTab extends StatelessWidget {
   final Future<void> Function(
     BuildContext context,
     RakutenManagedProduct product,
-  )? onCollectPressed;
+  )?
+  onCollectPressed;
   final String emptyTitle;
   final String emptySubtitle;
   final String emptyHint;
@@ -396,11 +416,9 @@ class _RoomManagedProductListTab extends StatelessWidget {
 
         if (ui == RakutenManagedProductListUiStatus.error) {
           return _RoomCollectionErrorState(
-            message: provider.listUiErrorMessage ??
-                '一覧データの読み込みに失敗しました。',
-            onRetry: () => provider.refreshManagedProductList(
-              showLoadingIndicator: true,
-            ),
+            message: provider.listUiErrorMessage ?? '一覧データの読み込みに失敗しました。',
+            onRetry: () =>
+                provider.refreshManagedProductList(showLoadingIndicator: true),
           );
         }
 
@@ -421,9 +439,8 @@ class _RoomManagedProductListTab extends StatelessWidget {
         }
 
         return RefreshIndicator(
-          onRefresh: () => provider.refreshManagedProductList(
-            showLoadingIndicator: true,
-          ),
+          onRefresh: () =>
+              provider.refreshManagedProductList(showLoadingIndicator: true),
           child: ListView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(
@@ -438,8 +455,9 @@ class _RoomManagedProductListTab extends StatelessWidget {
                   enabled: continuousCollectMode,
                   onChanged: onContinuousModeChanged ?? (_) {},
                   hasNextCandidate: list.isNotEmpty,
-                  nextCandidateName:
-                      list.isNotEmpty ? list.first.itemName : null,
+                  nextCandidateName: list.isNotEmpty
+                      ? list.first.itemName
+                      : null,
                 ),
               if (status == RakutenManagedProductStatus.candidate)
                 const SizedBox(height: 10),
@@ -450,8 +468,8 @@ class _RoomManagedProductListTab extends StatelessWidget {
                   onCollectPressed: onCollectPressed,
                   emphasizeAsNext:
                       status == RakutenManagedProductStatus.candidate &&
-                          continuousCollectMode &&
-                          i == 0,
+                      continuousCollectMode &&
+                      i == 0,
                 ),
                 if (i != list.length - 1) const SizedBox(height: 10),
               ],
@@ -495,16 +513,18 @@ class _ContinuousCollectModePanel extends StatelessWidget {
               Icon(
                 Icons.autorenew_rounded,
                 size: 18,
-                color: enabled ? AppColors.accentPrimary : AppColors.textSecondary,
+                color: enabled
+                    ? AppColors.accentPrimary
+                    : AppColors.textSecondary,
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   '連続コレモード',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
-                      ),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
               Switch(
@@ -519,9 +539,9 @@ class _ContinuousCollectModePanel extends StatelessWidget {
                 ? '「コレする」後に戻ると、次に処理する候補を案内します。'
                 : 'ONにすると、次にコレする候補を強調表示します。',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.4,
-                ),
+              color: AppColors.textSecondary,
+              height: 1.4,
+            ),
           ),
           if (enabled) ...[
             const SizedBox(height: 8),
@@ -532,9 +552,9 @@ class _ContinuousCollectModePanel extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: AppColors.accentPrimary,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: AppColors.accentPrimary,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ],
         ],
@@ -571,18 +591,18 @@ class _RoomCollectionSearchEmptyState extends StatelessWidget {
                     '検索に一致する商品はありません',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     '別のキーワードで試すか、検索欄をクリアしてください。',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.4,
-                        ),
+                      color: AppColors.textSecondary,
+                      height: 1.4,
+                    ),
                   ),
                 ],
               ),
@@ -630,27 +650,27 @@ class _RoomCollectionEmptyState extends StatelessWidget {
                     title,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     subtitle,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.45,
-                        ),
+                      color: AppColors.textSecondary,
+                      height: 1.45,
+                    ),
                   ),
                   const SizedBox(height: 14),
                   Text(
                     hint,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textTertiary,
-                          height: 1.35,
-                        ),
+                      color: AppColors.textTertiary,
+                      height: 1.35,
+                    ),
                   ),
                 ],
               ),
@@ -689,18 +709,18 @@ class _RoomCollectionErrorState extends StatelessWidget {
                     '一覧を表示できませんでした',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     message,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.45,
-                        ),
+                      color: AppColors.textSecondary,
+                      height: 1.45,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   FilledButton.icon(
