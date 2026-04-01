@@ -1285,7 +1285,7 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
           alpha: done ? 0.04 : 0.05,
         ),
         child: Opacity(
-          opacity: done ? 0.96 : 1,
+          opacity: done ? 0.98 : 1,
           child: Container(
             width: double.infinity,
             padding: _HomeUi.paddingTodayRecommendationsCard,
@@ -1372,8 +1372,8 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 6, top: 2),
                   child: Icon(
                     Icons.chevron_right_rounded,
-                    color: AppColors.textTertiary.withValues(
-                      alpha: done ? 0.5 : 0.85,
+                    color: HomeScreenColors.chevronOnSection.withValues(
+                      alpha: done ? 0.52 : 0.90,
                     ),
                     size: 22,
                   ),
@@ -1703,9 +1703,7 @@ class _RecentCandidatesPanel extends StatelessWidget {
               thickness: 1,
               indent: embedInUnifiedSection ? 70 : 72,
               endIndent: embedInUnifiedSection ? 12 : 12,
-              color: embedInUnifiedSection
-                  ? HomeScreenColors.listRowDivider
-                  : AppColors.divider.withValues(alpha: 0.55),
+              color: HomeScreenColors.listRowDivider,
             ),
         ],
       ],
@@ -1785,7 +1783,9 @@ class _RecentCandidateTile extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 6, top: 2),
                 child: Icon(
                   Icons.chevron_right_rounded,
-                  color: AppColors.textTertiary.withValues(alpha: 0.9),
+                  color: HomeScreenColors.chevronOnSection.withValues(
+                    alpha: 0.88,
+                  ),
                   size: 22,
                 ),
               ),

@@ -21,59 +21,63 @@ abstract final class HomeScreenColors {
   HomeScreenColors._();
 
   // --- 1. 画面土台 ---
-  static Color get canvas => AppColors.background;
+  /// ホームのみキャンバスをわずかに沈め、カード面との差をはっきりさせる（アプリ共通背景は変えない）
+  static Color get canvas => Color.alphaBlend(
+        AppColors.textPrimary.withValues(alpha: 0.028),
+        AppColors.background,
+      );
 
   // --- 2. セクションのまとまり（基調）---
   static Color get groupedSectionFill => Color.alphaBlend(
-        AppColors.surfaceVariant.withValues(alpha: 0.62),
+        AppColors.surfaceVariant.withValues(alpha: 0.70),
         AppColors.background,
       );
 
   /// ROOM：ほんの少しピンク寄り（一覧ブロックと「ひとかたまり」に見せる）
   static Color get roomGroupedShellFill => Color.alphaBlend(
-        AppColors.accentLight.withValues(alpha: 0.185),
+        AppColors.accentLight.withValues(alpha: 0.208),
         groupedSectionFill,
       );
 
   /// 最近候補：ROOM より薄く、別セクションだが同じ世界観
   static Color get recentGroupedShellFill => Color.alphaBlend(
-        AppColors.accentLight.withValues(alpha: 0.115),
+        AppColors.accentLight.withValues(alpha: 0.138),
         groupedSectionFill,
       );
 
   /// ROOM 見出し帯（タイトル＝親）
   static Color get roomSectionHeaderBand => Color.alphaBlend(
-        AppColors.accentLight.withValues(alpha: 0.38),
+        AppColors.accentLight.withValues(alpha: 0.42),
         roomGroupedShellFill,
       );
 
   /// 最近候補 見出し帯
   static Color get recentSectionHeaderBand => Color.alphaBlend(
-        AppColors.accentLight.withValues(alpha: 0.30),
+        AppColors.accentLight.withValues(alpha: 0.35),
         recentGroupedShellFill,
       );
 
   /// ROOM：区切り下〜デッキ手前のわずかな沈み（中身ブロック）
   static Color get roomContentWellFill => Color.alphaBlend(
-        AppColors.surface.withValues(alpha: 0.26),
+        AppColors.surface.withValues(alpha: 0.32),
         roomGroupedShellFill,
       );
 
   /// 最近候補：一覧デッキ周辺
   static Color get recentContentWellFill => Color.alphaBlend(
-        AppColors.surface.withValues(alpha: 0.22),
+        AppColors.surface.withValues(alpha: 0.28),
         recentGroupedShellFill,
       );
 
   /// 単独カード（検索ブロック）：真っ白だけにせずホーム全体と密度を揃える
   static Color get standaloneCardFill => Color.alphaBlend(
-        AppColors.accentLightest.withValues(alpha: 0.22),
+        AppColors.accentLightest.withValues(alpha: 0.30),
         AppColors.surface,
       );
 
   // --- 3. 内側デッキ ---
   static Color get deckFill => AppColors.surface;
-  static Color get deckOutline => AppColors.divider.withValues(alpha: 0.80);
+  static Color get deckOutline => AppColors.divider.withValues(alpha: 0.86);
 
   // --- 4. メトリクス1枚・リスト行のベース面 ---
   static Color get metricTileFill => AppColors.surface;
@@ -81,27 +85,27 @@ abstract final class HomeScreenColors {
 
   /// ROOM 集計4タイル：共通のカード面（純白よりほんの少しトーンを載せデッキから分離）
   static Color get roomMetricTileFill => Color.alphaBlend(
-        AppColors.accentLightest.withValues(alpha: 0.52),
+        AppColors.accentLightest.withValues(alpha: 0.58),
         Color.alphaBlend(
-          AppColors.surfaceVariant.withValues(alpha: 0.26),
+          AppColors.surfaceVariant.withValues(alpha: 0.30),
           AppColors.surface,
         ),
       );
 
   /// ROOM メトリクス：縁をわずかに強め、背景に埋もれない
   static Color get roomMetricTileBorder => Color.alphaBlend(
-        AppColors.textPrimary.withValues(alpha: 0.085),
-        AppColors.divider.withValues(alpha: 0.72),
+        AppColors.textPrimary.withValues(alpha: 0.092),
+        AppColors.divider.withValues(alpha: 0.76),
       );
 
   /// メトリクス行見出し（4枚で同色・役割はアイコンバッジで）
-  static Color get metricTileTitleColor => const Color(0xFF38383E);
+  static Color get metricTileTitleColor => const Color(0xFF32323A);
 
   /// メトリクス主数値（文字が沈まないよう一段濃く）
   static Color get metricTileValueColor => const Color(0xFF0E0E10);
 
   /// メトリクス補足（タップ案内：主張しすぎない）
-  static Color get metricTileCaptionColor => const Color(0xFF878790);
+  static Color get metricTileCaptionColor => const Color(0xFF6F6F7A);
 
   // --- ROOM メトリクス：役割別アクセント（アイコン＋バッジ地面のみ）---
   /// コレ候補：情報系（ブランドから逸れすぎないスレートブルー）
@@ -133,7 +137,7 @@ abstract final class HomeScreenColors {
   /// ROOM メトリクス（デッキ内）：ごく弱い影で面の存在感を補助
   static List<BoxShadow> get roomMetricTileShadow => [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.048),
+          color: Colors.black.withValues(alpha: 0.054),
           offset: const Offset(0, 1),
           blurRadius: 7,
         ),
@@ -141,27 +145,27 @@ abstract final class HomeScreenColors {
 
   // --- 境界 ---
   static Color get sectionOutlineNeutral =>
-      AppColors.divider.withValues(alpha: 0.84);
+      AppColors.divider.withValues(alpha: 0.88);
   static Color get sectionOutlineAccent =>
-      AppColors.accentPrimary.withValues(alpha: 0.22);
+      AppColors.accentPrimary.withValues(alpha: 0.26);
   static Color get inlineDivider => AppColors.divider.withValues(alpha: 0.58);
   static Color get listRowDivider =>
       AppColors.divider.withValues(alpha: 0.56);
 
   // --- 今日のおすすめ（独立セクション・グラデでまとまり）---
   static List<Color> get todayActiveGradientColors => [
-        AppColors.accentLight.withValues(alpha: 0.96),
+        AppColors.accentLight.withValues(alpha: 0.98),
         Color.alphaBlend(
-          AppColors.accentLight.withValues(alpha: 0.36),
+          AppColors.accentLight.withValues(alpha: 0.44),
           AppColors.surface,
         ),
       ];
   static Color get todayActiveBorder =>
-      AppColors.accentPrimary.withValues(alpha: 0.28);
+      AppColors.accentPrimary.withValues(alpha: 0.32);
   static Color get todayDoneFill => Color.alphaBlend(
-        AppColors.accentLight.withValues(alpha: 0.11),
+        AppColors.accentLight.withValues(alpha: 0.14),
         Color.alphaBlend(
-          AppColors.surfaceVariant.withValues(alpha: 0.62),
+          AppColors.surfaceVariant.withValues(alpha: 0.68),
           AppColors.surface,
         ),
       );
@@ -171,7 +175,7 @@ abstract final class HomeScreenColors {
   static Color get aboutHeaderGradientStart =>
       AppColors.accentLight.withValues(alpha: 0.97);
   static Color get aboutHeaderGradientEnd =>
-      Color.alphaBlend(AppColors.accentLight.withValues(alpha: 0.22), canvas);
+      Color.alphaBlend(AppColors.accentLight.withValues(alpha: 0.28), canvas);
 
   static List<Color> get aboutSectionGradientColors => [
         aboutHeaderGradientStart,
@@ -180,7 +184,7 @@ abstract final class HomeScreenColors {
 
   /// 展開本文エリア（ヘッダーより一段沈めて「中身」）
   static Color get aboutExpandedWellFill => Color.alphaBlend(
-        AppColors.accentLightest.withValues(alpha: 0.78),
+        AppColors.accentLightest.withValues(alpha: 0.86),
         canvas,
       );
 
@@ -189,17 +193,17 @@ abstract final class HomeScreenColors {
 
   /// アクセントセクション見出し（ROOM・最近候補）：ブランドより一段濃く
   static Color get accentSectionHeading => Color.alphaBlend(
-        const Color(0xFF240010).withValues(alpha: 0.165),
+        const Color(0xFF240010).withValues(alpha: 0.182),
         AppColors.accentPrimary,
       );
 
   static Color get sectionTitleAccent => AppColors.accentPrimary;
-  static Color get leadOnSection => const Color(0xFF65656D);
+  static Color get leadOnSection => const Color(0xFF5C5C64);
   static Color get bodyOnSection => AppColors.textSecondary;
 
   /// グループセクション内の説明文（中身：読みやすさ）
-  static Color get groupedSectionBody => const Color(0xFF52525A);
-  static Color get footnoteMuted => const Color(0xFF73737C);
+  static Color get groupedSectionBody => const Color(0xFF4B4B54);
+  static Color get footnoteMuted => const Color(0xFF6C6C75);
   static Color get footerActionLabel =>
       AppColors.accentPrimary.withValues(alpha: 0.94);
 
@@ -208,7 +212,7 @@ abstract final class HomeScreenColors {
 
   // --- サブ導線行 ---
   static Color get subActionRowFill => Color.alphaBlend(
-        AppColors.surfaceVariant.withValues(alpha: 0.52),
+        AppColors.surfaceVariant.withValues(alpha: 0.58),
         AppColors.surface,
       );
 
@@ -220,12 +224,12 @@ abstract final class HomeScreenColors {
 
   /// ホーム主CTA（楽天で検索・hero）：ベタ塗りより一階調整して主役感と落ち着きの両立
   static Color get heroCtaBackground => Color.alphaBlend(
-        const Color(0xFF1A0610).withValues(alpha: 0.11),
+        const Color(0xFF1A0610).withValues(alpha: 0.075),
         AppColors.accentPrimary,
       );
 
   static Color get heroCtaShadow =>
-      AppColors.accentPrimary.withValues(alpha: 0.34);
+      AppColors.accentPrimary.withValues(alpha: 0.37);
 
   // --- 状態アイコン ---
   static Color get statusSuccessIcon =>
@@ -245,10 +249,10 @@ abstract final class HomeScreenColors {
       AppColors.textPrimary.withValues(alpha: 0.035);
 
   // --- 影 ---
-  static Color get cardShadowColor => Colors.black.withValues(alpha: 0.072);
+  static Color get cardShadowColor => Colors.black.withValues(alpha: 0.078);
 
   // --- プログレス（10件バーが埋もれないように）---
-  static Color get progressTrack => AppColors.divider.withValues(alpha: 0.48);
+  static Color get progressTrack => AppColors.divider.withValues(alpha: 0.52);
   static Color get progressValue =>
       AppColors.accentPrimary.withValues(alpha: 0.92);
 
