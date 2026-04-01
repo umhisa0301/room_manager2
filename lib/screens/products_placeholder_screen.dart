@@ -12,6 +12,10 @@ import '../widgets/app_screen_status.dart';
 import '../widgets/rakuten_managed_product_card.dart';
 import 'rakuten_search_screen.dart';
 
+/// ROOMコレ一覧専用。アプリ共通 [AppDimensions.screenPaddingH] より詰め密度を上げる。
+const double _kRoomListScreenPadH = 12;
+const double _kRoomListCardGap = 6;
+
 List<RakutenManagedProduct> _filterManagedProductsByQuery(
   List<RakutenManagedProduct> items,
   String query,
@@ -242,18 +246,24 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                AppDimensions.screenPaddingH,
-                AppDimensions.spacingSm,
-                AppDimensions.screenPaddingH,
-                8,
+                _kRoomListScreenPadH,
+                6,
+                _kRoomListScreenPadH,
+                6,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   if (canPop)
                     IconButton(
+                      visualDensity: VisualDensity.compact,
+                      constraints: const BoxConstraints(
+                        minWidth: 40,
+                        minHeight: 40,
+                      ),
+                      padding: EdgeInsets.zero,
                       onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(Icons.arrow_back_rounded),
+                      icon: const Icon(Icons.arrow_back_rounded, size: 22),
                       color: AppColors.textPrimary,
                       tooltip: '戻る',
                     ),
@@ -262,14 +272,22 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                       controller: _searchController,
                       onChanged: (v) => setState(() => _searchQuery = v),
                       textInputAction: TextInputAction.search,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontSize: 14,
+                            height: 1.2,
+                          ),
                       decoration: InputDecoration(
                         hintText: 'キーワード検索',
+                        hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontSize: 14,
+                              color: AppColors.textTertiary,
+                            ),
                         isDense: true,
                         filled: true,
                         fillColor: AppColors.surface,
                         contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 12,
+                          vertical: 10,
+                          horizontal: 10,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(
@@ -295,7 +313,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                         prefixIcon: Icon(
                           Icons.search_rounded,
                           color: AppColors.textTertiary,
-                          size: 22,
+                          size: 20,
                         ),
                         suffixIcon: _searchQuery.trim().isNotEmpty
                             ? IconButton(
@@ -310,6 +328,12 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     ),
                   ),
                   IconButton(
+                    visualDensity: VisualDensity.compact,
+                    constraints: const BoxConstraints(
+                      minWidth: 40,
+                      minHeight: 40,
+                    ),
+                    padding: EdgeInsets.zero,
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
@@ -320,7 +344,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     icon: Icon(
                       Icons.travel_explore_rounded,
                       color: AppColors.accentPrimary,
-                      size: 26,
+                      size: 22,
                     ),
                     tooltip: '商品追加',
                   ),
@@ -339,17 +363,13 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     .length;
                 final idx = _tabController.index;
                 return Padding(
-                  padding: const EdgeInsets.only(
-                    left: 0,
-                    right: 0,
-                    bottom: 8,
-                  ),
+                  padding: const EdgeInsets.only(bottom: 6),
                   child: SizedBox(
-                    height: 44,
+                    height: 36,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(
-                        horizontal: AppDimensions.screenPaddingH,
+                        horizontal: _kRoomListScreenPadH,
                       ),
                       children: [
                         _RoomListFilterChip(
@@ -365,7 +385,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             }
                           },
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 6),
                         _RoomListFilterChip(
                           label: 'コレ済',
                           count: nDone,
@@ -379,26 +399,27 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             }
                           },
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 6),
                         FilterChip(
                           label: const Text('URL未取得除外'),
                           selected: _excludeUrlNotReady,
                           onSelected: (v) =>
                               setState(() => _excludeUrlNotReady = v),
                           showCheckmark: false,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
+                            horizontal: 10,
+                            vertical: 0,
                           ),
                           pressElevation: 0,
                           backgroundColor: AppColors.surface,
                           selectedColor:
-                              AppColors.accentPrimary.withValues(alpha: 0.18),
+                              AppColors.accentPrimary.withValues(alpha: 0.16),
                           side: BorderSide(
                             color: _excludeUrlNotReady
                                 ? AppColors.accentPrimary
                                 : AppColors.divider,
-                            width: _excludeUrlNotReady ? 1.5 : 1,
+                            width: _excludeUrlNotReady ? 1.25 : 1,
                           ),
                           labelStyle: TextStyle(
                             color: _excludeUrlNotReady
@@ -407,7 +428,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             fontWeight: _excludeUrlNotReady
                                 ? FontWeight.w700
                                 : FontWeight.w500,
-                            fontSize: 13,
+                            fontSize: 12,
+                            height: 1.2,
                           ),
                         ),
                       ],
@@ -497,18 +519,20 @@ class _RoomListFilterChip extends StatelessWidget {
       selected: selected,
       onSelected: onSelected,
       showCheckmark: false,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
       pressElevation: 0,
       backgroundColor: AppColors.surface,
-      selectedColor: accent.withValues(alpha: 0.2),
+      selectedColor: accent.withValues(alpha: 0.18),
       side: BorderSide(
         color: borderColor,
-        width: selected ? 1.5 : 1,
+        width: selected ? 1.25 : 1,
       ),
       labelStyle: TextStyle(
         color: selected ? accent : AppColors.textPrimary,
         fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
-        fontSize: 13,
+        fontSize: 12,
+        height: 1.2,
       ),
     );
   }
@@ -642,10 +666,10 @@ class _RoomManagedProductListTab extends StatelessWidget {
             controller: listScrollController,
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(
-              AppDimensions.screenPaddingH,
-              4,
-              AppDimensions.screenPaddingH,
-              24,
+              _kRoomListScreenPadH,
+              2,
+              _kRoomListScreenPadH,
+              12,
             ),
             children: [
               if (showDayBanner) ...[
@@ -653,7 +677,7 @@ class _RoomManagedProductListTab extends StatelessWidget {
                   filterDay: doneAtLocalDayFilter!,
                   onClear: onClearDoneDayFilter!,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: _kRoomListCardGap),
               ],
               if (status == RakutenManagedProductStatus.done)
                 _DoneTabCollapsibleNotice(
@@ -666,7 +690,8 @@ class _RoomManagedProductListTab extends StatelessWidget {
                   rowKey: rowKeyFor?.call(list[i].productId),
                   flash: flashHighlightProductId == list[i].productId,
                 ),
-                if (i != list.length - 1) const SizedBox(height: 10),
+                if (i != list.length - 1)
+                  const SizedBox(height: _kRoomListCardGap),
               ],
             ],
           ),
@@ -700,9 +725,9 @@ class _KeyedCandidateProductRow extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
         decoration: BoxDecoration(
-          color: AppColors.accentLight.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-          border: Border.all(color: AppColors.accentPrimary, width: 2),
+          color: AppColors.accentLight.withValues(alpha: 0.28),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.accentPrimary, width: 1.5),
         ),
         child: card,
       );
@@ -723,25 +748,26 @@ class _DoneDayFilterBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.surfaceVariant.withValues(alpha: 0.65),
-      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+      color: AppColors.surfaceVariant.withValues(alpha: 0.55),
+      borderRadius: BorderRadius.circular(12),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         child: Row(
           children: [
             Icon(
               Icons.calendar_today_rounded,
-              size: 18,
+              size: 16,
               color: AppColors.accentPrimary,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 6),
             Expanded(
               child: Text(
                 '本日（${filterDay.month}/${filterDay.day}）コレした分のみ表示中',
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
-                  height: 1.3,
+                  height: 1.25,
+                  fontSize: 12,
                 ),
               ),
             ),
@@ -796,17 +822,17 @@ class _DoneTabCollapsibleNoticeState extends State<_DoneTabCollapsibleNotice> {
   Widget build(BuildContext context) {
     if (_suppressed) return const SizedBox.shrink();
 
-    final borderColor = RoomListAccent.done.withValues(alpha: 0.38);
+    final borderColor = RoomListAccent.done.withValues(alpha: 0.34);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: _kRoomListCardGap),
       child: Material(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        borderRadius: BorderRadius.circular(12),
         elevation: 0,
         shadowColor: Colors.transparent,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(color: borderColor),
           ),
           child: Column(
@@ -814,20 +840,19 @@ class _DoneTabCollapsibleNoticeState extends State<_DoneTabCollapsibleNotice> {
             children: [
               InkWell(
                 onTap: () => setState(() => _expanded = !_expanded),
-                borderRadius:
-                    BorderRadius.circular(AppDimensions.radiusCard),
+                borderRadius: BorderRadius.circular(12),
                 child: SizedBox(
-                  height: 48,
+                  height: 44,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
                       children: [
                         Icon(
                           Icons.info_outline_rounded,
-                          size: 22,
+                          size: 18,
                           color: RoomListAccent.done.withValues(alpha: 0.95),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             _summary,
@@ -836,7 +861,8 @@ class _DoneTabCollapsibleNoticeState extends State<_DoneTabCollapsibleNotice> {
                             style: Theme.of(context).textTheme.labelLarge?.copyWith(
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w600,
-                                  height: 1.25,
+                                  height: 1.2,
+                                  fontSize: 12,
                                 ),
                           ),
                         ),
@@ -853,17 +879,18 @@ class _DoneTabCollapsibleNoticeState extends State<_DoneTabCollapsibleNotice> {
               ),
               if (_expanded) ...[
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 6),
                   child: Text(
                     _body,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
-                          height: 1.45,
+                          height: 1.4,
+                          fontSize: 12,
                         ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4),
+                  padding: const EdgeInsets.only(left: 2, right: 2, bottom: 2),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
@@ -904,22 +931,23 @@ class _RoomCollectionSearchEmptyState extends StatelessWidget {
           height: MediaQuery.sizeOf(context).height * 0.35,
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
+              padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.search_off_outlined,
-                    size: 52,
-                    color: accentColor.withValues(alpha: 0.45),
+                    size: 44,
+                    color: accentColor.withValues(alpha: 0.42),
                   ),
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 10),
                   Text(
                     '一致する商品がありません',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w600,
+                      fontSize: 14,
                     ),
                   ),
                 ],
@@ -958,37 +986,39 @@ class _RoomCollectionEmptyState extends StatelessWidget {
           height: MediaQuery.sizeOf(context).height * 0.4,
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
+              padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.inventory_2_outlined,
-                    size: 56,
-                    color: accentColor.withValues(alpha: 0.45),
+                    size: 48,
+                    color: accentColor.withValues(alpha: 0.42),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   Text(
                     title,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
                   ),
                   if (subtitle.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     Text(
                       subtitle,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSecondary,
-                        height: 1.45,
+                        height: 1.4,
+                        fontSize: 13,
                       ),
                     ),
                   ],
                   if (hint.isNotEmpty) ...[
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 10),
                     Text(
                       hint,
                       textAlign: TextAlign.center,
@@ -999,7 +1029,7 @@ class _RoomCollectionEmptyState extends StatelessWidget {
                     ),
                   ],
                   if (onAction != null && actionLabel != null) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                     TextButton(onPressed: onAction, child: Text(actionLabel!)),
                   ],
                 ],
@@ -1026,7 +1056,10 @@ class _RoomCollectionErrorState extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          padding: const EdgeInsets.symmetric(
+            horizontal: _kRoomListScreenPadH,
+            vertical: 16,
+          ),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: constraints.maxHeight - 48),
             child: Center(
