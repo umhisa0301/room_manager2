@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
 
 /// ホームの主CTAの強調度。[hero] は最優先導線（楽天で検索）向け。
 enum HomePrimaryActionEmphasis {
@@ -49,10 +50,14 @@ class HomePrimaryActionButton extends StatelessWidget {
       child: FilledButton(
         onPressed: onPressed,
         style: FilledButton.styleFrom(
-          backgroundColor: AppColors.accentPrimary,
+          backgroundColor: emphasis == HomePrimaryActionEmphasis.hero
+              ? HomeScreenColors.heroCtaBackground
+              : AppColors.accentPrimary,
           foregroundColor: AppColors.textOnAccent,
           elevation: _elevation,
-          shadowColor: AppColors.accentPrimary.withValues(alpha: 0.35),
+          shadowColor: emphasis == HomePrimaryActionEmphasis.hero
+              ? HomeScreenColors.heroCtaShadow
+              : AppColors.accentPrimary.withValues(alpha: 0.35),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           minimumSize: Size(double.infinity, _height),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
