@@ -23,14 +23,8 @@ abstract final class _HomeUi {
   /// 主要ブロック同士（CTA・セクション・グループ）
   static const double gapSection = 20;
 
-  /// 見出しカードと、その直下の「まとまり」本体の距離
-  static const double gapHeadingToContent = 10;
-
   /// セクション見出しと折りたたみ要約の間
   static const double gapTitleToSummary = 8;
-
-  /// 囲み（well）の内側パディング
-  static const double paddingGroupedWell = 12;
 
   /// ROOMコレ管理セクション：見出しと補足行の間
   static const double gapRoomTitleToLead = 6;
@@ -46,6 +40,27 @@ abstract final class _HomeUi {
 
   /// ROOMコレ管理：グリッドの列・行間（統一）
   static const double gapRoomGrid = 8;
+
+  /// 最近候補セクション：見出しとリード文の間
+  static const double gapRecentTitleToLead = 6;
+
+  /// 最近候補：展開説明の下余白
+  static const double gapRecentDetailBottom = 10;
+
+  /// 最近候補：区切り線とリストデッキの間
+  static const double gapRecentDividerToDeck = 10;
+
+  /// 最近候補：リストデッキの内側パディング
+  static const double paddingRecentListDeck = 10;
+
+  /// 最近候補：デッキとフッター導線の間
+  static const double gapRecentDeckToFooter = 8;
+
+  /// 最近候補セクション：外周の横・下（上はヘッダーで確保）
+  static const double paddingRecentSectionH = 12;
+
+  /// 最近候補セクション：最下部の余白
+  static const double paddingRecentSectionBottom = 4;
 
   /// コンパクトな縦の詰まり（チップ上など）
   static const double gapTight = 6;
@@ -73,20 +88,6 @@ abstract final class _HomeUi {
     );
   }
 
-  /// メトリクス・最近候補の「親」の囲み（背景差でまとまりを示す）
-  static BoxDecoration groupedWellDecoration() {
-    return BoxDecoration(
-      color: Color.alphaBlend(
-        AppColors.surfaceVariant.withValues(alpha: 0.48),
-        AppColors.background,
-      ),
-      borderRadius: BorderRadius.circular(14),
-      border: Border.all(
-        color: AppColors.divider.withValues(alpha: 0.78),
-      ),
-    );
-  }
-
   /// ROOMコレ管理：見出し〜タイルまでを1ブロックに見せる外枠
   static BoxDecoration roomManagementSectionDecoration() {
     return BoxDecoration(
@@ -110,6 +111,21 @@ abstract final class _HomeUi {
       border: Border.all(
         color: AppColors.divider.withValues(alpha: 0.68),
       ),
+    );
+  }
+
+  /// 最近追加した候補：見出し〜一覧〜フッターを1つにまとめる外枠
+  static BoxDecoration recentCandidatesSectionDecoration() {
+    return BoxDecoration(
+      color: Color.alphaBlend(
+        AppColors.surfaceVariant.withValues(alpha: 0.44),
+        AppColors.background,
+      ),
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(
+        color: AppColors.divider.withValues(alpha: 0.82),
+      ),
+      boxShadow: cardShadow,
     );
   }
 
@@ -330,7 +346,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                         ),
                         const SizedBox(height: _HomeUi.gapSection),
                         _HomeExpandableSection(
-                          chrome: _HomeExpandableChrome.hero,
                           expanded: _aboutExpanded,
                           onToggle: () {
                             setState(() {
@@ -375,40 +390,19 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                           onLastCollectTap: () => _openActivity(context),
                         ),
                         const SizedBox(height: _HomeUi.gapSection),
-                        _HomeExpandableSection(
-                          chrome: _HomeExpandableChrome.plain,
+                        _RecentCandidatesHomeSection(
                           expanded: _recentIntroExpanded,
                           onToggle: () {
                             setState(() {
                               _recentIntroExpanded = !_recentIntroExpanded;
                             });
                           },
-                          title: '最近追加した候補',
-                          collapsedSummary: '',
-                          leadingIcon: Icons.bookmark_added_outlined,
-                          expandedChild: Text(
-                            '直近の候補を最大5件表示。コレ済にすると消えます。行タップでコレ一覧。',
-                            style: _HomeUi.sectionBody(context),
+                          candidates: recentCandidates,
+                          onOpenCandidateTap: (productId) => _openRoomList(
+                            context,
+                            focusCandidateProductId: productId,
                           ),
-                        ),
-                        const SizedBox(height: _HomeUi.gapHeadingToContent),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(
-                            _HomeUi.paddingGroupedWell,
-                          ),
-                          decoration: _HomeUi.groupedWellDecoration(),
-                          child: _RecentCandidatesPanel(
-                            candidates: recentCandidates,
-                            onOpenCandidateTap: (productId) => _openRoomList(
-                              context,
-                              focusCandidateProductId: productId,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: _HomeUi.gapSection),
-                        _HomeCollectionListLink(
-                          onPressed: () => _openRoomList(context),
+                          onOpenFullList: () => _openRoomList(context),
                         ),
                       ],
                     );
@@ -419,13 +413,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   }
 }
 
-/// ホームの折りたたみカードの見た目種別。
-enum _HomeExpandableChrome { hero, plain }
-
 /// ホーム共通：ヘッダー全面タップ・スプラッシュ・AnimatedSize で開閉。
 class _HomeExpandableSection extends StatelessWidget {
   const _HomeExpandableSection({
-    required this.chrome,
     required this.expanded,
     required this.onToggle,
     required this.title,
@@ -434,7 +424,6 @@ class _HomeExpandableSection extends StatelessWidget {
     required this.expandedChild,
   });
 
-  final _HomeExpandableChrome chrome;
   final bool expanded;
   final VoidCallback onToggle;
   final String title;
@@ -448,37 +437,25 @@ class _HomeExpandableSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(AppDimensions.radiusCard);
-    final isHero = chrome == _HomeExpandableChrome.hero;
-    final splashColor = isHero
-        ? AppColors.accentPrimary.withValues(alpha: 0.14)
-        : AppColors.textPrimary.withValues(alpha: 0.08);
-    final highlightColor = isHero
-        ? AppColors.accentPrimary.withValues(alpha: 0.07)
-        : AppColors.textPrimary.withValues(alpha: 0.05);
-    final iconColor = isHero
-        ? AppColors.accentPrimary
-        : AppColors.textSecondary;
+    final splashColor = AppColors.accentPrimary.withValues(alpha: 0.14);
+    final highlightColor = AppColors.accentPrimary.withValues(alpha: 0.07);
+    const iconColor = AppColors.accentPrimary;
 
-    final BoxDecoration decoration;
-    if (isHero) {
-      decoration = BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.accentLight.withValues(alpha: 0.9),
-            const Color(0xFFFFF5F9),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: radius,
-        border: Border.all(
-          color: AppColors.accentPrimary.withValues(alpha: 0.14),
-        ),
-        boxShadow: _HomeUi.cardShadow,
-      );
-    } else {
-      decoration = _HomeUi.elevatedCardDecoration();
-    }
+    final decoration = BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          AppColors.accentLight.withValues(alpha: 0.9),
+          const Color(0xFFFFF5F9),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      borderRadius: radius,
+      border: Border.all(
+        color: AppColors.accentPrimary.withValues(alpha: 0.14),
+      ),
+      boxShadow: _HomeUi.cardShadow,
+    );
 
     return Container(
       width: double.infinity,
@@ -690,6 +667,137 @@ class _RoomManagementSection extends StatelessWidget {
   }
 }
 
+/// 最近追加した候補：見出し・一覧・コレ一覧導線を1セクションにまとめる。
+class _RecentCandidatesHomeSection extends StatelessWidget {
+  const _RecentCandidatesHomeSection({
+    required this.expanded,
+    required this.onToggle,
+    required this.candidates,
+    required this.onOpenCandidateTap,
+    required this.onOpenFullList,
+  });
+
+  final bool expanded;
+  final VoidCallback onToggle;
+  final List<RakutenManagedProduct> candidates;
+  final void Function(String productId) onOpenCandidateTap;
+  final VoidCallback onOpenFullList;
+
+  static const Duration _animDuration = Duration(milliseconds: 280);
+  static const Curve _animCurve = Curves.easeInOutCubic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.recentCandidatesSectionDecoration(),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onToggle,
+              splashColor: AppColors.accentPrimary.withValues(alpha: 0.09),
+              highlightColor: AppColors.accentPrimary.withValues(alpha: 0.05),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 14, 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.bookmark_added_outlined,
+                      size: 22,
+                      color: AppColors.accentPrimary.withValues(alpha: 0.9),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '最近追加した候補',
+                            style: _HomeUi.roomManagementSectionTitle(context),
+                          ),
+                          const SizedBox(height: _HomeUi.gapRecentTitleToLead),
+                          Text(
+                            '直近5件まで。行タップで一覧の該当へ。コレ済で消えます。',
+                            style: _HomeUi.roomManagementSectionLead(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      expanded
+                          ? Icons.keyboard_arrow_up_rounded
+                          : Icons.keyboard_arrow_down_rounded,
+                      color: AppColors.textSecondary,
+                      size: 22,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          AnimatedSize(
+            duration: _animDuration,
+            curve: _animCurve,
+            alignment: Alignment.topCenter,
+            child: expanded
+                ? Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      16,
+                      0,
+                      16,
+                      _HomeUi.gapRecentDetailBottom,
+                    ),
+                    child: Text(
+                      '直近の候補を最大5件表示。コレ済にすると消えます。行タップでコレ一覧の該当商品へ移動します。',
+                      style: _HomeUi.sectionBody(context),
+                    ),
+                  )
+                : const SizedBox(width: double.infinity),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Divider(
+              height: 1,
+              thickness: 1,
+              color: AppColors.divider.withValues(alpha: 0.5),
+            ),
+          ),
+          SizedBox(height: _HomeUi.gapRecentDividerToDeck),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              _HomeUi.paddingRecentSectionH,
+              0,
+              _HomeUi.paddingRecentSectionH,
+              _HomeUi.gapRecentDeckToFooter,
+            ),
+            child: DecoratedBox(
+              decoration: _HomeUi.roomTileDeckDecoration(),
+              child: Padding(
+                padding: const EdgeInsets.all(_HomeUi.paddingRecentListDeck),
+                child: _RecentCandidatesPanel(
+                  embedInUnifiedSection: true,
+                  candidates: candidates,
+                  onOpenCandidateTap: onOpenCandidateTap,
+                ),
+              ),
+            ),
+          ),
+          _HomeCollectionListLink(
+            embeddedInSection: true,
+            onPressed: onOpenFullList,
+          ),
+          SizedBox(height: _HomeUi.paddingRecentSectionBottom),
+        ],
+      ),
+    );
+  }
+}
+
 class _AboutAppExpandedBody extends StatelessWidget {
   const _AboutAppExpandedBody({required this.displayName});
 
@@ -806,12 +914,85 @@ class _FlowStepLine extends StatelessWidget {
 
 /// 下部のサブ導線：コレ一覧（ROOMコレタブと補完）。
 class _HomeCollectionListLink extends StatelessWidget {
-  const _HomeCollectionListLink({required this.onPressed});
+  const _HomeCollectionListLink({
+    required this.onPressed,
+    this.embeddedInSection = false,
+  });
 
   final VoidCallback onPressed;
 
+  /// true のときはセクション末尾のサブアクション（主要CTAと競合しない薄めの見た目）
+  final bool embeddedInSection;
+
   @override
   Widget build(BuildContext context) {
+    if (embeddedInSection) {
+      return Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          splashColor: AppColors.textPrimary.withValues(alpha: 0.06),
+          highlightColor: AppColors.textPrimary.withValues(alpha: 0.03),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.fromLTRB(16, 12, 14, 12),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: AppColors.divider.withValues(alpha: 0.52),
+                ),
+              ),
+              color: AppColors.surface.withValues(alpha: 0.38),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 1),
+                  child: Icon(
+                    Icons.playlist_add_check_outlined,
+                    size: 20,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'コレ一覧を開く',
+                        style:
+                            Theme.of(context).textTheme.labelLarge?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13.5,
+                                  color: AppColors.accentPrimary,
+                                  height: 1.2,
+                                ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        '候補とコレ済の全体を表示',
+                        style: _HomeUi.tapHint(context),
+                      ),
+                    ],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 4, top: 1),
+                  child: Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.textTertiary,
+                    size: 22,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return Material(
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
@@ -1158,18 +1339,28 @@ class _RoomMetricTile extends StatelessWidget {
 
 class _RecentCandidatesPanel extends StatelessWidget {
   const _RecentCandidatesPanel({
+    this.embedInUnifiedSection = false,
     required this.candidates,
     required this.onOpenCandidateTap,
   });
+
+  /// [_RecentCandidatesHomeSection] 内では外枠なし（親デッキが枠を持つ）
+  final bool embedInUnifiedSection;
 
   final List<RakutenManagedProduct> candidates;
   final void Function(String productId) onOpenCandidateTap;
 
   @override
   Widget build(BuildContext context) {
+    final tilePadding = embedInUnifiedSection
+        ? const EdgeInsets.fromLTRB(12, 10, 11, 10)
+        : const EdgeInsets.fromLTRB(14, 12, 12, 12);
+
     if (candidates.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+        padding: embedInUnifiedSection
+            ? const EdgeInsets.symmetric(vertical: 6, horizontal: 2)
+            : const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1187,6 +1378,32 @@ class _RecentCandidatesPanel extends StatelessWidget {
       );
     }
 
+    final list = Column(
+      children: [
+        for (int i = 0; i < candidates.length; i++) ...[
+          _RecentCandidateTile(
+            product: candidates[i],
+            contentPadding: tilePadding,
+            onTap: () => onOpenCandidateTap(candidates[i].productId),
+          ),
+          if (i < candidates.length - 1)
+            Divider(
+              height: 1,
+              thickness: 1,
+              indent: 72,
+              endIndent: 12,
+              color: AppColors.divider.withValues(
+                alpha: embedInUnifiedSection ? 0.48 : 0.55,
+              ),
+            ),
+        ],
+      ],
+    );
+
+    if (embedInUnifiedSection) {
+      return list;
+    }
+
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -1195,32 +1412,20 @@ class _RecentCandidatesPanel extends StatelessWidget {
           color: AppColors.divider.withValues(alpha: 0.88),
         ),
       ),
-      child: Column(
-        children: [
-          for (int i = 0; i < candidates.length; i++) ...[
-            _RecentCandidateTile(
-              product: candidates[i],
-              onTap: () => onOpenCandidateTap(candidates[i].productId),
-            ),
-            if (i < candidates.length - 1)
-              Divider(
-                height: 1,
-                thickness: 1,
-                indent: 72,
-                endIndent: 12,
-                color: AppColors.divider.withValues(alpha: 0.55),
-              ),
-          ],
-        ],
-      ),
+      child: list,
     );
   }
 }
 
 class _RecentCandidateTile extends StatelessWidget {
-  const _RecentCandidateTile({required this.product, required this.onTap});
+  const _RecentCandidateTile({
+    required this.product,
+    this.contentPadding = const EdgeInsets.fromLTRB(14, 12, 12, 12),
+    required this.onTap,
+  });
 
   final RakutenManagedProduct product;
+  final EdgeInsetsGeometry contentPadding;
   final VoidCallback onTap;
 
   @override
@@ -1232,7 +1437,7 @@ class _RecentCandidateTile extends StatelessWidget {
         splashColor: AppColors.textPrimary.withValues(alpha: 0.06),
         highlightColor: AppColors.textPrimary.withValues(alpha: 0.03),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(14, 12, 12, 12),
+          padding: contentPadding,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
