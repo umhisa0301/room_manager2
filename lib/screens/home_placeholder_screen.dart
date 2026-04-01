@@ -81,7 +81,7 @@ abstract final class _HomeUi {
   /// セクション見出しと折りたたみ要約の間
   static const double gapTitleToSummary = 5;
 
-  /// 見出し直下の一行リード（ROOM・最近候補・検索で共通）
+  /// 見出し直下の一行説明（楽天検索ブロック等）
   static const double gapHeaderTitleToLead = 4;
 
   /// ROOMコレ管理：展開説明の下余白
@@ -233,18 +233,6 @@ abstract final class _HomeUi {
   /// グループセクション内の展開説明（中身本文）
   static TextStyle sectionBodyGrouped(BuildContext context) {
     return sectionBody(context).copyWith(color: HomeScreenColors.groupedSectionBody);
-  }
-
-  /// 見出し直下の一行リード（全セクションで統一）
-  static TextStyle sectionHeaderLead(BuildContext context) {
-    final base = Theme.of(context).textTheme.labelSmall;
-    return (base ?? const TextStyle()).copyWith(
-      fontSize: 12,
-      fontWeight: FontWeight.w500,
-      height: 1.35,
-      letterSpacing: 0.02,
-      color: HomeScreenColors.leadOnSection,
-    );
   }
 
   /// セクション・カード見出し（何が見出しかを揃える）
@@ -771,19 +759,9 @@ class _RoomManagementSection extends StatelessWidget {
                       ),
                       SizedBox(width: _HomeUi.gapIconToTitle),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'ROOMコレ管理',
-                              style: _HomeUi.sectionTitleAccent(context),
-                            ),
-                            SizedBox(height: _HomeUi.gapHeaderTitleToLead),
-                            Text(
-                              '端末に保存した一覧の集計です。下のカードで一覧・活動へ。',
-                              style: _HomeUi.sectionHeaderLead(context),
-                            ),
-                          ],
+                        child: Text(
+                          'ROOMコレ管理',
+                          style: _HomeUi.sectionTitleAccent(context),
                         ),
                       ),
                       Icon(
@@ -811,7 +789,7 @@ class _RoomManagementSection extends StatelessWidget {
                       bottom: _HomeUi.gapRoomDetailBottom,
                     ),
                     child: Text(
-                      '下の数は端末に保存した一覧の集計です。カードをタップで一覧・活動へ移動します。',
+                      '各カードの数値は端末に保存した一覧の集計です。タップで一覧・活動へ移動します。',
                       style: _HomeUi.sectionBodyGrouped(context),
                     ),
                   )
@@ -899,19 +877,9 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
                       ),
                       SizedBox(width: _HomeUi.gapIconToTitle),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '最近追加した候補',
-                              style: _HomeUi.sectionTitleAccent(context),
-                            ),
-                            SizedBox(height: _HomeUi.gapHeaderTitleToLead),
-                            Text(
-                              '直近5件まで。行タップで一覧の該当へ。コレ済で消えます。',
-                              style: _HomeUi.sectionHeaderLead(context),
-                            ),
-                          ],
+                        child: Text(
+                          '最近追加した候補',
+                          style: _HomeUi.sectionTitleAccent(context),
                         ),
                       ),
                       Icon(
