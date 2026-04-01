@@ -65,6 +65,12 @@ abstract final class _HomeUi {
   /// コンパクトな縦の詰まり（チップ上など）
   static const double gapTight = 6;
 
+  /// 楽天で検索ブロック：見出しとリードの間
+  static const double gapSearchTitleToLead = 6;
+
+  /// 楽天で検索ブロック：説明文とボタンの間
+  static const double gapSearchLeadToButton = 14;
+
   /// 標準リストの下余白（ナビバー押さえ以外）
   static const double listBottomExtra = 16;
 
@@ -85,6 +91,30 @@ abstract final class _HomeUi {
         color: AppColors.divider.withValues(alpha: 0.92),
       ),
       boxShadow: cardShadow,
+    );
+  }
+
+  /// 楽天で検索：説明＋CTA を1ブロックに（先頭単独ボタンの唐突感を抑える）
+  static BoxDecoration searchEntrySectionDecoration() {
+    return BoxDecoration(
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+      border: Border.all(
+        color: AppColors.accentPrimary.withValues(alpha: 0.18),
+      ),
+      boxShadow: cardShadow,
+    );
+  }
+
+  /// 楽天で検索ブロックの見出し（セクションラベル：主ボタンと差別化）
+  static TextStyle searchEntryHeading(BuildContext context) {
+    final base = Theme.of(context).textTheme.titleSmall;
+    return (base ?? const TextStyle()).copyWith(
+      fontSize: 15,
+      fontWeight: FontWeight.w800,
+      height: 1.25,
+      letterSpacing: -0.12,
+      color: AppColors.textPrimary,
     );
   }
 
@@ -332,19 +362,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                         bottomInset + navBarReserve + _HomeUi.listBottomExtra,
                       ),
                       children: [
-                        HomePrimaryActionButton(
-                          emphasis: HomePrimaryActionEmphasis.hero,
-                          icon: Icons.travel_explore_rounded,
-                          label: '楽天で検索',
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const RakutenSearchScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: _HomeUi.gapSection),
                         _HomeExpandableSection(
                           expanded: _aboutExpanded,
                           onToggle: () {
@@ -358,6 +375,16 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                           expandedChild: _AboutAppExpandedBody(
                             displayName: displayName,
                           ),
+                        ),
+                        const SizedBox(height: _HomeUi.gapSection),
+                        _HomeSearchEntrySection(
+                          onSearch: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const RakutenSearchScreen(),
+                              ),
+                            );
+                          },
                         ),
                         const SizedBox(height: _HomeUi.gapSection),
                         _TodayRecommendationsEntryCard(
@@ -518,6 +545,61 @@ class _HomeExpandableSection extends StatelessWidget {
                     child: expandedChild,
                   )
                 : const SizedBox(width: double.infinity),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 「このアプリについて」の直後：楽天検索を**文脈付きブロック**として提示（ステップ1）。
+class _HomeSearchEntrySection extends StatelessWidget {
+  const _HomeSearchEntrySection({required this.onSearch});
+
+  final VoidCallback onSearch;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.searchEntrySectionDecoration(),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.travel_explore_rounded,
+                size: 22,
+                color: AppColors.accentPrimary.withValues(alpha: 0.9),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '楽天で商品を探す',
+                      style: _HomeUi.searchEntryHeading(context),
+                    ),
+                    const SizedBox(height: _HomeUi.gapSearchTitleToLead),
+                    Text(
+                      '検索して気に入った商品をコレ候補に登録。ROOMコレの第一歩です。',
+                      style: _HomeUi.sectionBody(context),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: _HomeUi.gapSearchLeadToButton),
+          HomePrimaryActionButton(
+            emphasis: HomePrimaryActionEmphasis.hero,
+            icon: Icons.travel_explore_rounded,
+            label: '楽天で検索',
+            onPressed: onSearch,
           ),
         ],
       ),
