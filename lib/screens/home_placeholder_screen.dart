@@ -37,11 +37,26 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     });
   }
 
-  void _openRoomList(BuildContext context, {int initialTabIndex = 0}) {
+  void _openRoomList(
+    BuildContext context, {
+    int initialTabIndex = 0,
+    DateTime? doneFilterLocalDay,
+  }) {
     final idx = initialTabIndex.clamp(0, 1);
+    DateTime? dayNorm;
+    if (doneFilterLocalDay != null) {
+      dayNorm = DateTime(
+        doneFilterLocalDay.year,
+        doneFilterLocalDay.month,
+        doneFilterLocalDay.day,
+      );
+    }
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => ProductsPlaceholderScreen(initialTabIndex: idx),
+        builder: (_) => ProductsPlaceholderScreen(
+          initialTabIndex: idx,
+          initialDoneFilterLocalDay: dayNorm,
+        ),
       ),
     );
   }
@@ -104,6 +119,11 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                         ).take(5).toList();
                     final bottomInset = MediaQuery.paddingOf(context).bottom;
                     const navBarReserve = 52.0;
+                    final todayLocalDay = DateTime(
+                      now.year,
+                      now.month,
+                      now.day,
+                    );
 
                     return ListView(
                       padding: EdgeInsets.fromLTRB(
@@ -179,7 +199,11 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                               _openRoomList(context, initialTabIndex: 0),
                           onDoneTap: () =>
                               _openRoomList(context, initialTabIndex: 1),
-                          onTodayTap: () => _openActivity(context),
+                          onTodayTap: () => _openRoomList(
+                            context,
+                            initialTabIndex: 1,
+                            doneFilterLocalDay: todayLocalDay,
+                          ),
                           onLastCollectTap: () => _openActivity(context),
                         ),
                         const SizedBox(height: AppDimensions.spacingLg),
@@ -606,7 +630,7 @@ class _TodayRecommendationsEntryCard extends StatelessWidget {
   }
 }
 
-/// ② 4 枚統一のコンパクトメトリクス（2×2、タップで遷移）。
+/// ② 4 枚統一のメトリクス（2×2、タップで遷移）。値・補足は改行で区切る。
 class _RoomStatsCardGrid extends StatelessWidget {
   const _RoomStatsCardGrid({
     required this.candidateTotal,
@@ -641,32 +665,32 @@ class _RoomStatsCardGrid extends StatelessWidget {
               Expanded(
                 child: _RoomMetricTile(
                   title: 'コレ候補',
-                  valueText: '$candidateTotal',
-                  caption: '一覧へ',
+                  valueMain: '$candidateTotal件',
+                  caption: '(タップで一覧)',
                   icon: Icons.bookmark_outline_rounded,
                   accent: const Color(0xFF1565C0),
                   iconBackground: const Color(0xFFE3F2FD),
-                  emphasizeValue: true,
+                  valueProminent: true,
                   onTap: onCandidateTap,
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Expanded(
                 child: _RoomMetricTile(
                   title: 'コレ済',
-                  valueText: '$doneTotal',
-                  caption: '一覧へ',
+                  valueMain: '$doneTotal件',
+                  caption: '(タップで一覧)',
                   icon: Icons.task_alt_rounded,
                   accent: const Color(0xFF2E7D32),
                   iconBackground: const Color(0xFFE8F5E9),
-                  emphasizeValue: true,
+                  valueProminent: true,
                   onTap: onDoneTap,
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 8),
         IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -674,25 +698,25 @@ class _RoomStatsCardGrid extends StatelessWidget {
               Expanded(
                 child: _RoomMetricTile(
                   title: '今日のコレ',
-                  valueText: '$todayDoneCount',
-                  caption: '活動へ',
+                  valueMain: '$todayDoneCount件',
+                  caption: '(タップで一覧)',
                   icon: Icons.today_rounded,
                   accent: AppColors.accentPrimary,
                   iconBackground: AppColors.accentLightest,
-                  emphasizeValue: true,
+                  valueProminent: true,
                   onTap: onTodayTap,
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Expanded(
                 child: _RoomMetricTile(
-                  title: '前回コレ',
-                  valueText: lastPrimary,
-                  caption: '活動へ',
+                  title: '前回コレ日時',
+                  valueMain: lastPrimary,
+                  caption: '(タップすると活動)',
                   icon: Icons.history_rounded,
                   accent: const Color(0xFF5C6BC0),
                   iconBackground: const Color(0xFFE8EAF6),
-                  emphasizeValue: false,
+                  valueProminent: false,
                   onTap: onLastCollectTap,
                 ),
               ),
@@ -712,22 +736,22 @@ class _RoomStatsCardGrid extends StatelessWidget {
 class _RoomMetricTile extends StatelessWidget {
   const _RoomMetricTile({
     required this.title,
-    required this.valueText,
+    required this.valueMain,
     required this.caption,
     required this.icon,
     required this.accent,
     required this.iconBackground,
-    required this.emphasizeValue,
+    required this.valueProminent,
     required this.onTap,
   });
 
   final String title;
-  final String valueText;
+  final String valueMain;
   final String caption;
   final IconData icon;
   final Color accent;
   final Color iconBackground;
-  final bool emphasizeValue;
+  final bool valueProminent;
   final VoidCallback onTap;
 
   @override
@@ -737,8 +761,9 @@ class _RoomMetricTile extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        splashColor: AppColors.textPrimary.withValues(alpha: 0.06),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(10, 10, 8, 10),
+          padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -746,70 +771,67 @@ class _RoomMetricTile extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 5,
-                offset: const Offset(0, 2),
+                blurRadius: 4,
+                offset: const Offset(0, 1),
               ),
             ],
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       color: iconBackground,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(icon, color: accent, size: 18),
+                    child: Icon(icon, color: accent, size: 17),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       title,
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         color: accent,
                         fontWeight: FontWeight.w800,
+                        height: 1.2,
                       ),
                     ),
                   ),
-                  Icon(
-                    Icons.chevron_right_rounded,
-                    size: 20,
-                    color: AppColors.textTertiary,
-                  ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
-                valueText,
-                textAlign: TextAlign.right,
-                maxLines: emphasizeValue ? 1 : 2,
+                valueMain,
+                textAlign: TextAlign.left,
+                maxLines: valueProminent ? 1 : 2,
                 overflow: TextOverflow.ellipsis,
-                style: emphasizeValue
-                    ? Theme.of(context).textTheme.headlineMedium?.copyWith(
+                style: valueProminent
+                    ? Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w800,
                         color: AppColors.textPrimary,
-                        height: 1.05,
-                        fontSize: 30,
+                        height: 1.1,
+                        fontSize: 26,
+                        letterSpacing: -0.5,
                       )
                     : Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w800,
                         color: AppColors.textPrimary,
-                        height: 1.15,
-                        fontSize: 18,
+                        height: 1.2,
+                        fontSize: 17,
                       ),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 4),
               Text(
                 caption,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.textTertiary,
-                  height: 1.35,
+                  height: 1.3,
                 ),
               ),
             ],

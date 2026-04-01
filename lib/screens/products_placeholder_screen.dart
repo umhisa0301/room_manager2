@@ -24,12 +24,33 @@ List<RakutenManagedProduct> _filterManagedProductsByQuery(
   }).toList();
 }
 
+/// [anchor] のローカル暦日と同一日の [doneAt] をもつコレ済のみ。
+List<RakutenManagedProduct> _filterDoneOnLocalCalendarDay(
+  List<RakutenManagedProduct> items,
+  DateTime anchor,
+) {
+  final target = DateTime(anchor.year, anchor.month, anchor.day);
+  return items.where((e) {
+    final d = e.doneAt;
+    if (d == null) return false;
+    final localDay = DateTime(d.year, d.month, d.day);
+    return localDay == target;
+  }).toList();
+}
+
 /// ROOMコレ管理画面。楽天検索で登録したコレ候補・コレ済をタブで表示する。
 class ProductsPlaceholderScreen extends StatefulWidget {
-  const ProductsPlaceholderScreen({super.key, this.initialTabIndex = 0});
+  const ProductsPlaceholderScreen({
+    super.key,
+    this.initialTabIndex = 0,
+    this.initialDoneFilterLocalDay,
+  });
 
   /// 0: コレ候補、1: コレ済
   final int initialTabIndex;
+
+  /// 指定したローカル暦日に [doneAt] があるコレ済のみ表示（コレ済タブ向け）。
+  final DateTime? initialDoneFilterLocalDay;
 
   @override
   State<ProductsPlaceholderScreen> createState() =>
@@ -44,11 +65,16 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   bool _continuousCollectMode = false;
   bool _awaitingContinuousResume = false;
   String _lastCollectedName = '';
+  DateTime? _doneLocalDayFilter;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    final d = widget.initialDoneFilterLocalDay;
+    if (d != null) {
+      _doneLocalDayFilter = DateTime(d.year, d.month, d.day);
+    }
     final initialIndex = widget.initialTabIndex.clamp(0, 1);
     _tabController = TabController(
       length: 2,
@@ -317,11 +343,17 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     variant: RakutenManagedProductCardVariant.done,
                     filterQuery: _searchQuery,
                     continuousCollectMode: false,
+                    doneAtLocalDayFilter: _doneLocalDayFilter,
+                    onClearDoneDayFilter: _doneLocalDayFilter == null
+                        ? null
+                        : () => setState(() => _doneLocalDayFilter = null),
                     emptyTitle: 'コレ済の商品はまだありません',
                     emptySubtitle:
                         'コレ候補一覧で ROOM の URL を開き「コレする」を押すと、'
                         'このアプリの一覧ではコレ済に移動します。',
                     emptyHint: '※ ROOM への実際の投稿完了までは、このアプリでは確認できません。',
+                    dayFilterEmptyTitle: 'この日にコレした商品はありません',
+                    dayFilterEmptySubtitle: '表示は端末の日付（このアプリでコレ済にした日時）に基づきます。',
                     accentColor: RoomListAccent.done,
                   ),
                 ],
@@ -380,9 +412,13 @@ class _RoomManagedProductListTab extends StatelessWidget {
     this.continuousCollectMode = false,
     this.onContinuousModeChanged,
     this.onCollectPressed,
+    this.doneAtLocalDayFilter,
+    this.onClearDoneDayFilter,
     required this.emptyTitle,
     required this.emptySubtitle,
     required this.emptyHint,
+    this.dayFilterEmptyTitle,
+    this.dayFilterEmptySubtitle,
     required this.accentColor,
   });
 
@@ -396,9 +432,13 @@ class _RoomManagedProductListTab extends StatelessWidget {
     RakutenManagedProduct product,
   )?
   onCollectPressed;
+  final DateTime? doneAtLocalDayFilter;
+  final VoidCallback? onClearDoneDayFilter;
   final String emptyTitle;
   final String emptySubtitle;
   final String emptyHint;
+  final String? dayFilterEmptyTitle;
+  final String? dayFilterEmptySubtitle;
   final Color accentColor;
 
   @override
@@ -423,7 +463,12 @@ class _RoomManagedProductListTab extends StatelessWidget {
         }
 
         final baseList = provider.sortedItemsForStatus(status);
-        final list = _filterManagedProductsByQuery(baseList, filterQuery);
+        final scoped =
+            status == RakutenManagedProductStatus.done &&
+                doneAtLocalDayFilter != null
+            ? _filterDoneOnLocalCalendarDay(baseList, doneAtLocalDayFilter!)
+            : baseList;
+        final list = _filterManagedProductsByQuery(scoped, filterQuery);
 
         if (baseList.isEmpty) {
           return _RoomCollectionEmptyState(
@@ -434,9 +479,28 @@ class _RoomManagedProductListTab extends StatelessWidget {
           );
         }
 
+        if (scoped.isEmpty &&
+            doneAtLocalDayFilter != null &&
+            dayFilterEmptyTitle != null &&
+            dayFilterEmptySubtitle != null) {
+          return _RoomCollectionEmptyState(
+            title: dayFilterEmptyTitle!,
+            subtitle: dayFilterEmptySubtitle!,
+            hint: '日付の絞り込みを解除すると、コレ済の一覧がすべて表示されます。',
+            accentColor: accentColor,
+            actionLabel: onClearDoneDayFilter != null ? 'すべて表示' : null,
+            onAction: onClearDoneDayFilter,
+          );
+        }
+
         if (list.isEmpty) {
           return _RoomCollectionSearchEmptyState(accentColor: accentColor);
         }
+
+        final showDayBanner =
+            status == RakutenManagedProductStatus.done &&
+            doneAtLocalDayFilter != null &&
+            onClearDoneDayFilter != null;
 
         return RefreshIndicator(
           onRefresh: () =>
@@ -450,6 +514,13 @@ class _RoomManagedProductListTab extends StatelessWidget {
               24,
             ),
             children: [
+              if (showDayBanner) ...[
+                _DoneDayFilterBanner(
+                  filterDay: doneAtLocalDayFilter!,
+                  onClear: onClearDoneDayFilter!,
+                ),
+                const SizedBox(height: 10),
+              ],
               if (status == RakutenManagedProductStatus.candidate)
                 _ContinuousCollectModePanel(
                   enabled: continuousCollectMode,
@@ -477,6 +548,53 @@ class _RoomManagedProductListTab extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _DoneDayFilterBanner extends StatelessWidget {
+  const _DoneDayFilterBanner({required this.filterDay, required this.onClear});
+
+  final DateTime filterDay;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.surfaceVariant.withValues(alpha: 0.65),
+      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Row(
+          children: [
+            Icon(
+              Icons.calendar_today_rounded,
+              size: 18,
+              color: AppColors.accentPrimary,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                '本日（${filterDay.month}/${filterDay.day}）コレした分のみ表示中',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                  height: 1.3,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: onClear,
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: const Text('すべて表示'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -620,12 +738,16 @@ class _RoomCollectionEmptyState extends StatelessWidget {
     required this.subtitle,
     required this.hint,
     required this.accentColor,
+    this.actionLabel,
+    this.onAction,
   });
 
   final String title;
   final String subtitle;
   final String hint;
   final Color accentColor;
+  final String? actionLabel;
+  final VoidCallback? onAction;
 
   @override
   Widget build(BuildContext context) {
@@ -663,15 +785,21 @@ class _RoomCollectionEmptyState extends StatelessWidget {
                       height: 1.45,
                     ),
                   ),
-                  const SizedBox(height: 14),
-                  Text(
-                    hint,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textTertiary,
-                      height: 1.35,
+                  if (hint.isNotEmpty) ...[
+                    const SizedBox(height: 14),
+                    Text(
+                      hint,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textTertiary,
+                        height: 1.35,
+                      ),
                     ),
-                  ),
+                  ],
+                  if (onAction != null && actionLabel != null) ...[
+                    const SizedBox(height: 16),
+                    TextButton(onPressed: onAction, child: Text(actionLabel!)),
+                  ],
                 ],
               ),
             ),
