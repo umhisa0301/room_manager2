@@ -14,7 +14,7 @@ import 'app_colors.dart';
 /// 5. [roomContentWellFill] … 見出し直下〜デッキまでの「中身ゾーン」
 /// 6. [standaloneCardFill] … 楽天検索など単独カード
 /// 7. [deckFill] / [deckOutline] … デッキ枠
-/// 8. [metricTileFill] … タイル面（読みやすさ優先で白基調）
+/// 8. [roomMetricTileFill] … ROOM メトリクス4枚の共通面／[metricTileFill] は他カード用
 /// 9. テキスト … [accentSectionHeading] / [leadOnSection] / [groupedSectionBody] / …
 /// 10. [subActionRowFill] … サブ導線行
 abstract final class HomeScreenColors {
@@ -75,6 +75,66 @@ abstract final class HomeScreenColors {
   // --- 4. メトリクス1枚・リスト行のベース面 ---
   static Color get metricTileFill => AppColors.surface;
   static Color get metricTileOutline => AppColors.divider.withValues(alpha: 0.92);
+
+  /// ROOM 集計4タイル：共通のカード面（純白よりほんの少しトーンを載せデッキから分離）
+  static Color get roomMetricTileFill => Color.alphaBlend(
+        AppColors.accentLightest.withValues(alpha: 0.48),
+        Color.alphaBlend(
+          AppColors.surfaceVariant.withValues(alpha: 0.22),
+          AppColors.surface,
+        ),
+      );
+
+  /// ROOM メトリクス：縁をわずかに強め、背景に埋もれない
+  static Color get roomMetricTileBorder => Color.alphaBlend(
+        AppColors.textPrimary.withValues(alpha: 0.07),
+        AppColors.divider.withValues(alpha: 0.78),
+      );
+
+  /// メトリクス行見出し（4枚で同色・役割はアイコンバッジで）
+  static Color get metricTileTitleColor => const Color(0xFF3A3A40);
+
+  /// メトリクス主数値（文字が沈まないよう一段濃く）
+  static Color get metricTileValueColor => const Color(0xFF101012);
+
+  /// メトリクス補足（タップ案内：主張しすぎない）
+  static Color get metricTileCaptionColor => const Color(0xFF92929A);
+
+  // --- ROOM メトリクス：役割別アクセント（アイコン＋バッジ地面のみ）---
+  /// コレ候補：情報系（ブランドから逸れすぎないスレートブルー）
+  static Color get metricRoleCandidateIcon => const Color(0xFF4A6B8C);
+  static Color get metricRoleCandidateIconBg => const Color(0xFFE8EEF4);
+
+  /// コレ済：完了系（ブランド success をわずかに明るくしてキツさを抑える）
+  static Color get metricRoleDoneIcon => Color.alphaBlend(
+        Colors.white.withValues(alpha: 0.14),
+        AppColors.success,
+      );
+  static Color get metricRoleDoneIconBg => Color.alphaBlend(
+        AppColors.success.withValues(alpha: 0.13),
+        AppColors.surface,
+      );
+
+  /// 今日のコレ：当日アクション（ブランドアクセント）
+  static Color get metricRoleTodayIcon =>
+      AppColors.accentPrimary.withValues(alpha: 0.95);
+  static Color get metricRoleTodayIconBg => Color.alphaBlend(
+        AppColors.accentLight.withValues(alpha: 0.85),
+        AppColors.surface,
+      );
+
+  /// 前回コレ日時：中立・メタ情報
+  static Color get metricRoleHistoryIcon => const Color(0xFF6C6770);
+  static Color get metricRoleHistoryIconBg => const Color(0xFFECECEF);
+
+  /// ROOM メトリクス（デッキ内）：ごく弱い影で面の存在感を補助
+  static List<BoxShadow> get roomMetricTileShadow => [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.042),
+          offset: const Offset(0, 1),
+          blurRadius: 6,
+        ),
+      ];
 
   // --- 境界 ---
   static Color get sectionOutlineNeutral =>

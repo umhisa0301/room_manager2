@@ -1387,6 +1387,9 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
   }
 }
 
+/// ROOM メトリクス4枚の役割（色は [HomeScreenColors] で統一ベース＋バッジアクセント）
+enum _RoomMetricTileRole { candidate, done, today, history }
+
 /// ② 4 枚統一のメトリクス（2×2、タップで遷移）。値・補足は改行で区切る。
 class _RoomStatsCardGrid extends StatelessWidget {
   const _RoomStatsCardGrid({
@@ -1427,12 +1430,11 @@ class _RoomStatsCardGrid extends StatelessWidget {
             children: [
               Expanded(
                 child: _RoomMetricTile(
+                  role: _RoomMetricTileRole.candidate,
                   title: 'コレ候補',
                   valueMain: '$candidateTotal件',
                   caption: 'タップで一覧を開く',
                   icon: Icons.bookmark_outline_rounded,
-                  accent: const Color(0xFF1565C0),
-                  iconBackground: const Color(0xFFE3F2FD),
                   valueProminent: true,
                   compactDeck: deck,
                   onTap: onCandidateTap,
@@ -1441,12 +1443,11 @@ class _RoomStatsCardGrid extends StatelessWidget {
               SizedBox(width: g),
               Expanded(
                 child: _RoomMetricTile(
+                  role: _RoomMetricTileRole.done,
                   title: 'コレ済',
                   valueMain: '$doneTotal件',
                   caption: 'タップで一覧を開く',
                   icon: Icons.task_alt_rounded,
-                  accent: const Color(0xFF2E7D32),
-                  iconBackground: const Color(0xFFE8F5E9),
                   valueProminent: true,
                   compactDeck: deck,
                   onTap: onDoneTap,
@@ -1462,12 +1463,11 @@ class _RoomStatsCardGrid extends StatelessWidget {
             children: [
               Expanded(
                 child: _RoomMetricTile(
+                  role: _RoomMetricTileRole.today,
                   title: '今日のコレ',
                   valueMain: '$todayDoneCount件',
                   caption: 'タップで一覧を開く',
                   icon: Icons.today_rounded,
-                  accent: AppColors.accentPrimary,
-                  iconBackground: AppColors.accentLightest,
                   valueProminent: true,
                   compactDeck: deck,
                   onTap: onTodayTap,
@@ -1476,12 +1476,11 @@ class _RoomStatsCardGrid extends StatelessWidget {
               SizedBox(width: g),
               Expanded(
                 child: _RoomMetricTile(
+                  role: _RoomMetricTileRole.history,
                   title: '前回コレ日時',
                   valueMain: lastPrimary,
                   caption: 'タップで活動を開く',
                   icon: Icons.history_rounded,
-                  accent: const Color(0xFF5C6BC0),
-                  iconBackground: const Color(0xFFE8EAF6),
                   valueProminent: false,
                   compactDeck: deck,
                   onTap: onLastCollectTap,
@@ -1502,27 +1501,50 @@ class _RoomStatsCardGrid extends StatelessWidget {
 
 class _RoomMetricTile extends StatelessWidget {
   const _RoomMetricTile({
+    required this.role,
     required this.title,
     required this.valueMain,
     required this.caption,
     required this.icon,
-    required this.accent,
-    required this.iconBackground,
     required this.valueProminent,
     this.compactDeck = false,
     required this.onTap,
   });
 
+  final _RoomMetricTileRole role;
   final String title;
   final String valueMain;
   final String caption;
   final IconData icon;
-  final Color accent;
-  final Color iconBackground;
   final bool valueProminent;
   /// ROOM セクション内デッキ用：角丸・余白・キャプション行を揃える
   final bool compactDeck;
   final VoidCallback onTap;
+
+  (Color iconFg, Color iconBg) _roleBadgeColors() {
+    switch (role) {
+      case _RoomMetricTileRole.candidate:
+        return (
+          HomeScreenColors.metricRoleCandidateIcon,
+          HomeScreenColors.metricRoleCandidateIconBg,
+        );
+      case _RoomMetricTileRole.done:
+        return (
+          HomeScreenColors.metricRoleDoneIcon,
+          HomeScreenColors.metricRoleDoneIconBg,
+        );
+      case _RoomMetricTileRole.today:
+        return (
+          HomeScreenColors.metricRoleTodayIcon,
+          HomeScreenColors.metricRoleTodayIconBg,
+        );
+      case _RoomMetricTileRole.history:
+        return (
+          HomeScreenColors.metricRoleHistoryIcon,
+          HomeScreenColors.metricRoleHistoryIconBg,
+        );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1531,9 +1553,10 @@ class _RoomMetricTile extends StatelessWidget {
         ? const EdgeInsets.symmetric(horizontal: 7, vertical: 7)
         : const EdgeInsets.fromLTRB(11, 9, 11, 9);
     final titleSize = compactDeck ? 12.5 : 13.0;
-    final valueLarge = compactDeck ? 23.0 : 25.0;
-    final valueSmall = compactDeck ? 15.5 : 16.0;
+    final valueLarge = compactDeck ? 24.0 : 26.0;
+    final valueSmall = compactDeck ? 16.0 : 16.5;
     final captionMaxLines = compactDeck ? 1 : 2;
+    final (accent, iconBackground) = _roleBadgeColors();
 
     return Material(
       color: Colors.transparent,
@@ -1544,11 +1567,12 @@ class _RoomMetricTile extends StatelessWidget {
         child: Container(
           padding: pad,
           decoration: BoxDecoration(
-            color: HomeScreenColors.metricTileFill,
+            color: HomeScreenColors.roomMetricTileFill,
             borderRadius: BorderRadius.circular(radius),
             border: Border.all(
-              color: HomeScreenColors.metricTileOutline,
+              color: HomeScreenColors.roomMetricTileBorder,
             ),
+            boxShadow: compactDeck ? HomeScreenColors.roomMetricTileShadow : null,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1571,10 +1595,11 @@ class _RoomMetricTile extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: accent,
-                            fontWeight: FontWeight.w800,
+                            color: HomeScreenColors.metricTileTitleColor,
+                            fontWeight: FontWeight.w700,
                             height: 1.12,
                             fontSize: titleSize,
+                            letterSpacing: -0.02,
                           ),
                     ),
                   ),
@@ -1589,16 +1614,17 @@ class _RoomMetricTile extends StatelessWidget {
                 style: valueProminent
                     ? Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.w800,
-                          color: AppColors.textPrimary,
-                          height: 1.04,
+                          color: HomeScreenColors.metricTileValueColor,
+                          height: 1.02,
                           fontSize: valueLarge,
-                          letterSpacing: -0.45,
+                          letterSpacing: -0.55,
                         )
                     : Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w800,
-                          color: AppColors.textPrimary,
-                          height: 1.14,
+                          color: HomeScreenColors.metricTileValueColor,
+                          height: 1.12,
                           fontSize: valueSmall,
+                          letterSpacing: -0.25,
                         ),
               ),
               SizedBox(height: compactDeck ? 1 : 4),
@@ -1606,7 +1632,13 @@ class _RoomMetricTile extends StatelessWidget {
                 caption,
                 maxLines: captionMaxLines,
                 overflow: TextOverflow.ellipsis,
-                style: _HomeUi.tapHint(context),
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      fontSize: compactDeck ? 10.5 : 11,
+                      fontWeight: FontWeight.w500,
+                      height: 1.28,
+                      color: HomeScreenColors.metricTileCaptionColor,
+                      letterSpacing: 0.01,
+                    ),
               ),
             ],
           ),
