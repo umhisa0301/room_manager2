@@ -71,9 +71,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('ホーム'),
-      ),
       body: SafeArea(
         child: Consumer3<RakutenManagedProductProvider, UserProfileProvider,
             TodayRecommendationProvider>(
@@ -99,17 +96,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                 90,
               ),
               children: [
-                _MainSearchSection(
-                  displayName: displayName,
-                  expanded: _mainHelpExpanded,
-                  onToggleExpanded: () {
-                    setState(() {
-                      _mainHelpExpanded = !_mainHelpExpanded;
-                    });
-                  },
-                ),
-                const SizedBox(height: AppDimensions.spacingMd),
                 HomePrimaryActionButton(
+                  emphasis: HomePrimaryActionEmphasis.hero,
                   icon: Icons.travel_explore_rounded,
                   label: '楽天で検索',
                   onPressed: () {
@@ -120,19 +108,17 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     );
                   },
                 ),
-                const SizedBox(height: AppDimensions.spacingSm),
-                HomePrimaryActionButton(
-                  icon: Icons.collections_bookmark_rounded,
-                  label: 'コレ一覧を開く',
-                  onPressed: () => _openRoomList(context),
+                const SizedBox(height: AppDimensions.spacingMd),
+                _MainFlowHintSection(
+                  displayName: displayName,
+                  expanded: _mainHelpExpanded,
+                  onToggleExpanded: () {
+                    setState(() {
+                      _mainHelpExpanded = !_mainHelpExpanded;
+                    });
+                  },
                 ),
-                const SizedBox(height: AppDimensions.spacingSm),
-                HomePrimaryActionButton(
-                  icon: Icons.auto_awesome_rounded,
-                  label: '今日のおすすめコレ候補',
-                  onPressed: () => _openTodayRecommendations(context),
-                ),
-                const SizedBox(height: AppDimensions.spacingSm),
+                const SizedBox(height: AppDimensions.spacingMd),
                 _TodayRecommendationsEntryCard(
                   totalCount: recProvider.totalCount,
                   pendingCount: recProvider.pendingCount,
@@ -142,7 +128,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                 const SizedBox(height: AppDimensions.spacingLg),
                 _SectionIntro(
                   title: 'ROOMコレ管理',
-                  body: 'コレ候補・コレ済をまとめて管理します。数値は端末に保存された一覧から集計しています。下のカードをタップすると該当画面へ進みます。',
+                  body: null,
                 ),
                 const SizedBox(height: AppDimensions.spacingSm),
                 _RoomStatsCardGrid(
@@ -157,15 +143,19 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                 ),
                 const SizedBox(height: AppDimensions.spacingLg),
                 _SectionIntro(
-                  title: '最近候補に追加した商品',
-                  body:
-                      '直近で候補登録した商品です。まだコレしていない候補だけが表示され、コレ済になるとここから外れます。',
+                  title: '最近追加した候補',
+                  body: 'コレ済になるとここから外れます。',
                 ),
                 const SizedBox(height: AppDimensions.spacingSm),
                 _RecentCandidatesPanel(
                   candidates: recentCandidates,
                   onOpenList: () => _openRoomList(context),
                 ),
+                const SizedBox(height: AppDimensions.spacingLg),
+                _HomeCollectionListLink(
+                  onPressed: () => _openRoomList(context),
+                ),
+                const SizedBox(height: AppDimensions.spacingMd),
               ],
             );
           },
@@ -175,8 +165,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   }
 }
 
-class _MainSearchSection extends StatelessWidget {
-  const _MainSearchSection({
+/// 折りたたみ式の「次に何をするか」ガイド（初期は閉じ、展開時のみ詳細）。
+class _MainFlowHintSection extends StatelessWidget {
+  const _MainFlowHintSection({
     required this.displayName,
     required this.expanded,
     required this.onToggleExpanded,
@@ -215,24 +206,6 @@ class _MainSearchSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (displayName != null) ...[
-            Text(
-              'ようこそ、$displayNameさん',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w800,
-                  ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              '$displayNameさんのROOM管理をサポートします。',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.35,
-                  ),
-            ),
-            const SizedBox(height: 10),
-          ],
           InkWell(
             onTap: onToggleExpanded,
             borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -240,14 +213,14 @@ class _MainSearchSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.info_outline_rounded,
+                  Icons.route_rounded,
                   size: 22,
                   color: AppColors.accentPrimary,
                 ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'このアプリについて',
+                    '使い方（3ステップ）',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.w800,
@@ -264,24 +237,44 @@ class _MainSearchSection extends StatelessWidget {
             ),
           ),
           if (expanded) ...[
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Text(
-              '楽天ROOMの「コレ」候補をこのアプリで集めておき、\nあとからコレ済まで整理しやすくするための補助アプリです。',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textPrimary,
-                    height: 1.45,
+              '商品を探す → 候補に追加 → ROOMでコレ',
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w600,
+                    height: 1.35,
                   ),
             ),
+            const SizedBox(height: 12),
+            if (displayName != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  '$displayNameさん、まずは検索から',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w600,
+                        height: 1.35,
+                      ),
+                ),
+              ),
+            _FlowStepLine(
+              number: '1',
+              title: '商品を探す',
+              subtitle: '上の「楽天で検索」から探します。',
+            ),
             const SizedBox(height: 8),
-            Text(
-              '基本の流れは次の3ステップです。\n'
-              '1. 「楽天で検索」で商品を探してコレ候補に追加\n'
-              '2. 「コレ一覧」で URL を取得して ROOM でコレする\n'
-              '3. 下のカードで候補数やコレ済の状況を確認（タップで画面移動）',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.5,
-                  ),
+            _FlowStepLine(
+              number: '2',
+              title: '候補に追加',
+              subtitle: '気になる商品をコレ候補として保存します。',
+            ),
+            const SizedBox(height: 8),
+            _FlowStepLine(
+              number: '3',
+              title: 'ROOMでコレ',
+              subtitle: 'コレ一覧でURLを開き、ROOMアプリでコレします。',
             ),
           ],
         ],
@@ -290,11 +283,72 @@ class _MainSearchSection extends StatelessWidget {
   }
 }
 
+class _FlowStepLine extends StatelessWidget {
+  const _FlowStepLine({
+    required this.number,
+    required this.title,
+    required this.subtitle,
+  });
+
+  final String number;
+  final String title;
+  final String subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 24,
+          height: 24,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: AppColors.accentPrimary.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            number,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.accentPrimary,
+                  fontWeight: FontWeight.w800,
+                ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w800,
+                      height: 1.25,
+                    ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.4,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _SectionIntro extends StatelessWidget {
-  const _SectionIntro({required this.title, required this.body});
+  const _SectionIntro({required this.title, this.body});
 
   final String title;
-  final String body;
+  final String? body;
 
   @override
   Widget build(BuildContext context) {
@@ -308,15 +362,55 @@ class _SectionIntro extends StatelessWidget {
                 fontWeight: FontWeight.w800,
               ),
         ),
-        const SizedBox(height: 6),
-        Text(
-          body,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.45,
-              ),
-        ),
+        if (body != null && body!.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          Text(
+            body!,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.45,
+                ),
+          ),
+        ],
       ],
+    );
+  }
+}
+
+/// 下部のサブ導線：コレ一覧（ROOMコレタブと補完）。
+class _HomeCollectionListLink extends StatelessWidget {
+  const _HomeCollectionListLink({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(
+        Icons.collections_bookmark_outlined,
+        size: 20,
+        color: AppColors.accentPrimary,
+      ),
+      label: Text(
+        'コレ一覧を開く',
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: AppColors.accentPrimary,
+        ),
+      ),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.accentPrimary,
+        side: BorderSide(
+          color: AppColors.accentPrimary.withValues(alpha: 0.45),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        minimumSize: const Size(double.infinity, 48),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+        ),
+      ),
     );
   }
 }
@@ -337,10 +431,10 @@ class _TodayRecommendationsEntryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final body = totalCount == 0
-        ? '今日のおすすめ候補は未生成です。タップして10件を作成できます。'
+        ? 'タップで候補を作成できます。'
         : isCompleted
-            ? '本日の10件はチェック完了です。明日になると新しい候補が再生成されます。'
-            : '今日のおすすめは$totalCount件中、未処理が$pendingCount件です。';
+            ? '本日分は完了。明日また表示されます。'
+            : '未処理 $pendingCount / $totalCount 件';
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -442,7 +536,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                 child: _RoomMetricTile(
                   title: 'コレ候補',
                   valueText: '$candidateTotal',
-                  caption: '候補の総数（タップで一覧）',
+                  caption: '一覧へ',
                   icon: Icons.bookmark_outline_rounded,
                   accent: const Color(0xFF1565C0),
                   iconBackground: const Color(0xFFE3F2FD),
@@ -455,7 +549,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                 child: _RoomMetricTile(
                   title: 'コレ済',
                   valueText: '$doneTotal',
-                  caption: 'コレ済の総数（タップで一覧）',
+                  caption: '一覧へ',
                   icon: Icons.task_alt_rounded,
                   accent: const Color(0xFF2E7D32),
                   iconBackground: const Color(0xFFE8F5E9),
@@ -475,7 +569,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                 child: _RoomMetricTile(
                   title: '今日のコレ',
                   valueText: '$todayDoneCount',
-                  caption: '本日コレ済へ移した件数（タップで活動）',
+                  caption: '活動へ',
                   icon: Icons.today_rounded,
                   accent: AppColors.accentPrimary,
                   iconBackground: AppColors.accentLightest,
@@ -486,9 +580,9 @@ class _RoomStatsCardGrid extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: _RoomMetricTile(
-                  title: '前回コレ日時',
+                  title: '前回コレ',
                   valueText: lastPrimary,
-                  caption: 'このアプリで最後にコレした日時です。\nタップすると活動の詳細を確認できます。',
+                  caption: '活動へ',
                   icon: Icons.history_rounded,
                   accent: const Color(0xFF5C6BC0),
                   iconBackground: const Color(0xFFE8EAF6),
@@ -644,7 +738,7 @@ class _RecentCandidatesPanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '候補の商品はまだありません',
+              '候補はまだありません',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
@@ -652,7 +746,7 @@ class _RecentCandidatesPanel extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              '上部の「楽天で検索」から商品を追加してください。',
+              'まずは「楽天で検索」から追加してください。',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.4,
