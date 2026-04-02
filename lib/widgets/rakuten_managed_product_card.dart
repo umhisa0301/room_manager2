@@ -18,6 +18,9 @@ abstract final class RoomListAccent {
   static const Color done = Color(0xFF2E7D32);
 }
 
+/// 候補・コレ済で共通の左端レール（タブ色に依存させず一覧の連続性を保つ）。
+const Color _kCardLeftRail = Color(0xFF90A4AE);
+
 /// カード内アクション：見た目はコンパクト、タップ最小 48×48 を維持。
 class _RoomListCardActionStyle {
   _RoomListCardActionStyle._();
@@ -86,7 +89,7 @@ class _RoomListCardActionStyle {
     );
   }
 
-  /// コレ済：ROOM 開く（アウトライン・完了色）。
+  /// ROOM 開く（アウトライン・完了色）。
   static ButtonStyle roomOutline(Color stateAccent) {
     return OutlinedButton.styleFrom(
       foregroundColor: stateAccent,
@@ -102,9 +105,25 @@ class _RoomListCardActionStyle {
       shape: _shapeCompact,
     );
   }
+
+  /// ROOM 非活性（コレ済でリンク未取得時 — レイアウトは ROOM ボタンと同一枠）。
+  static ButtonStyle roomOutlineDisabled() {
+    return OutlinedButton.styleFrom(
+      foregroundColor: AppColors.textTertiary,
+      backgroundColor: AppColors.surface,
+      disabledForegroundColor: AppColors.textTertiary,
+      disabledBackgroundColor: AppColors.surface,
+      minimumSize: const Size(minTap, minTap),
+      padding: paddingCompact,
+      side: BorderSide(color: AppColors.divider.withValues(alpha: 0.95)),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.compact,
+      shape: _shapeCompact,
+    );
+  }
 }
 
-/// 楽天ROOM管理の保存済み商品カード（画像主役・縦型・高密度）。
+/// 楽天ROOM管理の保存済み商品カード（候補／コレ済でレイアウト規格を完全一致）。
 class RakutenManagedProductCard extends StatelessWidget {
   const RakutenManagedProductCard({
     super.key,
@@ -122,22 +141,24 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   static const double _radius = 12;
 
-  /// 72dp 相当の約1.5〜2倍に相当する「一覧上での印象スケール」を
-  /// アスペクト比と組み合わせて確保（幅いっぱいのヒーロー）。
   static const double _imageAspect = 1;
 
-  /// 商品名は常に2行分の枠を確保しカード間で揃える。
   static const int _titleMaxLines = 2;
 
-  /// ショップ名・フッターは1行で統一（高さブレ抑制）。
   static const int _shopMaxLines = 1;
   static const int _footerMaxLines = 1;
 
   static const double _badgeRowHeight = 30;
 
+  /// コンテンツ内側余白（候補・コレ済で同一）。
+  static const EdgeInsets _contentPadding =
+      EdgeInsets.fromLTRB(10, 8, 10, 8);
+
   bool get _canCollectRoom =>
       product.extractionStatus == RakutenUrlExtractionStatus.success &&
       product.extractedUrl.trim().isNotEmpty;
+
+  bool get _hasRoomUrl => product.extractedUrl.trim().isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +172,7 @@ class RakutenManagedProductCard extends StatelessWidget {
           fontSize: 14,
         );
     final priceStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: stateAccent.withValues(alpha: 0.92),
+          color: AppColors.textPrimary,
           fontWeight: FontWeight.w800,
           fontSize: 15,
           height: 1.2,
@@ -190,7 +211,7 @@ class RakutenManagedProductCard extends StatelessWidget {
         children: [
           Container(
             width: 2.5,
-            color: stateAccent.withValues(alpha: 0.9),
+            color: _kCardLeftRail,
           ),
           Expanded(
             child: Column(
@@ -202,7 +223,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                   child: _heroImage(topRightRadius: _radius),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                  padding: _contentPadding,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -278,10 +299,11 @@ class RakutenManagedProductCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         _roleBadge(context, isCandidate, stateAccent),
-        if (isCandidate) ...[
-          const SizedBox(width: 6),
-          _extractionBadge(context),
-        ],
+        const SizedBox(width: 6),
+        if (isCandidate)
+          _extractionBadge(context)
+        else
+          _roomLinkBadge(stateAccent),
       ],
     );
   }
@@ -293,10 +315,11 @@ class RakutenManagedProductCard extends StatelessWidget {
     return '更新日時: ${_formatDateTime(product.updatedAt)}';
   }
 
+  /// 3 スロット（5+5+2）・同一ギャップ。コレ済は右端をスペーサで埋める。
   Widget _candidateActions(BuildContext context) {
     final provider = context.read<RakutenManagedProductProvider>();
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
           flex: 5,
@@ -446,12 +469,11 @@ class RakutenManagedProductCard extends StatelessWidget {
   }
 
   Widget _doneActions(BuildContext context, Color stateAccent) {
-    final hasRoom = product.extractedUrl.trim().isNotEmpty;
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          flex: hasRoom ? 5 : 10,
+          flex: 5,
           child: FilledButton(
             style: _RoomListCardActionStyle.rakutenFilled(),
             onPressed: () => AppActionService.openUrl(
@@ -468,26 +490,72 @@ class RakutenManagedProductCard extends StatelessWidget {
             ),
           ),
         ),
-        if (hasRoom) ...[
-          const SizedBox(width: 5),
-          Expanded(
-            flex: 5,
+        const SizedBox(width: 5),
+        Expanded(
+          flex: 5,
+          child: Tooltip(
+            message: _hasRoomUrl
+                ? 'ROOMの画面を開きます'
+                : 'ROOM用のリンクが取得されていません',
             child: OutlinedButton(
-              style: _RoomListCardActionStyle.roomOutline(stateAccent),
-              onPressed: () => AppActionService.openUrl(
-                context,
-                url: product.extractedUrl.trim(),
-              ),
+              style: _hasRoomUrl
+                  ? _RoomListCardActionStyle.roomOutline(stateAccent)
+                  : _RoomListCardActionStyle.roomOutlineDisabled(),
+              onPressed: _hasRoomUrl
+                  ? () => AppActionService.openUrl(
+                        context,
+                        url: product.extractedUrl.trim(),
+                      )
+                  : null,
               child: _compactActionLabel(
-                icon: Icons.chat_bubble_outline_rounded,
+                icon: _hasRoomUrl
+                    ? Icons.chat_bubble_outline_rounded
+                    : Icons.link_off_rounded,
                 label: 'ROOM',
-                color: stateAccent,
+                color:
+                    _hasRoomUrl ? stateAccent : AppColors.textTertiary,
                 weight: FontWeight.w600,
               ),
             ),
           ),
-        ],
+        ),
+        const SizedBox(width: 5),
+        Expanded(
+          flex: 2,
+          child: Center(
+            child: Container(
+              height: _RoomListCardActionStyle.minTap,
+              width: double.infinity,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: const Color(0xFFBDBDBD).withValues(alpha: 0.4),
+                  width: 1,
+                ),
+                color: AppColors.surface,
+              ),
+            ),
+          ),
+        ),
       ],
+    );
+  }
+
+  Widget _roomLinkBadge(Color stateAccent) {
+    if (_hasRoomUrl) {
+      return _StatusPill(
+        icon: Icons.link_rounded,
+        label: 'ROOMリンク',
+        backgroundColor: stateAccent.withValues(alpha: 0.1),
+        foregroundColor: stateAccent,
+      );
+    }
+    return _StatusPill(
+      icon: Icons.link_off_rounded,
+      label: 'ROOMなし',
+      backgroundColor: AppColors.surfaceVariant,
+      foregroundColor: AppColors.textTertiary,
     );
   }
 
