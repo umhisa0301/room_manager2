@@ -244,96 +244,194 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            /// ① タブ（一覧モード切替）— 検索・フィルタと役割を分離
             Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: EdgeInsets.fromLTRB(
                 _kRoomListScreenPadH,
-                6,
+                canPop ? 2 : 8,
                 _kRoomListScreenPadH,
                 6,
               ),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (canPop)
-                    IconButton(
-                      visualDensity: VisualDensity.compact,
-                      constraints: const BoxConstraints(
-                        minWidth: 40,
-                        minHeight: 40,
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4, top: 2),
+                      child: IconButton(
+                        visualDensity: VisualDensity.compact,
+                        constraints: const BoxConstraints(
+                          minWidth: 44,
+                          minHeight: 44,
+                        ),
+                        padding: EdgeInsets.zero,
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const Icon(Icons.arrow_back_rounded, size: 22),
+                        color: AppColors.textPrimary,
+                        tooltip: '戻る',
                       ),
-                      padding: EdgeInsets.zero,
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(Icons.arrow_back_rounded, size: 22),
-                      color: AppColors.textPrimary,
-                      tooltip: '戻る',
                     ),
                   Expanded(
-                    child: TextField(
-                      controller: _searchController,
-                      onChanged: (v) => setState(() => _searchQuery = v),
-                      textInputAction: TextInputAction.search,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontSize: 14,
-                            height: 1.2,
-                          ),
-                      decoration: InputDecoration(
-                        hintText: 'キーワード検索',
-                        hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontSize: 14,
-                              color: AppColors.textTertiary,
+                    child: Consumer<RakutenManagedProductProvider>(
+                      builder: (context, managed, _) {
+                        final nCand = managed
+                            .sortedItemsForStatus(
+                              RakutenManagedProductStatus.candidate,
+                            )
+                            .length;
+                        final nDone = managed
+                            .sortedItemsForStatus(
+                              RakutenManagedProductStatus.done,
+                            )
+                            .length;
+                        final idx = _tabController.index;
+                        final selectedAccent = idx == 0
+                            ? RoomListAccent.candidate
+                            : RoomListAccent.done;
+                        return SegmentedButton<int>(
+                          showSelectedIcon: false,
+                          segments: <ButtonSegment<int>>[
+                            ButtonSegment<int>(
+                              value: 0,
+                              label: Text('コレ候補 ($nCand)'),
+                              tooltip: 'コレ候補の一覧',
                             ),
-                        isDense: true,
-                        filled: true,
-                        fillColor: AppColors.surface,
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 10,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            AppDimensions.radiusButton,
+                            ButtonSegment<int>(
+                              value: 1,
+                              label: Text('コレ済 ($nDone)'),
+                              tooltip: 'コレ済の一覧',
+                            ),
+                          ],
+                          selected: <int>{_tabController.index},
+                          onSelectionChanged: (Set<int> selection) {
+                            final v = selection.first;
+                            if (v != _tabController.index) {
+                              _tabController.animateTo(v);
+                            }
+                          },
+                          style: ButtonStyle(
+                            visualDensity: VisualDensity.compact,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            side: WidgetStateProperty.all(
+                              const BorderSide(color: AppColors.divider),
+                            ),
+                            padding: WidgetStateProperty.all(
+                              const EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 8,
+                              ),
+                            ),
+                            foregroundColor:
+                                WidgetStateProperty.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return selectedAccent;
+                              }
+                              return AppColors.textSecondary;
+                            }),
+                            backgroundColor:
+                                WidgetStateProperty.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return selectedAccent.withValues(alpha: 0.12);
+                              }
+                              return AppColors.surface;
+                            }),
+                            textStyle: WidgetStateProperty.all(
+                              Theme.of(context).textTheme.labelLarge?.copyWith(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.15,
+                                  ),
+                            ),
                           ),
-                          borderSide: BorderSide(color: AppColors.divider),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            AppDimensions.radiusButton,
-                          ),
-                          borderSide: BorderSide(color: AppColors.divider),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            AppDimensions.radiusButton,
-                          ),
-                          borderSide: const BorderSide(
-                            color: AppColors.accentPrimary,
-                            width: 1.5,
-                          ),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.search_rounded,
-                          color: AppColors.textTertiary,
-                          size: 20,
-                        ),
-                        suffixIcon: _searchQuery.trim().isNotEmpty
-                            ? IconButton(
-                                icon: const Icon(Icons.close_rounded, size: 20),
-                                onPressed: () {
-                                  _searchController.clear();
-                                  setState(() => _searchQuery = '');
-                                },
-                              )
-                            : null,
-                      ),
+                        );
+                      },
                     ),
                   ),
-                  IconButton(
-                    visualDensity: VisualDensity.compact,
-                    constraints: const BoxConstraints(
-                      minWidth: 40,
-                      minHeight: 40,
+                ],
+              ),
+            ),
+            /// ② キーワード検索（一覧内テキストのみ。楽天遷移とは別行）
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                _kRoomListScreenPadH,
+                2,
+                _kRoomListScreenPadH,
+                4,
+              ),
+              child: TextField(
+                controller: _searchController,
+                onChanged: (v) => setState(() => _searchQuery = v),
+                textInputAction: TextInputAction.search,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 14,
+                      height: 1.2,
                     ),
-                    padding: EdgeInsets.zero,
+                decoration: InputDecoration(
+                  hintText: 'キーワード検索',
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 14,
+                        color: AppColors.textTertiary,
+                      ),
+                  isDense: true,
+                  filled: true,
+                  fillColor: AppColors.surface,
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 12,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      AppDimensions.radiusSearchBar,
+                    ),
+                    borderSide: const BorderSide(color: AppColors.divider),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      AppDimensions.radiusSearchBar,
+                    ),
+                    borderSide: const BorderSide(color: AppColors.divider),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      AppDimensions.radiusSearchBar,
+                    ),
+                    borderSide: const BorderSide(
+                      color: AppColors.accentPrimary,
+                      width: 1.5,
+                    ),
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.search_rounded,
+                    color: AppColors.textTertiary,
+                    size: 22,
+                  ),
+                  suffixIcon: _searchQuery.trim().isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.close_rounded, size: 20),
+                          color: AppColors.textSecondary,
+                          tooltip: '検索をクリア',
+                          onPressed: () {
+                            _searchController.clear();
+                            setState(() => _searchQuery = '');
+                          },
+                        )
+                      : null,
+                ),
+              ),
+            ),
+            /// 楽天の検索画面へ＝店舗・商品探索（検索アイコンとは別アイコン）
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                _kRoomListScreenPadH,
+                0,
+                _kRoomListScreenPadH,
+                4,
+              ),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Tooltip(
+                  message: '楽天の検索画面を開き、コレ候補に登録できます',
+                  child: TextButton.icon(
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
@@ -342,101 +440,110 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                       );
                     },
                     icon: Icon(
-                      Icons.travel_explore_rounded,
+                      Icons.storefront_outlined,
+                      size: 20,
                       color: AppColors.accentPrimary,
-                      size: 22,
                     ),
-                    tooltip: '商品追加',
+                    label: Text(
+                      '楽天で商品を追加',
+                      style: TextStyle(
+                        color: AppColors.accentPrimary,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
+                      minimumSize: const Size(48, 48),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
                   ),
-                ],
+                ),
               ),
             ),
-            Consumer<RakutenManagedProductProvider>(
-              builder: (context, managed, _) {
-                final nCand = managed
-                    .sortedItemsForStatus(
-                      RakutenManagedProductStatus.candidate,
-                    )
-                    .length;
-                final nDone = managed
-                    .sortedItemsForStatus(RakutenManagedProductStatus.done)
-                    .length;
-                final idx = _tabController.index;
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: SizedBox(
-                    height: 36,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: _kRoomListScreenPadH,
+            /// ③ フィルタ（チップ）— タブと見た目を分離したブロック
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                _kRoomListScreenPadH,
+                4,
+                _kRoomListScreenPadH,
+                8,
+              ),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceVariant.withValues(alpha: 0.72),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: AppColors.divider),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.filter_list_rounded,
+                        size: 20,
+                        color: AppColors.textSecondary,
                       ),
-                      children: [
-                        _RoomListFilterChip(
-                          label: '候補のみ',
-                          count: nCand,
-                          selected: idx == 0,
-                          useAccent: true,
-                          onSelected: (v) {
-                            if (v) {
-                              _tabController.animateTo(0);
-                            } else if (idx == 0) {
-                              _tabController.animateTo(1);
-                            }
-                          },
-                        ),
-                        const SizedBox(width: 6),
-                        _RoomListFilterChip(
-                          label: 'コレ済',
-                          count: nDone,
-                          selected: idx == 1,
-                          useAccent: false,
-                          onSelected: (v) {
-                            if (v) {
-                              _tabController.animateTo(1);
-                            } else if (idx == 1) {
-                              _tabController.animateTo(0);
-                            }
-                          },
-                        ),
-                        const SizedBox(width: 6),
-                        FilterChip(
-                          label: const Text('URL未取得除外'),
-                          selected: _excludeUrlNotReady,
-                          onSelected: (v) =>
-                              setState(() => _excludeUrlNotReady = v),
-                          showCheckmark: false,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 0,
-                          ),
-                          pressElevation: 0,
-                          backgroundColor: AppColors.surface,
-                          selectedColor:
-                              AppColors.accentPrimary.withValues(alpha: 0.16),
-                          side: BorderSide(
-                            color: _excludeUrlNotReady
-                                ? AppColors.accentPrimary
-                                : AppColors.divider,
-                            width: _excludeUrlNotReady ? 1.25 : 1,
-                          ),
-                          labelStyle: TextStyle(
-                            color: _excludeUrlNotReady
-                                ? AppColors.accentPrimary
-                                : AppColors.textPrimary,
-                            fontWeight: _excludeUrlNotReady
-                                ? FontWeight.w700
-                                : FontWeight.w500,
-                            fontSize: 12,
-                            height: 1.2,
+                      const SizedBox(width: 8),
+                      Text(
+                        '絞り込み',
+                        style:
+                            Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  color: AppColors.textSecondary,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 12,
+                                  letterSpacing: 0.2,
+                                ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: FilterChip(
+                            label: const Text('URL未取得除外'),
+                            selected: _excludeUrlNotReady,
+                            onSelected: (v) =>
+                                setState(() => _excludeUrlNotReady = v),
+                            showCheckmark: false,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 0,
+                            ),
+                            pressElevation: 0,
+                            backgroundColor: AppColors.surface,
+                            selectedColor: const Color(0xFF546E7A)
+                                .withValues(alpha: 0.14),
+                            side: BorderSide(
+                              color: _excludeUrlNotReady
+                                  ? const Color(0xFF546E7A)
+                                  : AppColors.divider,
+                              width: _excludeUrlNotReady ? 1.25 : 1,
+                            ),
+                            labelStyle: TextStyle(
+                              color: _excludeUrlNotReady
+                                  ? const Color(0xFF37474F)
+                                  : AppColors.textPrimary,
+                              fontWeight: _excludeUrlNotReady
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
+                              fontSize: 12,
+                              height: 1.2,
+                            ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                );
-              },
+                ),
+              ),
             ),
             const Divider(height: 1, thickness: 1),
             Expanded(
@@ -488,51 +595,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _RoomListFilterChip extends StatelessWidget {
-  const _RoomListFilterChip({
-    required this.label,
-    required this.count,
-    required this.selected,
-    required this.useAccent,
-    required this.onSelected,
-  });
-
-  final String label;
-  final int count;
-  final bool selected;
-  final bool useAccent;
-  final ValueChanged<bool> onSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final accent = useAccent
-        ? RoomListAccent.candidate
-        : RoomListAccent.done;
-    final borderColor = selected ? accent : AppColors.divider;
-    return FilterChip(
-      label: Text('$label ($count)'),
-      selected: selected,
-      onSelected: onSelected,
-      showCheckmark: false,
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-      pressElevation: 0,
-      backgroundColor: AppColors.surface,
-      selectedColor: accent.withValues(alpha: 0.18),
-      side: BorderSide(
-        color: borderColor,
-        width: selected ? 1.25 : 1,
-      ),
-      labelStyle: TextStyle(
-        color: selected ? accent : AppColors.textPrimary,
-        fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
-        fontSize: 12,
-        height: 1.2,
       ),
     );
   }
