@@ -61,8 +61,20 @@ List<RakutenManagedProduct> _dedupeManagedProductsPreserveOrder(
   return out;
 }
 
-/// タブ表示件数を一覧と同じ管線（日付・URL除外・キーワード・重複除去）に揃える。
-int _roomColleVisibleCount({
+/// コレ済の暦日フィルタを安全なローカル日付に正規化（不正値は null）。
+DateTime? _normalizeDoneDayFilter(DateTime? raw) {
+  if (raw == null) return null;
+  try {
+    final y = raw.year;
+    if (y < 1900 || y > 2100) return null;
+    return DateTime(raw.year, raw.month, raw.day);
+  } catch (_) {
+    return null;
+  }
+}
+
+/// 一覧タブと同じ管線で表示リストを求める（URL未取得除外はコレ候補タブのみ適用）。
+List<RakutenManagedProduct> _roomListVisibleItems({
   required RakutenManagedProductProvider provider,
   required RakutenManagedProductStatus status,
   required String filterQuery,
@@ -74,9 +86,28 @@ int _roomColleVisibleCount({
   final scoped = status == RakutenManagedProductStatus.done && day != null
       ? _filterDoneOnLocalCalendarDay(baseList, day)
       : baseList;
-  final urlScoped = _filterExcludeUrlNotReady(scoped, excludeUrlNotReady);
+  final urlActive =
+      status == RakutenManagedProductStatus.candidate && excludeUrlNotReady;
+  final urlScoped = _filterExcludeUrlNotReady(scoped, urlActive);
   final queried = _filterManagedProductsByQuery(urlScoped, filterQuery);
-  return _dedupeManagedProductsPreserveOrder(queried).length;
+  return _dedupeManagedProductsPreserveOrder(queried);
+}
+
+/// タブ表示件数を [_roomListVisibleItems] に揃える。
+int _roomColleVisibleCount({
+  required RakutenManagedProductProvider provider,
+  required RakutenManagedProductStatus status,
+  required String filterQuery,
+  required bool excludeUrlNotReady,
+  DateTime? doneAtLocalDayFilter,
+}) {
+  return _roomListVisibleItems(
+    provider: provider,
+    status: status,
+    filterQuery: filterQuery,
+    excludeUrlNotReady: excludeUrlNotReady,
+    doneAtLocalDayFilter: doneAtLocalDayFilter,
+  ).length;
 }
 
 /// [anchor] のローカル暦日と同一日の [doneAt] をもつコレ済のみ。
@@ -84,13 +115,21 @@ List<RakutenManagedProduct> _filterDoneOnLocalCalendarDay(
   List<RakutenManagedProduct> items,
   DateTime anchor,
 ) {
-  final target = DateTime(anchor.year, anchor.month, anchor.day);
-  return items.where((e) {
-    final d = e.doneAt;
-    if (d == null) return false;
-    final localDay = DateTime(d.year, d.month, d.day);
-    return localDay == target;
-  }).toList();
+  try {
+    final target = DateTime(anchor.year, anchor.month, anchor.day);
+    return items.where((e) {
+      final d = e.doneAt;
+      if (d == null) return false;
+      try {
+        final localDay = DateTime(d.year, d.month, d.day);
+        return localDay == target;
+      } catch (_) {
+        return false;
+      }
+    }).toList();
+  } catch (_) {
+    return <RakutenManagedProduct>[];
+  }
 }
 
 /// ON のとき、URL が取得済みで開ける商品だけ残す（コレ前の絞り込み用）。
@@ -179,12 +218,20 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       if (!mounted) return;
       final ctx = _candidateRowKeys[productId]?.currentContext;
       if (ctx != null) {
-        Scrollable.ensureVisible(
-          ctx,
-          alignment: 0.12,
-          duration: const Duration(milliseconds: 320),
-          curve: Curves.easeOutCubic,
-        );
+        try {
+          Scrollable.ensureVisible(
+            ctx,
+            alignment: 0.12,
+            duration: const Duration(milliseconds: 320),
+            curve: Curves.easeOutCubic,
+          );
+        } catch (e, st) {
+          assert(() {
+            debugPrint('[ROOMコレ] ensureVisible 失敗: $e\n$st');
+            return true;
+          }());
+        }
+        if (!mounted) return;
         setState(() => _flashProductId = productId);
         _flashTimer?.cancel();
         _flashTimer = Timer(const Duration(seconds: 1), () {
@@ -196,13 +243,20 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     });
   }
 
+  void _resetRoomColleFilters() {
+    if (!mounted) return;
+    setState(() {
+      _excludeUrlNotReady = false;
+      _searchQuery = '';
+      _searchController.clear();
+      _doneLocalDayFilter = null;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    final d = widget.initialDoneFilterLocalDay;
-    if (d != null) {
-      _doneLocalDayFilter = DateTime(d.year, d.month, d.day);
-    }
+    _doneLocalDayFilter = _normalizeDoneDayFilter(widget.initialDoneFilterLocalDay);
     final focusId = widget.initialFocusCandidateProductId;
     final idx0 = widget.initialTabIndex.clamp(0, 1);
     if (focusId != null &&
@@ -266,9 +320,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
           _searchQuery = '';
         }
       } else {
-        final d = intent.doneFilterLocalDay;
-        _doneLocalDayFilter =
-            d == null ? null : DateTime(d.year, d.month, d.day);
+        _doneLocalDayFilter = _normalizeDoneDayFilter(intent.doneFilterLocalDay);
       }
       _shellFocusCandidateProductId = focusId;
       _candidateFocusHandled = false;
@@ -381,6 +433,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           ],
                           selected: <int>{_tabController.index},
                           onSelectionChanged: (Set<int> selection) {
+                            if (selection.isEmpty) return;
                             final v = selection.first;
                             if (v != _tabController.index) {
                               _tabController.animateTo(v);
@@ -492,7 +545,10 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
               ),
               child: TextField(
                 controller: _searchController,
-                onChanged: (v) => setState(() => _searchQuery = v),
+                onChanged: (v) {
+                  if (!mounted) return;
+                  setState(() => _searchQuery = v);
+                },
                 textInputAction: TextInputAction.search,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 14,
@@ -586,9 +642,12 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           alignment: Alignment.centerLeft,
                           child: FilterChip(
                             label: const Text('URL未取得除外'),
+                            tooltip: 'コレ候補タブの一覧にのみ適用されます',
                             selected: _excludeUrlNotReady,
-                            onSelected: (v) =>
-                                setState(() => _excludeUrlNotReady = v),
+                            onSelected: (v) {
+                              if (!mounted) return;
+                              setState(() => _excludeUrlNotReady = v);
+                            },
                             showCheckmark: false,
                             materialTapTargetSize:
                                 MaterialTapTargetSize.shrinkWrap,
@@ -619,6 +678,21 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           ),
                         ),
                       ),
+                      IconButton(
+                        tooltip: 'フィルタを初期化',
+                        visualDensity: VisualDensity.compact,
+                        constraints: const BoxConstraints(
+                          minWidth: 40,
+                          minHeight: 40,
+                        ),
+                        padding: EdgeInsets.zero,
+                        onPressed: _resetRoomColleFilters,
+                        icon: Icon(
+                          Icons.restart_alt_rounded,
+                          size: 22,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -636,6 +710,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     variant: RakutenManagedProductCardVariant.candidate,
                     filterQuery: _searchQuery,
                     excludeUrlNotReady: _excludeUrlNotReady,
+                    candidateFocusHandled: _candidateFocusHandled,
                     emptyTitle: 'コレ候補はまだありません',
                     emptySubtitle: '',
                     emptyHint: '',
@@ -660,6 +735,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     variant: RakutenManagedProductCardVariant.done,
                     filterQuery: _searchQuery,
                     excludeUrlNotReady: _excludeUrlNotReady,
+                    candidateFocusHandled: true,
                     doneAtLocalDayFilter: _doneLocalDayFilter,
                     onClearDoneDayFilter: _doneLocalDayFilter == null
                         ? null
@@ -681,12 +757,13 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   }
 }
 
-class _RoomManagedProductListTab extends StatelessWidget {
+class _RoomManagedProductListTab extends StatefulWidget {
   const _RoomManagedProductListTab({
     required this.status,
     required this.variant,
     required this.filterQuery,
     this.excludeUrlNotReady = false,
+    this.candidateFocusHandled = true,
     this.doneAtLocalDayFilter,
     this.onClearDoneDayFilter,
     required this.emptyTitle,
@@ -707,6 +784,10 @@ class _RoomManagedProductListTab extends StatelessWidget {
   final RakutenManagedProductCardVariant variant;
   final String filterQuery;
   final bool excludeUrlNotReady;
+
+  /// 親が候補フォーカス意図を消化済みなら true（build 内での post-frame 連発を止める）。
+  final bool candidateFocusHandled;
+
   final DateTime? doneAtLocalDayFilter;
   final VoidCallback? onClearDoneDayFilter;
   final String emptyTitle;
@@ -721,6 +802,83 @@ class _RoomManagedProductListTab extends StatelessWidget {
   final String? focusCandidateProductId;
   final VoidCallback? onCandidateFocusListReady;
   final VoidCallback? onCandidateFocusProductMissing;
+
+  @override
+  State<_RoomManagedProductListTab> createState() =>
+      _RoomManagedProductListTabState();
+}
+
+class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> {
+  bool _candidateFocusCallbackEnqueued = false;
+  String? _lastSeenFocusProductId;
+
+  @override
+  void initState() {
+    super.initState();
+    _lastSeenFocusProductId = widget.focusCandidateProductId;
+  }
+
+  @override
+  void didUpdateWidget(covariant _RoomManagedProductListTab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final newId = widget.focusCandidateProductId;
+    if (newId != _lastSeenFocusProductId) {
+      _lastSeenFocusProductId = newId;
+      _candidateFocusCallbackEnqueued = false;
+    }
+    if (oldWidget.candidateFocusHandled && !widget.candidateFocusHandled) {
+      _candidateFocusCallbackEnqueued = false;
+    }
+  }
+
+  void _scheduleCandidateFocusKickOnce(
+    BuildContext context,
+  ) {
+    if (widget.status != RakutenManagedProductStatus.candidate) return;
+    if (widget.candidateFocusHandled) return;
+    final fid = widget.focusCandidateProductId;
+    if (fid == null || fid.isEmpty) return;
+    if (widget.onCandidateFocusListReady == null ||
+        widget.onCandidateFocusProductMissing == null) {
+      return;
+    }
+    if (_candidateFocusCallbackEnqueued) return;
+    _candidateFocusCallbackEnqueued = true;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _candidateFocusCallbackEnqueued = false;
+      if (!mounted) {
+        return;
+      }
+      try {
+        final p = context.read<RakutenManagedProductProvider>();
+        if (p.listUiStatus != RakutenManagedProductListUiStatus.ready) {
+          return;
+        }
+        if (widget.candidateFocusHandled) return;
+
+        final listNow = _roomListVisibleItems(
+          provider: p,
+          status: RakutenManagedProductStatus.candidate,
+          filterQuery: widget.filterQuery,
+          excludeUrlNotReady: widget.excludeUrlNotReady,
+          doneAtLocalDayFilter: null,
+        );
+        final baseCand = p.sortedItemsForStatus(RakutenManagedProductStatus.candidate);
+
+        if (listNow.any((e) => e.productId == fid)) {
+          widget.onCandidateFocusListReady!();
+        } else if (baseCand.isNotEmpty) {
+          widget.onCandidateFocusProductMissing!();
+        }
+      } catch (e, st) {
+        assert(() {
+          debugPrint('[ROOMコレ] 候補フォーカス処理エラー: $e\n$st');
+          return true;
+        }());
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -742,82 +900,74 @@ class _RoomManagedProductListTab extends StatelessWidget {
           );
         }
 
-        final baseList = provider.sortedItemsForStatus(status);
-        final scoped =
-            status == RakutenManagedProductStatus.done &&
-                doneAtLocalDayFilter != null
-            ? _filterDoneOnLocalCalendarDay(baseList, doneAtLocalDayFilter!)
-            : baseList;
-        final urlScoped =
-            _filterExcludeUrlNotReady(scoped, excludeUrlNotReady);
-        final list = _dedupeManagedProductsPreserveOrder(
-          _filterManagedProductsByQuery(urlScoped, filterQuery),
+        final list = _roomListVisibleItems(
+          provider: provider,
+          status: widget.status,
+          filterQuery: widget.filterQuery,
+          excludeUrlNotReady: widget.excludeUrlNotReady,
+          doneAtLocalDayFilter: widget.doneAtLocalDayFilter,
         );
+
+        final baseList = provider.sortedItemsForStatus(widget.status);
+        final day = widget.doneAtLocalDayFilter;
+        final scoped = widget.status == RakutenManagedProductStatus.done &&
+                day != null
+            ? _filterDoneOnLocalCalendarDay(baseList, day)
+            : baseList;
+        final urlActive = widget.status == RakutenManagedProductStatus.candidate &&
+            widget.excludeUrlNotReady;
+        final urlScoped = _filterExcludeUrlNotReady(scoped, urlActive);
 
         if (baseList.isEmpty) {
           return _RoomCollectionEmptyState(
-            title: emptyTitle,
-            subtitle: emptySubtitle,
-            hint: emptyHint,
-            accentColor: accentColor,
+            title: widget.emptyTitle,
+            subtitle: widget.emptySubtitle,
+            hint: widget.emptyHint,
+            accentColor: widget.accentColor,
           );
         }
 
         if (scoped.isEmpty &&
-            doneAtLocalDayFilter != null &&
-            dayFilterEmptyTitle != null &&
-            dayFilterEmptySubtitle != null) {
+            widget.doneAtLocalDayFilter != null &&
+            widget.dayFilterEmptyTitle != null &&
+            widget.dayFilterEmptySubtitle != null) {
           return _RoomCollectionEmptyState(
-            title: dayFilterEmptyTitle!,
-            subtitle: dayFilterEmptySubtitle!,
+            title: widget.dayFilterEmptyTitle!,
+            subtitle: widget.dayFilterEmptySubtitle!,
             hint: '',
-            accentColor: accentColor,
-            actionLabel: onClearDoneDayFilter != null ? 'すべて表示' : null,
-            onAction: onClearDoneDayFilter,
+            accentColor: widget.accentColor,
+            actionLabel: widget.onClearDoneDayFilter != null ? 'すべて表示' : null,
+            onAction: widget.onClearDoneDayFilter,
           );
         }
 
         if (list.isEmpty) {
-          final q = filterQuery.trim();
-          if (excludeUrlNotReady &&
-              scoped.isNotEmpty &&
-              urlScoped.isEmpty) {
-            return _RoomCollectionUrlFilterEmptyState(accentColor: accentColor);
+          final q = widget.filterQuery.trim();
+          if (urlActive && scoped.isNotEmpty && urlScoped.isEmpty) {
+            return _RoomCollectionUrlFilterEmptyState(
+              accentColor: widget.accentColor,
+            );
           }
           if (scoped.isNotEmpty && q.isNotEmpty) {
-            return _RoomCollectionSearchEmptyState(accentColor: accentColor);
+            return _RoomCollectionSearchEmptyState(accentColor: widget.accentColor);
           }
-          return _RoomCollectionRenderOrDataEmptyState(accentColor: accentColor);
+          return _RoomCollectionRenderOrDataEmptyState(
+            accentColor: widget.accentColor,
+          );
         }
+
+        _scheduleCandidateFocusKickOnce(context);
 
         final showDayBanner =
-            status == RakutenManagedProductStatus.done &&
-            doneAtLocalDayFilter != null &&
-            onClearDoneDayFilter != null;
-
-        final fid = focusCandidateProductId;
-        if (status == RakutenManagedProductStatus.candidate &&
-            fid != null &&
-            fid.isNotEmpty &&
-            onCandidateFocusListReady != null &&
-            onCandidateFocusProductMissing != null) {
-          final inList = list.any((e) => e.productId == fid);
-          if (inList) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              onCandidateFocusListReady!();
-            });
-          } else if (urlScoped.isNotEmpty) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              onCandidateFocusProductMissing!();
-            });
-          }
-        }
+            widget.status == RakutenManagedProductStatus.done &&
+            widget.doneAtLocalDayFilter != null &&
+            widget.onClearDoneDayFilter != null;
 
         return RefreshIndicator(
           onRefresh: () =>
               provider.refreshManagedProductList(showLoadingIndicator: true),
           child: ListView(
-            controller: listScrollController,
+            controller: widget.listScrollController,
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(
               _kRoomListScreenPadH,
@@ -828,21 +978,21 @@ class _RoomManagedProductListTab extends StatelessWidget {
             children: [
               if (showDayBanner) ...[
                 _DoneDayFilterBanner(
-                  filterDay: doneAtLocalDayFilter!,
-                  onClear: onClearDoneDayFilter!,
+                  filterDay: widget.doneAtLocalDayFilter!,
+                  onClear: widget.onClearDoneDayFilter!,
                 ),
                 const SizedBox(height: _kRoomListCardGap),
               ],
-              if (status == RakutenManagedProductStatus.done)
+              if (widget.status == RakutenManagedProductStatus.done)
                 _DoneTabCollapsibleNotice(
                   repository: context.read<DoneTabNoticeRepository>(),
                 ),
               for (var i = 0; i < list.length; i++) ...[
                 _KeyedCandidateProductRow(
                   product: list[i],
-                  variant: variant,
-                  rowKey: rowKeyFor?.call(list[i].productId),
-                  flash: flashHighlightProductId == list[i].productId,
+                  variant: widget.variant,
+                  rowKey: widget.rowKeyFor?.call(list[i].productId),
+                  flash: widget.flashHighlightProductId == list[i].productId,
                 ),
                 if (i != list.length - 1)
                   const SizedBox(height: _kRoomListCardGap),
