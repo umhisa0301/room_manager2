@@ -244,6 +244,25 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                border: Border(
+                  bottom: BorderSide(
+                    color: AppColors.divider.withValues(alpha: 0.88),
+                  ),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    offset: const Offset(0, 2),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
             /// ① タブ（一覧モード切替）— 検索・フィルタと役割を分離
             Padding(
               padding: EdgeInsets.fromLTRB(
@@ -547,7 +566,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                 ),
               ),
             ),
-            const Divider(height: 1, thickness: 1),
+                ],
+              ),
+            ),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
