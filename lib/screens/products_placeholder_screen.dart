@@ -350,11 +350,66 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                 ],
               ),
             ),
-            /// ② キーワード検索（一覧内テキストのみ。楽天遷移とは別行）
+            /// 楽天検索へ（一覧のキーワード欄とは別物。店舗アイコンで虫眼鏡と差別化）
             Padding(
               padding: const EdgeInsets.fromLTRB(
                 _kRoomListScreenPadH,
                 2,
+                _kRoomListScreenPadH,
+                8,
+              ),
+              child: Tooltip(
+                message: '楽天の検索画面を開き、商品を探してコレ候補に登録できます',
+                child: SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const RakutenSearchScreen(),
+                        ),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.storefront_outlined,
+                      size: 22,
+                      color: AppColors.accentPrimary,
+                    ),
+                    label: Text(
+                      '楽天で検索',
+                      style: TextStyle(
+                        color: AppColors.accentPrimary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.accentPrimary,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 16,
+                      ),
+                      minimumSize: const Size.fromHeight(48),
+                      side: BorderSide(
+                        color: AppColors.accentPrimary.withValues(alpha: 0.55),
+                        width: 1.25,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          AppDimensions.radiusButton,
+                        ),
+                      ),
+                      backgroundColor: AppColors.surface,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            /// キーワード検索（この一覧内のみ絞り込み。右端は虫眼鏡のみ）
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                _kRoomListScreenPadH,
+                0,
                 _kRoomListScreenPadH,
                 4,
               ),
@@ -375,10 +430,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                   isDense: true,
                   filled: true,
                   fillColor: AppColors.surface,
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 12,
-                  ),
+                  contentPadding: const EdgeInsets.fromLTRB(16, 10, 4, 10),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
                       AppDimensions.radiusSearchBar,
@@ -400,67 +452,17 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                       width: 1.5,
                     ),
                   ),
-                  prefixIcon: const Icon(
-                    Icons.search_rounded,
-                    color: AppColors.textTertiary,
-                    size: 22,
+                  suffixIcon: const Padding(
+                    padding: EdgeInsetsDirectional.only(end: 10),
+                    child: Icon(
+                      Icons.search_rounded,
+                      color: AppColors.textTertiary,
+                      size: 24,
+                    ),
                   ),
-                  suffixIcon: _searchQuery.trim().isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.close_rounded, size: 20),
-                          color: AppColors.textSecondary,
-                          tooltip: '検索をクリア',
-                          onPressed: () {
-                            _searchController.clear();
-                            setState(() => _searchQuery = '');
-                          },
-                        )
-                      : null,
-                ),
-              ),
-            ),
-            /// 楽天の検索画面へ＝店舗・商品探索（検索アイコンとは別アイコン）
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                _kRoomListScreenPadH,
-                0,
-                _kRoomListScreenPadH,
-                4,
-              ),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Tooltip(
-                  message: '楽天の検索画面を開き、コレ候補に登録できます',
-                  child: TextButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const RakutenSearchScreen(),
-                        ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.storefront_outlined,
-                      size: 20,
-                      color: AppColors.accentPrimary,
-                    ),
-                    label: Text(
-                      '楽天で商品を追加',
-                      style: TextStyle(
-                        color: AppColors.accentPrimary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                      ),
-                    ),
-                    style: TextButton.styleFrom(
-                      visualDensity: VisualDensity.compact,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 8,
-                      ),
-                      minimumSize: const Size(48, 48),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
+                  suffixIconConstraints: const BoxConstraints(
+                    minWidth: 40,
+                    minHeight: 40,
                   ),
                 ),
               ),
