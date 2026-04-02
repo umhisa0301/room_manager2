@@ -79,6 +79,23 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// ローカル保存から一覧を復旧し [ready] へ戻す（エラー画面の固定化回避）。内部ログのみ。
+  void recoverListUiSilently() {
+    try {
+      _items = _repository.loadAll();
+      _listUiStatus = RakutenManagedProductListUiStatus.ready;
+      _listUiErrorMessage = null;
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[RakutenManagedProduct] recoverListUiSilently failed: $e\n$st');
+      }
+      _items = const [];
+      _listUiStatus = RakutenManagedProductListUiStatus.ready;
+      _listUiErrorMessage = null;
+    }
+    notifyListeners();
+  }
+
   /// 永続化一覧に無い場合は [RakutenManagedProductStatus.none]。
   RakutenManagedProductStatus statusForProduct(String productId) {
     final id = productId.trim();

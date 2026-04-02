@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../navigation/app_shell_controller.dart';
 import '../repository/done_tab_notice_repository.dart';
+import '../repository/room_colle_ui_state_repository.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_screen_status.dart';
@@ -15,6 +17,12 @@ import 'rakuten_search_screen.dart';
 /// ROOMコレ一覧専用。アプリ共通 [AppDimensions.screenPaddingH] より詰め密度を上げる。
 const double _kRoomListScreenPadH = 12;
 const double _kRoomListCardGap = 6;
+
+bool _roomColleScreenHasExplicitRouteArgs(ProductsPlaceholderScreen widget) {
+  return widget.initialDoneFilterLocalDay != null ||
+      (widget.initialFocusCandidateProductId?.isNotEmpty ?? false) ||
+      widget.initialTabIndex != 0;
+}
 
 bool _managedProductMatchesQuery(RakutenManagedProduct e, String t) {
   return e.itemName.toLowerCase().contains(t) ||
@@ -184,7 +192,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   bool _candidateFocusHandled = false;
   String? _shellFocusCandidateProductId;
   late final AppShellController _shellCtrl;
+  late final RoomColleUiStateRepository _roomColleUiRepo;
   bool _excludeUrlNotReady = false;
+  Timer? _persistSearchDebounce;
 
   String? get _focusCandidateTargetId {
     final w = widget.initialFocusCandidateProductId;
@@ -251,12 +261,72 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       _searchController.clear();
       _doneLocalDayFilter = null;
     });
+    _persistRoomColleUiNow();
+  }
+
+  RoomColleUiStateSnapshot _snapshotForPersist() {
+    return RoomColleUiStateSnapshot(
+      tabIndex: _tabController.index.clamp(0, 1),
+      searchQuery: _searchQuery,
+      excludeUrlNotReady: _excludeUrlNotReady,
+      doneLocalDay: _doneLocalDayFilter,
+    );
+  }
+
+  void _persistRoomColleUiNow() {
+    unawaited(_roomColleUiRepo.saveSanitized(_snapshotForPersist()));
+  }
+
+  void _schedulePersistRoomColleSearch() {
+    _persistSearchDebounce?.cancel();
+    _persistSearchDebounce = Timer(const Duration(milliseconds: 420), () {
+      if (!mounted) return;
+      _persistRoomColleUiNow();
+    });
+  }
+
+  int _resolveInitialTabIndex(RoomColleUiStateSnapshot persisted) {
+    if (widget.initialTabIndex != 0) {
+      return widget.initialTabIndex.clamp(0, 1);
+    }
+    return persisted.tabIndex.clamp(0, 1);
+  }
+
+  Future<void> _recoverRoomColleListAndFilters() async {
+    if (!mounted) return;
+    if (kDebugMode) {
+      debugPrint('[ROOMコレ] recover: filters + list UI (user)');
+    }
+    setState(() {
+      _excludeUrlNotReady = false;
+      _searchQuery = '';
+      _searchController.clear();
+      _doneLocalDayFilter = null;
+    });
+    await _roomColleUiRepo.clearPersisted();
+    await _roomColleUiRepo.saveSanitized(RoomColleUiStateSnapshot.defaults());
+    if (!mounted) return;
+    final managed = context.read<RakutenManagedProductProvider>();
+    managed.recoverListUiSilently();
+    await managed.refreshManagedProductList(showLoadingIndicator: true);
   }
 
   @override
   void initState() {
     super.initState();
-    _doneLocalDayFilter = _normalizeDoneDayFilter(widget.initialDoneFilterLocalDay);
+    _roomColleUiRepo = context.read<RoomColleUiStateRepository>();
+    final persisted = _roomColleUiRepo.loadSanitized();
+
+    if (_roomColleScreenHasExplicitRouteArgs(widget)) {
+      _doneLocalDayFilter =
+          _normalizeDoneDayFilter(widget.initialDoneFilterLocalDay);
+    } else {
+      _searchQuery = persisted.searchQuery;
+      _searchController.text = persisted.searchQuery;
+      _excludeUrlNotReady = persisted.excludeUrlNotReady;
+      _doneLocalDayFilter = _normalizeDoneDayFilter(persisted.doneLocalDay);
+    }
+
     final focusId = widget.initialFocusCandidateProductId;
     final idx0 = widget.initialTabIndex.clamp(0, 1);
     if (focusId != null &&
@@ -265,7 +335,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       _searchController.clear();
       _searchQuery = '';
     }
-    final initialIndex = widget.initialTabIndex.clamp(0, 1);
+    final initialIndex = _resolveInitialTabIndex(persisted);
     _tabController = TabController(
       length: 2,
       vsync: this,
@@ -273,13 +343,23 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     );
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) return;
-      if (mounted) setState(() {});
+      if (mounted) {
+        setState(() {});
+        _persistRoomColleUiNow();
+      }
     });
     _shellCtrl = context.read<AppShellController>();
     _shellCtrl.addListener(_onShellCtrlChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      context.read<RakutenManagedProductProvider>().refreshManagedProductList(
+      final managed = context.read<RakutenManagedProductProvider>();
+      if (managed.listUiStatus == RakutenManagedProductListUiStatus.error) {
+        if (kDebugMode) {
+          debugPrint('[ROOMコレ] init_post_frame: recover list UI from error');
+        }
+        managed.recoverListUiSilently();
+      }
+      managed.refreshManagedProductList(
         showLoadingIndicator: false,
       );
       _tryConsumeRoomCollectIntent();
@@ -290,7 +370,14 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     if (!mounted) return;
     // IndexedStack 維持のため initState は1回のみ。タブ再表示時に一覧とエラー状態を復旧する。
     if (_shellCtrl.currentIndex == 1) {
-      context.read<RakutenManagedProductProvider>().refreshManagedProductList(
+      final managed = context.read<RakutenManagedProductProvider>();
+      if (managed.listUiStatus == RakutenManagedProductListUiStatus.error) {
+        if (kDebugMode) {
+          debugPrint('[ROOMコレ] shell_tab_focus: recover list UI from error');
+        }
+        managed.recoverListUiSilently();
+      }
+      managed.refreshManagedProductList(
         showLoadingIndicator: false,
       );
     }
@@ -329,10 +416,13 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     if (_tabController.index != idx) {
       _tabController.animateTo(idx);
     }
+    _persistRoomColleUiNow();
   }
 
   @override
   void dispose() {
+    _persistSearchDebounce?.cancel();
+    _persistRoomColleUiNow();
     _shellCtrl.removeListener(_onShellCtrlChanged);
     _flashTimer?.cancel();
     _candidateScrollController.dispose();
@@ -548,6 +638,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                 onChanged: (v) {
                   if (!mounted) return;
                   setState(() => _searchQuery = v);
+                  _schedulePersistRoomColleSearch();
                 },
                 textInputAction: TextInputAction.search,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -647,6 +738,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             onSelected: (v) {
                               if (!mounted) return;
                               setState(() => _excludeUrlNotReady = v);
+                              _persistRoomColleUiNow();
                             },
                             showCheckmark: false,
                             materialTapTargetSize:
@@ -711,6 +803,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     filterQuery: _searchQuery,
                     excludeUrlNotReady: _excludeUrlNotReady,
                     candidateFocusHandled: _candidateFocusHandled,
+                    onRecoverFromListError: _recoverRoomColleListAndFilters,
                     emptyTitle: 'コレ候補はまだありません',
                     emptySubtitle: '',
                     emptyHint: '',
@@ -736,10 +829,14 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     filterQuery: _searchQuery,
                     excludeUrlNotReady: _excludeUrlNotReady,
                     candidateFocusHandled: true,
+                    onRecoverFromListError: _recoverRoomColleListAndFilters,
                     doneAtLocalDayFilter: _doneLocalDayFilter,
                     onClearDoneDayFilter: _doneLocalDayFilter == null
                         ? null
-                        : () => setState(() => _doneLocalDayFilter = null),
+                        : () {
+                            setState(() => _doneLocalDayFilter = null);
+                            _persistRoomColleUiNow();
+                          },
                     emptyTitle: 'コレ済の商品はまだありません',
                     emptySubtitle: '',
                     emptyHint: '',
@@ -764,6 +861,7 @@ class _RoomManagedProductListTab extends StatefulWidget {
     required this.filterQuery,
     this.excludeUrlNotReady = false,
     this.candidateFocusHandled = true,
+    this.onRecoverFromListError,
     this.doneAtLocalDayFilter,
     this.onClearDoneDayFilter,
     required this.emptyTitle,
@@ -787,6 +885,9 @@ class _RoomManagedProductListTab extends StatefulWidget {
 
   /// 親が候補フォーカス意図を消化済みなら true（build 内での post-frame 連発を止める）。
   final bool candidateFocusHandled;
+
+  /// 一覧エラー時にフィルタ初期化＋再読込で復旧する。
+  final Future<void> Function()? onRecoverFromListError;
 
   final DateTime? doneAtLocalDayFilter;
   final VoidCallback? onClearDoneDayFilter;
@@ -897,6 +998,7 @@ class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> 
             message: provider.listUiErrorMessage ?? '一覧データの読み込みに失敗しました。',
             onRetry: () =>
                 provider.refreshManagedProductList(showLoadingIndicator: true),
+            onResetFiltersAndRetry: widget.onRecoverFromListError,
           );
         }
 
@@ -1520,10 +1622,12 @@ class _RoomCollectionErrorState extends StatelessWidget {
   const _RoomCollectionErrorState({
     required this.message,
     required this.onRetry,
+    this.onResetFiltersAndRetry,
   });
 
   final String message;
   final Future<void> Function() onRetry;
+  final Future<void> Function()? onResetFiltersAndRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -1565,6 +1669,13 @@ class _RoomCollectionErrorState extends StatelessWidget {
                     icon: const Icon(Icons.refresh_rounded, size: 20),
                     label: const Text('もう一度読み込む'),
                   ),
+                  if (onResetFiltersAndRetry != null) ...[
+                    const SizedBox(height: 12),
+                    TextButton(
+                      onPressed: () => onResetFiltersAndRetry!(),
+                      child: const Text('フィルタを初期化して再開'),
+                    ),
+                  ],
                 ],
               ),
             ),
