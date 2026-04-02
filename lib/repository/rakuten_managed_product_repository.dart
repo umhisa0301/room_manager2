@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/rakuten_managed_product.dart';
@@ -15,13 +16,14 @@ class RakutenManagedProductRepository {
 
   /// [status] に一致する商品だけを返す（更新日時の新しい順）。
   List<RakutenManagedProduct> loadByStatus(RakutenManagedProductStatus status) {
-    final list =
-        loadAll().where((e) => e.status == status).toList(growable: false);
+    final list = loadAll()
+        .where((e) => RakutenManagedProduct.isMemberForStatusTab(e, status))
+        .toList(growable: false);
     list.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
     return list;
   }
 
-  /// 保存済みの一覧を読み込む。破損時は空。
+  /// 保存済みの一覧を読み込む。要素単位でパースし、1件失敗で全体を捨てない。
   List<RakutenManagedProduct> loadAll() {
     try {
       final jsonStr = _prefs.getString(_keyList);
@@ -32,17 +34,38 @@ class RakutenManagedProductRepository {
 
       final out = <RakutenManagedProduct>[];
       for (final entry in decoded) {
-        Map<String, dynamic>? map;
-        if (entry is Map<String, dynamic>) {
-          map = entry;
-        } else if (entry is Map) {
-          map = Map<String, dynamic>.from(entry);
+        try {
+          Map<String, dynamic>? map;
+          if (entry is Map<String, dynamic>) {
+            map = entry;
+          } else if (entry is Map) {
+            map = Map<String, dynamic>.from(entry);
+          } else {
+            if (kDebugMode) {
+              debugPrint(
+                '[ROOMコレ診断] loadAll skip non-map entry type=${entry.runtimeType}',
+              );
+            }
+            continue;
+          }
+          final item = RakutenManagedProduct.fromJson(map);
+          if (item != null) out.add(item);
+        } catch (e, st) {
+          if (kDebugMode) {
+            debugPrint('[ROOMコレ診断] loadAll skip corrupt entry: $e\n$st');
+          }
         }
-        final item = RakutenManagedProduct.fromJson(map);
-        if (item != null) out.add(item);
+      }
+      if (kDebugMode) {
+        debugPrint(
+          '[ROOMコレ診断] loadAll 成功 parsed=${out.length} rawJsonList=${decoded.length}',
+        );
       }
       return out;
-    } catch (_) {
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[ROOMコレ診断] loadAll 全体失敗（JSON等）: $e\n$st');
+      }
       return [];
     }
   }
@@ -72,6 +95,12 @@ class RakutenManagedProductRepository {
       ),
     );
     await _saveAll(list);
+    if (kDebugMode) {
+      debugPrint(
+        '[ROOMコレ診断] registerCandidateFromSearchItem 保存 productId=${item.productId} '
+        'status=candidate saveCount=${list.length}',
+      );
+    }
     return true;
   }
 

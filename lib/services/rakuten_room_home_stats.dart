@@ -5,11 +5,25 @@ class RakutenRoomHomeStats {
   RakutenRoomHomeStats._();
 
   static int countCandidates(List<RakutenManagedProduct> all) {
-    return all.where((e) => e.status == RakutenManagedProductStatus.candidate).length;
+    return all
+        .where(
+          (e) => RakutenManagedProduct.isMemberForStatusTab(
+            e,
+            RakutenManagedProductStatus.candidate,
+          ),
+        )
+        .length;
   }
 
   static int countDone(List<RakutenManagedProduct> all) {
-    return all.where((e) => e.status == RakutenManagedProductStatus.done).length;
+    return all
+        .where(
+          (e) => RakutenManagedProduct.isMemberForStatusTab(
+            e,
+            RakutenManagedProductStatus.done,
+          ),
+        )
+        .length;
   }
 
   /// [anchor] のローカル暦日と同一日の [doneAt] をもつコレ済件数（日付切替は端末ローカルの 0:00 基準）。
@@ -20,7 +34,12 @@ class RakutenRoomHomeStats {
     final target = DateTime(anchor.year, anchor.month, anchor.day);
     var n = 0;
     for (final e in all) {
-      if (e.status != RakutenManagedProductStatus.done) continue;
+      if (!RakutenManagedProduct.isMemberForStatusTab(
+            e,
+            RakutenManagedProductStatus.done,
+          )) {
+        continue;
+      }
       final d = e.doneAt;
       if (d == null) continue;
       final localDay = DateTime(d.year, d.month, d.day);
@@ -33,7 +52,12 @@ class RakutenRoomHomeStats {
   static DateTime? latestDoneAt(List<RakutenManagedProduct> all) {
     DateTime? max;
     for (final e in all) {
-      if (e.status != RakutenManagedProductStatus.done) continue;
+      if (!RakutenManagedProduct.isMemberForStatusTab(
+            e,
+            RakutenManagedProductStatus.done,
+          )) {
+        continue;
+      }
       final d = e.doneAt;
       if (d == null) continue;
       if (max == null || d.isAfter(max)) max = d;
@@ -45,8 +69,14 @@ class RakutenRoomHomeStats {
   static List<RakutenManagedProduct> candidatesNewestFirst(
     List<RakutenManagedProduct> all,
   ) {
-    final list =
-        all.where((e) => e.status == RakutenManagedProductStatus.candidate).toList();
+    final list = all
+        .where(
+          (e) => RakutenManagedProduct.isMemberForStatusTab(
+            e,
+            RakutenManagedProductStatus.candidate,
+          ),
+        )
+        .toList();
     list.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
     return list;
   }

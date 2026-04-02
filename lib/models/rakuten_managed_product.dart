@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'rakuten_search_item.dart';
 
 /// 楽天ROOM周りでローカル管理する商品の状態（将来「コレ済」等を追加しやすい）。
@@ -168,14 +170,56 @@ class RakutenManagedProduct {
   }
 
   static RakutenUrlExtractionStatus _parseExtractionStatus(String? raw) {
+    final t = raw?.trim();
+    if (t == null || t.isEmpty) {
+      return RakutenUrlExtractionStatus.notStarted;
+    }
     return RakutenUrlExtractionStatus.values.firstWhere(
-      (e) => e.name == raw,
+      (e) => e.name == t,
       orElse: () => RakutenUrlExtractionStatus.notStarted,
     );
   }
 
+  /// [RakutenManagedProductProvider.sortedItemsForStatus] と同一のタブ所属判定。
+  static bool isMemberForStatusTab(
+    RakutenManagedProduct e,
+    RakutenManagedProductStatus status,
+  ) {
+    if (e.status == status) return true;
+    if (e.status == RakutenManagedProductStatus.none) {
+      if (status == RakutenManagedProductStatus.done && e.doneAt != null) {
+        return true;
+      }
+      if (status == RakutenManagedProductStatus.candidate && e.doneAt == null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static int _readItemPrice(dynamic raw) {
+    if (raw == null) return 0;
+    if (raw is int) return raw;
+    if (raw is num) return raw.toInt();
+    if (raw is String) {
+      return int.tryParse(raw.trim()) ?? 0;
+    }
+    return 0;
+  }
+
   static RakutenManagedProduct? fromJson(Map<String, dynamic>? json) {
     if (json == null) return null;
+    try {
+      return _fromJsonImpl(json);
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[ROOMコレ診断] RakutenManagedProduct.fromJson 失敗: $e\n$st');
+      }
+      return null;
+    }
+  }
+
+  static RakutenManagedProduct? _fromJsonImpl(Map<String, dynamic> json) {
     final productId = (json['productId'] ?? '').toString().trim();
     if (productId.isEmpty) return null;
     final itemName = (json['itemName'] ?? '').toString();
@@ -212,8 +256,9 @@ class RakutenManagedProduct {
       doneAt = parseDt(dAt);
     }
 
+    final statusRaw = (json['status'] ?? '').toString().trim();
     var status = RakutenManagedProductStatus.values.firstWhere(
-      (e) => e.name == (json['status'] ?? '').toString(),
+      (e) => e.name == statusRaw,
       orElse: () => RakutenManagedProductStatus.candidate,
     );
     if (status == RakutenManagedProductStatus.none) {
@@ -222,15 +267,15 @@ class RakutenManagedProduct {
           : RakutenManagedProductStatus.candidate;
     }
 
-    final extRaw = json['extractionStatus']?.toString();
-    final extractionStatus = extRaw != null && extRaw.isNotEmpty
+    final extRaw = (json['extractionStatus']?.toString() ?? '').trim();
+    final extractionStatus = extRaw.isNotEmpty
         ? _parseExtractionStatus(extRaw)
         : RakutenUrlExtractionStatus.notStarted;
 
     return RakutenManagedProduct(
       productId: productId,
       itemName: itemName,
-      itemPrice: (json['itemPrice'] as num?)?.toInt() ?? 0,
+      itemPrice: _readItemPrice(json['itemPrice']),
       itemUrl: itemUrl,
       affiliateUrl: (json['affiliateUrl'] ?? '').toString(),
       imageUrl: (json['imageUrl'] ?? '').toString(),

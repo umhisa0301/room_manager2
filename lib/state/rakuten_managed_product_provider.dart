@@ -49,19 +49,9 @@ class RakutenManagedProductProvider extends ChangeNotifier {
   List<RakutenManagedProduct> sortedItemsForStatus(
     RakutenManagedProductStatus status,
   ) {
-    final filtered = _items.where((e) {
-      if (e.status == status) return true;
-      if (e.status == RakutenManagedProductStatus.none) {
-        if (status == RakutenManagedProductStatus.done && e.doneAt != null) {
-          return true;
-        }
-        if (status == RakutenManagedProductStatus.candidate &&
-            e.doneAt == null) {
-          return true;
-        }
-      }
-      return false;
-    }).toList();
+    final filtered = _items
+        .where((e) => RakutenManagedProduct.isMemberForStatusTab(e, status))
+        .toList();
     try {
       filtered.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
     } catch (_) {
@@ -85,6 +75,16 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       _items = _repository.loadAll();
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
       _listUiErrorMessage = null;
+      if (kDebugMode) {
+        final nCand =
+            sortedItemsForStatus(RakutenManagedProductStatus.candidate).length;
+        final nDone =
+            sortedItemsForStatus(RakutenManagedProductStatus.done).length;
+        debugPrint(
+          '[ROOMコレ診断] refreshManagedProductList 完了 total=${_items.length} '
+          'candidate=$nCand done=$nDone ui=ready',
+        );
+      }
     } catch (e, st) {
       if (kDebugMode) {
         debugPrint('[RakutenManagedProduct] refreshManagedProductList failed: $e');
@@ -148,6 +148,17 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       _reloadFromStorage();
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
       _listUiErrorMessage = null;
+      if (kDebugMode) {
+        final nCand =
+            sortedItemsForStatus(RakutenManagedProductStatus.candidate).length;
+        final nDone =
+            sortedItemsForStatus(RakutenManagedProductStatus.done).length;
+        debugPrint(
+          '[ROOMコレ診断] registerCandidate 反映 productId=$id persisted→memory '
+          'total=${_items.length} candidate=$nCand done=$nDone '
+          'added=$added status saved=candidate',
+        );
+      }
       if (added) {
         await _repository.markExtractionExtracting(id);
         _reloadFromStorage();
@@ -266,6 +277,16 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       _reloadFromStorage();
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
       _listUiErrorMessage = null;
+      if (kDebugMode) {
+        final nCand =
+            sortedItemsForStatus(RakutenManagedProductStatus.candidate).length;
+        final nDone =
+            sortedItemsForStatus(RakutenManagedProductStatus.done).length;
+        debugPrint(
+          '[ROOMコレ診断] collectRoomAndLaunch 反映 productId=$id '
+          'total=${_items.length} candidate=$nCand done=$nDone status saved=done',
+        );
+      }
       notifyListeners();
     } on Exception catch (e) {
       if (kDebugMode) {

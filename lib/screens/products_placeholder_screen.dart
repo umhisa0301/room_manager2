@@ -468,7 +468,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     });
     _shellCtrl = context.read<AppShellController>();
     _shellCtrl.addListener(_onShellCtrlChanged);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       final managed = context.read<RakutenManagedProductProvider>();
       if (managed.listUiStatus == RakutenManagedProductListUiStatus.error) {
@@ -478,7 +478,19 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         managed.recoverListUiSilently();
       }
       _tryConsumeRoomCollectIntent();
-      managed.refreshManagedProductList(showLoadingIndicator: false);
+      await managed.refreshManagedProductList(showLoadingIndicator: false);
+      if (!mounted) return;
+      if (kDebugMode) {
+        final m = context.read<RakutenManagedProductProvider>();
+        final nCand =
+            m.sortedItemsForStatus(RakutenManagedProductStatus.candidate).length;
+        final nDone =
+            m.sortedItemsForStatus(RakutenManagedProductStatus.done).length;
+        debugPrint(
+          '[ROOMコレ診断] ROOMコレ画面起動後 total=${m.items.length} candidate=$nCand '
+          'done=$nDone listUi=${m.listUiStatus} tabIdx=${_tabController.index}',
+        );
+      }
     });
   }
 
@@ -1216,6 +1228,21 @@ class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> 
           canShowDayEmptyMessage: canShowDayEmpty,
         );
         _debugLogSurface(surface);
+        if (kDebugMode) {
+          debugPrint(
+            '[ROOMコレ診断] 一覧直前 tab=${widget.status.name} kw="${widget.filterQuery}" '
+            'urlExcl=${widget.excludeUrlNotReady} day=${widget.doneAtLocalDayFilter != null} '
+            'baseLen=${baseList.length} afterFilterLen=${list.length} '
+            'surface=${surface.debugLabel} ui=${ui.name}',
+          );
+          if (list.isNotEmpty) {
+            final f = list.first;
+            debugPrint(
+              '[ROOMコレ診断] 描画リスト先頭 productId=${f.productId} title=${f.itemName} '
+              'status=${f.status.name} len=${list.length}',
+            );
+          }
+        }
 
         switch (surface) {
           case _RoomColleListSurface.loading:
