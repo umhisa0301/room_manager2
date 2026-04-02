@@ -95,7 +95,24 @@ List<RakutenManagedProduct> _roomListVisibleItems({
       status == RakutenManagedProductStatus.candidate && excludeUrlNotReady;
   final urlScoped = _filterExcludeUrlNotReady(scoped, urlActive);
   final queried = _filterManagedProductsByQuery(urlScoped, filterQuery);
-  return _dedupeManagedProductsPreserveOrder(queried);
+  final deduped = _dedupeManagedProductsPreserveOrder(queried);
+  if (deduped.isEmpty && baseList.isNotEmpty) {
+    final urlHidAll = status == RakutenManagedProductStatus.candidate &&
+        excludeUrlNotReady &&
+        scoped.isNotEmpty &&
+        _filterExcludeUrlNotReady(scoped, true).isEmpty;
+    final q = filterQuery.trim();
+    final searchHidAll = q.isNotEmpty && scoped.isNotEmpty;
+    if (!urlHidAll && !searchHidAll) {
+      final rawScoped = status == RakutenManagedProductStatus.done &&
+              day != null
+          ? _filterDoneOnLocalCalendarDay(baseList, day)
+          : baseList;
+      final fallback = _dedupeManagedProductsPreserveOrder(rawScoped);
+      if (fallback.isNotEmpty) return fallback;
+    }
+  }
+  return deduped;
 }
 
 /// タブ表示件数を [_roomListVisibleItems] に揃える。
@@ -951,7 +968,8 @@ class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> 
       }
       try {
         final p = context.read<RakutenManagedProductProvider>();
-        if (p.listUiStatus != RakutenManagedProductListUiStatus.ready) {
+        if (p.listUiStatus == RakutenManagedProductListUiStatus.loading ||
+            p.listUiStatus == RakutenManagedProductListUiStatus.error) {
           return;
         }
         if (widget.candidateFocusHandled) return;

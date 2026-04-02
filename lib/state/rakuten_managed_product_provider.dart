@@ -27,6 +27,8 @@ class RakutenManagedProductProvider extends ChangeNotifier {
   })  : _repository = repository,
         _pendingCollectNoticeRepository = pendingCollectNoticeRepository {
     _reloadFromStorage();
+    _listUiStatus = RakutenManagedProductListUiStatus.ready;
+    _listUiErrorMessage = null;
   }
 
   final RakutenManagedProductRepository _repository;
@@ -47,8 +49,24 @@ class RakutenManagedProductProvider extends ChangeNotifier {
   List<RakutenManagedProduct> sortedItemsForStatus(
     RakutenManagedProductStatus status,
   ) {
-    final filtered = _items.where((e) => e.status == status).toList();
-    filtered.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    final filtered = _items.where((e) {
+      if (e.status == status) return true;
+      if (e.status == RakutenManagedProductStatus.none) {
+        if (status == RakutenManagedProductStatus.done && e.doneAt != null) {
+          return true;
+        }
+        if (status == RakutenManagedProductStatus.candidate &&
+            e.doneAt == null) {
+          return true;
+        }
+      }
+      return false;
+    }).toList();
+    try {
+      filtered.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    } catch (_) {
+      // 日時不整合時は並び替えを諦める（一覧は表示を優先）
+    }
     return List.unmodifiable(filtered);
   }
 

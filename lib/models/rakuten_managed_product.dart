@@ -200,16 +200,6 @@ class RakutenManagedProduct {
     final updatedAt = parseDt(updatedRaw);
     if (createdAt == null || updatedAt == null) return null;
 
-    final status = RakutenManagedProductStatus.values.firstWhere(
-      (e) => e.name == (json['status'] ?? '').toString(),
-      orElse: () => RakutenManagedProductStatus.candidate,
-    );
-
-    final extRaw = json['extractionStatus']?.toString();
-    final extractionStatus = extRaw != null && extRaw.isNotEmpty
-        ? _parseExtractionStatus(extRaw)
-        : RakutenUrlExtractionStatus.notStarted;
-
     DateTime? extractedAt;
     final extAt = json['extractedAt']?.toString();
     if (extAt != null && extAt.isNotEmpty) {
@@ -221,6 +211,21 @@ class RakutenManagedProduct {
     if (dAt != null && dAt.isNotEmpty) {
       doneAt = parseDt(dAt);
     }
+
+    var status = RakutenManagedProductStatus.values.firstWhere(
+      (e) => e.name == (json['status'] ?? '').toString(),
+      orElse: () => RakutenManagedProductStatus.candidate,
+    );
+    if (status == RakutenManagedProductStatus.none) {
+      status = doneAt != null
+          ? RakutenManagedProductStatus.done
+          : RakutenManagedProductStatus.candidate;
+    }
+
+    final extRaw = json['extractionStatus']?.toString();
+    final extractionStatus = extRaw != null && extRaw.isNotEmpty
+        ? _parseExtractionStatus(extRaw)
+        : RakutenUrlExtractionStatus.notStarted;
 
     return RakutenManagedProduct(
       productId: productId,

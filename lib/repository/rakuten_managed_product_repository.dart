@@ -32,7 +32,12 @@ class RakutenManagedProductRepository {
 
       final out = <RakutenManagedProduct>[];
       for (final entry in decoded) {
-        final map = entry is Map<String, dynamic> ? entry : null;
+        Map<String, dynamic>? map;
+        if (entry is Map<String, dynamic>) {
+          map = entry;
+        } else if (entry is Map) {
+          map = Map<String, dynamic>.from(entry);
+        }
         final item = RakutenManagedProduct.fromJson(map);
         if (item != null) out.add(item);
       }
