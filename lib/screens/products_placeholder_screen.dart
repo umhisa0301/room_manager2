@@ -285,10 +285,12 @@ class ProductsPlaceholderScreen extends StatefulWidget {
 class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
-  final TextEditingController _searchController = TextEditingController();
+  late final TextEditingController _candidateSearchController;
+  late final TextEditingController _doneSearchController;
   final ScrollController _candidateScrollController = ScrollController();
   final Map<String, GlobalKey> _candidateRowKeys = <String, GlobalKey>{};
-  String _searchQuery = '';
+  String _candidateSearchQuery = '';
+  String _doneSearchQuery = '';
   DateTime? _doneLocalDayFilter;
   Timer? _flashTimer;
   String? _flashProductId;
@@ -296,7 +298,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   String? _shellFocusCandidateProductId;
   late final AppShellController _shellCtrl;
   late final RoomColleUiStateRepository _roomColleUiRepo;
-  bool _excludeUrlNotReady = false;
+  bool _candidateExcludeUrlNotReady = false;
   Timer? _persistSearchDebounce;
 
   String? get _focusCandidateTargetId {
@@ -358,10 +360,13 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
 
   void _resetRoomColleFilters() {
     if (!mounted) return;
+    _persistSearchDebounce?.cancel();
     setState(() {
-      _excludeUrlNotReady = false;
-      _searchQuery = '';
-      _searchController.clear();
+      _candidateExcludeUrlNotReady = false;
+      _candidateSearchQuery = '';
+      _doneSearchQuery = '';
+      _candidateSearchController.clear();
+      _doneSearchController.clear();
       _doneLocalDayFilter = null;
     });
     _persistRoomColleUiNow();
@@ -370,8 +375,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   RoomColleUiStateSnapshot _snapshotForPersist() {
     return RoomColleUiStateSnapshot(
       tabIndex: _tabController.index.clamp(0, 1),
-      searchQuery: _searchQuery,
-      excludeUrlNotReady: _excludeUrlNotReady,
+      candidateSearchQuery: _candidateSearchQuery,
+      doneSearchQuery: _doneSearchQuery,
+      candidateExcludeUrlNotReady: _candidateExcludeUrlNotReady,
       doneLocalDay: _doneLocalDayFilter,
     );
   }
@@ -400,10 +406,13 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     if (kDebugMode) {
       debugPrint('[ROOMコレ] recover: filters + list UI (user)');
     }
+    _persistSearchDebounce?.cancel();
     setState(() {
-      _excludeUrlNotReady = false;
-      _searchQuery = '';
-      _searchController.clear();
+      _candidateExcludeUrlNotReady = false;
+      _candidateSearchQuery = '';
+      _doneSearchQuery = '';
+      _candidateSearchController.clear();
+      _doneSearchController.clear();
       _doneLocalDayFilter = null;
     });
     await _roomColleUiRepo.clearPersisted();
@@ -417,6 +426,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   @override
   void initState() {
     super.initState();
+    _candidateSearchController = TextEditingController();
+    _doneSearchController = TextEditingController();
     _roomColleUiRepo = context.read<RoomColleUiStateRepository>();
     final persisted = _roomColleUiRepo.loadSanitized();
 
@@ -424,9 +435,11 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       _doneLocalDayFilter =
           _normalizeDoneDayFilter(widget.initialDoneFilterLocalDay);
     } else {
-      _searchQuery = persisted.searchQuery;
-      _searchController.text = persisted.searchQuery;
-      _excludeUrlNotReady = persisted.excludeUrlNotReady;
+      _candidateSearchQuery = persisted.candidateSearchQuery;
+      _candidateSearchController.text = persisted.candidateSearchQuery;
+      _doneSearchQuery = persisted.doneSearchQuery;
+      _doneSearchController.text = persisted.doneSearchQuery;
+      _candidateExcludeUrlNotReady = persisted.candidateExcludeUrlNotReady;
       _doneLocalDayFilter = _normalizeDoneDayFilter(persisted.doneLocalDay);
     }
 
@@ -435,8 +448,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     if (focusId != null &&
         focusId.isNotEmpty &&
         idx0 == 0) {
-      _searchController.clear();
-      _searchQuery = '';
+      _candidateSearchController.clear();
+      _candidateSearchQuery = '';
     }
     final initialIndex = _resolveInitialTabIndex(persisted);
     _tabController = TabController(
@@ -504,10 +517,13 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     final focusId =
         (focusRaw != null && focusRaw.isNotEmpty && idx == 0) ? focusRaw : null;
 
+    _persistSearchDebounce?.cancel();
     setState(() {
-      _excludeUrlNotReady = false;
-      _searchController.clear();
-      _searchQuery = '';
+      _candidateExcludeUrlNotReady = false;
+      _candidateSearchController.clear();
+      _doneSearchController.clear();
+      _candidateSearchQuery = '';
+      _doneSearchQuery = '';
       if (idx == 0) {
         _doneLocalDayFilter = null;
       } else {
@@ -536,8 +552,56 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     _flashTimer?.cancel();
     _candidateScrollController.dispose();
     _tabController.dispose();
-    _searchController.dispose();
+    _candidateSearchController.dispose();
+    _doneSearchController.dispose();
     super.dispose();
+  }
+
+  InputDecoration _roomColleKeywordDecoration(BuildContext context) {
+    return InputDecoration(
+      hintText: 'キーワード検索',
+      hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontSize: 14,
+            color: AppColors.textTertiary,
+          ),
+      isDense: true,
+      filled: true,
+      fillColor: AppColors.surface,
+      contentPadding: const EdgeInsets.fromLTRB(16, 10, 4, 10),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(
+          AppDimensions.radiusSearchBar,
+        ),
+        borderSide: const BorderSide(color: AppColors.divider),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(
+          AppDimensions.radiusSearchBar,
+        ),
+        borderSide: const BorderSide(color: AppColors.divider),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(
+          AppDimensions.radiusSearchBar,
+        ),
+        borderSide: const BorderSide(
+          color: AppColors.accentPrimary,
+          width: 1.5,
+        ),
+      ),
+      suffixIcon: const Padding(
+        padding: EdgeInsetsDirectional.only(end: 10),
+        child: Icon(
+          Icons.search_rounded,
+          color: AppColors.textTertiary,
+          size: 24,
+        ),
+      ),
+      suffixIconConstraints: const BoxConstraints(
+        minWidth: 40,
+        minHeight: 40,
+      ),
+    );
   }
 
   @override
@@ -568,13 +632,13 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-            /// ① タブ（一覧モード切替）— 検索・フィルタと役割を分離
+            /// ① タブのみ（キーワード・URL 除外は各タブ内の絞り込み領域へ）
             Padding(
               padding: EdgeInsets.fromLTRB(
                 _kRoomListScreenPadH,
                 canPop ? 2 : 8,
                 _kRoomListScreenPadH,
-                6,
+                10,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -601,15 +665,15 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                         final nCand = _roomColleVisibleCount(
                           provider: managed,
                           status: RakutenManagedProductStatus.candidate,
-                          filterQuery: _searchQuery,
-                          excludeUrlNotReady: _excludeUrlNotReady,
+                          filterQuery: _candidateSearchQuery,
+                          excludeUrlNotReady: _candidateExcludeUrlNotReady,
                           doneAtLocalDayFilter: null,
                         );
                         final nDone = _roomColleVisibleCount(
                           provider: managed,
                           status: RakutenManagedProductStatus.done,
-                          filterQuery: _searchQuery,
-                          excludeUrlNotReady: _excludeUrlNotReady,
+                          filterQuery: _doneSearchQuery,
+                          excludeUrlNotReady: false,
                           doneAtLocalDayFilter: _doneLocalDayFilter,
                         );
                         final idx = _tabController.index;
@@ -679,137 +743,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                 ],
               ),
             ),
-            /// キーワード検索（この一覧内のみ絞り込み）
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                _kRoomListScreenPadH,
-                0,
-                _kRoomListScreenPadH,
-                4,
-              ),
-              child: TextField(
-                controller: _searchController,
-                onChanged: (v) {
-                  if (!mounted) return;
-                  setState(() => _searchQuery = v);
-                  _schedulePersistRoomColleSearch();
-                },
-                textInputAction: TextInputAction.search,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 14,
-                      height: 1.2,
-                    ),
-                decoration: InputDecoration(
-                  hintText: 'キーワード検索',
-                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontSize: 14,
-                        color: AppColors.textTertiary,
-                      ),
-                  isDense: true,
-                  filled: true,
-                  fillColor: AppColors.surface,
-                  contentPadding: const EdgeInsets.fromLTRB(16, 10, 4, 10),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      AppDimensions.radiusSearchBar,
-                    ),
-                    borderSide: const BorderSide(color: AppColors.divider),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      AppDimensions.radiusSearchBar,
-                    ),
-                    borderSide: const BorderSide(color: AppColors.divider),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      AppDimensions.radiusSearchBar,
-                    ),
-                    borderSide: const BorderSide(
-                      color: AppColors.accentPrimary,
-                      width: 1.5,
-                    ),
-                  ),
-                  suffixIcon: const Padding(
-                    padding: EdgeInsetsDirectional.only(end: 10),
-                    child: Icon(
-                      Icons.search_rounded,
-                      color: AppColors.textTertiary,
-                      size: 24,
-                    ),
-                  ),
-                  suffixIconConstraints: const BoxConstraints(
-                    minWidth: 40,
-                    minHeight: 40,
-                  ),
-                ),
-              ),
-            ),
-            /// URL 未取得除外（コレ候補タブの一覧のみ。行構成はタブ・キーワード・本チップに限定）
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                _kRoomListScreenPadH,
-                4,
-                _kRoomListScreenPadH,
-                8,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: FilterChip(
-                      label: const Text('URL未取得除外'),
-                      tooltip: 'コレ候補タブの一覧にのみ適用されます',
-                      selected: _excludeUrlNotReady,
-                      onSelected: (v) {
-                        if (!mounted) return;
-                        setState(() => _excludeUrlNotReady = v);
-                        _persistRoomColleUiNow();
-                      },
-                      showCheckmark: false,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 0,
-                      ),
-                      pressElevation: 0,
-                      backgroundColor: AppColors.surface,
-                      selectedColor:
-                          const Color(0xFF546E7A).withValues(alpha: 0.14),
-                      side: BorderSide(
-                        color: _excludeUrlNotReady
-                            ? const Color(0xFF546E7A)
-                            : AppColors.divider,
-                        width: _excludeUrlNotReady ? 1.25 : 1,
-                      ),
-                      labelStyle: TextStyle(
-                        color: _excludeUrlNotReady
-                            ? const Color(0xFF37474F)
-                            : AppColors.textPrimary,
-                        fontWeight: _excludeUrlNotReady
-                            ? FontWeight.w700
-                            : FontWeight.w500,
-                        fontSize: 12,
-                        height: 1.2,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: _resetRoomColleFilters,
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      minimumSize: Size.zero,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      visualDensity: VisualDensity.compact,
-                    ),
-                    child: const Text('条件クリア'),
-                  ),
-                ],
-              ),
-            ),
                 ],
               ),
             ),
@@ -817,52 +750,248 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  _RoomManagedProductListTab(
-                    status: RakutenManagedProductStatus.candidate,
-                    variant: RakutenManagedProductCardVariant.candidate,
-                    filterQuery: _searchQuery,
-                    excludeUrlNotReady: _excludeUrlNotReady,
-                    candidateFocusHandled: _candidateFocusHandled,
-                    onRecoverFromListError: _recoverRoomColleListAndFilters,
-                    emptyTitle: 'コレ候補はまだありません',
-                    emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
-                    emptyHint: '',
-                    accentColor: RoomListAccent.candidate,
-                    listScrollController: _candidateScrollController,
-                    flashHighlightProductId: _flashProductId,
-                    rowKeyFor: _keyForCandidateRow,
-                    focusCandidateProductId: _focusCandidateTargetId,
-                    onCandidateFocusListReady:
-                        _focusCandidateTargetId != null &&
-                                _focusCandidateTargetId!.isNotEmpty
-                            ? _onCandidateFocusListReady
-                            : null,
-                    onCandidateFocusProductMissing:
-                        _focusCandidateTargetId != null &&
-                                _focusCandidateTargetId!.isNotEmpty
-                            ? _onCandidateFocusProductMissing
-                            : null,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Material(
+                        color: AppColors.surface,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            _kRoomListScreenPadH,
+                            8,
+                            _kRoomListScreenPadH,
+                            8,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                '候補一覧の絞り込み',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(
+                                      color: AppColors.textSecondary,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                    ),
+                              ),
+                              const SizedBox(height: 6),
+                              TextField(
+                                controller: _candidateSearchController,
+                                onChanged: (v) {
+                                  if (!mounted) return;
+                                  setState(() => _candidateSearchQuery = v);
+                                  _schedulePersistRoomColleSearch();
+                                },
+                                textInputAction: TextInputAction.search,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      fontSize: 14,
+                                      height: 1.2,
+                                    ),
+                                decoration: _roomColleKeywordDecoration(context),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: FilterChip(
+                                      label: const Text('URL未取得除外'),
+                                      tooltip:
+                                          'URL が取得済みの候補だけ一覧に表示します',
+                                      selected: _candidateExcludeUrlNotReady,
+                                      onSelected: (v) {
+                                        if (!mounted) return;
+                                        setState(() =>
+                                            _candidateExcludeUrlNotReady = v);
+                                        _persistRoomColleUiNow();
+                                      },
+                                      showCheckmark: false,
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 0,
+                                      ),
+                                      pressElevation: 0,
+                                      backgroundColor: AppColors.surface,
+                                      selectedColor: const Color(0xFF546E7A)
+                                          .withValues(alpha: 0.14),
+                                      side: BorderSide(
+                                        color: _candidateExcludeUrlNotReady
+                                            ? const Color(0xFF546E7A)
+                                            : AppColors.divider,
+                                        width:
+                                            _candidateExcludeUrlNotReady
+                                                ? 1.25
+                                                : 1,
+                                      ),
+                                      labelStyle: TextStyle(
+                                        color: _candidateExcludeUrlNotReady
+                                            ? const Color(0xFF37474F)
+                                            : AppColors.textPrimary,
+                                        fontWeight:
+                                            _candidateExcludeUrlNotReady
+                                                ? FontWeight.w700
+                                                : FontWeight.w500,
+                                        fontSize: 12,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: _resetRoomColleFilters,
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      minimumSize: Size.zero,
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      visualDensity: VisualDensity.compact,
+                                    ),
+                                    child: const Text('条件クリア'),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Divider(height: 1, thickness: 1),
+                      Expanded(
+                        child: _RoomManagedProductListTab(
+                          status: RakutenManagedProductStatus.candidate,
+                          variant:
+                              RakutenManagedProductCardVariant.candidate,
+                          filterQuery: _candidateSearchQuery,
+                          excludeUrlNotReady: _candidateExcludeUrlNotReady,
+                          candidateFocusHandled: _candidateFocusHandled,
+                          onRecoverFromListError:
+                              _recoverRoomColleListAndFilters,
+                          emptyTitle: 'コレ候補はまだありません',
+                          emptySubtitle:
+                              '保存データでは、このタブに該当する商品はまだありません。',
+                          emptyHint: '',
+                          accentColor: RoomListAccent.candidate,
+                          listScrollController: _candidateScrollController,
+                          flashHighlightProductId: _flashProductId,
+                          rowKeyFor: _keyForCandidateRow,
+                          focusCandidateProductId: _focusCandidateTargetId,
+                          onCandidateFocusListReady:
+                              _focusCandidateTargetId != null &&
+                                      _focusCandidateTargetId!
+                                          .isNotEmpty
+                                  ? _onCandidateFocusListReady
+                                  : null,
+                          onCandidateFocusProductMissing:
+                              _focusCandidateTargetId != null &&
+                                      _focusCandidateTargetId!
+                                          .isNotEmpty
+                                  ? _onCandidateFocusProductMissing
+                                  : null,
+                        ),
+                      ),
+                    ],
                   ),
-                  _RoomManagedProductListTab(
-                    status: RakutenManagedProductStatus.done,
-                    variant: RakutenManagedProductCardVariant.done,
-                    filterQuery: _searchQuery,
-                    excludeUrlNotReady: _excludeUrlNotReady,
-                    candidateFocusHandled: true,
-                    onRecoverFromListError: _recoverRoomColleListAndFilters,
-                    doneAtLocalDayFilter: _doneLocalDayFilter,
-                    onClearDoneDayFilter: _doneLocalDayFilter == null
-                        ? null
-                        : () {
-                            setState(() => _doneLocalDayFilter = null);
-                            _persistRoomColleUiNow();
-                          },
-                    emptyTitle: 'コレ済の商品はまだありません',
-                    emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
-                    emptyHint: '',
-                    dayFilterEmptyTitle: 'この日にコレした商品はありません',
-                    dayFilterEmptySubtitle: '表示は端末の日付（このアプリでコレ済にした日時）に基づきます。',
-                    accentColor: RoomListAccent.done,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Material(
+                        color: AppColors.surface,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            _kRoomListScreenPadH,
+                            8,
+                            _kRoomListScreenPadH,
+                            8,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                'コレ済一覧の絞り込み',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(
+                                      color: AppColors.textSecondary,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                    ),
+                              ),
+                              const SizedBox(height: 6),
+                              TextField(
+                                controller: _doneSearchController,
+                                onChanged: (v) {
+                                  if (!mounted) return;
+                                  setState(() => _doneSearchQuery = v);
+                                  _schedulePersistRoomColleSearch();
+                                },
+                                textInputAction: TextInputAction.search,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      fontSize: 14,
+                                      height: 1.2,
+                                    ),
+                                decoration: _roomColleKeywordDecoration(context),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: _resetRoomColleFilters,
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    minimumSize: Size.zero,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    visualDensity: VisualDensity.compact,
+                                  ),
+                                  child: const Text('条件クリア'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Divider(height: 1, thickness: 1),
+                      Expanded(
+                        child: _RoomManagedProductListTab(
+                          status: RakutenManagedProductStatus.done,
+                          variant: RakutenManagedProductCardVariant.done,
+                          filterQuery: _doneSearchQuery,
+                          excludeUrlNotReady: false,
+                          candidateFocusHandled: true,
+                          onRecoverFromListError:
+                              _recoverRoomColleListAndFilters,
+                          doneAtLocalDayFilter: _doneLocalDayFilter,
+                          onClearDoneDayFilter: _doneLocalDayFilter == null
+                              ? null
+                              : () {
+                                  setState(() => _doneLocalDayFilter = null);
+                                  _persistRoomColleUiNow();
+                                },
+                          emptyTitle: 'コレ済の商品はまだありません',
+                          emptySubtitle:
+                              '保存データでは、このタブに該当する商品はまだありません。',
+                          emptyHint: '',
+                          dayFilterEmptyTitle: 'この日にコレした商品はありません',
+                          dayFilterEmptySubtitle:
+                              '表示は端末の日付（このアプリでコレ済にした日時）に基づきます。',
+                          accentColor: RoomListAccent.done,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

@@ -12,6 +12,7 @@ class RoomColleUiStateRepository {
 
   static const String _key = 'room_colle_ui_state_v1';
   static const int _maxSearchLen = 512;
+  static const int _schemaV2 = 2;
 
   /// 読み込みと検証。失敗時は [RoomColleUiStateSnapshot.defaults] を返し、必要なら永続を削除。
   RoomColleUiStateSnapshot loadSanitized() {
@@ -27,6 +28,7 @@ class RoomColleUiStateRepository {
         return RoomColleUiStateSnapshot.defaults();
       }
       final map = Map<String, dynamic>.from(decoded);
+
       final tabRaw = map['tabIndex'];
       var tabIndex = 0;
       if (tabRaw is int) {
@@ -37,15 +39,6 @@ class RoomColleUiStateRepository {
       if (tabIndex < 0 || tabIndex > 1) {
         _logInitFailure('bad_tabIndex=$tabIndex');
         tabIndex = 0;
-      }
-
-      final excludeRaw = map['excludeUrlNotReady'];
-      final excludeUrlNotReady = excludeRaw is bool ? excludeRaw : false;
-
-      var searchQuery = '';
-      final q = map['searchQuery'];
-      if (q is String) {
-        searchQuery = _sanitizeSearchQuery(q);
       }
 
       DateTime? doneLocalDay;
@@ -64,10 +57,49 @@ class RoomColleUiStateRepository {
         }
       }
 
+      final schemaRaw = map['schema'];
+      final hasV2 = schemaRaw == _schemaV2 ||
+          map['candidateSearchQuery'] != null ||
+          map['doneSearchQuery'] != null;
+
+      if (hasV2) {
+        var candidateQ = '';
+        final cq = map['candidateSearchQuery'];
+        if (cq is String) {
+          candidateQ = _sanitizeSearchQuery(cq);
+        }
+        var doneQ = '';
+        final dq = map['doneSearchQuery'];
+        if (dq is String) {
+          doneQ = _sanitizeSearchQuery(dq);
+        }
+        final exRaw = map['candidateExcludeUrlNotReady'];
+        final exclude =
+            exRaw is bool ? exRaw : false;
+
+        return RoomColleUiStateSnapshot(
+          tabIndex: tabIndex,
+          candidateSearchQuery: candidateQ,
+          doneSearchQuery: doneQ,
+          candidateExcludeUrlNotReady: exclude,
+          doneLocalDay: doneLocalDay,
+        );
+      }
+
+      /// 旧スキーマ（1本の searchQuery・excludeUrlNotReady）
+      final excludeRaw = map['excludeUrlNotReady'];
+      final excludeUrlNotReady = excludeRaw is bool ? excludeRaw : false;
+      var legacyQ = '';
+      final q = map['searchQuery'];
+      if (q is String) {
+        legacyQ = _sanitizeSearchQuery(q);
+      }
+
       return RoomColleUiStateSnapshot(
         tabIndex: tabIndex,
-        searchQuery: searchQuery,
-        excludeUrlNotReady: excludeUrlNotReady,
+        candidateSearchQuery: legacyQ,
+        doneSearchQuery: legacyQ,
+        candidateExcludeUrlNotReady: excludeUrlNotReady,
         doneLocalDay: doneLocalDay,
       );
     } catch (e, st) {
@@ -82,9 +114,12 @@ class RoomColleUiStateRepository {
   Future<void> saveSanitized(RoomColleUiStateSnapshot snap) async {
     try {
       final map = <String, dynamic>{
+        'schema': _schemaV2,
         'tabIndex': snap.tabIndex.clamp(0, 1),
-        'searchQuery': _sanitizeSearchQuery(snap.searchQuery),
-        'excludeUrlNotReady': snap.excludeUrlNotReady,
+        'candidateSearchQuery':
+            _sanitizeSearchQuery(snap.candidateSearchQuery),
+        'doneSearchQuery': _sanitizeSearchQuery(snap.doneSearchQuery),
+        'candidateExcludeUrlNotReady': snap.candidateExcludeUrlNotReady,
         'doneLocalDay': snap.doneLocalDay?.toIso8601String(),
       };
       await _prefs.setString(_key, jsonEncode(map));
@@ -122,23 +157,28 @@ class RoomColleUiStateRepository {
 }
 
 /// ROOMコレ画面上部のユーザー操作状態（一覧データとは別）。
+/// 候補タブ用・コレ済タブ用のキーワードと URL 除外を分離して保存する。
 class RoomColleUiStateSnapshot {
   const RoomColleUiStateSnapshot({
     required this.tabIndex,
-    required this.searchQuery,
-    required this.excludeUrlNotReady,
+    required this.candidateSearchQuery,
+    required this.doneSearchQuery,
+    required this.candidateExcludeUrlNotReady,
     this.doneLocalDay,
   });
 
   final int tabIndex;
-  final String searchQuery;
-  final bool excludeUrlNotReady;
+  final String candidateSearchQuery;
+  final String doneSearchQuery;
+  final bool candidateExcludeUrlNotReady;
   final DateTime? doneLocalDay;
 
-  static RoomColleUiStateSnapshot defaults() => const RoomColleUiStateSnapshot(
+  static RoomColleUiStateSnapshot defaults() =>
+      const RoomColleUiStateSnapshot(
         tabIndex: 0,
-        searchQuery: '',
-        excludeUrlNotReady: false,
+        candidateSearchQuery: '',
+        doneSearchQuery: '',
+        candidateExcludeUrlNotReady: false,
         doneLocalDay: null,
       );
 }
