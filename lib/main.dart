@@ -20,6 +20,7 @@ import 'widgets/room_url_extraction_host.dart';
 import 'navigation/app_route_observer.dart';
 import 'repository/pending_collect_notice_repository.dart';
 import 'repository/done_tab_notice_repository.dart';
+import 'repository/room_colle_ui_state_repository.dart';
 import 'repository/user_profile_repository.dart';
 import 'repository/saved_shop_repository.dart';
 import 'repository/today_recommendation_repository.dart';
@@ -41,6 +42,7 @@ void main() async {
   final pendingCollectNoticeRepository =
       PendingCollectNoticeRepository(prefs);
   final doneTabNoticeRepository = DoneTabNoticeRepository(prefs);
+  final roomColleUiStateRepository = RoomColleUiStateRepository(prefs);
   final userProfileRepository = UserProfileRepository(prefs);
   final savedShopRepository = SavedShopRepository(prefs);
   final todayRecommendationRepository = TodayRecommendationRepository(prefs);
@@ -53,6 +55,7 @@ void main() async {
       rakutenManagedProductRepository: rakutenManagedProductRepository,
       pendingCollectNoticeRepository: pendingCollectNoticeRepository,
       doneTabNoticeRepository: doneTabNoticeRepository,
+      roomColleUiStateRepository: roomColleUiStateRepository,
       userProfileRepository: userProfileRepository,
       savedShopRepository: savedShopRepository,
       todayRecommendationRepository: todayRecommendationRepository,
@@ -70,6 +73,7 @@ class MyApp extends StatelessWidget {
     required this.rakutenManagedProductRepository,
     required this.pendingCollectNoticeRepository,
     required this.doneTabNoticeRepository,
+    required this.roomColleUiStateRepository,
     required this.userProfileRepository,
     required this.savedShopRepository,
     required this.todayRecommendationRepository,
@@ -82,6 +86,7 @@ class MyApp extends StatelessWidget {
   final RakutenManagedProductRepository rakutenManagedProductRepository;
   final PendingCollectNoticeRepository pendingCollectNoticeRepository;
   final DoneTabNoticeRepository doneTabNoticeRepository;
+  final RoomColleUiStateRepository roomColleUiStateRepository;
   final UserProfileRepository userProfileRepository;
   final SavedShopRepository savedShopRepository;
   final TodayRecommendationRepository todayRecommendationRepository;
@@ -98,6 +103,9 @@ class MyApp extends StatelessWidget {
         ),
         Provider<DoneTabNoticeRepository>.value(
           value: doneTabNoticeRepository,
+        ),
+        Provider<RoomColleUiStateRepository>.value(
+          value: roomColleUiStateRepository,
         ),
         ChangeNotifierProvider(
           create: (_) => ProductListProvider(repository: productRepository),
