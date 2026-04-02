@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -21,20 +19,21 @@ abstract final class RoomListAccent {
   static const Color done = Color(0xFF2E7D32);
 }
 
-/// カード内アクション：見た目はコンパクト、タップ最小 48×48 を維持。
+/// カード内アクション：1行に収めつつタップ領域を確保。
 class _RoomListCardActionStyle {
   _RoomListCardActionStyle._();
 
   static const double minTap = 48;
 
-  static const double iconSizeCompact = 15;
-  static const double labelFontCompact = 11;
+  static const double iconSizeCompact = 14;
+  static const double labelFontCompact = 10.5;
+  static const double labelFontDelete = 10;
 
-  static const EdgeInsets paddingCompact =
-      EdgeInsets.symmetric(horizontal: 5, vertical: 4);
+  static const EdgeInsets paddingMain =
+      EdgeInsets.symmetric(horizontal: 6, vertical: 6);
 
   static const EdgeInsets paddingDelete =
-      EdgeInsets.symmetric(horizontal: 2, vertical: 4);
+      EdgeInsets.symmetric(horizontal: 4, vertical: 6);
 
   static RoundedRectangleBorder get _shapeCompact =>
       RoundedRectangleBorder(
@@ -48,8 +47,8 @@ class _RoomListCardActionStyle {
       backgroundColor: blue,
       disabledForegroundColor: Color(0xFFE3F2FD),
       disabledBackgroundColor: Color(0xFF90CAF9),
-      minimumSize: const Size(minTap, minTap),
-      padding: paddingCompact,
+      minimumSize: const Size(0, minTap),
+      padding: paddingMain,
       elevation: 0,
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
@@ -63,8 +62,8 @@ class _RoomListCardActionStyle {
       backgroundColor: AppColors.accentPrimary,
       disabledForegroundColor: AppColors.textTertiary,
       disabledBackgroundColor: AppColors.surfaceVariant,
-      minimumSize: const Size(minTap, minTap),
-      padding: paddingCompact,
+      minimumSize: const Size(0, minTap),
+      padding: paddingMain,
       elevation: 0,
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
@@ -76,11 +75,11 @@ class _RoomListCardActionStyle {
     return OutlinedButton.styleFrom(
       foregroundColor: AppColors.textSecondary,
       backgroundColor: AppColors.surface,
-      minimumSize: const Size(minTap, minTap),
+      minimumSize: const Size(0, minTap),
       padding: paddingDelete,
-      side: const BorderSide(color: Color(0xFFBDBDBD), width: 1),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
+      side: const BorderSide(color: Color(0xFFBDBDBD), width: 1),
       shape: _shapeCompact,
     );
   }
@@ -89,14 +88,14 @@ class _RoomListCardActionStyle {
     return OutlinedButton.styleFrom(
       foregroundColor: stateAccent,
       backgroundColor: AppColors.surface,
-      minimumSize: const Size(minTap, minTap),
-      padding: paddingCompact,
+      minimumSize: const Size(0, minTap),
+      padding: paddingMain,
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.compact,
       side: BorderSide(
         color: stateAccent.withValues(alpha: 0.45),
         width: 1,
       ),
-      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      visualDensity: VisualDensity.compact,
       shape: _shapeCompact,
     );
   }
@@ -107,17 +106,17 @@ class _RoomListCardActionStyle {
       backgroundColor: AppColors.surface,
       disabledForegroundColor: AppColors.textTertiary,
       disabledBackgroundColor: AppColors.surface,
-      minimumSize: const Size(minTap, minTap),
-      padding: paddingCompact,
-      side: BorderSide(color: AppColors.divider.withValues(alpha: 0.95)),
+      minimumSize: const Size(0, minTap),
+      padding: paddingMain,
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
+      side: BorderSide(color: AppColors.divider.withValues(alpha: 0.95)),
       shape: _shapeCompact,
     );
   }
 }
 
-/// 楽天ROOM管理の保存済み商品カード（最小構成：画像・題名・価格・ショップ・3ボタン）。
+/// 楽天ROOM管理の保存済み商品カード（左画像・右情報の横並び一覧向け）。
 class RakutenManagedProductCard extends StatelessWidget {
   const RakutenManagedProductCard({
     super.key,
@@ -134,13 +133,12 @@ class RakutenManagedProductCard extends StatelessWidget {
   )? onCollectPressed;
 
   static const double _radius = 12;
-  /// 一覧は横幅いっぱいの正方形にならないよう上限を設ける。
-  static const double _heroMaxHeight = 108;
+  /// 一覧でカード高さを揃え、行間のリズムを一定にする。
+  static const double _cardHeight = 140;
+  /// 左スロット幅（その中で正方形サムネを配置）。
+  static const double _thumbSlotWidth = 102;
   static const int _titleMaxLines = 2;
   static const int _shopMaxLines = 1;
-
-  static const EdgeInsets _contentPadding =
-      EdgeInsets.fromLTRB(10, 8, 10, 8);
 
   bool get _canCollectRoom =>
       product.extractionStatus == RakutenUrlExtractionStatus.success &&
@@ -170,7 +168,10 @@ class RakutenManagedProductCard extends StatelessWidget {
     try {
       final n = product.itemPrice;
       if (n < 0) return '価格 —';
-      return '¥$n';
+      return '¥${n.toString().replaceAllMapped(
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (m) => '${m[1]},',
+          )}';
     } catch (_) {
       return '価格 —';
     }
@@ -181,29 +182,28 @@ class RakutenManagedProductCard extends StatelessWidget {
     final isCandidate = variant == RakutenManagedProductCardVariant.candidate;
     final stateAccent =
         isCandidate ? RoomListAccent.candidate : RoomListAccent.done;
+
     final titleStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
           color: AppColors.textPrimary,
-          height: 1.25,
+          height: 1.22,
           fontWeight: FontWeight.w600,
-          fontSize: 14,
+          fontSize: 13.5,
         );
     final priceStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: AppColors.textPrimary,
+          color: AppColors.accentPrimary,
           fontWeight: FontWeight.w800,
           fontSize: 15,
-          height: 1.2,
+          height: 1.15,
         );
     final shopStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: AppColors.textSecondary,
+          color: AppColors.textTertiary,
           height: 1.2,
-          fontSize: 12,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
         );
 
-    final titleLineHeight =
-        (titleStyle?.fontSize ?? 14) * (titleStyle?.height ?? 1.25);
-    final titleFixedHeight = titleLineHeight * _titleMaxLines;
-
     return Container(
+      height: _cardHeight,
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(_radius),
@@ -217,56 +217,51 @@ class RakutenManagedProductCard extends StatelessWidget {
         ],
       ),
       clipBehavior: Clip.antiAlias,
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final h = math
-                  .min(_heroMaxHeight, constraints.maxWidth * 0.38)
-                  .clamp(72.0, _heroMaxHeight);
-              return SizedBox(
-                height: h,
-                width: constraints.maxWidth,
-                child: _heroImage(topRightRadius: _radius),
-              );
-            },
-          ),
-          Padding(
-            padding: _contentPadding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  height: titleFixedHeight,
-                  child: Text(
-                    _safeItemName(product),
-                    maxLines: _titleMaxLines,
-                    overflow: TextOverflow.ellipsis,
-                    style: titleStyle,
+          _thumbColumn(),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8, 8, 10, 7),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          _safeItemName(product),
+                          maxLines: _titleMaxLines,
+                          overflow: TextOverflow.ellipsis,
+                          style: titleStyle,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _safePriceYen(product),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: priceStyle,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          _safeShopName(product),
+                          maxLines: _shopMaxLines,
+                          overflow: TextOverflow.ellipsis,
+                          style: shopStyle,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  _safePriceYen(product),
-                  style: priceStyle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  _safeShopName(product),
-                  maxLines: _shopMaxLines,
-                  overflow: TextOverflow.ellipsis,
-                  style: shopStyle,
-                ),
-                const SizedBox(height: 8),
-                if (isCandidate)
-                  _candidateActions(context)
-                else
-                  _doneActions(context, stateAccent),
-              ],
+                  const SizedBox(height: 6),
+                  if (isCandidate)
+                    _candidateActions(context)
+                  else
+                    _doneActions(context, stateAccent),
+                ],
+              ),
             ),
           ),
         ],
@@ -274,15 +269,38 @@ class RakutenManagedProductCard extends StatelessWidget {
     );
   }
 
+  /// 左：正方形に近いサムネ（縦中央）。ListView 内で無限高さにならないよう固定幅のみ。
+  Widget _thumbColumn() {
+    return Container(
+      width: _thumbSlotWidth,
+      decoration: BoxDecoration(
+        color: AppColors.surfaceVariant.withValues(alpha: 0.65),
+        border: Border(
+          right: BorderSide(
+            color: AppColors.divider.withValues(alpha: 0.9),
+          ),
+        ),
+      ),
+      padding: const EdgeInsets.all(7),
+      child: Center(
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: _heroImage(),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _candidateActions(BuildContext context) {
     final provider = context.read<RakutenManagedProductProvider>();
-    // ListView→Column 経路では Row に縦の max が無制限になり得る。
-    // stretch は縦方向に有限制約が必須のため center にする。
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
-          flex: 5,
+          flex: 38,
           child: FilledButton(
             style: _RoomListCardActionStyle.rakutenFilled(),
             onPressed: () async {
@@ -299,15 +317,16 @@ class RakutenManagedProductCard extends StatelessWidget {
             },
             child: _compactActionLabel(
               icon: Icons.open_in_new_rounded,
-              label: '楽天',
+              label: '楽天で見る',
               color: Colors.white,
               weight: FontWeight.w700,
+              fontSize: _RoomListCardActionStyle.labelFontCompact,
             ),
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 4),
         Expanded(
-          flex: 5,
+          flex: 38,
           child: Tooltip(
             message: _canCollectRoom
                 ? 'ROOMのURLを開き、一覧をコレ済に移します。'
@@ -330,18 +349,19 @@ class RakutenManagedProductCard extends StatelessWidget {
                 icon: _canCollectRoom
                     ? Icons.favorite_rounded
                     : Icons.hourglass_top_rounded,
-                label: 'コレ',
+                label: 'コレする',
                 color: _canCollectRoom
                     ? AppColors.textOnAccent
                     : AppColors.textTertiary,
                 weight: FontWeight.w700,
+                fontSize: _RoomListCardActionStyle.labelFontCompact,
               ),
             ),
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 4),
         Expanded(
-          flex: 2,
+          flex: 22,
           child: OutlinedButton(
             style: _RoomListCardActionStyle.deleteOutlined(),
             onPressed: () => _confirmRemoveCandidate(context, provider),
@@ -350,6 +370,7 @@ class RakutenManagedProductCard extends StatelessWidget {
               label: '削除',
               color: AppColors.textSecondary,
               weight: FontWeight.w600,
+              fontSize: _RoomListCardActionStyle.labelFontDelete,
             ),
           ),
         ),
@@ -362,9 +383,11 @@ class RakutenManagedProductCard extends StatelessWidget {
     required String label,
     required Color color,
     required FontWeight weight,
+    double fontSize = _RoomListCardActionStyle.labelFontCompact,
   }) {
     return FittedBox(
       fit: BoxFit.scaleDown,
+      alignment: Alignment.center,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -380,7 +403,7 @@ class RakutenManagedProductCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.clip,
             style: TextStyle(
-              fontSize: _RoomListCardActionStyle.labelFontCompact,
+              fontSize: fontSize,
               fontWeight: weight,
               color: color,
               height: 1.1,
@@ -434,7 +457,7 @@ class RakutenManagedProductCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
-          flex: 5,
+          flex: 38,
           child: FilledButton(
             style: _RoomListCardActionStyle.rakutenFilled(),
             onPressed: () => AppActionService.openUrl(
@@ -445,15 +468,15 @@ class RakutenManagedProductCard extends StatelessWidget {
             ),
             child: _compactActionLabel(
               icon: Icons.open_in_new_rounded,
-              label: '楽天',
+              label: '楽天で見る',
               color: Colors.white,
               weight: FontWeight.w700,
             ),
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 4),
         Expanded(
-          flex: 5,
+          flex: 38,
           child: Tooltip(
             message: _hasRoomUrl
                 ? 'ROOMの画面を開きます'
@@ -480,9 +503,9 @@ class RakutenManagedProductCard extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 4),
         Expanded(
-          flex: 2,
+          flex: 22,
           child: OutlinedButton(
             style: _RoomListCardActionStyle.deleteOutlined(),
             onPressed: product.productId.trim().isEmpty
@@ -504,6 +527,7 @@ class RakutenManagedProductCard extends StatelessWidget {
               label: 'ID',
               color: AppColors.textSecondary,
               weight: FontWeight.w600,
+              fontSize: _RoomListCardActionStyle.labelFontDelete,
             ),
           ),
         ),
@@ -511,13 +535,11 @@ class RakutenManagedProductCard extends StatelessWidget {
     );
   }
 
-  Widget _heroImage({required double topRightRadius}) {
+  Widget _heroImage() {
     Widget child;
     try {
       final url = product.imageUrl.trim();
       if (url.isNotEmpty) {
-        // AspectRatio 配下では width/height に infinity を渡すと
-        // ListView 子のレイアウトで「無限高さ」例外につながる場合がある。
         child = Image.network(
           url,
           fit: BoxFit.cover,
@@ -530,22 +552,17 @@ class RakutenManagedProductCard extends StatelessWidget {
     } catch (_) {
       child = Center(child: _thumbPlaceholder());
     }
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-        topRight: Radius.circular(topRightRadius),
-      ),
-      child: ColoredBox(
-        color: AppColors.surfaceVariant,
-        child: child,
-      ),
+    return ColoredBox(
+      color: AppColors.surfaceVariant,
+      child: child,
     );
   }
 
   Widget _thumbPlaceholder() {
     return Icon(
       Icons.image_outlined,
-      size: 40,
-      color: AppColors.textTertiary.withValues(alpha: 0.7),
+      size: 30,
+      color: AppColors.textTertiary.withValues(alpha: 0.65),
     );
   }
 }
