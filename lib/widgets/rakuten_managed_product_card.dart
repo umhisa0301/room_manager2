@@ -18,90 +18,88 @@ abstract final class RoomListAccent {
   static const Color done = Color(0xFF2E7D32);
 }
 
-/// 一覧内ボタン（EC一覧向け・横並び時はタップ域を保ちつつ詰める）。
+/// カード内アクション：見た目はコンパクト、タップ最小 48×48 を維持。
 class _RoomListCardActionStyle {
   _RoomListCardActionStyle._();
 
-  static const double minTapHeight = 48;
-  static const double iconSize = 17;
-  static const double labelFontSizeSecondary = 12;
-  static const double labelFontSizePrimary = 13;
-  static const FontWeight labelWeight = FontWeight.w600;
-  static const FontWeight primaryLabelWeight = FontWeight.w800;
+  /// アクセシビリティ／操作性の下限（見た目より広くヒットさせる）。
+  static const double minTap = 48;
 
-  static const EdgeInsets compactPadding =
-      EdgeInsets.symmetric(horizontal: 10, vertical: 8);
+  static const double iconSizeCompact = 15;
+  static const double labelFontCompact = 11;
 
-  /// 横3分割時の内側余白（情報密度優先）。
-  static const EdgeInsets rowTightPadding =
-      EdgeInsets.symmetric(horizontal: 6, vertical: 8);
+  static const EdgeInsets paddingCompact =
+      EdgeInsets.symmetric(horizontal: 5, vertical: 4);
 
-  static RoundedRectangleBorder get shape => RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+  static const EdgeInsets paddingDelete =
+      EdgeInsets.symmetric(horizontal: 2, vertical: 4);
+
+  static RoundedRectangleBorder get _shapeCompact =>
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
       );
 
-  static ButtonStyle primaryViewFilled({EdgeInsetsGeometry? padding}) {
+  /// 楽天：青系（他ボタンと色分離）。
+  static ButtonStyle rakutenFilled() {
+    const blue = Color(0xFF1565C0);
+    return FilledButton.styleFrom(
+      foregroundColor: Colors.white,
+      backgroundColor: blue,
+      disabledForegroundColor: Color(0xFFE3F2FD),
+      disabledBackgroundColor: Color(0xFF90CAF9),
+      minimumSize: const Size(minTap, minTap),
+      padding: paddingCompact,
+      elevation: 0,
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.compact,
+      shape: _shapeCompact,
+    );
+  }
+
+  /// コレ：アプリ強調色（フィルで一段目立たせる）。
+  static ButtonStyle collectFilled() {
     return FilledButton.styleFrom(
       foregroundColor: AppColors.textOnAccent,
       backgroundColor: AppColors.accentPrimary,
-      minimumSize: const Size.fromHeight(minTapHeight),
-      padding: padding ?? compactPadding,
-      elevation: 0.5,
-      shadowColor: AppColors.accentPrimary.withValues(alpha: 0.2),
+      disabledForegroundColor: AppColors.textTertiary,
+      disabledBackgroundColor: AppColors.surfaceVariant,
+      minimumSize: const Size(minTap, minTap),
+      padding: paddingCompact,
+      elevation: 0,
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      shape: shape,
+      visualDensity: VisualDensity.compact,
+      shape: _shapeCompact,
     );
   }
 
-  static ButtonStyle secondaryCollectOutline(
-    Color stateAccent, {
-    EdgeInsetsGeometry? padding,
-  }) {
+  /// 削除：薄いグレー枠（視覚ノイズ低・サブアクション）。
+  static ButtonStyle deleteOutlined() {
     return OutlinedButton.styleFrom(
-      foregroundColor: stateAccent,
+      foregroundColor: AppColors.textSecondary,
       backgroundColor: AppColors.surface,
-      minimumSize: const Size.fromHeight(minTapHeight),
-      padding: padding ?? compactPadding,
-      side: BorderSide(
-        color: stateAccent.withValues(alpha: 0.5),
-        width: 1,
-      ),
+      minimumSize: const Size(minTap, minTap),
+      padding: paddingDelete,
+      side: const BorderSide(color: Color(0xFFBDBDBD), width: 1),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      shape: shape,
+      visualDensity: VisualDensity.compact,
+      shape: _shapeCompact,
     );
   }
 
-  static ButtonStyle auxiliaryRoomOutline(
-    Color stateAccent, {
-    EdgeInsetsGeometry? padding,
-  }) {
+  /// コレ済：ROOM 開く（アウトライン・完了色）。
+  static ButtonStyle roomOutline(Color stateAccent) {
     return OutlinedButton.styleFrom(
       foregroundColor: stateAccent,
       backgroundColor: AppColors.surface,
-      minimumSize: const Size.fromHeight(minTapHeight),
-      padding: padding ?? compactPadding,
+      minimumSize: const Size(minTap, minTap),
+      padding: paddingCompact,
       side: BorderSide(
         color: stateAccent.withValues(alpha: 0.45),
         width: 1,
       ),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      shape: shape,
-    );
-  }
-
-  static ButtonStyle destructiveOutline({EdgeInsetsGeometry? padding}) {
-    const softRed = Color(0xFFB71C1C);
-    return OutlinedButton.styleFrom(
-      foregroundColor: softRed,
-      backgroundColor: AppColors.surface,
-      minimumSize: const Size.fromHeight(minTapHeight),
-      padding: padding ?? compactPadding,
-      side: BorderSide(
-        color: AppColors.error.withValues(alpha: 0.32),
-        width: 1,
-      ),
-      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      shape: shape,
+      visualDensity: VisualDensity.compact,
+      shape: _shapeCompact,
     );
   }
 }
@@ -257,7 +255,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       if (isCandidate)
-                        _candidateActions(context, stateAccent)
+                        _candidateActions(context)
                       else
                         _doneActions(context, stateAccent),
                     ],
@@ -295,15 +293,15 @@ class RakutenManagedProductCard extends StatelessWidget {
     return '更新日時: ${_formatDateTime(product.updatedAt)}';
   }
 
-  Widget _candidateActions(BuildContext context, Color stateAccent) {
+  Widget _candidateActions(BuildContext context) {
     final provider = context.read<RakutenManagedProductProvider>();
-    final tight = _RoomListCardActionStyle.rowTightPadding;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
+          flex: 5,
           child: FilledButton(
-            style: _RoomListCardActionStyle.primaryViewFilled(padding: tight),
+            style: _RoomListCardActionStyle.rakutenFilled(),
             onPressed: () async {
               final err = await provider.openRakutenItemPage(
                 context,
@@ -316,25 +314,23 @@ class RakutenManagedProductCard extends StatelessWidget {
                 );
               }
             },
-            child: _actionContent(
+            child: _compactActionLabel(
               icon: Icons.open_in_new_rounded,
-              label: '楽天で見る',
-              foreground: AppColors.textOnAccent,
-              primary: true,
+              label: '楽天',
+              color: Colors.white,
+              weight: FontWeight.w700,
             ),
           ),
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: 5),
         Expanded(
+          flex: 5,
           child: Tooltip(
             message: _canCollectRoom
                 ? 'ROOMのURLを開き、一覧をコレ済に移します。'
                 : 'ROOM用のURLが取得できるまでお待ちください',
-            child: OutlinedButton(
-              style: _RoomListCardActionStyle.secondaryCollectOutline(
-                stateAccent,
-                padding: tight,
-              ),
+            child: FilledButton(
+              style: _RoomListCardActionStyle.collectFilled(),
               onPressed: _canCollectRoom
                   ? () async {
                       if (onCollectPressed != null) {
@@ -347,28 +343,30 @@ class RakutenManagedProductCard extends StatelessWidget {
                       );
                     }
                   : null,
-              child: _actionContent(
+              child: _compactActionLabel(
                 icon: _canCollectRoom
                     ? Icons.favorite_rounded
                     : Icons.hourglass_top_rounded,
-                label:
-                    _canCollectRoom ? 'コレする' : 'コレする（URL未取得）',
-                primary: true,
+                label: 'コレ',
+                color: _canCollectRoom
+                    ? AppColors.textOnAccent
+                    : AppColors.textTertiary,
+                weight: FontWeight.w700,
               ),
             ),
           ),
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: 5),
         Expanded(
+          flex: 2,
           child: OutlinedButton(
-            style: _RoomListCardActionStyle.destructiveOutline(
-              padding: tight,
-            ),
+            style: _RoomListCardActionStyle.deleteOutlined(),
             onPressed: () => _confirmRemoveCandidate(context, provider),
-            child: _actionContent(
+            child: _compactActionLabel(
               icon: Icons.delete_outline_rounded,
               label: '削除',
-              primary: false,
+              color: AppColors.textSecondary,
+              weight: FontWeight.w600,
             ),
           ),
         ),
@@ -376,18 +374,12 @@ class RakutenManagedProductCard extends StatelessWidget {
     );
   }
 
-  Widget _actionContent({
+  Widget _compactActionLabel({
     required IconData icon,
     required String label,
-    required bool primary,
-    Color? foreground,
+    required Color color,
+    required FontWeight weight,
   }) {
-    final fs = primary
-        ? _RoomListCardActionStyle.labelFontSizePrimary
-        : _RoomListCardActionStyle.labelFontSizeSecondary;
-    final fw = primary
-        ? _RoomListCardActionStyle.primaryLabelWeight
-        : _RoomListCardActionStyle.labelWeight;
     return FittedBox(
       fit: BoxFit.scaleDown,
       child: Row(
@@ -396,18 +388,19 @@ class RakutenManagedProductCard extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: _RoomListCardActionStyle.iconSize,
-            color: foreground,
+            size: _RoomListCardActionStyle.iconSizeCompact,
+            color: color,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 3),
           Text(
             label,
             maxLines: 1,
             overflow: TextOverflow.clip,
             style: TextStyle(
-              fontSize: fs,
-              fontWeight: fw,
-              color: foreground,
+              fontSize: _RoomListCardActionStyle.labelFontCompact,
+              fontWeight: weight,
+              color: color,
+              height: 1.1,
             ),
           ),
         ],
@@ -454,43 +447,42 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   Widget _doneActions(BuildContext context, Color stateAccent) {
     final hasRoom = product.extractedUrl.trim().isNotEmpty;
-    final tight = _RoomListCardActionStyle.rowTightPadding;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
+          flex: hasRoom ? 5 : 10,
           child: FilledButton(
-            style: _RoomListCardActionStyle.primaryViewFilled(padding: tight),
+            style: _RoomListCardActionStyle.rakutenFilled(),
             onPressed: () => AppActionService.openUrl(
               context,
               url: product.itemUrl.trim().isNotEmpty
                   ? product.itemUrl.trim()
                   : product.browserLaunchUrl,
             ),
-            child: _actionContent(
+            child: _compactActionLabel(
               icon: Icons.open_in_new_rounded,
-              label: '楽天で見る',
-              foreground: AppColors.textOnAccent,
-              primary: true,
+              label: '楽天',
+              color: Colors.white,
+              weight: FontWeight.w700,
             ),
           ),
         ),
         if (hasRoom) ...[
-          const SizedBox(width: 6),
+          const SizedBox(width: 5),
           Expanded(
+            flex: 5,
             child: OutlinedButton(
-              style: _RoomListCardActionStyle.auxiliaryRoomOutline(
-                stateAccent,
-                padding: tight,
-              ),
+              style: _RoomListCardActionStyle.roomOutline(stateAccent),
               onPressed: () => AppActionService.openUrl(
                 context,
                 url: product.extractedUrl.trim(),
               ),
-              child: _actionContent(
+              child: _compactActionLabel(
                 icon: Icons.chat_bubble_outline_rounded,
-                label: 'ROOMを開く',
-                primary: false,
+                label: 'ROOM',
+                color: stateAccent,
+                weight: FontWeight.w600,
               ),
             ),
           ),
