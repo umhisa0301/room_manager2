@@ -18,7 +18,7 @@ abstract final class RoomListAccent {
   static const Color done = Color(0xFF2E7D32);
 }
 
-/// 一覧内ボタン（最小タップ 48dp・縦リスト向けにタイトな内側余白）。
+/// 一覧内ボタン（EC一覧向け・横並び時はタップ域を保ちつつ詰める）。
 class _RoomListCardActionStyle {
   _RoomListCardActionStyle._();
 
@@ -32,16 +32,20 @@ class _RoomListCardActionStyle {
   static const EdgeInsets compactPadding =
       EdgeInsets.symmetric(horizontal: 10, vertical: 8);
 
+  /// 横3分割時の内側余白（情報密度優先）。
+  static const EdgeInsets rowTightPadding =
+      EdgeInsets.symmetric(horizontal: 6, vertical: 8);
+
   static RoundedRectangleBorder get shape => RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
       );
 
-  static ButtonStyle primaryViewFilled() {
+  static ButtonStyle primaryViewFilled({EdgeInsetsGeometry? padding}) {
     return FilledButton.styleFrom(
       foregroundColor: AppColors.textOnAccent,
       backgroundColor: AppColors.accentPrimary,
       minimumSize: const Size.fromHeight(minTapHeight),
-      padding: compactPadding,
+      padding: padding ?? compactPadding,
       elevation: 0.5,
       shadowColor: AppColors.accentPrimary.withValues(alpha: 0.2),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -49,12 +53,15 @@ class _RoomListCardActionStyle {
     );
   }
 
-  static ButtonStyle secondaryCollectOutline(Color stateAccent) {
+  static ButtonStyle secondaryCollectOutline(
+    Color stateAccent, {
+    EdgeInsetsGeometry? padding,
+  }) {
     return OutlinedButton.styleFrom(
       foregroundColor: stateAccent,
       backgroundColor: AppColors.surface,
       minimumSize: const Size.fromHeight(minTapHeight),
-      padding: compactPadding,
+      padding: padding ?? compactPadding,
       side: BorderSide(
         color: stateAccent.withValues(alpha: 0.5),
         width: 1,
@@ -64,12 +71,15 @@ class _RoomListCardActionStyle {
     );
   }
 
-  static ButtonStyle auxiliaryRoomOutline(Color stateAccent) {
+  static ButtonStyle auxiliaryRoomOutline(
+    Color stateAccent, {
+    EdgeInsetsGeometry? padding,
+  }) {
     return OutlinedButton.styleFrom(
       foregroundColor: stateAccent,
       backgroundColor: AppColors.surface,
       minimumSize: const Size.fromHeight(minTapHeight),
-      padding: compactPadding,
+      padding: padding ?? compactPadding,
       side: BorderSide(
         color: stateAccent.withValues(alpha: 0.45),
         width: 1,
@@ -79,13 +89,13 @@ class _RoomListCardActionStyle {
     );
   }
 
-  static ButtonStyle destructiveOutline() {
+  static ButtonStyle destructiveOutline({EdgeInsetsGeometry? padding}) {
     const softRed = Color(0xFFB71C1C);
     return OutlinedButton.styleFrom(
       foregroundColor: softRed,
       backgroundColor: AppColors.surface,
       minimumSize: const Size.fromHeight(minTapHeight),
-      padding: compactPadding,
+      padding: padding ?? compactPadding,
       side: BorderSide(
         color: AppColors.error.withValues(alpha: 0.32),
         width: 1,
@@ -96,7 +106,7 @@ class _RoomListCardActionStyle {
   }
 }
 
-/// 楽天ROOM管理の保存済み商品カード（一覧向け高密度レイアウト）。
+/// 楽天ROOM管理の保存済み商品カード（画像主役・縦型・高密度）。
 class RakutenManagedProductCard extends StatelessWidget {
   const RakutenManagedProductCard({
     super.key,
@@ -113,7 +123,19 @@ class RakutenManagedProductCard extends StatelessWidget {
   )? onCollectPressed;
 
   static const double _radius = 12;
-  static const double _thumbExtent = 72;
+
+  /// 72dp 相当の約1.5〜2倍に相当する「一覧上での印象スケール」を
+  /// アスペクト比と組み合わせて確保（幅いっぱいのヒーロー）。
+  static const double _imageAspect = 1;
+
+  /// 商品名は常に2行分の枠を確保しカード間で揃える。
+  static const int _titleMaxLines = 2;
+
+  /// ショップ名・フッターは1行で統一（高さブレ抑制）。
+  static const int _shopMaxLines = 1;
+  static const int _footerMaxLines = 1;
+
+  static const double _badgeRowHeight = 30;
 
   bool get _canCollectRoom =>
       product.extractionStatus == RakutenUrlExtractionStatus.success &&
@@ -126,26 +148,30 @@ class RakutenManagedProductCard extends StatelessWidget {
         isCandidate ? RoomListAccent.candidate : RoomListAccent.done;
     final titleStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
           color: AppColors.textPrimary,
-          height: 1.22,
+          height: 1.25,
           fontWeight: FontWeight.w600,
-          fontSize: 13.5,
+          fontSize: 14,
         );
     final priceStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
           color: stateAccent.withValues(alpha: 0.92),
-          fontWeight: FontWeight.w700,
-          fontSize: 13,
+          fontWeight: FontWeight.w800,
+          fontSize: 15,
           height: 1.2,
         );
     final shopStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
           color: AppColors.textSecondary,
-          height: 1.28,
-          fontSize: 11.5,
+          height: 1.2,
+          fontSize: 12,
         );
     final footerStyle = Theme.of(context).textTheme.labelSmall?.copyWith(
           color: AppColors.textTertiary,
-          height: 1.25,
+          height: 1.2,
           fontSize: 10.5,
         );
+
+    final titleLineHeight =
+        (titleStyle?.fontSize ?? 14) * (titleStyle?.height ?? 1.25);
+    final titleFixedHeight = titleLineHeight * _titleMaxLines;
 
     return Container(
       decoration: BoxDecoration(
@@ -161,72 +187,86 @@ class RakutenManagedProductCard extends StatelessWidget {
         ],
       ),
       clipBehavior: Clip.antiAlias,
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              width: 2.5,
-              color: stateAccent.withValues(alpha: 0.9),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 10, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _thumb(),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _badgeRow(context, isCandidate, stateAccent),
-                              const SizedBox(height: 4),
-                              Text(
-                                product.itemName,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                                style: titleStyle,
-                              ),
-                              const SizedBox(height: 3),
-                              Text(
-                                '¥${product.itemPrice}',
-                                style: priceStyle,
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                product.shopName.isEmpty
-                                    ? 'ショップ名なし'
-                                    : product.shopName,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: shopStyle,
-                              ),
-                              const SizedBox(height: 3),
-                              Text(
-                                _footerText(isCandidate),
-                                style: footerStyle,
-                              ),
-                            ],
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            width: 2.5,
+            color: stateAccent.withValues(alpha: 0.9),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AspectRatio(
+                  aspectRatio: _imageAspect,
+                  child: _heroImage(topRightRadius: _radius),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        height: _badgeRowHeight,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: _badgeRow(
+                              context,
+                              isCandidate,
+                              stateAccent,
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    if (isCandidate)
-                      _candidateActions(context, stateAccent)
-                    else
-                      _doneActions(context, stateAccent),
-                  ],
+                      ),
+                      SizedBox(
+                        height: titleFixedHeight,
+                        width: double.infinity,
+                        child: Text(
+                          product.itemName,
+                          maxLines: _titleMaxLines,
+                          overflow: TextOverflow.ellipsis,
+                          style: titleStyle,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '¥${product.itemPrice}',
+                        style: priceStyle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        product.shopName.isEmpty
+                            ? 'ショップ名なし'
+                            : product.shopName,
+                        maxLines: _shopMaxLines,
+                        overflow: TextOverflow.ellipsis,
+                        style: shopStyle,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _footerText(isCandidate),
+                        maxLines: _footerMaxLines,
+                        overflow: TextOverflow.ellipsis,
+                        style: footerStyle,
+                      ),
+                      const SizedBox(height: 8),
+                      if (isCandidate)
+                        _candidateActions(context, stateAccent)
+                      else
+                        _doneActions(context, stateAccent),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -236,13 +276,14 @@ class RakutenManagedProductCard extends StatelessWidget {
     bool isCandidate,
     Color stateAccent,
   ) {
-    return Wrap(
-      spacing: 4,
-      runSpacing: 4,
-      crossAxisAlignment: WrapCrossAlignment.center,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         _roleBadge(context, isCandidate, stateAccent),
-        if (isCandidate) _extractionBadge(context),
+        if (isCandidate) ...[
+          const SizedBox(width: 6),
+          _extractionBadge(context),
+        ],
       ],
     );
   }
@@ -256,108 +297,121 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   Widget _candidateActions(BuildContext context, Color stateAccent) {
     final provider = context.read<RakutenManagedProductProvider>();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    final tight = _RoomListCardActionStyle.rowTightPadding;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FilledButton(
-          style: _RoomListCardActionStyle.primaryViewFilled(),
-          onPressed: () async {
-            final err = await provider.openRakutenItemPage(
-              context,
-              product.productId,
-            );
-            if (!context.mounted) return;
-            if (err != null) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(err)),
+        Expanded(
+          child: FilledButton(
+            style: _RoomListCardActionStyle.primaryViewFilled(padding: tight),
+            onPressed: () async {
+              final err = await provider.openRakutenItemPage(
+                context,
+                product.productId,
               );
-            }
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.open_in_new_rounded,
-                size: _RoomListCardActionStyle.iconSize,
-                color: AppColors.textOnAccent,
-              ),
-              const SizedBox(width: 5),
-              Text(
-                '楽天で見る',
-                style: TextStyle(
-                  fontSize: _RoomListCardActionStyle.labelFontSizePrimary,
-                  fontWeight: _RoomListCardActionStyle.primaryLabelWeight,
-                  color: AppColors.textOnAccent,
-                ),
-              ),
-            ],
+              if (!context.mounted) return;
+              if (err != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(err)),
+                );
+              }
+            },
+            child: _actionContent(
+              icon: Icons.open_in_new_rounded,
+              label: '楽天で見る',
+              foreground: AppColors.textOnAccent,
+              primary: true,
+            ),
           ),
         ),
-        const SizedBox(height: 4),
-        Tooltip(
-          message: _canCollectRoom
-              ? 'ROOMのURLを開き、一覧をコレ済に移します。'
-              : 'ROOM用のURLが取得できるまでお待ちください',
-          child: OutlinedButton(
-            style: _RoomListCardActionStyle.secondaryCollectOutline(
-              stateAccent,
-            ),
-            onPressed: _canCollectRoom
-                ? () async {
-                    if (onCollectPressed != null) {
-                      await onCollectPressed!(context, product);
-                      return;
+        const SizedBox(width: 6),
+        Expanded(
+          child: Tooltip(
+            message: _canCollectRoom
+                ? 'ROOMのURLを開き、一覧をコレ済に移します。'
+                : 'ROOM用のURLが取得できるまでお待ちください',
+            child: OutlinedButton(
+              style: _RoomListCardActionStyle.secondaryCollectOutline(
+                stateAccent,
+                padding: tight,
+              ),
+              onPressed: _canCollectRoom
+                  ? () async {
+                      if (onCollectPressed != null) {
+                        await onCollectPressed!(context, product);
+                        return;
+                      }
+                      await provider.collectRoomAndLaunch(
+                        context,
+                        product.productId,
+                      );
                     }
-                    await provider.collectRoomAndLaunch(context, product.productId);
-                  }
-                : null,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  _canCollectRoom
-                      ? Icons.favorite_rounded
-                      : Icons.hourglass_top_rounded,
-                  size: _RoomListCardActionStyle.iconSize,
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  _canCollectRoom ? 'コレする' : 'コレする（URL未取得）',
-                  style: TextStyle(
-                    fontSize: _RoomListCardActionStyle.labelFontSizePrimary,
-                    fontWeight: _RoomListCardActionStyle.primaryLabelWeight,
-                  ),
-                ),
-              ],
+                  : null,
+              child: _actionContent(
+                icon: _canCollectRoom
+                    ? Icons.favorite_rounded
+                    : Icons.hourglass_top_rounded,
+                label:
+                    _canCollectRoom ? 'コレする' : 'コレする（URL未取得）',
+                primary: true,
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 4),
-        OutlinedButton(
-          style: _RoomListCardActionStyle.destructiveOutline(),
-          onPressed: () => _confirmRemoveCandidate(context, provider),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.delete_outline_rounded,
-                size: _RoomListCardActionStyle.iconSize,
-              ),
-              const SizedBox(width: 5),
-              Text(
-                '削除',
-                style: TextStyle(
-                  fontSize: _RoomListCardActionStyle.labelFontSizeSecondary,
-                  fontWeight: _RoomListCardActionStyle.labelWeight,
-                ),
-              ),
-            ],
+        const SizedBox(width: 6),
+        Expanded(
+          child: OutlinedButton(
+            style: _RoomListCardActionStyle.destructiveOutline(
+              padding: tight,
+            ),
+            onPressed: () => _confirmRemoveCandidate(context, provider),
+            child: _actionContent(
+              icon: Icons.delete_outline_rounded,
+              label: '削除',
+              primary: false,
+            ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _actionContent({
+    required IconData icon,
+    required String label,
+    required bool primary,
+    Color? foreground,
+  }) {
+    final fs = primary
+        ? _RoomListCardActionStyle.labelFontSizePrimary
+        : _RoomListCardActionStyle.labelFontSizeSecondary;
+    final fw = primary
+        ? _RoomListCardActionStyle.primaryLabelWeight
+        : _RoomListCardActionStyle.labelWeight;
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: _RoomListCardActionStyle.iconSize,
+            color: foreground,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.clip,
+            style: TextStyle(
+              fontSize: fs,
+              fontWeight: fw,
+              color: foreground,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -399,64 +453,45 @@ class RakutenManagedProductCard extends StatelessWidget {
   }
 
   Widget _doneActions(BuildContext context, Color stateAccent) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    final hasRoom = product.extractedUrl.trim().isNotEmpty;
+    final tight = _RoomListCardActionStyle.rowTightPadding;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FilledButton(
-          style: _RoomListCardActionStyle.primaryViewFilled(),
-          onPressed: () => AppActionService.openUrl(
-            context,
-            url: product.itemUrl.trim().isNotEmpty
-                ? product.itemUrl.trim()
-                : product.browserLaunchUrl,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.open_in_new_rounded,
-                size: _RoomListCardActionStyle.iconSize,
-                color: AppColors.textOnAccent,
-              ),
-              const SizedBox(width: 5),
-              Text(
-                '楽天で見る',
-                style: TextStyle(
-                  fontSize: _RoomListCardActionStyle.labelFontSizePrimary,
-                  fontWeight: _RoomListCardActionStyle.primaryLabelWeight,
-                  color: AppColors.textOnAccent,
-                ),
-              ),
-            ],
-          ),
-        ),
-        if (product.extractedUrl.trim().isNotEmpty) ...[
-          const SizedBox(height: 4),
-          OutlinedButton(
-            style:
-                _RoomListCardActionStyle.auxiliaryRoomOutline(stateAccent),
+        Expanded(
+          child: FilledButton(
+            style: _RoomListCardActionStyle.primaryViewFilled(padding: tight),
             onPressed: () => AppActionService.openUrl(
               context,
-              url: product.extractedUrl.trim(),
+              url: product.itemUrl.trim().isNotEmpty
+                  ? product.itemUrl.trim()
+                  : product.browserLaunchUrl,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.chat_bubble_outline_rounded,
-                  size: _RoomListCardActionStyle.iconSize,
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  'ROOMを開く',
-                  style: TextStyle(
-                    fontSize: _RoomListCardActionStyle.labelFontSizeSecondary,
-                    fontWeight: _RoomListCardActionStyle.labelWeight,
-                  ),
-                ),
-              ],
+            child: _actionContent(
+              icon: Icons.open_in_new_rounded,
+              label: '楽天で見る',
+              foreground: AppColors.textOnAccent,
+              primary: true,
+            ),
+          ),
+        ),
+        if (hasRoom) ...[
+          const SizedBox(width: 6),
+          Expanded(
+            child: OutlinedButton(
+              style: _RoomListCardActionStyle.auxiliaryRoomOutline(
+                stateAccent,
+                padding: tight,
+              ),
+              onPressed: () => AppActionService.openUrl(
+                context,
+                url: product.extractedUrl.trim(),
+              ),
+              child: _actionContent(
+                icon: Icons.chat_bubble_outline_rounded,
+                label: 'ROOMを開く',
+                primary: false,
+              ),
             ),
           ),
         ],
@@ -512,23 +547,23 @@ class RakutenManagedProductCard extends StatelessWidget {
     );
   }
 
-  Widget _thumb() {
+  Widget _heroImage({required double topRightRadius}) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(8),
-      child: SizedBox(
-        width: _thumbExtent,
-        height: _thumbExtent,
-        child: ColoredBox(
-          color: AppColors.surfaceVariant,
-          child: product.imageUrl.isNotEmpty
-              ? Image.network(
-                  product.imageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
-                      Center(child: _thumbPlaceholder()),
-                )
-              : Center(child: _thumbPlaceholder()),
-        ),
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(topRightRadius),
+      ),
+      child: ColoredBox(
+        color: AppColors.surfaceVariant,
+        child: product.imageUrl.isNotEmpty
+            ? Image.network(
+                product.imageUrl,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+                errorBuilder: (_, __, ___) =>
+                    Center(child: _thumbPlaceholder()),
+              )
+            : Center(child: _thumbPlaceholder()),
       ),
     );
   }
@@ -536,7 +571,7 @@ class RakutenManagedProductCard extends StatelessWidget {
   Widget _thumbPlaceholder() {
     return Icon(
       Icons.image_outlined,
-      size: 24,
+      size: 40,
       color: AppColors.textTertiary.withValues(alpha: 0.7),
     );
   }
