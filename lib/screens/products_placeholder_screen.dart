@@ -156,6 +156,95 @@ List<RakutenManagedProduct> _filterExcludeUrlNotReady(
   }).toList();
 }
 
+/// 各タブ一覧エリアの表面状態（読込 / 表示成功の内訳 / 失敗）。デバッグは [debugLabel]。
+enum _RoomColleListSurface {
+  loading,
+  loadError,
+  readyEmptyNoData,
+  readyEmptyFilteredByDay,
+  readyEmptyFilteredByUrl,
+  readyEmptyFilteredBySearch,
+  readyEmptyAnomaly,
+  readyList,
+}
+
+extension on _RoomColleListSurface {
+  String get debugLabel {
+    switch (this) {
+      case _RoomColleListSurface.loading:
+        return 'loading';
+      case _RoomColleListSurface.loadError:
+        return 'load_error';
+      case _RoomColleListSurface.readyEmptyNoData:
+        return 'ok_empty_no_data';
+      case _RoomColleListSurface.readyEmptyFilteredByDay:
+        return 'ok_empty_filter_day';
+      case _RoomColleListSurface.readyEmptyFilteredByUrl:
+        return 'ok_empty_filter_url';
+      case _RoomColleListSurface.readyEmptyFilteredBySearch:
+        return 'ok_empty_filter_search';
+      case _RoomColleListSurface.readyEmptyAnomaly:
+        return 'ok_empty_anomaly';
+      case _RoomColleListSurface.readyList:
+        return 'ok_list';
+    }
+  }
+}
+
+/// [idle] / [ready] はここでは表示可能として扱い、[loading] / [error] と 0件の内訳を返す。
+_RoomColleListSurface _resolveRoomColleListSurface({
+  required RakutenManagedProductListUiStatus ui,
+  required List<RakutenManagedProduct> baseList,
+  required List<RakutenManagedProduct> scoped,
+  required List<RakutenManagedProduct> list,
+  required List<RakutenManagedProduct> urlScoped,
+  required bool urlActive,
+  required String filterQuery,
+  required bool hasDayFilter,
+  required bool canShowDayEmptyMessage,
+}) {
+  if (ui == RakutenManagedProductListUiStatus.loading) {
+    return _RoomColleListSurface.loading;
+  }
+  if (ui == RakutenManagedProductListUiStatus.error) {
+    return _RoomColleListSurface.loadError;
+  }
+
+  if (baseList.isEmpty) {
+    return _RoomColleListSurface.readyEmptyNoData;
+  }
+
+  if (hasDayFilter &&
+      scoped.isEmpty &&
+      canShowDayEmptyMessage) {
+    return _RoomColleListSurface.readyEmptyFilteredByDay;
+  }
+
+  if (list.isEmpty) {
+    final q = filterQuery.trim();
+    if (urlActive && scoped.isNotEmpty && urlScoped.isEmpty) {
+      return _RoomColleListSurface.readyEmptyFilteredByUrl;
+    }
+    if (scoped.isNotEmpty && q.isNotEmpty) {
+      return _RoomColleListSurface.readyEmptyFilteredBySearch;
+    }
+    return _RoomColleListSurface.readyEmptyAnomaly;
+  }
+
+  return _RoomColleListSurface.readyList;
+}
+
+Widget _roomColleRefreshableScroll(
+  RakutenManagedProductProvider provider, {
+  required Widget child,
+}) {
+  return RefreshIndicator(
+    onRefresh: () =>
+        provider.refreshManagedProductList(showLoadingIndicator: true),
+    child: child,
+  );
+}
+
 /// ROOMコレ管理画面。楽天検索で登録したコレ候補・コレ済をタブで表示する。
 class ProductsPlaceholderScreen extends StatefulWidget {
   const ProductsPlaceholderScreen({
@@ -805,7 +894,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     candidateFocusHandled: _candidateFocusHandled,
                     onRecoverFromListError: _recoverRoomColleListAndFilters,
                     emptyTitle: 'コレ候補はまだありません',
-                    emptySubtitle: '',
+                    emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
                     emptyHint: '',
                     accentColor: RoomListAccent.candidate,
                     listScrollController: _candidateScrollController,
@@ -838,7 +927,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             _persistRoomColleUiNow();
                           },
                     emptyTitle: 'コレ済の商品はまだありません',
-                    emptySubtitle: '',
+                    emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
                     emptyHint: '',
                     dayFilterEmptyTitle: 'この日にコレした商品はありません',
                     dayFilterEmptySubtitle: '表示は端末の日付（このアプリでコレ済にした日時）に基づきます。',
@@ -912,6 +1001,7 @@ class _RoomManagedProductListTab extends StatefulWidget {
 class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> {
   bool _candidateFocusCallbackEnqueued = false;
   String? _lastSeenFocusProductId;
+  _RoomColleListSurface? _lastDebugSurface;
 
   @override
   void initState() {
@@ -981,26 +1071,26 @@ class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> 
     });
   }
 
+  void _debugLogSurface(_RoomColleListSurface surface) {
+    assert(() {
+      if (_lastDebugSurface != surface) {
+        final tabName = widget.status == RakutenManagedProductStatus.candidate
+            ? 'candidate'
+            : 'done';
+        debugPrint(
+          '[ROOMコレ][surface] tab=$tabName surface=${surface.debugLabel}',
+        );
+        _lastDebugSurface = surface;
+      }
+      return true;
+    }());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<RakutenManagedProductProvider>(
       builder: (context, provider, _) {
         final ui = provider.listUiStatus;
-
-        if (ui == RakutenManagedProductListUiStatus.loading) {
-          return const AppScreenLoadingCenter(
-            title: 'コレ一覧を読み込んでいます',
-          );
-        }
-
-        if (ui == RakutenManagedProductListUiStatus.error) {
-          return _RoomCollectionErrorState(
-            message: provider.listUiErrorMessage ?? '一覧データの読み込みに失敗しました。',
-            onRetry: () =>
-                provider.refreshManagedProductList(showLoadingIndicator: true),
-            onResetFiltersAndRetry: widget.onRecoverFromListError,
-          );
-        }
 
         final list = _roomListVisibleItems(
           provider: provider,
@@ -1020,42 +1110,124 @@ class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> 
             widget.excludeUrlNotReady;
         final urlScoped = _filterExcludeUrlNotReady(scoped, urlActive);
 
-        if (baseList.isEmpty) {
-          return _RoomCollectionEmptyState(
-            title: widget.emptyTitle,
-            subtitle: widget.emptySubtitle,
-            hint: widget.emptyHint,
-            accentColor: widget.accentColor,
-          );
-        }
+        final canShowDayEmpty = widget.dayFilterEmptyTitle != null &&
+            widget.dayFilterEmptySubtitle != null;
 
-        if (scoped.isEmpty &&
-            widget.doneAtLocalDayFilter != null &&
-            widget.dayFilterEmptyTitle != null &&
-            widget.dayFilterEmptySubtitle != null) {
-          return _RoomCollectionEmptyState(
-            title: widget.dayFilterEmptyTitle!,
-            subtitle: widget.dayFilterEmptySubtitle!,
-            hint: '',
-            accentColor: widget.accentColor,
-            actionLabel: widget.onClearDoneDayFilter != null ? 'すべて表示' : null,
-            onAction: widget.onClearDoneDayFilter,
-          );
-        }
+        final surface = _resolveRoomColleListSurface(
+          ui: ui,
+          baseList: baseList,
+          scoped: scoped,
+          list: list,
+          urlScoped: urlScoped,
+          urlActive: urlActive,
+          filterQuery: widget.filterQuery,
+          hasDayFilter: widget.doneAtLocalDayFilter != null,
+          canShowDayEmptyMessage: canShowDayEmpty,
+        );
+        _debugLogSurface(surface);
 
-        if (list.isEmpty) {
-          final q = widget.filterQuery.trim();
-          if (urlActive && scoped.isNotEmpty && urlScoped.isEmpty) {
-            return _RoomCollectionUrlFilterEmptyState(
-              accentColor: widget.accentColor,
+        switch (surface) {
+          case _RoomColleListSurface.loading:
+            return const AppScreenLoadingCenter(
+              title: '一覧を読み込み中',
+              subtitle:
+                  '端末に保存した一覧を読み込んでいます。しばらくお待ちください。',
             );
-          }
-          if (scoped.isNotEmpty && q.isNotEmpty) {
-            return _RoomCollectionSearchEmptyState(accentColor: widget.accentColor);
-          }
-          return _RoomCollectionRenderOrDataEmptyState(
-            accentColor: widget.accentColor,
-          );
+
+          case _RoomColleListSurface.loadError:
+            return _RoomCollectionErrorState(
+              message:
+                  provider.listUiErrorMessage ?? '一覧データの読み込みに失敗しました。',
+              onRetry: () =>
+                  provider.refreshManagedProductList(showLoadingIndicator: true),
+              onResetFiltersAndRetry: widget.onRecoverFromListError,
+            );
+
+          case _RoomColleListSurface.readyEmptyNoData:
+            return _roomColleRefreshableScroll(
+              provider,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  _RoomCollectionEmptyState(
+                    title: widget.emptyTitle,
+                    subtitle: widget.emptySubtitle,
+                    hint: widget.emptyHint,
+                    accentColor: widget.accentColor,
+                    stateFootnote: '読み込みは完了していますが、このタブに該当するデータは0件です。',
+                    embedInListView: false,
+                  ),
+                ],
+              ),
+            );
+
+          case _RoomColleListSurface.readyEmptyFilteredByDay:
+            return _roomColleRefreshableScroll(
+              provider,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  _RoomCollectionEmptyState(
+                    title: widget.dayFilterEmptyTitle!,
+                    subtitle: widget.dayFilterEmptySubtitle!,
+                    hint: '',
+                    accentColor: widget.accentColor,
+                    actionLabel:
+                        widget.onClearDoneDayFilter != null ? 'すべて表示' : null,
+                    onAction: widget.onClearDoneDayFilter,
+                    stateFootnote:
+                        '読み込みは完了しています。日付条件に一致する商品は0件です。「すべて表示」で解除できます。',
+                    embedInListView: false,
+                  ),
+                ],
+              ),
+            );
+
+          case _RoomColleListSurface.readyEmptyFilteredByUrl:
+            return _roomColleRefreshableScroll(
+              provider,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  _RoomCollectionUrlFilterEmptyState(
+                    accentColor: widget.accentColor,
+                    embedInListView: false,
+                  ),
+                ],
+              ),
+            );
+
+          case _RoomColleListSurface.readyEmptyFilteredBySearch:
+            return _roomColleRefreshableScroll(
+              provider,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  _RoomCollectionSearchEmptyState(
+                    accentColor: widget.accentColor,
+                    embedInListView: false,
+                  ),
+                ],
+              ),
+            );
+
+          case _RoomColleListSurface.readyEmptyAnomaly:
+            return _roomColleRefreshableScroll(
+              provider,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  _RoomCollectionRenderOrDataEmptyState(
+                    accentColor: widget.accentColor,
+                    embedInListView: false,
+                    onResetFilters: widget.onRecoverFromListError,
+                  ),
+                ],
+              ),
+            );
+
+          case _RoomColleListSurface.readyList:
+            break;
         }
 
         _scheduleCandidateFocusKickOnce(context);
@@ -1386,153 +1558,200 @@ class _DoneTabCollapsibleNoticeState extends State<_DoneTabCollapsibleNotice> {
 }
 
 class _RoomCollectionSearchEmptyState extends StatelessWidget {
-  const _RoomCollectionSearchEmptyState({required this.accentColor});
+  const _RoomCollectionSearchEmptyState({
+    required this.accentColor,
+    this.embedInListView = true,
+  });
 
   final Color accentColor;
+  final bool embedInListView;
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      children: [
-        SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.35,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.search_off_outlined,
-                    size: 44,
-                    color: accentColor.withValues(alpha: 0.42),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    '一致する商品がありません',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+    final pane = SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.35,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.search_off_outlined,
+                size: 44,
+                color: accentColor.withValues(alpha: 0.42),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                '一致する商品がありません',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
                     ),
-                  ),
-                ],
               ),
-            ),
+              const SizedBox(height: 8),
+              Text(
+                'キーワードを変えるか、絞り込みを解除してください。読み込み自体は成功しています。',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textTertiary,
+                      height: 1.35,
+                      fontSize: 12,
+                    ),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
+    if (embedInListView) {
+      return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [pane],
+      );
+    }
+    return pane;
   }
 }
 
 /// 「URL未取得除外」により表示対象が0件（データは存在する）。
 class _RoomCollectionUrlFilterEmptyState extends StatelessWidget {
-  const _RoomCollectionUrlFilterEmptyState({required this.accentColor});
+  const _RoomCollectionUrlFilterEmptyState({
+    required this.accentColor,
+    this.embedInListView = true,
+  });
 
   final Color accentColor;
+  final bool embedInListView;
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      children: [
-        SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.35,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.link_off_rounded,
-                    size: 44,
-                    color: accentColor.withValues(alpha: 0.42),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'URL未取得除外のため表示できる商品がありません',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+    final pane = SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.35,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.link_off_rounded,
+                size: 44,
+                color: accentColor.withValues(alpha: 0.42),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'URL未取得除外のため表示できる商品がありません',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'チップ「URL未取得除外」をオフにすると一覧が表示されます。',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.4,
-                          fontSize: 13,
-                        ),
-                  ),
-                ],
               ),
-            ),
+              const SizedBox(height: 8),
+              Text(
+                'チップ「URL未取得除外」をオフにすると一覧が表示されます。',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.4,
+                      fontSize: 13,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'データの読み込みは成功しています（コレ候補をURL条件で絞り込んだ結果が0件です）。',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textTertiary,
+                      height: 1.35,
+                      fontSize: 12,
+                    ),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
+    if (embedInListView) {
+      return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [pane],
+      );
+    }
+    return pane;
   }
 }
 
 /// 本当の0件ではなく、想定外で一覧が空になったとき（真っ白防止）。
 class _RoomCollectionRenderOrDataEmptyState extends StatelessWidget {
-  const _RoomCollectionRenderOrDataEmptyState({required this.accentColor});
+  const _RoomCollectionRenderOrDataEmptyState({
+    required this.accentColor,
+    this.embedInListView = true,
+    this.onResetFilters,
+  });
 
   final Color accentColor;
+  final bool embedInListView;
+  final Future<void> Function()? onResetFilters;
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      children: [
-        SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.35,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.inventory_2_outlined,
-                    size: 44,
-                    color: accentColor.withValues(alpha: 0.42),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    '一覧を表示できませんでした',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+    final pane = SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.35,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.inventory_2_outlined,
+                size: 44,
+                color: accentColor.withValues(alpha: 0.42),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                '一覧を描画できませんでした',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'データはある可能性があります。下に引っ張って再読み込みするか、アプリを再起動してください。',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.4,
-                          fontSize: 13,
-                        ),
-                  ),
-                ],
               ),
-            ),
+              const SizedBox(height: 8),
+              Text(
+                '読み込みエラーではなく、画面上の整合が取れていない可能性（描画・データの不整合）があります。下に引っ張って再読み込みするか、フィルタを初期化してください。',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.4,
+                      fontSize: 13,
+                    ),
+              ),
+              if (onResetFilters != null) ...[
+                const SizedBox(height: 12),
+                TextButton(
+                  onPressed: () => onResetFilters!(),
+                  child: const Text('フィルタを初期化'),
+                ),
+              ],
+            ],
           ),
         ),
-      ],
+      ),
     );
+    if (embedInListView) {
+      return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [pane],
+      );
+    }
+    return pane;
   }
 }
 
@@ -1544,6 +1763,8 @@ class _RoomCollectionEmptyState extends StatelessWidget {
     required this.accentColor,
     this.actionLabel,
     this.onAction,
+    this.stateFootnote,
+    this.embedInListView = true,
   });
 
   final String title;
@@ -1552,69 +1773,86 @@ class _RoomCollectionEmptyState extends StatelessWidget {
   final Color accentColor;
   final String? actionLabel;
   final VoidCallback? onAction;
+  final String? stateFootnote;
+  final bool embedInListView;
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      children: [
-        SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.4,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.inventory_2_outlined,
-                    size: 48,
-                    color: accentColor.withValues(alpha: 0.42),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+    final pane = SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.4,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.inventory_2_outlined,
+                size: 48,
+                color: accentColor.withValues(alpha: 0.42),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
-                  ),
-                  if (subtitle.isNotEmpty) ...[
-                    const SizedBox(height: 6),
-                    Text(
-                      subtitle,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              ),
+              if (subtitle.isNotEmpty) ...[
+                const SizedBox(height: 6),
+                Text(
+                  subtitle,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSecondary,
                         height: 1.4,
                         fontSize: 13,
                       ),
-                    ),
-                  ],
-                  if (hint.isNotEmpty) ...[
-                    const SizedBox(height: 10),
-                    Text(
-                      hint,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                ),
+              ],
+              if (hint.isNotEmpty) ...[
+                const SizedBox(height: 10),
+                Text(
+                  hint,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textTertiary,
                         height: 1.35,
                       ),
-                    ),
-                  ],
-                  if (onAction != null && actionLabel != null) ...[
-                    const SizedBox(height: 12),
-                    TextButton(onPressed: onAction, child: Text(actionLabel!)),
-                  ],
-                ],
-              ),
-            ),
+                ),
+              ],
+              if (onAction != null && actionLabel != null) ...[
+                const SizedBox(height: 12),
+                TextButton(onPressed: onAction, child: Text(actionLabel!)),
+              ],
+              if (stateFootnote != null && stateFootnote!.trim().isNotEmpty) ...[
+                const SizedBox(height: 14),
+                Text(
+                  stateFootnote!,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textTertiary,
+                        fontSize: 11,
+                        height: 1.35,
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
+              ],
+            ],
           ),
         ),
-      ],
+      ),
     );
+    if (embedInListView) {
+      return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [pane],
+      );
+    }
+    return pane;
   }
 }
 
@@ -1653,6 +1891,16 @@ class _RoomCollectionErrorState extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
                     ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    '状態: データの読み込みに失敗しました',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.textTertiary,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                   const SizedBox(height: 8),
                   Text(
