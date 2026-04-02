@@ -10,7 +10,9 @@ import '../repository/room_colle_ui_state_repository.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_screen_status.dart';
+import '../widgets/home_primary_action_button.dart';
 import '../widgets/rakuten_managed_product_card.dart';
+import 'rakuten_search_screen.dart';
 /// ROOMコレ一覧専用。アプリ共通 [AppDimensions.screenPaddingH] より詰め密度を上げる。
 const double _kRoomListScreenPadH = 12;
 const double _kRoomListCardGap = 6;
@@ -632,13 +634,13 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-            /// ① タブのみ（キーワード・URL 除外は各タブ内の絞り込み領域へ）
+            /// ① 主導線：楽天検索（候補を増やす）
             Padding(
               padding: EdgeInsets.fromLTRB(
                 _kRoomListScreenPadH,
-                canPop ? 2 : 8,
+                canPop ? 4 : 6,
                 _kRoomListScreenPadH,
-                10,
+                2,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -659,6 +661,34 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                         tooltip: '戻る',
                       ),
                     ),
+                  Expanded(
+                    child: HomePrimaryActionButton(
+                      emphasis: HomePrimaryActionEmphasis.hero,
+                      icon: Icons.travel_explore_rounded,
+                      label: '楽天でコレ候補を検索する',
+                      onPressed: () {
+                        Navigator.of(context).push<void>(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const RakutenSearchScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            /// ② タブ（キーワード・URL 除外は各タブ内の絞り込み領域へ）
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                _kRoomListScreenPadH,
+                2,
+                _kRoomListScreenPadH,
+                8,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Expanded(
                     child: Consumer<RakutenManagedProductProvider>(
                       builder: (context, managed, _) {
