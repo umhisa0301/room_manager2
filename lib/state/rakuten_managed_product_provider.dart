@@ -66,6 +66,7 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       await Future<void>.delayed(Duration.zero);
       _items = _repository.loadAll();
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
+      _listUiErrorMessage = null;
     } catch (e, st) {
       if (kDebugMode) {
         debugPrint('[RakutenManagedProduct] refreshManagedProductList failed: $e');

@@ -572,16 +572,19 @@ class RakutenManagedProductCard extends StatelessWidget {
         bg = const Color(0xFFFFF8E1);
         fg = const Color(0xFFE65100);
         icon = Icons.hourglass_empty_rounded;
+        break;
       case RakutenUrlExtractionStatus.success:
         shortLabel = '取得済';
         bg = const Color(0xFFE8F5E9);
         fg = RoomListAccent.done;
         icon = Icons.check_circle_outline_rounded;
+        break;
       case RakutenUrlExtractionStatus.failed:
         shortLabel = '失敗';
         bg = AppColors.error.withValues(alpha: 0.1);
         fg = AppColors.error;
         icon = Icons.error_outline_rounded;
+        break;
     }
     return _StatusPill(
       icon: icon,
