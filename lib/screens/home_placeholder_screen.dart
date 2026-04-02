@@ -356,17 +356,19 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     final idx = initialTabIndex.clamp(0, 1);
     DateTime? dayNorm;
     if (doneFilterLocalDay != null) {
-      dayNorm = DateTime(
-        doneFilterLocalDay.year,
-        doneFilterLocalDay.month,
-        doneFilterLocalDay.day,
-      );
+      try {
+        final d = doneFilterLocalDay;
+        final y = d.year;
+        if (y >= 1900 && y <= 2100) {
+          dayNorm = DateTime(d.year, d.month, d.day);
+        }
+      } catch (_) {}
     }
-    final focusId = focusCandidateProductId != null &&
-            focusCandidateProductId.isNotEmpty &&
-            idx == 0
-        ? focusCandidateProductId
-        : null;
+    final trimmedFocus = focusCandidateProductId?.trim();
+    final focusId =
+        trimmedFocus != null && trimmedFocus.isNotEmpty && idx == 0
+            ? trimmedFocus
+            : null;
     context.read<AppShellController>().openRoomCollect(
           initialTabIndex: idx,
           doneFilterLocalDay: dayNorm,

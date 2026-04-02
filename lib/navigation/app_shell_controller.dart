@@ -52,8 +52,13 @@ class AppShellController extends ChangeNotifier {
 
     DateTime? dayNorm;
     if (idx == 1 && doneFilterLocalDay != null) {
-      final d = doneFilterLocalDay;
-      dayNorm = DateTime(d.year, d.month, d.day);
+      try {
+        final d = doneFilterLocalDay;
+        final y = d.year;
+        if (y >= 1900 && y <= 2100) {
+          dayNorm = DateTime(d.year, d.month, d.day);
+        }
+      } catch (_) {}
     }
 
     _pendingRoomCollect = RoomCollectNavigationIntent(

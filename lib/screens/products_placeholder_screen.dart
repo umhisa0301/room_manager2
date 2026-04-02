@@ -462,10 +462,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         }
         managed.recoverListUiSilently();
       }
-      managed.refreshManagedProductList(
-        showLoadingIndicator: false,
-      );
       _tryConsumeRoomCollectIntent();
+      managed.refreshManagedProductList(showLoadingIndicator: false);
     });
   }
 
@@ -480,44 +478,52 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         }
         managed.recoverListUiSilently();
       }
-      managed.refreshManagedProductList(
-        showLoadingIndicator: false,
-      );
+      _tryConsumeRoomCollectIntent();
+      managed.refreshManagedProductList(showLoadingIndicator: false);
+    } else {
+      _tryConsumeRoomCollectIntent();
     }
-    _tryConsumeRoomCollectIntent();
   }
 
+  /// ホーム等からの [openRoomCollect] のインテントのみ消費する。
+  /// 適用は次フレームへ逃がし、シェル通知中の同期的 setState 連鎖を避ける。
   void _tryConsumeRoomCollectIntent() {
     if (!mounted) return;
     final intent = _shellCtrl.takePendingRoomCollectIntent();
-    if (intent != null) {
+    if (intent == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       _applyRoomCollectIntent(intent);
-    }
+    });
   }
 
   void _applyRoomCollectIntent(RoomCollectNavigationIntent intent) {
     final idx = intent.initialTabIndex.clamp(0, 1);
-    final focusRaw = intent.focusCandidateProductId;
-    final focusId = (focusRaw != null && focusRaw.isNotEmpty && idx == 0)
-        ? focusRaw
-        : null;
+    var focusRaw = intent.focusCandidateProductId?.trim();
+    if (focusRaw != null && focusRaw.isEmpty) focusRaw = null;
+    final focusId =
+        (focusRaw != null && focusRaw.isNotEmpty && idx == 0) ? focusRaw : null;
 
     setState(() {
+      _excludeUrlNotReady = false;
+      _searchController.clear();
+      _searchQuery = '';
       if (idx == 0) {
         _doneLocalDayFilter = null;
-        if (focusId != null) {
-          _searchController.clear();
-          _searchQuery = '';
-        }
       } else {
-        _doneLocalDayFilter = _normalizeDoneDayFilter(intent.doneFilterLocalDay);
+        _doneLocalDayFilter =
+            _normalizeDoneDayFilter(intent.doneFilterLocalDay);
       }
       _shellFocusCandidateProductId = focusId;
       _candidateFocusHandled = false;
     });
 
     if (_tabController.index != idx) {
-      _tabController.animateTo(idx);
+      _tabController.animateTo(
+        idx,
+        duration: Duration.zero,
+        curve: Curves.linear,
+      );
     }
     _persistRoomColleUiNow();
   }
