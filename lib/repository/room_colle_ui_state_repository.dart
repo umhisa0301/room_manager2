@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/room_colle_list_filters.dart';
+
 /// ROOMコレ画面の UI 状態（タブ・フィルタ）を永続化する。破損時はデフォルトへフォールバック。
 class RoomColleUiStateRepository {
   RoomColleUiStateRepository(this._prefs);
@@ -13,19 +15,20 @@ class RoomColleUiStateRepository {
   static const String _key = 'room_colle_ui_state_v1';
   static const int _maxSearchLen = 512;
   static const int _schemaV2 = 2;
+  static const int _schemaV3 = 3;
 
   /// 読み込みと検証。失敗時は [RoomColleUiStateSnapshot.defaults] を返し、必要なら永続を削除。
   RoomColleUiStateSnapshot loadSanitized() {
     try {
       final raw = _prefs.getString(_key);
       if (raw == null || raw.trim().isEmpty) {
-        return RoomColleUiStateSnapshot.defaults();
+        return RoomColleUiStateSnapshot.defaults;
       }
       final decoded = jsonDecode(raw);
       if (decoded is! Map) {
         _logInitFailure('root_not_map');
         unawaited(clearPersisted());
-        return RoomColleUiStateSnapshot.defaults();
+        return RoomColleUiStateSnapshot.defaults;
       }
       final map = Map<String, dynamic>.from(decoded);
 
@@ -58,6 +61,59 @@ class RoomColleUiStateRepository {
       }
 
       final schemaRaw = map['schema'];
+      final schemaNum = schemaRaw is int
+          ? schemaRaw
+          : schemaRaw is num
+              ? schemaRaw.toInt()
+              : 0;
+
+      final hasV3 = schemaNum == _schemaV3 ||
+          (map['candidateListFilters'] is Map && map['doneListFilters'] is Map);
+
+      if (hasV3) {
+        final exRaw = map['candidateExcludeUrlNotReady'];
+        final exclude = exRaw is bool ? exRaw : false;
+        var cFilters = RoomColleListFilterCriteria.fromJson(
+          map['candidateListFilters'],
+        );
+        var dFilters =
+            RoomColleListFilterCriteria.fromJson(map['doneListFilters']);
+
+        void legacyHydrateKeyword() {
+          var candidateQ = '';
+          final cq = map['candidateSearchQuery'];
+          if (cq is String) {
+            candidateQ = _sanitizeSearchQuery(cq);
+          }
+          var doneQ = '';
+          final dq = map['doneSearchQuery'];
+          if (dq is String) {
+            doneQ = _sanitizeSearchQuery(dq);
+          }
+          if (candidateQ.isNotEmpty && cFilters.keyword.isEmpty) {
+            cFilters = cFilters.copyWith(keyword: candidateQ);
+          }
+          if (doneQ.isNotEmpty && dFilters.keyword.isEmpty) {
+            dFilters = dFilters.copyWith(keyword: doneQ);
+          }
+        }
+
+        if (schemaNum != _schemaV3) {
+          legacyHydrateKeyword();
+        }
+
+        cFilters = _sanitizeFilterCriteriaKeywords(cFilters);
+        dFilters = _sanitizeFilterCriteriaKeywords(dFilters);
+
+        return RoomColleUiStateSnapshot(
+          tabIndex: tabIndex,
+          candidateListFilters: cFilters,
+          doneListFilters: dFilters,
+          candidateExcludeUrlNotReady: exclude,
+          doneLocalDay: doneLocalDay,
+        );
+      }
+
       final hasV2 = schemaRaw == _schemaV2 ||
           map['candidateSearchQuery'] != null ||
           map['doneSearchQuery'] != null;
@@ -79,8 +135,9 @@ class RoomColleUiStateRepository {
 
         return RoomColleUiStateSnapshot(
           tabIndex: tabIndex,
-          candidateSearchQuery: candidateQ,
-          doneSearchQuery: doneQ,
+          candidateListFilters:
+              RoomColleListFilterCriteria(keyword: candidateQ),
+          doneListFilters: RoomColleListFilterCriteria(keyword: doneQ),
           candidateExcludeUrlNotReady: exclude,
           doneLocalDay: doneLocalDay,
         );
@@ -97,8 +154,8 @@ class RoomColleUiStateRepository {
 
       return RoomColleUiStateSnapshot(
         tabIndex: tabIndex,
-        candidateSearchQuery: legacyQ,
-        doneSearchQuery: legacyQ,
+        candidateListFilters: RoomColleListFilterCriteria(keyword: legacyQ),
+        doneListFilters: RoomColleListFilterCriteria(keyword: legacyQ),
         candidateExcludeUrlNotReady: excludeUrlNotReady,
         doneLocalDay: doneLocalDay,
       );
@@ -107,18 +164,21 @@ class RoomColleUiStateRepository {
         debugPrint('[RoomColleUiState] loadSanitized exception: $e\n$st');
       }
       unawaited(clearPersisted());
-      return RoomColleUiStateSnapshot.defaults();
+      return RoomColleUiStateSnapshot.defaults;
     }
   }
 
   Future<void> saveSanitized(RoomColleUiStateSnapshot snap) async {
     try {
+      final cSan = _sanitizeFilterCriteriaKeywords(snap.candidateListFilters);
+      final dSan = _sanitizeFilterCriteriaKeywords(snap.doneListFilters);
       final map = <String, dynamic>{
-        'schema': _schemaV2,
+        'schema': _schemaV3,
         'tabIndex': snap.tabIndex.clamp(0, 1),
-        'candidateSearchQuery':
-            _sanitizeSearchQuery(snap.candidateSearchQuery),
-        'doneSearchQuery': _sanitizeSearchQuery(snap.doneSearchQuery),
+        'candidateSearchQuery': _sanitizeSearchQuery(cSan.keyword),
+        'doneSearchQuery': _sanitizeSearchQuery(dSan.keyword),
+        'candidateListFilters': cSan.toJson(),
+        'doneListFilters': dSan.toJson(),
         'candidateExcludeUrlNotReady': snap.candidateExcludeUrlNotReady,
         'doneLocalDay': snap.doneLocalDay?.toIso8601String(),
       };
@@ -149,6 +209,12 @@ class RoomColleUiStateRepository {
     return t.substring(0, _maxSearchLen);
   }
 
+  RoomColleListFilterCriteria _sanitizeFilterCriteriaKeywords(
+    RoomColleListFilterCriteria c,
+  ) {
+    return c.copyWith(keyword: _sanitizeSearchQuery(c.keyword));
+  }
+
   void _logInitFailure(String reason) {
     if (kDebugMode) {
       debugPrint('[RoomColleUiState] loadSanitized fallback: $reason');
@@ -157,28 +223,38 @@ class RoomColleUiStateRepository {
 }
 
 /// ROOMコレ画面上部のユーザー操作状態（一覧データとは別）。
-/// 候補タブ用・コレ済タブ用のキーワードと URL 除外を分離して保存する。
+/// 候補タブ用・コレ済タブ用の [RoomColleListFilterCriteria] と URL 除外を分離して保存する。
 class RoomColleUiStateSnapshot {
   const RoomColleUiStateSnapshot({
     required this.tabIndex,
-    required this.candidateSearchQuery,
-    required this.doneSearchQuery,
+    required this.candidateListFilters,
+    required this.doneListFilters,
     required this.candidateExcludeUrlNotReady,
     this.doneLocalDay,
   });
 
   final int tabIndex;
-  final String candidateSearchQuery;
-  final String doneSearchQuery;
+
+  /// コレ候補タブの絞り込み（キーワード＋拡張条件）。
+  final RoomColleListFilterCriteria candidateListFilters;
+
+  /// コレ済タブの絞り込み。
+  final RoomColleListFilterCriteria doneListFilters;
+
   final bool candidateExcludeUrlNotReady;
   final DateTime? doneLocalDay;
 
-  static RoomColleUiStateSnapshot defaults() =>
-      const RoomColleUiStateSnapshot(
-        tabIndex: 0,
-        candidateSearchQuery: '',
-        doneSearchQuery: '',
-        candidateExcludeUrlNotReady: false,
-        doneLocalDay: null,
-      );
+  /// 永続 v2 / UI 互換用。常に [candidateListFilters.keyword] と一致。
+  String get candidateSearchQuery => candidateListFilters.keyword;
+
+  /// 永続 v2 / UI 互換用。常に [doneListFilters.keyword] と一致。
+  String get doneSearchQuery => doneListFilters.keyword;
+
+  static const RoomColleUiStateSnapshot defaults = RoomColleUiStateSnapshot(
+    tabIndex: 0,
+    candidateListFilters: RoomColleListFilterCriteria.defaults,
+    doneListFilters: RoomColleListFilterCriteria.defaults,
+    candidateExcludeUrlNotReady: false,
+    doneLocalDay: null,
+  );
 }
