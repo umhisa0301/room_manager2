@@ -331,10 +331,22 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
 
   void _runScrollToCandidate(String productId, int attempt) {
     if (!mounted || attempt > 16) return;
+    // コレ済タブ表示中やレイアウト中に ensureVisible すると sliver 整合が崩れる。
+    // 候補タブ選択時のみ、2フレーム後に実行する。
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      final ctx = _candidateRowKeys[productId]?.currentContext;
-      if (ctx != null) {
+      if (!mounted || _tabController.index != 0) return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted || _tabController.index != 0) return;
+        final ctx = _candidateRowKeys[productId]?.currentContext;
+        if (ctx == null) {
+          _runScrollToCandidate(productId, attempt + 1);
+          return;
+        }
+        final ro = ctx.findRenderObject();
+        if (ro is! RenderBox || !ro.hasSize || !ro.attached) {
+          _runScrollToCandidate(productId, attempt + 1);
+          return;
+        }
         try {
           Scrollable.ensureVisible(
             ctx,
@@ -348,15 +360,13 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
             return true;
           }());
         }
-        if (!mounted) return;
+        if (!mounted || _tabController.index != 0) return;
         setState(() => _flashProductId = productId);
         _flashTimer?.cancel();
         _flashTimer = Timer(const Duration(seconds: 1), () {
           if (mounted) setState(() => _flashProductId = null);
         });
-        return;
-      }
-      _runScrollToCandidate(productId, attempt + 1);
+      });
     });
   }
 

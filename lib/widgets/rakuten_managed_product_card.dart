@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -132,7 +134,8 @@ class RakutenManagedProductCard extends StatelessWidget {
   )? onCollectPressed;
 
   static const double _radius = 12;
-  static const double _imageAspect = 1;
+  /// 一覧は横幅いっぱいの正方形にならないよう上限を設ける。
+  static const double _heroMaxHeight = 108;
   static const int _titleMaxLines = 2;
   static const int _shopMaxLines = 1;
 
@@ -218,9 +221,17 @@ class RakutenManagedProductCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          AspectRatio(
-            aspectRatio: _imageAspect,
-            child: _heroImage(topRightRadius: _radius),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final h = math
+                  .min(_heroMaxHeight, constraints.maxWidth * 0.38)
+                  .clamp(72.0, _heroMaxHeight);
+              return SizedBox(
+                height: h,
+                width: constraints.maxWidth,
+                child: _heroImage(topRightRadius: _radius),
+              );
+            },
           ),
           Padding(
             padding: _contentPadding,
@@ -229,7 +240,6 @@ class RakutenManagedProductCard extends StatelessWidget {
               children: [
                 SizedBox(
                   height: titleFixedHeight,
-                  width: double.infinity,
                   child: Text(
                     _safeItemName(product),
                     maxLines: _titleMaxLines,
@@ -266,8 +276,10 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   Widget _candidateActions(BuildContext context) {
     final provider = context.read<RakutenManagedProductProvider>();
+    // ListView→Column 経路では Row に縦の max が無制限になり得る。
+    // stretch は縦方向に有限制約が必須のため center にする。
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
           flex: 5,
@@ -419,7 +431,7 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   Widget _doneActions(BuildContext context, Color stateAccent) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
           flex: 5,
@@ -504,11 +516,11 @@ class RakutenManagedProductCard extends StatelessWidget {
     try {
       final url = product.imageUrl.trim();
       if (url.isNotEmpty) {
+        // AspectRatio 配下では width/height に infinity を渡すと
+        // ListView 子のレイアウトで「無限高さ」例外につながる場合がある。
         child = Image.network(
           url,
           fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
           errorBuilder: (_, __, ___) =>
               Center(child: _thumbPlaceholder()),
         );
