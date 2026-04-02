@@ -23,6 +23,145 @@ const double _kRoomColleTabTrackRadius = 14;
 /// 条件クリアなど、セカンダリ操作の最小タップ高さ（Material 推奨に寄せる）。
 const double _kRoomColleSecondaryCtrlMinHeight = 44;
 
+/// コレ候補タブ専用：URL 準備済みの候補だけ一覧に残すフィルタ（トグル＋短文説明）。
+class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
+  const _RoomColleCandidateUrlFilterPanel({
+    required this.excludeUrlNotReady,
+    required this.onExcludeUrlNotReadyChanged,
+  });
+
+  /// `true` のとき「取得済みURLのみ表示」と同義（既存 [_ProductsPlaceholderScreenState._candidateExcludeUrlNotReady]）。
+  final bool excludeUrlNotReady;
+  final ValueChanged<bool> onExcludeUrlNotReadyChanged;
+
+  static const Color _filterAccent = Color(0xFF546E7A);
+  static const Color _filterAccentForeground = Color(0xFF37474F);
+
+  @override
+  Widget build(BuildContext context) {
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColors.background.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.divider.withValues(alpha: 0.88),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 1),
+                  child: Icon(
+                    Icons.tune_rounded,
+                    size: 18,
+                    color: AppColors.textSecondary.withValues(alpha: 0.95),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'コレ候補の表示条件',
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                              color: AppColors.textSecondary,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 12,
+                              height: 1.25,
+                            ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'このタブでのみ有効な絞り込みです',
+                        style: bodySmall?.copyWith(
+                          color: AppColors.textTertiary,
+                          fontSize: 11,
+                          height: 1.3,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: () =>
+                    onExcludeUrlNotReadyChanged(!excludeUrlNotReady),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: MergeSemantics(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '取得済みURLのみ表示',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      fontSize: 14,
+                                      fontWeight: excludeUrlNotReady
+                                          ? FontWeight.w700
+                                          : FontWeight.w600,
+                                      height: 1.25,
+                                      color: excludeUrlNotReady
+                                          ? _filterAccentForeground
+                                          : AppColors.textPrimary,
+                                    ),
+                              ),
+                              const SizedBox(height: 3),
+                              Text(
+                                'ROOM用のURLがまだ無い候補を一覧から隠します',
+                                style: bodySmall?.copyWith(
+                                  color: AppColors.textTertiary,
+                                  fontSize: 11,
+                                  height: 1.35,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Switch.adaptive(
+                        value: excludeUrlNotReady,
+                        onChanged: onExcludeUrlNotReadyChanged,
+                        activeTrackColor:
+                            _filterAccent.withValues(alpha: 0.42),
+                        activeThumbColor: _filterAccentForeground,
+                        inactiveTrackColor:
+                            AppColors.divider.withValues(alpha: 0.65),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// 一覧の絞り込み条件をまとめて解除。アウトラインで「ボタン」だが主CTAより弱く見せる。
 class _RoomColleClearFiltersButton extends StatelessWidget {
   const _RoomColleClearFiltersButton({required this.onPressed});
@@ -960,73 +1099,21 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                     ),
                                 decoration: _roomColleKeywordDecoration(context),
                               ),
-                              const SizedBox(height: 10),
-                              Text(
-                                'フィルタと条件クリア',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall
-                                    ?.copyWith(
-                                      color: AppColors.textTertiary,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 11,
-                                      height: 1.2,
-                                    ),
+                              const SizedBox(height: 12),
+                              _RoomColleCandidateUrlFilterPanel(
+                                excludeUrlNotReady: _candidateExcludeUrlNotReady,
+                                onExcludeUrlNotReadyChanged: (v) {
+                                  if (!mounted) return;
+                                  setState(() => _candidateExcludeUrlNotReady = v);
+                                  _persistRoomColleUiNow();
+                                },
                               ),
-                              const SizedBox(height: 6),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: FilterChip(
-                                      label: const Text('URL未取得除外'),
-                                      tooltip:
-                                          'URL が取得済みの候補だけ一覧に表示します',
-                                      selected: _candidateExcludeUrlNotReady,
-                                      onSelected: (v) {
-                                        if (!mounted) return;
-                                        setState(() =>
-                                            _candidateExcludeUrlNotReady = v);
-                                        _persistRoomColleUiNow();
-                                      },
-                                      showCheckmark: false,
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.padded,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 8,
-                                      ),
-                                      pressElevation: 0,
-                                      backgroundColor: AppColors.surface,
-                                      selectedColor: const Color(0xFF546E7A)
-                                          .withValues(alpha: 0.14),
-                                      side: BorderSide(
-                                        color: _candidateExcludeUrlNotReady
-                                            ? const Color(0xFF546E7A)
-                                            : AppColors.divider,
-                                        width:
-                                            _candidateExcludeUrlNotReady
-                                                ? 1.25
-                                                : 1,
-                                      ),
-                                      labelStyle: TextStyle(
-                                        color: _candidateExcludeUrlNotReady
-                                            ? const Color(0xFF37474F)
-                                            : AppColors.textPrimary,
-                                        fontWeight:
-                                            _candidateExcludeUrlNotReady
-                                                ? FontWeight.w700
-                                                : FontWeight.w500,
-                                        fontSize: 12,
-                                        height: 1.2,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  _RoomColleClearFiltersButton(
-                                    onPressed: _resetRoomColleFilters,
-                                  ),
-                                ],
+                              const SizedBox(height: 10),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: _RoomColleClearFiltersButton(
+                                  onPressed: _resetRoomColleFilters,
+                                ),
                               ),
                             ],
                           ),
@@ -1736,7 +1823,7 @@ class _RoomCollectionSearchEmptyState extends StatelessWidget {
   }
 }
 
-/// 「URL未取得除外」により表示対象が0件（データは存在する）。
+/// 「取得済みURLのみ表示」により表示対象が0件（データは存在する）。候補タブ専用。
 class _RoomCollectionUrlFilterEmptyState extends StatelessWidget {
   const _RoomCollectionUrlFilterEmptyState({
     required this.accentColor,
@@ -1763,7 +1850,7 @@ class _RoomCollectionUrlFilterEmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                'URL未取得除外のため表示できる商品がありません',
+                '「取得済みURLのみ表示」では一覧に出せる商品がありません',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: AppColors.textPrimary,
@@ -1773,7 +1860,7 @@ class _RoomCollectionUrlFilterEmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'チップ「URL未取得除外」をオフにすると一覧が表示されます。',
+                '絞り込みの「取得済みURLのみ表示」をオフにすると、URLが未準備の候補も表示されます。',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
