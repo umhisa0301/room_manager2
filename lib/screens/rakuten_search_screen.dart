@@ -189,7 +189,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       _selectedProductIds.clear();
     });
     final condition = _buildProductCondition();
-    context.read<RakutenSearchProvider>().searchWithCondition(condition);
+    final excludeIds = context
+        .read<RakutenManagedProductProvider>()
+        .productIdsExcludedFromKeywordSearch();
+    context.read<RakutenSearchProvider>().searchWithCondition(
+          condition,
+          excludeRegisteredProductIds: excludeIds,
+        );
   }
 
   RakutenProductSearchCondition _buildProductCondition() {
@@ -1175,6 +1181,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           icon: Icons.manage_search_outlined,
           title: '検索するとここに商品が並びます',
           subtitle: '上のキーワード欄で検索。絞り込みは「詳細条件」から。',
+          stateFootnote: 'コレ候補・コレ済に登録済みの商品は、結果に含めません。',
           compactLayout: true,
         );
       case RakutenSearchStatus.loading:
@@ -1182,7 +1189,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           title: '商品を探しています',
           subtitle: '楽天の商品情報を読み込んでいます。回線状況によっては30秒ほどかかることがあります。',
           footnote:
-              '最大約100件まで順に取得しています。この画面を閉じずにお待ちください。',
+              '登録済みを除き最大100件になるまで、次ページの取得を続けることがあります。この画面を閉じずにお待ちください。',
         );
       case RakutenSearchStatus.error:
         return RakutenSearchErrorView(
@@ -1197,6 +1204,23 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
+          if (search.keywordSearchHadApiHitsButNoVisibleResults) {
+            return RakutenSearchEmptyView(
+              icon: Icons.playlist_remove_rounded,
+              title: '表示できる新しい候補が見つかりませんでした',
+              body:
+                  'コレ候補・コレ済に登録済みの商品は、検索結果に含めていません。'
+                  'この条件では、除外のあとに残る商品がありませんでした。',
+              hints: const [
+                'キーワードや詳細条件を変えてみる',
+                '登録済み商品が多いと、新しい候補は出にくくなります',
+              ],
+              onRefine: () => _openProductConditionsSheet(context),
+              refineLabel: '詳細条件を調整',
+              stateFootnote:
+                  '楽天側に商品があっても、登録済みだけを除くと0件になることがあります。',
+            );
+          }
           return RakutenSearchEmptyView(
             icon: Icons.inventory_2_outlined,
             title: '条件に合う商品は見つかりませんでした',

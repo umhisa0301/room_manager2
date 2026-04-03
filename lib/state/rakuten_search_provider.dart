@@ -24,11 +24,16 @@ class RakutenSearchProvider extends ChangeNotifier {
   List<RakutenSearchItem> _results = const [];
   String _errorMessage = '';
   String _lastKeyword = '';
+  /// キーワード検索で API から商品は取れたが、登録済み除外・アプリ側条件の結果リストが空。
+  bool _keywordSearchHadApiHitsButNoVisibleResults = false;
 
   RakutenSearchStatus get status => _status;
   List<RakutenSearchItem> get results => _results;
   String get errorMessage => _errorMessage;
   String get lastKeyword => _lastKeyword;
+
+  bool get keywordSearchHadApiHitsButNoVisibleResults =>
+      _keywordSearchHadApiHitsButNoVisibleResults;
 
   /// 直近の成功結果のうち `affiliateUrl` が空でない件数（API側のアフィリエイト応答の目安）。
   int get resultsWithAffiliateUrlCount => _results
@@ -42,6 +47,7 @@ class RakutenSearchProvider extends ChangeNotifier {
       _results = const [];
       _errorMessage = '';
       _lastKeyword = '';
+      _keywordSearchHadApiHitsButNoVisibleResults = false;
       notifyListeners();
       return;
     }
@@ -49,8 +55,9 @@ class RakutenSearchProvider extends ChangeNotifier {
   }
 
   Future<void> searchWithCondition(
-    RakutenProductSearchCondition condition,
-  ) async {
+    RakutenProductSearchCondition condition, {
+    Set<String>? excludeRegisteredProductIds,
+  }) async {
     final normalized = condition.normalized();
     // キーワード検索だけでなく、genreId 指定のみの検索（ジャンル検索・ショップ発掘）も許可する。
     final hasKeyword = normalized.keyword.isNotEmpty;
@@ -61,16 +68,29 @@ class RakutenSearchProvider extends ChangeNotifier {
       _results = const [];
       _errorMessage = '';
       _lastKeyword = '';
+      _keywordSearchHadApiHitsButNoVisibleResults = false;
       notifyListeners();
       return;
     }
     _status = RakutenSearchStatus.loading;
     _errorMessage = '';
     _lastKeyword = normalized.keyword;
+    _keywordSearchHadApiHitsButNoVisibleResults = false;
     notifyListeners();
 
     try {
-      final fetched = await _repository.search(condition: normalized);
+      final List<RakutenSearchItem> fetched;
+      if (excludeRegisteredProductIds != null) {
+        final result = await _repository.searchKeywordWithManagedExclusion(
+          condition: normalized,
+          excludeRegisteredProductIds: excludeRegisteredProductIds,
+        );
+        fetched = result.items;
+        _keywordSearchHadApiHitsButNoVisibleResults =
+            result.receivedAnyItemFromApi && result.items.isEmpty;
+      } else {
+        fetched = await _repository.search(condition: normalized);
+      }
       _results = fetched;
       _status = RakutenSearchStatus.success;
       final withAff = fetched.where((e) => e.hasAffiliateUrlInResponse).length;
@@ -87,6 +107,7 @@ class RakutenSearchProvider extends ChangeNotifier {
       _results = const [];
       _status = RakutenSearchStatus.error;
       _errorMessage = _userFacingError(e);
+      _keywordSearchHadApiHitsButNoVisibleResults = false;
     }
     notifyListeners();
   }
@@ -117,6 +138,7 @@ class RakutenSearchProvider extends ChangeNotifier {
     _results = const [];
     _errorMessage = '';
     _lastKeyword = '';
+    _keywordSearchHadApiHitsButNoVisibleResults = false;
     notifyListeners();
   }
 }

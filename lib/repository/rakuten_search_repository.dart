@@ -4,6 +4,17 @@ import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/rakuten_api_service.dart';
 
+/// キーワード検索で登録済み商品を除外して集めた結果（API に1件でも取れたかのフラグ付き）。
+class RakutenKeywordSearchRepositoryResult {
+  const RakutenKeywordSearchRepositoryResult({
+    required this.items,
+    required this.receivedAnyItemFromApi,
+  });
+
+  final List<RakutenSearchItem> items;
+  final bool receivedAnyItemFromApi;
+}
+
 /// APIレスポンスをアプリ用モデルへ変換する責務。
 class RakutenSearchRepository {
   RakutenSearchRepository({required RakutenApiService apiService})
@@ -78,6 +89,125 @@ class RakutenSearchRepository {
       }
       return results;
     }
+  }
+
+  /// キーワード検索タブ専用: [excludeRegisteredProductIds]（itemCode）を除いたうえで、
+  /// 表示候補が [targetVisibleCount] 件に達するか API が尽きるまで、ページを順に取得する。
+  ///
+  /// - 1ページあたり [hitsPerPage] 件（最大30）、最大 [maxFetchPages] ページで打ち切り
+  /// - 同一 [productId] の重複は結合しない
+  /// - 1ページ目の取得失敗は再スロー、2ページ目以降の失敗は確保済み件で打ち切り
+  Future<RakutenKeywordSearchRepositoryResult> searchKeywordWithManagedExclusion({
+    required RakutenProductSearchCondition condition,
+    required Set<String> excludeRegisteredProductIds,
+    int targetVisibleCount = 100,
+    int hitsPerPage = 30,
+    int startPage = 1,
+    int maxFetchPages = 10,
+    Duration interPageDelay = const Duration(milliseconds: 200),
+  }) async {
+    assert(() {
+      return targetVisibleCount > 0 &&
+          hitsPerPage >= 1 &&
+          hitsPerPage <= 30 &&
+          maxFetchPages >= 1 &&
+          startPage >= 1;
+    }());
+    final normalized = condition.normalized();
+    final exclude = excludeRegisteredProductIds
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toSet();
+
+    final visible = <RakutenSearchItem>[];
+    final seenIds = <String>{};
+    var receivedAnyFromApi = false;
+    var page = startPage;
+
+    while (visible.length < targetVisibleCount && page <= maxFetchPages) {
+      try {
+        if (page > startPage) {
+          await Future<void>.delayed(interPageDelay);
+        }
+        final raw = await _apiService.searchItems(
+          condition: normalized,
+          page: page,
+          hits: hitsPerPage,
+        );
+        final items = raw['Items'];
+        if (items is! List || items.isEmpty) {
+          if (kDebugMode) {
+            debugPrint(
+              '[Rakuten] keywordManagedExclusion page=$page empty Items — stop',
+            );
+          }
+          break;
+        }
+
+        final pageLen = items.length;
+        for (final entry in items) {
+          if (visible.length >= targetVisibleCount) break;
+          try {
+            final map = _unwrapItem(entry);
+            final item = _mapToModel(map);
+            if (item == null) continue;
+            receivedAnyFromApi = true;
+            final id = item.productId.trim();
+            if (id.isEmpty) continue;
+            if (exclude.contains(id)) continue;
+            if (seenIds.contains(id)) continue;
+            final passed = _applyAppSideFilters([item], normalized);
+            if (passed.isEmpty) continue;
+            seenIds.add(id);
+            visible.add(item);
+          } catch (e, st) {
+            if (kDebugMode) {
+              debugPrint(
+                '[Rakuten] keywordManagedExclusion map/parse skip page=$page: $e',
+              );
+              debugPrint('$st');
+            }
+          }
+        }
+
+        if (kDebugMode) {
+          debugPrint(
+            '[Rakuten] keywordManagedExclusion page=$page raw=$pageLen '
+            'visible=${visible.length}/$targetVisibleCount',
+          );
+        }
+
+        if (visible.length >= targetVisibleCount) break;
+        final isLastPage = pageLen < hitsPerPage;
+        if (isLastPage) break;
+        page++;
+      } catch (e, st) {
+        if (kDebugMode) {
+          debugPrint(
+            '[Rakuten] keywordManagedExclusion page=$page failed: $e',
+          );
+          debugPrint('$st');
+        }
+        if (page == startPage) {
+          rethrow;
+        }
+        break;
+      }
+    }
+
+    if (kDebugMode) {
+      debugPrint(
+        '[Rakuten] keywordManagedExclusion done visible=${visible.length} '
+        'hadRaw=$receivedAnyFromApi',
+      );
+    }
+
+    return RakutenKeywordSearchRepositoryResult(
+      items: visible.length > targetVisibleCount
+          ? visible.sublist(0, targetVisibleCount)
+          : visible,
+      receivedAnyItemFromApi: receivedAnyFromApi,
+    );
   }
 
   Map<String, dynamic>? _unwrapItem(dynamic entry) {

@@ -124,6 +124,25 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     return RakutenManagedProductStatus.none;
   }
 
+  /// キーワード検索 API 結果から除外する [RakutenSearchItem.productId]（楽天 itemCode）集合。
+  Set<String> productIdsExcludedFromKeywordSearch() {
+    final out = <String>{};
+    for (final e in _items) {
+      final isCand = RakutenManagedProduct.isMemberForStatusTab(
+        e,
+        RakutenManagedProductStatus.candidate,
+      );
+      final isDone = RakutenManagedProduct.isMemberForStatusTab(
+        e,
+        RakutenManagedProductStatus.done,
+      );
+      if (!isCand && !isDone) continue;
+      final id = e.productId.trim();
+      if (id.isNotEmpty) out.add(id);
+    }
+    return out;
+  }
+
   bool isRegistering(String productId) =>
       _registeringProductIds.contains(productId.trim());
 
