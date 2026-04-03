@@ -136,6 +136,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _resetSearchUi();
   }
 
+  /// キーワード検索タブ: フォーカスを外してキーボードを閉じる。
+  void _dismissKeywordSearchKeyboard() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,10 +175,29 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   color: HomeScreenColors.inlineDivider,
                 ),
                 Expanded(
-                  child: ColoredBox(
-                    color: HomeScreenColors.canvas,
-                    child: _buildResultArea(context, search, managed, saved),
-                  ),
+                  child: _mode == _RakutenSearchMode.product
+                      ? GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: _dismissKeywordSearchKeyboard,
+                          child: ColoredBox(
+                            color: HomeScreenColors.canvas,
+                            child: _buildResultArea(
+                              context,
+                              search,
+                              managed,
+                              saved,
+                            ),
+                          ),
+                        )
+                      : ColoredBox(
+                          color: HomeScreenColors.canvas,
+                          child: _buildResultArea(
+                            context,
+                            search,
+                            managed,
+                            saved,
+                          ),
+                        ),
                 ),
               ],
             );
@@ -184,6 +208,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   void _runSearch(BuildContext context) {
+    _dismissKeywordSearchKeyboard();
     setState(() {
       _selectionMode = false;
       _selectedProductIds.clear();
@@ -304,6 +329,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 controller: _keywordController,
                 textInputAction: TextInputAction.search,
                 onSubmitted: (_) => _runSearch(context),
+                onTapOutside: (_) => _dismissKeywordSearchKeyboard(),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 14,
                       height: 1.22,
@@ -362,7 +388,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
             Expanded(
               child: OutlinedButton(
-                onPressed: _clearConditionsForCurrentMode,
+                onPressed: () {
+                  _dismissKeywordSearchKeyboard();
+                  _clearConditionsForCurrentMode();
+                },
                 style: _neutralConditionsButtonStyle().copyWith(
                   minimumSize: const WidgetStatePropertyAll(Size(0, 40)),
                   padding: const WidgetStatePropertyAll(
@@ -609,6 +638,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   void _onModeChanged(_RakutenSearchMode next) {
     if (_mode == next) return;
+    if (_mode == _RakutenSearchMode.product) {
+      _dismissKeywordSearchKeyboard();
+    }
     setState(() => _mode = next);
     context.read<RakutenSearchProvider>().resetTransientState();
   }
@@ -663,6 +695,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   Future<void> _openProductConditionsSheet(BuildContext context) async {
+    if (_mode == _RakutenSearchMode.product) {
+      _dismissKeywordSearchKeyboard();
+    }
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
