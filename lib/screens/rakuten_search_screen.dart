@@ -685,6 +685,20 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     });
   }
 
+  /// キーワード検索の主キーワードは残し、詳細条件（シート内の項目）だけを初期化する。
+  void _clearKeywordDetailConditionsOnly() {
+    setState(() {
+      _minPriceController.clear();
+      _maxPriceController.clear();
+      _excludeKeywordController.clear();
+      _minReviewCountController.clear();
+      _minReviewAverageController.clear();
+      _minCommentCountController.clear();
+      _selectedShopCode = null;
+      _selectedGenreId = null;
+    });
+  }
+
   ButtonStyle _detailConditionsButtonStyle() {
     return OutlinedButton.styleFrom(
       foregroundColor: HomeScreenColors.accentSectionHeading,
@@ -708,36 +722,41 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  Future<void> _openProductConditionsSheet(BuildContext context) async {
+  Future<void> _openProductConditionsSheet(BuildContext screenContext) async {
     if (_mode == _RakutenSearchMode.product) {
       _dismissKeywordSearchKeyboard();
     }
     await showModalBottomSheet<void>(
-      context: context,
+      context: screenContext,
       isScrollControlled: true,
       showDragHandle: true,
       builder: (sheetContext) {
-        return Material(
-          color: HomeScreenColors.canvas,
-          child: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                RakutenSearchScreenUi.sheetPadH,
-                8,
-                RakutenSearchScreenUi.sheetPadH,
-                MediaQuery.of(sheetContext).viewInsets.bottom + 16,
-              ),
-              child: SingleChildScrollView(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      'キーワード検索の詳細条件',
-                      style: RakutenSearchScreenUi.sectionHeadingAccent(context),
-                    ),
+        return StatefulBuilder(
+          builder: (modalContext, setModalState) {
+            return Material(
+              color: HomeScreenColors.canvas,
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    RakutenSearchScreenUi.sheetPadH,
+                    8,
+                    RakutenSearchScreenUi.sheetPadH,
+                    MediaQuery.of(sheetContext).viewInsets.bottom + 16,
+                  ),
+                  child: SingleChildScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          _mode == _RakutenSearchMode.product
+                              ? 'キーワード検索の詳細条件'
+                              : 'ジャンル検索の詳細条件',
+                          style:
+                              RakutenSearchScreenUi.sectionHeadingAccent(context),
+                        ),
                     SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
                     Row(
                       children: [
@@ -882,6 +901,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               .toList(),
                           onChanged: (value) {
                             setState(() => _selectedShopCode = value);
+                            setModalState(() {});
                           },
                         ),
                       ),
@@ -912,24 +932,131 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               .toList(),
                           onChanged: (value) {
                             setState(() => _selectedGenreId = value);
+                            setModalState(() {});
                           },
                         ),
                       ),
                     ),
                     SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
-                    FilledButton(
-                      onPressed: () => Navigator.of(sheetContext).pop(),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.accentPrimary,
-                        foregroundColor: AppColors.textOnAccent,
+                    if (_mode == _RakutenSearchMode.product) ...[
+                      Consumer<RakutenSearchProvider>(
+                        builder: (context, search, _) {
+                          final loading =
+                              search.status == RakutenSearchStatus.loading;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              FilledButton.icon(
+                                onPressed: loading
+                                    ? null
+                                    : () {
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
+                                        Navigator.of(sheetContext).pop();
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) {
+                                          if (!mounted) return;
+                                          _runSearch(screenContext);
+                                        });
+                                      },
+                                icon: const Icon(Icons.search_rounded, size: 22),
+                                label: const Text(
+                                  'この条件で検索',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: AppColors.accentPrimary,
+                                  foregroundColor: AppColors.textOnAccent,
+                                  minimumSize: const Size(0, 50),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 14,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                          Navigator.of(sheetContext).pop();
+                                        },
+                                        style: TextButton.styleFrom(
+                                          foregroundColor:
+                                              HomeScreenColors.leadOnSection,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 10,
+                                          ),
+                                        ),
+                                        child: const Text('閉じる'),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                          _clearKeywordDetailConditionsOnly();
+                                          setModalState(() {});
+                                        },
+                                        style: TextButton.styleFrom(
+                                          foregroundColor:
+                                              HomeScreenColors.footnoteMuted,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                            vertical: 10,
+                                          ),
+                                        ),
+                                        child: const Text(
+                                          '条件をクリア',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
                       ),
-                      child: const Text('閉じる'),
+                    ] else
+                      OutlinedButton(
+                        onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          Navigator.of(sheetContext).pop();
+                        },
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: HomeScreenColors.leadOnSection,
+                          side: BorderSide(color: HomeScreenColors.deckOutline),
+                          minimumSize: const Size(0, 48),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                        ),
+                        child: const Text('閉じる'),
+                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
