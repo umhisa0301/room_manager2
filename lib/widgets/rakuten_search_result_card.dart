@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/app_action_service.dart';
+import '../services/rakuten_genre_master_service.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
@@ -60,6 +61,13 @@ class RakutenSearchResultCard extends StatelessWidget {
     final shopStyle = RoomColleProductListCardLayout.shopTextStyle(theme);
     final selectionHintStyle =
         RoomColleProductListCardLayout.selectionHintTextStyle(theme);
+    final genreLineBase = shopStyle ??
+        theme.textTheme.bodySmall ??
+        const TextStyle();
+    final genreLineStyle = genreLineBase.copyWith(
+      fontSize: (genreLineBase.fontSize ?? 12) - 1,
+      color: theme.colorScheme.onSurfaceVariant,
+    );
 
     return Container(
       height: RoomColleProductListCardLayout.cardHeight,
@@ -107,6 +115,16 @@ class RakutenSearchResultCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: shopStyle,
                         ),
+                        if (item.genreId.trim().isNotEmpty) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            RakutenGenreMasterService.instance
+                                .genreDisplayName(item.genreId),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: genreLineStyle,
+                          ),
+                        ],
                         if (localStatus != RakutenManagedProductStatus.none &&
                             !selectionMode) ...[
                           _SearchCardStatusLozenge(status: localStatus),

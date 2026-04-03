@@ -8,6 +8,7 @@ import '../models/rakuten_managed_product.dart';
 import '../models/room_colle_list_filters.dart';
 import '../navigation/app_shell_controller.dart';
 import '../repository/room_colle_ui_state_repository.dart';
+import '../services/rakuten_genre_master_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
@@ -537,7 +538,7 @@ int _roomColleStale7PlusCandidateCount(RakutenManagedProductProvider p) {
   return n;
 }
 
-/// 一覧に現れる非空の楽天 genreId 一覧（API由来。名称は未保持のため ID のみ）。
+/// 一覧に現れる非空の楽天 genreId 一覧（商品データ由来）。
 List<String> _roomColleDistinctGenreIds(List<RakutenManagedProduct> items) {
   final s = <String>{};
   for (final e in items) {
@@ -548,6 +549,13 @@ List<String> _roomColleDistinctGenreIds(List<RakutenManagedProduct> items) {
   }
   final out = s.toList()..sort();
   return out;
+}
+
+String _roomColleGenreFilterMenuText(String id) {
+  final raw =
+      RakutenGenreMasterService.instance.roomColleGenreFilterMenuLabel(id);
+  if (raw.length > 42) return '${raw.substring(0, 40)}…';
+  return raw;
 }
 
 List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
@@ -590,7 +598,10 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
   }
   final g = c.genreId?.trim();
   if (g != null && g.isNotEmpty) {
-    final short = g.length > 14 ? '${g.substring(0, 12)}…' : g;
+    final labelFull =
+        RakutenGenreMasterService.instance.roomColleGenreFilterMenuLabel(g);
+    final short =
+        labelFull.length > 22 ? '${labelFull.substring(0, 20)}…' : labelFull;
     out.add(
       Chip(
         label: Text('ジャンル: $short'),
@@ -1109,7 +1120,7 @@ class _RoomColleFilterEditorSheetState
             ),
             const SizedBox(height: 4),
             Text(
-              '一覧にないIDは出ません。名前はAPIで保持していないためIDのみです。',
+              '一覧にないIDは出ません。名称はアプリ内マスタで引き、未登録IDは「未分類」と表示されます。',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: HomeScreenColors.footnoteMuted,
                 fontSize: 11,
@@ -1165,7 +1176,7 @@ class _RoomColleFilterEditorSheetState
                           (id) => DropdownMenuItem<String?>(
                             value: id,
                             child: Text(
-                              id.length > 28 ? '${id.substring(0, 26)}…' : id,
+                              _roomColleGenreFilterMenuText(id),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),

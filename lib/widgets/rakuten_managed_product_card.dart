@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../services/app_action_service.dart';
+import '../services/rakuten_genre_master_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/room_colle_list_accent.dart';
@@ -89,6 +90,13 @@ class RakutenManagedProductCard extends StatelessWidget {
             DateTime.now(),
           )
         : null;
+    final genreLineBase = shopStyle ??
+        theme.textTheme.bodySmall ??
+        const TextStyle();
+    final genreLineStyle = genreLineBase.copyWith(
+      fontSize: (genreLineBase.fontSize ?? 12) - 1,
+      color: theme.colorScheme.onSurfaceVariant,
+    );
 
     return Container(
       height: RoomColleProductListCardLayout.cardHeight,
@@ -129,6 +137,16 @@ class RakutenManagedProductCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: shopStyle,
                         ),
+                        if (product.genreId.trim().isNotEmpty) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            RakutenGenreMasterService.instance
+                                .genreDisplayName(product.genreId),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: genreLineStyle,
+                          ),
+                        ],
                         if (staleSpec != null) ...[
                           const SizedBox(height: 4),
                           RoomColleCandidateStaleChip(spec: staleSpec),

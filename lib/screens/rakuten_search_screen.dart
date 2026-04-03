@@ -6,6 +6,7 @@ import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 import '../navigation/app_route_observer.dart';
+import '../services/rakuten_genre_master_service.dart';
 import '../services/shop_discovery_aggregator.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/rakuten_search_provider.dart';
@@ -1364,10 +1365,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   String? _labelForGenre(String? id) {
     if (id == null) return null;
-    for (final g in _mockGenres) {
-      if (g.id == id) return g.label;
-    }
-    return null;
+    return RakutenGenreMasterService.instance.genreNameIfKnown(id);
   }
 
   Future<void> _runGenreSearch(BuildContext context) async {
@@ -2578,9 +2576,11 @@ const List<_SearchShopOption> _mockShops = [
   _SearchShopOption('biccamera', 'ビックカメラ楽天市場店'),
 ];
 
-const List<_SearchGenreOption> _mockGenres = [
-  _SearchGenreOption(null, '指定なし'),
-  _SearchGenreOption('100939', 'インテリア・寝具・収納'),
-  _SearchGenreOption('551167', '家電'),
-  _SearchGenreOption('565004', '日用品雑貨・文房具・手芸'),
-];
+List<_SearchGenreOption> get _mockGenres => [
+      const _SearchGenreOption(null, '指定なし'),
+      ...RakutenGenreMasterService.instance
+          .orderedMasterEntriesForDropdown()
+          .map(
+            (e) => _SearchGenreOption(e.genreId, e.genreName),
+          ),
+    ];
