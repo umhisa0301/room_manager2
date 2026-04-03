@@ -4,9 +4,10 @@ import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/app_action_service.dart';
 import '../theme/app_theme.dart';
-import '../theme/home_screen_colors.dart';
+import 'room_colle_list_card_action_style.dart';
+import 'room_colle_product_list_card_layout.dart';
 
-/// 楽天検索結果の1商品カード。
+/// 楽天検索結果の1商品カード（ROOM コレ一覧カードと同一 UI ルール）。
 class RakutenSearchResultCard extends StatelessWidget {
   const RakutenSearchResultCard({
     super.key,
@@ -31,100 +32,182 @@ class RakutenSearchResultCard extends StatelessWidget {
   final VoidCallback? onToggleSelected;
   final String? selectionDisabledLabel;
 
+  static String _safeItemName(RakutenSearchItem item) {
+    try {
+      final t = item.itemName.trim();
+      return t.isEmpty ? '（商品名なし）' : t;
+    } catch (_) {
+      return '（商品名なし）';
+    }
+  }
+
+  static String _safeShopName(RakutenSearchItem item) {
+    try {
+      final t = item.shopName.trim();
+      return t.isEmpty ? 'ショップ名なし' : t;
+    } catch (_) {
+      return 'ショップ名なし';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final titleStyle = RoomColleProductListCardLayout.titleTextStyle(theme);
+    final priceStyle = RoomColleProductListCardLayout.priceTextStyle(theme);
+    final shopStyle = RoomColleProductListCardLayout.shopTextStyle(theme);
+    final selectionHintStyle =
+        RoomColleProductListCardLayout.selectionHintTextStyle(theme);
+
     return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: HomeScreenColors.roomMetricTileFill,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: HomeScreenColors.roomMetricTileBorder),
-        boxShadow: HomeScreenColors.roomMetricTileShadow,
-      ),
+      height: RoomColleProductListCardLayout.cardHeight,
+      decoration: RoomColleProductListCardLayout.cardDecoration(),
+      clipBehavior: Clip.antiAlias,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (selectionMode)
             Padding(
-              padding: const EdgeInsets.only(right: 8, top: 2),
-              child: _buildSelectionControl(context),
+              padding: const EdgeInsets.only(left: 6, right: 2),
+              child: Center(child: _buildSelectionControl(context)),
             ),
-          _buildImage(),
-          const SizedBox(width: 10),
+          RoomColleProductListCardThumbSlot(child: _heroImage()),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  item.itemName,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: HomeScreenColors.metricTileTitleColor,
-                        fontWeight: FontWeight.w700,
-                        height: 1.3,
-                      ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  '¥${item.itemPrice}',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: HomeScreenColors.sectionTitleAccent,
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  item.shopName.isEmpty ? 'ショップ名なし' : item.shopName,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: HomeScreenColors.metricTileCaptionColor,
-                      ),
-                ),
-                const SizedBox(height: 10),
-                if (selectionMode && !isSelectionEnabled) ...[
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: HomeScreenColors.subActionRowFill,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: HomeScreenColors.deckOutline),
-                    ),
-                    child: Text(
-                      selectionDisabledLabel ?? 'この商品は選択できません',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: HomeScreenColors.groupedSectionBody,
-                            fontWeight: FontWeight.w600,
+            child: Padding(
+              padding: RoomColleProductListCardLayout.rightColumnPadding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          _safeItemName(item),
+                          maxLines: RoomColleProductListCardLayout.titleMaxLines,
+                          overflow: TextOverflow.ellipsis,
+                          style: titleStyle,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          RoomColleProductListCardLayout.formatPriceYen(
+                            item.itemPrice,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: priceStyle,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          _safeShopName(item),
+                          maxLines: RoomColleProductListCardLayout.shopMaxLines,
+                          overflow: TextOverflow.ellipsis,
+                          style: shopStyle,
+                        ),
+                        if (selectionMode && !isSelectionEnabled) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            selectionDisabledLabel ?? 'この商品は選択できません',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: selectionHintStyle,
+                          ),
+                        ],
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 5),
+                  _searchResultActions(context),
                 ],
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => AppActionService.openUrl(
-                          context,
-                          url: item.browserLaunchUrl,
-                        ),
-                        child: const Text('楽天で見る'),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: _buildCandidateAction(context),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 6),
-              ],
+              ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _searchResultActions(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 38,
+          child: FilledButton(
+            style: RoomColleListCardActionStyle.rakutenFilled(),
+            onPressed: () => AppActionService.openUrl(
+              context,
+              url: item.browserLaunchUrl,
+            ),
+            child: RoomColleListCardActionStyle.compactActionLabel(
+              icon: Icons.open_in_new_rounded,
+              label: '楽天で見る',
+              color: Colors.white,
+              weight: FontWeight.w700,
+              fontSize: RoomColleListCardActionStyle.labelFontCompact,
+            ),
+          ),
+        ),
+        const SizedBox(width: 4),
+        Expanded(
+          flex: 38,
+          child: _buildRegisterAction(context),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRegisterAction(BuildContext context) {
+    final isCandidate = localStatus == RakutenManagedProductStatus.candidate;
+    final isDone = localStatus == RakutenManagedProductStatus.done;
+
+    if (isDone) {
+      return OutlinedButton(
+        style: RoomColleListCardActionStyle.roomOutlineDisabled(),
+        onPressed: null,
+        child: RoomColleListCardActionStyle.compactActionLabel(
+          icon: Icons.check_circle_outline_rounded,
+          label: 'コレ済',
+          color: AppColors.textTertiary,
+          weight: FontWeight.w600,
+        ),
+      );
+    }
+
+    if (isCandidate) {
+      return OutlinedButton(
+        style: RoomColleListCardActionStyle.roomOutlineDisabled(),
+        onPressed: null,
+        child: RoomColleListCardActionStyle.compactActionLabel(
+          icon: Icons.bookmark_added_outlined,
+          label: 'コレ候補登録済',
+          color: AppColors.textTertiary,
+          weight: FontWeight.w600,
+          fontSize: 10,
+        ),
+      );
+    }
+
+    return FilledButton(
+      style: RoomColleListCardActionStyle.collectFilled(),
+      onPressed: isRegistering ? null : onRegisterCandidate,
+      child: isRegistering
+          ? SizedBox(
+              width: 22,
+              height: 22,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppColors.textOnAccent,
+              ),
+            )
+          : RoomColleListCardActionStyle.compactActionLabel(
+              icon: Icons.bookmark_add_outlined,
+              label: 'コレ候補へ登録',
+              color: AppColors.textOnAccent,
+              weight: FontWeight.w700,
+              fontSize: RoomColleListCardActionStyle.labelFontCompact,
+            ),
     );
   }
 
@@ -133,7 +216,7 @@ class RakutenSearchResultCard extends StatelessWidget {
       return Icon(
         Icons.block_rounded,
         size: 22,
-        color: HomeScreenColors.footnoteMuted,
+        color: AppColors.textTertiary,
       );
     }
     return InkWell(
@@ -145,66 +228,36 @@ class RakutenSearchResultCard extends StatelessWidget {
             : Icons.radio_button_unchecked_rounded,
         size: 24,
         color: isSelected
-            ? HomeScreenColors.statusAccentStrong
-            : HomeScreenColors.groupedSectionBody,
+            ? AppColors.accentPrimary
+            : AppColors.textSecondary,
       ),
     );
   }
 
-  Widget _buildCandidateAction(BuildContext context) {
-    final isCandidate = localStatus == RakutenManagedProductStatus.candidate;
-    final isDone = localStatus == RakutenManagedProductStatus.done;
-
-    if (isDone) {
-      return OutlinedButton(
-        onPressed: null,
-        child: const Text('コレ済'),
-      );
+  Widget _heroImage() {
+    Widget child;
+    try {
+      final url = item.imageUrl.trim();
+      if (url.isNotEmpty) {
+        child = Image.network(
+          url,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => Center(child: _thumbPlaceholder()),
+        );
+      } else {
+        child = Center(child: _thumbPlaceholder());
+      }
+    } catch (_) {
+      child = Center(child: _thumbPlaceholder());
     }
-
-    if (isCandidate) {
-      return OutlinedButton(
-        onPressed: null,
-        child: const Text('コレ候補登録済'),
-      );
-    }
-
-    return FilledButton.tonal(
-      onPressed: isRegistering ? null : onRegisterCandidate,
-      child: isRegistering
-          ? const SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
-          : const Text('コレ候補へ登録'),
-    );
+    return ColoredBox(color: AppColors.surfaceVariant, child: child);
   }
 
-  Widget _buildImage() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        width: 88,
-        height: 88,
-        color: HomeScreenColors.candidateThumbPlaceholder
-            .withValues(alpha: 0.35),
-        child: item.imageUrl.isNotEmpty
-            ? Image.network(
-                item.imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => _placeholder(),
-              )
-            : _placeholder(),
-      ),
-    );
-  }
-
-  Widget _placeholder() {
+  Widget _thumbPlaceholder() {
     return Icon(
       Icons.image_outlined,
-      size: 28,
-      color: HomeScreenColors.footnoteMuted,
+      size: 30,
+      color: AppColors.textTertiary.withValues(alpha: 0.65),
     );
   }
 }
