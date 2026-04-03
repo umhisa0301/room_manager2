@@ -11,6 +11,7 @@ import '../repository/room_colle_ui_state_repository.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../utils/room_colle_candidate_stale.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/home_primary_action_button.dart';
 import '../widgets/rakuten_managed_product_card.dart';
@@ -452,10 +453,87 @@ class _RoomColleStaleOrganizeQuickRow extends StatelessWidget {
   }
 }
 
+/// 7日超の候補が一定件数以上のときの整理ナッジ（閉じた状態は永続化）。
+class _RoomColleStalePileNoticeBar extends StatelessWidget {
+  const _RoomColleStalePileNoticeBar({required this.onDismiss});
+
+  final VoidCallback onDismiss;
+
+  @override
+  Widget build(BuildContext context) {
+    const accent = Color(0xFFE65100);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Color.alphaBlend(
+          const Color(0xFFFFF3E0).withValues(alpha: 0.94),
+          HomeScreenColors.roomContentWellFill,
+        ),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: accent.withValues(alpha: 0.38)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 10, 4, 10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.inventory_2_outlined,
+              size: 22,
+              color: accent.withValues(alpha: 0.92),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 1),
+                child: Text(
+                  '古い候補が溜まっています',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w700,
+                    height: 1.3,
+                    color: HomeScreenColors.titlePrimary,
+                  ),
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: onDismiss,
+              tooltip: '閉じる',
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+              icon: Icon(
+                Icons.close_rounded,
+                size: 22,
+                color: HomeScreenColors.leadOnSection.withValues(alpha: 0.85),
+              ),
+              visualDensity: VisualDensity.compact,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 bool _roomColleScreenHasExplicitRouteArgs(ProductsPlaceholderScreen widget) {
   return widget.initialDoneFilterLocalDay != null ||
       (widget.initialFocusCandidateProductId?.isNotEmpty ?? false) ||
       widget.initialTabIndex != 0;
+}
+
+/// 登録から 7 暦日以上経過したコレ候補の件数。
+int _roomColleStale7PlusCandidateCount(RakutenManagedProductProvider p) {
+  final now = DateTime.now();
+  var n = 0;
+  for (final e in p.sortedItemsForStatus(RakutenManagedProductStatus.candidate)) {
+    try {
+      if (RoomColleCandidateStaleSpec.calendarDaysElapsed(e.addedAt, now) >=
+          7) {
+        n++;
+      }
+    } catch (_) {}
+  }
+  return n;
 }
 
 /// 一覧に現れる非空の楽天 genreId 一覧（API由来。名称は未保持のため ID のみ）。
@@ -1416,6 +1494,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   late final AppShellController _shellCtrl;
   late final RoomColleUiStateRepository _roomColleUiRepo;
   bool _candidateExcludeUrlNotReady = false;
+
+  /// [RoomColleUiStateSnapshot.staleCandidatePileBannerDismissed] と同期。
+  bool _stalePileBannerDismissed = false;
   Timer? _persistSearchDebounce;
 
   String? get _focusCandidateTargetId {
@@ -1505,6 +1586,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       _candidateSearchController.clear();
       _doneSearchController.clear();
       _doneLocalDayFilter = null;
+      _stalePileBannerDismissed = false;
     });
     _persistRoomColleUiNow();
   }
@@ -1516,6 +1598,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       doneListFilters: _doneListFilters,
       candidateExcludeUrlNotReady: _candidateExcludeUrlNotReady,
       doneLocalDay: _doneLocalDayFilter,
+      staleCandidatePileBannerDismissed: _stalePileBannerDismissed,
     );
   }
 
@@ -1617,6 +1700,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       _candidateExcludeUrlNotReady = persisted.candidateExcludeUrlNotReady;
       _doneLocalDayFilter = _normalizeDoneDayFilter(persisted.doneLocalDay);
     }
+    _stalePileBannerDismissed = persisted.staleCandidatePileBannerDismissed;
 
     final focusId = widget.initialFocusCandidateProductId;
     final idx0 = widget.initialTabIndex.clamp(0, 1);
@@ -2066,6 +2150,38 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      Consumer<RakutenManagedProductProvider>(
+                        builder: (context, managed, _) {
+                          final pile =
+                              _roomColleStale7PlusCandidateCount(managed);
+                          if (pile < 5 && _stalePileBannerDismissed) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (!mounted || !_stalePileBannerDismissed) {
+                                return;
+                              }
+                              setState(() => _stalePileBannerDismissed = false);
+                              _persistRoomColleUiNow();
+                            });
+                          }
+                          if (pile < 5 || _stalePileBannerDismissed) {
+                            return const SizedBox.shrink();
+                          }
+                          return Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              _kRoomListScreenPadH,
+                              0,
+                              _kRoomListScreenPadH,
+                              _RoomColleUi.gapFieldStack,
+                            ),
+                            child: _RoomColleStalePileNoticeBar(
+                              onDismiss: () {
+                                setState(() => _stalePileBannerDismissed = true);
+                                _persistRoomColleUiNow();
+                              },
+                            ),
+                          );
+                        },
+                      ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: _kRoomListScreenPadH,

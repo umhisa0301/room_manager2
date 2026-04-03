@@ -105,12 +105,17 @@ class RoomColleUiStateRepository {
         cFilters = _sanitizeFilterCriteriaKeywords(cFilters);
         dFilters = _sanitizeFilterCriteriaKeywords(dFilters);
 
+        final pileBannerRaw = map['staleCandidatePileBannerDismissed'];
+        final pileBannerDismissed =
+            pileBannerRaw is bool ? pileBannerRaw : false;
+
         return RoomColleUiStateSnapshot(
           tabIndex: tabIndex,
           candidateListFilters: cFilters,
           doneListFilters: dFilters,
           candidateExcludeUrlNotReady: exclude,
           doneLocalDay: doneLocalDay,
+          staleCandidatePileBannerDismissed: pileBannerDismissed,
         );
       }
 
@@ -181,6 +186,8 @@ class RoomColleUiStateRepository {
         'doneListFilters': dSan.toJson(),
         'candidateExcludeUrlNotReady': snap.candidateExcludeUrlNotReady,
         'doneLocalDay': snap.doneLocalDay?.toIso8601String(),
+        'staleCandidatePileBannerDismissed':
+            snap.staleCandidatePileBannerDismissed,
       };
       await _prefs.setString(_key, jsonEncode(map));
     } catch (e, st) {
@@ -231,6 +238,7 @@ class RoomColleUiStateSnapshot {
     required this.doneListFilters,
     required this.candidateExcludeUrlNotReady,
     this.doneLocalDay,
+    this.staleCandidatePileBannerDismissed = false,
   });
 
   final int tabIndex;
@@ -244,6 +252,9 @@ class RoomColleUiStateSnapshot {
   final bool candidateExcludeUrlNotReady;
   final DateTime? doneLocalDay;
 
+  /// 7日超候補が5件以上のときのナッジバナーをユーザーが閉じたか（候補タブ用）。
+  final bool staleCandidatePileBannerDismissed;
+
   /// 永続 v2 / UI 互換用。常に [candidateListFilters.keyword] と一致。
   String get candidateSearchQuery => candidateListFilters.keyword;
 
@@ -256,5 +267,6 @@ class RoomColleUiStateSnapshot {
     doneListFilters: RoomColleListFilterCriteria.defaults,
     candidateExcludeUrlNotReady: false,
     doneLocalDay: null,
+    staleCandidatePileBannerDismissed: false,
   );
 }
