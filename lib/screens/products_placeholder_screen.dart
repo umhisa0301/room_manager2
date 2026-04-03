@@ -11,6 +11,7 @@ import '../repository/room_colle_ui_state_repository.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../theme/room_colle_list_accent.dart';
 import '../utils/room_colle_candidate_stale.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/home_primary_action_button.dart';
@@ -1993,8 +1994,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                       );
                                       final idx = _tabController.index;
                                       final selectedAccent = idx == 0
-                                          ? RoomListAccent.candidate
-                                          : RoomListAccent.done;
+                                          ? RoomColleListAccent.candidate
+                                          : RoomColleListAccent.done;
                                       final segmentShape =
                                           RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(
@@ -2302,7 +2303,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           emptyTitle: 'コレ候補はまだありません',
                           emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
                           emptyHint: '',
-                          accentColor: RoomListAccent.candidate,
+                          accentColor: RoomColleListAccent.candidate,
                           listScrollController: _candidateScrollController,
                           flashHighlightProductId: _flashProductId,
                           rowKeyFor: _keyForCandidateRow,
@@ -2416,7 +2417,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           dayFilterEmptyTitle: 'この日にコレした商品はありません',
                           dayFilterEmptySubtitle:
                               '表示は端末の日付（このアプリでコレ済にした日時）に基づきます。',
-                          accentColor: RoomListAccent.done,
+                          accentColor: RoomColleListAccent.done,
                         ),
                       ),
                     ],
