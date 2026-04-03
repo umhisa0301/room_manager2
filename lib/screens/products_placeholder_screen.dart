@@ -334,6 +334,124 @@ class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
   }
 }
 
+/// 候補タブ：古い候補の整理導線（ワンタップで経過日数による絞り込み）。
+///
+/// [onPresetChanged] には [RoomColleStaleCandidatePreset.none] を含む確定値を渡す（トグルオフ含む）。
+class _RoomColleStaleOrganizeQuickRow extends StatelessWidget {
+  const _RoomColleStaleOrganizeQuickRow({
+    required this.preset,
+    required this.onPresetChanged,
+  });
+
+  final RoomColleStaleCandidatePreset preset;
+  final ValueChanged<RoomColleStaleCandidatePreset> onPresetChanged;
+
+  void _commitTap(RoomColleStaleCandidatePreset target) {
+    final next =
+        preset == target ? RoomColleStaleCandidatePreset.none : target;
+    onPresetChanged(next);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final o7 = const Color(0xFFE65100);
+    final o7Bg = Color.alphaBlend(
+      const Color(0xFFFFF3E0).withValues(alpha: 0.92),
+      HomeScreenColors.roomContentWellFill,
+    );
+    final r30 = const Color(0xFFB71C1C);
+    final r30Bg = Color.alphaBlend(
+      const Color(0xFFFFEBEE).withValues(alpha: 0.92),
+      HomeScreenColors.roomContentWellFill,
+    );
+
+    final sel7 = preset == RoomColleStaleCandidatePreset.sevenPlus;
+    final sel30 = preset == RoomColleStaleCandidatePreset.thirtyPlus;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '古い候補を整理',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            fontWeight: FontWeight.w800,
+            fontSize: 12,
+            color: HomeScreenColors.leadOnSection,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          '整理対象だけをすぐ表示',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            fontSize: 11,
+            height: 1.28,
+            color: HomeScreenColors.footnoteMuted,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Wrap(
+          spacing: _RoomColleUi.chipSpacing,
+          runSpacing: _RoomColleUi.chipSpacing,
+          children: [
+            FilterChip(
+              label: const Text('7日以上'),
+              selected: sel7,
+              showCheckmark: false,
+              onSelected: (_) =>
+                  _commitTap(RoomColleStaleCandidatePreset.sevenPlus),
+              visualDensity: VisualDensity.compact,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              backgroundColor: HomeScreenColors.deckFill,
+              selectedColor: o7Bg,
+              checkmarkColor: o7,
+              labelStyle: TextStyle(
+                fontSize: 12,
+                fontWeight: sel7 ? FontWeight.w800 : FontWeight.w600,
+                color: sel7 ? o7 : HomeScreenColors.titlePrimary,
+              ),
+              side: BorderSide(
+                color: sel7 ? o7.withValues(alpha: 0.55) : HomeScreenColors.deckOutline,
+                width: sel7 ? 1.25 : 1,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            ),
+            FilterChip(
+              label: const Text('30日以上'),
+              selected: sel30,
+              showCheckmark: false,
+              onSelected: (_) =>
+                  _commitTap(RoomColleStaleCandidatePreset.thirtyPlus),
+              visualDensity: VisualDensity.compact,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              backgroundColor: HomeScreenColors.deckFill,
+              selectedColor: r30Bg,
+              checkmarkColor: r30,
+              labelStyle: TextStyle(
+                fontSize: 12,
+                fontWeight: sel30 ? FontWeight.w800 : FontWeight.w600,
+                color: sel30 ? r30 : HomeScreenColors.titlePrimary,
+              ),
+              side: BorderSide(
+                color: sel30
+                    ? r30.withValues(alpha: 0.55)
+                    : HomeScreenColors.deckOutline,
+                width: sel30 ? 1.25 : 1,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
 bool _roomColleScreenHasExplicitRouteArgs(ProductsPlaceholderScreen widget) {
   return widget.initialDoneFilterLocalDay != null ||
       (widget.initialFocusCandidateProductId?.isNotEmpty ?? false) ||
@@ -435,6 +553,46 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
       ),
     );
   }
+  switch (c.staleCandidatePreset) {
+    case RoomColleStaleCandidatePreset.none:
+      break;
+    case RoomColleStaleCandidatePreset.sevenPlus:
+      out.add(
+        Chip(
+          label: const Text('整理対象: 7日以上'),
+          visualDensity: VisualDensity.compact,
+          backgroundColor: HomeScreenColors.roomMetricTileFill,
+          side: BorderSide(
+            color: const Color(0xFFE65100).withValues(alpha: 0.45),
+          ),
+          labelStyle: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFFE65100),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+        ),
+      );
+      break;
+    case RoomColleStaleCandidatePreset.thirtyPlus:
+      out.add(
+        Chip(
+          label: const Text('整理対象: 30日以上'),
+          visualDensity: VisualDensity.compact,
+          backgroundColor: HomeScreenColors.roomMetricTileFill,
+          side: BorderSide(
+            color: const Color(0xFFB71C1C).withValues(alpha: 0.45),
+          ),
+          labelStyle: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFFB71C1C),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+        ),
+      );
+      break;
+  }
   return out;
 }
 
@@ -506,6 +664,7 @@ class _RoomColleFilterEditorSheet extends StatefulWidget {
 class _RoomColleFilterEditorSheetState
     extends State<_RoomColleFilterEditorSheet> {
   late RoomColleRegisteredDatePreset _preset;
+  late RoomColleStaleCandidatePreset _staleCandidateDraft;
   String? _genreId;
   late final TextEditingController _minPriceCtrl;
   late final TextEditingController _maxPriceCtrl;
@@ -515,6 +674,9 @@ class _RoomColleFilterEditorSheetState
   void initState() {
     super.initState();
     _preset = widget.initial.registeredDatePreset;
+    _staleCandidateDraft = widget.isCandidateTab
+        ? widget.initial.staleCandidatePreset
+        : RoomColleStaleCandidatePreset.none;
     final g = widget.initial.genreId?.trim();
     _genreId = (g != null && g.isNotEmpty) ? g : null;
     _minPriceCtrl = TextEditingController(
@@ -538,6 +700,7 @@ class _RoomColleFilterEditorSheetState
   void _resetDraftExtended() {
     setState(() {
       _preset = RoomColleRegisteredDatePreset.all;
+      _staleCandidateDraft = RoomColleStaleCandidatePreset.none;
       _genreId = null;
       _minPriceCtrl.clear();
       _maxPriceCtrl.clear();
@@ -570,6 +733,9 @@ class _RoomColleFilterEditorSheetState
     }
     final merged = widget.initial.copyWith(
       registeredDatePreset: _preset,
+      staleCandidatePreset: widget.isCandidateTab
+          ? _staleCandidateDraft
+          : RoomColleStaleCandidatePreset.none,
       genreId: _genreId,
       clearGenreId: _genreId == null || _genreId!.isEmpty,
       priceMinYen: minY,
@@ -754,6 +920,66 @@ class _RoomColleFilterEditorSheetState
                     ],
                   ),
                 ),
+              ),
+            ],
+            if (widget.isCandidateTab) ...[
+              const SizedBox(height: 16),
+              Text(
+                '古い候補を整理',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: HomeScreenColors.leadOnSection,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '整理対象の経過日数で絞り込み（他の条件と併用可。候補タブの一覧のみに効きます）。',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: HomeScreenColors.footnoteMuted,
+                  fontSize: 11,
+                  height: 1.32,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: _RoomColleUi.chipSpacing,
+                runSpacing: _RoomColleUi.chipSpacing,
+                children: [
+                  FilterChip(
+                    label: const Text('7日以上'),
+                    selected:
+                        _staleCandidateDraft ==
+                        RoomColleStaleCandidatePreset.sevenPlus,
+                    showCheckmark: false,
+                    onSelected: (_) {
+                      setState(() {
+                        _staleCandidateDraft =
+                            _staleCandidateDraft ==
+                                RoomColleStaleCandidatePreset.sevenPlus
+                            ? RoomColleStaleCandidatePreset.none
+                            : RoomColleStaleCandidatePreset.sevenPlus;
+                      });
+                    },
+                    visualDensity: VisualDensity.compact,
+                  ),
+                  FilterChip(
+                    label: const Text('30日以上'),
+                    selected:
+                        _staleCandidateDraft ==
+                        RoomColleStaleCandidatePreset.thirtyPlus,
+                    showCheckmark: false,
+                    onSelected: (_) {
+                      setState(() {
+                        _staleCandidateDraft =
+                            _staleCandidateDraft ==
+                                RoomColleStaleCandidatePreset.thirtyPlus
+                            ? RoomColleStaleCandidatePreset.none
+                            : RoomColleStaleCandidatePreset.thirtyPlus;
+                      });
+                    },
+                    visualDensity: VisualDensity.compact,
+                  ),
+                ],
               ),
             ],
             const SizedBox(height: 16),
@@ -1257,6 +1483,16 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         });
       });
     });
+  }
+
+  void _setCandidateStalePreset(RoomColleStaleCandidatePreset v) {
+    if (!mounted) return;
+    setState(() {
+      _candidateListFilters = _candidateListFilters.copyWith(
+        staleCandidatePreset: v,
+      );
+    });
+    _persistRoomColleUiNow();
   }
 
   void _resetRoomColleFilters() {
@@ -1865,6 +2101,14 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                               ),
                               SizedBox(
                                 height: _RoomColleUi.gapKeywordToFilterRow,
+                              ),
+                              _RoomColleStaleOrganizeQuickRow(
+                                preset:
+                                    _candidateListFilters.staleCandidatePreset,
+                                onPresetChanged: _setCandidateStalePreset,
+                              ),
+                              SizedBox(
+                                height: _RoomColleUi.gapFieldStack,
                               ),
                               _RoomColleInlineMoreFiltersRow(
                                 onOpenMoreFilters: () =>

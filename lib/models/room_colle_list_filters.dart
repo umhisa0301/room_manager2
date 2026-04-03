@@ -1,6 +1,30 @@
 import 'package:flutter/foundation.dart';
 
 import 'rakuten_managed_product.dart';
+import '../utils/room_colle_candidate_stale.dart';
+
+/// 候補タブ：登録からの経過で「整理対象」を絞る（コレ済一覧では無視。将来は一括削除の対象抽出管線に流用可）。
+enum RoomColleStaleCandidatePreset {
+  /// 条件なし。
+  none,
+
+  /// 登録から 7 暦日以上。
+  sevenPlus,
+
+  /// 登録から 30 暦日以上。
+  thirtyPlus,
+}
+
+RoomColleStaleCandidatePreset roomColleStaleCandidatePresetFromWire(
+  String? raw,
+) {
+  final t = raw?.trim();
+  if (t == null || t.isEmpty) return RoomColleStaleCandidatePreset.none;
+  return RoomColleStaleCandidatePreset.values.firstWhere(
+    (e) => e.name == t,
+    orElse: () => RoomColleStaleCandidatePreset.none,
+  );
+}
 
 /// アプリに候補として保存した日（[RakutenManagedProduct.addedAt]）ベースのプリセット。
 /// コレ済タブでも同一フィールドを使い、「一覧に出す元データの登録日」として扱う。
@@ -33,6 +57,7 @@ class RoomColleListFilterCriteria {
   const RoomColleListFilterCriteria({
     this.keyword = '',
     this.registeredDatePreset = RoomColleRegisteredDatePreset.all,
+    this.staleCandidatePreset = RoomColleStaleCandidatePreset.none,
     this.genreId,
     this.priceMinYen,
     this.priceMaxYen,
@@ -43,6 +68,10 @@ class RoomColleListFilterCriteria {
 
   /// [RakutenManagedProduct.addedAt] に対するプリセット。
   final RoomColleRegisteredDatePreset registeredDatePreset;
+
+  /// 候補の「古い順」整理向け。単一選択（[none] / [sevenPlus] / [thirtyPlus]）。
+  /// コレ済タブの一覧では解釈されない（データは保持され得るが効果は候補のみ）。
+  final RoomColleStaleCandidatePreset staleCandidatePreset;
 
   /// 楽天 [RakutenManagedProduct.genreId] との完全一致。null または空なら未使用。
   /// API由来のIDのみで名前は保持しない（将来、マップテーブルを足せば表示名のみ拡張）。
@@ -62,6 +91,9 @@ class RoomColleListFilterCriteria {
     if (registeredDatePreset != RoomColleRegisteredDatePreset.all) {
       return true;
     }
+    if (staleCandidatePreset != RoomColleStaleCandidatePreset.none) {
+      return true;
+    }
     final g = genreId?.trim() ?? '';
     if (g.isNotEmpty) return true;
     if (priceMinYen != null || priceMaxYen != null) return true;
@@ -75,6 +107,7 @@ class RoomColleListFilterCriteria {
   RoomColleListFilterCriteria copyWith({
     String? keyword,
     RoomColleRegisteredDatePreset? registeredDatePreset,
+    RoomColleStaleCandidatePreset? staleCandidatePreset,
     String? genreId,
     bool clearGenreId = false,
     int? priceMinYen,
@@ -86,6 +119,8 @@ class RoomColleListFilterCriteria {
       keyword: keyword ?? this.keyword,
       registeredDatePreset:
           registeredDatePreset ?? this.registeredDatePreset,
+      staleCandidatePreset:
+          staleCandidatePreset ?? this.staleCandidatePreset,
       genreId: clearGenreId ? null : (genreId ?? this.genreId),
       priceMinYen: clearPriceMin ? null : (priceMinYen ?? this.priceMinYen),
       priceMaxYen: clearPriceMax ? null : (priceMaxYen ?? this.priceMaxYen),
@@ -96,6 +131,7 @@ class RoomColleListFilterCriteria {
     return <String, dynamic>{
       'keyword': keyword,
       'registeredDatePreset': registeredDatePreset.name,
+      'staleCandidatePreset': staleCandidatePreset.name,
       'genreId': genreId,
       'priceMinYen': priceMinYen,
       'priceMaxYen': priceMaxYen,
@@ -109,6 +145,9 @@ class RoomColleListFilterCriteria {
       final kw = (m['keyword'] ?? '').toString();
       final preset = roomColleRegisteredDatePresetFromWire(
         m['registeredDatePreset']?.toString(),
+      );
+      final stale = roomColleStaleCandidatePresetFromWire(
+        m['staleCandidatePreset']?.toString(),
       );
       final gRaw = m['genreId']?.toString().trim();
       final genre = (gRaw != null && gRaw.isNotEmpty) ? gRaw : null;
@@ -131,6 +170,7 @@ class RoomColleListFilterCriteria {
       return RoomColleListFilterCriteria(
         keyword: kw,
         registeredDatePreset: preset,
+        staleCandidatePreset: stale,
         genreId: genre,
         priceMinYen: minY,
         priceMaxYen: maxY,
@@ -189,6 +229,29 @@ bool _matchesGenre(RakutenManagedProduct e, String? genreFilter) {
   }
 }
 
+bool _matchesStaleCandidatePreset(
+  RakutenManagedProduct e,
+  RoomColleStaleCandidatePreset preset,
+) {
+  if (preset == RoomColleStaleCandidatePreset.none) return true;
+  if (e.status != RakutenManagedProductStatus.candidate) return true;
+  try {
+    final days = RoomColleCandidateStaleSpec.calendarDaysElapsed(
+      e.addedAt,
+      DateTime.now(),
+    );
+    switch (preset) {
+      case RoomColleStaleCandidatePreset.none:
+        return true;
+      case RoomColleStaleCandidatePreset.sevenPlus:
+        return days >= 7;
+      case RoomColleStaleCandidatePreset.thirtyPlus:
+        return days >= 30;
+    }
+  } catch (_) {}
+  return false;
+}
+
 bool _matchesPrice(
   RakutenManagedProduct e,
   int? minYen,
@@ -204,7 +267,11 @@ bool _matchesPrice(
   }
 }
 
-/// [criteria] を適用（キーワード＋登録日＋ジャンルID＋価格帯）。例外はスキップ。
+/// [criteria] を適用（キーワード＋登録日＋経過（候補のみ）＋ジャンルID＋価格帯）。例外はスキップ。
+///
+/// [staleCandidatePreset] は [RakutenManagedProductStatus.candidate] の行だけに効く。
+/// 将来、同じ [RoomColleListFilterCriteria] で [applyRoomColleListFilters] 済みリストを
+/// 一括削除の対象 ID に流用できる。
 List<RakutenManagedProduct> applyRoomColleListFilters(
   List<RakutenManagedProduct> items,
   RoomColleListFilterCriteria criteria,
@@ -217,6 +284,9 @@ List<RakutenManagedProduct> applyRoomColleListFilters(
     try {
       if (!_managedProductMatchesKeyword(e, criteria.keyword)) continue;
       if (!_matchesRegisteredDate(e, criteria.registeredDatePreset)) continue;
+      if (!_matchesStaleCandidatePreset(e, criteria.staleCandidatePreset)) {
+        continue;
+      }
       if (!_matchesGenre(e, criteria.genreId)) continue;
       if (!_matchesPrice(e, criteria.priceMinYen, criteria.priceMaxYen)) {
         continue;
