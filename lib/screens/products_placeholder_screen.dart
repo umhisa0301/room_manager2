@@ -10,13 +10,163 @@ import '../navigation/app_shell_controller.dart';
 import '../repository/room_colle_ui_state_repository.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/home_primary_action_button.dart';
 import '../widgets/rakuten_managed_product_card.dart';
 import 'rakuten_search_screen.dart';
-/// ROOMコレ一覧専用。アプリ共通 [AppDimensions.screenPaddingH] より詰め密度を上げる。
-const double _kRoomListScreenPadH = 12;
-const double _kRoomListCardGap = 6;
+
+/// ROOMコレ一覧専用。ホーム画面 [_HomeUi] と同じ横余白（9）に揃える。
+const double _kRoomListScreenPadH = 9;
+const double _kRoomListCardGap = 8;
+
+/// ROOMコレ画面のレイアウト・面色・装飾（ホーム完成版と同一デザイン言語。ロジックとは分離）。
+abstract final class _RoomColleUi {
+  const _RoomColleUi._();
+
+  static const double gapSection = 9;
+  static const double insetSectionH = 9;
+  static const double gapIconToTitle = 8;
+  static const double paddingWellV = 8;
+  static const double paddingHeaderBand = 7;
+  static const double headerBandBottom = 4;
+  static const double chromeTopPadPop = 4;
+  static const double chromeTopPadNoPop = 6;
+  static const double tabDeckPad = 8;
+  static const double tabDeckBottom = 10;
+  static const double tabInnerPad = 4;
+  static const double gapFieldStack = 8;
+  static const double gapWellBlock = 10;
+  static const double gapAfterFilterShell = 6;
+  static const double listBottomPad = 12;
+
+  static double get radiusSectionOuter => AppDimensions.radiusCard;
+  static const double radiusSectionInner = 12;
+
+  static List<BoxShadow> get cardShadow => [
+    BoxShadow(
+      color: HomeScreenColors.cardShadowColor,
+      offset: const Offset(0, 2),
+      blurRadius: 10,
+    ),
+  ];
+
+  static BoxDecoration outerRoomShellDecoration() {
+    return BoxDecoration(
+      color: HomeScreenColors.roomGroupedShellFill,
+      borderRadius: BorderRadius.circular(radiusSectionOuter),
+      border: Border.all(color: HomeScreenColors.sectionOutlineNeutral),
+      boxShadow: cardShadow,
+    );
+  }
+
+  static BoxDecoration tabInnerDeckDecoration() {
+    return BoxDecoration(
+      color: HomeScreenColors.roomContentWellFill,
+      borderRadius: BorderRadius.circular(radiusSectionInner),
+      border: Border.all(color: HomeScreenColors.deckOutline),
+    );
+  }
+
+  static TextStyle sectionHeadingAccent(BuildContext context) {
+    final base = Theme.of(context).textTheme.titleSmall;
+    return (base ?? const TextStyle()).copyWith(
+      fontSize: 15,
+      fontWeight: FontWeight.w800,
+      height: 1.22,
+      letterSpacing: -0.15,
+      color: HomeScreenColors.accentSectionHeading,
+    );
+  }
+
+  static TextStyle footnoteOnSection(BuildContext context) {
+    return Theme.of(context).textTheme.labelSmall?.copyWith(
+          fontSize: 11.5,
+          height: 1.32,
+          color: HomeScreenColors.footnoteMuted,
+          fontWeight: FontWeight.w500,
+        ) ??
+        TextStyle(
+          fontSize: 11.5,
+          height: 1.32,
+          color: HomeScreenColors.footnoteMuted,
+          fontWeight: FontWeight.w500,
+        );
+  }
+}
+
+/// 絞り込みブロック：ホーム「ROOMコレ管理」と同じ「見出し帯＋ウェル」の階層。
+class _RoomColleFilterShell extends StatelessWidget {
+  const _RoomColleFilterShell({
+    required this.title,
+    required this.icon,
+    required this.child,
+  });
+
+  final String title;
+  final IconData icon;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: _RoomColleUi.outerRoomShellDecoration(),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(_RoomColleUi.radiusSectionOuter),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ColoredBox(
+              color: HomeScreenColors.roomSectionHeaderBand,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                  _RoomColleUi.insetSectionH,
+                  _RoomColleUi.paddingHeaderBand,
+                  _RoomColleUi.insetSectionH,
+                  _RoomColleUi.headerBandBottom,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 1),
+                      child: Icon(
+                        icon,
+                        size: 22,
+                        color: HomeScreenColors.statusAccentStrong,
+                      ),
+                    ),
+                    SizedBox(width: _RoomColleUi.gapIconToTitle),
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: _RoomColleUi.sectionHeadingAccent(context),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            ColoredBox(
+              color: HomeScreenColors.roomContentWellFill,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                  _RoomColleUi.insetSectionH,
+                  _RoomColleUi.paddingWellV,
+                  _RoomColleUi.insetSectionH,
+                  _RoomColleUi.paddingWellV,
+                ),
+                child: child,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 /// タブをレール状に乗せる外周の角丸。
 const double _kRoomColleTabTrackRadius = 14;
@@ -35,22 +185,24 @@ class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
   final bool excludeUrlNotReady;
   final ValueChanged<bool> onExcludeUrlNotReadyChanged;
 
-  static const Color _filterAccent = Color(0xFF546E7A);
-  static const Color _filterAccentForeground = Color(0xFF37474F);
-
   @override
   Widget build(BuildContext context) {
     final bodySmall = Theme.of(context).textTheme.bodySmall;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.background.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.divider.withValues(alpha: 0.88),
-        ),
+        color: HomeScreenColors.deckFill,
+        borderRadius: BorderRadius.circular(_RoomColleUi.radiusSectionInner),
+        border: Border.all(color: HomeScreenColors.deckOutline),
+        boxShadow: [
+          BoxShadow(
+            color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.65),
+            offset: const Offset(0, 1),
+            blurRadius: 6,
+          ),
+        ],
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+        padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -62,19 +214,20 @@ class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
                   child: Icon(
                     Icons.tune_rounded,
                     size: 18,
-                    color: AppColors.textSecondary.withValues(alpha: 0.95),
+                    color: HomeScreenColors.statusAccentStrong,
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: _RoomColleUi.gapIconToTitle),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'コレ候補の表示条件',
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                              color: AppColors.textSecondary,
-                              fontWeight: FontWeight.w700,
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(
+                              color: HomeScreenColors.leadOnSection,
+                              fontWeight: FontWeight.w800,
                               fontSize: 12,
                               height: 1.25,
                             ),
@@ -83,9 +236,9 @@ class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
                       Text(
                         'このタブでのみ有効な絞り込みです',
                         style: bodySmall?.copyWith(
-                          color: AppColors.textTertiary,
+                          color: HomeScreenColors.groupedSectionBody,
                           fontSize: 11,
-                          height: 1.3,
+                          height: 1.32,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -99,11 +252,14 @@ class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
               color: Colors.transparent,
               child: InkWell(
                 borderRadius: BorderRadius.circular(10),
-                onTap: () =>
-                    onExcludeUrlNotReadyChanged(!excludeUrlNotReady),
+                splashColor: HomeScreenColors.inkAccentSplash,
+                highlightColor: HomeScreenColors.inkAccentHighlight,
+                onTap: () => onExcludeUrlNotReadyChanged(!excludeUrlNotReady),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 6,
+                    horizontal: 4,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -114,9 +270,7 @@ class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
                             children: [
                               Text(
                                 '取得済みURLのみ表示',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
+                                style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
                                       fontSize: 14,
                                       fontWeight: excludeUrlNotReady
@@ -124,15 +278,16 @@ class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
                                           : FontWeight.w600,
                                       height: 1.25,
                                       color: excludeUrlNotReady
-                                          ? _filterAccentForeground
-                                          : AppColors.textPrimary,
+                                          ? HomeScreenColors
+                                                .accentSectionHeading
+                                          : HomeScreenColors.titlePrimary,
                                     ),
                               ),
                               const SizedBox(height: 3),
                               Text(
                                 'ROOM用のURLがまだ無い候補を一覧から隠します',
                                 style: bodySmall?.copyWith(
-                                  color: AppColors.textTertiary,
+                                  color: HomeScreenColors.footnoteMuted,
                                   fontSize: 11,
                                   height: 1.35,
                                 ),
@@ -145,11 +300,13 @@ class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
                       Switch.adaptive(
                         value: excludeUrlNotReady,
                         onChanged: onExcludeUrlNotReadyChanged,
-                        activeTrackColor:
-                            _filterAccent.withValues(alpha: 0.42),
-                        activeThumbColor: _filterAccentForeground,
-                        inactiveTrackColor:
-                            AppColors.divider.withValues(alpha: 0.65),
+                        activeTrackColor: AppColors.accentPrimary.withValues(
+                          alpha: 0.38,
+                        ),
+                        activeThumbColor: AppColors.accentPrimary,
+                        inactiveTrackColor: AppColors.divider.withValues(
+                          alpha: 0.65,
+                        ),
                       ),
                     ],
                   ),
@@ -176,32 +333,28 @@ class _RoomColleClearFiltersButton extends StatelessWidget {
       icon: Icon(
         Icons.layers_clear_rounded,
         size: 18,
-        color: AppColors.textSecondary.withValues(alpha: 0.9),
+        color: HomeScreenColors.leadOnSection,
       ),
       label: Text(
         '条件クリア',
         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              height: 1.2,
-              color: AppColors.textSecondary,
-            ),
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          height: 1.2,
+          color: HomeScreenColors.leadOnSection,
+        ),
       ),
       style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.textSecondary,
-        backgroundColor: AppColors.surface,
+        foregroundColor: HomeScreenColors.leadOnSection,
+        backgroundColor: HomeScreenColors.deckFill,
         elevation: 0,
         shadowColor: Colors.transparent,
         minimumSize: const Size(48, _kRoomColleSecondaryCtrlMinHeight),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         tapTargetSize: MaterialTapTargetSize.padded,
         visualDensity: VisualDensity.standard,
-        side: BorderSide(
-          color: AppColors.divider.withValues(alpha: 0.9),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        side: BorderSide(color: HomeScreenColors.metricTileOutline),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
   }
@@ -236,7 +389,13 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
         Chip(
           label: const Text('登録日: 今日'),
           visualDensity: VisualDensity.compact,
-          labelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+          backgroundColor: HomeScreenColors.roomMetricTileFill,
+          side: BorderSide(color: HomeScreenColors.metricTileOutline),
+          labelStyle: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: HomeScreenColors.metricTileTitleColor,
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 8),
         ),
       );
@@ -246,7 +405,13 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
         Chip(
           label: const Text('登録日: 7日以内'),
           visualDensity: VisualDensity.compact,
-          labelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+          backgroundColor: HomeScreenColors.roomMetricTileFill,
+          side: BorderSide(color: HomeScreenColors.metricTileOutline),
+          labelStyle: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: HomeScreenColors.metricTileTitleColor,
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 8),
         ),
       );
@@ -259,7 +424,13 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
       Chip(
         label: Text('ジャンル: $short'),
         visualDensity: VisualDensity.compact,
-        labelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+        backgroundColor: HomeScreenColors.roomMetricTileFill,
+        side: BorderSide(color: HomeScreenColors.metricTileOutline),
+        labelStyle: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+          color: HomeScreenColors.metricTileTitleColor,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 8),
       ),
     );
@@ -279,7 +450,13 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
       Chip(
         label: Text('価格 $s'),
         visualDensity: VisualDensity.compact,
-        labelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+        backgroundColor: HomeScreenColors.roomMetricTileFill,
+        side: BorderSide(color: HomeScreenColors.metricTileOutline),
+        labelStyle: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+          color: HomeScreenColors.metricTileTitleColor,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 8),
       ),
     );
@@ -304,7 +481,8 @@ class _RoomColleFilterEditorSheet extends StatefulWidget {
       _RoomColleFilterEditorSheetState();
 }
 
-class _RoomColleFilterEditorSheetState extends State<_RoomColleFilterEditorSheet> {
+class _RoomColleFilterEditorSheetState
+    extends State<_RoomColleFilterEditorSheet> {
   late RoomColleRegisteredDatePreset _preset;
   String? _genreId;
   late final TextEditingController _minPriceCtrl;
@@ -351,9 +529,9 @@ class _RoomColleFilterEditorSheetState extends State<_RoomColleFilterEditorSheet
     var maxY = _tryParseYenField(_maxPriceCtrl);
     if ((_minPriceCtrl.text.trim().isNotEmpty && minY == null) ||
         (_maxPriceCtrl.text.trim().isNotEmpty && maxY == null)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('価格は数値で入力してください')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('価格は数値で入力してください')));
       return;
     }
     if (minY != null && maxY != null && minY > maxY) {
@@ -377,7 +555,7 @@ class _RoomColleFilterEditorSheetState extends State<_RoomColleFilterEditorSheet
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.paddingOf(context).bottom;
     return Material(
-      color: AppColors.surface,
+      color: HomeScreenColors.canvas,
       child: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(
           _kRoomListScreenPadH,
@@ -403,26 +581,26 @@ class _RoomColleFilterEditorSheetState extends State<_RoomColleFilterEditorSheet
             Text(
               widget.sectionTitle,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
+                fontWeight: FontWeight.w800,
+                color: HomeScreenColors.accentSectionHeading,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               'キーワードは上部の検索欄を使います。ここでは登録日・ジャンルID・価格帯のみ変えられます。',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textTertiary,
-                    height: 1.35,
-                    fontSize: 12,
-                  ),
+                color: HomeScreenColors.groupedSectionBody,
+                height: 1.35,
+                fontSize: 12,
+              ),
             ),
             const SizedBox(height: 16),
             Text(
               '登録日（端末に保存した日）',
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textSecondary,
-                  ),
+                fontWeight: FontWeight.w800,
+                color: HomeScreenColors.leadOnSection,
+              ),
             ),
             const SizedBox(height: 8),
             SegmentedButton<RoomColleRegisteredDatePreset>(
@@ -458,18 +636,18 @@ class _RoomColleFilterEditorSheetState extends State<_RoomColleFilterEditorSheet
             Text(
               'ジャンル（楽天 genreId）',
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textSecondary,
-                  ),
+                fontWeight: FontWeight.w800,
+                color: HomeScreenColors.leadOnSection,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               '一覧にないIDは出ません。名前はAPIで保持していないためIDのみです。',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textTertiary,
-                    fontSize: 11,
-                    height: 1.35,
-                  ),
+                color: HomeScreenColors.footnoteMuted,
+                fontSize: 11,
+                height: 1.35,
+              ),
             ),
             const SizedBox(height: 8),
             Builder(
@@ -482,14 +660,24 @@ class _RoomColleFilterEditorSheetState extends State<_RoomColleFilterEditorSheet
                   choices.add(gCur);
                 }
                 choices.sort();
-                final effectiveGenre =
-                    gCur != null && choices.contains(gCur) ? gCur : null;
+                final effectiveGenre = gCur != null && choices.contains(gCur)
+                    ? gCur
+                    : null;
                 return InputDecorator(
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: AppColors.background.withValues(alpha: 0.4),
+                    fillColor: HomeScreenColors.deckFill,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: HomeScreenColors.deckOutline,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: HomeScreenColors.deckOutline,
+                      ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -510,9 +698,7 @@ class _RoomColleFilterEditorSheetState extends State<_RoomColleFilterEditorSheet
                           (id) => DropdownMenuItem<String?>(
                             value: id,
                             child: Text(
-                              id.length > 28
-                                  ? '${id.substring(0, 26)}…'
-                                  : id,
+                              id.length > 28 ? '${id.substring(0, 26)}…' : id,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -528,9 +714,9 @@ class _RoomColleFilterEditorSheetState extends State<_RoomColleFilterEditorSheet
             Text(
               '価格帯（税込 itemPrice・円）',
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textSecondary,
-                  ),
+                fontWeight: FontWeight.w800,
+                color: HomeScreenColors.leadOnSection,
+              ),
             ),
             const SizedBox(height: 8),
             Row(
@@ -575,10 +761,7 @@ class _RoomColleFilterEditorSheetState extends State<_RoomColleFilterEditorSheet
               ],
             ),
             const SizedBox(height: 20),
-            FilledButton.tonal(
-              onPressed: _apply,
-              child: const Text('この条件を適用'),
-            ),
+            FilledButton.tonal(onPressed: _apply, child: const Text('この条件を適用')),
             const SizedBox(height: 10),
             TextButton(
               onPressed: _resetDraftExtended,
@@ -642,15 +825,16 @@ List<RakutenManagedProduct> _roomListVisibleItems({
   final queried = applyRoomColleListFilters(urlScoped, listFilters);
   final deduped = _dedupeManagedProductsPreserveOrder(queried);
   if (deduped.isEmpty && baseList.isNotEmpty) {
-    final urlHidAll = status == RakutenManagedProductStatus.candidate &&
+    final urlHidAll =
+        status == RakutenManagedProductStatus.candidate &&
         excludeUrlNotReady &&
         scoped.isNotEmpty &&
         _filterExcludeUrlNotReady(scoped, true).isEmpty;
     final reducingActive = listFilters.hasAnyReducingFilter;
     final searchHidAll = reducingActive && scoped.isNotEmpty;
     if (!urlHidAll && !searchHidAll) {
-      final rawScoped = status == RakutenManagedProductStatus.done &&
-              day != null
+      final rawScoped =
+          status == RakutenManagedProductStatus.done && day != null
           ? _filterDoneOnLocalCalendarDay(baseList, day)
           : baseList;
       final fallback = _dedupeManagedProductsPreserveOrder(rawScoped);
@@ -773,9 +957,7 @@ _RoomColleListSurface _resolveRoomColleListSurface({
     return _RoomColleListSurface.readyEmptyNoData;
   }
 
-  if (hasDayFilter &&
-      scoped.isEmpty &&
-      canShowDayEmptyMessage) {
+  if (hasDayFilter && scoped.isEmpty && canShowDayEmptyMessage) {
     return _RoomColleListSurface.readyEmptyFilteredByDay;
   }
 
@@ -947,9 +1129,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     final base = managed.sortedItemsForStatus(status);
     final genreIds = _roomColleDistinctGenreIds(base);
     final current = isCandidate ? _candidateListFilters : _doneListFilters;
-    final title = isCandidate
-        ? '候補一覧の条件（キーワード以外）'
-        : 'コレ済一覧の条件（キーワード以外）';
+    final title = isCandidate ? '候補一覧の条件（キーワード以外）' : 'コレ済一覧の条件（キーワード以外）';
     final result = await showModalBottomSheet<RoomColleListFilterCriteria>(
       context: context,
       isScrollControlled: true,
@@ -1021,8 +1201,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     final persisted = _roomColleUiRepo.loadSanitized();
 
     if (_roomColleScreenHasExplicitRouteArgs(widget)) {
-      _doneLocalDayFilter =
-          _normalizeDoneDayFilter(widget.initialDoneFilterLocalDay);
+      _doneLocalDayFilter = _normalizeDoneDayFilter(
+        widget.initialDoneFilterLocalDay,
+      );
     } else {
       _candidateListFilters = persisted.candidateListFilters;
       _candidateSearchController.text = persisted.candidateListFilters.keyword;
@@ -1034,9 +1215,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
 
     final focusId = widget.initialFocusCandidateProductId;
     final idx0 = widget.initialTabIndex.clamp(0, 1);
-    if (focusId != null &&
-        focusId.isNotEmpty &&
-        idx0 == 0) {
+    if (focusId != null && focusId.isNotEmpty && idx0 == 0) {
       _candidateSearchController.clear();
       _candidateListFilters = _candidateListFilters.copyWith(keyword: '');
     }
@@ -1069,10 +1248,12 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       if (!mounted) return;
       if (kDebugMode) {
         final m = context.read<RakutenManagedProductProvider>();
-        final nCand =
-            m.sortedItemsForStatus(RakutenManagedProductStatus.candidate).length;
-        final nDone =
-            m.sortedItemsForStatus(RakutenManagedProductStatus.done).length;
+        final nCand = m
+            .sortedItemsForStatus(RakutenManagedProductStatus.candidate)
+            .length;
+        final nDone = m
+            .sortedItemsForStatus(RakutenManagedProductStatus.done)
+            .length;
         debugPrint(
           '[ROOMコレ診断] ROOMコレ画面起動後 total=${m.items.length} candidate=$nCand '
           'done=$nDone listUi=${m.listUiStatus} tabIdx=${_tabController.index}',
@@ -1115,8 +1296,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     final idx = intent.initialTabIndex.clamp(0, 1);
     var focusRaw = intent.focusCandidateProductId?.trim();
     if (focusRaw != null && focusRaw.isEmpty) focusRaw = null;
-    final focusId =
-        (focusRaw != null && focusRaw.isNotEmpty && idx == 0) ? focusRaw : null;
+    final focusId = (focusRaw != null && focusRaw.isNotEmpty && idx == 0)
+        ? focusRaw
+        : null;
 
     _persistSearchDebounce?.cancel();
     setState(() {
@@ -1128,8 +1310,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       if (idx == 0) {
         _doneLocalDayFilter = null;
       } else {
-        _doneLocalDayFilter =
-            _normalizeDoneDayFilter(intent.doneFilterLocalDay);
+        _doneLocalDayFilter = _normalizeDoneDayFilter(
+          intent.doneFilterLocalDay,
+        );
       }
       _shellFocusCandidateProductId = focusId;
       _candidateFocusHandled = false;
@@ -1162,46 +1345,37 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     return InputDecoration(
       hintText: 'キーワード検索',
       hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontSize: 14,
-            color: AppColors.textTertiary,
-          ),
+        fontSize: 14,
+        color: HomeScreenColors.footnoteMuted,
+      ),
       isDense: true,
       filled: true,
-      fillColor: AppColors.surface,
-      contentPadding: const EdgeInsets.fromLTRB(16, 10, 4, 10),
+      fillColor: HomeScreenColors.deckFill,
+      contentPadding: const EdgeInsets.fromLTRB(14, 10, 4, 10),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(
-          AppDimensions.radiusSearchBar,
-        ),
-        borderSide: const BorderSide(color: AppColors.divider),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
+        borderSide: BorderSide(color: HomeScreenColors.deckOutline),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(
-          AppDimensions.radiusSearchBar,
-        ),
-        borderSide: const BorderSide(color: AppColors.divider),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
+        borderSide: BorderSide(color: HomeScreenColors.deckOutline),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(
-          AppDimensions.radiusSearchBar,
-        ),
-        borderSide: const BorderSide(
-          color: AppColors.accentPrimary,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
+        borderSide: BorderSide(
+          color: AppColors.accentPrimary.withValues(alpha: 0.92),
           width: 1.5,
         ),
       ),
-      suffixIcon: const Padding(
-        padding: EdgeInsetsDirectional.only(end: 10),
+      suffixIcon: Padding(
+        padding: const EdgeInsetsDirectional.only(end: 10),
         child: Icon(
           Icons.search_rounded,
-          color: AppColors.textTertiary,
+          color: HomeScreenColors.leadOnSection,
           size: 24,
         ),
       ),
-      suffixIconConstraints: const BoxConstraints(
-        minWidth: 40,
-        minHeight: 40,
-      ),
+      suffixIconConstraints: const BoxConstraints(minWidth: 40, minHeight: 40),
     );
   }
 
@@ -1209,236 +1383,277 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   Widget build(BuildContext context) {
     final canPop = Navigator.canPop(context);
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: HomeScreenColors.canvas,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                border: Border(
-                  bottom: BorderSide(
-                    color: AppColors.divider.withValues(alpha: 0.88),
-                  ),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    offset: const Offset(0, 2),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-            /// ① 主導線：楽天検索（候補を増やす）
             Padding(
               padding: EdgeInsets.fromLTRB(
                 _kRoomListScreenPadH,
-                canPop ? 4 : 6,
+                _RoomColleUi.gapSection,
                 _kRoomListScreenPadH,
-                2,
+                0,
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (canPop)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4, top: 2),
-                      child: IconButton(
-                        visualDensity: VisualDensity.compact,
-                        constraints: const BoxConstraints(
-                          minWidth: 44,
-                          minHeight: 44,
-                        ),
-                        padding: EdgeInsets.zero,
-                        onPressed: () => Navigator.of(context).pop(),
-                        icon: const Icon(Icons.arrow_back_rounded, size: 22),
-                        color: AppColors.textPrimary,
-                        tooltip: '戻る',
-                      ),
-                    ),
-                  Expanded(
-                    child: HomePrimaryActionButton(
-                      emphasis: HomePrimaryActionEmphasis.hero,
-                      icon: Icons.travel_explore_rounded,
-                      label: '楽天でコレ候補を検索する',
-                      onPressed: () {
-                        Navigator.of(context).push<void>(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const RakutenSearchScreen(),
-                          ),
-                        );
-                      },
-                    ),
+              child: DecoratedBox(
+                decoration: _RoomColleUi.outerRoomShellDecoration(),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                    _RoomColleUi.radiusSectionOuter,
                   ),
-                ],
-              ),
-            ),
-            /// ② タブ（キーワード・URL 除外は各タブ内の絞り込み領域へ）
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                _kRoomListScreenPadH,
-                4,
-                _kRoomListScreenPadH,
-                10,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Consumer<RakutenManagedProductProvider>(
-                      builder: (context, managed, _) {
-                        final nCand = _roomColleVisibleCount(
-                          provider: managed,
-                          status: RakutenManagedProductStatus.candidate,
-                          listFilters: _candidateListFilters,
-                          excludeUrlNotReady: _candidateExcludeUrlNotReady,
-                          doneAtLocalDayFilter: null,
-                        );
-                        final nDone = _roomColleVisibleCount(
-                          provider: managed,
-                          status: RakutenManagedProductStatus.done,
-                          listFilters: _doneListFilters,
-                          excludeUrlNotReady: false,
-                          doneAtLocalDayFilter: _doneLocalDayFilter,
-                        );
-                        final idx = _tabController.index;
-                        final selectedAccent = idx == 0
-                            ? RoomListAccent.candidate
-                            : RoomListAccent.done;
-                        final segmentShape = RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            _kRoomColleTabTrackRadius - 4,
-                          ),
-                        );
-                        return DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: AppColors.background.withValues(alpha: 0.58),
-                            borderRadius: BorderRadius.circular(
-                              _kRoomColleTabTrackRadius,
-                            ),
-                            border: Border.all(
-                              color: AppColors.divider.withValues(alpha: 0.72),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4),
-                            child: SegmentedButton<int>(
-                              showSelectedIcon: false,
-                              expandedInsets: EdgeInsets.zero,
-                              segments: <ButtonSegment<int>>[
-                                ButtonSegment<int>(
-                                  value: 0,
-                                  label: Text(
-                                    'コレ候補 ($nCand)',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      /// ① 主導線：楽天検索（候補を増やす）
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          _RoomColleUi.insetSectionH,
+                          canPop
+                              ? _RoomColleUi.chromeTopPadPop
+                              : _RoomColleUi.chromeTopPadNoPop,
+                          _RoomColleUi.insetSectionH,
+                          2,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (canPop)
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  right: 4,
+                                  top: 2,
+                                ),
+                                child: IconButton(
+                                  visualDensity: VisualDensity.compact,
+                                  constraints: const BoxConstraints(
+                                    minWidth: 44,
+                                    minHeight: 44,
                                   ),
-                                  tooltip: 'コレ候補の一覧',
-                                ),
-                                ButtonSegment<int>(
-                                  value: 1,
-                                  label: Text(
-                                    'コレ済 ($nDone)',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  icon: const Icon(
+                                    Icons.arrow_back_rounded,
+                                    size: 22,
                                   ),
-                                  tooltip: 'コレ済の一覧',
+                                  color: HomeScreenColors.titlePrimary,
+                                  tooltip: '戻る',
                                 ),
-                              ],
-                              selected: <int>{_tabController.index},
-                              onSelectionChanged: (Set<int> selection) {
-                                if (selection.isEmpty) return;
-                                final v = selection.first;
-                                if (v != _tabController.index) {
-                                  _tabController.animateTo(v);
-                                }
-                              },
-                              style: ButtonStyle(
-                                visualDensity: VisualDensity.standard,
-                                tapTargetSize: MaterialTapTargetSize.padded,
-                                minimumSize: WidgetStateProperty.all(
-                                  const Size(48, 52),
-                                ),
-                                side: WidgetStateProperty.resolveWith((states) {
-                                  if (states.contains(WidgetState.selected)) {
-                                    return BorderSide(
-                                      color: selectedAccent,
-                                      width: 1.75,
-                                    );
-                                  }
-                                  return BorderSide(
-                                    color: AppColors.divider
-                                        .withValues(alpha: 0.45),
+                              ),
+                            Expanded(
+                              child: HomePrimaryActionButton(
+                                emphasis: HomePrimaryActionEmphasis.hero,
+                                icon: Icons.travel_explore_rounded,
+                                label: '楽天でコレ候補を検索する',
+                                onPressed: () {
+                                  Navigator.of(context).push<void>(
+                                    MaterialPageRoute<void>(
+                                      builder: (_) =>
+                                          const RakutenSearchScreen(),
+                                    ),
                                   );
-                                }),
-                                padding: WidgetStateProperty.all(
-                                  const EdgeInsets.symmetric(
-                                    vertical: 14,
-                                    horizontal: 12,
-                                  ),
-                                ),
-                                shape:
-                                    WidgetStateProperty.all(segmentShape),
-                                foregroundColor:
-                                    WidgetStateProperty.resolveWith((states) {
-                                  if (states.contains(WidgetState.selected)) {
-                                    return selectedAccent;
-                                  }
-                                  return AppColors.textSecondary;
-                                }),
-                                backgroundColor:
-                                    WidgetStateProperty.resolveWith((states) {
-                                  if (states.contains(WidgetState.selected)) {
-                                    return selectedAccent.withValues(alpha: 0.18);
-                                  }
-                                  return AppColors.surface.withValues(
-                                    alpha: 0.5,
-                                  );
-                                }),
-                                textStyle: WidgetStateProperty.resolveWith(
-                                  (states) {
-                                    final base =
-                                        Theme.of(context).textTheme.labelLarge;
-                                    final selected = states
-                                        .contains(WidgetState.selected);
-                                    return base?.copyWith(
-                                      fontSize: 14,
-                                      fontWeight: selected
-                                          ? FontWeight.w800
-                                          : FontWeight.w600,
-                                      height: 1.2,
-                                      letterSpacing: selected ? 0.15 : 0,
-                                    );
-                                  },
-                                ),
-                                overlayColor:
-                                    WidgetStateProperty.resolveWith((states) {
-                                  if (states.contains(WidgetState.selected)) {
-                                    return selectedAccent.withValues(
-                                      alpha: 0.1,
-                                    );
-                                  }
-                                  return Colors.black.withValues(alpha: 0.05);
-                                }),
+                                },
                               ),
                             ),
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        height: 1,
+                        thickness: 1,
+                        color: HomeScreenColors.inlineDivider,
+                      ),
+
+                      /// ② タブ（キーワード・URL 除外は各タブ内の絞り込み領域へ）
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          _RoomColleUi.insetSectionH,
+                          _RoomColleUi.tabDeckPad,
+                          _RoomColleUi.insetSectionH,
+                          _RoomColleUi.tabDeckBottom,
+                        ),
+                        child: DecoratedBox(
+                          decoration: _RoomColleUi.tabInnerDeckDecoration(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                              _RoomColleUi.tabInnerPad,
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Consumer<RakutenManagedProductProvider>(
+                                    builder: (context, managed, _) {
+                                      final nCand = _roomColleVisibleCount(
+                                        provider: managed,
+                                        status: RakutenManagedProductStatus
+                                            .candidate,
+                                        listFilters: _candidateListFilters,
+                                        excludeUrlNotReady:
+                                            _candidateExcludeUrlNotReady,
+                                        doneAtLocalDayFilter: null,
+                                      );
+                                      final nDone = _roomColleVisibleCount(
+                                        provider: managed,
+                                        status:
+                                            RakutenManagedProductStatus.done,
+                                        listFilters: _doneListFilters,
+                                        excludeUrlNotReady: false,
+                                        doneAtLocalDayFilter:
+                                            _doneLocalDayFilter,
+                                      );
+                                      final idx = _tabController.index;
+                                      final selectedAccent = idx == 0
+                                          ? RoomListAccent.candidate
+                                          : RoomListAccent.done;
+                                      final segmentShape =
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              _kRoomColleTabTrackRadius - 4,
+                                            ),
+                                          );
+                                      return SegmentedButton<int>(
+                                        showSelectedIcon: false,
+                                        expandedInsets: EdgeInsets.zero,
+                                        segments: <ButtonSegment<int>>[
+                                          ButtonSegment<int>(
+                                            value: 0,
+                                            label: Text(
+                                              'コレ候補 ($nCand)',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            tooltip: 'コレ候補の一覧',
+                                          ),
+                                          ButtonSegment<int>(
+                                            value: 1,
+                                            label: Text(
+                                              'コレ済 ($nDone)',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            tooltip: 'コレ済の一覧',
+                                          ),
+                                        ],
+                                        selected: <int>{_tabController.index},
+                                        onSelectionChanged:
+                                            (Set<int> selection) {
+                                              if (selection.isEmpty) return;
+                                              final v = selection.first;
+                                              if (v != _tabController.index) {
+                                                _tabController.animateTo(v);
+                                              }
+                                            },
+                                        style: ButtonStyle(
+                                          visualDensity: VisualDensity.standard,
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.padded,
+                                          minimumSize: WidgetStateProperty.all(
+                                            const Size(48, 52),
+                                          ),
+                                          side: WidgetStateProperty.resolveWith(
+                                            (states) {
+                                              if (states.contains(
+                                                WidgetState.selected,
+                                              )) {
+                                                return BorderSide(
+                                                  color: selectedAccent,
+                                                  width: 1.75,
+                                                );
+                                              }
+                                              return BorderSide(
+                                                color: HomeScreenColors
+                                                    .deckOutline,
+                                              );
+                                            },
+                                          ),
+                                          padding: WidgetStateProperty.all(
+                                            const EdgeInsets.symmetric(
+                                              vertical: 14,
+                                              horizontal: 12,
+                                            ),
+                                          ),
+                                          shape: WidgetStateProperty.all(
+                                            segmentShape,
+                                          ),
+                                          foregroundColor:
+                                              WidgetStateProperty.resolveWith((
+                                                states,
+                                              ) {
+                                                if (states.contains(
+                                                  WidgetState.selected,
+                                                )) {
+                                                  return selectedAccent;
+                                                }
+                                                return HomeScreenColors
+                                                    .leadOnSection;
+                                              }),
+                                          backgroundColor:
+                                              WidgetStateProperty.resolveWith((
+                                                states,
+                                              ) {
+                                                if (states.contains(
+                                                  WidgetState.selected,
+                                                )) {
+                                                  return selectedAccent
+                                                      .withValues(alpha: 0.18);
+                                                }
+                                                return HomeScreenColors
+                                                    .deckFill;
+                                              }),
+                                          textStyle:
+                                              WidgetStateProperty.resolveWith((
+                                                states,
+                                              ) {
+                                                final base = Theme.of(
+                                                  context,
+                                                ).textTheme.labelLarge;
+                                                final selected = states
+                                                    .contains(
+                                                      WidgetState.selected,
+                                                    );
+                                                return base?.copyWith(
+                                                  fontSize: 14,
+                                                  fontWeight: selected
+                                                      ? FontWeight.w800
+                                                      : FontWeight.w600,
+                                                  height: 1.2,
+                                                  letterSpacing: selected
+                                                      ? 0.15
+                                                      : 0,
+                                                );
+                                              }),
+                                          overlayColor:
+                                              WidgetStateProperty.resolveWith((
+                                                states,
+                                              ) {
+                                                if (states.contains(
+                                                  WidgetState.selected,
+                                                )) {
+                                                  return selectedAccent
+                                                      .withValues(alpha: 0.1);
+                                                }
+                                                return HomeScreenColors
+                                                    .inkNeutralSplash;
+                                              }),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-                ],
-              ),
-            ),
+            SizedBox(height: _RoomColleUi.gapSection),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
@@ -1446,30 +1661,16 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Material(
-                        color: AppColors.surface,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            _kRoomListScreenPadH,
-                            10,
-                            _kRoomListScreenPadH,
-                            12,
-                          ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: _kRoomListScreenPadH,
+                        ),
+                        child: _RoomColleFilterShell(
+                          title: '候補一覧の絞り込み',
+                          icon: Icons.filter_alt_outlined,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text(
-                                '候補一覧の絞り込み',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelMedium
-                                    ?.copyWith(
-                                      color: AppColors.textSecondary,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                    ),
-                              ),
-                              const SizedBox(height: 8),
                               TextField(
                                 controller: _candidateSearchController,
                                 onChanged: (v) {
@@ -1477,22 +1678,23 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   setState(
                                     () => _candidateListFilters =
                                         _candidateListFilters.copyWith(
-                                      keyword: v,
-                                    ),
+                                          keyword: v,
+                                        ),
                                   );
                                   _schedulePersistRoomColleSearch();
                                 },
                                 textInputAction: TextInputAction.search,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
+                                style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
                                       fontSize: 14,
-                                      height: 1.2,
+                                      height: 1.22,
+                                      color: HomeScreenColors.titlePrimary,
                                     ),
-                                decoration: _roomColleKeywordDecoration(context),
+                                decoration: _roomColleKeywordDecoration(
+                                  context,
+                                ),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: _RoomColleUi.gapFieldStack),
                               OutlinedButton.icon(
                                 onPressed: () => _openRoomColleFilterEditor(
                                   isCandidate: true,
@@ -1502,20 +1704,23 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   backgroundColor: AppColors.accentPrimary,
                                   isLabelVisible: _candidateListFilters
                                       .hasNonKeywordConstraints,
-                                  child: const Icon(Icons.tune_rounded, size: 20),
+                                  child: const Icon(
+                                    Icons.tune_rounded,
+                                    size: 20,
+                                  ),
                                 ),
                                 label: Text(
                                   'キーワード以外の条件',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge
+                                  style: Theme.of(context).textTheme.labelLarge
                                       ?.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.textSecondary,
+                                        fontWeight: FontWeight.w700,
+                                        color: HomeScreenColors.leadOnSection,
                                       ),
                                 ),
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: AppColors.textSecondary,
+                                  foregroundColor:
+                                      HomeScreenColors.leadOnSection,
+                                  backgroundColor: HomeScreenColors.deckFill,
                                   alignment: Alignment.centerLeft,
                                   minimumSize: const Size.fromHeight(48),
                                   padding: const EdgeInsets.symmetric(
@@ -1524,32 +1729,37 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   ),
                                   side: BorderSide(
                                     color:
-                                        AppColors.divider.withValues(alpha: 0.9),
+                                        HomeScreenColors.sectionOutlineNeutral,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
                               ),
                               if (_candidateListFilters
                                   .hasNonKeywordConstraints) ...[
-                                const SizedBox(height: 8),
+                                SizedBox(height: _RoomColleUi.gapFieldStack),
                                 Wrap(
                                   spacing: 6,
                                   runSpacing: 6,
-                                  children:
-                                      _roomColleFilterSummaryChips(
+                                  children: _roomColleFilterSummaryChips(
                                     _candidateListFilters,
                                   ),
                                 ),
                               ],
-                              const SizedBox(height: 12),
+                              SizedBox(height: _RoomColleUi.gapWellBlock),
                               _RoomColleCandidateUrlFilterPanel(
-                                excludeUrlNotReady: _candidateExcludeUrlNotReady,
+                                excludeUrlNotReady:
+                                    _candidateExcludeUrlNotReady,
                                 onExcludeUrlNotReadyChanged: (v) {
                                   if (!mounted) return;
-                                  setState(() => _candidateExcludeUrlNotReady = v);
+                                  setState(
+                                    () => _candidateExcludeUrlNotReady = v,
+                                  );
                                   _persistRoomColleUiNow();
                                 },
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: _RoomColleUi.gapFieldStack),
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: _RoomColleClearFiltersButton(
@@ -1560,20 +1770,18 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           ),
                         ),
                       ),
-                      const Divider(height: 1, thickness: 1),
+                      SizedBox(height: _RoomColleUi.gapAfterFilterShell),
                       Expanded(
                         child: _RoomManagedProductListTab(
                           status: RakutenManagedProductStatus.candidate,
-                          variant:
-                              RakutenManagedProductCardVariant.candidate,
+                          variant: RakutenManagedProductCardVariant.candidate,
                           listFilters: _candidateListFilters,
                           excludeUrlNotReady: _candidateExcludeUrlNotReady,
                           candidateFocusHandled: _candidateFocusHandled,
                           onRecoverFromListError:
                               _recoverRoomColleListAndFilters,
                           emptyTitle: 'コレ候補はまだありません',
-                          emptySubtitle:
-                              '保存データでは、このタブに該当する商品はまだありません。',
+                          emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
                           emptyHint: '',
                           accentColor: RoomListAccent.candidate,
                           listScrollController: _candidateScrollController,
@@ -1582,16 +1790,14 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           focusCandidateProductId: _focusCandidateTargetId,
                           onCandidateFocusListReady:
                               _focusCandidateTargetId != null &&
-                                      _focusCandidateTargetId!
-                                          .isNotEmpty
-                                  ? _onCandidateFocusListReady
-                                  : null,
+                                  _focusCandidateTargetId!.isNotEmpty
+                              ? _onCandidateFocusListReady
+                              : null,
                           onCandidateFocusProductMissing:
                               _focusCandidateTargetId != null &&
-                                      _focusCandidateTargetId!
-                                          .isNotEmpty
-                                  ? _onCandidateFocusProductMissing
-                                  : null,
+                                  _focusCandidateTargetId!.isNotEmpty
+                              ? _onCandidateFocusProductMissing
+                              : null,
                         ),
                       ),
                     ],
@@ -1599,51 +1805,38 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Material(
-                        color: AppColors.surface,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            _kRoomListScreenPadH,
-                            10,
-                            _kRoomListScreenPadH,
-                            12,
-                          ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: _kRoomListScreenPadH,
+                        ),
+                        child: _RoomColleFilterShell(
+                          title: 'コレ済一覧の絞り込み',
+                          icon: Icons.task_alt_outlined,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text(
-                                'コレ済一覧の絞り込み',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelMedium
-                                    ?.copyWith(
-                                      color: AppColors.textSecondary,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                    ),
-                              ),
-                              const SizedBox(height: 8),
                               TextField(
                                 controller: _doneSearchController,
                                 onChanged: (v) {
                                   if (!mounted) return;
                                   setState(
-                                    () => _doneListFilters =
-                                        _doneListFilters.copyWith(keyword: v),
+                                    () => _doneListFilters = _doneListFilters
+                                        .copyWith(keyword: v),
                                   );
                                   _schedulePersistRoomColleSearch();
                                 },
                                 textInputAction: TextInputAction.search,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
+                                style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
                                       fontSize: 14,
-                                      height: 1.2,
+                                      height: 1.22,
+                                      color: HomeScreenColors.titlePrimary,
                                     ),
-                                decoration: _roomColleKeywordDecoration(context),
+                                decoration: _roomColleKeywordDecoration(
+                                  context,
+                                ),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: _RoomColleUi.gapFieldStack),
                               OutlinedButton.icon(
                                 onPressed: () => _openRoomColleFilterEditor(
                                   isCandidate: false,
@@ -1653,20 +1846,23 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   backgroundColor: AppColors.accentPrimary,
                                   isLabelVisible:
                                       _doneListFilters.hasNonKeywordConstraints,
-                                  child: const Icon(Icons.tune_rounded, size: 20),
+                                  child: const Icon(
+                                    Icons.tune_rounded,
+                                    size: 20,
+                                  ),
                                 ),
                                 label: Text(
                                   'キーワード以外の条件',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge
+                                  style: Theme.of(context).textTheme.labelLarge
                                       ?.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.textSecondary,
+                                        fontWeight: FontWeight.w700,
+                                        color: HomeScreenColors.leadOnSection,
                                       ),
                                 ),
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: AppColors.textSecondary,
+                                  foregroundColor:
+                                      HomeScreenColors.leadOnSection,
+                                  backgroundColor: HomeScreenColors.deckFill,
                                   alignment: Alignment.centerLeft,
                                   minimumSize: const Size.fromHeight(48),
                                   padding: const EdgeInsets.symmetric(
@@ -1675,12 +1871,16 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   ),
                                   side: BorderSide(
                                     color:
-                                        AppColors.divider.withValues(alpha: 0.9),
+                                        HomeScreenColors.sectionOutlineNeutral,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
                               ),
-                              if (_doneListFilters.hasNonKeywordConstraints) ...[
-                                const SizedBox(height: 8),
+                              if (_doneListFilters
+                                  .hasNonKeywordConstraints) ...[
+                                SizedBox(height: _RoomColleUi.gapFieldStack),
                                 Wrap(
                                   spacing: 6,
                                   runSpacing: 6,
@@ -1689,7 +1889,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   ),
                                 ),
                               ],
-                              const SizedBox(height: 10),
+                              SizedBox(height: _RoomColleUi.gapWellBlock),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -1698,15 +1898,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                       '検索・絞り込み・コレ済の日付をまとめてリセットします。',
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall
-                                          ?.copyWith(
-                                            color: AppColors.textTertiary,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 11,
-                                            height: 1.35,
-                                          ),
+                                      style: _RoomColleUi.footnoteOnSection(
+                                        context,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 10),
@@ -1719,7 +1913,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           ),
                         ),
                       ),
-                      const Divider(height: 1, thickness: 1),
+                      SizedBox(height: _RoomColleUi.gapAfterFilterShell),
                       Expanded(
                         child: _RoomManagedProductListTab(
                           status: RakutenManagedProductStatus.done,
@@ -1737,8 +1931,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   _persistRoomColleUiNow();
                                 },
                           emptyTitle: 'コレ済の商品はまだありません',
-                          emptySubtitle:
-                              '保存データでは、このタブに該当する商品はまだありません。',
+                          emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
                           emptyHint: '',
                           dayFilterEmptyTitle: 'この日にコレした商品はありません',
                           dayFilterEmptySubtitle:
@@ -1813,7 +2006,8 @@ class _RoomManagedProductListTab extends StatefulWidget {
       _RoomManagedProductListTabState();
 }
 
-class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> {
+class _RoomManagedProductListTabState
+    extends State<_RoomManagedProductListTab> {
   bool _candidateFocusCallbackEnqueued = false;
   String? _lastSeenFocusProductId;
   _RoomColleListSurface? _lastDebugSurface;
@@ -1837,9 +2031,7 @@ class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> 
     }
   }
 
-  void _scheduleCandidateFocusKickOnce(
-    BuildContext context,
-  ) {
+  void _scheduleCandidateFocusKickOnce(BuildContext context) {
     if (widget.status != RakutenManagedProductStatus.candidate) return;
     if (widget.candidateFocusHandled) return;
     final fid = widget.focusCandidateProductId;
@@ -1871,7 +2063,9 @@ class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> 
           excludeUrlNotReady: widget.excludeUrlNotReady,
           doneAtLocalDayFilter: null,
         );
-        final baseCand = p.sortedItemsForStatus(RakutenManagedProductStatus.candidate);
+        final baseCand = p.sortedItemsForStatus(
+          RakutenManagedProductStatus.candidate,
+        );
 
         if (listNow.any((e) => e.productId == fid)) {
           widget.onCandidateFocusListReady!();
@@ -1918,15 +2112,17 @@ class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> 
 
         final baseList = provider.sortedItemsForStatus(widget.status);
         final day = widget.doneAtLocalDayFilter;
-        final scoped = widget.status == RakutenManagedProductStatus.done &&
-                day != null
+        final scoped =
+            widget.status == RakutenManagedProductStatus.done && day != null
             ? _filterDoneOnLocalCalendarDay(baseList, day)
             : baseList;
-        final urlActive = widget.status == RakutenManagedProductStatus.candidate &&
+        final urlActive =
+            widget.status == RakutenManagedProductStatus.candidate &&
             widget.excludeUrlNotReady;
         final urlScoped = _filterExcludeUrlNotReady(scoped, urlActive);
 
-        final canShowDayEmpty = widget.dayFilterEmptyTitle != null &&
+        final canShowDayEmpty =
+            widget.dayFilterEmptyTitle != null &&
             widget.dayFilterEmptySubtitle != null;
 
         final surface = _resolveRoomColleListSurface(
@@ -1962,16 +2158,15 @@ class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> 
           case _RoomColleListSurface.loading:
             return const AppScreenLoadingCenter(
               title: '一覧を読み込み中',
-              subtitle:
-                  '端末に保存した一覧を読み込んでいます。しばらくお待ちください。',
+              subtitle: '端末に保存した一覧を読み込んでいます。しばらくお待ちください。',
             );
 
           case _RoomColleListSurface.loadError:
             return _RoomCollectionErrorState(
-              message:
-                  provider.listUiErrorMessage ?? '一覧データの読み込みに失敗しました。',
-              onRetry: () =>
-                  provider.refreshManagedProductList(showLoadingIndicator: true),
+              message: provider.listUiErrorMessage ?? '一覧データの読み込みに失敗しました。',
+              onRetry: () => provider.refreshManagedProductList(
+                showLoadingIndicator: true,
+              ),
               onResetFiltersAndRetry: widget.onRecoverFromListError,
             );
 
@@ -2004,8 +2199,9 @@ class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> 
                     subtitle: widget.dayFilterEmptySubtitle!,
                     hint: '',
                     accentColor: widget.accentColor,
-                    actionLabel:
-                        widget.onClearDoneDayFilter != null ? 'すべて表示' : null,
+                    actionLabel: widget.onClearDoneDayFilter != null
+                        ? 'すべて表示'
+                        : null,
                     onAction: widget.onClearDoneDayFilter,
                     stateFootnote:
                         '読み込みは完了しています。日付条件に一致する商品は0件です。「すべて表示」で解除できます。',
@@ -2075,11 +2271,11 @@ class _RoomManagedProductListTabState extends State<_RoomManagedProductListTab> 
           child: ListView(
             controller: widget.listScrollController,
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(
+            padding: EdgeInsets.fromLTRB(
               _kRoomListScreenPadH,
-              2,
+              4,
               _kRoomListScreenPadH,
-              12,
+              _RoomColleUi.listBottomPad,
             ),
             children: [
               if (showDayBanner) ...[
@@ -2132,9 +2328,15 @@ class _KeyedCandidateProductRow extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeOut,
           decoration: BoxDecoration(
-            color: AppColors.accentLight.withValues(alpha: 0.28),
+            color: Color.alphaBlend(
+              AppColors.accentLight.withValues(alpha: 0.35),
+              HomeScreenColors.roomContentWellFill,
+            ),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.accentPrimary, width: 1.5),
+            border: Border.all(
+              color: HomeScreenColors.sectionOutlineAccent,
+              width: 1.5,
+            ),
           ),
           child: card,
         );
@@ -2166,10 +2368,16 @@ class _RoomColleBrokenProductRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.surface,
-      borderRadius: BorderRadius.circular(12),
+      color: HomeScreenColors.roomMetricTileFill,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: HomeScreenColors.roomMetricTileBorder),
+      ),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
+        splashColor: HomeScreenColors.inkNeutralSplash,
+        highlightColor: HomeScreenColors.inkNeutralHighlight,
         onTap: () {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -2193,10 +2401,10 @@ class _RoomColleBrokenProductRow extends StatelessWidget {
                       ? '表示できない商品行があります（タップで詳細）'
                       : '表示エラー: $productId',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                      ),
+                    color: HomeScreenColors.metricTileTitleColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                  ),
                 ),
               ),
             ],
@@ -2216,8 +2424,12 @@ class _DoneDayFilterBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.surfaceVariant.withValues(alpha: 0.55),
-      borderRadius: BorderRadius.circular(12),
+      color: HomeScreenColors.subActionRowFill,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: HomeScreenColors.sectionOutlineNeutral),
+      ),
+      clipBehavior: Clip.antiAlias,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         child: Row(
@@ -2225,15 +2437,15 @@ class _DoneDayFilterBanner extends StatelessWidget {
             Icon(
               Icons.calendar_today_rounded,
               size: 16,
-              color: AppColors.accentPrimary,
+              color: HomeScreenColors.statusAccentStrong,
             ),
             const SizedBox(width: 6),
             Expanded(
               child: Text(
                 '本日（${filterDay.month}/${filterDay.day}）コレした分のみ表示中',
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
+                  color: HomeScreenColors.leadOnSection,
+                  fontWeight: FontWeight.w700,
                   height: 1.25,
                   fontSize: 12,
                 ),
@@ -2284,20 +2496,20 @@ class _RoomCollectionSearchEmptyState extends StatelessWidget {
                 '一致する商品がありません',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
+                  color: HomeScreenColors.titlePrimary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 'キーワードを変えるか、絞り込みを解除してください。読み込み自体は成功しています。',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textTertiary,
-                      height: 1.35,
-                      fontSize: 12,
-                    ),
+                  color: HomeScreenColors.groupedSectionBody,
+                  height: 1.35,
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
@@ -2344,30 +2556,30 @@ class _RoomCollectionUrlFilterEmptyState extends StatelessWidget {
                 '「取得済みURLのみ表示」では一覧に出せる商品がありません',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
+                  color: HomeScreenColors.titlePrimary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 '絞り込みの「取得済みURLのみ表示」をオフにすると、URLが未準備の候補も表示されます。',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.4,
-                      fontSize: 13,
-                    ),
+                  color: HomeScreenColors.groupedSectionBody,
+                  height: 1.4,
+                  fontSize: 13,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 'データの読み込みは成功しています（コレ候補をURL条件で絞り込んだ結果が0件です）。',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textTertiary,
-                      height: 1.35,
-                      fontSize: 12,
-                    ),
+                  color: HomeScreenColors.footnoteMuted,
+                  height: 1.35,
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
@@ -2416,20 +2628,20 @@ class _RoomCollectionRenderOrDataEmptyState extends StatelessWidget {
                 '一覧を描画できませんでした',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
+                  color: HomeScreenColors.titlePrimary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 '読み込みエラーではなく、画面上の整合が取れていない可能性（描画・データの不整合）があります。下に引っ張って再読み込みするか、フィルタを初期化してください。',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.4,
-                      fontSize: 13,
-                    ),
+                  color: HomeScreenColors.groupedSectionBody,
+                  height: 1.4,
+                  fontSize: 13,
+                ),
               ),
               if (onResetFilters != null) ...[
                 const SizedBox(height: 12),
@@ -2494,10 +2706,10 @@ class _RoomCollectionEmptyState extends StatelessWidget {
                 title,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
+                  color: HomeScreenColors.titlePrimary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                ),
               ),
               if (subtitle.isNotEmpty) ...[
                 const SizedBox(height: 6),
@@ -2505,10 +2717,10 @@ class _RoomCollectionEmptyState extends StatelessWidget {
                   subtitle,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.4,
-                        fontSize: 13,
-                      ),
+                    color: HomeScreenColors.groupedSectionBody,
+                    height: 1.4,
+                    fontSize: 13,
+                  ),
                 ),
               ],
               if (hint.isNotEmpty) ...[
@@ -2517,26 +2729,27 @@ class _RoomCollectionEmptyState extends StatelessWidget {
                   hint,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textTertiary,
-                        height: 1.35,
-                      ),
+                    color: HomeScreenColors.footnoteMuted,
+                    height: 1.35,
+                  ),
                 ),
               ],
               if (onAction != null && actionLabel != null) ...[
                 const SizedBox(height: 12),
                 TextButton(onPressed: onAction, child: Text(actionLabel!)),
               ],
-              if (stateFootnote != null && stateFootnote!.trim().isNotEmpty) ...[
+              if (stateFootnote != null &&
+                  stateFootnote!.trim().isNotEmpty) ...[
                 const SizedBox(height: 14),
                 Text(
                   stateFootnote!,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.textTertiary,
-                        fontSize: 11,
-                        height: 1.35,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    color: HomeScreenColors.footnoteMuted,
+                    fontSize: 11,
+                    height: 1.35,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ],
@@ -2586,8 +2799,8 @@ class _RoomCollectionErrorState extends StatelessWidget {
                     '一覧を表示できませんでした',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w800,
+                      color: HomeScreenColors.accentSectionHeading,
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -2595,17 +2808,17 @@ class _RoomCollectionErrorState extends StatelessWidget {
                     '状態: データの読み込みに失敗しました',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textTertiary,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      color: HomeScreenColors.footnoteMuted,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     message,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: HomeScreenColors.groupedSectionBody,
                       height: 1.45,
                     ),
                   ),

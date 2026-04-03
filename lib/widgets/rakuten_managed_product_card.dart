@@ -6,12 +6,10 @@ import '../models/rakuten_managed_product.dart';
 import '../services/app_action_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
 
 /// 一覧カードの見た目バリアント（候補 / コレ済）。
-enum RakutenManagedProductCardVariant {
-  candidate,
-  done,
-}
+enum RakutenManagedProductCardVariant { candidate, done }
 
 /// ROOM 管理一覧用の共通アクセント（状態差のみに使用。カード下地は共通）。
 abstract final class RoomListAccent {
@@ -29,16 +27,18 @@ class _RoomListCardActionStyle {
   static const double labelFontCompact = 10.5;
   static const double labelFontDelete = 10;
 
-  static const EdgeInsets paddingMain =
-      EdgeInsets.symmetric(horizontal: 6, vertical: 6);
+  static const EdgeInsets paddingMain = EdgeInsets.symmetric(
+    horizontal: 6,
+    vertical: 6,
+  );
 
-  static const EdgeInsets paddingDelete =
-      EdgeInsets.symmetric(horizontal: 4, vertical: 6);
+  static const EdgeInsets paddingDelete = EdgeInsets.symmetric(
+    horizontal: 4,
+    vertical: 6,
+  );
 
   static RoundedRectangleBorder get _shapeCompact =>
-      RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      );
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
 
   static ButtonStyle rakutenFilled() {
     const blue = Color(0xFF1565C0);
@@ -79,7 +79,7 @@ class _RoomListCardActionStyle {
       padding: paddingDelete,
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
-      side: const BorderSide(color: Color(0xFFBDBDBD), width: 1),
+      side: BorderSide(color: HomeScreenColors.metricTileOutline, width: 1),
       shape: _shapeCompact,
     );
   }
@@ -92,10 +92,7 @@ class _RoomListCardActionStyle {
       padding: paddingMain,
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
-      side: BorderSide(
-        color: stateAccent.withValues(alpha: 0.45),
-        width: 1,
-      ),
+      side: BorderSide(color: stateAccent.withValues(alpha: 0.45), width: 1),
       shape: _shapeCompact,
     );
   }
@@ -130,11 +127,14 @@ class RakutenManagedProductCard extends StatelessWidget {
   final Future<void> Function(
     BuildContext context,
     RakutenManagedProduct product,
-  )? onCollectPressed;
+  )?
+  onCollectPressed;
 
   static const double _radius = 12;
+
   /// 一覧でカード高さを揃え、行間のリズムを一定にする。
   static const double _cardHeight = 140;
+
   /// 左スロット幅（その中で正方形サムネを配置）。
   static const double _thumbSlotWidth = 102;
   static const int _titleMaxLines = 2;
@@ -168,10 +168,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     try {
       final n = product.itemPrice;
       if (n < 0) return '価格 —';
-      return '¥${n.toString().replaceAllMapped(
-            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-            (m) => '${m[1]},',
-          )}';
+      return '¥${n.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}';
     } catch (_) {
       return '価格 —';
     }
@@ -180,41 +177,36 @@ class RakutenManagedProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCandidate = variant == RakutenManagedProductCardVariant.candidate;
-    final stateAccent =
-        isCandidate ? RoomListAccent.candidate : RoomListAccent.done;
+    final stateAccent = isCandidate
+        ? RoomListAccent.candidate
+        : RoomListAccent.done;
 
     final titleStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: AppColors.textPrimary,
-          height: 1.22,
-          fontWeight: FontWeight.w600,
-          fontSize: 13.5,
-        );
+      color: HomeScreenColors.metricTileTitleColor,
+      height: 1.22,
+      fontWeight: FontWeight.w600,
+      fontSize: 13.5,
+    );
     final priceStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: AppColors.accentPrimary,
-          fontWeight: FontWeight.w800,
-          fontSize: 15,
-          height: 1.15,
-        );
+      color: HomeScreenColors.metricTileValueColor,
+      fontWeight: FontWeight.w800,
+      fontSize: 15,
+      height: 1.15,
+    );
     final shopStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: AppColors.textTertiary,
-          height: 1.2,
-          fontSize: 11,
-          fontWeight: FontWeight.w500,
-        );
+      color: HomeScreenColors.metricTileCaptionColor,
+      height: 1.2,
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
+    );
 
     return Container(
       height: _cardHeight,
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: HomeScreenColors.roomMetricTileFill,
         borderRadius: BorderRadius.circular(_radius),
-        border: Border.all(color: AppColors.divider),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            offset: const Offset(0, 1),
-            blurRadius: 4,
-          ),
-        ],
+        border: Border.all(color: HomeScreenColors.roomMetricTileBorder),
+        boxShadow: HomeScreenColors.roomMetricTileShadow,
       ),
       clipBehavior: Clip.antiAlias,
       child: Row(
@@ -274,12 +266,11 @@ class RakutenManagedProductCard extends StatelessWidget {
     return Container(
       width: _thumbSlotWidth,
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant.withValues(alpha: 0.65),
-        border: Border(
-          right: BorderSide(
-            color: AppColors.divider.withValues(alpha: 0.9),
-          ),
+        color: Color.alphaBlend(
+          AppColors.surfaceVariant.withValues(alpha: 0.45),
+          HomeScreenColors.roomMetricTileFill,
         ),
+        border: Border(right: BorderSide(color: HomeScreenColors.deckOutline)),
       ),
       padding: const EdgeInsets.all(7),
       child: Center(
@@ -310,9 +301,9 @@ class RakutenManagedProductCard extends StatelessWidget {
               );
               if (!context.mounted) return;
               if (err != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(err)),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(err)));
               }
             },
             child: _compactActionLabel(
@@ -423,9 +414,7 @@ class RakutenManagedProductCard extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('候補から削除'),
-        content: Text(
-          '「$name」をコレ候補から削除します。よろしいですか？',
-        ),
+        content: Text('「$name」をコレ候補から削除します。よろしいですか？'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
@@ -446,9 +435,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     final err = await provider.removeCandidate(context, product.productId);
     if (!context.mounted) return;
     if (err != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(err)),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err)));
     }
   }
 
@@ -478,26 +465,23 @@ class RakutenManagedProductCard extends StatelessWidget {
         Expanded(
           flex: 38,
           child: Tooltip(
-            message: _hasRoomUrl
-                ? 'ROOMの画面を開きます'
-                : 'ROOM用のリンクが取得されていません',
+            message: _hasRoomUrl ? 'ROOMの画面を開きます' : 'ROOM用のリンクが取得されていません',
             child: OutlinedButton(
               style: _hasRoomUrl
                   ? _RoomListCardActionStyle.roomOutline(stateAccent)
                   : _RoomListCardActionStyle.roomOutlineDisabled(),
               onPressed: _hasRoomUrl
                   ? () => AppActionService.openUrl(
-                        context,
-                        url: product.extractedUrl.trim(),
-                      )
+                      context,
+                      url: product.extractedUrl.trim(),
+                    )
                   : null,
               child: _compactActionLabel(
                 icon: _hasRoomUrl
                     ? Icons.chat_bubble_outline_rounded
                     : Icons.link_off_rounded,
                 label: 'ROOM',
-                color:
-                    _hasRoomUrl ? stateAccent : AppColors.textTertiary,
+                color: _hasRoomUrl ? stateAccent : AppColors.textTertiary,
                 weight: FontWeight.w600,
               ),
             ),
@@ -543,8 +527,7 @@ class RakutenManagedProductCard extends StatelessWidget {
         child = Image.network(
           url,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) =>
-              Center(child: _thumbPlaceholder()),
+          errorBuilder: (_, __, ___) => Center(child: _thumbPlaceholder()),
         );
       } else {
         child = Center(child: _thumbPlaceholder());
@@ -552,10 +535,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     } catch (_) {
       child = Center(child: _thumbPlaceholder());
     }
-    return ColoredBox(
-      color: AppColors.surfaceVariant,
-      child: child,
-    );
+    return ColoredBox(color: AppColors.surfaceVariant, child: child);
   }
 
   Widget _thumbPlaceholder() {
