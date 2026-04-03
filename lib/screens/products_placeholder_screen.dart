@@ -27,7 +27,7 @@ abstract final class _RoomColleUi {
   static const double gapSection = 7;
   static const double insetSectionH = 9;
   static const double gapIconToTitle = 6;
-  static const double paddingWellV = 5;
+  static const double paddingWellV = 6;
   static const double paddingHeaderBand = 5;
   static const double headerBandBottom = 2;
   static const double chromeTopPadPop = 3;
@@ -36,10 +36,15 @@ abstract final class _RoomColleUi {
   static const double tabDeckBottom = 8;
   static const double tabInnerPad = 3;
   static const double gapFieldStack = 6;
+
+  /// キーワード欄と「その他の条件」行の間。やや空けて上部の詰まりを緩和。
+  static const double gapKeywordToFilterRow = 8;
   static const double gapWellBlock = 6;
   static const double gapAfterFilterShell = 4;
   static const double listBottomPad = 12;
-  static const double filterRowGap = 8;
+
+  /// 主ボタンと条件クリアの隙間。
+  static const double filterRowGap = 10;
   static const double chipSpacing = 4;
 
   static double get radiusSectionOuter => AppDimensions.radiusCard;
@@ -240,31 +245,44 @@ class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
   }
 }
 
-/// 一覧の絞り込み条件をまとめて解除。アウトラインで「ボタン」だが主CTAより弱く見せる。
+/// 一覧の絞り込み条件をまとめて解除（キーワード・拡張条件・URL条件・日付を初期化）。
 class _RoomColleClearFiltersButton extends StatelessWidget {
   const _RoomColleClearFiltersButton({
     required this.onPressed,
     this.compact = false,
+    this.inlineSecondary = false,
   });
 
   final VoidCallback onPressed;
 
-  /// 横並び行用。ラベル・パディングを詰めつつ最小タップ高は維持。
+  /// 旧フル幅レイアウト用（現状未使用だが互換のため維持）。
   final bool compact;
+
+  /// 横並び右列：主ボタンより弱い補助操作として見せる。
+  final bool inlineSecondary;
 
   @override
   Widget build(BuildContext context) {
-    final iconSize = compact ? 17.0 : 18.0;
-    final fontSize = compact ? 12.5 : 13.0;
-    final padH = compact ? 8.0 : 12.0;
-    final padV = compact ? 8.0 : 10.0;
+    final iconSize = inlineSecondary ? 16.0 : (compact ? 17.0 : 18.0);
+    final fontSize = inlineSecondary ? 12.0 : (compact ? 12.5 : 13.0);
+    final padH = inlineSecondary ? 6.0 : (compact ? 8.0 : 12.0);
+    final padV = inlineSecondary ? 8.0 : (compact ? 8.0 : 10.0);
+    final fg = inlineSecondary
+        ? HomeScreenColors.groupedSectionBody
+        : HomeScreenColors.leadOnSection;
+    final bg = inlineSecondary
+        ? Color.alphaBlend(
+            HomeScreenColors.subActionRowFill.withValues(alpha: 0.55),
+            HomeScreenColors.deckFill,
+          )
+        : HomeScreenColors.deckFill;
+    final borderColor = inlineSecondary
+        ? HomeScreenColors.inlineDivider
+        : HomeScreenColors.metricTileOutline;
+
     return OutlinedButton.icon(
       onPressed: onPressed,
-      icon: Icon(
-        Icons.layers_clear_rounded,
-        size: iconSize,
-        color: HomeScreenColors.leadOnSection,
-      ),
+      icon: Icon(Icons.layers_clear_rounded, size: iconSize, color: fg),
       label: Text(
         '条件クリア',
         maxLines: 1,
@@ -273,26 +291,30 @@ class _RoomColleClearFiltersButton extends StatelessWidget {
           fontSize: fontSize,
           fontWeight: FontWeight.w600,
           height: 1.15,
-          color: HomeScreenColors.leadOnSection,
+          color: fg,
         ),
       ),
       style: OutlinedButton.styleFrom(
-        foregroundColor: HomeScreenColors.leadOnSection,
-        backgroundColor: HomeScreenColors.deckFill,
+        foregroundColor: fg,
+        backgroundColor: bg,
         elevation: 0,
         shadowColor: Colors.transparent,
         minimumSize: const Size(48, _kRoomColleSecondaryCtrlMinHeight),
         padding: EdgeInsets.symmetric(horizontal: padH, vertical: padV),
         tapTargetSize: MaterialTapTargetSize.padded,
-        visualDensity: compact ? VisualDensity.compact : VisualDensity.standard,
-        side: BorderSide(color: HomeScreenColors.metricTileOutline),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        visualDensity: inlineSecondary
+            ? VisualDensity.compact
+            : (compact ? VisualDensity.compact : VisualDensity.standard),
+        side: BorderSide(color: borderColor),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+        ),
       ),
     );
   }
 }
 
-/// キーワード以外の条件（シート）と条件クリアを1行に配置。
+/// キーワード以外の条件（主）と条件クリア（補助）を1行に配置。
 class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
   const _RoomColleInlineMoreFiltersRow({
     required this.onOpenMoreFilters,
@@ -304,47 +326,57 @@ class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
   final bool hasNonKeywordConstraintsBadge;
   final VoidCallback onClear;
 
+  static Color _primaryFilterButtonFill() {
+    return Color.alphaBlend(
+      AppColors.accentLight.withValues(alpha: 0.20),
+      HomeScreenColors.deckFill,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          flex: 11,
+          flex: 7,
           child: Tooltip(
-            message: '登録日・ジャンル・価格など、キーワード以外の条件',
+            message: '登録日・ジャンル・価格など（キーワード以外）',
             child: OutlinedButton.icon(
               onPressed: onOpenMoreFilters,
               icon: Badge(
                 smallSize: 8,
                 backgroundColor: AppColors.accentPrimary,
                 isLabelVisible: hasNonKeywordConstraintsBadge,
-                child: const Icon(Icons.tune_rounded, size: 18),
+                child: const Icon(Icons.tune_rounded, size: 20),
               ),
               label: Text(
-                'その他の条件',
+                'キーワード以外の条件',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12.5,
-                  color: HomeScreenColors.leadOnSection,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 13.5,
+                  height: 1.15,
+                  color: HomeScreenColors.accentSectionHeading,
                 ),
               ),
               style: OutlinedButton.styleFrom(
-                foregroundColor: HomeScreenColors.leadOnSection,
-                backgroundColor: HomeScreenColors.deckFill,
+                foregroundColor: HomeScreenColors.accentSectionHeading,
+                backgroundColor: _primaryFilterButtonFill(),
                 alignment: Alignment.centerLeft,
                 minimumSize: const Size(0, _kRoomColleSecondaryCtrlMinHeight),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 8,
+                  horizontal: 12,
+                  vertical: 10,
                 ),
-                side: BorderSide(color: HomeScreenColors.sectionOutlineNeutral),
+                side: BorderSide(color: HomeScreenColors.sectionOutlineAccent),
                 tapTargetSize: MaterialTapTargetSize.padded,
-                visualDensity: VisualDensity.compact,
+                visualDensity: VisualDensity.standard,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(
+                    AppDimensions.radiusButton,
+                  ),
                 ),
               ),
             ),
@@ -352,11 +384,12 @@ class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
         ),
         SizedBox(width: _RoomColleUi.filterRowGap),
         Expanded(
-          flex: 9,
+          flex: 4,
           child: Tooltip(
-            message: '検索・すべての絞り込み・コレ済の日付フィルタをリセット',
+            message: 'キーワード・すべての絞り込み・コレ済の日付をまとめて初期化',
             child: _RoomColleClearFiltersButton(
               compact: true,
+              inlineSecondary: true,
               onPressed: onClear,
             ),
           ),
@@ -1700,7 +1733,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   context,
                                 ),
                               ),
-                              SizedBox(height: _RoomColleUi.gapFieldStack),
+                              SizedBox(
+                                height: _RoomColleUi.gapKeywordToFilterRow,
+                              ),
                               _RoomColleInlineMoreFiltersRow(
                                 onOpenMoreFilters: () =>
                                     _openRoomColleFilterEditor(
@@ -1804,7 +1839,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   context,
                                 ),
                               ),
-                              SizedBox(height: _RoomColleUi.gapFieldStack),
+                              SizedBox(
+                                height: _RoomColleUi.gapKeywordToFilterRow,
+                              ),
                               _RoomColleInlineMoreFiltersRow(
                                 onOpenMoreFilters: () =>
                                     _openRoomColleFilterEditor(
