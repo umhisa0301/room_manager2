@@ -22,6 +22,13 @@ class RakutenSearchRepository {
 
   final RakutenApiService _apiService;
 
+  /// キーワード検索（コレ候補・コレ済の itemCode 除外）で追いかける API ページ上限。
+  /// 1ページあたり最大30件。無限ループ防止・API負荷の上限。
+  static const int keywordManagedExclusionMaxApiPages = 20;
+
+  /// 除外後に目標とする表示件数（楽天分の上限に合わせ100）。
+  static const int keywordManagedExclusionTargetVisibleCount = 100;
+
   Future<List<RakutenSearchItem>> search({
     required RakutenProductSearchCondition condition,
   }) async {
@@ -91,20 +98,20 @@ class RakutenSearchRepository {
     }
   }
 
-  /// キーワード検索タブ専用: [excludeRegisteredProductIds]（itemCode）を除いたうえで、
-  /// 表示候補が [targetVisibleCount] 件に達するか API が尽きるまで、ページを順に取得する。
+  /// キーワード検索タブ専用: [excludeRegisteredProductIds]（楽天 itemCode / [RakutenSearchItem.productId]）を除いたうえで、
+  /// 表示候補が [targetVisibleCount] 件に達するか API が尽きるまで、ページを **1ページずつ** 順取得する。
   ///
-  /// - 1ページあたり [hitsPerPage] 件（最大30）、最大 [maxFetchPages] ページで打ち切り
-  /// - 同一 [productId] の重複は結合しない
+  /// - 1ページあたり [hitsPerPage] 件（最大30）、最大 [maxFetchPages] ページ（同一ページは取得しない）
+  /// - ローカルで除外・ユニーク化してから件数判定（まとめて結合してから次ページへ）
   /// - 1ページ目の取得失敗は再スロー、2ページ目以降の失敗は確保済み件で打ち切り
   Future<RakutenKeywordSearchRepositoryResult> searchKeywordWithManagedExclusion({
     required RakutenProductSearchCondition condition,
     required Set<String> excludeRegisteredProductIds,
-    int targetVisibleCount = 100,
+    int targetVisibleCount = keywordManagedExclusionTargetVisibleCount,
     int hitsPerPage = 30,
     int startPage = 1,
-    int maxFetchPages = 10,
-    Duration interPageDelay = const Duration(milliseconds: 200),
+    int maxFetchPages = keywordManagedExclusionMaxApiPages,
+    Duration interPageDelay = const Duration(milliseconds: 220),
   }) async {
     assert(() {
       return targetVisibleCount > 0 &&

@@ -1530,8 +1530,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return const RakutenSearchIdleView(
           icon: Icons.manage_search_outlined,
           title: '検索するとここに商品が並びます',
-          subtitle: '上のキーワード欄で検索。絞り込みは「詳細条件」から。',
-          stateFootnote: 'コレ候補・コレ済に登録済みの商品は、結果に含めません。',
+          subtitle: 'キーワードで検索。絞り込みは「詳細条件」から。',
+          stateFootnote:
+              'コレ候補・コレ済は結果に含めません。足りないときは次ページも取り、最大100件まで集めます。',
           compactLayout: true,
         );
       case RakutenSearchStatus.loading:
@@ -1539,7 +1540,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           title: '商品を探しています',
           subtitle: '楽天の商品情報を読み込んでいます。回線状況によっては30秒ほどかかることがあります。',
           footnote:
-              '登録済みを除き最大100件になるまで、次ページの取得を続けることがあります。この画面を閉じずにお待ちください。',
+              'コレ候補・コレ済を除いたうえで、最大100件に足りない場合は続けてページ取得します（上限あり）。この画面を閉じずにお待ちください。',
         );
       case RakutenSearchStatus.error:
         return RakutenSearchErrorView(
@@ -1559,16 +1560,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               icon: Icons.playlist_remove_rounded,
               title: '表示できる新しい候補が見つかりませんでした',
               body:
-                  'コレ候補・コレ済に登録済みの商品は、検索結果に含めていません。'
-                  'この条件では、除外のあとに残る商品がありませんでした。',
+                  'コレ候補・コレ済に登録済みの商品は検索結果に含めていません。'
+                  'この条件では、登録済みを除いたあとに残る商品がありませんでした（複数ページまで取得済みです）。',
               hints: const [
                 'キーワードや詳細条件を変えてみる',
-                '登録済み商品が多いと、新しい候補は出にくくなります',
+                '登録済みが多いと、同じ条件では新しい候補は出にくくなります',
               ],
               onRefine: () => _openProductConditionsSheet(context),
               refineLabel: '詳細条件を調整',
               stateFootnote:
-                  '楽天側に商品があっても、登録済みだけを除くと0件になることがあります。',
+                  '楽天側に商品があっても、候補・コレ済を除くと0件になることがあります。',
             );
           }
           return RakutenSearchEmptyView(
@@ -1591,8 +1592,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           managed,
           saved,
         );
-        final base = managedPreferred.isNotEmpty ? managedPreferred : search.results;
+        // キーワードタブ: API 側ですでに候補・コレ済を除いている。保存ショップ優先除外だけ採用し、
+        // その結果が空でも登録済み商品を一覧に戻さない（新しい候補探索の体験を優先）。
+        final base = _mode == _RakutenSearchMode.product
+            ? managedPreferred
+            : (managedPreferred.isNotEmpty ? managedPreferred : search.results);
         final filteredResults = _applyLocalStatusFilters(base, managed);
+        final keywordPreferredFilteredAllOut = _mode == _RakutenSearchMode.product &&
+            managedPreferred.isEmpty &&
+            search.results.isNotEmpty;
         final selectableCount =
             filteredResults.where((e) => _isSelectableForBulk(e, managed)).length;
         final totalCount = search.results.length;
@@ -1725,19 +1733,35 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
             Expanded(
               child: filteredResults.isEmpty
-                  ? RakutenSearchEmptyView(
-                      icon: Icons.filter_alt_off_outlined,
-                      title: 'この一覧では表示できる商品がありません',
-                      body:
-                          '検索の取得はできていますが、「コレ候補を除外」「コレ済を除外」や、登録済み・保存ショップの扱いで、今の一覧だけが0件になっています。',
-                      hints: const [
-                        '「コレ候補を除外」「コレ済を除外」をオフにしてみる',
-                        'キーワードや詳細条件を変えて、もう一度検索する',
-                      ],
-                      onRefine: () => _openProductConditionsSheet(context),
-                      refineLabel: '詳細条件を開く',
-                      stateFootnote: 'データ取得は完了しています。一覧の絞り込みだけを見直せます。',
-                    )
+                  ? keywordPreferredFilteredAllOut
+                      ? RakutenSearchEmptyView(
+                          icon: Icons.store_mall_directory_outlined,
+                          title: 'この条件では一覧を表示できませんでした',
+                          body:
+                              'ヒットはありましたが、保存ショップ登録済みの店の商品だけでした。'
+                              'キーワード検索ではそのままでは一覧に出さないようにしています。',
+                          hints: const [
+                            'キーワードや詳細条件を変えて、別のショップの商品を探す',
+                            'ジャンル検索など別の切り口も試せます',
+                          ],
+                          onRefine: () => _openProductConditionsSheet(context),
+                          refineLabel: '詳細条件を開く',
+                          stateFootnote:
+                              'コレ候補・コレ済以外の商品は、すでに結果に含めています。',
+                        )
+                      : RakutenSearchEmptyView(
+                          icon: Icons.filter_alt_off_outlined,
+                          title: 'この一覧では表示できる商品がありません',
+                          body:
+                              '検索の取得はできていますが、「コレ候補を除外」「コレ済を除外」や、登録済み・保存ショップの扱いで、今の一覧だけが0件になっています。',
+                          hints: const [
+                            '「コレ候補を除外」「コレ済を除外」をオフにしてみる',
+                            'キーワードや詳細条件を変えて、もう一度検索する',
+                          ],
+                          onRefine: () => _openProductConditionsSheet(context),
+                          refineLabel: '詳細条件を開く',
+                          stateFootnote: 'データ取得は完了しています。一覧の絞り込みだけを見直せます。',
+                        )
                   : ListView.separated(
                       padding: EdgeInsets.fromLTRB(
                         RakutenSearchScreenUi.screenPadH,
