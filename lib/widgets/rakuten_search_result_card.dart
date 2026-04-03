@@ -4,6 +4,7 @@ import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/app_action_service.dart';
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
 
 /// 楽天検索結果の1商品カード。
 class RakutenSearchResultCard extends StatelessWidget {
@@ -35,15 +36,10 @@ class RakutenSearchResultCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: HomeScreenColors.roomMetricTileFill,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            offset: const Offset(0, 2),
-            blurRadius: 6,
-          ),
-        ],
+        border: Border.all(color: HomeScreenColors.roomMetricTileBorder),
+        boxShadow: HomeScreenColors.roomMetricTileShadow,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +60,8 @@ class RakutenSearchResultCard extends StatelessWidget {
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.textPrimary,
+                        color: HomeScreenColors.metricTileTitleColor,
+                        fontWeight: FontWeight.w700,
                         height: 1.3,
                       ),
                 ),
@@ -72,7 +69,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                 Text(
                   '¥${item.itemPrice}',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.accentPrimary,
+                        color: HomeScreenColors.sectionTitleAccent,
                         fontWeight: FontWeight.w700,
                       ),
                 ),
@@ -82,7 +79,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: HomeScreenColors.metricTileCaptionColor,
                       ),
                 ),
                 const SizedBox(height: 10),
@@ -90,13 +87,14 @@ class RakutenSearchResultCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppColors.surfaceVariant,
+                      color: HomeScreenColors.subActionRowFill,
                       borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: HomeScreenColors.deckOutline),
                     ),
                     child: Text(
                       selectionDisabledLabel ?? 'この商品は選択できません',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
+                            color: HomeScreenColors.groupedSectionBody,
                             fontWeight: FontWeight.w600,
                           ),
                     ),
@@ -135,7 +133,7 @@ class RakutenSearchResultCard extends StatelessWidget {
       return Icon(
         Icons.block_rounded,
         size: 22,
-        color: AppColors.textTertiary,
+        color: HomeScreenColors.footnoteMuted,
       );
     }
     return InkWell(
@@ -146,7 +144,9 @@ class RakutenSearchResultCard extends StatelessWidget {
             ? Icons.check_circle_rounded
             : Icons.radio_button_unchecked_rounded,
         size: 24,
-        color: isSelected ? AppColors.accentPrimary : AppColors.textSecondary,
+        color: isSelected
+            ? HomeScreenColors.statusAccentStrong
+            : HomeScreenColors.groupedSectionBody,
       ),
     );
   }
@@ -187,7 +187,8 @@ class RakutenSearchResultCard extends StatelessWidget {
       child: Container(
         width: 88,
         height: 88,
-        color: AppColors.surfaceVariant,
+        color: HomeScreenColors.candidateThumbPlaceholder
+            .withValues(alpha: 0.35),
         child: item.imageUrl.isNotEmpty
             ? Image.network(
                 item.imageUrl,
@@ -203,7 +204,7 @@ class RakutenSearchResultCard extends StatelessWidget {
     return Icon(
       Icons.image_outlined,
       size: 28,
-      color: AppColors.textTertiary.withValues(alpha: 0.7),
+      color: HomeScreenColors.footnoteMuted,
     );
   }
 }

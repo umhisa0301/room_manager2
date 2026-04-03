@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
 
 /// 楽天検索エリア：未検索（アイドル）状態。
 class RakutenSearchIdleView extends StatelessWidget {
@@ -26,14 +27,14 @@ class RakutenSearchIdleView extends StatelessWidget {
             Icon(
               icon,
               size: 48,
-              color: AppColors.textTertiary.withValues(alpha: 0.7),
+              color: HomeScreenColors.footnoteMuted,
             ),
             const SizedBox(height: 16),
             Text(
               title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: HomeScreenColors.titlePrimary,
                     fontWeight: FontWeight.w700,
                     height: 1.35,
                   ),
@@ -43,7 +44,7 @@ class RakutenSearchIdleView extends StatelessWidget {
               subtitle,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: HomeScreenColors.groupedSectionBody,
                     height: 1.45,
                   ),
             ),
@@ -75,17 +76,20 @@ class RakutenSearchLoadingView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(
+            SizedBox(
               width: 40,
               height: 40,
-              child: CircularProgressIndicator(strokeWidth: 3),
+              child: CircularProgressIndicator(
+                strokeWidth: 3,
+                color: HomeScreenColors.statusAccentStrong,
+              ),
             ),
             const SizedBox(height: 20),
             Text(
               title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: HomeScreenColors.titlePrimary,
                     fontWeight: FontWeight.w700,
                     height: 1.35,
                   ),
@@ -95,7 +99,7 @@ class RakutenSearchLoadingView extends StatelessWidget {
               subtitle,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: HomeScreenColors.groupedSectionBody,
                     height: 1.45,
                   ),
             ),
@@ -105,7 +109,7 @@ class RakutenSearchLoadingView extends StatelessWidget {
                 footnote!,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textTertiary,
+                      color: HomeScreenColors.footnoteMuted,
                       height: 1.4,
                     ),
               ),
@@ -154,7 +158,7 @@ class RakutenSearchErrorView extends StatelessWidget {
               title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: HomeScreenColors.titlePrimary,
                     fontWeight: FontWeight.w700,
                     height: 1.35,
                   ),
@@ -164,7 +168,7 @@ class RakutenSearchErrorView extends StatelessWidget {
               message,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: HomeScreenColors.groupedSectionBody,
                     height: 1.45,
                   ),
             ),
@@ -224,14 +228,14 @@ class RakutenSearchEmptyView extends StatelessWidget {
             Icon(
               icon,
               size: 44,
-              color: AppColors.textTertiary.withValues(alpha: 0.75),
+              color: HomeScreenColors.footnoteMuted,
             ),
             const SizedBox(height: 14),
             Text(
               title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: HomeScreenColors.titlePrimary,
                     fontWeight: FontWeight.w700,
                     height: 1.35,
                   ),
@@ -241,7 +245,7 @@ class RakutenSearchEmptyView extends StatelessWidget {
               body,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: HomeScreenColors.groupedSectionBody,
                     height: 1.45,
                   ),
             ),
@@ -255,8 +259,8 @@ class RakutenSearchEmptyView extends StatelessWidget {
                     Text(
                       '次の方法を試せます',
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w600,
+                            color: HomeScreenColors.leadOnSection,
+                            fontWeight: FontWeight.w700,
                           ),
                     ),
                     const SizedBox(height: 8),
@@ -271,7 +275,9 @@ class RakutenSearchEmptyView extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
-                                  ?.copyWith(color: AppColors.textSecondary),
+                                  ?.copyWith(
+                                    color: HomeScreenColors.groupedSectionBody,
+                                  ),
                             ),
                             Expanded(
                               child: Text(
@@ -280,7 +286,7 @@ class RakutenSearchEmptyView extends StatelessWidget {
                                     .textTheme
                                     .bodyMedium
                                     ?.copyWith(
-                                      color: AppColors.textSecondary,
+                                      color: HomeScreenColors.groupedSectionBody,
                                       height: 1.4,
                                     ),
                               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/shop_discovery_summary.dart';
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
 
 class ShopDiscoveryCard extends StatelessWidget {
   const ShopDiscoveryCard({
@@ -24,16 +25,10 @@ class ShopDiscoveryCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: HomeScreenColors.roomMetricTileFill,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(color: HomeScreenColors.roomMetricTileBorder),
+        boxShadow: HomeScreenColors.roomMetricTileShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -44,13 +39,13 @@ class ShopDiscoveryCard extends StatelessWidget {
                 margin: const EdgeInsets.only(right: 8),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.accentPrimary.withValues(alpha: 0.1),
+                  color: HomeScreenColors.flowStepBadgeFill,
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
                   '#$rank',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.accentPrimary,
+                        color: HomeScreenColors.statusAccentStrong,
                         fontWeight: FontWeight.w700,
                       ),
                 ),
@@ -72,13 +67,14 @@ class ShopDiscoveryCard extends StatelessWidget {
                   margin: const EdgeInsets.only(right: 8),
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceVariant,
+                    color: HomeScreenColors.subActionRowFill,
                     borderRadius: BorderRadius.circular(999),
+                    border: Border.all(color: HomeScreenColors.deckOutline),
                   ),
                   child: Text(
                     '保存済み',
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: HomeScreenColors.groupedSectionBody,
                           fontWeight: FontWeight.w700,
                         ),
                   ),
@@ -163,13 +159,14 @@ class _MiniInfo extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
+        color: HomeScreenColors.roomContentWellFill,
         borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: HomeScreenColors.deckOutline),
       ),
       child: Text(
         '$label: $value',
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
+              color: HomeScreenColors.metricTileCaptionColor,
               fontWeight: FontWeight.w600,
             ),
       ),
@@ -212,18 +209,18 @@ class _ThumbItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: Container(
         height: 58,
-        color: AppColors.surfaceVariant,
+        color: HomeScreenColors.candidateThumbPlaceholder.withValues(alpha: 0.35),
         child: item.imageUrl.trim().isEmpty
             ? Icon(
                 Icons.image_outlined,
-                color: AppColors.textTertiary,
+                color: HomeScreenColors.footnoteMuted,
               )
             : Image.network(
                 item.imageUrl,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Icon(
                   Icons.broken_image_outlined,
-                  color: AppColors.textTertiary,
+                  color: HomeScreenColors.footnoteMuted,
                 ),
               ),
       ),
