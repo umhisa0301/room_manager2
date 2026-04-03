@@ -16,34 +16,44 @@ import '../widgets/home_primary_action_button.dart';
 import '../widgets/rakuten_managed_product_card.dart';
 import 'rakuten_search_screen.dart';
 
-/// ROOMコレ一覧専用。ホーム画面 [_HomeUi] と同じ横余白（9）に揃える。
-const double _kRoomListScreenPadH = 9;
-const double _kRoomListCardGap = 6;
+/// ROOMコレ一覧の左右。ホームの 9 に対し **1dp だけ狭め**て一覧優先（違和感を抑える程度）。
+const double _kRoomListScreenPadH = 8;
+const double _kRoomListCardGap = 5;
 
 /// ROOMコレ画面のレイアウト・面色・装飾（ホーム完成版と同一デザイン言語。ロジックとは分離）。
 abstract final class _RoomColleUi {
   const _RoomColleUi._();
 
-  static const double gapSection = 7;
-  static const double insetSectionH = 9;
-  static const double gapIconToTitle = 6;
-  static const double paddingWellV = 6;
-  static const double paddingHeaderBand = 5;
-  static const double headerBandBottom = 2;
-  static const double chromeTopPadPop = 3;
-  static const double chromeTopPadNoPop = 5;
-  static const double tabDeckPad = 6;
-  static const double tabDeckBottom = 8;
-  static const double tabInnerPad = 3;
-  static const double gapFieldStack = 6;
+  /// ホーム [_HomeUi.gapSection] と同じ 9。
+  static const double gapSection = 9;
 
-  /// キーワード欄と「その他の条件」行の間。やや空けて上部の詰まりを緩和。
-  static const double gapKeywordToFilterRow = 8;
-  static const double gapAfterFilterShell = 4;
-  static const double listBottomPad = 12;
+  /// 上部シェル内の左右。外側 [_kRoomListScreenPadH] と揃え、二重に空きすぎない。
+  static const double insetSectionH = 8;
+
+  /// ホーム見出し行と同じ 8。
+  static const double gapIconToTitle = 8;
+  static const double paddingWellV = 6;
+  static const double paddingHeaderBand = 6;
+  static const double headerBandBottom = 3;
+  static const double chromeTopPadPop = 4;
+  static const double chromeTopPadNoPop = 6;
+  static const double tabDeckPad = 6;
+  static const double tabDeckBottom = 7;
+  static const double tabInnerPad = 3;
+  static const double gapFieldStack = 5;
+
+  /// キーワード欄と「その他の条件」行の間。
+  static const double gapKeywordToFilterRow = 7;
+
+  /// 絞り込みシェル直下〜区切り線まで。
+  static const double gapAfterFilterShell = 2;
+
+  /// 区切り線〜一覧の間（検索ブロックとリストの接続を明確に）。
+  static const double gapListAfterDivider = 4;
+  static const double listBottomPad = 10;
 
   /// 主ボタンと条件クリアの隙間。
-  static const double filterRowGap = 10;
+  static const double filterRowGap = 8;
   static const double chipSpacing = 4;
 
   static double get radiusSectionOuter => AppDimensions.radiusCard;
@@ -260,7 +270,7 @@ class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
           flex: 7,
@@ -1909,6 +1919,17 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                         ),
                       ),
                       SizedBox(height: _RoomColleUi.gapAfterFilterShell),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: _kRoomListScreenPadH,
+                        ),
+                        child: Divider(
+                          height: 1,
+                          thickness: 1,
+                          color: HomeScreenColors.inlineDivider,
+                        ),
+                      ),
+                      SizedBox(height: _RoomColleUi.gapListAfterDivider),
                       Expanded(
                         child: _RoomManagedProductListTab(
                           status: RakutenManagedProductStatus.candidate,
@@ -2002,6 +2023,17 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                         ),
                       ),
                       SizedBox(height: _RoomColleUi.gapAfterFilterShell),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: _kRoomListScreenPadH,
+                        ),
+                        child: Divider(
+                          height: 1,
+                          thickness: 1,
+                          color: HomeScreenColors.inlineDivider,
+                        ),
+                      ),
+                      SizedBox(height: _RoomColleUi.gapListAfterDivider),
                       Expanded(
                         child: _RoomManagedProductListTab(
                           status: RakutenManagedProductStatus.done,
@@ -2361,7 +2393,7 @@ class _RoomManagedProductListTabState
             physics: const AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.fromLTRB(
               _kRoomListScreenPadH,
-              2,
+              0,
               _kRoomListScreenPadH,
               _RoomColleUi.listBottomPad,
             ),

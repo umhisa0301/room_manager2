@@ -132,6 +132,16 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   static const double _radius = 12;
 
+  /// キャンバス上でカード面が埋もれないよう、ホームのセクション影に近い補助影を重ねる。
+  static List<BoxShadow> get _listCardShadow => [
+    ...HomeScreenColors.roomMetricTileShadow,
+    BoxShadow(
+      color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.38),
+      offset: const Offset(0, 2),
+      blurRadius: 9,
+    ),
+  ];
+
   /// 一覧でカード高さを揃え、行間のリズムを一定にする。
   static const double _cardHeight = 130;
 
@@ -206,7 +216,7 @@ class RakutenManagedProductCard extends StatelessWidget {
         color: HomeScreenColors.roomMetricTileFill,
         borderRadius: BorderRadius.circular(_radius),
         border: Border.all(color: HomeScreenColors.roomMetricTileBorder),
-        boxShadow: HomeScreenColors.roomMetricTileShadow,
+        boxShadow: _listCardShadow,
       ),
       clipBehavior: Clip.antiAlias,
       child: Row(
