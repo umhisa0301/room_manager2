@@ -13,6 +13,7 @@ import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../validation/rakuten_keyword_detail_conditions_validation.dart';
 import '../widgets/rakuten_search_feedback.dart';
 import '../widgets/rakuten_search_result_card.dart';
 import '../widgets/shop_discovery_card.dart';
@@ -209,6 +210,19 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   void _runSearch(BuildContext context) {
     _dismissKeywordSearchKeyboard();
+    final detailError = RakutenKeywordDetailConditionsValidation.validateAll(
+      minPriceText: _minPriceController.text,
+      maxPriceText: _maxPriceController.text,
+      minReviewCountText: _minReviewCountController.text,
+      minReviewAverageText: _minReviewAverageController.text,
+      minCommentCountText: _minCommentCountController.text,
+    );
+    if (detailError != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(detailError)),
+      );
+      return;
+    }
     setState(() {
       _selectionMode = false;
       _selectedProductIds.clear();
@@ -730,7 +744,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         Expanded(
                           child: TextField(
                             controller: _minPriceController,
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: false,
+                              signed: false,
+                            ),
+                            inputFormatters:
+                                RakutenKeywordDetailConditionsInput.digitsOnlyField,
                             decoration: RakutenSearchScreenUi.searchField(
                               labelText: '最低価格',
                               hintText: '1000',
@@ -745,7 +764,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         Expanded(
                           child: TextField(
                             controller: _maxPriceController,
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: false,
+                              signed: false,
+                            ),
+                            inputFormatters:
+                                RakutenKeywordDetailConditionsInput.digitsOnlyField,
                             decoration: RakutenSearchScreenUi.searchField(
                               labelText: '最高価格',
                               hintText: '5000',
@@ -776,7 +800,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         Expanded(
                           child: TextField(
                             controller: _minReviewCountController,
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: false,
+                              signed: false,
+                            ),
+                            inputFormatters:
+                                RakutenKeywordDetailConditionsInput.digitsOnlyField,
                             decoration: RakutenSearchScreenUi.searchField(
                               labelText: '最低評価数',
                               hintText: '50',
@@ -793,7 +822,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             controller: _minReviewAverageController,
                             keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,
+                              signed: false,
                             ),
+                            inputFormatters:
+                                RakutenKeywordDetailConditionsInput.reviewAverageField,
                             decoration: RakutenSearchScreenUi.searchField(
                               labelText: '最低評価点数',
                               hintText: '4.0',
@@ -809,7 +841,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
                     TextField(
                       controller: _minCommentCountController,
-                      keyboardType: TextInputType.number,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: false,
+                        signed: false,
+                      ),
+                      inputFormatters:
+                          RakutenKeywordDetailConditionsInput.digitsOnlyField,
                       decoration: RakutenSearchScreenUi.searchField(
                         labelText: '最低コメント数',
                         hintText: '30',
