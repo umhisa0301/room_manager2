@@ -12,12 +12,16 @@ abstract final class RakutenSearchScreenUi {
   /// ROOMコレ一覧と同じ左右 8。
   static const double screenPadH = 8;
 
-  static const double gapSection = 9;
-  static const double gapFieldStack = 5;
-  static const double gapKeywordToControls = 7;
-  static const double gapListAfterDivider = 4;
+  /// 画面上部ツール帯まわり（一覧の主役化のため詰める）。
+  static const double gapSection = 4;
+  static const double gapFieldStack = 4;
+  static const double gapKeywordToControls = 5;
+  static const double gapListAfterDivider = 2;
   static const double listBottomPad = 10;
   static const double listCardGap = 5;
+
+  /// 検索入力デッキ内側（従来シェルウェルより薄く）。
+  static const double inputDeckPadding = 8;
 
   static const double insetSectionH = 8;
   static const double paddingWellV = 6;
@@ -49,6 +53,18 @@ abstract final class RakutenSearchScreenUi {
     return BoxDecoration(
       color: HomeScreenColors.roomContentWellFill,
       borderRadius: BorderRadius.circular(radiusSectionInner),
+      border: Border.all(color: HomeScreenColors.deckOutline),
+    );
+  }
+
+  /// 一覧フィルタ帯（タブ/主CTAと区別する補助トーン）。
+  static BoxDecoration listFilterStripDecoration() {
+    return BoxDecoration(
+      color: Color.alphaBlend(
+        HomeScreenColors.subActionRowFill.withValues(alpha: 0.85),
+        HomeScreenColors.roomContentWellFill,
+      ),
+      borderRadius: BorderRadius.circular(10),
       border: Border.all(color: HomeScreenColors.deckOutline),
     );
   }
@@ -120,7 +136,7 @@ abstract final class RakutenSearchScreenUi {
           width: 1.5,
         ),
       ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
     );
   }
 }
