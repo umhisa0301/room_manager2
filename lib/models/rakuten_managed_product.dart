@@ -38,6 +38,7 @@ class RakutenManagedProduct {
     required this.status,
     required this.createdAt,
     required this.updatedAt,
+    required this.addedAt,
     required this.extractedUrl,
     required this.extractionStatus,
     required this.extractionErrorMessage,
@@ -59,6 +60,9 @@ class RakutenManagedProduct {
   final RakutenManagedProductStatus status;
   final DateTime createdAt;
   final DateTime updatedAt;
+
+  /// コレ候補として登録した日時。
+  final DateTime addedAt;
 
   /// XPath 等で抽出した URL（未抽出時は空）。
   final String extractedUrl;
@@ -87,6 +91,7 @@ class RakutenManagedProduct {
     RakutenManagedProductStatus? status,
     DateTime? createdAt,
     DateTime? updatedAt,
+    DateTime? addedAt,
     String? extractedUrl,
     RakutenUrlExtractionStatus? extractionStatus,
     String? extractionErrorMessage,
@@ -109,6 +114,7 @@ class RakutenManagedProduct {
       status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      addedAt: addedAt ?? this.addedAt,
       extractedUrl: extractedUrl ?? this.extractedUrl,
       extractionStatus: extractionStatus ?? this.extractionStatus,
       extractionErrorMessage:
@@ -138,6 +144,7 @@ class RakutenManagedProduct {
       status: status,
       createdAt: t,
       updatedAt: t,
+      addedAt: t,
       extractedUrl: '',
       extractionStatus: RakutenUrlExtractionStatus.notStarted,
       extractionErrorMessage: '',
@@ -161,6 +168,7 @@ class RakutenManagedProduct {
       'status': status.name,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
+      'addedAt': addedAt.toIso8601String(),
       'extractedUrl': extractedUrl,
       'extractionStatus': extractionStatus.name,
       'extractionErrorMessage': extractionErrorMessage,
@@ -244,6 +252,15 @@ class RakutenManagedProduct {
     final updatedAt = parseDt(updatedRaw);
     if (createdAt == null || updatedAt == null) return null;
 
+    var addedAt = createdAt;
+    final addRaw = json['addedAt']?.toString();
+    if (addRaw != null && addRaw.isNotEmpty) {
+      final a = parseDt(addRaw);
+      if (a != null) {
+        addedAt = a;
+      }
+    }
+
     DateTime? extractedAt;
     final extAt = json['extractedAt']?.toString();
     if (extAt != null && extAt.isNotEmpty) {
@@ -286,6 +303,7 @@ class RakutenManagedProduct {
       status: status,
       createdAt: createdAt,
       updatedAt: updatedAt,
+      addedAt: addedAt,
       extractedUrl: (json['extractedUrl'] ?? '').toString(),
       extractionStatus: extractionStatus,
       extractionErrorMessage:

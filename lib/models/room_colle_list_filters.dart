@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'rakuten_managed_product.dart';
 
-/// アプリに候補として保存した日（[RakutenManagedProduct.createdAt]）ベースのプリセット。
+/// アプリに候補として保存した日（[RakutenManagedProduct.addedAt]）ベースのプリセット。
 /// コレ済タブでも同一フィールドを使い、「一覧に出す元データの登録日」として扱う。
 enum RoomColleRegisteredDatePreset {
   /// 日付条件なし。
@@ -41,7 +41,7 @@ class RoomColleListFilterCriteria {
   /// 商品名・ショップ・ID・URL 等を横断したキーワード（従来どおり）。
   final String keyword;
 
-  /// [RakutenManagedProduct.createdAt] に対するプリセット。
+  /// [RakutenManagedProduct.addedAt] に対するプリセット。
   final RoomColleRegisteredDatePreset registeredDatePreset;
 
   /// 楽天 [RakutenManagedProduct.genreId] との完全一致。null または空なら未使用。
@@ -163,7 +163,7 @@ bool _matchesRegisteredDate(
 ) {
   if (preset == RoomColleRegisteredDatePreset.all) return true;
   try {
-    final c = e.createdAt;
+    final c = e.addedAt;
     final now = DateTime.now();
     final cDay = DateTime(c.year, c.month, c.day);
     if (preset == RoomColleRegisteredDatePreset.today) {

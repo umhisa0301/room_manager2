@@ -7,6 +7,7 @@ import '../services/app_action_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../utils/room_colle_card_time_format.dart';
 
 /// 一覧カードの見た目バリアント（候補 / コレ済）。
 enum RakutenManagedProductCardVariant { candidate, done }
@@ -143,7 +144,8 @@ class RakutenManagedProductCard extends StatelessWidget {
   ];
 
   /// 一覧でカード高さを揃え、行間のリズムを一定にする。
-  static const double _cardHeight = 130;
+  /// 登録/コレ日時1行を右カラムに入れるため従来よりわずかに確保。
+  static const double _cardHeight = 142;
 
   /// 左スロット幅（その中で正方形サムネを配置）。
   static const double _thumbSlotWidth = 98;
@@ -209,6 +211,14 @@ class RakutenManagedProductCard extends StatelessWidget {
       fontSize: 11,
       fontWeight: FontWeight.w500,
     );
+    final tsInstant =
+        isCandidate ? product.addedAt : product.doneAt;
+    final timestampStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
+      color: const Color(0xFF888888),
+      height: 1.15,
+      fontSize: 10,
+      fontWeight: FontWeight.w400,
+    );
 
     return Container(
       height: _cardHeight,
@@ -253,6 +263,10 @@ class RakutenManagedProductCard extends StatelessWidget {
                           maxLines: _shopMaxLines,
                           overflow: TextOverflow.ellipsis,
                           style: shopStyle,
+                        ),
+                        RoomColleCardTimestampText(
+                          instant: tsInstant,
+                          style: timestampStyle,
                         ),
                       ],
                     ),
