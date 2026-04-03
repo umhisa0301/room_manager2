@@ -8,6 +8,7 @@ import '../models/today_recommendation.dart';
 import '../models/user_profile.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../repository/today_recommendation_repository.dart';
+import '../utils/user_profile_preferred_genre_words.dart';
 import 'rakuten_managed_product_provider.dart';
 
 class TodayRecommendationProvider extends ChangeNotifier {
@@ -186,7 +187,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       dedup.putIfAbsent(id, () => item);
     }
 
-    final genreWords = _splitWords(profile.favoriteGenres);
+    final genreWords = UserProfilePreferredGenreWords.fromProfile(profile);
     final scored = dedup.values.toList()
       ..sort((a, b) {
         final bs = _scoreOf(
@@ -220,7 +221,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     List<RakutenManagedProduct> managedItems,
   ) {
     final out = <String>[];
-    out.addAll(_splitWords(profile.favoriteGenres));
+    out.addAll(UserProfilePreferredGenreWords.fromProfile(profile));
     for (final p in managedItems.take(40)) {
       final n = p.itemName.trim();
       if (n.isEmpty) continue;
@@ -245,15 +246,6 @@ class TodayRecommendationProvider extends ChangeNotifier {
       return const ['人気', '売れ筋', 'ランキング'];
     }
     return normalized;
-  }
-
-  Set<String> _splitWords(String source) {
-    final out = <String>{};
-    for (final raw in source.split(RegExp(r'[,、，\s]+'))) {
-      final v = raw.trim();
-      if (v.isNotEmpty) out.add(v);
-    }
-    return out;
   }
 
   Map<String, int> _countManagedShopFrequency(

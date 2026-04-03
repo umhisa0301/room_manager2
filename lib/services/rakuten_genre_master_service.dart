@@ -29,12 +29,19 @@ class RakutenGenreMasterService {
     return _repository.findNameIfRegistered(id) ?? unknownGenreDisplayLabel;
   }
 
-  /// プルダウン等：ジャンル名の昇順でマスタ行のみ（先頭の「指定なし」は呼び出し側で付与）。
-  List<RakutenGenreMasterEntry> orderedMasterEntriesForDropdown() {
+  /// マスタ全件（ジャンル名昇順）。UI・ダイアログ・マイグレーションの共通入口。
+  List<RakutenGenreMasterEntry> getAllGenres() {
     final list = List<RakutenGenreMasterEntry>.from(_repository.fetchAll());
     list.sort((a, b) => a.genreName.compareTo(b.genreName));
     return list;
   }
+
+  /// `getAllGenres` と同一（プルダウン用の別名。既存呼び出し互換）。
+  List<RakutenGenreMasterEntry> orderedMasterEntriesForDropdown() =>
+      getAllGenres();
+
+  /// [genreDisplayName] の別名（要件上の命名用）。
+  String getGenreNameById(String? rawGenreId) => genreDisplayName(rawGenreId);
 
   /// ROOMコレ絞り込みのドロップダウン表示用（値は `genreId` のまま）。
   String roomColleGenreFilterMenuLabel(String genreId) {

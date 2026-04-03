@@ -6,6 +6,7 @@ class UserProfile {
     this.genderKey,
     this.occupation = '',
     this.favoriteGenres = '',
+    this.favoriteGenreIds = '',
     this.roomUrl = '',
   });
 
@@ -35,6 +36,8 @@ class UserProfile {
   final String? genderKey;
   final String occupation;
   final String favoriteGenres;
+  /// 好きなジャンルの楽天 `genreId` を `、` または `,` 区切りで保持（最大5件想定・UI側で制御）。
+  final String favoriteGenreIds;
   /// 楽天ROOMのプロフィールまたはトップページURL
   final String roomUrl;
 
@@ -42,7 +45,8 @@ class UserProfile {
   bool get hasCoreProfile {
     return displayName.trim().isNotEmpty ||
         roomUrl.trim().isNotEmpty ||
-        favoriteGenreList.isNotEmpty;
+        favoriteGenreList.isNotEmpty ||
+        favoriteGenreIdList.isNotEmpty;
   }
 
   bool get hasRoomUrl => roomUrl.trim().isNotEmpty;
@@ -63,6 +67,21 @@ class UserProfile {
     return normalized;
   }
 
+  /// [favoriteGenreIds] を正規化した配列（重複除去・空要素除去）。
+  List<String> get favoriteGenreIdList {
+    final tokens = favoriteGenreIds.split(RegExp(r'[、,\n]+'));
+    final normalized = <String>[];
+    final seen = <String>{};
+    for (final token in tokens) {
+      final text = token.trim();
+      if (text.isEmpty) continue;
+      if (seen.contains(text)) continue;
+      seen.add(text);
+      normalized.add(text);
+    }
+    return normalized;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'displayName': displayName,
@@ -70,6 +89,7 @@ class UserProfile {
       'genderKey': genderKey,
       'occupation': occupation,
       'favoriteGenres': favoriteGenres,
+      'favoriteGenreIds': favoriteGenreIds,
       'roomUrl': roomUrl,
     };
   }
@@ -82,6 +102,7 @@ class UserProfile {
       genderKey: json['genderKey'] as String?,
       occupation: json['occupation'] as String? ?? '',
       favoriteGenres: json['favoriteGenres'] as String? ?? '',
+      favoriteGenreIds: json['favoriteGenreIds'] as String? ?? '',
       roomUrl: json['roomUrl'] as String? ?? '',
     );
   }

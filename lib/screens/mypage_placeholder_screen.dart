@@ -3,11 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/legal_urls.dart';
+import '../models/rakuten_genre_master_entry.dart';
 import '../models/user_profile.dart';
 import '../services/app_action_service.dart';
+import '../services/rakuten_genre_master_service.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../utils/user_profile_genre_migration.dart';
 import 'rakuten_search_screen.dart';
 import 'saved_shops_screen.dart';
 
@@ -24,11 +27,16 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
   late final TextEditingController _nameController;
   late final TextEditingController _ageController;
   late final TextEditingController _occupationController;
-  late final TextEditingController _genresController;
   late final TextEditingController _roomUrlController;
   String? _genderKey;
   bool _bound = false;
   bool _showOnboardingHint = false;
+
+  /// マイページで選んだ `genreId`（最大5件）。保存時に [UserProfile.favoriteGenreIds] へ反映。
+  final List<String> _favoriteGenreIds = [];
+
+  /// [favoriteGenreIdList] が空で、マスタへ移行できなかった従来のフリーテキストを一時保持。
+  String _preservedFreeformFavoriteGenres = '';
 
   @override
   void didChangeDependencies() {
@@ -41,10 +49,24 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
       text: p.age != null ? '${p.age}' : '',
     );
     _occupationController = TextEditingController(text: p.occupation);
-    _genresController = TextEditingController(text: p.favoriteGenres);
     _roomUrlController = TextEditingController(text: p.roomUrl);
     _genderKey = p.genderKey;
     _showOnboardingHint = !p.hasCoreProfile;
+
+    _favoriteGenreIds.clear();
+    _favoriteGenreIds.addAll(p.favoriteGenreIdList);
+    if (_favoriteGenreIds.isEmpty && p.favoriteGenres.trim().isNotEmpty) {
+      _favoriteGenreIds.addAll(
+        UserProfileGenreMigration.idsFromLegacyFavoriteGenresText(
+          p.favoriteGenres,
+        ),
+      );
+    }
+    if (_favoriteGenreIds.isEmpty && p.favoriteGenres.trim().isNotEmpty) {
+      _preservedFreeformFavoriteGenres = p.favoriteGenres.trim();
+    } else {
+      _preservedFreeformFavoriteGenres = '';
+    }
   }
 
   @override
@@ -52,9 +74,32 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
     _nameController.dispose();
     _ageController.dispose();
     _occupationController.dispose();
-    _genresController.dispose();
     _roomUrlController.dispose();
     super.dispose();
+  }
+
+  Future<void> _openFavoriteGenresPicker() async {
+    final messenger = ScaffoldMessenger.of(context);
+    final picked = await showDialog<List<String>>(
+      context: context,
+      builder: (ctx) => _FavoriteGenresPickerDialog(
+        initialSelectedIds: List<String>.from(_favoriteGenreIds),
+        onLimitReached: () {
+          messenger.showSnackBar(
+            const SnackBar(content: Text('ジャンルは最大5件まで選択できます')),
+          );
+        },
+      ),
+    );
+    if (!mounted || picked == null) return;
+    setState(() {
+      _favoriteGenreIds
+        ..clear()
+        ..addAll(picked.take(5));
+      if (_favoriteGenreIds.isNotEmpty) {
+        _preservedFreeformFavoriteGenres = '';
+      }
+    });
   }
 
   Future<void> _save() async {
@@ -73,12 +118,38 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
       }
     }
 
+    final svc = RakutenGenreMasterService.instance;
+    final ids = _favoriteGenreIds
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .take(5)
+        .toList();
+
+    String favoriteGenresStr;
+    String favoriteGenreIdsStr;
+    if (ids.isNotEmpty) {
+      favoriteGenreIdsStr = ids.join('、');
+      final names = <String>[];
+      for (final id in ids) {
+        final n = svc.getGenreNameById(id);
+        if (n.isNotEmpty &&
+            n != RakutenGenreMasterService.unknownGenreDisplayLabel) {
+          names.add(n);
+        }
+      }
+      favoriteGenresStr = names.join('、');
+    } else {
+      favoriteGenreIdsStr = '';
+      favoriteGenresStr = _preservedFreeformFavoriteGenres.trim();
+    }
+
     final next = UserProfile(
       displayName: _nameController.text.trim(),
       age: age,
       genderKey: _genderKey,
       occupation: _occupationController.text.trim(),
-      favoriteGenres: _genresController.text.trim(),
+      favoriteGenres: favoriteGenresStr,
+      favoriteGenreIds: favoriteGenreIdsStr,
       roomUrl: _roomUrlController.text.trim(),
     );
 
@@ -302,26 +373,32 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             const SizedBox(height: AppDimensions.spacingLg),
             _SectionHeader(
               title: '好きなジャンル',
-              body: '複数ジャンルを登録すると、今後のおすすめ候補や検索補助に活用できます。',
+              body: 'アプリ内のジャンルマスタから最大5件まで選べます（おすすめ候補の参考に使います）。',
             ),
             const SizedBox(height: 10),
             _SectionCard(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TextFormField(
-                    controller: _genresController,
-                    minLines: 2,
-                    maxLines: 4,
-                    textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: '好きなジャンル（任意）',
-                      hintText: '例: 美容、インテリア、グルメ',
-                      alignLabelWithHint: true,
+                  OutlinedButton.icon(
+                    onPressed: _openFavoriteGenresPicker,
+                    icon: const Icon(Icons.category_outlined, size: 20),
+                    label: Text(
+                      _favoriteGenreIds.isEmpty
+                          ? 'ジャンルを選ぶ（最大5件）'
+                          : 'ジャンルを変更（${_favoriteGenreIds.length}/5）',
                     ),
-                    onChanged: (_) => setState(() {}),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      foregroundColor: AppColors.textPrimary,
+                      side: BorderSide(color: AppColors.divider),
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  _GenresChipsPreview(rawText: _genresController.text),
+                  _GenresChipsPreview(
+                    genreIds: List<String>.from(_favoriteGenreIds),
+                    legacyFreeformText: _preservedFreeformFavoriteGenres,
+                  ),
                 ],
               ),
             ),
@@ -410,6 +487,104 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
   }
 }
 
+class _FavoriteGenresPickerDialog extends StatefulWidget {
+  const _FavoriteGenresPickerDialog({
+    required this.initialSelectedIds,
+    required this.onLimitReached,
+  });
+
+  final List<String> initialSelectedIds;
+  final VoidCallback onLimitReached;
+
+  @override
+  State<_FavoriteGenresPickerDialog> createState() =>
+      _FavoriteGenresPickerDialogState();
+}
+
+class _FavoriteGenresPickerDialogState extends State<_FavoriteGenresPickerDialog> {
+  late final Set<String> _selected;
+  late final List<RakutenGenreMasterEntry> _entries;
+
+  @override
+  void initState() {
+    super.initState();
+    _selected = Set<String>.from(
+      widget.initialSelectedIds.map((e) => e.trim()).where((e) => e.isNotEmpty),
+    );
+    _entries = RakutenGenreMasterService.instance.getAllGenres();
+  }
+
+  void _onToggle(String genreId, bool? checked) {
+    final id = genreId.trim();
+    if (id.isEmpty) return;
+    if (checked == true) {
+      if (_selected.length >= 5) {
+        widget.onLimitReached();
+        return;
+      }
+      setState(() => _selected.add(id));
+    } else {
+      setState(() => _selected.remove(id));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('好きなジャンルを選ぶ'),
+      content: SizedBox(
+        width: double.maxFinite,
+        height: 380,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'チェックを付けたジャンルが保存されます（${_selected.length}/5）。',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _entries.length,
+                itemBuilder: (context, index) {
+                  final e = _entries[index];
+                  final id = e.genreId;
+                  final name = e.genreName;
+                  return CheckboxListTile(
+                    value: _selected.contains(id),
+                    onChanged: (v) => _onToggle(id, v),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Text(name),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('キャンセル'),
+        ),
+        FilledButton(
+          onPressed: () {
+            final ordered = <String>[];
+            for (final e in _entries) {
+              final id = e.genreId;
+              if (_selected.contains(id)) ordered.add(id);
+            }
+            Navigator.of(context).pop(ordered);
+          },
+          child: const Text('決定'),
+        ),
+      ],
+    );
+  }
+}
+
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader({
     required this.title,
@@ -468,28 +643,69 @@ class _SectionCard extends StatelessWidget {
   }
 }
 
-/// 好きなジャンル入力欄の下に表示する、簡易プレビュー用のチップ一覧。
+/// 選んだジャンル（マスタ名称）と、移行前のフリーテキストのプレビュー。
 class _GenresChipsPreview extends StatelessWidget {
-  const _GenresChipsPreview({required this.rawText});
+  const _GenresChipsPreview({
+    required this.genreIds,
+    required this.legacyFreeformText,
+  });
 
-  final String rawText;
+  final List<String> genreIds;
+  final String legacyFreeformText;
 
   @override
   Widget build(BuildContext context) {
-    final genres = UserProfile(favoriteGenres: rawText).favoriteGenreList;
-    if (genres.isEmpty) {
+    final svc = RakutenGenreMasterService.instance;
+    if (genreIds.isEmpty &&
+        legacyFreeformText.trim().isEmpty) {
       return Text(
-        '入力したジャンルはここにタグとして表示されます。',
+        '「ジャンルを選ぶ」から登録すると、ここに表示されます。',
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: AppColors.textTertiary,
             ),
       );
     }
-    return Wrap(
-      spacing: 6,
-      runSpacing: 6,
-      children: [
-        for (final g in genres)
+
+    final chips = <Widget>[];
+
+    for (final id in genreIds) {
+      final label = svc.getGenreNameById(id);
+      if (label.isEmpty) continue;
+      chips.add(
+        Chip(
+          label: Text(
+            label,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.textPrimary,
+                ),
+          ),
+          backgroundColor: AppColors.surfaceVariant,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
+          ),
+        ),
+      );
+    }
+
+    if (genreIds.isEmpty && legacyFreeformText.trim().isNotEmpty) {
+      final legacy = UserProfile(
+        favoriteGenres: legacyFreeformText,
+      ).favoriteGenreList;
+      chips.add(
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: Text(
+            '従来の入力（マスタへ未対応の語は保存時までこのまま保持されます）',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.textTertiary,
+                  fontSize: 10,
+                  height: 1.35,
+                ),
+          ),
+        ),
+      );
+      for (final g in legacy) {
+        chips.add(
           Chip(
             label: Text(
               g,
@@ -497,13 +713,19 @@ class _GenresChipsPreview extends StatelessWidget {
                     color: AppColors.textPrimary,
                   ),
             ),
-            backgroundColor: AppColors.surfaceVariant,
+            backgroundColor: AppColors.surfaceVariant.withValues(alpha: 0.65),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
             ),
           ),
-      ],
+        );
+      }
+    }
+
+    return Wrap(
+      spacing: 6,
+      runSpacing: 6,
+      children: chips,
     );
   }
-
 }
