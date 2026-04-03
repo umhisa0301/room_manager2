@@ -133,10 +133,10 @@ class RakutenManagedProductCard extends StatelessWidget {
   static const double _radius = 12;
 
   /// 一覧でカード高さを揃え、行間のリズムを一定にする。
-  static const double _cardHeight = 140;
+  static const double _cardHeight = 130;
 
   /// 左スロット幅（その中で正方形サムネを配置）。
-  static const double _thumbSlotWidth = 102;
+  static const double _thumbSlotWidth = 98;
   static const int _titleMaxLines = 2;
   static const int _shopMaxLines = 1;
 
@@ -215,7 +215,7 @@ class RakutenManagedProductCard extends StatelessWidget {
           _thumbColumn(),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 10, 7),
+              padding: const EdgeInsets.fromLTRB(7, 7, 9, 6),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -247,7 +247,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 5),
                   if (isCandidate)
                     _candidateActions(context)
                   else
@@ -272,7 +272,7 @@ class RakutenManagedProductCard extends StatelessWidget {
         ),
         border: Border(right: BorderSide(color: HomeScreenColors.deckOutline)),
       ),
-      padding: const EdgeInsets.all(7),
+      padding: const EdgeInsets.all(6),
       child: Center(
         child: AspectRatio(
           aspectRatio: 1,

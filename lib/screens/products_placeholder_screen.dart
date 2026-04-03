@@ -18,27 +18,29 @@ import 'rakuten_search_screen.dart';
 
 /// ROOMコレ一覧専用。ホーム画面 [_HomeUi] と同じ横余白（9）に揃える。
 const double _kRoomListScreenPadH = 9;
-const double _kRoomListCardGap = 8;
+const double _kRoomListCardGap = 6;
 
 /// ROOMコレ画面のレイアウト・面色・装飾（ホーム完成版と同一デザイン言語。ロジックとは分離）。
 abstract final class _RoomColleUi {
   const _RoomColleUi._();
 
-  static const double gapSection = 9;
+  static const double gapSection = 7;
   static const double insetSectionH = 9;
-  static const double gapIconToTitle = 8;
-  static const double paddingWellV = 8;
-  static const double paddingHeaderBand = 7;
-  static const double headerBandBottom = 4;
-  static const double chromeTopPadPop = 4;
-  static const double chromeTopPadNoPop = 6;
-  static const double tabDeckPad = 8;
-  static const double tabDeckBottom = 10;
-  static const double tabInnerPad = 4;
-  static const double gapFieldStack = 8;
-  static const double gapWellBlock = 10;
-  static const double gapAfterFilterShell = 6;
+  static const double gapIconToTitle = 6;
+  static const double paddingWellV = 5;
+  static const double paddingHeaderBand = 5;
+  static const double headerBandBottom = 2;
+  static const double chromeTopPadPop = 3;
+  static const double chromeTopPadNoPop = 5;
+  static const double tabDeckPad = 6;
+  static const double tabDeckBottom = 8;
+  static const double tabInnerPad = 3;
+  static const double gapFieldStack = 6;
+  static const double gapWellBlock = 6;
+  static const double gapAfterFilterShell = 4;
   static const double listBottomPad = 12;
+  static const double filterRowGap = 8;
+  static const double chipSpacing = 4;
 
   static double get radiusSectionOuter => AppDimensions.radiusCard;
   static const double radiusSectionInner = 12;
@@ -71,27 +73,12 @@ abstract final class _RoomColleUi {
   static TextStyle sectionHeadingAccent(BuildContext context) {
     final base = Theme.of(context).textTheme.titleSmall;
     return (base ?? const TextStyle()).copyWith(
-      fontSize: 15,
+      fontSize: 14,
       fontWeight: FontWeight.w800,
-      height: 1.22,
-      letterSpacing: -0.15,
+      height: 1.2,
+      letterSpacing: -0.12,
       color: HomeScreenColors.accentSectionHeading,
     );
-  }
-
-  static TextStyle footnoteOnSection(BuildContext context) {
-    return Theme.of(context).textTheme.labelSmall?.copyWith(
-          fontSize: 11.5,
-          height: 1.32,
-          color: HomeScreenColors.footnoteMuted,
-          fontWeight: FontWeight.w500,
-        ) ??
-        TextStyle(
-          fontSize: 11.5,
-          height: 1.32,
-          color: HomeScreenColors.footnoteMuted,
-          fontWeight: FontWeight.w500,
-        );
   }
 }
 
@@ -134,7 +121,7 @@ class _RoomColleFilterShell extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 1),
                       child: Icon(
                         icon,
-                        size: 22,
+                        size: 20,
                         color: HomeScreenColors.statusAccentStrong,
                       ),
                     ),
@@ -187,133 +174,66 @@ class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bodySmall = Theme.of(context).textTheme.bodySmall;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: HomeScreenColors.deckFill,
-        borderRadius: BorderRadius.circular(_RoomColleUi.radiusSectionInner),
-        border: Border.all(color: HomeScreenColors.deckOutline),
-        boxShadow: [
-          BoxShadow(
-            color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.65),
-            offset: const Offset(0, 1),
-            blurRadius: 6,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 1),
-                  child: Icon(
-                    Icons.tune_rounded,
+    return Tooltip(
+      message: 'ROOM用のURLがまだ無い候補を一覧から隠します（このタブのみ）',
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: HomeScreenColors.deckFill,
+          borderRadius: BorderRadius.circular(_RoomColleUi.radiusSectionInner),
+          border: Border.all(color: HomeScreenColors.deckOutline),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(
+              _RoomColleUi.radiusSectionInner,
+            ),
+            splashColor: HomeScreenColors.inkAccentSplash,
+            highlightColor: HomeScreenColors.inkAccentHighlight,
+            onTap: () => onExcludeUrlNotReadyChanged(!excludeUrlNotReady),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8, 6, 6, 6),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.link_rounded,
                     size: 18,
                     color: HomeScreenColors.statusAccentStrong,
                   ),
-                ),
-                SizedBox(width: _RoomColleUi.gapIconToTitle),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'コレ候補の表示条件',
-                        style: Theme.of(context).textTheme.labelMedium
-                            ?.copyWith(
-                              color: HomeScreenColors.leadOnSection,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 12,
-                              height: 1.25,
-                            ),
+                  SizedBox(width: _RoomColleUi.gapIconToTitle),
+                  Expanded(
+                    child: Text(
+                      '取得済みURLのみ表示',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontSize: 13,
+                        fontWeight: excludeUrlNotReady
+                            ? FontWeight.w800
+                            : FontWeight.w600,
+                        height: 1.2,
+                        color: excludeUrlNotReady
+                            ? HomeScreenColors.accentSectionHeading
+                            : HomeScreenColors.titlePrimary,
                       ),
-                      const SizedBox(height: 2),
-                      Text(
-                        'このタブでのみ有効な絞り込みです',
-                        style: bodySmall?.copyWith(
-                          color: HomeScreenColors.groupedSectionBody,
-                          fontSize: 11,
-                          height: 1.32,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(10),
-                splashColor: HomeScreenColors.inkAccentSplash,
-                highlightColor: HomeScreenColors.inkAccentHighlight,
-                onTap: () => onExcludeUrlNotReadyChanged(!excludeUrlNotReady),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 6,
-                    horizontal: 4,
+                  Switch.adaptive(
+                    value: excludeUrlNotReady,
+                    onChanged: onExcludeUrlNotReadyChanged,
+                    activeTrackColor: AppColors.accentPrimary.withValues(
+                      alpha: 0.38,
+                    ),
+                    activeThumbColor: AppColors.accentPrimary,
+                    inactiveTrackColor: AppColors.divider.withValues(
+                      alpha: 0.65,
+                    ),
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: MergeSemantics(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '取得済みURLのみ表示',
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      fontSize: 14,
-                                      fontWeight: excludeUrlNotReady
-                                          ? FontWeight.w700
-                                          : FontWeight.w600,
-                                      height: 1.25,
-                                      color: excludeUrlNotReady
-                                          ? HomeScreenColors
-                                                .accentSectionHeading
-                                          : HomeScreenColors.titlePrimary,
-                                    ),
-                              ),
-                              const SizedBox(height: 3),
-                              Text(
-                                'ROOM用のURLがまだ無い候補を一覧から隠します',
-                                style: bodySmall?.copyWith(
-                                  color: HomeScreenColors.footnoteMuted,
-                                  fontSize: 11,
-                                  height: 1.35,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Switch.adaptive(
-                        value: excludeUrlNotReady,
-                        onChanged: onExcludeUrlNotReadyChanged,
-                        activeTrackColor: AppColors.accentPrimary.withValues(
-                          alpha: 0.38,
-                        ),
-                        activeThumbColor: AppColors.accentPrimary,
-                        inactiveTrackColor: AppColors.divider.withValues(
-                          alpha: 0.65,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -322,25 +242,37 @@ class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
 
 /// 一覧の絞り込み条件をまとめて解除。アウトラインで「ボタン」だが主CTAより弱く見せる。
 class _RoomColleClearFiltersButton extends StatelessWidget {
-  const _RoomColleClearFiltersButton({required this.onPressed});
+  const _RoomColleClearFiltersButton({
+    required this.onPressed,
+    this.compact = false,
+  });
 
   final VoidCallback onPressed;
 
+  /// 横並び行用。ラベル・パディングを詰めつつ最小タップ高は維持。
+  final bool compact;
+
   @override
   Widget build(BuildContext context) {
+    final iconSize = compact ? 17.0 : 18.0;
+    final fontSize = compact ? 12.5 : 13.0;
+    final padH = compact ? 8.0 : 12.0;
+    final padV = compact ? 8.0 : 10.0;
     return OutlinedButton.icon(
       onPressed: onPressed,
       icon: Icon(
         Icons.layers_clear_rounded,
-        size: 18,
+        size: iconSize,
         color: HomeScreenColors.leadOnSection,
       ),
       label: Text(
         '条件クリア',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          fontSize: 13,
+          fontSize: fontSize,
           fontWeight: FontWeight.w600,
-          height: 1.2,
+          height: 1.15,
           color: HomeScreenColors.leadOnSection,
         ),
       ),
@@ -350,12 +282,86 @@ class _RoomColleClearFiltersButton extends StatelessWidget {
         elevation: 0,
         shadowColor: Colors.transparent,
         minimumSize: const Size(48, _kRoomColleSecondaryCtrlMinHeight),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: padH, vertical: padV),
         tapTargetSize: MaterialTapTargetSize.padded,
-        visualDensity: VisualDensity.standard,
+        visualDensity: compact ? VisualDensity.compact : VisualDensity.standard,
         side: BorderSide(color: HomeScreenColors.metricTileOutline),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
+    );
+  }
+}
+
+/// キーワード以外の条件（シート）と条件クリアを1行に配置。
+class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
+  const _RoomColleInlineMoreFiltersRow({
+    required this.onOpenMoreFilters,
+    required this.hasNonKeywordConstraintsBadge,
+    required this.onClear,
+  });
+
+  final VoidCallback onOpenMoreFilters;
+  final bool hasNonKeywordConstraintsBadge;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          flex: 11,
+          child: Tooltip(
+            message: '登録日・ジャンル・価格など、キーワード以外の条件',
+            child: OutlinedButton.icon(
+              onPressed: onOpenMoreFilters,
+              icon: Badge(
+                smallSize: 8,
+                backgroundColor: AppColors.accentPrimary,
+                isLabelVisible: hasNonKeywordConstraintsBadge,
+                child: const Icon(Icons.tune_rounded, size: 18),
+              ),
+              label: Text(
+                'その他の条件',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12.5,
+                  color: HomeScreenColors.leadOnSection,
+                ),
+              ),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: HomeScreenColors.leadOnSection,
+                backgroundColor: HomeScreenColors.deckFill,
+                alignment: Alignment.centerLeft,
+                minimumSize: const Size(0, _kRoomColleSecondaryCtrlMinHeight),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
+                side: BorderSide(color: HomeScreenColors.sectionOutlineNeutral),
+                tapTargetSize: MaterialTapTargetSize.padded,
+                visualDensity: VisualDensity.compact,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: _RoomColleUi.filterRowGap),
+        Expanded(
+          flex: 9,
+          child: Tooltip(
+            message: '検索・すべての絞り込み・コレ済の日付フィルタをリセット',
+            child: _RoomColleClearFiltersButton(
+              compact: true,
+              onPressed: onClear,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -1351,7 +1357,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       isDense: true,
       filled: true,
       fillColor: HomeScreenColors.deckFill,
-      contentPadding: const EdgeInsets.fromLTRB(14, 10, 4, 10),
+      contentPadding: const EdgeInsets.fromLTRB(12, 8, 2, 8),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
         borderSide: BorderSide(color: HomeScreenColors.deckOutline),
@@ -1368,14 +1374,14 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         ),
       ),
       suffixIcon: Padding(
-        padding: const EdgeInsetsDirectional.only(end: 10),
+        padding: const EdgeInsetsDirectional.only(end: 8),
         child: Icon(
           Icons.search_rounded,
           color: HomeScreenColors.leadOnSection,
-          size: 24,
+          size: 22,
         ),
       ),
-      suffixIconConstraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+      suffixIconConstraints: const BoxConstraints(minWidth: 36, minHeight: 36),
     );
   }
 
@@ -1551,7 +1557,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                           tapTargetSize:
                                               MaterialTapTargetSize.padded,
                                           minimumSize: WidgetStateProperty.all(
-                                            const Size(48, 52),
+                                            const Size(48, 46),
                                           ),
                                           side: WidgetStateProperty.resolveWith(
                                             (states) {
@@ -1571,8 +1577,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                           ),
                                           padding: WidgetStateProperty.all(
                                             const EdgeInsets.symmetric(
-                                              vertical: 14,
-                                              horizontal: 12,
+                                              vertical: 10,
+                                              horizontal: 10,
                                             ),
                                           ),
                                           shape: WidgetStateProperty.all(
@@ -1666,7 +1672,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           horizontal: _kRoomListScreenPadH,
                         ),
                         child: _RoomColleFilterShell(
-                          title: '候補一覧の絞り込み',
+                          title: '候補の絞り込み',
                           icon: Icons.filter_alt_outlined,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1695,53 +1701,22 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                 ),
                               ),
                               SizedBox(height: _RoomColleUi.gapFieldStack),
-                              OutlinedButton.icon(
-                                onPressed: () => _openRoomColleFilterEditor(
-                                  isCandidate: true,
-                                ),
-                                icon: Badge(
-                                  smallSize: 8,
-                                  backgroundColor: AppColors.accentPrimary,
-                                  isLabelVisible: _candidateListFilters
-                                      .hasNonKeywordConstraints,
-                                  child: const Icon(
-                                    Icons.tune_rounded,
-                                    size: 20,
-                                  ),
-                                ),
-                                label: Text(
-                                  'キーワード以外の条件',
-                                  style: Theme.of(context).textTheme.labelLarge
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: HomeScreenColors.leadOnSection,
-                                      ),
-                                ),
-                                style: OutlinedButton.styleFrom(
-                                  foregroundColor:
-                                      HomeScreenColors.leadOnSection,
-                                  backgroundColor: HomeScreenColors.deckFill,
-                                  alignment: Alignment.centerLeft,
-                                  minimumSize: const Size.fromHeight(48),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 10,
-                                  ),
-                                  side: BorderSide(
-                                    color:
-                                        HomeScreenColors.sectionOutlineNeutral,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
+                              _RoomColleInlineMoreFiltersRow(
+                                onOpenMoreFilters: () =>
+                                    _openRoomColleFilterEditor(
+                                      isCandidate: true,
+                                    ),
+                                hasNonKeywordConstraintsBadge:
+                                    _candidateListFilters
+                                        .hasNonKeywordConstraints,
+                                onClear: _resetRoomColleFilters,
                               ),
                               if (_candidateListFilters
                                   .hasNonKeywordConstraints) ...[
                                 SizedBox(height: _RoomColleUi.gapFieldStack),
                                 Wrap(
-                                  spacing: 6,
-                                  runSpacing: 6,
+                                  spacing: _RoomColleUi.chipSpacing,
+                                  runSpacing: _RoomColleUi.chipSpacing,
                                   children: _roomColleFilterSummaryChips(
                                     _candidateListFilters,
                                   ),
@@ -1758,13 +1733,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   );
                                   _persistRoomColleUiNow();
                                 },
-                              ),
-                              SizedBox(height: _RoomColleUi.gapFieldStack),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: _RoomColleClearFiltersButton(
-                                  onPressed: _resetRoomColleFilters,
-                                ),
                               ),
                             ],
                           ),
@@ -1810,7 +1778,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           horizontal: _kRoomListScreenPadH,
                         ),
                         child: _RoomColleFilterShell(
-                          title: 'コレ済一覧の絞り込み',
+                          title: 'コレ済の絞り込み',
                           icon: Icons.task_alt_outlined,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1837,78 +1805,26 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                 ),
                               ),
                               SizedBox(height: _RoomColleUi.gapFieldStack),
-                              OutlinedButton.icon(
-                                onPressed: () => _openRoomColleFilterEditor(
-                                  isCandidate: false,
-                                ),
-                                icon: Badge(
-                                  smallSize: 8,
-                                  backgroundColor: AppColors.accentPrimary,
-                                  isLabelVisible:
-                                      _doneListFilters.hasNonKeywordConstraints,
-                                  child: const Icon(
-                                    Icons.tune_rounded,
-                                    size: 20,
-                                  ),
-                                ),
-                                label: Text(
-                                  'キーワード以外の条件',
-                                  style: Theme.of(context).textTheme.labelLarge
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: HomeScreenColors.leadOnSection,
-                                      ),
-                                ),
-                                style: OutlinedButton.styleFrom(
-                                  foregroundColor:
-                                      HomeScreenColors.leadOnSection,
-                                  backgroundColor: HomeScreenColors.deckFill,
-                                  alignment: Alignment.centerLeft,
-                                  minimumSize: const Size.fromHeight(48),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 10,
-                                  ),
-                                  side: BorderSide(
-                                    color:
-                                        HomeScreenColors.sectionOutlineNeutral,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
+                              _RoomColleInlineMoreFiltersRow(
+                                onOpenMoreFilters: () =>
+                                    _openRoomColleFilterEditor(
+                                      isCandidate: false,
+                                    ),
+                                hasNonKeywordConstraintsBadge:
+                                    _doneListFilters.hasNonKeywordConstraints,
+                                onClear: _resetRoomColleFilters,
                               ),
                               if (_doneListFilters
                                   .hasNonKeywordConstraints) ...[
                                 SizedBox(height: _RoomColleUi.gapFieldStack),
                                 Wrap(
-                                  spacing: 6,
-                                  runSpacing: 6,
+                                  spacing: _RoomColleUi.chipSpacing,
+                                  runSpacing: _RoomColleUi.chipSpacing,
                                   children: _roomColleFilterSummaryChips(
                                     _doneListFilters,
                                   ),
                                 ),
                               ],
-                              SizedBox(height: _RoomColleUi.gapWellBlock),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      '検索・絞り込み・コレ済の日付をまとめてリセットします。',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: _RoomColleUi.footnoteOnSection(
-                                        context,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  _RoomColleClearFiltersButton(
-                                    onPressed: _resetRoomColleFilters,
-                                  ),
-                                ],
-                              ),
                             ],
                           ),
                         ),
@@ -2273,7 +2189,7 @@ class _RoomManagedProductListTabState
             physics: const AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.fromLTRB(
               _kRoomListScreenPadH,
-              4,
+              2,
               _kRoomListScreenPadH,
               _RoomColleUi.listBottomPad,
             ),
