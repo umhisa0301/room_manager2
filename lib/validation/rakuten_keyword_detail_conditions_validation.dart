@@ -21,6 +21,23 @@ abstract final class RakutenKeywordDetailConditionsInput {
 abstract final class RakutenKeywordDetailConditionsValidation {
   RakutenKeywordDetailConditionsValidation._();
 
+  /// キーワード検索タブの「最低評価数」選択肢（未選択は空文字）。
+  static const List<int> keywordMinReviewCountChoices = [
+    10,
+    50,
+    100,
+    500,
+    1000,
+  ];
+
+  /// キーワード検索タブの「最低評価点数」選択肢（未選択は空文字）。
+  static const List<double> keywordMinReviewAverageChoices = [
+    3.0,
+    3.5,
+    4.0,
+    4.5,
+  ];
+
   /// 楽天商品検索APIに無理のない価格上限（円）。超過はエラー。
   static const int maxPriceYen = 999999999;
 
@@ -60,11 +77,7 @@ abstract final class RakutenKeywordDetailConditionsValidation {
       return '最低価格は最高価格以下にしてください。';
     }
 
-    final reviewCountErr = validateOptionalNonNegativeIntField(
-      fieldLabel: '最低評価数',
-      raw: minReviewCountText,
-      maxInclusive: maxCountThreshold,
-    );
+    final reviewCountErr = validateKeywordTabMinReviewCount(minReviewCountText);
     if (reviewCountErr != null) return reviewCountErr;
 
     final commentErr = validateOptionalNonNegativeIntField(
@@ -74,7 +87,35 @@ abstract final class RakutenKeywordDetailConditionsValidation {
     );
     if (commentErr != null) return commentErr;
 
-    return validateOptionalReviewAverage(minReviewAverageText);
+    return validateKeywordTabMinReviewAverage(minReviewAverageText);
+  }
+
+  /// 空は未指定。非空は [keywordMinReviewCountChoices] のいずれかのみ。
+  static String? validateKeywordTabMinReviewCount(String raw) {
+    final t = raw.trim();
+    if (t.isEmpty) return null;
+    final v = int.tryParse(t);
+    if (v == null) {
+      return '最低評価数は一覧から選び直してください（未選択は指定なし）。';
+    }
+    if (!keywordMinReviewCountChoices.contains(v)) {
+      return '最低評価数は一覧のいずれかを選んでください。';
+    }
+    return null;
+  }
+
+  /// 空は未指定。非空は [keywordMinReviewAverageChoices] のいずれかのみ。
+  static String? validateKeywordTabMinReviewAverage(String raw) {
+    final t = raw.trim();
+    if (t.isEmpty) return null;
+    final v = double.tryParse(t);
+    if (v == null || v.isNaN || v.isInfinite) {
+      return '最低評価点数は一覧から選び直してください（未選択は指定なし）。';
+    }
+    for (final a in keywordMinReviewAverageChoices) {
+      if ((v - a).abs() < 0.001) return null;
+    }
+    return '最低評価点数は一覧のいずれかを選んでください。';
   }
 
   /// 空・空白のみは null（未指定）。非空で整数化できなければエラー。

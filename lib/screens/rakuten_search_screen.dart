@@ -699,6 +699,31 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     });
   }
 
+  /// 詳細条件シート（キーワードタブ）の最低評価数プルダウン用。不正な文字列は未選択扱い。
+  int? _keywordSheetSelectedReviewCount() {
+    final t = _minReviewCountController.text.trim();
+    if (t.isEmpty) return null;
+    final v = int.tryParse(t);
+    if (v == null) return null;
+    return RakutenKeywordDetailConditionsValidation.keywordMinReviewCountChoices
+            .contains(v)
+        ? v
+        : null;
+  }
+
+  /// 詳細条件シート（キーワードタブ）の最低評価点数プルダウン用。
+  double? _keywordSheetSelectedReviewAverage() {
+    final t = _minReviewAverageController.text.trim();
+    if (t.isEmpty) return null;
+    final v = double.tryParse(t);
+    if (v == null) return null;
+    for (final a
+        in RakutenKeywordDetailConditionsValidation.keywordMinReviewAverageChoices) {
+      if ((v - a).abs() < 0.001) return a;
+    }
+    return null;
+  }
+
   ButtonStyle _detailConditionsButtonStyle() {
     return OutlinedButton.styleFrom(
       foregroundColor: HomeScreenColors.accentSectionHeading,
@@ -814,49 +839,175 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       ),
                     ),
                     SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _minReviewCountController,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: false,
-                              signed: false,
-                            ),
-                            inputFormatters:
-                                RakutenKeywordDetailConditionsInput.digitsOnlyField,
-                            decoration: RakutenSearchScreenUi.searchField(
-                              labelText: '最低評価数',
-                              hintText: '50',
-                              prefixIcon: Icon(
-                                Icons.reviews_outlined,
-                                color: HomeScreenColors.leadOnSection,
+                    if (_mode == _RakutenSearchMode.product)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: InputDecorator(
+                              decoration: RakutenSearchScreenUi.searchField(
+                                labelText: '最低評価数',
+                                prefixIcon: Icon(
+                                  Icons.reviews_outlined,
+                                  color: HomeScreenColors.leadOnSection,
+                                ),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<int?>(
+                                  isExpanded: true,
+                                  value: _keywordSheetSelectedReviewCount(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: HomeScreenColors.titlePrimary,
+                                      ),
+                                  padding: EdgeInsets.zero,
+                                  items: [
+                                    DropdownMenuItem<int?>(
+                                      value: null,
+                                      child: Text(
+                                        '指定なし',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: HomeScreenColors
+                                                  .groupedSectionBody,
+                                            ),
+                                      ),
+                                    ),
+                                    ...RakutenKeywordDetailConditionsValidation
+                                        .keywordMinReviewCountChoices
+                                        .map(
+                                          (n) => DropdownMenuItem<int?>(
+                                            value: n,
+                                            child: Text('$n〜'),
+                                          ),
+                                        ),
+                                  ],
+                                  onChanged: (v) {
+                                    setState(() {
+                                      _minReviewCountController.text =
+                                          v == null ? '' : '$v';
+                                    });
+                                    setModalState(() {});
+                                  },
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
-                        Expanded(
-                          child: TextField(
-                            controller: _minReviewAverageController,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                              signed: false,
-                            ),
-                            inputFormatters:
-                                RakutenKeywordDetailConditionsInput.reviewAverageField,
-                            decoration: RakutenSearchScreenUi.searchField(
-                              labelText: '最低評価点数',
-                              hintText: '4.0',
-                              prefixIcon: Icon(
-                                Icons.star_outline_rounded,
-                                color: HomeScreenColors.leadOnSection,
+                          SizedBox(
+                            width: RakutenSearchScreenUi.gapFieldStack,
+                          ),
+                          Expanded(
+                            child: InputDecorator(
+                              decoration: RakutenSearchScreenUi.searchField(
+                                labelText: '最低評価点数',
+                                prefixIcon: Icon(
+                                  Icons.star_outline_rounded,
+                                  color: HomeScreenColors.leadOnSection,
+                                ),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<double?>(
+                                  isExpanded: true,
+                                  value: _keywordSheetSelectedReviewAverage(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: HomeScreenColors.titlePrimary,
+                                      ),
+                                  padding: EdgeInsets.zero,
+                                  items: [
+                                    DropdownMenuItem<double?>(
+                                      value: null,
+                                      child: Text(
+                                        '指定なし',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: HomeScreenColors
+                                                  .groupedSectionBody,
+                                            ),
+                                      ),
+                                    ),
+                                    ...RakutenKeywordDetailConditionsValidation
+                                        .keywordMinReviewAverageChoices
+                                        .map(
+                                          (x) => DropdownMenuItem<double?>(
+                                            value: x,
+                                            child: Text(
+                                              '${x.toStringAsFixed(1)}〜',
+                                            ),
+                                          ),
+                                        ),
+                                  ],
+                                  onChanged: (v) {
+                                    setState(() {
+                                      _minReviewAverageController.text =
+                                          v == null
+                                              ? ''
+                                              : v.toStringAsFixed(1);
+                                    });
+                                    setModalState(() {});
+                                  },
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      )
+                    else
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _minReviewCountController,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                decimal: false,
+                                signed: false,
+                              ),
+                              inputFormatters:
+                                  RakutenKeywordDetailConditionsInput
+                                      .digitsOnlyField,
+                              decoration: RakutenSearchScreenUi.searchField(
+                                labelText: '最低評価数',
+                                hintText: '50',
+                                prefixIcon: Icon(
+                                  Icons.reviews_outlined,
+                                  color: HomeScreenColors.leadOnSection,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
+                          Expanded(
+                            child: TextField(
+                              controller: _minReviewAverageController,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                decimal: true,
+                                signed: false,
+                              ),
+                              inputFormatters:
+                                  RakutenKeywordDetailConditionsInput
+                                      .reviewAverageField,
+                              decoration: RakutenSearchScreenUi.searchField(
+                                labelText: '最低評価点数',
+                                hintText: '4.0',
+                                prefixIcon: Icon(
+                                  Icons.star_outline_rounded,
+                                  color: HomeScreenColors.leadOnSection,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
                     TextField(
                       controller: _minCommentCountController,
