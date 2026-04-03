@@ -39,7 +39,6 @@ abstract final class _RoomColleUi {
 
   /// キーワード欄と「その他の条件」行の間。やや空けて上部の詰まりを緩和。
   static const double gapKeywordToFilterRow = 8;
-  static const double gapWellBlock = 6;
   static const double gapAfterFilterShell = 4;
   static const double listBottomPad = 12;
 
@@ -166,85 +165,6 @@ const double _kRoomColleTabTrackRadius = 14;
 /// 条件クリアなど、セカンダリ操作の最小タップ高さ（Material 推奨に寄せる）。
 const double _kRoomColleSecondaryCtrlMinHeight = 44;
 
-/// コレ候補タブ専用：URL 準備済みの候補だけ一覧に残すフィルタ（トグル＋短文説明）。
-class _RoomColleCandidateUrlFilterPanel extends StatelessWidget {
-  const _RoomColleCandidateUrlFilterPanel({
-    required this.excludeUrlNotReady,
-    required this.onExcludeUrlNotReadyChanged,
-  });
-
-  /// `true` のとき「取得済みURLのみ表示」と同義（既存 [_ProductsPlaceholderScreenState._candidateExcludeUrlNotReady]）。
-  final bool excludeUrlNotReady;
-  final ValueChanged<bool> onExcludeUrlNotReadyChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Tooltip(
-      message: 'ROOM用のURLがまだ無い候補を一覧から隠します（このタブのみ）',
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: HomeScreenColors.deckFill,
-          borderRadius: BorderRadius.circular(_RoomColleUi.radiusSectionInner),
-          border: Border.all(color: HomeScreenColors.deckOutline),
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(
-              _RoomColleUi.radiusSectionInner,
-            ),
-            splashColor: HomeScreenColors.inkAccentSplash,
-            highlightColor: HomeScreenColors.inkAccentHighlight,
-            onTap: () => onExcludeUrlNotReadyChanged(!excludeUrlNotReady),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 6, 6, 6),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.link_rounded,
-                    size: 18,
-                    color: HomeScreenColors.statusAccentStrong,
-                  ),
-                  SizedBox(width: _RoomColleUi.gapIconToTitle),
-                  Expanded(
-                    child: Text(
-                      '取得済みURLのみ表示',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontSize: 13,
-                        fontWeight: excludeUrlNotReady
-                            ? FontWeight.w800
-                            : FontWeight.w600,
-                        height: 1.2,
-                        color: excludeUrlNotReady
-                            ? HomeScreenColors.accentSectionHeading
-                            : HomeScreenColors.titlePrimary,
-                      ),
-                    ),
-                  ),
-                  Switch.adaptive(
-                    value: excludeUrlNotReady,
-                    onChanged: onExcludeUrlNotReadyChanged,
-                    activeTrackColor: AppColors.accentPrimary.withValues(
-                      alpha: 0.38,
-                    ),
-                    activeThumbColor: AppColors.accentPrimary,
-                    inactiveTrackColor: AppColors.divider.withValues(
-                      alpha: 0.65,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 /// 一覧の絞り込み条件をまとめて解除（キーワード・拡張条件・URL条件・日付を初期化）。
 class _RoomColleClearFiltersButton extends StatelessWidget {
   const _RoomColleClearFiltersButton({
@@ -320,11 +240,15 @@ class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
     required this.onOpenMoreFilters,
     required this.hasNonKeywordConstraintsBadge,
     required this.onClear,
+    this.candidateUrlFilterActive = false,
   });
 
   final VoidCallback onOpenMoreFilters;
   final bool hasNonKeywordConstraintsBadge;
   final VoidCallback onClear;
+
+  /// 候補タブ：取得済URLのみがONのときシート内フィルタが効いている旨をバッジで示す。
+  final bool candidateUrlFilterActive;
 
   static Color _primaryFilterButtonFill() {
     return Color.alphaBlend(
@@ -347,7 +271,8 @@ class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
               icon: Badge(
                 smallSize: 8,
                 backgroundColor: AppColors.accentPrimary,
-                isLabelVisible: hasNonKeywordConstraintsBadge,
+                isLabelVisible:
+                    hasNonKeywordConstraintsBadge || candidateUrlFilterActive,
                 child: const Icon(Icons.tune_rounded, size: 20),
               ),
               label: Text(
@@ -503,17 +428,65 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
   return out;
 }
 
+/// 候補タブ：取得済URLフィルタON時のサマリーチップ（検索欄下のチップ列用）。
+Chip _roomColleCandidateUrlOnlySummaryChip(VoidCallback onDeleted) {
+  return Chip(
+    avatar: Icon(
+      Icons.link_rounded,
+      size: 16,
+      color: HomeScreenColors.metricRoleCandidateIcon,
+    ),
+    label: Text(
+      '取得済URLのみ',
+      style: TextStyle(
+        fontSize: 11,
+        fontWeight: FontWeight.w700,
+        color: HomeScreenColors.metricTileTitleColor,
+      ),
+    ),
+    deleteIcon: Icon(
+      Icons.close_rounded,
+      size: 16,
+      color: HomeScreenColors.leadOnSection,
+    ),
+    onDeleted: onDeleted,
+    visualDensity: VisualDensity.compact,
+    backgroundColor: HomeScreenColors.roomMetricTileFill,
+    side: BorderSide(color: HomeScreenColors.metricRoleCandidateIcon),
+    padding: const EdgeInsets.symmetric(horizontal: 6),
+  );
+}
+
+/// 絞り込みシートの適用結果。[includesCandidateUrlOption] が false のときは
+/// [candidateExcludeUrlNotReady] を親で無視する（コレ済タブ用シート）。
+class _RoomColleFilterSheetApplyResult {
+  const _RoomColleFilterSheetApplyResult({
+    required this.criteria,
+    required this.candidateExcludeUrlNotReady,
+    required this.includesCandidateUrlOption,
+  });
+
+  final RoomColleListFilterCriteria criteria;
+  final bool candidateExcludeUrlNotReady;
+  final bool includesCandidateUrlOption;
+}
+
 /// キーワード以外の条件をボトムシートで編集。キーワードは [initial] に含め親が保持する。
+/// 候補タブ（[isCandidateTab]）では ROOM用URLの絞り込みを同シート内に配置する。
 class _RoomColleFilterEditorSheet extends StatefulWidget {
   const _RoomColleFilterEditorSheet({
     required this.sectionTitle,
     required this.initial,
     required this.genreIds,
+    required this.isCandidateTab,
+    this.initialExcludeUrlNotReady = false,
   });
 
   final String sectionTitle;
   final RoomColleListFilterCriteria initial;
   final List<String> genreIds;
+  final bool isCandidateTab;
+  final bool initialExcludeUrlNotReady;
 
   @override
   State<_RoomColleFilterEditorSheet> createState() =>
@@ -526,6 +499,7 @@ class _RoomColleFilterEditorSheetState
   String? _genreId;
   late final TextEditingController _minPriceCtrl;
   late final TextEditingController _maxPriceCtrl;
+  late bool _excludeUrlNotReadyDraft;
 
   @override
   void initState() {
@@ -539,6 +513,9 @@ class _RoomColleFilterEditorSheetState
     _maxPriceCtrl = TextEditingController(
       text: widget.initial.priceMaxYen?.toString() ?? '',
     );
+    _excludeUrlNotReadyDraft = widget.isCandidateTab
+        ? widget.initialExcludeUrlNotReady
+        : false;
   }
 
   @override
@@ -554,6 +531,9 @@ class _RoomColleFilterEditorSheetState
       _genreId = null;
       _minPriceCtrl.clear();
       _maxPriceCtrl.clear();
+      if (widget.isCandidateTab) {
+        _excludeUrlNotReadyDraft = false;
+      }
     });
   }
 
@@ -587,7 +567,13 @@ class _RoomColleFilterEditorSheetState
       clearPriceMin: minY == null,
       clearPriceMax: maxY == null,
     );
-    Navigator.of(context).pop(merged);
+    Navigator.of(context).pop(
+      _RoomColleFilterSheetApplyResult(
+        criteria: merged,
+        candidateExcludeUrlNotReady: _excludeUrlNotReadyDraft,
+        includesCandidateUrlOption: widget.isCandidateTab,
+      ),
+    );
   }
 
   @override
@@ -626,13 +612,140 @@ class _RoomColleFilterEditorSheetState
             ),
             const SizedBox(height: 4),
             Text(
-              'キーワードは上部の検索欄を使います。ここでは登録日・ジャンルID・価格帯のみ変えられます。',
+              widget.isCandidateTab
+                  ? 'キーワードは上部の検索欄を使います。登録日・ジャンル・価格に加え、コレ候補タブだけ有効な「ROOMのURL」条件もここで変更できます。'
+                  : 'キーワードは上部の検索欄を使います。ここでは登録日・ジャンルID・価格帯のみ変えられます。',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: HomeScreenColors.groupedSectionBody,
                 height: 1.35,
                 fontSize: 12,
               ),
             ),
+            if (widget.isCandidateTab) ...[
+              const SizedBox(height: 14),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Color.alphaBlend(
+                    AppColors.accentLight.withValues(alpha: 0.12),
+                    HomeScreenColors.roomContentWellFill,
+                  ),
+                  borderRadius: BorderRadius.circular(
+                    _RoomColleUi.radiusSectionInner,
+                  ),
+                  border: Border.all(color: HomeScreenColors.deckOutline),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              color: HomeScreenColors.metricRoleCandidateIconBg,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              '候補タブのみ',
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    color: HomeScreenColors
+                                        .metricRoleCandidateIcon,
+                                    height: 1.15,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'ROOMのURLで一覧を絞る',
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w800,
+                              color: HomeScreenColors.accentSectionHeading,
+                            ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'いま開けるROOM用URLがある候補だけ残します（コレ前の整理向け）。',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: HomeScreenColors.footnoteMuted,
+                          fontSize: 11,
+                          height: 1.32,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Material(
+                        color: HomeScreenColors.deckFill,
+                        borderRadius: BorderRadius.circular(10),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(10),
+                          splashColor: HomeScreenColors.inkAccentSplash,
+                          highlightColor: HomeScreenColors.inkAccentHighlight,
+                          onTap: () => setState(
+                            () => _excludeUrlNotReadyDraft =
+                                !_excludeUrlNotReadyDraft,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.link_rounded,
+                                  size: 20,
+                                  color: HomeScreenColors.statusAccentStrong,
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    '取得済URLのみ',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          fontWeight: _excludeUrlNotReadyDraft
+                                              ? FontWeight.w800
+                                              : FontWeight.w600,
+                                          fontSize: 14,
+                                          color: _excludeUrlNotReadyDraft
+                                              ? HomeScreenColors
+                                                    .accentSectionHeading
+                                              : HomeScreenColors.titlePrimary,
+                                        ),
+                                  ),
+                                ),
+                                Switch.adaptive(
+                                  value: _excludeUrlNotReadyDraft,
+                                  onChanged: (v) => setState(
+                                    () => _excludeUrlNotReadyDraft = v,
+                                  ),
+                                  activeTrackColor: AppColors.accentPrimary
+                                      .withValues(alpha: 0.38),
+                                  activeThumbColor: AppColors.accentPrimary,
+                                  inactiveTrackColor: AppColors.divider
+                                      .withValues(alpha: 0.65),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
             const SizedBox(height: 16),
             Text(
               '登録日（端末に保存した日）',
@@ -1169,7 +1282,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     final genreIds = _roomColleDistinctGenreIds(base);
     final current = isCandidate ? _candidateListFilters : _doneListFilters;
     final title = isCandidate ? '候補一覧の条件（キーワード以外）' : 'コレ済一覧の条件（キーワード以外）';
-    final result = await showModalBottomSheet<RoomColleListFilterCriteria>(
+    final result = await showModalBottomSheet<_RoomColleFilterSheetApplyResult>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
@@ -1177,14 +1290,21 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         sectionTitle: title,
         initial: current,
         genreIds: genreIds,
+        isCandidateTab: isCandidate,
+        initialExcludeUrlNotReady: isCandidate
+            ? _candidateExcludeUrlNotReady
+            : false,
       ),
     );
     if (!mounted || result == null) return;
     setState(() {
       if (isCandidate) {
-        _candidateListFilters = result;
+        _candidateListFilters = result.criteria;
+        if (result.includesCandidateUrlOption) {
+          _candidateExcludeUrlNotReady = result.candidateExcludeUrlNotReady;
+        }
       } else {
-        _doneListFilters = result;
+        _doneListFilters = result.criteria;
       }
     });
     _persistRoomColleUiNow();
@@ -1744,29 +1864,44 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                 hasNonKeywordConstraintsBadge:
                                     _candidateListFilters
                                         .hasNonKeywordConstraints,
+                                candidateUrlFilterActive:
+                                    _candidateExcludeUrlNotReady,
                                 onClear: _resetRoomColleFilters,
                               ),
-                              if (_candidateListFilters
-                                  .hasNonKeywordConstraints) ...[
-                                SizedBox(height: _RoomColleUi.gapFieldStack),
-                                Wrap(
-                                  spacing: _RoomColleUi.chipSpacing,
-                                  runSpacing: _RoomColleUi.chipSpacing,
-                                  children: _roomColleFilterSummaryChips(
+                              Builder(
+                                builder: (context) {
+                                  final chips = _roomColleFilterSummaryChips(
                                     _candidateListFilters,
-                                  ),
-                                ),
-                              ],
-                              SizedBox(height: _RoomColleUi.gapWellBlock),
-                              _RoomColleCandidateUrlFilterPanel(
-                                excludeUrlNotReady:
-                                    _candidateExcludeUrlNotReady,
-                                onExcludeUrlNotReadyChanged: (v) {
-                                  if (!mounted) return;
-                                  setState(
-                                    () => _candidateExcludeUrlNotReady = v,
                                   );
-                                  _persistRoomColleUiNow();
+                                  if (_candidateExcludeUrlNotReady) {
+                                    chips.add(
+                                      _roomColleCandidateUrlOnlySummaryChip(() {
+                                        if (!mounted) return;
+                                        setState(
+                                          () => _candidateExcludeUrlNotReady =
+                                              false,
+                                        );
+                                        _persistRoomColleUiNow();
+                                      }),
+                                    );
+                                  }
+                                  if (chips.isEmpty) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      SizedBox(
+                                        height: _RoomColleUi.gapFieldStack,
+                                      ),
+                                      Wrap(
+                                        spacing: _RoomColleUi.chipSpacing,
+                                        runSpacing: _RoomColleUi.chipSpacing,
+                                        children: chips,
+                                      ),
+                                    ],
+                                  );
                                 },
                               ),
                             ],
@@ -2506,7 +2641,7 @@ class _RoomCollectionUrlFilterEmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                '「取得済みURLのみ表示」では一覧に出せる商品がありません',
+                '「取得済URLのみ」では一覧に出せる商品がありません',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: HomeScreenColors.titlePrimary,
@@ -2516,7 +2651,7 @@ class _RoomCollectionUrlFilterEmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                '絞り込みの「取得済みURLのみ表示」をオフにすると、URLが未準備の候補も表示されます。',
+                '「キーワード以外の条件」で「取得済URLのみ」をオフにすると、URL未準備の候補も表示されます。',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: HomeScreenColors.groupedSectionBody,
