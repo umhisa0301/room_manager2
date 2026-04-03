@@ -1145,39 +1145,44 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       case RakutenSearchStatus.idle:
         return const RakutenSearchIdleView(
           icon: Icons.manage_search_outlined,
-          title: 'キーワード検索の準備ができています',
+          title: 'ここではまだ結果を表示していません',
           subtitle:
-              'キーワードを入力し「検索」を押すか、上の「詳細条件」で価格帯・ショップ・ジャンルなどを指定できます。',
+              'キーワードを入力して「検索」を押すか、「詳細条件」から価格帯・ショップ・ジャンルなどを組み合わせて探せます。',
+          stateFootnote: '検索が始まるまで、このエリアは更新されません。',
         );
       case RakutenSearchStatus.loading:
         return const RakutenSearchLoadingView(
           title: '商品を探しています',
-          subtitle: '楽天の商品データを読み込んでいます。通信状況により30秒ほどかかることがあります。',
-          footnote: '複数ページ（最大約100件）を順に取得しています。この画面を閉じずにお待ちください。',
+          subtitle: '楽天の商品情報を読み込んでいます。回線状況によっては30秒ほどかかることがあります。',
+          footnote:
+              '最大約100件まで順に取得しています。この画面を閉じずにお待ちください。',
         );
       case RakutenSearchStatus.error:
         return RakutenSearchErrorView(
-          title: 'キーワード検索に失敗しました',
-          message: search.errorMessage,
+          title: '検索結果を表示できませんでした',
+          stateLine: '状態: 通信または楽天APIの応答に失敗しました',
+          message: search.errorMessage.isNotEmpty
+              ? search.errorMessage
+              : '時間をおいて「もう一度検索する」を押すか、条件を緩めて試してください。',
           onRetry: () => _runSearch(context),
           onAdjustConditions: () => _openProductConditionsSheet(context),
-          retryLabel: '同じ条件で再試行',
           adjustLabel: '詳細条件を開く',
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
           return RakutenSearchEmptyView(
             icon: Icons.inventory_2_outlined,
-            title: '条件に合う商品が見つかりませんでした',
+            title: '条件に合う商品は見つかりませんでした',
             body:
-                '楽天側に該当する商品がないか、詳細条件・除外ワードが厳しすぎる可能性があります。',
+                '楽天側に該当がないか、除外ワードや価格・評価の下限などが厳しすぎている可能性があります。',
             hints: const [
-              'キーワードを変えてみる',
+              'キーワードの言い回しを変えてみる',
               '詳細条件の下限（評価数・価格など）を緩める',
-              '除外ワードを減らす・空にする',
+              '除外ワードを減らす、または空にする',
             ],
             onRefine: () => _openProductConditionsSheet(context),
             refineLabel: '詳細条件を調整',
+            stateFootnote: '読み込みは完了していますが、この条件では0件です。',
           );
         }
         final managedPreferred = _applyPreferredExcludes(
@@ -1322,13 +1327,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       icon: Icons.filter_alt_off_outlined,
                       title: 'この一覧では表示できる商品がありません',
                       body:
-                          '検索自体は成功していますが、一覧上の除外フィルタや、すでに登録済みの候補・コレ済・保存ショップの商品を避ける設定の影響で、表示が0件になっています。',
+                          '検索の取得はできていますが、「コレ候補を除外」「コレ済を除外」や、登録済み・保存ショップの扱いで、今の一覧だけが0件になっています。',
                       hints: const [
-                        '「コレ候補を除外」「コレ済を除外」のチェックをオフにする',
-                        '詳細条件やキーワードを変えて再検索する',
+                        '「コレ候補を除外」「コレ済を除外」をオフにしてみる',
+                        'キーワードや詳細条件を変えて、もう一度検索する',
                       ],
                       onRefine: () => _openProductConditionsSheet(context),
                       refineLabel: '詳細条件を開く',
+                      stateFootnote: 'データ取得は完了しています。一覧の絞り込みだけを見直せます。',
                     )
                   : ListView.separated(
                       padding: EdgeInsets.fromLTRB(
@@ -1425,32 +1431,36 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       case RakutenSearchStatus.idle:
         return const RakutenSearchIdleView(
           icon: Icons.category_outlined,
-          title: 'ジャンル検索の準備ができています',
+          title: 'ここではまだ結果を表示していません',
           subtitle:
-              'ジャンルを選び、必要なら補助キーワードを入力してから「検索」を押してください。詳細条件は「詳細条件」から開けます。',
+              'ジャンルを選び、必要なら補助キーワードを入力してから「検索」を押してください。絞り込みは「詳細条件」から開けます。',
+          stateFootnote: '検索が始まるまで、このエリアは更新されません。',
         );
       case RakutenSearchStatus.loading:
         return const RakutenSearchLoadingView(
-          title: 'ジャンルに沿った商品を読み込んでいます',
-          subtitle: '楽天の商品データを読み込んでいます。通信状況により30秒ほどかかることがあります。',
-          footnote: '複数ページ（最大約100件）を順に取得しています。この画面を閉じずにお待ちください。',
+          title: 'ジャンルに沿って商品を読み込んでいます',
+          subtitle: '楽天の商品情報を読み込んでいます。回線状況によっては30秒ほどかかることがあります。',
+          footnote:
+              '最大約100件まで順に取得しています。この画面を閉じずにお待ちください。',
         );
       case RakutenSearchStatus.error:
         return RakutenSearchErrorView(
-          title: 'ジャンル検索に失敗しました',
-          message: search.errorMessage,
+          title: 'ジャンル検索の結果を表示できませんでした',
+          stateLine: '状態: 通信または楽天APIの応答に失敗しました',
+          message: search.errorMessage.isNotEmpty
+              ? search.errorMessage
+              : '時間をおいて「もう一度検索する」を押すか、条件を緩めて試してください。',
           onRetry: () => _runGenreSearch(context),
           onAdjustConditions: () => _openProductConditionsSheet(context),
-          retryLabel: '同じ条件で再試行',
           adjustLabel: '詳細条件を開く',
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
           return RakutenSearchEmptyView(
             icon: Icons.category_outlined,
-            title: 'このジャンルでは商品が見つかりませんでした',
+            title: 'このジャンルでは商品は見つかりませんでした',
             body:
-                '条件が厳しすぎるか、この組み合わせではヒットがない可能性があります。',
+                '補助キーワードや詳細条件が厳しすぎると、ヒットが出にくくなります。',
             hints: const [
               '補助キーワードを空にするか、別の言い方に変える',
               '詳細条件の評価数・価格帯を緩める',
@@ -1458,6 +1468,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ],
             onRefine: () => _openProductConditionsSheet(context),
             refineLabel: '詳細条件を調整',
+            stateFootnote: '読み込みは完了していますが、この条件では0件です。',
           );
         }
         final managedPreferred = _applyPreferredExcludes(
@@ -1470,15 +1481,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         if (filteredResults.isEmpty) {
           return RakutenSearchEmptyView(
             icon: Icons.filter_alt_off_outlined,
-            title: '表示できる商品がありません',
+            title: 'この一覧では表示できる商品がありません',
             body:
-                '検索は成功していますが、一覧の除外や登録済み商品の扱いの影響で、表示が0件です。',
+                '検索の取得はできていますが、一覧側の除外や登録済み商品の扱いで、表示だけが0件になっています。',
             hints: const [
-              '詳細条件を緩めて再検索する',
-              '上部の「キーワード」に切り替えて別の切り口を試す',
+              '詳細条件を緩めて、もう一度検索する',
+              'モードを「キーワード」に切り替えて別の切り口を試す',
             ],
             onRefine: () => _openProductConditionsSheet(context),
             refineLabel: '詳細条件を開く',
+            stateFootnote: 'データ取得は完了しています。条件の組み合わせを変えてみましょう。',
           );
         }
         final sorted = [...filteredResults];
@@ -1603,32 +1615,37 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       case RakutenSearchStatus.idle:
         return const RakutenSearchIdleView(
           icon: Icons.storefront_outlined,
-          title: 'ショップ発掘の準備ができています',
+          title: 'ここではまだ発掘結果を表示していません',
           subtitle:
-              'キーワードまたはジャンルを指定し、「ショップを発掘する」を押すと、商品から有望なショップ候補をリスト化します。発掘条件は「発掘条件」から調整できます。',
+              'キーワードかジャンルを指定し、「ショップを発掘する」を押すと、商品から有望なショップ候補をまとめます。しきい値は「発掘条件」から調整できます。',
+          stateFootnote: '発掘が始まるまで、このエリアは更新されません。',
         );
       case RakutenSearchStatus.loading:
         return const RakutenSearchLoadingView(
           title: 'ショップを発掘しています',
-          subtitle: 'まず商品を読み込み、ショップ単位に集計しています。全体で少し時間がかかることがあります。',
-          footnote: 'データ取得中はこの画面を開いたままお待ちください。長時間応答がない場合は通信環境をご確認ください。',
+          subtitle:
+              'まず商品を読み込み、ショップ単位に集計しています。まとまった件数があると、少し時間がかかることがあります。',
+          footnote:
+              '取得中はこの画面を開いたままお待ちください。長く応答がないときは回線や楽天側の混雑も考えられます。',
         );
       case RakutenSearchStatus.error:
         return RakutenSearchErrorView(
-          title: 'ショップ発掘に失敗しました',
-          message: search.errorMessage,
+          title: 'ショップ発掘を完了できませんでした',
+          stateLine: '状態: 通信または楽天APIの応答に失敗しました',
+          message: search.errorMessage.isNotEmpty
+              ? search.errorMessage
+              : '時間をおいて「もう一度検索する」を押すか、発掘条件を緩めて試してください。',
           onRetry: () => _runShopDiscovery(context),
           onAdjustConditions: () => _openShopDiscoveryConditionsSheet(context),
-          retryLabel: '同じ条件で再試行',
           adjustLabel: '発掘条件を開く',
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
           return RakutenSearchEmptyView(
             icon: Icons.travel_explore_outlined,
-            title: '発掘できる商品がありませんでした',
+            title: '発掘のもとになる商品がありませんでした',
             body:
-                '検索条件にヒットする商品が無いか、条件が厳しすぎる可能性があります。',
+                '条件にヒットする商品がないか、除外や評価の下限が厳しすぎる可能性があります。',
             hints: const [
               'キーワードを広げる、または別のジャンルも試す',
               '発掘条件の評価数・評価点を緩める',
@@ -1636,6 +1653,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ],
             onRefine: () => _openShopDiscoveryConditionsSheet(context),
             refineLabel: '発掘条件を調整',
+            stateFootnote: '読み込みは完了していますが、この条件では0件です。',
           );
         }
         final shopLimit = _parseInt(_shopDiscoveryShopLimitController.text) ?? 10;
@@ -1649,15 +1667,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         if (summaries.isEmpty) {
           return RakutenSearchEmptyView(
             icon: Icons.groups_outlined,
-            title: 'ショップ候補を表示できませんでした',
+            title: 'ショップ候補を組み立てられませんでした',
             body:
-                '商品データは取得できていますが、ショップ単位の集約結果が空でした。しばらくしてから同じ条件でもう一度お試しください。',
+                '商品の取得はできていますが、ショップ単位の集計結果が空でした。条件を変えるか、しばらくしてからもう一度試せます。',
             hints: const [
               '発掘条件を緩めて再実行する',
               'キーワードやジャンルを変えて商品数を増やす',
             ],
             onRefine: () => _openShopDiscoveryConditionsSheet(context),
             refineLabel: '発掘条件を開く',
+            stateFootnote: '読み込みは完了していますが、表示できるショップは0件です。',
           );
         }
         return Consumer<SavedShopProvider>(
