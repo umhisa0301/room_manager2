@@ -98,6 +98,25 @@ class RoomColleListCardActionStyle {
     );
   }
 
+  /// 検索結果カード：候補済／コレ済で再登録できないときの Outlined（非活性でもアクセントで状態が読める）。
+  static ButtonStyle searchStatusLockedOutline(Color accent) {
+    final fill = Color.alphaBlend(accent.withValues(alpha: 0.09), AppColors.surface);
+    final border = accent.withValues(alpha: 0.38);
+    final fg = accent.withValues(alpha: 0.94);
+    return OutlinedButton.styleFrom(
+      foregroundColor: fg,
+      disabledForegroundColor: fg,
+      backgroundColor: fill,
+      disabledBackgroundColor: fill,
+      side: BorderSide(color: border, width: 1),
+      minimumSize: const Size(0, minTap),
+      padding: paddingMain,
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.compact,
+      shape: _shapeCompact,
+    );
+  }
+
   static Widget compactActionLabel({
     required IconData icon,
     required String label,

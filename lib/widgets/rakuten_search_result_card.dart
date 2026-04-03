@@ -4,6 +4,8 @@ import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/app_action_service.dart';
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
+import '../theme/room_colle_list_accent.dart';
 import 'room_colle_list_card_action_style.dart';
 import 'room_colle_product_list_card_layout.dart';
 
@@ -105,6 +107,10 @@ class RakutenSearchResultCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: shopStyle,
                         ),
+                        if (localStatus != RakutenManagedProductStatus.none &&
+                            !selectionMode) ...[
+                          _SearchCardStatusLozenge(status: localStatus),
+                        ],
                         if (selectionMode && !isSelectionEnabled) ...[
                           const SizedBox(height: 4),
                           Text(
@@ -163,60 +169,80 @@ class RakutenSearchResultCard extends StatelessWidget {
     final isDone = localStatus == RakutenManagedProductStatus.done;
 
     if (isDone) {
-      return OutlinedButton(
-        style: RoomColleListCardActionStyle.roomOutlineDisabled(),
-        onPressed: null,
-        child: RoomColleListCardActionStyle.compactActionLabel(
-          icon: Icons.check_circle_outline_rounded,
-          label: 'コレ済',
-          color: AppColors.textTertiary,
-          weight: FontWeight.w600,
+      return Tooltip(
+        message: 'ROOMコレでコレ済の商品です。再度コレ候補へは登録できません。',
+        child: OutlinedButton(
+          style: RoomColleListCardActionStyle.searchStatusLockedOutline(
+            RoomColleListAccent.done,
+          ),
+          onPressed: null,
+          child: RoomColleListCardActionStyle.compactActionLabel(
+            icon: Icons.check_circle_outline_rounded,
+            label: 'コレ済',
+            color: RoomColleListAccent.done,
+            weight: FontWeight.w700,
+          ),
         ),
       );
     }
 
     if (isCandidate) {
-      return OutlinedButton(
-        style: RoomColleListCardActionStyle.roomOutlineDisabled(),
-        onPressed: null,
-        child: RoomColleListCardActionStyle.compactActionLabel(
-          icon: Icons.bookmark_added_outlined,
-          label: 'コレ候補登録済',
-          color: AppColors.textTertiary,
-          weight: FontWeight.w600,
-          fontSize: 10,
+      return Tooltip(
+        message: 'コレ候補に登録済みです。重複登録はできません。ROOMコレの候補一覧から確認できます。',
+        child: OutlinedButton(
+          style: RoomColleListCardActionStyle.searchStatusLockedOutline(
+            RoomColleListAccent.candidate,
+          ),
+          onPressed: null,
+          child: RoomColleListCardActionStyle.compactActionLabel(
+            icon: Icons.bookmark_added_outlined,
+            label: '候補に登録済',
+            color: RoomColleListAccent.candidate,
+            weight: FontWeight.w700,
+            fontSize: 10,
+          ),
         ),
       );
     }
 
-    return FilledButton(
-      style: RoomColleListCardActionStyle.collectFilled(),
-      onPressed: isRegistering ? null : onRegisterCandidate,
-      child: isRegistering
-          ? SizedBox(
-              width: 22,
-              height: 22,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
+    return Tooltip(
+      message: 'ROOMコレのコレ候補として保存します。',
+      child: FilledButton(
+        style: RoomColleListCardActionStyle.collectFilled(),
+        onPressed: isRegistering ? null : onRegisterCandidate,
+        child: isRegistering
+            ? SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: AppColors.textOnAccent,
+                ),
+              )
+            : RoomColleListCardActionStyle.compactActionLabel(
+                icon: Icons.bookmark_add_outlined,
+                label: 'コレ候補へ登録',
                 color: AppColors.textOnAccent,
+                weight: FontWeight.w700,
+                fontSize: RoomColleListCardActionStyle.labelFontCompact,
               ),
-            )
-          : RoomColleListCardActionStyle.compactActionLabel(
-              icon: Icons.bookmark_add_outlined,
-              label: 'コレ候補へ登録',
-              color: AppColors.textOnAccent,
-              weight: FontWeight.w700,
-              fontSize: RoomColleListCardActionStyle.labelFontCompact,
-            ),
+      ),
     );
   }
 
   Widget _buildSelectionControl(BuildContext context) {
     if (!isSelectionEnabled) {
+      final isCandidate = localStatus == RakutenManagedProductStatus.candidate;
+      final isDone = localStatus == RakutenManagedProductStatus.done;
+      final accent = isDone
+          ? RoomColleListAccent.done
+          : isCandidate
+              ? RoomColleListAccent.candidate
+              : AppColors.textTertiary;
       return Icon(
         Icons.block_rounded,
         size: 22,
-        color: AppColors.textTertiary,
+        color: accent.withValues(alpha: 0.85),
       );
     }
     return InkWell(
@@ -258,6 +284,61 @@ class RakutenSearchResultCard extends StatelessWidget {
       Icons.image_outlined,
       size: 30,
       color: AppColors.textTertiary.withValues(alpha: 0.65),
+    );
+  }
+}
+
+/// ROOM コレのメトリクスバッジと同系の、カード内ミニ状態表示。
+class _SearchCardStatusLozenge extends StatelessWidget {
+  const _SearchCardStatusLozenge({required this.status});
+
+  final RakutenManagedProductStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    if (status == RakutenManagedProductStatus.none) {
+      return const SizedBox.shrink();
+    }
+    final isDone = status == RakutenManagedProductStatus.done;
+    final bg = isDone
+        ? HomeScreenColors.metricRoleDoneIconBg
+        : HomeScreenColors.metricRoleCandidateIconBg;
+    final fg = isDone
+        ? HomeScreenColors.metricRoleDoneIcon
+        : HomeScreenColors.metricRoleCandidateIcon;
+    final label = isDone ? 'コレ済' : '候補に登録済';
+    final icon =
+        isDone ? Icons.verified_outlined : Icons.bookmark_added_outlined;
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+          decoration: BoxDecoration(
+            color: bg,
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: fg.withValues(alpha: 0.2)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 12, color: fg),
+              const SizedBox(width: 4),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: fg,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 10,
+                      height: 1.1,
+                      letterSpacing: -0.05,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

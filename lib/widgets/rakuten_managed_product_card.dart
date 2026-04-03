@@ -6,6 +6,7 @@ import '../models/rakuten_managed_product.dart';
 import '../services/app_action_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
+import '../theme/room_colle_list_accent.dart';
 import '../utils/room_colle_candidate_stale.dart';
 import '../utils/room_colle_card_time_format.dart';
 import 'room_colle_list_card_action_style.dart';
@@ -13,12 +14,6 @@ import 'room_colle_product_list_card_layout.dart';
 
 /// 一覧カードの見た目バリアント（候補 / コレ済）。
 enum RakutenManagedProductCardVariant { candidate, done }
-
-/// ROOM 管理一覧用の共通アクセント（状態差のみに使用。カード下地は共通）。
-abstract final class RoomListAccent {
-  static const Color candidate = Color(0xFF1565C0);
-  static const Color done = Color(0xFF2E7D32);
-}
 
 /// 楽天ROOM管理の保存済み商品カード（左画像・右情報の横並び一覧向け）。
 class RakutenManagedProductCard extends StatelessWidget {
@@ -73,8 +68,8 @@ class RakutenManagedProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isCandidate = variant == RakutenManagedProductCardVariant.candidate;
     final stateAccent = isCandidate
-        ? RoomListAccent.candidate
-        : RoomListAccent.done;
+        ? RoomColleListAccent.candidate
+        : RoomColleListAccent.done;
 
     final theme = Theme.of(context);
     final titleStyle = RoomColleProductListCardLayout.titleTextStyle(theme);

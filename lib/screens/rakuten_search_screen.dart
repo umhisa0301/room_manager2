@@ -1061,7 +1061,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   ) {
     final status = managed.statusForProduct(item.productId);
     if (status == RakutenManagedProductStatus.candidate) {
-      return 'コレ候補登録済のため選択不可';
+      return '候補に登録済のため選択不可';
     }
     if (status == RakutenManagedProductStatus.done) {
       return 'コレ済のため選択不可';
@@ -1288,13 +1288,32 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 RakutenSearchScreenUi.screenPadH,
                 RakutenSearchScreenUi.gapFieldStack,
               ),
-              child: Text(
-                totalCount >= 100
-                    ? '表示 $showingCount件 / 取得 $totalCount件（最大100件まで取得しています）'
-                    : '表示 $showingCount件 / 取得 $totalCount件',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: HomeScreenColors.footnoteMuted,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    totalCount >= 100
+                        ? '表示 $showingCount件 / 取得 $totalCount件（最大100件まで取得しています）'
+                        : '表示 $showingCount件 / 取得 $totalCount件',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: HomeScreenColors.footnoteMuted,
+                        ),
+                  ),
+                  if (_excludeCandidate || _excludeDone) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      _excludeCandidate && _excludeDone
+                          ? '※ 一覧フィルタで候補・コレ済を隠しています'
+                          : _excludeCandidate
+                              ? '※ 一覧フィルタでコレ候補を隠しています'
+                              : '※ 一覧フィルタでコレ済を隠しています',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: HomeScreenColors.footnoteMuted,
+                            height: 1.25,
+                          ),
                     ),
+                  ],
+                ],
               ),
             ),
             Expanded(
