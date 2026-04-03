@@ -155,10 +155,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               children: [
                 Flexible(
                   fit: FlexFit.loose,
-                  child: SingleChildScrollView(
+                  flex: 0,
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
                     keyboardDismissBehavior:
                         ScrollViewKeyboardDismissBehavior.onDrag,
-                    child: _buildModeAndInputArea(context, search),
+                    children: [_buildModeAndInputArea(context, search)],
                   ),
                 ),
                 Divider(
@@ -219,12 +222,18 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context,
     RakutenSearchProvider search,
   ) {
+    final deckTopPad = _mode == _RakutenSearchMode.product
+        ? 5.0
+        : RakutenSearchScreenUi.gapSection;
+    final deckBottomPad = _mode == _RakutenSearchMode.product
+        ? 4.0
+        : RakutenSearchScreenUi.gapFieldStack;
     return Padding(
       padding: EdgeInsets.fromLTRB(
         RakutenSearchScreenUi.screenPadH,
-        RakutenSearchScreenUi.gapSection,
+        deckTopPad,
         RakutenSearchScreenUi.screenPadH,
-        RakutenSearchScreenUi.gapFieldStack,
+        deckBottomPad,
       ),
       child: DecoratedBox(
         decoration: RakutenSearchScreenUi.outerSectionShellDecoration(),
@@ -236,7 +245,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           child: ColoredBox(
             color: HomeScreenColors.roomContentWellFill,
             child: Padding(
-              padding: const EdgeInsets.all(RakutenSearchScreenUi.inputDeckPadding),
+              padding: EdgeInsets.all(
+                _mode == _RakutenSearchMode.product
+                    ? 8.0
+                    : RakutenSearchScreenUi.inputDeckPadding,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
@@ -245,9 +258,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     const _DiscoveryFlowGuideCompact(),
                   _SearchModeSegmented(
                     mode: _mode,
+                    compact: _mode == _RakutenSearchMode.product,
                     onChanged: _onModeChanged,
                   ),
-                  SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
+                  SizedBox(
+                    height: _mode == _RakutenSearchMode.product
+                        ? 5.0
+                        : RakutenSearchScreenUi.gapKeywordToControls,
+                  ),
                   switch (_mode) {
                     _RakutenSearchMode.product =>
                       _buildProductInput(context, search),
@@ -315,7 +333,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
           ],
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack - 1),
         Row(
           children: [
             Expanded(
@@ -323,18 +341,28 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 onPressed: () => _openProductConditionsSheet(context),
                 icon: Icon(
                   Icons.tune_rounded,
-                  size: 17,
+                  size: 16,
                   color: HomeScreenColors.accentSectionHeading,
                 ),
                 label: const Text('詳細条件'),
-                style: _detailConditionsButtonStyle(),
+                style: _detailConditionsButtonStyle().copyWith(
+                  minimumSize: const WidgetStatePropertyAll(Size(0, 40)),
+                  padding: const WidgetStatePropertyAll(
+                    EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  ),
+                ),
               ),
             ),
             SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
             Expanded(
               child: OutlinedButton(
                 onPressed: _clearConditionsForCurrentMode,
-                style: _neutralConditionsButtonStyle(),
+                style: _neutralConditionsButtonStyle().copyWith(
+                  minimumSize: const WidgetStatePropertyAll(Size(0, 40)),
+                  padding: const WidgetStatePropertyAll(
+                    EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  ),
+                ),
                 child: const Text('条件クリア'),
               ),
             ),
@@ -1145,10 +1173,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       case RakutenSearchStatus.idle:
         return const RakutenSearchIdleView(
           icon: Icons.manage_search_outlined,
-          title: 'ここではまだ結果を表示していません',
-          subtitle:
-              'キーワードを入力して「検索」を押すか、「詳細条件」から価格帯・ショップ・ジャンルなどを組み合わせて探せます。',
-          stateFootnote: '検索が始まるまで、このエリアは更新されません。',
+          title: '検索するとここに商品が並びます',
+          subtitle: '上のキーワード欄で検索。絞り込みは「詳細条件」から。',
+          compactLayout: true,
         );
       case RakutenSearchStatus.loading:
         return const RakutenSearchLoadingView(
@@ -1202,15 +1229,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             Padding(
               padding: EdgeInsets.fromLTRB(
                 RakutenSearchScreenUi.screenPadH,
-                RakutenSearchScreenUi.gapListAfterDivider,
+                3,
                 RakutenSearchScreenUi.screenPadH,
-                RakutenSearchScreenUi.gapResultStatusRowBottom,
+                3,
               ),
               child: Row(
                 children: [
                   Icon(
                     Icons.check_circle_outline_rounded,
-                    size: 18,
+                    size: 17,
                     color: HomeScreenColors.statusAccentStrong,
                   ),
                   SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
@@ -1231,7 +1258,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 RakutenSearchScreenUi.screenPadH,
                 0,
                 RakutenSearchScreenUi.screenPadH,
-                RakutenSearchScreenUi.gapFieldStack,
+                4,
               ),
               child: Row(
                 children: [
@@ -1277,6 +1304,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               ),
             ),
             _SearchLocalFilterBar(
+              dense: true,
               excludeCandidate: _excludeCandidate,
               excludeDone: _excludeDone,
               onExcludeCandidateChanged: (next) {
@@ -1291,7 +1319,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 RakutenSearchScreenUi.screenPadH,
                 0,
                 RakutenSearchScreenUi.screenPadH,
-                RakutenSearchScreenUi.gapFieldStack,
+                4,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1341,7 +1369,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         RakutenSearchScreenUi.screenPadH,
                         RakutenSearchScreenUi.listScrollTopPad,
                         RakutenSearchScreenUi.screenPadH,
-                        RakutenSearchScreenUi.listBottomPadWithSelectionBar,
+                        _selectionMode
+                            ? RakutenSearchScreenUi.listBottomPadWithSelectionBar
+                            : RakutenSearchScreenUi.listBottomPad + 6,
                       ),
                       itemCount: filteredResults.length,
                       separatorBuilder: (_, __) =>
@@ -1928,10 +1958,12 @@ class _SearchModeSegmented extends StatelessWidget {
   const _SearchModeSegmented({
     required this.mode,
     required this.onChanged,
+    this.compact = false,
   });
 
   final _RakutenSearchMode mode;
   final ValueChanged<_RakutenSearchMode> onChanged;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -1942,7 +1974,7 @@ class _SearchModeSegmented extends StatelessWidget {
           children: [
             Icon(
               Icons.filter_list_rounded,
-              size: 17,
+              size: compact ? 15 : 17,
               color: HomeScreenColors.footnoteMuted,
             ),
             const SizedBox(width: 6),
@@ -1952,11 +1984,12 @@ class _SearchModeSegmented extends StatelessWidget {
                     color: HomeScreenColors.footnoteMuted,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.15,
+                    fontSize: compact ? 11.5 : null,
                   ),
             ),
           ],
         ),
-        const SizedBox(height: 5),
+        SizedBox(height: compact ? 4 : 5),
         SegmentedButton<_RakutenSearchMode>(
           segments: const [
             ButtonSegment<_RakutenSearchMode>(
@@ -1984,6 +2017,12 @@ class _SearchModeSegmented extends StatelessWidget {
           style: ButtonStyle(
             visualDensity: VisualDensity.compact,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            padding: WidgetStateProperty.all(
+              EdgeInsets.symmetric(
+                horizontal: compact ? 6 : 10,
+                vertical: compact ? 6 : 10,
+              ),
+            ),
             side: WidgetStateProperty.all(
               BorderSide(color: HomeScreenColors.deckOutline),
             ),
@@ -2032,31 +2071,32 @@ class _SearchLocalFilterBar extends StatelessWidget {
     required this.excludeDone,
     required this.onExcludeCandidateChanged,
     required this.onExcludeDoneChanged,
+    this.dense = false,
   });
 
   final bool excludeCandidate;
   final bool excludeDone;
   final ValueChanged<bool> onExcludeCandidateChanged;
   final ValueChanged<bool> onExcludeDoneChanged;
+  final bool dense;
 
   @override
   Widget build(BuildContext context) {
+    final insetH = dense ? 6.0 : RakutenSearchScreenUi.insetSectionH;
+    final insetV = dense ? 5.0 : RakutenSearchScreenUi.paddingWellV;
+    final bottomPad =
+        dense ? 4.0 : RakutenSearchScreenUi.gapFieldStack;
     return Padding(
       padding: EdgeInsets.fromLTRB(
         RakutenSearchScreenUi.screenPadH,
         0,
         RakutenSearchScreenUi.screenPadH,
-        RakutenSearchScreenUi.gapFieldStack,
+        bottomPad,
       ),
       child: DecoratedBox(
         decoration: RakutenSearchScreenUi.listFilterStripDecoration(),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            RakutenSearchScreenUi.insetSectionH,
-            RakutenSearchScreenUi.paddingWellV,
-            RakutenSearchScreenUi.insetSectionH,
-            RakutenSearchScreenUi.paddingWellV,
-          ),
+          padding: EdgeInsets.fromLTRB(insetH, insetV, insetH, insetV),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -2064,7 +2104,7 @@ class _SearchLocalFilterBar extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.filter_alt_outlined,
-                    size: 16,
+                    size: dense ? 14 : 16,
                     color: HomeScreenColors.leadOnSection,
                   ),
                   SizedBox(width: RakutenSearchScreenUi.gapFieldStack + 1),
@@ -2073,11 +2113,12 @@ class _SearchLocalFilterBar extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                           color: HomeScreenColors.leadOnSection,
                           fontWeight: FontWeight.w800,
+                          fontSize: dense ? 11.5 : null,
                         ),
                   ),
                 ],
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: dense ? 4 : 6),
               Wrap(
                 spacing: 6,
                 runSpacing: 6,

@@ -23,21 +23,60 @@ BoxDecoration _rakutenSearchFeedbackShellDecoration() {
 
 /// ROOM コレの空／エラー／読込と同系の「結果ペイン」ラッパー（スクロール可能・最小高さで縦中央寄せ）。
 class _RakutenSearchFeedbackShell extends StatelessWidget {
-  const _RakutenSearchFeedbackShell({required this.child});
+  const _RakutenSearchFeedbackShell({
+    required this.child,
+    this.stretchToFillViewport = true,
+  });
 
   final Widget child;
+  /// true のときビューポート高さまで [minHeight] を取り中央寄せ（従来どおり）。
+  /// false のときはコンテンツ高さのみ・上寄せで余白を抑える。
+  final bool stretchToFillViewport;
 
   @override
   Widget build(BuildContext context) {
+    final padH = RakutenSearchScreenUi.screenPadH;
+    final padV = RakutenSearchScreenUi.gapSection;
+    final innerPad = EdgeInsets.fromLTRB(
+      RakutenSearchScreenUi.insetSectionH + 4,
+      RakutenSearchScreenUi.paddingWellV + 10,
+      RakutenSearchScreenUi.insetSectionH + 4,
+      RakutenSearchScreenUi.paddingWellV + 10,
+    );
+
+    if (!stretchToFillViewport) {
+      final innerTight = EdgeInsets.fromLTRB(
+        RakutenSearchScreenUi.insetSectionH + 4,
+        RakutenSearchScreenUi.paddingWellV + 4,
+        RakutenSearchScreenUi.insetSectionH + 4,
+        RakutenSearchScreenUi.paddingWellV + 4,
+      );
+      return SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(padH, padV * 0.55, padH, padV),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: DecoratedBox(
+              decoration: _rakutenSearchFeedbackShellDecoration(),
+              child: Padding(
+                padding: innerTight,
+                child: child,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final h = constraints.maxHeight;
         final minH = h.isFinite ? math.max(120.0, h) : 200.0;
         return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: RakutenSearchScreenUi.screenPadH,
-            vertical: RakutenSearchScreenUi.gapSection,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: padH, vertical: padV),
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: minH),
             child: Center(
@@ -46,12 +85,7 @@ class _RakutenSearchFeedbackShell extends StatelessWidget {
                 child: DecoratedBox(
                   decoration: _rakutenSearchFeedbackShellDecoration(),
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      RakutenSearchScreenUi.insetSectionH + 4,
-                      RakutenSearchScreenUi.paddingWellV + 10,
-                      RakutenSearchScreenUi.insetSectionH + 4,
-                      RakutenSearchScreenUi.paddingWellV + 10,
-                    ),
+                    padding: innerPad,
                     child: child,
                   ),
                 ),
@@ -85,6 +119,7 @@ class RakutenSearchIdleView extends StatelessWidget {
     required this.subtitle,
     this.stateFootnote,
     this.iconTint,
+    this.compactLayout = false,
   });
 
   final IconData icon;
@@ -93,51 +128,55 @@ class RakutenSearchIdleView extends StatelessWidget {
   /// ROOM コレ空状態の [stateFootnote] と同役割（処理は進んでいない旨など短く）。
   final String? stateFootnote;
   final Color? iconTint;
+  /// true のときビューポート全体を埋めず、上寄せ・控えめな余白（キーワード検索の検索前など）。
+  final bool compactLayout;
 
   @override
   Widget build(BuildContext context) {
     final ic = iconTint ??
         HomeScreenColors.statusAccentMuted.withValues(alpha: 0.88);
+    final iconSize = compactLayout ? 36.0 : 48.0;
 
     return _RakutenSearchFeedbackShell(
+      stretchToFillViewport: !compactLayout,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Icon(
             icon,
-            size: 48,
+            size: iconSize,
             color: ic,
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: compactLayout ? 8 : 12),
           Text(
             title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: HomeScreenColors.titlePrimary,
                   fontWeight: FontWeight.w700,
-                  fontSize: 16,
+                  fontSize: compactLayout ? 15 : 16,
                   height: 1.25,
                 ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: compactLayout ? 4 : 6),
           Text(
             subtitle,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: HomeScreenColors.groupedSectionBody,
-                  height: 1.45,
-                  fontSize: 13,
+                  height: compactLayout ? 1.4 : 1.45,
+                  fontSize: compactLayout ? 12.5 : 13,
                 ),
           ),
           if (stateFootnote != null && stateFootnote!.trim().isNotEmpty) ...[
-            const SizedBox(height: 14),
+            SizedBox(height: compactLayout ? 8 : 14),
             Text(
               stateFootnote!,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: HomeScreenColors.footnoteMuted,
-                    fontSize: 11,
+                    fontSize: compactLayout ? 10.5 : 11,
                     height: 1.35,
                     fontWeight: FontWeight.w500,
                   ),
