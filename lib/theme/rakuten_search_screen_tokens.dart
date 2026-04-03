@@ -12,16 +12,49 @@ abstract final class RakutenSearchScreenUi {
   /// ROOMコレ一覧と同じ左右 8。
   static const double screenPadH = 8;
 
-  /// 画面上部ツール帯まわり（一覧の主役化のため詰める）。
-  static const double gapSection = 4;
-  static const double gapFieldStack = 4;
-  static const double gapKeywordToControls = 5;
-  static const double gapListAfterDivider = 2;
+  /// ホーム [_HomeUi.gapSection] / ROOM [_RoomColleUi.gapSection] と同じ 9。
+  static const double gapSection = 9;
+
+  /// ROOM [_RoomColleUi.gapFieldStack] と同じ 5。
+  static const double gapFieldStack = 5;
+
+  /// ROOM [_RoomColleUi.gapKeywordToFilterRow] に相当（主入力〜次行の呼吸）。
+  static const double gapKeywordToControls = 7;
+
+  /// ROOM [_RoomColleUi.gapListAfterDivider] と同じ 4（区切り〜一覧ヘッダの接続）。
+  static const double gapListAfterDivider = 4;
+
   static const double listBottomPad = 10;
+
+  /// ROOM [_kRoomListCardGap] と同じ 5。
   static const double listCardGap = 5;
 
-  /// 検索入力デッキ内側（従来シェルウェルより薄く）。
-  static const double inputDeckPadding = 8;
+  /// ジャンル結果リストの下余白 = [listBottomPad] + この値。
+  static const double listScrollExtraPadGenre = 12;
+
+  /// ショップ発掘リストの下余白 = [listBottomPad] + この値。
+  static const double listScrollExtraPadDiscovery = 14;
+
+  /// キーワード結果で選択モード時のフローティングバー用。
+  static const double listBottomPadWithSelectionBar = 88;
+
+  /// リスト先頭の微余白（カード密度を ROOM 一覧に寄せる）。
+  static const double listScrollTopPad = 2;
+
+  /// 「検索完了」行の下側（次ブロックまでの締め）。
+  static const double gapResultStatusRowBottom = 4;
+
+  /// 発掘フロー完了行の下（メトリクスカードとの間を少し広めに）。
+  static const double gapDiscoveryStatusRowBottom = 6;
+
+  /// 下部フローティング一括操作バーの下パディング。
+  static const double gapFloatingBarPad = 12;
+
+  /// 検索入力デッキ内側（ウェル密度は ROOM の well に近づけつつタップしやすく）。
+  static const double inputDeckPadding = 10;
+
+  /// モーダルシートの左右（本文の読みやすさ用。外側 [screenPadH] よりやや広く）。
+  static const double sheetPadH = 12;
 
   static const double insetSectionH = 8;
   static const double paddingWellV = 6;
@@ -57,15 +90,15 @@ abstract final class RakutenSearchScreenUi {
     );
   }
 
-  /// 一覧フィルタ帯（タブ/主CTAと区別する補助トーン）。
+  /// 一覧フィルタ帯（ROOM 補助行〜チップ帯と同系：主シェルより一段弱い）。
   static BoxDecoration listFilterStripDecoration() {
     return BoxDecoration(
       color: Color.alphaBlend(
-        HomeScreenColors.subActionRowFill.withValues(alpha: 0.85),
+        HomeScreenColors.subActionRowFill.withValues(alpha: 0.92),
         HomeScreenColors.roomContentWellFill,
       ),
       borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: HomeScreenColors.deckOutline),
+      border: Border.all(color: HomeScreenColors.sectionOutlineNeutral),
     );
   }
 
@@ -136,7 +169,7 @@ abstract final class RakutenSearchScreenUi {
           width: 1.5,
         ),
       ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
     );
   }
 }

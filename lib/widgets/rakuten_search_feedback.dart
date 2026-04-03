@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../theme/rakuten_search_screen_tokens.dart';
 
 BoxDecoration _rakutenSearchFeedbackShellDecoration() {
   return BoxDecoration(
@@ -33,7 +34,10 @@ class _RakutenSearchFeedbackShell extends StatelessWidget {
         final h = constraints.maxHeight;
         final minH = h.isFinite ? math.max(120.0, h) : 200.0;
         return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+          padding: EdgeInsets.symmetric(
+            horizontal: RakutenSearchScreenUi.screenPadH,
+            vertical: RakutenSearchScreenUi.gapSection,
+          ),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: minH),
             child: Center(
@@ -42,7 +46,12 @@ class _RakutenSearchFeedbackShell extends StatelessWidget {
                 child: DecoratedBox(
                   decoration: _rakutenSearchFeedbackShellDecoration(),
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
+                    padding: EdgeInsets.fromLTRB(
+                      RakutenSearchScreenUi.insetSectionH + 4,
+                      RakutenSearchScreenUi.paddingWellV + 10,
+                      RakutenSearchScreenUi.insetSectionH + 4,
+                      RakutenSearchScreenUi.paddingWellV + 10,
+                    ),
                     child: child,
                   ),
                 ),

@@ -639,9 +639,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           child: SafeArea(
             child: Padding(
               padding: EdgeInsets.fromLTRB(
-                RakutenSearchScreenUi.screenPadH + 4,
+                RakutenSearchScreenUi.sheetPadH,
                 8,
-                RakutenSearchScreenUi.screenPadH + 4,
+                RakutenSearchScreenUi.sheetPadH,
                 MediaQuery.of(sheetContext).viewInsets.bottom + 16,
               ),
               child: SingleChildScrollView(
@@ -840,9 +840,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           child: SafeArea(
             child: Padding(
               padding: EdgeInsets.fromLTRB(
-                RakutenSearchScreenUi.screenPadH + 4,
+                RakutenSearchScreenUi.sheetPadH,
                 8,
-                RakutenSearchScreenUi.screenPadH + 4,
+                RakutenSearchScreenUi.sheetPadH,
                 MediaQuery.of(sheetContext).viewInsets.bottom + 16,
               ),
               child: SingleChildScrollView(
@@ -1204,7 +1204,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 RakutenSearchScreenUi.screenPadH,
                 RakutenSearchScreenUi.gapListAfterDivider,
                 RakutenSearchScreenUi.screenPadH,
-                4,
+                RakutenSearchScreenUi.gapResultStatusRowBottom,
               ),
               child: Row(
                 children: [
@@ -1213,7 +1213,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     size: 18,
                     color: HomeScreenColors.statusAccentStrong,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
                   Expanded(
                     child: Text(
                       '検索が完了しました（$totalCount件を取得）',
@@ -1244,7 +1244,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     ),
                     label: Text(_selectionMode ? '選択終了' : '選択モード'),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
                   if (_selectionMode)
                     Expanded(
                       child: Text(
@@ -1258,7 +1258,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       ),
                     ),
                   if (_selectionMode) ...[
-                    const SizedBox(width: 8),
+                    SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
                     TextButton(
                       onPressed: filteredResults.isEmpty || _isBulkRegistering
                           ? null
@@ -1339,9 +1339,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   : ListView.separated(
                       padding: EdgeInsets.fromLTRB(
                         RakutenSearchScreenUi.screenPadH,
-                        2,
+                        RakutenSearchScreenUi.listScrollTopPad,
                         RakutenSearchScreenUi.screenPadH,
-                        88,
+                        RakutenSearchScreenUi.listBottomPadWithSelectionBar,
                       ),
                       itemCount: filteredResults.length,
                       separatorBuilder: (_, __) =>
@@ -1390,7 +1390,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     RakutenSearchScreenUi.screenPadH,
                     RakutenSearchScreenUi.gapFieldStack,
                     RakutenSearchScreenUi.screenPadH,
-                    12,
+                    RakutenSearchScreenUi.gapFloatingBarPad,
                   ),
                   child: SizedBox(
                     width: double.infinity,
@@ -1512,7 +1512,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 RakutenSearchScreenUi.screenPadH,
                 RakutenSearchScreenUi.gapListAfterDivider,
                 RakutenSearchScreenUi.screenPadH,
-                4,
+                RakutenSearchScreenUi.gapResultStatusRowBottom,
               ),
               child: Row(
                 children: [
@@ -1521,7 +1521,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     size: 18,
                     color: HomeScreenColors.statusAccentStrong,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
                   Expanded(
                     child: Text(
                       '検索が完了しました（${search.results.length}件を取得）',
@@ -1576,9 +1576,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               child: ListView.separated(
                 padding: EdgeInsets.fromLTRB(
                   RakutenSearchScreenUi.screenPadH,
-                  2,
+                  RakutenSearchScreenUi.listScrollTopPad,
                   RakutenSearchScreenUi.screenPadH,
-                  RakutenSearchScreenUi.listBottomPad + 12,
+                  RakutenSearchScreenUi.listBottomPad +
+                      RakutenSearchScreenUi.listScrollExtraPadGenre,
                 ),
                 itemCount: sorted.length,
                 separatorBuilder: (_, __) =>
@@ -1696,7 +1697,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     RakutenSearchScreenUi.screenPadH,
                     RakutenSearchScreenUi.gapListAfterDivider,
                     RakutenSearchScreenUi.screenPadH,
-                    6,
+                    RakutenSearchScreenUi.gapDiscoveryStatusRowBottom,
                   ),
                   child: Row(
                     children: [
@@ -1705,7 +1706,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         size: 18,
                         color: HomeScreenColors.statusAccentStrong,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
                       Expanded(
                         child: Text(
                           '商品の取得が完了しました（${search.results.length}件からショップを集計）',
@@ -1801,9 +1802,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   child: ListView.separated(
                     padding: EdgeInsets.fromLTRB(
                       RakutenSearchScreenUi.screenPadH,
-                      0,
+                      RakutenSearchScreenUi.listScrollTopPad,
                       RakutenSearchScreenUi.screenPadH,
-                      RakutenSearchScreenUi.listBottomPad + 14,
+                      RakutenSearchScreenUi.listBottomPad +
+                          RakutenSearchScreenUi.listScrollExtraPadDiscovery,
                     ),
                     itemCount: visible.length,
                     separatorBuilder: (_, __) =>
@@ -2049,7 +2051,12 @@ class _SearchLocalFilterBar extends StatelessWidget {
       child: DecoratedBox(
         decoration: RakutenSearchScreenUi.listFilterStripDecoration(),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+          padding: EdgeInsets.fromLTRB(
+            RakutenSearchScreenUi.insetSectionH,
+            RakutenSearchScreenUi.paddingWellV,
+            RakutenSearchScreenUi.insetSectionH,
+            RakutenSearchScreenUi.paddingWellV,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -2060,7 +2067,7 @@ class _SearchLocalFilterBar extends StatelessWidget {
                     size: 16,
                     color: HomeScreenColors.leadOnSection,
                   ),
-                  const SizedBox(width: 6),
+                  SizedBox(width: RakutenSearchScreenUi.gapFieldStack + 1),
                   Text(
                     '一覧で絞り込み',
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
