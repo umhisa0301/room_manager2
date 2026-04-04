@@ -60,8 +60,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   String? _selectedShopCode;
   String? _selectedGenreId;
   String? _selectedDiscoveryGenreId;
-  bool _excludeCandidate = false;
-  bool _excludeDone = false;
   bool _selectionMode = false;
   bool _isBulkRegistering = false;
   final Set<String> _selectedProductIds = <String>{};
@@ -87,8 +85,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _selectedShopCode = null;
     _selectedGenreId = null;
     _selectedDiscoveryGenreId = null;
-    _excludeCandidate = false;
-    _excludeDone = false;
     _selectionMode = false;
     _isBulkRegistering = false;
     _selectedProductIds.clear();
@@ -1095,8 +1091,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                   ),
                                 ),
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       '保存済ショップがありません',
@@ -1126,22 +1121,23 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                       alignment: Alignment.centerLeft,
                                       child: TextButton(
                                         onPressed: () {
-                                          FocusManager
-                                              .instance.primaryFocus
+                                          FocusManager.instance.primaryFocus
                                               ?.unfocus();
                                           Navigator.of(sheetContext).pop();
                                           WidgetsBinding.instance
                                               .addPostFrameCallback((_) {
-                                            if (!screenContext.mounted) {
-                                              return;
-                                            }
-                                            Navigator.of(screenContext).push(
-                                              MaterialPageRoute<void>(
-                                                builder: (_) =>
-                                                    const SavedShopsScreen(),
-                                              ),
-                                            );
-                                          });
+                                                if (!screenContext.mounted) {
+                                                  return;
+                                                }
+                                                Navigator.of(
+                                                  screenContext,
+                                                ).push(
+                                                  MaterialPageRoute<void>(
+                                                    builder: (_) =>
+                                                        const SavedShopsScreen(),
+                                                  ),
+                                                );
+                                              });
                                         },
                                         child: const Text('保存ショップ一覧を開く'),
                                       ),
@@ -1171,9 +1167,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                 child: DropdownButton<String?>(
                                   isExpanded: true,
                                   value: dropdownValue,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
+                                  style: Theme.of(context).textTheme.bodyMedium
                                       ?.copyWith(
                                         color: HomeScreenColors.titlePrimary,
                                       ),
@@ -1563,24 +1557,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     await context.read<RakutenSearchProvider>().searchWithCondition(condition);
   }
 
-  List<RakutenSearchItem> _applyLocalStatusFilters(
-    List<RakutenSearchItem> source,
-    RakutenManagedProductProvider managed,
-  ) {
-    if (!_excludeCandidate && !_excludeDone) return source;
-    return source.where((item) {
-      final status = managed.statusForProduct(item.productId);
-      if (_excludeCandidate &&
-          status == RakutenManagedProductStatus.candidate) {
-        return false;
-      }
-      if (_excludeDone && status == RakutenManagedProductStatus.done) {
-        return false;
-      }
-      return true;
-    }).toList();
-  }
-
   /// 候補済・コレ済の商品や保存済みショップの商品を優先的に除外したリストを返す。
   /// ただし、除外しすぎて極端に件数が減る場合は元のリストをそのまま使う前提で呼び出し元でフォールバックする。
   List<RakutenSearchItem> _applyPreferredExcludes(
@@ -1770,7 +1746,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         final base = _mode == _RakutenSearchMode.product
             ? managedPreferred
             : (managedPreferred.isNotEmpty ? managedPreferred : search.results);
-        final filteredResults = _applyLocalStatusFilters(base, managed);
+        final filteredResults = base;
         final keywordPreferredFilteredAllOut =
             _mode == _RakutenSearchMode.product &&
             managedPreferred.isEmpty &&
@@ -1861,23 +1837,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 ],
               ),
             ),
-            _SearchLocalFilterBar(
-              dense: true,
-              excludeCandidate: _excludeCandidate,
-              excludeDone: _excludeDone,
-              onExcludeCandidateChanged: (next) {
-                setState(() => _excludeCandidate = next);
-              },
-              onExcludeDoneChanged: (next) {
-                setState(() => _excludeDone = next);
-              },
-            ),
             Padding(
               padding: EdgeInsets.fromLTRB(
                 RakutenSearchScreenUi.screenPadH,
                 0,
                 RakutenSearchScreenUi.screenPadH,
-                4,
+                6,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1890,20 +1855,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       color: HomeScreenColors.footnoteMuted,
                     ),
                   ),
-                  if (_excludeCandidate || _excludeDone) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      _excludeCandidate && _excludeDone
-                          ? '※ 一覧フィルタで候補・コレ済を隠しています'
-                          : _excludeCandidate
-                          ? '※ 一覧フィルタでコレ候補を隠しています'
-                          : '※ 一覧フィルタでコレ済を隠しています',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: HomeScreenColors.footnoteMuted,
-                        height: 1.25,
-                      ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '※ コレ候補・コレ済に登録済みの商品は検索結果に含まれません。',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: HomeScreenColors.footnoteMuted,
+                      height: 1.25,
                     ),
-                  ],
+                  ),
                 ],
               ),
             ),
@@ -1929,15 +1888,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             icon: Icons.filter_alt_off_outlined,
                             title: 'この一覧では表示できる商品がありません',
                             body:
-                                '検索の取得はできていますが、「コレ候補を除外」「コレ済を除外」や、登録済み・保存ショップの扱いで、今の一覧だけが0件になっています。',
+                                '検索の取得はできていますが、保存ショップ登録済みの店の商品のみヒットしたなど、表示上の理由で0件になっている可能性があります。',
                             hints: const [
-                              '「コレ候補を除外」「コレ済を除外」をオフにしてみる',
                               'キーワードや詳細条件を変えて、もう一度検索する',
+                              'ジャンル検索に切り替えて別の切り口を試す',
                             ],
                             onRefine: () =>
                                 _openProductConditionsSheet(context),
                             refineLabel: '詳細条件を開く',
-                            stateFootnote: 'データ取得は完了しています。一覧の絞り込みだけを見直せます。',
+                            stateFootnote: 'データ取得は完了しています。条件を変えて試せます。',
                           )
                   : ListView.separated(
                       padding: EdgeInsets.fromLTRB(
@@ -2049,7 +2008,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           icon: Icons.category_outlined,
           title: 'ここではまだ結果を表示していません',
           subtitle: 'ジャンルを選び、必要なら補助キーワードを入力してから「検索」を押してください。絞り込みは「詳細条件」から開けます。',
-          stateFootnote: '検索が始まるまで、このエリアは更新されません。',
+          stateFootnote: '検索が始まるまで、このエリアは更新されません。コレ候補・コレ済登録済みの商品は結果に含みません。',
         );
       case RakutenSearchStatus.loading:
         return const RakutenSearchLoadingView(
@@ -2092,12 +2051,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         final base = managedPreferred.isNotEmpty
             ? managedPreferred
             : search.results;
-        final filteredResults = _applyLocalStatusFilters(base, managed);
+        final filteredResults = base;
         if (filteredResults.isEmpty) {
           return RakutenSearchEmptyView(
             icon: Icons.filter_alt_off_outlined,
             title: 'この一覧では表示できる商品がありません',
-            body: '検索の取得はできていますが、一覧側の除外や登録済み商品の扱いで、表示だけが0件になっています。',
+            body: '検索の取得はできていますが、保存ショップ登録済みの商品のみなど、表示上の理由で0件になっている可能性があります。',
             hints: const ['詳細条件を緩めて、もう一度検索する', 'モードを「キーワード」に切り替えて別の切り口を試す'],
             onRefine: () => _openProductConditionsSheet(context),
             refineLabel: '詳細条件を開く',
@@ -2105,11 +2064,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           );
         }
         final sorted = [...filteredResults];
-        switch (_genreSort) {
-          case _GenreSort.reviewCount:
-            sorted.sort((a, b) => b.reviewCount.compareTo(a.reviewCount));
-          case _GenreSort.reviewAverage:
-            sorted.sort((a, b) => b.reviewAverage.compareTo(a.reviewAverage));
+        if (_genreSort == _GenreSort.reviewCount) {
+          sorted.sort((a, b) => b.reviewCount.compareTo(a.reviewCount));
+        } else {
+          sorted.sort((a, b) => b.reviewAverage.compareTo(a.reviewAverage));
         }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -2119,7 +2077,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 RakutenSearchScreenUi.screenPadH,
                 RakutenSearchScreenUi.gapListAfterDivider,
                 RakutenSearchScreenUi.screenPadH,
-                RakutenSearchScreenUi.gapResultStatusRowBottom,
+                4,
               ),
               child: Row(
                 children: [
@@ -2139,6 +2097,21 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     ),
                   ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                RakutenSearchScreenUi.screenPadH,
+                0,
+                RakutenSearchScreenUi.screenPadH,
+                4,
+              ),
+              child: Text(
+                '※ コレ候補・コレ済に登録済みの商品は検索結果に含まれません。',
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: HomeScreenColors.footnoteMuted,
+                  height: 1.25,
+                ),
               ),
             ),
             Padding(
@@ -2640,119 +2613,6 @@ class _SearchGenreOption {
 }
 
 enum _GenreSort { reviewCount, reviewAverage }
-
-class _SearchLocalFilterBar extends StatelessWidget {
-  const _SearchLocalFilterBar({
-    required this.excludeCandidate,
-    required this.excludeDone,
-    required this.onExcludeCandidateChanged,
-    required this.onExcludeDoneChanged,
-    this.dense = false,
-  });
-
-  final bool excludeCandidate;
-  final bool excludeDone;
-  final ValueChanged<bool> onExcludeCandidateChanged;
-  final ValueChanged<bool> onExcludeDoneChanged;
-  final bool dense;
-
-  @override
-  Widget build(BuildContext context) {
-    final insetH = dense ? 6.0 : RakutenSearchScreenUi.insetSectionH;
-    final insetV = dense ? 5.0 : RakutenSearchScreenUi.paddingWellV;
-    final bottomPad = dense ? 4.0 : RakutenSearchScreenUi.gapFieldStack;
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-        RakutenSearchScreenUi.screenPadH,
-        0,
-        RakutenSearchScreenUi.screenPadH,
-        bottomPad,
-      ),
-      child: DecoratedBox(
-        decoration: RakutenSearchScreenUi.listFilterStripDecoration(),
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(insetH, insetV, insetH, insetV),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.filter_alt_outlined,
-                    size: dense ? 14 : 16,
-                    color: HomeScreenColors.leadOnSection,
-                  ),
-                  SizedBox(width: RakutenSearchScreenUi.gapFieldStack + 1),
-                  Text(
-                    '一覧で絞り込み',
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: HomeScreenColors.leadOnSection,
-                      fontWeight: FontWeight.w800,
-                      fontSize: dense ? 11.5 : null,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: dense ? 4 : 6),
-              Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: [
-                  FilterChip(
-                    selected: excludeCandidate,
-                    onSelected: onExcludeCandidateChanged,
-                    label: const Text('コレ候補を除外'),
-                    avatar: const Icon(Icons.bookmark_added_outlined, size: 17),
-                    labelStyle: Theme.of(context).textTheme.labelLarge
-                        ?.copyWith(fontWeight: FontWeight.w600, fontSize: 12),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 0,
-                    ),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity.compact,
-                    selectedColor: AppColors.accentPrimary.withValues(
-                      alpha: 0.15,
-                    ),
-                    showCheckmark: false,
-                    side: BorderSide(
-                      color: excludeCandidate
-                          ? HomeScreenColors.sectionOutlineAccent
-                          : HomeScreenColors.deckOutline,
-                    ),
-                  ),
-                  FilterChip(
-                    selected: excludeDone,
-                    onSelected: onExcludeDoneChanged,
-                    label: const Text('コレ済を除外'),
-                    avatar: const Icon(Icons.check_circle_outline, size: 17),
-                    labelStyle: Theme.of(context).textTheme.labelLarge
-                        ?.copyWith(fontWeight: FontWeight.w600, fontSize: 12),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 0,
-                    ),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity.compact,
-                    selectedColor: AppColors.accentPrimary.withValues(
-                      alpha: 0.15,
-                    ),
-                    showCheckmark: false,
-                    side: BorderSide(
-                      color: excludeDone
-                          ? HomeScreenColors.sectionOutlineAccent
-                          : HomeScreenColors.deckOutline,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 /// 検索 UI 用に保存済ショップを正規化（空 ID・空名を除き、重複 shopId は先勝ち）。
 List<SavedShop> _sanitizedSavedShopsForSearch(List<SavedShop> raw) {
