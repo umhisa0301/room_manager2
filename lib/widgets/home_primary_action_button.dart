@@ -4,10 +4,7 @@ import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 
 /// ホームの主CTAの強調度。[hero] は最優先導線（楽天で検索）向け。
-enum HomePrimaryActionEmphasis {
-  standard,
-  hero,
-}
+enum HomePrimaryActionEmphasis { standard, hero }
 
 /// ホーム画面の主要導線用ボタン。
 class HomePrimaryActionButton extends StatelessWidget {
@@ -36,11 +33,9 @@ class HomePrimaryActionButton extends StatelessWidget {
   double get _iconSize =>
       emphasis == HomePrimaryActionEmphasis.hero ? iconSizeHero : iconSize;
 
-  double get _fontSize =>
-      emphasis == HomePrimaryActionEmphasis.hero ? 17 : 16;
+  double get _fontSize => emphasis == HomePrimaryActionEmphasis.hero ? 17 : 16;
 
-  double get _elevation =>
-      emphasis == HomePrimaryActionEmphasis.hero ? 2 : 0;
+  double get _elevation => emphasis == HomePrimaryActionEmphasis.hero ? 2 : 0;
 
   @override
   Widget build(BuildContext context) {

@@ -7,8 +7,8 @@ import '../repository/product_repository.dart';
 /// 追加・編集・削除はここを経由し、永続化は ProductRepository に委譲する。
 class ProductListProvider extends ChangeNotifier {
   ProductListProvider({required ProductRepository repository})
-      : _repository = repository,
-        _products = List.from(repository.loadProducts());
+    : _repository = repository,
+      _products = List.from(repository.loadProducts());
 
   final ProductRepository _repository;
   final List<Product> _products;

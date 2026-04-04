@@ -24,7 +24,9 @@ class ProductRepository {
 
       final products = <Product>[];
       for (final item in list) {
-        final product = Product.fromJson(item is Map<String, dynamic> ? item : null);
+        final product = Product.fromJson(
+          item is Map<String, dynamic> ? item : null,
+        );
         if (product != null) products.add(product);
       }
       return products;

@@ -5,18 +5,12 @@ import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/rakuten_search_repository.dart';
 
-enum RakutenSearchStatus {
-  idle,
-  loading,
-  success,
-  error,
-}
+enum RakutenSearchStatus { idle, loading, success, error }
 
 /// 楽天検索画面の状態管理。
 class RakutenSearchProvider extends ChangeNotifier {
-  RakutenSearchProvider({
-    required RakutenSearchRepository repository,
-  }) : _repository = repository;
+  RakutenSearchProvider({required RakutenSearchRepository repository})
+    : _repository = repository;
 
   final RakutenSearchRepository _repository;
 
@@ -24,6 +18,7 @@ class RakutenSearchProvider extends ChangeNotifier {
   List<RakutenSearchItem> _results = const [];
   String _errorMessage = '';
   String _lastKeyword = '';
+
   /// キーワード検索で API から商品は取れたが、登録済み除外・アプリ側条件の結果リストが空。
   bool _keywordSearchHadApiHitsButNoVisibleResults = false;
 
@@ -36,12 +31,13 @@ class RakutenSearchProvider extends ChangeNotifier {
       _keywordSearchHadApiHitsButNoVisibleResults;
 
   /// 直近の成功結果のうち `affiliateUrl` が空でない件数（API側のアフィリエイト応答の目安）。
-  int get resultsWithAffiliateUrlCount => _results
-      .where((e) => e.hasAffiliateUrlInResponse)
-      .length;
+  int get resultsWithAffiliateUrlCount =>
+      _results.where((e) => e.hasAffiliateUrlInResponse).length;
 
   Future<void> search(String keyword) async {
-    final condition = RakutenProductSearchCondition(keyword: keyword).normalized();
+    final condition = RakutenProductSearchCondition(
+      keyword: keyword,
+    ).normalized();
     if (condition.keyword.isEmpty) {
       _status = RakutenSearchStatus.idle;
       _results = const [];
@@ -61,8 +57,10 @@ class RakutenSearchProvider extends ChangeNotifier {
     final normalized = condition.normalized();
     // キーワード検索だけでなく、genreId 指定のみの検索（ジャンル検索・ショップ発掘）も許可する。
     final hasKeyword = normalized.keyword.isNotEmpty;
-    final hasGenre = normalized.genreId != null && normalized.genreId!.isNotEmpty;
-    final hasShop = normalized.shopCode != null && normalized.shopCode!.trim().isNotEmpty;
+    final hasGenre =
+        normalized.genreId != null && normalized.genreId!.isNotEmpty;
+    final hasShop =
+        normalized.shopCode != null && normalized.shopCode!.trim().isNotEmpty;
     if (!hasKeyword && !hasGenre && !hasShop) {
       _status = RakutenSearchStatus.idle;
       _results = const [];

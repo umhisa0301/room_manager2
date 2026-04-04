@@ -31,8 +31,9 @@ class RoomUrlExtractionService {
       debugPrint('$_logTag URL正規化（アフィリエイト中間→商品ページ）: $resolved');
     }
 
-    final sel =
-        await XPathConfigRepository.loadSelectorNamed(_defaultSelectorName);
+    final sel = await XPathConfigRepository.loadSelectorNamed(
+      _defaultSelectorName,
+    );
     if (sel == null) {
       debugPrint(
         '$_logTag 失敗 [設定] assets の selectors に '
@@ -42,9 +43,7 @@ class RoomUrlExtractionService {
     }
     final t = sel.type.toLowerCase().trim();
     if (t != 'xpath' && t != 'css') {
-      debugPrint(
-        '$_logTag 失敗 [設定] type は xpath か css である必要があります: ${sel.type}',
-      );
+      debugPrint('$_logTag 失敗 [設定] type は xpath か css である必要があります: ${sel.type}');
       throw Exception('未対応のセレクタ種別です: ${sel.type}（xpath または css）');
     }
     final v = sel.value.trim();

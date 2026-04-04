@@ -66,12 +66,12 @@ abstract final class RakutenSearchScreenUi {
   static const double radiusSectionInner = 12;
 
   static List<BoxShadow> get cardShadow => [
-        BoxShadow(
-          color: HomeScreenColors.cardShadowColor,
-          offset: const Offset(0, 2),
-          blurRadius: 10,
-        ),
-      ];
+    BoxShadow(
+      color: HomeScreenColors.cardShadowColor,
+      offset: const Offset(0, 2),
+      blurRadius: 10,
+    ),
+  ];
 
   static BoxDecoration outerSectionShellDecoration() {
     return BoxDecoration(
@@ -118,10 +118,7 @@ abstract final class RakutenSearchScreenUi {
           color: HomeScreenColors.groupedSectionBody,
           height: 1.4,
         ) ??
-        TextStyle(
-          color: HomeScreenColors.groupedSectionBody,
-          height: 1.4,
-        );
+        TextStyle(color: HomeScreenColors.groupedSectionBody, height: 1.4);
   }
 
   static TextStyle labelStrong(BuildContext context) {
@@ -156,10 +153,7 @@ abstract final class RakutenSearchScreenUi {
         fontWeight: FontWeight.w600,
         fontSize: 13,
       ),
-      hintStyle: TextStyle(
-        color: HomeScreenColors.footnoteMuted,
-        fontSize: 14,
-      ),
+      hintStyle: TextStyle(color: HomeScreenColors.footnoteMuted, fontSize: 14),
       border: normal,
       enabledBorder: normal,
       focusedBorder: OutlineInputBorder(
@@ -192,8 +186,9 @@ class RakutenSearchSectionShell extends StatelessWidget {
     return DecoratedBox(
       decoration: RakutenSearchScreenUi.outerSectionShellDecoration(),
       child: ClipRRect(
-        borderRadius:
-            BorderRadius.circular(RakutenSearchScreenUi.radiusSectionOuter),
+        borderRadius: BorderRadius.circular(
+          RakutenSearchScreenUi.radiusSectionOuter,
+        ),
         clipBehavior: Clip.antiAlias,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -223,7 +218,9 @@ class RakutenSearchSectionShell extends StatelessWidget {
                     Expanded(
                       child: Text(
                         title,
-                        style: RakutenSearchScreenUi.sectionHeadingAccent(context),
+                        style: RakutenSearchScreenUi.sectionHeadingAccent(
+                          context,
+                        ),
                       ),
                     ),
                   ],

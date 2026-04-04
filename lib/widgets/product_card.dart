@@ -93,10 +93,10 @@ class ProductCard extends StatelessWidget {
         Text(
           product.productName,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: AppColors.textPrimary,
-                fontSize: 14,
-                height: 1.3,
-              ),
+            color: AppColors.textPrimary,
+            fontSize: 14,
+            height: 1.3,
+          ),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
@@ -104,9 +104,9 @@ class ProductCard extends StatelessWidget {
         Text(
           product.displayUrlOrShop,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                fontSize: 12,
-              ),
+            color: AppColors.textSecondary,
+            fontSize: 12,
+          ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -122,16 +122,17 @@ class ProductCard extends StatelessWidget {
         Row(
           children: [
             _buildStatusChip(context),
-            if (product.quickComment != null && product.quickComment!.isNotEmpty) ...[
+            if (product.quickComment != null &&
+                product.quickComment!.isNotEmpty) ...[
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   product.quickComment!,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontSize: 11,
-                        fontStyle: FontStyle.italic,
-                      ),
+                    color: AppColors.textSecondary,
+                    fontSize: 11,
+                    fontStyle: FontStyle.italic,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -160,10 +161,10 @@ class ProductCard extends StatelessWidget {
             child: Text(
               label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.accentPrimary,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: AppColors.accentPrimary,
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
       ],
@@ -184,9 +185,9 @@ class ProductCard extends StatelessWidget {
           child: Text(
             tag,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.accentPrimary,
-                  fontSize: 10,
-                ),
+              color: AppColors.accentPrimary,
+              fontSize: 10,
+            ),
           ),
         );
       }).toList(),
@@ -207,10 +208,10 @@ class ProductCard extends StatelessWidget {
       child: Text(
         highlightSearchState ? '状態: ${status.label}' : status.label,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: _statusFg(status),
-              fontWeight: FontWeight.w500,
-              fontSize: 11,
-            ),
+          color: _statusFg(status),
+          fontWeight: FontWeight.w500,
+          fontSize: 11,
+        ),
       ),
     );
   }

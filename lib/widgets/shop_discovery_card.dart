@@ -45,9 +45,9 @@ class ShopDiscoveryCard extends StatelessWidget {
                 child: Text(
                   '#$rank',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: HomeScreenColors.statusAccentStrong,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: HomeScreenColors.statusAccentStrong,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               Expanded(
@@ -56,16 +56,19 @@ class ShopDiscoveryCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
-                      ),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
               if (isSaved)
                 Container(
                   margin: const EdgeInsets.only(right: 8),
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: HomeScreenColors.subActionRowFill,
                     borderRadius: BorderRadius.circular(999),
@@ -74,9 +77,9 @@ class ShopDiscoveryCard extends StatelessWidget {
                   child: Text(
                     '保存済み',
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: HomeScreenColors.groupedSectionBody,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: HomeScreenColors.groupedSectionBody,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               _ScorePill(score: summary.discoveryScore),
@@ -112,7 +115,9 @@ class ShopDiscoveryCard extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: onSave,
                   icon: Icon(
-                    isSaved ? Icons.bookmark_added_rounded : Icons.bookmark_add_outlined,
+                    isSaved
+                        ? Icons.bookmark_added_rounded
+                        : Icons.bookmark_add_outlined,
                     size: 18,
                   ),
                   label: Text(isSaved ? '保存済み' : '保存する'),
@@ -141,9 +146,9 @@ class _ScorePill extends StatelessWidget {
       child: Text(
         '売れ筋度 ${score.toStringAsFixed(1)}',
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: AppColors.accentPrimary,
-              fontWeight: FontWeight.w700,
-            ),
+          color: AppColors.accentPrimary,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
@@ -166,9 +171,9 @@ class _MiniInfo extends StatelessWidget {
       child: Text(
         '$label: $value',
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: HomeScreenColors.metricTileCaptionColor,
-              fontWeight: FontWeight.w600,
-            ),
+          color: HomeScreenColors.metricTileCaptionColor,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -183,9 +188,9 @@ class _ThumbStrip extends StatelessWidget {
     if (items.isEmpty) {
       return Text(
         '代表商品がありません',
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
       );
     }
     return Row(
@@ -209,12 +214,11 @@ class _ThumbItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: Container(
         height: 58,
-        color: HomeScreenColors.candidateThumbPlaceholder.withValues(alpha: 0.35),
+        color: HomeScreenColors.candidateThumbPlaceholder.withValues(
+          alpha: 0.35,
+        ),
         child: item.imageUrl.trim().isEmpty
-            ? Icon(
-                Icons.image_outlined,
-                color: HomeScreenColors.footnoteMuted,
-              )
+            ? Icon(Icons.image_outlined, color: HomeScreenColors.footnoteMuted)
             : Image.network(
                 item.imageUrl,
                 fit: BoxFit.cover,

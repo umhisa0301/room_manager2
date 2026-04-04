@@ -26,8 +26,9 @@ class SavedShop {
       shopName: shopName ?? this.shopName,
       shopUrl: shopUrl ?? this.shopUrl,
       savedAt: savedAt ?? this.savedAt,
-      lastViewedAt:
-          clearLastViewedAt ? null : (lastViewedAt ?? this.lastViewedAt),
+      lastViewedAt: clearLastViewedAt
+          ? null
+          : (lastViewedAt ?? this.lastViewedAt),
     );
   }
 
@@ -50,7 +51,9 @@ class SavedShop {
     final savedRaw = (json['savedAt'] ?? '').toString();
     final savedAt = DateTime.tryParse(savedRaw) ?? DateTime.now();
     final viewedRaw = (json['lastViewedAt'] ?? '').toString().trim();
-    final lastViewedAt = viewedRaw.isEmpty ? null : DateTime.tryParse(viewedRaw);
+    final lastViewedAt = viewedRaw.isEmpty
+        ? null
+        : DateTime.tryParse(viewedRaw);
     return SavedShop(
       shopId: id,
       shopName: name,

@@ -1,10 +1,6 @@
 import 'rakuten_search_item.dart';
 
-enum TodayRecommendationDecision {
-  pending,
-  skipped,
-  addedCandidate,
-}
+enum TodayRecommendationDecision { pending, skipped, addedCandidate }
 
 class TodayRecommendationEntry {
   const TodayRecommendationEntry({
@@ -93,8 +89,9 @@ class TodayRecommendationBundle {
       entries.isNotEmpty &&
       entries.every((e) => e.decision != TodayRecommendationDecision.pending);
 
-  int get pendingCount =>
-      entries.where((e) => e.decision == TodayRecommendationDecision.pending).length;
+  int get pendingCount => entries
+      .where((e) => e.decision == TodayRecommendationDecision.pending)
+      .length;
 
   Map<String, dynamic> toJson() {
     return {
@@ -143,4 +140,3 @@ class TodayRecommendationBundle {
     );
   }
 }
-

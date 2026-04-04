@@ -18,7 +18,7 @@ class RakutenKeywordSearchRepositoryResult {
 /// APIレスポンスをアプリ用モデルへ変換する責務。
 class RakutenSearchRepository {
   RakutenSearchRepository({required RakutenApiService apiService})
-      : _apiService = apiService;
+    : _apiService = apiService;
 
   final RakutenApiService _apiService;
 
@@ -104,7 +104,8 @@ class RakutenSearchRepository {
   /// - 1ページあたり [hitsPerPage] 件（最大30）、最大 [maxFetchPages] ページ（同一ページは取得しない）
   /// - ローカルで除外・ユニーク化してから件数判定（まとめて結合してから次ページへ）
   /// - 1ページ目の取得失敗は再スロー、2ページ目以降の失敗は確保済み件で打ち切り
-  Future<RakutenKeywordSearchRepositoryResult> searchKeywordWithManagedExclusion({
+  Future<RakutenKeywordSearchRepositoryResult>
+  searchKeywordWithManagedExclusion({
     required RakutenProductSearchCondition condition,
     required Set<String> excludeRegisteredProductIds,
     int targetVisibleCount = keywordManagedExclusionTargetVisibleCount,
@@ -190,9 +191,7 @@ class RakutenSearchRepository {
         page++;
       } catch (e, st) {
         if (kDebugMode) {
-          debugPrint(
-            '[Rakuten] keywordManagedExclusion page=$page failed: $e',
-          );
+          debugPrint('[Rakuten] keywordManagedExclusion page=$page failed: $e');
           debugPrint('$st');
         }
         if (page == startPage) {
@@ -341,7 +340,8 @@ class RakutenSearchRepository {
     };
 
     return source.where((item) {
-      if (requiredReviewCount != null && item.reviewCount < requiredReviewCount) {
+      if (requiredReviewCount != null &&
+          item.reviewCount < requiredReviewCount) {
         return false;
       }
       if (condition.minReviewAverage != null &&

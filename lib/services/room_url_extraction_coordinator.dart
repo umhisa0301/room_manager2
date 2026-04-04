@@ -10,7 +10,8 @@ class RoomUrlExtractionCoordinator {
     String selectorType,
     String selectorValue,
     int postLoadDelayMs,
-  )? _runner;
+  )?
+  _runner;
 
   bool _ready = false;
 
@@ -22,7 +23,8 @@ class RoomUrlExtractionCoordinator {
       String selectorType,
       String selectorValue,
       int postLoadDelayMs,
-    ) runner,
+    )
+    runner,
   ) {
     _runner = runner;
     _ready = true;

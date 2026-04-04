@@ -40,9 +40,9 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
           context.read<ProductListProvider>().updateProduct(product);
           if (context.mounted) {
             Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('保存しました')),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('保存しました')));
           }
         },
       ),

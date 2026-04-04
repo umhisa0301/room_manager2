@@ -6,10 +6,7 @@ import '../models/product_search_hit.dart';
 class ProductSearchService {
   ProductSearchService._();
 
-  static List<ProductSearchHit> search(
-    List<Product> source,
-    String query,
-  ) {
+  static List<ProductSearchHit> search(List<Product> source, String query) {
     final raw = query.trim();
     if (raw.isEmpty) {
       return source
@@ -37,7 +34,8 @@ class ProductSearchService {
       if (memo.contains(qText)) kinds.add(ProductMatchKind.memo);
       if (quick.contains(qText)) kinds.add(ProductMatchKind.quickComment);
       if (tags.contains(qText)) kinds.add(ProductMatchKind.tags);
-      if (rawUrlLower.contains(raw.toLowerCase()) || normalizedUrl.contains(qUrl)) {
+      if (rawUrlLower.contains(raw.toLowerCase()) ||
+          normalizedUrl.contains(qUrl)) {
         kinds.add(ProductMatchKind.productUrl);
       }
 
@@ -95,7 +93,8 @@ class ProductSearchService {
 
   static bool _looksLikeUrl(String input) {
     final v = input.trim().toLowerCase();
-    return v.startsWith('http://') || v.startsWith('https://') || v.contains('.jp/');
+    return v.startsWith('http://') ||
+        v.startsWith('https://') ||
+        v.contains('.jp/');
   }
 }
-

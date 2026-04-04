@@ -4,11 +4,7 @@ import 'package:flutter/material.dart';
 String? formatRoomColleCardTimestamp(DateTime? at, DateTime referenceNow) {
   if (at == null) return null;
   final a = DateTime(at.year, at.month, at.day);
-  final r = DateTime(
-    referenceNow.year,
-    referenceNow.month,
-    referenceNow.day,
-  );
+  final r = DateTime(referenceNow.year, referenceNow.month, referenceNow.day);
   final dDiff = a.difference(r).inDays;
   String two(int n) => n < 10 ? '0$n' : '$n';
   final hm = '${two(at.hour)}:${two(at.minute)}';

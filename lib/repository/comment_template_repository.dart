@@ -21,8 +21,9 @@ class CommentTemplateRepository {
       if (list is! List) return [];
       final result = <CommentTemplate>[];
       for (final item in list) {
-        final tmpl =
-            CommentTemplate.fromJson(item is Map<String, dynamic> ? item : null);
+        final tmpl = CommentTemplate.fromJson(
+          item is Map<String, dynamic> ? item : null,
+        );
         if (tmpl != null) result.add(tmpl);
       }
       return result;
@@ -61,4 +62,3 @@ class CommentTemplateRepository {
     }
   }
 }
-

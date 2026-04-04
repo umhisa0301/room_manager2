@@ -1,9 +1,5 @@
 /// 商品のステータス。タブ（候補・コレ済・アーカイブ）と対応。
-enum ProductStatus {
-  candidate,
-  collected,
-  archived,
-}
+enum ProductStatus { candidate, collected, archived }
 
 extension ProductStatusExtension on ProductStatus {
   /// 一覧・タブ表示用ラベル

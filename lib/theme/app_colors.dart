@@ -9,18 +9,23 @@ class AppColors {
   /// アプリ全体のベース背景（少しだけ濃いグレー）
   /// カードとのコントラストをわずかに強めて区切りを見やすくする。
   static const Color background = Color(0xFFF4F4F7);
+
   /// カード・AppBar・ナビなどの表面
   static const Color surface = Color(0xFFFFFFFF);
+
   /// カードやチップのホバー/押下時の薄い背景
   static const Color surfaceVariant = Color(0xFFF5F5F5);
 
   // --- アクセント（ピンク〜マゼンタ）---
   /// メインアクセント（ボタン・選択・リンク）
   static const Color accentPrimary = Color(0xFFE91E8C);
+
   /// サブアクセント（グラデーション・ハイライト）
   static const Color accentSecondary = Color(0xFFFF6090);
+
   /// アクセントの薄い背景（チップ・バッジ背景）
   static const Color accentLight = Color(0xFFFFE5F0);
+
   /// アクセントのさらに薄い背景（ホバー等）
   static const Color accentLightest = Color(0xFFFFF0F5);
 

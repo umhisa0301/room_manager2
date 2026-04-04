@@ -12,14 +12,18 @@ class ProductItem {
   });
 
   final String id;
+
   /// 画像URL。null の場合はプレースホルダー表示。
   final String? imageUrl;
   final String name;
+
   /// ショップ名またはURLの短い表示用文字列。
   final String shopOrUrl;
   final List<String> tags;
+
   /// 表示用ステータス（候補・コレ済・アーカイブなど）。
   final String status;
+
   /// コメント有無（将来の余白設計用）。
   final bool hasComment;
 }

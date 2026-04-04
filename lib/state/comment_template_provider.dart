@@ -6,9 +6,9 @@ import '../repository/comment_template_repository.dart';
 /// コメントテンプレート一覧と「直近コピーしたコメント」を管理する Provider。
 class CommentTemplateProvider extends ChangeNotifier {
   CommentTemplateProvider({required CommentTemplateRepository repository})
-      : _repository = repository,
-        _templates = List.from(repository.loadTemplates()),
-        _lastCopiedComment = repository.loadLastCopiedComment();
+    : _repository = repository,
+      _templates = List.from(repository.loadTemplates()),
+      _lastCopiedComment = repository.loadLastCopiedComment();
 
   final CommentTemplateRepository _repository;
   final List<CommentTemplate> _templates;
@@ -64,4 +64,3 @@ class CommentTemplateProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-

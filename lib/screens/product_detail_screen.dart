@@ -32,7 +32,9 @@ class ProductDetailScreen extends StatelessWidget {
             if (!context.mounted) return;
             Navigator.of(context).maybePop();
           });
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
         return _DetailBody(product: product);
       },
@@ -92,9 +94,9 @@ class _DetailBody extends StatelessWidget {
                 Text(
                   product.productName,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 GestureDetector(
@@ -120,8 +122,9 @@ class _DetailBody extends StatelessWidget {
                     : Wrap(
                         spacing: 6,
                         runSpacing: 4,
-                        children:
-                            product.tags.map((t) => _chip(context, t)).toList(),
+                        children: product.tags
+                            .map((t) => _chip(context, t))
+                            .toList(),
                       ),
                 const SizedBox(height: 10),
                 OutlinedButton.icon(
@@ -171,13 +174,14 @@ class _DetailBody extends StatelessWidget {
                     ElevatedButton.icon(
                       onPressed: hasQuickComment
                           ? () => AppActionService.copyText(
-                                context,
-                                text: product.quickComment!.trim(),
-                                onSuccess: () => context
-                                    .read<CommentTemplateProvider>()
-                                    .setLastCopiedComment(
-                                        product.quickComment!.trim()),
-                              )
+                              context,
+                              text: product.quickComment!.trim(),
+                              onSuccess: () => context
+                                  .read<CommentTemplateProvider>()
+                                  .setLastCopiedComment(
+                                    product.quickComment!.trim(),
+                                  ),
+                            )
                           : null,
                       icon: const Icon(Icons.copy, size: 16),
                       label: const Text('コピー'),
@@ -221,10 +225,7 @@ class _DetailBody extends StatelessWidget {
                 OutlinedButton.icon(
                   onPressed: templates.isEmpty
                       ? null
-                      : () => _showTemplatePicker(
-                            context,
-                            templates,
-                          ),
+                      : () => _showTemplatePicker(context, templates),
                   icon: const Icon(Icons.article_outlined, size: 16),
                   label: const Text('テンプレから選ぶ'),
                 ),
@@ -232,14 +233,15 @@ class _DetailBody extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: hasQuickComment
                       ? () => AppActionService.copyThenOpenUrl(
-                            context,
-                            text: product.quickComment!.trim(),
-                            url: product.productUrl,
-                            onCopied: () => context
-                                .read<CommentTemplateProvider>()
-                                .setLastCopiedComment(
-                                    product.quickComment!.trim()),
-                          )
+                          context,
+                          text: product.quickComment!.trim(),
+                          url: product.productUrl,
+                          onCopied: () => context
+                              .read<CommentTemplateProvider>()
+                              .setLastCopiedComment(
+                                product.quickComment!.trim(),
+                              ),
+                        )
                       : null,
                   icon: const Icon(Icons.rocket_launch_outlined, size: 16),
                   label: const Text('コメントをコピーしてURLを開く'),
@@ -257,7 +259,8 @@ class _DetailBody extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute<void>(
-                        builder: (context) => ProductEditScreen(product: product),
+                        builder: (context) =>
+                            ProductEditScreen(product: product),
                       ),
                     );
                   },
@@ -286,11 +289,13 @@ class _DetailBody extends StatelessWidget {
     );
   }
 
-  TextStyle? _bodyStyle(BuildContext context) =>
-      Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textPrimary);
+  TextStyle? _bodyStyle(BuildContext context) => Theme.of(
+    context,
+  ).textTheme.bodyMedium?.copyWith(color: AppColors.textPrimary);
 
-  TextStyle? _captionStyle(BuildContext context) =>
-      Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary);
+  TextStyle? _captionStyle(BuildContext context) => Theme.of(
+    context,
+  ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary);
 
   Widget _chip(BuildContext context, String label) {
     return Container(
@@ -299,7 +304,12 @@ class _DetailBody extends StatelessWidget {
         color: AppColors.accentLightest,
         borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
       ),
-      child: Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.accentPrimary)),
+      child: Text(
+        label,
+        style: Theme.of(
+          context,
+        ).textTheme.bodySmall?.copyWith(color: AppColors.accentPrimary),
+      ),
     );
   }
 
@@ -322,8 +332,10 @@ class _DetailBody extends StatelessWidget {
             itemBuilder: (context, index) {
               final t = templates[index];
               return ListTile(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 4,
+                  vertical: 2,
+                ),
                 title: Text(
                   t.title,
                   maxLines: 1,
@@ -417,9 +429,9 @@ class _SectionCard extends StatelessWidget {
           Text(
             title,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 8),
           child,
@@ -450,13 +462,17 @@ class _StatusChunks extends StatelessWidget {
               label: Text(s.label),
               selected: selected,
               onSelected: (_) {
-                provider.updateProduct(product.copyWith(status: s, updatedAt: DateTime.now()));
+                provider.updateProduct(
+                  product.copyWith(status: s, updatedAt: DateTime.now()),
+                );
               },
               selectedColor: AppColors.accentLight,
               checkmarkColor: AppColors.accentPrimary,
               labelStyle: TextStyle(
                 fontSize: 13,
-                color: selected ? AppColors.accentPrimary : AppColors.textPrimary,
+                color: selected
+                    ? AppColors.accentPrimary
+                    : AppColors.textPrimary,
               ),
             );
           }).toList(),

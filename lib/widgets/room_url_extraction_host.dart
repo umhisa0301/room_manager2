@@ -71,7 +71,9 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
     final sel = selectorValue.length > 160
         ? '${selectorValue.substring(0, 160)}…'
         : selectorValue;
-    final url = pageUrl.length > 200 ? '${pageUrl.substring(0, 200)}…' : pageUrl;
+    final url = pageUrl.length > 200
+        ? '${pageUrl.substring(0, 200)}…'
+        : pageUrl;
     debugPrint(
       '$_logTag 失敗 [$phase] $summary | type=$selectorType | selector=$sel | url=$url',
     );
@@ -109,9 +111,7 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
             // 副リソース（画像・XHR 等）の ORB 等は本体表示と無関係なことが多い。
             // メイン以外のエラーで completeError すると、実際は描画できても抽出が失敗する。
             if (err.isForMainFrame == false) {
-              debugPrint(
-                '$_logTag 副リソース読込エラー(無視): ${err.description}',
-              );
+              debugPrint('$_logTag 副リソース読込エラー(無視): ${err.description}');
               return;
             }
             final comp = _loadCompleter;
@@ -183,19 +183,14 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
   ) async {
     final c = _controller;
     if (c == null) {
-      debugPrint(
-        '$_logTag 失敗 [WebView] controller が未初期化のため実行できません',
-      );
+      debugPrint('$_logTag 失敗 [WebView] controller が未初期化のため実行できません');
       return null;
     }
 
     final trimmedUrl = url.trim();
     final uri = Uri.tryParse(trimmedUrl);
-    if (uri == null ||
-        (uri.scheme != 'http' && uri.scheme != 'https')) {
-      debugPrint(
-        '$_logTag 失敗 [URL検証] http(s) でない、または解析不能: $trimmedUrl',
-      );
+    if (uri == null || (uri.scheme != 'http' && uri.scheme != 'https')) {
+      debugPrint('$_logTag 失敗 [URL検証] http(s) でない、または解析不能: $trimmedUrl');
       throw Exception('商品URLが不正です');
     }
 
@@ -245,9 +240,9 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
 
     Object? raw;
     try {
-      raw = await c.runJavaScriptReturningResult(script).timeout(
-        const Duration(seconds: 15),
-      );
+      raw = await c
+          .runJavaScriptReturningResult(script)
+          .timeout(const Duration(seconds: 15));
     } on TimeoutException catch (e) {
       _logFailure(
         phase: 'JS実行',
@@ -432,10 +427,7 @@ class _RoomUrlExtractionHostState extends State<RoomUrlExtractionHost> {
           height: 1,
           child: Opacity(
             opacity: 0.01,
-            child: IgnorePointer(
-              ignoring: true,
-              child: web,
-            ),
+            child: IgnorePointer(ignoring: true, child: web),
           ),
         ),
       ],

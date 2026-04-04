@@ -153,18 +153,18 @@ class _CommentScreenPurposeHeader extends StatelessWidget {
                 Text(
                   '楽天ROOMに投稿するコメントを作成・保存できます',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                        height: 1.35,
-                      ),
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w700,
+                    height: 1.35,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   '保存した文は一覧からワンタップでコピーし、ROOMの投稿欄に貼り付けられます。',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.45,
-                      ),
+                    color: AppColors.textSecondary,
+                    height: 1.45,
+                  ),
                 ),
               ],
             ),
@@ -201,9 +201,9 @@ class _AiSuggestionFuturePlaceholder extends StatelessWidget {
             child: Text(
               'テンプレートをジャンルや用途別に分けておくと、投稿のたびに迷いにくくなります。',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.4,
-                  ),
+                color: AppColors.textSecondary,
+                height: 1.4,
+              ),
             ),
           ),
         ],
@@ -222,9 +222,7 @@ class _CommentTemplatesEmptyGuide extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(
-          color: AppColors.accentLight.withValues(alpha: 0.6),
-        ),
+        border: Border.all(color: AppColors.accentLight.withValues(alpha: 0.6)),
       ),
       child: Column(
         children: [
@@ -238,10 +236,10 @@ class _CommentTemplatesEmptyGuide extends StatelessWidget {
             'コメントを作成して保存すると、すぐにコピーできます',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                  height: 1.35,
-                ),
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+              height: 1.35,
+            ),
           ),
           const SizedBox(height: 10),
           Text(
@@ -250,9 +248,9 @@ class _CommentTemplatesEmptyGuide extends StatelessWidget {
             'ジャンルごとに登録しておくと、あとから整理しやすくなります。',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.45,
-                ),
+              color: AppColors.textSecondary,
+              height: 1.45,
+            ),
           ),
         ],
       ),
@@ -292,9 +290,9 @@ class _RecentCopiedCard extends StatelessWidget {
               Text(
                 '最近コピーしたコメント',
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ],
           ),
@@ -303,9 +301,9 @@ class _RecentCopiedCard extends StatelessWidget {
             text == null || text!.isEmpty
                 ? 'まだコピー履歴がありません。テンプレか商品のコメントをコピーするとここに表示されます。'
                 : text!,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.textPrimary),
           ),
         ],
       ),
@@ -381,8 +379,8 @@ class _CommentTemplateCard extends StatelessWidget {
                     Text(
                       template.body,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                        color: AppColors.textSecondary,
+                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -435,25 +433,25 @@ class _CommentTemplateCard extends StatelessWidget {
               SizedBox(
                 width: 40,
                 child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.copy, size: 18),
-                    onPressed: onCopy,
-                    tooltip: 'コピー',
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.edit_outlined, size: 18),
-                    onPressed: onEdit,
-                    tooltip: '編集',
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete_outline, size: 18),
-                    onPressed: onDelete,
-                    tooltip: '削除',
-                  ),
-                ],
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.copy, size: 18),
+                      onPressed: onCopy,
+                      tooltip: 'コピー',
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.edit_outlined, size: 18),
+                      onPressed: onEdit,
+                      tooltip: '編集',
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete_outline, size: 18),
+                      onPressed: onDelete,
+                      tooltip: '削除',
+                    ),
+                  ],
                 ),
               ),
             ],

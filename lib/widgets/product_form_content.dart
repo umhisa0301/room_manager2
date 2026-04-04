@@ -77,7 +77,9 @@ class ProductFormContentState extends State<ProductFormContent> {
       product = widget.initialProduct!.copyWith(
         productName: _nameController.text.trim(),
         productUrl: _urlController.text.trim(),
-        memo: _memoController.text.trim().isEmpty ? null : _memoController.text.trim(),
+        memo: _memoController.text.trim().isEmpty
+            ? null
+            : _memoController.text.trim(),
         tags: tags,
         status: _status,
         updatedAt: now,
@@ -91,7 +93,9 @@ class ProductFormContentState extends State<ProductFormContent> {
         productName: _nameController.text.trim(),
         productUrl: _urlController.text.trim(),
         imageUrl: null,
-        memo: _memoController.text.trim().isEmpty ? null : _memoController.text.trim(),
+        memo: _memoController.text.trim().isEmpty
+            ? null
+            : _memoController.text.trim(),
         tags: tags,
         status: ProductStatus.candidate,
         createdAt: now,
@@ -181,9 +185,9 @@ class ProductFormContentState extends State<ProductFormContent> {
       children: [
         Text(
           'ステータス',
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: AppColors.textSecondary,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.labelMedium?.copyWith(color: AppColors.textSecondary),
         ),
         const SizedBox(height: 6),
         Wrap(
@@ -199,7 +203,9 @@ class ProductFormContentState extends State<ProductFormContent> {
               checkmarkColor: AppColors.accentPrimary,
               labelStyle: TextStyle(
                 fontSize: 13,
-                color: selected ? AppColors.accentPrimary : AppColors.textPrimary,
+                color: selected
+                    ? AppColors.accentPrimary
+                    : AppColors.textPrimary,
               ),
             );
           }).toList(),

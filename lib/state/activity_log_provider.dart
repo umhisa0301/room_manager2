@@ -6,8 +6,8 @@ import '../repository/activity_log_repository.dart';
 /// 活動ログの状態管理。
 class ActivityLogProvider extends ChangeNotifier {
   ActivityLogProvider({required ActivityLogRepository repository})
-      : _repository = repository,
-        _logs = List.from(repository.loadLogs());
+    : _repository = repository,
+      _logs = List.from(repository.loadLogs());
 
   final ActivityLogRepository _repository;
   final List<ActivityLog> _logs;
@@ -71,4 +71,3 @@ class ActivityLogProvider extends ChangeNotifier {
     _repository.saveLogs(_logs);
   }
 }
-

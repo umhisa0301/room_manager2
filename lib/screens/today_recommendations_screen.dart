@@ -17,7 +17,8 @@ class TodayRecommendationsScreen extends StatefulWidget {
       _TodayRecommendationsScreenState();
 }
 
-class _TodayRecommendationsScreenState extends State<TodayRecommendationsScreen> {
+class _TodayRecommendationsScreenState
+    extends State<TodayRecommendationsScreen> {
   @override
   void initState() {
     super.initState();
@@ -55,15 +56,14 @@ class _TodayRecommendationsScreenState extends State<TodayRecommendationsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('今日のおすすめコレ候補'),
-      ),
+      appBar: AppBar(title: const Text('今日のおすすめコレ候補')),
       body: Consumer<TodayRecommendationProvider>(
         builder: (context, rec, _) {
           if (rec.isLoading) {
             return const AppScreenLoadingCenter(
               title: '今日のおすすめを準備しています',
-              subtitle: '保存済みのプロフィールや検索履歴に基づき、候補を集めています。通信状況により少し時間がかかることがあります。',
+              subtitle:
+                  '保存済みのプロフィールや検索履歴に基づき、候補を集めています。通信状況により少し時間がかかることがあります。',
             );
           }
           if (rec.errorMessage != null) {
@@ -147,13 +147,11 @@ class _SummaryCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            completed
-                ? '本日のおすすめはチェック完了です'
-                : '本日のおすすめ $total件（未処理 $pending件）',
+            completed ? '本日のおすすめはチェック完了です' : '本日のおすすめ $total件（未処理 $pending件）',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                ),
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
@@ -161,9 +159,9 @@ class _SummaryCard extends StatelessWidget {
                 ? '10件見終わりました。次回は翌日に新しい候補が生成されます。'
                 : '各カードの「候補にする」「見送る」で、今日見る候補を整理できます。',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.4,
-                ),
+              color: AppColors.textSecondary,
+              height: 1.4,
+            ),
           ),
           const SizedBox(height: 6),
           Align(
@@ -212,10 +210,10 @@ class _RecommendationCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w700,
-                            height: 1.3,
-                          ),
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                        height: 1.3,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -223,16 +221,16 @@ class _RecommendationCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       '評価 ${item.reviewAverage.toStringAsFixed(2)} / '
                       '評価数 ${item.reviewCount}',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.textTertiary,
-                          ),
+                        color: AppColors.textTertiary,
+                      ),
                     ),
                   ],
                 ),
@@ -263,17 +261,16 @@ class _ActionRow extends StatelessWidget {
             onPressed: enabled
                 ? () async {
                     final rec = context.read<TodayRecommendationProvider>();
-                    final managed = context.read<RakutenManagedProductProvider>();
+                    final managed = context
+                        .read<RakutenManagedProductProvider>();
                     final err = await rec.markAddedCandidate(
                       managedProvider: managed,
                       item: entry.item,
                     );
                     if (!context.mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(err ?? '候補に追加しました'),
-                      ),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(err ?? '候補に追加しました')));
                   }
                 : null,
             icon: const Icon(Icons.bookmark_add_rounded, size: 18),
@@ -330,9 +327,9 @@ class _DecisionChip extends StatelessWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: fg,
-              fontWeight: FontWeight.w700,
-            ),
+          color: fg,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
@@ -356,11 +353,12 @@ class _Thumb extends StatelessWidget {
             : Image.network(
                 imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                    const Icon(Icons.broken_image_outlined, color: AppColors.textTertiary),
+                errorBuilder: (_, __, ___) => const Icon(
+                  Icons.broken_image_outlined,
+                  color: AppColors.textTertiary,
+                ),
               ),
       ),
     );
   }
 }
-

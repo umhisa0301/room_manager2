@@ -64,10 +64,11 @@ class RoomColleUiStateRepository {
       final schemaNum = schemaRaw is int
           ? schemaRaw
           : schemaRaw is num
-              ? schemaRaw.toInt()
-              : 0;
+          ? schemaRaw.toInt()
+          : 0;
 
-      final hasV3 = schemaNum == _schemaV3 ||
+      final hasV3 =
+          schemaNum == _schemaV3 ||
           (map['candidateListFilters'] is Map && map['doneListFilters'] is Map);
 
       if (hasV3) {
@@ -76,8 +77,9 @@ class RoomColleUiStateRepository {
         var cFilters = RoomColleListFilterCriteria.fromJson(
           map['candidateListFilters'],
         );
-        var dFilters =
-            RoomColleListFilterCriteria.fromJson(map['doneListFilters']);
+        var dFilters = RoomColleListFilterCriteria.fromJson(
+          map['doneListFilters'],
+        );
 
         void legacyHydrateKeyword() {
           var candidateQ = '';
@@ -106,8 +108,9 @@ class RoomColleUiStateRepository {
         dFilters = _sanitizeFilterCriteriaKeywords(dFilters);
 
         final pileBannerRaw = map['staleCandidatePileBannerDismissed'];
-        final pileBannerDismissed =
-            pileBannerRaw is bool ? pileBannerRaw : false;
+        final pileBannerDismissed = pileBannerRaw is bool
+            ? pileBannerRaw
+            : false;
 
         return RoomColleUiStateSnapshot(
           tabIndex: tabIndex,
@@ -119,7 +122,8 @@ class RoomColleUiStateRepository {
         );
       }
 
-      final hasV2 = schemaRaw == _schemaV2 ||
+      final hasV2 =
+          schemaRaw == _schemaV2 ||
           map['candidateSearchQuery'] != null ||
           map['doneSearchQuery'] != null;
 
@@ -135,13 +139,13 @@ class RoomColleUiStateRepository {
           doneQ = _sanitizeSearchQuery(dq);
         }
         final exRaw = map['candidateExcludeUrlNotReady'];
-        final exclude =
-            exRaw is bool ? exRaw : false;
+        final exclude = exRaw is bool ? exRaw : false;
 
         return RoomColleUiStateSnapshot(
           tabIndex: tabIndex,
-          candidateListFilters:
-              RoomColleListFilterCriteria(keyword: candidateQ),
+          candidateListFilters: RoomColleListFilterCriteria(
+            keyword: candidateQ,
+          ),
           doneListFilters: RoomColleListFilterCriteria(keyword: doneQ),
           candidateExcludeUrlNotReady: exclude,
           doneLocalDay: doneLocalDay,

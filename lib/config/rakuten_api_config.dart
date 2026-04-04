@@ -3,15 +3,18 @@
 class RakutenApiConfig {
   RakutenApiConfig._();
 
-  static const String applicationId =
-      String.fromEnvironment('RAKUTEN_APP_ID', defaultValue: '');
+  static const String applicationId = String.fromEnvironment(
+    'RAKUTEN_APP_ID',
+    defaultValue: '',
+  );
 
-  static const String affiliateId =
-      String.fromEnvironment('RAKUTEN_AFFILIATE_ID', defaultValue: '');
+  static const String affiliateId = String.fromEnvironment(
+    'RAKUTEN_AFFILIATE_ID',
+    defaultValue: '',
+  );
 
   static bool get hasValidAppId => applicationId.trim().isNotEmpty;
 
   /// リクエストクエリに `affiliateId` を付与するか（ビルド時の define 由来）。
   static bool get requestIncludesAffiliateId => affiliateId.trim().isNotEmpty;
 }
-

@@ -46,4 +46,3 @@ class RakutenSearchItem {
   /// API が `affiliateUrl` を返したか（リクエストの affiliateId が有効なときに付く）。
   bool get hasAffiliateUrlInResponse => affiliateUrl.trim().isNotEmpty;
 }
-

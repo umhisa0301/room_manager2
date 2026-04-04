@@ -22,9 +22,6 @@ abstract final class RakutenGenreMasterLocalData {
     RakutenGenreMasterEntry(genreId: '558885', genreName: 'スポーツ・アウトドア'),
     RakutenGenreMasterEntry(genreId: '558929', genreName: '花・ガーデン・DIY'),
     RakutenGenreMasterEntry(genreId: '565004', genreName: '日用品雑貨・文房具・手芸'),
-    RakutenGenreMasterEntry(
-      genreId: '611505',
-      genreName: 'キッズ・ベビー・マタニティ',
-    ),
+    RakutenGenreMasterEntry(genreId: '611505', genreName: 'キッズ・ベビー・マタニティ'),
   ];
 }

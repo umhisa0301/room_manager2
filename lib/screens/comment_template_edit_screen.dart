@@ -16,8 +16,7 @@ class CommentTemplateEditScreen extends StatefulWidget {
       _CommentTemplateEditScreenState();
 }
 
-class _CommentTemplateEditScreenState
-    extends State<CommentTemplateEditScreen> {
+class _CommentTemplateEditScreenState extends State<CommentTemplateEditScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
@@ -82,9 +81,7 @@ class _CommentTemplateEditScreenState
     if (!context.mounted) return;
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(_isEdit ? '保存しました' : 'テンプレートを追加しました'),
-      ),
+      SnackBar(content: Text(_isEdit ? '保存しました' : 'テンプレートを追加しました')),
     );
   }
 
@@ -94,12 +91,7 @@ class _CommentTemplateEditScreenState
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(_isEdit ? 'テンプレートを編集' : 'テンプレートを追加'),
-        actions: [
-          TextButton(
-            onPressed: _save,
-            child: const Text('保存'),
-          ),
-        ],
+        actions: [TextButton(onPressed: _save, child: const Text('保存'))],
       ),
       body: Form(
         key: _formKey,
@@ -154,8 +146,8 @@ class _CommentTemplateEditScreenState
                 Text(
                   'お気に入り',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                      ),
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ],
             ),
@@ -165,4 +157,3 @@ class _CommentTemplateEditScreenState
     );
   }
 }
-

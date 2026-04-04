@@ -35,9 +35,9 @@ class RakutenRoomHomeStats {
     var n = 0;
     for (final e in all) {
       if (!RakutenManagedProduct.isMemberForStatusTab(
-            e,
-            RakutenManagedProductStatus.done,
-          )) {
+        e,
+        RakutenManagedProductStatus.done,
+      )) {
         continue;
       }
       final d = e.doneAt;
@@ -53,9 +53,9 @@ class RakutenRoomHomeStats {
     DateTime? max;
     for (final e in all) {
       if (!RakutenManagedProduct.isMemberForStatusTab(
-            e,
-            RakutenManagedProductStatus.done,
-          )) {
+        e,
+        RakutenManagedProductStatus.done,
+      )) {
         continue;
       }
       final d = e.doneAt;

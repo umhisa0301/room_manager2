@@ -74,9 +74,7 @@ class RakutenApiService {
     if (keywordTrimmed.isNotEmpty) {
       params['keyword'] = keywordTrimmed;
     } else if (!hasGenre && !hasShop) {
-      throw Exception(
-        '楽天API: キーワードが空のときは genreId または shopCode が必要です。',
-      );
+      throw Exception('楽天API: キーワードが空のときは genreId または shopCode が必要です。');
     }
 
     if (normalized.minPrice != null) {
@@ -118,10 +116,7 @@ class RakutenApiService {
     http.Response response;
     try {
       response = await http
-          .get(
-            uri,
-            headers: const {'User-Agent': 'RoomManager/1.0 (Flutter)'},
-          )
+          .get(uri, headers: const {'User-Agent': 'RoomManager/1.0 (Flutter)'})
           .timeout(_requestTimeout);
     } catch (e) {
       if (kDebugMode) {
@@ -150,20 +145,27 @@ class RakutenApiService {
     }
 
     if (response.statusCode != 200) {
-      final detail = _rakutenErrorMessage(bodyMap) ?? _truncateBody(response.body);
-      if (_isInvalidApplicationIdError(detail, httpStatus: response.statusCode)) {
+      final detail =
+          _rakutenErrorMessage(bodyMap) ?? _truncateBody(response.body);
+      if (_isInvalidApplicationIdError(
+        detail,
+        httpStatus: response.statusCode,
+      )) {
         throw Exception(_invalidApplicationIdUserMessage(detail));
       }
       throw _RakutenApiTransportException(
         statusCode: response.statusCode,
-        message: '楽天API呼び出しに失敗しました (${response.statusCode})'
+        message:
+            '楽天API呼び出しに失敗しました (${response.statusCode})'
             '${detail.isNotEmpty ? ': $detail' : ''}',
       );
     }
 
     if (bodyMap == null) {
       if (kDebugMode) {
-        debugPrint('[Rakuten] parse error: body is not a JSON object page=$page');
+        debugPrint(
+          '[Rakuten] parse error: body is not a JSON object page=$page',
+        );
       }
       throw Exception('楽天APIレスポンス形式が不正です');
     }
@@ -172,7 +174,10 @@ class RakutenApiService {
       if (kDebugMode) {
         debugPrint('[Rakuten] API logical error page=$page: $errMsg');
       }
-      if (_isInvalidApplicationIdError(errMsg, httpStatus: response.statusCode)) {
+      if (_isInvalidApplicationIdError(
+        errMsg,
+        httpStatus: response.statusCode,
+      )) {
         throw Exception(_invalidApplicationIdUserMessage(errMsg));
       }
       throw Exception('楽天API: $errMsg');

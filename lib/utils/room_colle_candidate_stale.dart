@@ -27,10 +27,7 @@ class RoomColleCandidateStaleSpec {
   }
 
   /// 候補のみ。null / 7日未満はチップなし。30日以上は [strong]、7日以上は [mild]。
-  static RoomColleCandidateStaleSpec? resolve(
-    DateTime? addedAt,
-    DateTime now,
-  ) {
+  static RoomColleCandidateStaleSpec? resolve(DateTime? addedAt, DateTime now) {
     if (addedAt == null) return null;
     final days = calendarDaysElapsed(addedAt, now);
     if (days >= 30) {

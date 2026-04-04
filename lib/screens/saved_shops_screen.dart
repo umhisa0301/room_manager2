@@ -39,8 +39,7 @@ class SavedShopsScreen extends StatelessWidget {
             return AppScreenEmptyCenter(
               icon: Icons.bookmarks_outlined,
               title: '保存ショップはまだありません',
-              body:
-                  '楽天検索の「ショップ発掘」で候補を探し、気に入ったショップを保存すると、ここからすぐ開けます。',
+              body: '楽天検索の「ショップ発掘」で候補を探し、気に入ったショップを保存すると、ここからすぐ開けます。',
               actions: [
                 FilledButton.icon(
                   onPressed: () {
@@ -107,7 +106,9 @@ class SavedShopsScreen extends StatelessWidget {
                         await saved.removeShop(shop.shopId);
                         if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('「${shop.shopName}」を保存解除しました')),
+                          SnackBar(
+                            content: Text('「${shop.shopName}」を保存解除しました'),
+                          ),
                         );
                       },
                     );
@@ -151,10 +152,10 @@ class _SavedShopsSummaryCard extends StatelessWidget {
             '保存 $totalCount件 / 閲覧済み $viewedCount件\n'
             '保存ショップから再訪して、候補登録を続けられます。',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.4,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: AppColors.textSecondary,
+              height: 1.4,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 8),
           Align(
@@ -203,23 +204,23 @@ class _SavedShopCard extends StatelessWidget {
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                ),
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             '保存日: ${_format(savedAt)}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
           ),
           const SizedBox(height: 2),
           Text(
             '最終閲覧: ${lastViewedAt == null ? '未閲覧' : _format(lastViewedAt!)}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
           ),
           const SizedBox(height: 8),
           Row(

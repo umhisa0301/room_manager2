@@ -15,8 +15,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
   TodayRecommendationProvider({
     required TodayRecommendationRepository repository,
     required RakutenSearchRepository searchRepository,
-  })  : _repository = repository,
-        _searchRepository = searchRepository {
+  }) : _repository = repository,
+       _searchRepository = searchRepository {
     _bundle = _repository.load();
   }
 
@@ -87,8 +87,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         debugPrint('[TodayRecommendation] regenerateToday failed: $e');
         debugPrint('$st');
       }
-      _errorMessage =
-          '今日のおすすめを用意できませんでした。通信状況を確認し、もう一度「再生成」をお試しください。';
+      _errorMessage = '今日のおすすめを用意できませんでした。通信状況を確認し、もう一度「再生成」をお試しください。';
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -98,11 +97,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
   Future<void> markSkipped(String productId) async {
     final b = _bundle;
     if (b == null) return;
-    final nextEntries = b.entries.map((e) {
-      if (e.item.productId != productId) return e;
-      if (e.decision != TodayRecommendationDecision.pending) return e;
-      return e.copyWith(decision: TodayRecommendationDecision.skipped);
-    }).toList(growable: false);
+    final nextEntries = b.entries
+        .map((e) {
+          if (e.item.productId != productId) return e;
+          if (e.decision != TodayRecommendationDecision.pending) return e;
+          return e.copyWith(decision: TodayRecommendationDecision.skipped);
+        })
+        .toList(growable: false);
     _bundle = b.copyWith(entries: nextEntries);
     await _repository.save(_bundle!);
     notifyListeners();
@@ -116,10 +117,14 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (err != null) return err;
     final b = _bundle;
     if (b == null) return null;
-    final nextEntries = b.entries.map((e) {
-      if (e.item.productId != item.productId) return e;
-      return e.copyWith(decision: TodayRecommendationDecision.addedCandidate);
-    }).toList(growable: false);
+    final nextEntries = b.entries
+        .map((e) {
+          if (e.item.productId != item.productId) return e;
+          return e.copyWith(
+            decision: TodayRecommendationDecision.addedCandidate,
+          );
+        })
+        .toList(growable: false);
     _bundle = b.copyWith(entries: nextEntries);
     await _repository.save(_bundle!);
     notifyListeners();
@@ -293,4 +298,3 @@ class TodayRecommendationProvider extends ChangeNotifier {
     return '${dateTime.year}-${two(dateTime.month)}-${two(dateTime.day)}';
   }
 }
-

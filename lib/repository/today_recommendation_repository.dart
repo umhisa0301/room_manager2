@@ -26,4 +26,3 @@ class TodayRecommendationRepository {
     await _prefs.setString(_key, jsonEncode(bundle.toJson()));
   }
 }
-

@@ -155,9 +155,9 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
 
     await context.read<UserProfileProvider>().saveProfile(next);
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('保存しました')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('保存しました')));
     }
   }
 
@@ -165,9 +165,7 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('マイページ'),
-      ),
+      appBar: AppBar(title: const Text('マイページ')),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(
@@ -194,7 +192,8 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                         Expanded(
                           child: Text(
                             '最初に3つだけ設定しておくと運用しやすくなります',
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(
                                   fontWeight: FontWeight.w800,
                                   color: AppColors.textPrimary,
                                 ),
@@ -207,9 +206,9 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                       'ユーザー名・ROOM URL・好きなジャンルを登録すると、'
                       'ホーム表示やおすすめ候補の精度向上に活かせます。',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.45,
-                          ),
+                        color: AppColors.textSecondary,
+                        height: 1.45,
+                      ),
                     ),
                     const SizedBox(height: 10),
                     TextButton(
@@ -255,9 +254,7 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                   ),
                   const SizedBox(height: 12),
                   InputDecorator(
-                    decoration: const InputDecoration(
-                      labelText: '性別（任意）',
-                    ),
+                    decoration: const InputDecoration(labelText: '性別（任意）'),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String?>(
                         value: _genderKey,
@@ -271,38 +268,38 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                           DropdownMenuItem(
                             value: UserProfile.genderMale,
                             child: Text(
-                                  UserProfile.genderLabelJa(
-                                        UserProfile.genderMale,
-                                      ) ??
-                                      '',
-                                ),
+                              UserProfile.genderLabelJa(
+                                    UserProfile.genderMale,
+                                  ) ??
+                                  '',
+                            ),
                           ),
                           DropdownMenuItem(
                             value: UserProfile.genderFemale,
                             child: Text(
-                                  UserProfile.genderLabelJa(
-                                        UserProfile.genderFemale,
-                                      ) ??
-                                      '',
-                                ),
+                              UserProfile.genderLabelJa(
+                                    UserProfile.genderFemale,
+                                  ) ??
+                                  '',
+                            ),
                           ),
                           DropdownMenuItem(
                             value: UserProfile.genderOther,
                             child: Text(
-                                  UserProfile.genderLabelJa(
-                                        UserProfile.genderOther,
-                                      ) ??
-                                      '',
-                                ),
+                              UserProfile.genderLabelJa(
+                                    UserProfile.genderOther,
+                                  ) ??
+                                  '',
+                            ),
                           ),
                           DropdownMenuItem(
                             value: UserProfile.genderPreferNot,
                             child: Text(
-                                  UserProfile.genderLabelJa(
-                                        UserProfile.genderPreferNot,
-                                      ) ??
-                                      '',
-                                ),
+                              UserProfile.genderLabelJa(
+                                    UserProfile.genderPreferNot,
+                                  ) ??
+                                  '',
+                            ),
                           ),
                         ],
                         onChanged: (v) => setState(() => _genderKey = v),
@@ -324,7 +321,8 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             const SizedBox(height: AppDimensions.spacingLg),
             _SectionHeader(
               title: 'ROOM情報',
-              body: '楽天ROOMのURLを保存しておくと、このアプリからすぐに開けます。'
+              body:
+                  '楽天ROOMのURLを保存しておくと、このアプリからすぐに開けます。'
                   'プロフィールとあわせて、おすすめ候補の参考にも使います。',
             ),
             const SizedBox(height: 10),
@@ -349,8 +347,8 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                           ? 'URLを登録すると「ROOMを開く」が使えます。'
                           : '登録したURLをすぐに開けます。',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.textTertiary,
-                          ),
+                        color: AppColors.textTertiary,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -360,9 +358,9 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                       onPressed: _roomUrlController.text.trim().isEmpty
                           ? null
                           : () => AppActionService.openUrl(
-                                context,
-                                url: _roomUrlController.text.trim(),
-                              ),
+                              context,
+                              url: _roomUrlController.text.trim(),
+                            ),
                       icon: const Icon(Icons.open_in_new_rounded, size: 20),
                       label: const Text('ROOMを開く'),
                     ),
@@ -411,10 +409,7 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
               child: const Text('保存'),
             ),
             const SizedBox(height: AppDimensions.spacingMd),
-            _SectionHeader(
-              title: 'アプリ設定や補助導線',
-              body: '運用中によく使う管理画面へ移動できます。',
-            ),
+            _SectionHeader(title: 'アプリ設定や補助導線', body: '運用中によく使う管理画面へ移動できます。'),
             const SizedBox(height: 10),
             _SectionCard(
               child: Column(
@@ -460,10 +455,7 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
               ),
             ),
             const SizedBox(height: AppDimensions.spacingLg),
-            _SectionHeader(
-              title: 'プライバシーポリシー',
-              body: '利用前に確認できるよう、いつでも開けます。',
-            ),
+            _SectionHeader(title: 'プライバシーポリシー', body: '利用前に確認できるよう、いつでも開けます。'),
             const SizedBox(height: 10),
             _SectionCard(
               child: OutlinedButton.icon(
@@ -501,7 +493,8 @@ class _FavoriteGenresPickerDialog extends StatefulWidget {
       _FavoriteGenresPickerDialogState();
 }
 
-class _FavoriteGenresPickerDialogState extends State<_FavoriteGenresPickerDialog> {
+class _FavoriteGenresPickerDialogState
+    extends State<_FavoriteGenresPickerDialog> {
   late final Set<String> _selected;
   late final List<RakutenGenreMasterEntry> _entries;
 
@@ -540,9 +533,9 @@ class _FavoriteGenresPickerDialogState extends State<_FavoriteGenresPickerDialog
           children: [
             Text(
               'チェックを付けたジャンルが保存されます（${_selected.length}/5）。',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: 8),
             Expanded(
@@ -586,10 +579,7 @@ class _FavoriteGenresPickerDialogState extends State<_FavoriteGenresPickerDialog
 }
 
 class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({
-    required this.title,
-    required this.body,
-  });
+  const _SectionHeader({required this.title, required this.body});
 
   final String title;
   final String body;
@@ -602,17 +592,17 @@ class _SectionHeader extends StatelessWidget {
         Text(
           title,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
-              ),
+            fontWeight: FontWeight.w800,
+            color: AppColors.textPrimary,
+          ),
         ),
         const SizedBox(height: 6),
         Text(
           body,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.45,
-              ),
+            color: AppColors.textSecondary,
+            height: 1.45,
+          ),
         ),
       ],
     );
@@ -620,10 +610,7 @@ class _SectionHeader extends StatelessWidget {
 }
 
 class _SectionCard extends StatelessWidget {
-  const _SectionCard({
-    required this.child,
-    this.marginBottom,
-  });
+  const _SectionCard({required this.child, this.marginBottom});
 
   final Widget child;
   final double? marginBottom;
@@ -656,13 +643,12 @@ class _GenresChipsPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final svc = RakutenGenreMasterService.instance;
-    if (genreIds.isEmpty &&
-        legacyFreeformText.trim().isEmpty) {
+    if (genreIds.isEmpty && legacyFreeformText.trim().isEmpty) {
       return Text(
         '「ジャンルを選ぶ」から登録すると、ここに表示されます。',
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: AppColors.textTertiary,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.labelSmall?.copyWith(color: AppColors.textTertiary),
       );
     }
 
@@ -675,9 +661,9 @@ class _GenresChipsPreview extends StatelessWidget {
         Chip(
           label: Text(
             label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textPrimary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(color: AppColors.textPrimary),
           ),
           backgroundColor: AppColors.surfaceVariant,
           shape: RoundedRectangleBorder(
@@ -697,10 +683,10 @@ class _GenresChipsPreview extends StatelessWidget {
           child: Text(
             '従来の入力（マスタへ未対応の語は保存時までこのまま保持されます）',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textTertiary,
-                  fontSize: 10,
-                  height: 1.35,
-                ),
+              color: AppColors.textTertiary,
+              fontSize: 10,
+              height: 1.35,
+            ),
           ),
         ),
       );
@@ -709,9 +695,9 @@ class _GenresChipsPreview extends StatelessWidget {
           Chip(
             label: Text(
               g,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: AppColors.textPrimary),
             ),
             backgroundColor: AppColors.surfaceVariant.withValues(alpha: 0.65),
             shape: RoundedRectangleBorder(
@@ -722,10 +708,6 @@ class _GenresChipsPreview extends StatelessWidget {
       }
     }
 
-    return Wrap(
-      spacing: 6,
-      runSpacing: 6,
-      children: chips,
-    );
+    return Wrap(spacing: 6, runSpacing: 6, children: chips);
   }
 }

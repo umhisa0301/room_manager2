@@ -34,7 +34,9 @@ class Product {
       final uri = Uri.parse(productUrl);
       if (uri.host.isNotEmpty) return uri.host;
     } catch (_) {}
-    return productUrl.length > 30 ? '${productUrl.substring(0, 30)}…' : productUrl;
+    return productUrl.length > 30
+        ? '${productUrl.substring(0, 30)}…'
+        : productUrl;
   }
 
   /// ローカル保存用 JSON に変換
@@ -60,7 +62,10 @@ class Product {
       final id = json['id'] as String?;
       final productName = json['productName'] as String?;
       final productUrl = json['productUrl'] as String?;
-      if (id == null || id.isEmpty || productName == null || productUrl == null) {
+      if (id == null ||
+          id.isEmpty ||
+          productName == null ||
+          productUrl == null) {
         return null;
       }
       final createdAt = _parseDateTime(json['createdAt']);
@@ -69,7 +74,10 @@ class Product {
 
       final tags = json['tags'];
       final tagList = tags is List<dynamic>
-          ? tags.map((e) => e?.toString() ?? '').where((s) => s.isNotEmpty).toList()
+          ? tags
+                .map((e) => e?.toString() ?? '')
+                .where((s) => s.isNotEmpty)
+                .toList()
           : <String>[];
 
       return Product(

@@ -39,7 +39,10 @@ abstract final class UserProfileGenreMigration {
     return out;
   }
 
-  static String? _matchByPartialName(String token, List<RakutenGenreMasterEntry> all) {
+  static String? _matchByPartialName(
+    String token,
+    List<RakutenGenreMasterEntry> all,
+  ) {
     final t = token.trim();
     if (t.isEmpty) return null;
     RakutenGenreMasterEntry? hit;

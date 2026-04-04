@@ -100,7 +100,10 @@ class RoomColleListCardActionStyle {
 
   /// 検索結果カード：候補済／コレ済で再登録できないときの Outlined（非活性でもアクセントで状態が読める）。
   static ButtonStyle searchStatusLockedOutline(Color accent) {
-    final fill = Color.alphaBlend(accent.withValues(alpha: 0.09), AppColors.surface);
+    final fill = Color.alphaBlend(
+      accent.withValues(alpha: 0.09),
+      AppColors.surface,
+    );
     final border = accent.withValues(alpha: 0.38);
     final fg = accent.withValues(alpha: 0.94);
     return OutlinedButton.styleFrom(
@@ -131,11 +134,7 @@ class RoomColleListCardActionStyle {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: iconSizeCompact,
-            color: color,
-          ),
+          Icon(icon, size: iconSizeCompact, color: color),
           const SizedBox(width: 3),
           Text(
             label,

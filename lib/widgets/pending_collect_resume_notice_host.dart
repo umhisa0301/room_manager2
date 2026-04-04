@@ -17,7 +17,8 @@ class PendingCollectResumeNoticeHost extends StatefulWidget {
 }
 
 class _PendingCollectResumeNoticeHostState
-    extends State<PendingCollectResumeNoticeHost> with WidgetsBindingObserver {
+    extends State<PendingCollectResumeNoticeHost>
+    with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();

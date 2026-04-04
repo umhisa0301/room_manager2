@@ -61,9 +61,8 @@ class RakutenSearchResultCard extends StatelessWidget {
     final shopStyle = RoomColleProductListCardLayout.shopTextStyle(theme);
     final selectionHintStyle =
         RoomColleProductListCardLayout.selectionHintTextStyle(theme);
-    final genreLineBase = shopStyle ??
-        theme.textTheme.bodySmall ??
-        const TextStyle();
+    final genreLineBase =
+        shopStyle ?? theme.textTheme.bodySmall ?? const TextStyle();
     final genreLineStyle = genreLineBase.copyWith(
       fontSize: (genreLineBase.fontSize ?? 12) - 1,
       color: theme.colorScheme.onSurfaceVariant,
@@ -95,7 +94,8 @@ class RakutenSearchResultCard extends StatelessWidget {
                       children: [
                         Text(
                           _safeItemName(item),
-                          maxLines: RoomColleProductListCardLayout.titleMaxLines,
+                          maxLines:
+                              RoomColleProductListCardLayout.titleMaxLines,
                           overflow: TextOverflow.ellipsis,
                           style: titleStyle,
                         ),
@@ -118,8 +118,9 @@ class RakutenSearchResultCard extends StatelessWidget {
                         if (item.genreId.trim().isNotEmpty) ...[
                           const SizedBox(height: 2),
                           Text(
-                            RakutenGenreMasterService.instance
-                                .genreDisplayName(item.genreId),
+                            RakutenGenreMasterService.instance.genreDisplayName(
+                              item.genreId,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: genreLineStyle,
@@ -160,10 +161,8 @@ class RakutenSearchResultCard extends StatelessWidget {
           flex: 38,
           child: FilledButton(
             style: RoomColleListCardActionStyle.rakutenFilled(),
-            onPressed: () => AppActionService.openUrl(
-              context,
-              url: item.browserLaunchUrl,
-            ),
+            onPressed: () =>
+                AppActionService.openUrl(context, url: item.browserLaunchUrl),
             child: RoomColleListCardActionStyle.compactActionLabel(
               icon: Icons.open_in_new_rounded,
               label: '楽天で見る',
@@ -174,10 +173,7 @@ class RakutenSearchResultCard extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 4),
-        Expanded(
-          flex: 38,
-          child: _buildRegisterAction(context),
-        ),
+        Expanded(flex: 38, child: _buildRegisterAction(context)),
       ],
     );
   }
@@ -255,8 +251,8 @@ class RakutenSearchResultCard extends StatelessWidget {
       final accent = isDone
           ? RoomColleListAccent.done
           : isCandidate
-              ? RoomColleListAccent.candidate
-              : AppColors.textTertiary;
+          ? RoomColleListAccent.candidate
+          : AppColors.textTertiary;
       return Icon(
         Icons.block_rounded,
         size: 22,
@@ -271,9 +267,7 @@ class RakutenSearchResultCard extends StatelessWidget {
             ? Icons.check_circle_rounded
             : Icons.radio_button_unchecked_rounded,
         size: 24,
-        color: isSelected
-            ? AppColors.accentPrimary
-            : AppColors.textSecondary,
+        color: isSelected ? AppColors.accentPrimary : AppColors.textSecondary,
       ),
     );
   }
@@ -325,8 +319,9 @@ class _SearchCardStatusLozenge extends StatelessWidget {
         ? HomeScreenColors.metricRoleDoneIcon
         : HomeScreenColors.metricRoleCandidateIcon;
     final label = isDone ? 'コレ済' : '候補に登録済';
-    final icon =
-        isDone ? Icons.verified_outlined : Icons.bookmark_added_outlined;
+    final icon = isDone
+        ? Icons.verified_outlined
+        : Icons.bookmark_added_outlined;
     return Padding(
       padding: const EdgeInsets.only(top: 4),
       child: Align(
@@ -346,12 +341,12 @@ class _SearchCardStatusLozenge extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: fg,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 10,
-                      height: 1.1,
-                      letterSpacing: -0.05,
-                    ),
+                  color: fg,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 10,
+                  height: 1.1,
+                  letterSpacing: -0.05,
+                ),
               ),
             ],
           ),

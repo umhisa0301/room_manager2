@@ -65,7 +65,8 @@ class _AppShellState extends State<AppShell> {
                     label: 'ホーム',
                     tooltip: null,
                     isSelected: idx == 0,
-                    onTap: () => context.read<AppShellController>().selectTab(0),
+                    onTap: () =>
+                        context.read<AppShellController>().selectTab(0),
                   ),
                 ),
                 Expanded(
@@ -75,7 +76,8 @@ class _AppShellState extends State<AppShell> {
                     label: 'ROOMコレ',
                     tooltip: 'ROOMコレ管理',
                     isSelected: idx == 1,
-                    onTap: () => context.read<AppShellController>().selectTab(1),
+                    onTap: () =>
+                        context.read<AppShellController>().selectTab(1),
                   ),
                 ),
                 Expanded(
@@ -85,7 +87,8 @@ class _AppShellState extends State<AppShell> {
                     label: 'コメント',
                     tooltip: null,
                     isSelected: idx == 2,
-                    onTap: () => context.read<AppShellController>().selectTab(2),
+                    onTap: () =>
+                        context.read<AppShellController>().selectTab(2),
                   ),
                 ),
                 Expanded(
@@ -95,7 +98,8 @@ class _AppShellState extends State<AppShell> {
                     label: '活動',
                     tooltip: null,
                     isSelected: idx == 3,
-                    onTap: () => context.read<AppShellController>().selectTab(3),
+                    onTap: () =>
+                        context.read<AppShellController>().selectTab(3),
                   ),
                 ),
                 Expanded(
@@ -105,7 +109,8 @@ class _AppShellState extends State<AppShell> {
                     label: 'マイページ',
                     tooltip: null,
                     isSelected: idx == 4,
-                    onTap: () => context.read<AppShellController>().selectTab(4),
+                    onTap: () =>
+                        context.read<AppShellController>().selectTab(4),
                   ),
                 ),
               ],

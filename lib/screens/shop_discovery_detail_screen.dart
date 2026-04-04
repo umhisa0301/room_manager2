@@ -10,12 +10,7 @@ import '../theme/app_theme.dart';
 import '../widgets/rakuten_search_result_card.dart';
 import 'saved_shops_screen.dart';
 
-enum _ShopDetailSort {
-  reviewCount,
-  reviewAverage,
-  priceHigh,
-  priceLow,
-}
+enum _ShopDetailSort { reviewCount, reviewAverage, priceHigh, priceLow }
 
 class ShopDiscoveryDetailScreen extends StatefulWidget {
   const ShopDiscoveryDetailScreen({
@@ -110,9 +105,9 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
             child: Text(
               '使い方: 商品検索画面と同じく、各商品カードから「コレ候補へ登録」できます。',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.4,
-                  ),
+                color: AppColors.textSecondary,
+                height: 1.4,
+              ),
             ),
           ),
           Padding(
@@ -122,9 +117,9 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                 Text(
                   '商品一覧 (${items.length}件)',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 const Spacer(),
                 _SortMenu(
@@ -146,9 +141,9 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                         '検索条件を変えて再発掘すると、商品が表示される場合があります。',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.textSecondary,
-                              height: 1.5,
-                            ),
+                          color: AppColors.textSecondary,
+                          height: 1.5,
+                        ),
                       ),
                     ),
                   );
@@ -167,9 +162,9 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                         final err = await managed.registerCandidate(item);
                         if (!context.mounted) return;
                         if (err != null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(err)),
-                          );
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(err)));
                         }
                       },
                     );
@@ -186,9 +181,9 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
   Future<void> _openShopUrl(BuildContext context) async {
     final url = widget.summary.shopUrl.trim();
     if (url.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('ショップURLが見つかりません')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('ショップURLが見つかりません')));
       return;
     }
     await AppActionService.openUrl(context, url: url);
@@ -225,17 +220,17 @@ class _ShopDetailHeader extends StatelessWidget {
           Text(
             shopName,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                ),
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             'このショップの商品を比較しながら、コレ候補登録まで進められます。',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.4,
-                ),
+              color: AppColors.textSecondary,
+              height: 1.4,
+            ),
           ),
           const SizedBox(height: 8),
           Row(
@@ -243,7 +238,9 @@ class _ShopDetailHeader extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onSaveToggle,
                 icon: Icon(
-                  isSaved ? Icons.bookmark_added_rounded : Icons.bookmark_add_outlined,
+                  isSaved
+                      ? Icons.bookmark_added_rounded
+                      : Icons.bookmark_add_outlined,
                   size: 18,
                 ),
                 label: Text(isSaved ? '保存済み' : 'このショップを保存'),
@@ -275,10 +272,7 @@ class _ShopDetailHeader extends StatelessWidget {
 }
 
 class _SortMenu extends StatelessWidget {
-  const _SortMenu({
-    required this.value,
-    required this.onChanged,
-  });
+  const _SortMenu({required this.value, required this.onChanged});
 
   final _ShopDetailSort value;
   final ValueChanged<_ShopDetailSort> onChanged;

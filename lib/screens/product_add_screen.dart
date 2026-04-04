@@ -37,9 +37,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
           context.read<ProductListProvider>().addProduct(product);
           if (context.mounted) {
             Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('商品を追加しました')),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('商品を追加しました')));
           }
         },
       ),

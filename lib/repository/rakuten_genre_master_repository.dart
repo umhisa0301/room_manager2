@@ -10,7 +10,8 @@ abstract class RakutenGenreMasterRepository {
 }
 
 /// ローカル定数リストをソースとする実装。
-class LocalRakutenGenreMasterRepository implements RakutenGenreMasterRepository {
+class LocalRakutenGenreMasterRepository
+    implements RakutenGenreMasterRepository {
   LocalRakutenGenreMasterRepository();
 
   List<RakutenGenreMasterEntry>? _all;
@@ -18,10 +19,9 @@ class LocalRakutenGenreMasterRepository implements RakutenGenreMasterRepository 
 
   @override
   List<RakutenGenreMasterEntry> fetchAll() {
-    return _all ??=
-        List<RakutenGenreMasterEntry>.unmodifiable(
-          RakutenGenreMasterLocalData.entries,
-        );
+    return _all ??= List<RakutenGenreMasterEntry>.unmodifiable(
+      RakutenGenreMasterLocalData.entries,
+    );
   }
 
   @override

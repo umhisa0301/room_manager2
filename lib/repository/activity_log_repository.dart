@@ -20,7 +20,9 @@ class ActivityLogRepository {
       if (decoded is! List) return [];
       final result = <ActivityLog>[];
       for (final item in decoded) {
-        final log = ActivityLog.fromJson(item is Map<String, dynamic> ? item : null);
+        final log = ActivityLog.fromJson(
+          item is Map<String, dynamic> ? item : null,
+        );
         if (log != null) result.add(log);
       }
       return result;
@@ -38,4 +40,3 @@ class ActivityLogRepository {
     }
   }
 }
-

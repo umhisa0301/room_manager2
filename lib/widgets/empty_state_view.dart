@@ -27,7 +27,8 @@ class EmptyStateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final effectiveIcon = icon ?? Icons.inbox_outlined;
-    final effectiveColor = iconColor ?? AppColors.accentPrimary.withValues(alpha: 0.6);
+    final effectiveColor =
+        iconColor ?? AppColors.accentPrimary.withValues(alpha: 0.6);
 
     return Center(
       child: Padding(
@@ -47,9 +48,9 @@ class EmptyStateView extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
             ),
             if (detail != null && detail!.isNotEmpty) ...[
               const SizedBox(height: AppDimensions.spacingSm),
@@ -57,8 +58,8 @@ class EmptyStateView extends StatelessWidget {
                 detail!,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                  color: AppColors.textSecondary,
+                ),
               ),
             ],
           ],

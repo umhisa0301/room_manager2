@@ -4,11 +4,7 @@ import '../theme/app_theme.dart';
 
 /// アプリ共通：画面中央のローディング（説明付き）。
 class AppScreenLoadingCenter extends StatelessWidget {
-  const AppScreenLoadingCenter({
-    super.key,
-    required this.title,
-    this.subtitle,
-  });
+  const AppScreenLoadingCenter({super.key, required this.title, this.subtitle});
 
   final String title;
   final String? subtitle;
@@ -31,10 +27,10 @@ class AppScreenLoadingCenter extends StatelessWidget {
               title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                    height: 1.35,
-                  ),
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+                height: 1.35,
+              ),
             ),
             if (subtitle != null && subtitle!.trim().isNotEmpty) ...[
               const SizedBox(height: 8),
@@ -42,9 +38,9 @@ class AppScreenLoadingCenter extends StatelessWidget {
                 subtitle!,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.45,
-                    ),
+                  color: AppColors.textSecondary,
+                  height: 1.45,
+                ),
               ),
             ],
           ],
@@ -87,19 +83,19 @@ class AppScreenErrorCenter extends StatelessWidget {
               title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                    height: 1.35,
-                  ),
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+                height: 1.35,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               message,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.45,
-                  ),
+                color: AppColors.textSecondary,
+                height: 1.45,
+              ),
             ),
             const SizedBox(height: 20),
             FilledButton.icon(
@@ -147,19 +143,19 @@ class AppScreenEmptyCenter extends StatelessWidget {
               title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                    height: 1.35,
-                  ),
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+                height: 1.35,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               body,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.45,
-                  ),
+                color: AppColors.textSecondary,
+                height: 1.45,
+              ),
             ),
             if (actions.isNotEmpty) ...[
               const SizedBox(height: 20),

@@ -6,10 +6,13 @@ class AppDimensions {
   // --- 角丸（大きめ）---
   /// カード・カード風コンテナ
   static const double radiusCard = 16.0;
+
   /// 検索バー・入力フィールド
   static const double radiusSearchBar = 24.0;
+
   /// チップ・タグ・ナビタップ領域
   static const double radiusChip = 20.0;
+
   /// ボタン
   static const double radiusButton = 12.0;
 
@@ -23,6 +26,7 @@ class AppDimensions {
 
   /// 画面左右のパディング
   static const double screenPaddingH = 20.0;
+
   /// 画面上下のパディング（SafeArea内）
   static const double screenPaddingV = 16.0;
 
