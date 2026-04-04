@@ -22,6 +22,9 @@ class RakutenSearchProvider extends ChangeNotifier {
   /// キーワード検索で API から商品は取れたが、登録済み除外・アプリ側条件の結果リストが空。
   bool _keywordSearchHadApiHitsButNoVisibleResults = false;
 
+  /// 直近の [searchWithCondition] で `excludeRegisteredProductIds` を使った場合のフェッチメタ（それ以外は null）。
+  RakutenKeywordManagedFetchSummary? _keywordManagedFetchSummary;
+
   RakutenSearchStatus get status => _status;
   List<RakutenSearchItem> get results => _results;
   String get errorMessage => _errorMessage;
@@ -29,6 +32,27 @@ class RakutenSearchProvider extends ChangeNotifier {
 
   bool get keywordSearchHadApiHitsButNoVisibleResults =>
       _keywordSearchHadApiHitsButNoVisibleResults;
+
+  RakutenKeywordManagedFetchSummary? get keywordManagedFetchSummary =>
+      _keywordManagedFetchSummary;
+
+  /// 管理除外パスで目標件数に届かなかったときの短文（キーワードタブ向け）。届いている・該当なしは null。
+  String? keywordManagedVisibleShortfallNote() {
+    final s = _keywordManagedFetchSummary;
+    if (s == null) return null;
+    final n = _results.length;
+    if (n >= s.targetVisibleCap) return null;
+    switch (s.stopReason) {
+      case RakutenKeywordSearchStopReason.reachedTarget:
+        return null;
+      case RakutenKeywordSearchStopReason.partialFetchFailure:
+        return '途中の取得に失敗したため、表示は$n件です。しばらくして再検索してください。';
+      case RakutenKeywordSearchStopReason.maxPagesReached:
+        return '取得ページ上限に達しました。除外後の表示は$n件です。';
+      case RakutenKeywordSearchStopReason.apiNoMoreResults:
+        return '登録済・保存ショップを除くと、この条件で表示できる新しい候補は$n件でした。';
+    }
+  }
 
   /// 直近の成功結果のうち `affiliateUrl` が空でない件数（API側のアフィリエイト応答の目安）。
   int get resultsWithAffiliateUrlCount =>
@@ -44,6 +68,7 @@ class RakutenSearchProvider extends ChangeNotifier {
       _errorMessage = '';
       _lastKeyword = '';
       _keywordSearchHadApiHitsButNoVisibleResults = false;
+      _keywordManagedFetchSummary = null;
       notifyListeners();
       return;
     }
@@ -53,6 +78,7 @@ class RakutenSearchProvider extends ChangeNotifier {
   Future<void> searchWithCondition(
     RakutenProductSearchCondition condition, {
     Set<String>? excludeRegisteredProductIds,
+    Set<String>? excludeSavedShopCodes,
   }) async {
     final normalized = condition.normalized();
     // キーワード検索だけでなく、genreId 指定のみの検索（ジャンル検索・ショップ発掘）も許可する。
@@ -67,6 +93,7 @@ class RakutenSearchProvider extends ChangeNotifier {
       _errorMessage = '';
       _lastKeyword = '';
       _keywordSearchHadApiHitsButNoVisibleResults = false;
+      _keywordManagedFetchSummary = null;
       notifyListeners();
       return;
     }
@@ -74,6 +101,7 @@ class RakutenSearchProvider extends ChangeNotifier {
     _errorMessage = '';
     _lastKeyword = normalized.keyword;
     _keywordSearchHadApiHitsButNoVisibleResults = false;
+    _keywordManagedFetchSummary = null;
     notifyListeners();
 
     try {
@@ -82,12 +110,16 @@ class RakutenSearchProvider extends ChangeNotifier {
         final result = await _repository.searchKeywordWithManagedExclusion(
           condition: normalized,
           excludeRegisteredProductIds: excludeRegisteredProductIds,
+          excludeSavedShopCodes: excludeSavedShopCodes ?? const {},
         );
         fetched = result.items;
         _keywordSearchHadApiHitsButNoVisibleResults =
             result.receivedAnyItemFromApi && result.items.isEmpty;
+        _keywordManagedFetchSummary =
+            RakutenKeywordManagedFetchSummary.from(result);
       } else {
         fetched = await _repository.search(condition: normalized);
+        _keywordManagedFetchSummary = null;
       }
       _results = fetched;
       _status = RakutenSearchStatus.success;
@@ -106,6 +138,7 @@ class RakutenSearchProvider extends ChangeNotifier {
       _status = RakutenSearchStatus.error;
       _errorMessage = _userFacingError(e);
       _keywordSearchHadApiHitsButNoVisibleResults = false;
+      _keywordManagedFetchSummary = null;
     }
     notifyListeners();
   }
@@ -137,6 +170,7 @@ class RakutenSearchProvider extends ChangeNotifier {
     _errorMessage = '';
     _lastKeyword = '';
     _keywordSearchHadApiHitsButNoVisibleResults = false;
+    _keywordManagedFetchSummary = null;
     notifyListeners();
   }
 }

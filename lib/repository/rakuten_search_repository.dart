@@ -4,15 +4,65 @@ import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/rakuten_api_service.dart';
 
+/// キーワード検索（管理除外パス）のページング終了理由。
+enum RakutenKeywordSearchStopReason {
+  /// 表示目標件数に達して打ち切り
+  reachedTarget,
+
+  /// 楽天API側に次のページがない（空レスポンス or 最終ページ）
+  apiNoMoreResults,
+
+  /// アプリ側の最大取得ページに達した
+  maxPagesReached,
+
+  /// 先頭以外のページで取得エラー
+  partialFetchFailure,
+}
+
 /// キーワード検索で登録済み商品を除外して集めた結果（API に1件でも取れたかのフラグ付き）。
 class RakutenKeywordSearchRepositoryResult {
   const RakutenKeywordSearchRepositoryResult({
     required this.items,
     required this.receivedAnyItemFromApi,
+    required this.targetVisibleCount,
+    required this.apiPagesFetched,
+    required this.stopReason,
   });
 
   final List<RakutenSearchItem> items;
   final bool receivedAnyItemFromApi;
+
+  /// [searchKeywordWithManagedExclusion] に渡した表示目標件数。
+  final int targetVisibleCount;
+
+  /// 楽天APIからレスポンスを受け取れたページ数（パース成否は問わない）。
+  final int apiPagesFetched;
+
+  /// ページングを終えた理由。
+  final RakutenKeywordSearchStopReason stopReason;
+}
+
+/// キーワード検索（管理除外パス）の直近フェッチのメタ情報（画面の件数説明用）。
+class RakutenKeywordManagedFetchSummary {
+  const RakutenKeywordManagedFetchSummary({
+    required this.targetVisibleCap,
+    required this.apiPagesFetched,
+    required this.stopReason,
+  });
+
+  factory RakutenKeywordManagedFetchSummary.from(
+    RakutenKeywordSearchRepositoryResult r,
+  ) {
+    return RakutenKeywordManagedFetchSummary(
+      targetVisibleCap: r.targetVisibleCount,
+      apiPagesFetched: r.apiPagesFetched,
+      stopReason: r.stopReason,
+    );
+  }
+
+  final int targetVisibleCap;
+  final int apiPagesFetched;
+  final RakutenKeywordSearchStopReason stopReason;
 }
 
 /// APIレスポンスをアプリ用モデルへ変換する責務。
@@ -98,7 +148,8 @@ class RakutenSearchRepository {
     }
   }
 
-  /// キーワード検索タブ専用: [excludeRegisteredProductIds]（楽天 itemCode / [RakutenSearchItem.productId]）を除いたうえで、
+  /// キーワード検索タブ専用: [excludeRegisteredProductIds]（楽天 itemCode / [RakutenSearchItem.productId]）と
+  /// [excludeSavedShopCodes]（保存ショップの shopCode）を除いたうえで、
   /// 表示候補が [targetVisibleCount] 件に達するか API が尽きるまで、ページを **1ページずつ** 順取得する。
   ///
   /// - 1ページあたり [hitsPerPage] 件（最大30）、最大 [maxFetchPages] ページ（同一ページは取得しない）
@@ -108,6 +159,7 @@ class RakutenSearchRepository {
   searchKeywordWithManagedExclusion({
     required RakutenProductSearchCondition condition,
     required Set<String> excludeRegisteredProductIds,
+    Set<String> excludeSavedShopCodes = const {},
     int targetVisibleCount = keywordManagedExclusionTargetVisibleCount,
     int hitsPerPage = 30,
     int startPage = 1,
@@ -126,11 +178,17 @@ class RakutenSearchRepository {
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
         .toSet();
+    final savedShopExclude = excludeSavedShopCodes
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toSet();
 
     final visible = <RakutenSearchItem>[];
     final seenIds = <String>{};
     var receivedAnyFromApi = false;
     var page = startPage;
+    var apiPagesFetched = 0;
+    RakutenKeywordSearchStopReason? explicitStop;
 
     while (visible.length < targetVisibleCount && page <= maxFetchPages) {
       try {
@@ -142,6 +200,7 @@ class RakutenSearchRepository {
           page: page,
           hits: hitsPerPage,
         );
+        apiPagesFetched++;
         final items = raw['Items'];
         if (items is! List || items.isEmpty) {
           if (kDebugMode) {
@@ -149,6 +208,7 @@ class RakutenSearchRepository {
               '[Rakuten] keywordManagedExclusion page=$page empty Items — stop',
             );
           }
+          explicitStop = RakutenKeywordSearchStopReason.apiNoMoreResults;
           break;
         }
 
@@ -166,6 +226,10 @@ class RakutenSearchRepository {
             if (seenIds.contains(id)) continue;
             final passed = _applyAppSideFilters([item], normalized);
             if (passed.isEmpty) continue;
+            final shopCode = item.shopCode.trim();
+            if (shopCode.isNotEmpty && savedShopExclude.contains(shopCode)) {
+              continue;
+            }
             seenIds.add(id);
             visible.add(item);
           } catch (e, st) {
@@ -185,9 +249,15 @@ class RakutenSearchRepository {
           );
         }
 
-        if (visible.length >= targetVisibleCount) break;
+        if (visible.length >= targetVisibleCount) {
+          explicitStop = RakutenKeywordSearchStopReason.reachedTarget;
+          break;
+        }
         final isLastPage = pageLen < hitsPerPage;
-        if (isLastPage) break;
+        if (isLastPage) {
+          explicitStop = RakutenKeywordSearchStopReason.apiNoMoreResults;
+          break;
+        }
         page++;
       } catch (e, st) {
         if (kDebugMode) {
@@ -197,14 +267,23 @@ class RakutenSearchRepository {
         if (page == startPage) {
           rethrow;
         }
+        explicitStop = RakutenKeywordSearchStopReason.partialFetchFailure;
         break;
       }
     }
 
+    final stopReason =
+        explicitStop ??
+        (visible.length >= targetVisibleCount
+            ? RakutenKeywordSearchStopReason.reachedTarget
+            : (page > maxFetchPages
+                  ? RakutenKeywordSearchStopReason.maxPagesReached
+                  : RakutenKeywordSearchStopReason.apiNoMoreResults));
+
     if (kDebugMode) {
       debugPrint(
         '[Rakuten] keywordManagedExclusion done visible=${visible.length} '
-        'hadRaw=$receivedAnyFromApi',
+        'hadRaw=$receivedAnyFromApi pages=$apiPagesFetched stop=$stopReason',
       );
     }
 
@@ -213,6 +292,9 @@ class RakutenSearchRepository {
           ? visible.sublist(0, targetVisibleCount)
           : visible,
       receivedAnyItemFromApi: receivedAnyFromApi,
+      targetVisibleCount: targetVisibleCount,
+      apiPagesFetched: apiPagesFetched,
+      stopReason: stopReason,
     );
   }
 

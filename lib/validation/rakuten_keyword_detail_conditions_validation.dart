@@ -49,6 +49,34 @@ abstract final class RakutenKeywordDetailConditionsValidation {
   /// 楽天レビューは一般に5点満想定。
   static const double maxReviewAverageBound = 5.0;
 
+  /// キーワード検索タブ用。空・空白のみは検索不可。
+  static String? validateKeywordTabSearchKeyword(String raw) {
+    if (raw.trim().isEmpty) {
+      return '検索キーワードを入力してください。';
+    }
+    return null;
+  }
+
+  /// キーワード検索の実行前チェック（キーワード → 詳細フィールドの順）。
+  static String? validateKeywordSearchBeforeRun({
+    required String keywordText,
+    required String minPriceText,
+    required String maxPriceText,
+    required String minReviewCountText,
+    required String minReviewAverageText,
+    required String minCommentCountText,
+  }) {
+    final kwErr = validateKeywordTabSearchKeyword(keywordText);
+    if (kwErr != null) return kwErr;
+    return validateAll(
+      minPriceText: minPriceText,
+      maxPriceText: maxPriceText,
+      minReviewCountText: minReviewCountText,
+      minReviewAverageText: minReviewAverageText,
+      minCommentCountText: minCommentCountText,
+    );
+  }
+
   /// すべて問題なければ null。最初に見つかったエラー文言を返す。
   static String? validateAll({
     required String minPriceText,
@@ -128,13 +156,13 @@ abstract final class RakutenKeywordDetailConditionsValidation {
     if (t.isEmpty) return null;
     final v = int.tryParse(t);
     if (v == null) {
-      return '$fieldLabelは半角数字の整数で入力してください（空欄は指定なし）。';
+      return '$fieldLabelは半角数字のみで入力してください。空にすると指定なしです。';
     }
     if (v < 0) {
-      return '$fieldLabelは0以上で入力してください。';
+      return '$fieldLabelは0以上の数字にしてください。';
     }
     if (v > maxInclusive) {
-      return '$fieldLabelは$maxInclusive以下で入力してください。';
+      return '$fieldLabelが許容上限を超えています。値を小さくするか、空にして指定なしにしてください。';
     }
     return null;
   }
