@@ -8,6 +8,9 @@ enum RoomColleStaleCandidatePreset {
   /// 条件なし。
   none,
 
+  /// 登録から 3 暦日以上（まだコレ済でない候補向け）。
+  threePlus,
+
   /// 登録から 7 暦日以上。
   sevenPlus,
 
@@ -40,7 +43,8 @@ enum RoomColleRegisteredDatePreset {
 }
 
 RoomColleRegisteredDatePreset roomColleRegisteredDatePresetFromWire(
-    String? raw) {
+  String? raw,
+) {
   final t = raw?.trim();
   if (t == null || t.isEmpty) return RoomColleRegisteredDatePreset.all;
   return RoomColleRegisteredDatePreset.values.firstWhere(
@@ -69,7 +73,7 @@ class RoomColleListFilterCriteria {
   /// [RakutenManagedProduct.addedAt] に対するプリセット。
   final RoomColleRegisteredDatePreset registeredDatePreset;
 
-  /// 候補の「古い順」整理向け。単一選択（[none] / [sevenPlus] / [thirtyPlus]）。
+  /// 候補の「古い順」整理向け。単一選択（[none] / [threePlus] / [sevenPlus] / [thirtyPlus]）。
   /// コレ済タブの一覧では解釈されない（データは保持され得るが効果は候補のみ）。
   final RoomColleStaleCandidatePreset staleCandidatePreset;
 
@@ -117,10 +121,8 @@ class RoomColleListFilterCriteria {
   }) {
     return RoomColleListFilterCriteria(
       keyword: keyword ?? this.keyword,
-      registeredDatePreset:
-          registeredDatePreset ?? this.registeredDatePreset,
-      staleCandidatePreset:
-          staleCandidatePreset ?? this.staleCandidatePreset,
+      registeredDatePreset: registeredDatePreset ?? this.registeredDatePreset,
+      staleCandidatePreset: staleCandidatePreset ?? this.staleCandidatePreset,
       genreId: clearGenreId ? null : (genreId ?? this.genreId),
       priceMinYen: clearPriceMin ? null : (priceMinYen ?? this.priceMinYen),
       priceMaxYen: clearPriceMax ? null : (priceMaxYen ?? this.priceMaxYen),
@@ -243,6 +245,8 @@ bool _matchesStaleCandidatePreset(
     switch (preset) {
       case RoomColleStaleCandidatePreset.none:
         return true;
+      case RoomColleStaleCandidatePreset.threePlus:
+        return days >= 3;
       case RoomColleStaleCandidatePreset.sevenPlus:
         return days >= 7;
       case RoomColleStaleCandidatePreset.thirtyPlus:
@@ -252,11 +256,7 @@ bool _matchesStaleCandidatePreset(
   return false;
 }
 
-bool _matchesPrice(
-  RakutenManagedProduct e,
-  int? minYen,
-  int? maxYen,
-) {
+bool _matchesPrice(RakutenManagedProduct e, int? minYen, int? maxYen) {
   try {
     final p = e.itemPrice;
     if (minYen != null && p < minYen) return false;
@@ -294,9 +294,7 @@ List<RakutenManagedProduct> applyRoomColleListFilters(
       out.add(e);
     } catch (err, st) {
       assert(() {
-        debugPrint(
-          '[ROOMコレ] フィルタ判定スキップ productId=${e.productId}: $err\n$st',
-        );
+        debugPrint('[ROOMコレ] フィルタ判定スキップ productId=${e.productId}: $err\n$st');
         return true;
       }());
     }

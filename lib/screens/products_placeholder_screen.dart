@@ -350,8 +350,7 @@ class _RoomColleStaleOrganizeQuickRow extends StatelessWidget {
   final ValueChanged<RoomColleStaleCandidatePreset> onPresetChanged;
 
   void _commitTap(RoomColleStaleCandidatePreset target) {
-    final next =
-        preset == target ? RoomColleStaleCandidatePreset.none : target;
+    final next = preset == target ? RoomColleStaleCandidatePreset.none : target;
     onPresetChanged(next);
   }
 
@@ -368,8 +367,15 @@ class _RoomColleStaleOrganizeQuickRow extends StatelessWidget {
       HomeScreenColors.roomContentWellFill,
     );
 
+    final sel3 = preset == RoomColleStaleCandidatePreset.threePlus;
     final sel7 = preset == RoomColleStaleCandidatePreset.sevenPlus;
     final sel30 = preset == RoomColleStaleCandidatePreset.thirtyPlus;
+
+    final blue3 = const Color(0xFF1565C0);
+    final blue3Bg = Color.alphaBlend(
+      const Color(0xFFE3F2FD).withValues(alpha: 0.92),
+      HomeScreenColors.roomContentWellFill,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -397,6 +403,33 @@ class _RoomColleStaleOrganizeQuickRow extends StatelessWidget {
           runSpacing: _RoomColleUi.chipSpacing,
           children: [
             FilterChip(
+              label: const Text('3日以上'),
+              selected: sel3,
+              showCheckmark: false,
+              onSelected: (_) =>
+                  _commitTap(RoomColleStaleCandidatePreset.threePlus),
+              visualDensity: VisualDensity.compact,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              backgroundColor: HomeScreenColors.deckFill,
+              selectedColor: blue3Bg,
+              checkmarkColor: blue3,
+              labelStyle: TextStyle(
+                fontSize: 12,
+                fontWeight: sel3 ? FontWeight.w800 : FontWeight.w600,
+                color: sel3 ? blue3 : HomeScreenColors.titlePrimary,
+              ),
+              side: BorderSide(
+                color: sel3
+                    ? blue3.withValues(alpha: 0.55)
+                    : HomeScreenColors.deckOutline,
+                width: sel3 ? 1.25 : 1,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            ),
+            FilterChip(
               label: const Text('7日以上'),
               selected: sel7,
               showCheckmark: false,
@@ -413,7 +446,9 @@ class _RoomColleStaleOrganizeQuickRow extends StatelessWidget {
                 color: sel7 ? o7 : HomeScreenColors.titlePrimary,
               ),
               side: BorderSide(
-                color: sel7 ? o7.withValues(alpha: 0.55) : HomeScreenColors.deckOutline,
+                color: sel7
+                    ? o7.withValues(alpha: 0.55)
+                    : HomeScreenColors.deckOutline,
                 width: sel7 ? 1.25 : 1,
               ),
               shape: RoundedRectangleBorder(
@@ -527,7 +562,9 @@ bool _roomColleScreenHasExplicitRouteArgs(ProductsPlaceholderScreen widget) {
 int _roomColleStale7PlusCandidateCount(RakutenManagedProductProvider p) {
   final now = DateTime.now();
   var n = 0;
-  for (final e in p.sortedItemsForStatus(RakutenManagedProductStatus.candidate)) {
+  for (final e in p.sortedItemsForStatus(
+    RakutenManagedProductStatus.candidate,
+  )) {
     try {
       if (RoomColleCandidateStaleSpec.calendarDaysElapsed(e.addedAt, now) >=
           7) {
@@ -552,8 +589,9 @@ List<String> _roomColleDistinctGenreIds(List<RakutenManagedProduct> items) {
 }
 
 String _roomColleGenreFilterMenuText(String id) {
-  final raw =
-      RakutenGenreMasterService.instance.roomColleGenreFilterMenuLabel(id);
+  final raw = RakutenGenreMasterService.instance.roomColleGenreFilterMenuLabel(
+    id,
+  );
   if (raw.length > 42) return '${raw.substring(0, 40)}…';
   return raw;
 }
@@ -598,10 +636,11 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
   }
   final g = c.genreId?.trim();
   if (g != null && g.isNotEmpty) {
-    final labelFull =
-        RakutenGenreMasterService.instance.roomColleGenreFilterMenuLabel(g);
-    final short =
-        labelFull.length > 22 ? '${labelFull.substring(0, 20)}…' : labelFull;
+    final labelFull = RakutenGenreMasterService.instance
+        .roomColleGenreFilterMenuLabel(g);
+    final short = labelFull.length > 22
+        ? '${labelFull.substring(0, 20)}…'
+        : labelFull;
     out.add(
       Chip(
         label: Text('ジャンル: $short'),
@@ -645,6 +684,24 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
   }
   switch (c.staleCandidatePreset) {
     case RoomColleStaleCandidatePreset.none:
+      break;
+    case RoomColleStaleCandidatePreset.threePlus:
+      out.add(
+        Chip(
+          label: const Text('整理対象: 3日以上'),
+          visualDensity: VisualDensity.compact,
+          backgroundColor: HomeScreenColors.roomMetricTileFill,
+          side: BorderSide(
+            color: const Color(0xFF1565C0).withValues(alpha: 0.45),
+          ),
+          labelStyle: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF1565C0),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+        ),
+      );
       break;
     case RoomColleStaleCandidatePreset.sevenPlus:
       out.add(
@@ -1035,6 +1092,23 @@ class _RoomColleFilterEditorSheetState
                 spacing: _RoomColleUi.chipSpacing,
                 runSpacing: _RoomColleUi.chipSpacing,
                 children: [
+                  FilterChip(
+                    label: const Text('3日以上'),
+                    selected:
+                        _staleCandidateDraft ==
+                        RoomColleStaleCandidatePreset.threePlus,
+                    showCheckmark: false,
+                    onSelected: (_) {
+                      setState(() {
+                        _staleCandidateDraft =
+                            _staleCandidateDraft ==
+                                RoomColleStaleCandidatePreset.threePlus
+                            ? RoomColleStaleCandidatePreset.none
+                            : RoomColleStaleCandidatePreset.threePlus;
+                      });
+                    },
+                    visualDensity: VisualDensity.compact,
+                  ),
                   FilterChip(
                     label: const Text('7日以上'),
                     selected:
@@ -1802,11 +1876,19 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         : null;
 
     _persistSearchDebounce?.cancel();
+    final staleFromIntent = intent.candidateStalePreset;
     setState(() {
       _candidateExcludeUrlNotReady = false;
       _candidateSearchController.clear();
       _doneSearchController.clear();
-      _candidateListFilters = RoomColleListFilterCriteria.defaults;
+      _candidateListFilters = RoomColleListFilterCriteria.defaults.copyWith(
+        staleCandidatePreset:
+            idx == 0 &&
+                staleFromIntent != null &&
+                staleFromIntent != RoomColleStaleCandidatePreset.none
+            ? staleFromIntent
+            : RoomColleStaleCandidatePreset.none,
+      );
       _doneListFilters = RoomColleListFilterCriteria.defaults;
       if (idx == 0) {
         _doneLocalDayFilter = null;
@@ -2164,8 +2246,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     children: [
                       Consumer<RakutenManagedProductProvider>(
                         builder: (context, managed, _) {
-                          final pile =
-                              _roomColleStale7PlusCandidateCount(managed);
+                          final pile = _roomColleStale7PlusCandidateCount(
+                            managed,
+                          );
                           if (pile < 5 && _stalePileBannerDismissed) {
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               if (!mounted || !_stalePileBannerDismissed) {
@@ -2187,7 +2270,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             ),
                             child: _RoomColleStalePileNoticeBar(
                               onDismiss: () {
-                                setState(() => _stalePileBannerDismissed = true);
+                                setState(
+                                  () => _stalePileBannerDismissed = true,
+                                );
                                 _persistRoomColleUiNow();
                               },
                             ),
@@ -2235,9 +2320,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                     _candidateListFilters.staleCandidatePreset,
                                 onPresetChanged: _setCandidateStalePreset,
                               ),
-                              SizedBox(
-                                height: _RoomColleUi.gapFieldStack,
-                              ),
+                              SizedBox(height: _RoomColleUi.gapFieldStack),
                               _RoomColleInlineMoreFiltersRow(
                                 onOpenMoreFilters: () =>
                                     _openRoomColleFilterEditor(

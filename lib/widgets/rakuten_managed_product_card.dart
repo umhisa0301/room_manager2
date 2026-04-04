@@ -76,8 +76,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     final titleStyle = RoomColleProductListCardLayout.titleTextStyle(theme);
     final priceStyle = RoomColleProductListCardLayout.priceTextStyle(theme);
     final shopStyle = RoomColleProductListCardLayout.shopTextStyle(theme);
-    final tsInstant =
-        isCandidate ? product.addedAt : product.doneAt;
+    final tsInstant = isCandidate ? product.addedAt : product.doneAt;
     final timestampStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
       color: const Color(0xFF888888),
       height: 1.15,
@@ -85,14 +84,10 @@ class RakutenManagedProductCard extends StatelessWidget {
       fontWeight: FontWeight.w400,
     );
     final staleSpec = isCandidate
-        ? RoomColleCandidateStaleSpec.resolve(
-            product.addedAt,
-            DateTime.now(),
-          )
+        ? RoomColleCandidateStaleSpec.resolve(product.addedAt, DateTime.now())
         : null;
-    final genreLineBase = shopStyle ??
-        theme.textTheme.bodySmall ??
-        const TextStyle();
+    final genreLineBase =
+        shopStyle ?? theme.textTheme.bodySmall ?? const TextStyle();
     final genreLineStyle = genreLineBase.copyWith(
       fontSize: (genreLineBase.fontSize ?? 12) - 1,
       color: theme.colorScheme.onSurfaceVariant,
@@ -119,7 +114,8 @@ class RakutenManagedProductCard extends StatelessWidget {
                       children: [
                         Text(
                           _safeItemName(product),
-                          maxLines: RoomColleProductListCardLayout.titleMaxLines,
+                          maxLines:
+                              RoomColleProductListCardLayout.titleMaxLines,
                           overflow: TextOverflow.ellipsis,
                           style: titleStyle,
                         ),
@@ -140,8 +136,9 @@ class RakutenManagedProductCard extends StatelessWidget {
                         if (product.genreId.trim().isNotEmpty) ...[
                           const SizedBox(height: 2),
                           Text(
-                            RakutenGenreMasterService.instance
-                                .genreDisplayName(product.genreId),
+                            RakutenGenreMasterService.instance.genreDisplayName(
+                              product.genreId,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: genreLineStyle,
@@ -158,7 +155,9 @@ class RakutenManagedProductCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 4),
+                  _feedbackToolbar(context),
+                  const SizedBox(height: 4),
                   if (isCandidate)
                     _candidateActions(context)
                   else
@@ -169,6 +168,113 @@ class RakutenManagedProductCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _feedbackToolbar(BuildContext context) {
+    final prov = context.read<RakutenManagedProductProvider>();
+    final liked = product.feedbackLikedAt != null;
+    final sold = product.feedbackSoldAt != null;
+    final weak = product.feedbackWeakAt != null;
+    ButtonStyle chip(bool on, Color accent) {
+      return TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+        minimumSize: Size.zero,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        foregroundColor: on ? accent : AppColors.textSecondary,
+        backgroundColor: on ? accent.withValues(alpha: 0.12) : null,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(
+            color: on ? accent.withValues(alpha: 0.45) : AppColors.divider,
+          ),
+        ),
+      );
+    }
+
+    return Row(
+      children: [
+        Expanded(
+          child: TextButton(
+            style: chip(liked, const Color(0xFF2E7D32)),
+            onPressed: () async {
+              final err = await prov.toggleFeedbackLiked(
+                context,
+                product.productId,
+              );
+              if (!context.mounted) return;
+              if (err != null) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(err)));
+              }
+            },
+            child: Text(
+              liked ? '反応◎' : '反応',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 10.5,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 4),
+        Expanded(
+          child: TextButton(
+            style: chip(sold, const Color(0xFFF9A825)),
+            onPressed: () async {
+              final err = await prov.toggleFeedbackSold(
+                context,
+                product.productId,
+              );
+              if (!context.mounted) return;
+              if (err != null) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(err)));
+              }
+            },
+            child: Text(
+              sold ? '売れた◎' : '売れた',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 10.5,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 4),
+        Expanded(
+          child: TextButton(
+            style: chip(weak, const Color(0xFF757575)),
+            onPressed: () async {
+              final err = await prov.toggleFeedbackWeak(
+                context,
+                product.productId,
+              );
+              if (!context.mounted) return;
+              if (err != null) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(err)));
+              }
+            },
+            child: Text(
+              weak ? '微妙◎' : '微妙',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 10.5,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -291,6 +397,7 @@ class RakutenManagedProductCard extends StatelessWidget {
   }
 
   Widget _doneActions(BuildContext context, Color stateAccent) {
+    final provider = context.read<RakutenManagedProductProvider>();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -298,12 +405,18 @@ class RakutenManagedProductCard extends StatelessWidget {
           flex: 38,
           child: FilledButton(
             style: RoomColleListCardActionStyle.rakutenFilled(),
-            onPressed: () => AppActionService.openUrl(
-              context,
-              url: product.itemUrl.trim().isNotEmpty
-                  ? product.itemUrl.trim()
-                  : product.browserLaunchUrl,
-            ),
+            onPressed: () async {
+              final err = await provider.openRakutenItemPage(
+                context,
+                product.productId,
+              );
+              if (!context.mounted) return;
+              if (err != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(err)),
+                );
+              }
+            },
             child: RoomColleListCardActionStyle.compactActionLabel(
               icon: Icons.open_in_new_rounded,
               label: '楽天で見る',

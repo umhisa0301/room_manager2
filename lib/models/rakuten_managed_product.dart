@@ -15,12 +15,7 @@ enum RakutenManagedProductStatus {
 }
 
 /// 商品ページからの URL 抽出ジョブの状態。
-enum RakutenUrlExtractionStatus {
-  notStarted,
-  extracting,
-  success,
-  failed,
-}
+enum RakutenUrlExtractionStatus { notStarted, extracting, success, failed }
 
 /// 楽天検索結果を元にローカル保存する用の商品エンティティ（API生JSONは保持しない）。
 class RakutenManagedProduct {
@@ -44,6 +39,9 @@ class RakutenManagedProduct {
     required this.extractionErrorMessage,
     this.extractedAt,
     this.doneAt,
+    this.feedbackLikedAt,
+    this.feedbackSoldAt,
+    this.feedbackWeakAt,
   });
 
   /// 楽天の itemCode（アプリ内の [RakutenSearchItem.productId] と同一）。
@@ -73,6 +71,15 @@ class RakutenManagedProduct {
   /// コレ済に移した日時（候補時は null）。
   final DateTime? doneAt;
 
+  /// ユーザー評価「反応よかった」を付けた日時。
+  final DateTime? feedbackLikedAt;
+
+  /// ユーザー評価「売れた」を付けた日時。
+  final DateTime? feedbackSoldAt;
+
+  /// ユーザー評価「微妙」を付けた日時。
+  final DateTime? feedbackWeakAt;
+
   /// ブラウザで開くURL（アフィリエイトURLを優先）。
   String get browserLaunchUrl =>
       affiliateUrl.trim().isNotEmpty ? affiliateUrl.trim() : itemUrl;
@@ -99,6 +106,12 @@ class RakutenManagedProduct {
     bool clearExtractedAt = false,
     DateTime? doneAt,
     bool clearDoneAt = false,
+    DateTime? feedbackLikedAt,
+    bool clearFeedbackLiked = false,
+    DateTime? feedbackSoldAt,
+    bool clearFeedbackSold = false,
+    DateTime? feedbackWeakAt,
+    bool clearFeedbackWeak = false,
   }) {
     return RakutenManagedProduct(
       productId: productId ?? this.productId,
@@ -121,6 +134,15 @@ class RakutenManagedProduct {
           extractionErrorMessage ?? this.extractionErrorMessage,
       extractedAt: clearExtractedAt ? null : (extractedAt ?? this.extractedAt),
       doneAt: clearDoneAt ? null : (doneAt ?? this.doneAt),
+      feedbackLikedAt: clearFeedbackLiked
+          ? null
+          : (feedbackLikedAt ?? this.feedbackLikedAt),
+      feedbackSoldAt: clearFeedbackSold
+          ? null
+          : (feedbackSoldAt ?? this.feedbackSoldAt),
+      feedbackWeakAt: clearFeedbackWeak
+          ? null
+          : (feedbackWeakAt ?? this.feedbackWeakAt),
     );
   }
 
@@ -150,6 +172,9 @@ class RakutenManagedProduct {
       extractionErrorMessage: '',
       extractedAt: null,
       doneAt: null,
+      feedbackLikedAt: null,
+      feedbackSoldAt: null,
+      feedbackWeakAt: null,
     );
   }
 
@@ -174,6 +199,9 @@ class RakutenManagedProduct {
       'extractionErrorMessage': extractionErrorMessage,
       'extractedAt': extractedAt?.toIso8601String(),
       'doneAt': doneAt?.toIso8601String(),
+      'feedbackLikedAt': feedbackLikedAt?.toIso8601String(),
+      'feedbackSoldAt': feedbackSoldAt?.toIso8601String(),
+      'feedbackWeakAt': feedbackWeakAt?.toIso8601String(),
     };
   }
 
@@ -273,6 +301,22 @@ class RakutenManagedProduct {
       doneAt = parseDt(dAt);
     }
 
+    DateTime? feedbackLikedAt;
+    final fl = json['feedbackLikedAt']?.toString();
+    if (fl != null && fl.isNotEmpty) {
+      feedbackLikedAt = parseDt(fl);
+    }
+    DateTime? feedbackSoldAt;
+    final fs = json['feedbackSoldAt']?.toString();
+    if (fs != null && fs.isNotEmpty) {
+      feedbackSoldAt = parseDt(fs);
+    }
+    DateTime? feedbackWeakAt;
+    final fw = json['feedbackWeakAt']?.toString();
+    if (fw != null && fw.isNotEmpty) {
+      feedbackWeakAt = parseDt(fw);
+    }
+
     final statusRaw = (json['status'] ?? '').toString().trim();
     var status = RakutenManagedProductStatus.values.firstWhere(
       (e) => e.name == statusRaw,
@@ -306,10 +350,12 @@ class RakutenManagedProduct {
       addedAt: addedAt,
       extractedUrl: (json['extractedUrl'] ?? '').toString(),
       extractionStatus: extractionStatus,
-      extractionErrorMessage:
-          (json['extractionErrorMessage'] ?? '').toString(),
+      extractionErrorMessage: (json['extractionErrorMessage'] ?? '').toString(),
       extractedAt: extractedAt,
       doneAt: doneAt,
+      feedbackLikedAt: feedbackLikedAt,
+      feedbackSoldAt: feedbackSoldAt,
+      feedbackWeakAt: feedbackWeakAt,
     );
   }
 }

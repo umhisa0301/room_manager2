@@ -186,6 +186,14 @@ class RakutenManagedProductRepository {
     });
   }
 
+  /// フィードバックフラグなど、一覧要素の任意更新。
+  Future<void> updateManagedProduct(
+    String productId,
+    RakutenManagedProduct Function(RakutenManagedProduct e) mapper,
+  ) async {
+    await _mapProduct(productId, mapper);
+  }
+
   /// コレ候補を永続化一覧から削除する（再検索からの登録を再度可能にする）。
   Future<void> removeCandidateProduct(String productId) async {
     final list = List<RakutenManagedProduct>.from(loadAll());
@@ -213,8 +221,9 @@ class RakutenManagedProductRepository {
 
   Future<void> _saveAll(List<RakutenManagedProduct> items) async {
     try {
-      final encoded =
-          jsonEncode(items.map((e) => e.toJson()).toList(growable: false));
+      final encoded = jsonEncode(
+        items.map((e) => e.toJson()).toList(growable: false),
+      );
       final ok = await _prefs.setString(_keyList, encoded);
       if (!ok) {
         throw Exception('SharedPreferences の保存が拒否されました');

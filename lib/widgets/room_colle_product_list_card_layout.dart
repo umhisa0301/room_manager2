@@ -7,7 +7,7 @@ import '../theme/home_screen_colors.dart';
 abstract final class RoomColleProductListCardLayout {
   RoomColleProductListCardLayout._();
 
-  static const double cardHeight = 158;
+  static const double cardHeight = 196;
 
   /// 左スロット幅（その中で 1:1 サムネを配置）。
   static const double thumbSlotWidth = 98;
@@ -18,13 +18,13 @@ abstract final class RoomColleProductListCardLayout {
   static const int shopMaxLines = 1;
 
   static List<BoxShadow> get cardBoxShadow => [
-        ...HomeScreenColors.roomMetricTileShadow,
-        BoxShadow(
-          color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.38),
-          offset: const Offset(0, 2),
-          blurRadius: 9,
-        ),
-      ];
+    ...HomeScreenColors.roomMetricTileShadow,
+    BoxShadow(
+      color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.38),
+      offset: const Offset(0, 2),
+      blurRadius: 9,
+    ),
+  ];
 
   static BoxDecoration cardDecoration() {
     return BoxDecoration(
@@ -82,10 +82,7 @@ abstract final class RoomColleProductListCardLayout {
 
 /// 左列：ROOM コレと同一のサムネスロット（1:1・角丸 8・右境界線）。
 class RoomColleProductListCardThumbSlot extends StatelessWidget {
-  const RoomColleProductListCardThumbSlot({
-    super.key,
-    required this.child,
-  });
+  const RoomColleProductListCardThumbSlot({super.key, required this.child});
 
   final Widget child;
 

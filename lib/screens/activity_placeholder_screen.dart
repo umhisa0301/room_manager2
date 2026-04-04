@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
+import '../models/room_activity_event.dart';
+import '../models/room_colle_list_filters.dart';
+import '../navigation/app_shell_controller.dart';
 import '../services/rakuten_room_home_stats.dart';
+import '../services/room_kpi_calculator.dart';
 import '../state/rakuten_managed_product_provider.dart';
+import '../state/room_activity_event_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../theme/app_theme.dart';
@@ -29,137 +34,163 @@ class ActivityPlaceholderScreen extends StatefulWidget {
       _ActivityPlaceholderScreenState();
 }
 
-class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen> {
+class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
+
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<RakutenManagedProductProvider>().refreshManagedProductList(
-            showLoadingIndicator: false,
-          );
+        showLoadingIndicator: false,
+      );
     });
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final shell = context.read<AppShellController>();
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('ROOM運用ダッシュボード'),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
+            Tab(text: '今日'),
+            Tab(text: '今週'),
+            Tab(text: '商品'),
+          ],
+        ),
       ),
       body: SafeArea(
-        child: Consumer3<RakutenManagedProductProvider, SavedShopProvider,
-            TodayRecommendationProvider>(
-          builder: (context, room, saved, rec, _) {
-            final items = room.items;
-            final now = DateTime.now();
-            final todayCount =
-                RakutenRoomHomeStats.countDoneOnLocalCalendarDay(items, now);
-            final totalDone = RakutenRoomHomeStats.countDone(items);
-            final lastDone = RakutenRoomHomeStats.latestDoneAt(items);
-            final series =
-                RakutenRoomHomeStats.doneCountsRollingDays(items, now, 7);
-            final savedShopCount = saved.shops.length;
-            final recommendPending = rec.pendingCount;
-            final recommendTotal = rec.totalCount;
-            final recentCandidateCount = _countTodayCandidates(items, now);
-            final maxInWeek = series
-                .map((e) => e.count)
-                .fold<int>(0, (a, b) => a > b ? a : b);
+        child:
+            Consumer4<
+              RakutenManagedProductProvider,
+              RoomActivityEventProvider,
+              SavedShopProvider,
+              TodayRecommendationProvider
+            >(
+              builder: (context, room, act, saved, rec, _) {
+                final items = room.items;
+                final now = DateTime.now();
+                final kpiProducts = items
+                    .map(RoomKpiProductRecord.fromManagedProduct)
+                    .toList(growable: false);
+                final kpi = RoomKpiCalculator.calculate(
+                  products: kpiProducts,
+                  events: act.events,
+                  now: now,
+                );
 
-            return RefreshIndicator(
-              onRefresh: () => room.refreshManagedProductList(
-                    showLoadingIndicator: true,
-                  ),
-              child: ListView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(
-                  AppDimensions.screenPaddingH,
-                  AppDimensions.spacingMd,
-                  AppDimensions.screenPaddingH,
-                  100,
-                ),
-                children: [
-                  _ActivityPurposeBanner(),
-                  const SizedBox(height: AppDimensions.spacingMd),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: _BigMetricCard(
-                          icon: Icons.today_rounded,
-                          iconColor: const Color(0xFF1565C0),
-                          title: '今日のコレ',
-                          valueText: '$todayCount',
-                          unit: '件',
-                          caption: '今日（0:00〜）にコレ済へ移した件数',
-                        ),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppDimensions.screenPaddingH,
+                        10,
+                        AppDimensions.screenPaddingH,
+                        8,
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _BigMetricCard(
-                          icon: Icons.stacked_line_chart_rounded,
-                          iconColor: const Color(0xFF2E7D32),
-                          title: '累計コレ',
-                          valueText: '$totalDone',
-                          unit: '件',
-                          caption: 'これまでにコレ済になった商品の総数',
-                        ),
+                      child: _ActivityPurposeBanner(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppDimensions.screenPaddingH,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: AppDimensions.spacingMd),
-                  _SevenDayTrendCard(
-                    series: series,
-                    maxCount: maxInWeek,
-                  ),
-                  const SizedBox(height: AppDimensions.spacingMd),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: _SmallMetricCard(
-                          icon: Icons.bookmarks_outlined,
-                          iconColor: const Color(0xFF6A1B9A),
-                          title: '保存ショップ',
-                          valueText: '$savedShopCount件',
-                          caption: '発掘から再訪する基盤',
-                        ),
+                      child: _ActivityKpiSummaryBar(summary: kpi),
+                    ),
+                    const SizedBox(height: 4),
+                    Expanded(
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          _ActivityTodayEventsTab(
+                            events: act.events,
+                            now: now,
+                            onRefresh: () => room.refreshManagedProductList(
+                              showLoadingIndicator: true,
+                            ),
+                          ),
+                          _ActivityWeekOverviewTab(
+                            items: items,
+                            kpi: kpi,
+                            savedShopCount: saved.shops.length,
+                            recommendPending: rec.pendingCount,
+                            recommendTotal: rec.totalCount,
+                            recentCandidateCount: _countTodayCandidates(
+                              items,
+                              now,
+                            ),
+                            now: now,
+                            onRefresh: () => room.refreshManagedProductList(
+                              showLoadingIndicator: true,
+                            ),
+                          ),
+                          _ActivityProductRankingTab(
+                            items: items,
+                            onRefresh: () => room.refreshManagedProductList(
+                              showLoadingIndicator: true,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _SmallMetricCard(
-                          icon: Icons.auto_awesome_rounded,
-                          iconColor: AppColors.accentPrimary,
-                          title: 'おすすめ残件',
-                          valueText: recommendTotal == 0
-                              ? '未生成'
-                              : '$recommendPending件',
-                          caption: recommendTotal == 0
-                              ? '今日のおすすめ未作成'
-                              : '今日のおすすめ未処理件数',
-                        ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppDimensions.screenPaddingH,
+                        6,
+                        AppDimensions.screenPaddingH,
+                        72,
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _SmallMetricCard(
-                          icon: Icons.bookmark_add_outlined,
-                          iconColor: const Color(0xFF1565C0),
-                          title: '最近候補追加',
-                          valueText: '$recentCandidateCount件',
-                          caption: '今日追加した候補数',
-                        ),
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 6,
+                        children: [
+                          OutlinedButton.icon(
+                            onPressed: () {
+                              shell.openRoomCollect(initialTabIndex: 0);
+                            },
+                            icon: const Icon(
+                              Icons.inventory_2_outlined,
+                              size: 18,
+                            ),
+                            label: const Text('コレ候補'),
+                          ),
+                          OutlinedButton.icon(
+                            onPressed: () {
+                              shell.openRoomCollect(
+                                candidateStalePreset:
+                                    RoomColleStaleCandidatePreset.threePlus,
+                              );
+                            },
+                            icon: const Icon(Icons.schedule_rounded, size: 18),
+                            label: const Text('放置整理'),
+                          ),
+                          OutlinedButton.icon(
+                            onPressed: () {
+                              shell.openRoomCollect(initialTabIndex: 1);
+                            },
+                            icon: const Icon(Icons.task_alt_rounded, size: 18),
+                            label: const Text('コレ済'),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: AppDimensions.spacingMd),
-                  _LastCollectCard(lastDoneAt: lastDone),
-                ],
-              ),
-            );
-          },
-        ),
+                    ),
+                  ],
+                );
+              },
+            ),
       ),
     );
   }
@@ -173,6 +204,334 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen> {
       if (d == target) count++;
     }
     return count;
+  }
+}
+
+String _activityEventCaption(RoomActivityEvent e) {
+  switch (e.type) {
+    case RoomActivityEventType.candidateAdded:
+      return '候補を登録';
+    case RoomActivityEventType.movedToCored:
+      return 'コレ済に移動';
+    case RoomActivityEventType.openedRakuten:
+      return '楽天ページを開く';
+    case RoomActivityEventType.feedbackLiked:
+      return '反応よかった';
+    case RoomActivityEventType.feedbackSold:
+      return '売れた';
+    case RoomActivityEventType.feedbackWeak:
+      return '微妙';
+    case RoomActivityEventType.deleted:
+      return '候補から削除';
+  }
+}
+
+String _formatHm(DateTime d) {
+  String t(int n) => n.toString().padLeft(2, '0');
+  return '${t(d.hour)}:${t(d.minute)}';
+}
+
+class _ActivityKpiSummaryBar extends StatelessWidget {
+  const _ActivityKpiSummaryBar({required this.summary});
+
+  final RoomKpiSummary summary;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget chip(String k, String v) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.divider),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              k,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              v,
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '活動サマリー',
+          style: Theme.of(
+            context,
+          ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w800),
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            chip('反応あり', '${summary.likedProductCount}件'),
+            chip('売れた', '${summary.soldProductCount}件'),
+            chip('週の活動', '${summary.weeklyActivityCount}件'),
+            chip('放置(3日+)', '${summary.staleCandidateCount}件'),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _ActivityTodayEventsTab extends StatelessWidget {
+  const _ActivityTodayEventsTab({
+    required this.events,
+    required this.now,
+    required this.onRefresh,
+  });
+
+  final List<RoomActivityEvent> events;
+  final DateTime now;
+  final Future<void> Function() onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    final todayStart = DateTime(now.year, now.month, now.day);
+    final tomorrowStart = todayStart.add(const Duration(days: 1));
+    final list =
+        events
+            .where(
+              (e) =>
+                  !e.createdAt.isBefore(todayStart) &&
+                  e.createdAt.isBefore(tomorrowStart),
+            )
+            .toList(growable: false)
+          ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      child: list.isEmpty
+          ? ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(24),
+              children: [
+                Text(
+                  '今日のログはまだありません。',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '商品登録・コレ済移行・楽天を開く・評価ボタンなどがここに積み上がります。',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textTertiary,
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            )
+          : ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(
+                AppDimensions.screenPaddingH,
+                8,
+                AppDimensions.screenPaddingH,
+                100,
+              ),
+              itemCount: list.length,
+              separatorBuilder: (_, __) => const Divider(height: 1),
+              itemBuilder: (context, i) {
+                final e = list[i];
+                return ListTile(
+                  dense: true,
+                  title: Text(
+                    _activityEventCaption(e),
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  subtitle: Text(
+                    '${e.productId}  ·  ${_formatHm(e.createdAt)}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}
+
+class _ActivityWeekOverviewTab extends StatelessWidget {
+  const _ActivityWeekOverviewTab({
+    required this.items,
+    required this.kpi,
+    required this.savedShopCount,
+    required this.recommendPending,
+    required this.recommendTotal,
+    required this.recentCandidateCount,
+    required this.now,
+    required this.onRefresh,
+  });
+
+  final List<RakutenManagedProduct> items;
+  final RoomKpiSummary kpi;
+  final int savedShopCount;
+  final int recommendPending;
+  final int recommendTotal;
+  final int recentCandidateCount;
+  final DateTime now;
+  final Future<void> Function() onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    final series = RakutenRoomHomeStats.doneCountsRollingDays(items, now, 7);
+    final maxInWeek = series
+        .map((e) => e.count)
+        .fold<int>(0, (a, b) => a > b ? a : b);
+    final lastDone = RakutenRoomHomeStats.latestDoneAt(items);
+    final story = kpi.weeklyActivityCount == 0
+        ? '今週はまだ活動ログが少なめです。候補を1件処理するとここが動き出します。'
+        : '今週は ${kpi.weeklyActivityCount} 件の動きがあり、体感の反応スコアは ${kpi.weeklyReactionScore} です（評価ボタンのログ由来）。';
+
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(
+          AppDimensions.screenPaddingH,
+          8,
+          AppDimensions.screenPaddingH,
+          100,
+        ),
+        children: [
+          Text(
+            '今週のまとめ',
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            story,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(height: 1.4),
+          ),
+          const SizedBox(height: 16),
+          _SevenDayTrendCard(series: series, maxCount: maxInWeek),
+          const SizedBox(height: 16),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _SmallMetricCard(
+                  icon: Icons.bookmarks_outlined,
+                  iconColor: const Color(0xFF6A1B9A),
+                  title: '保存ショップ',
+                  valueText: '$savedShopCount件',
+                  caption: '発掘から再訪する基盤',
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _SmallMetricCard(
+                  icon: Icons.auto_awesome_rounded,
+                  iconColor: AppColors.accentPrimary,
+                  title: 'おすすめ残件',
+                  valueText: recommendTotal == 0 ? '未生成' : '$recommendPending件',
+                  caption: recommendTotal == 0 ? '今日のおすすめ未作成' : '今日のおすすめ未処理件数',
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _SmallMetricCard(
+                  icon: Icons.bookmark_add_outlined,
+                  iconColor: const Color(0xFF1565C0),
+                  title: '最近候補追加',
+                  valueText: '$recentCandidateCount件',
+                  caption: '今日追加した候補数',
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _LastCollectCard(lastDoneAt: lastDone),
+        ],
+      ),
+    );
+  }
+}
+
+class _ActivityProductRankingTab extends StatelessWidget {
+  const _ActivityProductRankingTab({
+    required this.items,
+    required this.onRefresh,
+  });
+
+  final List<RakutenManagedProduct> items;
+  final Future<void> Function() onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    final sorted = List<RakutenManagedProduct>.from(items);
+    sorted.sort((a, b) {
+      final ra = RoomKpiProductRecord.fromManagedProduct(a).reactionRankScore;
+      final rb = RoomKpiProductRecord.fromManagedProduct(b).reactionRankScore;
+      final c = rb.compareTo(ra);
+      if (c != 0) return c;
+      return b.updatedAt.compareTo(a.updatedAt);
+    });
+
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      child: sorted.isEmpty
+          ? ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(24),
+              children: const [Text('まだ商品データがありません。')],
+            )
+          : ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(
+                AppDimensions.screenPaddingH,
+                8,
+                AppDimensions.screenPaddingH,
+                100,
+              ),
+              itemCount: sorted.length.clamp(0, 40),
+              separatorBuilder: (_, __) => const Divider(height: 1),
+              itemBuilder: (context, i) {
+                final p = sorted[i];
+                final r = RoomKpiProductRecord.fromManagedProduct(p);
+                final flags = <String>[];
+                if (r.isSold) flags.add('売れた');
+                if (r.isLiked) flags.add('反応');
+                if (r.isWeak) flags.add('微妙');
+                final flagStr = flags.isEmpty ? '評価なし' : flags.join(' / ');
+                return ListTile(
+                  dense: true,
+                  title: Text(
+                    p.itemName.trim().isEmpty ? p.productId : p.itemName.trim(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    'スコア ${r.reactionRankScore}  ·  $flagStr',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                );
+              },
+            ),
+    );
   }
 }
 
@@ -210,17 +569,17 @@ class _ActivityPurposeBanner extends StatelessWidget {
                 Text(
                   'ROOM運用の進捗が見える',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
-                      ),
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   '候補管理とコレ済実績を1画面で確認できます。今日の動きと中長期の傾向を見ながら運用を調整できます。',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.45,
-                      ),
+                    color: AppColors.textSecondary,
+                    height: 1.45,
+                  ),
                 ),
               ],
             ),
@@ -268,9 +627,9 @@ class _SmallMetricCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],
@@ -281,9 +640,9 @@ class _SmallMetricCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w800,
-                ),
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
@@ -291,98 +650,9 @@ class _SmallMetricCard extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textTertiary,
-                  height: 1.3,
-                ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BigMetricCard extends StatelessWidget {
-  const _BigMetricCard({
-    required this.icon,
-    required this.iconColor,
-    required this.title,
-    required this.valueText,
-    required this.unit,
-    required this.caption,
-  });
-
-  final IconData icon;
-  final Color iconColor;
-  final String title;
-  final String valueText;
-  final String unit;
-  final String caption;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, size: 20, color: iconColor),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(
-                valueText,
-                style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                      height: 1,
-                      fontSize: 36,
-                    ),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                unit,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            caption,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textTertiary,
-                  height: 1.35,
-                ),
+              color: AppColors.textTertiary,
+              height: 1.3,
+            ),
           ),
         ],
       ),
@@ -391,10 +661,7 @@ class _BigMetricCard extends StatelessWidget {
 }
 
 class _SevenDayTrendCard extends StatelessWidget {
-  const _SevenDayTrendCard({
-    required this.series,
-    required this.maxCount,
-  });
+  const _SevenDayTrendCard({required this.series, required this.maxCount});
 
   final List<({DateTime day, int count})> series;
   final int maxCount;
@@ -433,9 +700,9 @@ class _SevenDayTrendCard extends StatelessWidget {
               Text(
                 '直近7日の推移',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                    ),
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.textPrimary,
+                ),
               ),
             ],
           ),
@@ -443,9 +710,9 @@ class _SevenDayTrendCard extends StatelessWidget {
           Text(
             '1日あたりのコレ済件数（端末の日付・0:00区切り）',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textTertiary,
-                  height: 1.35,
-                ),
+              color: AppColors.textTertiary,
+              height: 1.35,
+            ),
           ),
           const SizedBox(height: 16),
           SizedBox(
@@ -465,9 +732,7 @@ class _SevenDayTrendCard extends StatelessWidget {
                               padding: const EdgeInsets.only(bottom: 4),
                               child: Text(
                                 '${e.count}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall
+                                style: Theme.of(context).textTheme.labelSmall
                                     ?.copyWith(
                                       fontWeight: FontWeight.w800,
                                       color: AppColors.accentPrimary,
@@ -478,18 +743,18 @@ class _SevenDayTrendCard extends StatelessWidget {
                           AnimatedContainer(
                             duration: const Duration(milliseconds: 400),
                             curve: Curves.easeOutCubic,
-                            height: chartHeight *
-                                0.72 *
-                                (e.count / denom),
+                            height: chartHeight * 0.72 * (e.count / denom),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
                                 colors: [
-                                  AppColors.accentPrimary
-                                      .withValues(alpha: 0.85),
-                                  AppColors.accentSecondary
-                                      .withValues(alpha: 0.55),
+                                  AppColors.accentPrimary.withValues(
+                                    alpha: 0.85,
+                                  ),
+                                  AppColors.accentSecondary.withValues(
+                                    alpha: 0.55,
+                                  ),
                                 ],
                               ),
                               borderRadius: const BorderRadius.vertical(
@@ -513,10 +778,10 @@ class _SevenDayTrendCard extends StatelessWidget {
                     _weekdayShort(e.day),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textTertiary,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      color: AppColors.textTertiary,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
             ],
@@ -530,9 +795,9 @@ class _SevenDayTrendCard extends StatelessWidget {
                     '${e.day.month}/${e.day.day}',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          fontSize: 10,
-                        ),
+                      color: AppColors.textSecondary,
+                      fontSize: 10,
+                    ),
                   ),
                 ),
             ],
@@ -588,9 +853,9 @@ class _LastCollectCard extends StatelessWidget {
               Text(
                 '最終コレ日時',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                    ),
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.textPrimary,
+                ),
               ),
             ],
           ),
@@ -598,21 +863,21 @@ class _LastCollectCard extends StatelessWidget {
           Text(
             'アプリで最後にコレ済へ移した日時です。\n最近いつコレしたかを振り返る目安になります。',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textTertiary,
-                  height: 1.35,
-                ),
+              color: AppColors.textTertiary,
+              height: 1.35,
+            ),
           ),
           const SizedBox(height: 14),
           Text(
             label,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: lastDoneAt == null
-                      ? AppColors.textTertiary
-                      : AppColors.textPrimary,
-                  height: 1.2,
-                  fontSize: lastDoneAt == null ? 16 : 26,
-                ),
+              fontWeight: FontWeight.w800,
+              color: lastDoneAt == null
+                  ? AppColors.textTertiary
+                  : AppColors.textPrimary,
+              height: 1.2,
+              fontSize: lastDoneAt == null ? 16 : 26,
+            ),
           ),
         ],
       ),
@@ -624,4 +889,3 @@ class _LastCollectCard extends StatelessWidget {
     return '${d.year}年${d.month}月${d.day}日 ${two(d.hour)}:${two(d.minute)}';
   }
 }
-

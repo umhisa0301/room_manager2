@@ -5,27 +5,26 @@ import 'package:flutter/material.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
+import '../models/room_activity_event.dart';
 import '../repository/pending_collect_notice_repository.dart';
 import '../repository/rakuten_managed_product_repository.dart';
+import 'room_activity_event_provider.dart';
 import '../services/app_action_service.dart';
 import '../services/room_url_extraction_coordinator.dart';
 import '../services/room_url_extraction_service.dart';
 
 /// 楽天ROOM管理の一覧画面用ロード状態。
-enum RakutenManagedProductListUiStatus {
-  idle,
-  loading,
-  ready,
-  error,
-}
+enum RakutenManagedProductListUiStatus { idle, loading, ready, error }
 
 /// 楽天検索由来のローカル管理商品の状態（UI向け）。
 class RakutenManagedProductProvider extends ChangeNotifier {
   RakutenManagedProductProvider({
     required RakutenManagedProductRepository repository,
     required PendingCollectNoticeRepository pendingCollectNoticeRepository,
-  })  : _repository = repository,
-        _pendingCollectNoticeRepository = pendingCollectNoticeRepository {
+    required RoomActivityEventProvider activityEventProvider,
+  }) : _repository = repository,
+       _pendingCollectNoticeRepository = pendingCollectNoticeRepository,
+       _activityEventProvider = activityEventProvider {
     _reloadFromStorage();
     _listUiStatus = RakutenManagedProductListUiStatus.ready;
     _listUiErrorMessage = null;
@@ -33,6 +32,10 @@ class RakutenManagedProductProvider extends ChangeNotifier {
 
   final RakutenManagedProductRepository _repository;
   final PendingCollectNoticeRepository _pendingCollectNoticeRepository;
+  final RoomActivityEventProvider _activityEventProvider;
+
+  static String _newEventId(String productId, RoomActivityEventType type) =>
+      '${DateTime.now().microsecondsSinceEpoch}_${productId.trim()}_${type.name}';
 
   List<RakutenManagedProduct> _items = const [];
   final Set<String> _registeringProductIds = {};
@@ -76,10 +79,12 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
       _listUiErrorMessage = null;
       if (kDebugMode) {
-        final nCand =
-            sortedItemsForStatus(RakutenManagedProductStatus.candidate).length;
-        final nDone =
-            sortedItemsForStatus(RakutenManagedProductStatus.done).length;
+        final nCand = sortedItemsForStatus(
+          RakutenManagedProductStatus.candidate,
+        ).length;
+        final nDone = sortedItemsForStatus(
+          RakutenManagedProductStatus.done,
+        ).length;
         debugPrint(
           '[ROOMコレ診断] refreshManagedProductList 完了 total=${_items.length} '
           'candidate=$nCand done=$nDone ui=ready',
@@ -87,12 +92,13 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       }
     } catch (e, st) {
       if (kDebugMode) {
-        debugPrint('[RakutenManagedProduct] refreshManagedProductList failed: $e');
+        debugPrint(
+          '[RakutenManagedProduct] refreshManagedProductList failed: $e',
+        );
         debugPrint('$st');
       }
       _listUiStatus = RakutenManagedProductListUiStatus.error;
-      _listUiErrorMessage =
-          '一覧データの読み込みに失敗しました。少し待ってから「再試行」を押してください。';
+      _listUiErrorMessage = '一覧データの読み込みに失敗しました。少し待ってから「再試行」を押してください。';
     }
     notifyListeners();
   }
@@ -105,7 +111,9 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       _listUiErrorMessage = null;
     } catch (e, st) {
       if (kDebugMode) {
-        debugPrint('[RakutenManagedProduct] recoverListUiSilently failed: $e\n$st');
+        debugPrint(
+          '[RakutenManagedProduct] recoverListUiSilently failed: $e\n$st',
+        );
       }
       _items = const [];
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
@@ -168,10 +176,12 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
       _listUiErrorMessage = null;
       if (kDebugMode) {
-        final nCand =
-            sortedItemsForStatus(RakutenManagedProductStatus.candidate).length;
-        final nDone =
-            sortedItemsForStatus(RakutenManagedProductStatus.done).length;
+        final nCand = sortedItemsForStatus(
+          RakutenManagedProductStatus.candidate,
+        ).length;
+        final nDone = sortedItemsForStatus(
+          RakutenManagedProductStatus.done,
+        ).length;
         debugPrint(
           '[ROOMコレ診断] registerCandidate 反映 productId=$id persisted→memory '
           'total=${_items.length} candidate=$nCand done=$nDone '
@@ -179,6 +189,15 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         );
       }
       if (added) {
+        final now = DateTime.now();
+        await _activityEventProvider.append(
+          RoomActivityEvent(
+            id: _newEventId(id, RoomActivityEventType.candidateAdded),
+            productId: id,
+            type: RoomActivityEventType.candidateAdded,
+            createdAt: now,
+          ),
+        );
         await _repository.markExtractionExtracting(id);
         _reloadFromStorage();
         notifyListeners();
@@ -215,24 +234,19 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       }
       if (!RoomUrlExtractionCoordinator.instance.isReady) {
         const msg = 'URL抽出エンジンが初期化されませんでした';
-        debugPrint(
-          '[RoomUrlExtraction] 失敗 [登録フロー] productId=$productId: $msg',
-        );
+        debugPrint('[RoomUrlExtraction] 失敗 [登録フロー] productId=$productId: $msg');
         await _repository.completeExtractionFailed(productId, msg);
       } else {
         try {
-          final url =
-              await RoomUrlExtractionService.extractRoomTargetUrl(pageUrl);
+          final url = await RoomUrlExtractionService.extractRoomTargetUrl(
+            pageUrl,
+          );
           await _repository.completeExtractionSuccess(productId, url);
         } on Exception catch (e) {
-          debugPrint(
-            '[RoomUrlExtraction] 失敗 [登録フロー] productId=$productId: $e',
-          );
+          debugPrint('[RoomUrlExtraction] 失敗 [登録フロー] productId=$productId: $e');
           await _repository.completeExtractionFailed(productId, e.toString());
         } catch (e) {
-          debugPrint(
-            '[RoomUrlExtraction] 失敗 [登録フロー] productId=$productId: $e',
-          );
+          debugPrint('[RoomUrlExtraction] 失敗 [登録フロー] productId=$productId: $e');
           await _repository.completeExtractionFailed(productId, e.toString());
         }
       }
@@ -259,6 +273,18 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         : p.browserLaunchUrl.trim();
     if (url.isEmpty) return '商品URLがありません';
     await AppActionService.openUrl(context, url: url);
+    if (context.mounted) {
+      try {
+        await _activityEventProvider.append(
+          RoomActivityEvent(
+            id: _newEventId(id, RoomActivityEventType.openedRakuten),
+            productId: id,
+            type: RoomActivityEventType.openedRakuten,
+            createdAt: DateTime.now(),
+          ),
+        );
+      } catch (_) {}
+    }
     return null;
   }
 
@@ -270,7 +296,10 @@ class RakutenManagedProductProvider extends ChangeNotifier {
   }
 
   /// コレ済に更新してから ROOM（抽出 URL）を開く。抽出 URL 不備時は [SnackBar] で通知。
-  Future<void> collectRoomAndLaunch(BuildContext context, String productId) async {
+  Future<void> collectRoomAndLaunch(
+    BuildContext context,
+    String productId,
+  ) async {
     final id = productId.trim();
     if (id.isEmpty) {
       _snack(context, '商品IDが空です');
@@ -290,6 +319,15 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     final noticeName = p.itemName.trim().isNotEmpty ? p.itemName : id;
     try {
       await _repository.markCollectedDone(id);
+      final now = DateTime.now();
+      await _activityEventProvider.append(
+        RoomActivityEvent(
+          id: _newEventId(id, RoomActivityEventType.movedToCored),
+          productId: id,
+          type: RoomActivityEventType.movedToCored,
+          createdAt: now,
+        ),
+      );
       await _pendingCollectNoticeRepository.enqueuePendingCollectNotice(
         noticeName,
       );
@@ -297,10 +335,12 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
       _listUiErrorMessage = null;
       if (kDebugMode) {
-        final nCand =
-            sortedItemsForStatus(RakutenManagedProductStatus.candidate).length;
-        final nDone =
-            sortedItemsForStatus(RakutenManagedProductStatus.done).length;
+        final nCand = sortedItemsForStatus(
+          RakutenManagedProductStatus.candidate,
+        ).length;
+        final nDone = sortedItemsForStatus(
+          RakutenManagedProductStatus.done,
+        ).length;
         debugPrint(
           '[ROOMコレ診断] collectRoomAndLaunch 反映 productId=$id '
           'total=${_items.length} candidate=$nCand done=$nDone status saved=done',
@@ -312,10 +352,7 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         debugPrint('[RakutenManagedProduct] collectRoomAndLaunch failed: $e');
       }
       if (context.mounted) {
-        _snack(
-          context,
-          'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。',
-        );
+        _snack(context, 'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。');
       }
       return;
     } catch (e) {
@@ -323,10 +360,7 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         debugPrint('[RakutenManagedProduct] collectRoomAndLaunch failed: $e');
       }
       if (context.mounted) {
-        _snack(
-          context,
-          'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。',
-        );
+        _snack(context, 'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。');
       }
       return;
     }
@@ -334,27 +368,132 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     await AppActionService.openUrl(context, url: roomUrl);
   }
 
+  /// 商品カードの「反応よかった」を ON/OFF。ON 時に活動ログへ1件追加。
+  Future<String?> toggleFeedbackLiked(
+    BuildContext context,
+    String productId,
+  ) async {
+    return _toggleFeedback(context, productId, liked: true);
+  }
+
+  /// 「売れた」トグル。
+  Future<String?> toggleFeedbackSold(
+    BuildContext context,
+    String productId,
+  ) async {
+    return _toggleFeedback(context, productId, sold: true);
+  }
+
+  /// 「微妙」トグル。
+  Future<String?> toggleFeedbackWeak(
+    BuildContext context,
+    String productId,
+  ) async {
+    return _toggleFeedback(context, productId, weak: true);
+  }
+
+  Future<String?> _toggleFeedback(
+    BuildContext context,
+    String productId, {
+    bool liked = false,
+    bool sold = false,
+    bool weak = false,
+  }) async {
+    final id = productId.trim();
+    if (id.isEmpty) return '商品IDが空です';
+    final p = _repository.getByProductId(id);
+    if (p == null) return '商品が見つかりません';
+
+    final now = DateTime.now();
+    late final RakutenManagedProduct next;
+    RoomActivityEventType? eventOnEnable;
+
+    if (liked) {
+      final on = p.feedbackLikedAt == null;
+      next = on
+          ? p.copyWith(feedbackLikedAt: now, updatedAt: now)
+          : p.copyWith(clearFeedbackLiked: true, updatedAt: now);
+      if (on) eventOnEnable = RoomActivityEventType.feedbackLiked;
+    } else if (sold) {
+      final on = p.feedbackSoldAt == null;
+      next = on
+          ? p.copyWith(feedbackSoldAt: now, updatedAt: now)
+          : p.copyWith(clearFeedbackSold: true, updatedAt: now);
+      if (on) eventOnEnable = RoomActivityEventType.feedbackSold;
+    } else if (weak) {
+      final on = p.feedbackWeakAt == null;
+      next = on
+          ? p.copyWith(feedbackWeakAt: now, updatedAt: now)
+          : p.copyWith(clearFeedbackWeak: true, updatedAt: now);
+      if (on) eventOnEnable = RoomActivityEventType.feedbackWeak;
+    } else {
+      return null;
+    }
+
+    try {
+      await _repository.updateManagedProduct(id, (_) => next);
+      if (eventOnEnable != null) {
+        await _activityEventProvider.append(
+          RoomActivityEvent(
+            id: _newEventId(id, eventOnEnable),
+            productId: id,
+            type: eventOnEnable,
+            createdAt: now,
+          ),
+        );
+      }
+      _reloadFromStorage();
+      _listUiStatus = RakutenManagedProductListUiStatus.ready;
+      _listUiErrorMessage = null;
+      notifyListeners();
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        debugPrint('[RakutenManagedProduct] _toggleFeedback failed: $e');
+      }
+      return '評価の更新に失敗しました';
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[RakutenManagedProduct] _toggleFeedback failed: $e');
+      }
+      return '評価の更新に失敗しました';
+    }
+    return null;
+  }
+
   void _snack(BuildContext context, String message) {
     if (!context.mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   /// コレ候補を一覧から削除する。
-  Future<String?> removeCandidate(BuildContext context, String productId) async {
+  Future<String?> removeCandidate(
+    BuildContext context,
+    String productId,
+  ) async {
     final id = productId.trim();
     if (id.isEmpty) return '商品IDが空です';
     try {
       await _repository.removeCandidateProduct(id);
+      try {
+        await _activityEventProvider.append(
+          RoomActivityEvent(
+            id: _newEventId(id, RoomActivityEventType.deleted),
+            productId: id,
+            type: RoomActivityEventType.deleted,
+            createdAt: DateTime.now(),
+          ),
+        );
+      } catch (_) {}
       _reloadFromStorage();
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
       _listUiErrorMessage = null;
       notifyListeners();
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('候補から外しました')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('候補から外しました')));
       }
       return null;
     } on Exception catch (e) {

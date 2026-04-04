@@ -1,11 +1,14 @@
 import 'package:flutter/foundation.dart';
 
+import '../models/room_colle_list_filters.dart';
+
 /// ホームなどから「ROOMコレ」タブを開くときに渡す一次ナビゲーション情報。
 class RoomCollectNavigationIntent {
   const RoomCollectNavigationIntent({
     required this.initialTabIndex,
     this.doneFilterLocalDay,
     this.focusCandidateProductId,
+    this.candidateStalePreset,
   });
 
   /// 0: コレ候補、1: コレ済
@@ -16,6 +19,9 @@ class RoomCollectNavigationIntent {
 
   /// コレ候補タブ内でフォーカスする商品ID。
   final String? focusCandidateProductId;
+
+  /// 候補タブを開いたときに適用する「経過日数」整理プリセット。
+  final RoomColleStaleCandidatePreset? candidateStalePreset;
 }
 
 /// アプリシェル（下部5タブ）の選択インデックスと、タブ間の導線用インテントを集約する。
@@ -44,6 +50,7 @@ class AppShellController extends ChangeNotifier {
     int initialTabIndex = 0,
     DateTime? doneFilterLocalDay,
     String? focusCandidateProductId,
+    RoomColleStaleCandidatePreset? candidateStalePreset,
   }) {
     var idx = initialTabIndex.clamp(0, 1);
     var focus = focusCandidateProductId?.trim();
@@ -61,10 +68,16 @@ class AppShellController extends ChangeNotifier {
       } catch (_) {}
     }
 
+    RoomColleStaleCandidatePreset? stale;
+    if (idx == 0 && candidateStalePreset != null) {
+      stale = candidateStalePreset;
+    }
+
     _pendingRoomCollect = RoomCollectNavigationIntent(
       initialTabIndex: idx,
       doneFilterLocalDay: idx == 1 ? dayNorm : null,
       focusCandidateProductId: focus,
+      candidateStalePreset: stale,
     );
     _currentIndex = 1;
     notifyListeners();

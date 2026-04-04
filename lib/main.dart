@@ -8,11 +8,13 @@ import 'repository/product_repository.dart';
 import 'repository/comment_template_repository.dart';
 import 'repository/activity_log_repository.dart';
 import 'repository/rakuten_managed_product_repository.dart';
+import 'repository/room_activity_event_repository.dart';
 import 'repository/rakuten_search_repository.dart';
 import 'state/product_list_provider.dart';
 import 'state/comment_template_provider.dart';
 import 'state/activity_log_provider.dart';
 import 'state/rakuten_managed_product_provider.dart';
+import 'state/room_activity_event_provider.dart';
 import 'state/rakuten_search_provider.dart';
 import 'app_messenger.dart';
 import 'widgets/pending_collect_resume_notice_host.dart';
@@ -35,12 +37,14 @@ void main() async {
   final productRepository = ProductRepository(prefs);
   final commentRepository = CommentTemplateRepository(prefs);
   final activityRepository = ActivityLogRepository(prefs);
-  final rakutenSearchRepository =
-      RakutenSearchRepository(apiService: RakutenApiService());
-  final rakutenManagedProductRepository =
-      RakutenManagedProductRepository(prefs);
-  final pendingCollectNoticeRepository =
-      PendingCollectNoticeRepository(prefs);
+  final rakutenSearchRepository = RakutenSearchRepository(
+    apiService: RakutenApiService(),
+  );
+  final rakutenManagedProductRepository = RakutenManagedProductRepository(
+    prefs,
+  );
+  final roomActivityEventRepository = RoomActivityEventRepository(prefs);
+  final pendingCollectNoticeRepository = PendingCollectNoticeRepository(prefs);
   final doneTabNoticeRepository = DoneTabNoticeRepository(prefs);
   final roomColleUiStateRepository = RoomColleUiStateRepository(prefs);
   final userProfileRepository = UserProfileRepository(prefs);
@@ -53,6 +57,7 @@ void main() async {
       activityRepository: activityRepository,
       rakutenSearchRepository: rakutenSearchRepository,
       rakutenManagedProductRepository: rakutenManagedProductRepository,
+      roomActivityEventRepository: roomActivityEventRepository,
       pendingCollectNoticeRepository: pendingCollectNoticeRepository,
       doneTabNoticeRepository: doneTabNoticeRepository,
       roomColleUiStateRepository: roomColleUiStateRepository,
@@ -71,6 +76,7 @@ class MyApp extends StatelessWidget {
     required this.activityRepository,
     required this.rakutenSearchRepository,
     required this.rakutenManagedProductRepository,
+    required this.roomActivityEventRepository,
     required this.pendingCollectNoticeRepository,
     required this.doneTabNoticeRepository,
     required this.roomColleUiStateRepository,
@@ -84,6 +90,7 @@ class MyApp extends StatelessWidget {
   final ActivityLogRepository activityRepository;
   final RakutenSearchRepository rakutenSearchRepository;
   final RakutenManagedProductRepository rakutenManagedProductRepository;
+  final RoomActivityEventRepository roomActivityEventRepository;
   final PendingCollectNoticeRepository pendingCollectNoticeRepository;
   final DoneTabNoticeRepository doneTabNoticeRepository;
   final RoomColleUiStateRepository roomColleUiStateRepository;
@@ -95,15 +102,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => AppShellController(),
-        ),
+        ChangeNotifierProvider(create: (_) => AppShellController()),
         Provider<PendingCollectNoticeRepository>.value(
           value: pendingCollectNoticeRepository,
         ),
-        Provider<DoneTabNoticeRepository>.value(
-          value: doneTabNoticeRepository,
-        ),
+        Provider<DoneTabNoticeRepository>.value(value: doneTabNoticeRepository),
         Provider<RoomColleUiStateRepository>.value(
           value: roomColleUiStateRepository,
         ),
@@ -111,8 +114,7 @@ class MyApp extends StatelessWidget {
           create: (_) => ProductListProvider(repository: productRepository),
         ),
         ChangeNotifierProvider(
-          create: (_) =>
-              CommentTemplateProvider(repository: commentRepository),
+          create: (_) => CommentTemplateProvider(repository: commentRepository),
         ),
         ChangeNotifierProvider(
           create: (_) => ActivityLogProvider(repository: activityRepository),
@@ -122,14 +124,19 @@ class MyApp extends StatelessWidget {
               RakutenSearchProvider(repository: rakutenSearchRepository),
         ),
         ChangeNotifierProvider(
-          create: (_) => RakutenManagedProductProvider(
-            repository: rakutenManagedProductRepository,
-            pendingCollectNoticeRepository: pendingCollectNoticeRepository,
+          create: (_) => RoomActivityEventProvider(
+            repository: roomActivityEventRepository,
           ),
         ),
         ChangeNotifierProvider(
-          create: (_) =>
-              UserProfileProvider(repository: userProfileRepository),
+          create: (ctx) => RakutenManagedProductProvider(
+            repository: rakutenManagedProductRepository,
+            pendingCollectNoticeRepository: pendingCollectNoticeRepository,
+            activityEventProvider: ctx.read<RoomActivityEventProvider>(),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UserProfileProvider(repository: userProfileRepository),
         ),
         ChangeNotifierProvider(
           create: (_) => SavedShopProvider(repository: savedShopRepository),
