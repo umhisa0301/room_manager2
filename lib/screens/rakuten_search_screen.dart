@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
+import '../models/saved_shop.dart';
 import '../models/shop_discovery_summary.dart';
 import '../navigation/app_route_observer.dart';
 import '../services/rakuten_genre_master_service.dart';
@@ -236,7 +237,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       _selectionMode = false;
       _selectedProductIds.clear();
     });
-    final condition = _buildProductCondition();
+    final condition = _buildProductCondition(context);
     final excludeIds = context
         .read<RakutenManagedProductProvider>()
         .productIdsExcludedFromKeywordSearch();
@@ -246,7 +247,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  RakutenProductSearchCondition _buildProductCondition() {
+  RakutenProductSearchCondition _buildProductCondition(BuildContext context) {
     return RakutenProductSearchCondition(
       keyword: _keywordController.text,
       minPrice: _parseInt(_minPriceController.text),
@@ -255,9 +256,35 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       minReviewCount: _parseInt(_minReviewCountController.text),
       minReviewAverage: _parseDouble(_minReviewAverageController.text),
       minCommentCount: _parseInt(_minCommentCountController.text),
-      shopCode: _selectedShopCode,
+      shopCode: _effectiveShopCodeForApi(context),
       genreId: _selectedGenreId,
     ).normalized();
+  }
+
+  /// 保存済ショップに存在する [shopId] だけを API の shopCode として渡す。
+  String? _effectiveShopCodeForApi(BuildContext context) {
+    final code = _selectedShopCode?.trim();
+    if (code == null || code.isEmpty) return null;
+    if (!context.mounted) return null;
+    final shops = _sanitizedSavedShopsForSearch(
+      context.read<SavedShopProvider>().shops,
+    );
+    for (final s in shops) {
+      if (s.shopId == code) return code;
+    }
+    return null;
+  }
+
+  /// 詳細条件シートを開く前に、保存から消えたショップの選択を外す。
+  void _syncSelectedShopWithSaved(BuildContext context) {
+    final code = _selectedShopCode?.trim();
+    if (code == null || code.isEmpty) return;
+    final shops = _sanitizedSavedShopsForSearch(
+      context.read<SavedShopProvider>().shops,
+    );
+    if (shops.isEmpty || !shops.any((s) => s.shopId == code)) {
+      setState(() => _selectedShopCode = null);
+    }
   }
 
   int? _parseInt(String raw) {
@@ -762,6 +789,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (_mode == _RakutenSearchMode.product) {
       _dismissKeywordSearchKeyboard();
     }
+    _syncSelectedShopWithSaved(screenContext);
     await showModalBottomSheet<void>(
       context: screenContext,
       isScrollControlled: true,
@@ -1052,36 +1080,136 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           ),
                         ),
                         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
-                        InputDecorator(
-                          decoration: RakutenSearchScreenUi.searchField(
-                            labelText: 'ショップ選択',
-                            prefixIcon: Icon(
-                              Icons.storefront_outlined,
-                              color: HomeScreenColors.leadOnSection,
-                            ),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String?>(
-                              isExpanded: true,
-                              value: _selectedShopCode,
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(
-                                    color: HomeScreenColors.titlePrimary,
+                        Consumer<SavedShopProvider>(
+                          builder: (context, savedProv, _) {
+                            final shops = _sanitizedSavedShopsForSearch(
+                              savedProv.shops,
+                            );
+                            if (shops.isEmpty) {
+                              return InputDecorator(
+                                decoration: RakutenSearchScreenUi.searchField(
+                                  labelText: 'ショップ選択（保存済）',
+                                  prefixIcon: Icon(
+                                    Icons.storefront_outlined,
+                                    color: HomeScreenColors.leadOnSection,
                                   ),
-                              items: _mockShops
-                                  .map(
-                                    (e) => DropdownMenuItem<String?>(
-                                      value: e.code,
-                                      child: Text(e.label),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '保存済ショップがありません',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            color:
+                                                HomeScreenColors.titlePrimary,
+                                          ),
                                     ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) {
-                                setState(() => _selectedShopCode = value);
-                                setModalState(() {});
-                              },
-                            ),
-                          ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      '先にショップ発掘や商品検索からショップを保存すると、ここから絞り込めます。',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: HomeScreenColors
+                                                .groupedSectionBody,
+                                            height: 1.35,
+                                          ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          FocusManager
+                                              .instance.primaryFocus
+                                              ?.unfocus();
+                                          Navigator.of(sheetContext).pop();
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                            if (!screenContext.mounted) {
+                                              return;
+                                            }
+                                            Navigator.of(screenContext).push(
+                                              MaterialPageRoute<void>(
+                                                builder: (_) =>
+                                                    const SavedShopsScreen(),
+                                              ),
+                                            );
+                                          });
+                                        },
+                                        child: const Text('保存ショップ一覧を開く'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+
+                            final dropdownValue =
+                                _selectedShopCode != null &&
+                                    shops.any(
+                                      (s) => s.shopId == _selectedShopCode,
+                                    )
+                                ? _selectedShopCode
+                                : null;
+
+                            return InputDecorator(
+                              decoration: RakutenSearchScreenUi.searchField(
+                                labelText: 'ショップ選択（保存済）',
+                                prefixIcon: Icon(
+                                  Icons.storefront_outlined,
+                                  color: HomeScreenColors.leadOnSection,
+                                ),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String?>(
+                                  isExpanded: true,
+                                  value: dropdownValue,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: HomeScreenColors.titlePrimary,
+                                      ),
+                                  items: [
+                                    DropdownMenuItem<String?>(
+                                      value: null,
+                                      child: Text(
+                                        '指定なし',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: HomeScreenColors
+                                                  .groupedSectionBody,
+                                            ),
+                                      ),
+                                    ),
+                                    ...shops.map(
+                                      (e) => DropdownMenuItem<String?>(
+                                        value: e.shopId,
+                                        child: Text(
+                                          e.shopName,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() => _selectedShopCode = value);
+                                    setModalState(() {});
+                                  },
+                                ),
+                              ),
+                            );
+                          },
                         ),
                         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
                         InputDecorator(
@@ -1428,6 +1556,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       excludeKeyword: _excludeKeywordController.text,
       minReviewCount: _parseInt(_minReviewCountController.text),
       minReviewAverage: _parseDouble(_minReviewAverageController.text),
+      minCommentCount: _parseInt(_minCommentCountController.text),
+      shopCode: _effectiveShopCodeForApi(context),
       genreId: _selectedGenreId,
     ).normalized();
     await context.read<RakutenSearchProvider>().searchWithCondition(condition);
@@ -2503,12 +2633,6 @@ class _SearchModeSegmented extends StatelessWidget {
   }
 }
 
-class _SearchShopOption {
-  const _SearchShopOption(this.code, this.label);
-  final String? code;
-  final String label;
-}
-
 class _SearchGenreOption {
   const _SearchGenreOption(this.id, this.label);
   final String? id;
@@ -2630,12 +2754,25 @@ class _SearchLocalFilterBar extends StatelessWidget {
   }
 }
 
-const List<_SearchShopOption> _mockShops = [
-  _SearchShopOption(null, '指定なし'),
-  _SearchShopOption('rakuten24', '楽天24'),
-  _SearchShopOption('book', '楽天ブックス'),
-  _SearchShopOption('biccamera', 'ビックカメラ楽天市場店'),
-];
+/// 検索 UI 用に保存済ショップを正規化（空 ID・空名を除き、重複 shopId は先勝ち）。
+List<SavedShop> _sanitizedSavedShopsForSearch(List<SavedShop> raw) {
+  final out = <SavedShop>[];
+  final seen = <String>{};
+  for (final e in raw) {
+    try {
+      final id = e.shopId.trim();
+      final name = e.shopName.trim();
+      if (id.isEmpty || name.isEmpty) continue;
+      if (seen.contains(id)) continue;
+      seen.add(id);
+      out.add(e);
+    } catch (_) {}
+  }
+  try {
+    out.sort((a, b) => b.savedAt.compareTo(a.savedAt));
+  } catch (_) {}
+  return out;
+}
 
 List<_SearchGenreOption> get _mockGenres => [
   const _SearchGenreOption(null, '指定なし'),
