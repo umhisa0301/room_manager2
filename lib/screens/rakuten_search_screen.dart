@@ -880,19 +880,20 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             context,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          _mode == _RakutenSearchMode.product
-                              ? 'キーワードは上部の検索バーと中身が同じです。どちらから入力しても同期します。空のままでは検索できません。'
-                              : 'ここでは価格・評価・除外ワード・ショップ・ジャンルをまとめて調整できます。結果を出すにはメイン画面の「検索」を押してください。',
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: HomeScreenColors.groupedSectionBody,
-                                height: 1.4,
-                              ),
-                        ),
-                        if (_mode == _RakutenSearchMode.product) ...[
+                        if (_mode == _RakutenSearchMode.genre) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            '価格・評価・ショップなどを調整します。結果はメイン画面の「検索」で表示します。',
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: HomeScreenColors.groupedSectionBody,
+                                  height: 1.4,
+                                ),
+                          ),
                           SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+                        ] else
+                          const SizedBox(height: 10),
+                        if (_mode == _RakutenSearchMode.product) ...[
                           TextField(
                             controller: _keywordController,
                             textInputAction: TextInputAction.search,
@@ -935,7 +936,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                     RakutenKeywordDetailConditionsInput
                                         .digitsOnlyField,
                                 decoration: RakutenSearchScreenUi.searchField(
-                                  labelText: '最低価格',
+                                  labelText: '最低価格（任意）',
                                   hintText: '1000',
                                   prefixIcon: Icon(
                                     Icons.currency_yen,
@@ -959,7 +960,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                     RakutenKeywordDetailConditionsInput
                                         .digitsOnlyField,
                                 decoration: RakutenSearchScreenUi.searchField(
-                                  labelText: '最高価格',
+                                  labelText: '最高価格（任意）',
                                   hintText: '5000',
                                   prefixIcon: Icon(
                                     Icons.currency_yen,
@@ -974,7 +975,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         TextField(
                           controller: _excludeKeywordController,
                           decoration: RakutenSearchScreenUi.searchField(
-                            labelText: '除外ワード',
+                            labelText: '除外ワード（任意）',
                             hintText: '中古 訳あり',
                             prefixIcon: Icon(
                               Icons.block_outlined,
@@ -990,7 +991,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               Expanded(
                                 child: InputDecorator(
                                   decoration: RakutenSearchScreenUi.searchField(
-                                    labelText: '最低評価数',
+                                    labelText: '最低評価数（任意）',
                                     prefixIcon: Icon(
                                       Icons.reviews_outlined,
                                       color: HomeScreenColors.leadOnSection,
@@ -1048,7 +1049,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               Expanded(
                                 child: InputDecorator(
                                   decoration: RakutenSearchScreenUi.searchField(
-                                    labelText: '最低評価点数',
+                                    labelText: '最低評価点数（任意）',
                                     prefixIcon: Icon(
                                       Icons.star_outline_rounded,
                                       color: HomeScreenColors.leadOnSection,
@@ -1167,7 +1168,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           inputFormatters: RakutenKeywordDetailConditionsInput
                               .digitsOnlyField,
                           decoration: RakutenSearchScreenUi.searchField(
-                            labelText: '最低コメント数',
+                            labelText: '最低コメント数（任意）',
                             hintText: '30',
                             prefixIcon: Icon(
                               Icons.comment_outlined,
@@ -1184,7 +1185,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             if (shops.isEmpty) {
                               return InputDecorator(
                                 decoration: RakutenSearchScreenUi.searchField(
-                                  labelText: 'ショップで絞り込み（保存済）',
+                                  labelText: 'ショップで絞り込み（保存済・任意）',
                                   prefixIcon: Icon(
                                     Icons.storefront_outlined,
                                     color: HomeScreenColors.leadOnSection,
@@ -1206,7 +1207,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                     ),
                                     const SizedBox(height: 6),
                                     Text(
-                                      '気に入った店を「保存」すると、ここで「このショップだけ検索」に切り替えられます。発掘タブや商品カードから追加できます。',
+                                      '店を保存するとここから選べます（発掘・商品カードなど）。',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall
@@ -1265,7 +1266,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               children: [
                                 InputDecorator(
                                   decoration: RakutenSearchScreenUi.searchField(
-                                    labelText: 'ショップで絞り込み（保存済）',
+                                    labelText: 'ショップで絞り込み（保存済・任意）',
                                     prefixIcon: Icon(
                                       Icons.storefront_outlined,
                                       color: HomeScreenColors.leadOnSection,
@@ -1316,22 +1317,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 4,
-                                    top: 6,
-                                  ),
-                                  child: Text(
-                                    '任意です。選ぶと、その保存ショップの商品だけを対象に楽天へ問い合わせます。',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelSmall
-                                        ?.copyWith(
-                                          color: HomeScreenColors.footnoteMuted,
-                                          height: 1.3,
-                                        ),
-                                  ),
-                                ),
                               ],
                             );
                           },
@@ -1342,7 +1327,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           children: [
                             InputDecorator(
                               decoration: RakutenSearchScreenUi.searchField(
-                                labelText: 'ジャンル選択',
+                                labelText: 'ジャンル（任意）',
                                 prefixIcon: Icon(
                                   Icons.category_outlined,
                                   color: HomeScreenColors.leadOnSection,
@@ -1371,18 +1356,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                 ),
                               ),
                             ),
-                            if (_mode == _RakutenSearchMode.product)
-                              Padding(
-                                padding: const EdgeInsets.only(left: 4, top: 6),
-                                child: Text(
-                                  '任意です。選ぶと楽天のジャンルにさらに絞り込みます。',
-                                  style: Theme.of(context).textTheme.labelSmall
-                                      ?.copyWith(
-                                        color: HomeScreenColors.footnoteMuted,
-                                        height: 1.3,
-                                      ),
-                                ),
-                              ),
                           ],
                         ),
                         SizedBox(
@@ -1400,21 +1373,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  if (!kwOk)
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 8),
-                                      child: Text(
-                                        '検索キーワードを入力すると実行できます。',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall
-                                            ?.copyWith(
-                                              color: HomeScreenColors
-                                                  .groupedSectionBody,
-                                              height: 1.3,
-                                            ),
-                                      ),
-                                    ),
                                   FilledButton.icon(
                                     onPressed: !canSearch
                                         ? null
@@ -1443,18 +1401,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(height: 6),
-                                  Text(
-                                    'いまの入力で楽天検索を実行します（数値などに不備があればメッセージで知らせます）。',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelSmall
-                                        ?.copyWith(
-                                          color: HomeScreenColors.footnoteMuted,
-                                          height: 1.3,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 12),
+                                  const SizedBox(height: 10),
                                   Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -1504,18 +1451,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 6),
-                                  Text(
-                                    '「閉じる」… シートを閉じるだけ（入力は保持）。'
-                                    '「絞り込みだけリセット」… キーワードは残し、価格など詳細だけ初期化。',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelSmall
-                                        ?.copyWith(
-                                          color: HomeScreenColors.footnoteMuted,
-                                          height: 1.35,
-                                        ),
-                                  ),
                                 ],
                               );
                             },
@@ -1524,16 +1459,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text(
-                                '入力内容は閉じたあとも保持されます。メイン画面の「検索」で結果を表示してください。',
-                                style: Theme.of(context).textTheme.labelSmall
-                                    ?.copyWith(
-                                      color:
-                                          HomeScreenColors.groupedSectionBody,
-                                      height: 1.35,
-                                    ),
-                              ),
-                              const SizedBox(height: 12),
                               OutlinedButton.icon(
                                 onPressed: () {
                                   FocusManager.instance.primaryFocus?.unfocus();
