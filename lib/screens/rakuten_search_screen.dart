@@ -824,6 +824,25 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
+  /// キーワード詳細シート下部の補助操作（閉じる／絞り込みリセット）。主CTAより弱く、輪郭で押せる範囲をはっきりさせる。
+  ButtonStyle _keywordDetailSheetAuxiliaryButtonStyle() {
+    return OutlinedButton.styleFrom(
+      foregroundColor: HomeScreenColors.leadOnSection,
+      backgroundColor: HomeScreenColors.deckFill,
+      side: BorderSide(color: HomeScreenColors.deckOutline, width: 1),
+      minimumSize: const Size(0, 48),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      visualDensity: VisualDensity.standard,
+      tapTargetSize: MaterialTapTargetSize.padded,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      textStyle: const TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 13.5,
+        height: 1.2,
+      ),
+    );
+  }
+
   Future<void> _openProductConditionsSheet(BuildContext screenContext) async {
     if (_mode == _RakutenSearchMode.product) {
       _dismissKeywordSearchKeyboard();
@@ -1441,54 +1460,46 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                         CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              FocusManager.instance.primaryFocus
-                                                  ?.unfocus();
-                                              Navigator.of(sheetContext).pop();
-                                            },
-                                            style: TextButton.styleFrom(
-                                              foregroundColor: HomeScreenColors
-                                                  .leadOnSection,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 12,
-                                                    vertical: 10,
-                                                  ),
-                                            ),
-                                            child: const Text('閉じる'),
+                                        child: OutlinedButton.icon(
+                                          onPressed: () {
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                            Navigator.of(sheetContext).pop();
+                                          },
+                                          icon: Icon(
+                                            Icons.close_rounded,
+                                            size: 20,
+                                            color:
+                                                HomeScreenColors.leadOnSection,
                                           ),
+                                          label: const Text('閉じる'),
+                                          style:
+                                              _keywordDetailSheetAuxiliaryButtonStyle(),
                                         ),
                                       ),
+                                      const SizedBox(width: 10),
                                       Expanded(
-                                        child: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              FocusManager.instance.primaryFocus
-                                                  ?.unfocus();
-                                              _clearKeywordDetailConditionsOnly();
-                                              setModalState(() {});
-                                            },
-                                            style: TextButton.styleFrom(
-                                              foregroundColor: HomeScreenColors
-                                                  .footnoteMuted,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 10,
-                                                    vertical: 10,
-                                                  ),
-                                            ),
-                                            child: const Text(
-                                              '絞り込みだけリセット',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 13,
-                                              ),
-                                            ),
+                                        child: OutlinedButton.icon(
+                                          onPressed: () {
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                            _clearKeywordDetailConditionsOnly();
+                                            setModalState(() {});
+                                          },
+                                          icon: Icon(
+                                            Icons.filter_alt_off_outlined,
+                                            size: 20,
+                                            color:
+                                                HomeScreenColors.leadOnSection,
                                           ),
+                                          label: const Text(
+                                            '絞り込みだけリセット',
+                                            textAlign: TextAlign.center,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          style:
+                                              _keywordDetailSheetAuxiliaryButtonStyle(),
                                         ),
                                       ),
                                     ],
