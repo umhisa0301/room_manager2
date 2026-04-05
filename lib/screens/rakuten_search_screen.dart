@@ -15,6 +15,7 @@ import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../utils/rakuten_keyword_search_sort.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
 import '../widgets/rakuten_search_feedback.dart';
 import '../widgets/rakuten_search_result_card.dart';
@@ -65,6 +66,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   final Set<String> _selectedProductIds = <String>{};
   bool _routeSubscribed = false;
   _GenreSort _genreSort = _GenreSort.reviewCount;
+  RakutenKeywordSearchSortMode _keywordSort =
+      RakutenKeywordSearchSortMode.defaultOrder;
+  final ScrollController _keywordResultsScrollController =
+      ScrollController();
   bool _excludeSavedShops = true;
 
   void _resetSearchUi() {
@@ -90,6 +95,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _selectedProductIds.clear();
     _mode = _RakutenSearchMode.product;
     _genreSort = _GenreSort.reviewCount;
+    _keywordSort = RakutenKeywordSearchSortMode.defaultOrder;
     context.read<RakutenSearchProvider>().resetTransientState();
     if (mounted) setState(() {});
   }
@@ -131,6 +137,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _shopDiscoveryMinReviewAverageController.dispose();
     _shopDiscoveryShopLimitController.dispose();
     _shopDiscoveryItemsPerShopController.dispose();
+    _keywordResultsScrollController.dispose();
     super.dispose();
   }
 
@@ -258,6 +265,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     setState(() {
       _selectionMode = false;
       _selectedProductIds.clear();
+      _keywordSort = RakutenKeywordSearchSortMode.defaultOrder;
     });
     final condition = _buildProductCondition(context);
     final excludeIds = context
@@ -1855,6 +1863,70 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     });
   }
 
+  String _keywordSortModeLabel(RakutenKeywordSearchSortMode mode) {
+    switch (mode) {
+      case RakutenKeywordSearchSortMode.defaultOrder:
+        return 'デフォルト';
+      case RakutenKeywordSearchSortMode.priceAscending:
+        return '価格順';
+      case RakutenKeywordSearchSortMode.ratingDescending:
+        return '評価順';
+      case RakutenKeywordSearchSortMode.reviewCountDescending:
+        return '件数順';
+    }
+  }
+
+  Widget _buildKeywordResultSortControl(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          '並び順',
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: HomeScreenColors.footnoteMuted,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(width: 4),
+        Theme(
+          data: Theme.of(context).copyWith(visualDensity: VisualDensity.compact),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<RakutenKeywordSearchSortMode>(
+              value: _keywordSort,
+              isDense: true,
+              alignment: AlignmentDirectional.centerEnd,
+              icon: Icon(
+                Icons.expand_more_rounded,
+                size: 18,
+                color: HomeScreenColors.leadOnSection,
+              ),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: HomeScreenColors.leadOnSection,
+                fontWeight: FontWeight.w700,
+              ),
+              items: RakutenKeywordSearchSortMode.values.map((mode) {
+                return DropdownMenuItem<RakutenKeywordSearchSortMode>(
+                  value: mode,
+                  child: Text(_keywordSortModeLabel(mode)),
+                );
+              }).toList(),
+              onChanged: (RakutenKeywordSearchSortMode? next) {
+                if (next == null || next == _keywordSort) return;
+                setState(() => _keywordSort = next);
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (!mounted) return;
+                  if (_keywordResultsScrollController.hasClients) {
+                    _keywordResultsScrollController.jumpTo(0);
+                  }
+                });
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildResultArea(
     BuildContext context,
     RakutenSearchProvider search,
@@ -1939,11 +2011,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ? managedPreferred
             : (managedPreferred.isNotEmpty ? managedPreferred : search.results);
         final filteredResults = base;
+        final orderedResults = sortedRakutenKeywordSearchItems(
+          filteredResults,
+          _keywordSort,
+        );
         final keywordPreferredFilteredAllOut =
             _mode == _RakutenSearchMode.product &&
             managedPreferred.isEmpty &&
             search.results.isNotEmpty;
-        final selectableCount = filteredResults
+        final selectableCount = orderedResults
             .where((e) => _isSelectableForBulk(e, managed))
             .length;
         final totalCount = search.results.length;
@@ -1961,6 +2037,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 3,
               ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.check_circle_outline_rounded,
@@ -1971,12 +2048,28 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   Expanded(
                     child: Text(
                       '検索が完了しました（一覧 $showingCount件）',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: HomeScreenColors.leadOnSection,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
+                  if (_mode == _RakutenSearchMode.product) ...[
+                    SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerRight,
+                          child: _buildKeywordResultSortControl(context),
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -2014,9 +2107,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   if (_selectionMode) ...[
                     SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
                     TextButton(
-                      onPressed: filteredResults.isEmpty || _isBulkRegistering
+                      onPressed: orderedResults.isEmpty || _isBulkRegistering
                           ? null
-                          : () => _selectAllForBulk(filteredResults, managed),
+                          : () => _selectAllForBulk(orderedResults, managed),
                       child: const Text('全部選択'),
                     ),
                     const SizedBox(width: 4),
@@ -2074,7 +2167,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               ),
             ),
             Expanded(
-              child: filteredResults.isEmpty
+              child: orderedResults.isEmpty
                   ? keywordPreferredFilteredAllOut
                         ? RakutenSearchEmptyView(
                             icon: Icons.store_mall_directory_outlined,
@@ -2106,6 +2199,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             stateFootnote: 'データ取得は完了しています。条件を変えて試せます。',
                           )
                   : ListView.separated(
+                      controller: _keywordResultsScrollController,
                       padding: EdgeInsets.fromLTRB(
                         RakutenSearchScreenUi.screenPadH,
                         RakutenSearchScreenUi.listScrollTopPad,
@@ -2115,11 +2209,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                   .listBottomPadWithSelectionBar
                             : RakutenSearchScreenUi.listBottomPad + 6,
                       ),
-                      itemCount: filteredResults.length,
+                      itemCount: orderedResults.length,
                       separatorBuilder: (_, __) =>
                           SizedBox(height: RakutenSearchScreenUi.listCardGap),
                       itemBuilder: (context, index) {
-                        final item = filteredResults[index];
+                        final item = orderedResults[index];
                         final isSelectable = _isSelectableForBulk(
                           item,
                           managed,
@@ -2181,7 +2275,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           ? null
                           : () => _bulkRegisterCandidates(
                               managed,
-                              filteredResults,
+                              orderedResults,
                             ),
                       icon: _isBulkRegistering
                           ? const SizedBox(
