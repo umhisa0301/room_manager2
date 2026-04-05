@@ -68,8 +68,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   _GenreSort _genreSort = _GenreSort.reviewCount;
   RakutenKeywordSearchSortMode _keywordSort =
       RakutenKeywordSearchSortMode.defaultOrder;
-  final ScrollController _keywordResultsScrollController =
-      ScrollController();
+  final ScrollController _keywordResultsScrollController = ScrollController();
   bool _excludeSavedShops = true;
 
   void _resetSearchUi() {
@@ -222,8 +221,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   String? _validateKeywordSearchInputs() {
-    return RakutenKeywordDetailConditionsValidation
-        .validateKeywordSearchBeforeRun(
+    return RakutenKeywordDetailConditionsValidation.validateKeywordSearchBeforeRun(
       keywordText: _keywordController.text,
       minPriceText: _minPriceController.text,
       maxPriceText: _maxPriceController.text,
@@ -441,7 +439,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             Padding(
               padding: const EdgeInsets.only(top: 2),
               child: FilledButton(
-                onPressed: search.status == RakutenSearchStatus.loading ||
+                onPressed:
+                    search.status == RakutenSearchStatus.loading ||
                         _keywordController.text.trim().isEmpty
                     ? null
                     : () => _runSearch(context),
@@ -867,25 +866,25 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           _mode == _RakutenSearchMode.product
                               ? 'キーワードは上部の検索バーと中身が同じです。どちらから入力しても同期します。空のままでは検索できません。'
                               : 'ここでは価格・評価・除外ワード・ショップ・ジャンルをまとめて調整できます。結果を出すにはメイン画面の「検索」を押してください。',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
                                 color: HomeScreenColors.groupedSectionBody,
                                 height: 1.4,
                               ),
                         ),
                         if (_mode == _RakutenSearchMode.product) ...[
-                          SizedBox(
-                            height: RakutenSearchScreenUi.gapFieldStack,
-                          ),
+                          SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
                           TextField(
                             controller: _keywordController,
                             textInputAction: TextInputAction.search,
                             onSubmitted: (_) =>
                                 _submitKeywordSearchFromDetailSheet(
-                              screenContext,
-                              sheetContext,
-                            ),
+                                  screenContext,
+                                  sheetContext,
+                                ),
                             onChanged: (_) => setModalState(() {}),
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
                                   fontSize: 14,
                                   height: 1.22,
                                   color: HomeScreenColors.titlePrimary,
@@ -1309,8 +1308,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                         .textTheme
                                         .labelSmall
                                         ?.copyWith(
-                                          color: HomeScreenColors
-                                              .footnoteMuted,
+                                          color: HomeScreenColors.footnoteMuted,
                                           height: 1.3,
                                         ),
                                   ),
@@ -1335,9 +1333,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                 child: DropdownButton<String?>(
                                   isExpanded: true,
                                   value: _selectedGenreId,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
+                                  style: Theme.of(context).textTheme.bodyMedium
                                       ?.copyWith(
                                         color: HomeScreenColors.titlePrimary,
                                       ),
@@ -1358,18 +1354,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             ),
                             if (_mode == _RakutenSearchMode.product)
                               Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 4,
-                                  top: 6,
-                                ),
+                                padding: const EdgeInsets.only(left: 4, top: 6),
                                 child: Text(
                                   '任意です。選ぶと楽天のジャンルにさらに絞り込みます。',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall
+                                  style: Theme.of(context).textTheme.labelSmall
                                       ?.copyWith(
-                                        color:
-                                            HomeScreenColors.footnoteMuted,
+                                        color: HomeScreenColors.footnoteMuted,
                                         height: 1.3,
                                       ),
                                 ),
@@ -1384,8 +1374,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             builder: (context, search, _) {
                               final loading =
                                   search.status == RakutenSearchStatus.loading;
-                              final kwOk =
-                                  _keywordController.text.trim().isNotEmpty;
+                              final kwOk = _keywordController.text
+                                  .trim()
+                                  .isNotEmpty;
                               final canSearch = !loading && kwOk;
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1440,8 +1431,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                         .textTheme
                                         .labelSmall
                                         ?.copyWith(
-                                          color:
-                                              HomeScreenColors.footnoteMuted,
+                                          color: HomeScreenColors.footnoteMuted,
                                           height: 1.3,
                                         ),
                                   ),
@@ -1511,8 +1501,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                         .textTheme
                                         .labelSmall
                                         ?.copyWith(
-                                          color:
-                                              HomeScreenColors.footnoteMuted,
+                                          color: HomeScreenColors.footnoteMuted,
                                           height: 1.35,
                                         ),
                                   ),
@@ -1526,11 +1515,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             children: [
                               Text(
                                 '入力内容は閉じたあとも保持されます。メイン画面の「検索」で結果を表示してください。',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall
+                                style: Theme.of(context).textTheme.labelSmall
                                     ?.copyWith(
-                                      color: HomeScreenColors.groupedSectionBody,
+                                      color:
+                                          HomeScreenColors.groupedSectionBody,
                                       height: 1.35,
                                     ),
                               ),
@@ -1889,7 +1877,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         ),
         const SizedBox(width: 4),
         Theme(
-          data: Theme.of(context).copyWith(visualDensity: VisualDensity.compact),
+          data: Theme.of(
+            context,
+          ).copyWith(visualDensity: VisualDensity.compact),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<RakutenKeywordSearchSortMode>(
               value: _keywordSort,
@@ -1944,8 +1934,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return const RakutenSearchIdleView(
           icon: Icons.manage_search_outlined,
           title: '検索するとここに商品が並びます',
-          subtitle:
-              '検索キーワードは必須です。価格・ショップ・ジャンルなどは「詳細条件」でまとめて調整できます。',
+          subtitle: '検索キーワードは必須です。価格・ショップ・ジャンルなどは「詳細条件」でまとめて調整できます。',
           stateFootnote: 'コレ候補・コレ済は結果に含めません。足りないときは次ページも取り、最大100件まで集めます。',
           compactLayout: true,
         );
