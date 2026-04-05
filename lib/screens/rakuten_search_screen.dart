@@ -361,10 +361,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           child: ColoredBox(
             color: HomeScreenColors.roomContentWellFill,
             child: Padding(
-              padding: EdgeInsets.all(
-                _mode == _RakutenSearchMode.product
-                    ? 8.0
-                    : RakutenSearchScreenUi.inputDeckPadding,
+              padding: const EdgeInsets.all(
+                RakutenSearchScreenUi.inputDeckPadding,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -379,7 +377,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   ),
                   SizedBox(
                     height: _mode == _RakutenSearchMode.product
-                        ? 5.0
+                        ? 6.0
                         : RakutenSearchScreenUi.gapKeywordToControls,
                   ),
                   switch (_mode) {
@@ -407,17 +405,22 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context,
     RakutenSearchProvider search,
   ) {
+    final loading = search.status == RakutenSearchStatus.loading;
+    final kwEmpty = _keywordController.text.trim().isEmpty;
+    final canSearch = !loading && !kwEmpty;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: TextField(
                 controller: _keywordController,
                 textInputAction: TextInputAction.search,
-                onSubmitted: (_) => _runSearch(context),
+                onSubmitted: (_) {
+                  if (canSearch) _runSearch(context);
+                },
                 onChanged: (_) => setState(() {}),
                 onTapOutside: (_) => _dismissKeywordSearchKeyboard(),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -426,8 +429,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   color: HomeScreenColors.titlePrimary,
                 ),
                 decoration: RakutenSearchScreenUi.searchField(
-                  labelText: '検索キーワード',
-                  hintText: '商品キーワードを入力',
+                  labelText: '検索キーワード（必須）',
+                  hintText: '例: ワイヤレスイヤホン',
                   prefixIcon: Icon(
                     Icons.search_rounded,
                     color: HomeScreenColors.leadOnSection,
@@ -436,29 +439,32 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               ),
             ),
             SizedBox(width: RakutenSearchScreenUi.gapFieldStack + 2),
-            Padding(
-              padding: const EdgeInsets.only(top: 2),
-              child: FilledButton(
-                onPressed:
-                    search.status == RakutenSearchStatus.loading ||
-                        _keywordController.text.trim().isEmpty
-                    ? null
-                    : () => _runSearch(context),
+            Semantics(
+              button: true,
+              label: 'キーワードで検索',
+              child: FilledButton.icon(
+                onPressed: canSearch ? () => _runSearch(context) : null,
+                icon: const Icon(Icons.search_rounded, size: 22),
+                label: const Text(
+                  '検索',
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                ),
                 style: FilledButton.styleFrom(
                   backgroundColor: AppColors.accentPrimary,
                   foregroundColor: AppColors.textOnAccent,
-                  minimumSize: const Size(0, 46),
+                  minimumSize: const Size(0, 48),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
+                    horizontal: 16,
                     vertical: 12,
                   ),
+                  elevation: 1,
+                  shadowColor: AppColors.textPrimary.withValues(alpha: 0.18),
                 ),
-                child: const Text('検索'),
               ),
             ),
           ],
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapFieldStack - 1),
+        SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
         Row(
           children: [
             Expanded(
@@ -466,32 +472,37 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 onPressed: () => _openProductConditionsSheet(context),
                 icon: Icon(
                   Icons.tune_rounded,
-                  size: 16,
+                  size: 17,
                   color: HomeScreenColors.accentSectionHeading,
                 ),
                 label: const Text('詳細条件'),
                 style: _detailConditionsButtonStyle().copyWith(
-                  minimumSize: const WidgetStatePropertyAll(Size(0, 40)),
+                  minimumSize: const WidgetStatePropertyAll(Size(0, 42)),
                   padding: const WidgetStatePropertyAll(
-                    EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   ),
                 ),
               ),
             ),
             SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
             Expanded(
-              child: OutlinedButton(
+              child: OutlinedButton.icon(
                 onPressed: () {
                   _dismissKeywordSearchKeyboard();
                   _clearConditionsForCurrentMode();
                 },
+                icon: Icon(
+                  Icons.restart_alt_rounded,
+                  size: 17,
+                  color: HomeScreenColors.groupedSectionBody,
+                ),
+                label: const Text('条件クリア'),
                 style: _neutralConditionsButtonStyle().copyWith(
-                  minimumSize: const WidgetStatePropertyAll(Size(0, 40)),
+                  minimumSize: const WidgetStatePropertyAll(Size(0, 42)),
                   padding: const WidgetStatePropertyAll(
-                    EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   ),
                 ),
-                child: const Text('条件クリア'),
               ),
             ),
           ],
@@ -1869,17 +1880,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       case RakutenSearchStatus.idle:
         return const RakutenSearchIdleView(
           icon: Icons.manage_search_outlined,
-          title: '検索するとここに商品が並びます',
-          subtitle: '検索キーワードは必須です。価格・ショップ・ジャンルなどは「詳細条件」でまとめて調整できます。',
-          stateFootnote: 'コレ候補・コレ済は結果に含めません。足りないときは次ページも取り、最大100件まで集めます。',
+          title: '商品がここに表示されます',
+          subtitle: '上のキーワードを入れて「検索」。価格やショップの細かい条件は「詳細条件」から。',
+          stateFootnote: '登録済み候補・コレ済は除外します（最大100件まで取得）。',
           compactLayout: true,
         );
       case RakutenSearchStatus.loading:
         return const RakutenSearchLoadingView(
           title: '商品を探しています',
-          subtitle: '楽天の商品情報を読み込んでいます。回線状況によっては30秒ほどかかることがあります。',
-          footnote:
-              'コレ候補・コレ済・保存ショップを除いたうえで、最大100件に足りない場合は続けてページ取得します（上限あり）。この画面を閉じずにお待ちください。',
+          subtitle: '楽天の商品情報を読み込んでいます。混雑時は30秒ほどかかることがあります。',
+          footnote: '除外・複数ページ取得のため、このままお待ちください。',
         );
       case RakutenSearchStatus.error:
         return RakutenSearchErrorView(
@@ -1957,45 +1967,55 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             Padding(
               padding: EdgeInsets.fromLTRB(
                 RakutenSearchScreenUi.screenPadH,
-                3,
+                2,
                 RakutenSearchScreenUi.screenPadH,
-                3,
+                RakutenSearchScreenUi.gapResultStatusRowBottom,
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.check_circle_outline_rounded,
-                    size: 17,
-                    color: HomeScreenColors.statusAccentStrong,
+              child: DecoratedBox(
+                decoration: RakutenSearchScreenUi.listFilterStripDecoration(),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
                   ),
-                  SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
-                  Expanded(
-                    child: Text(
-                      '検索が完了しました（一覧 $showingCount件）',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: HomeScreenColors.leadOnSection,
-                        fontWeight: FontWeight.w700,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.check_circle_outline_rounded,
+                        size: 17,
+                        color: HomeScreenColors.statusAccentStrong,
                       ),
-                    ),
-                  ),
-                  if (_mode == _RakutenSearchMode.product) ...[
-                    SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerRight,
-                          child: _buildKeywordResultSortControl(context),
+                      SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
+                      Expanded(
+                        child: Text(
+                          '検索が完了しました（一覧 $showingCount件）',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: HomeScreenColors.leadOnSection,
+                                fontWeight: FontWeight.w700,
+                              ),
                         ),
                       ),
-                    ),
-                  ],
-                ],
+                      if (_mode == _RakutenSearchMode.product) ...[
+                        SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerRight,
+                              child: _buildKeywordResultSortControl(context),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ),
             ),
             Padding(
