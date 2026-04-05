@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -1687,6 +1688,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       shopCode: _effectiveShopCodeForApi(context),
       genreId: _selectedGenreId,
     ).normalized();
+    if (kDebugMode) {
+      debugPrint(
+        '[Rakuten] genreSearch request start genreId=${condition.genreId} '
+        'keywordLen=${condition.keyword.length}',
+      );
+    }
     await context.read<RakutenSearchProvider>().searchWithCondition(condition);
   }
 
@@ -2274,11 +2281,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           adjustLabel: '詳細条件を開く',
         );
       case RakutenSearchStatus.success:
+        if (kDebugMode) {
+          debugPrint(
+            '[Rakuten] genreSearch before render count=${search.results.length}',
+          );
+        }
         if (search.results.isEmpty) {
           return RakutenSearchEmptyView(
             icon: Icons.category_outlined,
             title: 'このジャンルでは商品は見つかりませんでした',
-            body: '補助キーワードや詳細条件が厳しすぎると、ヒットが出にくくなります。',
+            body:
+                'APIの応答に商品が無かったか、アプリ側の絞り込み後に0件になりました。補助キーワードや詳細条件を緩めて試してください。',
             hints: const [
               '補助キーワードを空にするか、別の言い方に変える',
               '詳細条件の評価数・価格帯を緩める',
@@ -2298,11 +2311,19 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ? managedPreferred
             : search.results;
         final filteredResults = base;
+        if (kDebugMode) {
+          debugPrint(
+            '[Rakuten] genreSearch after filter count (preferred excludes)=${filteredResults.length}',
+          );
+        }
         if (filteredResults.isEmpty) {
+          final n = search.results.length;
           return RakutenSearchEmptyView(
             icon: Icons.filter_alt_off_outlined,
             title: 'この一覧では表示できる商品がありません',
-            body: '検索の取得はできていますが、保存ショップ登録済みの商品のみなど、表示上の理由で0件になっている可能性があります。',
+            body: n > 0
+                ? '楽天からは $n 件取得できましたが、コレ候補・コレ済・保存ショップの除外のため、この一覧では0件です。'
+                : '検索の取得はできていますが、表示上の理由で0件になっている可能性があります。',
             hints: const ['詳細条件を緩めて、もう一度検索する', 'モードを「キーワード」に切り替えて別の切り口を試す'],
             onRefine: () => _openProductConditionsSheet(context),
             refineLabel: '詳細条件を開く',
@@ -2314,6 +2335,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           sorted.sort((a, b) => b.reviewCount.compareTo(a.reviewCount));
         } else {
           sorted.sort((a, b) => b.reviewAverage.compareTo(a.reviewAverage));
+        }
+        if (kDebugMode) {
+          debugPrint(
+            '[Rakuten] genreSearch itemBuilder count=${sorted.length}',
+          );
         }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -2335,7 +2361,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
                   Expanded(
                     child: Text(
-                      '検索が完了しました（${search.results.length}件を取得）',
+                      '検索が完了しました（${search.results.length}件を取得・表示${sorted.length}件）',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: HomeScreenColors.leadOnSection,
                         fontWeight: FontWeight.w700,
@@ -2412,20 +2438,44 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     SizedBox(height: RakutenSearchScreenUi.listCardGap),
                 itemBuilder: (context, index) {
                   final item = sorted[index];
-                  return RakutenSearchResultCard(
-                    item: item,
-                    localStatus: managed.statusForProduct(item.productId),
-                    isRegistering: managed.isRegistering(item.productId),
-                    onRegisterCandidate: () async {
-                      final err = await managed.registerCandidate(item);
-                      if (!context.mounted) return;
-                      if (err != null) {
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(SnackBar(content: Text(err)));
-                      }
-                    },
-                  );
+                  if (kDebugMode && index == 0) {
+                    debugPrint(
+                      '[Rakuten] genreSearch first visible item summary '
+                      'id=${item.productId} name=${item.itemName} '
+                      'price=${item.itemPrice} genreId=${item.genreId}',
+                    );
+                  }
+                  try {
+                    return RakutenSearchResultCard(
+                      item: item,
+                      localStatus: managed.statusForProduct(item.productId),
+                      isRegistering: managed.isRegistering(item.productId),
+                      onRegisterCandidate: () async {
+                        final err = await managed.registerCandidate(item);
+                        if (!context.mounted) return;
+                        if (err != null) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(err)));
+                        }
+                      },
+                    );
+                  } catch (e, st) {
+                    if (kDebugMode) {
+                      debugPrint(
+                        '[Rakuten] genreSearch itemBuilder row failed index=$index: $e',
+                      );
+                      debugPrint('$st');
+                    }
+                    return ListTile(
+                      title: Text(
+                        item.itemName,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text('表示をスキップ: $e'),
+                    );
+                  }
                 },
               ),
             ),

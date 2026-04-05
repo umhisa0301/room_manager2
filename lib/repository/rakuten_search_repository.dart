@@ -136,9 +136,16 @@ class RakutenSearchRepository {
     }
     if (kDebugMode) {
       debugPrint('[Rakuten] repository search total mapped=${results.length}');
+      final gsTag =
+          normalized.genreId != null && normalized.genreId!.trim().isNotEmpty
+          ? 'genreSearch'
+          : 'search';
+      debugPrint('[Rakuten] $gsTag mapped item count=${results.length}');
+      debugPrint('[Rakuten] $gsTag before filter count=${results.length}');
     }
+    List<RakutenSearchItem> afterFilter;
     try {
-      return _applyAppSideFilters(results, normalized);
+      afterFilter = _applyAppSideFilters(results, normalized);
     } catch (e, st) {
       if (kDebugMode) {
         debugPrint('[Rakuten] app-side filter failed: $e');
@@ -146,6 +153,14 @@ class RakutenSearchRepository {
       }
       return results;
     }
+    if (kDebugMode) {
+      final gsTag =
+          normalized.genreId != null && normalized.genreId!.trim().isNotEmpty
+          ? 'genreSearch'
+          : 'search';
+      debugPrint('[Rakuten] $gsTag after filter count=${afterFilter.length}');
+    }
+    return afterFilter;
   }
 
   /// キーワード検索タブ専用: [excludeRegisteredProductIds]（楽天 itemCode / [RakutenSearchItem.productId]）と
@@ -434,9 +449,16 @@ class RakutenSearchRepository {
           item.shopCode.trim() != condition.shopCode!.trim()) {
         return false;
       }
-      if (condition.genreId != null &&
-          !item.genreId.trim().contains(condition.genreId!.trim())) {
-        return false;
+      // genreId は API リクエストで既に絞り込まれている。Item 側の genreId は空や子階層のみのことがあり、
+      // 空文字に対する contains 判定で全件落ちるため、Item に genreId が無いときは通す。
+      if (condition.genreId != null) {
+        final condG = condition.genreId!.trim();
+        if (condG.isNotEmpty) {
+          final itemG = item.genreId.trim();
+          if (itemG.isNotEmpty && !itemG.contains(condG)) {
+            return false;
+          }
+        }
       }
       return true;
     }).toList();

@@ -115,11 +115,21 @@ class RakutenSearchProvider extends ChangeNotifier {
         fetched = result.items;
         _keywordSearchHadApiHitsButNoVisibleResults =
             result.receivedAnyItemFromApi && result.items.isEmpty;
-        _keywordManagedFetchSummary =
-            RakutenKeywordManagedFetchSummary.from(result);
+        _keywordManagedFetchSummary = RakutenKeywordManagedFetchSummary.from(
+          result,
+        );
       } else {
         fetched = await _repository.search(condition: normalized);
         _keywordManagedFetchSummary = null;
+      }
+      if (kDebugMode) {
+        final g = normalized.genreId?.trim();
+        final tag = g != null && g.isNotEmpty
+            ? 'genreSearch'
+            : 'searchWithCondition';
+        debugPrint(
+          '[Rakuten] $tag provider after repository count=${fetched.length}',
+        );
       }
       _results = fetched;
       _status = RakutenSearchStatus.success;
