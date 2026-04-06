@@ -653,7 +653,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         Semantics(
           button: true,
-          label: 'ジャンルで探索する',
+          label: 'ジャンル探索で検索',
           child: FilledButton.icon(
             onPressed: canSearch ? () => _runGenreSearch(context) : null,
             icon: const Icon(Icons.search_rounded, size: 22),
@@ -741,7 +741,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   size: 17,
                   color: HomeScreenColors.accentSectionHeading,
                 ),
-                label: const Text('発掘条件'),
+                label: const Text('ショップ発掘の条件'),
                 style: _detailConditionsButtonStyle(),
               ),
             ),
@@ -769,7 +769,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
             icon: const Icon(Icons.travel_explore_rounded),
             label: const Text(
-              'ショップを発掘する',
+              'ショップ発掘を実行',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
           ),
@@ -1506,9 +1506,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     final keyword = _shopDiscoveryKeywordController.text.trim();
     final genreId = _selectedDiscoveryGenreId;
     if (keyword.isEmpty && (genreId == null || genreId.isEmpty)) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('キーワードまたはジャンルを指定してください')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('ショップ発掘では、キーワードまたはジャンルを指定してください')),
+      );
       return;
     }
     final fallbackKeyword = _labelForGenre(genreId) ?? '楽天';
@@ -1565,7 +1565,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   String _savedShopNameForLog(BuildContext context, String? shopCode) {
     final c = shopCode?.trim();
     if (c == null || c.isEmpty) return '-';
-    return context.read<SavedShopProvider>().findById(c)?.shopName ?? '(unknown)';
+    return context.read<SavedShopProvider>().findById(c)?.shopName ??
+        '(unknown)';
   }
 
   Future<void> _runGenreSearch(BuildContext context) async {
@@ -1632,8 +1633,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     for (final item in source) {
       final status = managed.statusForProduct(item.productId);
       final itemShop = item.shopCode.trim();
-      final fromSavedShop =
-          itemShop.isNotEmpty && saved.isSaved(itemShop);
+      final fromSavedShop = itemShop.isNotEmpty && saved.isSaved(itemShop);
       if (status == RakutenManagedProductStatus.candidate) {
         exclCandidate++;
         continue;
@@ -2006,10 +2006,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
           ),
         ),
-        Expanded(
-          flex: 5,
-          child: listPane,
-        ),
+        Expanded(flex: 5, child: listPane),
       ],
     );
   }
@@ -2144,7 +2141,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return const RakutenSearchIdleView(
           icon: Icons.manage_search_outlined,
           title: '商品がここに表示されます',
-          subtitle: '上のキーワードを入れて「検索」。価格やショップの細かい条件は「詳細条件」から。',
+          subtitle: 'キーワード検索では、上の欄に言葉を入れて「キーワードで検索」。価格やショップの細かい条件は「詳細条件」から。',
           stateFootnote: '登録済み候補・コレ済は除外します（最大100件まで取得）。',
           compactLayout: true,
         );
@@ -2270,7 +2267,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   '検索の取得はできていますが、保存ショップ登録済みの店の商品のみヒットしたなど、表示上の理由で0件になっている可能性があります。',
               hints: const [
                 'キーワードや詳細条件を変えて、もう一度検索する',
-                '「探索」に切り替えて別の切り口を試す',
+                '「ジャンル探索」に切り替えて別の切り口を試す',
               ],
               onRefine: () => _openProductConditionsSheet(context),
               refineLabel: '詳細条件を開く',
@@ -2358,7 +2355,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             body: n > 0
                 ? '楽天からは $n 件取得できましたが、コレ候補・コレ済・保存ショップの除外のため、この一覧では0件です。'
                 : '検索の取得はできていますが、保存ショップ登録済みの店の商品のみヒットしたなど、表示上の理由で0件になっている可能性があります。',
-            hints: const ['詳細条件を緩めて、もう一度検索する', '「キーワード」に切り替えて別の切り口を試す'],
+            hints: const ['詳細条件を緩めて、もう一度検索する', '「キーワード検索」に切り替えて別の切り口を試す'],
             onRefine: () => _openProductConditionsSheet(context),
             refineLabel: '詳細条件を開く',
             stateFootnote: 'データ取得は完了しています。条件を変えて試せます。',
@@ -2392,7 +2389,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             _buildResultsMetaAndExcludeFootnote(
               context,
               primaryLine: primaryMeta,
-              emphasisLine: '探索中のジャンル: 「$genreLabel」',
+              emphasisLine: 'ジャンル探索中: 「$genreLabel」',
             ),
           ],
           listPane: _buildResultsListWithBulkBar(
@@ -2413,14 +2410,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       case RakutenSearchStatus.idle:
         return const RakutenSearchIdleView(
           icon: Icons.storefront_outlined,
-          title: 'ここではまだ発掘結果を表示していません',
+          title: 'ここではまだショップ発掘の結果を表示していません',
           subtitle:
-              'キーワードかジャンルを指定し、「ショップを発掘する」を押すと、商品から有望なショップ候補をまとめます。しきい値は「発掘条件」から調整できます。',
-          stateFootnote: '発掘が始まるまで、このエリアは更新されません。',
+              'キーワードかジャンルを指定し、「ショップ発掘を実行」を押すと、商品から有望なショップ候補をまとめます。しきい値は「ショップ発掘の条件」から調整できます。',
+          stateFootnote: 'ショップ発掘が始まるまで、このエリアは更新されません。',
         );
       case RakutenSearchStatus.loading:
         return const RakutenSearchLoadingView(
-          title: 'ショップを発掘しています',
+          title: 'ショップ発掘のためデータを読み込んでいます',
           subtitle: 'まず商品を読み込み、ショップ単位に集計しています。まとまった件数があると、少し時間がかかることがあります。',
           footnote: '取得中はこの画面を開いたままお待ちください。長く応答がないときは回線や楽天側の混雑も考えられます。',
         );
@@ -2430,24 +2427,24 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           stateLine: '状態: 通信または楽天APIの応答に失敗しました',
           message: search.errorMessage.isNotEmpty
               ? search.errorMessage
-              : '時間をおいて「もう一度検索する」を押すか、発掘条件を緩めて試してください。',
+              : '時間をおいて「もう一度検索する」を押すか、ショップ発掘の条件を緩めて試してください。',
           onRetry: () => _runShopDiscovery(context),
           onAdjustConditions: () => _openShopDiscoveryConditionsSheet(context),
-          adjustLabel: '発掘条件を開く',
+          adjustLabel: 'ショップ発掘の条件を開く',
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
           return RakutenSearchEmptyView(
             icon: Icons.travel_explore_outlined,
-            title: '発掘のもとになる商品がありませんでした',
+            title: 'ショップ発掘のもとになる商品がありませんでした',
             body: '条件にヒットする商品がないか、除外や評価の下限が厳しすぎる可能性があります。',
             hints: const [
               'キーワードを広げる、または別のジャンルも試す',
-              '発掘条件の評価数・評価点を緩める',
+              'ショップ発掘の条件の評価数・評価点を緩める',
               '除外ワードを減らす',
             ],
             onRefine: () => _openShopDiscoveryConditionsSheet(context),
-            refineLabel: '発掘条件を調整',
+            refineLabel: 'ショップ発掘の条件を調整',
             stateFootnote: '読み込みは完了していますが、この条件では0件です。',
           );
         }
@@ -2465,9 +2462,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             icon: Icons.groups_outlined,
             title: 'ショップ候補を組み立てられませんでした',
             body: '商品の取得はできていますが、ショップ単位の集計結果が空でした。条件を変えるか、しばらくしてからもう一度試せます。',
-            hints: const ['発掘条件を緩めて再実行する', 'キーワードやジャンルを変えて商品数を増やす'],
+            hints: const ['ショップ発掘の条件を緩めて再実行する', 'キーワードやジャンルを変えて商品数を増やす'],
             onRefine: () => _openShopDiscoveryConditionsSheet(context),
-            refineLabel: '発掘条件を開く',
+            refineLabel: 'ショップ発掘の条件を開く',
             stateFootnote: '読み込みは完了していますが、表示できるショップは0件です。',
           );
         }
@@ -2535,7 +2532,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '発掘結果 ${visible.length}ショップ（スコア順）',
+                          'ショップ発掘の結果 ${visible.length}件のショップ（スコア順）',
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
                                 color: HomeScreenColors.metricTileTitleColor,
@@ -2680,17 +2677,13 @@ enum _RakutenSearchMode {
   product(
     'キーワード検索',
     Icons.shopping_bag_outlined,
-    'キーワード中心で商品を探し、必要に応じて詳細条件で絞り込みます',
+    '言葉（キーワード）で商品を探します。ジャンルやショップでも絞り込めます。',
   ),
-  genre(
-    'ジャンル探索',
-    Icons.explore_outlined,
-    'キーワードが思いつかないときも、ジャンルを決めてカテゴリの中から広く候補を眺められます',
-  ),
+  genre('ジャンル探索', Icons.explore_outlined, 'ジャンル（カテゴリ）を選んで、その中から商品を広く探します。'),
   shopDiscovery(
     'ショップ発掘',
     Icons.storefront_outlined,
-    'キーワードやジャンルから強いショップ候補を見つけます',
+    'まず商品を検索し、そこから注目したいショップ候補をまとめて探します。',
   );
 
   const _RakutenSearchMode(this.label, this.icon, this.description);
@@ -2717,7 +2710,7 @@ class _DiscoveryFlowGuideCompact extends StatelessWidget {
           const SizedBox(width: 6),
           Expanded(
             child: Text(
-              '発掘 → 詳細で比較 → 保存で次回もすぐ開く',
+              'ショップ発掘 → 詳細で比較 → 保存で次回もすぐ開く',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -2744,6 +2737,31 @@ class _SearchModeSegmented extends StatelessWidget {
   final ValueChanged<_RakutenSearchMode> onChanged;
   final bool compact;
 
+  /// 長いタブラベルでも1行内に収まるよう縮小。折り返しは最大2行。
+  Widget _tabSegmentLabel(BuildContext context, String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.center,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: compact ? 118 : 128),
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+              fontSize: compact ? 10.5 : 11.5,
+              height: 1.12,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -2757,34 +2775,39 @@ class _SearchModeSegmented extends StatelessWidget {
               color: HomeScreenColors.footnoteMuted,
             ),
             const SizedBox(width: 6),
-            Text(
-              '検索の種類',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: HomeScreenColors.footnoteMuted,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 0.15,
-                fontSize: compact ? 11.5 : null,
+            Expanded(
+              child: Text(
+                '探し方を選ぶ',
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: HomeScreenColors.footnoteMuted,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.15,
+                  fontSize: compact ? 11.5 : null,
+                ),
               ),
             ),
           ],
         ),
         SizedBox(height: compact ? 4 : 5),
         SegmentedButton<_RakutenSearchMode>(
-          segments: const [
+          segments: [
             ButtonSegment<_RakutenSearchMode>(
               value: _RakutenSearchMode.product,
-              label: Text('キーワード'),
-              icon: Icon(Icons.shopping_bag_outlined, size: 15),
+              label: _tabSegmentLabel(
+                context,
+                _RakutenSearchMode.product.label,
+              ),
             ),
             ButtonSegment<_RakutenSearchMode>(
               value: _RakutenSearchMode.genre,
-              label: Text('探索'),
-              icon: Icon(Icons.explore_outlined, size: 15),
+              label: _tabSegmentLabel(context, _RakutenSearchMode.genre.label),
             ),
             ButtonSegment<_RakutenSearchMode>(
               value: _RakutenSearchMode.shopDiscovery,
-              label: Text('発掘'),
-              icon: Icon(Icons.storefront_outlined, size: 15),
+              label: _tabSegmentLabel(
+                context,
+                _RakutenSearchMode.shopDiscovery.label,
+              ),
             ),
           ],
           selected: <_RakutenSearchMode>{mode},
@@ -2796,10 +2819,11 @@ class _SearchModeSegmented extends StatelessWidget {
           style: ButtonStyle(
             visualDensity: VisualDensity.compact,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            minimumSize: WidgetStateProperty.all(Size(0, compact ? 42 : 46)),
             padding: WidgetStateProperty.all(
               EdgeInsets.symmetric(
-                horizontal: compact ? 6 : 10,
-                vertical: compact ? 6 : 10,
+                horizontal: compact ? 4 : 6,
+                vertical: compact ? 8 : 10,
               ),
             ),
             side: WidgetStateProperty.all(
@@ -2821,6 +2845,17 @@ class _SearchModeSegmented extends StatelessWidget {
               return HomeScreenColors.groupedSectionBody;
             }),
           ),
+        ),
+        SizedBox(height: compact ? 5 : 6),
+        Text(
+          mode.description,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: HomeScreenColors.groupedSectionBody,
+            height: 1.38,
+            fontSize: compact ? 11.5 : 12.5,
+          ),
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
