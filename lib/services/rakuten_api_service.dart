@@ -109,7 +109,8 @@ class RakutenApiService {
         '[Rakuten] request start page=$page hits=$hits '
         'keyword=${keywordTrimmed.isEmpty ? '(omit)' : keywordTrimmed} '
         'genreId=${hasGenre ? genreTrimmed : '-'} '
-        'shopCode=${hasShop ? shopTrimmed : '-'}',
+        'shopCode=${hasShop ? shopTrimmed : '-'} '
+        'shopName=未送信(APIはshopCodeのみ)',
       );
     }
 

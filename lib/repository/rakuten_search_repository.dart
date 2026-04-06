@@ -257,9 +257,14 @@ class RakutenSearchRepository {
               continue;
             }
             final shopCode = item.shopCode.trim();
+            final scopedShop = normalized.shopCode?.trim() ?? '';
             if (shopCode.isNotEmpty && savedShopExclude.contains(shopCode)) {
-              pageDroppedSavedShop++;
-              continue;
+              // 保存済みショップは通常一覧から除外するが、API 検索でその shopCode を
+              // 明示指定しているときは結果は当該ショップの商品に限られるため除外しない。
+              if (scopedShop.isEmpty || shopCode != scopedShop) {
+                pageDroppedSavedShop++;
+                continue;
+              }
             }
             seenIds.add(id);
             visible.add(item);
@@ -463,10 +468,8 @@ class RakutenSearchRepository {
           item.reviewAverage < condition.minReviewAverage!) {
         return false;
       }
-      if (condition.shopCode != null &&
-          item.shopCode.trim() != condition.shopCode!.trim()) {
-        return false;
-      }
+      // shopCode はクエリで API が既に絞り込む。Item 側の shopCode が空・表記差で
+      // 一致しない場合があり、クライアント再判定で全件落ちうるためここでは判定しない。
       // genreId はクエリパラメータで API が既に絞り込む。レスポンス各 Item の genreId は
       // 子ジャンルIDのみで親 genreId を部分文字列に含まないことが多く、クライアント側の
       // 文字列一致・contains では誤って全件落ちるためここでは判定しない。

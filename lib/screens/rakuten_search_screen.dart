@@ -323,8 +323,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         '[Rakuten] keyword search execute keyword="${c.keyword}" '
         'genreId=${c.genreId ?? '-'} '
         'genreName(lookup)=${_labelForGenre(c.genreId) ?? '-'} '
-        'shopCode=${c.shopCode ?? '-'} hits=30 '
-        'excludeRegistered=${excludeIds.length} savedShopCodes=${savedShopCodes.length}',
+        'shopCode=${c.shopCode ?? '-'} '
+        'shopName(saved lookup)=${_savedShopNameForLog(context, c.shopCode)} hits=30 '
+        'excludeRegistered=${excludeIds.length} savedShopExcludeSet=${savedShopCodes.length} '
+        '(scoped shop はリポジトリで saved 除外対象外)',
       );
     }
     context.read<RakutenSearchProvider>().searchWithCondition(
@@ -1130,7 +1132,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               shops: shops,
                               selectedShopCode: _selectedShopCode,
                               onShopChanged: (value) {
-                                setState(() => _selectedShopCode = value);
+                                _setSelectedShopCode(context, value);
                                 setModalState(() {});
                               },
                               onNavigateToSavedShops: () {
@@ -1546,6 +1548,26 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     setState(() => _selectedGenreId = value);
   }
 
+  void _setSelectedShopCode(BuildContext context, String? value) {
+    if (kDebugMode) {
+      final shop = value != null && value.trim().isNotEmpty
+          ? context.read<SavedShopProvider>().findById(value.trim())
+          : null;
+      debugPrint(
+        '[Rakuten] shop UI selected label=${shop?.shopName ?? value ?? '指定なし'} '
+        'shopCode=${value ?? '(null)'} shopName=${shop?.shopName ?? '(null)'} '
+        'shopUrl=${shop?.shopUrl ?? '-'} savedModel shopId=${shop?.shopId ?? '-'}',
+      );
+    }
+    setState(() => _selectedShopCode = value);
+  }
+
+  String _savedShopNameForLog(BuildContext context, String? shopCode) {
+    final c = shopCode?.trim();
+    if (c == null || c.isEmpty) return '-';
+    return context.read<SavedShopProvider>().findById(c)?.shopName ?? '(unknown)';
+  }
+
   Future<void> _runGenreSearch(BuildContext context) async {
     if (_selectedGenreId == null || _selectedGenreId!.isEmpty) {
       ScaffoldMessenger.of(
@@ -1577,7 +1599,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         'keywordLen=${condition.keyword.length} '
         'genreId=${condition.genreId ?? '-'} '
         'genreName(lookup)=${_labelForGenre(condition.genreId) ?? '-'} '
-        'shopCode=${condition.shopCode ?? '-'} hits=20',
+        'shopCode=${condition.shopCode ?? '-'} '
+        'shopName(saved lookup)=${_savedShopNameForLog(context, condition.shopCode)} hits=20',
       );
     }
     setState(() {
@@ -1591,21 +1614,26 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   /// 候補済・コレ済の商品や保存済みショップの商品を優先的に除外したリストを返す。
   /// ただし、除外しすぎて極端に件数が減る場合は元のリストをそのまま使う前提で呼び出し元でフォールバックする。
+  ///
+  /// [searchScopeShopCode] に API 検索で絞り込んだ shopCode があるとき、当該ショップは
+  /// 「保存済み」であっても一覧から落とさない（ショップ指定検索の結果が 0 件にならないようにする）。
   List<RakutenSearchItem> _applyPreferredExcludes(
     List<RakutenSearchItem> source,
     RakutenManagedProductProvider managed,
-    SavedShopProvider saved,
-  ) {
+    SavedShopProvider saved, {
+    String? searchScopeShopCode,
+  }) {
     if (source.isEmpty) return source;
+    final scoped = searchScopeShopCode?.trim() ?? '';
     final out = <RakutenSearchItem>[];
     var exclCandidate = 0;
     var exclDone = 0;
     var exclSavedShop = 0;
     for (final item in source) {
       final status = managed.statusForProduct(item.productId);
+      final itemShop = item.shopCode.trim();
       final fromSavedShop =
-          item.shopCode.trim().isNotEmpty &&
-          saved.isSaved(item.shopCode.trim());
+          itemShop.isNotEmpty && saved.isSaved(itemShop);
       if (status == RakutenManagedProductStatus.candidate) {
         exclCandidate++;
         continue;
@@ -1615,6 +1643,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         continue;
       }
       if (fromSavedShop) {
+        if (scoped.isNotEmpty && itemShop == scoped) {
+          out.add(item);
+          continue;
+        }
         exclSavedShop++;
         continue;
       }
@@ -1623,7 +1655,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (kDebugMode) {
       debugPrint(
         '[Rakuten] UI preferred excludes before=${source.length} after=${out.length} '
-        'candidateExclude=$exclCandidate doneExclude=$exclDone savedShopExclude=$exclSavedShop',
+        'candidateExclude=$exclCandidate doneExclude=$exclDone savedShopExclude=$exclSavedShop '
+        'searchScopeShopCode=${scoped.isEmpty ? '-' : scoped}',
       );
     }
     // 除外後が極端に少ないときは、呼び出し側で元リストにフォールバックさせる。
@@ -2168,6 +2201,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           search.results,
           managed,
           saved,
+          searchScopeShopCode: _effectiveShopCodeForApi(context),
         );
         // キーワードタブ: API 側で候補・コレ済・保存ショップを除いて最大100件まで集約済み。
         // ここでは一覧表示の一貫性のため同条件で再フィルタし、
@@ -2305,6 +2339,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           search.results,
           managed,
           saved,
+          searchScopeShopCode: _effectiveShopCodeForApi(context),
         );
         final base = managedPreferred.isNotEmpty
             ? managedPreferred
