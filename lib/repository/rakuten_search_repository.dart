@@ -228,21 +228,37 @@ class RakutenSearchRepository {
         }
 
         final pageLen = items.length;
+        var pageDroppedRegistered = 0;
+        var pageDroppedDup = 0;
+        var pageDroppedAppFilter = 0;
+        var pageDroppedSavedShop = 0;
+        var pageParsedOk = 0;
         for (final entry in items) {
           if (visible.length >= targetVisibleCount) break;
           try {
             final map = _unwrapItem(entry);
             final item = _mapToModel(map);
             if (item == null) continue;
+            pageParsedOk++;
             receivedAnyFromApi = true;
             final id = item.productId.trim();
             if (id.isEmpty) continue;
-            if (exclude.contains(id)) continue;
-            if (seenIds.contains(id)) continue;
+            if (exclude.contains(id)) {
+              pageDroppedRegistered++;
+              continue;
+            }
+            if (seenIds.contains(id)) {
+              pageDroppedDup++;
+              continue;
+            }
             final passed = _applyAppSideFilters([item], normalized);
-            if (passed.isEmpty) continue;
+            if (passed.isEmpty) {
+              pageDroppedAppFilter++;
+              continue;
+            }
             final shopCode = item.shopCode.trim();
             if (shopCode.isNotEmpty && savedShopExclude.contains(shopCode)) {
+              pageDroppedSavedShop++;
               continue;
             }
             seenIds.add(id);
@@ -260,7 +276,9 @@ class RakutenSearchRepository {
         if (kDebugMode) {
           debugPrint(
             '[Rakuten] keywordManagedExclusion page=$page raw=$pageLen '
-            'visible=${visible.length}/$targetVisibleCount',
+            'parsed=$pageParsedOk visible=${visible.length}/$targetVisibleCount '
+            'dropReg=$pageDroppedRegistered dropDup=$pageDroppedDup '
+            'dropAppFilter=$pageDroppedAppFilter dropSavedShop=$pageDroppedSavedShop',
           );
         }
 
@@ -449,17 +467,9 @@ class RakutenSearchRepository {
           item.shopCode.trim() != condition.shopCode!.trim()) {
         return false;
       }
-      // genreId は API リクエストで既に絞り込まれている。Item 側の genreId は空や子階層のみのことがあり、
-      // 空文字に対する contains 判定で全件落ちるため、Item に genreId が無いときは通す。
-      if (condition.genreId != null) {
-        final condG = condition.genreId!.trim();
-        if (condG.isNotEmpty) {
-          final itemG = item.genreId.trim();
-          if (itemG.isNotEmpty && !itemG.contains(condG)) {
-            return false;
-          }
-        }
-      }
+      // genreId はクエリパラメータで API が既に絞り込む。レスポンス各 Item の genreId は
+      // 子ジャンルIDのみで親 genreId を部分文字列に含まないことが多く、クライアント側の
+      // 文字列一致・contains では誤って全件落ちるためここでは判定しない。
       return true;
     }).toList();
   }

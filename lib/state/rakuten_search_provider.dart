@@ -128,7 +128,9 @@ class RakutenSearchProvider extends ChangeNotifier {
             ? 'genreSearch'
             : 'searchWithCondition';
         debugPrint(
-          '[Rakuten] $tag provider after repository count=${fetched.length}',
+          '[Rakuten] $tag provider after repository rawItemsCount=${fetched.length} '
+          'parsedItemsCount=${fetched.length} genreId=${normalized.genreId ?? '-'} '
+          'keywordLen=${normalized.keyword.length}',
         );
       }
       _results = fetched;

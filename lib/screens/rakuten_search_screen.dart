@@ -317,6 +317,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         .map((e) => e.shopId.trim())
         .where((e) => e.isNotEmpty)
         .toSet();
+    if (kDebugMode) {
+      final c = condition;
+      debugPrint(
+        '[Rakuten] keyword search execute keyword="${c.keyword}" '
+        'genreId=${c.genreId ?? '-'} '
+        'genreName(lookup)=${_labelForGenre(c.genreId) ?? '-'} '
+        'shopCode=${c.shopCode ?? '-'} hits=30 '
+        'excludeRegistered=${excludeIds.length} savedShopCodes=${savedShopCodes.length}',
+      );
+    }
     context.read<RakutenSearchProvider>().searchWithCondition(
       condition,
       excludeRegisteredProductIds: excludeIds,
@@ -565,7 +575,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           labelText: 'ジャンルを選択（必須）',
           value: _selectedGenreId,
           options: _mockGenres,
-          onChanged: (value) => setState(() => _selectedGenreId = value),
+          onChanged: _setSelectedGenreId,
         ),
         if (genreOk && search.status == RakutenSearchStatus.idle) ...[
           SizedBox(height: RakutenSearchScreenUi.gapFieldStack * 0.75),
@@ -976,7 +986,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                     value: _selectedGenreId,
                                     options: _mockGenres,
                                     onChanged: (value) {
-                                      setState(() => _selectedGenreId = value);
+                                      _setSelectedGenreId(value);
                                       setModalState(() {});
                                     },
                                   ),
@@ -1147,7 +1157,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             value: _selectedGenreId,
                             options: _mockGenres,
                             onChanged: (value) {
-                              setState(() => _selectedGenreId = value);
+                              _setSelectedGenreId(value);
                               setModalState(() {});
                             },
                           ),
@@ -1517,6 +1527,25 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return RakutenGenreMasterService.instance.genreNameIfKnown(id);
   }
 
+  String _genreUiLabelForId(String? id) {
+    if (id == null || id.trim().isEmpty) return '指定なし';
+    for (final o in _mockGenres) {
+      if (o.id == id) return o.label;
+    }
+    return id;
+  }
+
+  void _setSelectedGenreId(String? value) {
+    if (kDebugMode) {
+      debugPrint(
+        '[Rakuten] genre UI selected label=${_genreUiLabelForId(value)} '
+        'genreId=${value ?? '(null)'} '
+        'genreName(lookup)=${_labelForGenre(value) ?? '(null)'}',
+      );
+    }
+    setState(() => _selectedGenreId = value);
+  }
+
   Future<void> _runGenreSearch(BuildContext context) async {
     if (_selectedGenreId == null || _selectedGenreId!.isEmpty) {
       ScaffoldMessenger.of(
@@ -1544,8 +1573,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     ).normalized();
     if (kDebugMode) {
       debugPrint(
-        '[Rakuten] genreSearch request start genreId=${condition.genreId} '
-        'keywordLen=${condition.keyword.length}',
+        '[Rakuten] genreSearch execute keyword="${condition.keyword}" '
+        'keywordLen=${condition.keyword.length} '
+        'genreId=${condition.genreId ?? '-'} '
+        'genreName(lookup)=${_labelForGenre(condition.genreId) ?? '-'} '
+        'shopCode=${condition.shopCode ?? '-'} hits=20',
       );
     }
     setState(() {
@@ -1566,18 +1598,33 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   ) {
     if (source.isEmpty) return source;
     final out = <RakutenSearchItem>[];
+    var exclCandidate = 0;
+    var exclDone = 0;
+    var exclSavedShop = 0;
     for (final item in source) {
       final status = managed.statusForProduct(item.productId);
       final fromSavedShop =
           item.shopCode.trim().isNotEmpty &&
           saved.isSaved(item.shopCode.trim());
-      if (status == RakutenManagedProductStatus.candidate ||
-          status == RakutenManagedProductStatus.done ||
-          fromSavedShop) {
-        // 優先除外候補
+      if (status == RakutenManagedProductStatus.candidate) {
+        exclCandidate++;
+        continue;
+      }
+      if (status == RakutenManagedProductStatus.done) {
+        exclDone++;
+        continue;
+      }
+      if (fromSavedShop) {
+        exclSavedShop++;
         continue;
       }
       out.add(item);
+    }
+    if (kDebugMode) {
+      debugPrint(
+        '[Rakuten] UI preferred excludes before=${source.length} after=${out.length} '
+        'candidateExclude=$exclCandidate doneExclude=$exclDone savedShopExclude=$exclSavedShop',
+      );
     }
     // 除外後が極端に少ないときは、呼び出し側で元リストにフォールバックさせる。
     return out;
