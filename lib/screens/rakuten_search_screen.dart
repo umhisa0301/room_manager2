@@ -67,10 +67,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   bool _isBulkRegistering = false;
   final Set<String> _selectedProductIds = <String>{};
   bool _routeSubscribed = false;
-  _GenreSort _genreSort = _GenreSort.reviewCount;
+  RakutenKeywordSearchSortMode _genreExploreSort =
+      RakutenKeywordSearchSortMode.defaultOrder;
   RakutenKeywordSearchSortMode _keywordSort =
       RakutenKeywordSearchSortMode.defaultOrder;
   final ScrollController _keywordResultsScrollController = ScrollController();
+  final ScrollController _genreResultsScrollController = ScrollController();
   bool _excludeSavedShops = true;
 
   void _resetSearchUi() {
@@ -95,7 +97,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _isBulkRegistering = false;
     _selectedProductIds.clear();
     _mode = _RakutenSearchMode.product;
-    _genreSort = _GenreSort.reviewCount;
+    _genreExploreSort = RakutenKeywordSearchSortMode.defaultOrder;
     _keywordSort = RakutenKeywordSearchSortMode.defaultOrder;
     context.read<RakutenSearchProvider>().resetTransientState();
     if (mounted) setState(() {});
@@ -139,6 +141,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _shopDiscoveryShopLimitController.dispose();
     _shopDiscoveryItemsPerShopController.dispose();
     _keywordResultsScrollController.dispose();
+    _genreResultsScrollController.dispose();
     super.dispose();
   }
 
@@ -564,6 +567,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           options: _mockGenres,
           onChanged: (value) => setState(() => _selectedGenreId = value),
         ),
+        if (genreOk && search.status == RakutenSearchStatus.idle) ...[
+          SizedBox(height: RakutenSearchScreenUi.gapFieldStack * 0.75),
+          Text(
+            '「検索」でこのジャンル内を一覧します。補助キーワードはなくても構いません。',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: HomeScreenColors.groupedSectionBody,
+              height: 1.35,
+            ),
+          ),
+        ],
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         TextField(
           controller: _genreController,
@@ -628,7 +641,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         Semantics(
           button: true,
-          label: 'ジャンルで検索',
+          label: 'ジャンルで探索する',
           child: FilledButton.icon(
             onPressed: canSearch ? () => _runGenreSearch(context) : null,
             icon: const Icon(Icons.search_rounded, size: 22),
@@ -939,7 +952,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         Text(
                           _mode == _RakutenSearchMode.product
                               ? 'キーワード検索の詳細条件'
-                              : 'ジャンル検索の詳細条件',
+                              : 'ジャンル探索の詳細条件',
                           style: RakutenSearchScreenUi.sectionHeadingAccent(
                             context,
                           ),
@@ -1531,6 +1544,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         'keywordLen=${condition.keyword.length}',
       );
     }
+    setState(() {
+      _genreExploreSort = RakutenKeywordSearchSortMode.defaultOrder;
+    });
+    if (_genreResultsScrollController.hasClients) {
+      _genreResultsScrollController.jumpTo(0);
+    }
     await context.read<RakutenSearchProvider>().searchWithCondition(condition);
   }
 
@@ -1655,7 +1674,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }
   }
 
-  Widget _buildKeywordResultSortControl(BuildContext context) {
+  Widget _buildResultSortControl(
+    BuildContext context, {
+    required RakutenKeywordSearchSortMode value,
+    required ScrollController resultsScrollController,
+    required void Function(RakutenKeywordSearchSortMode next) onSortSelected,
+  }) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -1673,7 +1697,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           ).copyWith(visualDensity: VisualDensity.compact),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<RakutenKeywordSearchSortMode>(
-              value: _keywordSort,
+              value: value,
               isDense: true,
               alignment: AlignmentDirectional.centerEnd,
               icon: Icon(
@@ -1692,12 +1716,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 );
               }).toList(),
               onChanged: (RakutenKeywordSearchSortMode? next) {
-                if (next == null || next == _keywordSort) return;
-                setState(() => _keywordSort = next);
+                if (next == null || next == value) return;
+                onSortSelected(next);
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (!mounted) return;
-                  if (_keywordResultsScrollController.hasClients) {
-                    _keywordResultsScrollController.jumpTo(0);
+                  if (resultsScrollController.hasClients) {
+                    resultsScrollController.jumpTo(0);
                   }
                 });
               },
@@ -1852,7 +1876,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerRight,
-                              child: _buildKeywordResultSortControl(context),
+                              child: _buildResultSortControl(
+                              context,
+                              value: _keywordSort,
+                              resultsScrollController:
+                                  _keywordResultsScrollController,
+                              onSortSelected: (next) =>
+                                  setState(() => _keywordSort = next),
+                            ),
                             ),
                           ),
                         ),
@@ -1966,7 +1997,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                 'キーワード検索ではそのままでは一覧に出さないようにしています。',
                             hints: const [
                               'キーワードや詳細条件を変えて、別のショップの商品を探す',
-                              'ジャンル検索など別の切り口も試せます',
+                              'ジャンル探索など別の切り口も試せます',
                             ],
                             onRefine: () =>
                                 _openProductConditionsSheet(context),
@@ -1980,7 +2011,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                 '検索の取得はできていますが、保存ショップ登録済みの店の商品のみヒットしたなど、表示上の理由で0件になっている可能性があります。',
                             hints: const [
                               'キーワードや詳細条件を変えて、もう一度検索する',
-                              'ジャンル検索に切り替えて別の切り口を試す',
+                              '「探索」に切り替えて別の切り口を試す',
                             ],
                             onRefine: () =>
                                 _openProductConditionsSheet(context),
@@ -2095,20 +2126,22 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     switch (search.status) {
       case RakutenSearchStatus.idle:
         return const RakutenSearchIdleView(
-          icon: Icons.category_outlined,
-          title: 'ここではまだ結果を表示していません',
-          subtitle: 'ジャンルを選び、必要なら補助キーワードを入力してから「検索」を押してください。絞り込みは「詳細条件」から開けます。',
-          stateFootnote: '検索が始まるまで、このエリアは更新されません。コレ候補・コレ済登録済みの商品は結果に含みません。',
+          icon: Icons.explore_outlined,
+          title: 'ジャンルから広く候補を眺める',
+          subtitle:
+              'まずジャンルを選び、「検索」でカテゴリ内の商品を一覧します。キーワードがなくても始められます。価格や評価の下限は「詳細条件」から。',
+          stateFootnote:
+              '検索が始まるまで、このエリアは更新されません。コレ候補・コレ済は一覧に含めません（最大約100件まで取得）。',
         );
       case RakutenSearchStatus.loading:
         return const RakutenSearchLoadingView(
-          title: 'ジャンルに沿って商品を読み込んでいます',
-          subtitle: '楽天の商品情報を読み込んでいます。回線状況によっては30秒ほどかかることがあります。',
-          footnote: '最大約100件まで順に取得しています。この画面を閉じずにお待ちください。',
+          title: 'ジャンル内の候補を読み込んでいます',
+          subtitle: '楽天の商品情報を読み込んでいます。混雑時は30秒ほどかかることがあります。',
+          footnote: '除外・最大約100件取得のため、このままお待ちください。',
         );
       case RakutenSearchStatus.error:
         return RakutenSearchErrorView(
-          title: 'ジャンル検索の結果を表示できませんでした',
+          title: 'ジャンル探索の結果を表示できませんでした',
           stateLine: '状態: 通信または楽天APIの応答に失敗しました',
           message: search.errorMessage.isNotEmpty
               ? search.errorMessage
@@ -2167,15 +2200,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             stateFootnote: 'データ取得は完了しています。条件の組み合わせを変えてみましょう。',
           );
         }
-        final sorted = [...filteredResults];
-        if (_genreSort == _GenreSort.reviewCount) {
-          sorted.sort((a, b) => b.reviewCount.compareTo(a.reviewCount));
-        } else {
-          sorted.sort((a, b) => b.reviewAverage.compareTo(a.reviewAverage));
-        }
+        final showingCount = filteredResults.length;
+        final orderedResults = sortedRakutenKeywordSearchItems(
+          filteredResults,
+          _genreExploreSort,
+        );
+        final genreLabel = _labelForGenre(_selectedGenreId) ?? '選択中のジャンル';
         if (kDebugMode) {
           debugPrint(
-            '[Rakuten] genreSearch itemBuilder count=${sorted.length}',
+            '[Rakuten] genreSearch itemBuilder count=${orderedResults.length}',
           );
         }
         return Column(
@@ -2184,28 +2217,59 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             Padding(
               padding: EdgeInsets.fromLTRB(
                 RakutenSearchScreenUi.screenPadH,
-                RakutenSearchScreenUi.gapListAfterDivider,
+                2,
                 RakutenSearchScreenUi.screenPadH,
-                4,
+                RakutenSearchScreenUi.gapResultStatusRowBottom,
               ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.check_circle_outline_rounded,
-                    size: 18,
-                    color: HomeScreenColors.statusAccentStrong,
+              child: DecoratedBox(
+                decoration: RakutenSearchScreenUi.listFilterStripDecoration(),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
                   ),
-                  SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
-                  Expanded(
-                    child: Text(
-                      '検索が完了しました（${search.results.length}件を取得・表示${sorted.length}件）',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: HomeScreenColors.leadOnSection,
-                        fontWeight: FontWeight.w700,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.check_circle_outline_rounded,
+                        size: 17,
+                        color: HomeScreenColors.statusAccentStrong,
                       ),
-                    ),
+                      SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
+                      Expanded(
+                        child: Text(
+                          'ジャンル探索が完了しました（「$genreLabel」・一覧 $showingCount件）',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: HomeScreenColors.leadOnSection,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerRight,
+                            child: _buildResultSortControl(
+                              context,
+                              value: _genreExploreSort,
+                              resultsScrollController:
+                                  _genreResultsScrollController,
+                              onSortSelected: (next) =>
+                                  setState(() => _genreExploreSort = next),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
             Padding(
@@ -2223,46 +2287,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                RakutenSearchScreenUi.screenPadH,
-                0,
-                RakutenSearchScreenUi.screenPadH,
-                RakutenSearchScreenUi.gapFieldStack,
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    'ジャンル検索結果（${sorted.length}件）',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: HomeScreenColors.titlePrimary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const Spacer(),
-                  DropdownButton<_GenreSort>(
-                    value: _genreSort,
-                    underline: const SizedBox.shrink(),
-                    onChanged: (next) {
-                      if (next == null) return;
-                      setState(() => _genreSort = next);
-                    },
-                    items: const [
-                      DropdownMenuItem(
-                        value: _GenreSort.reviewCount,
-                        child: Text('評価数順'),
-                      ),
-                      DropdownMenuItem(
-                        value: _GenreSort.reviewAverage,
-                        child: Text('評価点順'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
             Expanded(
               child: ListView.separated(
+                controller: _genreResultsScrollController,
                 padding: EdgeInsets.fromLTRB(
                   RakutenSearchScreenUi.screenPadH,
                   RakutenSearchScreenUi.listScrollTopPad,
@@ -2270,11 +2297,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   RakutenSearchScreenUi.listBottomPad +
                       RakutenSearchScreenUi.listScrollExtraPadGenre,
                 ),
-                itemCount: sorted.length,
+                itemCount: orderedResults.length,
                 separatorBuilder: (_, __) =>
                     SizedBox(height: RakutenSearchScreenUi.listCardGap),
                 itemBuilder: (context, index) {
-                  final item = sorted[index];
+                  final item = orderedResults[index];
                   if (kDebugMode && index == 0) {
                     debugPrint(
                       '[Rakuten] genreSearch first visible item summary '
@@ -2598,7 +2625,11 @@ enum _RakutenSearchMode {
     Icons.shopping_bag_outlined,
     'キーワード中心で商品を探し、必要に応じて詳細条件で絞り込みます',
   ),
-  genre('ジャンル検索', Icons.category_outlined, '楽天のジャンルIDを軸に、商品をまとめて探します'),
+  genre(
+    'ジャンル探索',
+    Icons.explore_outlined,
+    'キーワードが思いつかないときも、ジャンルを決めてカテゴリの中から広く候補を眺められます',
+  ),
   shopDiscovery(
     'ショップ発掘',
     Icons.storefront_outlined,
@@ -2690,8 +2721,8 @@ class _SearchModeSegmented extends StatelessWidget {
             ),
             ButtonSegment<_RakutenSearchMode>(
               value: _RakutenSearchMode.genre,
-              label: Text('ジャンル'),
-              icon: Icon(Icons.category_outlined, size: 15),
+              label: Text('探索'),
+              icon: Icon(Icons.explore_outlined, size: 15),
             ),
             ButtonSegment<_RakutenSearchMode>(
               value: _RakutenSearchMode.shopDiscovery,
@@ -2738,8 +2769,6 @@ class _SearchModeSegmented extends StatelessWidget {
     );
   }
 }
-
-enum _GenreSort { reviewCount, reviewAverage }
 
 /// 検索 UI 用に保存済ショップを正規化（空 ID・空名を除き、重複 shopId は先勝ち）。
 List<SavedShop> _sanitizedSavedShopsForSearch(List<SavedShop> raw) {
