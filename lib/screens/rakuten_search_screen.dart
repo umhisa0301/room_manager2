@@ -1953,6 +1953,34 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
+  /// 帯・選択行・メタとリストを縦分割する。キーボード表示などで下ペインが低いとき、
+  /// 固定高さヘッダの合計が領域を超えて [RenderFlex] オーバーフローしないよう、
+  /// 上部は割当て高さ内でスクロール可能にする。
+  Widget _buildSearchResultsHeaderAndListColumn({
+    required List<Widget> headerChildren,
+    required Widget listPane,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          flex: 2,
+          child: SingleChildScrollView(
+            clipBehavior: Clip.hardEdge,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: headerChildren,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 5,
+          child: listPane,
+        ),
+      ],
+    );
+  }
+
   /// 結果リストまたは（キーワード用）空の内訳別表示＋一括登録バー。
   ///
   /// [emptyPreferredFilteredOut] / [emptyGenericFilteredOut] がともに null のとき、
@@ -2165,9 +2193,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             : (totalCount == showingCount
                   ? '一覧 $showingCount件です。'
                   : '一覧 $showingCount件です（全体 $totalCount件から表示用に除外）。');
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+        return _buildSearchResultsHeaderAndListColumn(
+          headerChildren: [
             _buildResultsCompletionStrip(
               context,
               showingCount: showingCount,
@@ -2181,43 +2208,41 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               primaryLine: primaryMeta,
               emphasisLine: shortfallNote,
             ),
-            Expanded(
-              child: _buildResultsListWithBulkBar(
-                context,
-                managed: managed,
-                orderedResults: orderedResults,
-                scrollController: _keywordResultsScrollController,
-                keywordPreferredFilteredAllOut: keywordPreferredFilteredAllOut,
-                emptyPreferredFilteredOut: RakutenSearchEmptyView(
-                  icon: Icons.store_mall_directory_outlined,
-                  title: 'この条件では一覧を表示できませんでした',
-                  body:
-                      'ヒットはありましたが、保存ショップ登録済みの店の商品だけでした。'
-                      'キーワード検索ではそのままでは一覧に出さないようにしています。',
-                  hints: const [
-                    'キーワードや詳細条件を変えて、別のショップの商品を探す',
-                    'ジャンル探索など別の切り口も試せます',
-                  ],
-                  onRefine: () => _openProductConditionsSheet(context),
-                  refineLabel: '詳細条件を開く',
-                  stateFootnote: 'コレ候補・コレ済以外の商品は、すでに結果に含めています。',
-                ),
-                emptyGenericFilteredOut: RakutenSearchEmptyView(
-                  icon: Icons.filter_alt_off_outlined,
-                  title: 'この一覧では表示できる商品がありません',
-                  body:
-                      '検索の取得はできていますが、保存ショップ登録済みの店の商品のみヒットしたなど、表示上の理由で0件になっている可能性があります。',
-                  hints: const [
-                    'キーワードや詳細条件を変えて、もう一度検索する',
-                    '「探索」に切り替えて別の切り口を試す',
-                  ],
-                  onRefine: () => _openProductConditionsSheet(context),
-                  refineLabel: '詳細条件を開く',
-                  stateFootnote: 'データ取得は完了しています。条件を変えて試せます。',
-                ),
-              ),
-            ),
           ],
+          listPane: _buildResultsListWithBulkBar(
+            context,
+            managed: managed,
+            orderedResults: orderedResults,
+            scrollController: _keywordResultsScrollController,
+            keywordPreferredFilteredAllOut: keywordPreferredFilteredAllOut,
+            emptyPreferredFilteredOut: RakutenSearchEmptyView(
+              icon: Icons.store_mall_directory_outlined,
+              title: 'この条件では一覧を表示できませんでした',
+              body:
+                  'ヒットはありましたが、保存ショップ登録済みの店の商品だけでした。'
+                  'キーワード検索ではそのままでは一覧に出さないようにしています。',
+              hints: const [
+                'キーワードや詳細条件を変えて、別のショップの商品を探す',
+                'ジャンル探索など別の切り口も試せます',
+              ],
+              onRefine: () => _openProductConditionsSheet(context),
+              refineLabel: '詳細条件を開く',
+              stateFootnote: 'コレ候補・コレ済以外の商品は、すでに結果に含めています。',
+            ),
+            emptyGenericFilteredOut: RakutenSearchEmptyView(
+              icon: Icons.filter_alt_off_outlined,
+              title: 'この一覧では表示できる商品がありません',
+              body:
+                  '検索の取得はできていますが、保存ショップ登録済みの店の商品のみヒットしたなど、表示上の理由で0件になっている可能性があります。',
+              hints: const [
+                'キーワードや詳細条件を変えて、もう一度検索する',
+                '「探索」に切り替えて別の切り口を試す',
+              ],
+              onRefine: () => _openProductConditionsSheet(context),
+              refineLabel: '詳細条件を開く',
+              stateFootnote: 'データ取得は完了しています。条件を変えて試せます。',
+            ),
+          ),
         );
     }
   }
@@ -2319,9 +2344,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             '[Rakuten] genreSearch itemBuilder count=${orderedResults.length}',
           );
         }
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+        return _buildSearchResultsHeaderAndListColumn(
+          headerChildren: [
             _buildResultsCompletionStrip(
               context,
               showingCount: showingCount,
@@ -2335,15 +2359,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               primaryLine: primaryMeta,
               emphasisLine: '探索中のジャンル: 「$genreLabel」',
             ),
-            Expanded(
-              child: _buildResultsListWithBulkBar(
-                context,
-                managed: managed,
-                orderedResults: orderedResults,
-                scrollController: _genreResultsScrollController,
-              ),
-            ),
           ],
+          listPane: _buildResultsListWithBulkBar(
+            context,
+            managed: managed,
+            orderedResults: orderedResults,
+            scrollController: _genreResultsScrollController,
+          ),
         );
     }
   }
