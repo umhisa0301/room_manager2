@@ -495,7 +495,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             SizedBox(width: RakutenSearchScreenUi.gapFieldStack + 2),
             Semantics(
               button: true,
-              label: 'キーワードで検索',
+              label: 'キーワード検索を実行',
               child: FilledButton.icon(
                 onPressed: canSearch ? () => _runSearch(context) : null,
                 icon: const Icon(Icons.search_rounded, size: 22),
@@ -1569,6 +1569,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         '(unknown)';
   }
 
+  /// キーワード／ジャンル結果メタ用。保存済ショップで API 絞り込み中のときのみ。
+  String? _shopScopeEmphasisLineForMeta(BuildContext context) {
+    final scoped = _effectiveShopCodeForApi(context);
+    if (scoped == null || scoped.isEmpty) return null;
+    final nm = _savedShopNameForLog(context, scoped);
+    if (nm != '-' && nm != '(unknown)') {
+      return 'ショップで絞り込み: 「$nm」';
+    }
+    return 'ショップで絞り込み（店舗コード: $scoped）';
+  }
+
   Future<void> _runGenreSearch(BuildContext context) async {
     if (_selectedGenreId == null || _selectedGenreId!.isEmpty) {
       ScaffoldMessenger.of(
@@ -1945,7 +1956,19 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context, {
     required String primaryLine,
     String? emphasisLine,
+    String? secondEmphasisLine,
   }) {
+    Widget emphasisText(String line) {
+      return Text(
+        line,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: HomeScreenColors.leadOnSection,
+          height: 1.25,
+          fontWeight: FontWeight.w600,
+        ),
+      );
+    }
+
     return Padding(
       padding: EdgeInsets.fromLTRB(
         RakutenSearchScreenUi.screenPadH,
@@ -1964,14 +1987,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           ),
           if (emphasisLine != null) ...[
             const SizedBox(height: 4),
-            Text(
-              emphasisLine,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: HomeScreenColors.leadOnSection,
-                height: 1.25,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            emphasisText(emphasisLine),
+          ],
+          if (secondEmphasisLine != null) ...[
+            const SizedBox(height: 4),
+            emphasisText(secondEmphasisLine),
           ],
           const SizedBox(height: 4),
           Text(
@@ -2141,7 +2161,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return const RakutenSearchIdleView(
           icon: Icons.manage_search_outlined,
           title: '商品がここに表示されます',
-          subtitle: 'キーワード検索では、上の欄に言葉を入れて「キーワードで検索」。価格やショップの細かい条件は「詳細条件」から。',
+          subtitle:
+              'キーワード検索では、上の欄に言葉を入れて「検索」。価格やショップの細かい条件は「詳細条件」から。保存済みショップに絞ることもできます。',
           stateFootnote: '登録済み候補・コレ済は除外します（最大100件まで取得）。',
           compactLayout: true,
         );
@@ -2171,10 +2192,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               body:
                   'コレ候補・コレ済に登録済みの商品は検索結果に含めていません。'
                   'この条件では、登録済みを除いたあとに残る商品がありませんでした（複数ページまで取得済みです）。',
-              hints: const [
-                'キーワードや詳細条件を変えてみる',
-                '登録済みが多いと、同じ条件では新しい候補は出にくくなります',
-              ],
+            hints: const [
+              'キーワードや詳細条件を変えてみる',
+              '登録済みが多いと、同じ条件では新しい候補は出にくくなります',
+              '「ジャンル探索」「ショップ発掘」で別の探し方を試す',
+            ],
               onRefine: () => _openProductConditionsSheet(context),
               refineLabel: '詳細条件を調整',
               stateFootnote: '楽天側に商品があっても、候補・コレ済を除くと0件になることがあります。',
@@ -2188,6 +2210,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               'キーワードの言い回しを変えてみる',
               '詳細条件の下限（評価数・価格など）を緩める',
               '除外ワードを減らす、または空にする',
+              'ショップ絞り込みを外す、または「ジャンル探索」を試す',
             ],
             onRefine: () => _openProductConditionsSheet(context),
             refineLabel: '詳細条件を調整',
@@ -2224,6 +2247,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             : (totalCount == showingCount
                   ? '一覧 $showingCount件です。'
                   : '一覧 $showingCount件です（全体 $totalCount件から表示用に除外）。');
+        final shopScopeLine = _shopScopeEmphasisLineForMeta(context);
         return _buildSearchResultsHeaderAndListColumn(
           headerChildren: [
             _buildResultsCompletionStrip(
@@ -2237,7 +2261,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             _buildResultsMetaAndExcludeFootnote(
               context,
               primaryLine: primaryMeta,
-              emphasisLine: shortfallNote,
+              emphasisLine: shopScopeLine ?? shortfallNote,
+              secondEmphasisLine: shopScopeLine != null && shortfallNote != null
+                  ? shortfallNote
+                  : null,
             ),
           ],
           listPane: _buildResultsListWithBulkBar(
@@ -2290,7 +2317,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           icon: Icons.explore_outlined,
           title: 'ジャンルから広く候補を眺める',
           subtitle:
-              'まずジャンルを選び、「検索」でカテゴリ内の商品を一覧します。キーワードがなくても始められます。価格や評価の下限は「詳細条件」から。',
+              'まずジャンルを選び、「検索」でカテゴリ内の商品を一覧します。キーワードがなくても始められます。価格・評価・保存済みショップの条件は「詳細条件」から。',
           stateFootnote: '検索が始まるまで、このエリアは更新されません。登録済み候補・コレ済は除外します（最大100件まで取得）。',
           compactLayout: true,
         );
@@ -2390,6 +2417,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               context,
               primaryLine: primaryMeta,
               emphasisLine: 'ジャンル探索中: 「$genreLabel」',
+              secondEmphasisLine: _shopScopeEmphasisLineForMeta(context),
             ),
           ],
           listPane: _buildResultsListWithBulkBar(
@@ -2414,6 +2442,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           subtitle:
               'キーワードかジャンルを指定し、「ショップ発掘を実行」を押すと、商品から有望なショップ候補をまとめます。しきい値は「ショップ発掘の条件」から調整できます。',
           stateFootnote: 'ショップ発掘が始まるまで、このエリアは更新されません。',
+          compactLayout: true,
         );
       case RakutenSearchStatus.loading:
         return const RakutenSearchLoadingView(
@@ -2745,7 +2774,7 @@ class _SearchModeSegmented extends StatelessWidget {
         fit: BoxFit.scaleDown,
         alignment: Alignment.center,
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: compact ? 118 : 128),
+          constraints: BoxConstraints(maxWidth: compact ? 124 : 136),
           child: Text(
             text,
             textAlign: TextAlign.center,
@@ -2819,11 +2848,11 @@ class _SearchModeSegmented extends StatelessWidget {
           style: ButtonStyle(
             visualDensity: VisualDensity.compact,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            minimumSize: WidgetStateProperty.all(Size(0, compact ? 42 : 46)),
+            minimumSize: WidgetStateProperty.all(Size(0, compact ? 44 : 48)),
             padding: WidgetStateProperty.all(
               EdgeInsets.symmetric(
-                horizontal: compact ? 4 : 6,
-                vertical: compact ? 8 : 10,
+                horizontal: compact ? 5 : 7,
+                vertical: compact ? 9 : 10,
               ),
             ),
             side: WidgetStateProperty.all(
