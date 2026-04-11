@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/genre_master.dart';
 import '../services/rakuten_genre_api_service.dart';
+import '../services/rakuten_genre_master_service.dart';
 
 /// 楽天ジャンルマスターの永続キャッシュとAPI取得。
 ///
@@ -70,6 +71,7 @@ class GenreMasterRepository {
     final store = _readStore();
     store[_key(genre.genreId)] = genre.toJson();
     await _writeStore(store);
+    RakutenGenreMasterService.instance.applyGenreMaster(genre);
     if (kDebugMode) {
       debugPrint('[GenreMaster] save complete genreId=${genre.genreId} name=${genre.genreName}');
     }
@@ -83,6 +85,10 @@ class GenreMasterRepository {
       store[_key(g.genreId)] = g.toJson();
     }
     await _writeStore(store);
+    for (final g in genres) {
+      if (g.genreId <= 0) continue;
+      RakutenGenreMasterService.instance.applyGenreMaster(g);
+    }
     if (kDebugMode) {
       debugPrint('[GenreMaster] batch save count=${genres.length}');
     }

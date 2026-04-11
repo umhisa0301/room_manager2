@@ -7,6 +7,7 @@ import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/genre_master_repository.dart';
 import '../repository/rakuten_search_repository.dart';
+import '../services/rakuten_genre_master_service.dart';
 import '../utils/rakuten_product_genre_display.dart';
 
 enum RakutenSearchStatus { idle, loading, success, error }
@@ -208,6 +209,7 @@ class RakutenSearchProvider extends ChangeNotifier {
         }
       }
       _resolvedGenreLabels = next;
+      RakutenGenreMasterService.instance.mergeRuntimeGenreNames(next);
       if (kDebugMode) {
         debugPrint(
           '[RakutenGenre] prefetch done uniqueIds=${ids.length} storedLabels=${next.length}',

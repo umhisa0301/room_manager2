@@ -5,6 +5,7 @@ import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 import '../repository/genre_master_repository.dart';
 import '../services/app_action_service.dart';
+import '../services/rakuten_genre_master_service.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
@@ -63,6 +64,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
           next[idStr] = raw;
         }
       }
+      RakutenGenreMasterService.instance.mergeRuntimeGenreNames(next);
       if (mounted) {
         setState(() => _genreLabels = next);
       }

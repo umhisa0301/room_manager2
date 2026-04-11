@@ -10,6 +10,7 @@ import 'repository/activity_log_repository.dart';
 import 'repository/rakuten_managed_product_repository.dart';
 import 'repository/room_activity_event_repository.dart';
 import 'repository/genre_master_repository.dart';
+import 'services/rakuten_genre_master_service.dart';
 import 'repository/rakuten_search_repository.dart';
 import 'state/product_list_provider.dart';
 import 'state/comment_template_provider.dart';
@@ -31,6 +32,19 @@ import 'state/user_profile_provider.dart';
 import 'state/saved_shop_provider.dart';
 import 'state/today_recommendation_provider.dart';
 import 'navigation/app_shell_controller.dart';
+import 'models/genre_master.dart';
+
+Future<void> _bootstrapRakutenGenreNameCache(GenreMasterRepository repo) async {
+  final List<GenreMaster> all;
+  try {
+    all = await repo.getAllCachedGenres();
+  } catch (_) {
+    return;
+  }
+  for (final g in all) {
+    RakutenGenreMasterService.instance.applyGenreMaster(g);
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +66,7 @@ void main() async {
   final savedShopRepository = SavedShopRepository(prefs);
   final todayRecommendationRepository = TodayRecommendationRepository(prefs);
   final genreMasterRepository = GenreMasterRepository(prefs: prefs);
+  await _bootstrapRakutenGenreNameCache(genreMasterRepository);
   runApp(
     MyApp(
       productRepository: productRepository,

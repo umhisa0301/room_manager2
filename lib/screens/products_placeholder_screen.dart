@@ -2692,6 +2692,7 @@ class _RoomManagedProductListTabState
             next[idStr] = raw;
           }
         }
+        RakutenGenreMasterService.instance.mergeRuntimeGenreNames(next);
         if (mounted) {
           setState(() => _genrePrefetchLabels = next);
         }
