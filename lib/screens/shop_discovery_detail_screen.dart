@@ -78,6 +78,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
       persistedGenreName: null,
       prefetchedGenreName: pf,
       genreId: item.genreId,
+      traceItemCode: item.productId,
     );
   }
 

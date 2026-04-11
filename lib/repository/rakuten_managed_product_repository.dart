@@ -33,6 +33,7 @@ class RakutenManagedProductRepository {
       if (decoded is! List) return [];
 
       final out = <RakutenManagedProduct>[];
+      var rakutenGenreLoadLogCount = 0;
       for (final entry in decoded) {
         try {
           Map<String, dynamic>? map;
@@ -49,7 +50,16 @@ class RakutenManagedProductRepository {
             continue;
           }
           final item = RakutenManagedProduct.fromJson(map);
-          if (item != null) out.add(item);
+          if (item != null) {
+            if (kDebugMode && rakutenGenreLoadLogCount < 5) {
+              rakutenGenreLoadLogCount++;
+              debugPrint(
+                '[RakutenGenre][LOAD] itemCode=${item.productId} '
+                'loaded.genreId=${item.genreId} loaded.genreName=${item.genreName}',
+              );
+            }
+            out.add(item);
+          }
         } catch (e, st) {
           if (kDebugMode) {
             debugPrint('[ROOMコレ診断] loadAll skip corrupt entry: $e\n$st');
@@ -88,12 +98,17 @@ class RakutenManagedProductRepository {
         return false;
       }
     }
-    list.add(
-      RakutenManagedProduct.fromSearchItem(
-        item,
-        status: RakutenManagedProductStatus.candidate,
-      ),
+    final candidate = RakutenManagedProduct.fromSearchItem(
+      item,
+      status: RakutenManagedProductStatus.candidate,
     );
+    if (kDebugMode) {
+      debugPrint(
+        '[RakutenGenre][SAVE] itemCode=${candidate.productId} '
+        'save.genreId=${candidate.genreId} save.genreName=${candidate.genreName}',
+      );
+    }
+    list.add(candidate);
     await _saveAll(list);
     if (kDebugMode) {
       debugPrint(

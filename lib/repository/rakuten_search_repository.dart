@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/rakuten_api_service.dart';
+import '../utils/rakuten_product_genre_display.dart';
 
 /// キーワード検索（管理除外パス）のページング終了理由。
 enum RakutenKeywordSearchStopReason {
@@ -388,7 +389,7 @@ class RakutenSearchRepository {
     }
     final imageUrl = _extractImageUrl(json);
 
-    return RakutenSearchItem(
+    final item = RakutenSearchItem(
       productId: productId,
       itemName: itemName,
       itemPrice: itemPrice,
@@ -402,6 +403,41 @@ class RakutenSearchRepository {
       shopUrl: shopUrl,
       genreId: genreId,
       genreName: genreName,
+    );
+    if (kDebugMode) {
+      _rakutenGenreLogApi(json, productId);
+      _rakutenGenreLogMap(item);
+    }
+    return item;
+  }
+
+  void _rakutenGenreLogApi(Map<String, dynamic> json, String itemCode) {
+    final keys = json.keys.map((k) => k.toString()).toList()..sort();
+    final gk = keys.where((k) => k.toLowerCase().contains('genre')).toList();
+    final rawGenreId = _stringField(json['genreId']).trim();
+    final g1 = _stringField(json['genreName']).trim();
+    final g2 = _stringField(json['itemGenreName']).trim();
+    final rawGenreName = g1.isNotEmpty ? g1 : g2;
+    final rawKeysStr = gk.isNotEmpty
+        ? gk.join(',')
+        : '(no *genre* in keys) sample=${keys.take(12).join(',')}';
+    debugPrint(
+      '[RakutenGenre][API] itemCode=$itemCode rawGenreId=$rawGenreId '
+      'rawGenreName=$rawGenreName rawKeys=$rawKeysStr',
+    );
+  }
+
+  void _rakutenGenreLogMap(RakutenSearchItem m) {
+    final display = RakutenProductGenreDisplay.resolve(
+      apiGenreName: m.genreName,
+      persistedGenreName: null,
+      prefetchedGenreName: null,
+      genreId: m.genreId,
+      traceItemCode: null,
+    );
+    debugPrint(
+      '[RakutenGenre][MAP] itemCode=${m.productId} model.genreId=${m.genreId} '
+      'model.genreName=${m.genreName} displayGenre=$display',
     );
   }
 

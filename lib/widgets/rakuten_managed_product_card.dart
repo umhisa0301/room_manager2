@@ -146,6 +146,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                               prefetchedGenreName:
                                   genrePrefetchLabels?[product.genreId.trim()],
                               genreId: product.genreId,
+                              traceItemCode: product.productId,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

@@ -129,6 +129,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                                   persistedGenreName: null,
                                   prefetchedGenreName: null,
                                   genreId: item.genreId,
+                                  traceItemCode: item.productId,
                                 ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

@@ -57,6 +57,7 @@ class RakutenSearchProvider extends ChangeNotifier {
       persistedGenreName: null,
       prefetchedGenreName: pf,
       genreId: item.genreId,
+      traceItemCode: item.productId,
     );
   }
 
@@ -207,18 +208,9 @@ class RakutenSearchProvider extends ChangeNotifier {
         }
       }
       _resolvedGenreLabels = next;
-      if (kDebugMode && items.isNotEmpty) {
-        final e = items.first;
-        RakutenProductGenreDisplay.debugLogResolution(
-          itemCode: e.productId,
-          genreId: e.genreId,
-          apiGenreName: e.genreName,
-          finalLabel: RakutenProductGenreDisplay.resolve(
-            apiGenreName: e.genreName,
-            persistedGenreName: null,
-            prefetchedGenreName: next[e.genreId.trim()],
-            genreId: e.genreId,
-          ),
+      if (kDebugMode) {
+        debugPrint(
+          '[RakutenGenre] prefetch done uniqueIds=${ids.length} storedLabels=${next.length}',
         );
       }
       notifyListeners();
