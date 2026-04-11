@@ -5,7 +5,7 @@ import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 import '../repository/genre_master_repository.dart';
 import '../services/app_action_service.dart';
-import '../utils/genre_display_helper.dart';
+import '../utils/rakuten_product_genre_display.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
@@ -57,7 +57,11 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
       await repo.prefetchGenreMasters(ids);
       final next = <String, String>{};
       for (final id in ids) {
-        next['$id'] = await repo.getGenreName(id);
+        final idStr = '$id';
+        final raw = await repo.getGenreName(id);
+        if (raw.isNotEmpty && raw != idStr) {
+          next[idStr] = raw;
+        }
       }
       if (mounted) {
         setState(() => _genreLabels = next);
@@ -68,9 +72,13 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
   String _genreLineForItem(RakutenSearchItem item) {
     final id = item.genreId.trim();
     if (id.isEmpty) return '';
-    final r = _genreLabels[id];
-    if (r != null && r.isNotEmpty) return r;
-    return GenreDisplayHelper.immediateLabelForGenreId(id);
+    final pf = _genreLabels[id];
+    return RakutenProductGenreDisplay.resolve(
+      apiGenreName: item.genreName,
+      persistedGenreName: null,
+      prefetchedGenreName: pf,
+      genreId: item.genreId,
+    );
   }
 
   List<RakutenSearchItem> _sortedItems() {

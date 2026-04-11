@@ -7,7 +7,6 @@ import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/genre_master_repository.dart';
 import '../repository/rakuten_search_repository.dart';
-import '../utils/genre_display_helper.dart';
 import '../utils/rakuten_product_genre_display.dart';
 
 enum RakutenSearchStatus { idle, loading, success, error }
@@ -58,7 +57,6 @@ class RakutenSearchProvider extends ChangeNotifier {
       persistedGenreName: null,
       prefetchedGenreName: pf,
       genreId: item.genreId,
-      debugItemCode: item.productId,
     );
   }
 
@@ -209,6 +207,20 @@ class RakutenSearchProvider extends ChangeNotifier {
         }
       }
       _resolvedGenreLabels = next;
+      if (kDebugMode && items.isNotEmpty) {
+        final e = items.first;
+        RakutenProductGenreDisplay.debugLogResolution(
+          itemCode: e.productId,
+          genreId: e.genreId,
+          apiGenreName: e.genreName,
+          finalLabel: RakutenProductGenreDisplay.resolve(
+            apiGenreName: e.genreName,
+            persistedGenreName: null,
+            prefetchedGenreName: next[e.genreId.trim()],
+            genreId: e.genreId,
+          ),
+        );
+      }
       notifyListeners();
     } catch (e, st) {
       if (kDebugMode) {

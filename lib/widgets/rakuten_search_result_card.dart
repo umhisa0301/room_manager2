@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/app_action_service.dart';
-import '../services/rakuten_genre_master_service.dart';
+import '../utils/rakuten_product_genre_display.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
@@ -37,7 +37,7 @@ class RakutenSearchResultCard extends StatelessWidget {
   final String? selectionDisabledLabel;
 
   /// 指定時はジャンル行にこれを表示（検索結果の API 解決名など）。
-  /// null のときは従来どおり [RakutenGenreMasterService] の同期表示。
+  /// null のときは [RakutenProductGenreDisplay.resolve]（API名・マスタ・未分類）。
   final String? genreDisplayLineOverride;
 
   static String _safeItemName(RakutenSearchItem item) {
@@ -124,9 +124,11 @@ class RakutenSearchResultCard extends StatelessWidget {
                           const SizedBox(height: 2),
                           Text(
                             genreDisplayLineOverride ??
-                                RakutenGenreMasterService.instance
-                                    .genreDisplayName(
-                                  item.genreId,
+                                RakutenProductGenreDisplay.resolve(
+                                  apiGenreName: item.genreName,
+                                  persistedGenreName: null,
+                                  prefetchedGenreName: null,
+                                  genreId: item.genreId,
                                 ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

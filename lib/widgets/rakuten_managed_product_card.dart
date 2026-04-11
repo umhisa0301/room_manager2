@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../services/app_action_service.dart';
-import '../services/rakuten_genre_master_service.dart';
+import '../utils/rakuten_product_genre_display.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/room_colle_list_accent.dart';
@@ -23,6 +23,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     required this.product,
     required this.variant,
     this.onCollectPressed,
+    this.genrePrefetchLabels,
   });
 
   final RakutenManagedProduct product;
@@ -32,6 +33,9 @@ class RakutenManagedProductCard extends StatelessWidget {
     RakutenManagedProduct product,
   )?
   onCollectPressed;
+
+  /// [GenreMasterRepository] プリフェッチ後の genreId→表示名（任意）。
+  final Map<String, String>? genrePrefetchLabels;
 
   bool get _canCollectRoom =>
       product.extractionStatus == RakutenUrlExtractionStatus.success &&
@@ -136,8 +140,12 @@ class RakutenManagedProductCard extends StatelessWidget {
                         if (product.genreId.trim().isNotEmpty) ...[
                           const SizedBox(height: 2),
                           Text(
-                            RakutenGenreMasterService.instance.genreDisplayName(
-                              product.genreId,
+                            RakutenProductGenreDisplay.resolve(
+                              apiGenreName: null,
+                              persistedGenreName: product.genreName,
+                              prefetchedGenreName:
+                                  genrePrefetchLabels?[product.genreId.trim()],
+                              genreId: product.genreId,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

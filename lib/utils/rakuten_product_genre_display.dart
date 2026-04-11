@@ -21,62 +21,56 @@ class RakutenProductGenreDisplay {
     String? persistedGenreName,
     String? prefetchedGenreName,
     required String genreId,
-    String? debugItemCode,
   }) {
     final id = genreId.trim();
     final apiTrim = apiGenreName?.trim() ?? '';
 
     if (apiTrim.isNotEmpty) {
-      _log(debugItemCode, id, apiTrim, apiTrim);
       return apiTrim;
     }
 
     final persisted = persistedGenreName?.trim() ?? '';
     if (persisted.isNotEmpty) {
-      _log(debugItemCode, id, apiTrim, persisted);
       return persisted;
     }
 
     final pf = prefetchedGenreName?.trim() ?? '';
     if (pf.isNotEmpty && !_isPlaceholderPrefetch(pf, id)) {
-      _log(debugItemCode, id, apiTrim, pf);
       return pf;
     }
 
     if (id.isEmpty) {
-      _log(debugItemCode, id, apiTrim, unknownLabel);
       return unknownLabel;
     }
 
     final known = RakutenGenreMasterService.instance.genreNameIfKnown(id);
     if (known != null && known.isNotEmpty) {
-      _log(debugItemCode, id, apiTrim, known);
       return known;
     }
 
-    _log(debugItemCode, id, apiTrim, unknownLabel);
     return unknownLabel;
+  }
+
+  /// 開発時: [itemCode] / [genreId] / API 名 / 最終表示を1行で出す（本番では呼ばない想定）。
+  static void debugLogResolution({
+    required String itemCode,
+    required String genreId,
+    String? apiGenreName,
+    required String finalLabel,
+  }) {
+    if (!kDebugMode) return;
+    final c = itemCode.trim().isEmpty ? '-' : itemCode.trim();
+    final g = genreId.trim().isEmpty ? '-' : genreId.trim();
+    final api = (apiGenreName?.trim().isEmpty ?? true)
+        ? '-'
+        : apiGenreName!.trim();
+    debugPrint(
+      '[GenreDisplay] itemCode=$c genreId=$g apiGenreName=$api final=$finalLabel',
+    );
   }
 
   static bool _isPlaceholderPrefetch(String name, String genreIdTrimmed) {
     if (genreIdTrimmed.isEmpty) return false;
     return name == genreIdTrimmed;
-  }
-
-  static void _log(
-    String? itemCode,
-    String genreId,
-    String apiGenreNameForLog,
-    String finalLabel,
-  ) {
-    if (!kDebugMode) return;
-    final code = itemCode?.trim().isEmpty ?? true
-        ? '-'
-        : itemCode!.trim();
-    final api = apiGenreNameForLog.isEmpty ? '-' : apiGenreNameForLog;
-    final gid = genreId.isEmpty ? '-' : genreId;
-    debugPrint(
-      '[GenreDisplay] itemCode=$code genreId=$gid apiGenreName=$api final=$finalLabel',
-    );
   }
 }

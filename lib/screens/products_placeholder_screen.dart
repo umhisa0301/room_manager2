@@ -7,12 +7,14 @@ import 'package:provider/provider.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_colle_list_filters.dart';
 import '../navigation/app_shell_controller.dart';
+import '../repository/genre_master_repository.dart';
 import '../repository/room_colle_ui_state_repository.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
+import '../utils/rakuten_product_genre_display.dart';
 import '../utils/room_colle_candidate_stale.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/home_primary_action_button.dart';
@@ -2587,6 +2589,11 @@ class _RoomManagedProductListTabState
   String? _lastSeenFocusProductId;
   _RoomColleListSurface? _lastDebugSurface;
 
+  /// [GenreMasterRepository] プリフェッチ結果（genreId 文字列キー）。
+  Map<String, String> _genrePrefetchLabels = const {};
+
+  String? _lastGenrePrefetchSig;
+
   @override
   void initState() {
     super.initState();
@@ -2653,6 +2660,56 @@ class _RoomManagedProductListTabState
           return true;
         }());
       }
+    });
+  }
+
+  void _scheduleGenrePrefetchIfNeeded(List<RakutenManagedProduct> list) {
+    final sig = list.map((e) => '${e.productId}:${e.genreId}').join('|');
+    if (sig == _lastGenrePrefetchSig) return;
+    _lastGenrePrefetchSig = sig;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      final ids = <int>{};
+      for (final p in list) {
+        final n = int.tryParse(p.genreId.trim());
+        if (n != null && n > 0) ids.add(n);
+      }
+      if (ids.isEmpty) {
+        if (mounted) {
+          setState(() => _genrePrefetchLabels = const {});
+        }
+        return;
+      }
+      try {
+        final repo = context.read<GenreMasterRepository>();
+        await repo.prefetchGenreMasters(ids);
+        final next = <String, String>{};
+        for (final id in ids) {
+          final idStr = '$id';
+          final raw = await repo.getGenreName(id);
+          if (raw.isNotEmpty && raw != idStr) {
+            next[idStr] = raw;
+          }
+        }
+        if (mounted) {
+          setState(() => _genrePrefetchLabels = next);
+        }
+        if (kDebugMode && list.isNotEmpty) {
+          final e = list.first;
+          RakutenProductGenreDisplay.debugLogResolution(
+            itemCode: e.productId,
+            genreId: e.genreId,
+            apiGenreName: e.genreName,
+            finalLabel: RakutenProductGenreDisplay.resolve(
+              apiGenreName: null,
+              persistedGenreName: e.genreName,
+              prefetchedGenreName: next[e.genreId.trim()],
+              genreId: e.genreId,
+            ),
+          );
+        }
+      } catch (_) {}
     });
   }
 
@@ -2830,6 +2887,7 @@ class _RoomManagedProductListTabState
             );
 
           case _RoomColleListSurface.readyList:
+            _scheduleGenrePrefetchIfNeeded(list);
             break;
         }
 
@@ -2864,6 +2922,7 @@ class _RoomManagedProductListTabState
                 _KeyedCandidateProductRow(
                   product: list[i],
                   variant: widget.variant,
+                  genrePrefetchLabels: _genrePrefetchLabels,
                   rowKey: widget.rowKeyFor?.call(list[i].productId),
                   flash: widget.flashHighlightProductId == list[i].productId,
                 ),
@@ -2882,12 +2941,14 @@ class _KeyedCandidateProductRow extends StatelessWidget {
   const _KeyedCandidateProductRow({
     required this.product,
     required this.variant,
+    required this.genrePrefetchLabels,
     this.rowKey,
     this.flash = false,
   });
 
   final RakutenManagedProduct product;
   final RakutenManagedProductCardVariant variant;
+  final Map<String, String> genrePrefetchLabels;
   final GlobalKey? rowKey;
   final bool flash;
 
@@ -2897,6 +2958,7 @@ class _KeyedCandidateProductRow extends StatelessWidget {
       Widget card = RakutenManagedProductCard(
         product: product,
         variant: variant,
+        genrePrefetchLabels: genrePrefetchLabels,
       );
       if (flash) {
         card = AnimatedContainer(
