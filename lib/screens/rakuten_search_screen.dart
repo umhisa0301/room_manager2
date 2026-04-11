@@ -2050,46 +2050,51 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
     Widget listOrEmpty() {
       if (orderedResults.isNotEmpty) {
-        return ListView.separated(
-          controller: scrollController,
-          padding: EdgeInsets.fromLTRB(
-            RakutenSearchScreenUi.screenPadH,
-            RakutenSearchScreenUi.listScrollTopPad,
-            RakutenSearchScreenUi.screenPadH,
-            bottomPad,
-          ),
-          itemCount: orderedResults.length,
-          separatorBuilder: (_, __) =>
-              SizedBox(height: RakutenSearchScreenUi.listCardGap),
-          itemBuilder: (context, index) {
-            final item = orderedResults[index];
-            final isSelectable = _isSelectableForBulk(item, managed);
-            return RakutenSearchResultCard(
-              item: item,
-              localStatus: managed.statusForProduct(item.productId),
-              isRegistering: managed.isRegistering(item.productId),
-              selectionMode: _selectionMode,
-              isSelected: _selectedProductIds.contains(item.productId),
-              isSelectionEnabled: isSelectable && !_isBulkRegistering,
-              selectionDisabledLabel: _selectionDisabledReason(item, managed),
-              onToggleSelected: () {
-                if (!isSelectable || _isBulkRegistering) return;
-                setState(() {
-                  if (_selectedProductIds.contains(item.productId)) {
-                    _selectedProductIds.remove(item.productId);
-                  } else {
-                    _selectedProductIds.add(item.productId);
-                  }
-                });
-              },
-              onRegisterCandidate: () async {
-                final err = await managed.registerCandidate(item);
-                if (!context.mounted) return;
-                if (err != null) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(err)));
-                }
+        return Consumer<RakutenSearchProvider>(
+          builder: (context, search, _) {
+            return ListView.separated(
+              controller: scrollController,
+              padding: EdgeInsets.fromLTRB(
+                RakutenSearchScreenUi.screenPadH,
+                RakutenSearchScreenUi.listScrollTopPad,
+                RakutenSearchScreenUi.screenPadH,
+                bottomPad,
+              ),
+              itemCount: orderedResults.length,
+              separatorBuilder: (_, __) =>
+                  SizedBox(height: RakutenSearchScreenUi.listCardGap),
+              itemBuilder: (context, index) {
+                final item = orderedResults[index];
+                final isSelectable = _isSelectableForBulk(item, managed);
+                return RakutenSearchResultCard(
+                  item: item,
+                  localStatus: managed.statusForProduct(item.productId),
+                  isRegistering: managed.isRegistering(item.productId),
+                  selectionMode: _selectionMode,
+                  isSelected: _selectedProductIds.contains(item.productId),
+                  isSelectionEnabled: isSelectable && !_isBulkRegistering,
+                  selectionDisabledLabel: _selectionDisabledReason(item, managed),
+                  genreDisplayLineOverride: search.genreLineForItem(item),
+                  onToggleSelected: () {
+                    if (!isSelectable || _isBulkRegistering) return;
+                    setState(() {
+                      if (_selectedProductIds.contains(item.productId)) {
+                        _selectedProductIds.remove(item.productId);
+                      } else {
+                        _selectedProductIds.add(item.productId);
+                      }
+                    });
+                  },
+                  onRegisterCandidate: () async {
+                    final err = await managed.registerCandidate(item);
+                    if (!context.mounted) return;
+                    if (err != null) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(err)));
+                    }
+                  },
+                );
               },
             );
           },
