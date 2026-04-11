@@ -13,6 +13,7 @@ class RakutenSearchItem {
     this.shopCode = '',
     this.shopUrl = '',
     this.genreId = '',
+    this.genreName = '',
   });
 
   final String productId;
@@ -38,6 +39,9 @@ class RakutenSearchItem {
 
   /// ジャンルID（楽天API `genreId`。数値でも文字列として保持）。
   final String genreId;
+
+  /// 楽天APIが返すジャンル名（あれば）。無い場合は空文字。
+  final String genreName;
 
   /// 「楽天で見る」で開くURL（アフィリエイトURLを優先）。
   String get browserLaunchUrl =>

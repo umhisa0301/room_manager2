@@ -30,6 +30,7 @@ class RakutenManagedProduct {
     required this.shopCode,
     required this.shopUrl,
     required this.genreId,
+    this.genreName = '',
     required this.status,
     required this.createdAt,
     required this.updatedAt,
@@ -55,6 +56,9 @@ class RakutenManagedProduct {
   final String shopCode;
   final String shopUrl;
   final String genreId;
+
+  /// 楽天API由来のジャンル名（保存時にあれば）。旧データは空のことがある。
+  final String genreName;
   final RakutenManagedProductStatus status;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -95,6 +99,7 @@ class RakutenManagedProduct {
     String? shopCode,
     String? shopUrl,
     String? genreId,
+    String? genreName,
     RakutenManagedProductStatus? status,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -124,6 +129,7 @@ class RakutenManagedProduct {
       shopCode: shopCode ?? this.shopCode,
       shopUrl: shopUrl ?? this.shopUrl,
       genreId: genreId ?? this.genreId,
+      genreName: genreName ?? this.genreName,
       status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -163,6 +169,7 @@ class RakutenManagedProduct {
       shopCode: item.shopCode,
       shopUrl: item.shopUrl,
       genreId: item.genreId,
+      genreName: item.genreName,
       status: status,
       createdAt: t,
       updatedAt: t,
@@ -190,6 +197,7 @@ class RakutenManagedProduct {
       'shopCode': shopCode,
       'shopUrl': shopUrl,
       'genreId': genreId,
+      'genreName': genreName,
       'status': status.name,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
@@ -344,6 +352,7 @@ class RakutenManagedProduct {
       shopCode: (json['shopCode'] ?? '').toString(),
       shopUrl: (json['shopUrl'] ?? '').toString(),
       genreId: (json['genreId'] ?? '').toString(),
+      genreName: (json['genreName'] ?? '').toString(),
       status: status,
       createdAt: createdAt,
       updatedAt: updatedAt,

@@ -382,6 +382,10 @@ class RakutenSearchRepository {
     final shopCode = _stringField(json['shopCode']).trim();
     final shopUrl = _stringField(json['shopUrl']).trim();
     final genreId = _stringField(json['genreId']).trim();
+    var genreName = _stringField(json['genreName']).trim();
+    if (genreName.isEmpty) {
+      genreName = _stringField(json['itemGenreName']).trim();
+    }
     final imageUrl = _extractImageUrl(json);
 
     return RakutenSearchItem(
@@ -397,6 +401,7 @@ class RakutenSearchRepository {
       shopCode: shopCode,
       shopUrl: shopUrl,
       genreId: genreId,
+      genreName: genreName,
     );
   }
 
