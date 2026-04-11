@@ -8,6 +8,7 @@ import '../models/rakuten_search_item.dart';
 import '../repository/genre_master_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../utils/genre_display_helper.dart';
+import '../utils/rakuten_product_genre_display.dart';
 
 enum RakutenSearchStatus { idle, loading, success, error }
 
@@ -47,15 +48,18 @@ class RakutenSearchProvider extends ChangeNotifier {
   RakutenKeywordManagedFetchSummary? get keywordManagedFetchSummary =>
       _keywordManagedFetchSummary;
 
-  /// 一覧カード向け。解決済みがあれば日本語名、なければローカルマスタまたは [genreId] 文字列。
+  /// 一覧カード向け。[RakutenProductGenreDisplay] の優先順位で表示名を決定。
   String genreLineForItem(RakutenSearchItem item) {
     final id = item.genreId.trim();
     if (id.isEmpty) return '';
-    final resolved = _resolvedGenreLabels[id];
-    if (resolved != null && resolved.isNotEmpty) {
-      return resolved;
-    }
-    return GenreDisplayHelper.immediateLabelForGenreId(id);
+    final pf = _resolvedGenreLabels[id];
+    return RakutenProductGenreDisplay.resolve(
+      apiGenreName: item.genreName,
+      persistedGenreName: null,
+      prefetchedGenreName: pf,
+      genreId: item.genreId,
+      debugItemCode: item.productId,
+    );
   }
 
   /// 管理除外パスで目標件数に届かなかったときの短文（キーワードタブ向け）。届いている・該当なしは null。
@@ -198,7 +202,11 @@ class RakutenSearchProvider extends ChangeNotifier {
       await repo.prefetchGenreMasters(ids);
       final next = <String, String>{};
       for (final id in ids) {
-        next['$id'] = await repo.getGenreName(id);
+        final idStr = '$id';
+        final raw = await repo.getGenreName(id);
+        if (raw.isNotEmpty && raw != idStr) {
+          next[idStr] = raw;
+        }
       }
       _resolvedGenreLabels = next;
       notifyListeners();

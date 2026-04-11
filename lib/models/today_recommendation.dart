@@ -36,6 +36,7 @@ class TodayRecommendationEntry {
         'shopCode': item.shopCode,
         'shopUrl': item.shopUrl,
         'genreId': item.genreId,
+        'genreName': item.genreName,
       },
       'decision': decision.name,
     };
@@ -68,6 +69,7 @@ class TodayRecommendationEntry {
         shopCode: (itemJson['shopCode'] ?? '').toString(),
         shopUrl: (itemJson['shopUrl'] ?? '').toString(),
         genreId: (itemJson['genreId'] ?? '').toString(),
+        genreName: (itemJson['genreName'] ?? '').toString(),
       ),
       decision: decision,
     );
