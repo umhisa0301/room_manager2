@@ -3,7 +3,7 @@ import '../services/rakuten_genre_master_service.dart';
 
 /// 画面向けのジャンル表示ラベル解決（同期・即時表示用）。
 ///
-/// [RakutenProductGenreDisplay.resolve] に委譲する（API名・ローカルマスタ・未分類の優先順位は同じ）。
+/// [RakutenProductGenreDisplay.resolve] に委譲する（API名・ローカルマスタ・genreId フォールバックの優先順位は同じ）。
 class GenreDisplayHelper {
   GenreDisplayHelper._();
 

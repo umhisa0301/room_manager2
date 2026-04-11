@@ -8,7 +8,8 @@
       "program": "lib/main.dart",
       "toolArgs": [
         "--dart-define=RAKUTEN_APP_ID=${env:RAKUTEN_APP_ID}",
-        "--dart-define=RAKUTEN_AFFILIATE_ID=${env:RAKUTEN_AFFILIATE_ID}"
+        "--dart-define=RAKUTEN_AFFILIATE_ID=${env:RAKUTEN_AFFILIATE_ID}",
+        "--dart-define=RAKUTEN_ACCESS_KEY=${env:RAKUTEN_ACCESS_KEY}"
       ]
     },
     {
