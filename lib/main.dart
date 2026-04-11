@@ -9,6 +9,7 @@ import 'repository/comment_template_repository.dart';
 import 'repository/activity_log_repository.dart';
 import 'repository/rakuten_managed_product_repository.dart';
 import 'repository/room_activity_event_repository.dart';
+import 'repository/genre_master_repository.dart';
 import 'repository/rakuten_search_repository.dart';
 import 'state/product_list_provider.dart';
 import 'state/comment_template_provider.dart';
@@ -50,6 +51,7 @@ void main() async {
   final userProfileRepository = UserProfileRepository(prefs);
   final savedShopRepository = SavedShopRepository(prefs);
   final todayRecommendationRepository = TodayRecommendationRepository(prefs);
+  final genreMasterRepository = GenreMasterRepository(prefs: prefs);
   runApp(
     MyApp(
       productRepository: productRepository,
@@ -64,6 +66,7 @@ void main() async {
       userProfileRepository: userProfileRepository,
       savedShopRepository: savedShopRepository,
       todayRecommendationRepository: todayRecommendationRepository,
+      genreMasterRepository: genreMasterRepository,
     ),
   );
 }
@@ -83,6 +86,7 @@ class MyApp extends StatelessWidget {
     required this.userProfileRepository,
     required this.savedShopRepository,
     required this.todayRecommendationRepository,
+    required this.genreMasterRepository,
   });
 
   final ProductRepository productRepository;
@@ -97,11 +101,15 @@ class MyApp extends StatelessWidget {
   final UserProfileRepository userProfileRepository;
   final SavedShopRepository savedShopRepository;
   final TodayRecommendationRepository todayRecommendationRepository;
+  final GenreMasterRepository genreMasterRepository;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<GenreMasterRepository>.value(
+          value: genreMasterRepository,
+        ),
         ChangeNotifierProvider(create: (_) => AppShellController()),
         Provider<PendingCollectNoticeRepository>.value(
           value: pendingCollectNoticeRepository,
@@ -120,8 +128,10 @@ class MyApp extends StatelessWidget {
           create: (_) => ActivityLogProvider(repository: activityRepository),
         ),
         ChangeNotifierProvider(
-          create: (_) =>
-              RakutenSearchProvider(repository: rakutenSearchRepository),
+          create: (_) => RakutenSearchProvider(
+            repository: rakutenSearchRepository,
+            genreMasterRepository: genreMasterRepository,
+          ),
         ),
         ChangeNotifierProvider(
           create: (_) => RoomActivityEventProvider(

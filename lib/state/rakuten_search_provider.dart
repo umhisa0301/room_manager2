@@ -1,18 +1,29 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import '../config/rakuten_api_config.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
+import '../repository/genre_master_repository.dart';
 import '../repository/rakuten_search_repository.dart';
+import '../utils/genre_display_helper.dart';
 
 enum RakutenSearchStatus { idle, loading, success, error }
 
 /// 楽天検索画面の状態管理。
 class RakutenSearchProvider extends ChangeNotifier {
-  RakutenSearchProvider({required RakutenSearchRepository repository})
-    : _repository = repository;
+  RakutenSearchProvider({
+    required RakutenSearchRepository repository,
+    GenreMasterRepository? genreMasterRepository,
+  }) : _repository = repository,
+       _genreMasterRepository = genreMasterRepository;
 
   final RakutenSearchRepository _repository;
+  final GenreMasterRepository? _genreMasterRepository;
+
+  /// 検索結果に対応するジャンル表示名（API解決後）。キーは `genreId` 文字列。
+  Map<String, String> _resolvedGenreLabels = const {};
 
   RakutenSearchStatus _status = RakutenSearchStatus.idle;
   List<RakutenSearchItem> _results = const [];
@@ -35,6 +46,17 @@ class RakutenSearchProvider extends ChangeNotifier {
 
   RakutenKeywordManagedFetchSummary? get keywordManagedFetchSummary =>
       _keywordManagedFetchSummary;
+
+  /// 一覧カード向け。解決済みがあれば日本語名、なければローカルマスタまたは [genreId] 文字列。
+  String genreLineForItem(RakutenSearchItem item) {
+    final id = item.genreId.trim();
+    if (id.isEmpty) return '';
+    final resolved = _resolvedGenreLabels[id];
+    if (resolved != null && resolved.isNotEmpty) {
+      return resolved;
+    }
+    return GenreDisplayHelper.immediateLabelForGenreId(id);
+  }
 
   /// 管理除外パスで目標件数に届かなかったときの短文（キーワードタブ向け）。届いている・該当なしは null。
   String? keywordManagedVisibleShortfallNote() {
@@ -69,6 +91,7 @@ class RakutenSearchProvider extends ChangeNotifier {
       _lastKeyword = '';
       _keywordSearchHadApiHitsButNoVisibleResults = false;
       _keywordManagedFetchSummary = null;
+      _resolvedGenreLabels = const {};
       notifyListeners();
       return;
     }
@@ -94,6 +117,7 @@ class RakutenSearchProvider extends ChangeNotifier {
       _lastKeyword = '';
       _keywordSearchHadApiHitsButNoVisibleResults = false;
       _keywordManagedFetchSummary = null;
+      _resolvedGenreLabels = const {};
       notifyListeners();
       return;
     }
@@ -135,12 +159,14 @@ class RakutenSearchProvider extends ChangeNotifier {
       }
       _results = fetched;
       _status = RakutenSearchStatus.success;
+      _resolvedGenreLabels = const {};
       final withAff = fetched.where((e) => e.hasAffiliateUrlInResponse).length;
       debugPrint(
         '[Rakuten] affiliateIdをリクエストに付与: '
         '${RakutenApiConfig.requestIncludesAffiliateId} / '
         'affiliateUrlあり: $withAff / ${fetched.length} 件',
       );
+      unawaited(_prefetchGenreLabels(fetched));
     } catch (e, st) {
       if (kDebugMode) {
         debugPrint('[Rakuten] searchWithCondition failed: $e');
@@ -151,8 +177,37 @@ class RakutenSearchProvider extends ChangeNotifier {
       _errorMessage = _userFacingError(e);
       _keywordSearchHadApiHitsButNoVisibleResults = false;
       _keywordManagedFetchSummary = null;
+      _resolvedGenreLabels = const {};
     }
     notifyListeners();
+  }
+
+  Future<void> _prefetchGenreLabels(List<RakutenSearchItem> items) async {
+    final repo = _genreMasterRepository;
+    if (repo == null) return;
+    final ids = <int>{};
+    for (final i in items) {
+      final p = int.tryParse(i.genreId.trim());
+      if (p != null && p > 0) ids.add(p);
+    }
+    if (ids.isEmpty) return;
+    if (kDebugMode) {
+      debugPrint('[GenreMaster] search prefetch unique=${ids.length}');
+    }
+    try {
+      await repo.prefetchGenreMasters(ids);
+      final next = <String, String>{};
+      for (final id in ids) {
+        next['$id'] = await repo.getGenreName(id);
+      }
+      _resolvedGenreLabels = next;
+      notifyListeners();
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[GenreMaster] search prefetch error: $e');
+        debugPrint('$st');
+      }
+    }
   }
 
   String _userFacingError(Object e) {
@@ -183,6 +238,7 @@ class RakutenSearchProvider extends ChangeNotifier {
     _lastKeyword = '';
     _keywordSearchHadApiHitsButNoVisibleResults = false;
     _keywordManagedFetchSummary = null;
+    _resolvedGenreLabels = const {};
     notifyListeners();
   }
 }

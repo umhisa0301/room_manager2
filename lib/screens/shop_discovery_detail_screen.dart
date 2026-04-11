@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 
 import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
+import '../repository/genre_master_repository.dart';
 import '../services/app_action_service.dart';
+import '../utils/genre_display_helper.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
@@ -30,13 +32,45 @@ class ShopDiscoveryDetailScreen extends StatefulWidget {
 class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
   _ShopDetailSort _sort = _ShopDetailSort.reviewCount;
 
+  /// ジャンルAPI解決後の表示名（キーは genreId 文字列）。
+  Map<String, String> _genreLabels = const {};
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<SavedShopProvider>().markViewed(widget.summary.shopKey);
+      _prefetchGenreLabels();
     });
+  }
+
+  Future<void> _prefetchGenreLabels() async {
+    final repo = context.read<GenreMasterRepository>();
+    final ids = widget.items
+        .map((e) => int.tryParse(e.genreId.trim()))
+        .whereType<int>()
+        .where((id) => id > 0)
+        .toSet();
+    if (ids.isEmpty) return;
+    try {
+      await repo.prefetchGenreMasters(ids);
+      final next = <String, String>{};
+      for (final id in ids) {
+        next['$id'] = await repo.getGenreName(id);
+      }
+      if (mounted) {
+        setState(() => _genreLabels = next);
+      }
+    } catch (_) {}
+  }
+
+  String _genreLineForItem(RakutenSearchItem item) {
+    final id = item.genreId.trim();
+    if (id.isEmpty) return '';
+    final r = _genreLabels[id];
+    if (r != null && r.isNotEmpty) return r;
+    return GenreDisplayHelper.immediateLabelForGenreId(id);
   }
 
   List<RakutenSearchItem> _sortedItems() {
@@ -158,6 +192,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                       item: item,
                       localStatus: managed.statusForProduct(item.productId),
                       isRegistering: managed.isRegistering(item.productId),
+                      genreDisplayLineOverride: _genreLineForItem(item),
                       onRegisterCandidate: () async {
                         final err = await managed.registerCandidate(item);
                         if (!context.mounted) return;

@@ -23,6 +23,7 @@ class RakutenSearchResultCard extends StatelessWidget {
     this.isSelectionEnabled = true,
     this.onToggleSelected,
     this.selectionDisabledLabel,
+    this.genreDisplayLineOverride,
   });
 
   final RakutenSearchItem item;
@@ -34,6 +35,10 @@ class RakutenSearchResultCard extends StatelessWidget {
   final bool isSelectionEnabled;
   final VoidCallback? onToggleSelected;
   final String? selectionDisabledLabel;
+
+  /// 指定時はジャンル行にこれを表示（検索結果の API 解決名など）。
+  /// null のときは従来どおり [RakutenGenreMasterService] の同期表示。
+  final String? genreDisplayLineOverride;
 
   static String _safeItemName(RakutenSearchItem item) {
     try {
@@ -118,9 +123,11 @@ class RakutenSearchResultCard extends StatelessWidget {
                         if (item.genreId.trim().isNotEmpty) ...[
                           const SizedBox(height: 2),
                           Text(
-                            RakutenGenreMasterService.instance.genreDisplayName(
-                              item.genreId,
-                            ),
+                            genreDisplayLineOverride ??
+                                RakutenGenreMasterService.instance
+                                    .genreDisplayName(
+                                  item.genreId,
+                                ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: genreLineStyle,
