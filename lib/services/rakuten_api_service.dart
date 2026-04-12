@@ -10,6 +10,8 @@ import '../models/rakuten_product_search_condition.dart';
 /// 楽天商品検索APIとの通信だけを担当するサービス。
 ///
 /// OpenAPI 版（2026-04-01）は **applicationId と accessKey の両方が必須**。
+/// リクエスト URL は公式ドキュメントどおり `.../ichibams/api/...`（**ichibams**。`ichibans` ではない）。
+/// ヘッダーは [RakutenApiConfig.openApiHttpHeaders]（`Origin` / `Referer`）を付与する。
 /// [RakutenApiConfig.accessKey] が無い場合は従来エンドポイント（2022-06-01）にフォールバックする。
 class RakutenApiService {
   static const String _baseUrlOpenApi =
