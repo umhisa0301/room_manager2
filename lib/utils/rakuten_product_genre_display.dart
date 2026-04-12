@@ -8,10 +8,9 @@ import '../services/rakuten_genre_master_service.dart';
 /// 1. API レスポンス由来の `apiGenreName`
 /// 2. 永続化済みの `persistedGenreName`（ROOMコレ保存時など）
 /// 3. 非同期キャッシュ解決後の `prefetchedGenreName`（ジャンルAPI/SPキャッシュ）
-/// 4. ローカル定数マスタ（[RakutenGenreMasterService]）
-/// 5. ローカル定数マスタにも無く、ジャンルAPIキャッシュも無いときは [genreId] 文字列を表示
-///    （楽天商品検索は多くの場合 `genreId` のみで `genreName` が来ないため。日本語名はジャンルAPI＋アクセスキーが必要）
-/// 6. [genreId] も空のときのみ [RakutenGenreMasterService.unknownGenreDisplayLabel]
+/// 4. ローカル定数マスタ → ランタイムキャッシュ → 同梱 JSON マスタ（[RakutenGenreMasterService.genreNameIfKnown]）
+/// 5. いずれでも解決できない、または [genreId] が空のときは
+///    [RakutenGenreMasterService.unknownGenreDisplayLabel]（未分類）
 class RakutenProductGenreDisplay {
   RakutenProductGenreDisplay._();
 
@@ -49,9 +48,7 @@ class RakutenProductGenreDisplay {
           if (known != null && known.isNotEmpty) {
             result = known;
           } else {
-            // 商品検索APIは genreName を返さないことが多く、ジャンルAPIは RAKUTEN_ACCESS_KEY 必須。
-            // 名前が取れない場合は「未分類」ではなく ID を出して識別できるようにする。
-            result = id;
+            result = unknownLabel;
           }
         }
       }
@@ -103,9 +100,10 @@ class RakutenProductGenreDisplay {
     }
     final known = RakutenGenreMasterService.instance.genreNameIfKnown(gid);
     final hit = known != null && known.isNotEmpty;
+    final resolved = hit ? known : '-';
     debugPrint(
       '[RakutenGenre][MASTER] itemCode=$code genreId=$gid masterHit=$hit '
-      'resolvedGenreName=${hit ? known : '-'}',
+      'resolvedGenreName=$resolved',
     );
   }
 

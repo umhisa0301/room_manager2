@@ -10,6 +10,7 @@ import 'repository/activity_log_repository.dart';
 import 'repository/rakuten_managed_product_repository.dart';
 import 'repository/room_activity_event_repository.dart';
 import 'repository/genre_master_repository.dart';
+import 'services/genre_master_service.dart';
 import 'services/rakuten_genre_master_service.dart';
 import 'repository/rakuten_search_repository.dart';
 import 'state/product_list_provider.dart';
@@ -67,6 +68,7 @@ void main() async {
   final todayRecommendationRepository = TodayRecommendationRepository(prefs);
   final genreMasterRepository = GenreMasterRepository(prefs: prefs);
   await _bootstrapRakutenGenreNameCache(genreMasterRepository);
+  await GenreMasterService.instance.load();
   runApp(
     MyApp(
       productRepository: productRepository,

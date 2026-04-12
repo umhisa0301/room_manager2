@@ -62,6 +62,7 @@ flutter:
 
   assets:
     - assets/config/xpath_config.json
+    - assets/genre_master_flutter.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,6 +1,7 @@
 import '../models/genre_master.dart';
 import '../models/rakuten_genre_master_entry.dart';
 import '../repository/rakuten_genre_master_repository.dart';
+import 'genre_master_service.dart';
 
 /// ジャンルマスタ参照の窓口（UI や画面ロジックはここ経由に寄せる）。
 class RakutenGenreMasterService {
@@ -54,11 +55,14 @@ class RakutenGenreMasterService {
 
   /// マスタに存在するジャンルのみ名前付きで返す。未登録・空は null（検索フォールバック等で従来挙動を維持）。
   ///
-  /// 優先: 同梱定数マスタ → ジャンルAPIキャッシュ由来の [applyGenreMaster] / [mergeRuntimeGenreNames]。
+  /// 優先: 同梱定数マスタ → ジャンルAPIキャッシュ由来の [applyGenreMaster] / [mergeRuntimeGenreNames]
+  /// → 同梱 JSON マスタ（[GenreMasterService]、全階層の ID 解決用）。
   String? genreNameIfKnown(String? rawGenreId) {
     final id = rawGenreId?.trim() ?? '';
     if (id.isEmpty) return null;
-    return _repository.findNameIfRegistered(id) ?? _runtimeNamesByGenreId[id];
+    return _repository.findNameIfRegistered(id) ??
+        _runtimeNamesByGenreId[id] ??
+        GenreMasterService.instance.getGenreNameById(id);
   }
 
   /// 一覧・商品表示向け。空 ID は空文字。未登録は [unknownGenreDisplayLabel]。
@@ -68,9 +72,18 @@ class RakutenGenreMasterService {
     return genreNameIfKnown(id) ?? unknownGenreDisplayLabel;
   }
 
-  /// マスタ全件（ジャンル名昇順）。UI・ダイアログ・マイグレーションの共通入口。
+  /// 選択肢としての「マスタ一覧」（ジャンル名昇順）。
+  ///
+  /// [GenreMasterService] が読み込めているときは JSON の `roots`（最上位ジャンルのみ）を返し、
+  /// 件数が膨大にならないようにする。未ロード時は従来どおりローカル定数リスト。
   List<RakutenGenreMasterEntry> getAllGenres() {
-    final list = List<RakutenGenreMasterEntry>.from(_repository.fetchAll());
+    final assetRoots = GenreMasterService.instance.rootMasterEntries();
+    final List<RakutenGenreMasterEntry> list;
+    if (GenreMasterService.instance.isLoaded && assetRoots.isNotEmpty) {
+      list = List<RakutenGenreMasterEntry>.from(assetRoots);
+    } else {
+      list = List<RakutenGenreMasterEntry>.from(_repository.fetchAll());
+    }
     list.sort((a, b) => a.genreName.compareTo(b.genreName));
     return list;
   }
