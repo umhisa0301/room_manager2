@@ -8,8 +8,13 @@ import '../config/rakuten_api_config.dart';
 import '../models/rakuten_product_search_condition.dart';
 
 /// 楽天商品検索APIとの通信だけを担当するサービス。
+///
+/// OpenAPI 版（2026-04-01）は **applicationId と accessKey の両方が必須**。
+/// [RakutenApiConfig.accessKey] が無い場合は従来エンドポイント（2022-06-01）にフォールバックする。
 class RakutenApiService {
-  static const String _baseUrl =
+  static const String _baseUrlOpenApi =
+      'https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260401';
+  static const String _baseUrlLegacy =
       'https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601';
 
   static const Duration _requestTimeout = Duration(seconds: 28);
@@ -64,6 +69,9 @@ class RakutenApiService {
       'page': '$page',
       'hits': '$hits',
     };
+    if (RakutenApiConfig.hasValidAccessKey) {
+      params['accessKey'] = RakutenApiConfig.accessKey.trim();
+    }
 
     final keywordTrimmed = normalized.keyword.trim();
     final genreTrimmed = normalized.genreId?.trim() ?? '';
@@ -102,11 +110,15 @@ class RakutenApiService {
     if (aff.isNotEmpty) {
       params['affiliateId'] = aff;
     }
-    final uri = Uri.parse(_baseUrl).replace(queryParameters: params);
+    final baseUrl = RakutenApiConfig.hasValidAccessKey
+        ? _baseUrlOpenApi
+        : _baseUrlLegacy;
+    final uri = Uri.parse(baseUrl).replace(queryParameters: params);
 
     if (kDebugMode) {
       debugPrint(
         '[Rakuten] request start page=$page hits=$hits '
+        'endpoint=${RakutenApiConfig.hasValidAccessKey ? 'openapi20260401' : 'legacy20220601'} '
         'keyword=${keywordTrimmed.isEmpty ? '(omit)' : keywordTrimmed} '
         'genreId=${hasGenre ? genreTrimmed : '-'} '
         'shopCode=${hasShop ? shopTrimmed : '-'} '
