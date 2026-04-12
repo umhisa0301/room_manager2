@@ -7,19 +7,24 @@ import 'package:http/http.dart' as http;
 import '../config/rakuten_api_config.dart';
 import '../models/rakuten_product_search_condition.dart';
 
+/// 商品検索の実行モード（このファイル内のみ）。
+enum _RakutenApiMode { openapi, legacy }
+
 /// 楽天商品検索APIとの通信だけを担当するサービス。
 ///
-/// OpenAPI 版（2026-04-01）は **applicationId と accessKey の両方が必須**。
-/// リクエスト URL は公式ドキュメントどおり `.../ichibams/api/...`（**ichibams**。`ichibans` ではない）。
-/// ヘッダーは [RakutenApiConfig.openApiHttpHeaders]（`Origin` / `Referer`）を付与する。
-/// [RakutenApiConfig.accessKey] が無い場合は従来エンドポイント（2022-06-01）にフォールバックする。
+/// 経路は [RakutenApiConfig.forceLegacy] と [RakutenApiConfig.isOpenApiEnabled] で決まる。
+/// - **legacy**: `app.rakuten.co.jp` の 2022-06-01。accessKey なし・OpenAPI 専用ヘッダーなし。
+/// - **openapi**: `openapi.rakuten.co.jp` の 2026-04-01。applicationId + accessKey + 必要ヘッダー。
 class RakutenApiService {
   static const String _baseUrlOpenApi =
       'https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260401';
+  /// 旧ホスト（OpenAPI ドメインとは分離する）。
   static const String _baseUrlLegacy =
       'https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601';
 
   static const Duration _requestTimeout = Duration(seconds: 28);
+
+  static const String _userAgent = 'RoomManager/1.0 (Flutter)';
 
   Future<Map<String, dynamic>> searchItems({
     required RakutenProductSearchCondition condition,
@@ -59,22 +64,54 @@ class RakutenApiService {
     throw lastError!;
   }
 
-  Future<Map<String, dynamic>> _searchItemsOnce({
-    required RakutenProductSearchCondition condition,
+  /// モードに応じたベース URL（ねじれないようここだけを参照する）。
+  static String _baseUrlForMode(_RakutenApiMode mode) {
+    switch (mode) {
+      case _RakutenApiMode.openapi:
+        return _baseUrlOpenApi;
+      case _RakutenApiMode.legacy:
+        return _baseUrlLegacy;
+    }
+  }
+
+  /// legacy では User-Agent のみ。OpenAPI では Origin/Referer 付き。
+  static Map<String, String> _headersForSearchMode(_RakutenApiMode mode) {
+    switch (mode) {
+      case _RakutenApiMode.openapi:
+        return RakutenApiConfig.openApiHttpHeaders(userAgent: _userAgent);
+      case _RakutenApiMode.legacy:
+        return <String, String>{'User-Agent': _userAgent};
+    }
+  }
+
+  /// 共通クエリにモード固有の差分を適用（legacy では accessKey を含めない）。
+  static Map<String, String> _paramsForSearchMode(
+    _RakutenApiMode mode,
+    Map<String, String> common,
+  ) {
+    final m = Map<String, String>.from(common);
+    switch (mode) {
+      case _RakutenApiMode.openapi:
+        m['accessKey'] = RakutenApiConfig.accessKey.trim();
+        return m;
+      case _RakutenApiMode.legacy:
+        m.remove('accessKey');
+        return m;
+    }
+  }
+
+  /// キーワード・ジャンル・店舗・価格・レビュー・affiliate までを組み立てる（accessKey は含めない）。
+  static Map<String, String> _buildCommonSearchParams({
+    required RakutenProductSearchCondition normalized,
     required int page,
     required int hits,
-  }) async {
-    final normalized = condition.normalized();
+  }) {
     final params = <String, String>{
       'format': 'json',
       'applicationId': RakutenApiConfig.applicationId.trim(),
       'page': '$page',
       'hits': '$hits',
     };
-    final includeAccessKey = RakutenApiConfig.hasValidAccessKey;
-    if (includeAccessKey) {
-      params['accessKey'] = RakutenApiConfig.accessKey.trim();
-    }
 
     final keywordTrimmed = normalized.keyword.trim();
     final genreTrimmed = normalized.genreId?.trim() ?? '';
@@ -113,37 +150,100 @@ class RakutenApiService {
     if (aff.isNotEmpty) {
       params['affiliateId'] = aff;
     }
-    final preferOpenApi = includeAccessKey;
-    if (kDebugMode) {
-      debugPrint(
-        '[Rakuten] request start page=$page hits=$hits '
-        'endpoint=${preferOpenApi ? 'openapi20260401' : 'legacy20220601'} '
-        'keyword=${keywordTrimmed.isEmpty ? '(omit)' : keywordTrimmed} '
-        'genreId=${hasGenre ? genreTrimmed : '-'} '
-        'shopCode=${hasShop ? shopTrimmed : '-'} '
-        'shopName=未送信(APIはshopCodeのみ)',
-      );
-    }
+    return params;
+  }
+
+  static _RakutenApiMode _resolveSearchMode() {
+    return RakutenApiConfig.isOpenApiEnabled
+        ? _RakutenApiMode.openapi
+        : _RakutenApiMode.legacy;
+  }
+
+  void _debugLogSearchPlan({
+    required _RakutenApiMode mode,
+    required int page,
+    required int hits,
+    required String keywordTrimmed,
+    required bool hasGenre,
+    required String genreTrimmed,
+    required bool hasShop,
+    required String shopTrimmed,
+  }) {
+    if (!kDebugMode) return;
+    final label = mode == _RakutenApiMode.openapi ? 'openapi' : 'legacy';
+    final base = _baseUrlForMode(mode);
+    final uri = Uri.parse(base);
+    final openapiHeaders = mode == _RakutenApiMode.openapi;
+    debugPrint(
+      '[Rakuten] request start mode=$label page=$page hits=$hits '
+      'url=${uri.scheme}://${uri.host}${uri.path} '
+      'forceLegacy=${RakutenApiConfig.forceLegacy} '
+      'accessKeySent=${mode == _RakutenApiMode.openapi} '
+      'openapiHeaders=$openapiHeaders '
+      'keyword=${keywordTrimmed.isEmpty ? '(omit)' : keywordTrimmed} '
+      'genreId=${hasGenre ? genreTrimmed : '-'} '
+      'shopCode=${hasShop ? shopTrimmed : '-'} '
+      'shopName=未送信(APIはshopCodeのみ)',
+    );
+  }
+
+  Future<Map<String, dynamic>> _searchItemsOnce({
+    required RakutenProductSearchCondition condition,
+    required int page,
+    required int hits,
+  }) async {
+    final normalized = condition.normalized();
+    final common = _buildCommonSearchParams(
+      normalized: normalized,
+      page: page,
+      hits: hits,
+    );
+
+    final keywordTrimmed = normalized.keyword.trim();
+    final genreTrimmed = normalized.genreId?.trim() ?? '';
+    final shopTrimmed = normalized.shopCode?.trim() ?? '';
+    final hasGenre = genreTrimmed.isNotEmpty;
+    final hasShop = shopTrimmed.isNotEmpty;
+
+    var mode = _resolveSearchMode();
+    _debugLogSearchPlan(
+      mode: mode,
+      page: page,
+      hits: hits,
+      keywordTrimmed: keywordTrimmed,
+      hasGenre: hasGenre,
+      genreTrimmed: genreTrimmed,
+      hasShop: hasShop,
+      shopTrimmed: shopTrimmed,
+    );
+
+    var params = _paramsForSearchMode(mode, common);
+    var headers = _headersForSearchMode(mode);
+    final baseUrl = _baseUrlForMode(mode);
 
     http.Response response;
     try {
       response = await _getSearchResponse(
-        baseUrl: preferOpenApi ? _baseUrlOpenApi : _baseUrlLegacy,
+        baseUrl: baseUrl,
         params: params,
+        headers: headers,
       );
     } catch (e) {
-      // 端末・エミュレータで openapi ホストだけ DNS 失敗する例があるため、legacy へ1回だけ試す。
-      if (preferOpenApi && _isLikelyDnsFailure(e)) {
-        final legacyParams = Map<String, String>.from(params)..remove('accessKey');
+      // OpenAPI 選択時のみ DNS 失敗なら legacy へ1回だけ試す（経路を明示ログ）。
+      if (mode == _RakutenApiMode.openapi && _isLikelyDnsFailure(e)) {
         if (kDebugMode) {
           debugPrint(
-            '[Rakuten] OpenAPI への接続前に DNS 失敗のため '
-            'app.rakuten.co.jp (legacy 20220601) にフォールバックします',
+            '[Rakuten] DNS失敗のため openapi→legacy に1回だけフォールバックします '
+            '(本来のモード解決は [RAKUTEN_FORCE_LEGACY] / アクセスキーで制御してください)',
           );
         }
+        mode = _RakutenApiMode.legacy;
+        params = _paramsForSearchMode(mode, common);
+        headers = _headersForSearchMode(mode);
         response = await _getSearchResponse(
-          baseUrl: _baseUrlLegacy,
-          params: legacyParams,
+          baseUrl: _baseUrlForMode(mode),
+          params: params,
+          headers: headers,
         );
       } else {
         if (kDebugMode) {
@@ -222,13 +322,17 @@ class RakutenApiService {
   Future<http.Response> _getSearchResponse({
     required String baseUrl,
     required Map<String, String> params,
+    required Map<String, String> headers,
   }) {
     final uri = Uri.parse(baseUrl).replace(queryParameters: params);
-    final headers = RakutenApiConfig.openApiHttpHeaders();
     if (kDebugMode) {
+      final path = Uri.parse(baseUrl).path;
+      final hasOrigin = headers.containsKey('Origin');
+      final hasReferer = headers.containsKey('Referer');
       debugPrint(
-        '[Rakuten] GET ${Uri.parse(baseUrl).path} … '
-        'Origin=${headers['Origin']} Referer=${headers['Referer']}',
+        '[Rakuten] GET $path … '
+        'headers: User-Agent=set Origin=${hasOrigin ? 'set' : 'omit'} '
+        'Referer=${hasReferer ? 'set' : 'omit'}',
       );
     }
     return http.get(uri, headers: headers).timeout(_requestTimeout);
