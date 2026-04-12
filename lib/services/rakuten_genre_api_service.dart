@@ -57,7 +57,7 @@ class RakutenGenreApiService {
     http.Response response;
     try {
       response = await http
-          .get(uri, headers: const {'User-Agent': 'RoomManager/1.0 (Flutter)'})
+          .get(uri, headers: RakutenApiConfig.openApiHttpHeaders())
           .timeout(_requestTimeout);
     } catch (e, st) {
       if (kDebugMode) {

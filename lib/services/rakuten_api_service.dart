@@ -223,7 +223,7 @@ class RakutenApiService {
   }) {
     final uri = Uri.parse(baseUrl).replace(queryParameters: params);
     return http
-        .get(uri, headers: const {'User-Agent': 'RoomManager/1.0 (Flutter)'})
+        .get(uri, headers: RakutenApiConfig.openApiHttpHeaders())
         .timeout(_requestTimeout);
   }
 }
