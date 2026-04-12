@@ -2,7 +2,8 @@
 /// 本番キーは `--dart-define=RAKUTEN_APP_ID=...` で注入する。
 /// ジャンル検索APIには [accessKey] も必要（楽天ウェブサービスのアプリ管理画面で確認）。
 ///
-/// 商品検索（[RakutenApiService]）の経路は [forceLegacy] / [isOpenApiEnabled] で切り替える。
+/// 商品検索（[RakutenApiService]）・ジャンル取得（[RakutenGenreApiService]）の経路は
+/// [forceLegacy] / [isOpenApiEnabled] で切り替える。
 class RakutenApiConfig {
   RakutenApiConfig._();
 
@@ -22,7 +23,7 @@ class RakutenApiConfig {
     defaultValue: '',
   );
 
-  /// `true` のとき商品検索は旧API互換（legacy）のみを使う。
+  /// `true` のとき商品検索・ジャンル取得は旧API互換（legacy）のみを使う。
   /// OpenAPI 前提の挙動に切り替える場合は `false` にし、[accessKey] も渡す。
   static const bool forceLegacy = bool.fromEnvironment(
     'RAKUTEN_FORCE_LEGACY',
@@ -46,7 +47,7 @@ class RakutenApiConfig {
 
   static bool get hasValidAccessKey => accessKey.trim().isNotEmpty;
 
-  /// 商品検索で OpenAPI 経路を使うか（[forceLegacy] が false かつアクセスキーあり）。
+  /// 商品検索・ジャンル取得で OpenAPI 経路を使うか（[forceLegacy] が false かつアクセスキーあり）。
   static bool get isOpenApiEnabled => !forceLegacy && hasValidAccessKey;
 
   /// リクエストクエリに `affiliateId` を付与するか（ビルド時の define 由来）。

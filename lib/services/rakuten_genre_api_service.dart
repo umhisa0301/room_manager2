@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -6,14 +7,24 @@ import 'package:http/http.dart' as http;
 import '../config/rakuten_api_config.dart';
 import '../models/genre_master.dart';
 
+/// ジャンルAPIの実行モード（このファイル内のみ）。商品検索側と同じ思想。
+enum _RakutenApiMode { openapi, legacy }
+
 /// 楽天市場ジャンル検索API（IchibaGenre/Search）呼び出し。
 ///
-/// 認証は [RakutenApiConfig.applicationId] と [RakutenApiConfig.accessKey]。
+/// 経路は [RakutenApiConfig.forceLegacy] と [RakutenApiConfig.isOpenApiEnabled] で決まる。
+/// - **legacy**: `app.rakuten.co.jp` の 20140222。accessKey なし・OpenAPI 専用ヘッダーなし。
+/// - **openapi**: `openapi.rakuten.co.jp` の 20140222。applicationId + accessKey + 必要ヘッダー。
 class RakutenGenreApiService {
-  static const String _baseUrl =
+  static const String _baseUrlOpenApi =
       'https://openapi.rakuten.co.jp/ichibagt/api/IchibaGenre/Search/20140222';
+  /// 旧ホスト（OpenAPI ドメインとは分離する）。
+  static const String _baseUrlLegacy =
+      'https://app.rakuten.co.jp/services/api/IchibaGenre/Search/20140222';
 
   static const Duration _requestTimeout = Duration(seconds: 28);
+
+  static const String _userAgent = 'RoomManager/1.0 (Flutter)';
 
   /// [genreId] 指定でジャンル情報を取得し [GenreMaster] に変換する。
   ///
@@ -27,44 +38,156 @@ class RakutenGenreApiService {
     }
     if (!RakutenApiConfig.hasValidAppId) {
       if (kDebugMode) {
-        debugPrint('[GenreMaster] API skip: RAKUTEN_APP_ID unset');
-      }
-      return null;
-    }
-    if (!RakutenApiConfig.hasValidAccessKey) {
-      if (kDebugMode) {
-        debugPrint(
-          '[GenreMaster] API skip: RAKUTEN_ACCESS_KEY unset '
-          '(ジャンルAPIにはアプリIDとアクセスキーの両方が必要です)',
-        );
+        debugPrint('楽天APIのアプリIDが未設定です。');
       }
       return null;
     }
 
-    final params = <String, String>{
+    for (var attempt = 0; attempt < 2; attempt++) {
+      try {
+        return await _fetchGenreMasterOnce(genreId);
+      } catch (e, st) {
+        if (kDebugMode) {
+          debugPrint(
+            '[GenreMaster] fetchGenreMaster failed genreId=$genreId '
+            'attempt=${attempt + 1}: $e',
+          );
+          debugPrint('$st');
+        }
+        final retriable = _isRetriableFailure(e);
+        if (attempt == 0 && retriable) {
+          if (kDebugMode) {
+            debugPrint(
+              '[GenreMaster] retrying genreId=$genreId after short delay…',
+            );
+          }
+          await Future<void>.delayed(const Duration(milliseconds: 450));
+          continue;
+        }
+        if (kDebugMode) {
+          debugPrint('楽天ジャンルAPI呼び出しに失敗しました: $e');
+        }
+        return null;
+      }
+    }
+    return null;
+  }
+
+  /// モードに応じたベース URL（文字列のねじれを防ぐためここに集約）。
+  static String _baseUrlForMode(_RakutenApiMode mode) {
+    switch (mode) {
+      case _RakutenApiMode.openapi:
+        return _baseUrlOpenApi;
+      case _RakutenApiMode.legacy:
+        return _baseUrlLegacy;
+    }
+  }
+
+  /// legacy は User-Agent のみ。openapi は Origin/Referer 付き。
+  static Map<String, String> _headersForGenreMode(_RakutenApiMode mode) {
+    switch (mode) {
+      case _RakutenApiMode.openapi:
+        return RakutenApiConfig.openApiHttpHeaders(userAgent: _userAgent);
+      case _RakutenApiMode.legacy:
+        return <String, String>{'User-Agent': _userAgent};
+    }
+  }
+
+  /// 共通クエリにモード固有の差分（legacy では accessKey を付けない）。
+  static Map<String, String> _paramsForGenreMode(
+    _RakutenApiMode mode,
+    Map<String, String> common,
+  ) {
+    final m = Map<String, String>.from(common);
+    switch (mode) {
+      case _RakutenApiMode.openapi:
+        m['accessKey'] = RakutenApiConfig.accessKey.trim();
+        return m;
+      case _RakutenApiMode.legacy:
+        m.remove('accessKey');
+        return m;
+    }
+  }
+
+  /// format / applicationId / genreId / genrePath まで（accessKey は含めない）。
+  static Map<String, String> _buildCommonGenreParams(int genreId) {
+    return <String, String>{
       'format': 'json',
       'applicationId': RakutenApiConfig.applicationId.trim(),
-      'accessKey': RakutenApiConfig.accessKey.trim(),
       'genreId': '$genreId',
       'genrePath': '1',
     };
-    final uri = Uri.parse(_baseUrl).replace(queryParameters: params);
+  }
 
-    if (kDebugMode) {
-      debugPrint('[GenreMaster] API request genreId=$genreId');
-    }
+  static _RakutenApiMode _resolveGenreMode() {
+    return RakutenApiConfig.isOpenApiEnabled
+        ? _RakutenApiMode.openapi
+        : _RakutenApiMode.legacy;
+  }
+
+  void _debugLogGenreRequest({
+    required _RakutenApiMode mode,
+    required int genreId,
+  }) {
+    if (!kDebugMode) return;
+    final label = mode == _RakutenApiMode.openapi ? 'openapi' : 'legacy';
+    final base = _baseUrlForMode(mode);
+    final uri = Uri.parse(base);
+    final openapiHeaders = mode == _RakutenApiMode.openapi;
+    debugPrint(
+      '[GenreMaster] API request mode=$label endpoint=IchibaGenre/Search/20140222 '
+      'genreId=$genreId '
+      'url=${uri.scheme}://${uri.host}${uri.path} '
+      'forceLegacy=${RakutenApiConfig.forceLegacy} '
+      'accessKeySent=${mode == _RakutenApiMode.openapi} '
+      'openapiHeaders=$openapiHeaders',
+    );
+  }
+
+  Future<GenreMaster?> _fetchGenreMasterOnce(int genreId) async {
+    final common = _buildCommonGenreParams(genreId);
+    var mode = _resolveGenreMode();
+    _debugLogGenreRequest(mode: mode, genreId: genreId);
+
+    var params = _paramsForGenreMode(mode, common);
+    var headers = _headersForGenreMode(mode);
+    final baseUrl = _baseUrlForMode(mode);
 
     http.Response response;
     try {
-      response = await http
-          .get(uri, headers: RakutenApiConfig.openApiHttpHeaders())
-          .timeout(_requestTimeout);
-    } catch (e, st) {
-      if (kDebugMode) {
-        debugPrint('[GenreMaster] API network error genreId=$genreId: $e');
-        debugPrint('$st');
+      response = await _getGenreResponse(
+        baseUrl: baseUrl,
+        params: params,
+        headers: headers,
+      );
+    } catch (e) {
+      // OpenAPI 選択時のみ DNS 失敗なら legacy へ1回だけ試す。
+      if (mode == _RakutenApiMode.openapi && _isLikelyDnsFailure(e)) {
+        if (kDebugMode) {
+          debugPrint(
+            '[GenreMaster] DNS失敗のため openapi→legacy に1回だけフォールバックします '
+            '(本来のモードは [RAKUTEN_FORCE_LEGACY] / アクセスキーで制御してください)',
+          );
+        }
+        mode = _RakutenApiMode.legacy;
+        params = _paramsForGenreMode(mode, common);
+        headers = _headersForGenreMode(mode);
+        response = await _getGenreResponse(
+          baseUrl: _baseUrlForMode(mode),
+          params: params,
+          headers: headers,
+        );
+      } else {
+        if (kDebugMode) {
+          debugPrint('[GenreMaster] API network error genreId=$genreId: $e');
+          if (_isLikelyDnsFailure(e)) {
+            debugPrint(
+              '[GenreMaster] ヒント: 「Failed host lookup」は端末の名前解決(DNS)の問題です。',
+            );
+          }
+        }
+        rethrow;
       }
-      return null;
     }
 
     if (kDebugMode) {
@@ -79,28 +202,42 @@ class RakutenGenreApiService {
       final d = jsonDecode(response.body);
       if (d is Map<String, dynamic>) bodyMap = d;
     } catch (e) {
-      if (kDebugMode) {
-        debugPrint('[GenreMaster] JSON decode error genreId=$genreId: $e');
+      if (response.statusCode != 200) {
+        throw _GenreApiTransportException(
+          statusCode: response.statusCode,
+          message:
+              '楽天ジャンルAPI呼び出しに失敗しました (${response.statusCode}): '
+              '${_truncate(response.body)}',
+        );
       }
-      return null;
-    }
-
-    if (bodyMap == null) return null;
-
-    final errMsg = _rakutenErrorMessage(bodyMap);
-    if (errMsg != null) {
       if (kDebugMode) {
-        debugPrint('[GenreMaster] API logical error genreId=$genreId: $errMsg');
+        debugPrint('楽天ジャンルAPIレスポンス形式が不正です (JSON decode): $e');
       }
       return null;
     }
 
     if (response.statusCode != 200) {
+      final detail =
+          _rakutenErrorMessage(bodyMap) ?? _truncate(response.body);
+      throw _GenreApiTransportException(
+        statusCode: response.statusCode,
+        message:
+            '楽天ジャンルAPI呼び出しに失敗しました (${response.statusCode})'
+            '${detail.isNotEmpty ? ': $detail' : ''}',
+      );
+    }
+
+    if (bodyMap == null) {
       if (kDebugMode) {
-        debugPrint(
-          '[GenreMaster] HTTP ${response.statusCode} genreId=$genreId '
-          '${_truncate(response.body)}',
-        );
+        debugPrint('楽天ジャンルAPIレスポンス形式が不正です (object)');
+      }
+      return null;
+    }
+
+    final errMsg = _rakutenErrorMessage(bodyMap);
+    if (errMsg != null) {
+      if (kDebugMode) {
+        debugPrint('楽天ジャンルAPI: $errMsg');
       }
       return null;
     }
@@ -109,18 +246,54 @@ class RakutenGenreApiService {
       return _parseGenreMaster(bodyMap, rawJson: response.body);
     } catch (e, st) {
       if (kDebugMode) {
-        debugPrint('[GenreMaster] parse error genreId=$genreId: $e');
+        debugPrint('楽天ジャンルAPIレスポンス形式が不正です (parse): $e');
         debugPrint('$st');
       }
       return null;
     }
   }
 
+  Future<http.Response> _getGenreResponse({
+    required String baseUrl,
+    required Map<String, String> params,
+    required Map<String, String> headers,
+  }) {
+    final uri = Uri.parse(baseUrl).replace(queryParameters: params);
+    if (kDebugMode) {
+      final path = Uri.parse(baseUrl).path;
+      final hasOrigin = headers.containsKey('Origin');
+      final hasReferer = headers.containsKey('Referer');
+      debugPrint(
+        '[GenreMaster] GET $path … '
+        'headers: User-Agent=set Origin=${hasOrigin ? 'set' : 'omit'} '
+        'Referer=${hasReferer ? 'set' : 'omit'}',
+      );
+    }
+    return http.get(uri, headers: headers).timeout(_requestTimeout);
+  }
+
+  /// 子ジャンル一覧（将来の再帰取得・プルダウン用に切り出し）。
+  List<Map<String, dynamic>> _extractChildren(Map<String, dynamic> root) {
+    return _mapList(root['children']);
+  }
+
+  /// 現在ジャンルブロック（`current` または `genre`）。
+  Map<String, dynamic>? _extractCurrentGenre(Map<String, dynamic> root) {
+    return _pickCurrent(root);
+  }
+
+  /// 親・祖先ブロック（`parents` 優先、なければ `ancestors`）。
+  List<Map<String, dynamic>> _extractAncestors(Map<String, dynamic> root) {
+    final parents = _mapList(root['parents']);
+    final ancestors = _mapList(root['ancestors']);
+    return parents.isNotEmpty ? parents : ancestors;
+  }
+
   GenreMaster _parseGenreMaster(
     Map<String, dynamic> root, {
     required String rawJson,
   }) {
-    final current = _pickCurrent(root);
+    final current = _extractCurrentGenre(root);
     if (current == null) {
       throw StateError('current genre block missing');
     }
@@ -129,9 +302,7 @@ class RakutenGenreApiService {
     final genreName = _readName(current);
     final level = _readLevel(current);
 
-    final parents = _mapList(root['parents']);
-    final ancestors = _mapList(root['ancestors']);
-    final parentBlocks = parents.isNotEmpty ? parents : ancestors;
+    final parentBlocks = _extractAncestors(root);
 
     final ancestorGenreIds = <int>[];
     final ancestorNames = <String>[];
@@ -149,7 +320,7 @@ class RakutenGenreApiService {
       parentGenreId = ancestorGenreIds.last;
     }
 
-    final children = _mapList(root['children']);
+    final children = _extractChildren(root);
     final childGenreIds = <int>[];
     for (final c in children) {
       final id = _readInt(c['genreId']);
@@ -224,6 +395,45 @@ class RakutenGenreApiService {
     if (v is num) return v.toInt();
     return int.tryParse(v.toString().trim());
   }
+}
+
+bool _isLikelyDnsFailure(Object e) {
+  final s = e.toString().toLowerCase();
+  return s.contains('failed host lookup') ||
+      s.contains('no address associated with hostname');
+}
+
+/// 通信層のHTTPステータス（リトライ判定用）。同一ファイル内のみ。
+class _GenreApiTransportException implements Exception {
+  _GenreApiTransportException({
+    required this.statusCode,
+    required this.message,
+  });
+
+  final int statusCode;
+  final String message;
+
+  @override
+  String toString() => message;
+}
+
+bool _isRetriableFailure(Object e) {
+  if (e is TimeoutException) return true;
+  if (e is http.ClientException) return true;
+  if (e is _GenreApiTransportException) {
+    final c = e.statusCode;
+    if (c == 429) return true;
+    if (c >= 500 && c <= 504) return true;
+    return false;
+  }
+  final s = e.toString().toLowerCase();
+  if (s.contains('timeoutexception')) return true;
+  if (s.contains('clientexception')) return true;
+  if (s.contains('connection reset')) return true;
+  if (s.contains('connection refused')) return true;
+  if (s.contains('failed host lookup')) return true;
+  if (s.contains('network is unreachable')) return true;
+  return false;
 }
 
 String? _rakutenErrorMessage(Map<String, dynamic>? map) {
