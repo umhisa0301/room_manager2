@@ -224,9 +224,14 @@ class RakutenApiService {
     required Map<String, String> params,
   }) {
     final uri = Uri.parse(baseUrl).replace(queryParameters: params);
-    return http
-        .get(uri, headers: RakutenApiConfig.openApiHttpHeaders())
-        .timeout(_requestTimeout);
+    final headers = RakutenApiConfig.openApiHttpHeaders();
+    if (kDebugMode) {
+      debugPrint(
+        '[Rakuten] GET ${Uri.parse(baseUrl).path} … '
+        'Origin=${headers['Origin']} Referer=${headers['Referer']}',
+      );
+    }
+    return http.get(uri, headers: headers).timeout(_requestTimeout);
   }
 }
 
