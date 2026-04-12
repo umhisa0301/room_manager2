@@ -69,7 +69,8 @@ class RakutenApiService {
       'page': '$page',
       'hits': '$hits',
     };
-    if (RakutenApiConfig.hasValidAccessKey) {
+    final includeAccessKey = RakutenApiConfig.hasValidAccessKey;
+    if (includeAccessKey) {
       params['accessKey'] = RakutenApiConfig.accessKey.trim();
     }
 
@@ -110,15 +111,11 @@ class RakutenApiService {
     if (aff.isNotEmpty) {
       params['affiliateId'] = aff;
     }
-    final baseUrl = RakutenApiConfig.hasValidAccessKey
-        ? _baseUrlOpenApi
-        : _baseUrlLegacy;
-    final uri = Uri.parse(baseUrl).replace(queryParameters: params);
-
+    final preferOpenApi = includeAccessKey;
     if (kDebugMode) {
       debugPrint(
         '[Rakuten] request start page=$page hits=$hits '
-        'endpoint=${RakutenApiConfig.hasValidAccessKey ? 'openapi20260401' : 'legacy20220601'} '
+        'endpoint=${preferOpenApi ? 'openapi20260401' : 'legacy20220601'} '
         'keyword=${keywordTrimmed.isEmpty ? '(omit)' : keywordTrimmed} '
         'genreId=${hasGenre ? genreTrimmed : '-'} '
         'shopCode=${hasShop ? shopTrimmed : '-'} '
@@ -128,14 +125,36 @@ class RakutenApiService {
 
     http.Response response;
     try {
-      response = await http
-          .get(uri, headers: const {'User-Agent': 'RoomManager/1.0 (Flutter)'})
-          .timeout(_requestTimeout);
+      response = await _getSearchResponse(
+        baseUrl: preferOpenApi ? _baseUrlOpenApi : _baseUrlLegacy,
+        params: params,
+      );
     } catch (e) {
-      if (kDebugMode) {
-        debugPrint('[Rakuten] network error page=$page: $e');
+      // 端末・エミュレータで openapi ホストだけ DNS 失敗する例があるため、legacy へ1回だけ試す。
+      if (preferOpenApi && _isLikelyDnsFailure(e)) {
+        final legacyParams = Map<String, String>.from(params)..remove('accessKey');
+        if (kDebugMode) {
+          debugPrint(
+            '[Rakuten] OpenAPI への接続前に DNS 失敗のため '
+            'app.rakuten.co.jp (legacy 20220601) にフォールバックします',
+          );
+        }
+        response = await _getSearchResponse(
+          baseUrl: _baseUrlLegacy,
+          params: legacyParams,
+        );
+      } else {
+        if (kDebugMode) {
+          debugPrint('[Rakuten] network error page=$page: $e');
+          if (_isLikelyDnsFailure(e)) {
+            debugPrint(
+              '[Rakuten] ヒント: 「Failed host lookup」はキー不正ではなく端末の名前解決(DNS)の問題です。'
+              'Android の「プライベートDNS」設定、Wi‑Fi、エミュレータの再作成を確認してください。',
+            );
+          }
+        }
+        rethrow;
       }
-      rethrow;
     }
 
     if (kDebugMode) {
@@ -197,6 +216,22 @@ class RakutenApiService {
     }
     return bodyMap;
   }
+
+  Future<http.Response> _getSearchResponse({
+    required String baseUrl,
+    required Map<String, String> params,
+  }) {
+    final uri = Uri.parse(baseUrl).replace(queryParameters: params);
+    return http
+        .get(uri, headers: const {'User-Agent': 'RoomManager/1.0 (Flutter)'})
+        .timeout(_requestTimeout);
+  }
+}
+
+bool _isLikelyDnsFailure(Object e) {
+  final s = e.toString().toLowerCase();
+  return s.contains('failed host lookup') ||
+      s.contains('no address associated with hostname');
 }
 
 /// 通信層のHTTPステータス（リトライ判定用）。同一ファイル内のみ。
