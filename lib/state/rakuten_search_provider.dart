@@ -195,13 +195,26 @@ class RakutenSearchProvider extends ChangeNotifier {
       if (p != null && p > 0) ids.add(p);
     }
     if (ids.isEmpty) return;
+    final svc = RakutenGenreMasterService.instance;
+    final toPrefetch = svc.genreIdsNeedingApiPrefetch(ids);
+    if (toPrefetch.isEmpty) {
+      if (kDebugMode) {
+        debugPrint(
+          '[GenreMaster] search prefetch skip resolvedLocally=${ids.length}',
+        );
+      }
+      return;
+    }
     if (kDebugMode) {
-      debugPrint('[GenreMaster] search prefetch unique=${ids.length}');
+      debugPrint(
+        '[GenreMaster] search prefetch unique=${ids.length} '
+        'apiNeeded=${toPrefetch.length}',
+      );
     }
     try {
-      await repo.prefetchGenreMasters(ids);
+      await repo.prefetchGenreMasters(toPrefetch);
       final next = <String, String>{};
-      for (final id in ids) {
+      for (final id in toPrefetch) {
         final idStr = '$id';
         final raw = await repo.getGenreName(id);
         if (raw.isNotEmpty && raw != idStr) {

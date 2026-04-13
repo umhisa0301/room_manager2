@@ -11,10 +11,18 @@ class GenreMasterService {
 
   static const String _assetPath = 'assets/genre_master_flutter.json';
 
+  /// 葉ジャンル名が「その他」のとき、親へ遡る最大回数（＝最下位から上に3階層）。
+  static const int maxOtherGenreParentHops = 3;
+
+  static const String _otherGenreDisplayLabel = 'その他';
+
   static final GenreMasterService instance = GenreMasterService._();
 
   Map<String, Map<String, dynamic>> _byId = {};
+  /// [getGenreNameById] 用のフラット参照（パース時に構築）。
+  Map<String, String> _nameById = {};
   List<String> _rootIds = [];
+  List<RakutenGenreMasterEntry>? _cachedRootEntries;
   bool _parseSucceeded = false;
   Future<void>? _inFlight;
 
@@ -58,6 +66,16 @@ class GenreMasterService {
         }
       });
       _byId = next;
+      final names = <String, String>{};
+      for (final e in next.entries) {
+        final n = e.value['genreName'];
+        if (n is! String) continue;
+        final t = n.trim();
+        if (t.isEmpty) continue;
+        names[e.key] = t;
+      }
+      _nameById = names;
+      _cachedRootEntries = null;
       final rootsRaw = decoded['roots'];
       if (rootsRaw is List) {
         _rootIds = rootsRaw
@@ -75,7 +93,9 @@ class GenreMasterService {
       );
     } catch (e, st) {
       _byId = {};
+      _nameById = {};
       _rootIds = [];
+      _cachedRootEntries = null;
       _parseSucceeded = false;
       debugPrint('[GenreMasterService] load failed: $e');
       debugPrint('$st');
@@ -100,16 +120,36 @@ class GenreMasterService {
     return Map<String, dynamic>.from(e);
   }
 
-  /// `genreName` のみ。空文字・欠損は null。
+  /// `genreName` のみ（JSON の生の名前）。空文字・欠損は null。
   String? getGenreNameById(dynamic genreId) {
     final id = _normalizeKey(genreId);
     if (id == null) return null;
-    final e = _byId[id];
-    if (e == null) return null;
-    final name = e['genreName'];
-    if (name is! String) return null;
-    final t = name.trim();
-    return t.isEmpty ? null : t;
+    return _nameById[id];
+  }
+
+  /// 一覧表示向け: 当該 ID の名前が [_otherGenreDisplayLabel] のときだけ親へ遡り、
+  /// 親方向への移動は最大 [maxOtherGenreParentHops] 回（＝最下位から上に3階層まで）。
+  ///
+  /// それでも「その他」かルートなら、その時点の名前を返す。異常な親子ループは打ち切る。
+  String? getDisplayGenreNameAvoidingOther(dynamic genreId) {
+    final id = _normalizeKey(genreId);
+    if (id == null || !_parseSucceeded) return null;
+    String? cursor = id;
+    final seen = <String>{};
+    var ascentsLeft = maxOtherGenreParentHops;
+    while (true) {
+      if (cursor == null || !seen.add(cursor)) {
+        return cursor != null ? _nameById[cursor] : null;
+      }
+      final n = _nameById[cursor];
+      if (n == null) return null;
+      if (n != _otherGenreDisplayLabel) return n;
+      if (ascentsLeft <= 0) return n;
+      final p = getParentGenreId(cursor);
+      if (p == null) return n;
+      cursor = p;
+      ascentsLeft--;
+    }
   }
 
   /// 親ジャンル ID。ルートは null。
@@ -131,9 +171,11 @@ class GenreMasterService {
   /// プルダウン・マイページの選択肢向け。未ロード時は空。
   List<RakutenGenreMasterEntry> rootMasterEntries() {
     if (!_parseSucceeded || _rootIds.isEmpty) return const [];
+    final hit = _cachedRootEntries;
+    if (hit != null) return hit;
     final out = <RakutenGenreMasterEntry>[];
     for (final id in _rootIds) {
-      final name = getGenreNameById(id);
+      final name = _nameById[id];
       if (name == null) continue;
       out.add(
         RakutenGenreMasterEntry(
@@ -143,7 +185,9 @@ class GenreMasterService {
         ),
       );
     }
-    return out;
+    final frozen = List<RakutenGenreMasterEntry>.unmodifiable(out);
+    _cachedRootEntries = frozen;
+    return frozen;
   }
 
   /// `pathNames` を文字列リストで返す。欠損時は空リスト。

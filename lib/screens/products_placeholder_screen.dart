@@ -2681,11 +2681,19 @@ class _RoomManagedProductListTabState
         }
         return;
       }
+      final toPrefetch =
+          RakutenGenreMasterService.instance.genreIdsNeedingApiPrefetch(ids);
+      if (toPrefetch.isEmpty) {
+        if (mounted) {
+          setState(() => _genrePrefetchLabels = const {});
+        }
+        return;
+      }
       try {
         final repo = context.read<GenreMasterRepository>();
-        await repo.prefetchGenreMasters(ids);
+        await repo.prefetchGenreMasters(toPrefetch);
         final next = <String, String>{};
-        for (final id in ids) {
+        for (final id in toPrefetch) {
           final idStr = '$id';
           final raw = await repo.getGenreName(id);
           if (raw.isNotEmpty && raw != idStr) {

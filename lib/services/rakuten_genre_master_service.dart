@@ -14,6 +14,9 @@ class RakutenGenreMasterService {
 
   final RakutenGenreMasterRepository _repository;
 
+  /// [getAllGenres] の結果キャッシュ（ドロップダウン用。起動後ほぼ不変）。
+  List<RakutenGenreMasterEntry>? _cachedSortedAllGenres;
+
   /// 楽天ジャンルAPI＋永続キャッシュ由来の ID→日本語名（同梱マスタに無い leaf 用）。
   final Map<String, String> _runtimeNamesByGenreId = {};
 
@@ -53,16 +56,30 @@ class RakutenGenreMasterService {
     }
   }
 
+  /// 同梱マスタ・ランタイムキャッシュですでに表示名が決まる ID を除き、
+  /// ジャンルAPIプリフェッチが必要なものだけ返す（検索結果表示後の冗長 API 抑止用）。
+  Set<int> genreIdsNeedingApiPrefetch(Iterable<int> parsedIds) {
+    final out = <int>{};
+    for (final id in parsedIds) {
+      if (id <= 0) continue;
+      final s = '$id';
+      if (genreNameIfKnown(s) != null) continue;
+      out.add(id);
+    }
+    return out;
+  }
+
   /// マスタに存在するジャンルのみ名前付きで返す。未登録・空は null（検索フォールバック等で従来挙動を維持）。
   ///
   /// 優先: 同梱定数マスタ → ジャンルAPIキャッシュ由来の [applyGenreMaster] / [mergeRuntimeGenreNames]
   /// → 同梱 JSON マスタ（[GenreMasterService]、全階層の ID 解決用）。
+  ///   葉が「その他」のときは親を最大 [GenreMasterService.maxOtherGenreParentHops] 階層まで遡って表示名を決める。
   String? genreNameIfKnown(String? rawGenreId) {
     final id = rawGenreId?.trim() ?? '';
     if (id.isEmpty) return null;
     return _repository.findNameIfRegistered(id) ??
         _runtimeNamesByGenreId[id] ??
-        GenreMasterService.instance.getGenreNameById(id);
+        GenreMasterService.instance.getDisplayGenreNameAvoidingOther(id);
   }
 
   /// 一覧・商品表示向け。空 ID は空文字。未登録は [unknownGenreDisplayLabel]。
@@ -77,6 +94,8 @@ class RakutenGenreMasterService {
   /// [GenreMasterService] が読み込めているときは JSON の `roots`（最上位ジャンルのみ）を返し、
   /// 件数が膨大にならないようにする。未ロード時は従来どおりローカル定数リスト。
   List<RakutenGenreMasterEntry> getAllGenres() {
+    final memo = _cachedSortedAllGenres;
+    if (memo != null) return memo;
     final assetRoots = GenreMasterService.instance.rootMasterEntries();
     final List<RakutenGenreMasterEntry> list;
     if (GenreMasterService.instance.isLoaded && assetRoots.isNotEmpty) {
@@ -85,7 +104,8 @@ class RakutenGenreMasterService {
       list = List<RakutenGenreMasterEntry>.from(_repository.fetchAll());
     }
     list.sort((a, b) => a.genreName.compareTo(b.genreName));
-    return list;
+    _cachedSortedAllGenres = List<RakutenGenreMasterEntry>.unmodifiable(list);
+    return _cachedSortedAllGenres!;
   }
 
   /// `getAllGenres` と同一（プルダウン用の別名。既存呼び出し互換）。

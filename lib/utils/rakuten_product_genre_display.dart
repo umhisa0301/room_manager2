@@ -30,6 +30,7 @@ class RakutenProductGenreDisplay {
     final id = genreId.trim();
     final apiTrim = apiGenreName?.trim() ?? '';
 
+    String? masterLookupForTrace;
     late final String result;
     if (apiTrim.isNotEmpty) {
       result = apiTrim;
@@ -44,9 +45,11 @@ class RakutenProductGenreDisplay {
         } else if (id.isEmpty) {
           result = unknownLabel;
         } else {
-          final known = RakutenGenreMasterService.instance.genreNameIfKnown(id);
-          if (known != null && known.isNotEmpty) {
-            result = known;
+          final m =
+              RakutenGenreMasterService.instance.genreNameIfKnown(id);
+          masterLookupForTrace = m;
+          if (m != null && m.isNotEmpty) {
+            result = m;
           } else {
             result = unknownLabel;
           }
@@ -61,6 +64,7 @@ class RakutenProductGenreDisplay {
       persistedGenreName: persistedGenreName,
       prefetchedGenreName: prefetchedGenreName,
       finalLabel: result,
+      masterLookupForTrace: masterLookupForTrace,
     );
     return result;
   }
@@ -72,6 +76,7 @@ class RakutenProductGenreDisplay {
     required String? persistedGenreName,
     required String? prefetchedGenreName,
     required String finalLabel,
+    String? masterLookupForTrace,
   }) {
     if (!kDebugMode || traceItemCode == null || _rakutenGenreTraceBudget <= 0) {
       return;
@@ -98,7 +103,8 @@ class RakutenProductGenreDisplay {
       );
       return;
     }
-    final known = RakutenGenreMasterService.instance.genreNameIfKnown(gid);
+    final known = masterLookupForTrace ??
+        RakutenGenreMasterService.instance.genreNameIfKnown(gid);
     final hit = known != null && known.isNotEmpty;
     final resolved = hit ? known : '-';
     debugPrint(

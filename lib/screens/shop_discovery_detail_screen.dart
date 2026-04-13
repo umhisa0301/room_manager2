@@ -54,10 +54,13 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
         .where((id) => id > 0)
         .toSet();
     if (ids.isEmpty) return;
+    final toPrefetch =
+        RakutenGenreMasterService.instance.genreIdsNeedingApiPrefetch(ids);
+    if (toPrefetch.isEmpty) return;
     try {
-      await repo.prefetchGenreMasters(ids);
+      await repo.prefetchGenreMasters(toPrefetch);
       final next = <String, String>{};
-      for (final id in ids) {
+      for (final id in toPrefetch) {
         final idStr = '$id';
         final raw = await repo.getGenreName(id);
         if (raw.isNotEmpty && raw != idStr) {
