@@ -71,15 +71,22 @@ class RakutenGenreMasterService {
 
   /// マスタに存在するジャンルのみ名前付きで返す。未登録・空は null（検索フォールバック等で従来挙動を維持）。
   ///
-  /// 優先: 同梱定数マスタ → ジャンルAPIキャッシュ由来の [applyGenreMaster] / [mergeRuntimeGenreNames]
-  /// → 同梱 JSON マスタ（[GenreMasterService]、全階層の ID 解決用）。
-  ///   葉が「その他」のときは親を最大 [GenreMasterService.maxOtherGenreParentHops] 階層まで遡って表示名を決める。
+  /// 優先: 同梱定数マスタ
+  /// → 同梱 JSON（[GenreMasterService.getDisplayGenreNameAvoidingOther]、読込済み時のみ。
+  ///   葉が「その他」のとき親を最大 [GenreMasterService.maxOtherGenreParentHops] 階層まで遡る）
+  /// → ジャンルAPIキャッシュ等の [applyGenreMaster] / [mergeRuntimeGenreNames]
+  /// → 再度 JSON（未ロード時は null のまま）。
+  ///
+  /// JSON をランタイムより後にすると、API 側の「その他」が [RakutenProductGenreDisplay] に残るため、
+  /// 読込済みなら JSON を先に参照する。
   String? genreNameIfKnown(String? rawGenreId) {
     final id = rawGenreId?.trim() ?? '';
     if (id.isEmpty) return null;
+    final gms = GenreMasterService.instance;
     return _repository.findNameIfRegistered(id) ??
+        (gms.isLoaded ? gms.getDisplayGenreNameAvoidingOther(id) : null) ??
         _runtimeNamesByGenreId[id] ??
-        GenreMasterService.instance.getDisplayGenreNameAvoidingOther(id);
+        gms.getDisplayGenreNameAvoidingOther(id);
   }
 
   /// 一覧・商品表示向け。空 ID は空文字。未登録は [unknownGenreDisplayLabel]。
