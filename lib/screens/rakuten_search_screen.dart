@@ -2916,9 +2916,18 @@ List<SavedShop> _sanitizedSavedShopsForSearch(List<SavedShop> raw) {
   return out;
 }
 
-List<RakutenSearchGenreOption> get _mockGenres => [
-  const RakutenSearchGenreOption(id: null, label: '指定なし'),
-  ...RakutenGenreMasterService.instance.orderedMasterEntriesForDropdown().map(
-    (e) => RakutenSearchGenreOption(id: e.genreId, label: e.genreName),
-  ),
-];
+List<RakutenSearchGenreOption>? _searchGenreDropdownMemo;
+
+/// ドロップダウン用。再ビルドのたびに [orderedMasterEntriesForDropdown] を走らせない。
+List<RakutenSearchGenreOption> get _mockGenres {
+  final m = _searchGenreDropdownMemo;
+  if (m != null) return m;
+  final built = <RakutenSearchGenreOption>[
+    const RakutenSearchGenreOption(id: null, label: '指定なし'),
+    ...RakutenGenreMasterService.instance.orderedMasterEntriesForDropdown().map(
+      (e) => RakutenSearchGenreOption(id: e.genreId, label: e.genreName),
+    ),
+  ];
+  _searchGenreDropdownMemo = built;
+  return built;
+}
