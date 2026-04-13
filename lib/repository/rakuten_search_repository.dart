@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
+import '../services/genre_master_service.dart';
 import '../services/rakuten_api_service.dart';
 import '../utils/rakuten_product_genre_display.dart';
 
@@ -428,6 +429,14 @@ class RakutenSearchRepository {
   }
 
   void _rakutenGenreLogMap(RakutenSearchItem m) {
+    final gid = m.genreId.trim();
+    final jsonRaw = gid.isEmpty
+        ? '-'
+        : (GenreMasterService.instance.getGenreNameById(gid) ?? '-');
+    final jsonRolled = gid.isEmpty
+        ? '-'
+        : (GenreMasterService.instance.getDisplayGenreNameAvoidingOther(gid) ??
+            '-');
     final display = RakutenProductGenreDisplay.resolve(
       apiGenreName: m.genreName,
       persistedGenreName: null,
@@ -437,7 +446,8 @@ class RakutenSearchRepository {
     );
     debugPrint(
       '[RakutenGenre][MAP] itemCode=${m.productId} model.genreId=${m.genreId} '
-      'model.genreName=${m.genreName} displayGenre=$display',
+      'model.genreName=${m.genreName} jsonRaw=$jsonRaw jsonRolled=$jsonRolled '
+      'displayGenre=$display',
     );
   }
 
