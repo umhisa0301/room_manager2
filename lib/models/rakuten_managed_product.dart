@@ -31,6 +31,7 @@ class RakutenManagedProduct {
     required this.shopUrl,
     required this.genreId,
     this.genreName = '',
+    this.resolvedGenreName = '',
     required this.status,
     required this.createdAt,
     required this.updatedAt,
@@ -59,6 +60,10 @@ class RakutenManagedProduct {
 
   /// 楽天API由来のジャンル名（保存時にあれば）。旧データは空のことがある。
   final String genreName;
+
+  /// コレ候補登録時点で検索一覧と同じルールで解決した日本語名
+  /// （同梱JSON・親「その他」遡りを含む）。好みジャンル集計などの参照用。旧データは空。
+  final String resolvedGenreName;
   final RakutenManagedProductStatus status;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -88,6 +93,14 @@ class RakutenManagedProduct {
   String get browserLaunchUrl =>
       affiliateUrl.trim().isNotEmpty ? affiliateUrl.trim() : itemUrl;
 
+  /// 一覧ジャンル行の「永続化名」向け（解決済み [resolvedGenreName] を優先）。
+  String? get persistedGenreDisplayName {
+    final r = resolvedGenreName.trim();
+    if (r.isNotEmpty) return r;
+    final g = genreName.trim();
+    return g.isEmpty ? null : g;
+  }
+
   RakutenManagedProduct copyWith({
     String? productId,
     String? itemName,
@@ -100,6 +113,7 @@ class RakutenManagedProduct {
     String? shopUrl,
     String? genreId,
     String? genreName,
+    String? resolvedGenreName,
     RakutenManagedProductStatus? status,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -130,6 +144,7 @@ class RakutenManagedProduct {
       shopUrl: shopUrl ?? this.shopUrl,
       genreId: genreId ?? this.genreId,
       genreName: genreName ?? this.genreName,
+      resolvedGenreName: resolvedGenreName ?? this.resolvedGenreName,
       status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -156,6 +171,7 @@ class RakutenManagedProduct {
     RakutenSearchItem item, {
     required RakutenManagedProductStatus status,
     DateTime? now,
+    String resolvedGenreName = '',
   }) {
     final t = now ?? DateTime.now();
     return RakutenManagedProduct(
@@ -170,6 +186,7 @@ class RakutenManagedProduct {
       shopUrl: item.shopUrl,
       genreId: item.genreId,
       genreName: item.genreName,
+      resolvedGenreName: resolvedGenreName,
       status: status,
       createdAt: t,
       updatedAt: t,
@@ -198,6 +215,7 @@ class RakutenManagedProduct {
       'shopUrl': shopUrl,
       'genreId': genreId,
       'genreName': genreName,
+      'resolvedGenreName': resolvedGenreName,
       'status': status.name,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
@@ -353,6 +371,7 @@ class RakutenManagedProduct {
       shopUrl: (json['shopUrl'] ?? '').toString(),
       genreId: (json['genreId'] ?? '').toString(),
       genreName: (json['genreName'] ?? '').toString(),
+      resolvedGenreName: (json['resolvedGenreName'] ?? '').toString(),
       status: status,
       createdAt: createdAt,
       updatedAt: updatedAt,

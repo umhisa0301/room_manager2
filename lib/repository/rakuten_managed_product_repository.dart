@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
+import '../utils/rakuten_product_genre_display.dart';
 
 /// 楽天検索由来の商品をローカル管理する（コレ候補・将来のコレ済・抽出結果などの拡張前提）。
 class RakutenManagedProductRepository {
@@ -55,7 +56,8 @@ class RakutenManagedProductRepository {
               rakutenGenreLoadLogCount++;
               debugPrint(
                 '[RakutenGenre][LOAD] itemCode=${item.productId} '
-                'loaded.genreId=${item.genreId} loaded.genreName=${item.genreName}',
+                'loaded.genreId=${item.genreId} loaded.genreName=${item.genreName} '
+                'loaded.resolvedGenreName=${item.resolvedGenreName}',
               );
             }
             out.add(item);
@@ -98,14 +100,17 @@ class RakutenManagedProductRepository {
         return false;
       }
     }
+    final resolvedLabel = _resolvedGenreLabelForSearchItem(item);
     final candidate = RakutenManagedProduct.fromSearchItem(
       item,
       status: RakutenManagedProductStatus.candidate,
+      resolvedGenreName: resolvedLabel,
     );
     if (kDebugMode) {
       debugPrint(
         '[RakutenGenre][SAVE] itemCode=${candidate.productId} '
-        'save.genreId=${candidate.genreId} save.genreName=${candidate.genreName}',
+        'save.genreId=${candidate.genreId} save.genreName=${candidate.genreName} '
+        'save.resolvedGenreName=${candidate.resolvedGenreName}',
       );
     }
     list.add(candidate);
@@ -232,6 +237,22 @@ class RakutenManagedProductRepository {
       throw Exception('商品が見つかりません');
     }
     await _saveAll(next);
+  }
+
+  /// 検索一覧と同じルールの表示名（未分類・空 genreId は保存しない）。
+  static String _resolvedGenreLabelForSearchItem(RakutenSearchItem item) {
+    if (item.genreId.trim().isEmpty) return '';
+    final s = RakutenProductGenreDisplay.resolve(
+      apiGenreName: item.genreName,
+      persistedGenreName: null,
+      prefetchedGenreName: null,
+      genreId: item.genreId,
+      traceItemCode: null,
+    ).trim();
+    if (s.isEmpty || s == RakutenProductGenreDisplay.unknownLabel) {
+      return '';
+    }
+    return s;
   }
 
   Future<void> _saveAll(List<RakutenManagedProduct> items) async {

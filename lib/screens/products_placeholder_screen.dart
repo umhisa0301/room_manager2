@@ -2712,7 +2712,7 @@ class _RoomManagedProductListTabState
             apiGenreName: e.genreName,
             finalLabel: RakutenProductGenreDisplay.resolve(
               apiGenreName: null,
-              persistedGenreName: e.genreName,
+              persistedGenreName: e.persistedGenreDisplayName,
               prefetchedGenreName: next[e.genreId.trim()],
               genreId: e.genreId,
             ),

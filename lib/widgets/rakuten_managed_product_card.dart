@@ -142,7 +142,8 @@ class RakutenManagedProductCard extends StatelessWidget {
                           Text(
                             RakutenProductGenreDisplay.resolve(
                               apiGenreName: null,
-                              persistedGenreName: product.genreName,
+                              persistedGenreName:
+                                  product.persistedGenreDisplayName,
                               prefetchedGenreName:
                                   genrePrefetchLabels?[product.genreId.trim()],
                               genreId: product.genreId,
