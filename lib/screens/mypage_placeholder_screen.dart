@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../config/demo_mode.dart';
 import '../constants/legal_urls.dart';
 import '../models/rakuten_genre_master_entry.dart';
 import '../models/user_profile.dart';
@@ -13,6 +14,7 @@ import '../theme/app_theme.dart';
 import '../utils/user_profile_genre_migration.dart';
 import 'rakuten_search_screen.dart';
 import 'saved_shops_screen.dart';
+import 'closed_test_demo_screen.dart';
 
 /// マイページ：ユーザー情報・ROOM情報・ジャンル・設定などをまとめる画面。
 class MypagePlaceholderScreen extends StatefulWidget {
@@ -414,6 +416,25 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             _SectionCard(
               child: Column(
                 children: [
+                  if (kDemoModeEnabled) ...[
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const ClosedTestDemoScreen(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.rocket_launch_outlined, size: 20),
+                      label: const Text('クローズドテスト用デモを見る'),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        foregroundColor: AppColors.textPrimary,
+                        side: BorderSide(color: AppColors.divider),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                  ],
                   OutlinedButton.icon(
                     onPressed: () {
                       Navigator.of(context).push(
