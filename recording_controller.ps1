@@ -5,17 +5,10 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$LockFilePath,
 
-    [string]$AppName = "app",
-
-    [string]$WindowTitle = "Recording Controller"
+    [string]$AppName = "app"
 )
 
 $ErrorActionPreference = "Continue"
-
-try {
-    $Host.UI.RawUI.WindowTitle = $WindowTitle
-} catch {
-}
 
 function Write-Command {
     param([string]$Value)

@@ -322,12 +322,14 @@ Write-Host "App name     : $SafeAppName" -ForegroundColor Green
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
 
 $localFileName = "{0}_{1}.mp4" -f $SafeAppName, $timestamp
-$flutterLogName = "{0}_flutter_run_{1}.log" -f $SafeAppName, $timestamp
+$flutterStdOutLogName = "{0}_flutter_stdout_{1}.log" -f $SafeAppName, $timestamp
+$flutterStdErrLogName = "{0}_flutter_stderr_{1}.log" -f $SafeAppName, $timestamp
 $recorderStdOutLogName = "{0}_screenrecord_stdout_{1}.log" -f $SafeAppName, $timestamp
 $recorderStdErrLogName = "{0}_screenrecord_stderr_{1}.log" -f $SafeAppName, $timestamp
 
 $localVideoPath = Join-Path $LocalSaveDir $localFileName
-$flutterLogFile = Join-Path $LocalSaveDir $flutterLogName
+$flutterStdOutLogFile = Join-Path $LocalSaveDir $flutterStdOutLogName
+$flutterStdErrLogFile = Join-Path $LocalSaveDir $flutterStdErrLogName
 $recorderStdOutLogFile = Join-Path $LocalSaveDir $recorderStdOutLogName
 $recorderStdErrLogFile = Join-Path $LocalSaveDir $recorderStdErrLogName
 
@@ -340,7 +342,8 @@ Write-Section "Start screen recording"
 Write-Host "Device ID              : $deviceId" -ForegroundColor Yellow
 Write-Host "Remote video path      : $RemoteVideoPath" -ForegroundColor Yellow
 Write-Host "Local video path       : $localVideoPath" -ForegroundColor Yellow
-Write-Host "Flutter log            : $flutterLogFile" -ForegroundColor Yellow
+Write-Host "Flutter stdout log     : $flutterStdOutLogFile" -ForegroundColor Yellow
+Write-Host "Flutter stderr log     : $flutterStdErrLogFile" -ForegroundColor Yellow
 Write-Host "Recorder stdout log    : $recorderStdOutLogFile" -ForegroundColor Yellow
 Write-Host "Recorder stderr log    : $recorderStdErrLogFile" -ForegroundColor Yellow
 Write-Host "Screenshot dir         : $ScreenshotDir" -ForegroundColor Yellow
@@ -377,46 +380,40 @@ $flutterArgs = @(
 )
 
 $flutterExe = Get-FlutterCommandPath
-$quotedFlutterExe = '"' + $flutterExe + '"'
-$flutterArgString = ($flutterArgs -join " ")
-$cmdArguments = "/c $quotedFlutterExe $flutterArgString"
 
-$flutterProc = New-Object System.Diagnostics.Process
-$flutterProc.StartInfo = New-Object System.Diagnostics.ProcessStartInfo
-$flutterProc.StartInfo.FileName = "cmd.exe"
-$flutterProc.StartInfo.WorkingDirectory = $CurrentDir
-$flutterProc.StartInfo.Arguments = $cmdArguments
-$flutterProc.StartInfo.UseShellExecute = $false
-$flutterProc.StartInfo.RedirectStandardOutput = $true
-$flutterProc.StartInfo.RedirectStandardError = $true
-$flutterProc.StartInfo.CreateNoWindow = $true
-$flutterProc.StartInfo.StandardOutputEncoding = [System.Text.UTF8Encoding]::new()
-$flutterProc.StartInfo.StandardErrorEncoding = [System.Text.UTF8Encoding]::new()
+$flutterProc = Start-Process `
+    -FilePath $flutterExe `
+    -ArgumentList $flutterArgs `
+    -WorkingDirectory $CurrentDir `
+    -RedirectStandardOutput $flutterStdOutLogFile `
+    -RedirectStandardError $flutterStdErrLogFile `
+    -PassThru
 
-$stdoutEvent = Register-ObjectEvent -InputObject $flutterProc -EventName OutputDataReceived -Action {
-    if ($EventArgs.Data) {
-        Write-Host $EventArgs.Data
-        Add-Content -Path $using:flutterLogFile -Value $EventArgs.Data -Encoding UTF8
+Write-Host ""
+Write-Host "Flutter started. Use the separate controller window." -ForegroundColor Green
+Write-Host "Showing flutter stdout below..." -ForegroundColor Green
+Write-Host ""
+
+$tailJob = Start-Job -ScriptBlock {
+    param($Path)
+
+    if (-not (Test-Path $Path)) {
+        New-Item -ItemType File -Path $Path -Force | Out-Null
     }
-}
-$stderrEvent = Register-ObjectEvent -InputObject $flutterProc -EventName ErrorDataReceived -Action {
-    if ($EventArgs.Data) {
-        Write-Host $EventArgs.Data -ForegroundColor Red
-        Add-Content -Path $using:flutterLogFile -Value $EventArgs.Data -Encoding UTF8
-    }
-}
+
+    Get-Content -Path $Path -Wait
+} -ArgumentList $flutterStdOutLogFile
 
 try {
-    [void]$flutterProc.Start()
-    $flutterProc.BeginOutputReadLine()
-    $flutterProc.BeginErrorReadLine()
-
-    Write-Host ""
-    Write-Host "Flutter started. Use the separate controller window." -ForegroundColor Green
-    Write-Host ""
-
     while (-not $flutterProc.HasExited) {
         Start-Sleep -Milliseconds 300
+
+        $tailOutput = Receive-Job -Job $tailJob -ErrorAction SilentlyContinue
+        if ($tailOutput) {
+            foreach ($line in $tailOutput) {
+                Write-Host $line
+            }
+        }
 
         $command = Get-ExternalCommand -Path $CommandFile
 
@@ -426,6 +423,7 @@ try {
                 Write-Host "Stop command received. Stopping flutter..." -ForegroundColor Yellow
                 try {
                     if (-not $flutterProc.HasExited) {
+                        Start-Sleep -Seconds 1
                         $flutterProc.Kill()
                         $flutterProc.WaitForExit()
                     }
@@ -448,13 +446,23 @@ try {
         }
     }
 
+    Start-Sleep -Seconds 1
+
+    $tailOutput = Receive-Job -Job $tailJob -ErrorAction SilentlyContinue
+    if ($tailOutput) {
+        foreach ($line in $tailOutput) {
+            Write-Host $line
+        }
+    }
+
     Write-Section "Flutter process ended"
 }
 finally {
-    try { Unregister-Event -SourceIdentifier $stdoutEvent.Name -ErrorAction SilentlyContinue } catch {}
-    try { Unregister-Event -SourceIdentifier $stderrEvent.Name -ErrorAction SilentlyContinue } catch {}
-    try { Remove-Job -Id $stdoutEvent.Id -Force -ErrorAction SilentlyContinue } catch {}
-    try { Remove-Job -Id $stderrEvent.Id -Force -ErrorAction SilentlyContinue } catch {}
+    if ($tailJob) {
+        try { Stop-Job $tailJob -ErrorAction SilentlyContinue } catch {}
+        try { Remove-Job $tailJob -Force -ErrorAction SilentlyContinue } catch {}
+    }
+
     if (Test-Path $LockFile) {
         Remove-Item $LockFile -Force -ErrorAction SilentlyContinue
     }
@@ -476,7 +484,8 @@ if (Test-RemoteFileExists -DeviceId $deviceId -RemotePath $RemoteVideoPath) {
     Write-Host ""
     Write-Host "Done." -ForegroundColor Green
     Write-Host "Video               : $localVideoPath" -ForegroundColor Green
-    Write-Host "Flutter log         : $flutterLogFile" -ForegroundColor Green
+    Write-Host "Flutter stdout log  : $flutterStdOutLogFile" -ForegroundColor Green
+    Write-Host "Flutter stderr log  : $flutterStdErrLogFile" -ForegroundColor Green
     Write-Host "Recorder stdout log : $recorderStdOutLogFile" -ForegroundColor Green
     Write-Host "Recorder stderr log : $recorderStdErrLogFile" -ForegroundColor Green
     Write-Host "Screenshot dir      : $ScreenshotDir" -ForegroundColor Green
