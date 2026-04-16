@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../config/demo_mode.dart';
+import '../data/demo_mode_data.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../utils/rakuten_product_genre_display.dart';
@@ -26,6 +28,9 @@ class RakutenManagedProductRepository {
 
   /// 保存済みの一覧を読み込む。要素単位でパースし、1件失敗で全体を捨てない。
   List<RakutenManagedProduct> loadAll() {
+    if (kDemoModeEnabled) {
+      return DemoModeData.managedProducts();
+    }
     try {
       final jsonStr = _prefs.getString(_keyList);
       if (jsonStr == null || jsonStr.isEmpty) return [];
@@ -94,6 +99,9 @@ class RakutenManagedProductRepository {
   /// 検索結果1件をコレ候補として保存。同一 [RakutenSearchItem.productId] が既にあれば何もしない（重複防止）。
   /// 新規追加した場合は true。
   Future<bool> registerCandidateFromSearchItem(RakutenSearchItem item) async {
+    if (kDemoModeEnabled) {
+      return false;
+    }
     final list = List<RakutenManagedProduct>.from(loadAll());
     for (final e in list) {
       if (e.productId == item.productId) {
@@ -128,6 +136,9 @@ class RakutenManagedProductRepository {
     String productId,
     RakutenManagedProduct Function(RakutenManagedProduct e) mapper,
   ) async {
+    if (kDemoModeEnabled) {
+      return;
+    }
     final list = List<RakutenManagedProduct>.from(loadAll());
     final id = productId.trim();
     if (id.isEmpty) {
@@ -216,6 +227,9 @@ class RakutenManagedProductRepository {
 
   /// コレ候補を永続化一覧から削除する（再検索からの登録を再度可能にする）。
   Future<void> removeCandidateProduct(String productId) async {
+    if (kDemoModeEnabled) {
+      return;
+    }
     final list = List<RakutenManagedProduct>.from(loadAll());
     final id = productId.trim();
     if (id.isEmpty) {
@@ -256,6 +270,9 @@ class RakutenManagedProductRepository {
   }
 
   Future<void> _saveAll(List<RakutenManagedProduct> items) async {
+    if (kDemoModeEnabled) {
+      return;
+    }
     try {
       final encoded = jsonEncode(
         items.map((e) => e.toJson()).toList(growable: false),

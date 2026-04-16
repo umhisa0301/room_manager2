@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/demo_mode.dart';
+import '../data/demo_mode_data.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/genre_master_service.dart';
@@ -84,6 +86,9 @@ class RakutenSearchRepository {
   Future<List<RakutenSearchItem>> search({
     required RakutenProductSearchCondition condition,
   }) async {
+    if (kDemoModeEnabled) {
+      return DemoModeData.querySearchItems(condition);
+    }
     final normalized = condition.normalized();
     final results = <RakutenSearchItem>[];
     // 最大5ページ分（約100件）を取得 — 逐次・1ページ失敗時は可能な範囲で継続
@@ -183,6 +188,22 @@ class RakutenSearchRepository {
     int maxFetchPages = keywordManagedExclusionMaxApiPages,
     Duration interPageDelay = const Duration(milliseconds: 220),
   }) async {
+    if (kDemoModeEnabled) {
+      final filtered = DemoModeData.querySearchItems(condition)
+          .where((e) => !excludeRegisteredProductIds.contains(e.productId))
+          .where((e) => !excludeSavedShopCodes.contains(e.shopCode))
+          .toList(growable: false);
+      final out = filtered.take(targetVisibleCount).toList(growable: false);
+      return RakutenKeywordSearchRepositoryResult(
+        items: out,
+        receivedAnyItemFromApi: DemoModeData.querySearchItems(condition).isNotEmpty,
+        targetVisibleCount: targetVisibleCount,
+        apiPagesFetched: 1,
+        stopReason: out.length >= targetVisibleCount
+            ? RakutenKeywordSearchStopReason.reachedTarget
+            : RakutenKeywordSearchStopReason.apiNoMoreResults,
+      );
+    }
     assert(() {
       return targetVisibleCount > 0 &&
           hitsPerPage >= 1 &&
