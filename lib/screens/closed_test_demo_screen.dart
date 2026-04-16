@@ -40,6 +40,7 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
   bool _isPlaying = false;
   bool _isPaused = false;
   int _stepIndex = 0;
+  bool _playStartedOnce = false;
 
   @override
   void initState() {
@@ -81,108 +82,112 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
         scene: _DemoScene.home,
         target: null,
         action: _DemoAction.navigate,
-        delay: Duration(milliseconds: 900),
-        caption: 'ホーム画面を表示します。',
+        delay: Duration(milliseconds: 700),
+        caption: 'ホーム',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.home,
         target: _tRecommendCard,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 1100),
-        caption: 'まず「今日のおすすめ候補」を確認できます。',
+        delay: Duration(milliseconds: 1050),
+        caption: 'おすすめ候補を確認',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.home,
         target: _tSearchCta,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 900),
-        caption: '次に「楽天でコレ候補を検索」を案内します。',
+        delay: Duration(milliseconds: 980),
+        caption: '検索導線を表示',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.home,
         target: _tSearchCta,
         action: _DemoAction.tap,
-        delay: Duration(milliseconds: 900),
-        caption: '疑似タップで検索へ進みます。',
+        delay: Duration(milliseconds: 820),
+        caption: 'タップで検索へ',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.search,
         target: null,
         action: _DemoAction.navigate,
-        delay: Duration(milliseconds: 950),
-        caption: '検索結果画面へ遷移しました。',
+        delay: Duration(milliseconds: 720),
+        caption: '検索結果',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.search,
         target: _tSearchResultCard,
         action: _DemoAction.scroll,
-        delay: Duration(milliseconds: 1050),
-        caption: '結果リストを自動スクロールして商品を見せます。',
+        delay: Duration(milliseconds: 900),
+        caption: '結果をスクロール表示',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.search,
         target: _tRegisterCandidateBtn,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 1000),
-        caption: '「コレ候補へ登録」ボタンを強調表示します。',
+        delay: Duration(milliseconds: 1020),
+        caption: '候補登録ボタンを強調',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.search,
         target: _tRegisterCandidateBtn,
         action: _DemoAction.tap,
-        delay: Duration(milliseconds: 900),
-        caption: '疑似タップで候補登録の流れを演出します。',
+        delay: Duration(milliseconds: 980),
+        caption: '候補に登録',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.room,
         target: null,
         action: _DemoAction.navigate,
-        delay: Duration(milliseconds: 980),
-        caption: 'ROOMコレ管理画面へ移動します。',
+        delay: Duration(milliseconds: 760),
+        caption: 'ROOMコレ管理',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.room,
         target: _tCandidateListCard,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 950),
-        caption: '候補一覧に登録済みアイテムが表示されます。',
+        delay: Duration(milliseconds: 980),
+        caption: '候補一覧を確認',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.room,
         target: _tDoneListCard,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 950),
-        caption: 'コレ済一覧も同じ画面で確認できます。',
+        delay: Duration(milliseconds: 980),
+        caption: 'コレ済一覧を確認',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.room,
         target: _tDoneListCard,
         action: _DemoAction.tap,
         delay: Duration(milliseconds: 900),
-        caption: '疑似タップで「コレ済」導線を見せます。',
+        caption: 'コレ済タップ演出',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.recommend,
         target: null,
         action: _DemoAction.navigate,
-        delay: Duration(milliseconds: 900),
-        caption: '最後におすすめ・ショップ発掘の画面へ。',
+        delay: Duration(milliseconds: 740),
+        caption: 'おすすめ / 発掘',
       ),
       const _DemoScenarioStep(
         scene: _DemoScene.recommend,
         target: _tShopDiscoveryCard,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 1200),
-        caption: 'ショップ発掘結果まで一連の流れを確認できます。',
+        delay: Duration(milliseconds: 1300),
+        caption: 'ショップ発掘まで確認',
       ),
     ];
   }
 
   Future<void> _play() async {
     if (_isPlaying && !_isPaused) return;
+    if (!_isPaused) {
+      _resetToStartForRecord();
+    }
     setState(() {
       _isPlaying = true;
       _isPaused = false;
+      _playStartedOnce = true;
     });
     while (_isPlaying && _stepIndex < _steps.length) {
       await _waitIfPaused();
@@ -202,6 +207,17 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
     });
   }
 
+  void _resetToStartForRecord() {
+    _tapController.reset();
+    _stepIndex = 0;
+    _scene = _DemoScene.home;
+    _activeTargetId = null;
+    _highlightRect = null;
+    _tapCenter = null;
+    _caption = '再生中';
+    _jumpTop();
+  }
+
   Future<void> _runStep(_DemoScenarioStep step) async {
     if (_scene != step.scene) {
       setState(() {
@@ -209,7 +225,7 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
         _activeTargetId = null;
         _highlightRect = null;
       });
-      await _waitWithPause(const Duration(milliseconds: 120));
+      await _waitWithPause(const Duration(milliseconds: 90));
       _jumpTop();
     }
 
@@ -251,12 +267,12 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
     final down = math.min(current + 180, max);
     await _scrollController.animateTo(
       down,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 440),
       curve: Curves.easeOutCubic,
     );
     await _scrollController.animateTo(
       current.clamp(0, max),
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 440),
       curve: Curves.easeInOutCubic,
     );
   }
@@ -357,8 +373,11 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
           padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
           child: Column(
             children: [
-              _controlBar(context),
-              const SizedBox(height: 10),
+              if (!_isPlaying || _isPaused) ...[
+                _controlBar(context),
+                const SizedBox(height: 10),
+              ] else
+                _recordingTopBar(),
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
@@ -397,6 +416,9 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
                             child: SingleChildScrollView(
                               key: ValueKey<_DemoScene>(_scene),
                               controller: _scrollController,
+                              physics: _isPlaying
+                                  ? const NeverScrollableScrollPhysics()
+                                  : const BouncingScrollPhysics(),
                               padding: const EdgeInsets.fromLTRB(12, 12, 12, 120),
                               child: _sceneBody(_scene),
                             ),
@@ -452,6 +474,11 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
                             bottom: 12,
                             child: _captionBubble(),
                           ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: _sceneBadge(),
+                          ),
                         ],
                       );
                     },
@@ -489,7 +516,7 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
               FilledButton.icon(
                 onPressed: _play,
                 icon: const Icon(Icons.play_arrow_rounded, size: 18),
-                label: const Text('再生'),
+                label: Text(_playStartedOnce ? '最初から再生' : '再生'),
               ),
               const SizedBox(width: 8),
               OutlinedButton.icon(
@@ -543,11 +570,52 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
-                height: 1.35,
+                height: 1.3,
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _recordingTopBar() {
+    final progress = _steps.isEmpty ? 0.0 : _stepIndex / _steps.length;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(999),
+        child: LinearProgressIndicator(
+          minHeight: 5,
+          value: progress.clamp(0, 1),
+          backgroundColor: AppColors.surfaceVariant,
+          color: AppColors.accentPrimary,
+        ),
+      ),
+    );
+  }
+
+  Widget _sceneBadge() {
+    final label = switch (_scene) {
+      _DemoScene.home => 'HOME',
+      _DemoScene.search => 'SEARCH',
+      _DemoScene.room => 'ROOM',
+      _DemoScene.recommend => 'RECOMMEND',
+    };
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.56),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.4,
+          fontSize: 11,
+        ),
       ),
     );
   }
