@@ -581,8 +581,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (_mode == _RakutenSearchMode.shopDiscovery)
-                    const _DiscoveryFlowGuideCompact(),
                   _SearchModeSegmented(
                     mode: _mode,
                     onChanged: _onModeChanged,
@@ -2876,26 +2874,19 @@ class _SearchModeSegmented extends StatelessWidget {
     required bool isSelected,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2),
-      child: FittedBox(
-        fit: BoxFit.scaleDown,
-        alignment: Alignment.center,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 136),
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              fontSize: 11.5,
-              height: 1.12,
-              color: isSelected
-                  ? AppColors.textOnAccent
-                  : HomeScreenColors.groupedSectionBody,
-            ),
-          ),
+      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
+          height: 1.15,
+          color: isSelected
+              ? AppColors.textOnAccent
+              : HomeScreenColors.groupedSectionBody,
         ),
       ),
     );
@@ -2906,28 +2897,9 @@ class _SearchModeSegmented extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          children: [
-            Icon(
-              Icons.filter_list_rounded,
-              size: 17,
-              color: HomeScreenColors.footnoteMuted,
-            ),
-            const SizedBox(width: 6),
-            Expanded(
-              child: Text(
-                '探し方を選ぶ',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: HomeScreenColors.footnoteMuted,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.15,
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 5),
+        const SizedBox(height: 6),
         SegmentedButton<_RakutenSearchMode>(
+          expandedInsets: EdgeInsets.zero,
           segments: [
             ButtonSegment<_RakutenSearchMode>(
               value: _RakutenSearchMode.product,
@@ -2967,6 +2939,13 @@ class _SearchModeSegmented extends StatelessWidget {
             padding: WidgetStateProperty.all(
               const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
             ),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                AppDimensions.radiusButton,
+              ),
+            ),
+          ),
             side: WidgetStateProperty.all(
               BorderSide(color: HomeScreenColors.deckOutline),
             ),
