@@ -28,6 +28,72 @@ class _AppShellState extends State<AppShell> {
     MypagePlaceholderScreen(),
   ];
 
+  Future<void> _showAddCandidateSheet() {
+    return showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: false,
+      useSafeArea: true,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppDimensions.radiusCard),
+        ),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppDimensions.spacingMd,
+              AppDimensions.spacingSm,
+              AppDimensions.spacingMd,
+              AppDimensions.spacingMd,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('候補を追加', style: AppTextStyles.titleMedium),
+                const SizedBox(height: AppDimensions.spacingXs),
+                Text(
+                  '追加方法を選ぶと、既存の画面へ移動します',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: AppDimensions.spacingMd),
+                _AddCandidateMenuItem(
+                  icon: Icons.travel_explore_rounded,
+                  title: '楽天で商品を探す',
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                  },
+                ),
+                const SizedBox(height: AppDimensions.spacingSm),
+                _AddCandidateMenuItem(
+                  icon: Icons.storefront_rounded,
+                  title: '保存ショップから探す',
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                  },
+                ),
+                const SizedBox(height: AppDimensions.spacingSm),
+                _AddCandidateMenuItem(
+                  icon: Icons.hiking_rounded,
+                  title: 'ショップ発掘を開く',
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final shell = context.watch<AppShellController>();
@@ -90,11 +156,7 @@ class _AppShellState extends State<AppShell> {
                     tooltip: null,
                     isSelected: false,
                     onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('候補追加メニューは次のStepで実装予定です'),
-                        ),
-                      );
+                      _showAddCandidateSheet();
                     },
                   ),
                 ),
@@ -122,6 +184,59 @@ class _AppShellState extends State<AppShell> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AddCandidateMenuItem extends StatelessWidget {
+  const _AddCandidateMenuItem({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.accentLight,
+      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.spacingMd,
+            vertical: AppDimensions.spacingSm,
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 34,
+                height: 34,
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(
+                    AppDimensions.radiusButton,
+                  ),
+                ),
+                child: Icon(icon, color: AppColors.accentPrimary),
+              ),
+              const SizedBox(width: AppDimensions.spacingSm),
+              Expanded(
+                child: Text(title, style: AppTextStyles.bodyLarge),
+              ),
+              const Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.textSecondary,
+              ),
+            ],
           ),
         ),
       ),
