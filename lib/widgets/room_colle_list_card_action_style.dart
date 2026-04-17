@@ -7,19 +7,19 @@ import '../theme/home_screen_colors.dart';
 class RoomColleListCardActionStyle {
   RoomColleListCardActionStyle._();
 
-  static const double minTap = 48;
+  static const double minTap = 44;
 
-  static const double iconSizeCompact = 14;
-  static const double labelFontCompact = 10.5;
-  static const double labelFontDelete = 10;
+  static const double iconSizeCompact = 13;
+  static const double labelFontCompact = 10;
+  static const double labelFontDelete = 9.5;
 
   static const EdgeInsets paddingMain = EdgeInsets.symmetric(
-    horizontal: 6,
+    horizontal: 5,
     vertical: 6,
   );
 
   static const EdgeInsets paddingDelete = EdgeInsets.symmetric(
-    horizontal: 4,
+    horizontal: 3,
     vertical: 6,
   );
 

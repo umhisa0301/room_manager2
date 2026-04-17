@@ -25,6 +25,26 @@ import 'rakuten_search_screen.dart';
 const double _kRoomListScreenPadH = 8;
 const double _kRoomListCardGap = 5;
 
+enum RoomColleListSortPreset {
+  recentFirst,
+  oldFirst,
+  priceHigh,
+  priceLow,
+}
+
+String _roomColleSortLabel(RoomColleListSortPreset preset) {
+  switch (preset) {
+    case RoomColleListSortPreset.recentFirst:
+      return '新しい順';
+    case RoomColleListSortPreset.oldFirst:
+      return '古い順';
+    case RoomColleListSortPreset.priceHigh:
+      return '価格が高い順';
+    case RoomColleListSortPreset.priceLow:
+      return '価格が安い順';
+  }
+}
+
 /// ROOMコレ画面のレイアウト・面色・装飾（ホーム完成版と同一デザイン言語。ロジックとは分離）。
 abstract final class _RoomColleUi {
   const _RoomColleUi._();
@@ -550,6 +570,70 @@ class _RoomColleStalePileNoticeBar extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _RoomColleSortQuickRow extends StatelessWidget {
+  const _RoomColleSortQuickRow({
+    required this.label,
+    required this.preset,
+    required this.onChanged,
+  });
+
+  final String label;
+  final RoomColleListSortPreset preset;
+  final ValueChanged<RoomColleListSortPreset> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.sort_rounded,
+          size: 18,
+          color: HomeScreenColors.leadOnSection,
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: HomeScreenColors.leadOnSection,
+            ),
+          ),
+        ),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: HomeScreenColors.deckFill,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: HomeScreenColors.deckOutline),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<RoomColleListSortPreset>(
+                value: preset,
+                isDense: true,
+                borderRadius: BorderRadius.circular(10),
+                items: RoomColleListSortPreset.values
+                    .map(
+                      (v) => DropdownMenuItem<RoomColleListSortPreset>(
+                        value: v,
+                        child: Text(_roomColleSortLabel(v)),
+                      ),
+                    )
+                    .toList(growable: false),
+                onChanged: (v) {
+                  if (v != null) onChanged(v);
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -1453,6 +1537,47 @@ List<RakutenManagedProduct> _filterExcludeUrlNotReady(
   }).toList();
 }
 
+List<RakutenManagedProduct> _sortRoomColleListItems(
+  List<RakutenManagedProduct> items,
+  RakutenManagedProductStatus status,
+  RoomColleListSortPreset preset,
+) {
+  final out = List<RakutenManagedProduct>.from(items);
+  int byPriceAsc(RakutenManagedProduct a, RakutenManagedProduct b) =>
+      a.itemPrice.compareTo(b.itemPrice);
+  int byAddedAsc(RakutenManagedProduct a, RakutenManagedProduct b) =>
+      a.addedAt.compareTo(b.addedAt);
+  int byDoneAsc(RakutenManagedProduct a, RakutenManagedProduct b) {
+    final ad = a.doneAt;
+    final bd = b.doneAt;
+    if (ad == null && bd == null) return 0;
+    if (ad == null) return 1;
+    if (bd == null) return -1;
+    return ad.compareTo(bd);
+  }
+
+  switch (preset) {
+    case RoomColleListSortPreset.recentFirst:
+      out.sort(
+        status == RakutenManagedProductStatus.done
+            ? (a, b) => byDoneAsc(b, a)
+            : (a, b) => byAddedAsc(b, a),
+      );
+      return out;
+    case RoomColleListSortPreset.oldFirst:
+      out.sort(
+        status == RakutenManagedProductStatus.done ? byDoneAsc : byAddedAsc,
+      );
+      return out;
+    case RoomColleListSortPreset.priceHigh:
+      out.sort((a, b) => byPriceAsc(b, a));
+      return out;
+    case RoomColleListSortPreset.priceLow:
+      out.sort(byPriceAsc);
+      return out;
+  }
+}
+
 /// 各タブ一覧エリアの表面状態（読込 / 表示成功の内訳 / 失敗）。デバッグは [debugLabel]。
 enum _RoomColleListSurface {
   loading,
@@ -1582,6 +1707,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   late final AppShellController _shellCtrl;
   late final RoomColleUiStateRepository _roomColleUiRepo;
   bool _candidateExcludeUrlNotReady = false;
+  RoomColleListSortPreset _candidateSortPreset =
+      RoomColleListSortPreset.recentFirst;
+  RoomColleListSortPreset _doneSortPreset = RoomColleListSortPreset.recentFirst;
 
   /// [RoomColleUiStateSnapshot.staleCandidatePileBannerDismissed] と同期。
   bool _stalePileBannerDismissed = false;
@@ -1669,6 +1797,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     _persistSearchDebounce?.cancel();
     setState(() {
       _candidateExcludeUrlNotReady = false;
+      _candidateSortPreset = RoomColleListSortPreset.recentFirst;
+      _doneSortPreset = RoomColleListSortPreset.recentFirst;
       _candidateListFilters = RoomColleListFilterCriteria.defaults;
       _doneListFilters = RoomColleListFilterCriteria.defaults;
       _candidateSearchController.clear();
@@ -1754,6 +1884,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     _persistSearchDebounce?.cancel();
     setState(() {
       _candidateExcludeUrlNotReady = false;
+      _candidateSortPreset = RoomColleListSortPreset.recentFirst;
+      _doneSortPreset = RoomColleListSortPreset.recentFirst;
       _candidateListFilters = RoomColleListFilterCriteria.defaults;
       _doneListFilters = RoomColleListFilterCriteria.defaults;
       _candidateSearchController.clear();
@@ -1881,6 +2013,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     final staleFromIntent = intent.candidateStalePreset;
     setState(() {
       _candidateExcludeUrlNotReady = false;
+      _candidateSortPreset = RoomColleListSortPreset.recentFirst;
+      _doneSortPreset = RoomColleListSortPreset.recentFirst;
       _candidateSearchController.clear();
       _doneSearchController.clear();
       _candidateListFilters = RoomColleListFilterCriteria.defaults.copyWith(
@@ -2323,6 +2457,15 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                 onPresetChanged: _setCandidateStalePreset,
                               ),
                               SizedBox(height: _RoomColleUi.gapFieldStack),
+                              _RoomColleSortQuickRow(
+                                label: '並び替え',
+                                preset: _candidateSortPreset,
+                                onChanged: (v) {
+                                  if (!mounted) return;
+                                  setState(() => _candidateSortPreset = v);
+                                },
+                              ),
+                              SizedBox(height: _RoomColleUi.gapFieldStack),
                               _RoomColleInlineMoreFiltersRow(
                                 onOpenMoreFilters: () =>
                                     _openRoomColleFilterEditor(
@@ -2392,6 +2535,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           status: RakutenManagedProductStatus.candidate,
                           variant: RakutenManagedProductCardVariant.candidate,
                           listFilters: _candidateListFilters,
+                          sortPreset: _candidateSortPreset,
                           excludeUrlNotReady: _candidateExcludeUrlNotReady,
                           candidateFocusHandled: _candidateFocusHandled,
                           onRecoverFromListError:
@@ -2464,6 +2608,15 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                     _doneListFilters.hasNonKeywordConstraints,
                                 onClear: _resetRoomColleFilters,
                               ),
+                              SizedBox(height: _RoomColleUi.gapFieldStack),
+                              _RoomColleSortQuickRow(
+                                label: '並び替え',
+                                preset: _doneSortPreset,
+                                onChanged: (v) {
+                                  if (!mounted) return;
+                                  setState(() => _doneSortPreset = v);
+                                },
+                              ),
                               if (_doneListFilters
                                   .hasNonKeywordConstraints) ...[
                                 SizedBox(height: _RoomColleUi.gapFieldStack),
@@ -2491,11 +2644,19 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                         ),
                       ),
                       SizedBox(height: _RoomColleUi.gapListAfterDivider),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: _kRoomListScreenPadH,
+                        ),
+                        child: const _DoneTabSectionNotice(),
+                      ),
+                      SizedBox(height: _RoomColleUi.gapFieldStack),
                       Expanded(
                         child: _RoomManagedProductListTab(
                           status: RakutenManagedProductStatus.done,
                           variant: RakutenManagedProductCardVariant.done,
                           listFilters: _doneListFilters,
+                          sortPreset: _doneSortPreset,
                           excludeUrlNotReady: false,
                           candidateFocusHandled: true,
                           onRecoverFromListError:
@@ -2533,6 +2694,7 @@ class _RoomManagedProductListTab extends StatefulWidget {
     required this.status,
     required this.variant,
     required this.listFilters,
+    required this.sortPreset,
     this.excludeUrlNotReady = false,
     this.candidateFocusHandled = true,
     this.onRecoverFromListError,
@@ -2555,6 +2717,7 @@ class _RoomManagedProductListTab extends StatefulWidget {
   final RakutenManagedProductStatus status;
   final RakutenManagedProductCardVariant variant;
   final RoomColleListFilterCriteria listFilters;
+  final RoomColleListSortPreset sortPreset;
   final bool excludeUrlNotReady;
 
   /// 親が候補フォーカス意図を消化済みなら true（build 内での post-frame 連発を止める）。
@@ -2743,12 +2906,17 @@ class _RoomManagedProductListTabState
       builder: (context, provider, _) {
         final ui = provider.listUiStatus;
 
-        final list = _roomListVisibleItems(
+        final listRaw = _roomListVisibleItems(
           provider: provider,
           status: widget.status,
           listFilters: widget.listFilters,
           excludeUrlNotReady: widget.excludeUrlNotReady,
           doneAtLocalDayFilter: widget.doneAtLocalDayFilter,
+        );
+        final list = _sortRoomColleListItems(
+          listRaw,
+          widget.status,
+          widget.sortPreset,
         );
 
         final baseList = provider.sortedItemsForStatus(widget.status);
@@ -3055,6 +3223,45 @@ class _RoomColleBrokenProductRow extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DoneTabSectionNotice extends StatelessWidget {
+  const _DoneTabSectionNotice();
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: HomeScreenColors.subActionRowFill,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: HomeScreenColors.sectionOutlineNeutral),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.info_outline_rounded,
+              size: 18,
+              color: HomeScreenColors.leadOnSection,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'コレ済は「投稿完了の管理一覧」です。各商品では重複した注意文を出さず、ここで共通ルールを案内します。',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: HomeScreenColors.groupedSectionBody,
+                  fontWeight: FontWeight.w600,
+                  height: 1.3,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

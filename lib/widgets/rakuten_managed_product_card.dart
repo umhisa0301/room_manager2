@@ -69,6 +69,17 @@ class RakutenManagedProductCard extends StatelessWidget {
     }
   }
 
+  static String _dateMetaLabel({
+    required bool isCandidate,
+    required DateTime? instant,
+  }) {
+    final stamp = formatRoomColleCardTimestamp(instant, DateTime.now());
+    if (stamp == null || stamp.isEmpty) {
+      return isCandidate ? '登録日: -' : 'コレ日: -';
+    }
+    return isCandidate ? '登録日: $stamp' : 'コレ日: $stamp';
+  }
+
   @override
   Widget build(BuildContext context) {
     final isCandidate = variant == RakutenManagedProductCardVariant.candidate;
@@ -81,12 +92,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     final priceStyle = RoomColleProductListCardLayout.priceTextStyle(theme);
     final shopStyle = RoomColleProductListCardLayout.shopTextStyle(theme);
     final tsInstant = isCandidate ? product.addedAt : product.doneAt;
-    final timestampStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
-      color: const Color(0xFF888888),
-      height: 1.15,
-      fontSize: 10,
-      fontWeight: FontWeight.w400,
-    );
+    final timestampStyle = RoomColleProductListCardLayout.metaTextStyle(theme);
     final staleSpec = isCandidate
         ? RoomColleCandidateStaleSpec.resolve(product.addedAt, DateTime.now())
         : null;
@@ -137,37 +143,40 @@ class RakutenManagedProductCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: shopStyle,
                         ),
-                        if (product.genreId.trim().isNotEmpty) ...[
-                          const SizedBox(height: 2),
-                          Text(
-                            RakutenProductGenreDisplay.resolve(
-                              apiGenreName: null,
-                              persistedGenreName:
-                                  product.persistedGenreDisplayName,
-                              prefetchedGenreName:
-                                  genrePrefetchLabels?[product.genreId.trim()],
-                              genreId: product.genreId,
-                              traceItemCode: product.productId,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: genreLineStyle,
+                        const SizedBox(height: 2),
+                        Text(
+                          RakutenProductGenreDisplay.resolve(
+                            apiGenreName: null,
+                            persistedGenreName: product.persistedGenreDisplayName,
+                            prefetchedGenreName:
+                                genrePrefetchLabels?[product.genreId.trim()],
+                            genreId: product.genreId,
+                            traceItemCode: product.productId,
                           ),
-                        ],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: genreLineStyle,
+                        ),
+                        const Spacer(),
                         if (staleSpec != null) ...[
-                          const SizedBox(height: 4),
                           RoomColleCandidateStaleChip(spec: staleSpec),
+                          const SizedBox(height: 3),
                         ],
-                        RoomColleCardTimestampText(
-                          instant: tsInstant,
+                        Text(
+                          _dateMetaLabel(
+                            isCandidate: isCandidate,
+                            instant: tsInstant,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: timestampStyle,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 5),
                   _feedbackToolbar(context),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 5),
                   if (isCandidate)
                     _candidateActions(context)
                   else
@@ -224,7 +233,7 @@ class RakutenManagedProductCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontSize: 10.5,
+                fontSize: 10,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -251,7 +260,7 @@ class RakutenManagedProductCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontSize: 10.5,
+                fontSize: 10,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -278,7 +287,7 @@ class RakutenManagedProductCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontSize: 10.5,
+                fontSize: 10,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -294,7 +303,7 @@ class RakutenManagedProductCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
-          flex: 38,
+          flex: 34,
           child: FilledButton(
             style: RoomColleListCardActionStyle.rakutenFilled(),
             onPressed: () async {
@@ -320,7 +329,7 @@ class RakutenManagedProductCard extends StatelessWidget {
         ),
         const SizedBox(width: 4),
         Expanded(
-          flex: 38,
+          flex: 44,
           child: Tooltip(
             message: _canCollectRoom
                 ? 'ROOMのURLを開き、一覧をコレ済に移します。'
@@ -343,7 +352,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                 icon: _canCollectRoom
                     ? Icons.favorite_rounded
                     : Icons.hourglass_top_rounded,
-                label: 'コレする',
+                label: 'ROOMに投稿',
                 color: _canCollectRoom
                     ? AppColors.textOnAccent
                     : AppColors.textTertiary,
@@ -412,7 +421,7 @@ class RakutenManagedProductCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
-          flex: 38,
+          flex: 40,
           child: FilledButton(
             style: RoomColleListCardActionStyle.rakutenFilled(),
             onPressed: () async {
@@ -437,7 +446,7 @@ class RakutenManagedProductCard extends StatelessWidget {
         ),
         const SizedBox(width: 4),
         Expanded(
-          flex: 38,
+          flex: 36,
           child: Tooltip(
             message: _hasRoomUrl ? 'ROOMの画面を開きます' : 'ROOM用のリンクが取得されていません',
             child: OutlinedButton(
@@ -454,7 +463,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                 icon: _hasRoomUrl
                     ? Icons.chat_bubble_outline_rounded
                     : Icons.link_off_rounded,
-                label: 'ROOM',
+                label: 'ROOMで確認',
                 color: _hasRoomUrl ? stateAccent : AppColors.textTertiary,
                 weight: FontWeight.w600,
               ),
@@ -463,7 +472,7 @@ class RakutenManagedProductCard extends StatelessWidget {
         ),
         const SizedBox(width: 4),
         Expanded(
-          flex: 22,
+          flex: 24,
           child: OutlinedButton(
             style: RoomColleListCardActionStyle.deleteOutlined(),
             onPressed: product.productId.trim().isEmpty

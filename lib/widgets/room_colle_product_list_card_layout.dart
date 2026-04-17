@@ -7,10 +7,10 @@ import '../theme/home_screen_colors.dart';
 abstract final class RoomColleProductListCardLayout {
   RoomColleProductListCardLayout._();
 
-  static const double cardHeight = 196;
+  static const double cardHeight = 214;
 
   /// 左スロット幅（その中で 1:1 サムネを配置）。
-  static const double thumbSlotWidth = 98;
+  static const double thumbSlotWidth = 104;
 
   static const double radius = 12;
 
@@ -36,7 +36,7 @@ abstract final class RoomColleProductListCardLayout {
   }
 
   static EdgeInsets get rightColumnPadding =>
-      const EdgeInsets.fromLTRB(7, 7, 9, 6);
+      const EdgeInsets.fromLTRB(8, 8, 10, 8);
 
   static String formatPriceYen(int n) {
     if (n < 0) return '価格 —';
@@ -67,6 +67,15 @@ abstract final class RoomColleProductListCardLayout {
       height: 1.2,
       fontSize: 11,
       fontWeight: FontWeight.w500,
+    );
+  }
+
+  static TextStyle? metaTextStyle(ThemeData theme) {
+    return theme.textTheme.bodySmall?.copyWith(
+      color: HomeScreenColors.metricTileCaptionColor,
+      height: 1.2,
+      fontSize: 10.5,
+      fontWeight: FontWeight.w600,
     );
   }
 
