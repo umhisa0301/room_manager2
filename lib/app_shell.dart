@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'navigation/app_shell_controller.dart';
+import 'navigation/rakuten_search_navigator.dart';
 import 'theme/app_theme.dart';
 import 'screens/home_placeholder_screen.dart';
 import 'screens/products_placeholder_screen.dart';
 import 'screens/comments_placeholder_screen.dart';
 import 'screens/activity_placeholder_screen.dart';
 import 'screens/mypage_placeholder_screen.dart';
-import 'screens/rakuten_search_screen.dart';
 
 /// 下部ナビゲーション＋5タブのメインシェル（2番目は ROOMコレ管理）。
 /// 選択中はアクセント色＋背景ピルで視覚的に明確にする。
@@ -78,11 +78,7 @@ class _AppShellState extends State<AppShell> {
                     tooltip: '楽天検索',
                     isSelected: false,
                     onTap: () {
-                      Navigator.of(context).push<void>(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const RakutenSearchScreen(),
-                        ),
-                      );
+                      openRakutenSearchScreen(context);
                     },
                   ),
                 ),

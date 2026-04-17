@@ -25,7 +25,7 @@ class RakutenProductSearchCondition {
 
   RakutenProductSearchCondition normalized() {
     return RakutenProductSearchCondition(
-      keyword: keyword.trim(),
+      keyword: _normalizeKeyword(keyword),
       minPrice: minPrice,
       maxPrice: maxPrice,
       excludeKeyword: excludeKeyword.trim(),
@@ -41,6 +41,16 @@ class RakutenProductSearchCondition {
     if (value == null) return null;
     final normalized = value.trim();
     if (normalized.isEmpty) return null;
+    return normalized;
+  }
+
+  /// 末尾や先頭に付きがちな句読点・記号を取り除き、検索語の実体を安定化する。
+  /// 例: `アンパンマン、` -> `アンパンマン`
+  static String _normalizeKeyword(String value) {
+    var normalized = value.trim();
+    if (normalized.isEmpty) return '';
+    normalized = normalized.replaceAll(RegExp(r'^[\s、。,.!！?？:：;；/／\\]+'), '');
+    normalized = normalized.replaceAll(RegExp(r'[\s、。,.!！?？:：;；/／\\]+$'), '');
     return normalized;
   }
 }
