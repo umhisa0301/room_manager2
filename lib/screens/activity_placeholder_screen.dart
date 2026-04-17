@@ -67,8 +67,8 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
           controller: _tabController,
           tabs: const [
             Tab(text: '今日'),
-            Tab(text: '今週'),
-            Tab(text: '商品'),
+            Tab(text: 'ダッシュボード'),
+            Tab(text: '振り返り'),
           ],
         ),
       ),
@@ -91,6 +91,15 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
                   events: act.events,
                   now: now,
                 );
+                final candidateCount = RakutenRoomHomeStats.countCandidates(
+                  items,
+                );
+                final doneCount = RakutenRoomHomeStats.countDone(items);
+                final todayDoneCount =
+                    RakutenRoomHomeStats.countDoneOnLocalCalendarDay(items, now);
+                final weeklyDoneTotal = RakutenRoomHomeStats
+                    .doneCountsRollingDays(items, now, 7)
+                    .fold<int>(0, (a, b) => a + b.count);
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -108,7 +117,14 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppDimensions.screenPaddingH,
                       ),
-                      child: _ActivityKpiSummaryBar(summary: kpi),
+                      child: _ActivityKpiSummaryBar(
+                        summary: kpi,
+                        todayDoneCount: todayDoneCount,
+                        weeklyDoneCount: weeklyDoneTotal,
+                        candidateCount: candidateCount,
+                        doneCount: doneCount,
+                        savedShopCount: saved.shops.length,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Expanded(
@@ -125,6 +141,10 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
                           _ActivityWeekOverviewTab(
                             items: items,
                             kpi: kpi,
+                            todayDoneCount: todayDoneCount,
+                            weeklyDoneCount: weeklyDoneTotal,
+                            candidateCount: candidateCount,
+                            doneCount: doneCount,
                             savedShopCount: saved.shops.length,
                             recommendPending: rec.pendingCount,
                             recommendTotal: rec.totalCount,
@@ -232,13 +252,25 @@ String _formatHm(DateTime d) {
 }
 
 class _ActivityKpiSummaryBar extends StatelessWidget {
-  const _ActivityKpiSummaryBar({required this.summary});
+  const _ActivityKpiSummaryBar({
+    required this.summary,
+    required this.todayDoneCount,
+    required this.weeklyDoneCount,
+    required this.candidateCount,
+    required this.doneCount,
+    required this.savedShopCount,
+  });
 
   final RoomKpiSummary summary;
+  final int todayDoneCount;
+  final int weeklyDoneCount;
+  final int candidateCount;
+  final int doneCount;
+  final int savedShopCount;
 
   @override
   Widget build(BuildContext context) {
-    Widget chip(String k, String v) {
+    Widget chip(String k, String v, String hint, IconData icon, Color iconColor) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
@@ -249,12 +281,20 @@ class _ActivityKpiSummaryBar extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              k,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w700,
-              ),
+            Row(
+              children: [
+                Icon(icon, size: 14, color: iconColor),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    k,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 2),
             Text(
@@ -262,6 +302,16 @@ class _ActivityKpiSummaryBar extends StatelessWidget {
               style: Theme.of(
                 context,
               ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(height: 1),
+            Text(
+              hint,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: AppColors.textTertiary,
+                fontSize: 10.5,
+              ),
             ),
           ],
         ),
@@ -282,10 +332,48 @@ class _ActivityKpiSummaryBar extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: [
-            chip('反応あり', '${summary.likedProductCount}件'),
-            chip('売れた', '${summary.soldProductCount}件'),
-            chip('週の活動', '${summary.weeklyActivityCount}件'),
-            chip('放置(3日+)', '${summary.staleCandidateCount}件'),
+            chip(
+              '今日のコレ数',
+              '$todayDoneCount件',
+              '今日処理できた件数',
+              Icons.today_rounded,
+              const Color(0xFF1565C0),
+            ),
+            chip(
+              '週間コレ数',
+              '$weeklyDoneCount件',
+              '直近7日合計',
+              Icons.show_chart_rounded,
+              const Color(0xFF5C6BC0),
+            ),
+            chip(
+              '候補ストック',
+              '$candidateCount件',
+              '次に処理できる候補',
+              Icons.inventory_2_outlined,
+              const Color(0xFFE65100),
+            ),
+            chip(
+              'コレ済累計',
+              '$doneCount件',
+              '積み上げ済みの成果',
+              Icons.task_alt_rounded,
+              const Color(0xFF2E7D32),
+            ),
+            chip(
+              '保存ショップ',
+              '$savedShopCount件',
+              '次回探索の土台',
+              Icons.bookmarks_outlined,
+              const Color(0xFF6A1B9A),
+            ),
+            chip(
+              '放置候補(3日+)',
+              '${summary.staleCandidateCount}件',
+              '整理優先の候補',
+              Icons.schedule_rounded,
+              const Color(0xFFEF6C00),
+            ),
           ],
         ),
       ],
@@ -374,6 +462,10 @@ class _ActivityWeekOverviewTab extends StatelessWidget {
   const _ActivityWeekOverviewTab({
     required this.items,
     required this.kpi,
+    required this.todayDoneCount,
+    required this.weeklyDoneCount,
+    required this.candidateCount,
+    required this.doneCount,
     required this.savedShopCount,
     required this.recommendPending,
     required this.recommendTotal,
@@ -384,6 +476,10 @@ class _ActivityWeekOverviewTab extends StatelessWidget {
 
   final List<RakutenManagedProduct> items;
   final RoomKpiSummary kpi;
+  final int todayDoneCount;
+  final int weeklyDoneCount;
+  final int candidateCount;
+  final int doneCount;
   final int savedShopCount;
   final int recommendPending;
   final int recommendTotal;
@@ -399,8 +495,15 @@ class _ActivityWeekOverviewTab extends StatelessWidget {
         .fold<int>(0, (a, b) => a > b ? a : b);
     final lastDone = RakutenRoomHomeStats.latestDoneAt(items);
     final story = kpi.weeklyActivityCount == 0
-        ? '今週はまだ活動ログが少なめです。候補を1件処理するとここが動き出します。'
-        : '今週は ${kpi.weeklyActivityCount} 件の動きがあり、体感の反応スコアは ${kpi.weeklyReactionScore} です（評価ボタンのログ由来）。';
+        ? 'まだ動きが少ない週です。まず1件コレすると、週間推移が伸び始めます。'
+        : '今週は ${kpi.weeklyActivityCount} 件の活動があり、反応スコアは ${kpi.weeklyReactionScore} です。';
+    final doneGoal = 5;
+    final doneProgress = weeklyDoneCount > doneGoal ? doneGoal : weeklyDoneCount;
+    final hint = recommendTotal == 0
+        ? '今日のおすすめを作成して、今日の1件目を進めましょう。'
+        : recommendPending > 0
+            ? '今日のおすすめ残り $recommendPending 件から進めると、週目標に近づきます。'
+            : '今日のおすすめは完了済みです。次は候補ストック整理がおすすめです。';
 
     return RefreshIndicator(
       onRefresh: onRefresh,
@@ -425,6 +528,13 @@ class _ActivityWeekOverviewTab extends StatelessWidget {
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(height: 1.4),
+          ),
+          const SizedBox(height: 12),
+          _ActivityGoalCard(
+            title: '今週の進捗',
+            progressLabel: '$weeklyDoneCount / $doneGoal 件',
+            progressValue: doneGoal == 0 ? 0 : doneProgress / doneGoal,
+            body: hint,
           ),
           const SizedBox(height: 16),
           _SevenDayTrendCard(series: series, maxCount: maxInWeek),
@@ -462,6 +572,13 @@ class _ActivityWeekOverviewTab extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 16),
+          _ActivityActionHintsCard(
+            todayDoneCount: todayDoneCount,
+            candidateCount: candidateCount,
+            doneCount: doneCount,
+            staleCandidateCount: kpi.staleCandidateCount,
           ),
           const SizedBox(height: 16),
           _LastCollectCard(lastDoneAt: lastDone),
@@ -536,6 +653,8 @@ class _ActivityProductRankingTab extends StatelessWidget {
 }
 
 class _ActivityPurposeBanner extends StatelessWidget {
+  const _ActivityPurposeBanner();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -567,7 +686,7 @@ class _ActivityPurposeBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ROOM運用の進捗が見える',
+                  '今日の進み具合と次アクションを確認',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: AppColors.textPrimary,
@@ -575,7 +694,7 @@ class _ActivityPurposeBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '候補管理とコレ済実績を1画面で確認できます。今日の動きと中長期の傾向を見ながら運用を調整できます。',
+                  'この画面では「どれだけ進んだか」と「次に何をすると良いか」をまとめて確認できます。',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.45,
@@ -584,6 +703,141 @@ class _ActivityPurposeBanner extends StatelessWidget {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ActivityGoalCard extends StatelessWidget {
+  const _ActivityGoalCard({
+    required this.title,
+    required this.progressLabel,
+    required this.progressValue,
+    required this.body,
+  });
+
+  final String title;
+  final String progressLabel;
+  final double progressValue;
+  final String body;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            progressLabel,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              minHeight: 7,
+              value: progressValue.clamp(0, 1),
+              backgroundColor: AppColors.surfaceVariant,
+              color: AppColors.accentPrimary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            body,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(height: 1.35, color: AppColors.textSecondary),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ActivityActionHintsCard extends StatelessWidget {
+  const _ActivityActionHintsCard({
+    required this.todayDoneCount,
+    required this.candidateCount,
+    required this.doneCount,
+    required this.staleCandidateCount,
+  });
+
+  final int todayDoneCount;
+  final int candidateCount;
+  final int doneCount;
+  final int staleCandidateCount;
+
+  @override
+  Widget build(BuildContext context) {
+    final hints = <String>[
+      if (todayDoneCount == 0) '今日はまず1件コレ済にすると、継続の流れを作れます。',
+      if (staleCandidateCount > 0) '放置候補が$staleCandidateCount件あります。先に整理すると候補管理が軽くなります。',
+      if (candidateCount < 3) '候補ストックが少なめです。検索画面から候補追加しておくと次が楽になります。',
+      if (doneCount >= 10) 'コレ済が$doneCount件まで積み上がっています。この調子で維持しましょう。',
+    ];
+    final list = hints.isEmpty ? const <String>['次の候補を1件追加して、明日の作業を軽くしましょう。'] : hints;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '次にやることのヒント',
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 8),
+          for (final line in list) ...[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Icon(
+                    Icons.check_circle_outline_rounded,
+                    size: 16,
+                    color: Color(0xFF1565C0),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    line,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+          ],
         ],
       ),
     );
