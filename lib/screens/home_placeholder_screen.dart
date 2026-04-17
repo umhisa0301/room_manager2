@@ -442,6 +442,10 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                       now: now,
                     );
                     final insights = HomeInsightBuilder.build(summary: kpi);
+                    final hasTodaySuggestions = recProvider.totalCount > 0;
+                    final todayDoneCountForRec = (recProvider.totalCount -
+                            recProvider.pendingCount)
+                        .clamp(0, recProvider.totalCount);
 
                     return ListView(
                       padding: EdgeInsets.fromLTRB(
@@ -456,6 +460,14 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                           summary: kpi,
                         ),
                         const SizedBox(height: _HomeUi.gapSection),
+                        _HomeMainActionSection(
+                          pendingCount: recProvider.pendingCount,
+                          totalCount: recProvider.totalCount,
+                          isLoading: recProvider.isLoading,
+                          isCompleted: recProvider.isCompleted,
+                          onPrimaryTap: () => _openTodayRecommendations(context),
+                        ),
+                        const SizedBox(height: _HomeUi.gapSection),
                         _HomeKpiMetricRow(
                           summary: kpi,
                           onTodayCollectTap: () => _openRoomList(
@@ -464,30 +476,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                             doneFilterLocalDay: todayLocalDay,
                           ),
                           onActivityTap: () => _openActivity(context),
-                        ),
-                        const SizedBox(height: _HomeUi.gapSection),
-                        _HomeInsightSection(
-                          insights: insights,
-                          onInsightAction: (actionType) {
-                            switch (actionType) {
-                              case 'stale_candidates':
-                                _openRoomList(
-                                  context,
-                                  candidateStalePreset:
-                                      RoomColleStaleCandidatePreset.threePlus,
-                                );
-                                break;
-                              case 'weekly_activity':
-                              case 'activity':
-                                _openActivity(context);
-                                break;
-                              case 'candidate_list':
-                                _openRoomList(context, initialTabIndex: 0);
-                                break;
-                              default:
-                                _openActivity(context);
-                            }
-                          },
                         ),
                         const SizedBox(height: _HomeUi.gapSection),
                         _HomeQuickLinkRow(
@@ -517,6 +505,19 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                           errorMessage: recProvider.errorMessage,
                           onOpen: () => _openTodayRecommendations(context),
                         ),
+                        if (hasTodaySuggestions) ...[
+                          const SizedBox(height: _HomeUi.gapTight),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: _HomeUi.insetSectionH,
+                            ),
+                            child: Text(
+                              '今日の候補は $todayDoneCountForRec/${recProvider.totalCount} 件を処理済みです。'
+                              ' 残りは「おすすめを見る」から候補追加または見送りで整理できます。',
+                              style: _HomeUi.tapHint(context),
+                            ),
+                          ),
+                        ],
                         const SizedBox(height: _HomeUi.gapSection),
                         _RoomManagementSection(
                           expanded: _roomIntroExpanded,
@@ -539,6 +540,30 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                             doneFilterLocalDay: todayLocalDay,
                           ),
                           onLastCollectTap: () => _openActivity(context),
+                        ),
+                        const SizedBox(height: _HomeUi.gapSection),
+                        _HomeInsightSection(
+                          insights: insights,
+                          onInsightAction: (actionType) {
+                            switch (actionType) {
+                              case 'stale_candidates':
+                                _openRoomList(
+                                  context,
+                                  candidateStalePreset:
+                                      RoomColleStaleCandidatePreset.threePlus,
+                                );
+                                break;
+                              case 'weekly_activity':
+                              case 'activity':
+                                _openActivity(context);
+                                break;
+                              case 'candidate_list':
+                                _openRoomList(context, initialTabIndex: 0);
+                                break;
+                              default:
+                                _openActivity(context);
+                            }
+                          },
                         ),
                         const SizedBox(height: _HomeUi.gapSection),
                         _RecentCandidatesHomeSection(
@@ -625,6 +650,67 @@ class _HomeMomentumHeader extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(weekLine, style: _HomeUi.sectionBody(context)),
+        ],
+      ),
+    );
+  }
+}
+
+class _HomeMainActionSection extends StatelessWidget {
+  const _HomeMainActionSection({
+    required this.pendingCount,
+    required this.totalCount,
+    required this.isLoading,
+    required this.isCompleted,
+    required this.onPrimaryTap,
+  });
+
+  final int pendingCount;
+  final int totalCount;
+  final bool isLoading;
+  final bool isCompleted;
+  final VoidCallback onPrimaryTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final title = isLoading && totalCount == 0
+        ? '今日やることを準備中です'
+        : isCompleted && totalCount > 0
+            ? '今日のおすすめは完了しました'
+            : totalCount == 0
+                ? 'まずは今日のおすすめを用意しましょう'
+                : 'まずは残り $pendingCount 件を確認しましょう';
+    final subtitle = isCompleted && totalCount > 0
+        ? '今日の分は完了です。明日の提案に備えて管理情報だけ確認できます。'
+        : 'ホームを開いたら最初にここから。今日の候補を追加・見送りして、次の行動を確定します。';
+
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.searchEntrySectionDecoration(),
+      padding: _HomeUi.paddingDenseCard,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            '今日の入口',
+            style: _HomeUi.sectionTitle(context).copyWith(
+              color: HomeScreenColors.accentSectionHeading,
+            ),
+          ),
+          const SizedBox(height: 3),
+          Text(
+            title,
+            style: _HomeUi.sectionTitle(context).copyWith(fontSize: 16),
+          ),
+          const SizedBox(height: _HomeUi.gapStackTight),
+          Text(subtitle, style: _HomeUi.sectionBody(context)),
+          const SizedBox(height: _HomeUi.gapSearchLeadToButton),
+          HomePrimaryActionButton(
+            emphasis: HomePrimaryActionEmphasis.hero,
+            icon: Icons.auto_awesome_rounded,
+            label: '今日のおすすめを見る',
+            onPressed: onPrimaryTap,
+          ),
         ],
       ),
     );
@@ -879,7 +965,19 @@ class _HomeQuickLinkRow extends StatelessWidget {
             _HomeUi.insetSectionH,
             6,
           ),
-          child: Text('すぐやる', style: _HomeUi.sectionTitle(context)),
+          child: Text('サブ導線', style: _HomeUi.sectionTitle(context)),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+            _HomeUi.insetSectionH,
+            0,
+            _HomeUi.insetSectionH,
+            6,
+          ),
+          child: Text(
+            '主導線は「今日のおすすめを見る」です。以下は状況に応じて使う補助導線です。',
+            style: _HomeUi.tapHint(context),
+          ),
         ),
         Wrap(
           spacing: 8,
@@ -887,7 +985,7 @@ class _HomeQuickLinkRow extends StatelessWidget {
           children: [
             _HomeChipAction(
               icon: Icons.search_rounded,
-              label: '楽天検索',
+              label: '候補を探す',
               onTap: onSearch,
             ),
             _HomeChipAction(
@@ -897,7 +995,7 @@ class _HomeQuickLinkRow extends StatelessWidget {
             ),
             _HomeChipAction(
               icon: Icons.task_alt_rounded,
-              label: 'コレ済',
+              label: 'コレ済を確認',
               onTap: onDoneList,
             ),
             _HomeChipAction(
@@ -1080,7 +1178,7 @@ class _HomeSearchEntrySection extends StatelessWidget {
                     Text('楽天で商品を探す', style: _HomeUi.sectionTitle(context)),
                     SizedBox(height: _HomeUi.gapHeaderTitleToLead),
                     Text(
-                      '検索して気に入った商品をコレ候補に登録。ROOMコレの第一歩です。',
+                      '主導線で候補が足りない時に使う補助導線です。検索して候補一覧へ追加できます。',
                       style: _HomeUi.sectionBody(context),
                     ),
                   ],
@@ -1092,7 +1190,7 @@ class _HomeSearchEntrySection extends StatelessWidget {
           HomePrimaryActionButton(
             emphasis: HomePrimaryActionEmphasis.hero,
             icon: Icons.travel_explore_rounded,
-            label: '楽天で検索',
+            label: '楽天でコレ候補を検索する',
             onPressed: onSearch,
           ),
         ],
@@ -1192,7 +1290,7 @@ class _RoomManagementSection extends StatelessWidget {
                       bottom: _HomeUi.gapRoomDetailBottom,
                     ),
                     child: Text(
-                      '各カードの数値は端末に保存した一覧の集計です。タップで一覧・活動へ移動します。',
+                      '管理情報をまとめて確認するブロックです。各カードを押すと対応する一覧や活動ログへ移動できます。',
                       style: _HomeUi.sectionBodyGrouped(context),
                     ),
                   )
@@ -1281,7 +1379,7 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
                       SizedBox(width: _HomeUi.gapIconToTitle),
                       Expanded(
                         child: Text(
-                          '最近追加した候補',
+                          'あとで処理する候補',
                           style: _HomeUi.sectionTitleAccent(context),
                         ),
                       ),
@@ -1310,7 +1408,7 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
                       bottom: _HomeUi.gapRecentDetailBottom,
                     ),
                     child: Text(
-                      '直近の候補を最大5件表示。コレ済にすると消えます。行タップでコレ一覧の該当商品へ移動します。',
+                      'ここは「後でコレする候補」の確認エリアです。直近5件を表示し、行タップで候補一覧の該当商品へ移動できます。',
                       style: _HomeUi.sectionBodyGrouped(context),
                     ),
                   )
@@ -1594,21 +1692,21 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
     late final String footnote;
     if (isLoading && totalCount == 0) {
       statusLine = '今日の提案を用意しています…';
-      footnote = '1日あたり最大$maxN件まで。日付が変わると、新しいセットに切り替わります。';
+      footnote = '1日あたり最大$maxN件。候補追加か見送りを決めると、今日やることが整理されます。';
     } else if (errorMessage != null &&
         errorMessage!.isNotEmpty &&
         totalCount == 0) {
       statusLine = 'いま一度お試しください';
-      footnote = 'タップで再試行できます。1日あたり最大$maxN件まで提案します（日付が変わると更新）。';
+      footnote = 'タップで再試行できます。提案は最大$maxN件で、候補追加/見送りを毎日決められます。';
     } else if (totalCount == 0) {
-      statusLine = 'タップして、今日のおすすめを最大$maxN件まで用意できます';
-      footnote = '毎日替わる提案です。ここでの内容は本日中だけ有効で、最大$maxN件です。';
+      statusLine = '今日やる候補を、最大$maxN件まで作成できます';
+      footnote = '毎日替わる提案です。候補追加と見送りを進めると、未処理がはっきりします。';
     } else if (done) {
       statusLine = '本日のおすすめはすべて完了しました';
-      footnote = '今日の分はここまでです。日付が変わると、また最大$maxN件まで新しくなります。';
+      footnote = '今日の判断が完了しました。日付が変わると、また最大$maxN件の提案が更新されます。';
     } else {
       statusLine = '残り $pendingCount 件 · 本日は最大$maxN件まで';
-      footnote = '未処理の提案だけがカウントされます。今日だけのセットです。';
+      footnote = '各提案で「候補に追加」か「見送り」を選ぶと、今日やることを終えられます。';
     }
 
     final progress = totalCount > 0 && !done
@@ -1666,7 +1764,7 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('今日のおすすめコレ候補', style: titleStyle),
+                      Text('今日やるおすすめ候補', style: titleStyle),
                       if (dateLabel != null && dateLabel!.isNotEmpty) ...[
                         const SizedBox(height: 1),
                         Text(
@@ -1780,7 +1878,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                   role: _RoomMetricTileRole.candidate,
                   title: 'コレ候補',
                   valueMain: '$candidateTotal件',
-                  caption: 'タップで一覧を開く',
+                  caption: '候補一覧へ進む',
                   icon: Icons.bookmark_outline_rounded,
                   valueProminent: true,
                   compactDeck: deck,
@@ -1793,7 +1891,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                   role: _RoomMetricTileRole.done,
                   title: 'コレ済',
                   valueMain: '$doneTotal件',
-                  caption: 'タップで一覧を開く',
+                  caption: 'コレ済一覧へ進む',
                   icon: Icons.task_alt_rounded,
                   valueProminent: true,
                   compactDeck: deck,
@@ -1813,7 +1911,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                   role: _RoomMetricTileRole.today,
                   title: '今日のコレ',
                   valueMain: '$todayDoneCount件',
-                  caption: 'タップで一覧を開く',
+                  caption: '今日分のコレ済へ',
                   icon: Icons.today_rounded,
                   valueProminent: true,
                   compactDeck: deck,
@@ -1826,7 +1924,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                   role: _RoomMetricTileRole.history,
                   title: '前回コレ日時',
                   valueMain: lastPrimary,
-                  caption: 'タップで活動を開く',
+                  caption: '活動ログを開く',
                   icon: Icons.history_rounded,
                   valueProminent: false,
                   compactDeck: deck,
@@ -2030,7 +2128,7 @@ class _RecentCandidatesPanel extends StatelessWidget {
           children: [
             Text('候補はまだありません', style: _HomeUi.bodyEmphasis(context)),
             const SizedBox(height: _HomeUi.gapTight),
-            Text('まずは「楽天で検索」から追加してください。', style: _HomeUi.sectionBody(context)),
+            Text('主導線の「今日のおすすめを見る」または「候補を探す」から追加してください。', style: _HomeUi.sectionBody(context)),
           ],
         ),
       );
