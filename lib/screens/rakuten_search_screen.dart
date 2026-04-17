@@ -2870,7 +2870,11 @@ class _SearchModeSegmented extends StatelessWidget {
   final ValueChanged<_RakutenSearchMode> onChanged;
 
   /// 長いタブラベルでも1行内に収まるよう縮小。折り返しは最大2行。
-  Widget _tabSegmentLabel(BuildContext context, String text) {
+  Widget _tabSegmentLabel(
+    BuildContext context,
+    String text, {
+    required bool isSelected,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: FittedBox(
@@ -2887,6 +2891,9 @@ class _SearchModeSegmented extends StatelessWidget {
               fontWeight: FontWeight.w700,
               fontSize: 11.5,
               height: 1.12,
+              color: isSelected
+                  ? AppColors.textOnAccent
+                  : HomeScreenColors.groupedSectionBody,
             ),
           ),
         ),
@@ -2927,17 +2934,23 @@ class _SearchModeSegmented extends StatelessWidget {
               label: _tabSegmentLabel(
                 context,
                 _RakutenSearchMode.product.label,
+                isSelected: mode == _RakutenSearchMode.product,
               ),
             ),
             ButtonSegment<_RakutenSearchMode>(
               value: _RakutenSearchMode.genre,
-              label: _tabSegmentLabel(context, _RakutenSearchMode.genre.label),
+              label: _tabSegmentLabel(
+                context,
+                _RakutenSearchMode.genre.label,
+                isSelected: mode == _RakutenSearchMode.genre,
+              ),
             ),
             ButtonSegment<_RakutenSearchMode>(
               value: _RakutenSearchMode.shopDiscovery,
               label: _tabSegmentLabel(
                 context,
                 _RakutenSearchMode.shopDiscovery.label,
+                isSelected: mode == _RakutenSearchMode.shopDiscovery,
               ),
             ),
           ],
