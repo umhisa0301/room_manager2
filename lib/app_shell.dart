@@ -92,7 +92,7 @@ class _AppShellState extends State<AppShell> {
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('＋はStep1では仮実装です'),
+                          content: Text('候補追加メニューは次のStepで実装予定です'),
                         ),
                       );
                     },
