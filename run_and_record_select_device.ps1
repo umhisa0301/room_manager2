@@ -392,7 +392,8 @@ $flutterArgs = @(
     "run",
     "-d", $deviceId,
     "--dart-define=RAKUTEN_APP_ID=$RakutenAppId",
-    "--dart-define=RAKUTEN_AFFILIATE_ID=$RakutenAffiliateId"
+    "--dart-define=RAKUTEN_AFFILIATE_ID=$RakutenAffiliateId",
+    "--dart-define=DEMO_MODE=true"
 )
 
 $flutterExe = Get-FlutterCommandPath
