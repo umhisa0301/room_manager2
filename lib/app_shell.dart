@@ -47,6 +47,13 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
+  Future<void> _openShopDiscoveryFromSheet(BuildContext sheetContext) async {
+    Navigator.of(sheetContext).pop();
+    await Future<void>.delayed(Duration.zero);
+    if (!mounted) return;
+    await openRakutenSearchScreen(context);
+  }
+
   Future<void> _showAddCandidateSheet() {
     return showModalBottomSheet<void>(
       context: context,
@@ -97,9 +104,7 @@ class _AppShellState extends State<AppShell> {
                 _AddCandidateMenuItem(
                   icon: Icons.hiking_rounded,
                   title: 'ショップ発掘を開く',
-                  onTap: () {
-                    Navigator.of(sheetContext).pop();
-                  },
+                  onTap: () => _openShopDiscoveryFromSheet(sheetContext),
                 ),
               ],
             ),
