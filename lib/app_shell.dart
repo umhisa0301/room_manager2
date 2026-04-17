@@ -28,6 +28,13 @@ class _AppShellState extends State<AppShell> {
     MypagePlaceholderScreen(),
   ];
 
+  Future<void> _openRakutenSearchFromSheet(BuildContext sheetContext) async {
+    Navigator.of(sheetContext).pop();
+    await Future<void>.delayed(Duration.zero);
+    if (!mounted) return;
+    await openRakutenSearchScreen(context);
+  }
+
   Future<void> _showAddCandidateSheet() {
     return showModalBottomSheet<void>(
       context: context,
@@ -66,9 +73,7 @@ class _AppShellState extends State<AppShell> {
                 _AddCandidateMenuItem(
                   icon: Icons.travel_explore_rounded,
                   title: '楽天で商品を探す',
-                  onTap: () {
-                    Navigator.of(sheetContext).pop();
-                  },
+                  onTap: () => _openRakutenSearchFromSheet(sheetContext),
                 ),
                 const SizedBox(height: AppDimensions.spacingSm),
                 _AddCandidateMenuItem(
