@@ -585,7 +585,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     const _DiscoveryFlowGuideCompact(),
                   _SearchModeSegmented(
                     mode: _mode,
-                    compact: _mode == _RakutenSearchMode.product,
                     onChanged: _onModeChanged,
                   ),
                   SizedBox(
@@ -2865,12 +2864,10 @@ class _SearchModeSegmented extends StatelessWidget {
   const _SearchModeSegmented({
     required this.mode,
     required this.onChanged,
-    this.compact = false,
   });
 
   final _RakutenSearchMode mode;
   final ValueChanged<_RakutenSearchMode> onChanged;
-  final bool compact;
 
   /// 長いタブラベルでも1行内に収まるよう縮小。折り返しは最大2行。
   Widget _tabSegmentLabel(BuildContext context, String text) {
@@ -2880,7 +2877,7 @@ class _SearchModeSegmented extends StatelessWidget {
         fit: BoxFit.scaleDown,
         alignment: Alignment.center,
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: compact ? 124 : 136),
+          constraints: const BoxConstraints(maxWidth: 136),
           child: Text(
             text,
             textAlign: TextAlign.center,
@@ -2888,7 +2885,7 @@ class _SearchModeSegmented extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               fontWeight: FontWeight.w700,
-              fontSize: compact ? 10.5 : 11.5,
+              fontSize: 11.5,
               height: 1.12,
             ),
           ),
@@ -2906,7 +2903,7 @@ class _SearchModeSegmented extends StatelessWidget {
           children: [
             Icon(
               Icons.filter_list_rounded,
-              size: compact ? 15 : 17,
+              size: 17,
               color: HomeScreenColors.footnoteMuted,
             ),
             const SizedBox(width: 6),
@@ -2917,13 +2914,12 @@ class _SearchModeSegmented extends StatelessWidget {
                   color: HomeScreenColors.footnoteMuted,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.15,
-                  fontSize: compact ? 11.5 : null,
                 ),
               ),
             ),
           ],
         ),
-        SizedBox(height: compact ? 4 : 5),
+        const SizedBox(height: 5),
         SegmentedButton<_RakutenSearchMode>(
           segments: [
             ButtonSegment<_RakutenSearchMode>(
@@ -2954,40 +2950,34 @@ class _SearchModeSegmented extends StatelessWidget {
           style: ButtonStyle(
             visualDensity: VisualDensity.compact,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            minimumSize: WidgetStateProperty.all(Size(0, compact ? 44 : 48)),
+            minimumSize: WidgetStateProperty.all(const Size(0, 48)),
             padding: WidgetStateProperty.all(
-              EdgeInsets.symmetric(
-                horizontal: compact ? 5 : 7,
-                vertical: compact ? 9 : 10,
-              ),
+              const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
             ),
             side: WidgetStateProperty.all(
               BorderSide(color: HomeScreenColors.deckOutline),
             ),
             backgroundColor: WidgetStateProperty.resolveWith((states) {
               if (states.contains(WidgetState.selected)) {
-                return Color.alphaBlend(
-                  HomeScreenColors.inkAccentSplash,
-                  HomeScreenColors.deckFill,
-                );
+                return AppColors.accentPrimary;
               }
               return HomeScreenColors.deckFill;
             }),
             foregroundColor: WidgetStateProperty.resolveWith((states) {
               if (states.contains(WidgetState.selected)) {
-                return HomeScreenColors.statusAccentStrong;
+                return AppColors.textOnAccent;
               }
               return HomeScreenColors.groupedSectionBody;
             }),
           ),
         ),
-        SizedBox(height: compact ? 5 : 6),
+        const SizedBox(height: 6),
         Text(
           mode.description,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: HomeScreenColors.groupedSectionBody,
             height: 1.38,
-            fontSize: compact ? 11.5 : 12.5,
+            fontSize: 12.5,
           ),
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
