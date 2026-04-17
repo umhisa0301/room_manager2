@@ -8,6 +8,7 @@ import '../models/rakuten_search_item.dart';
 import '../models/saved_shop.dart';
 import '../models/shop_discovery_summary.dart';
 import '../navigation/app_route_observer.dart';
+import '../navigation/app_shell_controller.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../services/shop_discovery_aggregator.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -158,13 +159,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: HomeScreenColors.canvas,
-      appBar: AppBar(
-        title: const Text('楽天検索'),
-        backgroundColor: HomeScreenColors.canvas,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: HomeScreenColors.titlePrimary,
-      ),
       body: SafeArea(
         child:
             Consumer3<
@@ -220,6 +214,96 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 );
               },
             ),
+      ),
+      bottomNavigationBar: _buildBottomNavigationBar(context),
+    );
+  }
+
+  void _returnToShellWithTab(BuildContext context, int index) {
+    context.read<AppShellController>().selectTab(index);
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border(
+          top: BorderSide(
+            color: AppColors.divider.withValues(alpha: 0.85),
+            width: 1,
+          ),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            offset: const Offset(0, -1),
+            blurRadius: 6,
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.spacingSm,
+            vertical: 4,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: _RakutenSearchBottomNavItem(
+                  icon: Icons.dashboard_outlined,
+                  selectedIcon: Icons.dashboard,
+                  label: 'ホーム',
+                  isSelected: false,
+                  onTap: () => _returnToShellWithTab(context, 0),
+                ),
+              ),
+              Expanded(
+                child: _RakutenSearchBottomNavItem(
+                  icon: Icons.travel_explore_outlined,
+                  selectedIcon: Icons.travel_explore_rounded,
+                  label: '探す',
+                  isSelected: true,
+                  onTap: () {},
+                ),
+              ),
+              Expanded(
+                child: _RakutenSearchBottomNavItem(
+                  icon: Icons.add_circle_outline_rounded,
+                  selectedIcon: Icons.add_circle_rounded,
+                  label: '＋',
+                  isSelected: false,
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('候補追加メニューは次のStepで実装予定です'),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: _RakutenSearchBottomNavItem(
+                  icon: Icons.collections_bookmark_outlined,
+                  selectedIcon: Icons.collections_bookmark,
+                  label: 'ROOMコレ',
+                  isSelected: false,
+                  onTap: () => _returnToShellWithTab(context, 1),
+                ),
+              ),
+              Expanded(
+                child: _RakutenSearchBottomNavItem(
+                  icon: Icons.person_outline,
+                  selectedIcon: Icons.person,
+                  label: 'マイページ',
+                  isSelected: false,
+                  onTap: () => _returnToShellWithTab(context, 4),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -2833,6 +2917,66 @@ class _SearchModeSegmented extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
       ],
+    );
+  }
+}
+
+class _RakutenSearchBottomNavItem extends StatelessWidget {
+  const _RakutenSearchBottomNavItem({
+    required this.icon,
+    required this.selectedIcon,
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final IconData selectedIcon;
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 48),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.accentLight : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                isSelected ? selectedIcon : icon,
+                size: AppDimensions.iconNav,
+                color: isSelected
+                    ? AppColors.accentPrimary
+                    : AppColors.textSecondary,
+              ),
+              const SizedBox(height: 2),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  style: isSelected
+                      ? AppTextStyles.navLabelSelected
+                      : AppTextStyles.navLabel,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
