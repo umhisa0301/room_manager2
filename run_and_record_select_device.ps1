@@ -12,6 +12,18 @@ try {
 } catch {}
 $OutputEncoding = [System.Text.UTF8Encoding]::new()
 
+# PSReadLine が複数端末で同一履歴ファイルを掴むと「being used by another process」になる。
+# このスクリプト経由のセッションは PID 別ファイルに逃がす（未導入・古い環境では無視）。
+try {
+    if (Get-Command Set-PSReadLineOption -ErrorAction SilentlyContinue) {
+        $histDir = Join-Path $env:LOCALAPPDATA "room_manager2_psreadline"
+        if (-not (Test-Path $histDir)) {
+            New-Item -ItemType Directory -Path $histDir -Force | Out-Null
+        }
+        Set-PSReadLineOption -HistorySavePath (Join-Path $histDir "history_$PID.txt") -ErrorAction SilentlyContinue
+    }
+} catch {}
+
 $CurrentDir = (Get-Location).Path
 $FolderName = Split-Path $CurrentDir -Leaf
 $SafeAppName = ($FolderName -replace '[\\/:*?"<>| ]', '_')
@@ -160,9 +172,13 @@ function Stop-AndroidScreenRecord {
         }
     } catch {}
 
+    # プロセスが無いとき killall が stderr に出すので、存在するときだけ送る
     try {
-        adb -s $DeviceId shell "killall -2 screenrecord" | Out-Host
-        Start-Sleep -Seconds 2
+        $still = (adb -s $DeviceId shell "pidof screenrecord" 2>$null | Out-String).Trim()
+        if ($still) {
+            adb -s $DeviceId shell "sh -c 'killall -2 screenrecord 2>/dev/null; exit 0'" | Out-Null
+            Start-Sleep -Seconds 2
+        }
     } catch {}
 }
 

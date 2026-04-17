@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../config/demo_mode.dart';
 import '../theme/app_theme.dart';
 
 class ClosedTestDemoScreen extends StatefulWidget {
@@ -16,6 +17,13 @@ class ClosedTestDemoScreen extends StatefulWidget {
 
 class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
     with SingleTickerProviderStateMixin {
+  static const Duration _kSceneSettle = Duration(milliseconds: 180);
+  static const Duration _kLeadInDelay = Duration(milliseconds: 900);
+  static const Duration _kHighlightDelay = Duration(milliseconds: 1150);
+  static const Duration _kTapDelay = Duration(milliseconds: 1050);
+  static const Duration _kScrollDelay = Duration(milliseconds: 980);
+  static const Duration _kNavigateDelay = Duration(milliseconds: 860);
+
   static const String _tSearchCta = 'search_cta';
   static const String _tRecommendCard = 'recommend_card';
   static const String _tSearchResultCard = 'search_result_card';
@@ -45,6 +53,7 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
   @override
   void initState() {
     super.initState();
+    ensureClosedTestDemoAvailable();
     _targetKeys = <String, GlobalKey>{
       _tSearchCta: GlobalKey(),
       _tRecommendCard: GlobalKey(),
@@ -56,14 +65,15 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
       _tShopDiscoveryCard: GlobalKey(),
     };
     _steps = _buildScenario();
-    _tapController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 560),
-    )..addListener(() {
-      if (mounted) {
-        setState(() {});
-      }
-    });
+    _tapController =
+        AnimationController(
+          vsync: this,
+          duration: const Duration(milliseconds: 560),
+        )..addListener(() {
+          if (mounted) {
+            setState(() {});
+          }
+        });
     _scrollController.addListener(_refreshHighlightRect);
   }
 
@@ -78,102 +88,102 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
 
   List<_DemoScenarioStep> _buildScenario() {
     return <_DemoScenarioStep>[
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.home,
         target: null,
         action: _DemoAction.navigate,
-        delay: Duration(milliseconds: 700),
-        caption: 'ホーム',
+        delay: _kNavigateDelay,
+        caption: 'ホームから開始',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.home,
         target: _tRecommendCard,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 1050),
-        caption: 'おすすめ候補を確認',
+        delay: _kHighlightDelay,
+        caption: 'おすすめ候補をチェック',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.home,
         target: _tSearchCta,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 980),
-        caption: '検索導線を表示',
+        delay: _kHighlightDelay,
+        caption: '検索導線を強調',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.home,
         target: _tSearchCta,
         action: _DemoAction.tap,
-        delay: Duration(milliseconds: 820),
+        delay: _kTapDelay,
         caption: 'タップで検索へ',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.search,
         target: null,
         action: _DemoAction.navigate,
-        delay: Duration(milliseconds: 720),
+        delay: _kNavigateDelay,
         caption: '検索結果',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.search,
         target: _tSearchResultCard,
         action: _DemoAction.scroll,
-        delay: Duration(milliseconds: 900),
-        caption: '結果をスクロール表示',
+        delay: _kScrollDelay,
+        caption: '結果をスクロール確認',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.search,
         target: _tRegisterCandidateBtn,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 1020),
+        delay: _kHighlightDelay,
         caption: '候補登録ボタンを強調',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.search,
         target: _tRegisterCandidateBtn,
         action: _DemoAction.tap,
-        delay: Duration(milliseconds: 980),
+        delay: _kTapDelay,
         caption: '候補に登録',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.room,
         target: null,
         action: _DemoAction.navigate,
-        delay: Duration(milliseconds: 760),
+        delay: _kNavigateDelay,
         caption: 'ROOMコレ管理',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.room,
         target: _tCandidateListCard,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 980),
+        delay: _kHighlightDelay,
         caption: '候補一覧を確認',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.room,
         target: _tDoneListCard,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 980),
+        delay: _kHighlightDelay,
         caption: 'コレ済一覧を確認',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.room,
         target: _tDoneListCard,
         action: _DemoAction.tap,
-        delay: Duration(milliseconds: 900),
+        delay: _kTapDelay,
         caption: 'コレ済タップ演出',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.recommend,
         target: null,
         action: _DemoAction.navigate,
-        delay: Duration(milliseconds: 740),
+        delay: _kNavigateDelay,
         caption: 'おすすめ / 発掘',
       ),
-      const _DemoScenarioStep(
+      _DemoScenarioStep(
         scene: _DemoScene.recommend,
         target: _tShopDiscoveryCard,
         action: _DemoAction.highlight,
-        delay: Duration(milliseconds: 1300),
+        delay: const Duration(milliseconds: 1500),
         caption: 'ショップ発掘まで確認',
       ),
     ];
@@ -189,6 +199,7 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
       _isPaused = false;
       _playStartedOnce = true;
     });
+    await _runLeadIn();
     while (_isPlaying && _stepIndex < _steps.length) {
       await _waitIfPaused();
       if (!_isPlaying || !mounted) return;
@@ -214,8 +225,16 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
     _activeTargetId = null;
     _highlightRect = null;
     _tapCenter = null;
-    _caption = '再生中';
+    _caption = '録画のため初期位置を固定しました';
     _jumpTop();
+  }
+
+  Future<void> _runLeadIn() async {
+    if (!_isPlaying || !mounted) return;
+    setState(() {
+      _caption = '3... 2... 1...';
+    });
+    await _waitWithPause(_kLeadInDelay);
   }
 
   Future<void> _runStep(_DemoScenarioStep step) async {
@@ -225,7 +244,7 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
         _activeTargetId = null;
         _highlightRect = null;
       });
-      await _waitWithPause(const Duration(milliseconds: 90));
+      await _waitWithPause(_kSceneSettle);
       _jumpTop();
     }
 
@@ -264,15 +283,16 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
     if (!_scrollController.hasClients) return;
     final current = _scrollController.offset;
     final max = _scrollController.position.maxScrollExtent;
-    final down = math.min(current + 180, max);
+    final down = math.min(current + 220, max);
     await _scrollController.animateTo(
       down,
-      duration: const Duration(milliseconds: 440),
+      duration: const Duration(milliseconds: 520),
       curve: Curves.easeOutCubic,
     );
+    await _waitWithPause(const Duration(milliseconds: 120));
     await _scrollController.animateTo(
       current.clamp(0, max),
-      duration: const Duration(milliseconds: 440),
+      duration: const Duration(milliseconds: 520),
       curve: Curves.easeInOutCubic,
     );
   }
@@ -365,6 +385,9 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
 
   @override
   Widget build(BuildContext context) {
+    if (!kClosedTestDemoAvailable) {
+      return const SizedBox.shrink();
+    }
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(title: const Text(ClosedTestDemoScreen.title)),
@@ -419,7 +442,12 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
                               physics: _isPlaying
                                   ? const NeverScrollableScrollPhysics()
                                   : const BouncingScrollPhysics(),
-                              padding: const EdgeInsets.fromLTRB(12, 12, 12, 120),
+                              padding: const EdgeInsets.fromLTRB(
+                                12,
+                                12,
+                                12,
+                                120,
+                              ),
                               child: _sceneBody(_scene),
                             ),
                           ),
@@ -428,19 +456,19 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
                               rect: _highlightRect!,
                               child: IgnorePointer(
                                 child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 220),
+                                  duration: const Duration(milliseconds: 260),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
                                       color: const Color(0xFF4A8DFF),
-                                      width: 2.6,
+                                      width: 3,
                                     ),
                                     boxShadow: [
                                       BoxShadow(
                                         color: const Color(
                                           0xFF4A8DFF,
                                         ).withValues(alpha: 0.28),
-                                        blurRadius: 12,
+                                        blurRadius: 14,
                                       ),
                                     ],
                                   ),
@@ -449,14 +477,14 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
                             ),
                           if (_tapCenter != null)
                             Positioned(
-                              left: _tapCenter!.dx - 42,
-                              top: _tapCenter!.dy - 42,
+                              left: _tapCenter!.dx - 38,
+                              top: _tapCenter!.dy - 38,
                               child: IgnorePointer(
                                 child: Opacity(
                                   opacity: 1 - _tapController.value,
                                   child: Container(
-                                    width: 84 + (_tapController.value * 44),
-                                    height: 84 + (_tapController.value * 44),
+                                    width: 76 + (_tapController.value * 40),
+                                    height: 76 + (_tapController.value * 40),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       border: Border.all(
@@ -474,11 +502,7 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
                             bottom: 12,
                             child: _captionBubble(),
                           ),
-                          Positioned(
-                            top: 10,
-                            right: 10,
-                            child: _sceneBadge(),
-                          ),
+                          Positioned(top: 10, right: 10, child: _sceneBadge()),
                         ],
                       );
                     },
@@ -507,16 +531,16 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
             children: [
               Expanded(
                 child: Text(
-                  'デモ進行: ${_stepIndex.clamp(0, _steps.length)}/${_steps.length}',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  'デモ進行: ${_stepIndex.clamp(0, _steps.length)}/${_steps.length}  (録画向け固定シナリオ)',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
                 ),
               ),
               FilledButton.icon(
                 onPressed: _play,
                 icon: const Icon(Icons.play_arrow_rounded, size: 18),
-                label: Text(_playStartedOnce ? '最初から再生' : '再生'),
+                label: Text(_playStartedOnce ? '再録画する' : '再生'),
               ),
               const SizedBox(width: 8),
               OutlinedButton.icon(
@@ -569,7 +593,7 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
               _caption,
               style: const TextStyle(
                 color: Colors.white,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
                 height: 1.3,
               ),
             ),
@@ -637,10 +661,7 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const _SceneHeader(
-          title: 'ホーム',
-          subtitle: '今日の運用状況と主要導線をまとめて確認',
-        ),
+        const _SceneHeader(title: 'ホーム', subtitle: '今日の運用状況と主要導線をまとめて確認'),
         const SizedBox(height: 10),
         _card(
           child: Row(
@@ -679,10 +700,7 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const _SceneHeader(
-          title: '楽天検索結果',
-          subtitle: '人気順・レビュー条件で候補を絞り込み',
-        ),
+        const _SceneHeader(title: '楽天検索結果', subtitle: '人気順・レビュー条件で候補を絞り込み'),
         const SizedBox(height: 8),
         _card(
           child: Row(
@@ -768,7 +786,10 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
-              Text('おすすめ候補（本日8件）', style: TextStyle(fontWeight: FontWeight.w800)),
+              Text(
+                'おすすめ候補（本日8件）',
+                style: TextStyle(fontWeight: FontWeight.w800),
+              ),
               SizedBox(height: 6),
               Text('・洗える ラグマット 185x185  ¥5,980'),
               Text('・ワイヤレス充電器 Qi対応 15W  ¥2,480'),
@@ -803,7 +824,14 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
       'スタッキング 保存容器 角型セット',
       'ポータブル加湿器 USB静音',
     ];
-    final prices = <String>['¥5,980', '¥3,880', '¥2,280', '¥4,580', '¥4,180', '¥2,680'];
+    final prices = <String>[
+      '¥5,980',
+      '¥3,880',
+      '¥2,280',
+      '¥4,580',
+      '¥4,180',
+      '¥2,680',
+    ];
     final shops = <String>[
       '北欧インテリア館',
       '北欧インテリア館',
@@ -822,11 +850,34 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  'https://picsum.photos/seed/search_$index/120/120',
+                child: Container(
                   width: 52,
                   height: 52,
-                  fit: BoxFit.cover,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color.lerp(
+                              AppColors.accentPrimary,
+                              Colors.white,
+                              0.25 + (index * 0.06),
+                            ) ??
+                            AppColors.accentPrimary,
+                        Color.lerp(
+                              AppColors.accentPrimary,
+                              Colors.black,
+                              0.08 + (index * 0.03),
+                            ) ??
+                            AppColors.accentPrimary,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.shopping_bag_outlined,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
@@ -952,16 +1003,16 @@ class _SceneHeader extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 2),
               Text(
                 subtitle,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
               ),
             ],
           ),
@@ -991,16 +1042,16 @@ class _MiniMetric extends StatelessWidget {
           children: [
             Text(
               value,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w900,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w900),
             ),
             const SizedBox(height: 1),
             Text(
               label,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppColors.textSecondary,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: AppColors.textSecondary),
             ),
           ],
         ),

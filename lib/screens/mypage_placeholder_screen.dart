@@ -163,6 +163,13 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
     }
   }
 
+  void _openClosedTestDemo() {
+    ensureClosedTestDemoAvailable();
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => const ClosedTestDemoScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -416,15 +423,9 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             _SectionCard(
               child: Column(
                 children: [
-                  if (kDemoModeEnabled) ...[
+                  if (kClosedTestDemoAvailable) ...[
                     OutlinedButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const ClosedTestDemoScreen(),
-                          ),
-                        );
-                      },
+                      onPressed: _openClosedTestDemo,
                       icon: const Icon(Icons.rocket_launch_outlined, size: 20),
                       label: const Text('クローズドテスト用デモを見る'),
                       style: OutlinedButton.styleFrom(
