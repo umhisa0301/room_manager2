@@ -73,7 +73,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       RakutenKeywordSearchSortMode.defaultOrder;
   final ScrollController _keywordResultsScrollController = ScrollController();
   final ScrollController _genreResultsScrollController = ScrollController();
-  bool _excludeSavedShops = true;
 
   void _resetSearchUi() {
     _keywordController.clear();
@@ -465,101 +464,42 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: TextField(
-                controller: _keywordController,
-                textInputAction: TextInputAction.search,
-                onSubmitted: (_) {
-                  if (canSearch) _runSearch(context);
-                },
-                onChanged: (_) => setState(() {}),
-                onTapOutside: (_) => _dismissKeywordSearchKeyboard(),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: 14,
-                  height: 1.22,
-                  color: HomeScreenColors.titlePrimary,
-                ),
-                decoration: RakutenSearchScreenUi.searchField(
-                  labelText: '検索キーワード（必須）',
-                  hintText: '例: ワイヤレスイヤホン',
-                  prefixIcon: Icon(
-                    Icons.search_rounded,
-                    color: HomeScreenColors.leadOnSection,
-                  ),
-                ),
-              ),
+        TextField(
+          controller: _keywordController,
+          textInputAction: TextInputAction.search,
+          onSubmitted: (_) {
+            if (canSearch) _runSearch(context);
+          },
+          onChanged: (_) => setState(() {}),
+          onTapOutside: (_) => _dismissKeywordSearchKeyboard(),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontSize: 14,
+            height: 1.22,
+            color: HomeScreenColors.titlePrimary,
+          ),
+          decoration: RakutenSearchScreenUi.searchField(
+            labelText: '検索キーワード（必須）',
+            hintText: '例: ワイヤレスイヤホン',
+            prefixIcon: Icon(
+              Icons.search_rounded,
+              color: HomeScreenColors.leadOnSection,
             ),
-            SizedBox(width: RakutenSearchScreenUi.gapFieldStack + 2),
-            Semantics(
-              button: true,
-              label: 'キーワード検索を実行',
-              child: FilledButton.icon(
-                onPressed: canSearch ? () => _runSearch(context) : null,
-                icon: const Icon(Icons.search_rounded, size: 22),
-                label: const Text(
-                  '検索',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-                ),
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.accentPrimary,
-                  foregroundColor: AppColors.textOnAccent,
-                  minimumSize: const Size(0, 48),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  elevation: 1,
-                  shadowColor: AppColors.textPrimary.withValues(alpha: 0.18),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
         SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
-        Row(
-          children: [
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: () => _openProductConditionsSheet(context),
-                icon: Icon(
-                  Icons.tune_rounded,
-                  size: 17,
-                  color: HomeScreenColors.accentSectionHeading,
-                ),
-                label: const Text('詳細条件'),
-                style: _detailConditionsButtonStyle().copyWith(
-                  minimumSize: const WidgetStatePropertyAll(Size(0, 42)),
-                  padding: const WidgetStatePropertyAll(
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  _dismissKeywordSearchKeyboard();
-                  _clearConditionsForCurrentMode();
-                },
-                icon: Icon(
-                  Icons.restart_alt_rounded,
-                  size: 17,
-                  color: HomeScreenColors.groupedSectionBody,
-                ),
-                label: const Text('条件クリア'),
-                style: _neutralConditionsButtonStyle().copyWith(
-                  minimumSize: const WidgetStatePropertyAll(Size(0, 42)),
-                  padding: const WidgetStatePropertyAll(
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  ),
-                ),
-              ),
-            ),
-          ],
+        _buildUnifiedSearchControls(
+          context,
+          onOpenDetail: () => _openProductConditionsSheet(context),
+          onClear: () {
+            _dismissKeywordSearchKeyboard();
+            _clearConditionsForCurrentMode();
+          },
+        ),
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+        _buildPrimarySearchButton(
+          context,
+          label: 'キーワード検索を実行',
+          onPressed: canSearch ? () => _runSearch(context) : null,
         ),
       ],
     );
@@ -579,16 +519,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           options: _mockGenres,
           onChanged: _setSelectedGenreId,
         ),
-        if (genreOk && search.status == RakutenSearchStatus.idle) ...[
-          SizedBox(height: RakutenSearchScreenUi.gapFieldStack * 0.75),
-          Text(
-            '「検索」でこのジャンル内を一覧します。補助キーワードはなくても構いません。',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: HomeScreenColors.groupedSectionBody,
-              height: 1.35,
-            ),
-          ),
-        ],
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         TextField(
           controller: _genreController,
@@ -611,65 +541,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           },
         ),
         SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
-        Row(
-          children: [
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: () => _openProductConditionsSheet(context),
-                icon: Icon(
-                  Icons.tune_rounded,
-                  size: 17,
-                  color: HomeScreenColors.accentSectionHeading,
-                ),
-                label: const Text('詳細条件'),
-                style: _detailConditionsButtonStyle().copyWith(
-                  minimumSize: const WidgetStatePropertyAll(Size(0, 42)),
-                  padding: const WidgetStatePropertyAll(
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: _clearConditionsForCurrentMode,
-                icon: Icon(
-                  Icons.restart_alt_rounded,
-                  size: 17,
-                  color: HomeScreenColors.groupedSectionBody,
-                ),
-                label: const Text('条件クリア'),
-                style: _neutralConditionsButtonStyle().copyWith(
-                  minimumSize: const WidgetStatePropertyAll(Size(0, 42)),
-                  padding: const WidgetStatePropertyAll(
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  ),
-                ),
-              ),
-            ),
-          ],
+        _buildUnifiedSearchControls(
+          context,
+          onOpenDetail: () => _openProductConditionsSheet(context),
+          onClear: _clearConditionsForCurrentMode,
         ),
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
-        Semantics(
-          button: true,
+        _buildPrimarySearchButton(
+          context,
           label: 'ジャンル探索で検索',
-          child: FilledButton.icon(
-            onPressed: canSearch ? () => _runGenreSearch(context) : null,
-            icon: const Icon(Icons.search_rounded, size: 22),
-            label: const Text(
-              '検索',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-            ),
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.accentPrimary,
-              foregroundColor: AppColors.textOnAccent,
-              minimumSize: const Size(0, 48),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              elevation: 1,
-              shadowColor: AppColors.textPrimary.withValues(alpha: 0.18),
-            ),
-          ),
+          onPressed: canSearch ? () => _runGenreSearch(context) : null,
         ),
       ],
     );
@@ -914,6 +795,79 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       side: BorderSide(color: HomeScreenColors.deckOutline),
       minimumSize: const Size(0, 44),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+    );
+  }
+
+  Widget _buildUnifiedSearchControls(
+    BuildContext context, {
+    required VoidCallback onOpenDetail,
+    required VoidCallback onClear,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: OutlinedButton.icon(
+            onPressed: onOpenDetail,
+            icon: Icon(
+              Icons.tune_rounded,
+              size: 17,
+              color: HomeScreenColors.accentSectionHeading,
+            ),
+            label: const Text('詳細条件'),
+            style: _detailConditionsButtonStyle().copyWith(
+              minimumSize: const WidgetStatePropertyAll(Size(0, 42)),
+              padding: const WidgetStatePropertyAll(
+                EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
+        Expanded(
+          child: OutlinedButton.icon(
+            onPressed: onClear,
+            icon: Icon(
+              Icons.restart_alt_rounded,
+              size: 17,
+              color: HomeScreenColors.groupedSectionBody,
+            ),
+            label: const Text('条件クリア'),
+            style: _neutralConditionsButtonStyle().copyWith(
+              minimumSize: const WidgetStatePropertyAll(Size(0, 42)),
+              padding: const WidgetStatePropertyAll(
+                EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPrimarySearchButton(
+    BuildContext context, {
+    required String label,
+    required VoidCallback? onPressed,
+  }) {
+    return Semantics(
+      button: true,
+      label: label,
+      child: FilledButton.icon(
+        onPressed: onPressed,
+        icon: const Icon(Icons.search_rounded, size: 22),
+        label: Text(
+          '検索',
+          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+        ),
+        style: FilledButton.styleFrom(
+          backgroundColor: AppColors.accentPrimary,
+          foregroundColor: AppColors.textOnAccent,
+          minimumSize: const Size(0, 48),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          elevation: 1,
+          shadowColor: AppColors.textPrimary.withValues(alpha: 0.18),
+        ),
+      ),
     );
   }
 
@@ -1621,7 +1575,20 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (_genreResultsScrollController.hasClients) {
       _genreResultsScrollController.jumpTo(0);
     }
-    await context.read<RakutenSearchProvider>().searchWithCondition(condition);
+    final excludeIds = context
+        .read<RakutenManagedProductProvider>()
+        .productIdsExcludedFromKeywordSearch();
+    final savedShopCodes = context
+        .read<SavedShopProvider>()
+        .shops
+        .map((e) => e.shopId.trim())
+        .where((e) => e.isNotEmpty)
+        .toSet();
+    await context.read<RakutenSearchProvider>().searchWithCondition(
+      condition,
+      excludeRegisteredProductIds: excludeIds,
+      excludeSavedShopCodes: savedShopCodes,
+    );
   }
 
   /// 候補済・コレ済の商品や保存済みショップの商品を優先的に除外したリストを返す。
@@ -2231,10 +2198,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         // キーワードタブ: API 側で候補・コレ済・保存ショップを除いて最大100件まで集約済み。
         // ここでは一覧表示の一貫性のため同条件で再フィルタし、
         // その結果が空でも登録済み商品を一覧に戻さない（新しい候補探索の体験を優先）。
-        final base = _mode == _RakutenSearchMode.product
-            ? managedPreferred
-            : (managedPreferred.isNotEmpty ? managedPreferred : search.results);
-        final filteredResults = base;
+        final filteredResults = managedPreferred;
         final orderedResults = sortedRakutenKeywordSearchItems(
           filteredResults,
           _keywordSort,
@@ -2370,10 +2334,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           saved,
           searchScopeShopCode: _effectiveShopCodeForApi(context),
         );
-        final base = managedPreferred.isNotEmpty
-            ? managedPreferred
-            : search.results;
-        final filteredResults = base;
+        final filteredResults = managedPreferred;
         if (kDebugMode) {
           debugPrint(
             '[Rakuten] genreSearch after filter count (preferred excludes)=${filteredResults.length}',
@@ -2385,8 +2346,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             icon: Icons.filter_alt_off_outlined,
             title: 'この一覧では表示できる商品がありません',
             body: n > 0
-                ? '楽天からは $n 件取得できましたが、コレ候補・コレ済・保存ショップの除外のため、この一覧では0件です。'
-                : '検索の取得はできていますが、保存ショップ登録済みの店の商品のみヒットしたなど、表示上の理由で0件になっている可能性があります。',
+                ? '楽天からは $n 件取得できましたが、コレ候補・コレ済・保存済みショップを除いた新規候補はありませんでした。'
+                : '検索の取得はできていますが、表示対象が0件です。',
             hints: const ['詳細条件を緩めて、もう一度検索する', '「キーワード検索」に切り替えて別の切り口を試す'],
             onRefine: () => _openProductConditionsSheet(context),
             refineLabel: '詳細条件を開く',
@@ -2505,13 +2466,21 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return Consumer<SavedShopProvider>(
           builder: (context, saved, _) {
             final raw = summaries;
-            final filtered = raw
-                .where(
-                  (s) => _excludeSavedShops ? !saved.isSaved(s.shopKey) : true,
-                )
+            final visible = raw
+                .where((s) => !saved.isSaved(s.shopKey))
                 .toList(growable: false);
-            final visible = filtered.isEmpty ? raw : filtered;
             final removedCount = raw.length - visible.length;
+            if (visible.isEmpty) {
+              return RakutenSearchEmptyView(
+                icon: Icons.store_mall_directory_outlined,
+                title: '保存済みを除く新規ショップがありません',
+                body: '今回の結果はすべて保存済みショップでした。新しい候補を探すため、保存済みショップは結果から除外しています。',
+                hints: const ['キーワードやジャンルを変えて再実行する', 'ショップ発掘の条件を緩める'],
+                onRefine: () => _openShopDiscoveryConditionsSheet(context),
+                refineLabel: 'ショップ発掘の条件を開く',
+                stateFootnote: '検索自体は成功しています。',
+              );
+            }
             return Column(
               children: [
                 Padding(
@@ -2582,46 +2551,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                 height: 1.35,
                               ),
                         ),
-                        if (_excludeSavedShops)
-                          Text(
-                            removedCount > 0
-                                ? '※ 保存済みショップを除外しています（除外 $removedCount件）。'
-                                : '※ 保存済みショップも含めて表示されています。',
-                            style: Theme.of(context).textTheme.labelSmall
-                                ?.copyWith(
-                                  color: HomeScreenColors.footnoteMuted,
-                                  height: 1.3,
-                                ),
+                        Text(
+                          '※ 保存済みショップは除外しています（除外 $removedCount件）。',
+                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: HomeScreenColors.footnoteMuted,
+                            height: 1.3,
                           ),
+                        ),
                       ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    RakutenSearchScreenUi.screenPadH,
-                    0,
-                    RakutenSearchScreenUi.screenPadH,
-                    RakutenSearchScreenUi.gapFieldStack,
-                  ),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: FilterChip(
-                      selected: _excludeSavedShops,
-                      onSelected: (next) {
-                        setState(() => _excludeSavedShops = next);
-                      },
-                      label: const Text('保存済ショップを除外'),
-                      avatar: const Icon(Icons.bookmarks_outlined, size: 18),
-                      selectedColor: AppColors.accentPrimary.withValues(
-                        alpha: 0.15,
-                      ),
-                      showCheckmark: false,
-                      side: BorderSide(
-                        color: _excludeSavedShops
-                            ? HomeScreenColors.sectionOutlineAccent
-                            : HomeScreenColors.deckOutline,
-                      ),
                     ),
                   ),
                 ),
@@ -2709,15 +2646,19 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
 enum _RakutenSearchMode {
   product(
-    'キーワード検索',
+    '商品名で探す',
     Icons.shopping_bag_outlined,
-    '言葉（キーワード）で商品を探します。ジャンルやショップでも絞り込めます。',
+    '商品名や用途の言葉で、新しい候補商品を探します。',
   ),
-  genre('ジャンル探索', Icons.explore_outlined, 'ジャンル（カテゴリ）を選んで、その中から商品を広く探します。'),
+  genre(
+    'ジャンルから探す',
+    Icons.explore_outlined,
+    'カテゴリを起点に、キーワードなしでも候補商品を探せます。',
+  ),
   shopDiscovery(
-    'ショップ発掘',
+    'ショップを発掘',
     Icons.storefront_outlined,
-    'まず商品を検索し、そこから注目したいショップ候補をまとめて探します。',
+    '商品結果を集計して、次に保存したいショップ候補を見つけます。',
   );
 
   const _RakutenSearchMode(this.label, this.icon, this.description);
