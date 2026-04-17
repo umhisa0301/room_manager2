@@ -69,44 +69,49 @@ class _AppShellState extends State<AppShell> {
       builder: (sheetContext) {
         return SafeArea(
           top: false,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppDimensions.spacingMd,
-              AppDimensions.spacingSm,
-              AppDimensions.spacingMd,
-              AppDimensions.spacingMd,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('候補を追加', style: AppTextStyles.titleMedium),
-                const SizedBox(height: AppDimensions.spacingXs),
-                Text(
-                  '追加方法を選ぶと、既存の画面へ移動します',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppDimensions.spacingMd,
+                AppDimensions.spacingSm,
+                AppDimensions.spacingMd,
+                AppDimensions.spacingMd,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('候補を追加', style: AppTextStyles.titleMedium),
+                  const SizedBox(height: AppDimensions.spacingXs),
+                  Text(
+                    '追加方法を選ぶと、既存の画面へ移動します',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: AppDimensions.spacingMd),
-                _AddCandidateMenuItem(
-                  icon: Icons.travel_explore_rounded,
-                  title: '楽天で商品を探す',
-                  onTap: () => _openRakutenSearchFromSheet(sheetContext),
-                ),
-                const SizedBox(height: AppDimensions.spacingSm),
-                _AddCandidateMenuItem(
-                  icon: Icons.storefront_rounded,
-                  title: '保存ショップから探す',
-                  onTap: () => _openSavedShopsFromSheet(sheetContext),
-                ),
-                const SizedBox(height: AppDimensions.spacingSm),
-                _AddCandidateMenuItem(
-                  icon: Icons.hiking_rounded,
-                  title: 'ショップ発掘を開く',
-                  onTap: () => _openShopDiscoveryFromSheet(sheetContext),
-                ),
-              ],
+                  const SizedBox(height: AppDimensions.spacingMd),
+                  _AddCandidateMenuItem(
+                    icon: Icons.travel_explore_rounded,
+                    title: '楽天で商品を探す',
+                    description: '楽天検索から候補を追加します',
+                    onTap: () => _openRakutenSearchFromSheet(sheetContext),
+                  ),
+                  const SizedBox(height: AppDimensions.spacingSm),
+                  _AddCandidateMenuItem(
+                    icon: Icons.storefront_rounded,
+                    title: '保存ショップから探す',
+                    description: '登録済みショップから候補を探します',
+                    onTap: () => _openSavedShopsFromSheet(sheetContext),
+                  ),
+                  const SizedBox(height: AppDimensions.spacingSm),
+                  _AddCandidateMenuItem(
+                    icon: Icons.hiking_rounded,
+                    title: 'ショップ発掘を開く',
+                    description: '新しいショップを探して候補追加につなげます',
+                    onTap: () => _openShopDiscoveryFromSheet(sheetContext),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -215,11 +220,13 @@ class _AddCandidateMenuItem extends StatelessWidget {
   const _AddCandidateMenuItem({
     required this.icon,
     required this.title,
+    required this.description,
     required this.onTap,
   });
 
   final IconData icon;
   final String title;
+  final String description;
   final VoidCallback onTap;
 
   @override
@@ -233,13 +240,14 @@ class _AddCandidateMenuItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimensions.spacingMd,
-            vertical: AppDimensions.spacingSm,
+            vertical: AppDimensions.spacingMd,
           ),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 34,
-                height: 34,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(
@@ -250,11 +258,33 @@ class _AddCandidateMenuItem extends StatelessWidget {
               ),
               const SizedBox(width: AppDimensions.spacingSm),
               Expanded(
-                child: Text(title, style: AppTextStyles.bodyLarge),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      description,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const Icon(
-                Icons.chevron_right_rounded,
-                color: AppColors.textSecondary,
+              const SizedBox(width: AppDimensions.spacingXs),
+              const Padding(
+                padding: EdgeInsets.only(top: 2),
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  color: AppColors.textSecondary,
+                ),
               ),
             ],
           ),
