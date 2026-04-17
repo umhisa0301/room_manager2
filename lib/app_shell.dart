@@ -8,6 +8,7 @@ import 'screens/products_placeholder_screen.dart';
 import 'screens/comments_placeholder_screen.dart';
 import 'screens/activity_placeholder_screen.dart';
 import 'screens/mypage_placeholder_screen.dart';
+import 'screens/rakuten_search_screen.dart';
 
 /// 下部ナビゲーション＋5タブのメインシェル（2番目は ROOMコレ管理）。
 /// 選択中はアクセント色＋背景ピルで視覚的に明確にする。
@@ -71,35 +72,45 @@ class _AppShellState extends State<AppShell> {
                 ),
                 Expanded(
                   child: _NavItem(
+                    icon: Icons.travel_explore_outlined,
+                    selectedIcon: Icons.travel_explore_rounded,
+                    label: '探す',
+                    tooltip: '楽天検索',
+                    isSelected: false,
+                    onTap: () {
+                      Navigator.of(context).push<void>(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const RakutenSearchScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: _NavItem(
+                    icon: Icons.add_circle_outline_rounded,
+                    selectedIcon: Icons.add_circle_rounded,
+                    label: '＋',
+                    tooltip: null,
+                    isSelected: false,
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('＋はStep1では仮実装です'),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: _NavItem(
                     icon: Icons.collections_bookmark_outlined,
                     selectedIcon: Icons.collections_bookmark,
                     label: 'ROOMコレ',
-                    tooltip: 'ROOMコレ管理',
+                    tooltip: null,
                     isSelected: idx == 1,
                     onTap: () =>
                         context.read<AppShellController>().selectTab(1),
-                  ),
-                ),
-                Expanded(
-                  child: _NavItem(
-                    icon: Icons.chat_bubble_outline,
-                    selectedIcon: Icons.chat_bubble,
-                    label: 'コメント',
-                    tooltip: null,
-                    isSelected: idx == 2,
-                    onTap: () =>
-                        context.read<AppShellController>().selectTab(2),
-                  ),
-                ),
-                Expanded(
-                  child: _NavItem(
-                    icon: Icons.analytics_outlined,
-                    selectedIcon: Icons.analytics,
-                    label: '活動',
-                    tooltip: null,
-                    isSelected: idx == 3,
-                    onTap: () =>
-                        context.read<AppShellController>().selectTab(3),
                   ),
                 ),
                 Expanded(
