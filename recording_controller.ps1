@@ -27,6 +27,7 @@ function Show-Help {
     Write-Host ("Controller - " + $AppName) -ForegroundColor Cyan
     Write-Host "=====================================" -ForegroundColor Cyan
     Write-Host "S : Screenshot" -ForegroundColor Green
+    Write-Host "R : Hot Reload" -ForegroundColor Green
     Write-Host "Q : Stop and Save" -ForegroundColor Yellow
     Write-Host "H : Help" -ForegroundColor Cyan
     Write-Host ""
@@ -54,6 +55,13 @@ while ($true) {
             "Q" {
                 Write-Command "q"
                 Write-Host ("[" + (Get-Date -Format "HH:mm:ss") + "] Stop") -ForegroundColor Yellow
+                Start-Sleep -Milliseconds 200
+                exit
+            }
+
+            "R" {
+                Write-Command "r"
+                Write-Host ("[" + (Get-Date -Format "HH:mm:ss") + "] Hot Reload") -ForegroundColor Green
             }
 
             "H" {

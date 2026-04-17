@@ -259,6 +259,7 @@ function Show-Help {
     Write-Host ""
     Write-Host "Controller window commands:" -ForegroundColor Cyan
     Write-Host "  S : save screenshot" -ForegroundColor Cyan
+    Write-Host "  R : flutter hot reload" -ForegroundColor Cyan
     Write-Host "  Q : stop flutter and collect video" -ForegroundColor Cyan
     Write-Host "  H : show help" -ForegroundColor Cyan
     Write-Host ""
@@ -307,10 +308,11 @@ function Start-ControllerWindow {
         "-AppName", $AppName
     )
 
-    Start-Process `
+    return Start-Process `
         -FilePath $pwshPath `
         -ArgumentList $controllerArgs `
-        -WorkingDirectory $CurrentDir | Out-Null
+        -WorkingDirectory $CurrentDir `
+        -PassThru
 }
 
 Ensure-Directory -Path $LocalSaveDir
@@ -381,7 +383,7 @@ $null = Start-Process `
 Start-Sleep -Seconds 2
 
 Write-Section "Start controller window"
-Start-ControllerWindow `
+$controllerProcess = Start-ControllerWindow `
     -ControllerScript $ControllerScriptPath `
     -CommandFilePath $CommandFile `
     -LockFilePath $LockFile `
@@ -401,40 +403,79 @@ if ($DemoMode) {
 }
 
 $flutterExe = Get-FlutterCommandPath
+$flutterStartFile = $flutterExe
+$flutterStartArgs = $flutterArgs
+$flutterExeLower = $flutterExe.ToLowerInvariant()
+if ($flutterExeLower.EndsWith(".cmd") -or $flutterExeLower.EndsWith(".bat")) {
+    $flutterStartFile = "cmd.exe"
+    $flutterStartArgs = @("/c", $flutterExe) + $flutterArgs
+}
 
-$flutterProc = Start-Process `
-    -FilePath $flutterExe `
-    -ArgumentList $flutterArgs `
-    -WorkingDirectory $CurrentDir `
-    -RedirectStandardOutput $flutterStdOutLogFile `
-    -RedirectStandardError $flutterStdErrLogFile `
-    -PassThru
+$flutterStartInfo = New-Object System.Diagnostics.ProcessStartInfo
+$flutterStartInfo.FileName = $flutterStartFile
+$flutterStartInfo.WorkingDirectory = $CurrentDir
+$flutterStartInfo.UseShellExecute = $false
+$flutterStartInfo.RedirectStandardInput = $true
+$flutterStartInfo.RedirectStandardOutput = $true
+$flutterStartInfo.RedirectStandardError = $true
+$flutterStartInfo.CreateNoWindow = $true
+
+foreach ($arg in $flutterStartArgs) {
+    $null = $flutterStartInfo.ArgumentList.Add($arg)
+}
+
+$flutterProc = New-Object System.Diagnostics.Process
+$flutterProc.StartInfo = $flutterStartInfo
+$null = $flutterProc.Start()
+
+$stdoutWriter = [System.IO.StreamWriter]::new($flutterStdOutLogFile, $false, [System.Text.UTF8Encoding]::new($false))
+$stderrWriter = [System.IO.StreamWriter]::new($flutterStdErrLogFile, $false, [System.Text.UTF8Encoding]::new($false))
+$ioSync = [hashtable]::Synchronized(@{
+    StdOut = $stdoutWriter
+    StdErr = $stderrWriter
+})
+
+$stdoutEvent = Register-ObjectEvent -InputObject $flutterProc -EventName OutputDataReceived -MessageData $ioSync -Action {
+    if ($null -ne $EventArgs.Data) {
+        $state = $event.MessageData
+        [System.Threading.Monitor]::Enter($state)
+        try {
+            $state.StdOut.WriteLine($EventArgs.Data)
+            $state.StdOut.Flush()
+        }
+        finally {
+            [System.Threading.Monitor]::Exit($state)
+        }
+        Write-Host $EventArgs.Data
+    }
+}
+
+$stderrEvent = Register-ObjectEvent -InputObject $flutterProc -EventName ErrorDataReceived -MessageData $ioSync -Action {
+    if ($null -ne $EventArgs.Data) {
+        $state = $event.MessageData
+        [System.Threading.Monitor]::Enter($state)
+        try {
+            $state.StdErr.WriteLine($EventArgs.Data)
+            $state.StdErr.Flush()
+        }
+        finally {
+            [System.Threading.Monitor]::Exit($state)
+        }
+        Write-Host $EventArgs.Data -ForegroundColor DarkYellow
+    }
+}
+
+$flutterProc.BeginOutputReadLine()
+$flutterProc.BeginErrorReadLine()
 
 Write-Host ""
 Write-Host "Flutter started. Use the separate controller window." -ForegroundColor Green
-Write-Host "Showing flutter stdout below..." -ForegroundColor Green
+Write-Host "Streaming flutter logs below..." -ForegroundColor Green
 Write-Host ""
-
-$tailJob = Start-Job -ScriptBlock {
-    param($Path)
-
-    if (-not (Test-Path $Path)) {
-        New-Item -ItemType File -Path $Path -Force | Out-Null
-    }
-
-    Get-Content -Path $Path -Wait
-} -ArgumentList $flutterStdOutLogFile
 
 try {
     while (-not $flutterProc.HasExited) {
         Start-Sleep -Milliseconds 300
-
-        $tailOutput = Receive-Job -Job $tailJob -ErrorAction SilentlyContinue
-        if ($tailOutput) {
-            foreach ($line in $tailOutput) {
-                Write-Host $line
-            }
-        }
 
         $command = Get-ExternalCommand -Path $CommandFile
 
@@ -449,6 +490,12 @@ try {
                         $flutterProc.WaitForExit()
                     }
                 } catch {}
+                try {
+                    if ($controllerProcess -and -not $controllerProcess.HasExited) {
+                        $controllerProcess.Kill()
+                        $controllerProcess.WaitForExit()
+                    }
+                } catch {}
                 break
             }
 
@@ -461,28 +508,41 @@ try {
                 }
             }
 
+            "r" {
+                try {
+                    if (-not $flutterProc.HasExited) {
+                        $flutterProc.StandardInput.WriteLine("r")
+                        $flutterProc.StandardInput.Flush()
+                        Write-Host "Hot reload command sent." -ForegroundColor Green
+                    }
+                } catch {
+                    Write-Host "Hot reload failed: $($_.Exception.Message)" -ForegroundColor Red
+                }
+            }
+
             "h" {
                 Show-Help
             }
         }
     }
 
-    Start-Sleep -Seconds 1
-
-    $tailOutput = Receive-Job -Job $tailJob -ErrorAction SilentlyContinue
-    if ($tailOutput) {
-        foreach ($line in $tailOutput) {
-            Write-Host $line
-        }
-    }
-
     Write-Section "Flutter process ended"
 }
 finally {
-    if ($tailJob) {
-        try { Stop-Job $tailJob -ErrorAction SilentlyContinue } catch {}
-        try { Remove-Job $tailJob -Force -ErrorAction SilentlyContinue } catch {}
-    }
+    try { $flutterProc.CancelOutputRead() } catch {}
+    try { $flutterProc.CancelErrorRead() } catch {}
+    try { Unregister-Event -SourceIdentifier $stdoutEvent.Name -ErrorAction SilentlyContinue } catch {}
+    try { Unregister-Event -SourceIdentifier $stderrEvent.Name -ErrorAction SilentlyContinue } catch {}
+    try { Remove-Job -Id $stdoutEvent.Id -Force -ErrorAction SilentlyContinue } catch {}
+    try { Remove-Job -Id $stderrEvent.Id -Force -ErrorAction SilentlyContinue } catch {}
+    try { $stdoutWriter.Dispose() } catch {}
+    try { $stderrWriter.Dispose() } catch {}
+    try {
+        if ($controllerProcess -and -not $controllerProcess.HasExited) {
+            $controllerProcess.Kill()
+            $controllerProcess.WaitForExit()
+        }
+    } catch {}
 
     if (Test-Path $LockFile) {
         Remove-Item $LockFile -Force -ErrorAction SilentlyContinue
