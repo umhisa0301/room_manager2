@@ -9,6 +9,7 @@ import 'screens/products_placeholder_screen.dart';
 import 'screens/comments_placeholder_screen.dart';
 import 'screens/activity_placeholder_screen.dart';
 import 'screens/mypage_placeholder_screen.dart';
+import 'screens/saved_shops_screen.dart';
 
 /// 下部ナビゲーション＋5タブのメインシェル（2番目は ROOMコレ管理）。
 /// 選択中はアクセント色＋背景ピルで視覚的に明確にする。
@@ -33,6 +34,17 @@ class _AppShellState extends State<AppShell> {
     await Future<void>.delayed(Duration.zero);
     if (!mounted) return;
     await openRakutenSearchScreen(context);
+  }
+
+  Future<void> _openSavedShopsFromSheet(BuildContext sheetContext) async {
+    Navigator.of(sheetContext).pop();
+    await Future<void>.delayed(Duration.zero);
+    if (!mounted) return;
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (_) => const SavedShopsScreen(),
+      ),
+    );
   }
 
   Future<void> _showAddCandidateSheet() {
@@ -79,9 +91,7 @@ class _AppShellState extends State<AppShell> {
                 _AddCandidateMenuItem(
                   icon: Icons.storefront_rounded,
                   title: '保存ショップから探す',
-                  onTap: () {
-                    Navigator.of(sheetContext).pop();
-                  },
+                  onTap: () => _openSavedShopsFromSheet(sheetContext),
                 ),
                 const SizedBox(height: AppDimensions.spacingSm),
                 _AddCandidateMenuItem(
