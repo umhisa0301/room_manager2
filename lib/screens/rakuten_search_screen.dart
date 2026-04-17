@@ -224,6 +224,86 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
+  Future<void> _openSavedShopsFromSheet(BuildContext sheetContext) async {
+    Navigator.of(sheetContext).pop();
+    await Future<void>.delayed(Duration.zero);
+    if (!mounted) return;
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (_) => const SavedShopsScreen(),
+      ),
+    );
+  }
+
+  Future<void> _showAddCandidateSheet() {
+    return showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: false,
+      useSafeArea: true,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppDimensions.radiusCard),
+        ),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppDimensions.spacingMd,
+                AppDimensions.spacingSm,
+                AppDimensions.spacingMd,
+                AppDimensions.spacingMd,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('候補を追加', style: AppTextStyles.titleMedium),
+                  const SizedBox(height: AppDimensions.spacingXs),
+                  Text(
+                    '追加方法を選ぶと、既存の画面へ移動します',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: AppDimensions.spacingMd),
+                  _RakutenSearchAddCandidateMenuItem(
+                    icon: Icons.travel_explore_rounded,
+                    title: '楽天で商品を探す',
+                    description: '楽天検索から候補を追加します',
+                    onTap: () {
+                      Navigator.of(sheetContext).pop();
+                    },
+                  ),
+                  const SizedBox(height: AppDimensions.spacingSm),
+                  _RakutenSearchAddCandidateMenuItem(
+                    icon: Icons.storefront_rounded,
+                    title: '保存ショップから探す',
+                    description: '登録済みショップから候補を探します',
+                    onTap: () => _openSavedShopsFromSheet(sheetContext),
+                  ),
+                  const SizedBox(height: AppDimensions.spacingSm),
+                  _RakutenSearchAddCandidateMenuItem(
+                    icon: Icons.hiking_rounded,
+                    title: 'ショップ発掘を開く',
+                    description: '新しいショップを探して候補追加につなげます',
+                    onTap: () {
+                      Navigator.of(sheetContext).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildBottomNavigationBar(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -275,11 +355,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   label: '＋',
                   isSelected: false,
                   onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('候補追加メニューは次のStepで実装予定です'),
-                      ),
-                    );
+                    _showAddCandidateSheet();
                   },
                 ),
               ),
@@ -2971,6 +3047,84 @@ class _RakutenSearchBottomNavItem extends StatelessWidget {
                   style: isSelected
                       ? AppTextStyles.navLabelSelected
                       : AppTextStyles.navLabel,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RakutenSearchAddCandidateMenuItem extends StatelessWidget {
+  const _RakutenSearchAddCandidateMenuItem({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final String description;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.accentLight,
+      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.spacingMd,
+            vertical: AppDimensions.spacingMd,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(
+                    AppDimensions.radiusButton,
+                  ),
+                ),
+                child: Icon(icon, color: AppColors.accentPrimary),
+              ),
+              const SizedBox(width: AppDimensions.spacingSm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      description,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: AppDimensions.spacingXs),
+              const Padding(
+                padding: EdgeInsets.only(top: 2),
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  color: AppColors.textSecondary,
                 ),
               ),
             ],
