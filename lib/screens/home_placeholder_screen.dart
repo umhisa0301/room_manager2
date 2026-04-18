@@ -55,10 +55,6 @@ abstract final class _HomeUi {
   static EdgeInsets get paddingRecentSectionHeader =>
       EdgeInsets.fromLTRB(insetSectionH, 7, insetSectionH, 4);
 
-  /// 「このアプリについて」等：開閉ヘッダー（本文との縦リズムを他セクションに寄せる）
-  static EdgeInsets get paddingExpandableHeader =>
-      EdgeInsets.fromLTRB(insetSectionH, 8, insetSectionH, 6);
-
   /// ROOMコレ管理：メトリクスデッキの外周
   static EdgeInsets get paddingDeckOuterRoom =>
       EdgeInsets.fromLTRB(insetSectionH, 0, insetSectionH, 6);
@@ -69,10 +65,6 @@ abstract final class _HomeUi {
 
   /// 見出し行：先頭アイコンとタイトル列の間
   static const double gapIconToTitle = 8;
-
-  /// 折りたたみセクション：展開ブロックのみ（上はヘッダーで確保）
-  static EdgeInsets get paddingSectionExpandedOnly =>
-      EdgeInsets.fromLTRB(insetSectionH, 0, insetSectionH, 8);
 
   /// 楽天検索等：単独カード内のパディング（横は [insetSectionH] に揃える）
   static EdgeInsets get paddingDenseCard =>
@@ -86,14 +78,8 @@ abstract final class _HomeUi {
   static EdgeInsets get paddingRecentListFooterAction =>
       EdgeInsets.symmetric(horizontal: insetSectionH, vertical: 4);
 
-  /// セクション見出しと折りたたみ要約の間
-  static const double gapTitleToSummary = 3;
-
   /// 見出し直下の一行説明（楽天検索ブロック等）
   static const double gapHeaderTitleToLead = 2;
-
-  /// ROOMコレ管理：展開説明の下余白
-  static const double gapRoomDetailBottom = 2;
 
   /// ROOMコレ管理：区切り線とタイルデッキの間
   static const double gapRoomDividerToDeck = 2;
@@ -229,13 +215,6 @@ abstract final class _HomeUi {
     ).copyWith(color: HomeScreenColors.accentSectionHeading);
   }
 
-  /// グループセクション内の展開説明（中身本文）
-  static TextStyle sectionBodyGrouped(BuildContext context) {
-    return sectionBody(
-      context,
-    ).copyWith(color: HomeScreenColors.groupedSectionBody);
-  }
-
   /// セクション・カード見出し（何が見出しかを揃える）
   static TextStyle sectionTitle(BuildContext context) {
     final base = Theme.of(context).textTheme.titleSmall;
@@ -245,17 +224,6 @@ abstract final class _HomeUi {
       height: 1.22,
       letterSpacing: -0.15,
       color: HomeScreenColors.titlePrimary,
-    );
-  }
-
-  /// 折りたたみ時の一行サマリー
-  static TextStyle sectionCollapsedSummary(BuildContext context) {
-    final base = Theme.of(context).textTheme.labelMedium;
-    return (base ?? const TextStyle()).copyWith(
-      fontSize: 13,
-      fontWeight: FontWeight.w600,
-      height: 1.32,
-      color: HomeScreenColors.bodyOnSection,
     );
   }
 
@@ -319,8 +287,6 @@ class HomePlaceholderScreen extends StatefulWidget {
 }
 
 class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
-  bool _aboutExpanded = false;
-  bool _roomIntroExpanded = false;
   @override
   void initState() {
     super.initState();
@@ -443,7 +409,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                       events: actProvider.events,
                       now: now,
                     );
-                    final insights = HomeInsightBuilder.build(summary: kpi);
                     final hasTodaySuggestions = recProvider.totalCount > 0;
                     final todayDoneCountForRec =
                         (recProvider.totalCount - recProvider.pendingCount)
@@ -519,12 +484,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                             ),
                             SizedBox(height: _HomeUi.gapSection),
                             _RoomManagementSection(
-                              expanded: _roomIntroExpanded,
-                              onToggle: () {
-                                setState(() {
-                                  _roomIntroExpanded = !_roomIntroExpanded;
-                                });
-                              },
                               candidateTotal: nCandidate,
                               doneTotal: nDone,
                               todayDoneCount: nTodayDone,
@@ -551,31 +510,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                               onActivityTap: () => _openActivity(context),
                             ),
                             SizedBox(height: _HomeUi.gapSection),
-                            _HomeInsightSection(
-                              insights: insights,
-                              onInsightAction: (actionType) {
-                                switch (actionType) {
-                                  case 'stale_candidates':
-                                    _openRoomList(
-                                      context,
-                                      candidateStalePreset:
-                                          RoomColleStaleCandidatePreset
-                                              .threePlus,
-                                    );
-                                    break;
-                                  case 'weekly_activity':
-                                  case 'activity':
-                                    _openActivity(context);
-                                    break;
-                                  case 'candidate_list':
-                                    _openRoomList(context, initialTabIndex: 0);
-                                    break;
-                                  default:
-                                    _openActivity(context);
-                                }
-                              },
-                            ),
-                            SizedBox(height: _HomeUi.gapSection),
                             _HomeQuickLinkRow(
                               onSearch: () {
                                 Navigator.of(context).push(
@@ -593,21 +527,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                   _openRoomList(context, initialTabIndex: 1),
                               onActivity: () => _openActivity(context),
                               showIntroText: false,
-                            ),
-                            SizedBox(height: _HomeUi.gapSection),
-                            _HomeExpandableSection(
-                              expanded: _aboutExpanded,
-                              onToggle: () {
-                                setState(() {
-                                  _aboutExpanded = !_aboutExpanded;
-                                });
-                              },
-                              title: 'このアプリについて',
-                              collapsedSummary: '3ステップでROOMコレを進める（詳しく）',
-                              leadingIcon: Icons.info_outline_rounded,
-                              expandedChild: _AboutAppExpandedBody(
-                                displayName: displayName,
-                              ),
                             ),
                           ],
                         ),
@@ -678,7 +597,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
             iconColor: const Color(0xFF1565C0),
             value: '${kpi.todayCoredCount}',
             label: '今日のコレ',
-            hint: 'タップで今日分のコレ済',
+            hint: 'タップでコレ済（今日）',
             onTap: onTodayCollectTap,
           ),
           const SizedBox(height: 10),
@@ -695,7 +614,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
           if (hasTodaySuggestions) ...[
             const SizedBox(height: 6),
             Text(
-              'おすすめ: $todayDoneCountForRec/$recTotalCount 件処理済み',
+              'おすすめ $todayDoneCountForRec/$recTotalCount 件済',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: _HomeUi.tapHint(context),
@@ -882,8 +801,8 @@ class _HomeMomentumHeader extends StatelessWidget {
         ? 'こんにちは'
         : 'こんにちは、${displayName!.trim()}さん';
     final weekLine = summary.weeklyActivityCount == 0
-        ? '今週は活動ログがまだありません。1件からはじめましょう。'
-        : '今週の活動 ${summary.weeklyActivityCount} 件 · 反応スコア ${summary.weeklyReactionScore}';
+        ? '今週の活動ログはまだありません'
+        : '今週 ${summary.weeklyActivityCount} 件 · 反応 ${summary.weeklyReactionScore}';
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -940,8 +859,8 @@ class _HomeMainActionSection extends StatelessWidget {
         ? 'まずは今日のおすすめを用意しましょう'
         : 'まずは残り $pendingCount 件を確認しましょう';
     final subtitle = isCompleted && totalCount > 0
-        ? '今日の分は完了です。明日の提案に備えて管理情報だけ確認できます。'
-        : 'ホームを開いたら最初にここから。今日の候補を追加・見送りして、次の行動を確定します。';
+        ? '完了済み。必要なら一覧で確認できます。'
+        : '候補の追加・見送りで今日の分を片付けられます。';
 
     if (slim) {
       return Column(
@@ -1018,7 +937,7 @@ class _HomeKpiMetricRow extends StatelessWidget {
             iconColor: const Color(0xFF1565C0),
             value: '${summary.todayCoredCount}',
             label: '今日のコレ',
-            hint: 'タップで今日分のコレ済',
+            hint: 'タップでコレ済（今日）',
             onTap: onTodayCollectTap,
           ),
         ),
@@ -1029,7 +948,7 @@ class _HomeKpiMetricRow extends StatelessWidget {
             iconColor: const Color(0xFFE65100),
             value: '${summary.consecutiveActiveDays}',
             label: '連続活動',
-            hint: 'イベント記録ベース',
+            hint: '活動ログ基準',
             onTap: onActivityTap,
           ),
         ),
@@ -1131,95 +1050,6 @@ class _HomeMiniKpiTile extends StatelessWidget {
   }
 }
 
-class _HomeInsightSection extends StatelessWidget {
-  const _HomeInsightSection({
-    required this.insights,
-    required this.onInsightAction,
-  });
-
-  final List<HomeInsightItem> insights;
-  final void Function(String actionType) onInsightAction;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(
-            _HomeUi.insetSectionH,
-            0,
-            _HomeUi.insetSectionH,
-            6,
-          ),
-          child: Text('気づき', style: _HomeUi.sectionTitle(context)),
-        ),
-        ...insights.expand(
-          (e) => [
-            _HomeInsightTile(
-              item: e,
-              onAction: () => onInsightAction(e.actionType),
-            ),
-            const SizedBox(height: 8),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class _HomeInsightTile extends StatelessWidget {
-  const _HomeInsightTile({required this.item, required this.onAction});
-
-  final HomeInsightItem item;
-  final VoidCallback onAction;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: HomeScreenColors.standaloneCardFill,
-        borderRadius: BorderRadius.circular(_HomeUi.radiusSectionOuter),
-        border: Border.all(color: _HomeUi.sectionBorderColor(accentTint: true)),
-        boxShadow: _HomeUi.cardShadow,
-      ),
-      padding: _HomeUi.paddingDenseCard,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.tips_and_updates_outlined,
-                size: 20,
-                color: HomeScreenColors.accentSectionHeading,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  item.title,
-                  style: _HomeUi.sectionTitle(context).copyWith(fontSize: 14.5),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(item.message, style: _HomeUi.sectionBody(context)),
-          const SizedBox(height: 8),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: onAction,
-              child: Text(item.actionLabel),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _HomeQuickLinkRow extends StatelessWidget {
   const _HomeQuickLinkRow({
     required this.onSearch,
@@ -1316,116 +1146,6 @@ class _HomeChipAction extends StatelessWidget {
   }
 }
 
-/// ホーム共通：ヘッダー全面タップ・スプラッシュ・AnimatedSize で開閉。
-class _HomeExpandableSection extends StatelessWidget {
-  const _HomeExpandableSection({
-    required this.expanded,
-    required this.onToggle,
-    required this.title,
-    required this.collapsedSummary,
-    required this.leadingIcon,
-    required this.expandedChild,
-  });
-
-  final bool expanded;
-  final VoidCallback onToggle;
-  final String title;
-  final String collapsedSummary;
-  final IconData leadingIcon;
-  final Widget expandedChild;
-
-  static const Duration _animDuration = Duration(milliseconds: 280);
-  static const Curve _animCurve = Curves.easeInOutCubic;
-
-  @override
-  Widget build(BuildContext context) {
-    final radius = BorderRadius.circular(_HomeUi.radiusSectionOuter);
-    final splashColor = HomeScreenColors.inkAccentSplash;
-    final highlightColor = HomeScreenColors.inkAccentHighlight;
-    final iconColor = HomeScreenColors.sectionTitleAccent;
-
-    final decoration = BoxDecoration(
-      gradient: LinearGradient(
-        colors: HomeScreenColors.aboutSectionGradientColors,
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-      borderRadius: radius,
-      border: Border.all(color: _HomeUi.sectionBorderColor(accentTint: true)),
-      boxShadow: _HomeUi.cardShadow,
-    );
-
-    return Container(
-      width: double.infinity,
-      decoration: decoration,
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: onToggle,
-              borderRadius: radius,
-              splashColor: splashColor,
-              highlightColor: highlightColor,
-              child: Padding(
-                padding: _HomeUi.paddingExpandableHeader,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 1),
-                      child: Icon(leadingIcon, size: 22, color: iconColor),
-                    ),
-                    SizedBox(width: _HomeUi.gapIconToTitle),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(title, style: _HomeUi.sectionTitle(context)),
-                          if (collapsedSummary.isNotEmpty && !expanded) ...[
-                            const SizedBox(height: _HomeUi.gapTitleToSummary),
-                            Text(
-                              collapsedSummary,
-                              style: _HomeUi.sectionCollapsedSummary(context),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      expanded
-                          ? Icons.keyboard_arrow_up_rounded
-                          : Icons.keyboard_arrow_down_rounded,
-                      color: HomeScreenColors.chevronOnSection,
-                      size: 22,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          AnimatedSize(
-            duration: _animDuration,
-            curve: _animCurve,
-            alignment: Alignment.topCenter,
-            child: expanded
-                ? ColoredBox(
-                    color: HomeScreenColors.aboutExpandedWellFill,
-                    child: Padding(
-                      padding: _HomeUi.paddingSectionExpandedOnly,
-                      child: expandedChild,
-                    ),
-                  )
-                : const SizedBox(width: double.infinity),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 /// 楽天検索を**文脈付きブロック**として提示（ホーム主行動内の埋め込み時は枠なし・説明省略可）。
 class _HomeSearchEntrySection extends StatelessWidget {
   const _HomeSearchEntrySection({
@@ -1466,10 +1186,7 @@ class _HomeSearchEntrySection extends StatelessWidget {
                   Text('楽天で商品を探す', style: _HomeUi.sectionTitle(context)),
                   if (!omitLeadParagraph) ...[
                     SizedBox(height: _HomeUi.gapHeaderTitleToLead),
-                    Text(
-                      '主導線で候補が足りない時に使う補助導線です。検索して候補一覧へ追加できます。',
-                      style: _HomeUi.sectionBody(context),
-                    ),
+                    Text('検索して候補に追加できます。', style: _HomeUi.sectionBody(context)),
                   ],
                 ],
               ),
@@ -1499,11 +1216,9 @@ class _HomeSearchEntrySection extends StatelessWidget {
   }
 }
 
-/// ROOMコレ管理：見出し・補足・4タイルを1セクションとして囲う。
+/// ROOMコレ管理：見出し・4タイルを1セクションとして囲う（ホームでは説明折りたたみなし）。
 class _RoomManagementSection extends StatelessWidget {
   const _RoomManagementSection({
-    required this.expanded,
-    required this.onToggle,
     required this.candidateTotal,
     required this.doneTotal,
     required this.todayDoneCount,
@@ -1514,8 +1229,6 @@ class _RoomManagementSection extends StatelessWidget {
     required this.onLastCollectTap,
   });
 
-  final bool expanded;
-  final VoidCallback onToggle;
   final int candidateTotal;
   final int doneTotal;
   final int todayDoneCount;
@@ -1524,9 +1237,6 @@ class _RoomManagementSection extends StatelessWidget {
   final VoidCallback onDoneTap;
   final VoidCallback onTodayTap;
   final VoidCallback onLastCollectTap;
-
-  static const Duration _animDuration = Duration(milliseconds: 280);
-  static const Curve _animCurve = Curves.easeInOutCubic;
 
   @override
   Widget build(BuildContext context) {
@@ -1539,62 +1249,41 @@ class _RoomManagementSection extends StatelessWidget {
         children: [
           ColoredBox(
             color: HomeScreenColors.roomSectionHeaderBand,
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: onToggle,
-                splashColor: HomeScreenColors.inkAccentSplash,
-                highlightColor: HomeScreenColors.inkAccentHighlight,
-                child: Padding(
-                  padding: _HomeUi.paddingRoomSectionHeader,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 1),
-                        child: Icon(
-                          Icons.collections_bookmark_outlined,
-                          size: 22,
-                          color: HomeScreenColors.statusAccentStrong,
-                        ),
-                      ),
-                      SizedBox(width: _HomeUi.gapIconToTitle),
-                      Expanded(
-                        child: Text(
+            child: Padding(
+              padding: _HomeUi.paddingRoomSectionHeader,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 1),
+                    child: Icon(
+                      Icons.collections_bookmark_outlined,
+                      size: 22,
+                      color: HomeScreenColors.statusAccentStrong,
+                    ),
+                  ),
+                  SizedBox(width: _HomeUi.gapIconToTitle),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
                           'ROOMコレ管理',
                           style: _HomeUi.sectionTitleAccent(context),
                         ),
-                      ),
-                      Icon(
-                        expanded
-                            ? Icons.keyboard_arrow_up_rounded
-                            : Icons.keyboard_arrow_down_rounded,
-                        color: HomeScreenColors.chevronOnSection,
-                        size: 22,
-                      ),
-                    ],
+                        const SizedBox(height: 2),
+                        Text(
+                          '各タイルで一覧・ログへ',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: _HomeUi.tapHint(context),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
-          ),
-          AnimatedSize(
-            duration: _animDuration,
-            curve: _animCurve,
-            alignment: Alignment.topCenter,
-            child: expanded
-                ? Padding(
-                    padding: EdgeInsets.only(
-                      left: _HomeUi.insetSectionH,
-                      right: _HomeUi.insetSectionH,
-                      bottom: _HomeUi.gapRoomDetailBottom,
-                    ),
-                    child: Text(
-                      '管理情報をまとめて確認するブロックです。各カードを押すと対応する一覧や活動ログへ移動できます。',
-                      style: _HomeUi.sectionBodyGrouped(context),
-                    ),
-                  )
-                : const SizedBox(width: double.infinity),
           ),
           _HomeUi.sectionDivider(),
           SizedBox(height: _HomeUi.gapRoomDividerToDeck),
@@ -1679,8 +1368,8 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
                         const SizedBox(height: 2),
                         Text(
                           candidateTotalCount == 0
-                              ? '追加するとここに並びます'
-                              : '直近3件まで表示（行タップでROOMコレの該当候補へ）',
+                              ? '追加すると表示されます'
+                              : '直近3件 · 行タップでROOMコレへ',
                           style: _HomeUi.tapHint(context),
                         ),
                       ],
@@ -1715,8 +1404,8 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
             onPressed: onOpenFullList,
             title: hasMore ? 'すべて見る' : 'コレ一覧を開く',
             hint: hasMore
-                ? '候補 $candidateTotalCount 件 · ROOMコレの候補タブへ'
-                : '候補とコレ済の全体を表示',
+                ? '候補 $candidateTotalCount 件 · ROOMコレへ'
+                : 'ROOMコレの一覧へ',
             leadingIcon: hasMore
                 ? Icons.view_list_outlined
                 : Icons.playlist_add_check_outlined,
@@ -1728,116 +1417,13 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
   }
 }
 
-class _AboutAppExpandedBody extends StatelessWidget {
-  const _AboutAppExpandedBody({required this.displayName});
-
-  final String? displayName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('検索 → 候補 → コレ', style: _HomeUi.sectionCollapsedSummary(context)),
-        const SizedBox(height: _HomeUi.gapTitleToSummary),
-        if (displayName != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: _HomeUi.gapTight),
-            child: Text(
-              '$displayNameさん、まずは検索から',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w600,
-                height: 1.35,
-                fontSize: 13,
-              ),
-            ),
-          ),
-        const _FlowStepLine(
-          number: '1',
-          title: '商品を探す',
-          subtitle: '「楽天で検索」から。',
-        ),
-        const SizedBox(height: _HomeUi.gapTight),
-        const _FlowStepLine(
-          number: '2',
-          title: '候補に追加',
-          subtitle: '検索結果から候補登録。',
-        ),
-        const SizedBox(height: _HomeUi.gapTight),
-        const _FlowStepLine(
-          number: '3',
-          title: 'ROOMでコレ',
-          subtitle: 'コレ一覧のURLからROOMでコレ。',
-        ),
-      ],
-    );
-  }
-}
-
-class _FlowStepLine extends StatelessWidget {
-  const _FlowStepLine({
-    required this.number,
-    required this.title,
-    required this.subtitle,
-  });
-
-  final String number;
-  final String title;
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 24,
-          height: 24,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: HomeScreenColors.flowStepBadgeFill,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            number,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: AppColors.accentPrimary,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-        ),
-        SizedBox(width: _HomeUi.gapIconToTitle),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w800,
-                  height: 1.22,
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(height: _HomeUi.gapStackTight),
-              Text(subtitle, style: _HomeUi.sectionBody(context)),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 /// 下部のサブ導線：コレ一覧（ROOMコレタブと補完）。
 class _HomeCollectionListLink extends StatelessWidget {
   const _HomeCollectionListLink({
     required this.onPressed,
     this.embeddedInSection = false,
     this.title = 'コレ一覧を開く',
-    this.hint = '候補とコレ済の全体を表示',
+    this.hint = 'ROOMコレの一覧へ',
     this.leadingIcon = Icons.playlist_add_check_outlined,
   });
 
@@ -1983,21 +1569,21 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
     late final String footnote;
     if (isLoading && totalCount == 0) {
       statusLine = '今日の提案を用意しています…';
-      footnote = '1日あたり最大$maxN件。候補追加か見送りを決めると、今日やることが整理されます。';
+      footnote = '最大$maxN件まで。追加/見送りで整理できます。';
     } else if (errorMessage != null &&
         errorMessage!.isNotEmpty &&
         totalCount == 0) {
       statusLine = 'いま一度お試しください';
-      footnote = 'タップで再試行できます。提案は最大$maxN件で、候補追加/見送りを毎日決められます。';
+      footnote = 'タップで再試行。最大$maxN件/日。';
     } else if (totalCount == 0) {
       statusLine = '今日やる候補を、最大$maxN件まで作成できます';
-      footnote = '毎日替わる提案です。候補追加と見送りを進めると、未処理がはっきりします。';
+      footnote = '日替わり提案。追加/見送りで未処理が減ります。';
     } else if (done) {
       statusLine = '本日のおすすめはすべて完了しました';
-      footnote = '今日の判断が完了しました。日付が変わると、また最大$maxN件の提案が更新されます。';
+      footnote = '日付が変わると最大$maxN件まで再提案されます。';
     } else {
       statusLine = '残り $pendingCount 件 · 本日は最大$maxN件まで';
-      footnote = '各提案で「候補に追加」か「見送り」を選ぶと、今日やることを終えられます。';
+      footnote = '各件で追加または見送りを選べます。';
     }
 
     final String footnoteForLayout = compactLayout ? '' : footnote;
@@ -2443,10 +2029,7 @@ class _RecentCandidatesPanel extends StatelessWidget {
           children: [
             Text('候補はまだありません', style: _HomeUi.bodyEmphasis(context)),
             const SizedBox(height: _HomeUi.gapTight),
-            Text(
-              '「今日のおすすめを見る」または楽天検索から追加してください。',
-              style: _HomeUi.sectionBody(context),
-            ),
+            Text('おすすめ画面または楽天検索から追加できます。', style: _HomeUi.sectionBody(context)),
           ],
         ),
       );
