@@ -97,7 +97,7 @@ abstract final class RakutenSearchScreenUi {
         HomeScreenColors.subActionRowFill.withValues(alpha: 0.92),
         HomeScreenColors.roomContentWellFill,
       ),
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(searchFieldBorderRadius),
       border: Border.all(color: HomeScreenColors.sectionOutlineNeutral),
     );
   }
@@ -129,13 +129,47 @@ abstract final class RakutenSearchScreenUi {
         const TextStyle(fontWeight: FontWeight.w700);
   }
 
+  /// 検索バー系 TextField の角丸（探すグループ共通）。
+  static const double searchFieldBorderRadius = 10;
+
+  /// 検索バー内の余白（高さ・左右位置の基準）。
+  static const EdgeInsets searchFieldContentPadding = EdgeInsets.symmetric(
+    horizontal: 12,
+    vertical: 12,
+  );
+
+  /// 先頭アイコンサイズ（未指定の [Icon] に [IconTheme] で適用）。
+  static const double searchFieldPrefixIconSize = 20;
+
+  /// 先頭／末尾アイコンのタップ領域（縦位置を揃える）。
+  static const BoxConstraints searchFieldIconConstraints = BoxConstraints(
+    minWidth: 44,
+    minHeight: 44,
+  );
+
+  /// 並び替え帯など、一覧ヘッダ行の内側パディング（楽天結果帯と同一）。
+  static EdgeInsets get listFilterStripInnerPadding => EdgeInsets.symmetric(
+    horizontal: AppDimensions.spacingSm + 2,
+    vertical: AppDimensions.spacingSm,
+  );
+
+  /// 探すグループ：一覧行・補助ブロック（検索デッキ内ウェルと同系の外枠）。
+  static BoxDecoration exploreGroupFlatCardDecoration() {
+    return BoxDecoration(
+      color: HomeScreenColors.deckFill,
+      borderRadius: BorderRadius.circular(radiusSectionInner),
+      border: Border.all(color: HomeScreenColors.deckOutline),
+      boxShadow: cardShadow,
+    );
+  }
+
   static InputDecoration searchField({
     String? labelText,
     String? hintText,
     Widget? prefixIcon,
     Widget? suffixIcon,
   }) {
-    final r = BorderRadius.circular(10);
+    final r = BorderRadius.circular(searchFieldBorderRadius);
     final normal = OutlineInputBorder(
       borderRadius: r,
       borderSide: BorderSide(color: HomeScreenColors.deckOutline),
@@ -146,8 +180,24 @@ abstract final class RakutenSearchScreenUi {
       isDense: true,
       labelText: labelText,
       hintText: hintText,
-      prefixIcon: prefixIcon,
-      suffixIcon: suffixIcon,
+      prefixIcon: prefixIcon == null
+          ? null
+          : IconTheme(
+              data: IconThemeData(
+                size: searchFieldPrefixIconSize,
+                color: HomeScreenColors.leadOnSection,
+              ),
+              child: prefixIcon,
+            ),
+      suffixIcon: suffixIcon == null
+          ? null
+          : IconTheme(
+              data: IconThemeData(
+                size: searchFieldPrefixIconSize,
+                color: HomeScreenColors.leadOnSection,
+              ),
+              child: suffixIcon,
+            ),
       labelStyle: TextStyle(
         color: HomeScreenColors.leadOnSection,
         fontWeight: FontWeight.w600,
@@ -163,7 +213,9 @@ abstract final class RakutenSearchScreenUi {
           width: 1.5,
         ),
       ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      contentPadding: searchFieldContentPadding,
+      prefixIconConstraints: searchFieldIconConstraints,
+      suffixIconConstraints: searchFieldIconConstraints,
     );
   }
 }

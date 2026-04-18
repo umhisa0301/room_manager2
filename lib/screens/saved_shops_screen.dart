@@ -160,11 +160,7 @@ class _SavedShopsSummaryCard extends StatelessWidget {
         RakutenSearchScreenUi.gapListAfterDivider,
       ),
       padding: const EdgeInsets.all(RakutenSearchScreenUi.inputDeckPadding),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-      ),
+      decoration: RakutenSearchScreenUi.outerSectionShellDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -211,11 +207,7 @@ class _SavedShopCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(RakutenSearchScreenUi.inputDeckPadding),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-      ),
+      decoration: RakutenSearchScreenUi.exploreGroupFlatCardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

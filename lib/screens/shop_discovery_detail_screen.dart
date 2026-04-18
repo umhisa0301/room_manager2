@@ -158,11 +158,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
               padding: const EdgeInsets.all(
                 RakutenSearchScreenUi.inputDeckPadding,
               ),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-                border: Border.all(color: AppColors.divider),
-              ),
+              decoration: RakutenSearchScreenUi.modeTabDeckDecoration(),
               child: Text(
                 '使い方: 商品検索画面と同じく、各商品カードから「コレ候補へ登録」できます。',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -181,10 +177,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
               child: DecoratedBox(
                 decoration: RakutenSearchScreenUi.listFilterStripDecoration(),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppDimensions.spacingSm + 2,
-                    vertical: AppDimensions.spacingSm,
-                  ),
+                  padding: RakutenSearchScreenUi.listFilterStripInnerPadding,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -318,11 +311,7 @@ class _ShopDetailHeader extends StatelessWidget {
       width: double.infinity,
       margin: EdgeInsets.fromLTRB(0, RakutenSearchScreenUi.gapSection, 0, 0),
       padding: const EdgeInsets.all(RakutenSearchScreenUi.inputDeckPadding),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-      ),
+      decoration: RakutenSearchScreenUi.outerSectionShellDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
