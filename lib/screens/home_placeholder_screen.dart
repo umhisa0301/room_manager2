@@ -18,6 +18,7 @@ import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../widgets/home_primary_action_button.dart';
+import '../widgets/room_colle_product_list_card_layout.dart';
 
 // --- ホーム画面：レイアウト・タイポ・装飾の統一（画面ロジックとは分離）---
 
@@ -102,9 +103,6 @@ abstract final class _HomeUi {
 
   /// ROOMコレ管理：グリッドの列・行間（統一）
   static const double gapRoomGrid = 3;
-
-  /// 最近候補：展開説明の下余白
-  static const double gapRecentDetailBottom = 3;
 
   /// 最近候補：区切り線とリストデッキの間
   static const double gapRecentDividerToDeck = 3;
@@ -323,7 +321,6 @@ class HomePlaceholderScreen extends StatefulWidget {
 class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   bool _aboutExpanded = false;
   bool _roomIntroExpanded = false;
-  bool _recentIntroExpanded = false;
   @override
   void initState() {
     super.initState();
@@ -499,13 +496,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                             ),
                             SizedBox(height: _HomeUi.gapSection),
                             _RecentCandidatesHomeSection(
-                              expanded: _recentIntroExpanded,
-                              onToggle: () {
-                                setState(() {
-                                  _recentIntroExpanded = !_recentIntroExpanded;
-                                });
-                              },
                               candidates: recentCandidates,
+                              candidateTotalCount: nCandidate,
                               onOpenCandidateTap: (productId) => _openRoomList(
                                 context,
                                 focusCandidateProductId: productId,
@@ -1635,27 +1627,24 @@ class _RoomManagementSection extends StatelessWidget {
   }
 }
 
-/// 最近追加した候補：見出し・一覧・コレ一覧導線を1セクションにまとめる。
+/// 最近追加した候補：ホームでは先頭最大3件のみ。再開のきっかけ用の軽量表示。
 class _RecentCandidatesHomeSection extends StatelessWidget {
   const _RecentCandidatesHomeSection({
-    required this.expanded,
-    required this.onToggle,
     required this.candidates,
+    required this.candidateTotalCount,
     required this.onOpenCandidateTap,
     required this.onOpenFullList,
   });
 
-  final bool expanded;
-  final VoidCallback onToggle;
   final List<RakutenManagedProduct> candidates;
+  final int candidateTotalCount;
   final void Function(String productId) onOpenCandidateTap;
   final VoidCallback onOpenFullList;
 
-  static const Duration _animDuration = Duration(milliseconds: 280);
-  static const Curve _animCurve = Curves.easeInOutCubic;
-
   @override
   Widget build(BuildContext context) {
+    final hasMore = candidateTotalCount > candidates.length;
+
     return Container(
       width: double.infinity,
       decoration: _HomeUi.recentCandidatesSectionDecoration(),
@@ -1665,62 +1654,41 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
         children: [
           ColoredBox(
             color: HomeScreenColors.recentSectionHeaderBand,
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: onToggle,
-                splashColor: HomeScreenColors.inkAccentSplash,
-                highlightColor: HomeScreenColors.inkAccentHighlight,
-                child: Padding(
-                  padding: _HomeUi.paddingRecentSectionHeader,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 1),
-                        child: Icon(
-                          Icons.bookmark_added_outlined,
-                          size: 22,
-                          color: HomeScreenColors.statusAccentStrong,
-                        ),
-                      ),
-                      SizedBox(width: _HomeUi.gapIconToTitle),
-                      Expanded(
-                        child: Text(
+            child: Padding(
+              padding: _HomeUi.paddingRecentSectionHeader,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 1),
+                    child: Icon(
+                      Icons.bookmark_added_outlined,
+                      size: 22,
+                      color: HomeScreenColors.statusAccentStrong,
+                    ),
+                  ),
+                  SizedBox(width: _HomeUi.gapIconToTitle),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
                           '最近追加した候補',
                           style: _HomeUi.sectionTitleAccent(context),
                         ),
-                      ),
-                      Icon(
-                        expanded
-                            ? Icons.keyboard_arrow_up_rounded
-                            : Icons.keyboard_arrow_down_rounded,
-                        color: HomeScreenColors.chevronOnSection,
-                        size: 22,
-                      ),
-                    ],
+                        const SizedBox(height: 2),
+                        Text(
+                          candidateTotalCount == 0
+                              ? '追加するとここに並びます'
+                              : '直近3件まで表示（行タップでROOMコレの該当候補へ）',
+                          style: _HomeUi.tapHint(context),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
-          ),
-          AnimatedSize(
-            duration: _animDuration,
-            curve: _animCurve,
-            alignment: Alignment.topCenter,
-            child: expanded
-                ? Padding(
-                    padding: EdgeInsets.only(
-                      left: _HomeUi.insetSectionH,
-                      right: _HomeUi.insetSectionH,
-                      bottom: _HomeUi.gapRecentDetailBottom,
-                    ),
-                    child: Text(
-                      'ここは「後でコレする候補」の確認エリアです。直近3件を表示し、行タップで候補一覧の該当商品へ移動できます。',
-                      style: _HomeUi.sectionBodyGrouped(context),
-                    ),
-                  )
-                : const SizedBox(width: double.infinity),
           ),
           _HomeUi.sectionDivider(),
           SizedBox(height: _HomeUi.gapRecentDividerToDeck),
@@ -1734,6 +1702,7 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
                   padding: const EdgeInsets.all(_HomeUi.paddingRecentListDeck),
                   child: _RecentCandidatesPanel(
                     embedInUnifiedSection: true,
+                    compactPreview: true,
                     candidates: candidates,
                     onOpenCandidateTap: onOpenCandidateTap,
                   ),
@@ -1744,6 +1713,13 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
           _HomeCollectionListLink(
             embeddedInSection: true,
             onPressed: onOpenFullList,
+            title: hasMore ? 'すべて見る' : 'コレ一覧を開く',
+            hint: hasMore
+                ? '候補 $candidateTotalCount 件 · ROOMコレの候補タブへ'
+                : '候補とコレ済の全体を表示',
+            leadingIcon: hasMore
+                ? Icons.view_list_outlined
+                : Icons.playlist_add_check_outlined,
           ),
           SizedBox(height: _HomeUi.paddingRecentSectionBottom),
         ],
@@ -1860,12 +1836,19 @@ class _HomeCollectionListLink extends StatelessWidget {
   const _HomeCollectionListLink({
     required this.onPressed,
     this.embeddedInSection = false,
+    this.title = 'コレ一覧を開く',
+    this.hint = '候補とコレ済の全体を表示',
+    this.leadingIcon = Icons.playlist_add_check_outlined,
   });
 
   final VoidCallback onPressed;
 
   /// true のときはセクション末尾のサブアクション（主要CTAと競合しない薄めの見た目）
   final bool embeddedInSection;
+
+  final String title;
+  final String hint;
+  final IconData leadingIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -1891,7 +1874,7 @@ class _HomeCollectionListLink extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 1),
                   child: Icon(
-                    Icons.playlist_add_check_outlined,
+                    leadingIcon,
                     size: 22,
                     color: HomeScreenColors.leadOnSection,
                   ),
@@ -1902,11 +1885,11 @@ class _HomeCollectionListLink extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'コレ一覧を開く',
+                        title,
                         style: _HomeUi.sectionFooterActionTitle(context),
                       ),
                       const SizedBox(height: _HomeUi.gapStackTight),
-                      Text('候補とコレ済の全体を表示', style: _HomeUi.tapHint(context)),
+                      Text(hint, style: _HomeUi.tapHint(context)),
                     ],
                   ),
                 ),
@@ -1930,13 +1913,9 @@ class _HomeCollectionListLink extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
       child: OutlinedButton.icon(
         onPressed: onPressed,
-        icon: Icon(
-          Icons.collections_bookmark_outlined,
-          size: 20,
-          color: AppColors.accentPrimary,
-        ),
+        icon: Icon(leadingIcon, size: 20, color: AppColors.accentPrimary),
         label: Text(
-          'コレ一覧を開く',
+          title,
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 14,
@@ -2432,6 +2411,7 @@ class _RoomMetricTile extends StatelessWidget {
 class _RecentCandidatesPanel extends StatelessWidget {
   const _RecentCandidatesPanel({
     this.embedInUnifiedSection = false,
+    this.compactPreview = false,
     required this.candidates,
     required this.onOpenCandidateTap,
   });
@@ -2439,12 +2419,17 @@ class _RecentCandidatesPanel extends StatelessWidget {
   /// [_RecentCandidatesHomeSection] 内では外枠なし（親デッキが枠を持つ）
   final bool embedInUnifiedSection;
 
+  /// ホームの「最近追加した候補」向け：行を薄くし、詳細を省く。
+  final bool compactPreview;
+
   final List<RakutenManagedProduct> candidates;
   final void Function(String productId) onOpenCandidateTap;
 
   @override
   Widget build(BuildContext context) {
-    final tilePadding = embedInUnifiedSection
+    final tilePadding = compactPreview
+        ? const EdgeInsets.symmetric(horizontal: 8, vertical: 3)
+        : embedInUnifiedSection
         ? const EdgeInsets.symmetric(horizontal: 10, vertical: 4)
         : const EdgeInsets.symmetric(horizontal: 10, vertical: 7);
 
@@ -2467,19 +2452,26 @@ class _RecentCandidatesPanel extends StatelessWidget {
       );
     }
 
+    final dividerIndent = compactPreview
+        ? 52.0
+        : embedInUnifiedSection
+        ? 60.0
+        : 62.0;
+
     final list = Column(
       children: [
         for (int i = 0; i < candidates.length; i++) ...[
           _RecentCandidateTile(
             product: candidates[i],
             contentPadding: tilePadding,
+            compactPreview: compactPreview,
             onTap: () => onOpenCandidateTap(candidates[i].productId),
           ),
           if (i < candidates.length - 1)
             Divider(
               height: 1,
               thickness: 1,
-              indent: embedInUnifiedSection ? 60 : 62,
+              indent: dividerIndent,
               endIndent: embedInUnifiedSection ? 9 : 9,
               color: HomeScreenColors.listRowDivider,
             ),
@@ -2509,15 +2501,78 @@ class _RecentCandidateTile extends StatelessWidget {
       horizontal: 10,
       vertical: 4,
     ),
+    this.compactPreview = false,
     required this.onTap,
   });
 
   final RakutenManagedProduct product;
   final EdgeInsetsGeometry contentPadding;
+  final bool compactPreview;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    final thumbSize = compactPreview ? 40.0 : 46.0;
+
+    if (compactPreview) {
+      return Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          splashColor: HomeScreenColors.inkNeutralSplash,
+          highlightColor: HomeScreenColors.inkNeutralHighlight,
+          child: Padding(
+            padding: contentPadding,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _thumb(thumbSize),
+                SizedBox(width: _HomeUi.gapIconToTitle),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.itemName,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                          height: 1.22,
+                          fontSize: 13.5,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        RoomColleProductListCardLayout.formatPriceYen(
+                          product.itemPrice,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            RoomColleProductListCardLayout.priceTextStyle(
+                              Theme.of(context),
+                            )?.copyWith(fontSize: 13.5) ??
+                            _HomeUi.tapHint(context),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: HomeScreenColors.chevronOnSection.withValues(
+                    alpha: 0.55,
+                  ),
+                  size: 20,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -2529,7 +2584,7 @@ class _RecentCandidateTile extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _thumb(),
+              _thumb(thumbSize),
               SizedBox(width: _HomeUi.gapIconToTitle),
               Expanded(
                 child: Column(
@@ -2575,26 +2630,26 @@ class _RecentCandidateTile extends StatelessWidget {
     );
   }
 
-  Widget _thumb() {
+  Widget _thumb(double size) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: Container(
-        width: 46,
-        height: 46,
+        width: size,
+        height: size,
         color: HomeScreenColors.candidateThumbPlaceholder,
         child: product.imageUrl.isNotEmpty
             ? Image.network(
                 product.imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const Icon(
+                errorBuilder: (_, __, ___) => Icon(
                   Icons.image_outlined,
-                  size: 22,
+                  size: size * 0.48,
                   color: AppColors.textTertiary,
                 ),
               )
-            : const Icon(
+            : Icon(
                 Icons.image_outlined,
-                size: 22,
+                size: size * 0.48,
                 color: AppColors.textTertiary,
               ),
       ),
