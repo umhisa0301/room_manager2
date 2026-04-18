@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_colle_list_filters.dart';
 import '../navigation/app_shell_controller.dart';
+import '../navigation/rakuten_search_navigator.dart';
 import 'rakuten_search_screen.dart';
+import 'saved_shops_screen.dart';
 import 'today_recommendations_screen.dart';
 import '../services/rakuten_room_home_stats.dart';
 import '../services/room_kpi_calculator.dart';
@@ -24,13 +26,16 @@ abstract final class _HomeUi {
   const _HomeUi._();
 
   /// 主要ブロック同士（CTA・セクション・グループ）
-  static const double gapSection = 9;
+  static const double gapSection = 14;
 
   /// ホーム ListView の左右（アプリ全体の [AppDimensions.screenPaddingH] より一段狭めて表示領域を確保）
-  static const double screenPaddingH = 9;
+  static const double screenPaddingH = 10;
 
   /// ホーム ListView の上下（画面端との距離を少し詰めつつ窮屈にならない程度）
-  static const double screenPaddingV = 8;
+  static const double screenPaddingV = 10;
+
+  /// 主行動ボタン同士の縦間隔（詰まり感を抑える）
+  static const double gapHeroMainActions = 10;
 
   /// セクション外枠の角丸（`AppDimensions.radiusCard` と一致）
   static double get radiusSectionOuter => AppDimensions.radiusCard;
@@ -143,7 +148,7 @@ abstract final class _HomeUi {
   static const double gapTodayRecBeforeProgress = 2;
 
   /// 標準リストの下余白（ナビバー押さえ以外）
-  static const double listBottomExtra = 6;
+  static const double listBottomExtra = 10;
 
   /// 行末 chevron のインセット（複所で統一）
   static const EdgeInsets paddingRowChevron = EdgeInsets.only(left: 4, top: 1);
@@ -424,7 +429,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     final recentCandidates =
                         RakutenRoomHomeStats.candidatesNewestFirst(
                           items,
-                        ).take(5).toList();
+                        ).take(3).toList();
                     final bottomInset = MediaQuery.paddingOf(context).bottom;
                     const navBarReserve = 52.0;
                     final todayLocalDay = DateTime(
@@ -443,172 +448,430 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     );
                     final insights = HomeInsightBuilder.build(summary: kpi);
                     final hasTodaySuggestions = recProvider.totalCount > 0;
-                    final todayDoneCountForRec = (recProvider.totalCount -
-                            recProvider.pendingCount)
-                        .clamp(0, recProvider.totalCount);
+                    final todayDoneCountForRec =
+                        (recProvider.totalCount - recProvider.pendingCount)
+                            .clamp(0, recProvider.totalCount);
 
-                    return ListView(
-                      padding: EdgeInsets.fromLTRB(
-                        _HomeUi.screenPaddingH,
-                        _HomeUi.screenPaddingV,
-                        _HomeUi.screenPaddingH,
-                        bottomInset + navBarReserve + _HomeUi.listBottomExtra,
-                      ),
-                      children: [
-                        _HomeMomentumHeader(
-                          displayName: displayName,
-                          summary: kpi,
+                    return SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          _HomeUi.screenPaddingH,
+                          _HomeUi.screenPaddingV,
+                          _HomeUi.screenPaddingH,
+                          bottomInset + navBarReserve + _HomeUi.listBottomExtra,
                         ),
-                        const SizedBox(height: _HomeUi.gapSection),
-                        _HomeMainActionSection(
-                          pendingCount: recProvider.pendingCount,
-                          totalCount: recProvider.totalCount,
-                          isLoading: recProvider.isLoading,
-                          isCompleted: recProvider.isCompleted,
-                          onPrimaryTap: () => _openTodayRecommendations(context),
-                        ),
-                        const SizedBox(height: _HomeUi.gapSection),
-                        _HomeKpiMetricRow(
-                          summary: kpi,
-                          onTodayCollectTap: () => _openRoomList(
-                            context,
-                            initialTabIndex: 1,
-                            doneFilterLocalDay: todayLocalDay,
-                          ),
-                          onActivityTap: () => _openActivity(context),
-                        ),
-                        const SizedBox(height: _HomeUi.gapSection),
-                        _HomeQuickLinkRow(
-                          onSearch: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const RakutenSearchScreen(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _HomeMomentumHeader(
+                              displayName: displayName,
+                              summary: kpi,
+                            ),
+                            SizedBox(height: _HomeUi.gapSection),
+                            _HomeTodayProgressCard(
+                              kpi: kpi,
+                              onTodayCollectTap: () => _openRoomList(
+                                context,
+                                initialTabIndex: 1,
+                                doneFilterLocalDay: todayLocalDay,
                               ),
-                            );
-                          },
-                          onStaleCandidates: () => _openRoomList(
-                            context,
-                            candidateStalePreset:
-                                RoomColleStaleCandidatePreset.threePlus,
-                          ),
-                          onDoneList: () =>
-                              _openRoomList(context, initialTabIndex: 1),
-                          onActivity: () => _openActivity(context),
-                        ),
-                        const SizedBox(height: _HomeUi.gapSection),
-                        _TodayRecommendationsHomeSection(
-                          totalCount: recProvider.totalCount,
-                          pendingCount: recProvider.pendingCount,
-                          isCompleted: recProvider.isCompleted,
-                          isLoading: recProvider.isLoading,
-                          dateLabel: recProvider.activeDateLabelJp,
-                          errorMessage: recProvider.errorMessage,
-                          onOpen: () => _openTodayRecommendations(context),
-                        ),
-                        if (hasTodaySuggestions) ...[
-                          const SizedBox(height: _HomeUi.gapTight),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: _HomeUi.insetSectionH,
+                              totalCount: recProvider.totalCount,
+                              pendingCount: recProvider.pendingCount,
+                              isCompleted: recProvider.isCompleted,
+                              isLoading: recProvider.isLoading,
+                              dateLabel: recProvider.activeDateLabelJp,
+                              errorMessage: recProvider.errorMessage,
+                              onOpenRecommendations: () =>
+                                  _openTodayRecommendations(context),
+                              hasTodaySuggestions: hasTodaySuggestions,
+                              todayDoneCountForRec: todayDoneCountForRec,
+                              recTotalCount: recProvider.totalCount,
+                              onPrimaryRecommendations: () =>
+                                  _openTodayRecommendations(context),
                             ),
-                            child: Text(
-                              '今日の候補は $todayDoneCountForRec/${recProvider.totalCount} 件を処理済みです。'
-                              ' 残りは「おすすめを見る」から候補追加または見送りで整理できます。',
-                              style: _HomeUi.tapHint(context),
+                            SizedBox(height: _HomeUi.gapSection),
+                            _HomeHeroMainActions(
+                              onRakutenSearch: () {
+                                openRakutenSearchScreen(context);
+                              },
+                              onOpenRoomCollect: () => _openRoomList(context),
                             ),
-                          ),
-                        ],
-                        const SizedBox(height: _HomeUi.gapSection),
-                        _RoomManagementSection(
-                          expanded: _roomIntroExpanded,
-                          onToggle: () {
-                            setState(() {
-                              _roomIntroExpanded = !_roomIntroExpanded;
-                            });
-                          },
-                          candidateTotal: nCandidate,
-                          doneTotal: nDone,
-                          todayDoneCount: nTodayDone,
-                          lastDoneAt: lastDone,
-                          onCandidateTap: () =>
-                              _openRoomList(context, initialTabIndex: 0),
-                          onDoneTap: () =>
-                              _openRoomList(context, initialTabIndex: 1),
-                          onTodayTap: () => _openRoomList(
-                            context,
-                            initialTabIndex: 1,
-                            doneFilterLocalDay: todayLocalDay,
-                          ),
-                          onLastCollectTap: () => _openActivity(context),
-                        ),
-                        const SizedBox(height: _HomeUi.gapSection),
-                        _HomeInsightSection(
-                          insights: insights,
-                          onInsightAction: (actionType) {
-                            switch (actionType) {
-                              case 'stale_candidates':
-                                _openRoomList(
-                                  context,
-                                  candidateStalePreset:
-                                      RoomColleStaleCandidatePreset.threePlus,
+                            SizedBox(height: _HomeUi.gapSection),
+                            _RecentCandidatesHomeSection(
+                              expanded: _recentIntroExpanded,
+                              onToggle: () {
+                                setState(() {
+                                  _recentIntroExpanded = !_recentIntroExpanded;
+                                });
+                              },
+                              candidates: recentCandidates,
+                              onOpenCandidateTap: (productId) => _openRoomList(
+                                context,
+                                focusCandidateProductId: productId,
+                              ),
+                              onOpenFullList: () => _openRoomList(context),
+                            ),
+                            SizedBox(height: _HomeUi.gapSection),
+                            _HomeSavedShopDiscoveryRow(
+                              onOpenSavedShops: () {
+                                Navigator.of(context).push<void>(
+                                  MaterialPageRoute<void>(
+                                    builder: (_) => const SavedShopsScreen(),
+                                  ),
                                 );
-                                break;
-                              case 'weekly_activity':
-                              case 'activity':
-                                _openActivity(context);
-                                break;
-                              case 'candidate_list':
-                                _openRoomList(context, initialTabIndex: 0);
-                                break;
-                              default:
-                                _openActivity(context);
-                            }
-                          },
-                        ),
-                        const SizedBox(height: _HomeUi.gapSection),
-                        _RecentCandidatesHomeSection(
-                          expanded: _recentIntroExpanded,
-                          onToggle: () {
-                            setState(() {
-                              _recentIntroExpanded = !_recentIntroExpanded;
-                            });
-                          },
-                          candidates: recentCandidates,
-                          onOpenCandidateTap: (productId) => _openRoomList(
-                            context,
-                            focusCandidateProductId: productId,
-                          ),
-                          onOpenFullList: () => _openRoomList(context),
-                        ),
-                        const SizedBox(height: _HomeUi.gapSection),
-                        _HomeSearchEntrySection(
-                          onSearch: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const RakutenSearchScreen(),
+                              },
+                              onOpenShopDiscovery: () {
+                                openRakutenSearchScreen(context);
+                              },
+                            ),
+                            SizedBox(height: _HomeUi.gapSection),
+                            _RoomManagementSection(
+                              expanded: _roomIntroExpanded,
+                              onToggle: () {
+                                setState(() {
+                                  _roomIntroExpanded = !_roomIntroExpanded;
+                                });
+                              },
+                              candidateTotal: nCandidate,
+                              doneTotal: nDone,
+                              todayDoneCount: nTodayDone,
+                              lastDoneAt: lastDone,
+                              onCandidateTap: () =>
+                                  _openRoomList(context, initialTabIndex: 0),
+                              onDoneTap: () =>
+                                  _openRoomList(context, initialTabIndex: 1),
+                              onTodayTap: () => _openRoomList(
+                                context,
+                                initialTabIndex: 1,
+                                doneFilterLocalDay: todayLocalDay,
                               ),
-                            );
-                          },
+                              onLastCollectTap: () => _openActivity(context),
+                            ),
+                            SizedBox(height: _HomeUi.gapSection),
+                            _HomeKpiMetricRow(
+                              summary: kpi,
+                              onTodayCollectTap: () => _openRoomList(
+                                context,
+                                initialTabIndex: 1,
+                                doneFilterLocalDay: todayLocalDay,
+                              ),
+                              onActivityTap: () => _openActivity(context),
+                            ),
+                            SizedBox(height: _HomeUi.gapSection),
+                            _HomeInsightSection(
+                              insights: insights,
+                              onInsightAction: (actionType) {
+                                switch (actionType) {
+                                  case 'stale_candidates':
+                                    _openRoomList(
+                                      context,
+                                      candidateStalePreset:
+                                          RoomColleStaleCandidatePreset
+                                              .threePlus,
+                                    );
+                                    break;
+                                  case 'weekly_activity':
+                                  case 'activity':
+                                    _openActivity(context);
+                                    break;
+                                  case 'candidate_list':
+                                    _openRoomList(context, initialTabIndex: 0);
+                                    break;
+                                  default:
+                                    _openActivity(context);
+                                }
+                              },
+                            ),
+                            SizedBox(height: _HomeUi.gapSection),
+                            _HomeQuickLinkRow(
+                              onSearch: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute<void>(
+                                    builder: (_) => const RakutenSearchScreen(),
+                                  ),
+                                );
+                              },
+                              onStaleCandidates: () => _openRoomList(
+                                context,
+                                candidateStalePreset:
+                                    RoomColleStaleCandidatePreset.threePlus,
+                              ),
+                              onDoneList: () =>
+                                  _openRoomList(context, initialTabIndex: 1),
+                              onActivity: () => _openActivity(context),
+                              showIntroText: false,
+                            ),
+                            SizedBox(height: _HomeUi.gapSection),
+                            _HomeExpandableSection(
+                              expanded: _aboutExpanded,
+                              onToggle: () {
+                                setState(() {
+                                  _aboutExpanded = !_aboutExpanded;
+                                });
+                              },
+                              title: 'このアプリについて',
+                              collapsedSummary: '3ステップでROOMコレを進める（詳しく）',
+                              leadingIcon: Icons.info_outline_rounded,
+                              expandedChild: _AboutAppExpandedBody(
+                                displayName: displayName,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: _HomeUi.gapSection),
-                        _HomeExpandableSection(
-                          expanded: _aboutExpanded,
-                          onToggle: () {
-                            setState(() {
-                              _aboutExpanded = !_aboutExpanded;
-                            });
-                          },
-                          title: 'このアプリについて',
-                          collapsedSummary: '3ステップでROOMコレを進める（詳しく）',
-                          leadingIcon: Icons.info_outline_rounded,
-                          expandedChild: _AboutAppExpandedBody(
-                            displayName: displayName,
-                          ),
-                        ),
-                      ],
+                      ),
                     );
                   },
             ),
+      ),
+    );
+  }
+}
+
+/// ホーム上部：今日のコレ（KPI）とおすすめ候補の進捗を1カードにまとめる。
+class _HomeTodayProgressCard extends StatelessWidget {
+  const _HomeTodayProgressCard({
+    required this.kpi,
+    required this.onTodayCollectTap,
+    required this.totalCount,
+    required this.pendingCount,
+    required this.isCompleted,
+    required this.isLoading,
+    required this.dateLabel,
+    required this.errorMessage,
+    required this.onOpenRecommendations,
+    required this.hasTodaySuggestions,
+    required this.todayDoneCountForRec,
+    required this.recTotalCount,
+    required this.onPrimaryRecommendations,
+  });
+
+  final RoomKpiSummary kpi;
+  final VoidCallback onTodayCollectTap;
+  final int totalCount;
+  final int pendingCount;
+  final bool isCompleted;
+  final bool isLoading;
+  final String? dateLabel;
+  final String? errorMessage;
+  final VoidCallback onOpenRecommendations;
+  final bool hasTodaySuggestions;
+  final int todayDoneCountForRec;
+  final int recTotalCount;
+  final VoidCallback onPrimaryRecommendations;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.searchEntrySectionDecoration(),
+      padding: const EdgeInsets.fromLTRB(
+        _HomeUi.insetSectionH,
+        10,
+        _HomeUi.insetSectionH,
+        10,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            '今日の進捗',
+            style: _HomeUi.sectionTitle(
+              context,
+            ).copyWith(color: HomeScreenColors.accentSectionHeading),
+          ),
+          const SizedBox(height: 8),
+          _HomeMiniKpiTile(
+            icon: Icons.today_rounded,
+            iconColor: const Color(0xFF1565C0),
+            value: '${kpi.todayCoredCount}',
+            label: '今日のコレ',
+            hint: 'タップで今日分のコレ済',
+            onTap: onTodayCollectTap,
+          ),
+          const SizedBox(height: 10),
+          _TodayRecommendationsHomeSection(
+            totalCount: totalCount,
+            pendingCount: pendingCount,
+            isCompleted: isCompleted,
+            isLoading: isLoading,
+            dateLabel: dateLabel,
+            errorMessage: errorMessage,
+            onOpen: onOpenRecommendations,
+            compactLayout: true,
+          ),
+          if (hasTodaySuggestions) ...[
+            const SizedBox(height: 6),
+            Text(
+              'おすすめ: $todayDoneCountForRec/$recTotalCount 件処理済み',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: _HomeUi.tapHint(context),
+            ),
+          ],
+          const SizedBox(height: 8),
+          _HomeMainActionSection(
+            pendingCount: pendingCount,
+            totalCount: totalCount,
+            isLoading: isLoading,
+            isCompleted: isCompleted,
+            onPrimaryTap: onPrimaryRecommendations,
+            slim: true,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 主行動：楽天検索と ROOM コレ一覧（既存の遷移をそのまま利用）。
+class _HomeHeroMainActions extends StatelessWidget {
+  const _HomeHeroMainActions({
+    required this.onRakutenSearch,
+    required this.onOpenRoomCollect,
+  });
+
+  final VoidCallback onRakutenSearch;
+  final VoidCallback onOpenRoomCollect;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.searchEntrySectionDecoration(),
+      padding: const EdgeInsets.fromLTRB(
+        _HomeUi.insetSectionH,
+        10,
+        _HomeUi.insetSectionH,
+        10,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            '次の一歩',
+            style: _HomeUi.sectionTitle(
+              context,
+            ).copyWith(color: HomeScreenColors.accentSectionHeading),
+          ),
+          const SizedBox(height: 8),
+          _HomeSearchEntrySection(
+            onSearch: onRakutenSearch,
+            embeddedInHero: true,
+            omitLeadParagraph: true,
+          ),
+          SizedBox(height: _HomeUi.gapHeroMainActions),
+          HomePrimaryActionButton(
+            emphasis: HomePrimaryActionEmphasis.standard,
+            icon: Icons.collections_bookmark_outlined,
+            label: 'ROOMコレを見る',
+            onPressed: onOpenRoomCollect,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 保存ショップ・ショップ発掘（下部ナビ「＋」シートと同じ遷移先）。
+class _HomeSavedShopDiscoveryRow extends StatelessWidget {
+  const _HomeSavedShopDiscoveryRow({
+    required this.onOpenSavedShops,
+    required this.onOpenShopDiscovery,
+  });
+
+  final VoidCallback onOpenSavedShops;
+  final VoidCallback onOpenShopDiscovery;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.searchEntrySectionDecoration(),
+      padding: const EdgeInsets.fromLTRB(
+        _HomeUi.insetSectionH,
+        10,
+        _HomeUi.insetSectionH,
+        10,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'サブ導線',
+            style: _HomeUi.sectionTitle(
+              context,
+            ).copyWith(color: HomeScreenColors.accentSectionHeading),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: onOpenSavedShops,
+                  icon: Icon(
+                    Icons.storefront_rounded,
+                    size: 20,
+                    color: AppColors.accentPrimary,
+                  ),
+                  label: Text(
+                    '保存ショップ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                      color: AppColors.accentPrimary,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.accentPrimary,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 12,
+                    ),
+                    side: BorderSide(color: HomeScreenColors.metricTileOutline),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppDimensions.radiusButton,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: onOpenShopDiscovery,
+                  icon: Icon(
+                    Icons.hiking_rounded,
+                    size: 20,
+                    color: AppColors.accentPrimary,
+                  ),
+                  label: Text(
+                    'ショップ発掘',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                      color: AppColors.accentPrimary,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.accentPrimary,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 12,
+                    ),
+                    side: BorderSide(color: HomeScreenColors.metricTileOutline),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppDimensions.radiusButton,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -663,6 +926,7 @@ class _HomeMainActionSection extends StatelessWidget {
     required this.isLoading,
     required this.isCompleted,
     required this.onPrimaryTap,
+    this.slim = false,
   });
 
   final int pendingCount;
@@ -671,18 +935,42 @@ class _HomeMainActionSection extends StatelessWidget {
   final bool isCompleted;
   final VoidCallback onPrimaryTap;
 
+  /// true のときは進捗カード内用に説明を省き、主ボタンだけをコンパクトに置く。
+  final bool slim;
+
   @override
   Widget build(BuildContext context) {
     final title = isLoading && totalCount == 0
         ? '今日やることを準備中です'
         : isCompleted && totalCount > 0
-            ? '今日のおすすめは完了しました'
-            : totalCount == 0
-                ? 'まずは今日のおすすめを用意しましょう'
-                : 'まずは残り $pendingCount 件を確認しましょう';
+        ? '今日のおすすめは完了しました'
+        : totalCount == 0
+        ? 'まずは今日のおすすめを用意しましょう'
+        : 'まずは残り $pendingCount 件を確認しましょう';
     final subtitle = isCompleted && totalCount > 0
         ? '今日の分は完了です。明日の提案に備えて管理情報だけ確認できます。'
         : 'ホームを開いたら最初にここから。今日の候補を追加・見送りして、次の行動を確定します。';
+
+    if (slim) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: _HomeUi.sectionTitle(context).copyWith(fontSize: 14.5),
+          ),
+          const SizedBox(height: _HomeUi.gapSearchLeadToButton),
+          HomePrimaryActionButton(
+            emphasis: HomePrimaryActionEmphasis.hero,
+            icon: Icons.auto_awesome_rounded,
+            label: '今日のおすすめを見る',
+            onPressed: onPrimaryTap,
+          ),
+        ],
+      );
+    }
 
     return Container(
       width: double.infinity,
@@ -693,9 +981,9 @@ class _HomeMainActionSection extends StatelessWidget {
         children: [
           Text(
             '今日の入口',
-            style: _HomeUi.sectionTitle(context).copyWith(
-              color: HomeScreenColors.accentSectionHeading,
-            ),
+            style: _HomeUi.sectionTitle(
+              context,
+            ).copyWith(color: HomeScreenColors.accentSectionHeading),
           ),
           const SizedBox(height: 3),
           Text(
@@ -946,12 +1234,16 @@ class _HomeQuickLinkRow extends StatelessWidget {
     required this.onStaleCandidates,
     required this.onDoneList,
     required this.onActivity,
+    this.showIntroText = true,
   });
 
   final VoidCallback onSearch;
   final VoidCallback onStaleCandidates;
   final VoidCallback onDoneList;
   final VoidCallback onActivity;
+
+  /// false のときは見出し下の説明文を出さず、チップ行だけにする。
+  final bool showIntroText;
 
   @override
   Widget build(BuildContext context) {
@@ -965,20 +1257,18 @@ class _HomeQuickLinkRow extends StatelessWidget {
             _HomeUi.insetSectionH,
             6,
           ),
-          child: Text('サブ導線', style: _HomeUi.sectionTitle(context)),
+          child: Text('ショートカット', style: _HomeUi.sectionTitle(context)),
         ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(
-            _HomeUi.insetSectionH,
-            0,
-            _HomeUi.insetSectionH,
-            6,
+        if (showIntroText)
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              _HomeUi.insetSectionH,
+              0,
+              _HomeUi.insetSectionH,
+              6,
+            ),
+            child: Text('状況に応じて使う補助導線です。', style: _HomeUi.tapHint(context)),
           ),
-          child: Text(
-            '主導線は「今日のおすすめを見る」です。以下は状況に応じて使う補助導線です。',
-            style: _HomeUi.tapHint(context),
-          ),
-        ),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -1144,57 +1434,75 @@ class _HomeExpandableSection extends StatelessWidget {
   }
 }
 
-/// 「このアプリについて」の直後：楽天検索を**文脈付きブロック**として提示（ステップ1）。
+/// 楽天検索を**文脈付きブロック**として提示（ホーム主行動内の埋め込み時は枠なし・説明省略可）。
 class _HomeSearchEntrySection extends StatelessWidget {
-  const _HomeSearchEntrySection({required this.onSearch});
+  const _HomeSearchEntrySection({
+    required this.onSearch,
+    this.embeddedInHero = false,
+    this.omitLeadParagraph = false,
+  });
 
   final VoidCallback onSearch;
 
+  /// true のときは外枠装飾を付けず、親カード内にそのまま置く。
+  final bool embeddedInHero;
+
+  /// true のときはリード文（補助導線の説明）を出さない。
+  final bool omitLeadParagraph;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: _HomeUi.searchEntrySectionDecoration(),
-      padding: _HomeUi.paddingDenseCard,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 1),
-                child: Icon(
-                  Icons.travel_explore_rounded,
-                  size: 22,
-                  color: HomeScreenColors.statusAccentStrong,
-                ),
+    final inner = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 1),
+              child: Icon(
+                Icons.travel_explore_rounded,
+                size: 22,
+                color: HomeScreenColors.statusAccentStrong,
               ),
-              SizedBox(width: _HomeUi.gapIconToTitle),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('楽天で商品を探す', style: _HomeUi.sectionTitle(context)),
+            ),
+            SizedBox(width: _HomeUi.gapIconToTitle),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('楽天で商品を探す', style: _HomeUi.sectionTitle(context)),
+                  if (!omitLeadParagraph) ...[
                     SizedBox(height: _HomeUi.gapHeaderTitleToLead),
                     Text(
                       '主導線で候補が足りない時に使う補助導線です。検索して候補一覧へ追加できます。',
                       style: _HomeUi.sectionBody(context),
                     ),
                   ],
-                ),
+                ],
               ),
-            ],
-          ),
-          SizedBox(height: _HomeUi.gapSearchLeadToButton),
-          HomePrimaryActionButton(
-            emphasis: HomePrimaryActionEmphasis.hero,
-            icon: Icons.travel_explore_rounded,
-            label: '楽天でコレ候補を検索する',
-            onPressed: onSearch,
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+        SizedBox(height: _HomeUi.gapSearchLeadToButton),
+        HomePrimaryActionButton(
+          emphasis: HomePrimaryActionEmphasis.hero,
+          icon: Icons.travel_explore_rounded,
+          label: '楽天でコレ候補を検索する',
+          onPressed: onSearch,
+        ),
+      ],
+    );
+
+    if (embeddedInHero) {
+      return inner;
+    }
+
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.searchEntrySectionDecoration(),
+      padding: _HomeUi.paddingDenseCard,
+      child: inner,
     );
   }
 }
@@ -1379,7 +1687,7 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
                       SizedBox(width: _HomeUi.gapIconToTitle),
                       Expanded(
                         child: Text(
-                          'あとで処理する候補',
+                          '最近追加した候補',
                           style: _HomeUi.sectionTitleAccent(context),
                         ),
                       ),
@@ -1408,7 +1716,7 @@ class _RecentCandidatesHomeSection extends StatelessWidget {
                       bottom: _HomeUi.gapRecentDetailBottom,
                     ),
                     child: Text(
-                      'ここは「後でコレする候補」の確認エリアです。直近5件を表示し、行タップで候補一覧の該当商品へ移動できます。',
+                      'ここは「後でコレする候補」の確認エリアです。直近3件を表示し、行タップで候補一覧の該当商品へ移動できます。',
                       style: _HomeUi.sectionBodyGrouped(context),
                     ),
                   )
@@ -1664,6 +1972,7 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
     required this.dateLabel,
     this.errorMessage,
     required this.onOpen,
+    this.compactLayout = false,
   });
 
   final int totalCount;
@@ -1673,6 +1982,9 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
   final String? dateLabel;
   final String? errorMessage;
   final VoidCallback onOpen;
+
+  /// 進捗カード内では脚注・日付行を抑え、縦の占有を減らす。
+  final bool compactLayout;
 
   @override
   Widget build(BuildContext context) {
@@ -1709,6 +2021,8 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
       footnote = '各提案で「候補に追加」か「見送り」を選ぶと、今日やることを終えられます。';
     }
 
+    final String footnoteForLayout = compactLayout ? '' : footnote;
+
     final progress = totalCount > 0 && !done
         ? (totalCount - pendingCount) / totalCount
         : 0.0;
@@ -1741,7 +2055,14 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
           opacity: done ? 0.98 : 1,
           child: Container(
             width: double.infinity,
-            padding: _HomeUi.paddingTodayRecommendationsCard,
+            padding: compactLayout
+                ? EdgeInsets.fromLTRB(
+                    _HomeUi.insetSectionH,
+                    5,
+                    _HomeUi.insetSectionH,
+                    5,
+                  )
+                : _HomeUi.paddingTodayRecommendationsCard,
             decoration: deco,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1765,7 +2086,9 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('今日やるおすすめ候補', style: titleStyle),
-                      if (dateLabel != null && dateLabel!.isNotEmpty) ...[
+                      if (!compactLayout &&
+                          dateLabel != null &&
+                          dateLabel!.isNotEmpty) ...[
                         const SizedBox(height: 1),
                         Text(
                           '${dateLabel!}の提案（日替わり）',
@@ -1775,6 +2098,8 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                       SizedBox(height: _HomeUi.gapTodayRecTitleToStatus),
                       Text(
                         statusLine,
+                        maxLines: compactLayout ? 2 : 4,
+                        overflow: TextOverflow.ellipsis,
                         style: _HomeUi.sectionBody(context).copyWith(
                           fontWeight: FontWeight.w600,
                           height: 1.32,
@@ -1794,8 +2119,13 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                           ),
                         ),
                       ],
-                      SizedBox(height: _HomeUi.gapTodayRecStatusToFootnote),
-                      Text(footnote, style: _HomeUi.tapHint(context)),
+                      if (footnoteForLayout.isNotEmpty) ...[
+                        SizedBox(height: _HomeUi.gapTodayRecStatusToFootnote),
+                        Text(
+                          footnoteForLayout,
+                          style: _HomeUi.tapHint(context),
+                        ),
+                      ],
                       if (totalCount > 0 && !done && !isLoading) ...[
                         SizedBox(height: _HomeUi.gapTodayRecBeforeProgress),
                         ClipRRect(
@@ -2128,7 +2458,10 @@ class _RecentCandidatesPanel extends StatelessWidget {
           children: [
             Text('候補はまだありません', style: _HomeUi.bodyEmphasis(context)),
             const SizedBox(height: _HomeUi.gapTight),
-            Text('主導線の「今日のおすすめを見る」または「候補を探す」から追加してください。', style: _HomeUi.sectionBody(context)),
+            Text(
+              '「今日のおすすめを見る」または楽天検索から追加してください。',
+              style: _HomeUi.sectionBody(context),
+            ),
           ],
         ),
       );
