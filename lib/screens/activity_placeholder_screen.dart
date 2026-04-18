@@ -167,11 +167,11 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(
+                      padding: EdgeInsets.fromLTRB(
                         AppDimensions.screenPaddingH,
                         6,
                         AppDimensions.screenPaddingH,
-                        72,
+                        12 + MediaQuery.paddingOf(context).bottom,
                       ),
                       child: Wrap(
                         spacing: 8,
@@ -328,53 +328,60 @@ class _ActivityKpiSummaryBar extends StatelessWidget {
           ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            chip(
-              '今日のコレ数',
-              '$todayDoneCount件',
-              '今日処理できた件数',
-              Icons.today_rounded,
-              const Color(0xFF1565C0),
-            ),
-            chip(
-              '週間コレ数',
-              '$weeklyDoneCount件',
-              '直近7日合計',
-              Icons.show_chart_rounded,
-              const Color(0xFF5C6BC0),
-            ),
-            chip(
-              '候補ストック',
-              '$candidateCount件',
-              '次に処理できる候補',
-              Icons.inventory_2_outlined,
-              const Color(0xFFE65100),
-            ),
-            chip(
-              'コレ済累計',
-              '$doneCount件',
-              '積み上げ済みの成果',
-              Icons.task_alt_rounded,
-              const Color(0xFF2E7D32),
-            ),
-            chip(
-              '保存ショップ',
-              '$savedShopCount件',
-              '次回探索の土台',
-              Icons.bookmarks_outlined,
-              const Color(0xFF6A1B9A),
-            ),
-            chip(
-              '放置候補(3日+)',
-              '${summary.staleCandidateCount}件',
-              '整理優先の候補',
-              Icons.schedule_rounded,
-              const Color(0xFFEF6C00),
-            ),
-          ],
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              chip(
+                '今日のコレ数',
+                '$todayDoneCount件',
+                '今日処理できた件数',
+                Icons.today_rounded,
+                const Color(0xFF1565C0),
+              ),
+              const SizedBox(width: 8),
+              chip(
+                '週間コレ数',
+                '$weeklyDoneCount件',
+                '直近7日合計',
+                Icons.show_chart_rounded,
+                const Color(0xFF5C6BC0),
+              ),
+              const SizedBox(width: 8),
+              chip(
+                '候補ストック',
+                '$candidateCount件',
+                '次に処理できる候補',
+                Icons.inventory_2_outlined,
+                const Color(0xFFE65100),
+              ),
+              const SizedBox(width: 8),
+              chip(
+                'コレ済累計',
+                '$doneCount件',
+                '積み上げ済みの成果',
+                Icons.task_alt_rounded,
+                const Color(0xFF2E7D32),
+              ),
+              const SizedBox(width: 8),
+              chip(
+                '保存ショップ',
+                '$savedShopCount件',
+                '次回探索の土台',
+                Icons.bookmarks_outlined,
+                const Color(0xFF6A1B9A),
+              ),
+              const SizedBox(width: 8),
+              chip(
+                '放置候補(3日+)',
+                '${summary.staleCandidateCount}件',
+                '整理優先の候補',
+                Icons.schedule_rounded,
+                const Color(0xFFEF6C00),
+              ),
+            ],
+          ),
         ),
       ],
     );
