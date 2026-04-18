@@ -22,6 +22,7 @@ import '../validation/rakuten_keyword_detail_conditions_validation.dart';
 import '../widgets/rakuten_search_condition_fields.dart';
 import '../widgets/rakuten_search_feedback.dart';
 import '../widgets/rakuten_search_result_card.dart';
+import '../widgets/search_group_screen_shell.dart';
 import '../widgets/shop_discovery_card.dart';
 import 'saved_shops_screen.dart';
 import 'shop_discovery_detail_screen.dart';
@@ -159,7 +160,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: HomeScreenColors.canvas,
-      body: SafeArea(
+      body: SearchGroupScreenShell(
+        backgroundColor: HomeScreenColors.canvas,
+        contentPadding: EdgeInsets.zero,
         child:
             Consumer3<
               RakutenSearchProvider,
@@ -229,9 +232,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     await Future<void>.delayed(Duration.zero);
     if (!mounted) return;
     await Navigator.of(context).push<void>(
-      MaterialPageRoute<void>(
-        builder: (_) => const SavedShopsScreen(),
-      ),
+      MaterialPageRoute<void>(builder: (_) => const SavedShopsScreen()),
     );
   }
 
@@ -581,10 +582,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _SearchModeSegmented(
-                    mode: _mode,
-                    onChanged: _onModeChanged,
-                  ),
+                  _SearchModeSegmented(mode: _mode, onChanged: _onModeChanged),
                   SizedBox(
                     height: _mode == _RakutenSearchMode.product
                         ? 6.0
@@ -2197,7 +2195,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   selectionMode: _selectionMode,
                   isSelected: _selectedProductIds.contains(item.productId),
                   isSelectionEnabled: isSelectable && !_isBulkRegistering,
-                  selectionDisabledLabel: _selectionDisabledReason(item, managed),
+                  selectionDisabledLabel: _selectionDisabledReason(
+                    item,
+                    managed,
+                  ),
                   genreDisplayLineOverride: search.genreLineForItem(item),
                   onToggleSelected: () {
                     if (!isSelectable || _isBulkRegistering) return;
@@ -2321,11 +2322,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               body:
                   'コレ候補・コレ済に登録済みの商品は検索結果に含めていません。'
                   'この条件では、登録済みを除いたあとに残る商品がありませんでした（複数ページまで取得済みです）。',
-            hints: const [
-              'キーワードや詳細条件を変えてみる',
-              '登録済みが多いと、同じ条件では新しい候補は出にくくなります',
-              '「ジャンル探索」「ショップ発掘」で別の探し方を試す',
-            ],
+              hints: const [
+                'キーワードや詳細条件を変えてみる',
+                '登録済みが多いと、同じ条件では新しい候補は出にくくなります',
+                '「ジャンル探索」「ショップ発掘」で別の探し方を試す',
+              ],
               onRefine: () => _openProductConditionsSheet(context),
               refineLabel: '詳細条件を調整',
               stateFootnote: '楽天側に商品があっても、候補・コレ済を除くと0件になることがあります。',
@@ -2710,10 +2711,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         ),
                         Text(
                           '※ 保存済みショップは除外しています（除外 $removedCount件）。',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: HomeScreenColors.footnoteMuted,
-                            height: 1.3,
-                          ),
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: HomeScreenColors.footnoteMuted,
+                                height: 1.3,
+                              ),
                         ),
                       ],
                     ),
@@ -2802,16 +2804,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 }
 
 enum _RakutenSearchMode {
-  product(
-    '商品名で探す',
-    Icons.shopping_bag_outlined,
-    '商品名や用途の言葉で、新しい候補商品を探します。',
-  ),
-  genre(
-    'ジャンルから探す',
-    Icons.explore_outlined,
-    'カテゴリを起点に、キーワードなしでも候補商品を探せます。',
-  ),
+  product('商品名で探す', Icons.shopping_bag_outlined, '商品名や用途の言葉で、新しい候補商品を探します。'),
+  genre('ジャンルから探す', Icons.explore_outlined, 'カテゴリを起点に、キーワードなしでも候補商品を探せます。'),
   shopDiscovery(
     'ショップを発掘',
     Icons.storefront_outlined,
@@ -2859,10 +2853,7 @@ class _DiscoveryFlowGuideCompact extends StatelessWidget {
 }
 
 class _SearchModeSegmented extends StatelessWidget {
-  const _SearchModeSegmented({
-    required this.mode,
-    required this.onChanged,
-  });
+  const _SearchModeSegmented({required this.mode, required this.onChanged});
 
   final _RakutenSearchMode mode;
   final ValueChanged<_RakutenSearchMode> onChanged;
@@ -2939,13 +2930,11 @@ class _SearchModeSegmented extends StatelessWidget {
             padding: WidgetStateProperty.all(
               const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
             ),
-          shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                AppDimensions.radiusButton,
+            shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
               ),
             ),
-          ),
             side: WidgetStateProperty.all(
               BorderSide(color: HomeScreenColors.deckOutline),
             ),
