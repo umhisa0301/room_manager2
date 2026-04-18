@@ -422,61 +422,38 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             _SectionHeader(
               title: '運用メニュー',
               body:
-                  'ROOM投稿用コメントの管理や、コレ活動のダッシュボードへ進むための入口です。',
+                  'ROOMの投稿やコレ運用で、すぐ戻りたい画面をまとめています。'
+                  '下の2つから開けます。',
             ),
             const SizedBox(height: 10),
             _SectionCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  OutlinedButton.icon(
+                  _OperationMenuNavTile(
+                    icon: Icons.add_comment_outlined,
+                    title: 'コメントを見る',
+                    subtitle: '投稿用テンプレの作成・コピーや、直近のコピー履歴を確認できます。',
                     onPressed: () {
                       context.read<AppShellController>().selectTab(2);
                     },
-                    icon: const Icon(Icons.add_comment_outlined, size: 20),
-                    label: Text(
-                      'コメントを見る',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.bodyLarge.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 14,
-                        horizontal: AppDimensions.spacingSm,
-                      ),
-                      alignment: Alignment.centerLeft,
-                      foregroundColor: AppColors.textPrimary,
-                      side: BorderSide(color: AppColors.divider),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: AppColors.divider.withValues(alpha: 0.85),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  OutlinedButton.icon(
+                  _OperationMenuNavTile(
+                    icon: Icons.insights_outlined,
+                    title: '活動を見る',
+                    subtitle:
+                        '今日の整理やコレ状況など、ROOM運用ダッシュボードで確認できます。',
                     onPressed: () {
                       context.read<AppShellController>().openActivityTab();
                     },
-                    icon: const Icon(Icons.insights_outlined, size: 20),
-                    label: Text(
-                      '活動を見る',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.bodyLarge.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 14,
-                        horizontal: AppDimensions.spacingSm,
-                      ),
-                      alignment: Alignment.centerLeft,
-                      foregroundColor: AppColors.textPrimary,
-                      side: BorderSide(color: AppColors.divider),
-                    ),
                   ),
                 ],
               ),
@@ -560,6 +537,73 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// 運用メニュー内の導線1行（タイトル＋短い補足）。
+class _OperationMenuNavTile extends StatelessWidget {
+  const _OperationMenuNavTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
+        alignment: Alignment.centerLeft,
+        foregroundColor: AppColors.textPrimary,
+        side: BorderSide(color: AppColors.divider),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Icon(icon, size: 22, color: AppColors.accentPrimary),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  subtitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.35,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
