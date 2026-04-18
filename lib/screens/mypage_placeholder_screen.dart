@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../config/demo_mode.dart';
 import '../constants/legal_urls.dart';
+import '../navigation/app_shell_controller.dart';
 import '../models/rakuten_genre_master_entry.dart';
 import '../models/user_profile.dart';
 import '../services/app_action_service.dart';
@@ -429,7 +430,9 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   OutlinedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<AppShellController>().selectTab(2);
+                    },
                     icon: const Icon(Icons.add_comment_outlined, size: 20),
                     label: Text(
                       'コメントを見る',
