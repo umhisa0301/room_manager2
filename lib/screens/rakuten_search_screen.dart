@@ -821,7 +821,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
             side: BorderSide(color: HomeScreenColors.inlineDivider),
             minimumSize: const Size(0, 42),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            padding: RakutenSearchScreenUi.listFilterStripInnerPadding,
           ),
         ),
       ],
@@ -1957,7 +1957,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       child: DecoratedBox(
         decoration: RakutenSearchScreenUi.listFilterStripDecoration(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          padding: RakutenSearchScreenUi.listFilterStripInnerPadding,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
