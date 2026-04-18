@@ -418,6 +418,65 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
               child: const Text('保存'),
             ),
             const SizedBox(height: AppDimensions.spacingMd),
+            _SectionHeader(
+              title: '運用メニュー',
+              body:
+                  'ROOM投稿用コメントの管理や、コレ活動のダッシュボードへ進むための入口です。',
+            ),
+            const SizedBox(height: 10),
+            _SectionCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add_comment_outlined, size: 20),
+                    label: Text(
+                      'コメントを見る',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 14,
+                        horizontal: AppDimensions.spacingSm,
+                      ),
+                      alignment: Alignment.centerLeft,
+                      foregroundColor: AppColors.textPrimary,
+                      side: BorderSide(color: AppColors.divider),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  OutlinedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.insights_outlined, size: 20),
+                    label: Text(
+                      '活動を見る',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 14,
+                        horizontal: AppDimensions.spacingSm,
+                      ),
+                      alignment: Alignment.centerLeft,
+                      foregroundColor: AppColors.textPrimary,
+                      side: BorderSide(color: AppColors.divider),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppDimensions.spacingLg),
             _SectionHeader(title: 'アプリ設定や補助導線', body: '運用中によく使う管理画面へ移動できます。'),
             const SizedBox(height: 10),
             _SectionCard(
