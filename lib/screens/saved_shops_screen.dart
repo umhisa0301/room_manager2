@@ -37,6 +37,7 @@ class SavedShopsScreen extends StatelessWidget {
       ),
       body: SearchGroupScreenShell(
         backgroundColor: HomeScreenColors.canvas,
+        subtitle: '探すグループ · 楽天検索やショップ発掘で保存したショップを一覧し、再訪やコレ候補登録につなげます。',
         child: Consumer<SavedShopProvider>(
           builder: (context, saved, _) {
             final shops = saved.shops;
@@ -78,9 +79,9 @@ class SavedShopsScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(
+                    padding: EdgeInsets.fromLTRB(
                       0,
-                      AppDimensions.spacingXs,
+                      RakutenSearchScreenUi.listScrollTopPad,
                       0,
                       AppDimensions.spacingLg,
                     ),
@@ -152,18 +153,13 @@ class _SavedShopsSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.fromLTRB(
+      margin: EdgeInsets.fromLTRB(
         0,
-        AppDimensions.spacingSm + AppDimensions.spacingXs,
+        RakutenSearchScreenUi.gapSection,
         0,
-        RakutenSearchScreenUi.gapFieldStack + 3,
+        RakutenSearchScreenUi.gapListAfterDivider,
       ),
-      padding: const EdgeInsets.fromLTRB(
-        AppDimensions.spacingSm + 4,
-        AppDimensions.spacingSm + 2,
-        AppDimensions.spacingSm + 4,
-        AppDimensions.spacingSm + 2,
-      ),
+      padding: const EdgeInsets.all(RakutenSearchScreenUi.inputDeckPadding),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -181,7 +177,7 @@ class _SavedShopsSummaryCard extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: AppDimensions.spacingSm),
+          SizedBox(height: RakutenSearchScreenUi.gapFieldStack + 3),
           Align(
             alignment: Alignment.centerRight,
             child: OutlinedButton.icon(
@@ -214,7 +210,7 @@ class _SavedShopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(AppDimensions.spacingSm + 4),
+      padding: const EdgeInsets.all(RakutenSearchScreenUi.inputDeckPadding),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -232,21 +228,21 @@ class _SavedShopCard extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: AppDimensions.spacingXs + 2),
           Text(
             '保存日: ${_format(savedAt)}',
             style: Theme.of(
               context,
             ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: AppDimensions.spacingXs / 2),
           Text(
             '最終閲覧: ${lastViewedAt == null ? '未閲覧' : _format(lastViewedAt!)}',
             style: Theme.of(
               context,
             ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
           ),
-          const SizedBox(height: AppDimensions.spacingSm),
+          SizedBox(height: AppDimensions.spacingSm),
           Row(
             children: [
               Expanded(
