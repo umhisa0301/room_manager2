@@ -10,7 +10,10 @@ import '../utils/rakuten_product_genre_display.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
+import '../theme/rakuten_search_screen_tokens.dart';
 import '../widgets/rakuten_search_result_card.dart';
+import '../widgets/search_group_screen_shell.dart';
 import 'saved_shops_screen.dart';
 
 enum _ShopDetailSort { reviewCount, reviewAverage, priceHigh, priceLow }
@@ -54,8 +57,8 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
         .where((id) => id > 0)
         .toSet();
     if (ids.isEmpty) return;
-    final toPrefetch =
-        RakutenGenreMasterService.instance.genreIdsNeedingApiPrefetch(ids);
+    final toPrefetch = RakutenGenreMasterService.instance
+        .genreIdsNeedingApiPrefetch(ids);
     if (toPrefetch.isEmpty) return;
     try {
       await repo.prefetchGenreMasters(toPrefetch);
@@ -108,7 +111,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
     final saved = context.watch<SavedShopProvider>();
     final isSaved = saved.isSaved(widget.summary.shopKey);
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: HomeScreenColors.canvas,
       appBar: AppBar(
         title: const Text('ショップ詳細'),
         actions: [
@@ -119,110 +122,142 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          _ShopDetailHeader(
-            shopName: widget.summary.shopName,
-            isSaved: isSaved,
-            onSaveToggle: () async {
-              if (isSaved) {
-                await saved.removeShop(widget.summary.shopKey);
-              } else {
-                await saved.upsertShop(
-                  shopId: widget.summary.shopKey,
-                  shopName: widget.summary.shopName,
-                  shopUrl: widget.summary.shopUrl,
-                );
-              }
-              if (!context.mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(isSaved ? '保存解除しました' : '保存しました')),
-              );
-            },
-            onBackToSearch: () => Navigator.of(context).maybePop(),
-          ),
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-              border: Border.all(color: AppColors.divider),
-            ),
-            child: Text(
-              '使い方: 商品検索画面と同じく、各商品カードから「コレ候補へ登録」できます。',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.4,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-            child: Row(
-              children: [
-                Text(
-                  '商品一覧 (${items.length}件)',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const Spacer(),
-                _SortMenu(
-                  value: _sort,
-                  onChanged: (next) => setState(() => _sort = next),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Consumer<RakutenManagedProductProvider>(
-              builder: (context, managed, _) {
-                if (items.isEmpty) {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Text(
-                        'このショップの表示対象商品がありません。\n'
-                        '検索条件を変えて再発掘すると、商品が表示される場合があります。',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.5,
-                        ),
-                      ),
-                    ),
+      body: SearchGroupScreenShell(
+        backgroundColor: HomeScreenColors.canvas,
+        child: Column(
+          children: [
+            _ShopDetailHeader(
+              shopName: widget.summary.shopName,
+              isSaved: isSaved,
+              onSaveToggle: () async {
+                if (isSaved) {
+                  await saved.removeShop(widget.summary.shopKey);
+                } else {
+                  await saved.upsertShop(
+                    shopId: widget.summary.shopKey,
+                    shopName: widget.summary.shopName,
+                    shopUrl: widget.summary.shopUrl,
                   );
                 }
-                return ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-                  itemCount: items.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 10),
-                  itemBuilder: (context, index) {
-                    final item = items[index];
-                    return RakutenSearchResultCard(
-                      item: item,
-                      localStatus: managed.statusForProduct(item.productId),
-                      isRegistering: managed.isRegistering(item.productId),
-                      genreDisplayLineOverride: _genreLineForItem(item),
-                      onRegisterCandidate: () async {
-                        final err = await managed.registerCandidate(item);
-                        if (!context.mounted) return;
-                        if (err != null) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text(err)));
-                        }
-                      },
-                    );
-                  },
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(isSaved ? '保存解除しました' : '保存しました')),
                 );
               },
+              onBackToSearch: () => Navigator.of(context).maybePop(),
             ),
-          ),
-        ],
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.fromLTRB(
+                0,
+                RakutenSearchScreenUi.gapFieldStack + 3,
+                0,
+                0,
+              ),
+              padding: const EdgeInsets.fromLTRB(
+                AppDimensions.spacingSm + 4,
+                AppDimensions.spacingSm + 2,
+                AppDimensions.spacingSm + 4,
+                AppDimensions.spacingSm + 2,
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                border: Border.all(color: AppColors.divider),
+              ),
+              child: Text(
+                '使い方: 商品検索画面と同じく、各商品カードから「コレ候補へ登録」できます。',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                0,
+                AppDimensions.spacingSm,
+                0,
+                AppDimensions.spacingSm,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '商品一覧 (${items.length}件)',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: AppDimensions.spacingXs),
+                  _SortMenu(
+                    value: _sort,
+                    onChanged: (next) => setState(() => _sort = next),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Consumer<RakutenManagedProductProvider>(
+                builder: (context, managed, _) {
+                  if (items.isEmpty) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal:
+                              AppDimensions.spacingMd + AppDimensions.spacingSm,
+                        ),
+                        child: Text(
+                          'このショップの表示対象商品がありません。\n'
+                          '検索条件を変えて再発掘すると、商品が表示される場合があります。',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: AppColors.textSecondary,
+                                height: 1.5,
+                              ),
+                        ),
+                      ),
+                    );
+                  }
+                  return ListView.separated(
+                    padding: const EdgeInsets.fromLTRB(
+                      0,
+                      0,
+                      0,
+                      AppDimensions.spacingLg,
+                    ),
+                    itemCount: items.length,
+                    separatorBuilder: (_, __) =>
+                        const SizedBox(height: AppDimensions.spacingSm + 2),
+                    itemBuilder: (context, index) {
+                      final item = items[index];
+                      return RakutenSearchResultCard(
+                        item: item,
+                        localStatus: managed.statusForProduct(item.productId),
+                        isRegistering: managed.isRegistering(item.productId),
+                        genreDisplayLineOverride: _genreLineForItem(item),
+                        onRegisterCandidate: () async {
+                          final err = await managed.registerCandidate(item);
+                          if (!context.mounted) return;
+                          if (err != null) {
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(SnackBar(content: Text(err)));
+                          }
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -256,8 +291,13 @@ class _ShopDetailHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
+      margin: const EdgeInsets.fromLTRB(0, AppDimensions.spacingSm + 2, 0, 0),
+      padding: const EdgeInsets.fromLTRB(
+        AppDimensions.spacingSm + 4,
+        AppDimensions.spacingSm + 4,
+        AppDimensions.spacingSm + 4,
+        AppDimensions.spacingSm + 2,
+      ),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -268,6 +308,8 @@ class _ShopDetailHeader extends StatelessWidget {
         children: [
           Text(
             shopName,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w700,
@@ -281,8 +323,11 @@ class _ShopDetailHeader extends StatelessWidget {
               height: 1.4,
             ),
           ),
-          const SizedBox(height: 8),
-          Row(
+          const SizedBox(height: AppDimensions.spacingSm),
+          Wrap(
+            spacing: AppDimensions.spacingSm,
+            runSpacing: AppDimensions.spacingXs,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               FilledButton.icon(
                 onPressed: onSaveToggle,
@@ -294,13 +339,11 @@ class _ShopDetailHeader extends StatelessWidget {
                 ),
                 label: Text(isSaved ? '保存済み' : 'このショップを保存'),
               ),
-              const SizedBox(width: 8),
               OutlinedButton.icon(
                 onPressed: onBackToSearch,
                 icon: const Icon(Icons.tune_rounded, size: 18),
                 label: const Text('条件を変えて再検索'),
               ),
-              const SizedBox(width: 4),
               IconButton(
                 tooltip: '保存ショップ一覧を開く',
                 icon: const Icon(Icons.bookmarks_outlined, size: 20),
