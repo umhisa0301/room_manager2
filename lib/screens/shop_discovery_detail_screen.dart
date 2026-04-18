@@ -124,6 +124,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
       ),
       body: SearchGroupScreenShell(
         backgroundColor: HomeScreenColors.canvas,
+        subtitle: '探すグループ · 発掘・保存ショップから開いた店の商品を並べ替えながら、コレ候補登録につなげます。',
         child: Column(
           children: [
             _ShopDetailHeader(
@@ -148,17 +149,14 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
             ),
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.fromLTRB(
+              margin: EdgeInsets.fromLTRB(
                 0,
                 RakutenSearchScreenUi.gapFieldStack + 3,
                 0,
-                0,
+                RakutenSearchScreenUi.gapListAfterDivider,
               ),
-              padding: const EdgeInsets.fromLTRB(
-                AppDimensions.spacingSm + 4,
-                AppDimensions.spacingSm + 2,
-                AppDimensions.spacingSm + 4,
-                AppDimensions.spacingSm + 2,
+              padding: const EdgeInsets.all(
+                RakutenSearchScreenUi.inputDeckPadding,
               ),
               decoration: BoxDecoration(
                 color: AppColors.surface,
@@ -174,31 +172,58 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: EdgeInsets.fromLTRB(
                 0,
-                AppDimensions.spacingSm,
+                RakutenSearchScreenUi.gapListAfterDivider,
                 0,
-                AppDimensions.spacingSm,
+                RakutenSearchScreenUi.gapResultStatusRowBottom,
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      '商品一覧 (${items.length}件)',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
+              child: DecoratedBox(
+                decoration: RakutenSearchScreenUi.listFilterStripDecoration(),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppDimensions.spacingSm + 2,
+                    vertical: AppDimensions.spacingSm,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.inventory_2_outlined,
+                        size: 17,
+                        color: HomeScreenColors.statusAccentStrong,
                       ),
-                    ),
+                      SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
+                      Expanded(
+                        child: Text(
+                          '商品一覧（${items.length}件）',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: HomeScreenColors.leadOnSection,
+                                fontWeight: FontWeight.w700,
+                              ),
+                        ),
+                      ),
+                      SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerRight,
+                            child: _SortMenu(
+                              value: _sort,
+                              onChanged: (next) => setState(() => _sort = next),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: AppDimensions.spacingXs),
-                  _SortMenu(
-                    value: _sort,
-                    onChanged: (next) => setState(() => _sort = next),
-                  ),
-                ],
+                ),
               ),
             ),
             Expanded(
@@ -225,9 +250,9 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                     );
                   }
                   return ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(
+                    padding: EdgeInsets.fromLTRB(
                       0,
-                      0,
+                      RakutenSearchScreenUi.listScrollTopPad,
                       0,
                       AppDimensions.spacingLg,
                     ),
@@ -291,13 +316,8 @@ class _ShopDetailHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.fromLTRB(0, AppDimensions.spacingSm + 2, 0, 0),
-      padding: const EdgeInsets.fromLTRB(
-        AppDimensions.spacingSm + 4,
-        AppDimensions.spacingSm + 4,
-        AppDimensions.spacingSm + 4,
-        AppDimensions.spacingSm + 2,
-      ),
+      margin: EdgeInsets.fromLTRB(0, RakutenSearchScreenUi.gapSection, 0, 0),
+      padding: const EdgeInsets.all(RakutenSearchScreenUi.inputDeckPadding),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -315,7 +335,7 @@ class _ShopDetailHeader extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: AppDimensions.spacingXs + 2),
           Text(
             'このショップの商品を比較しながら、コレ候補登録まで進められます。',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -323,7 +343,7 @@ class _ShopDetailHeader extends StatelessWidget {
               height: 1.4,
             ),
           ),
-          const SizedBox(height: AppDimensions.spacingSm),
+          SizedBox(height: AppDimensions.spacingSm),
           Wrap(
             spacing: AppDimensions.spacingSm,
             runSpacing: AppDimensions.spacingXs,
@@ -363,37 +383,77 @@ class _ShopDetailHeader extends StatelessWidget {
   }
 }
 
+String _shopDetailSortLabel(_ShopDetailSort mode) {
+  switch (mode) {
+    case _ShopDetailSort.reviewCount:
+      return '評価数順';
+    case _ShopDetailSort.reviewAverage:
+      return '評価点順';
+    case _ShopDetailSort.priceHigh:
+      return '価格が高い順';
+    case _ShopDetailSort.priceLow:
+      return '価格が安い順';
+  }
+}
+
 class _SortMenu extends StatelessWidget {
   const _SortMenu({required this.value, required this.onChanged});
 
   final _ShopDetailSort value;
   final ValueChanged<_ShopDetailSort> onChanged;
 
+  static const List<_ShopDetailSort> _order = [
+    _ShopDetailSort.reviewCount,
+    _ShopDetailSort.reviewAverage,
+    _ShopDetailSort.priceHigh,
+    _ShopDetailSort.priceLow,
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<_ShopDetailSort>(
-      value: value,
-      underline: const SizedBox.shrink(),
-      onChanged: (next) {
-        if (next == null) return;
-        onChanged(next);
-      },
-      items: const [
-        DropdownMenuItem(
-          value: _ShopDetailSort.reviewCount,
-          child: Text('評価数順'),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          '並び順',
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: HomeScreenColors.footnoteMuted,
+            fontWeight: FontWeight.w700,
+          ),
         ),
-        DropdownMenuItem(
-          value: _ShopDetailSort.reviewAverage,
-          child: Text('評価点順'),
-        ),
-        DropdownMenuItem(
-          value: _ShopDetailSort.priceHigh,
-          child: Text('価格が高い順'),
-        ),
-        DropdownMenuItem(
-          value: _ShopDetailSort.priceLow,
-          child: Text('価格が安い順'),
+        const SizedBox(width: AppDimensions.spacingXs),
+        Theme(
+          data: Theme.of(
+            context,
+          ).copyWith(visualDensity: VisualDensity.compact),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<_ShopDetailSort>(
+              value: value,
+              isDense: true,
+              alignment: AlignmentDirectional.centerEnd,
+              icon: Icon(
+                Icons.expand_more_rounded,
+                size: 18,
+                color: HomeScreenColors.leadOnSection,
+              ),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: HomeScreenColors.leadOnSection,
+                fontWeight: FontWeight.w700,
+              ),
+              items: _order
+                  .map(
+                    (mode) => DropdownMenuItem<_ShopDetailSort>(
+                      value: mode,
+                      child: Text(_shopDetailSortLabel(mode)),
+                    ),
+                  )
+                  .toList(growable: false),
+              onChanged: (next) {
+                if (next == null || next == value) return;
+                onChanged(next);
+              },
+            ),
+          ),
         ),
       ],
     );
