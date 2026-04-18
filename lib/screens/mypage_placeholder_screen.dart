@@ -455,7 +455,9 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                   ),
                   const SizedBox(height: 10),
                   OutlinedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<AppShellController>().openActivityTab();
+                    },
                     icon: const Icon(Icons.insights_outlined, size: 20),
                     label: Text(
                       '活動を見る',
