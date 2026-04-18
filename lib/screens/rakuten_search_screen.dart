@@ -163,6 +163,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       body: SearchGroupScreenShell(
         backgroundColor: HomeScreenColors.canvas,
         contentPadding: EdgeInsets.zero,
+        subtitle: '探すグループ · キーワード・ジャンル・ショップ発掘で候補を探し、ROOM コレ候補へ登録につなげます。',
         child:
             Consumer3<
               RakutenSearchProvider,
@@ -193,25 +194,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           ? GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: _dismissKeywordSearchKeyboard,
-                              child: ColoredBox(
-                                color: HomeScreenColors.canvas,
-                                child: _buildResultArea(
-                                  context,
-                                  search,
-                                  managed,
-                                  saved,
-                                ),
-                              ),
-                            )
-                          : ColoredBox(
-                              color: HomeScreenColors.canvas,
                               child: _buildResultArea(
                                 context,
                                 search,
                                 managed,
                                 saved,
                               ),
-                            ),
+                            )
+                          : _buildResultArea(context, search, managed, saved),
                     ),
                   ],
                 );
