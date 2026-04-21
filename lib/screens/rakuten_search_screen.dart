@@ -731,7 +731,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         Align(
           alignment: Alignment.centerRight,
-          child: TextButton.icon(
+          child: OutlinedButton.icon(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute<void>(
@@ -739,11 +739,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 ),
               );
             },
-            style: TextButton.styleFrom(
+            style: OutlinedButton.styleFrom(
               foregroundColor: HomeScreenColors.leadOnSection,
+              backgroundColor: Color.alphaBlend(
+                HomeScreenColors.subActionRowFill.withValues(alpha: 0.45),
+                HomeScreenColors.deckFill,
+              ),
+              side: BorderSide(color: HomeScreenColors.inlineDivider),
+              minimumSize: const Size(0, 36),
               visualDensity: VisualDensity.compact,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             ),
             icon: const Icon(Icons.bookmarks_outlined, size: 16),
             label: Text('保存ショップ（$savedCount）'),
