@@ -1070,6 +1070,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             context,
                           ),
                         ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _mode == _RakutenSearchMode.product
+                              ? 'キーワードや絞り込み条件はここで編集できます。閉じた後はベース画面の検索ボタンでも実行できます。'
+                              : '検索ジャンルや補助キーワードはここで編集できます。閉じた後はベース画面の検索ボタンでも実行できます。',
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: HomeScreenColors.groupedSectionBody,
+                                height: 1.3,
+                              ),
+                        ),
                         if (_mode == _RakutenSearchMode.genre) ...[
                           const SizedBox(height: denseGap),
                           DecoratedBox(
@@ -1283,7 +1294,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                       size: 22,
                                     ),
                                     label: const Text(
-                                      'この条件で検索',
+                                      '条件を保存して検索',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -1316,7 +1327,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                             color:
                                                 HomeScreenColors.leadOnSection,
                                           ),
-                                          label: const Text('閉じる'),
+                                          label: const Text('閉じる（検索しない）'),
                                           style:
                                               _keywordDetailSheetAuxiliaryButtonStyle(),
                                         ),
@@ -1377,7 +1388,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                       size: 22,
                                     ),
                                     label: const Text(
-                                      'この条件で検索',
+                                      '条件を保存して検索',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -1410,7 +1421,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                             color:
                                                 HomeScreenColors.leadOnSection,
                                           ),
-                                          label: const Text('閉じる'),
+                                          label: const Text('閉じる（検索しない）'),
                                           style:
                                               _keywordDetailSheetAuxiliaryButtonStyle(),
                                         ),
