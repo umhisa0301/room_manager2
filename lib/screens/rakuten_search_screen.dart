@@ -552,11 +552,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         _buildConditionSummaryCard(
           context,
           title: '現在の条件',
-          lines: [
-            'キーワード: ${_keywordSummaryText()}',
-            'ショップ: ${_shopSummaryText(context)}',
-            'ジャンル: ${_genreSummaryText()}',
-          ],
+          chips: _productModeSummaryChips(context),
         ),
         SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
         _buildUnifiedSearchControls(
@@ -586,11 +582,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         _buildConditionSummaryCard(
           context,
           title: '現在の条件',
-          lines: [
-            '検索ジャンル: ${_genreSummaryText()}',
-            '補助キーワード: ${_genreKeywordSummaryText()}',
-            'ショップ: ${_shopSummaryText(context)}',
-          ],
+          chips: _genreModeSummaryChips(context),
         ),
         SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
         _buildUnifiedSearchControls(
@@ -611,7 +603,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   Widget _buildConditionSummaryCard(
     BuildContext context, {
     required String title,
-    required List<String> lines,
+    required List<String> chips,
   }) {
     return DecoratedBox(
       decoration: RakutenSearchScreenUi.modeTabDeckDecoration(),
@@ -628,19 +620,39 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               ),
             ),
             SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
-            ...lines.map(
-              (line) => Padding(
-                padding: const EdgeInsets.only(bottom: 3),
-                child: Text(
-                  line,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: HomeScreenColors.groupedSectionBody,
-                    height: 1.25,
-                  ),
-                ),
-              ),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: chips
+                  .map(
+                    (line) => Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Color.alphaBlend(
+                          AppColors.accentLight.withValues(alpha: 0.2),
+                          HomeScreenColors.deckFill,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          AppDimensions.radiusButton,
+                        ),
+                        border: Border.all(color: HomeScreenColors.deckOutline),
+                      ),
+                      child: Text(
+                        line,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: HomeScreenColors.groupedSectionBody,
+                          fontWeight: FontWeight.w600,
+                          height: 1.15,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(growable: false),
             ),
           ],
         ),
@@ -648,29 +660,45 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  String _keywordSummaryText() {
+  List<String> _productModeSummaryChips(BuildContext context) {
+    final out = <String>[];
     final keyword = _keywordController.text.trim();
-    return keyword.isEmpty ? '未入力（詳細条件から設定）' : keyword;
-  }
-
-  String _genreSummaryText() {
-    final genreId = _selectedGenreId?.trim();
-    if (genreId == null || genreId.isEmpty) {
-      return '未選択（詳細条件から設定）';
+    if (keyword.isNotEmpty) out.add('キーワード: $keyword');
+    if (_hasPriceCondition()) out.add('価格条件あり');
+    if (_excludeKeywordController.text.trim().isNotEmpty) {
+      out.add('除外ワードあり');
     }
-    return _genreUiLabelForId(genreId);
+    if (_selectedShopCode?.trim().isNotEmpty == true) {
+      out.add('ショップ絞り込みあり');
+    }
+    final genreId = _selectedGenreId?.trim();
+    if (genreId != null && genreId.isNotEmpty) out.add('ジャンル指定あり');
+    if (out.isEmpty) out.add('条件未設定（詳細条件から設定）');
+    return out;
   }
 
-  String _genreKeywordSummaryText() {
-    final keyword = _genreController.text.trim();
-    return keyword.isEmpty ? '指定なし' : keyword;
+  List<String> _genreModeSummaryChips(BuildContext context) {
+    final out = <String>[];
+    final genreId = _selectedGenreId?.trim();
+    if (genreId != null && genreId.isNotEmpty) {
+      out.add('ジャンル: ${_genreUiLabelForId(genreId)}');
+    }
+    final kw = _genreController.text.trim();
+    if (kw.isNotEmpty) out.add('補助キーワード: $kw');
+    if (_hasPriceCondition()) out.add('価格条件あり');
+    if (_excludeKeywordController.text.trim().isNotEmpty) {
+      out.add('除外ワードあり');
+    }
+    if (_selectedShopCode?.trim().isNotEmpty == true) {
+      out.add('ショップ絞り込みあり');
+    }
+    if (out.isEmpty) out.add('条件未設定（詳細条件から設定）');
+    return out;
   }
 
-  String _shopSummaryText(BuildContext context) {
-    final shopCode = _selectedShopCode?.trim();
-    if (shopCode == null || shopCode.isEmpty) return '指定なし';
-    final shop = context.read<SavedShopProvider>().findById(shopCode);
-    return shop?.shopName ?? '指定なし';
+  bool _hasPriceCondition() {
+    return _minPriceController.text.trim().isNotEmpty ||
+        _maxPriceController.text.trim().isNotEmpty;
   }
 
   Widget _buildShopDiscoveryInput(
