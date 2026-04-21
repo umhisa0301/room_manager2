@@ -960,20 +960,21 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       foregroundColor: HomeScreenColors.leadOnSection,
       backgroundColor: HomeScreenColors.deckFill,
       side: BorderSide(color: HomeScreenColors.deckOutline, width: 1),
-      minimumSize: const Size(0, 48),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-      visualDensity: VisualDensity.standard,
+      minimumSize: const Size(0, 42),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      visualDensity: VisualDensity.compact,
       tapTargetSize: MaterialTapTargetSize.padded,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       textStyle: const TextStyle(
         fontWeight: FontWeight.w600,
-        fontSize: 13.5,
+        fontSize: 13,
         height: 1.2,
       ),
     );
   }
 
   Future<void> _openProductConditionsSheet(BuildContext screenContext) async {
+    const denseGap = 8.0;
     if (_mode == _RakutenSearchMode.product) {
       _dismissKeywordSearchKeyboard();
     }
@@ -1011,12 +1012,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           ),
                         ),
                         if (_mode == _RakutenSearchMode.genre) ...[
-                          const SizedBox(height: 10),
+                          const SizedBox(height: denseGap),
                           DecoratedBox(
                             decoration:
                                 RakutenSearchScreenUi.modeTabDeckDecoration(),
                             child: Padding(
-                              padding: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(8),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
@@ -1064,11 +1065,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: RakutenSearchScreenUi.gapKeywordToControls,
-                          ),
+                          const SizedBox(height: denseGap),
                         ] else ...[
-                          const SizedBox(height: 10),
+                          const SizedBox(height: denseGap),
                           TextField(
                             controller: _keywordController,
                             textInputAction: TextInputAction.search,
@@ -1093,9 +1092,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: RakutenSearchScreenUi.gapKeywordToControls,
-                          ),
+                          const SizedBox(height: denseGap),
                         ],
                         RakutenSearchPriceRangeRow(
                           minPriceController: _minPriceController,
@@ -1104,7 +1101,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               RakutenKeywordDetailConditionsInput
                                   .digitsOnlyField,
                         ),
-                        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+                        const SizedBox(height: denseGap),
                         TextField(
                           controller: _excludeKeywordController,
                           onChanged: (_) => setModalState(() {}),
@@ -1117,7 +1114,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             ),
                           ),
                         ),
-                        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+                        const SizedBox(height: denseGap),
                         RakutenSearchMinReviewDropdownRow(
                           selectedReviewCount:
                               _keywordSheetSelectedReviewCount(),
@@ -1140,7 +1137,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             setModalState(() {});
                           },
                         ),
-                        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+                        const SizedBox(height: denseGap),
                         TextField(
                           controller: _minCommentCountController,
                           keyboardType: const TextInputType.numberWithOptions(
@@ -1159,7 +1156,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             ),
                           ),
                         ),
-                        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+                        const SizedBox(height: denseGap),
                         Consumer<SavedShopProvider>(
                           builder: (context, savedProv, _) {
                             final shops = _sanitizedSavedShopsForSearch(
@@ -1190,7 +1187,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           },
                         ),
                         if (_mode == _RakutenSearchMode.product) ...[
-                          SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+                          const SizedBox(height: denseGap),
                           RakutenSearchGenreDropdownField(
                             labelText: 'ジャンル（任意）',
                             value: _selectedGenreId,
@@ -1201,9 +1198,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             },
                           ),
                         ],
-                        SizedBox(
-                          height: RakutenSearchScreenUi.gapKeywordToControls,
-                        ),
+                        const SizedBox(height: denseGap),
                         if (_mode == _RakutenSearchMode.product) ...[
                           Consumer<RakutenSearchProvider>(
                             builder: (context, search, _) {
@@ -1244,7 +1239,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
+                                  const SizedBox(height: denseGap),
                                   Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -1267,7 +1262,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                               _keywordDetailSheetAuxiliaryButtonStyle(),
                                         ),
                                       ),
-                                      const SizedBox(width: 10),
+                                      const SizedBox(width: 8),
                                       Expanded(
                                         child: OutlinedButton.icon(
                                           onPressed: () {
@@ -1338,7 +1333,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
+                                  const SizedBox(height: denseGap),
                                   Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -1361,7 +1356,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                               _keywordDetailSheetAuxiliaryButtonStyle(),
                                         ),
                                       ),
-                                      const SizedBox(width: 10),
+                                      const SizedBox(width: 8),
                                       Expanded(
                                         child: OutlinedButton.icon(
                                           onPressed: () {
@@ -1405,6 +1400,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   Future<void> _openShopDiscoveryConditionsSheet(BuildContext context) async {
+    const denseGap = 8.0;
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -1433,9 +1429,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         context,
                       ),
                     ),
-                    SizedBox(
-                      height: RakutenSearchScreenUi.gapKeywordToControls,
-                    ),
+                    const SizedBox(height: denseGap),
                     TextField(
                       controller: _shopDiscoveryExcludeController,
                       decoration: RakutenSearchScreenUi.searchField(
@@ -1447,7 +1441,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         ),
                       ),
                     ),
-                    SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+                    const SizedBox(height: denseGap),
                     Row(
                       children: [
                         Expanded(
@@ -1484,7 +1478,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         ),
                       ],
                     ),
-                    SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+                    const SizedBox(height: denseGap),
                     Row(
                       children: [
                         Expanded(
@@ -1518,14 +1512,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: RakutenSearchScreenUi.gapKeywordToControls,
-                    ),
+                    const SizedBox(height: denseGap),
                     FilledButton(
                       onPressed: () => Navigator.of(sheetContext).pop(),
                       style: FilledButton.styleFrom(
                         backgroundColor: AppColors.accentPrimary,
                         foregroundColor: AppColors.textOnAccent,
+                        minimumSize: const Size(0, 44),
+                        visualDensity: VisualDensity.compact,
                       ),
                       child: const Text('閉じる'),
                     ),
