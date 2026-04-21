@@ -709,79 +709,26 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
-          controller: _shopDiscoveryKeywordController,
-          textInputAction: TextInputAction.next,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontSize: 14,
-            height: 1.22,
-            color: HomeScreenColors.titlePrimary,
-          ),
-          decoration: RakutenSearchScreenUi.searchField(
-            labelText: 'キーワード',
-            hintText: '例: おしゃれ 家具',
-            prefixIcon: Icon(
-              Icons.search_rounded,
-              color: HomeScreenColors.leadOnSection,
+        _buildConditionSummaryCard(
+          context,
+          title: '現在の発掘条件',
+          chips: _shopDiscoveryModeSummaryChips(),
+        ),
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: OutlinedButton.icon(
+            onPressed: () => _openShopDiscoveryConditionsSheet(context),
+            icon: Icon(
+              Icons.tune_rounded,
+              size: 17,
+              color: HomeScreenColors.accentSectionHeading,
             ),
+            label: const Text('発掘条件を編集'),
+            style: _detailConditionsButtonStyle(),
           ),
         ),
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
-        InputDecorator(
-          decoration: RakutenSearchScreenUi.searchField(
-            labelText: 'ジャンル',
-            prefixIcon: Icon(
-              Icons.category_outlined,
-              color: HomeScreenColors.leadOnSection,
-            ),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String?>(
-              isExpanded: true,
-              value: _selectedDiscoveryGenreId,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: HomeScreenColors.titlePrimary,
-              ),
-              items: _mockGenres
-                  .map(
-                    (e) => DropdownMenuItem<String?>(
-                      value: e.id,
-                      child: Text(e.label),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                setState(() => _selectedDiscoveryGenreId = value);
-              },
-            ),
-          ),
-        ),
-        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
-        Row(
-          children: [
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: () => _openShopDiscoveryConditionsSheet(context),
-                icon: Icon(
-                  Icons.tune_rounded,
-                  size: 17,
-                  color: HomeScreenColors.accentSectionHeading,
-                ),
-                label: const Text('ショップ発掘の条件'),
-                style: _detailConditionsButtonStyle(),
-              ),
-            ),
-            SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
-            Expanded(
-              child: OutlinedButton(
-                onPressed: _clearConditionsForCurrentMode,
-                style: _neutralConditionsButtonStyle(),
-                child: const Text('条件クリア'),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 2),
         Align(
           alignment: Alignment.centerRight,
           child: TextButton.icon(
@@ -802,7 +749,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             label: Text('保存ショップ（$savedCount）'),
           ),
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapFieldStack - 1),
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         SizedBox(
           height: 46,
           child: FilledButton.icon(
@@ -823,6 +770,33 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         ),
       ],
     );
+  }
+
+  List<String> _shopDiscoveryModeSummaryChips() {
+    final out = <String>[];
+    final keyword = _shopDiscoveryKeywordController.text.trim();
+    if (keyword.isNotEmpty) out.add('キーワード: $keyword');
+    final genreId = _selectedDiscoveryGenreId?.trim();
+    if (genreId != null && genreId.isNotEmpty) {
+      out.add('ジャンル: ${_genreUiLabelForId(genreId)}');
+    }
+    if (_shopDiscoveryExcludeController.text.trim().isNotEmpty) {
+      out.add('除外ワードあり');
+    }
+    if (_shopDiscoveryMinReviewCountController.text.trim().isNotEmpty ||
+        _shopDiscoveryMinReviewAverageController.text.trim().isNotEmpty) {
+      out.add('評価下限あり');
+    }
+    final shopLimit = _shopDiscoveryShopLimitController.text.trim();
+    if (shopLimit.isNotEmpty && shopLimit != '10') {
+      out.add('表示ショップ数: $shopLimit');
+    }
+    final itemsPerShop = _shopDiscoveryItemsPerShopController.text.trim();
+    if (itemsPerShop.isNotEmpty && itemsPerShop != '5') {
+      out.add('商品数/店: $itemsPerShop');
+    }
+    if (out.isEmpty) out.add('条件未設定（発掘条件を編集）');
+    return out;
   }
 
   void _onModeChanged(_RakutenSearchMode next) {
@@ -1497,6 +1471,48 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       'ショップ発掘の詳細条件',
                       style: RakutenSearchScreenUi.sectionHeadingAccent(
                         context,
+                      ),
+                    ),
+                    const SizedBox(height: denseGap),
+                    TextField(
+                      controller: _shopDiscoveryKeywordController,
+                      textInputAction: TextInputAction.next,
+                      decoration: RakutenSearchScreenUi.searchField(
+                        labelText: 'キーワード',
+                        hintText: '例: おしゃれ 家具',
+                        prefixIcon: Icon(
+                          Icons.search_rounded,
+                          color: HomeScreenColors.leadOnSection,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: denseGap),
+                    InputDecorator(
+                      decoration: RakutenSearchScreenUi.searchField(
+                        labelText: 'ジャンル',
+                        prefixIcon: Icon(
+                          Icons.category_outlined,
+                          color: HomeScreenColors.leadOnSection,
+                        ),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String?>(
+                          isExpanded: true,
+                          value: _selectedDiscoveryGenreId,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: HomeScreenColors.titlePrimary),
+                          items: _mockGenres
+                              .map(
+                                (e) => DropdownMenuItem<String?>(
+                                  value: e.id,
+                                  child: Text(e.label),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() => _selectedDiscoveryGenreId = value);
+                          },
+                        ),
                       ),
                     ),
                     const SizedBox(height: denseGap),
