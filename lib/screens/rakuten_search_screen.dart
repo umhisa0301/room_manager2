@@ -701,7 +701,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
           ),
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         Row(
           children: [
             Expanded(
@@ -726,7 +726,28 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
           ],
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+        const SizedBox(height: 2),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const SavedShopsScreen(),
+                ),
+              );
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: HomeScreenColors.leadOnSection,
+              visualDensity: VisualDensity.compact,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            ),
+            icon: const Icon(Icons.bookmarks_outlined, size: 16),
+            label: Text('保存ショップ（$savedCount）'),
+          ),
+        ),
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack - 1),
         SizedBox(
           height: 46,
           child: FilledButton.icon(
@@ -743,30 +764,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               'ショップ発掘を実行',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
-          ),
-        ),
-        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
-        OutlinedButton.icon(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(builder: (_) => const SavedShopsScreen()),
-            );
-          },
-          icon: Icon(
-            Icons.bookmarks_outlined,
-            size: 17,
-            color: HomeScreenColors.leadOnSection,
-          ),
-          label: Text('保存ショップを見る（$savedCount件）'),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: HomeScreenColors.leadOnSection,
-            backgroundColor: Color.alphaBlend(
-              HomeScreenColors.subActionRowFill.withValues(alpha: 0.55),
-              HomeScreenColors.deckFill,
-            ),
-            side: BorderSide(color: HomeScreenColors.inlineDivider),
-            minimumSize: const Size(0, 42),
-            padding: RakutenSearchScreenUi.listFilterStripInnerPadding,
           ),
         ),
       ],
