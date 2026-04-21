@@ -545,34 +545,20 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     RakutenSearchProvider search,
   ) {
     final loading = search.status == RakutenSearchStatus.loading;
-    final kwEmpty = _keywordController.text.trim().isEmpty;
-    final canSearch = !loading && !kwEmpty;
+    final canSearch = !loading;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
-          controller: _keywordController,
-          textInputAction: TextInputAction.search,
-          onSubmitted: (_) {
-            if (canSearch) _runSearch(context);
-          },
-          onChanged: (_) => setState(() {}),
-          onTapOutside: (_) => _dismissKeywordSearchKeyboard(),
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontSize: 14,
-            height: 1.22,
-            color: HomeScreenColors.titlePrimary,
-          ),
-          decoration: RakutenSearchScreenUi.searchField(
-            labelText: '検索キーワード（必須）',
-            hintText: '例: ワイヤレスイヤホン',
-            prefixIcon: Icon(
-              Icons.search_rounded,
-              color: HomeScreenColors.leadOnSection,
-            ),
-          ),
+        _buildConditionSummaryCard(
+          context,
+          title: '現在の条件',
+          lines: [
+            'キーワード: ${_keywordSummaryText()}',
+            'ショップ: ${_shopSummaryText(context)}',
+            'ジャンル: ${_genreSummaryText()}',
+          ],
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+        SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
         _buildUnifiedSearchControls(
           context,
           onOpenDetail: () => _openProductConditionsSheet(context),
@@ -593,40 +579,20 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   Widget _buildGenreInput(BuildContext context, RakutenSearchProvider search) {
     final loading = search.status == RakutenSearchStatus.loading;
-    final genreOk =
-        _selectedGenreId != null && _selectedGenreId!.trim().isNotEmpty;
-    final canSearch = !loading && genreOk;
+    final canSearch = !loading;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        RakutenSearchGenreDropdownField(
-          labelText: 'ジャンルを選択（必須）',
-          value: _selectedGenreId,
-          options: _mockGenres,
-          onChanged: _setSelectedGenreId,
+        _buildConditionSummaryCard(
+          context,
+          title: '現在の条件',
+          lines: [
+            '検索ジャンル: ${_genreSummaryText()}',
+            '補助キーワード: ${_genreKeywordSummaryText()}',
+            'ショップ: ${_shopSummaryText(context)}',
+          ],
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
-        TextField(
-          controller: _genreController,
-          textInputAction: TextInputAction.search,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontSize: 14,
-            height: 1.22,
-            color: HomeScreenColors.titlePrimary,
-          ),
-          decoration: RakutenSearchScreenUi.searchField(
-            labelText: '補助キーワード（任意）',
-            hintText: '例: 収納 ボックス',
-            prefixIcon: Icon(
-              Icons.search_rounded,
-              color: HomeScreenColors.leadOnSection,
-            ),
-          ),
-          onSubmitted: (_) {
-            if (canSearch) _runGenreSearch(context);
-          },
-        ),
-        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+        SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
         _buildUnifiedSearchControls(
           context,
           onOpenDetail: () => _openProductConditionsSheet(context),
@@ -640,6 +606,71 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         ),
       ],
     );
+  }
+
+  Widget _buildConditionSummaryCard(
+    BuildContext context, {
+    required String title,
+    required List<String> lines,
+  }) {
+    return DecoratedBox(
+      decoration: RakutenSearchScreenUi.modeTabDeckDecoration(),
+      child: Padding(
+        padding: const EdgeInsets.all(RakutenSearchScreenUi.inputDeckPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: HomeScreenColors.leadOnSection,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+            ...lines.map(
+              (line) => Padding(
+                padding: const EdgeInsets.only(bottom: 3),
+                child: Text(
+                  line,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: HomeScreenColors.groupedSectionBody,
+                    height: 1.25,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _keywordSummaryText() {
+    final keyword = _keywordController.text.trim();
+    return keyword.isEmpty ? '未入力（詳細条件から設定）' : keyword;
+  }
+
+  String _genreSummaryText() {
+    final genreId = _selectedGenreId?.trim();
+    if (genreId == null || genreId.isEmpty) {
+      return '未選択（詳細条件から設定）';
+    }
+    return _genreUiLabelForId(genreId);
+  }
+
+  String _genreKeywordSummaryText() {
+    final keyword = _genreController.text.trim();
+    return keyword.isEmpty ? '指定なし' : keyword;
+  }
+
+  String _shopSummaryText(BuildContext context) {
+    final shopCode = _selectedShopCode?.trim();
+    if (shopCode == null || shopCode.isEmpty) return '指定なし';
+    final shop = context.read<SavedShopProvider>().findById(shopCode);
+    return shop?.shopName ?? '指定なし';
   }
 
   Widget _buildShopDiscoveryInput(
