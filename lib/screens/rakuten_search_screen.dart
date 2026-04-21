@@ -518,11 +518,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _SearchModeSegmented(mode: _mode, onChanged: _onModeChanged),
-                  SizedBox(
-                    height: _mode == _RakutenSearchMode.product
-                        ? 6.0
-                        : RakutenSearchScreenUi.gapKeywordToControls,
-                  ),
+                  SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
                   switch (_mode) {
                     _RakutenSearchMode.product => _buildProductInput(
                       context,
@@ -576,7 +572,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
           ),
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         _buildUnifiedSearchControls(
           context,
           onOpenDetail: () => _openProductConditionsSheet(context),
@@ -630,7 +626,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             if (canSearch) _runGenreSearch(context);
           },
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapKeywordToControls),
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         _buildUnifiedSearchControls(
           context,
           onOpenDetail: () => _openProductConditionsSheet(context),
@@ -870,8 +866,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         HomeScreenColors.deckFill,
       ),
       side: BorderSide(color: HomeScreenColors.sectionOutlineAccent),
-      minimumSize: const Size(0, 44),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      minimumSize: const Size(0, 42),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
     );
   }
 
@@ -880,8 +876,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       foregroundColor: HomeScreenColors.groupedSectionBody,
       backgroundColor: HomeScreenColors.deckFill,
       side: BorderSide(color: HomeScreenColors.deckOutline),
-      minimumSize: const Size(0, 44),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      minimumSize: const Size(0, 42),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
     );
   }
 
@@ -2820,7 +2816,7 @@ class _SearchModeSegmented extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: 6),
+        const SizedBox(height: 4),
         SegmentedButton<_RakutenSearchMode>(
           expandedInsets: EdgeInsets.zero,
           segments: [
@@ -2884,15 +2880,15 @@ class _SearchModeSegmented extends StatelessWidget {
             }),
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         Text(
           mode.description,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: HomeScreenColors.groupedSectionBody,
-            height: 1.38,
-            fontSize: 12.5,
+            height: 1.3,
+            fontSize: 12,
           ),
-          maxLines: 3,
+          maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
       ],
