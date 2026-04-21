@@ -49,11 +49,10 @@ class SearchGroupScreenShell extends StatelessWidget {
   Widget build(BuildContext context) {
     final bg = backgroundColor ?? HomeScreenColors.canvas;
     final pad =
-        contentPadding ??
-        const EdgeInsets.symmetric(
-          horizontal: AppDimensions.screenPaddingH,
-          vertical: AppDimensions.spacingSm,
-        );
+        contentPadding ?? RakutenSearchScreenUi.searchGroupShellContentPadding;
+    final fallbackTitle = (title == null || title!.trim().isEmpty)
+        ? ((subtitle != null && subtitle!.trim().isNotEmpty) ? '探すグループ' : null)
+        : title?.trim();
 
     return ColoredBox(
       color: bg,
@@ -68,7 +67,7 @@ class SearchGroupScreenShell extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _SearchGroupHeaderBand(
-                      title: title?.trim(),
+                      title: fallbackTitle,
                       subtitle: subtitle?.trim(),
                     ),
                     SizedBox(height: RakutenSearchScreenUi.gapSection),
@@ -93,10 +92,7 @@ class _SearchGroupHeaderBand extends StatelessWidget {
     return DecoratedBox(
       decoration: RakutenSearchScreenUi.listFilterStripDecoration(),
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppDimensions.spacingMd,
-          vertical: AppDimensions.spacingSm,
-        ),
+        padding: RakutenSearchScreenUi.listFilterStripInnerPadding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,

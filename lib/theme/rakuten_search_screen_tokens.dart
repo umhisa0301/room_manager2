@@ -56,6 +56,26 @@ abstract final class RakutenSearchScreenUi {
   /// モーダルシートの左右（本文の読みやすさ用。外側 [screenPadH] よりやや広く）。
   static const double sheetPadH = 12;
 
+  /// 探すグループ共通シェルの内側余白。
+  static const EdgeInsets searchGroupShellContentPadding = EdgeInsets.symmetric(
+    horizontal: screenPadH,
+    vertical: AppDimensions.spacingSm,
+  );
+
+  /// 入口3択シート本文の外側余白（見出し〜3択までの共通間隔）。
+  static const EdgeInsets addCandidateSheetContentPadding = EdgeInsets.fromLTRB(
+    screenPadH,
+    AppDimensions.spacingSm,
+    screenPadH,
+    AppDimensions.spacingMd,
+  );
+
+  /// 入口3択シート内の行カード余白。
+  static const EdgeInsets addCandidateSheetItemPadding = EdgeInsets.symmetric(
+    horizontal: AppDimensions.spacingMd,
+    vertical: inputDeckPadding,
+  );
+
   static const double insetSectionH = 8;
   static const double paddingWellV = 6;
   static const double paddingHeaderBand = 6;

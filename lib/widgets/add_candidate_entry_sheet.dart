@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import '../theme/home_screen_colors.dart';
+import '../theme/rakuten_search_screen_tokens.dart';
 
 /// シート内 [BuildContext]（通常は `showModalBottomSheet` の builder 引数）を渡すアクション。
 typedef AddCandidateEntrySheetAction =
@@ -31,12 +33,7 @@ Future<void> showAddCandidateEntryBottomSheet({
         top: false,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppDimensions.spacingMd,
-              AppDimensions.spacingSm,
-              AppDimensions.spacingMd,
-              AppDimensions.spacingMd,
-            ),
+            padding: RakutenSearchScreenUi.addCandidateSheetContentPadding,
             child: AddCandidateEntrySheetBody(
               onTapRakutenProductSearch: () =>
                   onTapRakutenProductSearch(sheetContext),
@@ -69,13 +66,22 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('候補を追加', style: AppTextStyles.titleMedium),
+        Text(
+          '探すグループ',
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: HomeScreenColors.footnoteMuted,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: AppDimensions.spacingXs / 2),
+        Text(
+          '候補を追加',
+          style: RakutenSearchScreenUi.sectionHeadingAccent(context),
+        ),
         const SizedBox(height: AppDimensions.spacingXs),
         Text(
           '追加方法を選ぶと、既存の画面へ移動します',
-          style: AppTextStyles.bodySmall.copyWith(
-            color: AppColors.textSecondary,
-          ),
+          style: RakutenSearchScreenUi.bodyCaption(context),
         ),
         const SizedBox(height: AppDimensions.spacingMd),
         AddCandidateEntrySheetMenuItem(
@@ -126,10 +132,7 @@ class AddCandidateEntrySheetMenuItem extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppDimensions.spacingMd,
-            vertical: AppDimensions.spacingMd,
-          ),
+          padding: RakutenSearchScreenUi.addCandidateSheetItemPadding,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
