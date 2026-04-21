@@ -712,7 +712,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         _buildConditionSummaryCard(
           context,
           title: '現在の発掘条件',
-          chips: _shopDiscoveryModeSummaryChips(),
+          chips: _shopDiscoveryModeSummaryChips(savedCount: savedCount),
         ),
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         Align(
@@ -778,7 +778,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  List<String> _shopDiscoveryModeSummaryChips() {
+  List<String> _shopDiscoveryModeSummaryChips({required int savedCount}) {
     final out = <String>[];
     final keyword = _shopDiscoveryKeywordController.text.trim();
     if (keyword.isNotEmpty) out.add('キーワード: $keyword');
@@ -787,7 +787,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       out.add('ジャンル: ${_genreUiLabelForId(genreId)}');
     }
     if (_shopDiscoveryExcludeController.text.trim().isNotEmpty) {
-      out.add('除外ワードあり');
+      out.add('除外語あり');
     }
     if (_shopDiscoveryMinReviewCountController.text.trim().isNotEmpty ||
         _shopDiscoveryMinReviewAverageController.text.trim().isNotEmpty) {
@@ -801,7 +801,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (itemsPerShop.isNotEmpty && itemsPerShop != '5') {
       out.add('商品数/店: $itemsPerShop');
     }
-    if (out.isEmpty) out.add('条件未設定（発掘条件を編集）');
+    if (savedCount > 0) out.add('保存ショップ $savedCount件');
+    if (out.isEmpty) out.add('条件未設定');
     return out;
   }
 
@@ -2823,7 +2824,7 @@ enum _RakutenSearchMode {
   shopDiscovery(
     'ショップを発掘',
     Icons.storefront_outlined,
-    '商品結果を集計して、次に保存したいショップ候補を見つけます。',
+    '条件を整えて実行すると、保存したいショップ候補を見つけられます。',
   );
 
   const _RakutenSearchMode(this.label, this.icon, this.description);
