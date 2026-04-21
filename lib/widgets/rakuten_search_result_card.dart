@@ -58,6 +58,14 @@ class RakutenSearchResultCard extends StatelessWidget {
     }
   }
 
+  String _ratingMetaLine() {
+    final rating = item.reviewAverage;
+    final reviewCount = item.reviewCount;
+    final ratingText = rating > 0 ? '★${rating.toStringAsFixed(1)}' : '★-';
+    final reviewText = reviewCount > 0 ? 'レビュー $reviewCount件' : 'レビュー 0件';
+    return '$ratingText  $reviewText';
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -113,7 +121,16 @@ class RakutenSearchResultCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: priceStyle,
                         ),
-                        const SizedBox(height: 2),
+                        const SizedBox(height: 1),
+                        Text(
+                          _ratingMetaLine(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: genreLineStyle.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 1),
                         Text(
                           _safeShopName(item),
                           maxLines: RoomColleProductListCardLayout.shopMaxLines,
