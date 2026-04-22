@@ -400,7 +400,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     setState(() {
       _selectionMode = false;
       _selectedProductIds.clear();
-      _keywordSort = RakutenKeywordSearchSortMode.defaultOrder;
     });
     final condition = _buildProductCondition(context);
     final excludeIds = context
@@ -442,6 +441,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       minCommentCount: _parseInt(_minCommentCountController.text),
       shopCode: _effectiveShopCodeForApi(context),
       genreId: _selectedGenreId,
+      sort: _apiSortParamForMode(_keywordSort),
     ).normalized();
   }
 
@@ -546,6 +546,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Align(
+          alignment: Alignment.centerRight,
+          child: _buildResultSortControl(
+            context,
+            value: _keywordSort,
+            resultsScrollController: _keywordResultsScrollController,
+            onSortSelected: (next) => _onKeywordSortChanged(context, next),
+          ),
+        ),
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         _buildUnifiedSearchControls(
           context,
           detailLabel: '検索キーワード',
@@ -571,6 +581,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Align(
+          alignment: Alignment.centerRight,
+          child: _buildResultSortControl(
+            context,
+            value: _genreExploreSort,
+            resultsScrollController: _genreResultsScrollController,
+            onSortSelected: (next) => _onGenreSortChanged(context, next),
+          ),
+        ),
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         _buildUnifiedSearchControls(
           context,
           detailLabel: 'ジャンルを選ぶ',
@@ -1592,6 +1612,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       minCommentCount: _parseInt(_minCommentCountController.text),
       shopCode: _effectiveShopCodeForApi(context),
       genreId: _selectedGenreId,
+      sort: _apiSortParamForMode(_genreExploreSort),
     ).normalized();
     if (kDebugMode) {
       debugPrint(
@@ -1603,9 +1624,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         'shopName(saved lookup)=${_savedShopNameForLog(context, condition.shopCode)} hits=20',
       );
     }
-    setState(() {
-      _genreExploreSort = RakutenKeywordSearchSortMode.defaultOrder;
-    });
     if (_genreResultsScrollController.hasClients) {
       _genreResultsScrollController.jumpTo(0);
     }
@@ -1770,6 +1788,45 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }
   }
 
+  String? _apiSortParamForMode(RakutenKeywordSearchSortMode mode) {
+    switch (mode) {
+      case RakutenKeywordSearchSortMode.defaultOrder:
+        return null;
+      case RakutenKeywordSearchSortMode.priceAscending:
+        return '+itemPrice';
+      case RakutenKeywordSearchSortMode.ratingDescending:
+        return '-reviewAverage';
+      case RakutenKeywordSearchSortMode.reviewCountDescending:
+        return '-reviewCount';
+    }
+  }
+
+  void _onKeywordSortChanged(
+    BuildContext context,
+    RakutenKeywordSearchSortMode next,
+  ) {
+    if (_keywordSort == next) return;
+    setState(() => _keywordSort = next);
+    final search = context.read<RakutenSearchProvider>();
+    if (_mode == _RakutenSearchMode.product &&
+        search.status == RakutenSearchStatus.success) {
+      _runSearch(context);
+    }
+  }
+
+  void _onGenreSortChanged(
+    BuildContext context,
+    RakutenKeywordSearchSortMode next,
+  ) {
+    if (_genreExploreSort == next) return;
+    setState(() => _genreExploreSort = next);
+    final search = context.read<RakutenSearchProvider>();
+    if (_mode == _RakutenSearchMode.genre &&
+        search.status == RakutenSearchStatus.success) {
+      _runGenreSearch(context);
+    }
+  }
+
   Widget _buildResultSortControl(
     BuildContext context, {
     required RakutenKeywordSearchSortMode value,
@@ -1833,9 +1890,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context,
     RakutenManagedProductProvider managed,
     List<RakutenSearchItem> orderedResults,
-    RakutenKeywordSearchSortMode sortMode,
-    ScrollController scrollController,
-    void Function(RakutenKeywordSearchSortMode next) onSortChanged,
   ) {
     final selectableCount = orderedResults
         .where((e) => _isSelectableForBulk(e, managed))
@@ -1887,13 +1941,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               child: const Text('全部解除'),
             ),
           ],
-          const Spacer(),
-          _buildResultSortControl(
-            context,
-            value: sortMode,
-            resultsScrollController: scrollController,
-            onSortSelected: onSortChanged,
-          ),
         ],
       ),
     );
@@ -2217,10 +2264,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         // ここでは一覧表示の一貫性のため同条件で再フィルタし、
         // その結果が空でも登録済み商品を一覧に戻さない（新しい候補探索の体験を優先）。
         final filteredResults = managedPreferred;
-        final orderedResults = sortedRakutenKeywordSearchItems(
-          filteredResults,
-          _keywordSort,
-        );
+        final orderedResults = filteredResults;
         final keywordPreferredFilteredAllOut =
             _mode == _RakutenSearchMode.product &&
             managedPreferred.isEmpty &&
@@ -2237,14 +2281,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         final shopScopeLine = _shopScopeEmphasisLineForMeta(context);
         return _buildSearchResultsHeaderAndListColumn(
           headerChildren: [
-            _buildResultsSelectionRow(
-              context,
-              managed,
-              orderedResults,
-              _keywordSort,
-              _keywordResultsScrollController,
-              (next) => setState(() => _keywordSort = next),
-            ),
+            _buildResultsSelectionRow(context, managed, orderedResults),
             _buildResultsMetaAndExcludeFootnote(
               context,
               primaryLine: primaryMeta,
@@ -2373,10 +2410,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           );
         }
         final showingCount = filteredResults.length;
-        final orderedResults = sortedRakutenKeywordSearchItems(
-          filteredResults,
-          _genreExploreSort,
-        );
+        final orderedResults = filteredResults;
         final genreLabel = _labelForGenre(_selectedGenreId) ?? '選択中のジャンル';
         final totalCount = search.results.length;
         final primaryMeta = totalCount == showingCount
@@ -2389,14 +2423,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         }
         return _buildSearchResultsHeaderAndListColumn(
           headerChildren: [
-            _buildResultsSelectionRow(
-              context,
-              managed,
-              orderedResults,
-              _genreExploreSort,
-              _genreResultsScrollController,
-              (next) => setState(() => _genreExploreSort = next),
-            ),
+            _buildResultsSelectionRow(context, managed, orderedResults),
             _buildResultsMetaAndExcludeFootnote(
               context,
               primaryLine: primaryMeta,
