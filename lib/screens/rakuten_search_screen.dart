@@ -78,6 +78,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   final ScrollController _keywordResultsScrollController = ScrollController();
   final ScrollController _genreResultsScrollController = ScrollController();
   RakutenSearchStatus _lastCompletionToastStatus = RakutenSearchStatus.idle;
+  final FocusNode _productDetailSheetKeywordFocus =
+      FocusNode(debugLabel: 'productDetailSheetKeyword');
+  final FocusNode _genreDetailSheetDropdownFocus =
+      FocusNode(debugLabel: 'genreDetailSheetDropdown');
+  final FocusNode _discoveryDetailSheetKeywordFocus =
+      FocusNode(debugLabel: 'discoveryDetailSheetKeyword');
 
   void _resetSearchUi() {
     _keywordController.clear();
@@ -146,6 +152,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _shopDiscoveryItemsPerShopController.dispose();
     _keywordResultsScrollController.dispose();
     _genreResultsScrollController.dispose();
+    _productDetailSheetKeywordFocus.dispose();
+    _genreDetailSheetDropdownFocus.dispose();
+    _discoveryDetailSheetKeywordFocus.dispose();
     super.dispose();
   }
 
@@ -860,6 +869,32 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
+  /// 詳細シートで「最初に触る欄」へ視線を集める枠（モーダル内のみ）。
+  Widget _sheetPrimaryAttentionShell({required Widget child}) {
+    final r = RakutenSearchScreenUi.searchFieldBorderRadius + 4;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(r),
+        border: Border.all(
+          color: HomeScreenColors.sectionOutlineAccent.withValues(alpha: 0.92),
+          width: 2,
+        ),
+        color: AppColors.accentLight.withValues(alpha: 0.11),
+        boxShadow: [
+          BoxShadow(
+            color: HomeScreenColors.sectionOutlineAccent.withValues(alpha: 0.12),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(7),
+        child: child,
+      ),
+    );
+  }
+
   Future<void> _openProductConditionsSheet(BuildContext screenContext) async {
     const denseGap = 8.0;
     if (_mode == _RakutenSearchMode.product) {
@@ -892,8 +927,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       children: [
                         Text(
                           _mode == _RakutenSearchMode.product
-                              ? 'キーワード検索の条件'
-                              : 'ジャンル探索の条件',
+                              ? 'キーワード検索'
+                              : 'ジャンル探索',
                           style: RakutenSearchScreenUi.sectionHeadingAccent(
                             context,
                           ),
@@ -901,8 +936,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         const SizedBox(height: 4),
                         Text(
                           _mode == _RakutenSearchMode.product
-                              ? 'まず検索キーワードを入力してください。'
-                              : 'まず検索ジャンル（必須）を選んでください。',
+                              ? 'キーワードを編集し、下で詳細条件を調整します。'
+                              : 'まずジャンル（必須）を選び、必要なら補助キーワードを入力します。',
                           style: Theme.of(context).textTheme.labelSmall
                               ?.copyWith(
                                 color: HomeScreenColors.groupedSectionBody,
@@ -910,77 +945,66 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               ),
                         ),
                         if (_mode == _RakutenSearchMode.genre) ...[
-                          const SizedBox(height: denseGap),
-                          Text(
-                            '最初に「検索ジャンル（必須）」を選択',
-                            style: Theme.of(context).textTheme.labelSmall
-                                ?.copyWith(
-                                  color: HomeScreenColors.accentSectionHeading,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                          ),
-                          const SizedBox(height: 4),
-                          DecoratedBox(
-                            decoration:
-                                RakutenSearchScreenUi.modeTabDeckDecoration(),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
+                          const SizedBox(height: 10),
+                          _PostFrameFocusRequester(
+                            focusNode: _genreDetailSheetDropdownFocus,
+                            child: _sheetPrimaryAttentionShell(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 1),
+                                        child: Icon(
+                                          Icons.flag_circle_rounded,
+                                          size: 20,
+                                          color: HomeScreenColors
+                                              .accentSectionHeading,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          'まず検索ジャンル（必須）を選びます',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w800,
+                                                color: HomeScreenColors
+                                                    .accentSectionHeading,
+                                                height: 1.25,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
                                   RakutenSearchGenreDropdownField(
                                     labelText: '検索ジャンル（必須）',
                                     value: _selectedGenreId,
                                     options: _mockGenres,
+                                    focusNode: _genreDetailSheetDropdownFocus,
                                     onChanged: (value) {
                                       _setSelectedGenreId(value);
                                       setModalState(() {});
                                     },
                                   ),
-                                  SizedBox(
-                                    height: RakutenSearchScreenUi.gapFieldStack,
-                                  ),
-                                  TextField(
-                                    controller: _genreController,
-                                    textInputAction: TextInputAction.search,
-                                    onSubmitted: (_) =>
-                                        _submitGenreSearchFromDetailSheet(
-                                          screenContext,
-                                          sheetContext,
-                                        ),
-                                    onChanged: (_) => setModalState(() {}),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          fontSize: 14,
-                                          height: 1.22,
-                                          color: HomeScreenColors.titlePrimary,
-                                        ),
-                                    decoration:
-                                        RakutenSearchScreenUi.searchField(
-                                          labelText: '補助キーワード（任意）',
-                                          hintText: '例: 収納 ボックス',
-                                          prefixIcon: Icon(
-                                            Icons.search_rounded,
-                                            color:
-                                                HomeScreenColors.leadOnSection,
-                                          ),
-                                        ),
-                                  ),
                                 ],
                               ),
                             ),
                           ),
-                          const SizedBox(height: denseGap),
-                        ] else ...[
-                          const SizedBox(height: denseGap),
+                          SizedBox(
+                            height: RakutenSearchScreenUi.gapFieldStack + 3,
+                          ),
                           TextField(
-                            controller: _keywordController,
-                            autofocus: true,
+                            controller: _genreController,
                             textInputAction: TextInputAction.search,
                             onSubmitted: (_) =>
-                                _submitKeywordSearchFromDetailSheet(
+                                _submitGenreSearchFromDetailSheet(
                                   screenContext,
                                   sheetContext,
                                 ),
@@ -992,11 +1016,45 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                   color: HomeScreenColors.titlePrimary,
                                 ),
                             decoration: RakutenSearchScreenUi.searchField(
-                              labelText: '検索キーワード（必須）',
-                              hintText: '例: ステンレス ボトル',
+                              labelText: '補助キーワード（任意）',
+                              hintText: '例: 収納 ボックス',
                               prefixIcon: Icon(
                                 Icons.search_rounded,
                                 color: HomeScreenColors.leadOnSection,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: denseGap),
+                        ] else ...[
+                          const SizedBox(height: denseGap),
+                          _PostFrameFocusRequester(
+                            focusNode: _productDetailSheetKeywordFocus,
+                            child: _sheetPrimaryAttentionShell(
+                              child: TextField(
+                                controller: _keywordController,
+                                focusNode: _productDetailSheetKeywordFocus,
+                                autofocus: false,
+                                textInputAction: TextInputAction.search,
+                                onSubmitted: (_) =>
+                                    _submitKeywordSearchFromDetailSheet(
+                                      screenContext,
+                                      sheetContext,
+                                    ),
+                                onChanged: (_) => setModalState(() {}),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      fontSize: 14,
+                                      height: 1.22,
+                                      color: HomeScreenColors.titlePrimary,
+                                    ),
+                                decoration: RakutenSearchScreenUi.searchField(
+                                  labelText: '検索キーワード（必須）',
+                                  hintText: '例: ステンレス ボトル',
+                                  prefixIcon: Icon(
+                                    Icons.search_rounded,
+                                    color: HomeScreenColors.leadOnSection,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -1334,22 +1392,36 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      'ショップ発掘の条件',
+                      'ショップ発掘',
                       style: RakutenSearchScreenUi.sectionHeadingAccent(
                         context,
                       ),
                     ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'キーワードまたはジャンルを指定し、下で条件を調整します。',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: HomeScreenColors.groupedSectionBody,
+                        height: 1.3,
+                      ),
+                    ),
                     const SizedBox(height: denseGap),
-                    TextField(
-                      controller: _shopDiscoveryKeywordController,
-                      autofocus: true,
-                      textInputAction: TextInputAction.next,
-                      decoration: RakutenSearchScreenUi.searchField(
-                        labelText: 'キーワード',
-                        hintText: '例: おしゃれ 家具',
-                        prefixIcon: Icon(
-                          Icons.search_rounded,
-                          color: HomeScreenColors.leadOnSection,
+                    _PostFrameFocusRequester(
+                      focusNode: _discoveryDetailSheetKeywordFocus,
+                      child: _sheetPrimaryAttentionShell(
+                        child: TextField(
+                          controller: _shopDiscoveryKeywordController,
+                          focusNode: _discoveryDetailSheetKeywordFocus,
+                          autofocus: false,
+                          textInputAction: TextInputAction.next,
+                          decoration: RakutenSearchScreenUi.searchField(
+                            labelText: 'キーワード',
+                            hintText: '例: おしゃれ 家具',
+                            prefixIcon: Icon(
+                              Icons.search_rounded,
+                              color: HomeScreenColors.leadOnSection,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -2624,6 +2696,35 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       context,
     ).showSnackBar(SnackBar(content: Text(isSaved ? '保存解除しました' : '保存しました')));
   }
+}
+
+/// シート表示直後に [focusNode] へフォーカスを移す（TextField / Dropdown 用）。
+class _PostFrameFocusRequester extends StatefulWidget {
+  const _PostFrameFocusRequester({
+    required this.focusNode,
+    required this.child,
+  });
+
+  final FocusNode focusNode;
+  final Widget child;
+
+  @override
+  State<_PostFrameFocusRequester> createState() =>
+      _PostFrameFocusRequesterState();
+}
+
+class _PostFrameFocusRequesterState extends State<_PostFrameFocusRequester> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      widget.focusNode.requestFocus();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }
 
 enum _RakutenSearchMode {
