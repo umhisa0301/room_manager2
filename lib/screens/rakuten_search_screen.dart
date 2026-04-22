@@ -1539,14 +1539,21 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     ),
                     const SizedBox(height: denseGap),
                     FilledButton(
-                      onPressed: () => Navigator.of(sheetContext).pop(),
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        Navigator.of(sheetContext).pop();
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (!mounted) return;
+                          _runShopDiscovery(context);
+                        });
+                      },
                       style: FilledButton.styleFrom(
                         backgroundColor: AppColors.accentPrimary,
                         foregroundColor: AppColors.textOnAccent,
                         minimumSize: const Size(0, 44),
                         visualDensity: VisualDensity.compact,
                       ),
-                      child: const Text('閉じる'),
+                      child: const Text('条件を保存して検索'),
                     ),
                   ],
                 ),
