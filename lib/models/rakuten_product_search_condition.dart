@@ -11,6 +11,7 @@ class RakutenProductSearchCondition {
     this.minCommentCount,
     this.shopCode,
     this.genreId,
+    this.sort,
   });
 
   final String keyword;
@@ -22,6 +23,7 @@ class RakutenProductSearchCondition {
   final int? minCommentCount;
   final String? shopCode;
   final String? genreId;
+  final String? sort;
 
   RakutenProductSearchCondition normalized() {
     return RakutenProductSearchCondition(
@@ -34,6 +36,7 @@ class RakutenProductSearchCondition {
       minCommentCount: minCommentCount,
       shopCode: _normalizeOptional(shopCode),
       genreId: _normalizeOptional(genreId),
+      sort: _normalizeOptional(sort),
     );
   }
 

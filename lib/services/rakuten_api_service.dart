@@ -18,6 +18,7 @@ enum _RakutenApiMode { openapi, legacy }
 class RakutenApiService {
   static const String _baseUrlOpenApi =
       'https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260401';
+
   /// 旧ホスト（OpenAPI ドメインとは分離する）。
   static const String _baseUrlLegacy =
       'https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601';
@@ -145,6 +146,10 @@ class RakutenApiService {
     }
     if (hasGenre) {
       params['genreId'] = genreTrimmed;
+    }
+    final sortTrimmed = normalized.sort?.trim() ?? '';
+    if (sortTrimmed.isNotEmpty) {
+      params['sort'] = sortTrimmed;
     }
     final aff = RakutenApiConfig.affiliateId.trim();
     if (aff.isNotEmpty) {
