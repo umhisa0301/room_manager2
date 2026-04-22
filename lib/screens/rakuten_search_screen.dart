@@ -20,6 +20,7 @@ import '../theme/rakuten_search_screen_tokens.dart';
 import '../utils/rakuten_keyword_search_sort.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
 import '../widgets/rakuten_search_condition_fields.dart';
+import '../widgets/rakuten_search_detail_condition_entry_chrome.dart';
 import '../widgets/rakuten_search_feedback.dart';
 import '../widgets/rakuten_search_result_card.dart';
 import '../widgets/add_candidate_entry_sheet.dart';
@@ -558,8 +559,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         _buildUnifiedSearchControls(
           context,
-          detailLabel: '検索キーワード',
-          onOpenDetail: () => _openProductConditionsSheet(context),
+          detailEntry: RakutenSearchPseudoSearchFieldEntry(
+            controller: _keywordController,
+            onTap: () => _openProductConditionsSheet(context),
+            labelText: '検索キーワード（必須）',
+            hintText: '例: ステンレス ボトル',
+            prefixIcon: Icons.search_rounded,
+          ),
           onClear: () {
             _dismissKeywordSearchKeyboard();
             _clearConditionsForCurrentMode();
@@ -593,8 +599,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         _buildUnifiedSearchControls(
           context,
-          detailLabel: 'ジャンルを選ぶ',
-          onOpenDetail: () => _openProductConditionsSheet(context),
+          detailEntry: RakutenSearchPseudoGenreDropdownEntry(
+            labelText: '検索ジャンル（必須）',
+            displayText: _genreUiLabelForId(_selectedGenreId),
+            onTap: () => _openProductConditionsSheet(context),
+          ),
           onClear: _clearConditionsForCurrentMode,
         ),
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
@@ -615,18 +624,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: OutlinedButton.icon(
-            onPressed: () => _openShopDiscoveryConditionsSheet(context),
-            icon: Icon(
-              Icons.tune_rounded,
-              size: 17,
-              color: HomeScreenColors.accentSectionHeading,
-            ),
-            label: const Text('検索キーワード'),
-            style: _detailConditionsButtonStyle(),
-          ),
+        RakutenSearchPseudoSearchFieldEntry(
+          controller: _shopDiscoveryKeywordController,
+          onTap: () => _openShopDiscoveryConditionsSheet(context),
+          labelText: 'キーワード',
+          hintText: '例: おしゃれ 家具',
+          prefixIcon: Icons.search_rounded,
         ),
         SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
         Align(
@@ -770,19 +773,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return null;
   }
 
-  ButtonStyle _detailConditionsButtonStyle() {
-    return OutlinedButton.styleFrom(
-      foregroundColor: HomeScreenColors.accentSectionHeading,
-      backgroundColor: Color.alphaBlend(
-        AppColors.accentLight.withValues(alpha: 0.2),
-        HomeScreenColors.deckFill,
-      ),
-      side: BorderSide(color: HomeScreenColors.sectionOutlineAccent),
-      minimumSize: const Size(0, 42),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-    );
-  }
-
   ButtonStyle _neutralConditionsButtonStyle() {
     return OutlinedButton.styleFrom(
       foregroundColor: HomeScreenColors.groupedSectionBody,
@@ -795,29 +785,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   Widget _buildUnifiedSearchControls(
     BuildContext context, {
-    required String detailLabel,
-    required VoidCallback onOpenDetail,
+    required Widget detailEntry,
     required VoidCallback onClear,
   }) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: OutlinedButton.icon(
-            onPressed: onOpenDetail,
-            icon: Icon(
-              Icons.tune_rounded,
-              size: 17,
-              color: HomeScreenColors.accentSectionHeading,
-            ),
-            label: Text(detailLabel),
-            style: _detailConditionsButtonStyle().copyWith(
-              minimumSize: const WidgetStatePropertyAll(Size(0, 42)),
-              padding: const WidgetStatePropertyAll(
-                EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              ),
-            ),
-          ),
-        ),
+        Expanded(child: detailEntry),
         SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
         Expanded(
           child: OutlinedButton.icon(
@@ -1331,6 +1305,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         );
       },
     );
+    if (!mounted) return;
+    setState(() {});
   }
 
   Future<void> _openShopDiscoveryConditionsSheet(BuildContext context) async {
@@ -1508,6 +1484,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         );
       },
     );
+    if (!mounted) return;
+    setState(() {});
   }
 
   void _runShopDiscovery(BuildContext context) {
