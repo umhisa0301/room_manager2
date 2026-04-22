@@ -297,12 +297,14 @@ class RakutenSearchGenreDropdownField extends StatelessWidget {
     required this.value,
     required this.options,
     required this.onChanged,
+    this.focusNode,
   });
 
   final String labelText;
   final String? value;
   final List<RakutenSearchGenreOption> options;
   final ValueChanged<String?> onChanged;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -320,6 +322,7 @@ class RakutenSearchGenreDropdownField extends StatelessWidget {
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String?>(
               isExpanded: true,
+              focusNode: focusNode,
               value: value,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: HomeScreenColors.titlePrimary,
