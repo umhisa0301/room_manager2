@@ -300,7 +300,6 @@ function Start-ControllerWindow {
     $pwshPath = Get-PwshCommandPath
 
     $controllerArgs = @(
-        "-NoExit",
         "-ExecutionPolicy", "Bypass",
         "-File", $ControllerScript,
         "-CommandFilePath", $CommandFilePath,
@@ -473,6 +472,8 @@ Write-Host "Flutter started. Use the separate controller window." -ForegroundCol
 Write-Host "Streaming flutter logs below..." -ForegroundColor Green
 Write-Host ""
 
+$stopRequestedByQ = $false
+
 try {
     while (-not $flutterProc.HasExited) {
         Start-Sleep -Milliseconds 300
@@ -481,19 +482,24 @@ try {
 
         switch ($command) {
             "q" {
+                $stopRequestedByQ = $true
                 Write-Host ""
                 Write-Host "Stop command received. Stopping flutter..." -ForegroundColor Yellow
                 try {
                     if (-not $flutterProc.HasExited) {
                         Start-Sleep -Seconds 1
                         $flutterProc.Kill()
-                        $flutterProc.WaitForExit()
+                        if (-not $flutterProc.WaitForExit(5000)) {
+                            Write-Host "Flutter process did not exit in time. Continue cleanup." -ForegroundColor Yellow
+                        }
                     }
                 } catch {}
                 try {
                     if ($controllerProcess -and -not $controllerProcess.HasExited) {
                         $controllerProcess.Kill()
-                        $controllerProcess.WaitForExit()
+                        if (-not $controllerProcess.WaitForExit(3000)) {
+                            Write-Host "Controller window did not close in time." -ForegroundColor Yellow
+                        }
                     }
                 } catch {}
                 break
@@ -553,6 +559,16 @@ Stop-AndroidScreenRecord -DeviceId $deviceId
 
 Write-Section "Pull recorded video"
 
+function Open-OutputFolder {
+    param([string]$Path)
+    try {
+        explorer $Path
+    }
+    catch {
+        Write-Host "Could not open folder: $Path" -ForegroundColor Yellow
+    }
+}
+
 if (Test-RemoteFileExists -DeviceId $deviceId -RemotePath $RemoteVideoPath) {
     adb -s $deviceId pull $RemoteVideoPath $localVideoPath | Out-Host
 
@@ -560,10 +576,13 @@ if (Test-RemoteFileExists -DeviceId $deviceId -RemotePath $RemoteVideoPath) {
     adb -s $deviceId shell "rm -f '$RemoteVideoPath'" | Out-Host
 
     Write-Section "Open output folder"
-    explorer $LocalSaveDir
+    Open-OutputFolder -Path $LocalSaveDir
 
     Write-Host ""
     Write-Host "Done." -ForegroundColor Green
+    if ($stopRequestedByQ) {
+        Write-Host "Stopped by Q command." -ForegroundColor Green
+    }
     Write-Host "Video               : $localVideoPath" -ForegroundColor Green
     Write-Host "Flutter stdout log  : $flutterStdOutLogFile" -ForegroundColor Green
     Write-Host "Flutter stderr log  : $flutterStdErrLogFile" -ForegroundColor Green
@@ -573,5 +592,9 @@ if (Test-RemoteFileExists -DeviceId $deviceId -RemotePath $RemoteVideoPath) {
 }
 else {
     Write-Host "Remote recorded video was not found." -ForegroundColor Red
-    explorer $LocalSaveDir
+    if ($stopRequestedByQ) {
+        Write-Host "Stopped by Q command." -ForegroundColor Yellow
+    }
+    Write-Section "Open output folder"
+    Open-OutputFolder -Path $LocalSaveDir
 }
