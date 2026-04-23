@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/shop_discovery_summary.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../theme/rakuten_search_screen_tokens.dart';
 
 class ShopDiscoveryCard extends StatelessWidget {
   const ShopDiscoveryCard({
@@ -23,13 +24,8 @@ class ShopDiscoveryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: HomeScreenColors.roomMetricTileFill,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: HomeScreenColors.roomMetricTileBorder),
-        boxShadow: HomeScreenColors.roomMetricTileShadow,
-      ),
+      padding: const EdgeInsets.all(14),
+      decoration: RakutenSearchScreenUi.exploreGroupFlatCardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -56,7 +52,9 @@ class ShopDiscoveryCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 14,
+                    letterSpacing: -0.15,
                     color: AppColors.textPrimary,
                   ),
                 ),
@@ -100,25 +98,48 @@ class ShopDiscoveryCard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           _ThumbStrip(items: summary.representativeItems.take(3).toList()),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
                 child: FilledButton.icon(
                   onPressed: onOpenShop,
-                  icon: const Icon(Icons.storefront_outlined, size: 18),
-                  label: const Text('商品を見て候補登録'),
+                  style: RakutenSearchScreenUi.sheetPrimaryFilledButtonStyle(),
+                  icon: const Icon(Icons.storefront_outlined, size: 20),
+                  label: const Text(
+                    '商品を見て候補登録',
+                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13),
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: onSave,
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: HomeScreenColors.leadOnSection,
+                    backgroundColor: HomeScreenColors.deckFill,
+                    side: BorderSide(color: HomeScreenColors.deckOutline),
+                    minimumSize: const Size(0, 52),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppDimensions.radiusButton,
+                      ),
+                    ),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                    ),
+                  ),
                   icon: Icon(
                     isSaved
                         ? Icons.bookmark_added_rounded
                         : Icons.bookmark_add_outlined,
-                    size: 18,
+                    size: 20,
                   ),
                   label: Text(isSaved ? '保存済み' : '保存する'),
                 ),

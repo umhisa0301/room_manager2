@@ -9,7 +9,7 @@ class RoomColleListCardActionStyle {
 
   static const double minTap = 44;
 
-  static const double iconSizeCompact = 13;
+  static const double iconSizeCompact = 14;
   static const double labelFontCompact = 10;
   static const double labelFontDelete = 9.5;
 
@@ -24,7 +24,7 @@ class RoomColleListCardActionStyle {
   );
 
   static RoundedRectangleBorder get _shapeCompact =>
-      RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10));
 
   static ButtonStyle rakutenFilled() {
     const blue = Color(0xFF1565C0);
@@ -35,7 +35,8 @@ class RoomColleListCardActionStyle {
       disabledBackgroundColor: Color(0xFF90CAF9),
       minimumSize: const Size(0, minTap),
       padding: paddingMain,
-      elevation: 0,
+      elevation: 0.5,
+      shadowColor: Colors.black.withValues(alpha: 0.12),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
       shape: _shapeCompact,
@@ -50,7 +51,8 @@ class RoomColleListCardActionStyle {
       disabledBackgroundColor: AppColors.surfaceVariant,
       minimumSize: const Size(0, minTap),
       padding: paddingMain,
-      elevation: 0,
+      elevation: 0.5,
+      shadowColor: AppColors.textPrimary.withValues(alpha: 0.12),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
       shape: _shapeCompact,

@@ -52,11 +52,7 @@ class RakutenSearchPseudoSearchFieldEntry extends StatelessWidget {
                   text,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 14,
-                    height: 1.22,
-                    color: HomeScreenColors.titlePrimary,
-                  ),
+                  style: RakutenSearchScreenUi.searchFieldValueStyle(context),
                 ),
               ),
             ),
@@ -107,11 +103,7 @@ class RakutenSearchPseudoGenreDropdownEntry extends StatelessWidget {
                     displayText,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 14,
-                      height: 1.22,
-                      color: HomeScreenColors.titlePrimary,
-                    ),
+                    style: RakutenSearchScreenUi.searchFieldValueStyle(context),
                   ),
                 ),
                 Icon(

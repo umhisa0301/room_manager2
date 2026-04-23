@@ -22,12 +22,28 @@ abstract final class RakutenSearchScreenUi {
   static const double gapKeywordToControls = 7;
 
   /// ROOM [_RoomColleUi.gapListAfterDivider] と同じ 4（区切り〜一覧ヘッダの接続）。
-  static const double gapListAfterDivider = 4;
+  static const double gapListAfterDivider = 6;
 
-  static const double listBottomPad = 10;
+  static const double listBottomPad = 12;
 
-  /// ROOM [_kRoomListCardGap] と同じ 5。
-  static const double listCardGap = 5;
+  /// 結果カード間（一覧の「呼吸」）。
+  static const double listCardGap = 8;
+
+  /// 入力デッキ外周（画面上端〜シェル）。
+  static const double gapDeckOuterTop = 8;
+  static const double gapDeckOuterBottom = 8;
+
+  /// 副操作行〜主CTAの前後。
+  static const double gapBeforePrimaryCta = 12;
+
+  /// モードタブ〜説明文。
+  static const double gapTabToBody = 10;
+
+  /// モーダル内フィールドの縦リズム（8〜10px帯）。
+  static const double sheetBlockGap = 10;
+
+  /// 並び替え行〜主入力ブロック。
+  static const double gapSortToFields = 8;
 
   /// ジャンル結果リストの下余白 = [listBottomPad] + この値。
   static const double listScrollExtraPadGenre = 12;
@@ -39,7 +55,7 @@ abstract final class RakutenSearchScreenUi {
   static const double listBottomPadWithSelectionBar = 88;
 
   /// リスト先頭の微余白（カード密度を ROOM 一覧に寄せる）。
-  static const double listScrollTopPad = 2;
+  static const double listScrollTopPad = 4;
 
   /// 「検索完了」行の下側（次ブロックまでの締め）。
   static const double gapResultStatusRowBottom = 4;
@@ -51,7 +67,7 @@ abstract final class RakutenSearchScreenUi {
   static const double gapFloatingBarPad = 12;
 
   /// 検索入力デッキ内側（ウェル密度は ROOM の well に近づけつつタップしやすく）。
-  static const double inputDeckPadding = 10;
+  static const double inputDeckPadding = 12;
 
   /// モーダルシートの左右（本文の読みやすさ用。外側 [screenPadH] よりやや広く）。
   static const double sheetPadH = 12;
@@ -87,11 +103,27 @@ abstract final class RakutenSearchScreenUi {
 
   static List<BoxShadow> get cardShadow => [
     BoxShadow(
-      color: HomeScreenColors.cardShadowColor,
-      offset: const Offset(0, 2),
-      blurRadius: 10,
+      color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.45),
+      offset: const Offset(0, 4),
+      blurRadius: 16,
+      spreadRadius: 0,
+    ),
+    BoxShadow(
+      color: Colors.black.withValues(alpha: 0.04),
+      offset: const Offset(0, 1),
+      blurRadius: 4,
     ),
   ];
+
+  /// 空状態・エラーなど結果ペインのカード外観（[outerSectionShellDecoration] と同系）。
+  static BoxDecoration feedbackShellDecoration() {
+    return BoxDecoration(
+      color: HomeScreenColors.roomGroupedShellFill,
+      borderRadius: BorderRadius.circular(radiusSectionOuter),
+      border: Border.all(color: HomeScreenColors.sectionOutlineNeutral),
+      boxShadow: cardShadow,
+    );
+  }
 
   static BoxDecoration outerSectionShellDecoration() {
     return BoxDecoration(
@@ -141,6 +173,59 @@ abstract final class RakutenSearchScreenUi {
         TextStyle(color: HomeScreenColors.groupedSectionBody, height: 1.4);
   }
 
+  /// モーダル先頭の説明1段落（主見出しの直下）。
+  static TextStyle sheetIntroBody(BuildContext context) {
+    return Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: HomeScreenColors.groupedSectionBody,
+          height: 1.38,
+          fontSize: 12.5,
+          fontWeight: FontWeight.w500,
+        ) ??
+        TextStyle(
+          color: HomeScreenColors.groupedSectionBody,
+          height: 1.38,
+          fontSize: 12.5,
+          fontWeight: FontWeight.w500,
+        );
+  }
+
+  /// モードタブ下の短いガイド文。
+  static TextStyle modeTabGuideBody(BuildContext context) {
+    return Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: HomeScreenColors.groupedSectionBody,
+          height: 1.35,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ) ??
+        TextStyle(
+          color: HomeScreenColors.groupedSectionBody,
+          height: 1.35,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        );
+  }
+
+  /// 詳細シートの主CTA（画面下部の主ボタンと同系）。
+  static ButtonStyle sheetPrimaryFilledButtonStyle() {
+    return FilledButton.styleFrom(
+      backgroundColor: AppColors.accentPrimary,
+      foregroundColor: AppColors.textOnAccent,
+      minimumSize: const Size(0, 52),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      elevation: 1,
+      shadowColor: AppColors.textPrimary.withValues(alpha: 0.14),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+      ),
+      textStyle: const TextStyle(
+        fontWeight: FontWeight.w800,
+        fontSize: 15,
+        letterSpacing: -0.2,
+        height: 1.15,
+      ),
+    );
+  }
+
   static TextStyle labelStrong(BuildContext context) {
     return Theme.of(context).textTheme.labelLarge?.copyWith(
           color: HomeScreenColors.titlePrimary,
@@ -149,13 +234,28 @@ abstract final class RakutenSearchScreenUi {
         const TextStyle(fontWeight: FontWeight.w700);
   }
 
+  /// 検索欄の入力値・擬似欄の表示文字（TextField [style] と揃える）。
+  static TextStyle searchFieldValueStyle(BuildContext context) {
+    return Theme.of(context).textTheme.bodyMedium?.copyWith(
+          fontSize: 14,
+          height: 1.25,
+          fontWeight: FontWeight.w500,
+          color: HomeScreenColors.titlePrimary,
+        ) ??
+        const TextStyle(
+          fontSize: 14,
+          height: 1.25,
+          fontWeight: FontWeight.w500,
+        );
+  }
+
   /// 検索バー系 TextField の角丸（探すグループ共通）。
-  static const double searchFieldBorderRadius = 10;
+  static const double searchFieldBorderRadius = 12;
 
   /// 検索バー内の余白（高さ・左右位置の基準）。
   static const EdgeInsets searchFieldContentPadding = EdgeInsets.symmetric(
-    horizontal: 12,
-    vertical: 12,
+    horizontal: 14,
+    vertical: 13,
   );
 
   /// 先頭アイコンサイズ（未指定の [Icon] に [IconTheme] で適用）。

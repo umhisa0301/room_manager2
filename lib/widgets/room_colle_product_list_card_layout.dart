@@ -7,12 +7,12 @@ import '../theme/home_screen_colors.dart';
 abstract final class RoomColleProductListCardLayout {
   RoomColleProductListCardLayout._();
 
-  static const double cardHeight = 214;
+  static const double cardHeight = 218;
 
   /// 左スロット幅（その中で 1:1 サムネを配置）。
   static const double thumbSlotWidth = 104;
 
-  static const double radius = 12;
+  static const double radius = 14;
 
   static const int titleMaxLines = 2;
   static const int shopMaxLines = 1;
@@ -20,9 +20,14 @@ abstract final class RoomColleProductListCardLayout {
   static List<BoxShadow> get cardBoxShadow => [
     ...HomeScreenColors.roomMetricTileShadow,
     BoxShadow(
-      color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.38),
-      offset: const Offset(0, 2),
-      blurRadius: 9,
+      color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.32),
+      offset: const Offset(0, 3),
+      blurRadius: 12,
+    ),
+    BoxShadow(
+      color: Colors.black.withValues(alpha: 0.03),
+      offset: const Offset(0, 1),
+      blurRadius: 3,
     ),
   ];
 
@@ -36,7 +41,7 @@ abstract final class RoomColleProductListCardLayout {
   }
 
   static EdgeInsets get rightColumnPadding =>
-      const EdgeInsets.fromLTRB(8, 8, 10, 8);
+      const EdgeInsets.fromLTRB(10, 10, 12, 10);
 
   static String formatPriceYen(int n) {
     if (n < 0) return '価格 —';
@@ -46,9 +51,10 @@ abstract final class RoomColleProductListCardLayout {
   static TextStyle? titleTextStyle(ThemeData theme) {
     return theme.textTheme.titleSmall?.copyWith(
       color: HomeScreenColors.metricTileTitleColor,
-      height: 1.22,
-      fontWeight: FontWeight.w600,
-      fontSize: 13.5,
+      height: 1.28,
+      fontWeight: FontWeight.w700,
+      fontSize: 14,
+      letterSpacing: -0.15,
     );
   }
 
@@ -56,15 +62,16 @@ abstract final class RoomColleProductListCardLayout {
     return theme.textTheme.titleSmall?.copyWith(
       color: HomeScreenColors.metricTileValueColor,
       fontWeight: FontWeight.w800,
-      fontSize: 15,
-      height: 1.15,
+      fontSize: 16,
+      height: 1.12,
+      letterSpacing: -0.25,
     );
   }
 
   static TextStyle? shopTextStyle(ThemeData theme) {
     return theme.textTheme.bodySmall?.copyWith(
       color: HomeScreenColors.metricTileCaptionColor,
-      height: 1.2,
+      height: 1.22,
       fontSize: 11,
       fontWeight: FontWeight.w500,
     );
@@ -73,9 +80,9 @@ abstract final class RoomColleProductListCardLayout {
   static TextStyle? metaTextStyle(ThemeData theme) {
     return theme.textTheme.bodySmall?.copyWith(
       color: HomeScreenColors.metricTileCaptionColor,
-      height: 1.2,
-      fontSize: 10.5,
-      fontWeight: FontWeight.w600,
+      height: 1.22,
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
     );
   }
 
@@ -111,7 +118,7 @@ class RoomColleProductListCardThumbSlot extends StatelessWidget {
         child: AspectRatio(
           aspectRatio: 1,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(10),
             child: child,
           ),
         ),

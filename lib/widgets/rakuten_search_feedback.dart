@@ -6,21 +6,6 @@ import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
 
-BoxDecoration _rakutenSearchFeedbackShellDecoration() {
-  return BoxDecoration(
-    color: HomeScreenColors.roomGroupedShellFill,
-    borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-    border: Border.all(color: HomeScreenColors.sectionOutlineNeutral),
-    boxShadow: [
-      BoxShadow(
-        color: HomeScreenColors.cardShadowColor,
-        offset: const Offset(0, 2),
-        blurRadius: 10,
-      ),
-    ],
-  );
-}
-
 /// ROOM コレの空／エラー／読込と同系の「結果ペイン」ラッパー（スクロール可能・最小高さで縦中央寄せ）。
 class _RakutenSearchFeedbackShell extends StatelessWidget {
   const _RakutenSearchFeedbackShell({
@@ -39,18 +24,18 @@ class _RakutenSearchFeedbackShell extends StatelessWidget {
     final padH = RakutenSearchScreenUi.screenPadH;
     final padV = RakutenSearchScreenUi.gapSection;
     final innerPad = EdgeInsets.fromLTRB(
-      RakutenSearchScreenUi.insetSectionH + 4,
-      RakutenSearchScreenUi.paddingWellV + 10,
-      RakutenSearchScreenUi.insetSectionH + 4,
-      RakutenSearchScreenUi.paddingWellV + 10,
+      RakutenSearchScreenUi.insetSectionH + 10,
+      RakutenSearchScreenUi.paddingWellV + 16,
+      RakutenSearchScreenUi.insetSectionH + 10,
+      RakutenSearchScreenUi.paddingWellV + 16,
     );
 
     if (!stretchToFillViewport) {
       final innerTight = EdgeInsets.fromLTRB(
-        RakutenSearchScreenUi.insetSectionH + 4,
-        RakutenSearchScreenUi.paddingWellV + 4,
-        RakutenSearchScreenUi.insetSectionH + 4,
-        RakutenSearchScreenUi.paddingWellV + 4,
+        RakutenSearchScreenUi.insetSectionH + 8,
+        RakutenSearchScreenUi.paddingWellV + 10,
+        RakutenSearchScreenUi.insetSectionH + 8,
+        RakutenSearchScreenUi.paddingWellV + 10,
       );
       return SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(padH, padV * 0.55, padH, padV),
@@ -60,7 +45,7 @@ class _RakutenSearchFeedbackShell extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 400),
             child: DecoratedBox(
-              decoration: _rakutenSearchFeedbackShellDecoration(),
+              decoration: RakutenSearchScreenUi.feedbackShellDecoration(),
               child: Padding(padding: innerTight, child: child),
             ),
           ),
@@ -81,7 +66,7 @@ class _RakutenSearchFeedbackShell extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 400),
                 child: DecoratedBox(
-                  decoration: _rakutenSearchFeedbackShellDecoration(),
+                  decoration: RakutenSearchScreenUi.feedbackShellDecoration(),
                   child: Padding(padding: innerPad, child: child),
                 ),
               ),
@@ -102,6 +87,11 @@ ButtonStyle _rakutenSearchSecondaryOutlinedStyle() {
     ),
     side: BorderSide(color: HomeScreenColors.sectionOutlineAccent),
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    minimumSize: const Size(0, 48),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+    ),
+    textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
   );
 }
 
@@ -132,7 +122,7 @@ class RakutenSearchIdleView extends StatelessWidget {
   Widget build(BuildContext context) {
     final ic =
         iconTint ?? HomeScreenColors.statusAccentMuted.withValues(alpha: 0.88);
-    final iconSize = compactLayout ? 36.0 : 48.0;
+    final iconSize = compactLayout ? 34.0 : 42.0;
 
     return _RakutenSearchFeedbackShell(
       stretchToFillViewport: !compactLayout,
@@ -141,36 +131,38 @@ class RakutenSearchIdleView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Icon(icon, size: iconSize, color: ic),
-          SizedBox(height: compactLayout ? 8 : 12),
+          SizedBox(height: compactLayout ? 10 : 14),
           Text(
             title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: HomeScreenColors.titlePrimary,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w800,
               fontSize: compactLayout ? 15 : 16,
-              height: 1.25,
+              height: 1.22,
+              letterSpacing: -0.2,
             ),
           ),
-          SizedBox(height: compactLayout ? 4 : 6),
+          SizedBox(height: compactLayout ? 6 : 8),
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: HomeScreenColors.groupedSectionBody,
-              height: compactLayout ? 1.4 : 1.45,
-              fontSize: compactLayout ? 12.5 : 13,
+              height: compactLayout ? 1.38 : 1.42,
+              fontSize: compactLayout ? 12 : 12.5,
+              fontWeight: FontWeight.w500,
             ),
           ),
           if (stateFootnote != null && stateFootnote!.trim().isNotEmpty) ...[
-            SizedBox(height: compactLayout ? 8 : 14),
+            SizedBox(height: compactLayout ? 10 : 12),
             Text(
               stateFootnote!,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: HomeScreenColors.footnoteMuted,
                 fontSize: compactLayout ? 10.5 : 11,
-                height: 1.35,
+                height: 1.32,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -211,36 +203,39 @@ class RakutenSearchLoadingView extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 16),
           Text(
             title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: HomeScreenColors.titlePrimary,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w800,
               fontSize: 16,
-              height: 1.25,
+              height: 1.22,
+              letterSpacing: -0.2,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: HomeScreenColors.groupedSectionBody,
-              height: 1.45,
-              fontSize: 13,
+              height: 1.4,
+              fontSize: 12.5,
+              fontWeight: FontWeight.w500,
             ),
           ),
           if (footnote != null && footnote!.trim().isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             Text(
               footnote!,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: HomeScreenColors.footnoteMuted,
-                height: 1.4,
-                fontSize: 12,
+                height: 1.35,
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
@@ -280,15 +275,16 @@ class RakutenSearchErrorView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Icon(Icons.error_outline_rounded, size: 48, color: AppColors.error),
-          const SizedBox(height: 12),
+          Icon(Icons.error_outline_rounded, size: 44, color: AppColors.error),
+          const SizedBox(height: 14),
           Text(
             title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w800,
               color: HomeScreenColors.accentSectionHeading,
-              height: 1.3,
+              height: 1.28,
+              letterSpacing: -0.15,
             ),
           ),
           const SizedBox(height: 6),
@@ -299,36 +295,40 @@ class RakutenSearchErrorView extends StatelessWidget {
               color: HomeScreenColors.footnoteMuted,
               fontSize: 11,
               fontWeight: FontWeight.w600,
-              height: 1.35,
+              height: 1.32,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             message,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: HomeScreenColors.groupedSectionBody,
-              height: 1.45,
+              height: 1.42,
+              fontSize: 12.5,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 18),
           FilledButton.icon(
             onPressed: onRetry,
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.accentPrimary,
-              foregroundColor: AppColors.textOnAccent,
-              padding: const EdgeInsets.symmetric(vertical: 12),
+            style: RakutenSearchScreenUi.sheetPrimaryFilledButtonStyle(),
+            icon: const Icon(Icons.refresh_rounded, size: 21),
+            label: Text(
+              retryLabel,
+              style: const TextStyle(fontWeight: FontWeight.w800),
             ),
-            icon: const Icon(Icons.refresh_rounded, size: 20),
-            label: Text(retryLabel),
           ),
           if (onAdjustConditions != null) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             OutlinedButton.icon(
               onPressed: onAdjustConditions,
               style: _rakutenSearchSecondaryOutlinedStyle(),
               icon: const Icon(Icons.tune_rounded, size: 20),
-              label: Text(adjustLabel),
+              label: Text(
+                adjustLabel,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
             ),
           ],
         ],
@@ -373,59 +373,64 @@ class RakutenSearchEmptyView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Icon(icon, size: 48, color: ic),
-          const SizedBox(height: 12),
+          Icon(icon, size: 42, color: ic),
+          const SizedBox(height: 14),
           Text(
             title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: HomeScreenColors.titlePrimary,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w800,
               fontSize: 16,
-              height: 1.25,
+              height: 1.22,
+              letterSpacing: -0.2,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           Text(
             body,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: HomeScreenColors.groupedSectionBody,
-              height: 1.45,
-              fontSize: 13,
+              height: 1.4,
+              fontSize: 12.5,
+              fontWeight: FontWeight.w500,
             ),
           ),
           if (hints.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             Text(
-              '次に試せること',
+              'ヒント',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: HomeScreenColors.leadOnSection,
                 fontWeight: FontWeight.w800,
-                fontSize: 12,
+                fontSize: 11,
+                letterSpacing: 0.2,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             for (final h in hints)
               Padding(
-                padding: const EdgeInsets.only(bottom: 6),
+                padding: const EdgeInsets.only(bottom: 5),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       '・',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: HomeScreenColors.groupedSectionBody,
+                        height: 1.35,
                       ),
                     ),
                     Expanded(
                       child: Text(
                         h,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: HomeScreenColors.groupedSectionBody,
-                          height: 1.4,
-                          fontSize: 13,
+                          height: 1.38,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
@@ -434,23 +439,26 @@ class RakutenSearchEmptyView extends StatelessWidget {
               ),
           ],
           if (onRefine != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             OutlinedButton.icon(
               onPressed: onRefine,
               style: _rakutenSearchSecondaryOutlinedStyle(),
               icon: const Icon(Icons.tune_rounded, size: 20),
-              label: Text(refineLabel),
+              label: Text(
+                refineLabel,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
             ),
           ],
           if (stateFootnote != null && stateFootnote!.trim().isNotEmpty) ...[
-            const SizedBox(height: 14),
+            const SizedBox(height: 12),
             Text(
               stateFootnote!,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: HomeScreenColors.footnoteMuted,
-                fontSize: 11,
-                height: 1.35,
+                fontSize: 10.5,
+                height: 1.32,
                 fontWeight: FontWeight.w500,
               ),
             ),

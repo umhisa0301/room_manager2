@@ -78,8 +78,18 @@ class RakutenSearchResultCard extends StatelessWidget {
         shopStyle ?? theme.textTheme.bodySmall ?? const TextStyle();
     final genreLineStyle = genreLineBase.copyWith(
       fontSize: (genreLineBase.fontSize ?? 12) - 1,
-      color: theme.colorScheme.onSurfaceVariant,
+      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.88),
+      fontWeight: FontWeight.w500,
+      height: 1.2,
     );
+    final reviewLineStyle =
+        RoomColleProductListCardLayout.metaTextStyle(theme)?.copyWith(
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+          height: 1.2,
+          color: HomeScreenColors.metricTileCaptionColor,
+        ) ??
+        genreLineStyle;
 
     return Container(
       height: RoomColleProductListCardLayout.cardHeight,
@@ -112,7 +122,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: titleStyle,
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 5),
                         Text(
                           RoomColleProductListCardLayout.formatPriceYen(
                             item.itemPrice,
@@ -121,16 +131,14 @@ class RakutenSearchResultCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: priceStyle,
                         ),
-                        const SizedBox(height: 1),
+                        const SizedBox(height: 4),
                         Text(
                           _ratingMetaLine(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: genreLineStyle.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: reviewLineStyle,
                         ),
-                        const SizedBox(height: 1),
+                        const SizedBox(height: 3),
                         Text(
                           _safeShopName(item),
                           maxLines: RoomColleProductListCardLayout.shopMaxLines,
@@ -138,7 +146,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                           style: shopStyle,
                         ),
                         if (item.genreId.trim().isNotEmpty) ...[
-                          const SizedBox(height: 2),
+                          const SizedBox(height: 3),
                           Text(
                             genreDisplayLineOverride ??
                                 RakutenProductGenreDisplay.resolve(
@@ -169,7 +177,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 8),
                   _searchResultActions(context),
                 ],
               ),
@@ -194,12 +202,12 @@ class RakutenSearchResultCard extends StatelessWidget {
               icon: Icons.open_in_new_rounded,
               label: '楽天で見る',
               color: Colors.white,
-              weight: FontWeight.w700,
-              fontSize: RoomColleListCardActionStyle.labelFontCompact,
+              weight: FontWeight.w800,
+              fontSize: 11,
             ),
           ),
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: 6),
         Expanded(flex: 38, child: _buildRegisterAction(context)),
       ],
     );
@@ -264,8 +272,8 @@ class RakutenSearchResultCard extends StatelessWidget {
                 icon: Icons.bookmark_add_outlined,
                 label: 'コレ候補へ登録',
                 color: AppColors.textOnAccent,
-                weight: FontWeight.w700,
-                fontSize: RoomColleListCardActionStyle.labelFontCompact,
+                weight: FontWeight.w800,
+                fontSize: 11,
               ),
       ),
     );

@@ -90,9 +90,7 @@ class RakutenSearchMinReviewDropdownRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bodyStyle = Theme.of(
-      context,
-    ).textTheme.bodyMedium?.copyWith(color: HomeScreenColors.titlePrimary);
+    final bodyStyle = RakutenSearchScreenUi.searchFieldValueStyle(context);
     final noneStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
       color: HomeScreenColors.groupedSectionBody,
     );
@@ -256,9 +254,7 @@ class RakutenSearchSavedShopPicker extends StatelessWidget {
             child: DropdownButton<String?>(
               isExpanded: true,
               value: dropdownValue,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: HomeScreenColors.titlePrimary,
-              ),
+              style: RakutenSearchScreenUi.searchFieldValueStyle(context),
               items: [
                 DropdownMenuItem<String?>(
                   value: null,
@@ -324,9 +320,7 @@ class RakutenSearchGenreDropdownField extends StatelessWidget {
               isExpanded: true,
               focusNode: focusNode,
               value: value,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: HomeScreenColors.titlePrimary,
-              ),
+              style: RakutenSearchScreenUi.searchFieldValueStyle(context),
               items: options
                   .map(
                     (e) => DropdownMenuItem<String?>(
