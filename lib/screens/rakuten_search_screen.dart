@@ -572,7 +572,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             controller: _keywordController,
             onTap: () => _openProductConditionsSheet(context),
             labelText: '検索キーワード（必須）',
-            hintText: '例: ステンレス ボトル',
+            hintText: '例：アンパンマン / イヤホン / 水筒',
             prefixIcon: Icons.search_rounded,
           ),
           onClear: () {
@@ -610,7 +610,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           context,
           detailEntry: RakutenSearchPseudoGenreDropdownEntry(
             labelText: '検索ジャンル（必須）',
-            displayText: _genreUiLabelForId(_selectedGenreId),
+            displayText:
+                _selectedGenreId == null || _selectedGenreId!.trim().isEmpty
+                ? 'ジャンルを選択してください（必須）'
+                : _genreUiLabelForId(_selectedGenreId),
             onTap: () => _openProductConditionsSheet(context),
           ),
           onClear: _clearConditionsForCurrentMode,
@@ -681,7 +684,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
             icon: const Icon(Icons.travel_explore_rounded),
             label: const Text(
-              'ショップ発掘を実行',
+              'ショップを探す',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
           ),
@@ -1399,7 +1402,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'キーワードまたはジャンルを指定し、下で条件を調整します。',
+                      'キーワードまたはジャンルを指定して検索してください',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: HomeScreenColors.groupedSectionBody,
                         height: 1.3,
@@ -1538,22 +1541,97 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       ],
                     ),
                     const SizedBox(height: denseGap),
-                    FilledButton(
-                      onPressed: () {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        Navigator.of(sheetContext).pop();
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          if (!mounted) return;
-                          _runShopDiscovery(context);
-                        });
+                    Consumer<RakutenSearchProvider>(
+                      builder: (context, search, _) {
+                        final loading =
+                            search.status == RakutenSearchStatus.loading;
+                        final keywordOk =
+                            _shopDiscoveryKeywordController.text.trim().isNotEmpty;
+                        final genreOk =
+                            _selectedDiscoveryGenreId != null &&
+                            _selectedDiscoveryGenreId!.trim().isNotEmpty;
+                        final canSearch = !loading && (keywordOk || genreOk);
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            FilledButton.icon(
+                              onPressed: !canSearch
+                                  ? null
+                                  : () {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      Navigator.of(sheetContext).pop();
+                                      WidgetsBinding.instance
+                                          .addPostFrameCallback((_) {
+                                            if (!mounted) return;
+                                            _runShopDiscovery(context);
+                                          });
+                                    },
+                              icon: const Icon(Icons.search_rounded, size: 22),
+                              label: const Text(
+                                '条件を保存して検索',
+                                style: TextStyle(fontWeight: FontWeight.w700),
+                              ),
+                              style: FilledButton.styleFrom(
+                                backgroundColor: AppColors.accentPrimary,
+                                foregroundColor: AppColors.textOnAccent,
+                                minimumSize: const Size(0, 50),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 14,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: denseGap),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: OutlinedButton.icon(
+                                    onPressed: () {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      Navigator.of(sheetContext).pop();
+                                    },
+                                    icon: Icon(
+                                      Icons.close_rounded,
+                                      size: 20,
+                                      color: HomeScreenColors.leadOnSection,
+                                    ),
+                                    label: const Text('閉じる（検索しない）'),
+                                    style:
+                                        _keywordDetailSheetAuxiliaryButtonStyle(),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: OutlinedButton.icon(
+                                    onPressed: () {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      _clearConditionsForCurrentMode();
+                                      setState(() {});
+                                    },
+                                    icon: Icon(
+                                      Icons.filter_alt_off_outlined,
+                                      size: 20,
+                                      color: HomeScreenColors.leadOnSection,
+                                    ),
+                                    label: const Text(
+                                      '絞り込みだけリセット',
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    style:
+                                        _keywordDetailSheetAuxiliaryButtonStyle(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
                       },
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.accentPrimary,
-                        foregroundColor: AppColors.textOnAccent,
-                        minimumSize: const Size(0, 44),
-                        visualDensity: VisualDensity.compact,
-                      ),
-                      child: const Text('条件を保存して検索'),
                     ),
                   ],
                 ),
@@ -2494,7 +2572,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return const RakutenSearchIdleView(
           icon: Icons.storefront_outlined,
           title: 'ここではまだショップ発掘の結果を表示していません',
-          subtitle: 'キーワードかジャンルを指定して「ショップ発掘を実行」。条件は「検索キーワード」から調整できます。',
+          subtitle: 'キーワードまたはジャンルを指定して検索してください',
           stateFootnote: 'ショップ発掘が始まるまで、このエリアは更新されません。',
           compactLayout: true,
         );
