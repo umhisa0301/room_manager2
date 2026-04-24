@@ -236,7 +236,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return k.isEmpty ? 'キーワード未入力' : k;
       case _RakutenSearchMode.genre:
         final g = _genreUiLabelForId(_selectedGenreId);
-        return 'ジャンル: $g';
+        return g;
       case _RakutenSearchMode.shopDiscovery:
         final k = _shopDiscoveryKeywordController.text.trim();
         final gid = _selectedDiscoveryGenreId;
@@ -244,11 +244,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ? (_labelForGenre(gid) ?? _genreUiLabelForId(gid))
             : null;
         if (k.isNotEmpty && genreLabel != null) {
-          return '発掘: $k / $genreLabel';
+          return '$k / $genreLabel';
         }
-        if (k.isNotEmpty) return '発掘: $k';
-        if (genreLabel != null) return '発掘: $genreLabel';
-        return '条件をタップして編集';
+        if (k.isNotEmpty) return k;
+        if (genreLabel != null) return genreLabel;
+        return '条件未設定';
     }
   }
 
@@ -283,12 +283,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     RakutenSearchProvider search,
   ) {
     final loading = search.status == RakutenSearchStatus.loading;
+    final compactSummary = _collapsedSearchSummaryLine();
+    final compactTitle = '${_mode.label}（$compactSummary）';
     return Padding(
       padding: EdgeInsets.fromLTRB(
         RakutenSearchScreenUi.screenPadH,
-        2,
+        1,
         RakutenSearchScreenUi.screenPadH,
-        2,
+        1,
       ),
       child: DecoratedBox(
         decoration: RakutenSearchScreenUi.outerSectionShellDecoration(),
@@ -300,43 +302,34 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           child: ColoredBox(
             color: HomeScreenColors.roomContentWellFill,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          _mode.label,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(8),
+                      onTap: loading
+                          ? null
+                          : () => _openConditionsForCurrentMode(context),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 2),
+                        child: Text(
+                          compactTitle,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.labelLarge?.copyWith(
                             fontWeight: FontWeight.w800,
-                            fontSize: 12,
+                            fontSize: 11.8,
                             color: HomeScreenColors.titlePrimary,
                             letterSpacing: -0.15,
                             height: 1.1,
                           ),
                         ),
-                        const SizedBox(height: 1),
-                        Text(
-                          _collapsedSearchSummaryLine(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: HomeScreenColors.footnoteMuted,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 10.5,
-                            height: 1.15,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 2),
                   TextButton(
                     onPressed: loading
                         ? null
@@ -344,15 +337,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     style: TextButton.styleFrom(
                       visualDensity: VisualDensity.compact,
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 2,
+                        horizontal: 5,
+                        vertical: 1,
                       ),
-                      minimumSize: const Size(0, 30),
+                      minimumSize: const Size(0, 28),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       foregroundColor: HomeScreenColors.leadOnSection,
                       textStyle: const TextStyle(
                         fontWeight: FontWeight.w700,
-                        fontSize: 11.5,
+                        fontSize: 11,
                       ),
                     ),
                     child: const Text('条件'),
@@ -375,8 +368,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     visualDensity: VisualDensity.compact,
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(
-                      minWidth: 30,
-                      minHeight: 30,
+                      minWidth: 28,
+                      minHeight: 28,
                     ),
                     tooltip: '再検索',
                     onPressed: loading
@@ -384,7 +377,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         : () => _rerunSearchForCurrentMode(context),
                     icon: Icon(
                       Icons.refresh_rounded,
-                      size: 18,
+                      size: 17,
                       color: loading
                           ? HomeScreenColors.footnoteMuted
                           : HomeScreenColors.leadOnSection,
@@ -2423,7 +2416,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   ),
                 ],
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 5),
               Wrap(
                 spacing: 6,
                 runSpacing: 6,
