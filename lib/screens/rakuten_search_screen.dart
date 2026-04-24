@@ -286,9 +286,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return Padding(
       padding: EdgeInsets.fromLTRB(
         RakutenSearchScreenUi.screenPadH,
-        4,
+        2,
         RakutenSearchScreenUi.screenPadH,
-        4,
+        2,
       ),
       child: DecoratedBox(
         decoration: RakutenSearchScreenUi.outerSectionShellDecoration(),
@@ -300,102 +300,94 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           child: ColoredBox(
             color: HomeScreenColors.roomContentWellFill,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        _mode.icon,
-                        size: 18,
-                        color: HomeScreenColors.leadOnSection,
-                      ),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
                           _mode.label,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          style: Theme.of(context).textTheme.labelLarge?.copyWith(
                             fontWeight: FontWeight.w800,
-                            fontSize: 13,
+                            fontSize: 12,
                             color: HomeScreenColors.titlePrimary,
-                            letterSpacing: -0.2,
+                            letterSpacing: -0.15,
+                            height: 1.1,
                           ),
                         ),
-                      ),
-                      TextButton(
-                        onPressed: loading
-                            ? null
-                            : () => _openConditionsForCurrentMode(context),
-                        style: TextButton.styleFrom(
-                          visualDensity: VisualDensity.compact,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
+                        const SizedBox(height: 1),
+                        Text(
+                          _collapsedSearchSummaryLine(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: HomeScreenColors.footnoteMuted,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 10.5,
+                            height: 1.15,
                           ),
-                          minimumSize: const Size(0, 36),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          foregroundColor: HomeScreenColors.leadOnSection,
-                        ),
-                        child: const Text(
-                          '条件',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 12.5,
-                          ),
-                        ),
-                      ),
-                      if (_sortLivesInResultsHeader(search)) ...[
-                        const SizedBox(width: 2),
-                        _buildResultSortControl(
-                          context,
-                          value: _mode == _RakutenSearchMode.product
-                              ? _keywordSort
-                              : _genreExploreSort,
-                          resultsScrollController:
-                              _mode == _RakutenSearchMode.product
-                              ? _keywordResultsScrollController
-                              : _genreResultsScrollController,
-                          onSortSelected: _mode == _RakutenSearchMode.product
-                              ? (next) => _onKeywordSortChanged(context, next)
-                              : (next) => _onGenreSortChanged(context, next),
-                          compact: true,
                         ),
                       ],
-                      IconButton(
-                        visualDensity: VisualDensity.compact,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(
-                          minWidth: 36,
-                          minHeight: 36,
-                        ),
-                        tooltip: '再検索',
-                        onPressed: loading
-                            ? null
-                            : () => _rerunSearchForCurrentMode(context),
-                        icon: Icon(
-                          Icons.refresh_rounded,
-                          size: 22,
-                          color: loading
-                              ? HomeScreenColors.footnoteMuted
-                              : HomeScreenColors.leadOnSection,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    _collapsedSearchSummaryLine(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: HomeScreenColors.footnoteMuted,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
+                  const SizedBox(width: 4),
+                  TextButton(
+                    onPressed: loading
+                        ? null
+                        : () => _openConditionsForCurrentMode(context),
+                    style: TextButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      minimumSize: const Size(0, 30),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      foregroundColor: HomeScreenColors.leadOnSection,
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 11.5,
+                      ),
+                    ),
+                    child: const Text('条件'),
+                  ),
+                  if (_sortLivesInResultsHeader(search))
+                    _buildResultSortControl(
+                      context,
+                      value: _mode == _RakutenSearchMode.product
+                          ? _keywordSort
+                          : _genreExploreSort,
+                      resultsScrollController: _mode == _RakutenSearchMode.product
+                          ? _keywordResultsScrollController
+                          : _genreResultsScrollController,
+                      onSortSelected: _mode == _RakutenSearchMode.product
+                          ? (next) => _onKeywordSortChanged(context, next)
+                          : (next) => _onGenreSortChanged(context, next),
+                      compact: true,
+                    ),
+                  IconButton(
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(
+                      minWidth: 30,
+                      minHeight: 30,
+                    ),
+                    tooltip: '再検索',
+                    onPressed: loading
+                        ? null
+                        : () => _rerunSearchForCurrentMode(context),
+                    icon: Icon(
+                      Icons.refresh_rounded,
+                      size: 18,
+                      color: loading
+                          ? HomeScreenColors.footnoteMuted
+                          : HomeScreenColors.leadOnSection,
                     ),
                   ),
                 ],
@@ -1203,8 +1195,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         const SizedBox(height: 6),
                         Text(
                           _mode == _RakutenSearchMode.product
-                              ? 'キーワードと詳細条件をここでまとめて編集します。'
-                              : 'ジャンルは必須です。必要なら補助キーワードも入力できます。',
+                              ? 'キーワードと条件を編集します。'
+                              : 'ジャンル（必須）を選択してください。',
                           style: RakutenSearchScreenUi.sheetIntroBody(context),
                         ),
                         if (_mode == _RakutenSearchMode.genre) ...[
@@ -1646,7 +1638,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          'キーワードかジャンルのどちらか（または両方）を指定してください。',
+                          'キーワードまたはジャンルを指定してください。',
                           style: RakutenSearchScreenUi.sheetIntroBody(context),
                         ),
                         const SizedBox(height: RakutenSearchScreenUi.sheetBlockGap),
@@ -2347,77 +2339,38 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  /// 結果一覧の先頭行（件数＋並び順）。一覧ヘッダに収めて浮き感を抑える。
+  /// 結果一覧の先頭操作ヘッダー（件数・並び順・選択モード）。
   Widget _buildResultsToolbarRow(
     BuildContext context,
-    RakutenSearchProvider search, {
+    RakutenSearchProvider search,
+    RakutenManagedProductProvider managed,
+    List<RakutenSearchItem> orderedResults, {
     required int showingCount,
   }) {
     if (!_sortLivesInResultsHeader(search)) {
       return const SizedBox.shrink();
     }
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-        RakutenSearchScreenUi.screenPadH,
-        0,
-        RakutenSearchScreenUi.screenPadH,
-        2,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Text(
-              '一覧 $showingCount件',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: HomeScreenColors.metricTileTitleColor,
-                fontWeight: FontWeight.w800,
-                fontSize: 12.5,
-                letterSpacing: -0.15,
-              ),
-            ),
-          ),
-          _buildResultSortControl(
-            context,
-            value: _mode == _RakutenSearchMode.product
-                ? _keywordSort
-                : _genreExploreSort,
-            resultsScrollController: _mode == _RakutenSearchMode.product
-                ? _keywordResultsScrollController
-                : _genreResultsScrollController,
-            onSortSelected: _mode == _RakutenSearchMode.product
-                ? (next) => _onKeywordSortChanged(context, next)
-                : (next) => _onGenreSortChanged(context, next),
-            compact: true,
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// 選択モード行（キーワード／ジャンルで同一）。
-  Widget _buildResultsSelectionRow(
-    BuildContext context,
-    RakutenManagedProductProvider managed,
-    List<RakutenSearchItem> orderedResults,
-  ) {
     final selectableCount = orderedResults
         .where((e) => _isSelectableForBulk(e, managed))
         .length;
-    final chipSide = BorderSide(color: HomeScreenColors.deckOutline);
-    ButtonStyle chipStyle = OutlinedButton.styleFrom(
-      foregroundColor: HomeScreenColors.leadOnSection,
-      backgroundColor: HomeScreenColors.deckFill,
-      side: chipSide,
+    final isSelecting = _selectionMode;
+    final selectChipStyle = OutlinedButton.styleFrom(
+      foregroundColor: isSelecting
+          ? AppColors.accentPrimary
+          : HomeScreenColors.leadOnSection,
+      backgroundColor: isSelecting
+          ? AppColors.accentLight.withValues(alpha: 0.35)
+          : HomeScreenColors.deckFill,
+      side: BorderSide(
+        color: isSelecting
+            ? AppColors.accentPrimary.withValues(alpha: 0.55)
+            : HomeScreenColors.deckOutline,
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       minimumSize: const Size(0, 34),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.5),
     );
     return Padding(
@@ -2427,69 +2380,124 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         RakutenSearchScreenUi.screenPadH,
         4,
       ),
-      child: Wrap(
-        spacing: 6,
-        runSpacing: 6,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          OutlinedButton.icon(
-            style: chipStyle,
-            onPressed: _isBulkRegistering ? null : _toggleSelectionMode,
-            icon: Icon(
-              _selectionMode
-                  ? Icons.checklist_rtl_rounded
-                  : Icons.playlist_add_check_rounded,
-              size: 16,
-            ),
-            label: Text(_selectionMode ? '選択終了' : '選択モード'),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: HomeScreenColors.deckFill,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: HomeScreenColors.deckOutline),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 8, 10, 7),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      '一覧 $showingCount件',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: HomeScreenColors.metricTileTitleColor,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 12.5,
+                        letterSpacing: -0.15,
+                      ),
+                    ),
+                  ),
+                  _buildResultSortControl(
+                    context,
+                    value: _mode == _RakutenSearchMode.product
+                        ? _keywordSort
+                        : _genreExploreSort,
+                    resultsScrollController: _mode == _RakutenSearchMode.product
+                        ? _keywordResultsScrollController
+                        : _genreResultsScrollController,
+                    onSortSelected: _mode == _RakutenSearchMode.product
+                        ? (next) => _onKeywordSortChanged(context, next)
+                        : (next) => _onGenreSortChanged(context, next),
+                    compact: true,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 6),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  OutlinedButton.icon(
+                    style: selectChipStyle,
+                    onPressed: _isBulkRegistering ? null : _toggleSelectionMode,
+                    icon: Icon(
+                      _selectionMode
+                          ? Icons.checklist_rtl_rounded
+                          : Icons.playlist_add_check_rounded,
+                      size: 16,
+                    ),
+                    label: Text(_selectionMode ? '選択終了' : '選択モード'),
+                  ),
+                  if (_selectionMode) ...[
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 180),
+                      child: Text(
+                        '選択中 ${_selectedProductIds.length}件 / 候補 $selectableCount件',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: HomeScreenColors.groupedSectionBody,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        visualDensity: VisualDensity.compact,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        minimumSize: const Size(0, 30),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        foregroundColor: HomeScreenColors.leadOnSection,
+                      ),
+                      onPressed: orderedResults.isEmpty || _isBulkRegistering
+                          ? null
+                          : () => _selectAllForBulk(orderedResults, managed),
+                      child: const Text(
+                        '全部選択',
+                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 11.5),
+                      ),
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        visualDensity: VisualDensity.compact,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        minimumSize: const Size(0, 30),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        foregroundColor: HomeScreenColors.leadOnSection,
+                      ),
+                      onPressed: _selectedProductIds.isEmpty || _isBulkRegistering
+                          ? null
+                          : _clearBulkSelection,
+                      child: const Text(
+                        '全部解除',
+                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 11.5),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ],
           ),
-          if (_selectionMode) ...[
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 200),
-              child: Text(
-                '選択中 ${_selectedProductIds.length}件 / 候補 $selectableCount件',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: HomeScreenColors.groupedSectionBody,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                visualDensity: VisualDensity.compact,
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                minimumSize: const Size(0, 32),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                foregroundColor: HomeScreenColors.leadOnSection,
-              ),
-              onPressed: orderedResults.isEmpty || _isBulkRegistering
-                  ? null
-                  : () => _selectAllForBulk(orderedResults, managed),
-              child: const Text(
-                '全部選択',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
-              ),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                visualDensity: VisualDensity.compact,
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                minimumSize: const Size(0, 32),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                foregroundColor: HomeScreenColors.leadOnSection,
-              ),
-              onPressed: _selectedProductIds.isEmpty || _isBulkRegistering
-                  ? null
-                  : _clearBulkSelection,
-              child: const Text(
-                '全部解除',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
-              ),
-            ),
-          ],
-        ],
+        ),
       ),
     );
   }
@@ -2699,43 +2707,65 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(child: listOrEmpty()),
-        if (_selectionMode)
-          SafeArea(
-            top: false,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                RakutenSearchScreenUi.screenPadH,
-                RakutenSearchScreenUi.gapFieldStack,
-                RakutenSearchScreenUi.screenPadH,
-                RakutenSearchScreenUi.gapFloatingBarPad,
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  onPressed: _selectedProductIds.isEmpty || _isBulkRegistering
-                      ? null
-                      : () => _bulkRegisterCandidates(managed, orderedResults),
-                  style: RakutenSearchScreenUi.sheetPrimaryFilledButtonStyle(),
-                  icon: _isBulkRegistering
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.playlist_add_check_rounded, size: 22),
-                  label: Text(
-                    _isBulkRegistering
-                        ? '一括登録中...'
-                        : 'まとめて候補登録（${_selectedProductIds.length}件）',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 15,
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 220),
+          switchInCurve: Curves.easeOutCubic,
+          switchOutCurve: Curves.easeInCubic,
+          transitionBuilder: (child, animation) {
+            final offsetTween = Tween<Offset>(
+              begin: const Offset(0, 0.12),
+              end: Offset.zero,
+            );
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(position: offsetTween.animate(animation), child: child),
+            );
+          },
+          child: (_selectionMode && _selectedProductIds.isNotEmpty)
+              ? SafeArea(
+                  key: const ValueKey<String>('bulk_register_bar'),
+                  top: false,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      RakutenSearchScreenUi.screenPadH,
+                      RakutenSearchScreenUi.gapFieldStack,
+                      RakutenSearchScreenUi.screenPadH,
+                      RakutenSearchScreenUi.gapFloatingBarPad,
+                    ),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        onPressed: _isBulkRegistering
+                            ? null
+                            : () => _bulkRegisterCandidates(managed, orderedResults),
+                        style: RakutenSearchScreenUi.sheetPrimaryFilledButtonStyle().copyWith(
+                          minimumSize: const WidgetStatePropertyAll(Size(0, 48)),
+                          padding: const WidgetStatePropertyAll(
+                            EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                          ),
+                        ),
+                        icon: _isBulkRegistering
+                            ? const SizedBox(
+                                width: 17,
+                                height: 17,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : const Icon(Icons.playlist_add_check_rounded, size: 20),
+                        label: Text(
+                          _isBulkRegistering
+                              ? '一括登録中...'
+                              : 'まとめて候補登録（${_selectedProductIds.length}件）',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-          ),
+                )
+              : const SizedBox.shrink(key: ValueKey<String>('bulk_register_hidden')),
+        ),
       ],
     );
   }
@@ -2838,9 +2868,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             _buildResultsToolbarRow(
               context,
               search,
+              managed,
+              orderedResults,
               showingCount: showingCount,
             ),
-            _buildResultsSelectionRow(context, managed, orderedResults),
             _buildResultsMetaAndExcludeFootnote(
               context,
               primaryLine: primaryMeta,
@@ -2975,9 +3006,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             _buildResultsToolbarRow(
               context,
               search,
+              managed,
+              orderedResults,
               showingCount: showingCount,
             ),
-            _buildResultsSelectionRow(context, managed, orderedResults),
             _buildResultsMetaAndExcludeFootnote(
               context,
               primaryLine: primaryMeta,
