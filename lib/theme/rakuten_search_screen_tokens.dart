@@ -30,20 +30,20 @@ abstract final class RakutenSearchScreenUi {
   static const double listCardGap = 8;
 
   /// 入力デッキ外周（画面上端〜シェル）。
-  static const double gapDeckOuterTop = 8;
-  static const double gapDeckOuterBottom = 8;
+  static const double gapDeckOuterTop = 6;
+  static const double gapDeckOuterBottom = 6;
 
   /// 副操作行〜主CTAの前後。
-  static const double gapBeforePrimaryCta = 12;
+  static const double gapBeforePrimaryCta = 8;
 
   /// モードタブ〜説明文。
-  static const double gapTabToBody = 10;
+  static const double gapTabToBody = 6;
 
   /// モーダル内フィールドの縦リズム（8〜10px帯）。
   static const double sheetBlockGap = 10;
 
   /// 並び替え行〜主入力ブロック。
-  static const double gapSortToFields = 8;
+  static const double gapSortToFields = 6;
 
   /// ジャンル結果リストの下余白 = [listBottomPad] + この値。
   static const double listScrollExtraPadGenre = 12;
@@ -55,7 +55,7 @@ abstract final class RakutenSearchScreenUi {
   static const double listBottomPadWithSelectionBar = 88;
 
   /// リスト先頭の微余白（カード密度を ROOM 一覧に寄せる）。
-  static const double listScrollTopPad = 4;
+  static const double listScrollTopPad = 2;
 
   /// 「検索完了」行の下側（次ブロックまでの締め）。
   static const double gapResultStatusRowBottom = 4;
@@ -67,7 +67,7 @@ abstract final class RakutenSearchScreenUi {
   static const double gapFloatingBarPad = 12;
 
   /// 検索入力デッキ内側（ウェル密度は ROOM の well に近づけつつタップしやすく）。
-  static const double inputDeckPadding = 12;
+  static const double inputDeckPadding = 10;
 
   /// モーダルシートの左右（本文の読みやすさ用。外側 [screenPadH] よりやや広く）。
   static const double sheetPadH = 12;

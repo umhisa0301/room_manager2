@@ -43,6 +43,41 @@ class RoomColleListCardActionStyle {
     );
   }
 
+  /// 検索結果カード：楽天で開く＝確認用の副導線（コレ候補ボタンと役割差をつける）。
+  static ButtonStyle rakutenBrowseOutlined() {
+    const blue = Color(0xFF1565C0);
+    return OutlinedButton.styleFrom(
+      foregroundColor: blue,
+      backgroundColor: Colors.white,
+      disabledForegroundColor: Color(0xFF90CAF9),
+      disabledBackgroundColor: Color(0xFFF5F5F5),
+      minimumSize: const Size(0, minTap),
+      padding: paddingMain,
+      elevation: 0,
+      side: BorderSide(color: blue.withValues(alpha: 0.55), width: 1.2),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.compact,
+      shape: _shapeCompact,
+    );
+  }
+
+  /// 検索結果カード：コレ候補追加の主CTA（一覧専用のわずかな強調）。
+  static ButtonStyle collectFilledSearchPrimary() {
+    return FilledButton.styleFrom(
+      foregroundColor: AppColors.textOnAccent,
+      backgroundColor: AppColors.accentPrimary,
+      disabledForegroundColor: AppColors.textTertiary,
+      disabledBackgroundColor: AppColors.surfaceVariant,
+      minimumSize: const Size(0, 46),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
+      elevation: 1,
+      shadowColor: AppColors.accentPrimary.withValues(alpha: 0.35),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.standard,
+      shape: _shapeCompact,
+    );
+  }
+
   static ButtonStyle collectFilled() {
     return FilledButton.styleFrom(
       foregroundColor: AppColors.textOnAccent,

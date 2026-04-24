@@ -58,14 +58,6 @@ class RakutenSearchResultCard extends StatelessWidget {
     }
   }
 
-  String _ratingMetaLine() {
-    final rating = item.reviewAverage;
-    final reviewCount = item.reviewCount;
-    final ratingText = rating > 0 ? '★${rating.toStringAsFixed(1)}' : '★-';
-    final reviewText = reviewCount > 0 ? 'レビュー $reviewCount件' : 'レビュー 0件';
-    return '$ratingText  $reviewText';
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -82,12 +74,21 @@ class RakutenSearchResultCard extends StatelessWidget {
       fontWeight: FontWeight.w500,
       height: 1.2,
     );
-    final reviewLineStyle =
+    final reviewCountStyle =
         RoomColleProductListCardLayout.metaTextStyle(theme)?.copyWith(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
+          fontSize: 10.5,
+          fontWeight: FontWeight.w500,
           height: 1.2,
           color: HomeScreenColors.metricTileCaptionColor,
+        ) ??
+        genreLineStyle;
+    final reviewScoreStyle =
+        RoomColleProductListCardLayout.metaTextStyle(theme)?.copyWith(
+          fontSize: 12,
+          fontWeight: FontWeight.w800,
+          height: 1.15,
+          color: HomeScreenColors.metricTileTitleColor,
+          letterSpacing: -0.2,
         ) ??
         genreLineStyle;
 
@@ -132,11 +133,9 @@ class RakutenSearchResultCard extends StatelessWidget {
                           style: priceStyle,
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          _ratingMetaLine(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: reviewLineStyle,
+                        _ratingRow(
+                          reviewScoreStyle: reviewScoreStyle,
+                          reviewCountStyle: reviewCountStyle,
                         ),
                         const SizedBox(height: 3),
                         Text(
@@ -188,27 +187,55 @@ class RakutenSearchResultCard extends StatelessWidget {
     );
   }
 
+  Widget _ratingRow({
+    required TextStyle reviewScoreStyle,
+    required TextStyle reviewCountStyle,
+  }) {
+    final rating = item.reviewAverage;
+    final reviewCount = item.reviewCount;
+    final scoreText = rating > 0 ? '★${rating.toStringAsFixed(1)}' : '★-';
+    final countText =
+        reviewCount > 0 ? 'レビュー $reviewCount件' : 'レビュー 0件';
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        Text(scoreText, style: reviewScoreStyle),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            countText,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: reviewCountStyle,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _searchResultActions(BuildContext context) {
+    const rakutenBlue = Color(0xFF1565C0);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
-          flex: 38,
-          child: FilledButton(
-            style: RoomColleListCardActionStyle.rakutenFilled(),
+          flex: 34,
+          child: OutlinedButton(
+            style: RoomColleListCardActionStyle.rakutenBrowseOutlined(),
             onPressed: () =>
                 AppActionService.openUrl(context, url: item.browserLaunchUrl),
             child: RoomColleListCardActionStyle.compactActionLabel(
               icon: Icons.open_in_new_rounded,
               label: '楽天で見る',
-              color: Colors.white,
-              weight: FontWeight.w800,
+              color: rakutenBlue,
+              weight: FontWeight.w700,
               fontSize: 11,
             ),
           ),
         ),
         const SizedBox(width: 6),
-        Expanded(flex: 38, child: _buildRegisterAction(context)),
+        Expanded(flex: 42, child: _buildRegisterAction(context)),
       ],
     );
   }
@@ -255,9 +282,10 @@ class RakutenSearchResultCard extends StatelessWidget {
     }
 
     return Tooltip(
-      message: 'ROOMコレのコレ候補として保存します。',
+      message:
+          'ROOMコレの「コレ候補」に追加します。あとからROOMコレタブの候補一覧で比較・整理できます。',
       child: FilledButton(
-        style: RoomColleListCardActionStyle.collectFilled(),
+        style: RoomColleListCardActionStyle.collectFilledSearchPrimary(),
         onPressed: isRegistering ? null : onRegisterCandidate,
         child: isRegistering
             ? SizedBox(
@@ -269,11 +297,11 @@ class RakutenSearchResultCard extends StatelessWidget {
                 ),
               )
             : RoomColleListCardActionStyle.compactActionLabel(
-                icon: Icons.bookmark_add_outlined,
-                label: 'コレ候補へ登録',
+                icon: Icons.bookmark_add_rounded,
+                label: 'コレ候補に追加',
                 color: AppColors.textOnAccent,
                 weight: FontWeight.w800,
-                fontSize: 11,
+                fontSize: 11.5,
               ),
       ),
     );

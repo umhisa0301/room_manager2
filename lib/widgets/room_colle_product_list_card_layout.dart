@@ -41,7 +41,7 @@ abstract final class RoomColleProductListCardLayout {
   }
 
   static EdgeInsets get rightColumnPadding =>
-      const EdgeInsets.fromLTRB(10, 10, 12, 10);
+      const EdgeInsets.fromLTRB(10, 8, 12, 8);
 
   static String formatPriceYen(int n) {
     if (n < 0) return '価格 —';
