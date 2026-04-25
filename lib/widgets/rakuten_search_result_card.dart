@@ -7,7 +7,7 @@ import '../utils/rakuten_product_genre_display.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
-import 'room_colle_list_card_action_style.dart';
+import 'app_button.dart';
 import 'room_colle_product_list_card_layout.dart';
 
 /// 楽天検索結果の1商品カード（ROOM コレ一覧カードと同一 UI ルール）。
@@ -214,23 +214,19 @@ class RakutenSearchResultCard extends StatelessWidget {
   }
 
   Widget _searchResultActions(BuildContext context) {
-    const rakutenBlue = Color(0xFF1565C0);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
           flex: 34,
-          child: OutlinedButton(
-            style: RoomColleListCardActionStyle.rakutenBrowseOutlined(),
+          child: AppSecondaryButton(
+            // 共通AppSecondaryButtonへ置換: 楽天確認用の副導線。
+            label: '楽天で見る',
+            icon: const Icon(Icons.open_in_new_rounded),
+            height: 44,
+            expand: true,
             onPressed: () =>
                 AppActionService.openUrl(context, url: item.browserLaunchUrl),
-            child: RoomColleListCardActionStyle.compactActionLabel(
-              icon: Icons.open_in_new_rounded,
-              label: '楽天で見る',
-              color: rakutenBlue,
-              weight: FontWeight.w700,
-              fontSize: 11,
-            ),
           ),
         ),
         const SizedBox(width: 6),
@@ -246,17 +242,13 @@ class RakutenSearchResultCard extends StatelessWidget {
     if (isDone) {
       return Tooltip(
         message: 'ROOMコレでコレ済の商品です。再度コレ候補へは登録できません。',
-        child: OutlinedButton(
-          style: RoomColleListCardActionStyle.searchStatusLockedOutline(
-            RoomColleListAccent.done,
-          ),
+        child: AppSecondaryButton(
+          // 共通AppSecondaryButtonへ置換: コレ済状態の非活性表示。
+          label: 'コレ済',
+          icon: const Icon(Icons.check_circle_outline_rounded),
+          height: 44,
+          expand: true,
           onPressed: null,
-          child: RoomColleListCardActionStyle.compactActionLabel(
-            icon: Icons.check_circle_outline_rounded,
-            label: 'コレ済',
-            color: RoomColleListAccent.done,
-            weight: FontWeight.w700,
-          ),
         ),
       );
     }
@@ -264,43 +256,27 @@ class RakutenSearchResultCard extends StatelessWidget {
     if (isCandidate) {
       return Tooltip(
         message: 'コレ候補に登録済みです。重複登録はできません。ROOMコレの候補一覧から確認できます。',
-        child: OutlinedButton(
-          style: RoomColleListCardActionStyle.searchStatusLockedOutline(
-            RoomColleListAccent.candidate,
-          ),
+        child: AppSecondaryButton(
+          // 共通AppSecondaryButtonへ置換: 候補登録済み状態の非活性表示。
+          label: '候補に登録済',
+          icon: const Icon(Icons.bookmark_added_outlined),
+          height: 44,
+          expand: true,
           onPressed: null,
-          child: RoomColleListCardActionStyle.compactActionLabel(
-            icon: Icons.bookmark_added_outlined,
-            label: '候補に登録済',
-            color: RoomColleListAccent.candidate,
-            weight: FontWeight.w700,
-            fontSize: 10,
-          ),
         ),
       );
     }
 
     return Tooltip(
       message: 'ROOMコレの「コレ候補」に追加します。あとからROOMコレタブの候補一覧で比較・整理できます。',
-      child: FilledButton(
-        style: RoomColleListCardActionStyle.collectFilledSearchPrimary(),
+      child: AppPrimaryButton(
+        // 共通AppPrimaryButtonへ置換: コレ候補追加の主CTA。
+        label: 'コレ候補に追加',
+        icon: const Icon(Icons.bookmark_add_rounded),
+        height: 46,
+        expand: true,
         onPressed: isRegistering ? null : onRegisterCandidate,
-        child: isRegistering
-            ? SizedBox(
-                width: 22,
-                height: 22,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: AppColors.textOnAccent,
-                ),
-              )
-            : RoomColleListCardActionStyle.compactActionLabel(
-                icon: Icons.bookmark_add_rounded,
-                label: 'コレ候補に追加',
-                color: AppColors.textOnAccent,
-                weight: FontWeight.w800,
-                fontSize: 11.5,
-              ),
+        isLoading: isRegistering,
       ),
     );
   }

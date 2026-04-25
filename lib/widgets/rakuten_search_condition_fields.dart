@@ -5,6 +5,8 @@ import '../models/saved_shop.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
+import 'app_button.dart';
+import 'app_text_field.dart';
 
 /// ジャンルプルダウン用の選択肢（ID null は「指定なし」など）。
 class RakutenSearchGenreOption {
@@ -32,40 +34,32 @@ class RakutenSearchPriceRangeRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: TextField(
+          child: AppTextField(
+            // 共通AppTextFieldへ置換: 最低価格入力。
             controller: minPriceController,
             keyboardType: const TextInputType.numberWithOptions(
               decimal: false,
               signed: false,
             ),
             inputFormatters: digitsOnlyFormatters,
-            decoration: RakutenSearchScreenUi.searchField(
-              labelText: '最低価格（任意）',
-              hintText: '1000',
-              prefixIcon: Icon(
-                Icons.currency_yen,
-                color: HomeScreenColors.leadOnSection,
-              ),
-            ),
+            labelText: '最低価格（任意）',
+            hintText: '1000',
+            prefixIcon: const Icon(Icons.currency_yen),
           ),
         ),
         SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
         Expanded(
-          child: TextField(
+          child: AppTextField(
+            // 共通AppTextFieldへ置換: 最高価格入力。
             controller: maxPriceController,
             keyboardType: const TextInputType.numberWithOptions(
               decimal: false,
               signed: false,
             ),
             inputFormatters: digitsOnlyFormatters,
-            decoration: RakutenSearchScreenUi.searchField(
-              labelText: '最高価格（任意）',
-              hintText: '5000',
-              prefixIcon: Icon(
-                Icons.currency_yen,
-                color: HomeScreenColors.leadOnSection,
-              ),
-            ),
+            labelText: '最高価格（任意）',
+            hintText: '5000',
+            prefixIcon: const Icon(Icons.currency_yen),
           ),
         ),
       ],
@@ -218,14 +212,11 @@ class RakutenSearchSavedShopPicker extends StatelessWidget {
             const SizedBox(height: 8),
             Align(
               alignment: Alignment.centerLeft,
-              child: TextButton.icon(
+              child: AppSecondaryButton(
+                // 共通AppSecondaryButtonへ置換: 保存ショップ導線。
+                label: '保存ショップを見る・追加',
+                icon: const Icon(Icons.bookmark_outline_rounded),
                 onPressed: onNavigateToSavedShops,
-                icon: Icon(
-                  Icons.bookmark_outline_rounded,
-                  size: 18,
-                  color: HomeScreenColors.leadOnSection,
-                ),
-                label: const Text('保存ショップを見る・追加'),
               ),
             ),
           ],
