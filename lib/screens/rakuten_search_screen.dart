@@ -805,7 +805,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           detailEntry: RakutenSearchPseudoSearchFieldEntry(
             controller: _keywordController,
             onTap: () => _openProductConditionsSheet(context),
-            labelText: '検索キーワード（必須）',
+            labelText: 'キーワード',
             hintText: '例：アンパンマン / イヤホン / 水筒',
             prefixIcon: Icons.search_rounded,
           ),
@@ -879,7 +879,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           hintText: '例: おしゃれ 家具',
           prefixIcon: Icons.search_rounded,
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapSortToFields),
+        const SizedBox(height: 4),
         Align(
           alignment: Alignment.centerRight,
           child: OutlinedButton.icon(
@@ -909,8 +909,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 fontSize: 12.5,
               ),
             ),
-            icon: const Icon(Icons.bookmarks_outlined, size: 18),
-            label: Text('保存ショップ（$savedCount）'),
+            icon: const Icon(Icons.bookmarks_outlined, size: 16),
+            label: Text('保存ショップ ($savedCount)'),
           ),
         ),
         SizedBox(height: RakutenSearchScreenUi.gapBeforePrimaryCta),
@@ -962,10 +962,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       _minCommentCountController.clear();
       _selectedShopCode = null;
       if (_mode == _RakutenSearchMode.product) {
+        _keywordController.clear();
         _selectedGenreId = null;
       }
       if (_mode == _RakutenSearchMode.genre) {
         _genreController.clear();
+        _selectedGenreId = null;
       }
       if (_mode == _RakutenSearchMode.shopDiscovery) {
         _shopDiscoveryExcludeController.clear();
@@ -1030,43 +1032,35 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return null;
   }
 
-  ButtonStyle _neutralConditionsButtonStyle() {
-    return OutlinedButton.styleFrom(
-      foregroundColor: HomeScreenColors.groupedSectionBody,
-      backgroundColor: HomeScreenColors.deckFill,
-      side: BorderSide(color: HomeScreenColors.deckOutline),
-      minimumSize: const Size(0, 48),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-      ),
-      textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12.5),
-    );
-  }
-
   Widget _buildUnifiedSearchControls(
     BuildContext context, {
     required Widget detailEntry,
     required VoidCallback onClear,
   }) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(child: detailEntry),
-        SizedBox(width: RakutenSearchScreenUi.gapFieldStack),
-        Expanded(
-          child: OutlinedButton.icon(
+        detailEntry,
+        const SizedBox(height: 4),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
             onPressed: onClear,
             icon: Icon(
               Icons.restart_alt_rounded,
-              size: 17,
+              size: 16,
               color: HomeScreenColors.groupedSectionBody,
             ),
             label: const Text('条件クリア'),
-            style: _neutralConditionsButtonStyle().copyWith(
-              minimumSize: const WidgetStatePropertyAll(Size(0, 48)),
-              padding: const WidgetStatePropertyAll(
-                EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            style: TextButton.styleFrom(
+              foregroundColor: HomeScreenColors.groupedSectionBody,
+              visualDensity: VisualDensity.compact,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              minimumSize: const Size(0, 36),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 12,
               ),
             ),
           ),
@@ -1291,7 +1285,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                       context,
                                     ),
                                 decoration: RakutenSearchScreenUi.searchField(
-                                  labelText: '検索キーワード（必須）',
+                                  labelText: 'キーワード（必須）',
                                   hintText: '例: ステンレス ボトル',
                                   prefixIcon: Icon(
                                     Icons.search_rounded,
@@ -2506,26 +2500,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _lastCompletionToastStatus = status;
     if (!shouldShow) return;
 
-    final text = switch (_mode) {
-      _RakutenSearchMode.product => '検索が完了しました（${search.results.length}件）',
-      _RakutenSearchMode.genre => '検索が完了しました（${search.results.length}件）',
-      _RakutenSearchMode.shopDiscovery =>
-        '商品の取得が完了しました（${search.results.length}件）',
-    };
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      final messenger = ScaffoldMessenger.maybeOf(context);
-      if (messenger == null) return;
-      messenger.hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(text),
-          behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    });
+    // 結果ヘッダーで完了状態を表現するため、完了トーストは表示しない。
   }
 
   /// 件数説明・補足・除外脚注（キーワード／ジャンルで同一スタイル）。
@@ -2800,7 +2775,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               : '時間をおいて「もう一度検索する」を押すか、条件を緩めて試してください。',
           onRetry: () => _runSearch(context),
           onAdjustConditions: () => _openProductConditionsSheet(context),
-          adjustLabel: '検索キーワードを開く',
+          adjustLabel: 'キーワードを開く',
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
