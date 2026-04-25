@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../state/product_list_provider.dart';
+import '../widgets/app_button.dart';
 import '../widgets/product_form_content.dart';
 
 /// 商品追加画面。共通フォームを使い、保存で一覧に追加・ローカル保存される。
@@ -24,9 +25,14 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
         backgroundColor: AppColors.surface,
         foregroundColor: AppColors.textPrimary,
         actions: [
-          TextButton(
-            onPressed: () => _formKey.currentState?.submit(),
-            child: const Text('保存'),
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: AppPrimaryButton(
+              label: '保存',
+              onPressed: () => _formKey.currentState?.submit(),
+              height: 36,
+              expand: false,
+            ),
           ),
         ],
       ),

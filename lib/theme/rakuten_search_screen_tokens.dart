@@ -205,28 +205,6 @@ abstract final class RakutenSearchScreenUi {
         );
   }
 
-  /// 詳細シートの主CTA（画面下部の主ボタンと同系）。
-  static ButtonStyle sheetPrimaryFilledButtonStyle() {
-    // CTAだけが強く見えるよう、入力欄とは異なる影とブランド色に集約。
-    return FilledButton.styleFrom(
-      backgroundColor: AppColors.accentPrimary,
-      foregroundColor: AppColors.textOnAccent,
-      disabledForegroundColor: AppColors.textOnAccent.withValues(alpha: 0.72),
-      disabledBackgroundColor: AppColors.accentPrimary.withValues(alpha: 0.34),
-      minimumSize: const Size(0, 52),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-      elevation: 1.2,
-      shadowColor: AppColors.accentPrimary.withValues(alpha: 0.22),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      textStyle: const TextStyle(
-        fontWeight: FontWeight.w800,
-        fontSize: 15,
-        letterSpacing: -0.2,
-        height: 1.15,
-      ),
-    );
-  }
-
   static TextStyle labelStrong(BuildContext context) {
     return Theme.of(context).textTheme.labelLarge?.copyWith(
           color: HomeScreenColors.titlePrimary,

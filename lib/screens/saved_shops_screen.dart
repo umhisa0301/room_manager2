@@ -7,6 +7,8 @@ import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../widgets/app_button.dart';
+import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/search_group_screen_shell.dart';
 import 'rakuten_search_screen.dart';
@@ -47,7 +49,8 @@ class SavedShopsScreen extends StatelessWidget {
                 title: '保存ショップはまだありません',
                 body: '楽天検索の「ショップ発掘」で候補を探し、気に入ったショップを保存すると、ここからすぐ開けます。',
                 actions: [
-                  FilledButton.icon(
+                  AppPrimaryButton(
+                    label: 'ショップ発掘を開く',
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
@@ -55,8 +58,7 @@ class SavedShopsScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    icon: const Icon(Icons.travel_explore_rounded, size: 20),
-                    label: const Text('ショップ発掘を開く'),
+                    icon: const Icon(Icons.travel_explore_rounded),
                   ),
                 ],
               );
@@ -151,38 +153,39 @@ class _SavedShopsSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      margin: EdgeInsets.fromLTRB(
-        0,
-        RakutenSearchScreenUi.gapSection,
-        0,
-        RakutenSearchScreenUi.gapListAfterDivider,
-      ),
-      padding: const EdgeInsets.all(RakutenSearchScreenUi.inputDeckPadding),
-      decoration: RakutenSearchScreenUi.outerSectionShellDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '保存 $totalCount件 / 閲覧済み $viewedCount件\n'
-            '保存ショップから再訪して、候補登録を続けられます。',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.4,
-              fontWeight: FontWeight.w600,
+      child: AppCard(
+        margin: EdgeInsets.fromLTRB(
+          0,
+          RakutenSearchScreenUi.gapSection,
+          0,
+          RakutenSearchScreenUi.gapListAfterDivider,
+        ),
+        padding: const EdgeInsets.all(RakutenSearchScreenUi.inputDeckPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '保存 $totalCount件 / 閲覧済み $viewedCount件\n'
+              '保存ショップから再訪して、候補登録を続けられます。',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.4,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          SizedBox(height: RakutenSearchScreenUi.gapFieldStack + 3),
-          Align(
-            alignment: Alignment.centerRight,
-            child: OutlinedButton.icon(
-              onPressed: onOpenDiscovery,
-              icon: const Icon(Icons.travel_explore_rounded, size: 18),
-              label: const Text('ショップ発掘へ戻る'),
+            SizedBox(height: RakutenSearchScreenUi.gapFieldStack + 3),
+            Align(
+              alignment: Alignment.centerRight,
+              child: AppSecondaryButton(
+                label: 'ショップ発掘へ戻る',
+                onPressed: onOpenDiscovery,
+                icon: const Icon(Icons.travel_explore_rounded),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -205,9 +208,8 @@ class _SavedShopCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AppCard(
       padding: const EdgeInsets.all(RakutenSearchScreenUi.inputDeckPadding),
-      decoration: RakutenSearchScreenUi.exploreGroupFlatCardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -238,18 +240,21 @@ class _SavedShopCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: FilledButton.icon(
+                child: AppPrimaryButton(
+                  label: 'このショップを見る',
                   onPressed: onOpen,
-                  icon: const Icon(Icons.storefront_outlined, size: 18),
-                  label: const Text('このショップを見る'),
+                  icon: const Icon(Icons.storefront_outlined),
+                  height: 44,
                 ),
               ),
               const SizedBox(width: AppDimensions.spacingSm),
               Expanded(
-                child: OutlinedButton.icon(
+                child: AppSecondaryButton(
+                  label: '保存解除',
                   onPressed: onRemove,
-                  icon: const Icon(Icons.delete_outline_rounded, size: 18),
-                  label: const Text('保存解除'),
+                  icon: const Icon(Icons.delete_outline_rounded),
+                  expand: true,
+                  height: 44,
                 ),
               ),
             ],

@@ -16,7 +16,9 @@ import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../utils/room_colle_candidate_stale.dart';
+import '../widgets/app_button.dart';
 import '../widgets/app_screen_status.dart';
+import '../widgets/app_text_field.dart';
 import '../widgets/home_primary_action_button.dart';
 import '../widgets/rakuten_managed_product_card.dart';
 import 'rakuten_search_screen.dart';
@@ -25,12 +27,7 @@ import 'rakuten_search_screen.dart';
 const double _kRoomListScreenPadH = 8;
 const double _kRoomListCardGap = 5;
 
-enum RoomColleListSortPreset {
-  recentFirst,
-  oldFirst,
-  priceHigh,
-  priceLow,
-}
+enum RoomColleListSortPreset { recentFirst, oldFirst, priceHigh, priceLow }
 
 String _roomColleSortLabel(RoomColleListSortPreset preset) {
   switch (preset) {
@@ -219,52 +216,15 @@ class _RoomColleClearFiltersButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final iconSize = inlineSecondary ? 16.0 : (compact ? 17.0 : 18.0);
-    final fontSize = inlineSecondary ? 12.0 : (compact ? 12.5 : 13.0);
-    final padH = inlineSecondary ? 6.0 : (compact ? 8.0 : 12.0);
-    final padV = inlineSecondary ? 8.0 : (compact ? 8.0 : 10.0);
     final fg = inlineSecondary
         ? HomeScreenColors.groupedSectionBody
         : HomeScreenColors.leadOnSection;
-    final bg = inlineSecondary
-        ? Color.alphaBlend(
-            HomeScreenColors.subActionRowFill.withValues(alpha: 0.55),
-            HomeScreenColors.deckFill,
-          )
-        : HomeScreenColors.deckFill;
-    final borderColor = inlineSecondary
-        ? HomeScreenColors.inlineDivider
-        : HomeScreenColors.metricTileOutline;
 
-    return OutlinedButton.icon(
+    return AppSecondaryButton(
+      label: '条件クリア',
       onPressed: onPressed,
       icon: Icon(Icons.layers_clear_rounded, size: iconSize, color: fg),
-      label: Text(
-        '条件クリア',
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          fontSize: fontSize,
-          fontWeight: FontWeight.w600,
-          height: 1.15,
-          color: fg,
-        ),
-      ),
-      style: OutlinedButton.styleFrom(
-        foregroundColor: fg,
-        backgroundColor: bg,
-        elevation: 0,
-        shadowColor: Colors.transparent,
-        minimumSize: const Size(48, _kRoomColleSecondaryCtrlMinHeight),
-        padding: EdgeInsets.symmetric(horizontal: padH, vertical: padV),
-        tapTargetSize: MaterialTapTargetSize.padded,
-        visualDensity: inlineSecondary
-            ? VisualDensity.compact
-            : (compact ? VisualDensity.compact : VisualDensity.standard),
-        side: BorderSide(color: borderColor),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-        ),
-      ),
+      height: _kRoomColleSecondaryCtrlMinHeight,
     );
   }
 }
@@ -285,13 +245,6 @@ class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
   /// 候補タブ：取得済URLのみがONのときシート内フィルタが効いている旨をバッジで示す。
   final bool candidateUrlFilterActive;
 
-  static Color _primaryFilterButtonFill() {
-    return Color.alphaBlend(
-      AppColors.accentLight.withValues(alpha: 0.20),
-      HomeScreenColors.deckFill,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -301,7 +254,8 @@ class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
           flex: 7,
           child: Tooltip(
             message: '登録日・ジャンル・価格など（キーワード以外）',
-            child: OutlinedButton.icon(
+            child: AppSecondaryButton(
+              label: 'キーワード以外の条件',
               onPressed: onOpenMoreFilters,
               icon: Badge(
                 smallSize: 8,
@@ -310,35 +264,8 @@ class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
                     hasNonKeywordConstraintsBadge || candidateUrlFilterActive,
                 child: const Icon(Icons.tune_rounded, size: 20),
               ),
-              label: Text(
-                'キーワード以外の条件',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 13.5,
-                  height: 1.15,
-                  color: HomeScreenColors.accentSectionHeading,
-                ),
-              ),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: HomeScreenColors.accentSectionHeading,
-                backgroundColor: _primaryFilterButtonFill(),
-                alignment: Alignment.centerLeft,
-                minimumSize: const Size(0, _kRoomColleSecondaryCtrlMinHeight),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                side: BorderSide(color: HomeScreenColors.sectionOutlineAccent),
-                tapTargetSize: MaterialTapTargetSize.padded,
-                visualDensity: VisualDensity.standard,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    AppDimensions.radiusButton,
-                  ),
-                ),
-              ),
+              expand: true,
+              height: _kRoomColleSecondaryCtrlMinHeight,
             ),
           ),
         ),
@@ -1361,19 +1288,10 @@ class _RoomColleFilterEditorSheetState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: TextField(
+                  child: AppTextField(
                     controller: _minPriceCtrl,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: '下限',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 12,
-                      ),
-                    ),
+                    hintText: '下限',
                   ),
                 ),
                 const Padding(
@@ -1381,34 +1299,29 @@ class _RoomColleFilterEditorSheetState
                   child: Text('〜'),
                 ),
                 Expanded(
-                  child: TextField(
+                  child: AppTextField(
                     controller: _maxPriceCtrl,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: '上限',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 12,
-                      ),
-                    ),
+                    hintText: '上限',
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 20),
-            FilledButton.tonal(onPressed: _apply, child: const Text('この条件を適用')),
+            AppPrimaryButton(label: 'この条件を適用', onPressed: _apply),
             const SizedBox(height: 10),
-            TextButton(
+            AppSecondaryButton(
+              label: 'シート内の条件をリセット',
               onPressed: _resetDraftExtended,
-              child: const Text('シート内の条件をリセット'),
+              expand: true,
+              height: 44,
             ),
             const SizedBox(height: 8),
-            TextButton(
+            AppSecondaryButton(
+              label: '閉じる',
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('閉じる'),
+              expand: true,
+              height: 44,
             ),
           ],
         ),
@@ -2060,44 +1973,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     super.dispose();
   }
 
-  InputDecoration _roomColleKeywordDecoration(BuildContext context) {
-    return InputDecoration(
-      hintText: 'キーワード検索',
-      hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-        fontSize: 14,
-        color: HomeScreenColors.footnoteMuted,
-      ),
-      isDense: true,
-      filled: true,
-      fillColor: HomeScreenColors.deckFill,
-      contentPadding: const EdgeInsets.fromLTRB(12, 8, 2, 8),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
-        borderSide: BorderSide(color: HomeScreenColors.deckOutline),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
-        borderSide: BorderSide(color: HomeScreenColors.deckOutline),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
-        borderSide: BorderSide(
-          color: AppColors.accentPrimary.withValues(alpha: 0.92),
-          width: 1.5,
-        ),
-      ),
-      suffixIcon: Padding(
-        padding: const EdgeInsetsDirectional.only(end: 8),
-        child: Icon(
-          Icons.search_rounded,
-          color: HomeScreenColors.leadOnSection,
-          size: 22,
-        ),
-      ),
-      suffixIconConstraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final canPop = Navigator.canPop(context);
@@ -2425,7 +2300,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              TextField(
+                              AppTextField(
                                 controller: _candidateSearchController,
                                 onChanged: (v) {
                                   if (!mounted) return;
@@ -2438,15 +2313,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   _schedulePersistRoomColleSearch();
                                 },
                                 textInputAction: TextInputAction.search,
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      fontSize: 14,
-                                      height: 1.22,
-                                      color: HomeScreenColors.titlePrimary,
-                                    ),
-                                decoration: _roomColleKeywordDecoration(
-                                  context,
-                                ),
+                                hintText: 'キーワード検索',
+                                suffixIcon: const Icon(Icons.search_rounded),
                               ),
                               SizedBox(
                                 height: _RoomColleUi.gapKeywordToFilterRow,
@@ -2575,7 +2443,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              TextField(
+                              AppTextField(
                                 controller: _doneSearchController,
                                 onChanged: (v) {
                                   if (!mounted) return;
@@ -2586,15 +2454,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   _schedulePersistRoomColleSearch();
                                 },
                                 textInputAction: TextInputAction.search,
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      fontSize: 14,
-                                      height: 1.22,
-                                      color: HomeScreenColors.titlePrimary,
-                                    ),
-                                decoration: _roomColleKeywordDecoration(
-                                  context,
-                                ),
+                                hintText: 'キーワード検索',
+                                suffixIcon: const Icon(Icons.search_rounded),
                               ),
                               SizedBox(
                                 height: _RoomColleUi.gapKeywordToFilterRow,
@@ -2844,8 +2705,8 @@ class _RoomManagedProductListTabState
         }
         return;
       }
-      final toPrefetch =
-          RakutenGenreMasterService.instance.genreIdsNeedingApiPrefetch(ids);
+      final toPrefetch = RakutenGenreMasterService.instance
+          .genreIdsNeedingApiPrefetch(ids);
       if (toPrefetch.isEmpty) {
         if (mounted) {
           setState(() => _genrePrefetchLabels = const {});
@@ -3304,15 +3165,7 @@ class _DoneDayFilterBanner extends StatelessWidget {
                 ),
               ),
             ),
-            TextButton(
-              onPressed: onClear,
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                minimumSize: Size.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: const Text('すべて表示'),
-            ),
+            AppSecondaryButton(label: 'すべて表示', onPressed: onClear, height: 32),
           ],
         ),
       ),
@@ -3498,9 +3351,9 @@ class _RoomCollectionRenderOrDataEmptyState extends StatelessWidget {
               ),
               if (onResetFilters != null) ...[
                 const SizedBox(height: 12),
-                TextButton(
+                AppSecondaryButton(
+                  label: 'フィルタを初期化',
                   onPressed: () => onResetFilters!(),
-                  child: const Text('フィルタを初期化'),
                 ),
               ],
             ],
@@ -3589,7 +3442,7 @@ class _RoomCollectionEmptyState extends StatelessWidget {
               ],
               if (onAction != null && actionLabel != null) ...[
                 const SizedBox(height: 12),
-                TextButton(onPressed: onAction, child: Text(actionLabel!)),
+                AppSecondaryButton(label: actionLabel!, onPressed: onAction),
               ],
               if (stateFootnote != null &&
                   stateFootnote!.trim().isNotEmpty) ...[
@@ -3676,16 +3529,17 @@ class _RoomCollectionErrorState extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  FilledButton.icon(
+                  AppPrimaryButton(
+                    label: 'もう一度読み込む',
                     onPressed: () => onRetry(),
-                    icon: const Icon(Icons.refresh_rounded, size: 20),
-                    label: const Text('もう一度読み込む'),
+                    icon: const Icon(Icons.refresh_rounded),
+                    expand: false,
                   ),
                   if (onResetFiltersAndRetry != null) ...[
                     const SizedBox(height: 12),
-                    TextButton(
+                    AppSecondaryButton(
+                      label: 'フィルタを初期化して再開',
                       onPressed: () => onResetFiltersAndRetry!(),
-                      child: const Text('フィルタを初期化して再開'),
                     ),
                   ],
                 ],

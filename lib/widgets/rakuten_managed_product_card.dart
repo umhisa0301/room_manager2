@@ -10,7 +10,8 @@ import '../theme/app_theme.dart';
 import '../theme/room_colle_list_accent.dart';
 import '../utils/room_colle_candidate_stale.dart';
 import '../utils/room_colle_card_time_format.dart';
-import 'room_colle_list_card_action_style.dart';
+import 'app_button.dart';
+import 'app_card.dart';
 import 'room_colle_product_list_card_layout.dart';
 
 /// 一覧カードの見た目バリアント（候補 / コレ済）。
@@ -103,89 +104,96 @@ class RakutenManagedProductCard extends StatelessWidget {
       color: theme.colorScheme.onSurfaceVariant,
     );
 
-    return Container(
+    return SizedBox(
       height: RoomColleProductListCardLayout.cardHeight,
-      decoration: RoomColleProductListCardLayout.cardDecoration(),
-      clipBehavior: Clip.antiAlias,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          RoomColleProductListCardThumbSlot(child: _heroImage()),
-          Expanded(
-            child: Padding(
-              padding: RoomColleProductListCardLayout.rightColumnPadding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          _safeItemName(product),
-                          maxLines:
-                              RoomColleProductListCardLayout.titleMaxLines,
-                          overflow: TextOverflow.ellipsis,
-                          style: titleStyle,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          _safePriceYen(product),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: priceStyle,
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          _safeShopName(product),
-                          maxLines: RoomColleProductListCardLayout.shopMaxLines,
-                          overflow: TextOverflow.ellipsis,
-                          style: shopStyle,
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          RakutenProductGenreDisplay.resolve(
-                            apiGenreName: null,
-                            persistedGenreName: product.persistedGenreDisplayName,
-                            prefetchedGenreName:
-                                genrePrefetchLabels?[product.genreId.trim()],
-                            genreId: product.genreId,
-                            traceItemCode: product.productId,
+      child: AppCard(
+        padding: EdgeInsets.zero,
+        backgroundColor: RoomColleProductListCardLayout.cardBackgroundColor,
+        borderColor: RoomColleProductListCardLayout.cardBorderColor,
+        radius: RoomColleProductListCardLayout.radius,
+        elevated: true,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            RoomColleProductListCardThumbSlot(child: _heroImage()),
+            Expanded(
+              child: Padding(
+                padding: RoomColleProductListCardLayout.rightColumnPadding,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            _safeItemName(product),
+                            maxLines:
+                                RoomColleProductListCardLayout.titleMaxLines,
+                            overflow: TextOverflow.ellipsis,
+                            style: titleStyle,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: genreLineStyle,
-                        ),
-                        const Spacer(),
-                        if (staleSpec != null) ...[
-                          RoomColleCandidateStaleChip(spec: staleSpec),
-                          const SizedBox(height: 3),
+                          const SizedBox(height: 4),
+                          Text(
+                            _safePriceYen(product),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: priceStyle,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            _safeShopName(product),
+                            maxLines:
+                                RoomColleProductListCardLayout.shopMaxLines,
+                            overflow: TextOverflow.ellipsis,
+                            style: shopStyle,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            RakutenProductGenreDisplay.resolve(
+                              apiGenreName: null,
+                              persistedGenreName:
+                                  product.persistedGenreDisplayName,
+                              prefetchedGenreName:
+                                  genrePrefetchLabels?[product.genreId.trim()],
+                              genreId: product.genreId,
+                              traceItemCode: product.productId,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: genreLineStyle,
+                          ),
+                          const Spacer(),
+                          if (staleSpec != null) ...[
+                            RoomColleCandidateStaleChip(spec: staleSpec),
+                            const SizedBox(height: 3),
+                          ],
+                          Text(
+                            _dateMetaLabel(
+                              isCandidate: isCandidate,
+                              instant: tsInstant,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: timestampStyle,
+                          ),
                         ],
-                        Text(
-                          _dateMetaLabel(
-                            isCandidate: isCandidate,
-                            instant: tsInstant,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: timestampStyle,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  _feedbackToolbar(context),
-                  const SizedBox(height: 5),
-                  if (isCandidate)
-                    _candidateActions(context)
-                  else
-                    _doneActions(context, stateAccent),
-                ],
+                    const SizedBox(height: 5),
+                    _feedbackToolbar(context),
+                    const SizedBox(height: 5),
+                    if (isCandidate)
+                      _candidateActions(context)
+                    else
+                      _doneActions(context, stateAccent),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -195,27 +203,11 @@ class RakutenManagedProductCard extends StatelessWidget {
     final liked = product.feedbackLikedAt != null;
     final sold = product.feedbackSoldAt != null;
     final weak = product.feedbackWeakAt != null;
-    ButtonStyle chip(bool on, Color accent) {
-      return TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
-        minimumSize: Size.zero,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        foregroundColor: on ? accent : AppColors.textSecondary,
-        backgroundColor: on ? accent.withValues(alpha: 0.12) : null,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: BorderSide(
-            color: on ? accent.withValues(alpha: 0.45) : AppColors.divider,
-          ),
-        ),
-      );
-    }
-
     return Row(
       children: [
         Expanded(
-          child: TextButton(
-            style: chip(liked, const Color(0xFF2E7D32)),
+          child: AppSecondaryButton(
+            label: liked ? '反応◎' : '反応',
             onPressed: () async {
               final err = await prov.toggleFeedbackLiked(
                 context,
@@ -228,21 +220,14 @@ class RakutenManagedProductCard extends StatelessWidget {
                 ).showSnackBar(SnackBar(content: Text(err)));
               }
             },
-            child: Text(
-              liked ? '反応◎' : '反応',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            height: 30,
+            expand: true,
           ),
         ),
         const SizedBox(width: 4),
         Expanded(
-          child: TextButton(
-            style: chip(sold, const Color(0xFFF9A825)),
+          child: AppSecondaryButton(
+            label: sold ? '売れた◎' : '売れた',
             onPressed: () async {
               final err = await prov.toggleFeedbackSold(
                 context,
@@ -255,21 +240,14 @@ class RakutenManagedProductCard extends StatelessWidget {
                 ).showSnackBar(SnackBar(content: Text(err)));
               }
             },
-            child: Text(
-              sold ? '売れた◎' : '売れた',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            height: 30,
+            expand: true,
           ),
         ),
         const SizedBox(width: 4),
         Expanded(
-          child: TextButton(
-            style: chip(weak, const Color(0xFF757575)),
+          child: AppSecondaryButton(
+            label: weak ? '微妙◎' : '微妙',
             onPressed: () async {
               final err = await prov.toggleFeedbackWeak(
                 context,
@@ -282,15 +260,8 @@ class RakutenManagedProductCard extends StatelessWidget {
                 ).showSnackBar(SnackBar(content: Text(err)));
               }
             },
-            child: Text(
-              weak ? '微妙◎' : '微妙',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            height: 30,
+            expand: true,
           ),
         ),
       ],
@@ -304,8 +275,8 @@ class RakutenManagedProductCard extends StatelessWidget {
       children: [
         Expanded(
           flex: 34,
-          child: FilledButton(
-            style: RoomColleListCardActionStyle.rakutenFilled(),
+          child: AppPrimaryButton(
+            label: '楽天で見る',
             onPressed: () async {
               final err = await provider.openRakutenItemPage(
                 context,
@@ -318,13 +289,8 @@ class RakutenManagedProductCard extends StatelessWidget {
                 ).showSnackBar(SnackBar(content: Text(err)));
               }
             },
-            child: RoomColleListCardActionStyle.compactActionLabel(
-              icon: Icons.open_in_new_rounded,
-              label: '楽天で見る',
-              color: Colors.white,
-              weight: FontWeight.w700,
-              fontSize: RoomColleListCardActionStyle.labelFontCompact,
-            ),
+            icon: const Icon(Icons.open_in_new_rounded),
+            height: 36,
           ),
         ),
         const SizedBox(width: 4),
@@ -334,8 +300,8 @@ class RakutenManagedProductCard extends StatelessWidget {
             message: _canCollectRoom
                 ? 'ROOMのURLを開き、一覧をコレ済に移します。'
                 : 'ROOM用のURLが取得できるまでお待ちください',
-            child: FilledButton(
-              style: RoomColleListCardActionStyle.collectFilled(),
+            child: AppPrimaryButton(
+              label: 'ROOMに投稿',
               onPressed: _canCollectRoom
                   ? () async {
                       if (onCollectPressed != null) {
@@ -348,33 +314,24 @@ class RakutenManagedProductCard extends StatelessWidget {
                       );
                     }
                   : null,
-              child: RoomColleListCardActionStyle.compactActionLabel(
-                icon: _canCollectRoom
+              icon: Icon(
+                _canCollectRoom
                     ? Icons.favorite_rounded
                     : Icons.hourglass_top_rounded,
-                label: 'ROOMに投稿',
-                color: _canCollectRoom
-                    ? AppColors.textOnAccent
-                    : AppColors.textTertiary,
-                weight: FontWeight.w700,
-                fontSize: RoomColleListCardActionStyle.labelFontCompact,
               ),
+              height: 36,
             ),
           ),
         ),
         const SizedBox(width: 4),
         Expanded(
           flex: 22,
-          child: OutlinedButton(
-            style: RoomColleListCardActionStyle.deleteOutlined(),
+          child: AppSecondaryButton(
+            label: '削除',
             onPressed: () => _confirmRemoveCandidate(context, provider),
-            child: RoomColleListCardActionStyle.compactActionLabel(
-              icon: Icons.delete_outline_rounded,
-              label: '削除',
-              color: AppColors.textSecondary,
-              weight: FontWeight.w600,
-              fontSize: RoomColleListCardActionStyle.labelFontDelete,
-            ),
+            icon: const Icon(Icons.delete_outline_rounded),
+            expand: true,
+            height: 36,
           ),
         ),
       ],
@@ -392,17 +349,13 @@ class RakutenManagedProductCard extends StatelessWidget {
         title: const Text('候補から削除'),
         content: Text('「$name」をコレ候補から削除します。よろしいですか？'),
         actions: [
-          TextButton(
+          AppSecondaryButton(
+            label: 'キャンセル',
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('キャンセル'),
           ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.error,
-              foregroundColor: Colors.white,
-            ),
+          AppSecondaryButton(
+            label: '削除',
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('削除'),
           ),
         ],
       ),
@@ -422,8 +375,8 @@ class RakutenManagedProductCard extends StatelessWidget {
       children: [
         Expanded(
           flex: 40,
-          child: FilledButton(
-            style: RoomColleListCardActionStyle.rakutenFilled(),
+          child: AppPrimaryButton(
+            label: '楽天で見る',
             onPressed: () async {
               final err = await provider.openRakutenItemPage(
                 context,
@@ -431,17 +384,13 @@ class RakutenManagedProductCard extends StatelessWidget {
               );
               if (!context.mounted) return;
               if (err != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(err)),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(err)));
               }
             },
-            child: RoomColleListCardActionStyle.compactActionLabel(
-              icon: Icons.open_in_new_rounded,
-              label: '楽天で見る',
-              color: Colors.white,
-              weight: FontWeight.w700,
-            ),
+            icon: const Icon(Icons.open_in_new_rounded),
+            height: 36,
           ),
         ),
         const SizedBox(width: 4),
@@ -449,32 +398,29 @@ class RakutenManagedProductCard extends StatelessWidget {
           flex: 36,
           child: Tooltip(
             message: _hasRoomUrl ? 'ROOMの画面を開きます' : 'ROOM用のリンクが取得されていません',
-            child: OutlinedButton(
-              style: _hasRoomUrl
-                  ? RoomColleListCardActionStyle.roomOutline(stateAccent)
-                  : RoomColleListCardActionStyle.roomOutlineDisabled(),
+            child: AppSecondaryButton(
+              label: 'ROOMで確認',
               onPressed: _hasRoomUrl
                   ? () => AppActionService.openUrl(
                       context,
                       url: product.extractedUrl.trim(),
                     )
                   : null,
-              child: RoomColleListCardActionStyle.compactActionLabel(
-                icon: _hasRoomUrl
+              icon: Icon(
+                _hasRoomUrl
                     ? Icons.chat_bubble_outline_rounded
                     : Icons.link_off_rounded,
-                label: 'ROOMで確認',
-                color: _hasRoomUrl ? stateAccent : AppColors.textTertiary,
-                weight: FontWeight.w600,
               ),
+              expand: true,
+              height: 36,
             ),
           ),
         ),
         const SizedBox(width: 4),
         Expanded(
           flex: 24,
-          child: OutlinedButton(
-            style: RoomColleListCardActionStyle.deleteOutlined(),
+          child: AppSecondaryButton(
+            label: 'ID',
             onPressed: product.productId.trim().isEmpty
                 ? null
                 : () async {
@@ -489,13 +435,9 @@ class RakutenManagedProductCard extends StatelessWidget {
                       ),
                     );
                   },
-            child: RoomColleListCardActionStyle.compactActionLabel(
-              icon: Icons.copy_rounded,
-              label: 'ID',
-              color: AppColors.textSecondary,
-              weight: FontWeight.w600,
-              fontSize: RoomColleListCardActionStyle.labelFontDelete,
-            ),
+            icon: const Icon(Icons.copy_rounded),
+            expand: true,
+            height: 36,
           ),
         ),
       ],

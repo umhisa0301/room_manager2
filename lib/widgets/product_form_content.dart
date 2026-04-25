@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../models/product.dart';
 import '../models/product_status.dart';
+import 'app_text_field.dart';
 
 /// 商品追加・編集で共通利用するフォーム。
 /// initialProduct が null なら追加、非 null なら編集（ステータス選択あり）。
@@ -115,12 +116,10 @@ class ProductFormContentState extends State<ProductFormContent> {
       child: ListView(
         padding: const EdgeInsets.all(AppDimensions.screenPaddingH),
         children: [
-          TextFormField(
+          AppTextField(
             controller: _nameController,
-            decoration: const InputDecoration(
-              labelText: '商品名',
-              hintText: '例：ベビー布団 洗える',
-            ),
+            labelText: '商品名',
+            hintText: '例：ベビー布団 洗える',
             textInputAction: TextInputAction.next,
             validator: (v) {
               if (v == null || v.trim().isEmpty) return '商品名を入力してください';
@@ -128,12 +127,10 @@ class ProductFormContentState extends State<ProductFormContent> {
             },
           ),
           const SizedBox(height: AppDimensions.spacingMd),
-          TextFormField(
+          AppTextField(
             controller: _urlController,
-            decoration: const InputDecoration(
-              labelText: '商品URL',
-              hintText: 'https://...',
-            ),
+            labelText: '商品URL',
+            hintText: 'https://...',
             keyboardType: TextInputType.url,
             textInputAction: TextInputAction.next,
             validator: (v) {
@@ -146,31 +143,25 @@ class ProductFormContentState extends State<ProductFormContent> {
             _buildStatusSection(context),
             const SizedBox(height: AppDimensions.spacingMd),
           ],
-          TextFormField(
+          AppTextField(
             controller: _memoController,
-            decoration: const InputDecoration(
-              labelText: 'メモ（任意）',
-              hintText: 'メモがあれば',
-            ),
+            labelText: 'メモ（任意）',
+            hintText: 'メモがあれば',
             maxLines: 2,
             textInputAction: TextInputAction.next,
           ),
           const SizedBox(height: AppDimensions.spacingMd),
-          TextFormField(
+          AppTextField(
             controller: _tagsController,
-            decoration: const InputDecoration(
-              labelText: 'タグ（任意）',
-              hintText: 'カンマ区切り 例：育児, インテリア',
-            ),
+            labelText: 'タグ（任意）',
+            hintText: 'カンマ区切り 例：育児, インテリア',
             textInputAction: TextInputAction.next,
           ),
           const SizedBox(height: AppDimensions.spacingMd),
-          TextFormField(
+          AppTextField(
             controller: _quickCommentController,
-            decoration: const InputDecoration(
-              labelText: 'ひとことコメント（任意）',
-              hintText: '短くメモ',
-            ),
+            labelText: 'ひとことコメント（任意）',
+            hintText: '短くメモ',
             textInputAction: TextInputAction.done,
           ),
         ],

@@ -7,6 +7,9 @@ import '../models/comment_template.dart';
 import '../state/product_list_provider.dart';
 import '../state/comment_template_provider.dart';
 import '../services/app_action_service.dart';
+import '../widgets/app_button.dart';
+import '../widgets/app_card.dart';
+import '../widgets/app_loading.dart';
 import 'product_edit_screen.dart';
 
 /// 商品詳細画面。表示・編集・削除・ステータス変更。
@@ -33,7 +36,9 @@ class ProductDetailScreen extends StatelessWidget {
             Navigator.of(context).maybePop();
           });
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: Center(
+              child: AppLoadingView(message: '商品情報を確認しています', inline: false),
+            ),
           );
         }
         return _DetailBody(product: product);
@@ -127,13 +132,13 @@ class _DetailBody extends StatelessWidget {
                             .toList(),
                       ),
                 const SizedBox(height: 10),
-                OutlinedButton.icon(
+                AppSecondaryButton(
+                  label: '商品URLを開く',
                   onPressed: () => AppActionService.openUrl(
                     context,
                     url: product.productUrl,
                   ),
-                  icon: const Icon(Icons.open_in_new, size: 16),
-                  label: const Text('商品URLを開く'),
+                  icon: const Icon(Icons.open_in_new),
                 ),
               ],
             ),
@@ -154,24 +159,26 @@ class _DetailBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppColors.accentLightest,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    hasQuickComment
-                        ? product.quickComment!.trim()
-                        : 'まだ設定されていません',
-                    style: _bodyStyle(context),
+                  child: AppCard(
+                    padding: const EdgeInsets.all(10),
+                    backgroundColor: AppColors.accentLightest,
+                    borderColor: AppColors.accentLightest,
+                    radius: 10,
+                    child: Text(
+                      hasQuickComment
+                          ? product.quickComment!.trim()
+                          : 'まだ設定されていません',
+                      style: _bodyStyle(context),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    ElevatedButton.icon(
+                    AppSecondaryButton(
+                      label: 'コピー',
                       onPressed: hasQuickComment
                           ? () => AppActionService.copyText(
                               context,
@@ -183,11 +190,11 @@ class _DetailBody extends StatelessWidget {
                                   ),
                             )
                           : null,
-                      icon: const Icon(Icons.copy, size: 16),
-                      label: const Text('コピー'),
+                      icon: const Icon(Icons.copy),
                     ),
                     const SizedBox(width: 8),
-                    OutlinedButton.icon(
+                    AppSecondaryButton(
+                      label: '編集',
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute<void>(
@@ -196,8 +203,7 @@ class _DetailBody extends StatelessWidget {
                           ),
                         );
                       },
-                      icon: const Icon(Icons.edit, size: 16),
-                      label: const Text('編集'),
+                      icon: const Icon(Icons.edit),
                     ),
                   ],
                 ),
@@ -222,15 +228,18 @@ class _DetailBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                OutlinedButton.icon(
+                AppSecondaryButton(
+                  label: 'テンプレから選ぶ',
                   onPressed: templates.isEmpty
                       ? null
                       : () => _showTemplatePicker(context, templates),
-                  icon: const Icon(Icons.article_outlined, size: 16),
-                  label: const Text('テンプレから選ぶ'),
+                  icon: const Icon(Icons.article_outlined),
+                  expand: true,
+                  height: 44,
                 ),
                 const SizedBox(height: 8),
-                ElevatedButton.icon(
+                AppPrimaryButton(
+                  label: 'コメントをコピーしてURLを開く',
                   onPressed: hasQuickComment
                       ? () => AppActionService.copyThenOpenUrl(
                           context,
@@ -243,8 +252,8 @@ class _DetailBody extends StatelessWidget {
                               ),
                         )
                       : null,
-                  icon: const Icon(Icons.rocket_launch_outlined, size: 16),
-                  label: const Text('コメントをコピーしてURLを開く'),
+                  icon: const Icon(Icons.rocket_launch_outlined),
+                  height: 44,
                 ),
               ],
             ),
@@ -255,7 +264,8 @@ class _DetailBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                OutlinedButton.icon(
+                AppSecondaryButton(
+                  label: '商品を編集',
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute<void>(
@@ -264,17 +274,17 @@ class _DetailBody extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.edit_outlined, size: 16),
-                  label: const Text('商品を編集'),
+                  icon: const Icon(Icons.edit_outlined),
+                  expand: true,
+                  height: 44,
                 ),
                 const SizedBox(height: 8),
-                OutlinedButton.icon(
+                AppSecondaryButton(
+                  label: '商品を削除',
                   onPressed: () => _showDeleteConfirm(context),
-                  icon: const Icon(Icons.delete_outline, size: 16),
-                  label: const Text('商品を削除'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.error,
-                  ),
+                  icon: const Icon(Icons.delete_outline),
+                  expand: true,
+                  height: 44,
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -374,13 +384,13 @@ class _DetailBody extends StatelessWidget {
         title: const Text('削除の確認'),
         content: const Text('本当に削除しますか？'),
         actions: [
-          TextButton(
+          AppSecondaryButton(
+            label: 'キャンセル',
             onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: const Text('キャンセル'),
           ),
-          TextButton(
+          AppSecondaryButton(
+            label: '削除',
             onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: Text('削除', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -410,19 +420,9 @@ class _SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AppCard(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            offset: const Offset(0, 2),
-            blurRadius: 6,
-          ),
-        ],
-      ),
+      elevated: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -12,6 +12,7 @@ import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../widgets/app_button.dart';
 import '../widgets/rakuten_search_result_card.dart';
 import '../widgets/search_group_screen_shell.dart';
 import 'saved_shops_screen.dart';
@@ -338,7 +339,8 @@ class _ShopDetailHeader extends StatelessWidget {
             runSpacing: AppDimensions.spacingXs,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              FilledButton.icon(
+              AppPrimaryButton(
+                label: isSaved ? '保存済み' : 'このショップを保存',
                 onPressed: onSaveToggle,
                 icon: Icon(
                   isSaved
@@ -346,12 +348,14 @@ class _ShopDetailHeader extends StatelessWidget {
                       : Icons.bookmark_add_outlined,
                   size: 18,
                 ),
-                label: Text(isSaved ? '保存済み' : 'このショップを保存'),
+                expand: false,
+                height: 44,
               ),
-              OutlinedButton.icon(
+              AppSecondaryButton(
+                label: '条件を変えて再検索',
                 onPressed: onBackToSearch,
-                icon: const Icon(Icons.tune_rounded, size: 18),
-                label: const Text('条件を変えて再検索'),
+                icon: const Icon(Icons.tune_rounded),
+                height: 44,
               ),
               IconButton(
                 tooltip: '保存ショップ一覧を開く',

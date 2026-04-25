@@ -7,6 +7,8 @@ import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_button.dart';
+import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
 
 class TodayRecommendationsScreen extends StatefulWidget {
@@ -83,10 +85,10 @@ class _TodayRecommendationsScreenState
               body:
                   '下のボタンで最大10件のコレ候補を提案します。マイページでプロフィールや好きなジャンルを入れておくと、より合った候補になりやすくなります。',
               actions: [
-                FilledButton.icon(
+                AppPrimaryButton(
+                  label: '今日のおすすめを作る',
                   onPressed: _regenerate,
-                  icon: const Icon(Icons.auto_awesome_rounded, size: 20),
-                  label: const Text('今日のおすすめを作る'),
+                  icon: const Icon(Icons.auto_awesome_rounded),
                 ),
               ],
             );
@@ -134,15 +136,9 @@ class _SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
+    return AppCard(
       margin: const EdgeInsets.fromLTRB(20, 12, 20, 8),
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -166,10 +162,10 @@ class _SummaryCard extends StatelessWidget {
           const SizedBox(height: 6),
           Align(
             alignment: Alignment.centerRight,
-            child: TextButton.icon(
+            child: AppSecondaryButton(
+              label: '今日の候補を再生成',
               onPressed: onRegenerate,
-              icon: const Icon(Icons.refresh_rounded, size: 18),
-              label: const Text('今日の候補を再生成'),
+              icon: const Icon(Icons.refresh_rounded),
             ),
           ),
         ],
@@ -186,13 +182,8 @@ class _RecommendationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final item = entry.item;
-    return Container(
+    return AppCard(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -257,7 +248,8 @@ class _ActionRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: FilledButton.icon(
+          child: AppPrimaryButton(
+            label: '候補にする',
             onPressed: enabled
                 ? () async {
                     final rec = context.read<TodayRecommendationProvider>();
@@ -273,21 +265,23 @@ class _ActionRow extends StatelessWidget {
                     ).showSnackBar(SnackBar(content: Text(err ?? '候補に追加しました')));
                   }
                 : null,
-            icon: const Icon(Icons.bookmark_add_rounded, size: 18),
-            label: const Text('候補にする'),
+            icon: const Icon(Icons.bookmark_add_rounded),
+            height: 44,
           ),
         ),
         const SizedBox(width: 8),
         Expanded(
-          child: OutlinedButton.icon(
+          child: AppSecondaryButton(
+            label: '見送る',
             onPressed: enabled
                 ? () async {
                     final rec = context.read<TodayRecommendationProvider>();
                     await rec.markSkipped(entry.item.productId);
                   }
                 : null,
-            icon: const Icon(Icons.skip_next_rounded, size: 18),
-            label: const Text('見送る'),
+            icon: const Icon(Icons.skip_next_rounded),
+            expand: true,
+            height: 44,
           ),
         ),
       ],

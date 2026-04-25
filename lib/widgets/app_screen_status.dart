@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import 'app_button.dart';
+import 'app_loading.dart';
 
 /// アプリ共通：画面中央のローディング（説明付き）。
 class AppScreenLoadingCenter extends StatelessWidget {
@@ -17,21 +19,7 @@ class AppScreenLoadingCenter extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(
-              width: 40,
-              height: 40,
-              child: CircularProgressIndicator(strokeWidth: 3),
-            ),
-            const SizedBox(height: 18),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
-                height: 1.35,
-              ),
-            ),
+            AppLoadingView(message: title, inline: false),
             if (subtitle != null && subtitle!.trim().isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(
@@ -98,10 +86,11 @@ class AppScreenErrorCenter extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            FilledButton.icon(
+            AppPrimaryButton(
+              label: retryLabel,
               onPressed: onRetry,
-              icon: const Icon(Icons.refresh_rounded, size: 20),
-              label: Text(retryLabel),
+              icon: const Icon(Icons.refresh_rounded),
+              expand: false,
             ),
           ],
         ),

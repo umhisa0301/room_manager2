@@ -28,6 +28,8 @@ class AppTextField extends StatelessWidget {
     this.maxLines = 1,
     this.minHeight = 46,
     this.semanticLabel,
+    this.validator,
+    this.autovalidateMode,
   });
 
   final TextEditingController? controller;
@@ -49,6 +51,8 @@ class AppTextField extends StatelessWidget {
   final int maxLines;
   final double minHeight;
   final String? semanticLabel;
+  final FormFieldValidator<String>? validator;
+  final AutovalidateMode? autovalidateMode;
 
   static const Color _fieldFill = Color(0xFFF7F7F7);
 
@@ -65,20 +69,22 @@ class AppTextField extends StatelessWidget {
 
     final field = ConstrainedBox(
       constraints: BoxConstraints(minHeight: minHeight),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         focusNode: focusNode,
         keyboardType: keyboardType,
         textInputAction: textInputAction,
         inputFormatters: inputFormatters,
         onChanged: onChanged,
-        onSubmitted: onSubmitted,
+        onFieldSubmitted: onSubmitted,
         onTap: onTap,
         readOnly: readOnly,
         enabled: enabled,
         autofocus: autofocus,
         obscureText: obscureText,
         maxLines: maxLines,
+        validator: validator,
+        autovalidateMode: autovalidateMode,
         style: AppTextStyles.bodyMedium.copyWith(
           color: enabled ? AppColors.textPrimary : AppColors.textTertiary,
           height: 1.25,

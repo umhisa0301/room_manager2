@@ -13,6 +13,9 @@ import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/user_profile_genre_migration.dart';
+import '../widgets/app_button.dart';
+import '../widgets/app_card.dart';
+import '../widgets/app_text_field.dart';
 import 'rakuten_search_screen.dart';
 import 'saved_shops_screen.dart';
 import 'closed_test_demo_screen.dart';
@@ -221,13 +224,13 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    TextButton(
+                    AppSecondaryButton(
+                      label: '後で',
                       onPressed: () {
                         setState(() {
                           _showOnboardingHint = false;
                         });
                       },
-                      child: const Text('後で'),
                     ),
                   ],
                 ),
@@ -240,16 +243,14 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             _SectionCard(
               child: Column(
                 children: [
-                  TextFormField(
+                  AppTextField(
                     controller: _nameController,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'ユーザー名（任意）',
-                      hintText: 'ニックネームなど',
-                    ),
+                    labelText: 'ユーザー名（任意）',
+                    hintText: 'ニックネームなど',
                   ),
                   const SizedBox(height: 12),
-                  TextFormField(
+                  AppTextField(
                     controller: _ageController,
                     keyboardType: TextInputType.number,
                     inputFormatters: [
@@ -257,10 +258,8 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                       LengthLimitingTextInputFormatter(3),
                     ],
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: '年齢（任意）',
-                      hintText: '例: 30',
-                    ),
+                    labelText: '年齢（任意）',
+                    hintText: '例: 30',
                   ),
                   const SizedBox(height: 12),
                   InputDecorator(
@@ -317,13 +316,11 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  TextFormField(
+                  AppTextField(
                     controller: _occupationController,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: '職業（任意）',
-                      hintText: '例: 会社員',
-                    ),
+                    labelText: '職業（任意）',
+                    hintText: '例: 会社員',
                   ),
                 ],
               ),
@@ -339,14 +336,12 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             _SectionCard(
               child: Column(
                 children: [
-                  TextFormField(
+                  AppTextField(
                     controller: _roomUrlController,
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.url,
-                    decoration: const InputDecoration(
-                      labelText: '楽天ROOMのURL（任意）',
-                      hintText: '例: https://room.rakuten.co.jp/xxxx',
-                    ),
+                    labelText: '楽天ROOMのURL（任意）',
+                    hintText: '例: https://room.rakuten.co.jp/xxxx',
                     onChanged: (_) => setState(() {}),
                   ),
                   const SizedBox(height: 8),
@@ -362,18 +357,17 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: _roomUrlController.text.trim().isEmpty
-                          ? null
-                          : () => AppActionService.openUrl(
-                              context,
-                              url: _roomUrlController.text.trim(),
-                            ),
-                      icon: const Icon(Icons.open_in_new_rounded, size: 20),
-                      label: const Text('ROOMを開く'),
-                    ),
+                  AppSecondaryButton(
+                    label: 'ROOMを開く',
+                    icon: const Icon(Icons.open_in_new_rounded),
+                    expand: true,
+                    height: 44,
+                    onPressed: _roomUrlController.text.trim().isEmpty
+                        ? null
+                        : () => AppActionService.openUrl(
+                            context,
+                            url: _roomUrlController.text.trim(),
+                          ),
                   ),
                 ],
               ),
@@ -388,19 +382,14 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  OutlinedButton.icon(
+                  AppSecondaryButton(
+                    label: _favoriteGenreIds.isEmpty
+                        ? 'ジャンルを選ぶ（最大5件）'
+                        : 'ジャンルを変更（${_favoriteGenreIds.length}/5）',
                     onPressed: _openFavoriteGenresPicker,
-                    icon: const Icon(Icons.category_outlined, size: 20),
-                    label: Text(
-                      _favoriteGenreIds.isEmpty
-                          ? 'ジャンルを選ぶ（最大5件）'
-                          : 'ジャンルを変更（${_favoriteGenreIds.length}/5）',
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      foregroundColor: AppColors.textPrimary,
-                      side: BorderSide(color: AppColors.divider),
-                    ),
+                    icon: const Icon(Icons.category_outlined),
+                    expand: true,
+                    height: 44,
                   ),
                   const SizedBox(height: 8),
                   _GenresChipsPreview(
@@ -411,13 +400,7 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
               ),
             ),
             const SizedBox(height: AppDimensions.spacingLg),
-            FilledButton(
-              onPressed: _save,
-              style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
-              ),
-              child: const Text('保存'),
-            ),
+            AppPrimaryButton(label: '保存', onPressed: _save),
             const SizedBox(height: AppDimensions.spacingMd),
             _SectionHeader(
               title: '運用メニュー',
@@ -449,8 +432,7 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                   _OperationMenuNavTile(
                     icon: Icons.insights_outlined,
                     title: '活動を見る',
-                    subtitle:
-                        '今日の整理やコレ状況など、ROOM運用ダッシュボードで確認できます。',
+                    subtitle: '今日の整理やコレ状況など、ROOM運用ダッシュボードで確認できます。',
                     onPressed: () {
                       context.read<AppShellController>().openActivityTab();
                     },
@@ -465,40 +447,33 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
               child: Column(
                 children: [
                   if (kClosedTestDemoAvailable) ...[
-                    OutlinedButton.icon(
+                    AppSecondaryButton(
+                      label: 'クローズドテスト用デモを見る',
                       onPressed: _openClosedTestDemo,
-                      icon: const Icon(Icons.rocket_launch_outlined, size: 20),
-                      label: const Text('クローズドテスト用デモを見る'),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        foregroundColor: AppColors.textPrimary,
-                        side: BorderSide(color: AppColors.divider),
-                      ),
+                      icon: const Icon(Icons.rocket_launch_outlined),
+                      expand: true,
+                      height: 44,
                     ),
                     const SizedBox(height: 8),
                   ],
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const SavedShopsScreen(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.bookmarks_outlined, size: 20),
-                    label: Consumer<SavedShopProvider>(
-                      builder: (context, saved, _) {
-                        return Text('保存ショップを管理する（${saved.shops.length}件）');
+                  Consumer<SavedShopProvider>(
+                    builder: (context, saved, _) => AppSecondaryButton(
+                      label: '保存ショップを管理する（${saved.shops.length}件）',
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const SavedShopsScreen(),
+                          ),
+                        );
                       },
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      foregroundColor: AppColors.textPrimary,
-                      side: BorderSide(color: AppColors.divider),
+                      icon: const Icon(Icons.bookmarks_outlined),
+                      expand: true,
+                      height: 44,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  OutlinedButton.icon(
+                  AppSecondaryButton(
+                    label: 'ショップ発掘を開く',
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
@@ -506,13 +481,9 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                         ),
                       );
                     },
-                    icon: const Icon(Icons.travel_explore_rounded, size: 20),
-                    label: const Text('ショップ発掘を開く'),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      foregroundColor: AppColors.textPrimary,
-                      side: BorderSide(color: AppColors.divider),
-                    ),
+                    icon: const Icon(Icons.travel_explore_rounded),
+                    expand: true,
+                    height: 44,
                   ),
                 ],
               ),
@@ -521,18 +492,15 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
             _SectionHeader(title: 'プライバシーポリシー', body: '利用前に確認できるよう、いつでも開けます。'),
             const SizedBox(height: 10),
             _SectionCard(
-              child: OutlinedButton.icon(
+              child: AppSecondaryButton(
+                label: 'プライバシーポリシーを開く',
                 onPressed: () => AppActionService.openUrl(
                   context,
                   url: LegalUrls.privacyPolicy,
                 ),
-                icon: const Icon(Icons.policy_outlined, size: 20),
-                label: const Text('プライバシーポリシーを開く'),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  foregroundColor: AppColors.textPrimary,
-                  side: BorderSide(color: AppColors.divider),
-                ),
+                icon: const Icon(Icons.policy_outlined),
+                expand: true,
+                height: 44,
               ),
             ),
           ],
@@ -558,17 +526,9 @@ class _OperationMenuNavTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
-        alignment: Alignment.centerLeft,
-        foregroundColor: AppColors.textPrimary,
-        side: BorderSide(color: AppColors.divider),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-        ),
-      ),
+    return AppCard(
+      onTap: onPressed,
+      padding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -688,11 +648,14 @@ class _FavoriteGenresPickerDialogState
         ),
       ),
       actions: [
-        TextButton(
+        AppSecondaryButton(
+          label: 'キャンセル',
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('キャンセル'),
         ),
-        FilledButton(
+        AppPrimaryButton(
+          label: '決定',
+          height: 40,
+          expand: false,
           onPressed: () {
             final ordered = <String>[];
             for (final e in _entries) {
@@ -701,7 +664,6 @@ class _FavoriteGenresPickerDialogState
             }
             Navigator.of(context).pop(ordered);
           },
-          child: const Text('決定'),
         ),
       ],
     );
@@ -747,14 +709,9 @@ class _SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AppCard(
       margin: EdgeInsets.only(bottom: marginBottom ?? 0),
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-      ),
       child: child,
     );
   }

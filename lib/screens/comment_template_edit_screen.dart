@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../models/comment_template.dart';
 import '../state/comment_template_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_button.dart';
+import '../widgets/app_text_field.dart';
 
 /// コメントテンプレートの追加・編集画面。
 class CommentTemplateEditScreen extends StatefulWidget {
@@ -91,19 +93,27 @@ class _CommentTemplateEditScreenState extends State<CommentTemplateEditScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(_isEdit ? 'テンプレートを編集' : 'テンプレートを追加'),
-        actions: [TextButton(onPressed: _save, child: const Text('保存'))],
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: AppPrimaryButton(
+              label: '保存',
+              onPressed: _save,
+              height: 36,
+              expand: false,
+            ),
+          ),
+        ],
       ),
       body: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(AppDimensions.screenPaddingH),
           children: [
-            TextFormField(
+            AppTextField(
               controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'タイトル',
-                hintText: '例：挨拶＋購入経路',
-              ),
+              labelText: 'タイトル',
+              hintText: '例：挨拶＋購入経路',
               textInputAction: TextInputAction.next,
               validator: (v) {
                 if (v == null || v.trim().isEmpty) {
@@ -113,12 +123,10 @@ class _CommentTemplateEditScreenState extends State<CommentTemplateEditScreen> {
               },
             ),
             const SizedBox(height: AppDimensions.spacingMd),
-            TextFormField(
+            AppTextField(
               controller: _bodyController,
-              decoration: const InputDecoration(
-                labelText: '本文',
-                hintText: '例：ご覧いただきありがとうございます…',
-              ),
+              labelText: '本文',
+              hintText: '例：ご覧いただきありがとうございます…',
               maxLines: 5,
               validator: (v) {
                 if (v == null || v.trim().isEmpty) {
@@ -128,12 +136,10 @@ class _CommentTemplateEditScreenState extends State<CommentTemplateEditScreen> {
               },
             ),
             const SizedBox(height: AppDimensions.spacingMd),
-            TextFormField(
+            AppTextField(
               controller: _categoryController,
-              decoration: const InputDecoration(
-                labelText: 'カテゴリー（任意）',
-                hintText: '例：育児 / インテリア など',
-              ),
+              labelText: 'カテゴリー（任意）',
+              hintText: '例：育児 / インテリア など',
             ),
             const SizedBox(height: AppDimensions.spacingMd),
             Row(

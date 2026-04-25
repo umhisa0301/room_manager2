@@ -12,6 +12,9 @@ import '../state/room_activity_event_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_button.dart';
+import '../widgets/app_card.dart';
+import '../widgets/app_tab.dart';
 
 /// コレ活動のダッシュボード（アプリ内のコレ済データを集計して可視化）。
 class ActivityPlaceholderScreen extends StatefulWidget {
@@ -37,11 +40,13 @@ class ActivityPlaceholderScreen extends StatefulWidget {
 class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
+  int _activityTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(_syncActivityTabIndex);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<RakutenManagedProductProvider>().refreshManagedProductList(
@@ -52,8 +57,14 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
 
   @override
   void dispose() {
+    _tabController.removeListener(_syncActivityTabIndex);
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _syncActivityTabIndex() {
+    if (!mounted || _activityTabIndex == _tabController.index) return;
+    setState(() => _activityTabIndex = _tabController.index);
   }
 
   @override
@@ -61,17 +72,7 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
     final shell = context.read<AppShellController>();
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('ROOM運用ダッシュボード'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: '今日'),
-            Tab(text: 'ダッシュボード'),
-            Tab(text: '振り返り'),
-          ],
-        ),
-      ),
+      appBar: AppBar(title: const Text('ROOM運用ダッシュボード')),
       body: SafeArea(
         child:
             Consumer4<
@@ -96,14 +97,40 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
                 );
                 final doneCount = RakutenRoomHomeStats.countDone(items);
                 final todayDoneCount =
-                    RakutenRoomHomeStats.countDoneOnLocalCalendarDay(items, now);
-                final weeklyDoneTotal = RakutenRoomHomeStats
-                    .doneCountsRollingDays(items, now, 7)
-                    .fold<int>(0, (a, b) => a + b.count);
+                    RakutenRoomHomeStats.countDoneOnLocalCalendarDay(
+                      items,
+                      now,
+                    );
+                final weeklyDoneTotal =
+                    RakutenRoomHomeStats.doneCountsRollingDays(
+                      items,
+                      now,
+                      7,
+                    ).fold<int>(0, (a, b) => a + b.count);
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppDimensions.screenPaddingH,
+                        10,
+                        AppDimensions.screenPaddingH,
+                        0,
+                      ),
+                      child: AppTabBar(
+                        items: const [
+                          AppTabItem(label: '今日'),
+                          AppTabItem(label: 'ダッシュボード'),
+                          AppTabItem(label: '振り返り'),
+                        ],
+                        selectedIndex: _activityTabIndex,
+                        onChanged: (index) {
+                          setState(() => _activityTabIndex = index);
+                          _tabController.animateTo(index);
+                        },
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(
                         AppDimensions.screenPaddingH,
@@ -177,32 +204,29 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
                         spacing: 8,
                         runSpacing: 6,
                         children: [
-                          OutlinedButton.icon(
+                          AppSecondaryButton(
+                            label: 'コレ候補',
                             onPressed: () {
                               shell.openRoomCollect(initialTabIndex: 0);
                             },
-                            icon: const Icon(
-                              Icons.inventory_2_outlined,
-                              size: 18,
-                            ),
-                            label: const Text('コレ候補'),
+                            icon: const Icon(Icons.inventory_2_outlined),
                           ),
-                          OutlinedButton.icon(
+                          AppSecondaryButton(
+                            label: '放置整理',
                             onPressed: () {
                               shell.openRoomCollect(
                                 candidateStalePreset:
                                     RoomColleStaleCandidatePreset.threePlus,
                               );
                             },
-                            icon: const Icon(Icons.schedule_rounded, size: 18),
-                            label: const Text('放置整理'),
+                            icon: const Icon(Icons.schedule_rounded),
                           ),
-                          OutlinedButton.icon(
+                          AppSecondaryButton(
+                            label: 'コレ済',
                             onPressed: () {
                               shell.openRoomCollect(initialTabIndex: 1);
                             },
-                            icon: const Icon(Icons.task_alt_rounded, size: 18),
-                            label: const Text('コレ済'),
+                            icon: const Icon(Icons.task_alt_rounded),
                           ),
                         ],
                       ),
@@ -270,14 +294,16 @@ class _ActivityKpiSummaryBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget chip(String k, String v, String hint, IconData icon, Color iconColor) {
-      return Container(
+    Widget chip(
+      String k,
+      String v,
+      String hint,
+      IconData icon,
+      Color iconColor,
+    ) {
+      return AppCard(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.divider),
-        ),
+        radius: 8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -505,12 +531,14 @@ class _ActivityWeekOverviewTab extends StatelessWidget {
         ? 'まだ動きが少ない週です。まず1件コレすると、週間推移が伸び始めます。'
         : '今週は ${kpi.weeklyActivityCount} 件の活動があり、反応スコアは ${kpi.weeklyReactionScore} です。';
     final doneGoal = 5;
-    final doneProgress = weeklyDoneCount > doneGoal ? doneGoal : weeklyDoneCount;
+    final doneProgress = weeklyDoneCount > doneGoal
+        ? doneGoal
+        : weeklyDoneCount;
     final hint = recommendTotal == 0
         ? '今日のおすすめを作成して、今日の1件目を進めましょう。'
         : recommendPending > 0
-            ? '今日のおすすめ残り $recommendPending 件から進めると、週目標に近づきます。'
-            : '今日のおすすめは完了済みです。次は候補ストック整理がおすすめです。';
+        ? '今日のおすすめ残り $recommendPending 件から進めると、週目標に近づきます。'
+        : '今日のおすすめは完了済みです。次は候補ストック整理がおすすめです。';
 
     return RefreshIndicator(
       onRefresh: onRefresh,
@@ -664,21 +692,9 @@ class _ActivityPurposeBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
+    return AppCard(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            offset: const Offset(0, 2),
-            blurRadius: 6,
-          ),
-        ],
-      ),
+      elevated: true,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -731,22 +747,16 @@ class _ActivityGoalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
+    return AppCard(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 6),
           Text(
@@ -769,9 +779,10 @@ class _ActivityGoalCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             body,
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(height: 1.35, color: AppColors.textSecondary),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              height: 1.35,
+              color: AppColors.textSecondary,
+            ),
           ),
         ],
       ),
@@ -796,27 +807,24 @@ class _ActivityActionHintsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final hints = <String>[
       if (todayDoneCount == 0) '今日はまず1件コレ済にすると、継続の流れを作れます。',
-      if (staleCandidateCount > 0) '放置候補が$staleCandidateCount件あります。先に整理すると候補管理が軽くなります。',
+      if (staleCandidateCount > 0)
+        '放置候補が$staleCandidateCount件あります。先に整理すると候補管理が軽くなります。',
       if (candidateCount < 3) '候補ストックが少なめです。検索画面から候補追加しておくと次が楽になります。',
       if (doneCount >= 10) 'コレ済が$doneCount件まで積み上がっています。この調子で維持しましょう。',
     ];
-    final list = hints.isEmpty ? const <String>['次の候補を1件追加して、明日の作業を軽くしましょう。'] : hints;
-    return Container(
-      width: double.infinity,
+    final list = hints.isEmpty
+        ? const <String>['次の候補を1件追加して、明日の作業を軽くしましょう。']
+        : hints;
+    return AppCard(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             '次にやることのヒント',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 8),
           for (final line in list) ...[
@@ -868,13 +876,8 @@ class _SmallMetricCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AppCard(
       padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -932,21 +935,9 @@ class _SevenDayTrendCard extends StatelessWidget {
     final denom = maxCount > 0 ? maxCount : 1;
     const chartHeight = 112.0;
 
-    return Container(
-      width: double.infinity,
+    return AppCard(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      elevated: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1085,21 +1076,9 @@ class _LastCollectCard extends StatelessWidget {
         ? 'まだコレ済の記録がありません'
         : _formatDateTime(lastDoneAt!);
 
-    return Container(
-      width: double.infinity,
+    return AppCard(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      elevated: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

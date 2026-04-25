@@ -17,6 +17,8 @@ import '../state/today_recommendation_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../widgets/app_button.dart';
+import '../widgets/app_loading.dart';
 import '../widgets/home_primary_action_button.dart';
 import '../widgets/room_colle_product_list_card_layout.dart';
 
@@ -718,66 +720,30 @@ class _HomeSavedShopDiscoveryRow extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: OutlinedButton.icon(
+                child: AppSecondaryButton(
+                  label: '保存ショップ',
                   onPressed: onOpenSavedShops,
                   icon: Icon(
                     Icons.storefront_rounded,
                     size: 20,
                     color: AppColors.accentPrimary,
                   ),
-                  label: Text(
-                    '保存ショップ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 13,
-                      color: AppColors.accentPrimary,
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.accentPrimary,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 12,
-                    ),
-                    side: BorderSide(color: HomeScreenColors.metricTileOutline),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        AppDimensions.radiusButton,
-                      ),
-                    ),
-                  ),
+                  expand: true,
+                  height: 44,
                 ),
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: OutlinedButton.icon(
+                child: AppSecondaryButton(
+                  label: 'ショップ発掘',
                   onPressed: onOpenShopDiscovery,
                   icon: Icon(
                     Icons.hiking_rounded,
                     size: 20,
                     color: AppColors.accentPrimary,
                   ),
-                  label: Text(
-                    'ショップ発掘',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 13,
-                      color: AppColors.accentPrimary,
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.accentPrimary,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 12,
-                    ),
-                    side: BorderSide(color: HomeScreenColors.metricTileOutline),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        AppDimensions.radiusButton,
-                      ),
-                    ),
-                  ),
+                  expand: true,
+                  height: 44,
                 ),
               ),
             ],
@@ -1494,35 +1460,12 @@ class _HomeCollectionListLink extends StatelessWidget {
       );
     }
 
-    return Material(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-      child: OutlinedButton.icon(
-        onPressed: onPressed,
-        icon: Icon(leadingIcon, size: 20, color: AppColors.accentPrimary),
-        label: Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-            color: AppColors.accentPrimary,
-            height: 1.25,
-          ),
-        ),
-        style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.accentPrimary,
-          backgroundColor: HomeScreenColors.standaloneCardFill,
-          side: BorderSide(color: HomeScreenColors.metricTileOutline),
-          elevation: 0,
-          shadowColor: Colors.transparent,
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-          minimumSize: const Size(double.infinity, 46),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-          ),
-        ),
-      ),
+    return AppSecondaryButton(
+      label: title,
+      onPressed: onPressed,
+      icon: Icon(leadingIcon, size: 20, color: AppColors.accentPrimary),
+      expand: true,
+      height: 46,
     );
   }
 }
@@ -1635,14 +1578,7 @@ class _TodayRecommendationsHomeSection extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 1),
                   child: isLoading && totalCount == 0
-                      ? SizedBox(
-                          width: 22,
-                          height: 22,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.2,
-                            color: HomeScreenColors.statusAccentStrong,
-                          ),
-                        )
+                      ? const AppLoadingView(message: '', inline: true)
                       : Icon(leadingIcon, size: 22, color: leadingColor),
                 ),
                 SizedBox(width: _HomeUi.gapIconToTitle),

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import 'app_button.dart';
+import 'app_loading.dart';
 
 /// ROOM コレの空／エラー／読込と同系の「結果ペイン」ラッパー（スクロール可能・最小高さで縦中央寄せ）。
 class _RakutenSearchFeedbackShell extends StatelessWidget {
@@ -76,23 +78,6 @@ class _RakutenSearchFeedbackShell extends StatelessWidget {
       },
     );
   }
-}
-
-ButtonStyle _rakutenSearchSecondaryOutlinedStyle() {
-  return OutlinedButton.styleFrom(
-    foregroundColor: HomeScreenColors.accentSectionHeading,
-    backgroundColor: Color.alphaBlend(
-      AppColors.accentLight.withValues(alpha: 0.14),
-      HomeScreenColors.deckFill,
-    ),
-    side: BorderSide(color: HomeScreenColors.sectionOutlineAccent),
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-    minimumSize: const Size(0, 48),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-    ),
-    textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
-  );
 }
 
 /// 楽天検索エリア：未検索（アイドル）状態。
@@ -193,29 +178,8 @@ class RakutenSearchLoadingView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(
-            child: SizedBox(
-              width: 28,
-              height: 28,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.4,
-                color: HomeScreenColors.statusAccentStrong,
-              ),
-            ),
-          ),
+          AppLoadingView(message: title, inline: false),
           const SizedBox(height: 10),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: HomeScreenColors.titlePrimary,
-              fontWeight: FontWeight.w800,
-              fontSize: 14.5,
-              height: 1.22,
-              letterSpacing: -0.2,
-            ),
-          ),
-          const SizedBox(height: 5),
           Text(
             subtitle,
             textAlign: TextAlign.center,
@@ -310,25 +274,19 @@ class RakutenSearchErrorView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 18),
-          FilledButton.icon(
+          AppPrimaryButton(
+            label: retryLabel,
             onPressed: onRetry,
-            style: RakutenSearchScreenUi.sheetPrimaryFilledButtonStyle(),
-            icon: const Icon(Icons.refresh_rounded, size: 21),
-            label: Text(
-              retryLabel,
-              style: const TextStyle(fontWeight: FontWeight.w800),
-            ),
+            icon: const Icon(Icons.refresh_rounded),
           ),
           if (onAdjustConditions != null) ...[
             const SizedBox(height: 10),
-            OutlinedButton.icon(
+            AppSecondaryButton(
+              label: adjustLabel,
               onPressed: onAdjustConditions,
-              style: _rakutenSearchSecondaryOutlinedStyle(),
-              icon: const Icon(Icons.tune_rounded, size: 20),
-              label: Text(
-                adjustLabel,
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
+              icon: const Icon(Icons.tune_rounded),
+              expand: true,
+              height: 48,
             ),
           ],
         ],
@@ -440,14 +398,12 @@ class RakutenSearchEmptyView extends StatelessWidget {
           ],
           if (onRefine != null) ...[
             const SizedBox(height: 14),
-            OutlinedButton.icon(
+            AppSecondaryButton(
+              label: refineLabel,
               onPressed: onRefine,
-              style: _rakutenSearchSecondaryOutlinedStyle(),
-              icon: const Icon(Icons.tune_rounded, size: 20),
-              label: Text(
-                refineLabel,
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
+              icon: const Icon(Icons.tune_rounded),
+              expand: true,
+              height: 48,
             ),
           ],
           if (stateFootnote != null && stateFootnote!.trim().isNotEmpty) ...[

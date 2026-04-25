@@ -17,6 +17,9 @@ abstract final class RoomColleProductListCardLayout {
   static const int titleMaxLines = 2;
   static const int shopMaxLines = 1;
 
+  static Color get cardBackgroundColor => HomeScreenColors.roomMetricTileFill;
+  static Color get cardBorderColor => HomeScreenColors.roomMetricTileBorder;
+
   static List<BoxShadow> get cardBoxShadow => [
     ...HomeScreenColors.roomMetricTileShadow,
     BoxShadow(
@@ -33,9 +36,9 @@ abstract final class RoomColleProductListCardLayout {
 
   static BoxDecoration cardDecoration() {
     return BoxDecoration(
-      color: HomeScreenColors.roomMetricTileFill,
+      color: cardBackgroundColor,
       borderRadius: BorderRadius.circular(radius),
-      border: Border.all(color: HomeScreenColors.roomMetricTileBorder),
+      border: Border.all(color: cardBorderColor),
       boxShadow: cardBoxShadow,
     );
   }

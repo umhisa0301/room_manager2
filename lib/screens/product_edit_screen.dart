@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../models/product.dart';
 import '../state/product_list_provider.dart';
+import '../widgets/app_button.dart';
 import '../widgets/product_form_content.dart';
 
 /// 商品編集画面。共通フォームで既存商品を編集し、保存で更新・ローカル保存される。
@@ -27,9 +28,14 @@ class _ProductEditScreenState extends State<ProductEditScreen> {
         backgroundColor: AppColors.surface,
         foregroundColor: AppColors.textPrimary,
         actions: [
-          TextButton(
-            onPressed: () => _formKey.currentState?.submit(),
-            child: const Text('保存'),
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: AppPrimaryButton(
+              label: '保存',
+              onPressed: () => _formKey.currentState?.submit(),
+              height: 36,
+              expand: false,
+            ),
           ),
         ],
       ),

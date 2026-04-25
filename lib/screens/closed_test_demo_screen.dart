@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../config/demo_mode.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_button.dart';
 
 class ClosedTestDemoScreen extends StatefulWidget {
   const ClosedTestDemoScreen({super.key});
@@ -537,27 +538,30 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
                   ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
                 ),
               ),
-              FilledButton.icon(
+              AppPrimaryButton(
+                label: _playStartedOnce ? '再録画する' : '再生',
                 onPressed: _play,
-                icon: const Icon(Icons.play_arrow_rounded, size: 18),
-                label: Text(_playStartedOnce ? '再録画する' : '再生'),
+                icon: const Icon(Icons.play_arrow_rounded),
+                expand: false,
+                height: 40,
               ),
               const SizedBox(width: 8),
-              OutlinedButton.icon(
+              AppSecondaryButton(
+                label: _isPaused ? '再開' : '一時停止',
                 onPressed: _isPlaying ? _pauseOrResume : null,
                 icon: Icon(
                   _isPaused
                       ? Icons.play_circle_outline_rounded
                       : Icons.pause_circle_outline_rounded,
-                  size: 18,
                 ),
-                label: Text(_isPaused ? '再開' : '一時停止'),
+                height: 40,
               ),
               const SizedBox(width: 8),
-              OutlinedButton.icon(
+              AppSecondaryButton(
+                label: '終了',
                 onPressed: _stop,
-                icon: const Icon(Icons.stop_circle_outlined, size: 18),
-                label: const Text('終了'),
+                icon: const Icon(Icons.stop_circle_outlined),
+                height: 40,
               ),
             ],
           ),
@@ -903,11 +907,13 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
             const SizedBox(height: 8),
             Align(
               alignment: Alignment.centerRight,
-              child: FilledButton.icon(
+              child: AppPrimaryButton(
                 key: _targetKeys[_tRegisterCandidateBtn],
+                label: 'コレ候補へ登録',
                 onPressed: () {},
-                icon: const Icon(Icons.bookmark_add_outlined, size: 16),
-                label: const Text('コレ候補へ登録'),
+                icon: const Icon(Icons.bookmark_add_outlined),
+                expand: false,
+                height: 40,
               ),
             ),
           ],
