@@ -24,10 +24,10 @@ class _RakutenSearchFeedbackShell extends StatelessWidget {
     final padH = RakutenSearchScreenUi.screenPadH;
     final padV = RakutenSearchScreenUi.gapSection;
     final innerPad = EdgeInsets.fromLTRB(
-      RakutenSearchScreenUi.insetSectionH + 10,
-      RakutenSearchScreenUi.paddingWellV + 16,
-      RakutenSearchScreenUi.insetSectionH + 10,
-      RakutenSearchScreenUi.paddingWellV + 16,
+      RakutenSearchScreenUi.insetSectionH + 8,
+      RakutenSearchScreenUi.paddingWellV + 10,
+      RakutenSearchScreenUi.insetSectionH + 8,
+      RakutenSearchScreenUi.paddingWellV + 10,
     );
 
     if (!stretchToFillViewport) {
@@ -122,7 +122,7 @@ class RakutenSearchIdleView extends StatelessWidget {
   Widget build(BuildContext context) {
     final ic =
         iconTint ?? HomeScreenColors.statusAccentMuted.withValues(alpha: 0.88);
-    final iconSize = compactLayout ? 34.0 : 42.0;
+    final iconSize = compactLayout ? 30.0 : 36.0;
 
     return _RakutenSearchFeedbackShell(
       stretchToFillViewport: !compactLayout,
@@ -131,31 +131,31 @@ class RakutenSearchIdleView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Icon(icon, size: iconSize, color: ic),
-          SizedBox(height: compactLayout ? 10 : 14),
+          SizedBox(height: compactLayout ? 8 : 10),
           Text(
             title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: HomeScreenColors.titlePrimary,
               fontWeight: FontWeight.w800,
-              fontSize: compactLayout ? 15 : 16,
+              fontSize: compactLayout ? 14.5 : 15,
               height: 1.22,
               letterSpacing: -0.2,
             ),
           ),
-          SizedBox(height: compactLayout ? 6 : 8),
+          SizedBox(height: compactLayout ? 4 : 6),
           Text(
             subtitle,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: HomeScreenColors.groupedSectionBody,
-              height: compactLayout ? 1.38 : 1.42,
-              fontSize: compactLayout ? 12 : 12.5,
+              height: compactLayout ? 1.32 : 1.36,
+              fontSize: compactLayout ? 11.5 : 12,
               fontWeight: FontWeight.w500,
             ),
           ),
           if (stateFootnote != null && stateFootnote!.trim().isNotEmpty) ...[
-            SizedBox(height: compactLayout ? 10 : 12),
+            SizedBox(height: compactLayout ? 8 : 10),
             Text(
               stateFootnote!,
               textAlign: TextAlign.center,
@@ -195,46 +195,46 @@ class RakutenSearchLoadingView extends StatelessWidget {
         children: [
           Center(
             child: SizedBox(
-              width: 40,
-              height: 40,
+              width: 28,
+              height: 28,
               child: CircularProgressIndicator(
-                strokeWidth: 3,
+                strokeWidth: 2.4,
                 color: HomeScreenColors.statusAccentStrong,
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           Text(
             title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: HomeScreenColors.titlePrimary,
               fontWeight: FontWeight.w800,
-              fontSize: 16,
+              fontSize: 14.5,
               height: 1.22,
               letterSpacing: -0.2,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 5),
           Text(
             subtitle,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: HomeScreenColors.groupedSectionBody,
-              height: 1.4,
-              fontSize: 12.5,
+              height: 1.32,
+              fontSize: 11.8,
               fontWeight: FontWeight.w500,
             ),
           ),
           if (footnote != null && footnote!.trim().isNotEmpty) ...[
-            const SizedBox(height: 10),
+            const SizedBox(height: 6),
             Text(
               footnote!,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: HomeScreenColors.footnoteMuted,
-                height: 1.35,
-                fontSize: 11,
+                height: 1.28,
+                fontSize: 10.5,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -373,32 +373,32 @@ class RakutenSearchEmptyView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Icon(icon, size: 42, color: ic),
-          const SizedBox(height: 14),
+          Icon(icon, size: 34, color: ic),
+          const SizedBox(height: 10),
           Text(
             title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: HomeScreenColors.titlePrimary,
               fontWeight: FontWeight.w800,
-              fontSize: 16,
+              fontSize: 15,
               height: 1.22,
               letterSpacing: -0.2,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
             body,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: HomeScreenColors.groupedSectionBody,
-              height: 1.4,
-              fontSize: 12.5,
+              height: 1.34,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
           ),
           if (hints.isNotEmpty) ...[
-            const SizedBox(height: 14),
+            const SizedBox(height: 10),
             Text(
               'ヒント',
               textAlign: TextAlign.center,

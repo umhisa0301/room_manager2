@@ -103,15 +103,15 @@ abstract final class RakutenSearchScreenUi {
 
   static List<BoxShadow> get cardShadow => [
     BoxShadow(
-      color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.45),
-      offset: const Offset(0, 4),
-      blurRadius: 16,
+      color: HomeScreenColors.cardShadowColor.withValues(alpha: 0.26),
+      offset: const Offset(0, 3),
+      blurRadius: 10,
       spreadRadius: 0,
     ),
     BoxShadow(
-      color: Colors.black.withValues(alpha: 0.04),
+      color: Colors.black.withValues(alpha: 0.025),
       offset: const Offset(0, 1),
-      blurRadius: 4,
+      blurRadius: 3,
     ),
   ];
 
@@ -207,16 +207,17 @@ abstract final class RakutenSearchScreenUi {
 
   /// 詳細シートの主CTA（画面下部の主ボタンと同系）。
   static ButtonStyle sheetPrimaryFilledButtonStyle() {
+    // CTAだけが強く見えるよう、入力欄とは異なる影とブランド色に集約。
     return FilledButton.styleFrom(
       backgroundColor: AppColors.accentPrimary,
       foregroundColor: AppColors.textOnAccent,
+      disabledForegroundColor: AppColors.textOnAccent.withValues(alpha: 0.72),
+      disabledBackgroundColor: AppColors.accentPrimary.withValues(alpha: 0.34),
       minimumSize: const Size(0, 52),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-      elevation: 1,
-      shadowColor: AppColors.textPrimary.withValues(alpha: 0.14),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-      ),
+      elevation: 1.2,
+      shadowColor: AppColors.accentPrimary.withValues(alpha: 0.22),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       textStyle: const TextStyle(
         fontWeight: FontWeight.w800,
         fontSize: 15,
@@ -290,13 +291,17 @@ abstract final class RakutenSearchScreenUi {
     Widget? suffixIcon,
   }) {
     final r = BorderRadius.circular(searchFieldBorderRadius);
+    // 入力欄は補助要素として薄いグレー面・1px枠に抑える。
     final normal = OutlineInputBorder(
       borderRadius: r,
-      borderSide: BorderSide(color: HomeScreenColors.deckOutline),
+      borderSide: BorderSide(
+        color: HomeScreenColors.deckOutline.withValues(alpha: 0.74),
+        width: 1,
+      ),
     );
     return InputDecoration(
       filled: true,
-      fillColor: HomeScreenColors.deckFill,
+      fillColor: const Color(0xFFF7F7F7),
       isDense: true,
       labelText: labelText,
       hintText: hintText,
@@ -330,7 +335,7 @@ abstract final class RakutenSearchScreenUi {
         borderRadius: r,
         borderSide: BorderSide(
           color: HomeScreenColors.sectionOutlineAccent,
-          width: 1.5,
+          width: 1.2,
         ),
       ),
       contentPadding: searchFieldContentPadding,

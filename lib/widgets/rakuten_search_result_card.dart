@@ -123,7 +123,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: titleStyle,
                         ),
-                        const SizedBox(height: 5),
+                        const SizedBox(height: 4),
                         Text(
                           RoomColleProductListCardLayout.formatPriceYen(
                             item.itemPrice,
@@ -132,7 +132,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: priceStyle,
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 2),
                         _ratingRow(
                           reviewScoreStyle: reviewScoreStyle,
                           reviewCountStyle: reviewCountStyle,
@@ -176,7 +176,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 6),
                   _searchResultActions(context),
                 ],
               ),
@@ -194,8 +194,7 @@ class RakutenSearchResultCard extends StatelessWidget {
     final rating = item.reviewAverage;
     final reviewCount = item.reviewCount;
     final scoreText = rating > 0 ? '★${rating.toStringAsFixed(1)}' : '★-';
-    final countText =
-        reviewCount > 0 ? 'レビュー $reviewCount件' : 'レビュー 0件';
+    final countText = reviewCount > 0 ? 'レビュー $reviewCount件' : 'レビュー 0件';
     return Row(
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
@@ -282,8 +281,7 @@ class RakutenSearchResultCard extends StatelessWidget {
     }
 
     return Tooltip(
-      message:
-          'ROOMコレの「コレ候補」に追加します。あとからROOMコレタブの候補一覧で比較・整理できます。',
+      message: 'ROOMコレの「コレ候補」に追加します。あとからROOMコレタブの候補一覧で比較・整理できます。',
       child: FilledButton(
         style: RoomColleListCardActionStyle.collectFilledSearchPrimary(),
         onPressed: isRegistering ? null : onRegisterCandidate,
