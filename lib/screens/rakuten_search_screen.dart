@@ -348,25 +348,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     ),
                   ),
                   const SizedBox(width: 2),
-                  TextButton(
+                  AppSecondaryButton(
+                    label: '条件',
                     onPressed: loading
                         ? null
                         : () => _openConditionsForCurrentMode(context),
-                    style: TextButton.styleFrom(
-                      visualDensity: VisualDensity.compact,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 5,
-                        vertical: 1,
-                      ),
-                      minimumSize: const Size(0, 28),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      foregroundColor: HomeScreenColors.leadOnSection,
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 11,
-                      ),
-                    ),
-                    child: const Text('条件'),
+                    height: 30,
                   ),
                   if (_sortLivesInResultsHeader(search))
                     _buildResultSortControl(
@@ -1044,25 +1031,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       children: [
         Expanded(child: detailEntry),
         const SizedBox(width: 6),
-        TextButton.icon(
+        AppSecondaryButton(
+          label: '条件クリア',
           onPressed: onClear,
           icon: Icon(
             Icons.restart_alt_rounded,
             size: 16,
             color: HomeScreenColors.groupedSectionBody,
           ),
-          label: const Text('条件クリア'),
-          style: TextButton.styleFrom(
-            foregroundColor: HomeScreenColors.groupedSectionBody,
-            visualDensity: VisualDensity.compact,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            minimumSize: const Size(0, 40),
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 11.5,
-            ),
-          ),
+          height: 40,
         ),
       ],
     );
@@ -2350,50 +2327,20 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         ),
                       ),
                     ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        visualDensity: VisualDensity.compact,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 2,
-                        ),
-                        minimumSize: const Size(0, 30),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        foregroundColor: HomeScreenColors.leadOnSection,
-                      ),
+                    AppSecondaryButton(
+                      label: '全部選択',
                       onPressed: orderedResults.isEmpty || _isBulkRegistering
                           ? null
                           : () => _selectAllForBulk(orderedResults, managed),
-                      child: const Text(
-                        '全部選択',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 11.5,
-                        ),
-                      ),
+                      height: 32,
                     ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        visualDensity: VisualDensity.compact,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 2,
-                        ),
-                        minimumSize: const Size(0, 30),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        foregroundColor: HomeScreenColors.leadOnSection,
-                      ),
+                    AppSecondaryButton(
+                      label: '全部解除',
                       onPressed:
                           _selectedProductIds.isEmpty || _isBulkRegistering
                           ? null
                           : _clearBulkSelection,
-                      child: const Text(
-                        '全部解除',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 11.5,
-                        ),
-                      ),
+                      height: 32,
                     ),
                   ],
                 ],

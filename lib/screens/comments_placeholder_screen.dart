@@ -5,6 +5,8 @@ import '../models/comment_template.dart';
 import '../services/app_action_service.dart';
 import '../state/comment_template_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_button.dart';
+import '../widgets/app_card.dart';
 import 'comment_template_edit_screen.dart';
 
 /// 楽天ROOM投稿用コメントの作成・保存・コピーを行う画面。
@@ -89,13 +91,13 @@ class CommentsPlaceholderScreen extends StatelessWidget {
                 title: const Text('削除の確認'),
                 content: const Text('このテンプレートを削除しますか？'),
                 actions: [
-                  TextButton(
+                  AppSecondaryButton(
+                    label: 'キャンセル',
                     onPressed: () => Navigator.of(dialogContext).pop(false),
-                    child: const Text('キャンセル'),
                   ),
-                  TextButton(
+                  AppSecondaryButton(
+                    label: '削除',
                     onPressed: () => Navigator.of(dialogContext).pop(true),
-                    child: Text('削除', style: TextStyle(color: AppColors.error)),
                   ),
                 ],
               ),
@@ -122,54 +124,44 @@ class _CommentScreenPurposeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            offset: const Offset(0, 2),
-            blurRadius: 6,
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            Icons.chat_bubble_outline_rounded,
-            size: 26,
-            color: AppColors.accentPrimary,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '楽天ROOMに投稿するコメントを作成・保存できます',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w700,
-                    height: 1.35,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '保存した文は一覧からワンタップでコピーし、ROOMの投稿欄に貼り付けられます。',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.45,
-                  ),
-                ),
-              ],
+      child: AppCard(
+        padding: const EdgeInsets.all(14),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.chat_bubble_outline_rounded,
+              size: 26,
+              color: AppColors.accentPrimary,
             ),
-          ),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '楽天ROOMに投稿するコメントを作成・保存できます',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w700,
+                      height: 1.35,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '保存した文は一覧からワンタップでコピーし、ROOMの投稿欄に貼り付けられます。',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.45,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -181,32 +173,29 @@ class _AiSuggestionFuturePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.lightbulb_outline_rounded,
-            size: 18,
-            color: AppColors.accentPrimary,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              'テンプレートをジャンルや用途別に分けておくと、投稿のたびに迷いにくくなります。',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.4,
+      child: AppCard(
+        padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+        child: Row(
+          children: [
+            Icon(
+              Icons.lightbulb_outline_rounded,
+              size: 18,
+              color: AppColors.accentPrimary,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'テンプレートをジャンルや用途別に分けておくと、投稿のたびに迷いにくくなります。',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -216,43 +205,41 @@ class _AiSuggestionFuturePlaceholder extends StatelessWidget {
 class _CommentTemplatesEmptyGuide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.accentLight.withValues(alpha: 0.6)),
-      ),
-      child: Column(
-        children: [
-          Icon(
-            Icons.post_add_outlined,
-            size: 40,
-            color: AppColors.accentPrimary.withValues(alpha: 0.75),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            'コメントを作成して保存すると、すぐにコピーできます',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-              height: 1.35,
+      child: AppCard(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
+        borderColor: AppColors.accentLight.withValues(alpha: 0.6),
+        child: Column(
+          children: [
+            Icon(
+              Icons.post_add_outlined,
+              size: 40,
+              color: AppColors.accentPrimary.withValues(alpha: 0.75),
             ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            '右下の＋ボタンから、よく使う投稿文をテンプレートとして登録してください。'
-            '一覧ではタップまたはコピーアイコンでクリップボードに送れます。'
-            'ジャンルごとに登録しておくと、あとから整理しやすくなります。',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.45,
+            const SizedBox(height: 12),
+            Text(
+              'コメントを作成して保存すると、すぐにコピーできます',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w700,
+                height: 1.35,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 10),
+            Text(
+              '右下の＋ボタンから、よく使う投稿文をテンプレートとして登録してください。'
+              '一覧ではタップまたはコピーアイコンでクリップボードに送れます。'
+              'ジャンルごとに登録しておくと、あとから整理しやすくなります。',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.45,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -265,20 +252,9 @@ class _RecentCopiedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AppCard(
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(color: AppColors.divider),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            offset: const Offset(0, 1),
-            blurRadius: 4,
-          ),
-        ],
-      ),
+      elevated: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -326,137 +302,117 @@ class _CommentTemplateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onCopy,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-            border: Border.all(color: AppColors.divider),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.06),
-                offset: const Offset(0, 2),
-                blurRadius: 6,
-              ),
-            ],
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+    return AppCard(
+      onTap: onCopy,
+      padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
+      elevated: true,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            template.title,
-                            style: Theme.of(context).textTheme.titleSmall
-                                ?.copyWith(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                    Expanded(
+                      child: Text(
+                        template.title,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
                         ),
-                        if (template.isFavorite)
-                          Icon(
-                            Icons.star,
-                            size: 18,
-                            color: AppColors.accentSecondary,
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      template.body,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        if ((template.category ?? '').isNotEmpty)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 3,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.accentLightest,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              'ジャンル: ${template.category!}',
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: AppColors.accentPrimary,
-                                    fontSize: 11,
-                                  ),
-                            ),
-                          )
-                        else
-                          Text(
-                            'ジャンル未設定',
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: AppColors.textTertiary,
-                                  fontSize: 11,
-                                ),
-                          ),
-                        const Spacer(),
-                        Text(
-                          'タップでコピー',
+                    if (template.isFavorite)
+                      Icon(
+                        Icons.star,
+                        size: 18,
+                        color: AppColors.accentSecondary,
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  template.body,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    if ((template.category ?? '').isNotEmpty)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.accentLightest,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          'ジャンル: ${template.category!}',
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
-                                color: AppColors.textTertiary,
+                                color: AppColors.accentPrimary,
                                 fontSize: 11,
                               ),
                         ),
-                      ],
+                      )
+                    else
+                      Text(
+                        'ジャンル未設定',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textTertiary,
+                          fontSize: 11,
+                        ),
+                      ),
+                    const Spacer(),
+                    Text(
+                      'タップでコピー',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textTertiary,
+                        fontSize: 11,
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(width: 8),
-              SizedBox(
-                width: 40,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.copy, size: 18),
-                      onPressed: onCopy,
-                      tooltip: 'コピー',
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.edit_outlined, size: 18),
-                      onPressed: onEdit,
-                      tooltip: '編集',
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete_outline, size: 18),
-                      onPressed: onDelete,
-                      tooltip: '削除',
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+          const SizedBox(width: 8),
+          SizedBox(
+            width: 40,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.copy, size: 18),
+                  onPressed: onCopy,
+                  tooltip: 'コピー',
+                ),
+                IconButton(
+                  icon: const Icon(Icons.edit_outlined, size: 18),
+                  onPressed: onEdit,
+                  tooltip: '編集',
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, size: 18),
+                  onPressed: onDelete,
+                  tooltip: '削除',
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
