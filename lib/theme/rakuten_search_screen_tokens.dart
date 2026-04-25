@@ -254,8 +254,8 @@ abstract final class RakutenSearchScreenUi {
 
   /// 検索バー内の余白（高さ・左右位置の基準）。
   static const EdgeInsets searchFieldContentPadding = EdgeInsets.symmetric(
-    horizontal: 14,
-    vertical: 13,
+    horizontal: 12,
+    vertical: 10,
   );
 
   /// 先頭アイコンサイズ（未指定の [Icon] に [IconTheme] で適用）。
@@ -263,8 +263,8 @@ abstract final class RakutenSearchScreenUi {
 
   /// 先頭／末尾アイコンのタップ領域（縦位置を揃える）。
   static const BoxConstraints searchFieldIconConstraints = BoxConstraints(
-    minWidth: 44,
-    minHeight: 44,
+    minWidth: 40,
+    minHeight: 40,
   );
 
   /// 並び替え帯など、一覧ヘッダ行の内側パディング（楽天結果帯と同一）。

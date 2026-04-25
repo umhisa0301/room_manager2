@@ -41,7 +41,7 @@ class RakutenSearchPseudoSearchFieldEntry extends StatelessWidget {
               child: InputDecorator(
                 isEmpty: empty,
                 decoration: RakutenSearchScreenUi.searchField(
-                  labelText: labelText,
+                  labelText: null,
                   hintText: hintText,
                   prefixIcon: Icon(
                     prefixIcon,
