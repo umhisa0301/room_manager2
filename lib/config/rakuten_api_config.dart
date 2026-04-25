@@ -63,10 +63,6 @@ class RakutenApiConfig {
     final r = httpReferer.trim().isEmpty
         ? 'https://webservice.rakuten.co.jp/'
         : httpReferer.trim();
-    return <String, String>{
-      'User-Agent': userAgent,
-      'Origin': o,
-      'Referer': r,
-    };
+    return <String, String>{'User-Agent': userAgent, 'Origin': o, 'Referer': r};
   }
 }

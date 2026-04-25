@@ -196,7 +196,9 @@ class RakutenSearchRepository {
       final out = filtered.take(targetVisibleCount).toList(growable: false);
       return RakutenKeywordSearchRepositoryResult(
         items: out,
-        receivedAnyItemFromApi: DemoModeData.querySearchItems(condition).isNotEmpty,
+        receivedAnyItemFromApi: DemoModeData.querySearchItems(
+          condition,
+        ).isNotEmpty,
         targetVisibleCount: targetVisibleCount,
         apiPagesFetched: 1,
         stopReason: out.length >= targetVisibleCount
@@ -457,7 +459,7 @@ class RakutenSearchRepository {
     final jsonRolled = gid.isEmpty
         ? '-'
         : (GenreMasterService.instance.getDisplayGenreNameAvoidingOther(gid) ??
-            '-');
+              '-');
     final display = RakutenProductGenreDisplay.resolve(
       apiGenreName: m.genreName,
       persistedGenreName: null,

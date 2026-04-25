@@ -14,7 +14,8 @@ import '../services/rakuten_genre_master_service.dart';
 class RakutenProductGenreDisplay {
   RakutenProductGenreDisplay._();
 
-  static const String unknownLabel = RakutenGenreMasterService.unknownGenreDisplayLabel;
+  static const String unknownLabel =
+      RakutenGenreMasterService.unknownGenreDisplayLabel;
 
   /// ログ過多防止（1セッションあたりの [RakutenGenre][UI]/[MASTER] 出力上限）。
   static int _rakutenGenreTraceBudget = 80;
@@ -45,8 +46,7 @@ class RakutenProductGenreDisplay {
         } else if (id.isEmpty) {
           result = unknownLabel;
         } else {
-          final m =
-              RakutenGenreMasterService.instance.genreNameIfKnown(id);
+          final m = RakutenGenreMasterService.instance.genreNameIfKnown(id);
           masterLookupForTrace = m;
           if (m != null && m.isNotEmpty) {
             result = m;
@@ -88,9 +88,7 @@ class RakutenProductGenreDisplay {
     final pf = prefetchedGenreName?.trim() ?? '';
     final uiGenreName = api.isNotEmpty
         ? api
-        : (persisted.isNotEmpty
-              ? persisted
-              : (pf.isNotEmpty ? pf : '-'));
+        : (persisted.isNotEmpty ? persisted : (pf.isNotEmpty ? pf : '-'));
     debugPrint(
       '[RakutenGenre][UI] itemCode=$code ui.genreId=${genreId.trim()} '
       'ui.genreName=$uiGenreName ui.label=$finalLabel',
@@ -103,7 +101,8 @@ class RakutenProductGenreDisplay {
       );
       return;
     }
-    final known = masterLookupForTrace ??
+    final known =
+        masterLookupForTrace ??
         RakutenGenreMasterService.instance.genreNameIfKnown(gid);
     final hit = known != null && known.isNotEmpty;
     final resolved = hit ? known : '-';

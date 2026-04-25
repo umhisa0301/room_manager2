@@ -19,6 +19,7 @@ class GenreMasterService {
   static final GenreMasterService instance = GenreMasterService._();
 
   Map<String, Map<String, dynamic>> _byId = {};
+
   /// [getGenreNameById] 用のフラット参照（パース時に構築）。
   Map<String, String> _nameById = {};
   List<String> _rootIds = [];

@@ -124,9 +124,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<GenreMasterRepository>.value(
-          value: genreMasterRepository,
-        ),
+        Provider<GenreMasterRepository>.value(value: genreMasterRepository),
         ChangeNotifierProvider(create: (_) => AppShellController()),
         Provider<PendingCollectNoticeRepository>.value(
           value: pendingCollectNoticeRepository,

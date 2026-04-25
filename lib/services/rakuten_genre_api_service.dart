@@ -18,6 +18,7 @@ enum _RakutenApiMode { openapi, legacy }
 class RakutenGenreApiService {
   static const String _baseUrlOpenApi =
       'https://openapi.rakuten.co.jp/ichibagt/api/IchibaGenre/Search/20140222';
+
   /// 旧ホスト（OpenAPI ドメインとは分離する）。
   static const String _baseUrlLegacy =
       'https://app.rakuten.co.jp/services/api/IchibaGenre/Search/20140222';
@@ -217,8 +218,7 @@ class RakutenGenreApiService {
     }
 
     if (response.statusCode != 200) {
-      final detail =
-          _rakutenErrorMessage(bodyMap) ?? _truncate(response.body);
+      final detail = _rakutenErrorMessage(bodyMap) ?? _truncate(response.body);
       throw _GenreApiTransportException(
         statusCode: response.statusCode,
         message:

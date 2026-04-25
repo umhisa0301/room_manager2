@@ -49,7 +49,10 @@ class GenreMaster {
     if (ancestorNames.isEmpty) {
       return t.isEmpty ? '$genreId' : t;
     }
-    final head = ancestorNames.map((e) => e.trim()).where((e) => e.isNotEmpty).join(' > ');
+    final head = ancestorNames
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .join(' > ');
     if (t.isEmpty) return head;
     if (head.isEmpty) return t;
     return '$head > $t';

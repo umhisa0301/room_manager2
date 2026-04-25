@@ -14,7 +14,8 @@ abstract final class DemoModeData {
         itemName: '北欧デザイン マグカップ 2個セット',
         itemPrice: 2980,
         itemUrl: 'https://item.rakuten.co.jp/demo/scandi-mug-set/',
-        affiliateUrl: 'https://item.rakuten.co.jp/demo/scandi-mug-set/?scid=demo',
+        affiliateUrl:
+            'https://item.rakuten.co.jp/demo/scandi-mug-set/?scid=demo',
         imageUrl: 'https://picsum.photos/seed/demo001/400/400',
         shopName: 'くらし雑貨ストア',
         shopCode: 'demo_shop_001',
@@ -104,7 +105,8 @@ abstract final class DemoModeData {
         itemName: '高反発 クッションチェア 座椅子',
         itemPrice: 6980,
         itemUrl: 'https://item.rakuten.co.jp/demo/cushion-chair/',
-        affiliateUrl: 'https://item.rakuten.co.jp/demo/cushion-chair/?scid=demo',
+        affiliateUrl:
+            'https://item.rakuten.co.jp/demo/cushion-chair/?scid=demo',
         imageUrl: 'https://picsum.photos/seed/demo102/400/400',
         shopName: '北欧インテリア館',
         shopCode: 'demo_shop_005',
@@ -334,37 +336,41 @@ abstract final class DemoModeData {
   ) {
     final c = condition.normalized();
     final src = searchItems();
-    return src.where((e) {
-      if (c.shopCode != null && c.shopCode!.isNotEmpty) {
-        if (e.shopCode.trim() != c.shopCode!.trim()) return false;
-      }
-      if (c.genreId != null && c.genreId!.isNotEmpty) {
-        if (e.genreId.trim() != c.genreId!.trim()) return false;
-      }
-      final kw = c.keyword.trim();
-      if (kw.isNotEmpty) {
-        final joined =
-            '${e.itemName} ${e.shopName} ${e.genreName}'.toLowerCase();
-        if (!joined.contains(kw.toLowerCase())) return false;
-      }
-      if (c.minPrice != null && e.itemPrice < c.minPrice!) return false;
-      if (c.maxPrice != null && e.itemPrice > c.maxPrice!) return false;
-      if (c.minReviewCount != null && e.reviewCount < c.minReviewCount!) {
-        return false;
-      }
-      if (c.minCommentCount != null && e.reviewCount < c.minCommentCount!) {
-        return false;
-      }
-      if (c.minReviewAverage != null &&
-          e.reviewAverage < c.minReviewAverage!) {
-        return false;
-      }
-      if (c.excludeKeyword.trim().isNotEmpty &&
-          e.itemName.toLowerCase().contains(c.excludeKeyword.toLowerCase())) {
-        return false;
-      }
-      return true;
-    }).toList(growable: false);
+    return src
+        .where((e) {
+          if (c.shopCode != null && c.shopCode!.isNotEmpty) {
+            if (e.shopCode.trim() != c.shopCode!.trim()) return false;
+          }
+          if (c.genreId != null && c.genreId!.isNotEmpty) {
+            if (e.genreId.trim() != c.genreId!.trim()) return false;
+          }
+          final kw = c.keyword.trim();
+          if (kw.isNotEmpty) {
+            final joined = '${e.itemName} ${e.shopName} ${e.genreName}'
+                .toLowerCase();
+            if (!joined.contains(kw.toLowerCase())) return false;
+          }
+          if (c.minPrice != null && e.itemPrice < c.minPrice!) return false;
+          if (c.maxPrice != null && e.itemPrice > c.maxPrice!) return false;
+          if (c.minReviewCount != null && e.reviewCount < c.minReviewCount!) {
+            return false;
+          }
+          if (c.minCommentCount != null && e.reviewCount < c.minCommentCount!) {
+            return false;
+          }
+          if (c.minReviewAverage != null &&
+              e.reviewAverage < c.minReviewAverage!) {
+            return false;
+          }
+          if (c.excludeKeyword.trim().isNotEmpty &&
+              e.itemName.toLowerCase().contains(
+                c.excludeKeyword.toLowerCase(),
+              )) {
+            return false;
+          }
+          return true;
+        })
+        .toList(growable: false);
   }
 
   static RakutenSearchItem _byId(String id) {

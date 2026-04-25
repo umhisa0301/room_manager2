@@ -60,7 +60,9 @@ class GenreMasterRepository {
       return GenreMaster.fromJson(block);
     } catch (e) {
       if (kDebugMode) {
-        debugPrint('[GenreMaster] getGenreMasterById parse error id=$genreId: $e');
+        debugPrint(
+          '[GenreMaster] getGenreMasterById parse error id=$genreId: $e',
+        );
       }
       return null;
     }
@@ -73,7 +75,9 @@ class GenreMasterRepository {
     await _writeStore(store);
     RakutenGenreMasterService.instance.applyGenreMaster(genre);
     if (kDebugMode) {
-      debugPrint('[GenreMaster] save complete genreId=${genre.genreId} name=${genre.genreName}');
+      debugPrint(
+        '[GenreMaster] save complete genreId=${genre.genreId} name=${genre.genreName}',
+      );
     }
   }
 
@@ -118,9 +122,7 @@ class GenreMasterRepository {
   /// ルート直下（level==1 かつ親0）のキャッシュ一覧。未取得ジャンルは含まない。
   Future<List<GenreMaster>> getCachedTopLevelGenres() async {
     final all = await getAllCachedGenres();
-    return all
-        .where((g) => g.level <= 1 && g.parentGenreId == 0)
-        .toList();
+    return all.where((g) => g.level <= 1 && g.parentGenreId == 0).toList();
   }
 
   /// 未キャッシュなら API で取得して保存する。
@@ -130,7 +132,9 @@ class GenreMasterRepository {
     final cached = await getGenreMasterById(genreId);
     if (cached != null) {
       if (kDebugMode) {
-        debugPrint('[GenreMaster] cache hit genreId=$genreId name=${cached.genreName}');
+        debugPrint(
+          '[GenreMaster] cache hit genreId=$genreId name=${cached.genreName}',
+        );
       }
       return cached;
     }

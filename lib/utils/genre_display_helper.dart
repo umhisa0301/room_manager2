@@ -20,5 +20,6 @@ class GenreDisplayHelper {
   }
 
   /// 互換: 旧コード向け。実質 [RakutenProductGenreDisplay.unknownLabel] と同じ文字列。
-  static String get unknownLabel => RakutenGenreMasterService.unknownGenreDisplayLabel;
+  static String get unknownLabel =>
+      RakutenGenreMasterService.unknownGenreDisplayLabel;
 }
