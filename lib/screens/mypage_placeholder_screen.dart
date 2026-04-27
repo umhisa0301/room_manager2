@@ -254,7 +254,7 @@ class MyPageHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '今日のコレ探しに使う情報をここで整えます。',
+                  'おすすめ候補に使う情報をここで整えます。',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -306,15 +306,54 @@ class MyPageQuickSummaryCard extends StatelessWidget {
         profile.age != null ||
         profile.genderKey != null ||
         profile.occupation.trim().isNotEmpty;
+    final hasGenres = genreCount > 0;
+    final hasRoomUrl = profile.hasRoomUrl;
+    final accuracyScore = [
+      profileConfigured,
+      hasGenres,
+      hasRoomUrl,
+      savedShopCount > 0,
+    ].where((e) => e).length;
+    final accuracyLabel = accuracyScore >= 3
+        ? '高'
+        : accuracyScore >= 2
+        ? '中'
+        : '低';
+    final accuracyColor = accuracyScore >= 3
+        ? AppColors.success
+        : accuracyScore >= 2
+        ? const Color(0xFFE65100)
+        : AppColors.textSecondary;
+    final setupAction = !hasGenres
+        ? onEditGenres
+        : !hasRoomUrl
+        ? onEditRoomUrl
+        : !profileConfigured
+        ? onEditProfile
+        : null;
     return AppCard(
       padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AppSectionHeader(
-            title: 'クイック概要',
-            subtitle: 'おすすめ生成に使う情報の状態',
+            title: 'おすすめ精度',
+            subtitle: '候補探しがスムーズになります',
             icon: Icons.dashboard_customize_outlined,
+            trailing: _AccuracyBadge(
+              label: accuracyLabel,
+              color: accuracyColor,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '好きなジャンルとROOM URLを登録すると、候補探しがスムーズになります。',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.35,
+            ),
           ),
           const SizedBox(height: 10),
           Wrap(
@@ -325,18 +364,21 @@ class MyPageQuickSummaryCard extends StatelessWidget {
                 label: 'プロフィール',
                 value: profileConfigured ? '設定済み' : '未設定',
                 icon: Icons.person_outline,
+                isWarning: !profileConfigured,
                 onTap: onEditProfile,
               ),
               _SummaryChip(
                 label: '好きなジャンル',
                 value: '$genreCount件',
                 icon: Icons.category_outlined,
+                isWarning: !hasGenres,
                 onTap: onEditGenres,
               ),
               _SummaryChip(
-                label: 'ROOM URL',
-                value: profile.hasRoomUrl ? '登録済み' : '未登録',
+                label: 'ROOM',
+                value: hasRoomUrl ? '登録済み' : '未登録',
                 icon: Icons.link_rounded,
+                isWarning: !hasRoomUrl,
                 onTap: onEditRoomUrl,
               ),
               _SummaryChip(
@@ -356,6 +398,18 @@ class MyPageQuickSummaryCard extends StatelessWidget {
               ),
             ],
           ),
+          if (setupAction != null) ...[
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerRight,
+              child: AppSecondaryButton(
+                label: '未設定を入力する',
+                onPressed: setupAction,
+                icon: const Icon(Icons.edit_note_rounded),
+                height: 36,
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -382,15 +436,15 @@ class MyPageTodayRecommendationCard extends StatelessWidget {
     final generated = recommendationProvider.totalCount > 0;
     final isLoading = recommendationProvider.isLoading;
     final title = !hasGenres
-        ? '好きなジャンルで候補を探しやすく'
+        ? 'まず好きなジャンルを設定'
         : generated
-        ? '前回のおすすめを見る'
+        ? '前回のおすすめがあります'
         : '今日のコレ候補を探す';
     final body = !hasGenres
-        ? '好きなジャンルを登録すると、今日の候補を探しやすくなります。'
+        ? 'おすすめ候補の精度を上げるために最大5件まで選べます。'
         : generated
         ? '未処理 ${recommendationProvider.pendingCount}件 / 全${recommendationProvider.totalCount}件'
-        : 'プロフィールや保存ショップをもとに、今日見る候補をまとめます。';
+        : '登録済みのジャンルや保存ショップを参考に候補を探します。';
 
     return AppCard(
       elevated: true,
@@ -435,8 +489,8 @@ class MyPageTodayRecommendationCard extends StatelessWidget {
           const SizedBox(height: 12),
           AppPrimaryButton(
             label: hasGenres
-                ? (generated ? 'おすすめを見る' : '今日のコレを探す')
-                : '好きなジャンルを設定',
+                ? (generated ? 'おすすめを見る' : '今日のおすすめを見る')
+                : 'ジャンルを選ぶ',
             icon: Icon(
               hasGenres ? Icons.travel_explore_rounded : Icons.category_rounded,
             ),
@@ -480,16 +534,16 @@ class MyPageRoomLinkCard extends StatelessWidget {
     final url = profile.roomUrl.trim();
     final hasUrl = url.isNotEmpty;
     return AppCard(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AppSectionHeader(
             title: hasUrl ? 'ROOM連携済み' : 'ROOM URL未登録',
-            subtitle: hasUrl ? '投稿先をすぐ開けます' : '登録すると投稿導線が短くなります',
+            subtitle: hasUrl ? '投稿先をすぐ開けます' : '登録すると投稿先をすぐ開けます',
             icon: Icons.link_rounded,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Row(
             children: [
               Expanded(
@@ -501,7 +555,7 @@ class MyPageRoomLinkCard extends StatelessWidget {
                   icon: Icon(
                     hasUrl ? Icons.open_in_new_rounded : Icons.add_link_rounded,
                   ),
-                  height: 42,
+                  height: 40,
                   expand: true,
                 ),
               ),
@@ -511,7 +565,7 @@ class MyPageRoomLinkCard extends StatelessWidget {
                   label: '編集',
                   onPressed: onEditRoomUrl,
                   icon: const Icon(Icons.edit_outlined),
-                  height: 42,
+                  height: 40,
                 ),
               ],
             ],
@@ -548,11 +602,11 @@ class MyPageOperationMenuCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const AppSectionHeader(
-            title: '運用メニュー',
-            subtitle: 'よく使う画面へ移動',
+            title: 'ショートカット',
+            subtitle: 'よく使う画面へ。',
             icon: Icons.tune_rounded,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           LayoutBuilder(
             builder: (context, constraints) {
               final tileWidth = (constraints.maxWidth - 8) / 2;
@@ -734,33 +788,9 @@ class _ProfileEditSheetState extends State<ProfileEditSheet> {
           hintText: '例: 30',
         ),
         const SizedBox(height: 12),
-        InputDecorator(
-          decoration: const InputDecoration(labelText: '性別（任意）'),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String?>(
-              value: _genderKey,
-              isExpanded: true,
-              hint: const Text('選択しない'),
-              items: [
-                const DropdownMenuItem<String?>(
-                  value: null,
-                  child: Text('選択しない'),
-                ),
-                ...[
-                  UserProfile.genderMale,
-                  UserProfile.genderFemale,
-                  UserProfile.genderOther,
-                  UserProfile.genderPreferNot,
-                ].map(
-                  (key) => DropdownMenuItem<String?>(
-                    value: key,
-                    child: Text(UserProfile.genderLabelJa(key) ?? ''),
-                  ),
-                ),
-              ],
-              onChanged: (v) => setState(() => _genderKey = v),
-            ),
-          ),
+        _GenderChipField(
+          value: _genderKey,
+          onChanged: (v) => setState(() => _genderKey = v),
         ),
         const SizedBox(height: 12),
         AppTextField(
@@ -874,6 +904,8 @@ class FavoriteGenrePickerSheet extends StatefulWidget {
 class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
   late final Set<String> _selected;
   late final List<RakutenGenreMasterEntry> _entries;
+  late final TextEditingController _queryController;
+  String _query = '';
 
   @override
   void initState() {
@@ -882,6 +914,21 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
       widget.initialSelectedIds.map((e) => e.trim()).where((e) => e.isNotEmpty),
     );
     _entries = RakutenGenreMasterService.instance.getAllGenres();
+    _queryController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _queryController.dispose();
+    super.dispose();
+  }
+
+  List<RakutenGenreMasterEntry> get _filteredEntries {
+    final q = _query.trim();
+    if (q.isEmpty) return _entries;
+    return _entries
+        .where((e) => e.genreName.contains(q) || e.genreId.contains(q))
+        .toList(growable: false);
   }
 
   void _toggle(String genreId, bool? checked) {
@@ -913,6 +960,8 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
   Widget build(BuildContext context) {
     final maxHeight = MediaQuery.sizeOf(context).height * 0.85;
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
+    final filtered = _filteredEntries;
+    final limitReached = _selected.length >= 5;
     return SafeArea(
       top: false,
       child: Padding(
@@ -935,28 +984,66 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '今日のおすすめ候補の精度に使います（${_selected.length}/5）。',
+                      limitReached
+                          ? '5/5 選択済みです。追加するには先に外してください。'
+                          : '今日のおすすめ候補の精度に使います（${_selected.length}/5）。',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: limitReached
+                            ? const Color(0xFFE65100)
+                            : AppColors.textSecondary,
                         height: 1.35,
                       ),
                     ),
+                    const SizedBox(height: 10),
+                    AppTextField(
+                      controller: _queryController,
+                      labelText: 'ジャンルを検索',
+                      hintText: '例: 収納 / 家具 / ベビー',
+                      prefixIcon: const Icon(Icons.search_rounded),
+                      textInputAction: TextInputAction.search,
+                      onChanged: (v) => setState(() => _query = v),
+                    ),
+                    if (_selected.isNotEmpty) ...[
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: [
+                          for (final id in _selected)
+                            InputChip(
+                              label: Text(_genreNameForId(id)),
+                              onDeleted: () =>
+                                  setState(() => _selected.remove(id)),
+                              backgroundColor: AppColors.surfaceVariant
+                                  .withValues(alpha: 0.7),
+                              side: BorderSide(
+                                color: AppColors.divider.withValues(alpha: 0.9),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
                   ],
                 ),
               ),
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
-                  itemCount: _entries.length,
+                  itemCount: filtered.length,
                   itemBuilder: (context, index) {
-                    final e = _entries[index];
+                    final e = filtered[index];
                     final id = e.genreId;
+                    final selected = _selected.contains(id);
+                    // 年齢制限が関係しそうなジャンルは将来のおすすめ生成側で除外対象にできるよう、
+                    // ここではID/名称を保持したまま通常ジャンルとして表示する。
                     return CheckboxListTile(
-                      value: _selected.contains(id),
+                      value: selected,
                       onChanged: (v) => _toggle(id, v),
                       controlAffinity: ListTileControlAffinity.leading,
                       title: Text(e.genreName),
                       dense: true,
+                      visualDensity: VisualDensity.compact,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 4),
                     );
                   },
                 ),
@@ -992,6 +1079,63 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  String _genreNameForId(String id) {
+    for (final entry in _entries) {
+      if (entry.genreId == id) return entry.genreName;
+    }
+    return id;
+  }
+}
+
+class _GenderChipField extends StatelessWidget {
+  const _GenderChipField({required this.value, required this.onChanged});
+
+  final String? value;
+  final ValueChanged<String?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = <({String label, String? value})>[
+      (label: '選択しない', value: null),
+      (label: '男性', value: UserProfile.genderMale),
+      (label: '女性', value: UserProfile.genderFemale),
+      (label: 'その他', value: UserProfile.genderOther),
+      (label: '回答しない', value: UserProfile.genderPreferNot),
+    ];
+    return InputDecorator(
+      decoration: const InputDecoration(labelText: '性別（任意）'),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          for (final item in items)
+            ChoiceChip(
+              label: Text(item.label),
+              selected: value == item.value,
+              showCheckmark: false,
+              onSelected: (_) => onChanged(item.value),
+              selectedColor: AppColors.accentLight,
+              backgroundColor: AppColors.surface,
+              side: BorderSide(
+                color: value == item.value
+                    ? AppColors.accentPrimary.withValues(alpha: 0.45)
+                    : AppColors.divider.withValues(alpha: 0.9),
+              ),
+              labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: value == item.value
+                    ? AppColors.accentPrimary
+                    : AppColors.textSecondary,
+                fontWeight: value == item.value
+                    ? FontWeight.w800
+                    : FontWeight.w600,
+              ),
+              visualDensity: VisualDensity.compact,
+            ),
+        ],
       ),
     );
   }
@@ -1059,30 +1203,41 @@ class _SummaryChip extends StatelessWidget {
     required this.label,
     required this.value,
     required this.icon,
+    this.isWarning = false,
     this.onTap,
   });
 
   final String label;
   final String value;
   final IconData icon;
+  final bool isWarning;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final bg = isWarning
+        ? const Color(0xFFFFF7E8)
+        : AppColors.surfaceVariant.withValues(alpha: 0.62);
+    final border = isWarning
+        ? const Color(0xFFE6C98E)
+        : AppColors.divider.withValues(alpha: 0.85);
+    final iconColor = isWarning
+        ? const Color(0xFFE65100)
+        : AppColors.textSecondary;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          color: AppColors.surfaceVariant.withValues(alpha: 0.62),
+          color: bg,
           borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
-          border: Border.all(color: AppColors.divider.withValues(alpha: 0.85)),
+          border: Border.all(color: border),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 16, color: AppColors.textSecondary),
+            Icon(icon, size: 16, color: iconColor),
             const SizedBox(width: 6),
             Text(
               '$label: ',
@@ -1099,6 +1254,32 @@ class _SummaryChip extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AccuracyBadge extends StatelessWidget {
+  const _AccuracyBadge({required this.label, required this.color});
+
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
+        border: Border.all(color: color.withValues(alpha: 0.28)),
+      ),
+      child: Text(
+        '精度 $label',
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: color,
+          fontWeight: FontWeight.w800,
         ),
       ),
     );
@@ -1126,29 +1307,36 @@ class _OperationTile extends StatelessWidget {
       width: width,
       child: AppCard(
         onTap: onTap,
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(icon, size: 20, color: AppColors.textSecondary),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w800,
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 1),
+                  Text(
+                    subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              subtitle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(
-                context,
-              ).textTheme.labelSmall?.copyWith(color: AppColors.textSecondary),
             ),
           ],
         ),
