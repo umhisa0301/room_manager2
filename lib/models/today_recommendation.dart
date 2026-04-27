@@ -2,22 +2,36 @@ import 'rakuten_search_item.dart';
 
 enum TodayRecommendationDecision { pending, skipped, addedCandidate }
 
+enum TodayRecommendationSection { personalized, popular, fresh }
+
 class TodayRecommendationEntry {
   const TodayRecommendationEntry({
     required this.item,
     this.decision = TodayRecommendationDecision.pending,
+    this.reason = '人気商品',
+    this.section = TodayRecommendationSection.personalized,
+    this.score = 0,
   });
 
   final RakutenSearchItem item;
   final TodayRecommendationDecision decision;
+  final String reason;
+  final TodayRecommendationSection section;
+  final double score;
 
   TodayRecommendationEntry copyWith({
     RakutenSearchItem? item,
     TodayRecommendationDecision? decision,
+    String? reason,
+    TodayRecommendationSection? section,
+    double? score,
   }) {
     return TodayRecommendationEntry(
       item: item ?? this.item,
       decision: decision ?? this.decision,
+      reason: reason ?? this.reason,
+      section: section ?? this.section,
+      score: score ?? this.score,
     );
   }
 
@@ -39,6 +53,9 @@ class TodayRecommendationEntry {
         'genreName': item.genreName,
       },
       'decision': decision.name,
+      'reason': reason,
+      'section': section.name,
+      'score': score,
     };
   }
 
@@ -54,6 +71,11 @@ class TodayRecommendationEntry {
     final decision = TodayRecommendationDecision.values.firstWhere(
       (e) => e.name == decisionRaw,
       orElse: () => TodayRecommendationDecision.pending,
+    );
+    final sectionRaw = (json['section'] ?? '').toString();
+    final section = TodayRecommendationSection.values.firstWhere(
+      (e) => e.name == sectionRaw,
+      orElse: () => TodayRecommendationSection.personalized,
     );
     return TodayRecommendationEntry(
       item: RakutenSearchItem(
@@ -72,6 +94,9 @@ class TodayRecommendationEntry {
         genreName: (itemJson['genreName'] ?? '').toString(),
       ),
       decision: decision,
+      reason: (json['reason'] ?? '人気商品').toString(),
+      section: section,
+      score: (json['score'] as num?)?.toDouble() ?? 0,
     );
   }
 }

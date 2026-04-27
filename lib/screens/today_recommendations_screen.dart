@@ -59,65 +59,163 @@ class _TodayRecommendationsScreenState
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(title: const Text('今日のおすすめコレ候補')),
-      body: Consumer<TodayRecommendationProvider>(
-        builder: (context, rec, _) {
-          if (rec.isLoading) {
-            return const AppScreenLoadingCenter(
-              title: '今日のおすすめを準備しています',
-              subtitle:
-                  '保存済みのプロフィールや検索履歴に基づき、候補を集めています。通信状況により少し時間がかかることがあります。',
-            );
-          }
-          if (rec.errorMessage != null) {
-            return AppScreenErrorCenter(
-              title: 'おすすめを表示できませんでした',
-              message: rec.errorMessage!,
-              onRetry: _regenerate,
-              retryLabel: 'もう一度生成する',
-            );
-          }
+      body: SafeArea(
+        child: Consumer<TodayRecommendationProvider>(
+          builder: (context, rec, _) {
+            if (rec.isLoading) {
+              return const AppScreenLoadingCenter(
+                title: '今日のおすすめを準備しています',
+                subtitle:
+                    '保存済みのプロフィールや検索履歴に基づき、候補を集めています。通信状況により少し時間がかかることがあります。',
+              );
+            }
+            if (rec.errorMessage != null) {
+              return AppScreenErrorCenter(
+                title: 'おすすめを表示できませんでした',
+                message: rec.errorMessage!,
+                onRetry: _regenerate,
+                retryLabel: 'もう一度生成する',
+              );
+            }
 
-          final bundle = rec.bundle;
-          if (bundle == null || bundle.entries.isEmpty) {
-            return AppScreenEmptyCenter(
-              icon: Icons.auto_awesome_outlined,
-              title: 'まだ今日のおすすめがありません',
-              body:
-                  '下のボタンで最大10件のコレ候補を提案します。マイページでプロフィールや好きなジャンルを入れておくと、より合った候補になりやすくなります。',
-              actions: [
-                AppPrimaryButton(
-                  label: '今日のおすすめを作る',
-                  onPressed: _regenerate,
-                  icon: const Icon(Icons.auto_awesome_rounded),
+            final bundle = rec.bundle;
+            if (bundle == null || bundle.entries.isEmpty) {
+              final favoriteGenres = context
+                  .read<UserProfileProvider>()
+                  .profile
+                  .favoriteGenreIdList;
+              return AppScreenEmptyCenter(
+                icon: Icons.auto_awesome_outlined,
+                title: 'まだ今日のおすすめがありません',
+                body: favoriteGenres.isEmpty
+                    ? 'まずはジャンルを設定すると精度が上がります。登録後に生成すると、好きなジャンルや候補履歴に近い商品を優先します。'
+                    : '下のボタンで最大10件のコレ候補を提案します。コレ履歴・候補履歴・保存ショップを使って、あなた向けに並び替えます。',
+                actions: [
+                  AppPrimaryButton(
+                    label: '今日のおすすめを作る',
+                    onPressed: _regenerate,
+                    icon: const Icon(Icons.auto_awesome_rounded),
+                  ),
+                ],
+              );
+            }
+
+            final rows = _RecommendationListRow.fromEntries(bundle.entries);
+            return Column(
+              children: [
+                _SummaryCard(
+                  total: bundle.entries.length,
+                  pending: rec.pendingCount,
+                  completed: rec.isCompleted,
+                  onRegenerate: _regenerate,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                    itemCount: rows.length,
+                    itemBuilder: (context, index) {
+                      final row = rows[index];
+                      if (row.section != null) {
+                        return _RecommendationSectionHeader(
+                          section: row.section!,
+                          topPadding: index == 0 ? 4 : 16,
+                        );
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: _RecommendationCard(entry: row.entry!),
+                      );
+                    },
+                  ),
                 ),
               ],
             );
-          }
-
-          return Column(
-            children: [
-              _SummaryCard(
-                total: bundle.entries.length,
-                pending: rec.pendingCount,
-                completed: rec.isCompleted,
-                onRegenerate: _regenerate,
-              ),
-              Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-                  itemCount: bundle.entries.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 10),
-                  itemBuilder: (context, index) {
-                    final entry = bundle.entries[index];
-                    return _RecommendationCard(entry: entry);
-                  },
-                ),
-              ),
-            ],
-          );
-        },
+          },
+        ),
       ),
     );
+  }
+}
+
+class _RecommendationListRow {
+  const _RecommendationListRow.entry(this.entry) : section = null;
+  const _RecommendationListRow.section(this.section) : entry = null;
+
+  final TodayRecommendationEntry? entry;
+  final TodayRecommendationSection? section;
+
+  static List<_RecommendationListRow> fromEntries(
+    List<TodayRecommendationEntry> entries,
+  ) {
+    final rows = <_RecommendationListRow>[];
+    for (final section in TodayRecommendationSection.values) {
+      final sectionEntries = entries
+          .where((e) => e.section == section)
+          .toList(growable: false);
+      if (sectionEntries.isEmpty) continue;
+      rows.add(_RecommendationListRow.section(section));
+      rows.addAll(sectionEntries.map(_RecommendationListRow.entry));
+    }
+    return rows;
+  }
+}
+
+class _RecommendationSectionHeader extends StatelessWidget {
+  const _RecommendationSectionHeader({
+    required this.section,
+    required this.topPadding,
+  });
+
+  final TodayRecommendationSection section;
+  final double topPadding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(2, topPadding, 2, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _sectionTitle(section),
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            _sectionSubtitle(section),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.35,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _sectionTitle(TodayRecommendationSection section) {
+    switch (section) {
+      case TodayRecommendationSection.personalized:
+        return 'あなた向け';
+      case TodayRecommendationSection.popular:
+        return '人気';
+      case TodayRecommendationSection.fresh:
+        return '新着';
+    }
+  }
+
+  String _sectionSubtitle(TodayRecommendationSection section) {
+    switch (section) {
+      case TodayRecommendationSection.personalized:
+        return 'ジャンル・コレ履歴・保存ショップに近い候補です。';
+      case TodayRecommendationSection.popular:
+        return 'レビュー評価や件数が強い候補です。';
+      case TodayRecommendationSection.fresh:
+        return 'いつもの傾向から少し広げた候補です。';
+    }
   }
 }
 
@@ -223,6 +321,8 @@ class _RecommendationCard extends StatelessWidget {
                         color: AppColors.textTertiary,
                       ),
                     ),
+                    const SizedBox(height: 6),
+                    _ReasonChip(reason: entry.reason),
                   ],
                 ),
               ),
@@ -232,6 +332,38 @@ class _RecommendationCard extends StatelessWidget {
           const SizedBox(height: 10),
           _ActionRow(entry: entry),
         ],
+      ),
+    );
+  }
+}
+
+class _ReasonChip extends StatelessWidget {
+  const _ReasonChip({required this.reason});
+
+  final String reason;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFEEF5),
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(
+            color: AppColors.accentPrimary.withValues(alpha: 0.18),
+          ),
+        ),
+        child: Text(
+          reason,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: AppColors.accentPrimary,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
       ),
     );
   }
