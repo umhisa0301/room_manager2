@@ -324,12 +324,32 @@ class MyPageQuickSummaryCard extends StatelessWidget {
         : accuracyScore >= 2
         ? const Color(0xFFE65100)
         : AppColors.textSecondary;
-    final setupAction = !hasGenres
-        ? onEditGenres
+    final accuracyMessage = accuracyScore >= 3
+        ? 'かなり当たりやすい状態です'
+        : accuracyScore >= 2
+        ? 'もう少しで当たりやすくなります'
+        : 'おすすめ精度が低いです';
+    final setup = !hasGenres
+        ? _SetupPrompt(
+            title: 'まずは好きなジャンルを設定',
+            body: 'あなたに合った商品だけを表示できるようになります',
+            label: 'ジャンルを設定する',
+            onTap: onEditGenres,
+          )
         : !hasRoomUrl
-        ? onEditRoomUrl
+        ? _SetupPrompt(
+            title: 'ROOM URLを登録',
+            body: 'あなたの投稿に近い商品を優先表示します',
+            label: 'ROOM URLを登録する',
+            onTap: onEditRoomUrl,
+          )
         : !profileConfigured
-        ? onEditProfile
+        ? _SetupPrompt(
+            title: 'プロフィールを入力',
+            body: 'よりあなた向けの商品が表示されます',
+            label: 'プロフィールを入力する',
+            onTap: onEditProfile,
+          )
         : null;
     return AppCard(
       padding: const EdgeInsets.all(12),
@@ -337,8 +357,8 @@ class MyPageQuickSummaryCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AppSectionHeader(
-            title: 'おすすめ精度',
-            subtitle: '候補探しがスムーズになります',
+            title: 'おすすめの当たりやすさ',
+            subtitle: '売れやすい商品候補を提案します',
             icon: Icons.dashboard_customize_outlined,
             trailing: _AccuracyBadge(
               label: accuracyLabel,
@@ -347,7 +367,18 @@ class MyPageQuickSummaryCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '好きなジャンルとROOM URLを登録すると、候補探しがスムーズになります。',
+            accuracyMessage,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: accuracyColor,
+              height: 1.35,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'あなたの情報をもとに「売れやすい商品候補」を提案します。',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -398,17 +429,9 @@ class MyPageQuickSummaryCard extends StatelessWidget {
               ),
             ],
           ),
-          if (setupAction != null) ...[
+          if (setup != null) ...[
             const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerRight,
-              child: AppSecondaryButton(
-                label: '未設定を入力する',
-                onPressed: setupAction,
-                icon: const Icon(Icons.edit_note_rounded),
-                height: 36,
-              ),
-            ),
+            _SetupPromptView(prompt: setup),
           ],
         ],
       ),
@@ -436,15 +459,15 @@ class MyPageTodayRecommendationCard extends StatelessWidget {
     final generated = recommendationProvider.totalCount > 0;
     final isLoading = recommendationProvider.isLoading;
     final title = !hasGenres
-        ? 'まず好きなジャンルを設定'
+        ? 'おすすめを強くする'
         : generated
         ? '前回のおすすめがあります'
         : '今日のコレ候補を探す';
     final body = !hasGenres
-        ? 'おすすめ候補の精度を上げるために最大5件まで選べます。'
+        ? 'ジャンルを設定すると精度が上がります。'
         : generated
-        ? '未処理 ${recommendationProvider.pendingCount}件 / 全${recommendationProvider.totalCount}件'
-        : '登録済みのジャンルや保存ショップを参考に候補を探します。';
+        ? '未処理 ${recommendationProvider.pendingCount}件'
+        : 'あなたの設定をもとに、売れやすい商品を提案します。';
 
     return AppCard(
       elevated: true,
@@ -488,9 +511,7 @@ class MyPageTodayRecommendationCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           AppPrimaryButton(
-            label: hasGenres
-                ? (generated ? 'おすすめを見る' : '今日のおすすめを見る')
-                : 'ジャンルを選ぶ',
+            label: hasGenres ? (generated ? 'おすすめを見る' : 'おすすめを探す') : 'ジャンルを設定',
             icon: Icon(
               hasGenres ? Icons.travel_explore_rounded : Icons.category_rounded,
             ),
@@ -701,6 +722,81 @@ class MyPageSettingsSection extends StatelessWidget {
   }
 }
 
+class _SetupPrompt {
+  const _SetupPrompt({
+    required this.title,
+    required this.body,
+    required this.label,
+    required this.onTap,
+  });
+
+  final String title;
+  final String body;
+  final String label;
+  final VoidCallback onTap;
+}
+
+class _SetupPromptView extends StatelessWidget {
+  const _SetupPromptView({required this.prompt});
+
+  final _SetupPrompt prompt;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 9, 10, 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF7E8),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+        border: Border.all(color: const Color(0xFFE6C98E)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.tips_and_updates_outlined,
+            color: Color(0xFFE65100),
+            size: 20,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  prompt.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  prompt.body,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          AppSecondaryButton(
+            label: prompt.label,
+            onPressed: prompt.onTap,
+            height: 36,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class ProfileEditSheet extends StatefulWidget {
   const ProfileEditSheet({super.key});
 
@@ -904,8 +1000,6 @@ class FavoriteGenrePickerSheet extends StatefulWidget {
 class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
   late final Set<String> _selected;
   late final List<RakutenGenreMasterEntry> _entries;
-  late final TextEditingController _queryController;
-  String _query = '';
 
   @override
   void initState() {
@@ -914,21 +1008,6 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
       widget.initialSelectedIds.map((e) => e.trim()).where((e) => e.isNotEmpty),
     );
     _entries = RakutenGenreMasterService.instance.getAllGenres();
-    _queryController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _queryController.dispose();
-    super.dispose();
-  }
-
-  List<RakutenGenreMasterEntry> get _filteredEntries {
-    final q = _query.trim();
-    if (q.isEmpty) return _entries;
-    return _entries
-        .where((e) => e.genreName.contains(q) || e.genreId.contains(q))
-        .toList(growable: false);
   }
 
   void _toggle(String genreId, bool? checked) {
@@ -960,7 +1039,6 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
   Widget build(BuildContext context) {
     final maxHeight = MediaQuery.sizeOf(context).height * 0.85;
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
-    final filtered = _filteredEntries;
     final limitReached = _selected.length >= 5;
     return SafeArea(
       top: false,
@@ -984,24 +1062,11 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      limitReached
-                          ? '5/5 選択済みです。追加するには先に外してください。'
-                          : '今日のおすすめ候補の精度に使います（${_selected.length}/5）。',
+                      '今日のおすすめ候補の精度に使います（${_selected.length}/5）。',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: limitReached
-                            ? const Color(0xFFE65100)
-                            : AppColors.textSecondary,
+                        color: AppColors.textSecondary,
                         height: 1.35,
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    AppTextField(
-                      controller: _queryController,
-                      labelText: 'ジャンルを検索',
-                      hintText: '例: 収納 / 家具 / ベビー',
-                      prefixIcon: const Icon(Icons.search_rounded),
-                      textInputAction: TextInputAction.search,
-                      onChanged: (v) => setState(() => _query = v),
                     ),
                     if (_selected.isNotEmpty) ...[
                       const SizedBox(height: 10),
@@ -1029,16 +1094,17 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
-                  itemCount: filtered.length,
+                  itemCount: _entries.length,
                   itemBuilder: (context, index) {
-                    final e = filtered[index];
+                    final e = _entries[index];
                     final id = e.genreId;
                     final selected = _selected.contains(id);
+                    final disabledByLimit = limitReached && !selected;
                     // 年齢制限が関係しそうなジャンルは将来のおすすめ生成側で除外対象にできるよう、
                     // ここではID/名称を保持したまま通常ジャンルとして表示する。
                     return CheckboxListTile(
                       value: selected,
-                      onChanged: (v) => _toggle(id, v),
+                      onChanged: disabledByLimit ? null : (v) => _toggle(id, v),
                       controlAffinity: ListTileControlAffinity.leading,
                       title: Text(e.genreName),
                       dense: true,
