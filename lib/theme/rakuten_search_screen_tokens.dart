@@ -272,14 +272,11 @@ abstract final class RakutenSearchScreenUi {
     // 入力欄は補助要素として薄いグレー面・1px枠に抑える。
     final normal = OutlineInputBorder(
       borderRadius: r,
-      borderSide: BorderSide(
-        color: HomeScreenColors.deckOutline.withValues(alpha: 0.74),
-        width: 1,
-      ),
+      borderSide: const BorderSide(color: Color(0xFFD4D4DA), width: 1),
     );
     return InputDecoration(
       filled: true,
-      fillColor: const Color(0xFFF7F7F7),
+      fillColor: const Color(0xFFFAFAFB),
       isDense: true,
       labelText: labelText,
       hintText: hintText,
@@ -311,10 +308,7 @@ abstract final class RakutenSearchScreenUi {
       enabledBorder: normal,
       focusedBorder: OutlineInputBorder(
         borderRadius: r,
-        borderSide: BorderSide(
-          color: HomeScreenColors.sectionOutlineAccent,
-          width: 1.2,
-        ),
+        borderSide: BorderSide(color: AppColors.accentPrimary, width: 1.2),
       ),
       contentPadding: searchFieldContentPadding,
       prefixIconConstraints: searchFieldIconConstraints,

@@ -48,7 +48,7 @@ class RakutenProductSearchCondition {
   }
 
   /// 末尾や先頭に付きがちな句読点・記号を取り除き、検索語の実体を安定化する。
-  /// 例: `アンパンマン、` -> `アンパンマン`
+  /// 例: `水筒、` -> `水筒`
   static String _normalizeKeyword(String value) {
     var normalized = value.trim();
     if (normalized.isEmpty) return '';

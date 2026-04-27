@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../config/demo_mode.dart';
 import '../constants/legal_urls.dart';
 import '../navigation/app_shell_controller.dart';
+import '../navigation/rakuten_search_navigator.dart';
 import '../models/rakuten_genre_master_entry.dart';
 import '../models/user_profile.dart';
 import '../services/app_action_service.dart';
@@ -16,7 +17,6 @@ import '../utils/user_profile_genre_migration.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
-import 'rakuten_search_screen.dart';
 import 'saved_shops_screen.dart';
 import 'closed_test_demo_screen.dart';
 
@@ -475,10 +475,9 @@ class _MypagePlaceholderScreenState extends State<MypagePlaceholderScreen> {
                   AppSecondaryButton(
                     label: 'ショップ発掘を開く',
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const RakutenSearchScreen(),
-                        ),
+                      openRakutenSearchScreen(
+                        context,
+                        initialMode: RakutenSearchInitialMode.shopDiscovery,
                       );
                     },
                     icon: const Icon(Icons.travel_explore_rounded),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
+import '../navigation/rakuten_search_navigator.dart';
 import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
@@ -11,7 +12,6 @@ import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/search_group_screen_shell.dart';
-import 'rakuten_search_screen.dart';
 import 'shop_discovery_detail_screen.dart';
 
 class SavedShopsScreen extends StatelessWidget {
@@ -27,10 +27,9 @@ class SavedShopsScreen extends StatelessWidget {
           IconButton(
             tooltip: 'ショップ発掘へ',
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => const RakutenSearchScreen(),
-                ),
+              openRakutenSearchScreen(
+                context,
+                initialMode: RakutenSearchInitialMode.shopDiscovery,
               );
             },
             icon: const Icon(Icons.travel_explore_rounded),
@@ -52,10 +51,9 @@ class SavedShopsScreen extends StatelessWidget {
                   AppPrimaryButton(
                     label: 'ショップ発掘を開く',
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const RakutenSearchScreen(),
-                        ),
+                      openRakutenSearchScreen(
+                        context,
+                        initialMode: RakutenSearchInitialMode.shopDiscovery,
                       );
                     },
                     icon: const Icon(Icons.travel_explore_rounded),
@@ -72,10 +70,9 @@ class SavedShopsScreen extends StatelessWidget {
                   totalCount: shops.length,
                   viewedCount: viewedCount,
                   onOpenDiscovery: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => const RakutenSearchScreen(),
-                      ),
+                    openRakutenSearchScreen(
+                      context,
+                      initialMode: RakutenSearchInitialMode.shopDiscovery,
                     );
                   },
                 ),

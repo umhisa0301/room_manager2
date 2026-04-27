@@ -50,7 +50,10 @@ class _AppShellState extends State<AppShell> {
     Navigator.of(sheetContext).pop();
     await Future<void>.delayed(Duration.zero);
     if (!mounted) return;
-    await openRakutenSearchScreen(context);
+    await openRakutenSearchScreen(
+      context,
+      initialMode: RakutenSearchInitialMode.shopDiscovery,
+    );
   }
 
   Future<void> _showAddCandidateSheet() {

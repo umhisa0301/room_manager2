@@ -92,12 +92,9 @@ class RakutenSearchResultCard extends StatelessWidget {
         ) ??
         genreLineStyle;
 
-    return Container(
-      height: RoomColleProductListCardLayout.cardHeight,
-      decoration: RoomColleProductListCardLayout.cardDecoration(),
-      clipBehavior: Clip.antiAlias,
+    return RoomColleProductListCardShell(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (selectionMode)
             Padding(
@@ -110,71 +107,69 @@ class RakutenSearchResultCard extends StatelessWidget {
               padding: RoomColleProductListCardLayout.rightColumnPadding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          _safeItemName(item),
-                          maxLines:
-                              RoomColleProductListCardLayout.titleMaxLines,
-                          overflow: TextOverflow.ellipsis,
-                          style: titleStyle,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        _safeItemName(item),
+                        maxLines: RoomColleProductListCardLayout.titleMaxLines,
+                        overflow: TextOverflow.ellipsis,
+                        style: titleStyle,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        RoomColleProductListCardLayout.formatPriceYen(
+                          item.itemPrice,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          RoomColleProductListCardLayout.formatPriceYen(
-                            item.itemPrice,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: priceStyle,
-                        ),
-                        const SizedBox(height: 2),
-                        _ratingRow(
-                          reviewScoreStyle: reviewScoreStyle,
-                          reviewCountStyle: reviewCountStyle,
-                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: priceStyle,
+                      ),
+                      const SizedBox(height: 2),
+                      _ratingRow(
+                        reviewScoreStyle: reviewScoreStyle,
+                        reviewCountStyle: reviewCountStyle,
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        _safeShopName(item),
+                        maxLines: RoomColleProductListCardLayout.shopMaxLines,
+                        overflow: TextOverflow.ellipsis,
+                        style: shopStyle,
+                      ),
+                      if (item.genreId.trim().isNotEmpty) ...[
                         const SizedBox(height: 3),
                         Text(
-                          _safeShopName(item),
-                          maxLines: RoomColleProductListCardLayout.shopMaxLines,
+                          genreDisplayLineOverride ??
+                              RakutenProductGenreDisplay.resolve(
+                                apiGenreName: item.genreName,
+                                persistedGenreName: null,
+                                prefetchedGenreName: null,
+                                genreId: item.genreId,
+                                traceItemCode: item.productId,
+                              ),
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: shopStyle,
+                          style: genreLineStyle,
                         ),
-                        if (item.genreId.trim().isNotEmpty) ...[
-                          const SizedBox(height: 3),
-                          Text(
-                            genreDisplayLineOverride ??
-                                RakutenProductGenreDisplay.resolve(
-                                  apiGenreName: item.genreName,
-                                  persistedGenreName: null,
-                                  prefetchedGenreName: null,
-                                  genreId: item.genreId,
-                                  traceItemCode: item.productId,
-                                ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: genreLineStyle,
-                          ),
-                        ],
-                        if (localStatus != RakutenManagedProductStatus.none &&
-                            !selectionMode) ...[
-                          _SearchCardStatusLozenge(status: localStatus),
-                        ],
-                        if (selectionMode && !isSelectionEnabled) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            selectionDisabledLabel ?? 'この商品は選択できません',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: selectionHintStyle,
-                          ),
-                        ],
                       ],
-                    ),
+                      if (localStatus != RakutenManagedProductStatus.none &&
+                          !selectionMode) ...[
+                        _SearchCardStatusLozenge(status: localStatus),
+                      ],
+                      if (selectionMode && !isSelectionEnabled) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          selectionDisabledLabel ?? 'この商品は選択できません',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: selectionHintStyle,
+                        ),
+                      ],
+                    ],
                   ),
                   const SizedBox(height: 6),
                   _searchResultActions(context),

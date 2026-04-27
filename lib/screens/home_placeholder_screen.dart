@@ -481,7 +481,11 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 );
                               },
                               onOpenShopDiscovery: () {
-                                openRakutenSearchScreen(context);
+                                openRakutenSearchScreen(
+                                  context,
+                                  initialMode:
+                                      RakutenSearchInitialMode.shopDiscovery,
+                                );
                               },
                             ),
                             SizedBox(height: _HomeUi.gapSection),

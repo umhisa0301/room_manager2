@@ -54,17 +54,15 @@ class AppTextField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final AutovalidateMode? autovalidateMode;
 
-  static const Color _fieldFill = Color(0xFFF7F7F7);
+  static const Color _fieldFill = Color(0xFFFAFAFB);
+  static const Color _fieldBorder = Color(0xFFD4D4DA);
 
   @override
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(12);
     final normalBorder = OutlineInputBorder(
       borderRadius: radius,
-      borderSide: BorderSide(
-        color: AppColors.divider.withValues(alpha: 0.82),
-        width: 1,
-      ),
+      borderSide: BorderSide(color: _fieldBorder, width: 1),
     );
 
     final field = ConstrainedBox(

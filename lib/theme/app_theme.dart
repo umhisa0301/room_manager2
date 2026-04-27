@@ -52,19 +52,20 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.surfaceVariant,
+        fillColor: const Color(0xFFFAFAFB),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
+          borderSide: const BorderSide(color: Color(0xFFD4D4DA), width: 1),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
-          borderSide: BorderSide.none,
+          borderSide: const BorderSide(color: Color(0xFFD4D4DA), width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusSearchBar),
           borderSide: const BorderSide(
             color: AppColors.accentPrimary,
-            width: 1.5,
+            width: 1.2,
           ),
         ),
         contentPadding: const EdgeInsets.symmetric(

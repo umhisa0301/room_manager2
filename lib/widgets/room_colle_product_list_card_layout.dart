@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import 'app_card.dart';
 
 /// ROOM コレ一覧と検索結果の商品行カードで共有するレイアウト・タイポの単一情報源。
 abstract final class RoomColleProductListCardLayout {
   RoomColleProductListCardLayout._();
 
-  static const double cardHeight = 218;
+  static const double minCardHeight = 218;
 
   /// 左スロット幅（その中で 1:1 サムネを配置）。
   static const double thumbSlotWidth = 104;
@@ -99,6 +100,30 @@ abstract final class RoomColleProductListCardLayout {
   }
 }
 
+/// ROOMコレ一覧と楽天検索結果で共有する商品カードの外枠。
+class RoomColleProductListCardShell extends StatelessWidget {
+  const RoomColleProductListCardShell({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        minHeight: RoomColleProductListCardLayout.minCardHeight,
+      ),
+      child: AppCard(
+        padding: EdgeInsets.zero,
+        backgroundColor: RoomColleProductListCardLayout.cardBackgroundColor,
+        borderColor: RoomColleProductListCardLayout.cardBorderColor,
+        radius: RoomColleProductListCardLayout.radius,
+        elevated: true,
+        child: child,
+      ),
+    );
+  }
+}
+
 /// 左列：ROOM コレと同一のサムネスロット（1:1・角丸 8・右境界線）。
 class RoomColleProductListCardThumbSlot extends StatelessWidget {
   const RoomColleProductListCardThumbSlot({super.key, required this.child});
@@ -109,6 +134,9 @@ class RoomColleProductListCardThumbSlot extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: RoomColleProductListCardLayout.thumbSlotWidth,
+      constraints: const BoxConstraints(
+        minHeight: RoomColleProductListCardLayout.minCardHeight,
+      ),
       decoration: BoxDecoration(
         color: Color.alphaBlend(
           AppColors.surfaceVariant.withValues(alpha: 0.45),

@@ -11,7 +11,6 @@ import '../theme/room_colle_list_accent.dart';
 import '../utils/room_colle_candidate_stale.dart';
 import '../utils/room_colle_card_time_format.dart';
 import 'app_button.dart';
-import 'app_card.dart';
 import 'room_colle_product_list_card_layout.dart';
 
 /// 一覧カードの見た目バリアント（候補 / コレ済）。
@@ -104,96 +103,84 @@ class RakutenManagedProductCard extends StatelessWidget {
       color: theme.colorScheme.onSurfaceVariant,
     );
 
-    return SizedBox(
-      height: RoomColleProductListCardLayout.cardHeight,
-      child: AppCard(
-        padding: EdgeInsets.zero,
-        backgroundColor: RoomColleProductListCardLayout.cardBackgroundColor,
-        borderColor: RoomColleProductListCardLayout.cardBorderColor,
-        radius: RoomColleProductListCardLayout.radius,
-        elevated: true,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            RoomColleProductListCardThumbSlot(child: _heroImage()),
-            Expanded(
-              child: Padding(
-                padding: RoomColleProductListCardLayout.rightColumnPadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            _safeItemName(product),
-                            maxLines:
-                                RoomColleProductListCardLayout.titleMaxLines,
-                            overflow: TextOverflow.ellipsis,
-                            style: titleStyle,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            _safePriceYen(product),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: priceStyle,
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            _safeShopName(product),
-                            maxLines:
-                                RoomColleProductListCardLayout.shopMaxLines,
-                            overflow: TextOverflow.ellipsis,
-                            style: shopStyle,
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            RakutenProductGenreDisplay.resolve(
-                              apiGenreName: null,
-                              persistedGenreName:
-                                  product.persistedGenreDisplayName,
-                              prefetchedGenreName:
-                                  genrePrefetchLabels?[product.genreId.trim()],
-                              genreId: product.genreId,
-                              traceItemCode: product.productId,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: genreLineStyle,
-                          ),
-                          const Spacer(),
-                          if (staleSpec != null) ...[
-                            RoomColleCandidateStaleChip(spec: staleSpec),
-                            const SizedBox(height: 3),
-                          ],
-                          Text(
-                            _dateMetaLabel(
-                              isCandidate: isCandidate,
-                              instant: tsInstant,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: timestampStyle,
-                          ),
-                        ],
+    return RoomColleProductListCardShell(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RoomColleProductListCardThumbSlot(child: _heroImage()),
+          Expanded(
+            child: Padding(
+              padding: RoomColleProductListCardLayout.rightColumnPadding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        _safeItemName(product),
+                        maxLines: RoomColleProductListCardLayout.titleMaxLines,
+                        overflow: TextOverflow.ellipsis,
+                        style: titleStyle,
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    _feedbackToolbar(context),
-                    const SizedBox(height: 5),
-                    if (isCandidate)
-                      _candidateActions(context)
-                    else
-                      _doneActions(context, stateAccent),
-                  ],
-                ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _safePriceYen(product),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: priceStyle,
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        _safeShopName(product),
+                        maxLines: RoomColleProductListCardLayout.shopMaxLines,
+                        overflow: TextOverflow.ellipsis,
+                        style: shopStyle,
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        RakutenProductGenreDisplay.resolve(
+                          apiGenreName: null,
+                          persistedGenreName: product.persistedGenreDisplayName,
+                          prefetchedGenreName:
+                              genrePrefetchLabels?[product.genreId.trim()],
+                          genreId: product.genreId,
+                          traceItemCode: product.productId,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: genreLineStyle,
+                      ),
+                      const SizedBox(height: 3),
+                      if (staleSpec != null) ...[
+                        RoomColleCandidateStaleChip(spec: staleSpec),
+                        const SizedBox(height: 3),
+                      ],
+                      Text(
+                        _dateMetaLabel(
+                          isCandidate: isCandidate,
+                          instant: tsInstant,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: timestampStyle,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  _feedbackToolbar(context),
+                  const SizedBox(height: 5),
+                  if (isCandidate)
+                    _candidateActions(context)
+                  else
+                    _doneActions(context, stateAccent),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
