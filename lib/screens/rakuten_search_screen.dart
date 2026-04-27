@@ -35,8 +35,15 @@ import 'saved_shops_screen.dart';
 import 'shop_discovery_detail_screen.dart';
 
 /// 楽天API商品検索画面（最小構成）。
+enum RakutenSearchInitialMode { product, genre, shopDiscovery }
+
 class RakutenSearchScreen extends StatefulWidget {
-  const RakutenSearchScreen({super.key});
+  const RakutenSearchScreen({
+    super.key,
+    this.initialMode = RakutenSearchInitialMode.product,
+  });
+
+  final RakutenSearchInitialMode initialMode;
 
   @override
   State<RakutenSearchScreen> createState() => _RakutenSearchScreenState();
@@ -98,6 +105,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     debugLabel: 'discoveryDetailSheetKeyword',
   );
 
+  _RakutenSearchMode get _initialSearchMode {
+    switch (widget.initialMode) {
+      case RakutenSearchInitialMode.product:
+        return _RakutenSearchMode.product;
+      case RakutenSearchInitialMode.genre:
+        return _RakutenSearchMode.genre;
+      case RakutenSearchInitialMode.shopDiscovery:
+        return _RakutenSearchMode.shopDiscovery;
+    }
+  }
+
   void _resetSearchUi() {
     _keywordController.clear();
     _minPriceController.clear();
@@ -120,7 +138,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _isBulkRegistering = false;
     _selectedProductIds.clear();
     _searchHeaderCollapsed = false;
-    _mode = _RakutenSearchMode.product;
+    _mode = _initialSearchMode;
     _genreExploreSort = RakutenKeywordSearchSortMode.defaultOrder;
     _keywordSort = RakutenKeywordSearchSortMode.defaultOrder;
     context.read<RakutenSearchProvider>().resetTransientState();
@@ -486,6 +504,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       onTapSavedShops: _openSavedShopsFromSheet,
       onTapShopDiscovery: (sheetContext) async {
         Navigator.of(sheetContext).pop();
+        await Future<void>.delayed(Duration.zero);
+        if (!mounted) return;
+        _onModeChanged(_RakutenSearchMode.shopDiscovery);
       },
     );
   }
@@ -819,7 +840,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             controller: _keywordController,
             onTap: () => _openProductConditionsSheet(context),
             labelText: 'キーワード',
-            hintText: '例：アンパンマン / イヤホン / 水筒',
+            hintText: '例：水筒 / イヤホン / トートバッグ',
             prefixIcon: Icons.search_rounded,
           ),
           onClear: () {
