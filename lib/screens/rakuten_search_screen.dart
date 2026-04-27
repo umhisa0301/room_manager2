@@ -840,7 +840,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             controller: _keywordController,
             onTap: () => _openProductConditionsSheet(context),
             labelText: 'キーワード',
-            hintText: '例：水筒 / イヤホン / トートバッグ',
+            hintText: '例：水筒 / イヤホン / バッグ',
             prefixIcon: Icons.search_rounded,
           ),
           onClear: () {
