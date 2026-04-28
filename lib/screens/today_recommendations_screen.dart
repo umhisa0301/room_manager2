@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/today_recommendation.dart';
+import '../services/app_action_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
@@ -283,66 +284,56 @@ class _RecommendationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final item = entry.item;
     return AppCard(
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      padding: const EdgeInsets.all(10),
+      radius: 16,
+      elevated: true,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _Thumb(imageUrl: item.imageUrl),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.itemName,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                        height: 1.3,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      item.shopName.trim().isEmpty ? 'ショップ名なし' : item.shopName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      _formatPrice(item.itemPrice),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '評価 ${item.reviewAverage.toStringAsFixed(2)} / '
-                      '評価数 ${item.reviewCount}',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.textTertiary,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    _RecommendationTagWrap(entry: entry),
-                  ],
+          _ProductImageWithStatus(entry: entry),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.itemName,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w800,
+                    height: 1.24,
+                  ),
                 ),
-              ),
-              _DecisionChip(decision: entry.decision),
-            ],
+                const SizedBox(height: 4),
+                Text(
+                  _formatPrice(item.itemPrice),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w900,
+                    height: 1.08,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  '評価 ${item.reviewAverage.toStringAsFixed(2)} / 評価数 ${item.reviewCount}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textTertiary,
+                    height: 1.18,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                _RecommendationTagWrap(entry: entry),
+                const SizedBox(height: 8),
+                _ActionRow(entry: entry),
+              ],
+            ),
           ),
-          const SizedBox(height: 10),
-          _ActionRow(entry: entry),
         ],
       ),
     );
@@ -431,8 +422,25 @@ class _ActionRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: AppPrimaryButton(
-            label: '候補にする',
+          flex: 6,
+          child: _CompactActionButton(
+            label: '楽天で見る',
+            style: _CompactActionStyle.primary,
+            onPressed: () {
+              AppActionService.openUrl(
+                context,
+                url: entry.item.browserLaunchUrl,
+              );
+            },
+          ),
+        ),
+        const SizedBox(width: 5),
+        Expanded(
+          flex: 4,
+          child: _CompactActionButton(
+            label: '候補',
+            icon: Icons.bookmark_add_rounded,
+            style: _CompactActionStyle.medium,
             onPressed: enabled
                 ? () async {
                     final rec = context.read<TodayRecommendationProvider>();
@@ -448,22 +456,20 @@ class _ActionRow extends StatelessWidget {
                     ).showSnackBar(SnackBar(content: Text(err ?? '候補に追加しました')));
                   }
                 : null,
-            icon: const Icon(Icons.bookmark_add_rounded),
-            height: 44,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 5),
         Expanded(
-          child: AppSecondaryButton(
+          flex: 4,
+          child: _CompactActionButton(
             label: '見送る',
+            style: _CompactActionStyle.weak,
             onPressed: enabled
                 ? () async {
                     final rec = context.read<TodayRecommendationProvider>();
                     await rec.markSkipped(entry.item.productId);
                   }
                 : null,
-            expand: true,
-            height: 42,
           ),
         ),
       ],
@@ -471,8 +477,104 @@ class _ActionRow extends StatelessWidget {
   }
 }
 
-class _DecisionChip extends StatelessWidget {
-  const _DecisionChip({required this.decision});
+enum _CompactActionStyle { primary, medium, weak }
+
+class _CompactActionButton extends StatelessWidget {
+  const _CompactActionButton({
+    required this.label,
+    required this.style,
+    required this.onPressed,
+    this.icon,
+  });
+
+  final String label;
+  final _CompactActionStyle style;
+  final VoidCallback? onPressed;
+  final IconData? icon;
+
+  bool get _isPrimary => style == _CompactActionStyle.primary;
+  bool get _isMedium => style == _CompactActionStyle.medium;
+
+  @override
+  Widget build(BuildContext context) {
+    final foreground = _isPrimary
+        ? AppColors.textOnAccent
+        : _isMedium
+        ? AppColors.accentPrimary
+        : AppColors.textSecondary;
+    final background = _isPrimary
+        ? AppColors.accentPrimary
+        : _isMedium
+        ? const Color(0xFFFFEEF5)
+        : Colors.transparent;
+    final border = _isPrimary
+        ? AppColors.accentPrimary
+        : _isMedium
+        ? AppColors.accentPrimary.withValues(alpha: 0.22)
+        : AppColors.divider.withValues(alpha: 0.82);
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 34),
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          foregroundColor: foreground,
+          disabledForegroundColor: AppColors.textTertiary,
+          backgroundColor: background,
+          disabledBackgroundColor: AppColors.surfaceVariant,
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+          minimumSize: const Size(0, 34),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(999),
+            side: BorderSide(color: border),
+          ),
+          textStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.2,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              Icon(icon, size: 13),
+              const SizedBox(width: 2),
+            ],
+            Flexible(
+              child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ProductImageWithStatus extends StatelessWidget {
+  const _ProductImageWithStatus({required this.entry});
+
+  final TodayRecommendationEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        _Thumb(imageUrl: entry.item.imageUrl),
+        Positioned(
+          top: 4,
+          right: 4,
+          child: _DecisionBadge(decision: entry.decision),
+        ),
+      ],
+    );
+  }
+}
+
+class _DecisionBadge extends StatelessWidget {
+  const _DecisionBadge({required this.decision});
   final TodayRecommendationDecision decision;
 
   @override
@@ -495,15 +597,17 @@ class _DecisionChip extends StatelessWidget {
         fg = const Color(0xFF2E7D32);
     }
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.86)),
       ),
       child: Text(
         text,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: fg,
+          fontSize: 9.5,
           fontWeight: FontWeight.w700,
         ),
       ),
@@ -521,8 +625,8 @@ class _Thumb extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        width: 70,
-        height: 70,
+        width: 92,
+        height: 108,
         color: AppColors.surfaceVariant,
         child: imageUrl.trim().isEmpty
             ? const Icon(Icons.image_outlined, color: AppColors.textTertiary)
