@@ -118,11 +118,11 @@ class _TodayRecommendationsScreenState
                       if (row.section != null) {
                         return _RecommendationSectionHeader(
                           section: row.section!,
-                          topPadding: index == 0 ? 4 : 16,
+                          topPadding: index == 0 ? 2 : 10,
                         );
                       }
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
+                        padding: const EdgeInsets.only(bottom: 8),
                         child: _RecommendationCard(entry: row.entry!),
                       );
                     },
@@ -172,7 +172,7 @@ class _RecommendationSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(2, topPadding, 2, 8),
+      padding: EdgeInsets.fromLTRB(2, topPadding, 2, 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -235,8 +235,8 @@ class _SummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCard(
-      margin: const EdgeInsets.fromLTRB(20, 12, 20, 8),
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      margin: const EdgeInsets.fromLTRB(20, 10, 20, 6),
+      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -251,13 +251,15 @@ class _SummaryCard extends StatelessWidget {
           Text(
             completed
                 ? '10件見終わりました。次回は翌日に新しい候補が生成されます。'
-                : '各カードの「候補にする」「見送る」で、今日見る候補を整理できます。',
+                : '候補 or 見送りで今日の投稿を整理できます',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
-              height: 1.4,
+              height: 1.25,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Align(
             alignment: Alignment.centerRight,
             child: AppSecondaryButton(
@@ -318,7 +320,7 @@ class _RecommendationCard extends StatelessWidget {
                       _formatPrice(item.itemPrice),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w800,
                       ),
@@ -367,23 +369,19 @@ class _RecommendationTagWrap extends StatelessWidget {
     final tags = <String>[];
     final item = entry.item;
     void addTag(String label) {
-      if (tags.length >= 3) return;
+      if (tags.length >= 2) return;
       if (!tags.contains(label)) tags.add(label);
     }
 
     if (item.itemPrice >= 3000 && item.itemPrice < 10000) {
       addTag('売れ筋価格帯');
     }
-    if (entry.reason.trim().isNotEmpty) addTag(entry.reason.trim());
     if (item.reviewCount >= 100) addTag('レビュー多数');
     if (item.reviewAverage >= 4.3 && item.reviewCount >= 20) addTag('高評価');
-    if (entry.section == TodayRecommendationSection.fresh) {
-      addTag('新しい候補');
-    }
     if (tags.isEmpty) return const SizedBox.shrink();
     return Wrap(
-      spacing: 6,
-      runSpacing: 6,
+      spacing: 5,
+      runSpacing: 5,
       children: tags.map((e) => _ProductTag(label: e)).toList(growable: false),
     );
   }
@@ -396,18 +394,25 @@ class _ProductTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final accent = label == '売れ筋価格帯';
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
+        color: accent ? const Color(0xFFFFEEF5) : AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: accent
+              ? AppColors.accentPrimary.withValues(alpha: 0.18)
+              : AppColors.divider.withValues(alpha: 0.55),
+        ),
       ),
       child: Text(
         label,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: AppColors.textSecondary,
+          color: accent ? AppColors.accentPrimary : AppColors.textSecondary,
+          fontSize: 10.5,
           fontWeight: FontWeight.w700,
         ),
       ),
@@ -457,9 +462,8 @@ class _ActionRow extends StatelessWidget {
                     await rec.markSkipped(entry.item.productId);
                   }
                 : null,
-            icon: const Icon(Icons.skip_next_rounded),
             expand: true,
-            height: 44,
+            height: 42,
           ),
         ),
       ],
@@ -517,8 +521,8 @@ class _Thumb extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        width: 62,
-        height: 62,
+        width: 70,
+        height: 70,
         color: AppColors.surfaceVariant,
         child: imageUrl.trim().isEmpty
             ? const Icon(Icons.image_outlined, color: AppColors.textTertiary)
