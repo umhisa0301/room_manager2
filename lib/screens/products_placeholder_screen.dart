@@ -52,11 +52,6 @@ abstract final class _RoomColleUi {
   /// 上部シェル内の左右。外側 [_kRoomListScreenPadH] と揃え、二重に空きすぎない。
   static const double insetSectionH = 8;
 
-  /// ホーム見出し行と同じ 8。
-  static const double gapIconToTitle = 8;
-  static const double paddingWellV = 6;
-  static const double paddingHeaderBand = 6;
-  static const double headerBandBottom = 3;
   static const double chromeTopPadPop = 4;
   static const double chromeTopPadNoPop = 6;
   static const double tabDeckPad = 6;
@@ -64,18 +59,10 @@ abstract final class _RoomColleUi {
   static const double tabInnerPad = 3;
   static const double gapFieldStack = 5;
 
-  /// キーワード欄と「その他の条件」行の間。
-  static const double gapKeywordToFilterRow = 7;
-
-  /// 絞り込みシェル直下〜区切り線まで。
-  static const double gapAfterFilterShell = 2;
-
   /// 区切り線〜一覧の間（検索ブロックとリストの接続を明確に）。
   static const double gapListAfterDivider = 4;
   static const double listBottomPad = 10;
 
-  /// 主ボタンと条件クリアの隙間。
-  static const double filterRowGap = 8;
   static const double chipSpacing = 4;
 
   static double get radiusSectionOuter => AppDimensions.radiusCard;
@@ -105,336 +92,117 @@ abstract final class _RoomColleUi {
       border: Border.all(color: HomeScreenColors.deckOutline),
     );
   }
-
-  static TextStyle sectionHeadingAccent(BuildContext context) {
-    final base = Theme.of(context).textTheme.titleSmall;
-    return (base ?? const TextStyle()).copyWith(
-      fontSize: 14,
-      fontWeight: FontWeight.w800,
-      height: 1.2,
-      letterSpacing: -0.12,
-      color: HomeScreenColors.accentSectionHeading,
-    );
-  }
-}
-
-/// 絞り込みブロック：ホーム「ROOMコレ管理」と同じ「見出し帯＋ウェル」の階層。
-class _RoomColleFilterShell extends StatelessWidget {
-  const _RoomColleFilterShell({
-    required this.title,
-    required this.icon,
-    required this.child,
-  });
-
-  final String title;
-  final IconData icon;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: _RoomColleUi.outerRoomShellDecoration(),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(_RoomColleUi.radiusSectionOuter),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ColoredBox(
-              color: HomeScreenColors.roomSectionHeaderBand,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                  _RoomColleUi.insetSectionH,
-                  _RoomColleUi.paddingHeaderBand,
-                  _RoomColleUi.insetSectionH,
-                  _RoomColleUi.headerBandBottom,
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 1),
-                      child: Icon(
-                        icon,
-                        size: 20,
-                        color: HomeScreenColors.statusAccentStrong,
-                      ),
-                    ),
-                    SizedBox(width: _RoomColleUi.gapIconToTitle),
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: _RoomColleUi.sectionHeadingAccent(context),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            ColoredBox(
-              color: HomeScreenColors.roomContentWellFill,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                  _RoomColleUi.insetSectionH,
-                  _RoomColleUi.paddingWellV,
-                  _RoomColleUi.insetSectionH,
-                  _RoomColleUi.paddingWellV,
-                ),
-                child: child,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 /// タブをレール状に乗せる外周の角丸。
 const double _kRoomColleTabTrackRadius = 14;
 
-/// 条件クリアなど、セカンダリ操作の最小タップ高さ（Material 推奨に寄せる）。
-const double _kRoomColleSecondaryCtrlMinHeight = 44;
-
-/// 一覧の絞り込み条件をまとめて解除（キーワード・拡張条件・URL条件・日付を初期化）。
-class _RoomColleClearFiltersButton extends StatelessWidget {
-  const _RoomColleClearFiltersButton({
-    required this.onPressed,
-    this.compact = false,
-    this.inlineSecondary = false,
-  });
-
-  final VoidCallback onPressed;
-
-  /// 旧フル幅レイアウト用（現状未使用だが互換のため維持）。
-  final bool compact;
-
-  /// 横並び右列：主ボタンより弱い補助操作として見せる。
-  final bool inlineSecondary;
-
-  @override
-  Widget build(BuildContext context) {
-    final iconSize = inlineSecondary ? 16.0 : (compact ? 17.0 : 18.0);
-    final fg = inlineSecondary
-        ? HomeScreenColors.groupedSectionBody
-        : HomeScreenColors.leadOnSection;
-
-    return AppSecondaryButton(
-      label: '条件クリア',
-      onPressed: onPressed,
-      icon: Icon(Icons.layers_clear_rounded, size: iconSize, color: fg),
-      height: _kRoomColleSecondaryCtrlMinHeight,
-    );
-  }
-}
-
-/// キーワード以外の条件（主）と条件クリア（補助）を1行に配置。
-class _RoomColleInlineMoreFiltersRow extends StatelessWidget {
-  const _RoomColleInlineMoreFiltersRow({
-    required this.onOpenMoreFilters,
-    required this.hasNonKeywordConstraintsBadge,
+class _RoomColleCompactFilterStrip extends StatelessWidget {
+  const _RoomColleCompactFilterStrip({
+    required this.criteria,
+    required this.excludeUrlNotReady,
+    required this.sortPreset,
+    required this.accentColor,
+    required this.onAdjust,
     required this.onClear,
-    this.candidateUrlFilterActive = false,
   });
 
-  final VoidCallback onOpenMoreFilters;
-  final bool hasNonKeywordConstraintsBadge;
+  final RoomColleListFilterCriteria criteria;
+  final bool excludeUrlNotReady;
+  final RoomColleListSortPreset sortPreset;
+  final Color accentColor;
+  final VoidCallback onAdjust;
   final VoidCallback onClear;
 
-  /// 候補タブ：取得済URLのみがONのときシート内フィルタが効いている旨をバッジで示す。
-  final bool candidateUrlFilterActive;
-
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          flex: 7,
-          child: Tooltip(
-            message: '登録日・ジャンル・価格など（キーワード以外）',
-            child: AppSecondaryButton(
-              label: 'キーワード以外の条件',
-              onPressed: onOpenMoreFilters,
-              icon: Badge(
-                smallSize: 8,
-                backgroundColor: AppColors.accentPrimary,
-                isLabelVisible:
-                    hasNonKeywordConstraintsBadge || candidateUrlFilterActive,
-                child: const Icon(Icons.tune_rounded, size: 20),
+    final hasActiveState =
+        criteria.hasAnyReducingFilter ||
+        excludeUrlNotReady ||
+        sortPreset != RoomColleListSortPreset.recentFirst;
+    if (!hasActiveState) {
+      return SizedBox(height: _RoomColleUi.gapListAfterDivider);
+    }
+
+    final chips = _roomColleFilterSummaryChips(criteria);
+    if (excludeUrlNotReady) {
+      chips.add(
+        Chip(
+          label: const Text('取得済URLのみ'),
+          visualDensity: VisualDensity.compact,
+          deleteIcon: const Icon(Icons.close_rounded, size: 16),
+          onDeleted: onClear,
+        ),
+      );
+    }
+    if (sortPreset != RoomColleListSortPreset.recentFirst) {
+      chips.add(
+        Chip(
+          label: Text(_roomColleSortLabel(sortPreset)),
+          visualDensity: VisualDensity.compact,
+        ),
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        _kRoomListScreenPadH,
+        0,
+        _kRoomListScreenPadH,
+        _RoomColleUi.gapListAfterDivider,
+      ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: HomeScreenColors.subActionRowFill,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: accentColor.withValues(alpha: 0.22)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 8, 8, 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.tune_rounded, size: 16, color: accentColor),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      '条件適用中',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: HomeScreenColors.leadOnSection,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                  AppSecondaryButton(
+                    label: '調整',
+                    onPressed: onAdjust,
+                    height: 32,
+                  ),
+                  const SizedBox(width: 6),
+                  AppSecondaryButton(
+                    label: '解除',
+                    onPressed: onClear,
+                    height: 32,
+                  ),
+                ],
               ),
-              expand: true,
-              height: _kRoomColleSecondaryCtrlMinHeight,
-            ),
+              if (chips.isNotEmpty) ...[
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: _RoomColleUi.chipSpacing,
+                  runSpacing: _RoomColleUi.chipSpacing,
+                  children: chips,
+                ),
+              ],
+            ],
           ),
         ),
-        SizedBox(width: _RoomColleUi.filterRowGap),
-        Expanded(
-          flex: 4,
-          child: Tooltip(
-            message: 'キーワード・すべての絞り込み・コレ済の日付をまとめて初期化',
-            child: _RoomColleClearFiltersButton(
-              compact: true,
-              inlineSecondary: true,
-              onPressed: onClear,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// 候補タブ：古い候補の整理導線（ワンタップで経過日数による絞り込み）。
-///
-/// [onPresetChanged] には [RoomColleStaleCandidatePreset.none] を含む確定値を渡す（トグルオフ含む）。
-class _RoomColleStaleOrganizeQuickRow extends StatelessWidget {
-  const _RoomColleStaleOrganizeQuickRow({
-    required this.preset,
-    required this.onPresetChanged,
-  });
-
-  final RoomColleStaleCandidatePreset preset;
-  final ValueChanged<RoomColleStaleCandidatePreset> onPresetChanged;
-
-  void _commitTap(RoomColleStaleCandidatePreset target) {
-    final next = preset == target ? RoomColleStaleCandidatePreset.none : target;
-    onPresetChanged(next);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final o7 = const Color(0xFFE65100);
-    final o7Bg = Color.alphaBlend(
-      const Color(0xFFFFF3E0).withValues(alpha: 0.92),
-      HomeScreenColors.roomContentWellFill,
-    );
-    final r30 = const Color(0xFFB71C1C);
-    final r30Bg = Color.alphaBlend(
-      const Color(0xFFFFEBEE).withValues(alpha: 0.92),
-      HomeScreenColors.roomContentWellFill,
-    );
-
-    final sel3 = preset == RoomColleStaleCandidatePreset.threePlus;
-    final sel7 = preset == RoomColleStaleCandidatePreset.sevenPlus;
-    final sel30 = preset == RoomColleStaleCandidatePreset.thirtyPlus;
-
-    final blue3 = const Color(0xFF1565C0);
-    final blue3Bg = Color.alphaBlend(
-      const Color(0xFFE3F2FD).withValues(alpha: 0.92),
-      HomeScreenColors.roomContentWellFill,
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '古い候補を整理',
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            fontWeight: FontWeight.w800,
-            fontSize: 12,
-            color: HomeScreenColors.leadOnSection,
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          '整理対象だけをすぐ表示',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            fontSize: 11,
-            height: 1.28,
-            color: HomeScreenColors.footnoteMuted,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Wrap(
-          spacing: _RoomColleUi.chipSpacing,
-          runSpacing: _RoomColleUi.chipSpacing,
-          children: [
-            FilterChip(
-              label: const Text('3日以上'),
-              selected: sel3,
-              showCheckmark: false,
-              onSelected: (_) =>
-                  _commitTap(RoomColleStaleCandidatePreset.threePlus),
-              visualDensity: VisualDensity.compact,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              backgroundColor: HomeScreenColors.deckFill,
-              selectedColor: blue3Bg,
-              checkmarkColor: blue3,
-              labelStyle: TextStyle(
-                fontSize: 12,
-                fontWeight: sel3 ? FontWeight.w800 : FontWeight.w600,
-                color: sel3 ? blue3 : HomeScreenColors.titlePrimary,
-              ),
-              side: BorderSide(
-                color: sel3
-                    ? blue3.withValues(alpha: 0.55)
-                    : HomeScreenColors.deckOutline,
-                width: sel3 ? 1.25 : 1,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-            ),
-            FilterChip(
-              label: const Text('7日以上'),
-              selected: sel7,
-              showCheckmark: false,
-              onSelected: (_) =>
-                  _commitTap(RoomColleStaleCandidatePreset.sevenPlus),
-              visualDensity: VisualDensity.compact,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              backgroundColor: HomeScreenColors.deckFill,
-              selectedColor: o7Bg,
-              checkmarkColor: o7,
-              labelStyle: TextStyle(
-                fontSize: 12,
-                fontWeight: sel7 ? FontWeight.w800 : FontWeight.w600,
-                color: sel7 ? o7 : HomeScreenColors.titlePrimary,
-              ),
-              side: BorderSide(
-                color: sel7
-                    ? o7.withValues(alpha: 0.55)
-                    : HomeScreenColors.deckOutline,
-                width: sel7 ? 1.25 : 1,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-            ),
-            FilterChip(
-              label: const Text('30日以上'),
-              selected: sel30,
-              showCheckmark: false,
-              onSelected: (_) =>
-                  _commitTap(RoomColleStaleCandidatePreset.thirtyPlus),
-              visualDensity: VisualDensity.compact,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              backgroundColor: HomeScreenColors.deckFill,
-              selectedColor: r30Bg,
-              checkmarkColor: r30,
-              labelStyle: TextStyle(
-                fontSize: 12,
-                fontWeight: sel30 ? FontWeight.w800 : FontWeight.w600,
-                color: sel30 ? r30 : HomeScreenColors.titlePrimary,
-              ),
-              side: BorderSide(
-                color: sel30
-                    ? r30.withValues(alpha: 0.55)
-                    : HomeScreenColors.deckOutline,
-                width: sel30 ? 1.25 : 1,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 }
@@ -497,70 +265,6 @@ class _RoomColleStalePileNoticeBar extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _RoomColleSortQuickRow extends StatelessWidget {
-  const _RoomColleSortQuickRow({
-    required this.label,
-    required this.preset,
-    required this.onChanged,
-  });
-
-  final String label;
-  final RoomColleListSortPreset preset;
-  final ValueChanged<RoomColleListSortPreset> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Icon(
-          Icons.sort_rounded,
-          size: 18,
-          color: HomeScreenColors.leadOnSection,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            label,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: HomeScreenColors.leadOnSection,
-            ),
-          ),
-        ),
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: HomeScreenColors.deckFill,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: HomeScreenColors.deckOutline),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<RoomColleListSortPreset>(
-                value: preset,
-                isDense: true,
-                borderRadius: BorderRadius.circular(10),
-                items: RoomColleListSortPreset.values
-                    .map(
-                      (v) => DropdownMenuItem<RoomColleListSortPreset>(
-                        value: v,
-                        child: Text(_roomColleSortLabel(v)),
-                      ),
-                    )
-                    .toList(growable: false),
-                onChanged: (v) {
-                  if (v != null) onChanged(v);
-                },
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -756,35 +460,6 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
   return out;
 }
 
-/// 候補タブ：取得済URLフィルタON時のサマリーチップ（検索欄下のチップ列用）。
-Chip _roomColleCandidateUrlOnlySummaryChip(VoidCallback onDeleted) {
-  return Chip(
-    avatar: Icon(
-      Icons.link_rounded,
-      size: 16,
-      color: HomeScreenColors.metricRoleCandidateIcon,
-    ),
-    label: Text(
-      '取得済URLのみ',
-      style: TextStyle(
-        fontSize: 11,
-        fontWeight: FontWeight.w700,
-        color: HomeScreenColors.metricTileTitleColor,
-      ),
-    ),
-    deleteIcon: Icon(
-      Icons.close_rounded,
-      size: 16,
-      color: HomeScreenColors.leadOnSection,
-    ),
-    onDeleted: onDeleted,
-    visualDensity: VisualDensity.compact,
-    backgroundColor: HomeScreenColors.roomMetricTileFill,
-    side: BorderSide(color: HomeScreenColors.metricRoleCandidateIcon),
-    padding: const EdgeInsets.symmetric(horizontal: 6),
-  );
-}
-
 /// 絞り込みシートの適用結果。[includesCandidateUrlOption] が false のときは
 /// [candidateExcludeUrlNotReady] を親で無視する（コレ済タブ用シート）。
 class _RoomColleFilterSheetApplyResult {
@@ -917,175 +592,295 @@ class _RoomColleFilterEditorSheetState
     final bottomInset = MediaQuery.paddingOf(context).bottom;
     return Material(
       color: HomeScreenColors.canvas,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(
-          _kRoomListScreenPadH,
-          12,
-          _kRoomListScreenPadH,
-          16 + bottomInset + MediaQuery.viewInsetsOf(context).bottom,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 12),
-                decoration: BoxDecoration(
-                  color: AppColors.divider,
-                  borderRadius: BorderRadius.circular(999),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: EdgeInsets.fromLTRB(
+            _kRoomListScreenPadH,
+            12,
+            _kRoomListScreenPadH,
+            16 + bottomInset + MediaQuery.viewInsetsOf(context).bottom,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    color: AppColors.divider,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
                 ),
               ),
-            ),
-            Text(
-              widget.sectionTitle,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: HomeScreenColors.accentSectionHeading,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              widget.isCandidateTab
-                  ? 'キーワードは上部の検索欄を使います。登録日・ジャンル・価格に加え、コレ候補タブだけ有効な「ROOMのURL」条件もここで変更できます。'
-                  : 'キーワードは上部の検索欄を使います。ここでは登録日・ジャンルID・価格帯のみ変えられます。',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: HomeScreenColors.groupedSectionBody,
-                height: 1.35,
-                fontSize: 12,
-              ),
-            ),
-            if (widget.isCandidateTab) ...[
-              const SizedBox(height: 14),
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Color.alphaBlend(
-                    AppColors.accentLight.withValues(alpha: 0.12),
-                    HomeScreenColors.roomContentWellFill,
-                  ),
-                  borderRadius: BorderRadius.circular(
-                    _RoomColleUi.radiusSectionInner,
-                  ),
-                  border: Border.all(color: HomeScreenColors.deckOutline),
+              Text(
+                widget.sectionTitle,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: HomeScreenColors.accentSectionHeading,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 3,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                widget.isCandidateTab
+                    ? 'キーワードは上部の検索欄を使います。登録日・ジャンル・価格に加え、コレ候補タブだけ有効な「ROOMのURL」条件もここで変更できます。'
+                    : 'キーワードは上部の検索欄を使います。ここでは登録日・ジャンルID・価格帯のみ変えられます。',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: HomeScreenColors.groupedSectionBody,
+                  height: 1.35,
+                  fontSize: 12,
+                ),
+              ),
+              if (widget.isCandidateTab) ...[
+                const SizedBox(height: 14),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Color.alphaBlend(
+                      AppColors.accentLight.withValues(alpha: 0.12),
+                      HomeScreenColors.roomContentWellFill,
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      _RoomColleUi.radiusSectionInner,
+                    ),
+                    border: Border.all(color: HomeScreenColors.deckOutline),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
+                              decoration: BoxDecoration(
+                                color:
+                                    HomeScreenColors.metricRoleCandidateIconBg,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                '候補タブのみ',
+                                style: Theme.of(context).textTheme.labelSmall
+                                    ?.copyWith(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w800,
+                                      color: HomeScreenColors
+                                          .metricRoleCandidateIcon,
+                                      height: 1.15,
+                                    ),
+                              ),
                             ),
-                            decoration: BoxDecoration(
-                              color: HomeScreenColors.metricRoleCandidateIconBg,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              '候補タブのみ',
-                              style: Theme.of(context).textTheme.labelSmall
-                                  ?.copyWith(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w800,
-                                    color: HomeScreenColors
-                                        .metricRoleCandidateIcon,
-                                    height: 1.15,
-                                  ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'ROOMのURLで一覧を絞る',
-                        style: Theme.of(context).textTheme.labelMedium
-                            ?.copyWith(
-                              fontWeight: FontWeight.w800,
-                              color: HomeScreenColors.accentSectionHeading,
-                            ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'いま開けるROOM用URLがある候補だけ残します（コレ前の整理向け）。',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: HomeScreenColors.footnoteMuted,
-                          fontSize: 11,
-                          height: 1.32,
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Material(
-                        color: HomeScreenColors.deckFill,
-                        borderRadius: BorderRadius.circular(10),
-                        child: InkWell(
+                        const SizedBox(height: 8),
+                        Text(
+                          'ROOMのURLで一覧を絞る',
+                          style: Theme.of(context).textTheme.labelMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: HomeScreenColors.accentSectionHeading,
+                              ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'いま開けるROOM用URLがある候補だけ残します（コレ前の整理向け）。',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: HomeScreenColors.footnoteMuted,
+                                fontSize: 11,
+                                height: 1.32,
+                              ),
+                        ),
+                        const SizedBox(height: 10),
+                        Material(
+                          color: HomeScreenColors.deckFill,
                           borderRadius: BorderRadius.circular(10),
-                          splashColor: HomeScreenColors.inkAccentSplash,
-                          highlightColor: HomeScreenColors.inkAccentHighlight,
-                          onTap: () => setState(
-                            () => _excludeUrlNotReadyDraft =
-                                !_excludeUrlNotReadyDraft,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 8,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(10),
+                            splashColor: HomeScreenColors.inkAccentSplash,
+                            highlightColor: HomeScreenColors.inkAccentHighlight,
+                            onTap: () => setState(
+                              () => _excludeUrlNotReadyDraft =
+                                  !_excludeUrlNotReadyDraft,
                             ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.link_rounded,
-                                  size: 20,
-                                  color: HomeScreenColors.statusAccentStrong,
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Text(
-                                    '取得済URLのみ',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          fontWeight: _excludeUrlNotReadyDraft
-                                              ? FontWeight.w800
-                                              : FontWeight.w600,
-                                          fontSize: 14,
-                                          color: _excludeUrlNotReadyDraft
-                                              ? HomeScreenColors
-                                                    .accentSectionHeading
-                                              : HomeScreenColors.titlePrimary,
-                                        ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 8,
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.link_rounded,
+                                    size: 20,
+                                    color: HomeScreenColors.statusAccentStrong,
                                   ),
-                                ),
-                                Switch.adaptive(
-                                  value: _excludeUrlNotReadyDraft,
-                                  onChanged: (v) => setState(
-                                    () => _excludeUrlNotReadyDraft = v,
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Text(
+                                      '取得済URLのみ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            fontWeight: _excludeUrlNotReadyDraft
+                                                ? FontWeight.w800
+                                                : FontWeight.w600,
+                                            fontSize: 14,
+                                            color: _excludeUrlNotReadyDraft
+                                                ? HomeScreenColors
+                                                      .accentSectionHeading
+                                                : HomeScreenColors.titlePrimary,
+                                          ),
+                                    ),
                                   ),
-                                  activeTrackColor: AppColors.accentPrimary
-                                      .withValues(alpha: 0.38),
-                                  activeThumbColor: AppColors.accentPrimary,
-                                  inactiveTrackColor: AppColors.divider
-                                      .withValues(alpha: 0.65),
-                                ),
-                              ],
+                                  Switch.adaptive(
+                                    value: _excludeUrlNotReadyDraft,
+                                    onChanged: (v) => setState(
+                                      () => _excludeUrlNotReadyDraft = v,
+                                    ),
+                                    activeTrackColor: AppColors.accentPrimary
+                                        .withValues(alpha: 0.38),
+                                    activeThumbColor: AppColors.accentPrimary,
+                                    inactiveTrackColor: AppColors.divider
+                                        .withValues(alpha: 0.65),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-            if (widget.isCandidateTab) ...[
+              ],
+              if (widget.isCandidateTab) ...[
+                const SizedBox(height: 16),
+                Text(
+                  '古い候補を整理',
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: HomeScreenColors.leadOnSection,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '整理対象の経過日数で絞り込み（他の条件と併用可。候補タブの一覧のみに効きます）。',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: HomeScreenColors.footnoteMuted,
+                    fontSize: 11,
+                    height: 1.32,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: _RoomColleUi.chipSpacing,
+                  runSpacing: _RoomColleUi.chipSpacing,
+                  children: [
+                    FilterChip(
+                      label: const Text('3日以上'),
+                      selected:
+                          _staleCandidateDraft ==
+                          RoomColleStaleCandidatePreset.threePlus,
+                      showCheckmark: false,
+                      onSelected: (_) {
+                        setState(() {
+                          _staleCandidateDraft =
+                              _staleCandidateDraft ==
+                                  RoomColleStaleCandidatePreset.threePlus
+                              ? RoomColleStaleCandidatePreset.none
+                              : RoomColleStaleCandidatePreset.threePlus;
+                        });
+                      },
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    FilterChip(
+                      label: const Text('7日以上'),
+                      selected:
+                          _staleCandidateDraft ==
+                          RoomColleStaleCandidatePreset.sevenPlus,
+                      showCheckmark: false,
+                      onSelected: (_) {
+                        setState(() {
+                          _staleCandidateDraft =
+                              _staleCandidateDraft ==
+                                  RoomColleStaleCandidatePreset.sevenPlus
+                              ? RoomColleStaleCandidatePreset.none
+                              : RoomColleStaleCandidatePreset.sevenPlus;
+                        });
+                      },
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    FilterChip(
+                      label: const Text('30日以上'),
+                      selected:
+                          _staleCandidateDraft ==
+                          RoomColleStaleCandidatePreset.thirtyPlus,
+                      showCheckmark: false,
+                      onSelected: (_) {
+                        setState(() {
+                          _staleCandidateDraft =
+                              _staleCandidateDraft ==
+                                  RoomColleStaleCandidatePreset.thirtyPlus
+                              ? RoomColleStaleCandidatePreset.none
+                              : RoomColleStaleCandidatePreset.thirtyPlus;
+                        });
+                      },
+                      visualDensity: VisualDensity.compact,
+                    ),
+                  ],
+                ),
+              ],
               const SizedBox(height: 16),
               Text(
-                '古い候補を整理',
+                '登録日（端末に保存した日）',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: HomeScreenColors.leadOnSection,
+                ),
+              ),
+              const SizedBox(height: 8),
+              SegmentedButton<RoomColleRegisteredDatePreset>(
+                showSelectedIcon: false,
+                segments: const <ButtonSegment<RoomColleRegisteredDatePreset>>[
+                  ButtonSegment<RoomColleRegisteredDatePreset>(
+                    value: RoomColleRegisteredDatePreset.all,
+                    label: Text('すべて'),
+                  ),
+                  ButtonSegment<RoomColleRegisteredDatePreset>(
+                    value: RoomColleRegisteredDatePreset.today,
+                    label: Text('今日'),
+                  ),
+                  ButtonSegment<RoomColleRegisteredDatePreset>(
+                    value: RoomColleRegisteredDatePreset.last7Days,
+                    label: Text('7日'),
+                  ),
+                ],
+                selected: <RoomColleRegisteredDatePreset>{_preset},
+                onSelectionChanged: (selection) {
+                  if (selection.isEmpty) return;
+                  setState(() => _preset = selection.first);
+                },
+                style: ButtonStyle(
+                  visualDensity: VisualDensity.standard,
+                  tapTargetSize: MaterialTapTargetSize.padded,
+                  padding: WidgetStateProperty.all(
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
+              Text(
+                'ジャンル（楽天 genreId）',
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   fontWeight: FontWeight.w800,
                   color: HomeScreenColors.leadOnSection,
@@ -1093,237 +888,124 @@ class _RoomColleFilterEditorSheetState
               ),
               const SizedBox(height: 4),
               Text(
-                '整理対象の経過日数で絞り込み（他の条件と併用可。候補タブの一覧のみに効きます）。',
+                '一覧にないIDは出ません。名称はアプリ内マスタで引き、未登録IDは「未分類」と表示されます。',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: HomeScreenColors.footnoteMuted,
                   fontSize: 11,
-                  height: 1.32,
+                  height: 1.35,
                 ),
               ),
               const SizedBox(height: 8),
-              Wrap(
-                spacing: _RoomColleUi.chipSpacing,
-                runSpacing: _RoomColleUi.chipSpacing,
+              Builder(
+                builder: (context) {
+                  final choices = List<String>.of(widget.genreIds);
+                  final gCur = _genreId;
+                  if (gCur != null &&
+                      gCur.isNotEmpty &&
+                      !choices.contains(gCur)) {
+                    choices.add(gCur);
+                  }
+                  choices.sort();
+                  final effectiveGenre = gCur != null && choices.contains(gCur)
+                      ? gCur
+                      : null;
+                  return InputDecorator(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: HomeScreenColors.deckFill,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: HomeScreenColors.deckOutline,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: HomeScreenColors.deckOutline,
+                        ),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String?>(
+                        value: effectiveGenre,
+                        isExpanded: true,
+                        isDense: true,
+                        items: [
+                          const DropdownMenuItem<String?>(
+                            value: null,
+                            child: Text('指定なし'),
+                          ),
+                          ...choices.map(
+                            (id) => DropdownMenuItem<String?>(
+                              value: id,
+                              child: Text(
+                                _roomColleGenreFilterMenuText(id),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ],
+                        onChanged: (v) => setState(() => _genreId = v),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 18),
+              Text(
+                '価格帯（税込 itemPrice・円）',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: HomeScreenColors.leadOnSection,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FilterChip(
-                    label: const Text('3日以上'),
-                    selected:
-                        _staleCandidateDraft ==
-                        RoomColleStaleCandidatePreset.threePlus,
-                    showCheckmark: false,
-                    onSelected: (_) {
-                      setState(() {
-                        _staleCandidateDraft =
-                            _staleCandidateDraft ==
-                                RoomColleStaleCandidatePreset.threePlus
-                            ? RoomColleStaleCandidatePreset.none
-                            : RoomColleStaleCandidatePreset.threePlus;
-                      });
-                    },
-                    visualDensity: VisualDensity.compact,
+                  Expanded(
+                    child: AppTextField(
+                      controller: _minPriceCtrl,
+                      keyboardType: TextInputType.number,
+                      hintText: '下限',
+                    ),
                   ),
-                  FilterChip(
-                    label: const Text('7日以上'),
-                    selected:
-                        _staleCandidateDraft ==
-                        RoomColleStaleCandidatePreset.sevenPlus,
-                    showCheckmark: false,
-                    onSelected: (_) {
-                      setState(() {
-                        _staleCandidateDraft =
-                            _staleCandidateDraft ==
-                                RoomColleStaleCandidatePreset.sevenPlus
-                            ? RoomColleStaleCandidatePreset.none
-                            : RoomColleStaleCandidatePreset.sevenPlus;
-                      });
-                    },
-                    visualDensity: VisualDensity.compact,
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+                    child: Text('〜'),
                   ),
-                  FilterChip(
-                    label: const Text('30日以上'),
-                    selected:
-                        _staleCandidateDraft ==
-                        RoomColleStaleCandidatePreset.thirtyPlus,
-                    showCheckmark: false,
-                    onSelected: (_) {
-                      setState(() {
-                        _staleCandidateDraft =
-                            _staleCandidateDraft ==
-                                RoomColleStaleCandidatePreset.thirtyPlus
-                            ? RoomColleStaleCandidatePreset.none
-                            : RoomColleStaleCandidatePreset.thirtyPlus;
-                      });
-                    },
-                    visualDensity: VisualDensity.compact,
+                  Expanded(
+                    child: AppTextField(
+                      controller: _maxPriceCtrl,
+                      keyboardType: TextInputType.number,
+                      hintText: '上限',
+                    ),
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
+              AppPrimaryButton(label: 'この条件を適用', onPressed: _apply),
+              const SizedBox(height: 10),
+              AppSecondaryButton(
+                label: 'シート内の条件をリセット',
+                onPressed: _resetDraftExtended,
+                expand: true,
+                height: 44,
+              ),
+              const SizedBox(height: 8),
+              AppSecondaryButton(
+                label: '閉じる',
+                onPressed: () => Navigator.of(context).pop(),
+                expand: true,
+                height: 44,
+              ),
             ],
-            const SizedBox(height: 16),
-            Text(
-              '登録日（端末に保存した日）',
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: HomeScreenColors.leadOnSection,
-              ),
-            ),
-            const SizedBox(height: 8),
-            SegmentedButton<RoomColleRegisteredDatePreset>(
-              showSelectedIcon: false,
-              segments: const <ButtonSegment<RoomColleRegisteredDatePreset>>[
-                ButtonSegment<RoomColleRegisteredDatePreset>(
-                  value: RoomColleRegisteredDatePreset.all,
-                  label: Text('すべて'),
-                ),
-                ButtonSegment<RoomColleRegisteredDatePreset>(
-                  value: RoomColleRegisteredDatePreset.today,
-                  label: Text('今日'),
-                ),
-                ButtonSegment<RoomColleRegisteredDatePreset>(
-                  value: RoomColleRegisteredDatePreset.last7Days,
-                  label: Text('7日'),
-                ),
-              ],
-              selected: <RoomColleRegisteredDatePreset>{_preset},
-              onSelectionChanged: (selection) {
-                if (selection.isEmpty) return;
-                setState(() => _preset = selection.first);
-              },
-              style: ButtonStyle(
-                visualDensity: VisualDensity.standard,
-                tapTargetSize: MaterialTapTargetSize.padded,
-                padding: WidgetStateProperty.all(
-                  const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                ),
-              ),
-            ),
-            const SizedBox(height: 18),
-            Text(
-              'ジャンル（楽天 genreId）',
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: HomeScreenColors.leadOnSection,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '一覧にないIDは出ません。名称はアプリ内マスタで引き、未登録IDは「未分類」と表示されます。',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: HomeScreenColors.footnoteMuted,
-                fontSize: 11,
-                height: 1.35,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Builder(
-              builder: (context) {
-                final choices = List<String>.of(widget.genreIds);
-                final gCur = _genreId;
-                if (gCur != null &&
-                    gCur.isNotEmpty &&
-                    !choices.contains(gCur)) {
-                  choices.add(gCur);
-                }
-                choices.sort();
-                final effectiveGenre = gCur != null && choices.contains(gCur)
-                    ? gCur
-                    : null;
-                return InputDecorator(
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: HomeScreenColors.deckFill,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
-                        color: HomeScreenColors.deckOutline,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
-                        color: HomeScreenColors.deckOutline,
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 4,
-                    ),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String?>(
-                      value: effectiveGenre,
-                      isExpanded: true,
-                      isDense: true,
-                      items: [
-                        const DropdownMenuItem<String?>(
-                          value: null,
-                          child: Text('指定なし'),
-                        ),
-                        ...choices.map(
-                          (id) => DropdownMenuItem<String?>(
-                            value: id,
-                            child: Text(
-                              _roomColleGenreFilterMenuText(id),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      ],
-                      onChanged: (v) => setState(() => _genreId = v),
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 18),
-            Text(
-              '価格帯（税込 itemPrice・円）',
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: HomeScreenColors.leadOnSection,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: AppTextField(
-                    controller: _minPriceCtrl,
-                    keyboardType: TextInputType.number,
-                    hintText: '下限',
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-                  child: Text('〜'),
-                ),
-                Expanded(
-                  child: AppTextField(
-                    controller: _maxPriceCtrl,
-                    keyboardType: TextInputType.number,
-                    hintText: '上限',
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            AppPrimaryButton(label: 'この条件を適用', onPressed: _apply),
-            const SizedBox(height: 10),
-            AppSecondaryButton(
-              label: 'シート内の条件をリセット',
-              onPressed: _resetDraftExtended,
-              expand: true,
-              height: 44,
-            ),
-            const SizedBox(height: 8),
-            AppSecondaryButton(
-              label: '閉じる',
-              onPressed: () => Navigator.of(context).pop(),
-              expand: true,
-              height: 44,
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -1695,16 +1377,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     });
   }
 
-  void _setCandidateStalePreset(RoomColleStaleCandidatePreset v) {
-    if (!mounted) return;
-    setState(() {
-      _candidateListFilters = _candidateListFilters.copyWith(
-        staleCandidatePreset: v,
-      );
-    });
-    _persistRoomColleUiNow();
-  }
-
   void _resetRoomColleFilters() {
     if (!mounted) return;
     _persistSearchDebounce?.cancel();
@@ -1772,14 +1444,6 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
 
   void _persistRoomColleUiNow() {
     unawaited(_roomColleUiRepo.saveSanitized(_snapshotForPersist()));
-  }
-
-  void _schedulePersistRoomColleSearch() {
-    _persistSearchDebounce?.cancel();
-    _persistSearchDebounce = Timer(const Duration(milliseconds: 420), () {
-      if (!mounted) return;
-      _persistRoomColleUiNow();
-    });
   }
 
   int _resolveInitialTabIndex(RoomColleUiStateSnapshot persisted) {
@@ -1978,572 +1642,420 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     final canPop = Navigator.canPop(context);
     return Scaffold(
       backgroundColor: HomeScreenColors.canvas,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                _kRoomListScreenPadH,
-                _RoomColleUi.gapSection,
-                _kRoomListScreenPadH,
-                0,
-              ),
-              child: DecoratedBox(
-                decoration: _RoomColleUi.outerRoomShellDecoration(),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    _RoomColleUi.radiusSectionOuter,
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      /// ① 主導線：楽天検索（候補を増やす）
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          _RoomColleUi.insetSectionH,
-                          canPop
-                              ? _RoomColleUi.chromeTopPadPop
-                              : _RoomColleUi.chromeTopPadNoPop,
-                          _RoomColleUi.insetSectionH,
-                          2,
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (canPop)
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 4,
-                                  top: 2,
-                                ),
-                                child: IconButton(
-                                  visualDensity: VisualDensity.compact,
-                                  constraints: const BoxConstraints(
-                                    minWidth: 44,
-                                    minHeight: 44,
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  _kRoomListScreenPadH,
+                  _RoomColleUi.gapSection,
+                  _kRoomListScreenPadH,
+                  0,
+                ),
+                child: DecoratedBox(
+                  decoration: _RoomColleUi.outerRoomShellDecoration(),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                      _RoomColleUi.radiusSectionOuter,
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        /// ① 主導線：楽天検索（候補を増やす）
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            _RoomColleUi.insetSectionH,
+                            canPop
+                                ? _RoomColleUi.chromeTopPadPop
+                                : _RoomColleUi.chromeTopPadNoPop,
+                            _RoomColleUi.insetSectionH,
+                            2,
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (canPop)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 4,
+                                    top: 2,
                                   ),
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  icon: const Icon(
-                                    Icons.arrow_back_rounded,
-                                    size: 22,
-                                  ),
-                                  color: HomeScreenColors.titlePrimary,
-                                  tooltip: '戻る',
-                                ),
-                              ),
-                            Expanded(
-                              child: HomePrimaryActionButton(
-                                emphasis: HomePrimaryActionEmphasis.hero,
-                                icon: Icons.travel_explore_rounded,
-                                label: '楽天でコレ候補を検索する',
-                                onPressed: () {
-                                  Navigator.of(context).push<void>(
-                                    MaterialPageRoute<void>(
-                                      builder: (_) =>
-                                          const RakutenSearchScreen(),
+                                  child: IconButton(
+                                    visualDensity: VisualDensity.compact,
+                                    constraints: const BoxConstraints(
+                                      minWidth: 44,
+                                      minHeight: 44,
                                     ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        height: 1,
-                        thickness: 1,
-                        color: HomeScreenColors.inlineDivider,
-                      ),
-
-                      /// ② タブ（キーワード・URL 除外は各タブ内の絞り込み領域へ）
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          _RoomColleUi.insetSectionH,
-                          _RoomColleUi.tabDeckPad,
-                          _RoomColleUi.insetSectionH,
-                          _RoomColleUi.tabDeckBottom,
-                        ),
-                        child: DecoratedBox(
-                          decoration: _RoomColleUi.tabInnerDeckDecoration(),
-                          child: Padding(
-                            padding: const EdgeInsets.all(
-                              _RoomColleUi.tabInnerPad,
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Consumer<RakutenManagedProductProvider>(
-                                    builder: (context, managed, _) {
-                                      final nCand = _roomColleVisibleCount(
-                                        provider: managed,
-                                        status: RakutenManagedProductStatus
-                                            .candidate,
-                                        listFilters: _candidateListFilters,
-                                        excludeUrlNotReady:
-                                            _candidateExcludeUrlNotReady,
-                                        doneAtLocalDayFilter: null,
-                                      );
-                                      final nDone = _roomColleVisibleCount(
-                                        provider: managed,
-                                        status:
-                                            RakutenManagedProductStatus.done,
-                                        listFilters: _doneListFilters,
-                                        excludeUrlNotReady: false,
-                                        doneAtLocalDayFilter:
-                                            _doneLocalDayFilter,
-                                      );
-                                      final idx = _tabController.index;
-                                      final selectedAccent = idx == 0
-                                          ? RoomColleListAccent.candidate
-                                          : RoomColleListAccent.done;
-                                      final segmentShape =
-                                          RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              _kRoomColleTabTrackRadius - 4,
-                                            ),
-                                          );
-                                      return SegmentedButton<int>(
-                                        showSelectedIcon: false,
-                                        expandedInsets: EdgeInsets.zero,
-                                        segments: <ButtonSegment<int>>[
-                                          ButtonSegment<int>(
-                                            value: 0,
-                                            label: Text(
-                                              'コレ候補 ($nCand)',
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            tooltip: 'コレ候補の一覧',
-                                          ),
-                                          ButtonSegment<int>(
-                                            value: 1,
-                                            label: Text(
-                                              'コレ済 ($nDone)',
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            tooltip: 'コレ済の一覧',
-                                          ),
-                                        ],
-                                        selected: <int>{_tabController.index},
-                                        onSelectionChanged:
-                                            (Set<int> selection) {
-                                              if (selection.isEmpty) return;
-                                              final v = selection.first;
-                                              if (v != _tabController.index) {
-                                                _tabController.animateTo(v);
-                                              }
-                                            },
-                                        style: ButtonStyle(
-                                          visualDensity: VisualDensity.standard,
-                                          tapTargetSize:
-                                              MaterialTapTargetSize.padded,
-                                          minimumSize: WidgetStateProperty.all(
-                                            const Size(48, 46),
-                                          ),
-                                          side: WidgetStateProperty.resolveWith(
-                                            (states) {
-                                              if (states.contains(
-                                                WidgetState.selected,
-                                              )) {
-                                                return BorderSide(
-                                                  color: selectedAccent,
-                                                  width: 1.75,
-                                                );
-                                              }
-                                              return BorderSide(
-                                                color: HomeScreenColors
-                                                    .deckOutline,
-                                              );
-                                            },
-                                          ),
-                                          padding: WidgetStateProperty.all(
-                                            const EdgeInsets.symmetric(
-                                              vertical: 10,
-                                              horizontal: 10,
-                                            ),
-                                          ),
-                                          shape: WidgetStateProperty.all(
-                                            segmentShape,
-                                          ),
-                                          foregroundColor:
-                                              WidgetStateProperty.resolveWith((
-                                                states,
-                                              ) {
-                                                if (states.contains(
-                                                  WidgetState.selected,
-                                                )) {
-                                                  return selectedAccent;
-                                                }
-                                                return HomeScreenColors
-                                                    .leadOnSection;
-                                              }),
-                                          backgroundColor:
-                                              WidgetStateProperty.resolveWith((
-                                                states,
-                                              ) {
-                                                if (states.contains(
-                                                  WidgetState.selected,
-                                                )) {
-                                                  return selectedAccent
-                                                      .withValues(alpha: 0.18);
-                                                }
-                                                return HomeScreenColors
-                                                    .deckFill;
-                                              }),
-                                          textStyle:
-                                              WidgetStateProperty.resolveWith((
-                                                states,
-                                              ) {
-                                                final base = Theme.of(
-                                                  context,
-                                                ).textTheme.labelLarge;
-                                                final selected = states
-                                                    .contains(
-                                                      WidgetState.selected,
-                                                    );
-                                                return base?.copyWith(
-                                                  fontSize: 14,
-                                                  fontWeight: selected
-                                                      ? FontWeight.w800
-                                                      : FontWeight.w600,
-                                                  height: 1.2,
-                                                  letterSpacing: selected
-                                                      ? 0.15
-                                                      : 0,
-                                                );
-                                              }),
-                                          overlayColor:
-                                              WidgetStateProperty.resolveWith((
-                                                states,
-                                              ) {
-                                                if (states.contains(
-                                                  WidgetState.selected,
-                                                )) {
-                                                  return selectedAccent
-                                                      .withValues(alpha: 0.1);
-                                                }
-                                                return HomeScreenColors
-                                                    .inkNeutralSplash;
-                                              }),
-                                        ),
-                                      );
-                                    },
+                                    padding: EdgeInsets.zero,
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    icon: const Icon(
+                                      Icons.arrow_back_rounded,
+                                      size: 22,
+                                    ),
+                                    color: HomeScreenColors.titlePrimary,
+                                    tooltip: '戻る',
                                   ),
                                 ),
-                              ],
+                              Expanded(
+                                child: HomePrimaryActionButton(
+                                  emphasis: HomePrimaryActionEmphasis.hero,
+                                  icon: Icons.travel_explore_rounded,
+                                  label: '楽天で探す',
+                                  onPressed: () {
+                                    Navigator.of(context).push<void>(
+                                      MaterialPageRoute<void>(
+                                        builder: (_) =>
+                                            const RakutenSearchScreen(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Divider(
+                          height: 1,
+                          thickness: 1,
+                          color: HomeScreenColors.inlineDivider,
+                        ),
+
+                        /// ② タブ（キーワード・URL 除外は各タブ内の絞り込み領域へ）
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            _RoomColleUi.insetSectionH,
+                            _RoomColleUi.tabDeckPad,
+                            _RoomColleUi.insetSectionH,
+                            _RoomColleUi.tabDeckBottom,
+                          ),
+                          child: DecoratedBox(
+                            decoration: _RoomColleUi.tabInnerDeckDecoration(),
+                            child: Padding(
+                              padding: const EdgeInsets.all(
+                                _RoomColleUi.tabInnerPad,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Consumer<RakutenManagedProductProvider>(
+                                      builder: (context, managed, _) {
+                                        final nCand = _roomColleVisibleCount(
+                                          provider: managed,
+                                          status: RakutenManagedProductStatus
+                                              .candidate,
+                                          listFilters: _candidateListFilters,
+                                          excludeUrlNotReady:
+                                              _candidateExcludeUrlNotReady,
+                                          doneAtLocalDayFilter: null,
+                                        );
+                                        final nDone = _roomColleVisibleCount(
+                                          provider: managed,
+                                          status:
+                                              RakutenManagedProductStatus.done,
+                                          listFilters: _doneListFilters,
+                                          excludeUrlNotReady: false,
+                                          doneAtLocalDayFilter:
+                                              _doneLocalDayFilter,
+                                        );
+                                        final idx = _tabController.index;
+                                        final selectedAccent = idx == 0
+                                            ? RoomColleListAccent.candidate
+                                            : RoomColleListAccent.done;
+                                        final segmentShape =
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                    _kRoomColleTabTrackRadius -
+                                                        4,
+                                                  ),
+                                            );
+                                        return SegmentedButton<int>(
+                                          showSelectedIcon: false,
+                                          expandedInsets: EdgeInsets.zero,
+                                          segments: <ButtonSegment<int>>[
+                                            ButtonSegment<int>(
+                                              value: 0,
+                                              label: Text(
+                                                'コレ候補 ($nCand)',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              tooltip: 'コレ候補の一覧',
+                                            ),
+                                            ButtonSegment<int>(
+                                              value: 1,
+                                              label: Text(
+                                                'コレ済 ($nDone)',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              tooltip: 'コレ済の一覧',
+                                            ),
+                                          ],
+                                          selected: <int>{_tabController.index},
+                                          onSelectionChanged:
+                                              (Set<int> selection) {
+                                                if (selection.isEmpty) return;
+                                                final v = selection.first;
+                                                if (v != _tabController.index) {
+                                                  _tabController.animateTo(v);
+                                                }
+                                              },
+                                          style: ButtonStyle(
+                                            visualDensity:
+                                                VisualDensity.standard,
+                                            tapTargetSize:
+                                                MaterialTapTargetSize.padded,
+                                            minimumSize:
+                                                WidgetStateProperty.all(
+                                                  const Size(48, 46),
+                                                ),
+                                            side:
+                                                WidgetStateProperty.resolveWith(
+                                                  (states) {
+                                                    if (states.contains(
+                                                      WidgetState.selected,
+                                                    )) {
+                                                      return BorderSide(
+                                                        color: selectedAccent,
+                                                        width: 1.75,
+                                                      );
+                                                    }
+                                                    return BorderSide(
+                                                      color: HomeScreenColors
+                                                          .deckOutline,
+                                                    );
+                                                  },
+                                                ),
+                                            padding: WidgetStateProperty.all(
+                                              const EdgeInsets.symmetric(
+                                                vertical: 10,
+                                                horizontal: 10,
+                                              ),
+                                            ),
+                                            shape: WidgetStateProperty.all(
+                                              segmentShape,
+                                            ),
+                                            foregroundColor:
+                                                WidgetStateProperty.resolveWith(
+                                                  (states) {
+                                                    if (states.contains(
+                                                      WidgetState.selected,
+                                                    )) {
+                                                      return selectedAccent;
+                                                    }
+                                                    return HomeScreenColors
+                                                        .leadOnSection;
+                                                  },
+                                                ),
+                                            backgroundColor:
+                                                WidgetStateProperty.resolveWith(
+                                                  (states) {
+                                                    if (states.contains(
+                                                      WidgetState.selected,
+                                                    )) {
+                                                      return selectedAccent
+                                                          .withValues(
+                                                            alpha: 0.18,
+                                                          );
+                                                    }
+                                                    return HomeScreenColors
+                                                        .deckFill;
+                                                  },
+                                                ),
+                                            textStyle:
+                                                WidgetStateProperty.resolveWith(
+                                                  (states) {
+                                                    final base = Theme.of(
+                                                      context,
+                                                    ).textTheme.labelLarge;
+                                                    final selected = states
+                                                        .contains(
+                                                          WidgetState.selected,
+                                                        );
+                                                    return base?.copyWith(
+                                                      fontSize: 14,
+                                                      fontWeight: selected
+                                                          ? FontWeight.w800
+                                                          : FontWeight.w600,
+                                                      height: 1.2,
+                                                      letterSpacing: selected
+                                                          ? 0.15
+                                                          : 0,
+                                                    );
+                                                  },
+                                                ),
+                                            overlayColor:
+                                                WidgetStateProperty.resolveWith(
+                                                  (states) {
+                                                    if (states.contains(
+                                                      WidgetState.selected,
+                                                    )) {
+                                                      return selectedAccent
+                                                          .withValues(
+                                                            alpha: 0.1,
+                                                          );
+                                                    }
+                                                    return HomeScreenColors
+                                                        .inkNeutralSplash;
+                                                  },
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: _RoomColleUi.gapSection),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Consumer<RakutenManagedProductProvider>(
-                        builder: (context, managed, _) {
-                          final pile = _roomColleStale7PlusCandidateCount(
-                            managed,
-                          );
-                          if (pile < 5 && _stalePileBannerDismissed) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (!mounted || !_stalePileBannerDismissed) {
-                                return;
-                              }
-                              setState(() => _stalePileBannerDismissed = false);
-                              _persistRoomColleUiNow();
-                            });
-                          }
-                          if (pile < 5 || _stalePileBannerDismissed) {
-                            return const SizedBox.shrink();
-                          }
-                          return Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              _kRoomListScreenPadH,
-                              0,
-                              _kRoomListScreenPadH,
-                              _RoomColleUi.gapFieldStack,
-                            ),
-                            child: _RoomColleStalePileNoticeBar(
-                              onDismiss: () {
+              SizedBox(height: _RoomColleUi.gapSection),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Consumer<RakutenManagedProductProvider>(
+                          builder: (context, managed, _) {
+                            final pile = _roomColleStale7PlusCandidateCount(
+                              managed,
+                            );
+                            if (pile < 5 && _stalePileBannerDismissed) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (!mounted || !_stalePileBannerDismissed) {
+                                  return;
+                                }
                                 setState(
-                                  () => _stalePileBannerDismissed = true,
+                                  () => _stalePileBannerDismissed = false,
                                 );
                                 _persistRoomColleUiNow();
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: _kRoomListScreenPadH,
-                        ),
-                        child: _RoomColleFilterShell(
-                          title: '候補の絞り込み',
-                          icon: Icons.filter_alt_outlined,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              AppTextField(
-                                controller: _candidateSearchController,
-                                onChanged: (v) {
-                                  if (!mounted) return;
+                              });
+                            }
+                            if (pile < 5 || _stalePileBannerDismissed) {
+                              return const SizedBox.shrink();
+                            }
+                            return Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                _kRoomListScreenPadH,
+                                0,
+                                _kRoomListScreenPadH,
+                                _RoomColleUi.gapFieldStack,
+                              ),
+                              child: _RoomColleStalePileNoticeBar(
+                                onDismiss: () {
                                   setState(
-                                    () => _candidateListFilters =
-                                        _candidateListFilters.copyWith(
-                                          keyword: v,
-                                        ),
+                                    () => _stalePileBannerDismissed = true,
                                   );
-                                  _schedulePersistRoomColleSearch();
-                                },
-                                textInputAction: TextInputAction.search,
-                                hintText: 'キーワード検索',
-                                suffixIcon: const Icon(Icons.search_rounded),
-                              ),
-                              SizedBox(
-                                height: _RoomColleUi.gapKeywordToFilterRow,
-                              ),
-                              _RoomColleStaleOrganizeQuickRow(
-                                preset:
-                                    _candidateListFilters.staleCandidatePreset,
-                                onPresetChanged: _setCandidateStalePreset,
-                              ),
-                              SizedBox(height: _RoomColleUi.gapFieldStack),
-                              _RoomColleSortQuickRow(
-                                label: '並び替え',
-                                preset: _candidateSortPreset,
-                                onChanged: (v) {
-                                  if (!mounted) return;
-                                  setState(() => _candidateSortPreset = v);
-                                },
-                              ),
-                              SizedBox(height: _RoomColleUi.gapFieldStack),
-                              _RoomColleInlineMoreFiltersRow(
-                                onOpenMoreFilters: () =>
-                                    _openRoomColleFilterEditor(
-                                      isCandidate: true,
-                                    ),
-                                hasNonKeywordConstraintsBadge:
-                                    _candidateListFilters
-                                        .hasNonKeywordConstraints,
-                                candidateUrlFilterActive:
-                                    _candidateExcludeUrlNotReady,
-                                onClear: _resetRoomColleFilters,
-                              ),
-                              Builder(
-                                builder: (context) {
-                                  final chips = _roomColleFilterSummaryChips(
-                                    _candidateListFilters,
-                                  );
-                                  if (_candidateExcludeUrlNotReady) {
-                                    chips.add(
-                                      _roomColleCandidateUrlOnlySummaryChip(() {
-                                        if (!mounted) return;
-                                        setState(
-                                          () => _candidateExcludeUrlNotReady =
-                                              false,
-                                        );
-                                        _persistRoomColleUiNow();
-                                      }),
-                                    );
-                                  }
-                                  if (chips.isEmpty) {
-                                    return const SizedBox.shrink();
-                                  }
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      SizedBox(
-                                        height: _RoomColleUi.gapFieldStack,
-                                      ),
-                                      Wrap(
-                                        spacing: _RoomColleUi.chipSpacing,
-                                        runSpacing: _RoomColleUi.chipSpacing,
-                                        children: chips,
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: _RoomColleUi.gapAfterFilterShell),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: _kRoomListScreenPadH,
-                        ),
-                        child: Divider(
-                          height: 1,
-                          thickness: 1,
-                          color: HomeScreenColors.inlineDivider,
-                        ),
-                      ),
-                      SizedBox(height: _RoomColleUi.gapListAfterDivider),
-                      Expanded(
-                        child: _RoomManagedProductListTab(
-                          status: RakutenManagedProductStatus.candidate,
-                          variant: RakutenManagedProductCardVariant.candidate,
-                          listFilters: _candidateListFilters,
-                          sortPreset: _candidateSortPreset,
-                          excludeUrlNotReady: _candidateExcludeUrlNotReady,
-                          candidateFocusHandled: _candidateFocusHandled,
-                          onRecoverFromListError:
-                              _recoverRoomColleListAndFilters,
-                          emptyTitle: 'コレ候補はまだありません',
-                          emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
-                          emptyHint: '',
-                          accentColor: RoomColleListAccent.candidate,
-                          listScrollController: _candidateScrollController,
-                          flashHighlightProductId: _flashProductId,
-                          rowKeyFor: _keyForCandidateRow,
-                          focusCandidateProductId: _focusCandidateTargetId,
-                          onCandidateFocusListReady:
-                              _focusCandidateTargetId != null &&
-                                  _focusCandidateTargetId!.isNotEmpty
-                              ? _onCandidateFocusListReady
-                              : null,
-                          onCandidateFocusProductMissing:
-                              _focusCandidateTargetId != null &&
-                                  _focusCandidateTargetId!.isNotEmpty
-                              ? _onCandidateFocusProductMissing
-                              : null,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: _kRoomListScreenPadH,
-                        ),
-                        child: _RoomColleFilterShell(
-                          title: 'コレ済の絞り込み',
-                          icon: Icons.task_alt_outlined,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              AppTextField(
-                                controller: _doneSearchController,
-                                onChanged: (v) {
-                                  if (!mounted) return;
-                                  setState(
-                                    () => _doneListFilters = _doneListFilters
-                                        .copyWith(keyword: v),
-                                  );
-                                  _schedulePersistRoomColleSearch();
-                                },
-                                textInputAction: TextInputAction.search,
-                                hintText: 'キーワード検索',
-                                suffixIcon: const Icon(Icons.search_rounded),
-                              ),
-                              SizedBox(
-                                height: _RoomColleUi.gapKeywordToFilterRow,
-                              ),
-                              _RoomColleInlineMoreFiltersRow(
-                                onOpenMoreFilters: () =>
-                                    _openRoomColleFilterEditor(
-                                      isCandidate: false,
-                                    ),
-                                hasNonKeywordConstraintsBadge:
-                                    _doneListFilters.hasNonKeywordConstraints,
-                                onClear: _resetRoomColleFilters,
-                              ),
-                              SizedBox(height: _RoomColleUi.gapFieldStack),
-                              _RoomColleSortQuickRow(
-                                label: '並び替え',
-                                preset: _doneSortPreset,
-                                onChanged: (v) {
-                                  if (!mounted) return;
-                                  setState(() => _doneSortPreset = v);
-                                },
-                              ),
-                              if (_doneListFilters
-                                  .hasNonKeywordConstraints) ...[
-                                SizedBox(height: _RoomColleUi.gapFieldStack),
-                                Wrap(
-                                  spacing: _RoomColleUi.chipSpacing,
-                                  runSpacing: _RoomColleUi.chipSpacing,
-                                  children: _roomColleFilterSummaryChips(
-                                    _doneListFilters,
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: _RoomColleUi.gapAfterFilterShell),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: _kRoomListScreenPadH,
-                        ),
-                        child: Divider(
-                          height: 1,
-                          thickness: 1,
-                          color: HomeScreenColors.inlineDivider,
-                        ),
-                      ),
-                      SizedBox(height: _RoomColleUi.gapListAfterDivider),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: _kRoomListScreenPadH,
-                        ),
-                        child: const _DoneTabSectionNotice(),
-                      ),
-                      SizedBox(height: _RoomColleUi.gapFieldStack),
-                      Expanded(
-                        child: _RoomManagedProductListTab(
-                          status: RakutenManagedProductStatus.done,
-                          variant: RakutenManagedProductCardVariant.done,
-                          listFilters: _doneListFilters,
-                          sortPreset: _doneSortPreset,
-                          excludeUrlNotReady: false,
-                          candidateFocusHandled: true,
-                          onRecoverFromListError:
-                              _recoverRoomColleListAndFilters,
-                          doneAtLocalDayFilter: _doneLocalDayFilter,
-                          onClearDoneDayFilter: _doneLocalDayFilter == null
-                              ? null
-                              : () {
-                                  setState(() => _doneLocalDayFilter = null);
                                   _persistRoomColleUiNow();
                                 },
-                          emptyTitle: 'コレ済の商品はまだありません',
-                          emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
-                          emptyHint: '',
-                          dayFilterEmptyTitle: 'この日にコレした商品はありません',
-                          dayFilterEmptySubtitle:
-                              '表示は端末の日付（このアプリでコレ済にした日時）に基づきます。',
-                          accentColor: RoomColleListAccent.done,
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        _RoomColleCompactFilterStrip(
+                          criteria: _candidateListFilters,
+                          excludeUrlNotReady: _candidateExcludeUrlNotReady,
+                          sortPreset: _candidateSortPreset,
+                          accentColor: RoomColleListAccent.candidate,
+                          onAdjust: () =>
+                              _openRoomColleFilterEditor(isCandidate: true),
+                          onClear: _resetRoomColleFilters,
+                        ),
+                        Expanded(
+                          child: _RoomManagedProductListTab(
+                            status: RakutenManagedProductStatus.candidate,
+                            variant: RakutenManagedProductCardVariant.candidate,
+                            listFilters: _candidateListFilters,
+                            sortPreset: _candidateSortPreset,
+                            excludeUrlNotReady: _candidateExcludeUrlNotReady,
+                            candidateFocusHandled: _candidateFocusHandled,
+                            onRecoverFromListError:
+                                _recoverRoomColleListAndFilters,
+                            emptyTitle: 'コレ候補はまだありません',
+                            emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
+                            emptyHint: '',
+                            accentColor: RoomColleListAccent.candidate,
+                            listScrollController: _candidateScrollController,
+                            flashHighlightProductId: _flashProductId,
+                            rowKeyFor: _keyForCandidateRow,
+                            focusCandidateProductId: _focusCandidateTargetId,
+                            onCandidateFocusListReady:
+                                _focusCandidateTargetId != null &&
+                                    _focusCandidateTargetId!.isNotEmpty
+                                ? _onCandidateFocusListReady
+                                : null,
+                            onCandidateFocusProductMissing:
+                                _focusCandidateTargetId != null &&
+                                    _focusCandidateTargetId!.isNotEmpty
+                                ? _onCandidateFocusProductMissing
+                                : null,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _RoomColleCompactFilterStrip(
+                          criteria: _doneListFilters,
+                          excludeUrlNotReady: false,
+                          sortPreset: _doneSortPreset,
+                          accentColor: RoomColleListAccent.done,
+                          onAdjust: () =>
+                              _openRoomColleFilterEditor(isCandidate: false),
+                          onClear: _resetRoomColleFilters,
+                        ),
+                        Expanded(
+                          child: _RoomManagedProductListTab(
+                            status: RakutenManagedProductStatus.done,
+                            variant: RakutenManagedProductCardVariant.done,
+                            listFilters: _doneListFilters,
+                            sortPreset: _doneSortPreset,
+                            excludeUrlNotReady: false,
+                            candidateFocusHandled: true,
+                            onRecoverFromListError:
+                                _recoverRoomColleListAndFilters,
+                            doneAtLocalDayFilter: _doneLocalDayFilter,
+                            onClearDoneDayFilter: _doneLocalDayFilter == null
+                                ? null
+                                : () {
+                                    setState(() => _doneLocalDayFilter = null);
+                                    _persistRoomColleUiNow();
+                                  },
+                            emptyTitle: 'コレ済の商品はまだありません',
+                            emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
+                            emptyHint: '',
+                            dayFilterEmptyTitle: 'この日にコレした商品はありません',
+                            dayFilterEmptySubtitle:
+                                '表示は端末の日付（このアプリでコレ済にした日時）に基づきます。',
+                            accentColor: RoomColleListAccent.done,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -3084,45 +2596,6 @@ class _RoomColleBrokenProductRow extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DoneTabSectionNotice extends StatelessWidget {
-  const _DoneTabSectionNotice();
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: HomeScreenColors.subActionRowFill,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: HomeScreenColors.sectionOutlineNeutral),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              Icons.info_outline_rounded,
-              size: 18,
-              color: HomeScreenColors.leadOnSection,
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                'コレ済は「投稿完了の管理一覧」です。各商品では重複した注意文を出さず、ここで共通ルールを案内します。',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: HomeScreenColors.groupedSectionBody,
-                  fontWeight: FontWeight.w600,
-                  height: 1.3,
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );

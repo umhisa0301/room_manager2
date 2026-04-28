@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../services/app_action_service.dart';
-import '../utils/rakuten_product_genre_display.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/room_colle_list_accent.dart';
-import '../utils/room_colle_candidate_stale.dart';
 import '../utils/room_colle_card_time_format.dart';
 import 'app_button.dart';
 import 'room_colle_product_list_card_layout.dart';
@@ -52,15 +49,6 @@ class RakutenManagedProductCard extends StatelessWidget {
     }
   }
 
-  static String _safeShopName(RakutenManagedProduct product) {
-    try {
-      final t = product.shopName.trim();
-      return t.isEmpty ? 'ショップ名なし' : t;
-    } catch (_) {
-      return 'ショップ名なし';
-    }
-  }
-
   static String _safePriceYen(RakutenManagedProduct product) {
     try {
       return RoomColleProductListCardLayout.formatPriceYen(product.itemPrice);
@@ -75,9 +63,17 @@ class RakutenManagedProductCard extends StatelessWidget {
   }) {
     final stamp = formatRoomColleCardTimestamp(instant, DateTime.now());
     if (stamp == null || stamp.isEmpty) {
-      return isCandidate ? '登録日: -' : 'コレ日: -';
+      return isCandidate ? '登録日 -' : '投稿日 -';
     }
-    return isCandidate ? '登録日: $stamp' : 'コレ日: $stamp';
+    return isCandidate ? '登録日 $stamp' : '投稿日 $stamp';
+  }
+
+  static String _ratingLabel(RakutenManagedProduct product) {
+    final hasPositiveSignal =
+        product.feedbackSoldAt != null || product.feedbackLikedAt != null;
+    if (hasPositiveSignal) return '評価 反応あり';
+    if (product.feedbackWeakAt != null) return '評価 微妙';
+    return '評価 楽天で確認';
   }
 
   @override
@@ -90,74 +86,48 @@ class RakutenManagedProductCard extends StatelessWidget {
     final theme = Theme.of(context);
     final titleStyle = RoomColleProductListCardLayout.titleTextStyle(theme);
     final priceStyle = RoomColleProductListCardLayout.priceTextStyle(theme);
-    final shopStyle = RoomColleProductListCardLayout.shopTextStyle(theme);
     final tsInstant = isCandidate ? product.addedAt : product.doneAt;
     final timestampStyle = RoomColleProductListCardLayout.metaTextStyle(theme);
-    final staleSpec = isCandidate
-        ? RoomColleCandidateStaleSpec.resolve(product.addedAt, DateTime.now())
-        : null;
-    final genreLineBase =
-        shopStyle ?? theme.textTheme.bodySmall ?? const TextStyle();
-    final genreLineStyle = genreLineBase.copyWith(
-      fontSize: (genreLineBase.fontSize ?? 12) - 1,
-      color: theme.colorScheme.onSurfaceVariant,
-    );
 
     return RoomColleProductListCardShell(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RoomColleProductListCardThumbSlot(child: _heroImage()),
-          Expanded(
-            child: Padding(
-              padding: RoomColleProductListCardLayout.rightColumnPadding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Column(
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RoomColleProductListCardThumbSlot(child: _heroImage()),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
+                      if (isCandidate) ...[
+                        _decisionBadge(context),
+                        const SizedBox(height: 6),
+                      ],
                       Text(
                         _safeItemName(product),
                         maxLines: RoomColleProductListCardLayout.titleMaxLines,
                         overflow: TextOverflow.ellipsis,
                         style: titleStyle,
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       Text(
                         _safePriceYen(product),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: priceStyle,
                       ),
-                      const SizedBox(height: 2),
-                      Text(
-                        _safeShopName(product),
-                        maxLines: RoomColleProductListCardLayout.shopMaxLines,
-                        overflow: TextOverflow.ellipsis,
-                        style: shopStyle,
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        RakutenProductGenreDisplay.resolve(
-                          apiGenreName: null,
-                          persistedGenreName: product.persistedGenreDisplayName,
-                          prefetchedGenreName:
-                              genrePrefetchLabels?[product.genreId.trim()],
-                          genreId: product.genreId,
-                          traceItemCode: product.productId,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: genreLineStyle,
-                      ),
-                      const SizedBox(height: 3),
-                      if (staleSpec != null) ...[
-                        RoomColleCandidateStaleChip(spec: staleSpec),
-                        const SizedBox(height: 3),
+                      if (isCandidate) ...[
+                        const SizedBox(height: 6),
+                        _ratingRow(context),
                       ],
+                      const SizedBox(height: 6),
                       Text(
                         _dateMetaLabel(
                           isCandidate: isCandidate,
@@ -169,19 +139,68 @@ class RakutenManagedProductCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
-                  _feedbackToolbar(context),
-                  const SizedBox(height: 5),
-                  if (isCandidate)
-                    _candidateActions(context)
-                  else
-                    _doneActions(context, stateAccent),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 10),
+            if (isCandidate) ...[
+              _candidateActions(context),
+            ] else ...[
+              _feedbackToolbar(context),
+              const SizedBox(height: 8),
+              _doneActions(context, stateAccent),
+            ],
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _decisionBadge(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: RoomColleListAccent.candidate.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: RoomColleListAccent.candidate.withValues(alpha: 0.32),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+        child: Text(
+          '今日のおすすめ',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: RoomColleListAccent.candidate,
+            fontWeight: FontWeight.w800,
+            height: 1.15,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _ratingRow(BuildContext context) {
+    final style = Theme.of(context).textTheme.labelMedium?.copyWith(
+      color: AppColors.textSecondary,
+      fontWeight: FontWeight.w700,
+      height: 1.15,
+    );
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(Icons.star_rounded, size: 17, color: Color(0xFFFFB300)),
+        const SizedBox(width: 4),
+        Flexible(
+          child: Text(
+            _ratingLabel(product),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: style,
+          ),
+        ),
+      ],
     );
   }
 
@@ -193,66 +212,62 @@ class RakutenManagedProductCard extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: AppSecondaryButton(
-            label: liked ? '反応◎' : '反応',
-            onPressed: () async {
-              final err = await prov.toggleFeedbackLiked(
-                context,
-                product.productId,
-              );
-              if (!context.mounted) return;
-              if (err != null) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(err)));
-              }
-            },
-            height: 30,
-            expand: true,
-          ),
-        ),
-        const SizedBox(width: 4),
-        Expanded(
-          child: AppSecondaryButton(
-            label: sold ? '売れた◎' : '売れた',
+          child: _FeedbackToggleButton(
+            label: '売れた',
+            selected: sold,
+            icon: Icons.local_fire_department_rounded,
+            selectedColor: const Color(0xFFE65100),
             onPressed: () async {
               final err = await prov.toggleFeedbackSold(
                 context,
                 product.productId,
               );
               if (!context.mounted) return;
-              if (err != null) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(err)));
-              }
+              _showFeedbackError(context, err);
             },
-            height: 30,
-            expand: true,
           ),
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: 6),
         Expanded(
-          child: AppSecondaryButton(
-            label: weak ? '微妙◎' : '微妙',
+          child: _FeedbackToggleButton(
+            label: '反応あり',
+            selected: liked,
+            icon: Icons.thumb_up_alt_rounded,
+            selectedColor: RoomColleListAccent.done,
+            onPressed: () async {
+              final err = await prov.toggleFeedbackLiked(
+                context,
+                product.productId,
+              );
+              if (!context.mounted) return;
+              _showFeedbackError(context, err);
+            },
+          ),
+        ),
+        const SizedBox(width: 6),
+        Expanded(
+          child: _FeedbackToggleButton(
+            label: '微妙',
+            selected: weak,
+            icon: Icons.trending_down_rounded,
+            selectedColor: const Color(0xFF795548),
             onPressed: () async {
               final err = await prov.toggleFeedbackWeak(
                 context,
                 product.productId,
               );
               if (!context.mounted) return;
-              if (err != null) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(err)));
-              }
+              _showFeedbackError(context, err);
             },
-            height: 30,
-            expand: true,
           ),
         ),
       ],
     );
+  }
+
+  void _showFeedbackError(BuildContext context, String? err) {
+    if (!context.mounted || err == null) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err)));
   }
 
   Widget _candidateActions(BuildContext context) {
@@ -288,7 +303,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                 ? 'ROOMのURLを開き、一覧をコレ済に移します。'
                 : 'ROOM用のURLが取得できるまでお待ちください',
             child: AppPrimaryButton(
-              label: 'ROOMに投稿',
+              label: '投稿する',
               onPressed: _canCollectRoom
                   ? () async {
                       if (onCollectPressed != null) {
@@ -314,9 +329,9 @@ class RakutenManagedProductCard extends StatelessWidget {
         Expanded(
           flex: 22,
           child: AppSecondaryButton(
-            label: '削除',
+            label: '見送る',
             onPressed: () => _confirmRemoveCandidate(context, provider),
-            icon: const Icon(Icons.delete_outline_rounded),
+            icon: const Icon(Icons.block_rounded),
             expand: true,
             height: 36,
           ),
@@ -333,15 +348,15 @@ class RakutenManagedProductCard extends StatelessWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('候補から削除'),
-        content: Text('「$name」をコレ候補から削除します。よろしいですか？'),
+        title: const Text('見送る'),
+        content: Text('「$name」を候補から外します。よろしいですか？'),
         actions: [
           AppSecondaryButton(
             label: 'キャンセル',
             onPressed: () => Navigator.of(ctx).pop(false),
           ),
           AppSecondaryButton(
-            label: '削除',
+            label: '見送る',
             onPressed: () => Navigator.of(ctx).pop(true),
           ),
         ],
@@ -380,9 +395,9 @@ class RakutenManagedProductCard extends StatelessWidget {
             height: 36,
           ),
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: 6),
         Expanded(
-          flex: 36,
+          flex: 40,
           child: Tooltip(
             message: _hasRoomUrl ? 'ROOMの画面を開きます' : 'ROOM用のリンクが取得されていません',
             child: AppSecondaryButton(
@@ -401,30 +416,6 @@ class RakutenManagedProductCard extends StatelessWidget {
               expand: true,
               height: 36,
             ),
-          ),
-        ),
-        const SizedBox(width: 4),
-        Expanded(
-          flex: 24,
-          child: AppSecondaryButton(
-            label: 'ID',
-            onPressed: product.productId.trim().isEmpty
-                ? null
-                : () async {
-                    await Clipboard.setData(
-                      ClipboardData(text: product.productId.trim()),
-                    );
-                    if (!context.mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('商品IDをコピーしました'),
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                  },
-            icon: const Icon(Icons.copy_rounded),
-            expand: true,
-            height: 36,
           ),
         ),
       ],
@@ -455,6 +446,59 @@ class RakutenManagedProductCard extends StatelessWidget {
       Icons.image_outlined,
       size: 30,
       color: AppColors.textTertiary.withValues(alpha: 0.65),
+    );
+  }
+}
+
+class _FeedbackToggleButton extends StatelessWidget {
+  const _FeedbackToggleButton({
+    required this.label,
+    required this.selected,
+    required this.icon,
+    required this.selectedColor,
+    required this.onPressed,
+  });
+
+  final String label;
+  final bool selected;
+  final IconData icon;
+  final Color selectedColor;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final fg = selected ? selectedColor : AppColors.textSecondary;
+    final bg = selected
+        ? selectedColor.withValues(alpha: 0.13)
+        : Colors.transparent;
+    final border = selected
+        ? selectedColor.withValues(alpha: 0.72)
+        : AppColors.divider.withValues(alpha: 0.82);
+
+    return SizedBox(
+      height: 36,
+      child: OutlinedButton.icon(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: fg,
+          backgroundColor: bg,
+          side: BorderSide(color: border, width: selected ? 1.4 : 1),
+          elevation: 0,
+          minimumSize: const Size(0, 36),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(999),
+          ),
+          textStyle: AppTextStyles.label.copyWith(
+            fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+            color: fg,
+          ),
+        ),
+        icon: Icon(icon, size: 15),
+        label: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+      ),
     );
   }
 }

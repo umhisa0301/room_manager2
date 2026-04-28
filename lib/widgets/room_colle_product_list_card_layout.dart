@@ -8,12 +8,12 @@ import 'app_card.dart';
 abstract final class RoomColleProductListCardLayout {
   RoomColleProductListCardLayout._();
 
-  static const double minCardHeight = 218;
+  static const double minCardHeight = 0;
 
   /// 左スロット幅（その中で 1:1 サムネを配置）。
   static const double thumbSlotWidth = 104;
 
-  static const double radius = 14;
+  static const double radius = 18;
 
   static const int titleMaxLines = 2;
   static const int shopMaxLines = 1;
@@ -110,7 +110,7 @@ class RoomColleProductListCardShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(
-        minHeight: RoomColleProductListCardLayout.minCardHeight,
+        minHeight: RoomColleProductListCardLayout.thumbSlotWidth,
       ),
       child: AppCard(
         padding: EdgeInsets.zero,
