@@ -2,15 +2,16 @@ import 'rakuten_search_item.dart';
 
 enum TodayRecommendationDecision { pending, skipped, addedCandidate }
 
-enum TodayRecommendationSection { personalized, popular, fresh }
+enum TodayRecommendationSection { sellable, popular, fresh }
 
 class TodayRecommendationEntry {
   const TodayRecommendationEntry({
     required this.item,
     this.decision = TodayRecommendationDecision.pending,
     this.reason = '人気商品',
-    this.section = TodayRecommendationSection.personalized,
+    this.section = TodayRecommendationSection.sellable,
     this.score = 0,
+    this.priceScore = 0,
   });
 
   final RakutenSearchItem item;
@@ -18,6 +19,7 @@ class TodayRecommendationEntry {
   final String reason;
   final TodayRecommendationSection section;
   final double score;
+  final double priceScore;
 
   TodayRecommendationEntry copyWith({
     RakutenSearchItem? item,
@@ -25,6 +27,7 @@ class TodayRecommendationEntry {
     String? reason,
     TodayRecommendationSection? section,
     double? score,
+    double? priceScore,
   }) {
     return TodayRecommendationEntry(
       item: item ?? this.item,
@@ -32,6 +35,7 @@ class TodayRecommendationEntry {
       reason: reason ?? this.reason,
       section: section ?? this.section,
       score: score ?? this.score,
+      priceScore: priceScore ?? this.priceScore,
     );
   }
 
@@ -56,6 +60,7 @@ class TodayRecommendationEntry {
       'reason': reason,
       'section': section.name,
       'score': score,
+      'priceScore': priceScore,
     };
   }
 
@@ -72,11 +77,7 @@ class TodayRecommendationEntry {
       (e) => e.name == decisionRaw,
       orElse: () => TodayRecommendationDecision.pending,
     );
-    final sectionRaw = (json['section'] ?? '').toString();
-    final section = TodayRecommendationSection.values.firstWhere(
-      (e) => e.name == sectionRaw,
-      orElse: () => TodayRecommendationSection.personalized,
-    );
+    final section = _parseSection((json['section'] ?? '').toString());
     return TodayRecommendationEntry(
       item: RakutenSearchItem(
         productId: productId,
@@ -97,6 +98,15 @@ class TodayRecommendationEntry {
       reason: (json['reason'] ?? '人気商品').toString(),
       section: section,
       score: (json['score'] as num?)?.toDouble() ?? 0,
+      priceScore: (json['priceScore'] as num?)?.toDouble() ?? 0,
+    );
+  }
+
+  static TodayRecommendationSection _parseSection(String raw) {
+    if (raw == 'personalized') return TodayRecommendationSection.sellable;
+    return TodayRecommendationSection.values.firstWhere(
+      (e) => e.name == raw,
+      orElse: () => TodayRecommendationSection.sellable,
     );
   }
 }

@@ -216,6 +216,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     for (final item in pool) {
       final id = item.productId.trim();
       if (id.isEmpty || excludeIds.contains(id)) continue;
+      if (_isExtremePrice(item.itemPrice)) continue;
       dedup.putIfAbsent(id, () => item);
     }
 
@@ -244,6 +245,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
             reason: e.reason,
             section: e.section,
             score: e.score,
+            priceScore: e.priceScore,
           ),
         )
         .toList(growable: false);
@@ -315,7 +317,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       }
     }
 
-    addFrom(TodayRecommendationSection.personalized, 6);
+    addFrom(TodayRecommendationSection.sellable, 6);
     addFrom(TodayRecommendationSection.popular, 3);
     addFrom(TodayRecommendationSection.fresh, 2);
     for (final item in scored) {
@@ -351,35 +353,46 @@ class TodayRecommendationProvider extends ChangeNotifier {
         ? 1.0
         : 0.0;
     final popularity = _popularityScore(item);
+    final priceScore = _priceScore(item.itemPrice);
 
-    final score =
+    final personalizedScore =
         genreMatch * 3 +
         doneSimilarity * 4 +
         candidateSimilarity * 2 +
-        shopMatch * 2 +
-        popularity;
-    final section =
-        doneSimilarity > 0.35 ||
-            candidateSimilarity > 0.45 ||
-            genreMatch > 0.55 ||
-            shopMatch > 0
-        ? TodayRecommendationSection.personalized
+        shopMatch * 2;
+    final finalScore = personalizedScore * 5 + popularity * 2 + priceScore * 3;
+    final section = priceScore >= 3
+        ? TodayRecommendationSection.sellable
         : popularity > 0.75
         ? TodayRecommendationSection.popular
         : TodayRecommendationSection.fresh;
 
     return _ScoredRecommendation(
       item: item,
-      score: score,
+      score: finalScore,
+      priceScore: priceScore,
       reason: _reasonFor(
         doneSimilarity: doneSimilarity,
         candidateSimilarity: candidateSimilarity,
         shopMatch: shopMatch,
         genreMatch: genreMatch,
         popularity: popularity,
+        priceScore: priceScore,
       ),
       section: section,
     );
+  }
+
+  bool _isExtremePrice(int price) {
+    return price < 500 || price >= 30000;
+  }
+
+  double _priceScore(int price) {
+    if (price >= 2000 && price < 5000) return 3;
+    if (price >= 1000 && price < 2000) return 2;
+    if (price >= 5000 && price < 10000) return 2;
+    if (price >= 10000) return -2;
+    return -1;
   }
 
   double _genreMatchScore(
@@ -451,7 +464,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required double shopMatch,
     required double genreMatch,
     required double popularity,
+    required double priceScore,
   }) {
+    if (priceScore >= 3) return '売れやすい価格帯';
     if (doneSimilarity >= 0.45) return 'あなたのコレ履歴に基づく';
     if (shopMatch > 0) return 'よく保存しているショップ';
     if (candidateSimilarity >= 0.45) return '候補にした商品に近い';
@@ -470,12 +485,14 @@ class _ScoredRecommendation {
   const _ScoredRecommendation({
     required this.item,
     required this.score,
+    required this.priceScore,
     required this.reason,
     required this.section,
   });
 
   final RakutenSearchItem item;
   final double score;
+  final double priceScore;
   final String reason;
   final TodayRecommendationSection section;
 }

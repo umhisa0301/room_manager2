@@ -198,10 +198,10 @@ class _RecommendationSectionHeader extends StatelessWidget {
 
   String _sectionTitle(TodayRecommendationSection section) {
     switch (section) {
-      case TodayRecommendationSection.personalized:
-        return 'あなた向け';
+      case TodayRecommendationSection.sellable:
+        return '売れやすい';
       case TodayRecommendationSection.popular:
-        return '人気';
+        return '人気商品';
       case TodayRecommendationSection.fresh:
         return '新着';
     }
@@ -209,8 +209,8 @@ class _RecommendationSectionHeader extends StatelessWidget {
 
   String _sectionSubtitle(TodayRecommendationSection section) {
     switch (section) {
-      case TodayRecommendationSection.personalized:
-        return 'ジャンル・コレ履歴・保存ショップに近い候補です。';
+      case TodayRecommendationSection.sellable:
+        return '価格帯とあなた向け度のバランスが良い候補です。';
       case TodayRecommendationSection.popular:
         return 'レビュー評価や件数が強い候補です。';
       case TodayRecommendationSection.fresh:
@@ -315,6 +315,16 @@ class _RecommendationCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
+                      _formatPrice(item.itemPrice),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
                       '評価 ${item.reviewAverage.toStringAsFixed(2)} / '
                       '評価数 ${item.reviewCount}',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -323,6 +333,8 @@ class _RecommendationCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     _ReasonChip(reason: entry.reason),
+                    const SizedBox(height: 6),
+                    _RecommendationTagWrap(entry: entry),
                   ],
                 ),
               ),
@@ -332,6 +344,70 @@ class _RecommendationCard extends StatelessWidget {
           const SizedBox(height: 10),
           _ActionRow(entry: entry),
         ],
+      ),
+    );
+  }
+}
+
+String _formatPrice(int price) {
+  final raw = price.toString();
+  final buffer = StringBuffer();
+  for (var i = 0; i < raw.length; i++) {
+    if (i > 0 && (raw.length - i) % 3 == 0) buffer.write(',');
+    buffer.write(raw[i]);
+  }
+  return '¥$buffer';
+}
+
+class _RecommendationTagWrap extends StatelessWidget {
+  const _RecommendationTagWrap({required this.entry});
+
+  final TodayRecommendationEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final tags = <String>[];
+    final item = entry.item;
+    if (item.itemPrice >= 2000 && item.itemPrice < 5000) {
+      tags.add('売れやすい価格');
+    }
+    if (entry.reason == '人気商品' ||
+        entry.section == TodayRecommendationSection.popular) {
+      tags.add('人気商品');
+    }
+    if (entry.section == TodayRecommendationSection.fresh) {
+      tags.add('新しい候補');
+    }
+    if (tags.isEmpty) return const SizedBox.shrink();
+    return Wrap(
+      spacing: 6,
+      runSpacing: 6,
+      children: tags.map((e) => _ProductTag(label: e)).toList(growable: false),
+    );
+  }
+}
+
+class _ProductTag extends StatelessWidget {
+  const _ProductTag({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceVariant,
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: AppColors.textSecondary,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
