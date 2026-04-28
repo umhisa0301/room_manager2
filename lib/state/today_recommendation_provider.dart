@@ -216,7 +216,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     for (final item in pool) {
       final id = item.productId.trim();
       if (id.isEmpty || excludeIds.contains(id)) continue;
-      if (_isExtremePrice(item.itemPrice)) continue;
+      if (_shouldExcludeRecommendationItem(item)) continue;
       dedup.putIfAbsent(id, () => item);
     }
 
@@ -306,23 +306,60 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (scored.length <= 10) return scored;
     final out = <_ScoredRecommendation>[];
 
+    bool canAdd(_ScoredRecommendation item, {required bool relaxed}) {
+      final productId = item.item.productId.trim();
+      if (productId.isEmpty) return false;
+      if (out.any((e) => e.item.productId.trim() == productId)) return false;
+
+      final shopCode = item.item.shopCode.trim();
+      final genreId = item.item.genreId.trim();
+      if (!relaxed && out.isNotEmpty) {
+        final last = out.last.item;
+        if (shopCode.isNotEmpty && shopCode == last.shopCode.trim()) {
+          return false;
+        }
+        if (genreId.isNotEmpty && genreId == last.genreId.trim()) {
+          return false;
+        }
+      }
+      if (!relaxed && shopCode.isNotEmpty) {
+        final shopCount = out
+            .where((e) => e.item.shopCode.trim() == shopCode)
+            .length;
+        if (shopCount >= 2) return false;
+      }
+      if (!relaxed && genreId.isNotEmpty) {
+        final genreCount = out
+            .where((e) => e.item.genreId.trim() == genreId)
+            .length;
+        if (genreCount >= 3) return false;
+      }
+      return true;
+    }
+
     void addFrom(TodayRecommendationSection section, int max) {
       for (final item in scored.where((e) => e.section == section)) {
         if (out.length >= 10) break;
         final sectionCount = out.where((e) => e.section == section).length;
         if (sectionCount >= max) break;
-        if (!out.any((e) => e.item.productId == item.item.productId)) {
+        if (canAdd(item, relaxed: false)) {
           out.add(item);
         }
       }
     }
 
-    addFrom(TodayRecommendationSection.sellable, 6);
-    addFrom(TodayRecommendationSection.popular, 3);
+    addFrom(TodayRecommendationSection.popular, 5);
+    addFrom(TodayRecommendationSection.sellable, 4);
     addFrom(TodayRecommendationSection.fresh, 2);
     for (final item in scored) {
       if (out.length >= 10) break;
-      if (!out.any((e) => e.item.productId == item.item.productId)) {
+      if (canAdd(item, relaxed: false)) {
+        out.add(item);
+      }
+    }
+    for (final item in scored) {
+      if (out.length >= 10) break;
+      if (canAdd(item, relaxed: true)) {
         out.add(item);
       }
     }
@@ -353,18 +390,27 @@ class TodayRecommendationProvider extends ChangeNotifier {
         ? 1.0
         : 0.0;
     final popularity = _popularityScore(item);
-    final priceScore = _priceScore(item.itemPrice);
+    final priceScore = _priceScore(item);
 
+    final marketScore = _marketScore(item, priceScore: priceScore);
+
+    // ROOM向けの調整値。履歴一致だけに寄せすぎず、
+    // 「売れ筋として強い商品」を前に出せるよう市場性をやや厚めに見る。
     final personalizedScore =
-        genreMatch * 3 +
-        doneSimilarity * 4 +
-        candidateSimilarity * 2 +
-        shopMatch * 2;
-    final finalScore = personalizedScore * 5 + popularity * 2 + priceScore * 3;
-    final section = priceScore >= 3
-        ? TodayRecommendationSection.sellable
-        : popularity > 0.75
+        genreMatch * 2.2 +
+        doneSimilarity * 3.0 +
+        candidateSimilarity * 1.5 +
+        shopMatch * 1.2;
+    final finalScore = personalizedScore * 4 + marketScore * 5 + priceScore * 2;
+    final isPersonalized =
+        doneSimilarity >= 0.35 ||
+        candidateSimilarity >= 0.45 ||
+        genreMatch >= 0.55 ||
+        shopMatch > 0;
+    final section = isPersonalized
         ? TodayRecommendationSection.popular
+        : marketScore >= 4.6 && priceScore >= 1.5
+        ? TodayRecommendationSection.sellable
         : TodayRecommendationSection.fresh;
 
     return _ScoredRecommendation(
@@ -383,16 +429,48 @@ class TodayRecommendationProvider extends ChangeNotifier {
     );
   }
 
-  bool _isExtremePrice(int price) {
-    return price < 500 || price >= 30000;
+  bool _shouldExcludeRecommendationItem(RakutenSearchItem item) {
+    final price = item.itemPrice;
+    if (price < 500) return true;
+    // 3万円以上はROOMの衝動買い候補として重く、まずは安全側で除外する。
+    // 将来、レビュー数・評価が非常に強い高単価だけ残す余地はここで調整する。
+    if (price >= 30000) return true;
+    if (price >= 10000 && item.reviewCount == 0) return true;
+    if (item.reviewCount > 0 && item.reviewAverage < 3.5) return true;
+    return false;
   }
 
-  double _priceScore(int price) {
-    if (price >= 2000 && price < 5000) return 3;
-    if (price >= 1000 && price < 2000) return 2;
-    if (price >= 5000 && price < 10000) return 2;
-    if (price >= 10000) return -2;
-    return -1;
+  double _priceScore(RakutenSearchItem item) {
+    final price = item.itemPrice;
+    if (price < 500) return -4;
+    if (price < 1500) return 0.5;
+    if (price < 3000) return 1.5;
+    if (price < 10000) return 3;
+    if (price < 20000) return 2;
+    if (price < 30000) {
+      if (item.reviewCount >= 80 && item.reviewAverage >= 4.2) return 1.2;
+      return 0.2;
+    }
+    return -4;
+  }
+
+  double _marketScore(RakutenSearchItem item, {required double priceScore}) {
+    final reviewCountScore = switch (item.reviewCount) {
+      >= 300 => 3.0,
+      >= 100 => 2.4,
+      >= 30 => 1.5,
+      >= 10 => 0.8,
+      _ => 0.2,
+    };
+    final rating = item.reviewAverage;
+    final ratingScore = rating >= 4.5
+        ? (item.reviewCount >= 20 ? 2.0 : 0.8)
+        : rating >= 4.0
+        ? 1.4
+        : rating >= 3.5
+        ? 0.5
+        : -1.5;
+    return reviewCountScore + ratingScore + priceScore;
   }
 
   double _genreMatchScore(
@@ -466,11 +544,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required double popularity,
     required double priceScore,
   }) {
-    if (priceScore >= 3) return '売れやすい価格帯';
     if (doneSimilarity >= 0.45) return 'あなたのコレ履歴に基づく';
-    if (shopMatch > 0) return 'よく保存しているショップ';
+    if (shopMatch > 0) return '保存ショップから発見';
     if (candidateSimilarity >= 0.45) return '候補にした商品に近い';
     if (genreMatch >= 0.55) return '好きなジャンルに近い';
+    if (priceScore >= 3) return '売れ筋価格帯';
     if (popularity >= 0.70) return '人気商品';
     return '新しい候補';
   }

@@ -199,20 +199,20 @@ class _RecommendationSectionHeader extends StatelessWidget {
   String _sectionTitle(TodayRecommendationSection section) {
     switch (section) {
       case TodayRecommendationSection.sellable:
-        return '売れやすい';
+        return '売れ筋';
       case TodayRecommendationSection.popular:
-        return '人気商品';
+        return 'あなた向け';
       case TodayRecommendationSection.fresh:
-        return '新着';
+        return '新着・発掘';
     }
   }
 
   String _sectionSubtitle(TodayRecommendationSection section) {
     switch (section) {
       case TodayRecommendationSection.sellable:
-        return '価格帯とあなた向け度のバランスが良い候補です。';
+        return '価格帯・レビュー数・評価がROOM向きの候補です。';
       case TodayRecommendationSection.popular:
-        return 'レビュー評価や件数が強い候補です。';
+        return '好きなジャンル・コレ履歴・保存ショップに近い候補です。';
       case TodayRecommendationSection.fresh:
         return 'いつもの傾向から少し広げた候補です。';
     }
@@ -296,7 +296,7 @@ class _RecommendationCard extends StatelessWidget {
                   children: [
                     Text(
                       item.itemName,
-                      maxLines: 2,
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textPrimary,
@@ -332,8 +332,6 @@ class _RecommendationCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 6),
-                    _ReasonChip(reason: entry.reason),
-                    const SizedBox(height: 6),
                     _RecommendationTagWrap(entry: entry),
                   ],
                 ),
@@ -368,15 +366,19 @@ class _RecommendationTagWrap extends StatelessWidget {
   Widget build(BuildContext context) {
     final tags = <String>[];
     final item = entry.item;
-    if (item.itemPrice >= 2000 && item.itemPrice < 5000) {
-      tags.add('売れやすい価格');
+    void addTag(String label) {
+      if (tags.length >= 3) return;
+      if (!tags.contains(label)) tags.add(label);
     }
-    if (entry.reason == '人気商品' ||
-        entry.section == TodayRecommendationSection.popular) {
-      tags.add('人気商品');
+
+    if (item.itemPrice >= 3000 && item.itemPrice < 10000) {
+      addTag('売れ筋価格帯');
     }
+    if (entry.reason.trim().isNotEmpty) addTag(entry.reason.trim());
+    if (item.reviewCount >= 100) addTag('レビュー多数');
+    if (item.reviewAverage >= 4.3 && item.reviewCount >= 20) addTag('高評価');
     if (entry.section == TodayRecommendationSection.fresh) {
-      tags.add('新しい候補');
+      addTag('新しい候補');
     }
     if (tags.isEmpty) return const SizedBox.shrink();
     return Wrap(
@@ -407,38 +409,6 @@ class _ProductTag extends StatelessWidget {
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: AppColors.textSecondary,
           fontWeight: FontWeight.w700,
-        ),
-      ),
-    );
-  }
-}
-
-class _ReasonChip extends StatelessWidget {
-  const _ReasonChip({required this.reason});
-
-  final String reason;
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: const Color(0xFFFFEEF5),
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(
-            color: AppColors.accentPrimary.withValues(alpha: 0.18),
-          ),
-        ),
-        child: Text(
-          reason,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.accentPrimary,
-            fontWeight: FontWeight.w700,
-          ),
         ),
       ),
     );
