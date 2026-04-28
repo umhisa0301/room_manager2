@@ -19,9 +19,7 @@ import '../utils/room_colle_candidate_stale.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/app_text_field.dart';
-import '../widgets/home_primary_action_button.dart';
 import '../widgets/rakuten_managed_product_card.dart';
-import 'rakuten_search_screen.dart';
 
 /// ROOMコレ一覧の左右。ホームの 9 に対し **1dp だけ狭め**て一覧優先（違和感を抑える程度）。
 const double _kRoomListScreenPadH = 8;
@@ -1394,6 +1392,43 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     _persistRoomColleUiNow();
   }
 
+  TextEditingController get _activeRoomColleSearchController =>
+      _tabController.index == 0
+      ? _candidateSearchController
+      : _doneSearchController;
+
+  bool get _activeRoomColleSearchHasText =>
+      _activeRoomColleSearchController.text.trim().isNotEmpty;
+
+  void _onRoomColleSearchChanged(String value) {
+    if (!mounted) return;
+    final idx = _tabController.index;
+    setState(() {
+      if (idx == 0) {
+        _candidateListFilters = _candidateListFilters.copyWith(keyword: value);
+      } else {
+        _doneListFilters = _doneListFilters.copyWith(keyword: value);
+      }
+    });
+    _schedulePersistRoomColleSearch();
+  }
+
+  void _clearActiveRoomColleSearch() {
+    if (!mounted) return;
+    _persistSearchDebounce?.cancel();
+    final idx = _tabController.index;
+    setState(() {
+      if (idx == 0) {
+        _candidateSearchController.clear();
+        _candidateListFilters = _candidateListFilters.copyWith(keyword: '');
+      } else {
+        _doneSearchController.clear();
+        _doneListFilters = _doneListFilters.copyWith(keyword: '');
+      }
+    });
+    _persistRoomColleUiNow();
+  }
+
   RoomColleUiStateSnapshot _snapshotForPersist() {
     return RoomColleUiStateSnapshot(
       tabIndex: _tabController.index.clamp(0, 1),
@@ -1444,6 +1479,14 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
 
   void _persistRoomColleUiNow() {
     unawaited(_roomColleUiRepo.saveSanitized(_snapshotForPersist()));
+  }
+
+  void _schedulePersistRoomColleSearch() {
+    _persistSearchDebounce?.cancel();
+    _persistSearchDebounce = Timer(const Duration(milliseconds: 420), () {
+      if (!mounted) return;
+      _persistRoomColleUiNow();
+    });
   }
 
   int _resolveInitialTabIndex(RoomColleUiStateSnapshot persisted) {
@@ -1667,7 +1710,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        /// ① 主導線：楽天検索（候補を増やす）
+                        /// ① 管理導線：保存済み商品の検索（商品名 / ショップ名）
                         Padding(
                           padding: EdgeInsets.fromLTRB(
                             _RoomColleUi.insetSectionH,
@@ -1675,17 +1718,14 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                 ? _RoomColleUi.chromeTopPadPop
                                 : _RoomColleUi.chromeTopPadNoPop,
                             _RoomColleUi.insetSectionH,
-                            2,
+                            6,
                           ),
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               if (canPop)
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 4,
-                                    top: 2,
-                                  ),
+                                  padding: const EdgeInsets.only(right: 4),
                                   child: IconButton(
                                     visualDensity: VisualDensity.compact,
                                     constraints: const BoxConstraints(
@@ -1704,18 +1744,20 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   ),
                                 ),
                               Expanded(
-                                child: HomePrimaryActionButton(
-                                  emphasis: HomePrimaryActionEmphasis.hero,
-                                  icon: Icons.travel_explore_rounded,
-                                  label: '楽天で探す',
-                                  onPressed: () {
-                                    Navigator.of(context).push<void>(
-                                      MaterialPageRoute<void>(
-                                        builder: (_) =>
-                                            const RakutenSearchScreen(),
-                                      ),
-                                    );
-                                  },
+                                child: AppTextField(
+                                  key: ValueKey<int>(_tabController.index),
+                                  controller: _activeRoomColleSearchController,
+                                  onChanged: _onRoomColleSearchChanged,
+                                  textInputAction: TextInputAction.search,
+                                  hintText: '商品名 / ショップ名で検索',
+                                  suffixIcon: _activeRoomColleSearchHasText
+                                      ? IconButton(
+                                          tooltip: '検索文字を消去',
+                                          onPressed:
+                                              _clearActiveRoomColleSearch,
+                                          icon: const Icon(Icons.close_rounded),
+                                        )
+                                      : const Icon(Icons.search_rounded),
                                 ),
                               ),
                             ],

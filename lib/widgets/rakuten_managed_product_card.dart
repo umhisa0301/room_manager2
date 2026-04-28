@@ -79,10 +79,6 @@ class RakutenManagedProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCandidate = variant == RakutenManagedProductCardVariant.candidate;
-    final stateAccent = isCandidate
-        ? RoomColleListAccent.candidate
-        : RoomColleListAccent.done;
-
     final theme = Theme.of(context);
     final titleStyle = RoomColleProductListCardLayout.titleTextStyle(theme);
     final priceStyle = RoomColleProductListCardLayout.priceTextStyle(theme);
@@ -148,7 +144,7 @@ class RakutenManagedProductCard extends StatelessWidget {
             ] else ...[
               _feedbackToolbar(context),
               const SizedBox(height: 8),
-              _doneActions(context, stateAccent),
+              _doneActions(context),
             ],
           ],
         ),
@@ -272,71 +268,71 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   Widget _candidateActions(BuildContext context) {
     final provider = context.read<RakutenManagedProductProvider>();
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          flex: 34,
-          child: AppPrimaryButton(
-            label: '楽天で見る',
-            onPressed: () async {
-              final err = await provider.openRakutenItemPage(
-                context,
-                product.productId,
-              );
-              if (!context.mounted) return;
-              if (err != null) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(err)));
-              }
-            },
-            icon: const Icon(Icons.open_in_new_rounded),
-            height: 36,
-          ),
-        ),
-        const SizedBox(width: 4),
-        Expanded(
-          flex: 44,
-          child: Tooltip(
-            message: _canCollectRoom
-                ? 'ROOMのURLを開き、一覧をコレ済に移します。'
-                : 'ROOM用のURLが取得できるまでお待ちください',
-            child: AppPrimaryButton(
-              label: '投稿する',
-              onPressed: _canCollectRoom
-                  ? () async {
-                      if (onCollectPressed != null) {
-                        await onCollectPressed!(context, product);
-                        return;
-                      }
-                      await provider.collectRoomAndLaunch(
-                        context,
-                        product.productId,
-                      );
-                    }
-                  : null,
-              icon: Icon(
-                _canCollectRoom
-                    ? Icons.favorite_rounded
-                    : Icons.hourglass_top_rounded,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const gap = 6.0;
+        final narrow = constraints.maxWidth < 340;
+        final halfWidth = (constraints.maxWidth - gap) / 2;
+        final thirdWidth = (constraints.maxWidth - gap * 2) / 3;
+
+        return Wrap(
+          spacing: gap,
+          runSpacing: gap,
+          children: [
+            SizedBox(
+              width: narrow ? halfWidth : thirdWidth,
+              child: _DecisionActionButton(
+                label: '楽天で見る',
+                tone: _DecisionActionTone.external,
+                onPressed: () async {
+                  final err = await provider.openRakutenItemPage(
+                    context,
+                    product.productId,
+                  );
+                  if (!context.mounted) return;
+                  if (err != null) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(err)));
+                  }
+                },
               ),
-              height: 36,
             ),
-          ),
-        ),
-        const SizedBox(width: 4),
-        Expanded(
-          flex: 22,
-          child: AppSecondaryButton(
-            label: '見送る',
-            onPressed: () => _confirmRemoveCandidate(context, provider),
-            icon: const Icon(Icons.block_rounded),
-            expand: true,
-            height: 36,
-          ),
-        ),
-      ],
+            SizedBox(
+              width: narrow ? halfWidth : thirdWidth,
+              child: Tooltip(
+                message: _canCollectRoom
+                    ? 'ROOMのURLを開き、一覧をコレ済に移します。'
+                    : 'ROOM用のURLが取得できるまでお待ちください',
+                child: _DecisionActionButton(
+                  label: '投稿する',
+                  tone: _DecisionActionTone.primary,
+                  onPressed: _canCollectRoom
+                      ? () async {
+                          if (onCollectPressed != null) {
+                            await onCollectPressed!(context, product);
+                            return;
+                          }
+                          await provider.collectRoomAndLaunch(
+                            context,
+                            product.productId,
+                          );
+                        }
+                      : null,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: narrow ? constraints.maxWidth : thirdWidth,
+              child: _DecisionActionButton(
+                label: '候補から外す',
+                tone: _DecisionActionTone.destructive,
+                onPressed: () => _confirmRemoveCandidate(context, provider),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -348,7 +344,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('見送る'),
+        title: const Text('候補から外す'),
         content: Text('「$name」を候補から外します。よろしいですか？'),
         actions: [
           AppSecondaryButton(
@@ -356,7 +352,7 @@ class RakutenManagedProductCard extends StatelessWidget {
             onPressed: () => Navigator.of(ctx).pop(false),
           ),
           AppSecondaryButton(
-            label: '見送る',
+            label: '候補から外す',
             onPressed: () => Navigator.of(ctx).pop(true),
           ),
         ],
@@ -370,55 +366,58 @@ class RakutenManagedProductCard extends StatelessWidget {
     }
   }
 
-  Widget _doneActions(BuildContext context, Color stateAccent) {
+  Widget _doneActions(BuildContext context) {
     final provider = context.read<RakutenManagedProductProvider>();
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          flex: 40,
-          child: AppPrimaryButton(
-            label: '楽天で見る',
-            onPressed: () async {
-              final err = await provider.openRakutenItemPage(
-                context,
-                product.productId,
-              );
-              if (!context.mounted) return;
-              if (err != null) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(err)));
-              }
-            },
-            icon: const Icon(Icons.open_in_new_rounded),
-            height: 36,
-          ),
-        ),
-        const SizedBox(width: 6),
-        Expanded(
-          flex: 40,
-          child: Tooltip(
-            message: _hasRoomUrl ? 'ROOMの画面を開きます' : 'ROOM用のリンクが取得されていません',
-            child: AppSecondaryButton(
-              label: 'ROOMで確認',
-              onPressed: _hasRoomUrl
-                  ? () => AppActionService.openUrl(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const gap = 6.0;
+        final narrow = constraints.maxWidth < 300;
+        final itemWidth = narrow
+            ? constraints.maxWidth
+            : (constraints.maxWidth - gap) / 2;
+
+        return Wrap(
+          spacing: gap,
+          runSpacing: gap,
+          children: [
+            SizedBox(
+              width: itemWidth,
+              child: _DecisionActionButton(
+                label: '楽天で見る',
+                tone: _DecisionActionTone.external,
+                onPressed: () async {
+                  final err = await provider.openRakutenItemPage(
+                    context,
+                    product.productId,
+                  );
+                  if (!context.mounted) return;
+                  if (err != null) {
+                    ScaffoldMessenger.of(
                       context,
-                      url: product.extractedUrl.trim(),
-                    )
-                  : null,
-              icon: Icon(
-                _hasRoomUrl
-                    ? Icons.chat_bubble_outline_rounded
-                    : Icons.link_off_rounded,
+                    ).showSnackBar(SnackBar(content: Text(err)));
+                  }
+                },
               ),
-              expand: true,
-              height: 36,
             ),
-          ),
-        ),
-      ],
+            SizedBox(
+              width: itemWidth,
+              child: Tooltip(
+                message: _hasRoomUrl ? 'ROOMの画面を開きます' : 'ROOM用のリンクが取得されていません',
+                child: _DecisionActionButton(
+                  label: 'ROOMで確認',
+                  tone: _DecisionActionTone.external,
+                  onPressed: _hasRoomUrl
+                      ? () => AppActionService.openUrl(
+                          context,
+                          url: product.extractedUrl.trim(),
+                        )
+                      : null,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -446,6 +445,70 @@ class RakutenManagedProductCard extends StatelessWidget {
       Icons.image_outlined,
       size: 30,
       color: AppColors.textTertiary.withValues(alpha: 0.65),
+    );
+  }
+}
+
+enum _DecisionActionTone { external, primary, destructive }
+
+class _DecisionActionButton extends StatelessWidget {
+  const _DecisionActionButton({
+    required this.label,
+    required this.tone,
+    required this.onPressed,
+  });
+
+  final String label;
+  final _DecisionActionTone tone;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final isPrimary = tone == _DecisionActionTone.primary;
+    final isDestructive = tone == _DecisionActionTone.destructive;
+    final fg = isPrimary
+        ? AppColors.textOnAccent
+        : isDestructive
+        ? AppColors.textSecondary
+        : AppColors.accentPrimary;
+    final bg = isPrimary
+        ? AppColors.accentPrimary
+        : isDestructive
+        ? AppColors.surfaceVariant
+        : Colors.transparent;
+    final border = isPrimary
+        ? AppColors.accentPrimary
+        : isDestructive
+        ? AppColors.divider
+        : AppColors.accentPrimary.withValues(alpha: 0.72);
+
+    return SizedBox(
+      height: 40,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: fg,
+          backgroundColor: bg,
+          disabledForegroundColor: AppColors.textTertiary,
+          disabledBackgroundColor: isPrimary
+              ? AppColors.accentPrimary.withValues(alpha: 0.28)
+              : AppColors.surfaceVariant.withValues(alpha: 0.75),
+          side: BorderSide(color: border, width: isPrimary ? 0 : 1),
+          elevation: isPrimary ? 1.2 : 0,
+          minimumSize: const Size(0, 40),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(999),
+          ),
+          textStyle: AppTextStyles.label.copyWith(fontWeight: FontWeight.w800),
+        ),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(label, maxLines: 1, softWrap: false),
+        ),
+      ),
     );
   }
 }
