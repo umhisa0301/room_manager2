@@ -38,7 +38,7 @@ RoomColleRegisteredDatePreset roomColleRegisteredDatePresetFromWire(
   );
 }
 
-enum RoomCollePostedDatePreset { all, today, last7Days, last30Days }
+enum RoomCollePostedDatePreset { all, today, last3Days, last7Days, last30Days }
 
 RoomCollePostedDatePreset roomCollePostedDatePresetFromWire(String? raw) {
   final t = raw?.trim();
@@ -334,6 +334,8 @@ bool _matchesPostedDate(DateTime? raw, RoomCollePostedDatePreset preset) {
         return true;
       case RoomCollePostedDatePreset.today:
         return d == today;
+      case RoomCollePostedDatePreset.last3Days:
+        return !d.isBefore(today.subtract(const Duration(days: 2)));
       case RoomCollePostedDatePreset.last7Days:
         return !d.isBefore(today.subtract(const Duration(days: 6)));
       case RoomCollePostedDatePreset.last30Days:

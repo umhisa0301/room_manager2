@@ -128,7 +128,7 @@ class _RoomColleCompactFilterStrip extends StatelessWidget {
     if (excludeUrlNotReady) {
       chips.add(
         Chip(
-          label: const Text('取得済URLのみ'),
+          label: const Text('ROOM URLあり'),
           visualDensity: VisualDensity.compact,
           deleteIcon: const Icon(Icons.close_rounded, size: 16),
           onDeleted: onClear,
@@ -169,7 +169,7 @@ class _RoomColleCompactFilterStrip extends StatelessWidget {
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      '条件適用中',
+                      '絞り込み中',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -179,13 +179,13 @@ class _RoomColleCompactFilterStrip extends StatelessWidget {
                     ),
                   ),
                   AppSecondaryButton(
-                    label: '調整',
+                    label: '変更',
                     onPressed: onAdjust,
                     height: 32,
                   ),
                   const SizedBox(width: 6),
                   AppSecondaryButton(
-                    label: '解除',
+                    label: 'クリア',
                     onPressed: onClear,
                     height: 32,
                   ),
@@ -364,7 +364,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
     case RoomColleRegisteredDatePreset.today:
       out.add(
         Chip(
-          label: const Text('登録日: 今日'),
+          label: const Text('今日'),
           visualDensity: VisualDensity.compact,
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
@@ -380,7 +380,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
     case RoomColleRegisteredDatePreset.last3Days:
       out.add(
         Chip(
-          label: const Text('登録日: 3日以内'),
+          label: const Text('3日以内'),
           visualDensity: VisualDensity.compact,
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
@@ -396,7 +396,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
     case RoomColleRegisteredDatePreset.last7Days:
       out.add(
         Chip(
-          label: const Text('登録日: 7日以内'),
+          label: const Text('7日以内'),
           visualDensity: VisualDensity.compact,
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
@@ -412,7 +412,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
     case RoomColleRegisteredDatePreset.last30Days:
       out.add(
         Chip(
-          label: const Text('登録日: 30日以内'),
+          label: const Text('30日以内'),
           visualDensity: VisualDensity.compact,
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
@@ -428,7 +428,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
     case RoomColleRegisteredDatePreset.olderThan30Days:
       out.add(
         Chip(
-          label: const Text('登録日: 30日以上前'),
+          label: const Text('30日以上前'),
           visualDensity: VisualDensity.compact,
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
@@ -451,7 +451,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
         : labelFull;
     out.add(
       Chip(
-        label: Text('ジャンル: $short'),
+        label: Text(short),
         visualDensity: VisualDensity.compact,
         backgroundColor: HomeScreenColors.roomMetricTileFill,
         side: BorderSide(color: HomeScreenColors.metricTileOutline),
@@ -490,64 +490,6 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
       ),
     );
   }
-  switch (c.staleCandidatePreset) {
-    case RoomColleStaleCandidatePreset.none:
-      break;
-    case RoomColleStaleCandidatePreset.threePlus:
-      out.add(
-        Chip(
-          label: const Text('整理対象: 3日以上'),
-          visualDensity: VisualDensity.compact,
-          backgroundColor: HomeScreenColors.roomMetricTileFill,
-          side: BorderSide(
-            color: const Color(0xFF1565C0).withValues(alpha: 0.45),
-          ),
-          labelStyle: TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFF1565C0),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-        ),
-      );
-      break;
-    case RoomColleStaleCandidatePreset.sevenPlus:
-      out.add(
-        Chip(
-          label: const Text('整理対象: 7日以上'),
-          visualDensity: VisualDensity.compact,
-          backgroundColor: HomeScreenColors.roomMetricTileFill,
-          side: BorderSide(
-            color: const Color(0xFFE65100).withValues(alpha: 0.45),
-          ),
-          labelStyle: TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFFE65100),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-        ),
-      );
-      break;
-    case RoomColleStaleCandidatePreset.thirtyPlus:
-      out.add(
-        Chip(
-          label: const Text('整理対象: 30日以上'),
-          visualDensity: VisualDensity.compact,
-          backgroundColor: HomeScreenColors.roomMetricTileFill,
-          side: BorderSide(
-            color: const Color(0xFFB71C1C).withValues(alpha: 0.45),
-          ),
-          labelStyle: TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFFB71C1C),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-        ),
-      );
-      break;
-  }
   switch (c.shopFilterMode) {
     case RoomColleShopFilterMode.all:
       break;
@@ -572,7 +514,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
       if (name != null && name.isNotEmpty) {
         out.add(
           Chip(
-            label: Text('ショップ: $name'),
+            label: Text(name),
             visualDensity: VisualDensity.compact,
             backgroundColor: HomeScreenColors.roomMetricTileFill,
             side: BorderSide(color: HomeScreenColors.metricTileOutline),
@@ -606,7 +548,7 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
 
   if (c.candidateHasRoomUrlOnly) addBoolChip('ROOM URLあり');
   if (c.candidateTodayRecommendationOnly) addBoolChip('今日のおすすめ');
-  if (c.candidateUnpostedOnly) addBoolChip('未投稿のみ');
+  if (c.candidateUnpostedOnly) addBoolChip('未投稿');
   if (c.doneFeedbackSold) addBoolChip('売れた');
   if (c.doneFeedbackLiked) addBoolChip('反応あり');
   if (c.doneFeedbackWeak) addBoolChip('微妙');
@@ -616,13 +558,16 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
     case RoomCollePostedDatePreset.all:
       break;
     case RoomCollePostedDatePreset.today:
-      addBoolChip('投稿日: 今日');
+      addBoolChip('今日');
+      break;
+    case RoomCollePostedDatePreset.last3Days:
+      addBoolChip('3日以内');
       break;
     case RoomCollePostedDatePreset.last7Days:
-      addBoolChip('投稿日: 7日以内');
+      addBoolChip('7日以内');
       break;
     case RoomCollePostedDatePreset.last30Days:
-      addBoolChip('投稿日: 30日以内');
+      addBoolChip('30日以内');
       break;
   }
   return out;
@@ -666,35 +611,35 @@ class _RoomColleFilterEditorSheet extends StatefulWidget {
       _RoomColleFilterEditorSheetState();
 }
 
+enum _RoomColleCandidateStateFilter {
+  all,
+  unposted,
+  roomUrl,
+  todayRecommendation,
+}
+
+enum _RoomColleDoneEvaluationFilter { all, sold, liked, weak, unrated }
+
 class _RoomColleFilterEditorSheetState
     extends State<_RoomColleFilterEditorSheet> {
-  late RoomColleRegisteredDatePreset _preset;
-  late RoomColleShopFilterMode _shopFilterMode;
-  String? _shopName;
-  late RoomColleStaleCandidatePreset _staleCandidateDraft;
+  static const String _shopAll = '__all__';
+  static const String _shopSaved = '__saved__';
+
+  late RoomColleRegisteredDatePreset _datePreset;
+  late String _shopValue;
   String? _genreId;
   late final TextEditingController _minPriceCtrl;
   late final TextEditingController _maxPriceCtrl;
-  late bool _excludeUrlNotReadyDraft;
-  late bool _todayRecommendationOnlyDraft;
-  late bool _unpostedOnlyDraft;
-  late bool _doneSoldDraft;
-  late bool _doneLikedDraft;
-  late bool _doneWeakDraft;
-  late bool _doneUnratedDraft;
-  late bool _doneRoomConfirmedDraft;
-  late RoomCollePostedDatePreset _postedDatePreset;
+  late _RoomColleCandidateStateFilter _candidateState;
+  late _RoomColleDoneEvaluationFilter _doneEvaluation;
 
   @override
   void initState() {
     super.initState();
-    _preset = widget.initial.registeredDatePreset;
-    _shopFilterMode = widget.initial.shopFilterMode;
-    final shop = widget.initial.shopName?.trim();
-    _shopName = (shop != null && shop.isNotEmpty) ? shop : null;
-    _staleCandidateDraft = widget.isCandidateTab
-        ? widget.initial.staleCandidatePreset
-        : RoomColleStaleCandidatePreset.none;
+    _datePreset = widget.isCandidateTab
+        ? _simpleDatePreset(widget.initial.registeredDatePreset)
+        : _datePresetFromPosted(widget.initial.postedDatePreset);
+    _shopValue = _shopValueFromCriteria(widget.initial);
     final g = widget.initial.genreId?.trim();
     _genreId = (g != null && g.isNotEmpty) ? g : null;
     _minPriceCtrl = TextEditingController(
@@ -703,34 +648,8 @@ class _RoomColleFilterEditorSheetState
     _maxPriceCtrl = TextEditingController(
       text: widget.initial.priceMaxYen?.toString() ?? '',
     );
-    _excludeUrlNotReadyDraft = widget.isCandidateTab
-        ? (widget.initialExcludeUrlNotReady ||
-              widget.initial.candidateHasRoomUrlOnly)
-        : false;
-    _todayRecommendationOnlyDraft = widget.isCandidateTab
-        ? widget.initial.candidateTodayRecommendationOnly
-        : false;
-    _unpostedOnlyDraft = widget.isCandidateTab
-        ? widget.initial.candidateUnpostedOnly
-        : false;
-    _doneSoldDraft = widget.isCandidateTab
-        ? false
-        : widget.initial.doneFeedbackSold;
-    _doneLikedDraft = widget.isCandidateTab
-        ? false
-        : widget.initial.doneFeedbackLiked;
-    _doneWeakDraft = widget.isCandidateTab
-        ? false
-        : widget.initial.doneFeedbackWeak;
-    _doneUnratedDraft = widget.isCandidateTab
-        ? false
-        : widget.initial.doneFeedbackUnrated;
-    _doneRoomConfirmedDraft = widget.isCandidateTab
-        ? false
-        : widget.initial.doneRoomConfirmedOnly;
-    _postedDatePreset = widget.isCandidateTab
-        ? RoomCollePostedDatePreset.all
-        : widget.initial.postedDatePreset;
+    _candidateState = _candidateStateFromCriteria(widget.initial);
+    _doneEvaluation = _doneEvaluationFromCriteria(widget.initial);
   }
 
   @override
@@ -740,34 +659,104 @@ class _RoomColleFilterEditorSheetState
     super.dispose();
   }
 
-  void _resetDraftExtended() {
-    setState(() {
-      _preset = RoomColleRegisteredDatePreset.all;
-      _shopFilterMode = RoomColleShopFilterMode.all;
-      _shopName = null;
-      _staleCandidateDraft = RoomColleStaleCandidatePreset.none;
-      _genreId = null;
-      _minPriceCtrl.clear();
-      _maxPriceCtrl.clear();
-      if (widget.isCandidateTab) {
-        _excludeUrlNotReadyDraft = false;
-        _todayRecommendationOnlyDraft = false;
-        _unpostedOnlyDraft = false;
-      } else {
-        _doneSoldDraft = false;
-        _doneLikedDraft = false;
-        _doneWeakDraft = false;
-        _doneUnratedDraft = false;
-        _doneRoomConfirmedDraft = false;
-        _postedDatePreset = RoomCollePostedDatePreset.all;
-      }
-    });
+  RoomColleRegisteredDatePreset _simpleDatePreset(
+    RoomColleRegisteredDatePreset preset,
+  ) {
+    return preset == RoomColleRegisteredDatePreset.olderThan30Days
+        ? RoomColleRegisteredDatePreset.all
+        : preset;
+  }
+
+  RoomColleRegisteredDatePreset _datePresetFromPosted(
+    RoomCollePostedDatePreset preset,
+  ) {
+    switch (preset) {
+      case RoomCollePostedDatePreset.all:
+        return RoomColleRegisteredDatePreset.all;
+      case RoomCollePostedDatePreset.today:
+        return RoomColleRegisteredDatePreset.today;
+      case RoomCollePostedDatePreset.last3Days:
+        return RoomColleRegisteredDatePreset.last3Days;
+      case RoomCollePostedDatePreset.last7Days:
+        return RoomColleRegisteredDatePreset.last7Days;
+      case RoomCollePostedDatePreset.last30Days:
+        return RoomColleRegisteredDatePreset.last30Days;
+    }
+  }
+
+  RoomCollePostedDatePreset _postedPresetFromDate(
+    RoomColleRegisteredDatePreset preset,
+  ) {
+    switch (_simpleDatePreset(preset)) {
+      case RoomColleRegisteredDatePreset.all:
+      case RoomColleRegisteredDatePreset.olderThan30Days:
+        return RoomCollePostedDatePreset.all;
+      case RoomColleRegisteredDatePreset.today:
+        return RoomCollePostedDatePreset.today;
+      case RoomColleRegisteredDatePreset.last3Days:
+        return RoomCollePostedDatePreset.last3Days;
+      case RoomColleRegisteredDatePreset.last7Days:
+        return RoomCollePostedDatePreset.last7Days;
+      case RoomColleRegisteredDatePreset.last30Days:
+        return RoomCollePostedDatePreset.last30Days;
+    }
+  }
+
+  String _shopValueFromCriteria(RoomColleListFilterCriteria criteria) {
+    switch (criteria.shopFilterMode) {
+      case RoomColleShopFilterMode.all:
+        return _shopAll;
+      case RoomColleShopFilterMode.saved:
+        return _shopSaved;
+      case RoomColleShopFilterMode.shopName:
+        final name = criteria.shopName?.trim();
+        return (name == null || name.isEmpty) ? _shopAll : name;
+    }
+  }
+
+  _RoomColleCandidateStateFilter _candidateStateFromCriteria(
+    RoomColleListFilterCriteria criteria,
+  ) {
+    if (criteria.candidateUnpostedOnly) {
+      return _RoomColleCandidateStateFilter.unposted;
+    }
+    if (criteria.candidateHasRoomUrlOnly || widget.initialExcludeUrlNotReady) {
+      return _RoomColleCandidateStateFilter.roomUrl;
+    }
+    if (criteria.candidateTodayRecommendationOnly) {
+      return _RoomColleCandidateStateFilter.todayRecommendation;
+    }
+    return _RoomColleCandidateStateFilter.all;
+  }
+
+  _RoomColleDoneEvaluationFilter _doneEvaluationFromCriteria(
+    RoomColleListFilterCriteria criteria,
+  ) {
+    if (criteria.doneFeedbackSold) return _RoomColleDoneEvaluationFilter.sold;
+    if (criteria.doneFeedbackLiked) return _RoomColleDoneEvaluationFilter.liked;
+    if (criteria.doneFeedbackWeak) return _RoomColleDoneEvaluationFilter.weak;
+    if (criteria.doneFeedbackUnrated) {
+      return _RoomColleDoneEvaluationFilter.unrated;
+    }
+    return _RoomColleDoneEvaluationFilter.all;
   }
 
   int? _tryParseYenField(TextEditingController c) {
     final t = c.text.trim();
     if (t.isEmpty) return null;
     return int.tryParse(t);
+  }
+
+  void _resetDraftExtended() {
+    setState(() {
+      _datePreset = RoomColleRegisteredDatePreset.all;
+      _shopValue = _shopAll;
+      _genreId = null;
+      _candidateState = _RoomColleCandidateStateFilter.all;
+      _doneEvaluation = _RoomColleDoneEvaluationFilter.all;
+      _minPriceCtrl.clear();
+      _maxPriceCtrl.clear();
+    });
   }
 
   void _apply() {
@@ -785,39 +774,55 @@ class _RoomColleFilterEditorSheetState
       minY = maxY;
       maxY = t;
     }
+
+    final shopMode = _shopValue == _shopSaved
+        ? RoomColleShopFilterMode.saved
+        : _shopValue == _shopAll
+        ? RoomColleShopFilterMode.all
+        : RoomColleShopFilterMode.shopName;
+    final shopName = shopMode == RoomColleShopFilterMode.shopName
+        ? _shopValue
+        : null;
+
     final merged = widget.initial.copyWith(
-      registeredDatePreset: _preset,
-      shopFilterMode: _shopFilterMode,
-      shopName: _shopName,
-      clearShopName:
-          _shopFilterMode != RoomColleShopFilterMode.shopName ||
-          (_shopName?.trim().isEmpty ?? true),
-      staleCandidatePreset: widget.isCandidateTab
-          ? _staleCandidateDraft
-          : RoomColleStaleCandidatePreset.none,
+      registeredDatePreset: widget.isCandidateTab
+          ? _datePreset
+          : RoomColleRegisteredDatePreset.all,
+      postedDatePreset: widget.isCandidateTab
+          ? RoomCollePostedDatePreset.all
+          : _postedPresetFromDate(_datePreset),
+      shopFilterMode: shopMode,
+      shopName: shopName,
+      clearShopName: shopName == null,
+      staleCandidatePreset: RoomColleStaleCandidatePreset.none,
       genreId: _genreId,
       clearGenreId: _genreId == null || _genreId!.isEmpty,
       priceMinYen: minY,
       priceMaxYen: maxY,
       clearPriceMin: minY == null,
       clearPriceMax: maxY == null,
-      candidateHasRoomUrlOnly: widget.isCandidateTab
-          ? _excludeUrlNotReadyDraft
-          : false,
-      candidateTodayRecommendationOnly: widget.isCandidateTab
-          ? _todayRecommendationOnlyDraft
-          : false,
-      candidateUnpostedOnly: widget.isCandidateTab ? _unpostedOnlyDraft : false,
-      doneFeedbackSold: widget.isCandidateTab ? false : _doneSoldDraft,
-      doneFeedbackLiked: widget.isCandidateTab ? false : _doneLikedDraft,
-      doneFeedbackWeak: widget.isCandidateTab ? false : _doneWeakDraft,
-      doneFeedbackUnrated: widget.isCandidateTab ? false : _doneUnratedDraft,
-      doneRoomConfirmedOnly: widget.isCandidateTab
-          ? false
-          : _doneRoomConfirmedDraft,
-      postedDatePreset: widget.isCandidateTab
-          ? RoomCollePostedDatePreset.all
-          : _postedDatePreset,
+      candidateHasRoomUrlOnly:
+          widget.isCandidateTab &&
+          _candidateState == _RoomColleCandidateStateFilter.roomUrl,
+      candidateTodayRecommendationOnly:
+          widget.isCandidateTab &&
+          _candidateState == _RoomColleCandidateStateFilter.todayRecommendation,
+      candidateUnpostedOnly:
+          widget.isCandidateTab &&
+          _candidateState == _RoomColleCandidateStateFilter.unposted,
+      doneFeedbackSold:
+          !widget.isCandidateTab &&
+          _doneEvaluation == _RoomColleDoneEvaluationFilter.sold,
+      doneFeedbackLiked:
+          !widget.isCandidateTab &&
+          _doneEvaluation == _RoomColleDoneEvaluationFilter.liked,
+      doneFeedbackWeak:
+          !widget.isCandidateTab &&
+          _doneEvaluation == _RoomColleDoneEvaluationFilter.weak,
+      doneFeedbackUnrated:
+          !widget.isCandidateTab &&
+          _doneEvaluation == _RoomColleDoneEvaluationFilter.unrated,
+      doneRoomConfirmedOnly: false,
     );
     Navigator.of(context).pop(
       _RoomColleFilterSheetApplyResult(
@@ -828,643 +833,299 @@ class _RoomColleFilterEditorSheetState
     );
   }
 
+  InputDecoration _fieldDecoration() {
+    return InputDecoration(
+      filled: true,
+      fillColor: HomeScreenColors.deckFill,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide(color: HomeScreenColors.deckOutline),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide(color: HomeScreenColors.deckOutline),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    );
+  }
+
+  Widget _label(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+          fontWeight: FontWeight.w800,
+          color: HomeScreenColors.leadOnSection,
+        ),
+      ),
+    );
+  }
+
+  Widget _dropdown<T>({
+    required String label,
+    required T value,
+    required List<DropdownMenuItem<T>> items,
+    required ValueChanged<T?> onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _label(label),
+        DropdownButtonFormField<T>(
+          key: ValueKey<Object?>(value),
+          initialValue: value,
+          isExpanded: true,
+          decoration: _fieldDecoration(),
+          items: items,
+          onChanged: onChanged,
+        ),
+      ],
+    );
+  }
+
+  List<DropdownMenuItem<RoomColleRegisteredDatePreset>> _dateItems() {
+    return const [
+      DropdownMenuItem(
+        value: RoomColleRegisteredDatePreset.all,
+        child: Text('すべて'),
+      ),
+      DropdownMenuItem(
+        value: RoomColleRegisteredDatePreset.today,
+        child: Text('今日'),
+      ),
+      DropdownMenuItem(
+        value: RoomColleRegisteredDatePreset.last3Days,
+        child: Text('3日以内'),
+      ),
+      DropdownMenuItem(
+        value: RoomColleRegisteredDatePreset.last7Days,
+        child: Text('7日以内'),
+      ),
+      DropdownMenuItem(
+        value: RoomColleRegisteredDatePreset.last30Days,
+        child: Text('30日以内'),
+      ),
+    ];
+  }
+
+  List<DropdownMenuItem<String>> _shopItems() {
+    return [
+      const DropdownMenuItem(value: _shopAll, child: Text('すべて')),
+      const DropdownMenuItem(value: _shopSaved, child: Text('保存したショップ')),
+      ...widget.shopNames.map(
+        (name) => DropdownMenuItem(
+          value: name,
+          child: Text(name, overflow: TextOverflow.ellipsis),
+        ),
+      ),
+    ];
+  }
+
+  List<DropdownMenuItem<String>> _genreItems() {
+    final choices = List<String>.of(widget.genreIds);
+    final gCur = _genreId;
+    if (gCur != null && gCur.isNotEmpty && !choices.contains(gCur)) {
+      choices.add(gCur);
+    }
+    choices.sort();
+    return [
+      const DropdownMenuItem(value: '', child: Text('すべて')),
+      ...choices.map(
+        (id) => DropdownMenuItem(
+          value: id,
+          child: Text(
+            _roomColleGenreFilterMenuText(id),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
+    ];
+  }
+
+  List<DropdownMenuItem<_RoomColleCandidateStateFilter>>
+  _candidateStateItems() {
+    return const [
+      DropdownMenuItem(
+        value: _RoomColleCandidateStateFilter.all,
+        child: Text('すべて'),
+      ),
+      DropdownMenuItem(
+        value: _RoomColleCandidateStateFilter.unposted,
+        child: Text('未投稿'),
+      ),
+      DropdownMenuItem(
+        value: _RoomColleCandidateStateFilter.roomUrl,
+        child: Text('ROOM URLあり'),
+      ),
+      DropdownMenuItem(
+        value: _RoomColleCandidateStateFilter.todayRecommendation,
+        child: Text('今日のおすすめ'),
+      ),
+    ];
+  }
+
+  List<DropdownMenuItem<_RoomColleDoneEvaluationFilter>> _evaluationItems() {
+    return const [
+      DropdownMenuItem(
+        value: _RoomColleDoneEvaluationFilter.all,
+        child: Text('すべて'),
+      ),
+      DropdownMenuItem(
+        value: _RoomColleDoneEvaluationFilter.sold,
+        child: Text('売れた'),
+      ),
+      DropdownMenuItem(
+        value: _RoomColleDoneEvaluationFilter.liked,
+        child: Text('反応あり'),
+      ),
+      DropdownMenuItem(
+        value: _RoomColleDoneEvaluationFilter.weak,
+        child: Text('微妙'),
+      ),
+      DropdownMenuItem(
+        value: _RoomColleDoneEvaluationFilter.unrated,
+        child: Text('未評価'),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    final bottomInset = MediaQuery.paddingOf(context).bottom;
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
     return Material(
       color: HomeScreenColors.canvas,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: SingleChildScrollView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          padding: EdgeInsets.fromLTRB(
-            _kRoomListScreenPadH,
-            12,
-            _kRoomListScreenPadH,
-            16 + bottomInset + MediaQuery.viewInsetsOf(context).bottom,
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 12),
-                  decoration: BoxDecoration(
-                    color: AppColors.divider,
-                    borderRadius: BorderRadius.circular(999),
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: EdgeInsets.fromLTRB(
+              _kRoomListScreenPadH,
+              12,
+              _kRoomListScreenPadH,
+              16 + bottomPadding,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: AppColors.divider,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                widget.sectionTitle,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: HomeScreenColors.accentSectionHeading,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                widget.isCandidateTab
-                    ? 'キーワードは上部の検索欄を使います。登録日・ジャンル・価格に加え、コレ候補タブだけ有効な「ROOMのURL」条件もここで変更できます。'
-                    : 'キーワードは上部の検索欄を使います。登録日・ショップ・ジャンル・価格に加え、評価と投稿日で絞り込めます。',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: HomeScreenColors.groupedSectionBody,
-                  height: 1.35,
-                  fontSize: 12,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'ショップ',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: HomeScreenColors.leadOnSection,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: _RoomColleUi.chipSpacing,
-                runSpacing: _RoomColleUi.chipSpacing,
-                children: [
-                  ChoiceChip(
-                    label: const Text('指定なし'),
-                    selected: _shopFilterMode == RoomColleShopFilterMode.all,
-                    onSelected: (_) => setState(() {
-                      _shopFilterMode = RoomColleShopFilterMode.all;
-                      _shopName = null;
-                    }),
-                    visualDensity: VisualDensity.compact,
-                  ),
-                  ChoiceChip(
-                    label: const Text('保存ショップ'),
-                    selected: _shopFilterMode == RoomColleShopFilterMode.saved,
-                    onSelected: (_) => setState(() {
-                      _shopFilterMode = RoomColleShopFilterMode.saved;
-                      _shopName = null;
-                    }),
-                    visualDensity: VisualDensity.compact,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              InputDecorator(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: HomeScreenColors.deckFill,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: HomeScreenColors.deckOutline),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: HomeScreenColors.deckOutline),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4,
+                Text(
+                  widget.sectionTitle,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: HomeScreenColors.accentSectionHeading,
                   ),
                 ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String?>(
-                    value:
-                        _shopFilterMode == RoomColleShopFilterMode.shopName &&
-                            widget.shopNames.contains(_shopName)
-                        ? _shopName
-                        : null,
-                    isExpanded: true,
-                    isDense: true,
-                    items: [
-                      const DropdownMenuItem<String?>(
-                        value: null,
-                        child: Text('ショップ名を指定しない'),
-                      ),
-                      ...widget.shopNames.map(
-                        (name) => DropdownMenuItem<String?>(
-                          value: name,
-                          child: Text(name, overflow: TextOverflow.ellipsis),
-                        ),
-                      ),
-                    ],
-                    onChanged: (v) => setState(() {
-                      _shopName = v;
-                      _shopFilterMode = v == null
-                          ? RoomColleShopFilterMode.all
-                          : RoomColleShopFilterMode.shopName;
-                    }),
-                  ),
-                ),
-              ),
-              if (widget.isCandidateTab) ...[
                 const SizedBox(height: 14),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Color.alphaBlend(
-                      AppColors.accentLight.withValues(alpha: 0.12),
-                      HomeScreenColors.roomContentWellFill,
-                    ),
-                    borderRadius: BorderRadius.circular(
-                      _RoomColleUi.radiusSectionInner,
-                    ),
-                    border: Border.all(color: HomeScreenColors.deckOutline),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 3,
-                              ),
-                              decoration: BoxDecoration(
-                                color:
-                                    HomeScreenColors.metricRoleCandidateIconBg,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                '候補タブのみ',
-                                style: Theme.of(context).textTheme.labelSmall
-                                    ?.copyWith(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w800,
-                                      color: HomeScreenColors
-                                          .metricRoleCandidateIcon,
-                                      height: 1.15,
-                                    ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'ROOMのURLで一覧を絞る',
-                          style: Theme.of(context).textTheme.labelMedium
-                              ?.copyWith(
-                                fontWeight: FontWeight.w800,
-                                color: HomeScreenColors.accentSectionHeading,
-                              ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'いま開けるROOM用URLがある候補だけ残します（コレ前の整理向け）。',
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: HomeScreenColors.footnoteMuted,
-                                fontSize: 11,
-                                height: 1.32,
-                              ),
-                        ),
-                        const SizedBox(height: 10),
-                        Material(
-                          color: HomeScreenColors.deckFill,
-                          borderRadius: BorderRadius.circular(10),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(10),
-                            splashColor: HomeScreenColors.inkAccentSplash,
-                            highlightColor: HomeScreenColors.inkAccentHighlight,
-                            onTap: () => setState(
-                              () => _excludeUrlNotReadyDraft =
-                                  !_excludeUrlNotReadyDraft,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 8,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.link_rounded,
-                                    size: 20,
-                                    color: HomeScreenColors.statusAccentStrong,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: Text(
-                                      '取得済みROOM URLのみ',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                            fontWeight: _excludeUrlNotReadyDraft
-                                                ? FontWeight.w800
-                                                : FontWeight.w600,
-                                            fontSize: 14,
-                                            color: _excludeUrlNotReadyDraft
-                                                ? HomeScreenColors
-                                                      .accentSectionHeading
-                                                : HomeScreenColors.titlePrimary,
-                                          ),
-                                    ),
-                                  ),
-                                  Switch.adaptive(
-                                    value: _excludeUrlNotReadyDraft,
-                                    onChanged: (v) => setState(
-                                      () => _excludeUrlNotReadyDraft = v,
-                                    ),
-                                    activeTrackColor: AppColors.accentPrimary
-                                        .withValues(alpha: 0.38),
-                                    activeThumbColor: AppColors.accentPrimary,
-                                    inactiveTrackColor: AppColors.divider
-                                        .withValues(alpha: 0.65),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        SwitchListTile.adaptive(
-                          value: _todayRecommendationOnlyDraft,
-                          onChanged: (v) =>
-                              setState(() => _todayRecommendationOnlyDraft = v),
-                          title: const Text('今日のおすすめ由来のみ'),
-                          dense: true,
-                          contentPadding: EdgeInsets.zero,
-                        ),
-                        SwitchListTile.adaptive(
-                          value: _unpostedOnlyDraft,
-                          onChanged: (v) =>
-                              setState(() => _unpostedOnlyDraft = v),
-                          title: const Text('未投稿のみ'),
-                          dense: true,
-                          contentPadding: EdgeInsets.zero,
-                        ),
-                      ],
-                    ),
-                  ),
+                _dropdown<RoomColleRegisteredDatePreset>(
+                  label: '日付',
+                  value: _datePreset,
+                  items: _dateItems(),
+                  onChanged: (v) {
+                    if (v != null) setState(() => _datePreset = v);
+                  },
                 ),
-              ],
-              if (widget.isCandidateTab) ...[
-                const SizedBox(height: 16),
-                Text(
-                  '古い候補を整理',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: HomeScreenColors.leadOnSection,
-                  ),
+                const SizedBox(height: 14),
+                _dropdown<String>(
+                  label: 'ショップ',
+                  value: _shopValue,
+                  items: _shopItems(),
+                  onChanged: (v) {
+                    if (v != null) setState(() => _shopValue = v);
+                  },
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  '整理対象の経過日数で絞り込み（他の条件と併用可。候補タブの一覧のみに効きます）。',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: HomeScreenColors.footnoteMuted,
-                    fontSize: 11,
-                    height: 1.32,
-                  ),
+                const SizedBox(height: 14),
+                _dropdown<String>(
+                  label: 'ジャンル',
+                  value: _genreId ?? '',
+                  items: _genreItems(),
+                  onChanged: (v) {
+                    setState(
+                      () => _genreId = (v == null || v.isEmpty) ? null : v,
+                    );
+                  },
                 ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: _RoomColleUi.chipSpacing,
-                  runSpacing: _RoomColleUi.chipSpacing,
+                const SizedBox(height: 14),
+                _label('価格'),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FilterChip(
-                      label: const Text('3日以上'),
-                      selected:
-                          _staleCandidateDraft ==
-                          RoomColleStaleCandidatePreset.threePlus,
-                      showCheckmark: false,
-                      onSelected: (_) {
-                        setState(() {
-                          _staleCandidateDraft =
-                              _staleCandidateDraft ==
-                                  RoomColleStaleCandidatePreset.threePlus
-                              ? RoomColleStaleCandidatePreset.none
-                              : RoomColleStaleCandidatePreset.threePlus;
-                        });
-                      },
-                      visualDensity: VisualDensity.compact,
+                    Expanded(
+                      child: AppTextField(
+                        controller: _minPriceCtrl,
+                        keyboardType: TextInputType.number,
+                        hintText: '最低価格',
+                      ),
                     ),
-                    FilterChip(
-                      label: const Text('7日以上'),
-                      selected:
-                          _staleCandidateDraft ==
-                          RoomColleStaleCandidatePreset.sevenPlus,
-                      showCheckmark: false,
-                      onSelected: (_) {
-                        setState(() {
-                          _staleCandidateDraft =
-                              _staleCandidateDraft ==
-                                  RoomColleStaleCandidatePreset.sevenPlus
-                              ? RoomColleStaleCandidatePreset.none
-                              : RoomColleStaleCandidatePreset.sevenPlus;
-                        });
-                      },
-                      visualDensity: VisualDensity.compact,
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 14,
+                      ),
+                      child: Text('〜'),
                     ),
-                    FilterChip(
-                      label: const Text('30日以上'),
-                      selected:
-                          _staleCandidateDraft ==
-                          RoomColleStaleCandidatePreset.thirtyPlus,
-                      showCheckmark: false,
-                      onSelected: (_) {
-                        setState(() {
-                          _staleCandidateDraft =
-                              _staleCandidateDraft ==
-                                  RoomColleStaleCandidatePreset.thirtyPlus
-                              ? RoomColleStaleCandidatePreset.none
-                              : RoomColleStaleCandidatePreset.thirtyPlus;
-                        });
-                      },
-                      visualDensity: VisualDensity.compact,
+                    Expanded(
+                      child: AppTextField(
+                        controller: _maxPriceCtrl,
+                        keyboardType: TextInputType.number,
+                        hintText: '最高価格',
+                      ),
                     ),
                   ],
                 ),
-              ],
-              if (!widget.isCandidateTab) ...[
-                const SizedBox(height: 16),
-                Text(
-                  'コレ済の評価',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: HomeScreenColors.leadOnSection,
+                const SizedBox(height: 14),
+                if (widget.isCandidateTab)
+                  _dropdown<_RoomColleCandidateStateFilter>(
+                    label: '状態',
+                    value: _candidateState,
+                    items: _candidateStateItems(),
+                    onChanged: (v) {
+                      if (v != null) setState(() => _candidateState = v);
+                    },
+                  )
+                else
+                  _dropdown<_RoomColleDoneEvaluationFilter>(
+                    label: '評価',
+                    value: _doneEvaluation,
+                    items: _evaluationItems(),
+                    onChanged: (v) {
+                      if (v != null) setState(() => _doneEvaluation = v);
+                    },
                   ),
+                const SizedBox(height: 20),
+                AppPrimaryButton(label: 'この条件を適用', onPressed: _apply),
+                const SizedBox(height: 10),
+                AppSecondaryButton(
+                  label: 'リセット',
+                  onPressed: _resetDraftExtended,
+                  expand: true,
+                  height: 44,
                 ),
                 const SizedBox(height: 8),
-                Wrap(
-                  spacing: _RoomColleUi.chipSpacing,
-                  runSpacing: _RoomColleUi.chipSpacing,
-                  children: [
-                    FilterChip(
-                      label: const Text('売れた'),
-                      selected: _doneSoldDraft,
-                      onSelected: (v) => setState(() => _doneSoldDraft = v),
-                      showCheckmark: false,
-                      visualDensity: VisualDensity.compact,
-                    ),
-                    FilterChip(
-                      label: const Text('反応あり'),
-                      selected: _doneLikedDraft,
-                      onSelected: (v) => setState(() => _doneLikedDraft = v),
-                      showCheckmark: false,
-                      visualDensity: VisualDensity.compact,
-                    ),
-                    FilterChip(
-                      label: const Text('微妙'),
-                      selected: _doneWeakDraft,
-                      onSelected: (v) => setState(() => _doneWeakDraft = v),
-                      showCheckmark: false,
-                      visualDensity: VisualDensity.compact,
-                    ),
-                    FilterChip(
-                      label: const Text('未評価'),
-                      selected: _doneUnratedDraft,
-                      onSelected: (v) => setState(() => _doneUnratedDraft = v),
-                      showCheckmark: false,
-                      visualDensity: VisualDensity.compact,
-                    ),
-                    FilterChip(
-                      label: const Text('ROOMで確認済み'),
-                      selected: _doneRoomConfirmedDraft,
-                      onSelected: (v) =>
-                          setState(() => _doneRoomConfirmedDraft = v),
-                      showCheckmark: false,
-                      visualDensity: VisualDensity.compact,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  '投稿日',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: HomeScreenColors.leadOnSection,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: _RoomColleUi.chipSpacing,
-                  runSpacing: _RoomColleUi.chipSpacing,
-                  children: [
-                    ChoiceChip(
-                      label: const Text('すべて'),
-                      selected:
-                          _postedDatePreset == RoomCollePostedDatePreset.all,
-                      onSelected: (_) => setState(
-                        () => _postedDatePreset = RoomCollePostedDatePreset.all,
-                      ),
-                      visualDensity: VisualDensity.compact,
-                    ),
-                    ChoiceChip(
-                      label: const Text('今日'),
-                      selected:
-                          _postedDatePreset == RoomCollePostedDatePreset.today,
-                      onSelected: (_) => setState(
-                        () =>
-                            _postedDatePreset = RoomCollePostedDatePreset.today,
-                      ),
-                      visualDensity: VisualDensity.compact,
-                    ),
-                    ChoiceChip(
-                      label: const Text('7日以内'),
-                      selected:
-                          _postedDatePreset ==
-                          RoomCollePostedDatePreset.last7Days,
-                      onSelected: (_) => setState(
-                        () => _postedDatePreset =
-                            RoomCollePostedDatePreset.last7Days,
-                      ),
-                      visualDensity: VisualDensity.compact,
-                    ),
-                    ChoiceChip(
-                      label: const Text('30日以内'),
-                      selected:
-                          _postedDatePreset ==
-                          RoomCollePostedDatePreset.last30Days,
-                      onSelected: (_) => setState(
-                        () => _postedDatePreset =
-                            RoomCollePostedDatePreset.last30Days,
-                      ),
-                      visualDensity: VisualDensity.compact,
-                    ),
-                  ],
+                AppSecondaryButton(
+                  label: '閉じる',
+                  onPressed: () => Navigator.of(context).pop(),
+                  expand: true,
+                  height: 44,
                 ),
               ],
-              const SizedBox(height: 16),
-              Text(
-                '登録日（端末に保存した日）',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: HomeScreenColors.leadOnSection,
-                ),
-              ),
-              const SizedBox(height: 8),
-              SegmentedButton<RoomColleRegisteredDatePreset>(
-                showSelectedIcon: false,
-                segments: const <ButtonSegment<RoomColleRegisteredDatePreset>>[
-                  ButtonSegment<RoomColleRegisteredDatePreset>(
-                    value: RoomColleRegisteredDatePreset.all,
-                    label: Text('すべて'),
-                  ),
-                  ButtonSegment<RoomColleRegisteredDatePreset>(
-                    value: RoomColleRegisteredDatePreset.today,
-                    label: Text('今日'),
-                  ),
-                  ButtonSegment<RoomColleRegisteredDatePreset>(
-                    value: RoomColleRegisteredDatePreset.last3Days,
-                    label: Text('3日'),
-                  ),
-                  ButtonSegment<RoomColleRegisteredDatePreset>(
-                    value: RoomColleRegisteredDatePreset.last7Days,
-                    label: Text('7日'),
-                  ),
-                  ButtonSegment<RoomColleRegisteredDatePreset>(
-                    value: RoomColleRegisteredDatePreset.last30Days,
-                    label: Text('30日'),
-                  ),
-                  ButtonSegment<RoomColleRegisteredDatePreset>(
-                    value: RoomColleRegisteredDatePreset.olderThan30Days,
-                    label: Text('30日超'),
-                  ),
-                ],
-                selected: <RoomColleRegisteredDatePreset>{_preset},
-                onSelectionChanged: (selection) {
-                  if (selection.isEmpty) return;
-                  setState(() => _preset = selection.first);
-                },
-                style: ButtonStyle(
-                  visualDensity: VisualDensity.standard,
-                  tapTargetSize: MaterialTapTargetSize.padded,
-                  padding: WidgetStateProperty.all(
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 18),
-              Text(
-                'ジャンル（楽天 genreId）',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: HomeScreenColors.leadOnSection,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                '一覧にないIDは出ません。名称はアプリ内マスタで引き、未登録IDは「未分類」と表示されます。',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: HomeScreenColors.footnoteMuted,
-                  fontSize: 11,
-                  height: 1.35,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Builder(
-                builder: (context) {
-                  final choices = List<String>.of(widget.genreIds);
-                  final gCur = _genreId;
-                  if (gCur != null &&
-                      gCur.isNotEmpty &&
-                      !choices.contains(gCur)) {
-                    choices.add(gCur);
-                  }
-                  choices.sort();
-                  final effectiveGenre = gCur != null && choices.contains(gCur)
-                      ? gCur
-                      : null;
-                  return InputDecorator(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: HomeScreenColors.deckFill,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: HomeScreenColors.deckOutline,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: HomeScreenColors.deckOutline,
-                        ),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String?>(
-                        value: effectiveGenre,
-                        isExpanded: true,
-                        isDense: true,
-                        items: [
-                          const DropdownMenuItem<String?>(
-                            value: null,
-                            child: Text('指定なし'),
-                          ),
-                          ...choices.map(
-                            (id) => DropdownMenuItem<String?>(
-                              value: id,
-                              child: Text(
-                                _roomColleGenreFilterMenuText(id),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                        ],
-                        onChanged: (v) => setState(() => _genreId = v),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 18),
-              Text(
-                '価格帯（税込 itemPrice・円）',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: HomeScreenColors.leadOnSection,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: AppTextField(
-                      controller: _minPriceCtrl,
-                      keyboardType: TextInputType.number,
-                      hintText: '下限',
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-                    child: Text('〜'),
-                  ),
-                  Expanded(
-                    child: AppTextField(
-                      controller: _maxPriceCtrl,
-                      keyboardType: TextInputType.number,
-                      hintText: '上限',
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              AppPrimaryButton(label: 'この条件を適用', onPressed: _apply),
-              const SizedBox(height: 10),
-              AppSecondaryButton(
-                label: 'シート内の条件をリセット',
-                onPressed: _resetDraftExtended,
-                expand: true,
-                height: 44,
-              ),
-              const SizedBox(height: 8),
-              AppSecondaryButton(
-                label: '閉じる',
-                onPressed: () => Navigator.of(context).pop(),
-                expand: true,
-                height: 44,
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -1929,7 +1590,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     final genreIds = _roomColleDistinctGenreIds(base);
     final shopNames = _roomColleDistinctShopNames(base);
     final current = isCandidate ? _candidateListFilters : _doneListFilters;
-    final title = isCandidate ? '候補一覧の条件（キーワード以外）' : 'コレ済一覧の条件（キーワード以外）';
+    const title = 'フィルター';
     final result = await showModalBottomSheet<_RoomColleFilterSheetApplyResult>(
       context: context,
       isScrollControlled: true,
@@ -3357,7 +3018,7 @@ class _RoomCollectionUrlFilterEmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                '「取得済URLのみ」では一覧に出せる商品がありません',
+                '「ROOM URLあり」に一致する商品がありません',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: HomeScreenColors.titlePrimary,
@@ -3367,7 +3028,7 @@ class _RoomCollectionUrlFilterEmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                '「キーワード以外の条件」で「取得済URLのみ」をオフにすると、URL未準備の候補も表示されます。',
+                'フィルターを変更すると、URL未準備の候補も表示できます。',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: HomeScreenColors.groupedSectionBody,
