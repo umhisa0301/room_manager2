@@ -2219,7 +2219,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  '気に入った商品は「コレ候補に追加」からROOMコレに入れられます',
+                  '気に入った商品は「候補に追加」からROOMコレに入れられます',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: HomeScreenColors.groupedSectionBody,
                     height: 1.32,
@@ -2633,7 +2633,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return const RakutenSearchIdleView(
           icon: Icons.manage_search_outlined,
           title: '検索結果がここに並びます',
-          subtitle: 'キーワードを入れて「検索」。気に入った商品はカードの「コレ候補に追加」からROOMコレへ。',
+          subtitle: 'キーワードを入れて「検索」。気に入った商品は「候補に追加」でROOMコレへ。',
           stateFootnote: '候補・コレ済は除外（最大100件）。',
           compactLayout: true,
         );
@@ -2760,7 +2760,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return const RakutenSearchIdleView(
           icon: Icons.explore_outlined,
           title: 'ジャンル探索の結果はここに並びます',
-          subtitle: 'ジャンルを選んで「検索」。気に入った商品は「コレ候補に追加」でROOMコレに保存。',
+          subtitle: 'ジャンルを選んで「検索」。気に入った商品は「候補に追加」でROOMコレに保存。',
           stateFootnote: '候補・コレ済は除外（最大100件）。',
           compactLayout: true,
         );
@@ -3110,9 +3110,9 @@ enum _RakutenSearchMode {
   product(
     '商品名で探す',
     Icons.shopping_bag_outlined,
-    'キーワードで探し、気に入った商品はカードの「コレ候補に追加」でROOMコレへ。',
+    'キーワードで探し、気に入った商品は「候補に追加」でROOMコレへ。',
   ),
-  genre('ジャンルから探す', Icons.explore_outlined, 'ジャンルで広く眺め、同じボタンからコレ候補に追加できます。'),
+  genre('ジャンルから探す', Icons.explore_outlined, 'ジャンルで広く眺め、同じボタンから候補に追加できます。'),
   shopDiscovery(
     'ショップを発掘',
     Icons.storefront_outlined,

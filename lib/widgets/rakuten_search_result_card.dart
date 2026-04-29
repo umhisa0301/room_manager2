@@ -262,9 +262,9 @@ class RakutenSearchResultCard extends StatelessWidget {
     }
 
     return Tooltip(
-      message: 'ROOMコレの「コレ候補」に追加します。あとからROOMコレタブの候補一覧で比較・整理できます。',
+      message: 'ROOMコレの候補に追加します。あとから候補一覧で比較・整理できます。',
       child: _SearchCardActionButton(
-        label: 'コレ候補に追加',
+        label: '候補に追加',
         icon: Icons.add_rounded,
         primary: true,
         onPressed: isRegistering ? null : onRegisterCandidate,

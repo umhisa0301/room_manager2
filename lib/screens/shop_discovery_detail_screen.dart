@@ -161,7 +161,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
               ),
               decoration: RakutenSearchScreenUi.modeTabDeckDecoration(),
               child: Text(
-                '使い方: 商品検索画面と同じく、各商品カードから「コレ候補へ登録」できます。',
+                '使い方: 商品検索画面と同じく、各商品カードから「候補に追加」できます。',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                   height: 1.4,

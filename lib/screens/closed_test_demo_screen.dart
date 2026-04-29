@@ -909,7 +909,7 @@ class _ClosedTestDemoScreenState extends State<ClosedTestDemoScreen>
               alignment: Alignment.centerRight,
               child: AppPrimaryButton(
                 key: _targetKeys[_tRegisterCandidateBtn],
-                label: 'コレ候補へ登録',
+                label: '候補に追加',
                 onPressed: () {},
                 icon: const Icon(Icons.bookmark_add_outlined),
                 expand: false,
