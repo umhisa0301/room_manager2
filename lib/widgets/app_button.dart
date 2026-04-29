@@ -59,7 +59,10 @@ class AppPrimaryButton extends StatelessWidget {
                 ),
               )
             : icon ?? const SizedBox.shrink(),
-        label: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+        label: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(label, maxLines: 1, softWrap: false),
+        ),
       ),
     );
 

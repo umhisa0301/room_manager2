@@ -17,7 +17,6 @@ import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../widgets/app_button.dart';
-import '../widgets/home_primary_action_button.dart';
 import '../widgets/room_colle_product_list_card_layout.dart';
 
 // --- ホーム画面：レイアウト・タイポ・装飾の統一（画面ロジックとは分離）---
@@ -384,20 +383,10 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                               kpi: kpi,
                               collectLimit: collectLimit,
                               candidateCount: nCandidate,
-                              doneCount: nDone,
-                              onTodayCollectTap: () => _openRoomList(
-                                context,
-                                initialTabIndex: 1,
-                                doneFilterLocalDay: todayLocalDay,
-                              ),
                               totalCount: recProvider.totalCount,
                               pendingCount: recProvider.pendingCount,
                               isCompleted: recProvider.isCompleted,
                               isLoading: recProvider.isLoading,
-                              dateLabel: recProvider.activeDateLabelJp,
-                              errorMessage: recProvider.errorMessage,
-                              onOpenRecommendations: () =>
-                                  _openTodayRecommendations(context),
                               hasTodaySuggestions: hasTodaySuggestions,
                               todayDoneCountForRec: todayDoneCountForRec,
                               recTotalCount: recProvider.totalCount,
@@ -405,10 +394,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                   openRakutenSearchScreen(context),
                               onOpenCandidates: () =>
                                   _openRoomList(context, initialTabIndex: 0),
-                              onOpenDone: () =>
-                                  _openRoomList(context, initialTabIndex: 1),
                               onOpenActivity: () => _openActivity(context),
-                              onOpenComments: () => _openComments(context),
                               onPrimaryRecommendations: () =>
                                   _openTodayRecommendations(context),
                             ),
@@ -587,65 +573,61 @@ class _HomeTodayProgressCard extends StatelessWidget {
     required this.kpi,
     required this.collectLimit,
     required this.candidateCount,
-    required this.doneCount,
-    required this.onTodayCollectTap,
     required this.totalCount,
     required this.pendingCount,
     required this.isCompleted,
     required this.isLoading,
-    required this.dateLabel,
-    required this.errorMessage,
-    required this.onOpenRecommendations,
     required this.hasTodaySuggestions,
     required this.todayDoneCountForRec,
     required this.recTotalCount,
     required this.onOpenSearch,
     required this.onOpenCandidates,
-    required this.onOpenDone,
     required this.onOpenActivity,
-    required this.onOpenComments,
     required this.onPrimaryRecommendations,
   });
 
   final RoomKpiSummary kpi;
   final _CollectLimitStats collectLimit;
   final int candidateCount;
-  final int doneCount;
-  final VoidCallback onTodayCollectTap;
   final int totalCount;
   final int pendingCount;
   final bool isCompleted;
   final bool isLoading;
-  final String? dateLabel;
-  final String? errorMessage;
-  final VoidCallback onOpenRecommendations;
   final bool hasTodaySuggestions;
   final int todayDoneCountForRec;
   final int recTotalCount;
   final VoidCallback onOpenSearch;
   final VoidCallback onOpenCandidates;
-  final VoidCallback onOpenDone;
   final VoidCallback onOpenActivity;
-  final VoidCallback onOpenComments;
   final VoidCallback onPrimaryRecommendations;
 
   @override
   Widget build(BuildContext context) {
     final primary = _primaryAction();
-    final message = collectLimit.isDailyReached
+    final statusMessage = collectLimit.isDailyReached
         ? '今日は結果確認へ'
         : collectLimit.isHourlyReached
         ? '今は整理しましょう'
         : pendingCount > 0
-        ? 'まずはおすすめ候補を確認しましょう'
+        ? 'あと$pendingCount件進めましょう'
         : candidateCount == 0
         ? '候補を探しましょう'
         : '候補を整理して進めましょう';
+    final recommendationLabel = isLoading && totalCount == 0
+        ? '算出中'
+        : totalCount == 0
+        ? 'まだなし'
+        : pendingCount == 0
+        ? '完了'
+        : '残り$pendingCount件';
+    final doneLabel = hasTodaySuggestions && recTotalCount > 0
+        ? 'おすすめ $todayDoneCountForRec/$recTotalCount 件済'
+        : '今日の記録から集計';
 
     return Container(
       width: double.infinity,
       decoration: _HomeUi.searchEntrySectionDecoration(),
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+      padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -663,8 +645,8 @@ class _HomeTodayProgressCard extends StatelessWidget {
                         fontSize: 17,
                       ),
                     ),
-                    const SizedBox(height: 3),
-                    Text(message, style: _HomeUi.sectionBody(context)),
+                    const SizedBox(height: 4),
+                    Text(statusMessage, style: _HomeUi.sectionBody(context)),
                   ],
                 ),
               ),
@@ -673,38 +655,25 @@ class _HomeTodayProgressCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          _CollectLimitProgressLine(
-            title: '今日',
+          const SizedBox(height: 14),
+          _TodayCollectHero(
             count: collectLimit.todayCount,
             limit: _CollectLimitStats.dailyLimit,
             remaining: collectLimit.dailyRemaining,
             state: collectLimit.dailyState,
           ),
-          const SizedBox(height: 8),
-          _CollectLimitProgressLine(
-            title: '1時間',
-            count: collectLimit.hourCount,
-            limit: _CollectLimitStats.hourlyLimit,
-            remaining: collectLimit.hourlyRemaining,
-            state: collectLimit.hourlyState,
-            trailing: _formatRecoveryLabel(collectLimit.hourRecoveryAt),
+          const SizedBox(height: 14),
+          _HomeHeroCtaButton(
+            icon: primary.icon,
+            label: primary.label,
+            onPressed: primary.onPressed,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Wrap(
             spacing: 8,
             runSpacing: 6,
             children: [
-              _HomeInlineMetric(
-                label: 'おすすめ',
-                value: isLoading && totalCount == 0
-                    ? '算出中'
-                    : totalCount == 0
-                    ? 'まだなし'
-                    : '未処理 $pendingCount件',
-              ),
-              _HomeInlineMetric(label: 'コレ候補', value: '$candidateCount件'),
-              _HomeInlineMetric(label: 'コレ済', value: '$doneCount件'),
+              _HomeInlineMetric(label: 'おすすめ', value: recommendationLabel),
               _HomeInlineMetric(
                 label: '連続活動',
                 value: kpi.consecutiveActiveDays == 0
@@ -713,19 +682,25 @@ class _HomeTodayProgressCard extends StatelessWidget {
               ),
             ],
           ),
-          if (hasTodaySuggestions) ...[
-            const SizedBox(height: 5),
-            Text(
-              'おすすめ $todayDoneCountForRec/$recTotalCount 件済',
-              style: _HomeUi.tapHint(context),
-            ),
-          ],
-          const SizedBox(height: 8),
-          HomePrimaryActionButton(
-            emphasis: HomePrimaryActionEmphasis.hero,
-            icon: primary.icon,
-            label: primary.label,
-            onPressed: primary.onPressed,
+          const SizedBox(height: 10),
+          Text(doneLabel, style: _HomeUi.tapHint(context)),
+          const SizedBox(height: 10),
+          _CollectLimitProgressLine(
+            title: '今日の進捗',
+            count: collectLimit.todayCount,
+            limit: _CollectLimitStats.dailyLimit,
+            remaining: collectLimit.dailyRemaining,
+            state: collectLimit.dailyState,
+          ),
+          const SizedBox(height: 9),
+          _CollectLimitProgressLine(
+            title: '今コレできる',
+            count: collectLimit.hourlyRemaining,
+            limit: _CollectLimitStats.hourlyLimit,
+            remaining: collectLimit.hourlyRemaining,
+            state: collectLimit.hourlyState,
+            trailing: _formatRecoveryLabel(collectLimit.hourRecoveryAt),
+            progressCount: collectLimit.hourCount,
           ),
         ],
       ),
@@ -735,7 +710,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
   _HomeActionSpec _primaryAction() {
     if (collectLimit.isDailyReached) {
       return _HomeActionSpec(
-        label: '結果を見る',
+        label: '今日の結果を見る',
         icon: Icons.insights_rounded,
         onPressed: onOpenActivity,
       );
@@ -749,7 +724,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
     }
     if (pendingCount > 0) {
       return _HomeActionSpec(
-        label: 'おすすめを見る',
+        label: 'おすすめコレを見る',
         icon: Icons.auto_awesome_rounded,
         onPressed: onPrimaryRecommendations,
       );
@@ -765,6 +740,157 @@ class _HomeTodayProgressCard extends StatelessWidget {
       label: '候補を整理',
       icon: Icons.inventory_2_outlined,
       onPressed: onOpenCandidates,
+    );
+  }
+}
+
+class _TodayCollectHero extends StatelessWidget {
+  const _TodayCollectHero({
+    required this.count,
+    required this.limit,
+    required this.remaining,
+    required this.state,
+  });
+
+  final int count;
+  final int limit;
+  final int remaining;
+  final _CollectLimitState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = switch (state) {
+      _CollectLimitState.normal => AppColors.accentPrimary,
+      _CollectLimitState.warning => const Color(0xFFE67E22),
+      _CollectLimitState.reached => AppColors.textSecondary,
+    };
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      decoration: BoxDecoration(
+        color: Color.alphaBlend(
+          AppColors.accentLight.withValues(alpha: 0.34),
+          AppColors.surface,
+        ),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: AppColors.accentPrimary.withValues(alpha: 0.18),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '$count',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                      fontSize: 40,
+                      height: 0.95,
+                      letterSpacing: -1.0,
+                      fontWeight: FontWeight.w900,
+                      color: accent,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  '/ $limit件',
+                  maxLines: 1,
+                  style: _HomeUi.sectionBody(context).copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: HomeScreenColors.footnoteMuted,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  '今日のコレ',
+                  maxLines: 1,
+                  style: _HomeUi.sectionTitle(context).copyWith(fontSize: 14),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            remaining == 0 ? '今日はここまで' : 'あと$remaining件',
+            maxLines: 1,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontSize: 18,
+              height: 1.2,
+              fontWeight: FontWeight.w900,
+              color: HomeScreenColors.titlePrimary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HomeHeroCtaButton extends StatelessWidget {
+  const _HomeHeroCtaButton({
+    required this.icon,
+    required this.label,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.accentPrimary.withValues(alpha: 0.22),
+            blurRadius: 14,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: SizedBox(
+        height: 58,
+        child: FilledButton.icon(
+          onPressed: onPressed,
+          style: FilledButton.styleFrom(
+            foregroundColor: AppColors.textOnAccent,
+            backgroundColor: AppColors.accentPrimary,
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          icon: Icon(icon, size: 22),
+          label: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              label,
+              maxLines: 1,
+              softWrap: false,
+              style: AppTextStyles.button.copyWith(
+                fontWeight: FontWeight.w900,
+                letterSpacing: -0.2,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -818,6 +944,7 @@ class _CollectLimitProgressLine extends StatelessWidget {
     required this.remaining,
     required this.state,
     this.trailing,
+    this.progressCount,
   });
 
   final String title;
@@ -826,15 +953,17 @@ class _CollectLimitProgressLine extends StatelessWidget {
   final int remaining;
   final _CollectLimitState state;
   final String? trailing;
+  final int? progressCount;
 
   @override
   Widget build(BuildContext context) {
     final color = switch (state) {
       _CollectLimitState.normal => AppColors.accentPrimary,
       _CollectLimitState.warning => const Color(0xFFE67E22),
-      _CollectLimitState.reached => AppColors.error,
+      _CollectLimitState.reached => AppColors.textSecondary,
     };
-    final progress = limit <= 0 ? 0.0 : (count / limit).clamp(0.0, 1.0);
+    final usedCount = progressCount ?? count;
+    final progress = limit <= 0 ? 0.0 : (usedCount / limit).clamp(0.0, 1.0);
     final trailingText = trailing == null || trailing!.isEmpty
         ? '残り $remaining件'
         : trailing!;
@@ -846,7 +975,9 @@ class _CollectLimitProgressLine extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                '$title：$count / $limit件',
+                title == '今コレできる'
+                    ? '$title：$remaining件'
+                    : '$title：$count / $limit件',
                 maxLines: 1,
                 style: _HomeUi.sectionBody(context).copyWith(
                   fontWeight: FontWeight.w800,
@@ -856,7 +987,7 @@ class _CollectLimitProgressLine extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              trailingText,
+              title == '今コレできる' ? '1時間' : trailingText,
               maxLines: 1,
               style: _HomeUi.tapHint(context).copyWith(
                 color: state == _CollectLimitState.normal
@@ -872,7 +1003,7 @@ class _CollectLimitProgressLine extends StatelessWidget {
           borderRadius: BorderRadius.circular(999),
           child: LinearProgressIndicator(
             value: progress,
-            minHeight: 6,
+            minHeight: 8,
             backgroundColor: HomeScreenColors.progressTrack,
             color: color,
           ),
@@ -1079,7 +1210,7 @@ class _HomeNextActionsSection extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: _HomeUi.searchEntrySectionDecoration(),
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -1089,8 +1220,16 @@ class _HomeNextActionsSection extends StatelessWidget {
               context,
             ).copyWith(color: HomeScreenColors.accentSectionHeading),
           ),
-          const SizedBox(height: 8),
-          _HomeActionWrap(actions: actions),
+          const SizedBox(height: 10),
+          _HomeHeroCtaButton(
+            icon: actions.first.icon,
+            label: actions.first.label,
+            onPressed: actions.first.onPressed,
+          ),
+          if (actions.length > 1) ...[
+            const SizedBox(height: 8),
+            _HomeActionWrap(actions: actions.skip(1).toList(growable: false)),
+          ],
         ],
       ),
     );
@@ -1106,7 +1245,7 @@ class _HomeNextActionsSection extends StatelessWidget {
     if (collectLimit.isDailyReached) {
       add(
         _HomeActionSpec(
-          label: '活動を見る',
+          label: '今日の結果を見る',
           icon: Icons.insights_outlined,
           onPressed: onActivity,
         ),
@@ -1156,7 +1295,7 @@ class _HomeNextActionsSection extends StatelessWidget {
     if (pendingRecommendations > 0) {
       add(
         _HomeActionSpec(
-          label: 'おすすめを見る',
+          label: 'おすすめコレを見る',
           icon: Icons.auto_awesome_rounded,
           onPressed: onRecommendations,
         ),
