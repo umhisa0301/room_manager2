@@ -11,6 +11,8 @@ import '../repository/genre_master_repository.dart';
 import '../repository/room_colle_ui_state_repository.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
+import '../state/saved_shop_provider.dart';
+import '../state/today_recommendation_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
@@ -303,12 +305,55 @@ List<String> _roomColleDistinctGenreIds(List<RakutenManagedProduct> items) {
   return out;
 }
 
+List<String> _roomColleDistinctShopNames(List<RakutenManagedProduct> items) {
+  final s = <String>{};
+  for (final e in items) {
+    try {
+      final name = e.shopName.trim();
+      if (name.isNotEmpty) s.add(name);
+    } catch (_) {}
+  }
+  final out = s.toList()..sort();
+  return out;
+}
+
 String _roomColleGenreFilterMenuText(String id) {
   final raw = RakutenGenreMasterService.instance.roomColleGenreFilterMenuLabel(
     id,
   );
   if (raw.length > 42) return '${raw.substring(0, 40)}…';
   return raw;
+}
+
+String _roomColleGenreLabelForProduct(
+  RakutenManagedProduct product, {
+  Map<String, String>? prefetchedGenreLabels,
+}) {
+  return RakutenProductGenreDisplay.resolve(
+    apiGenreName: null,
+    persistedGenreName: product.persistedGenreDisplayName,
+    prefetchedGenreName: prefetchedGenreLabels?[product.genreId.trim()],
+    genreId: product.genreId,
+    traceItemCode: product.productId,
+  );
+}
+
+Set<String> _savedShopIdSet(BuildContext context) {
+  return context
+      .watch<SavedShopProvider>()
+      .shops
+      .map((e) => e.shopId.trim())
+      .where((e) => e.isNotEmpty)
+      .toSet();
+}
+
+Set<String> _todayRecommendationIdSet(BuildContext context) {
+  final bundle = context.watch<TodayRecommendationProvider>().bundle;
+  return bundle?.entries
+          .map((e) => e.item.productId.trim())
+          .where((e) => e.isNotEmpty)
+          .toSet() ??
+      <String>{};
 }
 
 List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
@@ -332,10 +377,58 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
         ),
       );
       break;
+    case RoomColleRegisteredDatePreset.last3Days:
+      out.add(
+        Chip(
+          label: const Text('登録日: 3日以内'),
+          visualDensity: VisualDensity.compact,
+          backgroundColor: HomeScreenColors.roomMetricTileFill,
+          side: BorderSide(color: HomeScreenColors.metricTileOutline),
+          labelStyle: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: HomeScreenColors.metricTileTitleColor,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+        ),
+      );
+      break;
     case RoomColleRegisteredDatePreset.last7Days:
       out.add(
         Chip(
           label: const Text('登録日: 7日以内'),
+          visualDensity: VisualDensity.compact,
+          backgroundColor: HomeScreenColors.roomMetricTileFill,
+          side: BorderSide(color: HomeScreenColors.metricTileOutline),
+          labelStyle: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: HomeScreenColors.metricTileTitleColor,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+        ),
+      );
+      break;
+    case RoomColleRegisteredDatePreset.last30Days:
+      out.add(
+        Chip(
+          label: const Text('登録日: 30日以内'),
+          visualDensity: VisualDensity.compact,
+          backgroundColor: HomeScreenColors.roomMetricTileFill,
+          side: BorderSide(color: HomeScreenColors.metricTileOutline),
+          labelStyle: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: HomeScreenColors.metricTileTitleColor,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+        ),
+      );
+      break;
+    case RoomColleRegisteredDatePreset.olderThan30Days:
+      out.add(
+        Chip(
+          label: const Text('登録日: 30日以上前'),
           visualDensity: VisualDensity.compact,
           backgroundColor: HomeScreenColors.roomMetricTileFill,
           side: BorderSide(color: HomeScreenColors.metricTileOutline),
@@ -455,6 +548,83 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
       );
       break;
   }
+  switch (c.shopFilterMode) {
+    case RoomColleShopFilterMode.all:
+      break;
+    case RoomColleShopFilterMode.saved:
+      out.add(
+        Chip(
+          label: const Text('保存ショップ'),
+          visualDensity: VisualDensity.compact,
+          backgroundColor: HomeScreenColors.roomMetricTileFill,
+          side: BorderSide(color: HomeScreenColors.metricTileOutline),
+          labelStyle: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: HomeScreenColors.metricTileTitleColor,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+        ),
+      );
+      break;
+    case RoomColleShopFilterMode.shopName:
+      final name = c.shopName?.trim();
+      if (name != null && name.isNotEmpty) {
+        out.add(
+          Chip(
+            label: Text('ショップ: $name'),
+            visualDensity: VisualDensity.compact,
+            backgroundColor: HomeScreenColors.roomMetricTileFill,
+            side: BorderSide(color: HomeScreenColors.metricTileOutline),
+            labelStyle: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: HomeScreenColors.metricTileTitleColor,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+          ),
+        );
+      }
+      break;
+  }
+  void addBoolChip(String label) {
+    out.add(
+      Chip(
+        label: Text(label),
+        visualDensity: VisualDensity.compact,
+        backgroundColor: HomeScreenColors.roomMetricTileFill,
+        side: BorderSide(color: HomeScreenColors.metricTileOutline),
+        labelStyle: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+          color: HomeScreenColors.metricTileTitleColor,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+      ),
+    );
+  }
+
+  if (c.candidateHasRoomUrlOnly) addBoolChip('ROOM URLあり');
+  if (c.candidateTodayRecommendationOnly) addBoolChip('今日のおすすめ');
+  if (c.candidateUnpostedOnly) addBoolChip('未投稿のみ');
+  if (c.doneFeedbackSold) addBoolChip('売れた');
+  if (c.doneFeedbackLiked) addBoolChip('反応あり');
+  if (c.doneFeedbackWeak) addBoolChip('微妙');
+  if (c.doneFeedbackUnrated) addBoolChip('未評価');
+  if (c.doneRoomConfirmedOnly) addBoolChip('ROOMで確認済み');
+  switch (c.postedDatePreset) {
+    case RoomCollePostedDatePreset.all:
+      break;
+    case RoomCollePostedDatePreset.today:
+      addBoolChip('投稿日: 今日');
+      break;
+    case RoomCollePostedDatePreset.last7Days:
+      addBoolChip('投稿日: 7日以内');
+      break;
+    case RoomCollePostedDatePreset.last30Days:
+      addBoolChip('投稿日: 30日以内');
+      break;
+  }
   return out;
 }
 
@@ -479,6 +649,7 @@ class _RoomColleFilterEditorSheet extends StatefulWidget {
     required this.sectionTitle,
     required this.initial,
     required this.genreIds,
+    required this.shopNames,
     required this.isCandidateTab,
     this.initialExcludeUrlNotReady = false,
   });
@@ -486,6 +657,7 @@ class _RoomColleFilterEditorSheet extends StatefulWidget {
   final String sectionTitle;
   final RoomColleListFilterCriteria initial;
   final List<String> genreIds;
+  final List<String> shopNames;
   final bool isCandidateTab;
   final bool initialExcludeUrlNotReady;
 
@@ -497,16 +669,29 @@ class _RoomColleFilterEditorSheet extends StatefulWidget {
 class _RoomColleFilterEditorSheetState
     extends State<_RoomColleFilterEditorSheet> {
   late RoomColleRegisteredDatePreset _preset;
+  late RoomColleShopFilterMode _shopFilterMode;
+  String? _shopName;
   late RoomColleStaleCandidatePreset _staleCandidateDraft;
   String? _genreId;
   late final TextEditingController _minPriceCtrl;
   late final TextEditingController _maxPriceCtrl;
   late bool _excludeUrlNotReadyDraft;
+  late bool _todayRecommendationOnlyDraft;
+  late bool _unpostedOnlyDraft;
+  late bool _doneSoldDraft;
+  late bool _doneLikedDraft;
+  late bool _doneWeakDraft;
+  late bool _doneUnratedDraft;
+  late bool _doneRoomConfirmedDraft;
+  late RoomCollePostedDatePreset _postedDatePreset;
 
   @override
   void initState() {
     super.initState();
     _preset = widget.initial.registeredDatePreset;
+    _shopFilterMode = widget.initial.shopFilterMode;
+    final shop = widget.initial.shopName?.trim();
+    _shopName = (shop != null && shop.isNotEmpty) ? shop : null;
     _staleCandidateDraft = widget.isCandidateTab
         ? widget.initial.staleCandidatePreset
         : RoomColleStaleCandidatePreset.none;
@@ -519,8 +704,33 @@ class _RoomColleFilterEditorSheetState
       text: widget.initial.priceMaxYen?.toString() ?? '',
     );
     _excludeUrlNotReadyDraft = widget.isCandidateTab
-        ? widget.initialExcludeUrlNotReady
+        ? (widget.initialExcludeUrlNotReady ||
+              widget.initial.candidateHasRoomUrlOnly)
         : false;
+    _todayRecommendationOnlyDraft = widget.isCandidateTab
+        ? widget.initial.candidateTodayRecommendationOnly
+        : false;
+    _unpostedOnlyDraft = widget.isCandidateTab
+        ? widget.initial.candidateUnpostedOnly
+        : false;
+    _doneSoldDraft = widget.isCandidateTab
+        ? false
+        : widget.initial.doneFeedbackSold;
+    _doneLikedDraft = widget.isCandidateTab
+        ? false
+        : widget.initial.doneFeedbackLiked;
+    _doneWeakDraft = widget.isCandidateTab
+        ? false
+        : widget.initial.doneFeedbackWeak;
+    _doneUnratedDraft = widget.isCandidateTab
+        ? false
+        : widget.initial.doneFeedbackUnrated;
+    _doneRoomConfirmedDraft = widget.isCandidateTab
+        ? false
+        : widget.initial.doneRoomConfirmedOnly;
+    _postedDatePreset = widget.isCandidateTab
+        ? RoomCollePostedDatePreset.all
+        : widget.initial.postedDatePreset;
   }
 
   @override
@@ -533,12 +743,23 @@ class _RoomColleFilterEditorSheetState
   void _resetDraftExtended() {
     setState(() {
       _preset = RoomColleRegisteredDatePreset.all;
+      _shopFilterMode = RoomColleShopFilterMode.all;
+      _shopName = null;
       _staleCandidateDraft = RoomColleStaleCandidatePreset.none;
       _genreId = null;
       _minPriceCtrl.clear();
       _maxPriceCtrl.clear();
       if (widget.isCandidateTab) {
         _excludeUrlNotReadyDraft = false;
+        _todayRecommendationOnlyDraft = false;
+        _unpostedOnlyDraft = false;
+      } else {
+        _doneSoldDraft = false;
+        _doneLikedDraft = false;
+        _doneWeakDraft = false;
+        _doneUnratedDraft = false;
+        _doneRoomConfirmedDraft = false;
+        _postedDatePreset = RoomCollePostedDatePreset.all;
       }
     });
   }
@@ -566,6 +787,11 @@ class _RoomColleFilterEditorSheetState
     }
     final merged = widget.initial.copyWith(
       registeredDatePreset: _preset,
+      shopFilterMode: _shopFilterMode,
+      shopName: _shopName,
+      clearShopName:
+          _shopFilterMode != RoomColleShopFilterMode.shopName ||
+          (_shopName?.trim().isEmpty ?? true),
       staleCandidatePreset: widget.isCandidateTab
           ? _staleCandidateDraft
           : RoomColleStaleCandidatePreset.none,
@@ -575,11 +801,28 @@ class _RoomColleFilterEditorSheetState
       priceMaxYen: maxY,
       clearPriceMin: minY == null,
       clearPriceMax: maxY == null,
+      candidateHasRoomUrlOnly: widget.isCandidateTab
+          ? _excludeUrlNotReadyDraft
+          : false,
+      candidateTodayRecommendationOnly: widget.isCandidateTab
+          ? _todayRecommendationOnlyDraft
+          : false,
+      candidateUnpostedOnly: widget.isCandidateTab ? _unpostedOnlyDraft : false,
+      doneFeedbackSold: widget.isCandidateTab ? false : _doneSoldDraft,
+      doneFeedbackLiked: widget.isCandidateTab ? false : _doneLikedDraft,
+      doneFeedbackWeak: widget.isCandidateTab ? false : _doneWeakDraft,
+      doneFeedbackUnrated: widget.isCandidateTab ? false : _doneUnratedDraft,
+      doneRoomConfirmedOnly: widget.isCandidateTab
+          ? false
+          : _doneRoomConfirmedDraft,
+      postedDatePreset: widget.isCandidateTab
+          ? RoomCollePostedDatePreset.all
+          : _postedDatePreset,
     );
     Navigator.of(context).pop(
       _RoomColleFilterSheetApplyResult(
         criteria: merged,
-        candidateExcludeUrlNotReady: _excludeUrlNotReadyDraft,
+        candidateExcludeUrlNotReady: false,
         includesCandidateUrlOption: widget.isCandidateTab,
       ),
     );
@@ -627,11 +870,92 @@ class _RoomColleFilterEditorSheetState
               Text(
                 widget.isCandidateTab
                     ? 'キーワードは上部の検索欄を使います。登録日・ジャンル・価格に加え、コレ候補タブだけ有効な「ROOMのURL」条件もここで変更できます。'
-                    : 'キーワードは上部の検索欄を使います。ここでは登録日・ジャンルID・価格帯のみ変えられます。',
+                    : 'キーワードは上部の検索欄を使います。登録日・ショップ・ジャンル・価格に加え、評価と投稿日で絞り込めます。',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: HomeScreenColors.groupedSectionBody,
                   height: 1.35,
                   fontSize: 12,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'ショップ',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: HomeScreenColors.leadOnSection,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: _RoomColleUi.chipSpacing,
+                runSpacing: _RoomColleUi.chipSpacing,
+                children: [
+                  ChoiceChip(
+                    label: const Text('指定なし'),
+                    selected: _shopFilterMode == RoomColleShopFilterMode.all,
+                    onSelected: (_) => setState(() {
+                      _shopFilterMode = RoomColleShopFilterMode.all;
+                      _shopName = null;
+                    }),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                  ChoiceChip(
+                    label: const Text('保存ショップ'),
+                    selected: _shopFilterMode == RoomColleShopFilterMode.saved,
+                    onSelected: (_) => setState(() {
+                      _shopFilterMode = RoomColleShopFilterMode.saved;
+                      _shopName = null;
+                    }),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              InputDecorator(
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: HomeScreenColors.deckFill,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: HomeScreenColors.deckOutline),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: HomeScreenColors.deckOutline),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String?>(
+                    value:
+                        _shopFilterMode == RoomColleShopFilterMode.shopName &&
+                            widget.shopNames.contains(_shopName)
+                        ? _shopName
+                        : null,
+                    isExpanded: true,
+                    isDense: true,
+                    items: [
+                      const DropdownMenuItem<String?>(
+                        value: null,
+                        child: Text('ショップ名を指定しない'),
+                      ),
+                      ...widget.shopNames.map(
+                        (name) => DropdownMenuItem<String?>(
+                          value: name,
+                          child: Text(name, overflow: TextOverflow.ellipsis),
+                        ),
+                      ),
+                    ],
+                    onChanged: (v) => setState(() {
+                      _shopName = v;
+                      _shopFilterMode = v == null
+                          ? RoomColleShopFilterMode.all
+                          : RoomColleShopFilterMode.shopName;
+                    }),
+                  ),
                 ),
               ),
               if (widget.isCandidateTab) ...[
@@ -724,7 +1048,7 @@ class _RoomColleFilterEditorSheetState
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
-                                      '取得済URLのみ',
+                                      '取得済みROOM URLのみ',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium
@@ -755,6 +1079,23 @@ class _RoomColleFilterEditorSheetState
                               ),
                             ),
                           ),
+                        ),
+                        const SizedBox(height: 8),
+                        SwitchListTile.adaptive(
+                          value: _todayRecommendationOnlyDraft,
+                          onChanged: (v) =>
+                              setState(() => _todayRecommendationOnlyDraft = v),
+                          title: const Text('今日のおすすめ由来のみ'),
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                        SwitchListTile.adaptive(
+                          value: _unpostedOnlyDraft,
+                          onChanged: (v) =>
+                              setState(() => _unpostedOnlyDraft = v),
+                          title: const Text('未投稿のみ'),
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
                         ),
                       ],
                     ),
@@ -838,6 +1179,115 @@ class _RoomColleFilterEditorSheetState
                   ],
                 ),
               ],
+              if (!widget.isCandidateTab) ...[
+                const SizedBox(height: 16),
+                Text(
+                  'コレ済の評価',
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: HomeScreenColors.leadOnSection,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: _RoomColleUi.chipSpacing,
+                  runSpacing: _RoomColleUi.chipSpacing,
+                  children: [
+                    FilterChip(
+                      label: const Text('売れた'),
+                      selected: _doneSoldDraft,
+                      onSelected: (v) => setState(() => _doneSoldDraft = v),
+                      showCheckmark: false,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    FilterChip(
+                      label: const Text('反応あり'),
+                      selected: _doneLikedDraft,
+                      onSelected: (v) => setState(() => _doneLikedDraft = v),
+                      showCheckmark: false,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    FilterChip(
+                      label: const Text('微妙'),
+                      selected: _doneWeakDraft,
+                      onSelected: (v) => setState(() => _doneWeakDraft = v),
+                      showCheckmark: false,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    FilterChip(
+                      label: const Text('未評価'),
+                      selected: _doneUnratedDraft,
+                      onSelected: (v) => setState(() => _doneUnratedDraft = v),
+                      showCheckmark: false,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    FilterChip(
+                      label: const Text('ROOMで確認済み'),
+                      selected: _doneRoomConfirmedDraft,
+                      onSelected: (v) =>
+                          setState(() => _doneRoomConfirmedDraft = v),
+                      showCheckmark: false,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  '投稿日',
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: HomeScreenColors.leadOnSection,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: _RoomColleUi.chipSpacing,
+                  runSpacing: _RoomColleUi.chipSpacing,
+                  children: [
+                    ChoiceChip(
+                      label: const Text('すべて'),
+                      selected:
+                          _postedDatePreset == RoomCollePostedDatePreset.all,
+                      onSelected: (_) => setState(
+                        () => _postedDatePreset = RoomCollePostedDatePreset.all,
+                      ),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    ChoiceChip(
+                      label: const Text('今日'),
+                      selected:
+                          _postedDatePreset == RoomCollePostedDatePreset.today,
+                      onSelected: (_) => setState(
+                        () =>
+                            _postedDatePreset = RoomCollePostedDatePreset.today,
+                      ),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    ChoiceChip(
+                      label: const Text('7日以内'),
+                      selected:
+                          _postedDatePreset ==
+                          RoomCollePostedDatePreset.last7Days,
+                      onSelected: (_) => setState(
+                        () => _postedDatePreset =
+                            RoomCollePostedDatePreset.last7Days,
+                      ),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    ChoiceChip(
+                      label: const Text('30日以内'),
+                      selected:
+                          _postedDatePreset ==
+                          RoomCollePostedDatePreset.last30Days,
+                      onSelected: (_) => setState(
+                        () => _postedDatePreset =
+                            RoomCollePostedDatePreset.last30Days,
+                      ),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                  ],
+                ),
+              ],
               const SizedBox(height: 16),
               Text(
                 '登録日（端末に保存した日）',
@@ -859,8 +1309,20 @@ class _RoomColleFilterEditorSheetState
                     label: Text('今日'),
                   ),
                   ButtonSegment<RoomColleRegisteredDatePreset>(
+                    value: RoomColleRegisteredDatePreset.last3Days,
+                    label: Text('3日'),
+                  ),
+                  ButtonSegment<RoomColleRegisteredDatePreset>(
                     value: RoomColleRegisteredDatePreset.last7Days,
                     label: Text('7日'),
+                  ),
+                  ButtonSegment<RoomColleRegisteredDatePreset>(
+                    value: RoomColleRegisteredDatePreset.last30Days,
+                    label: Text('30日'),
+                  ),
+                  ButtonSegment<RoomColleRegisteredDatePreset>(
+                    value: RoomColleRegisteredDatePreset.olderThan30Days,
+                    label: Text('30日超'),
                   ),
                 ],
                 selected: <RoomColleRegisteredDatePreset>{_preset},
@@ -1043,6 +1505,9 @@ List<RakutenManagedProduct> _roomListVisibleItems({
   required RakutenManagedProductStatus status,
   required RoomColleListFilterCriteria listFilters,
   required bool excludeUrlNotReady,
+  Set<String> savedShopIds = const <String>{},
+  Set<String> todayRecommendationProductIds = const <String>{},
+  String Function(RakutenManagedProduct product)? genreLabelForProduct,
   DateTime? doneAtLocalDayFilter,
 }) {
   final baseList = provider.sortedItemsForStatus(status);
@@ -1053,7 +1518,16 @@ List<RakutenManagedProduct> _roomListVisibleItems({
   final urlActive =
       status == RakutenManagedProductStatus.candidate && excludeUrlNotReady;
   final urlScoped = _filterExcludeUrlNotReady(scoped, urlActive);
-  final queried = applyRoomColleListFilters(urlScoped, listFilters);
+  final queried = applyRoomColleListFilters(
+    urlScoped,
+    listFilters.copyWith(
+      candidateHasRoomUrlOnly:
+          listFilters.candidateHasRoomUrlOnly || excludeUrlNotReady,
+    ),
+    savedShopIds: savedShopIds,
+    todayRecommendationProductIds: todayRecommendationProductIds,
+    genreLabelForProduct: genreLabelForProduct,
+  );
   final deduped = _dedupeManagedProductsPreserveOrder(queried);
   if (deduped.isEmpty && baseList.isNotEmpty) {
     final urlHidAll =
@@ -1081,6 +1555,9 @@ int _roomColleVisibleCount({
   required RakutenManagedProductStatus status,
   required RoomColleListFilterCriteria listFilters,
   required bool excludeUrlNotReady,
+  Set<String> savedShopIds = const <String>{},
+  Set<String> todayRecommendationProductIds = const <String>{},
+  String Function(RakutenManagedProduct product)? genreLabelForProduct,
   DateTime? doneAtLocalDayFilter,
 }) {
   return _roomListVisibleItems(
@@ -1088,6 +1565,9 @@ int _roomColleVisibleCount({
     status: status,
     listFilters: listFilters,
     excludeUrlNotReady: excludeUrlNotReady,
+    savedShopIds: savedShopIds,
+    todayRecommendationProductIds: todayRecommendationProductIds,
+    genreLabelForProduct: genreLabelForProduct,
     doneAtLocalDayFilter: doneAtLocalDayFilter,
   ).length;
 }
@@ -1447,6 +1927,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         : RakutenManagedProductStatus.done;
     final base = managed.sortedItemsForStatus(status);
     final genreIds = _roomColleDistinctGenreIds(base);
+    final shopNames = _roomColleDistinctShopNames(base);
     final current = isCandidate ? _candidateListFilters : _doneListFilters;
     final title = isCandidate ? '候補一覧の条件（キーワード以外）' : 'コレ済一覧の条件（キーワード以外）';
     final result = await showModalBottomSheet<_RoomColleFilterSheetApplyResult>(
@@ -1457,6 +1938,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         sectionTitle: title,
         initial: current,
         genreIds: genreIds,
+        shopNames: shopNames,
         isCandidateTab: isCandidate,
         initialExcludeUrlNotReady: isCandidate
             ? _candidateExcludeUrlNotReady
@@ -1749,7 +2231,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   controller: _activeRoomColleSearchController,
                                   onChanged: _onRoomColleSearchChanged,
                                   textInputAction: TextInputAction.search,
-                                  hintText: '商品名 / ショップ名で検索',
+                                  hintText: '商品・ショップ・ジャンルを検索',
                                   suffixIcon: _activeRoomColleSearchHasText
                                       ? IconButton(
                                           tooltip: '検索文字を消去',
@@ -1758,6 +2240,14 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                           icon: const Icon(Icons.close_rounded),
                                         )
                                       : const Icon(Icons.search_rounded),
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              AppSecondaryButton(
+                                label: 'フィルター',
+                                height: 44,
+                                onPressed: () => _openRoomColleFilterEditor(
+                                  isCandidate: _tabController.index == 0,
                                 ),
                               ),
                             ],
@@ -1789,24 +2279,17 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   Expanded(
                                     child: Consumer<RakutenManagedProductProvider>(
                                       builder: (context, managed, _) {
-                                        final nCand = _roomColleVisibleCount(
-                                          provider: managed,
-                                          status: RakutenManagedProductStatus
-                                              .candidate,
-                                          listFilters: _candidateListFilters,
-                                          excludeUrlNotReady:
-                                              _candidateExcludeUrlNotReady,
-                                          doneAtLocalDayFilter: null,
-                                        );
-                                        final nDone = _roomColleVisibleCount(
-                                          provider: managed,
-                                          status:
+                                        final nCand = managed
+                                            .sortedItemsForStatus(
+                                              RakutenManagedProductStatus
+                                                  .candidate,
+                                            )
+                                            .length;
+                                        final nDone = managed
+                                            .sortedItemsForStatus(
                                               RakutenManagedProductStatus.done,
-                                          listFilters: _doneListFilters,
-                                          excludeUrlNotReady: false,
-                                          doneAtLocalDayFilter:
-                                              _doneLocalDayFilter,
-                                        );
+                                            )
+                                            .length;
                                         final idx = _tabController.index;
                                         final selectedAccent = idx == 0
                                             ? RoomColleListAccent.candidate
@@ -2021,6 +2504,11 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                               _openRoomColleFilterEditor(isCandidate: true),
                           onClear: _resetRoomColleFilters,
                         ),
+                        _RoomColleCountSummary(
+                          status: RakutenManagedProductStatus.candidate,
+                          listFilters: _candidateListFilters,
+                          excludeUrlNotReady: _candidateExcludeUrlNotReady,
+                        ),
                         Expanded(
                           child: _RoomManagedProductListTab(
                             status: RakutenManagedProductStatus.candidate,
@@ -2065,6 +2553,12 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                               _openRoomColleFilterEditor(isCandidate: false),
                           onClear: _resetRoomColleFilters,
                         ),
+                        _RoomColleCountSummary(
+                          status: RakutenManagedProductStatus.done,
+                          listFilters: _doneListFilters,
+                          excludeUrlNotReady: false,
+                          doneAtLocalDayFilter: _doneLocalDayFilter,
+                        ),
                         Expanded(
                           child: _RoomManagedProductListTab(
                             status: RakutenManagedProductStatus.done,
@@ -2100,6 +2594,62 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
           ),
         ),
       ),
+    );
+  }
+}
+
+class _RoomColleCountSummary extends StatelessWidget {
+  const _RoomColleCountSummary({
+    required this.status,
+    required this.listFilters,
+    required this.excludeUrlNotReady,
+    this.doneAtLocalDayFilter,
+  });
+
+  final RakutenManagedProductStatus status;
+  final RoomColleListFilterCriteria listFilters;
+  final bool excludeUrlNotReady;
+  final DateTime? doneAtLocalDayFilter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<RakutenManagedProductProvider>(
+      builder: (context, provider, _) {
+        final baseCount = provider.sortedItemsForStatus(status).length;
+        final visibleCount = _roomColleVisibleCount(
+          provider: provider,
+          status: status,
+          listFilters: listFilters,
+          excludeUrlNotReady: excludeUrlNotReady,
+          savedShopIds: _savedShopIdSet(context),
+          todayRecommendationProductIds: _todayRecommendationIdSet(context),
+          genreLabelForProduct: _roomColleGenreLabelForProduct,
+          doneAtLocalDayFilter: doneAtLocalDayFilter,
+        );
+        final filtering =
+            listFilters.hasAnyReducingFilter ||
+            excludeUrlNotReady ||
+            doneAtLocalDayFilter != null;
+        final label = filtering
+            ? '$baseCount件中 $visibleCount件を表示'
+            : '$baseCount件';
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(
+            _kRoomListScreenPadH,
+            0,
+            _kRoomListScreenPadH,
+            6,
+          ),
+          child: Text(
+            label,
+            textAlign: TextAlign.right,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: HomeScreenColors.footnoteMuted,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -2221,6 +2771,22 @@ class _RoomManagedProductListTabState
           status: RakutenManagedProductStatus.candidate,
           listFilters: widget.listFilters,
           excludeUrlNotReady: widget.excludeUrlNotReady,
+          savedShopIds: context
+              .read<SavedShopProvider>()
+              .shops
+              .map((e) => e.shopId.trim())
+              .where((e) => e.isNotEmpty)
+              .toSet(),
+          todayRecommendationProductIds:
+              context
+                  .read<TodayRecommendationProvider>()
+                  .bundle
+                  ?.entries
+                  .map((e) => e.item.productId.trim())
+                  .where((e) => e.isNotEmpty)
+                  .toSet() ??
+              <String>{},
+          genreLabelForProduct: _roomColleGenreLabelForProduct,
           doneAtLocalDayFilter: null,
         );
         final baseCand = p.sortedItemsForStatus(
@@ -2320,12 +2886,20 @@ class _RoomManagedProductListTabState
     return Consumer<RakutenManagedProductProvider>(
       builder: (context, provider, _) {
         final ui = provider.listUiStatus;
+        final savedShopIds = _savedShopIdSet(context);
+        final todayRecommendationIds = _todayRecommendationIdSet(context);
 
         final listRaw = _roomListVisibleItems(
           provider: provider,
           status: widget.status,
           listFilters: widget.listFilters,
           excludeUrlNotReady: widget.excludeUrlNotReady,
+          savedShopIds: savedShopIds,
+          todayRecommendationProductIds: todayRecommendationIds,
+          genreLabelForProduct: (product) => _roomColleGenreLabelForProduct(
+            product,
+            prefetchedGenreLabels: _genrePrefetchLabels,
+          ),
           doneAtLocalDayFilter: widget.doneAtLocalDayFilter,
         );
         final list = _sortRoomColleListItems(
@@ -2515,6 +3089,9 @@ class _RoomManagedProductListTabState
                   product: list[i],
                   variant: widget.variant,
                   genrePrefetchLabels: _genrePrefetchLabels,
+                  isSavedShop: savedShopIds.contains(list[i].shopCode.trim()),
+                  isTodayRecommendationCandidate: todayRecommendationIds
+                      .contains(list[i].productId.trim()),
                   rowKey: widget.rowKeyFor?.call(list[i].productId),
                   flash: widget.flashHighlightProductId == list[i].productId,
                 ),
@@ -2534,6 +3111,8 @@ class _KeyedCandidateProductRow extends StatelessWidget {
     required this.product,
     required this.variant,
     required this.genrePrefetchLabels,
+    required this.isSavedShop,
+    required this.isTodayRecommendationCandidate,
     this.rowKey,
     this.flash = false,
   });
@@ -2541,6 +3120,8 @@ class _KeyedCandidateProductRow extends StatelessWidget {
   final RakutenManagedProduct product;
   final RakutenManagedProductCardVariant variant;
   final Map<String, String> genrePrefetchLabels;
+  final bool isSavedShop;
+  final bool isTodayRecommendationCandidate;
   final GlobalKey? rowKey;
   final bool flash;
 
@@ -2551,6 +3132,8 @@ class _KeyedCandidateProductRow extends StatelessWidget {
         product: product,
         variant: variant,
         genrePrefetchLabels: genrePrefetchLabels,
+        isSavedShop: isSavedShop,
+        isTodayRecommendationCandidate: isTodayRecommendationCandidate,
       );
       if (flash) {
         card = AnimatedContainer(

@@ -21,6 +21,8 @@ class RakutenManagedProductCard extends StatelessWidget {
     required this.variant,
     this.onCollectPressed,
     this.genrePrefetchLabels,
+    this.isSavedShop = false,
+    this.isTodayRecommendationCandidate = false,
   });
 
   final RakutenManagedProduct product;
@@ -33,6 +35,8 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   /// [GenreMasterRepository] プリフェッチ後の genreId→表示名（任意）。
   final Map<String, String>? genrePrefetchLabels;
+  final bool isSavedShop;
+  final bool isTodayRecommendationCandidate;
 
   bool get _canCollectRoom =>
       product.extractionStatus == RakutenUrlExtractionStatus.success &&
@@ -55,6 +59,17 @@ class RakutenManagedProductCard extends StatelessWidget {
     } catch (_) {
       return '価格 —';
     }
+  }
+
+  String _genreLabel() {
+    final id = product.genreId.trim();
+    final prefetched = genrePrefetchLabels?[id];
+    final persisted = product.persistedGenreDisplayName?.trim();
+    if (prefetched != null && prefetched.trim().isNotEmpty) {
+      return prefetched.trim();
+    }
+    if (persisted != null && persisted.isNotEmpty) return persisted;
+    return id.isEmpty ? 'ジャンル未設定' : 'ジャンル $id';
   }
 
   static String _dateMetaLabel({
@@ -103,7 +118,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (isCandidate) ...[
-                        _decisionBadge(context),
+                        _candidateBadges(context),
                         const SizedBox(height: 6),
                       ],
                       Text(
@@ -123,6 +138,13 @@ class RakutenManagedProductCard extends StatelessWidget {
                         const SizedBox(height: 6),
                         _ratingRow(context),
                       ],
+                      const SizedBox(height: 6),
+                      Text(
+                        '${product.shopName.trim().isEmpty ? 'ショップ未設定' : product.shopName.trim()} / ${_genreLabel()}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: timestampStyle,
+                      ),
                       const SizedBox(height: 6),
                       Text(
                         _dateMetaLabel(
@@ -153,28 +175,28 @@ class RakutenManagedProductCard extends StatelessWidget {
   }
 
   Widget _decisionBadge(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: RoomColleListAccent.candidate.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(
-          color: RoomColleListAccent.candidate.withValues(alpha: 0.32),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
-        child: Text(
-          '今日のおすすめ',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: RoomColleListAccent.candidate,
-            fontWeight: FontWeight.w800,
-            height: 1.15,
-          ),
-        ),
-      ),
-    );
+    return _SmallBadge(label: '今日のおすすめ', color: RoomColleListAccent.candidate);
+  }
+
+  Widget _candidateBadges(BuildContext context) {
+    final badges = <Widget>[];
+    if (isTodayRecommendationCandidate) {
+      badges.add(_decisionBadge(context));
+    }
+    if (isSavedShop) {
+      badges.add(const _SmallBadge(label: '保存ショップ', color: Color(0xFF1565C0)));
+    }
+    if (_hasRoomUrl) {
+      badges.add(
+        const _SmallBadge(label: 'ROOM URLあり', color: Color(0xFF2E7D32)),
+      );
+    }
+    if (badges.isEmpty) {
+      badges.add(
+        _SmallBadge(label: 'コレ候補', color: RoomColleListAccent.candidate),
+      );
+    }
+    return Wrap(spacing: 5, runSpacing: 4, children: badges);
   }
 
   Widget _ratingRow(BuildContext context) {
@@ -445,6 +467,37 @@ class RakutenManagedProductCard extends StatelessWidget {
       Icons.image_outlined,
       size: 30,
       color: AppColors.textTertiary.withValues(alpha: 0.65),
+    );
+  }
+}
+
+class _SmallBadge extends StatelessWidget {
+  const _SmallBadge({required this.label, required this.color});
+
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: color.withValues(alpha: 0.32)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+        child: Text(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: color,
+            fontWeight: FontWeight.w800,
+            height: 1.15,
+          ),
+        ),
+      ),
     );
   }
 }

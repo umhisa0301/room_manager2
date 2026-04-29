@@ -3,20 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'rakuten_managed_product.dart';
 import '../utils/room_colle_candidate_stale.dart';
 
-/// 候補タブ：登録からの経過で「整理対象」を絞る（コレ済一覧では無視。将来は一括削除の対象抽出管線に流用可）。
-enum RoomColleStaleCandidatePreset {
-  /// 条件なし。
-  none,
-
-  /// 登録から 3 暦日以上（まだコレ済でない候補向け）。
-  threePlus,
-
-  /// 登録から 7 暦日以上。
-  sevenPlus,
-
-  /// 登録から 30 暦日以上。
-  thirtyPlus,
-}
+/// 候補タブ：登録からの経過で「候補から外す対象」を絞る。
+enum RoomColleStaleCandidatePreset { none, threePlus, sevenPlus, thirtyPlus }
 
 RoomColleStaleCandidatePreset roomColleStaleCandidatePresetFromWire(
   String? raw,
@@ -29,17 +17,14 @@ RoomColleStaleCandidatePreset roomColleStaleCandidatePresetFromWire(
   );
 }
 
-/// アプリに候補として保存した日（[RakutenManagedProduct.addedAt]）ベースのプリセット。
-/// コレ済タブでも同一フィールドを使い、「一覧に出す元データの登録日」として扱う。
+/// 登録日の相対フィルター。既存の [last7Days] は互換維持のため名称を残す。
 enum RoomColleRegisteredDatePreset {
-  /// 日付条件なし。
   all,
-
-  /// 端末ローカルの暦日で「今日」と同じ日に保存されたもの。
   today,
-
-  /// 今日を含む過去7暦日（今日〜6日前の 0:00 以降）。
+  last3Days,
   last7Days,
+  last30Days,
+  olderThan30Days,
 }
 
 RoomColleRegisteredDatePreset roomColleRegisteredDatePresetFromWire(
@@ -53,64 +38,111 @@ RoomColleRegisteredDatePreset roomColleRegisteredDatePresetFromWire(
   );
 }
 
+enum RoomCollePostedDatePreset { all, today, last7Days, last30Days }
+
+RoomCollePostedDatePreset roomCollePostedDatePresetFromWire(String? raw) {
+  final t = raw?.trim();
+  if (t == null || t.isEmpty) return RoomCollePostedDatePreset.all;
+  return RoomCollePostedDatePreset.values.firstWhere(
+    (e) => e.name == t,
+    orElse: () => RoomCollePostedDatePreset.all,
+  );
+}
+
+enum RoomColleShopFilterMode { all, saved, shopName }
+
+RoomColleShopFilterMode roomColleShopFilterModeFromWire(String? raw) {
+  final t = raw?.trim();
+  if (t == null || t.isEmpty) return RoomColleShopFilterMode.all;
+  return RoomColleShopFilterMode.values.firstWhere(
+    (e) => e.name == t,
+    orElse: () => RoomColleShopFilterMode.all,
+  );
+}
+
 /// ROOMコレ一覧用の絞り込み条件。
 ///
-/// [keyword] 以外は将来増やしやすいようフィールドを分離。永続化は [toJson] / [fromJson]。
+/// 既存JSONに新キーが無くても [fromJson] でデフォルトへ戻す。
 @immutable
 class RoomColleListFilterCriteria {
   const RoomColleListFilterCriteria({
     this.keyword = '',
     this.registeredDatePreset = RoomColleRegisteredDatePreset.all,
+    this.shopFilterMode = RoomColleShopFilterMode.all,
+    this.shopName,
     this.staleCandidatePreset = RoomColleStaleCandidatePreset.none,
     this.genreId,
     this.priceMinYen,
     this.priceMaxYen,
+    this.candidateHasRoomUrlOnly = false,
+    this.candidateTodayRecommendationOnly = false,
+    this.candidateUnpostedOnly = false,
+    this.doneFeedbackSold = false,
+    this.doneFeedbackLiked = false,
+    this.doneFeedbackWeak = false,
+    this.doneFeedbackUnrated = false,
+    this.doneRoomConfirmedOnly = false,
+    this.postedDatePreset = RoomCollePostedDatePreset.all,
   });
 
-  /// 商品名・ショップ・ID・URL 等を横断したキーワード（従来どおり）。
+  /// 商品名・ショップ名・ジャンル名を横断検索する。
   final String keyword;
-
-  /// [RakutenManagedProduct.addedAt] に対するプリセット。
   final RoomColleRegisteredDatePreset registeredDatePreset;
-
-  /// 候補の「古い順」整理向け。単一選択（[none] / [threePlus] / [sevenPlus] / [thirtyPlus]）。
-  /// コレ済タブの一覧では解釈されない（データは保持され得るが効果は候補のみ）。
+  final RoomColleShopFilterMode shopFilterMode;
+  final String? shopName;
   final RoomColleStaleCandidatePreset staleCandidatePreset;
-
-  /// 楽天 [RakutenManagedProduct.genreId] との完全一致。null または空なら未使用。
-  /// API由来のIDのみで名前は保持しない（将来、マップテーブルを足せば表示名のみ拡張）。
   final String? genreId;
-
-  /// 価格下限（円・税込み想定の itemPrice）。null なら下限なし。
   final int? priceMinYen;
-
-  /// 価格上限（円）。null なら上限なし。
   final int? priceMaxYen;
+
+  final bool candidateHasRoomUrlOnly;
+  final bool candidateTodayRecommendationOnly;
+  final bool candidateUnpostedOnly;
+
+  final bool doneFeedbackSold;
+  final bool doneFeedbackLiked;
+  final bool doneFeedbackWeak;
+  final bool doneFeedbackUnrated;
+  final bool doneRoomConfirmedOnly;
+  final RoomCollePostedDatePreset postedDatePreset;
 
   static const RoomColleListFilterCriteria defaults =
       RoomColleListFilterCriteria();
 
-  /// キーワード以外で一覧を減らし得る条件が付いているか。
   bool get hasNonKeywordConstraints {
-    if (registeredDatePreset != RoomColleRegisteredDatePreset.all) {
-      return true;
-    }
+    if (registeredDatePreset != RoomColleRegisteredDatePreset.all) return true;
+    if (shopFilterMode != RoomColleShopFilterMode.all) return true;
+    if ((shopName?.trim() ?? '').isNotEmpty) return true;
     if (staleCandidatePreset != RoomColleStaleCandidatePreset.none) {
       return true;
     }
-    final g = genreId?.trim() ?? '';
-    if (g.isNotEmpty) return true;
+    if ((genreId?.trim() ?? '').isNotEmpty) return true;
     if (priceMinYen != null || priceMaxYen != null) return true;
+    if (candidateHasRoomUrlOnly ||
+        candidateTodayRecommendationOnly ||
+        candidateUnpostedOnly) {
+      return true;
+    }
+    if (doneFeedbackSold ||
+        doneFeedbackLiked ||
+        doneFeedbackWeak ||
+        doneFeedbackUnrated ||
+        doneRoomConfirmedOnly) {
+      return true;
+    }
+    if (postedDatePreset != RoomCollePostedDatePreset.all) return true;
     return false;
   }
 
-  /// キーワードまたは拡張条件のいずれかで絞り込みが有効か。
   bool get hasAnyReducingFilter =>
       keyword.trim().isNotEmpty || hasNonKeywordConstraints;
 
   RoomColleListFilterCriteria copyWith({
     String? keyword,
     RoomColleRegisteredDatePreset? registeredDatePreset,
+    RoomColleShopFilterMode? shopFilterMode,
+    String? shopName,
+    bool clearShopName = false,
     RoomColleStaleCandidatePreset? staleCandidatePreset,
     String? genreId,
     bool clearGenreId = false,
@@ -118,14 +150,39 @@ class RoomColleListFilterCriteria {
     int? priceMaxYen,
     bool clearPriceMin = false,
     bool clearPriceMax = false,
+    bool? candidateHasRoomUrlOnly,
+    bool? candidateTodayRecommendationOnly,
+    bool? candidateUnpostedOnly,
+    bool? doneFeedbackSold,
+    bool? doneFeedbackLiked,
+    bool? doneFeedbackWeak,
+    bool? doneFeedbackUnrated,
+    bool? doneRoomConfirmedOnly,
+    RoomCollePostedDatePreset? postedDatePreset,
   }) {
     return RoomColleListFilterCriteria(
       keyword: keyword ?? this.keyword,
       registeredDatePreset: registeredDatePreset ?? this.registeredDatePreset,
+      shopFilterMode: shopFilterMode ?? this.shopFilterMode,
+      shopName: clearShopName ? null : (shopName ?? this.shopName),
       staleCandidatePreset: staleCandidatePreset ?? this.staleCandidatePreset,
       genreId: clearGenreId ? null : (genreId ?? this.genreId),
       priceMinYen: clearPriceMin ? null : (priceMinYen ?? this.priceMinYen),
       priceMaxYen: clearPriceMax ? null : (priceMaxYen ?? this.priceMaxYen),
+      candidateHasRoomUrlOnly:
+          candidateHasRoomUrlOnly ?? this.candidateHasRoomUrlOnly,
+      candidateTodayRecommendationOnly:
+          candidateTodayRecommendationOnly ??
+          this.candidateTodayRecommendationOnly,
+      candidateUnpostedOnly:
+          candidateUnpostedOnly ?? this.candidateUnpostedOnly,
+      doneFeedbackSold: doneFeedbackSold ?? this.doneFeedbackSold,
+      doneFeedbackLiked: doneFeedbackLiked ?? this.doneFeedbackLiked,
+      doneFeedbackWeak: doneFeedbackWeak ?? this.doneFeedbackWeak,
+      doneFeedbackUnrated: doneFeedbackUnrated ?? this.doneFeedbackUnrated,
+      doneRoomConfirmedOnly:
+          doneRoomConfirmedOnly ?? this.doneRoomConfirmedOnly,
+      postedDatePreset: postedDatePreset ?? this.postedDatePreset,
     );
   }
 
@@ -133,10 +190,21 @@ class RoomColleListFilterCriteria {
     return <String, dynamic>{
       'keyword': keyword,
       'registeredDatePreset': registeredDatePreset.name,
+      'shopFilterMode': shopFilterMode.name,
+      'shopName': shopName,
       'staleCandidatePreset': staleCandidatePreset.name,
       'genreId': genreId,
       'priceMinYen': priceMinYen,
       'priceMaxYen': priceMaxYen,
+      'candidateHasRoomUrlOnly': candidateHasRoomUrlOnly,
+      'candidateTodayRecommendationOnly': candidateTodayRecommendationOnly,
+      'candidateUnpostedOnly': candidateUnpostedOnly,
+      'doneFeedbackSold': doneFeedbackSold,
+      'doneFeedbackLiked': doneFeedbackLiked,
+      'doneFeedbackWeak': doneFeedbackWeak,
+      'doneFeedbackUnrated': doneFeedbackUnrated,
+      'doneRoomConfirmedOnly': doneRoomConfirmedOnly,
+      'postedDatePreset': postedDatePreset.name,
     };
   }
 
@@ -144,16 +212,6 @@ class RoomColleListFilterCriteria {
     if (raw is! Map) return defaults;
     try {
       final m = Map<String, dynamic>.from(raw);
-      final kw = (m['keyword'] ?? '').toString();
-      final preset = roomColleRegisteredDatePresetFromWire(
-        m['registeredDatePreset']?.toString(),
-      );
-      final stale = roomColleStaleCandidatePresetFromWire(
-        m['staleCandidatePreset']?.toString(),
-      );
-      final gRaw = m['genreId']?.toString().trim();
-      final genre = (gRaw != null && gRaw.isNotEmpty) ? gRaw : null;
-
       int? readOptInt(dynamic v) {
         if (v == null) return null;
         if (v is int) return v;
@@ -162,6 +220,18 @@ class RoomColleListFilterCriteria {
         return null;
       }
 
+      bool readBool(dynamic v) {
+        if (v is bool) return v;
+        if (v is num) return v != 0;
+        if (v is String) {
+          final t = v.trim().toLowerCase();
+          return t == 'true' || t == '1' || t == 'yes';
+        }
+        return false;
+      }
+
+      final gRaw = m['genreId']?.toString().trim();
+      final sRaw = m['shopName']?.toString().trim();
       var minY = readOptInt(m['priceMinYen']);
       var maxY = readOptInt(m['priceMaxYen']);
       if (minY != null && maxY != null && minY > maxY) {
@@ -169,13 +239,35 @@ class RoomColleListFilterCriteria {
         minY = maxY;
         maxY = t;
       }
+
       return RoomColleListFilterCriteria(
-        keyword: kw,
-        registeredDatePreset: preset,
-        staleCandidatePreset: stale,
-        genreId: genre,
+        keyword: (m['keyword'] ?? '').toString(),
+        registeredDatePreset: roomColleRegisteredDatePresetFromWire(
+          m['registeredDatePreset']?.toString(),
+        ),
+        shopFilterMode: roomColleShopFilterModeFromWire(
+          m['shopFilterMode']?.toString(),
+        ),
+        shopName: (sRaw != null && sRaw.isNotEmpty) ? sRaw : null,
+        staleCandidatePreset: roomColleStaleCandidatePresetFromWire(
+          m['staleCandidatePreset']?.toString(),
+        ),
+        genreId: (gRaw != null && gRaw.isNotEmpty) ? gRaw : null,
         priceMinYen: minY,
         priceMaxYen: maxY,
+        candidateHasRoomUrlOnly: readBool(m['candidateHasRoomUrlOnly']),
+        candidateTodayRecommendationOnly: readBool(
+          m['candidateTodayRecommendationOnly'],
+        ),
+        candidateUnpostedOnly: readBool(m['candidateUnpostedOnly']),
+        doneFeedbackSold: readBool(m['doneFeedbackSold']),
+        doneFeedbackLiked: readBool(m['doneFeedbackLiked']),
+        doneFeedbackWeak: readBool(m['doneFeedbackWeak']),
+        doneFeedbackUnrated: readBool(m['doneFeedbackUnrated']),
+        doneRoomConfirmedOnly: readBool(m['doneRoomConfirmedOnly']),
+        postedDatePreset: roomCollePostedDatePresetFromWire(
+          m['postedDatePreset']?.toString(),
+        ),
       );
     } catch (e, st) {
       assert(() {
@@ -187,38 +279,86 @@ class RoomColleListFilterCriteria {
   }
 }
 
-/// キーワード判定（1件のデータ破損で全体を失敗させない）。
-bool _managedProductMatchesKeyword(RakutenManagedProduct e, String query) {
+bool _managedProductMatchesKeyword(
+  RakutenManagedProduct e,
+  String query,
+  String Function(RakutenManagedProduct product)? genreLabelForProduct,
+) {
   final t = query.trim().toLowerCase();
   if (t.isEmpty) return true;
+  final genre =
+      (genreLabelForProduct?.call(e) ??
+              e.persistedGenreDisplayName ??
+              e.genreId)
+          .toLowerCase();
   return e.itemName.toLowerCase().contains(t) ||
       e.shopName.toLowerCase().contains(t) ||
-      e.productId.toLowerCase().contains(t) ||
-      e.itemUrl.toLowerCase().contains(t) ||
-      e.shopCode.toLowerCase().contains(t) ||
-      e.genreId.toLowerCase().contains(t);
+      genre.contains(t);
 }
 
-bool _matchesRegisteredDate(
-  RakutenManagedProduct e,
-  RoomColleRegisteredDatePreset preset,
-) {
+bool _matchesRelativeDate(DateTime? raw, RoomColleRegisteredDatePreset preset) {
   if (preset == RoomColleRegisteredDatePreset.all) return true;
+  if (raw == null) return false;
   try {
-    final c = e.addedAt;
     final now = DateTime.now();
-    final cDay = DateTime(c.year, c.month, c.day);
-    if (preset == RoomColleRegisteredDatePreset.today) {
-      final tDay = DateTime(now.year, now.month, now.day);
-      return cDay == tDay;
+    final today = DateTime(now.year, now.month, now.day);
+    final d = DateTime(raw.year, raw.month, raw.day);
+    switch (preset) {
+      case RoomColleRegisteredDatePreset.all:
+        return true;
+      case RoomColleRegisteredDatePreset.today:
+        return d == today;
+      case RoomColleRegisteredDatePreset.last3Days:
+        return !d.isBefore(today.subtract(const Duration(days: 2)));
+      case RoomColleRegisteredDatePreset.last7Days:
+        return !d.isBefore(today.subtract(const Duration(days: 6)));
+      case RoomColleRegisteredDatePreset.last30Days:
+        return !d.isBefore(today.subtract(const Duration(days: 29)));
+      case RoomColleRegisteredDatePreset.olderThan30Days:
+        return d.isBefore(today.subtract(const Duration(days: 30)));
     }
-    if (preset == RoomColleRegisteredDatePreset.last7Days) {
-      final todayStart = DateTime(now.year, now.month, now.day);
-      final windowStart = todayStart.subtract(const Duration(days: 6));
-      return !cDay.isBefore(windowStart);
+  } catch (_) {
+    return false;
+  }
+}
+
+bool _matchesPostedDate(DateTime? raw, RoomCollePostedDatePreset preset) {
+  if (preset == RoomCollePostedDatePreset.all) return true;
+  if (raw == null) return false;
+  try {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final d = DateTime(raw.year, raw.month, raw.day);
+    switch (preset) {
+      case RoomCollePostedDatePreset.all:
+        return true;
+      case RoomCollePostedDatePreset.today:
+        return d == today;
+      case RoomCollePostedDatePreset.last7Days:
+        return !d.isBefore(today.subtract(const Duration(days: 6)));
+      case RoomCollePostedDatePreset.last30Days:
+        return !d.isBefore(today.subtract(const Duration(days: 29)));
     }
-  } catch (_) {}
-  return false;
+  } catch (_) {
+    return false;
+  }
+}
+
+bool _matchesShop(
+  RakutenManagedProduct e,
+  RoomColleListFilterCriteria criteria,
+  Set<String> savedShopIds,
+) {
+  switch (criteria.shopFilterMode) {
+    case RoomColleShopFilterMode.all:
+      return true;
+    case RoomColleShopFilterMode.saved:
+      return savedShopIds.contains(e.shopCode.trim());
+    case RoomColleShopFilterMode.shopName:
+      final target = criteria.shopName?.trim();
+      if (target == null || target.isEmpty) return true;
+      return e.shopName.trim() == target;
+  }
 }
 
 bool _matchesGenre(RakutenManagedProduct e, String? genreFilter) {
@@ -252,13 +392,16 @@ bool _matchesStaleCandidatePreset(
       case RoomColleStaleCandidatePreset.thirtyPlus:
         return days >= 30;
     }
-  } catch (_) {}
-  return false;
+  } catch (_) {
+    return false;
+  }
 }
 
 bool _matchesPrice(RakutenManagedProduct e, int? minYen, int? maxYen) {
+  if (minYen == null && maxYen == null) return true;
   try {
     final p = e.itemPrice;
+    if (p <= 0) return false;
     if (minYen != null && p < minYen) return false;
     if (maxYen != null && p > maxYen) return false;
     return true;
@@ -267,23 +410,68 @@ bool _matchesPrice(RakutenManagedProduct e, int? minYen, int? maxYen) {
   }
 }
 
-/// [criteria] を適用（キーワード＋登録日＋経過（候補のみ）＋ジャンルID＋価格帯）。例外はスキップ。
-///
-/// [staleCandidatePreset] は [RakutenManagedProductStatus.candidate] の行だけに効く。
-/// 将来、同じ [RoomColleListFilterCriteria] で [applyRoomColleListFilters] 済みリストを
-/// 一括削除の対象 ID に流用できる。
-List<RakutenManagedProduct> applyRoomColleListFilters(
-  List<RakutenManagedProduct> items,
+bool _hasRoomUrl(RakutenManagedProduct e) => e.extractedUrl.trim().isNotEmpty;
+
+bool _matchesCandidateOnly(
+  RakutenManagedProduct e,
+  RoomColleListFilterCriteria criteria,
+  Set<String> todayRecommendationProductIds,
+) {
+  if (e.status != RakutenManagedProductStatus.candidate) return true;
+  if (criteria.candidateHasRoomUrlOnly && !_hasRoomUrl(e)) return false;
+  if (criteria.candidateTodayRecommendationOnly &&
+      !todayRecommendationProductIds.contains(e.productId.trim())) {
+    return false;
+  }
+  if (criteria.candidateUnpostedOnly && e.doneAt != null) return false;
+  return true;
+}
+
+bool _matchesDoneOnly(
+  RakutenManagedProduct e,
   RoomColleListFilterCriteria criteria,
 ) {
+  if (e.status != RakutenManagedProductStatus.done && e.doneAt == null) {
+    return true;
+  }
+  if (criteria.doneFeedbackSold && e.feedbackSoldAt == null) return false;
+  if (criteria.doneFeedbackLiked && e.feedbackLikedAt == null) return false;
+  if (criteria.doneFeedbackWeak && e.feedbackWeakAt == null) return false;
+  if (criteria.doneFeedbackUnrated &&
+      (e.feedbackSoldAt != null ||
+          e.feedbackLikedAt != null ||
+          e.feedbackWeakAt != null)) {
+    return false;
+  }
+  if (criteria.doneRoomConfirmedOnly && !_hasRoomUrl(e)) return false;
+  if (!_matchesPostedDate(e.doneAt, criteria.postedDatePreset)) return false;
+  return true;
+}
+
+List<RakutenManagedProduct> applyRoomColleListFilters(
+  List<RakutenManagedProduct> items,
+  RoomColleListFilterCriteria criteria, {
+  Set<String> savedShopIds = const <String>{},
+  Set<String> todayRecommendationProductIds = const <String>{},
+  String Function(RakutenManagedProduct product)? genreLabelForProduct,
+}) {
   if (!criteria.hasAnyReducingFilter) {
     return List<RakutenManagedProduct>.from(items);
   }
   final out = <RakutenManagedProduct>[];
   for (final e in items) {
     try {
-      if (!_managedProductMatchesKeyword(e, criteria.keyword)) continue;
-      if (!_matchesRegisteredDate(e, criteria.registeredDatePreset)) continue;
+      if (!_managedProductMatchesKeyword(
+        e,
+        criteria.keyword,
+        genreLabelForProduct,
+      )) {
+        continue;
+      }
+      if (!_matchesRelativeDate(e.addedAt, criteria.registeredDatePreset)) {
+        continue;
+      }
+      if (!_matchesShop(e, criteria, savedShopIds)) continue;
       if (!_matchesStaleCandidatePreset(e, criteria.staleCandidatePreset)) {
         continue;
       }
@@ -291,6 +479,10 @@ List<RakutenManagedProduct> applyRoomColleListFilters(
       if (!_matchesPrice(e, criteria.priceMinYen, criteria.priceMaxYen)) {
         continue;
       }
+      if (!_matchesCandidateOnly(e, criteria, todayRecommendationProductIds)) {
+        continue;
+      }
+      if (!_matchesDoneOnly(e, criteria)) continue;
       out.add(e);
     } catch (err, st) {
       assert(() {
