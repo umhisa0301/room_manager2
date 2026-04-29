@@ -643,10 +643,10 @@ class _RoomColleFilterEditorSheetState
     final g = widget.initial.genreId?.trim();
     _genreId = (g != null && g.isNotEmpty) ? g : null;
     _minPriceCtrl = TextEditingController(
-      text: widget.initial.priceMinYen?.toString() ?? '',
+      text: _formatYenInput(widget.initial.priceMinYen?.toString() ?? ''),
     );
     _maxPriceCtrl = TextEditingController(
-      text: widget.initial.priceMaxYen?.toString() ?? '',
+      text: _formatYenInput(widget.initial.priceMaxYen?.toString() ?? ''),
     );
     _candidateState = _candidateStateFromCriteria(widget.initial);
     _doneEvaluation = _doneEvaluationFromCriteria(widget.initial);
@@ -742,9 +742,30 @@ class _RoomColleFilterEditorSheetState
   }
 
   int? _tryParseYenField(TextEditingController c) {
-    final t = c.text.trim();
+    final t = c.text.trim().replaceAll(',', '');
     if (t.isEmpty) return null;
     return int.tryParse(t);
+  }
+
+  String _formatYenInput(String value) {
+    final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digits.isEmpty) return '';
+    final buffer = StringBuffer();
+    for (var i = 0; i < digits.length; i++) {
+      final remaining = digits.length - i;
+      buffer.write(digits[i]);
+      if (remaining > 1 && remaining % 3 == 1) buffer.write(',');
+    }
+    return buffer.toString();
+  }
+
+  void _formatPriceController(TextEditingController controller) {
+    final formatted = _formatYenInput(controller.text);
+    if (controller.text == formatted) return;
+    controller.value = TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: formatted.length),
+    );
   }
 
   void _resetDraftExtended() {
@@ -836,16 +857,20 @@ class _RoomColleFilterEditorSheetState
   InputDecoration _fieldDecoration() {
     return InputDecoration(
       filled: true,
-      fillColor: HomeScreenColors.deckFill,
+      fillColor: AppColors.surface,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(color: HomeScreenColors.deckOutline),
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: AppColors.divider),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(color: HomeScreenColors.deckOutline),
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: AppColors.divider),
       ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: AppColors.accentPrimary, width: 1.3),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
     );
   }
 
@@ -855,8 +880,10 @@ class _RoomColleFilterEditorSheetState
       child: Text(
         text,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
+          fontSize: 12,
           fontWeight: FontWeight.w800,
-          color: HomeScreenColors.leadOnSection,
+          color: AppColors.textSecondary,
+          height: 1.2,
         ),
       ),
     );
@@ -877,6 +904,11 @@ class _RoomColleFilterEditorSheetState
           initialValue: value,
           isExpanded: true,
           decoration: _fieldDecoration(),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            fontSize: 16,
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.w600,
+          ),
           items: items,
           onChanged: onChanged,
         ),
@@ -913,6 +945,12 @@ class _RoomColleFilterEditorSheetState
     return [
       const DropdownMenuItem(value: _shopAll, child: Text('すべて')),
       const DropdownMenuItem(value: _shopSaved, child: Text('保存したショップ')),
+      if (widget.shopNames.isNotEmpty)
+        const DropdownMenuItem<String>(
+          enabled: false,
+          value: '__divider__',
+          child: Divider(height: 1),
+        ),
       ...widget.shopNames.map(
         (name) => DropdownMenuItem(
           value: name,
@@ -936,6 +974,7 @@ class _RoomColleFilterEditorSheetState
           value: id,
           child: Text(
             _roomColleGenreFilterMenuText(id),
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -993,138 +1032,212 @@ class _RoomColleFilterEditorSheetState
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
-    return Material(
-      color: HomeScreenColors.canvas,
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: SingleChildScrollView(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            padding: EdgeInsets.fromLTRB(
-              _kRoomListScreenPadH,
-              12,
-              _kRoomListScreenPadH,
-              16 + bottomPadding,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(
-                      color: AppColors.divider,
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                  ),
-                ),
-                Text(
-                  widget.sectionTitle,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: HomeScreenColors.accentSectionHeading,
-                  ),
-                ),
-                const SizedBox(height: 14),
-                _dropdown<RoomColleRegisteredDatePreset>(
-                  label: '日付',
-                  value: _datePreset,
-                  items: _dateItems(),
-                  onChanged: (v) {
-                    if (v != null) setState(() => _datePreset = v);
-                  },
-                ),
-                const SizedBox(height: 14),
-                _dropdown<String>(
-                  label: 'ショップ',
-                  value: _shopValue,
-                  items: _shopItems(),
-                  onChanged: (v) {
-                    if (v != null) setState(() => _shopValue = v);
-                  },
-                ),
-                const SizedBox(height: 14),
-                _dropdown<String>(
-                  label: 'ジャンル',
-                  value: _genreId ?? '',
-                  items: _genreItems(),
-                  onChanged: (v) {
-                    setState(
-                      () => _genreId = (v == null || v.isEmpty) ? null : v,
-                    );
-                  },
-                ),
-                const SizedBox(height: 14),
-                _label('価格'),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    final sheetHeight = MediaQuery.sizeOf(context).height * 0.8;
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            height: sheetHeight,
+            child: Material(
+              color: AppColors.surface,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: SafeArea(
+                top: false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
-                      child: AppTextField(
-                        controller: _minPriceCtrl,
-                        keyboardType: TextInputType.number,
-                        hintText: '最低価格',
+                    Center(
+                      child: Container(
+                        width: 44,
+                        height: 5,
+                        margin: const EdgeInsets.only(top: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                          color: AppColors.divider,
+                          borderRadius: BorderRadius.circular(999),
+                        ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 14,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 12, 12),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.sectionTitle,
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    color: AppColors.textPrimary,
+                                  ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: _resetDraftExtended,
+                            style: TextButton.styleFrom(
+                              foregroundColor: AppColors.accentPrimary,
+                              textStyle: Theme.of(context).textTheme.labelLarge
+                                  ?.copyWith(fontWeight: FontWeight.w800),
+                            ),
+                            child: const Text('リセット'),
+                          ),
+                        ],
                       ),
-                      child: Text('〜'),
                     ),
                     Expanded(
-                      child: AppTextField(
-                        controller: _maxPriceCtrl,
-                        keyboardType: TextInputType.number,
-                        hintText: '最高価格',
+                      child: SingleChildScrollView(
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _dropdown<RoomColleRegisteredDatePreset>(
+                              label: '日付',
+                              value: _datePreset,
+                              items: _dateItems(),
+                              onChanged: (v) {
+                                if (v != null) {
+                                  setState(() => _datePreset = v);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            _dropdown<String>(
+                              label: 'ショップ',
+                              value: _shopValue,
+                              items: _shopItems(),
+                              onChanged: (v) {
+                                if (v != null && v != '__divider__') {
+                                  setState(() => _shopValue = v);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            _dropdown<String>(
+                              label: 'ジャンル',
+                              value: _genreId ?? '',
+                              items: _genreItems(),
+                              onChanged: (v) {
+                                setState(
+                                  () => _genreId = (v == null || v.isEmpty)
+                                      ? null
+                                      : v,
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            _label('価格'),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: AppTextField(
+                                    controller: _minPriceCtrl,
+                                    keyboardType: TextInputType.number,
+                                    hintText: '最低価格',
+                                    onChanged: (_) =>
+                                        _formatPriceController(_minPriceCtrl),
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 14,
+                                  ),
+                                  child: Text('〜'),
+                                ),
+                                Expanded(
+                                  child: AppTextField(
+                                    controller: _maxPriceCtrl,
+                                    keyboardType: TextInputType.number,
+                                    hintText: '最高価格',
+                                    onChanged: (_) =>
+                                        _formatPriceController(_maxPriceCtrl),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 24),
+                            if (widget.isCandidateTab)
+                              _dropdown<_RoomColleCandidateStateFilter>(
+                                label: '状態',
+                                value: _candidateState,
+                                items: _candidateStateItems(),
+                                onChanged: (v) {
+                                  if (v != null) {
+                                    setState(() => _candidateState = v);
+                                  }
+                                },
+                              )
+                            else
+                              _dropdown<_RoomColleDoneEvaluationFilter>(
+                                label: '評価',
+                                value: _doneEvaluation,
+                                items: _evaluationItems(),
+                                onChanged: (v) {
+                                  if (v != null) {
+                                    setState(() => _doneEvaluation = v);
+                                  }
+                                },
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        border: Border(
+                          top: BorderSide(
+                            color: AppColors.divider.withValues(alpha: 0.72),
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          20,
+                          14,
+                          20,
+                          12 + bottomPadding,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            AppPrimaryButton(
+                              label: 'この条件で検索',
+                              onPressed: _apply,
+                              height: 56,
+                            ),
+                            const SizedBox(height: 10),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              style: TextButton.styleFrom(
+                                foregroundColor: AppColors.textSecondary,
+                                minimumSize: const Size(0, 44),
+                                textStyle: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(fontWeight: FontWeight.w800),
+                              ),
+                              child: const Text('閉じる'),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 14),
-                if (widget.isCandidateTab)
-                  _dropdown<_RoomColleCandidateStateFilter>(
-                    label: '状態',
-                    value: _candidateState,
-                    items: _candidateStateItems(),
-                    onChanged: (v) {
-                      if (v != null) setState(() => _candidateState = v);
-                    },
-                  )
-                else
-                  _dropdown<_RoomColleDoneEvaluationFilter>(
-                    label: '評価',
-                    value: _doneEvaluation,
-                    items: _evaluationItems(),
-                    onChanged: (v) {
-                      if (v != null) setState(() => _doneEvaluation = v);
-                    },
-                  ),
-                const SizedBox(height: 20),
-                AppPrimaryButton(label: 'この条件を適用', onPressed: _apply),
-                const SizedBox(height: 10),
-                AppSecondaryButton(
-                  label: 'リセット',
-                  onPressed: _resetDraftExtended,
-                  expand: true,
-                  height: 44,
-                ),
-                const SizedBox(height: 8),
-                AppSecondaryButton(
-                  label: '閉じる',
-                  onPressed: () => Navigator.of(context).pop(),
-                  expand: true,
-                  height: 44,
-                ),
-              ],
+              ),
             ),
           ),
         ),
@@ -1595,6 +1708,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black.withValues(alpha: 0.34),
       builder: (ctx) => _RoomColleFilterEditorSheet(
         sectionTitle: title,
         initial: current,

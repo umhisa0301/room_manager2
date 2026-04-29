@@ -213,7 +213,6 @@ class RakutenSearchResultCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
-          flex: 34,
           child: AppSecondaryButton(
             // 共通AppSecondaryButtonへ置換: 楽天確認用の副導線。
             label: '楽天で見る',
@@ -224,8 +223,8 @@ class RakutenSearchResultCard extends StatelessWidget {
                 AppActionService.openUrl(context, url: item.browserLaunchUrl),
           ),
         ),
-        const SizedBox(width: 6),
-        Expanded(flex: 42, child: _buildRegisterAction(context)),
+        const SizedBox(width: 8),
+        Expanded(child: _buildRegisterAction(context)),
       ],
     );
   }
@@ -267,7 +266,7 @@ class RakutenSearchResultCard extends StatelessWidget {
       child: AppPrimaryButton(
         // 共通AppPrimaryButtonへ置換: コレ候補追加の主CTA。
         label: 'コレ候補に追加',
-        icon: const Icon(Icons.bookmark_add_rounded),
+        icon: const Icon(Icons.add_rounded),
         height: 46,
         expand: true,
         onPressed: isRegistering ? null : onRegisterCandidate,
