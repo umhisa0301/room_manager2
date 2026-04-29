@@ -7,7 +7,6 @@ import '../utils/rakuten_product_genre_display.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
-import 'app_button.dart';
 import 'room_colle_product_list_card_layout.dart';
 
 /// 楽天検索結果の1商品カード（ROOM コレ一覧カードと同一 UI ルール）。
@@ -39,6 +38,16 @@ class RakutenSearchResultCard extends StatelessWidget {
   /// 指定時はジャンル行にこれを表示（検索結果の API 解決名など）。
   /// null のときは [RakutenProductGenreDisplay.resolve]（API名・マスタ・未分類）。
   final String? genreDisplayLineOverride;
+
+  static const double _contentGap = 6;
+  static const double _metaGap = 4;
+  static const double _buttonGap = 8;
+  static const EdgeInsets _rightColumnPadding = EdgeInsets.fromLTRB(
+    12,
+    10,
+    12,
+    10,
+  );
 
   static String _safeItemName(RakutenSearchItem item) {
     try {
@@ -104,7 +113,7 @@ class RakutenSearchResultCard extends StatelessWidget {
           RoomColleProductListCardThumbSlot(child: _heroImage()),
           Expanded(
             child: Padding(
-              padding: RoomColleProductListCardLayout.rightColumnPadding,
+              padding: _rightColumnPadding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
@@ -119,7 +128,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: titleStyle,
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: _contentGap),
                       Text(
                         RoomColleProductListCardLayout.formatPriceYen(
                           item.itemPrice,
@@ -128,12 +137,12 @@ class RakutenSearchResultCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: priceStyle,
                       ),
-                      const SizedBox(height: 2),
+                      const SizedBox(height: _metaGap),
                       _ratingRow(
                         reviewScoreStyle: reviewScoreStyle,
                         reviewCountStyle: reviewCountStyle,
                       ),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: _metaGap),
                       Text(
                         _safeShopName(item),
                         maxLines: RoomColleProductListCardLayout.shopMaxLines,
@@ -141,7 +150,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                         style: shopStyle,
                       ),
                       if (item.genreId.trim().isNotEmpty) ...[
-                        const SizedBox(height: 3),
+                        const SizedBox(height: _metaGap),
                         Text(
                           genreDisplayLineOverride ??
                               RakutenProductGenreDisplay.resolve(
@@ -171,7 +180,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                       ],
                     ],
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 10),
                   _searchResultActions(context),
                 ],
               ),
@@ -213,17 +222,14 @@ class RakutenSearchResultCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
-          child: AppSecondaryButton(
-            // 共通AppSecondaryButtonへ置換: 楽天確認用の副導線。
+          child: _SearchCardActionButton(
             label: '楽天で見る',
-            icon: const Icon(Icons.open_in_new_rounded),
-            height: 44,
-            expand: true,
+            icon: Icons.open_in_new_rounded,
             onPressed: () =>
                 AppActionService.openUrl(context, url: item.browserLaunchUrl),
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: _buttonGap),
         Expanded(child: _buildRegisterAction(context)),
       ],
     );
@@ -236,12 +242,9 @@ class RakutenSearchResultCard extends StatelessWidget {
     if (isDone) {
       return Tooltip(
         message: 'ROOMコレでコレ済の商品です。再度コレ候補へは登録できません。',
-        child: AppSecondaryButton(
-          // 共通AppSecondaryButtonへ置換: コレ済状態の非活性表示。
+        child: const _SearchCardActionButton(
           label: 'コレ済',
-          icon: const Icon(Icons.check_circle_outline_rounded),
-          height: 44,
-          expand: true,
+          icon: Icons.check_circle_outline_rounded,
           onPressed: null,
         ),
       );
@@ -250,12 +253,9 @@ class RakutenSearchResultCard extends StatelessWidget {
     if (isCandidate) {
       return Tooltip(
         message: 'コレ候補に登録済みです。重複登録はできません。ROOMコレの候補一覧から確認できます。',
-        child: AppSecondaryButton(
-          // 共通AppSecondaryButtonへ置換: 候補登録済み状態の非活性表示。
+        child: const _SearchCardActionButton(
           label: '候補に登録済',
-          icon: const Icon(Icons.bookmark_added_outlined),
-          height: 44,
-          expand: true,
+          icon: Icons.bookmark_added_outlined,
           onPressed: null,
         ),
       );
@@ -263,12 +263,10 @@ class RakutenSearchResultCard extends StatelessWidget {
 
     return Tooltip(
       message: 'ROOMコレの「コレ候補」に追加します。あとからROOMコレタブの候補一覧で比較・整理できます。',
-      child: AppPrimaryButton(
-        // 共通AppPrimaryButtonへ置換: コレ候補追加の主CTA。
+      child: _SearchCardActionButton(
         label: 'コレ候補に追加',
-        icon: const Icon(Icons.add_rounded),
-        height: 46,
-        expand: true,
+        icon: Icons.add_rounded,
+        primary: true,
         onPressed: isRegistering ? null : onRegisterCandidate,
         isLoading: isRegistering,
       ),
@@ -327,6 +325,98 @@ class RakutenSearchResultCard extends StatelessWidget {
       Icons.image_outlined,
       size: 30,
       color: AppColors.textTertiary.withValues(alpha: 0.65),
+    );
+  }
+}
+
+class _SearchCardActionButton extends StatelessWidget {
+  const _SearchCardActionButton({
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+    this.primary = false,
+    this.isLoading = false,
+  });
+
+  static const double _height = 48;
+
+  final String label;
+  final IconData icon;
+  final VoidCallback? onPressed;
+  final bool primary;
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onPressed != null && !isLoading;
+    final foreground = primary
+        ? AppColors.textOnAccent
+        : AppColors.textSecondary;
+    final background = primary ? AppColors.accentPrimary : Colors.transparent;
+    final border = primary
+        ? AppColors.accentPrimary
+        : AppColors.divider.withValues(alpha: 0.86);
+
+    return SizedBox(
+      width: double.infinity,
+      height: _height,
+      child: OutlinedButton(
+        onPressed: enabled ? onPressed : null,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: foreground,
+          backgroundColor: background,
+          disabledForegroundColor: primary
+              ? AppColors.textOnAccent.withValues(alpha: 0.72)
+              : AppColors.textTertiary,
+          disabledBackgroundColor: primary
+              ? AppColors.accentPrimary.withValues(alpha: 0.34)
+              : Colors.transparent,
+          side: BorderSide(color: enabled ? border : AppColors.divider),
+          elevation: primary && enabled ? 1.2 : 0,
+          minimumSize: const Size(0, _height),
+          fixedSize: const Size.fromHeight(_height),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          tapTargetSize: MaterialTapTargetSize.padded,
+          visualDensity: VisualDensity.standard,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(primary ? 14 : 999),
+          ),
+        ),
+        child: Center(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (isLoading) ...[
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.textOnAccent.withValues(alpha: 0.9),
+                    ),
+                  ),
+                ] else ...[
+                  Icon(icon, size: 17),
+                ],
+                const SizedBox(width: 5),
+                Text(
+                  label,
+                  maxLines: 1,
+                  softWrap: false,
+                  style: AppTextStyles.label.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: foreground,
+                    height: 1.1,
+                    letterSpacing: -0.25,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
