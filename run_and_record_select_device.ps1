@@ -29,7 +29,6 @@ $CurrentDir = (Get-Location).Path
 $FolderName = Split-Path $CurrentDir -Leaf
 $SafeAppName = ($FolderName -replace '[\\/:*?"<>| ]', '_')
 $LocalSaveDir = Join-Path $CurrentDir "recordings"
-$ScreenshotDir = Join-Path $LocalSaveDir "screenshots"
 $CommandFile = Join-Path $LocalSaveDir "recording_command.txt"
 $LockFile = Join-Path $LocalSaveDir "recording_session.lock"
 $ControllerScriptPath = Join-Path $CurrentDir "recording_controller.ps1"
@@ -315,7 +314,6 @@ function Start-ControllerWindow {
 }
 
 Ensure-Directory -Path $LocalSaveDir
-Ensure-Directory -Path $ScreenshotDir
 
 if (Test-Path $CommandFile) {
     Remove-Item $CommandFile -Force -ErrorAction SilentlyContinue
@@ -338,6 +336,8 @@ Write-Host "Project dir  : $CurrentDir" -ForegroundColor Green
 Write-Host "App name     : $SafeAppName" -ForegroundColor Green
 
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+$ScreenshotDir = Join-Path $LocalSaveDir ("screenshots_" + $timestamp)
+Ensure-Directory -Path $ScreenshotDir
 
 $localFileName = "{0}_{1}.mp4" -f $SafeAppName, $timestamp
 $flutterStdOutLogName = "{0}_flutter_stdout_{1}.log" -f $SafeAppName, $timestamp
@@ -480,6 +480,10 @@ try {
 
         $command = Get-ExternalCommand -Path $CommandFile
 
+        if ($null -eq $command) {
+            continue
+        }
+
         switch ($command) {
             "q" {
                 $stopRequestedByQ = $true
@@ -575,8 +579,8 @@ if (Test-RemoteFileExists -DeviceId $deviceId -RemotePath $RemoteVideoPath) {
     Write-Section "Delete remote video"
     adb -s $deviceId shell "rm -f '$RemoteVideoPath'" | Out-Host
 
-    Write-Section "Open output folder"
-    Open-OutputFolder -Path $LocalSaveDir
+    Write-Section "Open screenshot folder"
+    Open-OutputFolder -Path $ScreenshotDir
 
     Write-Host ""
     Write-Host "Done." -ForegroundColor Green
@@ -595,6 +599,6 @@ else {
     if ($stopRequestedByQ) {
         Write-Host "Stopped by Q command." -ForegroundColor Yellow
     }
-    Write-Section "Open output folder"
-    Open-OutputFolder -Path $LocalSaveDir
+    Write-Section "Open screenshot folder"
+    Open-OutputFolder -Path $ScreenshotDir
 }
