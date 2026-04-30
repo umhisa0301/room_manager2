@@ -13,6 +13,17 @@ import 'comment_template_edit_screen.dart';
 class CommentsPlaceholderScreen extends StatelessWidget {
   const CommentsPlaceholderScreen({super.key});
 
+  List<CommentTemplate> _sortedTemplates(List<CommentTemplate> raw) {
+    final list = [...raw]
+      ..sort((a, b) {
+        if (a.isFavorite != b.isFavorite) {
+          return a.isFavorite ? -1 : 1;
+        }
+        return b.updatedAt.compareTo(a.updatedAt);
+      });
+    return list;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,41 +32,75 @@ class CommentsPlaceholderScreen extends StatelessWidget {
       body: SafeArea(
         child: Consumer<CommentTemplateProvider>(
           builder: (context, provider, _) {
-            final templates = provider.templates;
+            final templates = _sortedTemplates(provider.templates);
+            final copied = provider.lastCopiedComment?.trim();
+            final hasCopiedPreview = copied != null && copied.isNotEmpty;
+
             return ListView(
-              padding: const EdgeInsets.fromLTRB(
+              padding: EdgeInsets.fromLTRB(
                 AppDimensions.screenPaddingH,
                 AppDimensions.spacingSm,
                 AppDimensions.screenPaddingH,
-                80,
+                MediaQuery.paddingOf(context).bottom + 88,
               ),
               children: [
                 const _CommentScreenPurposeHeader(),
-                const SizedBox(height: AppDimensions.spacingMd),
-                const _AiSuggestionFuturePlaceholder(),
-                const SizedBox(height: AppDimensions.spacingSm),
-                _RecentCopiedCard(text: provider.lastCopiedComment),
-                const SizedBox(height: AppDimensions.spacingMd),
-                if (templates.isEmpty)
-                  _CommentTemplatesEmptyGuide()
-                else
+                if (hasCopiedPreview) ...[
+                  const SizedBox(height: 10),
+                  _RecentCopiedStrip(text: copied),
+                ],
+                const SizedBox(height: 14),
+                if (templates.isEmpty) ...[
+                  _CommentTemplatesEmptyGuide(
+                    onAdd: () => _openAdd(context),
+                  ),
+                ] else ...[
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.library_books_outlined,
+                        size: 20,
+                        color: AppColors.accentPrimary,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'テンプレート一覧',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: AppColors.textPrimary,
+                              fontWeight: FontWeight.w800,
+                            ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
                   ..._buildTemplateCards(context, provider, templates),
+                ],
               ],
             );
           },
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        heroTag: 'fab_comments_template_add',
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (context) =>
-                  const CommentTemplateEditScreen(initialTemplate: null),
-            ),
-          );
-        },
-        child: const Icon(Icons.add_comment_outlined),
+        heroTag: 'fab_comments_add_template',
+        tooltip: 'テンプレートを追加',
+        elevation: 3.5,
+        highlightElevation: 6,
+        backgroundColor: AppColors.accentPrimary,
+        foregroundColor: AppColors.textOnAccent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        onPressed: () => _openAdd(context),
+        child: const Icon(Icons.add_comment_rounded, size: 26),
+      ),
+    );
+  }
+
+  void _openAdd(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) =>
+            const CommentTemplateEditScreen(initialTemplate: null),
       ),
     );
   }
@@ -65,22 +110,26 @@ class CommentsPlaceholderScreen extends StatelessWidget {
     CommentTemplateProvider provider,
     List<CommentTemplate> templates,
   ) {
+    final last = provider.lastCopiedComment?.trim();
     return [
-      for (final t in templates) ...[
+      for (var i = 0; i < templates.length; i++) ...[
         _CommentTemplateCard(
-          template: t,
+          template: templates[i],
+          justCopied: last != null && last == templates[i].body.trim(),
           onCopy: () async {
             await AppActionService.copyText(
               context,
-              text: t.body,
-              onSuccess: () => provider.setLastCopiedComment(t.body),
+              text: templates[i].body,
+              successMessage: 'コピーしました',
+              onSuccess: () => provider.setLastCopiedComment(templates[i].body),
             );
           },
           onEdit: () {
             Navigator.of(context).push(
               MaterialPageRoute<void>(
-                builder: (context) =>
-                    CommentTemplateEditScreen(initialTemplate: t),
+                builder: (context) => CommentTemplateEditScreen(
+                  initialTemplate: templates[i],
+                ),
               ),
             );
           },
@@ -103,22 +152,22 @@ class CommentsPlaceholderScreen extends StatelessWidget {
               ),
             );
             if (ok == true) {
-              provider.deleteTemplate(t);
+              provider.deleteTemplate(templates[i]);
               if (context.mounted) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('削除しました')));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('削除しました')),
+                );
               }
             }
           },
         ),
-        const SizedBox(height: 10),
+        if (i != templates.length - 1) const SizedBox(height: 8),
       ],
     ];
   }
 }
 
-/// この画面の目的を冒頭で伝える。
+/// 短い案内（説明カードはこの1枚まで）。
 class _CommentScreenPurposeHeader extends StatelessWidget {
   const _CommentScreenPurposeHeader();
 
@@ -127,13 +176,14 @@ class _CommentScreenPurposeHeader extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: AppCard(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+        borderColor: AppColors.accentPrimary.withValues(alpha: 0.22),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(
-              Icons.chat_bubble_outline_rounded,
-              size: 26,
+              Icons.content_copy_rounded,
+              size: 24,
               color: AppColors.accentPrimary,
             ),
             const SizedBox(width: 12),
@@ -142,20 +192,21 @@ class _CommentScreenPurposeHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '楽天ROOMに投稿するコメントを作成・保存できます',
+                    'よく使うROOMコメントを保存して、ワンタップでコピーできます',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w700,
-                      height: 1.35,
-                    ),
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w800,
+                          height: 1.3,
+                        ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 6),
                   Text(
-                    '保存した文は一覧からワンタップでコピーし、ROOMの投稿欄に貼り付けられます。',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.45,
-                    ),
+                    'フォローのお礼・投稿コメント・定型文をここにまとめておけます。テンプレを選び「コピーする」またはカードをタップしてROOMに貼り付けましょう。',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.35,
+                          fontSize: 14,
+                        ),
                   ),
                 ],
               ),
@@ -167,31 +218,52 @@ class _CommentScreenPurposeHeader extends StatelessWidget {
   }
 }
 
-/// テンプレート活用のヒント欄。
-class _AiSuggestionFuturePlaceholder extends StatelessWidget {
-  const _AiSuggestionFuturePlaceholder();
+/// 直近コピー（控えめ・履歴があるときだけ上部に表示）。
+class _RecentCopiedStrip extends StatelessWidget {
+  const _RecentCopiedStrip({required this.text});
+
+  final String text;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: AppCard(
-        padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+    final preview = text.replaceAll('\n', ' ');
+    return Material(
+      color: AppColors.accentLight.withValues(alpha: 0.35),
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(
-              Icons.lightbulb_outline_rounded,
-              size: 18,
-              color: AppColors.accentPrimary,
+              Icons.history_rounded,
+              size: 16,
+              color: AppColors.accentPrimary.withValues(alpha: 0.9),
             ),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(
-                'テンプレートをジャンルや用途別に分けておくと、投稿のたびに迷いにくくなります。',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.4,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '最近コピーしたコメント',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.1,
+                        ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    preview,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textPrimary,
+                          height: 1.25,
+                        ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -201,85 +273,48 @@ class _AiSuggestionFuturePlaceholder extends StatelessWidget {
   }
 }
 
-/// テンプレがまだないときのガイド。
 class _CommentTemplatesEmptyGuide extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: AppCard(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
-        borderColor: AppColors.accentLight.withValues(alpha: 0.6),
-        child: Column(
-          children: [
-            Icon(
-              Icons.post_add_outlined,
-              size: 40,
-              color: AppColors.accentPrimary.withValues(alpha: 0.75),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'コメントを作成して保存すると、すぐにコピーできます',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w700,
-                height: 1.35,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              '右下の＋ボタンから、よく使う投稿文をテンプレートとして登録してください。'
-              '一覧ではタップまたはコピーアイコンでクリップボードに送れます。'
-              'ジャンルごとに登録しておくと、あとから整理しやすくなります。',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.45,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+  const _CommentTemplatesEmptyGuide({required this.onAdd});
 
-class _RecentCopiedCard extends StatelessWidget {
-  const _RecentCopiedCard({required this.text});
-
-  final String? text;
+  final VoidCallback onAdd;
 
   @override
   Widget build(BuildContext context) {
     return AppCard(
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      elevated: true,
+      padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
+      borderColor: AppColors.accentPrimary.withValues(alpha: 0.25),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Icon(Icons.history, size: 18, color: AppColors.textSecondary),
-              const SizedBox(width: 6),
-              Text(
-                '最近コピーしたコメント',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
+          Icon(
+            Icons.post_add_rounded,
+            size: 36,
+            color: AppColors.accentPrimary.withValues(alpha: 0.85),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 12),
           Text(
-            text == null || text!.isEmpty
-                ? 'まだコピー履歴がありません。テンプレか商品のコメントをコピーするとここに表示されます。'
-                : text!,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: AppColors.textPrimary),
+            'よく使うコメントを登録しましょう',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w800,
+                  height: 1.3,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'フォローお礼や投稿文を保存しておくと、ROOM投稿が楽になります。右下の「テンプレートを追加」から登録できます。',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                  fontSize: 14,
+                ),
+          ),
+          const SizedBox(height: 14),
+          AppPrimaryButton(
+            label: 'テンプレートを追加',
+            icon: const Icon(Icons.add_comment_rounded),
+            onPressed: onAdd,
           ),
         ],
       ),
@@ -290,127 +325,164 @@ class _RecentCopiedCard extends StatelessWidget {
 class _CommentTemplateCard extends StatelessWidget {
   const _CommentTemplateCard({
     required this.template,
+    required this.justCopied,
     required this.onCopy,
     required this.onEdit,
     required this.onDelete,
   });
 
   final CommentTemplate template;
+  final bool justCopied;
   final VoidCallback onCopy;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
+    final category = template.category?.trim();
     return AppCard(
       onTap: onCopy,
-      padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
+      padding: const EdgeInsets.fromLTRB(12, 10, 10, 10),
       elevated: true,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      borderColor: AppColors.divider.withValues(alpha: 0.75),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        template.title,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    if (template.isFavorite)
-                      Icon(
-                        Icons.star,
-                        size: 18,
-                        color: AppColors.accentSecondary,
-                      ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  template.body,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  template.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    if ((template.category ?? '').isNotEmpty)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 3,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.accentLightest,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          'ジャンル: ${template.category!}',
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: AppColors.accentPrimary,
-                                fontSize: 11,
-                              ),
-                        ),
-                      )
-                    else
-                      Text(
-                        'ジャンル未設定',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textTertiary,
-                          fontSize: 11,
-                        ),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w800,
+                        height: 1.25,
                       ),
-                    const Spacer(),
-                    Text(
-                      'タップでコピー',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textTertiary,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ],
                 ),
-              ],
-            ),
+              ),
+              if (template.isFavorite)
+                Padding(
+                  padding: const EdgeInsets.only(left: 6, top: 1),
+                  child: Icon(
+                    Icons.star_rounded,
+                    size: 20,
+                    color: AppColors.accentSecondary,
+                  ),
+                ),
+            ],
           ),
-          const SizedBox(width: 8),
-          SizedBox(
-            width: 40,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.copy, size: 18),
+          const SizedBox(height: 6),
+          Text(
+            template.body,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.32,
+                  fontSize: 14,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              if (category != null && category.isNotEmpty)
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: AppColors.accentLight,
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(
+                      color: AppColors.accentPrimary.withValues(alpha: 0.2),
+                    ),
+                  ),
+                  child: Text(
+                    category,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: AppColors.accentPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                )
+              else
+                Text(
+                  'カテゴリー未設定',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textTertiary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+              if (justCopied)
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: AppColors.surfaceVariant,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Text(
+                    '直近にコピー',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'カードの余白をタップしてもコピーできます',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.textTertiary,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: FilledButton.icon(
                   onPressed: onCopy,
-                  tooltip: 'コピー',
+                  icon: const Icon(Icons.copy_rounded, size: 20),
+                  label: const Text('クリップボードにコピーする'),
+                  style: FilledButton.styleFrom(
+                    foregroundColor: AppColors.textOnAccent,
+                    backgroundColor: AppColors.accentPrimary,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.edit_outlined, size: 18),
-                  onPressed: onEdit,
-                  tooltip: '編集',
+              ),
+              IconButton(
+                tooltip: '編集する',
+                onPressed: onEdit,
+                icon: Icon(
+                  Icons.edit_outlined,
+                  color: AppColors.textSecondary,
                 ),
-                IconButton(
-                  icon: const Icon(Icons.delete_outline, size: 18),
-                  onPressed: onDelete,
-                  tooltip: '削除',
+              ),
+              IconButton(
+                tooltip: '削除する',
+                onPressed: onDelete,
+                icon: Icon(
+                  Icons.delete_outline_rounded,
+                  color: AppColors.textSecondary,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
