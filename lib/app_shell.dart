@@ -99,74 +99,81 @@ class _AppShellState extends State<AppShell> {
     final shell = context.watch<AppShellController>();
     final idx = shell.currentIndex;
     final bottomLift = MediaQuery.paddingOf(context).bottom + 56;
+    final showGlobalCommentFab = idx != 2;
     return Scaffold(
       body: IndexedStack(index: idx, children: _screens),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: bottomLift.clamp(52.0, 92.0)),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            if (_showCommentFabCoachmark)
-              Padding(
-                padding: const EdgeInsets.only(right: 4, bottom: 10),
-                child: Material(
-                  elevation: 2,
-                  shadowColor: Colors.black.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(14),
-                  color: AppColors.surface,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 8, 4, 8),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 220),
-                          child: Text(
-                            '投稿コメントを作れます',
-                            style: Theme.of(context).textTheme.labelLarge
-                                ?.copyWith(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.w700,
-                                  height: 1.25,
+      floatingActionButton: showGlobalCommentFab
+          ? Padding(
+              padding: EdgeInsets.only(bottom: bottomLift.clamp(52.0, 92.0)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  if (_showCommentFabCoachmark)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4, bottom: 10),
+                      child: Material(
+                        elevation: 2,
+                        shadowColor: Colors.black.withValues(alpha: 0.14),
+                        borderRadius: BorderRadius.circular(14),
+                        color: AppColors.surface,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 8, 4, 8),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 220,
                                 ),
+                                child: Text(
+                                  '投稿コメントを作れます',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge
+                                      ?.copyWith(
+                                        color: AppColors.textPrimary,
+                                        fontWeight: FontWeight.w700,
+                                        height: 1.25,
+                                      ),
+                                ),
+                              ),
+                              IconButton(
+                                visualDensity: VisualDensity.compact,
+                                tooltip: '閉じる',
+                                onPressed: _consumeCommentFabCoachmark,
+                                icon: Icon(
+                                  Icons.close_rounded,
+                                  size: 20,
+                                  color: AppColors.textSecondary.withValues(
+                                    alpha: 0.85,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        IconButton(
-                          visualDensity: VisualDensity.compact,
-                          tooltip: '閉じる',
-                          onPressed: _consumeCommentFabCoachmark,
-                          icon: Icon(
-                            Icons.close_rounded,
-                            size: 20,
-                            color: AppColors.textSecondary.withValues(
-                              alpha: 0.85,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
+                    ),
+                  Tooltip(
+                    message: '投稿コメントを作れます',
+                    child: FloatingActionButton(
+                      heroTag: 'app_shell_comment_fab',
+                      elevation: 3.5,
+                      highlightElevation: 6,
+                      backgroundColor: AppColors.accentPrimary,
+                      foregroundColor: AppColors.textOnAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      onPressed: _openCommentsTab,
+                      child: const Icon(Icons.chat_bubble_rounded, size: 26),
                     ),
                   ),
-                ),
+                ],
               ),
-            Tooltip(
-              message: '投稿コメントを作れます',
-              child: FloatingActionButton(
-                heroTag: 'app_shell_comment_fab',
-                elevation: 3.5,
-                highlightElevation: 6,
-                backgroundColor: AppColors.accentPrimary,
-                foregroundColor: AppColors.textOnAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                onPressed: _openCommentsTab,
-                child: const Icon(Icons.chat_bubble_rounded, size: 26),
-              ),
-            ),
-          ],
-        ),
-      ),
+            )
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

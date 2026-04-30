@@ -89,8 +89,12 @@ class _CommentTemplateEditScreenState extends State<CommentTemplateEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewInsets = MediaQuery.viewInsetsOf(context);
+    final bottomPad = 16 + viewInsets.bottom;
+
     return Scaffold(
       backgroundColor: AppColors.background,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(_isEdit ? 'テンプレートを編集' : 'テンプレートを追加'),
         actions: [
@@ -99,65 +103,106 @@ class _CommentTemplateEditScreenState extends State<CommentTemplateEditScreen> {
             child: AppPrimaryButton(
               label: '保存',
               onPressed: _save,
-              height: 36,
+              height: 40,
               expand: false,
             ),
           ),
         ],
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(AppDimensions.screenPaddingH),
-          children: [
-            AppTextField(
-              controller: _titleController,
-              labelText: 'タイトル',
-              hintText: '例：挨拶＋購入経路',
-              textInputAction: TextInputAction.next,
-              validator: (v) {
-                if (v == null || v.trim().isEmpty) {
-                  return 'タイトルを入力してください';
-                }
-                return null;
-              },
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(
+              AppDimensions.screenPaddingH,
+              12,
+              AppDimensions.screenPaddingH,
+              bottomPad,
             ),
-            const SizedBox(height: AppDimensions.spacingMd),
-            AppTextField(
-              controller: _bodyController,
-              labelText: '本文',
-              hintText: '例：ご覧いただきありがとうございます…',
-              maxLines: 5,
-              validator: (v) {
-                if (v == null || v.trim().isEmpty) {
-                  return '本文を入力してください';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: AppDimensions.spacingMd),
-            AppTextField(
-              controller: _categoryController,
-              labelText: 'カテゴリー（任意）',
-              hintText: '例：育児 / インテリア など',
-            ),
-            const SizedBox(height: AppDimensions.spacingMd),
-            Row(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Switch(
-                  value: _isFavorite,
-                  onChanged: (v) => setState(() => _isFavorite = v),
-                ),
-                const SizedBox(width: 8),
                 Text(
-                  'お気に入り',
+                  'ROOMの投稿欄に貼り付ける文を入力します',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                        color: AppColors.textSecondary,
+                        height: 1.35,
+                        fontSize: 14,
+                      ),
+                ),
+                const SizedBox(height: 14),
+                AppTextField(
+                  controller: _titleController,
+                  labelText: 'タイトル',
+                  hintText: '一覧で見分けやすい名前',
+                  textInputAction: TextInputAction.next,
+                  semanticLabel: 'テンプレートのタイトル',
+                  validator: (v) {
+                    if (v == null || v.trim().isEmpty) {
+                      return 'タイトルを入力してください';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 14),
+                AppTextField(
+                  controller: _bodyController,
+                  labelText: '本文',
+                  hintText: '複数行のコメントをそのまま入力できます',
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  maxLines: 12,
+                  minHeight: 140,
+                  semanticLabel: 'コメント本文',
+                  validator: (v) {
+                    if (v == null || v.trim().isEmpty) {
+                      return '本文を入力してください';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 14),
+                AppTextField(
+                  controller: _categoryController,
+                  labelText: 'カテゴリー（任意）',
+                  hintText: '例：フォローお礼 / 投稿コメント',
+                  textInputAction: TextInputAction.done,
+                ),
+                const SizedBox(height: 8),
+                Material(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(14),
+                  child: SwitchListTile.adaptive(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                    title: Text(
+                      'お気に入り',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    subtitle: Text(
+                      '一覧の上に表示しやすくなります',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                    ),
+                    value: _isFavorite,
+                    activeThumbColor: AppColors.accentPrimary,
+                    onChanged: (v) => setState(() => _isFavorite = v),
                   ),
+                ),
+                const SizedBox(height: 20),
+                AppPrimaryButton(
+                  label: '保存して一覧へ戻る',
+                  icon: const Icon(Icons.check_rounded),
+                  onPressed: _save,
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
