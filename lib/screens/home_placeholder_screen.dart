@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
-import '../models/room_activity_event.dart';
 import '../models/room_colle_list_filters.dart';
 import '../navigation/app_shell_controller.dart';
 import '../navigation/rakuten_search_navigator.dart';
 import 'today_recommendations_screen.dart';
 import '../services/rakuten_room_home_stats.dart';
+import '../services/room_collect_post_limit.dart';
 import '../services/room_kpi_calculator.dart';
+import '../utils/today_recommendation_ui_tags.dart';
 import '../state/room_activity_event_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
@@ -177,7 +178,7 @@ abstract final class _HomeUi {
   static TextStyle sectionBody(BuildContext context) {
     final base = Theme.of(context).textTheme.bodySmall;
     return (base ?? const TextStyle()).copyWith(
-      fontSize: 13,
+      fontSize: 14,
       height: 1.38,
       color: HomeScreenColors.bodyOnSection,
     );
@@ -333,7 +334,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     );
                     final nDone = RakutenRoomHomeStats.countDone(items);
                     final now = DateTime.now();
-                    final collectLimit = _CollectLimitStats.from(
+                    final collectLimit = RoomCollectPostLimitSnapshot.compute(
                       items: items,
                       events: actProvider.events,
                       now: now,
@@ -390,6 +391,11 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                               hasTodaySuggestions: hasTodaySuggestions,
                               todayDoneCountForRec: todayDoneCountForRec,
                               recTotalCount: recProvider.totalCount,
+                              recommendationHintLine:
+                                  todayRecommendationHomeHintLine(
+                                bundle: recProvider.bundle,
+                                isLoading: recProvider.isLoading,
+                              ),
                               onOpenSearch: () =>
                                   openRakutenSearchScreen(context),
                               onOpenCandidates: () =>
@@ -445,103 +451,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   }
 }
 
-enum _CollectLimitState { normal, warning, reached }
-
-class _CollectLimitStats {
-  const _CollectLimitStats({
-    required this.todayCount,
-    required this.hourCount,
-    required this.hasAnyCollectRecord,
-    required this.hourRecoveryAt,
-  });
-
-  static const int dailyLimit = 200;
-  static const int hourlyLimit = 100;
-  static const int dailyWarningThreshold = 180;
-  static const int hourlyWarningThreshold = 80;
-
-  final int todayCount;
-  final int hourCount;
-  final bool hasAnyCollectRecord;
-  final DateTime? hourRecoveryAt;
-
-  int get dailyRemaining => (dailyLimit - todayCount).clamp(0, dailyLimit);
-  int get hourlyRemaining => (hourlyLimit - hourCount).clamp(0, hourlyLimit);
-  bool get isDailyReached => todayCount >= dailyLimit;
-  bool get isHourlyReached => hourCount >= hourlyLimit;
-  bool get isAnyLimitReached => isDailyReached || isHourlyReached;
-  bool get isDailyWarning =>
-      !isDailyReached && todayCount >= dailyWarningThreshold;
-  bool get isHourlyWarning =>
-      !isHourlyReached && hourCount >= hourlyWarningThreshold;
-
-  _CollectLimitState get dailyState {
-    if (isDailyReached) return _CollectLimitState.reached;
-    if (isDailyWarning) return _CollectLimitState.warning;
-    return _CollectLimitState.normal;
-  }
-
-  _CollectLimitState get hourlyState {
-    if (isHourlyReached) return _CollectLimitState.reached;
-    if (isHourlyWarning) return _CollectLimitState.warning;
-    return _CollectLimitState.normal;
-  }
-
-  static _CollectLimitStats from({
-    required List<RakutenManagedProduct> items,
-    required List<RoomActivityEvent> events,
-    required DateTime now,
-  }) {
-    final timestamps = <DateTime>[];
-    final productIdsWithDoneAt = <String>{};
-
-    for (final item in items) {
-      if (!RakutenManagedProduct.isMemberForStatusTab(
-        item,
-        RakutenManagedProductStatus.done,
-      )) {
-        continue;
-      }
-      final doneAt = item.doneAt;
-      if (doneAt == null) continue;
-      timestamps.add(doneAt);
-      final id = item.productId.trim();
-      if (id.isNotEmpty) productIdsWithDoneAt.add(id);
-    }
-
-    for (final event in events) {
-      if (event.type != RoomActivityEventType.movedToCored) continue;
-      if (productIdsWithDoneAt.contains(event.productId.trim())) continue;
-      timestamps.add(event.createdAt);
-    }
-
-    final todayStart = DateTime(now.year, now.month, now.day);
-    final tomorrowStart = todayStart.add(const Duration(days: 1));
-    final hourStart = now.subtract(const Duration(hours: 1));
-    var todayCount = 0;
-    final hourTimestamps = <DateTime>[];
-
-    for (final at in timestamps) {
-      if (!at.isBefore(todayStart) && at.isBefore(tomorrowStart)) {
-        todayCount++;
-      }
-      if (!at.isBefore(hourStart) && !at.isAfter(now)) {
-        hourTimestamps.add(at);
-      }
-    }
-    hourTimestamps.sort();
-
-    return _CollectLimitStats(
-      todayCount: todayCount,
-      hourCount: hourTimestamps.length,
-      hasAnyCollectRecord: timestamps.isNotEmpty,
-      hourRecoveryAt: hourTimestamps.isEmpty
-          ? null
-          : hourTimestamps.first.add(const Duration(hours: 1)),
-    );
-  }
-}
-
 /// ホーム上部：今日の運用判断とコレ上限を1カードにまとめる。
 class _HomeTodayProgressCard extends StatelessWidget {
   const _HomeTodayProgressCard({
@@ -555,6 +464,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
     required this.hasTodaySuggestions,
     required this.todayDoneCountForRec,
     required this.recTotalCount,
+    required this.recommendationHintLine,
     required this.onOpenSearch,
     required this.onOpenCandidates,
     required this.onOpenActivity,
@@ -562,7 +472,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
   });
 
   final RoomKpiSummary kpi;
-  final _CollectLimitStats collectLimit;
+  final RoomCollectPostLimitSnapshot collectLimit;
   final int candidateCount;
   final int totalCount;
   final int pendingCount;
@@ -571,6 +481,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
   final bool hasTodaySuggestions;
   final int todayDoneCountForRec;
   final int recTotalCount;
+  final String? recommendationHintLine;
   final VoidCallback onOpenSearch;
   final VoidCallback onOpenCandidates;
   final VoidCallback onOpenActivity;
@@ -603,26 +514,41 @@ class _HomeTodayProgressCard extends StatelessWidget {
             '今日のROOM運用',
             style: _HomeUi.sectionTitle(context).copyWith(
               color: HomeScreenColors.accentSectionHeading,
-              fontSize: 17,
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
             ),
           ),
+          if (recommendationHintLine != null &&
+              recommendationHintLine!.trim().isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              recommendationHintLine!.trim(),
+              maxLines: 3,
+              softWrap: true,
+              style: _HomeUi.tapHint(context).copyWith(
+                fontSize: 13,
+                height: 1.38,
+                color: HomeScreenColors.bodyOnSection,
+              ),
+            ),
+          ],
           const SizedBox(height: 12),
           _CollectLimitProgressLine(
             title: '今日の投稿数',
             usedCount: collectLimit.todayCount,
-            limit: _CollectLimitStats.dailyLimit,
-            state: collectLimit.dailyState,
+            limit: RoomCollectPostLimitSnapshot.dailyLimit,
+            state: collectLimit.dailyBarState,
             rightLabel: '本日あと${collectLimit.dailyRemaining}件',
           ),
           const SizedBox(height: 12),
           _CollectLimitProgressLine(
             title: '1時間の投稿数',
             usedCount: collectLimit.hourCount,
-            limit: _CollectLimitStats.hourlyLimit,
-            state: collectLimit.hourlyState,
+            limit: RoomCollectPostLimitSnapshot.hourlyLimit,
+            state: collectLimit.hourlyBarState,
             rightLabel: 'この1時間あと${collectLimit.hourlyRemaining}件',
             footnote: collectLimit.isHourlyReached
-                ? _minutesToRecoveryText(collectLimit.hourRecoveryAt)
+                ? collectLimit.recoveryFootnote(DateTime.now())
                 : null,
           ),
           const SizedBox(height: 12),
@@ -751,6 +677,51 @@ class _HomeActionSpec {
   final VoidCallback onPressed;
 }
 
+class _HomeAnimatedPostedCount extends StatefulWidget {
+  const _HomeAnimatedPostedCount({required this.value, required this.style});
+
+  final int value;
+  final TextStyle style;
+
+  @override
+  State<_HomeAnimatedPostedCount> createState() =>
+      _HomeAnimatedPostedCountState();
+}
+
+class _HomeAnimatedPostedCountState extends State<_HomeAnimatedPostedCount> {
+  int _begin = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _begin = widget.value;
+  }
+
+  @override
+  void didUpdateWidget(covariant _HomeAnimatedPostedCount oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value) {
+      _begin = oldWidget.value;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<int>(
+      duration: const Duration(milliseconds: 550),
+      curve: Curves.easeOutCubic,
+      tween: IntTween(begin: _begin, end: widget.value),
+      onEnd: () {
+        if (!mounted) return;
+        setState(() => _begin = widget.value);
+      },
+      builder: (context, v, child) {
+        return Text('$v', style: widget.style);
+      },
+    );
+  }
+}
+
 class _CollectLimitProgressLine extends StatelessWidget {
   const _CollectLimitProgressLine({
     required this.title,
@@ -764,19 +735,26 @@ class _CollectLimitProgressLine extends StatelessWidget {
   final String title;
   final int usedCount;
   final int limit;
-  final _CollectLimitState state;
+  final RoomCollectPostLimitBarState state;
   final String rightLabel;
   final String? footnote;
 
   @override
   Widget build(BuildContext context) {
     final color = switch (state) {
-      _CollectLimitState.normal => AppColors.accentPrimary,
-      _CollectLimitState.warning => const Color(0xFFE67E22),
-      _CollectLimitState.reached => AppColors.textSecondary,
+      RoomCollectPostLimitBarState.normal => AppColors.accentPrimary,
+      RoomCollectPostLimitBarState.warning => const Color(0xFFE67E22),
+      RoomCollectPostLimitBarState.reached => AppColors.textSecondary,
     };
     final progress = limit <= 0 ? 0.0 : (usedCount / limit).clamp(0.0, 1.0);
     final foot = footnote?.trim();
+
+    final metricStyle = _HomeUi.sectionBody(context).copyWith(
+      fontSize: 15,
+      fontWeight: FontWeight.w900,
+      height: 1.32,
+      color: HomeScreenColors.titlePrimary,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -785,16 +763,15 @@ class _CollectLimitProgressLine extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Text(
-                '$title：$usedCount / $limit件',
-                maxLines: 2,
-                softWrap: true,
-                style: _HomeUi.sectionBody(context).copyWith(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w800,
-                  height: 1.32,
-                  color: HomeScreenColors.titlePrimary,
-                ),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 0,
+                runSpacing: 4,
+                children: [
+                  Text('$title：', style: metricStyle),
+                  _HomeAnimatedPostedCount(value: usedCount, style: metricStyle),
+                  Text(' / $limit件', style: metricStyle),
+                ],
               ),
             ),
             const SizedBox(width: 10),
@@ -809,7 +786,7 @@ class _CollectLimitProgressLine extends StatelessWidget {
                   fontSize: 12.5,
                   fontWeight: FontWeight.w800,
                   height: 1.28,
-                  color: state == _CollectLimitState.normal
+                  color: state == RoomCollectPostLimitBarState.normal
                       ? HomeScreenColors.footnoteMuted
                       : color,
                 ),
@@ -853,7 +830,7 @@ class _HomeLimitAlertCard extends StatelessWidget {
     required this.onActivity,
   });
 
-  final _CollectLimitStats collectLimit;
+  final RoomCollectPostLimitSnapshot collectLimit;
   final VoidCallback onOrganizeCandidates;
   final VoidCallback onComments;
   final VoidCallback onDoneList;
@@ -873,8 +850,8 @@ class _HomeLimitAlertCard extends StatelessWidget {
     late final List<_HomeActionSpec> actions;
 
     if (collectLimit.isDailyReached) {
-      title = '今日の上限に達しました';
-      message = '明日また続けましょう';
+      title = '本日の上限に達しました';
+      message = '本日の上限です。明日また再開してください。';
       actions = [
         _HomeActionSpec(
           label: '活動を見る',
@@ -889,7 +866,8 @@ class _HomeLimitAlertCard extends StatelessWidget {
       ];
     } else if (collectLimit.isHourlyReached) {
       title = '1時間の上限に達しました';
-      message = _minutesToRecoveryText(collectLimit.hourRecoveryAt);
+      message =
+          'この1時間は上限です。少し待ってから再開してください。\n${collectLimit.recoveryFootnote(DateTime.now())}';
       actions = [
         _HomeActionSpec(
           label: '候補を整理',
@@ -1079,12 +1057,6 @@ class _HomeActionWrap extends StatelessWidget {
       ],
     );
   }
-}
-
-String _minutesToRecoveryText(DateTime? recoveryAt) {
-  if (recoveryAt == null) return '少し時間をおいて再開できます';
-  final minutes = recoveryAt.difference(DateTime.now()).inMinutes.clamp(1, 60);
-  return 'あと$minutes分で再開できます';
 }
 
 class _HomeMomentumHeader extends StatelessWidget {

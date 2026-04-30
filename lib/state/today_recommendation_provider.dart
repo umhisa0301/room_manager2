@@ -545,11 +545,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required double priceScore,
   }) {
     if (doneSimilarity >= 0.45) return 'あなたのコレ履歴に基づく';
-    if (shopMatch > 0) return '保存ショップから発見';
+    if (shopMatch > 0) return '保存ショップ由来';
     if (candidateSimilarity >= 0.45) return '候補にした商品に近い';
     if (genreMatch >= 0.55) return '好きなジャンルに近い';
     if (priceScore >= 3) return '売れ筋価格帯';
-    if (popularity >= 0.70) return '人気商品';
+    if (popularity >= 0.70) return '人気の候補';
     return '新しい候補';
   }
 

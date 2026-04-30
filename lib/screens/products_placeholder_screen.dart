@@ -10,7 +10,9 @@ import '../navigation/app_shell_controller.dart';
 import '../repository/genre_master_repository.dart';
 import '../repository/room_colle_ui_state_repository.dart';
 import '../services/rakuten_genre_master_service.dart';
+import '../services/room_collect_post_limit.dart';
 import '../state/rakuten_managed_product_provider.dart';
+import '../state/room_activity_event_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../theme/app_theme.dart';
@@ -2659,9 +2661,25 @@ class _RoomManagedProductListTabState
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<RakutenManagedProductProvider>(
-      builder: (context, provider, _) {
+    return Consumer2<RakutenManagedProductProvider, RoomActivityEventProvider>(
+      builder: (context, provider, act, _) {
         final ui = provider.listUiStatus;
+        final collectSnap = RoomCollectPostLimitSnapshot.compute(
+          items: provider.items,
+          events: act.events,
+          now: DateTime.now(),
+        );
+        final postingBlocked =
+            widget.status == RakutenManagedProductStatus.candidate &&
+            !collectSnap.canAcceptAnotherCollect;
+        var postingBlockedUserMessage = '';
+        if (postingBlocked) {
+          postingBlockedUserMessage = collectSnap.userBlockMessage ?? '';
+          if (collectSnap.isHourlyReached) {
+            postingBlockedUserMessage +=
+                '\n${collectSnap.recoveryFootnote(DateTime.now())}';
+          }
+        }
         final savedShopIds = _savedShopIdSet(context);
         final todayRecommendationIds = _todayRecommendationIdSet(context);
 
@@ -2868,6 +2886,8 @@ class _RoomManagedProductListTabState
                   isSavedShop: savedShopIds.contains(list[i].shopCode.trim()),
                   isTodayRecommendationCandidate: todayRecommendationIds
                       .contains(list[i].productId.trim()),
+                  collectPostingBlocked: postingBlocked,
+                  collectPostingBlockedMessage: postingBlockedUserMessage,
                   rowKey: widget.rowKeyFor?.call(list[i].productId),
                   flash: widget.flashHighlightProductId == list[i].productId,
                 ),
@@ -2889,6 +2909,8 @@ class _KeyedCandidateProductRow extends StatelessWidget {
     required this.genrePrefetchLabels,
     required this.isSavedShop,
     required this.isTodayRecommendationCandidate,
+    this.collectPostingBlocked = false,
+    this.collectPostingBlockedMessage = '',
     this.rowKey,
     this.flash = false,
   });
@@ -2898,6 +2920,8 @@ class _KeyedCandidateProductRow extends StatelessWidget {
   final Map<String, String> genrePrefetchLabels;
   final bool isSavedShop;
   final bool isTodayRecommendationCandidate;
+  final bool collectPostingBlocked;
+  final String collectPostingBlockedMessage;
   final GlobalKey? rowKey;
   final bool flash;
 
@@ -2910,6 +2934,8 @@ class _KeyedCandidateProductRow extends StatelessWidget {
         genrePrefetchLabels: genrePrefetchLabels,
         isSavedShop: isSavedShop,
         isTodayRecommendationCandidate: isTodayRecommendationCandidate,
+        collectPostingBlocked: collectPostingBlocked,
+        collectPostingBlockedMessage: collectPostingBlockedMessage,
       );
       if (flash) {
         card = AnimatedContainer(

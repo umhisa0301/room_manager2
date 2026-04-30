@@ -10,8 +10,10 @@ import '../repository/pending_collect_notice_repository.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import 'room_activity_event_provider.dart';
 import '../services/app_action_service.dart';
+import '../services/room_collect_post_limit.dart';
 import '../services/room_url_extraction_coordinator.dart';
 import '../services/room_url_extraction_service.dart';
+import '../widgets/collect_post_success_overlay.dart';
 
 /// 楽天ROOM管理の一覧画面用ロード状態。
 enum RakutenManagedProductListUiStatus { idle, loading, ready, error }
@@ -295,26 +297,40 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         p.extractedUrl.trim().isNotEmpty;
   }
 
-  /// コレ済に更新してから ROOM（抽出 URL）を開く。抽出 URL 不備時は [SnackBar] で通知。
-  Future<void> collectRoomAndLaunch(
+  /// コレ済に更新してから ROOM（抽出 URL）を開く。
+  /// 上限超過・入力不備はダイアログで通知する。成功時は true（URL 起動まで試行した場合も含む）。
+  Future<bool> collectRoomAndLaunch(
     BuildContext context,
     String productId,
   ) async {
     final id = productId.trim();
     if (id.isEmpty) {
-      _snack(context, '商品IDが空です');
-      return;
+      _collectIssueDialog(context, '商品IDが空です');
+      return false;
     }
     final p = _repository.getByProductId(id);
     if (p == null) {
-      _snack(context, '商品が見つかりません');
-      return;
+      _collectIssueDialog(context, '商品が見つかりません');
+      return false;
     }
     if (p.extractionStatus != RakutenUrlExtractionStatus.success ||
         p.extractedUrl.trim().isEmpty) {
-      _snack(context, 'ROOM用URLがまだ取得できていません');
-      return;
+      _collectIssueDialog(context, 'ROOM用URLがまだ取得できていません');
+      return false;
     }
+    final nowPre = DateTime.now();
+    final preLimit = RoomCollectPostLimitSnapshot.compute(
+      items: _items,
+      events: _activityEventProvider.events,
+      now: nowPre,
+    );
+    if (!preLimit.canAcceptAnotherCollect) {
+      if (context.mounted) {
+        await showCollectPostBlockedDialog(context, preLimit);
+      }
+      return false;
+    }
+
     final roomUrl = p.extractedUrl.trim();
     final noticeName = p.itemName.trim().isNotEmpty ? p.itemName : id;
     try {
@@ -352,20 +368,51 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         debugPrint('[RakutenManagedProduct] collectRoomAndLaunch failed: $e');
       }
       if (context.mounted) {
-        _snack(context, 'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。');
+        _collectIssueDialog(
+          context,
+          'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。',
+        );
       }
-      return;
+      return false;
     } catch (e) {
       if (kDebugMode) {
         debugPrint('[RakutenManagedProduct] collectRoomAndLaunch failed: $e');
       }
       if (context.mounted) {
-        _snack(context, 'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。');
+        _collectIssueDialog(
+          context,
+          'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。',
+        );
       }
-      return;
+      return false;
     }
-    if (!context.mounted) return;
+    if (!context.mounted) return false;
+
+    final snap = RoomCollectPostLimitSnapshot.compute(
+      items: _items,
+      events: _activityEventProvider.events,
+      now: DateTime.now(),
+    );
+    showCollectPostSuccessCelebration(context, todayOrdinal: snap.todayCount);
     await AppActionService.openUrl(context, url: roomUrl);
+    return true;
+  }
+
+  void _collectIssueDialog(BuildContext context, String message) {
+    if (!context.mounted) return;
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('投稿できません'),
+        content: SingleChildScrollView(child: Text(message)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('閉じる'),
+          ),
+        ],
+      ),
+    );
   }
 
   /// 商品カードの「反応よかった」を ON/OFF。ON 時に活動ログへ1件追加。
@@ -458,13 +505,6 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       return '評価の更新に失敗しました';
     }
     return null;
-  }
-
-  void _snack(BuildContext context, String message) {
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   /// コレ候補を一覧から削除する。

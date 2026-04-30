@@ -8,6 +8,7 @@ import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../utils/today_recommendation_ui_tags.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
@@ -357,18 +358,7 @@ class _RecommendationTagWrap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tags = <String>[];
-    final item = entry.item;
-    void addTag(String label) {
-      if (tags.length >= 2) return;
-      if (!tags.contains(label)) tags.add(label);
-    }
-
-    if (item.itemPrice >= 3000 && item.itemPrice < 10000) {
-      addTag('売れ筋価格帯');
-    }
-    if (item.reviewCount >= 100) addTag('レビュー多数');
-    if (item.reviewAverage >= 4.3 && item.reviewCount >= 20) addTag('高評価');
+    final tags = todayRecommendationUiTags(entry);
     if (tags.isEmpty) return const SizedBox.shrink();
     return Wrap(
       spacing: 5,
@@ -401,9 +391,8 @@ class _ProductTag extends StatelessWidget {
         label,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(
           color: accent ? AppColors.accentPrimary : AppColors.textSecondary,
-          fontSize: 10.5,
           fontWeight: FontWeight.w700,
         ),
       ),
@@ -451,9 +440,25 @@ class _ActionRow extends StatelessWidget {
                       item: entry.item,
                     );
                     if (!context.mounted) return;
+                    if (err != null) {
+                      await showDialog<void>(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text('候補に追加できませんでした'),
+                          content: Text(err),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(ctx).pop(),
+                              child: const Text('閉じる'),
+                            ),
+                          ],
+                        ),
+                      );
+                      return;
+                    }
                     ScaffoldMessenger.of(
                       context,
-                    ).showSnackBar(SnackBar(content: Text(err ?? '候補に追加しました')));
+                    ).showSnackBar(const SnackBar(content: Text('候補に追加しました')));
                   }
                 : null,
           ),

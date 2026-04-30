@@ -23,6 +23,8 @@ class RakutenManagedProductCard extends StatelessWidget {
     this.genrePrefetchLabels,
     this.isSavedShop = false,
     this.isTodayRecommendationCandidate = false,
+    this.collectPostingBlocked = false,
+    this.collectPostingBlockedMessage = '',
   });
 
   final RakutenManagedProduct product;
@@ -37,6 +39,12 @@ class RakutenManagedProductCard extends StatelessWidget {
   final Map<String, String>? genrePrefetchLabels;
   final bool isSavedShop;
   final bool isTodayRecommendationCandidate;
+
+  /// 1日・1時間の上限により「投稿する」を止めるとき true。
+  final bool collectPostingBlocked;
+
+  /// [collectPostingBlocked] 時にユーザーへ示す全文（ツールチップ等）。
+  final String collectPostingBlockedMessage;
 
   bool get _canCollectRoom =>
       product.extractionStatus == RakutenUrlExtractionStatus.success &&
@@ -297,6 +305,21 @@ class RakutenManagedProductCard extends StatelessWidget {
         final halfWidth = (constraints.maxWidth - gap) / 2;
         final thirdWidth = (constraints.maxWidth - gap * 2) / 3;
 
+        final postLimitBlocked = collectPostingBlocked;
+        final urlNotReady = !_canCollectRoom;
+        final postActionsDisabled = postLimitBlocked || urlNotReady;
+        final String postTooltip;
+        if (urlNotReady) {
+          postTooltip = 'ROOM用のURLが取得できるまでお待ちください';
+        } else if (postLimitBlocked) {
+          final m = collectPostingBlockedMessage.trim();
+          postTooltip = m.isNotEmpty
+              ? m
+              : '本日またはこの1時間の投稿上限に達しています。ホームの表示をご確認ください。';
+        } else {
+          postTooltip = 'ROOMのURLを開き、一覧をコレ済に移します。';
+        }
+
         return Wrap(
           spacing: gap,
           runSpacing: gap,
@@ -323,14 +346,13 @@ class RakutenManagedProductCard extends StatelessWidget {
             SizedBox(
               width: narrow ? halfWidth : thirdWidth,
               child: Tooltip(
-                message: _canCollectRoom
-                    ? 'ROOMのURLを開き、一覧をコレ済に移します。'
-                    : 'ROOM用のURLが取得できるまでお待ちください',
+                message: postTooltip,
                 child: _DecisionActionButton(
                   label: '投稿する',
                   tone: _DecisionActionTone.primary,
-                  onPressed: _canCollectRoom
-                      ? () async {
+                  onPressed: postActionsDisabled
+                      ? null
+                      : () async {
                           if (onCollectPressed != null) {
                             await onCollectPressed!(context, product);
                             return;
@@ -339,8 +361,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                             context,
                             product.productId,
                           );
-                        }
-                      : null,
+                        },
                 ),
               ),
             ),
