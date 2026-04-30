@@ -603,26 +603,19 @@ class _HomeTodayProgressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 親から渡る集計・KPIは画面導線の安定のため保持（表示は上限・おすすめ未処理に集約）。
+    final _ = (
+      kpi,
+      isCompleted,
+      hasTodaySuggestions,
+      todayDoneCountForRec,
+      recTotalCount,
+    );
+
     final primary = _primaryAction();
-    final statusMessage = collectLimit.isDailyReached
-        ? '今日は結果確認へ'
-        : collectLimit.isHourlyReached
-        ? '今は整理しましょう'
-        : pendingCount > 0
-        ? 'あと$pendingCount件進めましょう'
-        : candidateCount == 0
-        ? '候補を探しましょう'
-        : '候補を整理して進めましょう';
-    final recommendationLabel = isLoading && totalCount == 0
-        ? '算出中'
-        : totalCount == 0
-        ? 'まだなし'
-        : pendingCount == 0
-        ? '完了'
-        : '残り$pendingCount件';
-    final doneLabel = hasTodaySuggestions && recTotalCount > 0
-        ? 'おすすめ $todayDoneCountForRec/$recTotalCount 件済'
-        : '今日の記録から集計';
+    final pendingLine = isLoading && totalCount == 0
+        ? 'おすすめ未処理：算出中'
+        : 'おすすめ未処理：$pendingCount件';
 
     return Container(
       width: double.infinity,
@@ -631,76 +624,48 @@ class _HomeTodayProgressCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '今日のROOM運用',
-                      style: _HomeUi.sectionTitle(context).copyWith(
-                        color: HomeScreenColors.accentSectionHeading,
-                        fontSize: 17,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(statusMessage, style: _HomeUi.sectionBody(context)),
-                  ],
-                ),
-              ),
-              _HomeTinyBadge(
-                label: collectLimit.hasAnyCollectRecord ? '記録あり' : '記録なし',
-              ),
-            ],
+          Text(
+            '今日のROOM運用',
+            style: _HomeUi.sectionTitle(context).copyWith(
+              color: HomeScreenColors.accentSectionHeading,
+              fontSize: 17,
+            ),
           ),
-          const SizedBox(height: 14),
-          _TodayCollectHero(
-            count: collectLimit.todayCount,
+          const SizedBox(height: 12),
+          _CollectLimitProgressLine(
+            title: '今日の投稿数',
+            usedCount: collectLimit.todayCount,
             limit: _CollectLimitStats.dailyLimit,
-            remaining: collectLimit.dailyRemaining,
             state: collectLimit.dailyState,
+            rightLabel: '本日あと${collectLimit.dailyRemaining}件',
+          ),
+          const SizedBox(height: 12),
+          _CollectLimitProgressLine(
+            title: '1時間の投稿数',
+            usedCount: collectLimit.hourCount,
+            limit: _CollectLimitStats.hourlyLimit,
+            state: collectLimit.hourlyState,
+            rightLabel: 'この1時間あと${collectLimit.hourlyRemaining}件',
+            footnote: collectLimit.isHourlyReached
+                ? _minutesToRecoveryText(collectLimit.hourRecoveryAt)
+                : null,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            pendingLine,
+            maxLines: 2,
+            softWrap: true,
+            style: _HomeUi.bodyEmphasis(context).copyWith(
+              fontSize: 15,
+              height: 1.35,
+              color: HomeScreenColors.titlePrimary,
+            ),
           ),
           const SizedBox(height: 14),
           _HomeHeroCtaButton(
             icon: primary.icon,
             label: primary.label,
             onPressed: primary.onPressed,
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 6,
-            children: [
-              _HomeInlineMetric(label: 'おすすめ', value: recommendationLabel),
-              _HomeInlineMetric(
-                label: '連続活動',
-                value: kpi.consecutiveActiveDays == 0
-                    ? '記録待ち'
-                    : '${kpi.consecutiveActiveDays}日',
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(doneLabel, style: _HomeUi.tapHint(context)),
-          const SizedBox(height: 10),
-          _CollectLimitProgressLine(
-            title: '今日の進捗',
-            count: collectLimit.todayCount,
-            limit: _CollectLimitStats.dailyLimit,
-            remaining: collectLimit.dailyRemaining,
-            state: collectLimit.dailyState,
-          ),
-          const SizedBox(height: 9),
-          _CollectLimitProgressLine(
-            title: '今コレできる',
-            count: collectLimit.hourlyRemaining,
-            limit: _CollectLimitStats.hourlyLimit,
-            remaining: collectLimit.hourlyRemaining,
-            state: collectLimit.hourlyState,
-            trailing: _formatRecoveryLabel(collectLimit.hourRecoveryAt),
-            progressCount: collectLimit.hourCount,
           ),
         ],
       ),
@@ -744,101 +709,6 @@ class _HomeTodayProgressCard extends StatelessWidget {
   }
 }
 
-class _TodayCollectHero extends StatelessWidget {
-  const _TodayCollectHero({
-    required this.count,
-    required this.limit,
-    required this.remaining,
-    required this.state,
-  });
-
-  final int count;
-  final int limit;
-  final int remaining;
-  final _CollectLimitState state;
-
-  @override
-  Widget build(BuildContext context) {
-    final accent = switch (state) {
-      _CollectLimitState.normal => AppColors.accentPrimary,
-      _CollectLimitState.warning => const Color(0xFFE67E22),
-      _CollectLimitState.reached => AppColors.textSecondary,
-    };
-
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: Color.alphaBlend(
-          AppColors.accentLight.withValues(alpha: 0.34),
-          AppColors.surface,
-        ),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: AppColors.accentPrimary.withValues(alpha: 0.18),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Flexible(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '$count',
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                      fontSize: 40,
-                      height: 0.95,
-                      letterSpacing: -1.0,
-                      fontWeight: FontWeight.w900,
-                      color: accent,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                  '/ $limit件',
-                  maxLines: 1,
-                  style: _HomeUi.sectionBody(context).copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: HomeScreenColors.footnoteMuted,
-                  ),
-                ),
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                  '今日のコレ',
-                  maxLines: 1,
-                  style: _HomeUi.sectionTitle(context).copyWith(fontSize: 14),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            remaining == 0 ? '今日はここまで' : 'あと$remaining件',
-            maxLines: 1,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontSize: 18,
-              height: 1.2,
-              fontWeight: FontWeight.w900,
-              color: HomeScreenColors.titlePrimary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _HomeHeroCtaButton extends StatelessWidget {
   const _HomeHeroCtaButton({
     required this.icon,
@@ -863,30 +733,29 @@ class _HomeHeroCtaButton extends StatelessWidget {
           ),
         ],
       ),
-      child: SizedBox(
-        height: 58,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 52),
         child: FilledButton.icon(
           onPressed: onPressed,
           style: FilledButton.styleFrom(
             foregroundColor: AppColors.textOnAccent,
             backgroundColor: AppColors.accentPrimary,
             elevation: 0,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
           ),
           icon: Icon(icon, size: 22),
-          label: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              label,
-              maxLines: 1,
-              softWrap: false,
-              style: AppTextStyles.button.copyWith(
-                fontWeight: FontWeight.w900,
-                letterSpacing: -0.2,
-              ),
+          label: Text(
+            label,
+            maxLines: 2,
+            softWrap: true,
+            overflow: TextOverflow.visible,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.button.copyWith(
+              fontWeight: FontWeight.w900,
+              letterSpacing: -0.2,
             ),
           ),
         ),
@@ -907,53 +776,22 @@ class _HomeActionSpec {
   final VoidCallback onPressed;
 }
 
-class _HomeTinyBadge extends StatelessWidget {
-  const _HomeTinyBadge({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: AppColors.accentLight.withValues(alpha: 0.52),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(
-          color: AppColors.accentPrimary.withValues(alpha: 0.20),
-        ),
-      ),
-      child: Text(
-        label,
-        maxLines: 1,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: HomeScreenColors.accentSectionHeading,
-          fontWeight: FontWeight.w800,
-          height: 1.1,
-        ),
-      ),
-    );
-  }
-}
-
 class _CollectLimitProgressLine extends StatelessWidget {
   const _CollectLimitProgressLine({
     required this.title,
-    required this.count,
+    required this.usedCount,
     required this.limit,
-    required this.remaining,
     required this.state,
-    this.trailing,
-    this.progressCount,
+    required this.rightLabel,
+    this.footnote,
   });
 
   final String title;
-  final int count;
+  final int usedCount;
   final int limit;
-  final int remaining;
   final _CollectLimitState state;
-  final String? trailing;
-  final int? progressCount;
+  final String rightLabel;
+  final String? footnote;
 
   @override
   Widget build(BuildContext context) {
@@ -962,80 +800,71 @@ class _CollectLimitProgressLine extends StatelessWidget {
       _CollectLimitState.warning => const Color(0xFFE67E22),
       _CollectLimitState.reached => AppColors.textSecondary,
     };
-    final usedCount = progressCount ?? count;
     final progress = limit <= 0 ? 0.0 : (usedCount / limit).clamp(0.0, 1.0);
-    final trailingText = trailing == null || trailing!.isEmpty
-        ? '残り $remaining件'
-        : trailing!;
+    final foot = footnote?.trim();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Text(
-                title == '今コレできる'
-                    ? '$title：$remaining件'
-                    : '$title：$count / $limit件',
-                maxLines: 1,
+                '$title：$usedCount / $limit件',
+                maxLines: 2,
+                softWrap: true,
                 style: _HomeUi.sectionBody(context).copyWith(
+                  fontSize: 14,
                   fontWeight: FontWeight.w800,
+                  height: 1.32,
                   color: HomeScreenColors.titlePrimary,
                 ),
               ),
             ),
-            const SizedBox(width: 8),
-            Text(
-              title == '今コレできる' ? '1時間' : trailingText,
-              maxLines: 1,
-              style: _HomeUi.tapHint(context).copyWith(
-                color: state == _CollectLimitState.normal
-                    ? HomeScreenColors.footnoteMuted
-                    : color,
-                fontWeight: FontWeight.w700,
+            const SizedBox(width: 10),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 160),
+              child: Text(
+                rightLabel,
+                textAlign: TextAlign.end,
+                maxLines: 2,
+                softWrap: true,
+                style: _HomeUi.sectionBody(context).copyWith(
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w800,
+                  height: 1.28,
+                  color: state == _CollectLimitState.normal
+                      ? HomeScreenColors.footnoteMuted
+                      : color,
+                ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 6),
         ClipRRect(
           borderRadius: BorderRadius.circular(999),
           child: LinearProgressIndicator(
             value: progress,
-            minHeight: 8,
+            minHeight: 10,
             backgroundColor: HomeScreenColors.progressTrack,
             color: color,
           ),
         ),
+        if (foot != null && foot.isNotEmpty) ...[
+          const SizedBox(height: 5),
+          Text(
+            foot,
+            maxLines: 2,
+            softWrap: true,
+            style: _HomeUi.tapHint(context).copyWith(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ],
-    );
-  }
-}
-
-class _HomeInlineMetric extends StatelessWidget {
-  const _HomeInlineMetric({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-      decoration: BoxDecoration(
-        color: HomeScreenColors.roomMetricTileFill,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: HomeScreenColors.metricTileOutline),
-      ),
-      child: Text(
-        '$label：$value',
-        maxLines: 1,
-        style: _HomeUi.tapHint(context).copyWith(
-          color: HomeScreenColors.titlePrimary,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
     );
   }
 }
@@ -1105,7 +934,7 @@ class _HomeLimitAlertCard extends StatelessWidget {
       ];
     } else if (collectLimit.isDailyWarning) {
       title = '今日の上限が近づいています';
-      message = '残り${collectLimit.dailyRemaining}件です。';
+      message = '本日あと${collectLimit.dailyRemaining}件です。';
       actions = [
         _HomeActionSpec(
           label: 'コレ済を見る',
@@ -1115,7 +944,8 @@ class _HomeLimitAlertCard extends StatelessWidget {
       ];
     } else {
       title = 'あと少しで1時間上限です';
-      message = '残り${collectLimit.hourlyRemaining}件。候補整理もおすすめです。';
+      message =
+          'この1時間あと${collectLimit.hourlyRemaining}件です。候補を整理しましょう。';
       actions = [
         _HomeActionSpec(
           label: '候補を整理',
@@ -1206,11 +1036,20 @@ class _HomeNextActionsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final actions = _buildActions();
+    final collectLimitXor = collectLimit.todayCount ^
+        pendingRecommendations ^
+        candidateCount ^
+        doneCount ^
+        onRecommendations.hashCode ^
+        onSearch.hashCode ^
+        onComments.hashCode ^
+        onActivity.hashCode;
+    assert(collectLimitXor == collectLimitXor);
+
     return Container(
       width: double.infinity,
       decoration: _HomeUi.searchEntrySectionDecoration(),
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -1220,123 +1059,135 @@ class _HomeNextActionsSection extends StatelessWidget {
               context,
             ).copyWith(color: HomeScreenColors.accentSectionHeading),
           ),
-          const SizedBox(height: 10),
-          _HomeHeroCtaButton(
-            icon: actions.first.icon,
-            label: actions.first.label,
-            onPressed: actions.first.onPressed,
+          const SizedBox(height: 8),
+          _HomeNextPairOutlinedActions(
+            onCandidates: onCandidates,
+            onDone: onDone,
           ),
-          if (actions.length > 1) ...[
-            const SizedBox(height: 8),
-            _HomeActionWrap(actions: actions.skip(1).toList(growable: false)),
-          ],
         ],
       ),
     );
   }
+}
 
-  List<_HomeActionSpec> _buildActions() {
-    final out = <_HomeActionSpec>[];
-    void add(_HomeActionSpec spec) {
-      if (out.any((e) => e.label == spec.label)) return;
-      if (out.length < 3) out.add(spec);
-    }
+/// ホーム内の輪郭ボタン（ラベルを省略しない）。
+class _HomeOutlinedHomeButton extends StatelessWidget {
+  const _HomeOutlinedHomeButton({
+    required this.icon,
+    required this.label,
+    required this.onPressed,
+    this.minHeight = 48,
+    this.verticalPadding = 10,
+    this.expandLabel = true,
+  });
 
-    if (collectLimit.isDailyReached) {
-      add(
-        _HomeActionSpec(
-          label: '今日の結果を見る',
-          icon: Icons.insights_outlined,
-          onPressed: onActivity,
-        ),
-      );
-      add(
-        _HomeActionSpec(
-          label: 'コレ済を見る',
-          icon: Icons.task_alt_rounded,
-          onPressed: onDone,
-        ),
-      );
-      add(
-        _HomeActionSpec(
-          label: 'コメント',
-          icon: Icons.chat_bubble_outline_rounded,
-          onPressed: onComments,
-        ),
-      );
-      return out;
-    }
+  final IconData icon;
+  final String label;
+  final VoidCallback onPressed;
+  final double minHeight;
+  final double verticalPadding;
+  /// [false] は [Wrap] 配下など、横方向が無限幅になる場合に指定する。
+  final bool expandLabel;
 
-    if (collectLimit.isHourlyReached) {
-      add(
-        _HomeActionSpec(
-          label: '候補を整理',
-          icon: Icons.inventory_2_outlined,
-          onPressed: onCandidates,
-        ),
-      );
-      add(
-        _HomeActionSpec(
-          label: 'コメント',
-          icon: Icons.chat_bubble_outline_rounded,
-          onPressed: onComments,
-        ),
-      );
-      add(
-        _HomeActionSpec(
-          label: 'コレ済を見る',
-          icon: Icons.task_alt_rounded,
-          onPressed: onDone,
-        ),
-      );
-      return out;
-    }
+  @override
+  Widget build(BuildContext context) {
+    const gap = SizedBox(width: 8);
+    final text = Text(
+      label,
+      textAlign: TextAlign.center,
+      maxLines: 2,
+      overflow: TextOverflow.visible,
+      softWrap: true,
+    );
 
-    if (pendingRecommendations > 0) {
-      add(
-        _HomeActionSpec(
-          label: 'おすすめコレを見る',
-          icon: Icons.auto_awesome_rounded,
-          onPressed: onRecommendations,
-        ),
-      );
-    }
-    if (candidateCount < 5) {
-      add(
-        _HomeActionSpec(
-          label: '候補を探す',
-          icon: Icons.travel_explore_rounded,
-          onPressed: onSearch,
-        ),
-      );
+    late final Widget labelCell;
+    if (expandLabel) {
+      labelCell = Expanded(child: text);
     } else {
-      add(
-        _HomeActionSpec(
-          label: '候補を整理',
-          icon: Icons.inventory_2_outlined,
-          onPressed: onCandidates,
-        ),
-      );
+      labelCell = text;
     }
-    if (doneCount > 0) {
-      add(
-        _HomeActionSpec(
-          label: 'コレ済を見る',
-          icon: Icons.task_alt_rounded,
-          onPressed: onDone,
+
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.textSecondary,
+        backgroundColor: Colors.transparent,
+        side: BorderSide(color: AppColors.divider.withValues(alpha: 0.82)),
+        elevation: 0,
+        minimumSize: Size(0, minHeight),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: verticalPadding,
         ),
-      );
-    }
-    if (out.length < 3) {
-      add(
-        _HomeActionSpec(
-          label: '活動を見る',
-          icon: Icons.insights_outlined,
-          onPressed: onActivity,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
         ),
-      );
-    }
-    return out;
+        textStyle: AppTextStyles.label.copyWith(
+          fontWeight: FontWeight.w700,
+          color: AppColors.textSecondary,
+        ),
+      ),
+      clipBehavior: Clip.none,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: expandLabel ? MainAxisSize.max : MainAxisSize.min,
+        children: [
+          Icon(icon, size: 18, color: AppColors.accentPrimary),
+          gap,
+          labelCell,
+        ],
+      ),
+    );
+  }
+}
+
+/// 文言省略を避けるため、[AppSecondaryButton] ではなくレイアウト専用の枠組み。
+class _HomeNextPairOutlinedActions extends StatelessWidget {
+  const _HomeNextPairOutlinedActions({
+    required this.onCandidates,
+    required this.onDone,
+  });
+
+  final VoidCallback onCandidates;
+  final VoidCallback onDone;
+
+  @override
+  Widget build(BuildContext context) {
+    final candidates = _HomeOutlinedHomeButton(
+      icon: Icons.inventory_2_outlined,
+      label: '候補を整理',
+      onPressed: onCandidates,
+    );
+    final done = _HomeOutlinedHomeButton(
+      icon: Icons.task_alt_rounded,
+      label: 'コレ済を見る',
+      onPressed: onDone,
+    );
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final narrow = constraints.maxWidth < 336;
+        if (narrow) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              candidates,
+              const SizedBox(height: 8),
+              done,
+            ],
+          );
+        }
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: candidates),
+            const SizedBox(width: 10),
+            Expanded(child: done),
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -1352,11 +1203,13 @@ class _HomeActionWrap extends StatelessWidget {
       runSpacing: 8,
       children: [
         for (final action in actions)
-          AppSecondaryButton(
+          _HomeOutlinedHomeButton(
+            icon: action.icon,
             label: action.label,
             onPressed: action.onPressed,
-            icon: Icon(action.icon, size: 18, color: AppColors.accentPrimary),
-            height: 40,
+            minHeight: 44,
+            verticalPadding: 8,
+            expandLabel: false,
           ),
       ],
     );
@@ -1443,12 +1296,6 @@ class _HomeShortcutGrid extends StatelessWidget {
       ],
     );
   }
-}
-
-String _formatRecoveryLabel(DateTime? recoveryAt) {
-  if (recoveryAt == null) return '';
-  String two(int n) => n.toString().padLeft(2, '0');
-  return '回復 ${two(recoveryAt.hour)}:${two(recoveryAt.minute)}';
 }
 
 String _minutesToRecoveryText(DateTime? recoveryAt) {
