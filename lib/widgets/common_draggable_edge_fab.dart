@@ -263,41 +263,46 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
         final showLeft = _collapsed ? collapsedLeft : el;
         final showTop = et;
 
-        return Positioned(
-          left: showLeft,
-          top: showTop,
-          child: Tooltip(
-            message: _tooltip,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => _handleTap(maxLeft, maxTop),
-              onHorizontalDragUpdate: (d) {
-                if (!_collapsed) return;
-                if (d.delta.dx < -3) {
-                  _expandWithBounds(maxLeft, maxTop);
-                }
-              },
-              onLongPressStart: (d) => _onLongPressStart(d, maxLeft, maxTop),
-              onLongPressMoveUpdate: (d) =>
-                  _onLongPressMoveUpdate(d, maxLeft, maxTop),
-              onLongPressEnd: (d) => _onLongPressEnd(d, w, h),
-              onLongPressCancel: _onLongPressCancel,
-              child: Material(
-                elevation: 4,
-                shadowColor: Colors.black.withValues(alpha: 0.18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    CommonDraggableEdgeFab.borderRadius,
+        // Positioned は Stack の直接の子にしか置けない。このウィジェットは Stack の子として
+        // LayoutBuilder 内に載るため、Align + Transform.translate で同じ座標を再現する。
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Transform.translate(
+            offset: Offset(showLeft, showTop),
+            child: Tooltip(
+              message: _tooltip,
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () => _handleTap(maxLeft, maxTop),
+                onHorizontalDragUpdate: (d) {
+                  if (!_collapsed) return;
+                  if (d.delta.dx < -3) {
+                    _expandWithBounds(maxLeft, maxTop);
+                  }
+                },
+                onLongPressStart: (d) =>
+                    _onLongPressStart(d, maxLeft, maxTop),
+                onLongPressMoveUpdate: (d) =>
+                    _onLongPressMoveUpdate(d, maxLeft, maxTop),
+                onLongPressEnd: (d) => _onLongPressEnd(d, w, h),
+                onLongPressCancel: _onLongPressCancel,
+                child: Material(
+                  elevation: 4,
+                  shadowColor: Colors.black.withValues(alpha: 0.18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      CommonDraggableEdgeFab.borderRadius,
+                    ),
                   ),
-                ),
-                color: AppColors.accentPrimary,
-                child: SizedBox(
-                  width: CommonDraggableEdgeFab.fabSize,
-                  height: CommonDraggableEdgeFab.fabSize,
-                  child: Icon(
-                    _icon,
-                    size: 30,
-                    color: AppColors.textOnAccent,
+                  color: AppColors.accentPrimary,
+                  child: SizedBox(
+                    width: CommonDraggableEdgeFab.fabSize,
+                    height: CommonDraggableEdgeFab.fabSize,
+                    child: Icon(
+                      _icon,
+                      size: 30,
+                      color: AppColors.textOnAccent,
+                    ),
                   ),
                 ),
               ),
