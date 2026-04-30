@@ -26,7 +26,7 @@ abstract final class _HomeUi {
   const _HomeUi._();
 
   /// 主要ブロック同士（CTA・セクション・グループ）
-  static const double gapSection = 14;
+  static const double gapSection = 16;
 
   /// ホーム ListView の左右（アプリ全体の [AppDimensions.screenPaddingH] より一段狭めて表示領域を確保）
   static const double screenPaddingH = 10;
@@ -102,7 +102,7 @@ abstract final class _HomeUi {
   }
 
   /// 標準リストの下余白（ナビバー押さえ以外）
-  static const double listBottomExtra = 10;
+  static const double listBottomExtra = 8;
 
   /// 行末 chevron のインセット（複所で統一）
   static const EdgeInsets paddingRowChevron = EdgeInsets.only(left: 4, top: 1);
@@ -408,22 +408,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                               onActivity: () => _openActivity(context),
                             ),
                             SizedBox(height: _HomeUi.gapSection),
-                            _HomeNextActionsSection(
-                              collectLimit: collectLimit,
-                              pendingRecommendations: recProvider.pendingCount,
-                              candidateCount: nCandidate,
-                              doneCount: nDone,
-                              onRecommendations: () =>
-                                  _openTodayRecommendations(context),
-                              onSearch: () => openRakutenSearchScreen(context),
-                              onCandidates: () =>
-                                  _openRoomList(context, initialTabIndex: 0),
-                              onDone: () =>
-                                  _openRoomList(context, initialTabIndex: 1),
-                              onComments: () => _openComments(context),
-                              onActivity: () => _openActivity(context),
-                            ),
-                            SizedBox(height: _HomeUi.gapSection),
                             _RecentCandidatesHomeSection(
                               candidates: recentCandidates,
                               candidateTotalCount: nCandidate,
@@ -449,15 +433,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 doneFilterLocalDay: todayLocalDay,
                               ),
                               onLastCollectTap: () => _openActivity(context),
-                            ),
-                            SizedBox(height: _HomeUi.gapSection),
-                            _HomeShortcutGrid(
-                              onSearch: () {
-                                openRakutenSearchScreen(context);
-                              },
-                              onRoomCollect: () => _openRoomList(context),
-                              onActivity: () => _openActivity(context),
-                              onComments: () => _openComments(context),
                             ),
                           ],
                         ),
@@ -1009,67 +984,6 @@ class _HomeLimitAlertCard extends StatelessWidget {
   }
 }
 
-class _HomeNextActionsSection extends StatelessWidget {
-  const _HomeNextActionsSection({
-    required this.collectLimit,
-    required this.pendingRecommendations,
-    required this.candidateCount,
-    required this.doneCount,
-    required this.onRecommendations,
-    required this.onSearch,
-    required this.onCandidates,
-    required this.onDone,
-    required this.onComments,
-    required this.onActivity,
-  });
-
-  final _CollectLimitStats collectLimit;
-  final int pendingRecommendations;
-  final int candidateCount;
-  final int doneCount;
-  final VoidCallback onRecommendations;
-  final VoidCallback onSearch;
-  final VoidCallback onCandidates;
-  final VoidCallback onDone;
-  final VoidCallback onComments;
-  final VoidCallback onActivity;
-
-  @override
-  Widget build(BuildContext context) {
-    final collectLimitXor = collectLimit.todayCount ^
-        pendingRecommendations ^
-        candidateCount ^
-        doneCount ^
-        onRecommendations.hashCode ^
-        onSearch.hashCode ^
-        onComments.hashCode ^
-        onActivity.hashCode;
-    assert(collectLimitXor == collectLimitXor);
-
-    return Container(
-      width: double.infinity,
-      decoration: _HomeUi.searchEntrySectionDecoration(),
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            '次のアクション',
-            style: _HomeUi.sectionTitle(
-              context,
-            ).copyWith(color: HomeScreenColors.accentSectionHeading),
-          ),
-          const SizedBox(height: 8),
-          _HomeNextPairOutlinedActions(
-            onCandidates: onCandidates,
-            onDone: onDone,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 /// ホーム内の輪郭ボタン（ラベルを省略しない）。
 class _HomeOutlinedHomeButton extends StatelessWidget {
   const _HomeOutlinedHomeButton({
@@ -1142,55 +1056,6 @@ class _HomeOutlinedHomeButton extends StatelessWidget {
   }
 }
 
-/// 文言省略を避けるため、[AppSecondaryButton] ではなくレイアウト専用の枠組み。
-class _HomeNextPairOutlinedActions extends StatelessWidget {
-  const _HomeNextPairOutlinedActions({
-    required this.onCandidates,
-    required this.onDone,
-  });
-
-  final VoidCallback onCandidates;
-  final VoidCallback onDone;
-
-  @override
-  Widget build(BuildContext context) {
-    final candidates = _HomeOutlinedHomeButton(
-      icon: Icons.inventory_2_outlined,
-      label: '候補を整理',
-      onPressed: onCandidates,
-    );
-    final done = _HomeOutlinedHomeButton(
-      icon: Icons.task_alt_rounded,
-      label: 'コレ済を見る',
-      onPressed: onDone,
-    );
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final narrow = constraints.maxWidth < 336;
-        if (narrow) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              candidates,
-              const SizedBox(height: 8),
-              done,
-            ],
-          );
-        }
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: candidates),
-            const SizedBox(width: 10),
-            Expanded(child: done),
-          ],
-        );
-      },
-    );
-  }
-}
-
 class _HomeActionWrap extends StatelessWidget {
   const _HomeActionWrap({required this.actions});
 
@@ -1211,88 +1076,6 @@ class _HomeActionWrap extends StatelessWidget {
             verticalPadding: 8,
             expandLabel: false,
           ),
-      ],
-    );
-  }
-}
-
-class _HomeShortcutGrid extends StatelessWidget {
-  const _HomeShortcutGrid({
-    required this.onSearch,
-    required this.onRoomCollect,
-    required this.onActivity,
-    required this.onComments,
-  });
-
-  final VoidCallback onSearch;
-  final VoidCallback onRoomCollect;
-  final VoidCallback onActivity;
-  final VoidCallback onComments;
-
-  @override
-  Widget build(BuildContext context) {
-    final shortcuts = [
-      _HomeActionSpec(
-        label: '探す',
-        icon: Icons.search_rounded,
-        onPressed: onSearch,
-      ),
-      _HomeActionSpec(
-        label: 'ROOMコレ',
-        icon: Icons.collections_bookmark_outlined,
-        onPressed: onRoomCollect,
-      ),
-      _HomeActionSpec(
-        label: '活動',
-        icon: Icons.insights_outlined,
-        onPressed: onActivity,
-      ),
-      _HomeActionSpec(
-        label: 'コメント',
-        icon: Icons.chat_bubble_outline_rounded,
-        onPressed: onComments,
-      ),
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(
-            _HomeUi.insetSectionH,
-            0,
-            _HomeUi.insetSectionH,
-            6,
-          ),
-          child: Text('ショートカット', style: _HomeUi.sectionTitle(context)),
-        ),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            const gap = 8.0;
-            final width = (constraints.maxWidth - gap) / 2;
-            return Wrap(
-              spacing: gap,
-              runSpacing: gap,
-              children: [
-                for (final item in shortcuts)
-                  SizedBox(
-                    width: width,
-                    child: AppSecondaryButton(
-                      label: item.label,
-                      onPressed: item.onPressed,
-                      icon: Icon(
-                        item.icon,
-                        size: 18,
-                        color: AppColors.accentPrimary,
-                      ),
-                      expand: true,
-                      height: 42,
-                    ),
-                  ),
-              ],
-            );
-          },
-        ),
       ],
     );
   }
@@ -1401,8 +1184,9 @@ class _RoomManagementSection extends StatelessWidget {
                         const SizedBox(height: 2),
                         Text(
                           '各タイルで一覧・ログへ',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          softWrap: true,
+                          overflow: TextOverflow.visible,
                           style: _HomeUi.tapHint(context),
                         ),
                       ],
@@ -1739,10 +1523,10 @@ class _RoomStatsCardGrid extends StatelessWidget {
     );
   }
 
-  /// 前回コレ日時タイル用。1行を短くして値のフォントを上げても折り返し・切れを起こしにくくする。
+  /// 前回コレ日時タイル用（横1行：`4/28 23:29`）。
   String _formatLastCollectForTile(DateTime d) {
     String two(int n) => n.toString().padLeft(2, '0');
-    return '${d.month}/${d.day}\n${two(d.hour)}:${two(d.minute)}';
+    return '${d.month}/${d.day} ${two(d.hour)}:${two(d.minute)}';
   }
 }
 
@@ -1804,8 +1588,8 @@ class _RoomMetricTile extends StatelessWidget {
     final valueLarge = compactDeck ? 24.0 : 26.0;
     final valueSmall = compactDeck ? 16.0 : 16.5;
 
-    /// 前回コレ日時：数値タイルより一回り小さく、従来の valueSmall より一段大きく（2行表示と組み合わせ）
-    final valueHistory = compactDeck ? 18.5 : 19.5;
+    /// 前回コレ日時：1行表示・やや大きめ（+2〜3pt）・weight 600 以上
+    final valueHistorySize = compactDeck ? 21.0 : 22.5;
     final captionMaxLines = compactDeck ? 1 : 2;
     final (accent, iconBackground) = _roleBadgeColors();
     final isHistoryTile = role == _RoomMetricTileRole.history;
@@ -1861,7 +1645,7 @@ class _RoomMetricTile extends StatelessWidget {
               Text(
                 valueMain,
                 textAlign: TextAlign.left,
-                maxLines: valueProminent ? 1 : 2,
+                maxLines: valueProminent || isHistoryTile ? 1 : 2,
                 overflow: TextOverflow.ellipsis,
                 style: valueProminent
                     ? Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -1871,12 +1655,20 @@ class _RoomMetricTile extends StatelessWidget {
                         fontSize: valueLarge,
                         letterSpacing: -0.55,
                       )
+                    : isHistoryTile
+                    ? Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: HomeScreenColors.metricTileValueColor,
+                        height: 1.2,
+                        fontSize: valueHistorySize,
+                        letterSpacing: -0.2,
+                      )
                     : Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w800,
                         color: HomeScreenColors.metricTileValueColor,
-                        height: isHistoryTile ? 1.08 : 1.12,
-                        fontSize: isHistoryTile ? valueHistory : valueSmall,
-                        letterSpacing: isHistoryTile ? -0.35 : -0.25,
+                        height: 1.12,
+                        fontSize: valueSmall,
+                        letterSpacing: -0.25,
                       ),
               ),
               SizedBox(height: compactDeck ? 1 : 2),

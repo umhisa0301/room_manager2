@@ -71,6 +71,12 @@ class _AppShellState extends State<AppShell> {
     final idx = shell.currentIndex;
     return Scaffold(
       body: IndexedStack(index: idx, children: _screens),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.read<AppShellController>().selectTab(2),
+        tooltip: 'コメント',
+        child: const Icon(Icons.chat_bubble_outline),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,
