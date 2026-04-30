@@ -29,6 +29,7 @@ import '../widgets/app_card.dart';
 import '../widgets/app_loading.dart';
 import '../widgets/app_tab.dart';
 import '../widgets/app_text_field.dart';
+import '../widgets/common_draggable_edge_fab.dart';
 import '../widgets/search_group_screen_shell.dart';
 import '../widgets/shop_discovery_card.dart';
 import 'saved_shops_screen.dart';
@@ -420,62 +421,79 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: HomeScreenColors.canvas,
-      body: SearchGroupScreenShell(
-        backgroundColor: HomeScreenColors.canvas,
-        contentPadding: EdgeInsets.zero,
-        child:
-            Consumer3<
-              RakutenSearchProvider,
-              RakutenManagedProductProvider,
-              SavedShopProvider
-            >(
-              builder: (context, search, managed, saved, _) {
-                return Column(
-                  children: [
-                    Flexible(
-                      fit: FlexFit.loose,
-                      flex: 0,
-                      child: AnimatedSize(
-                        duration: const Duration(milliseconds: 240),
-                        curve: Curves.easeOutCubic,
-                        alignment: Alignment.topCenter,
-                        clipBehavior: Clip.hardEdge,
-                        child: _searchHeaderCollapsed
-                            ? _buildCollapsedSearchHeader(context, search)
-                            : ListView(
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                                keyboardDismissBehavior:
-                                    ScrollViewKeyboardDismissBehavior.onDrag,
-                                children: [
-                                  _buildModeAndInputArea(context, search),
-                                ],
-                              ),
-                      ),
-                    ),
-                    Divider(
-                      height: 1,
-                      thickness: 1,
-                      color: HomeScreenColors.inlineDivider,
-                    ),
-                    Expanded(
-                      child: _mode == _RakutenSearchMode.product
-                          ? GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onTap: _dismissKeywordSearchKeyboard,
-                              child: _buildResultArea(
-                                context,
-                                search,
-                                managed,
-                                saved,
-                              ),
-                            )
-                          : _buildResultArea(context, search, managed, saved),
-                    ),
-                  ],
-                );
-              },
-            ),
+      body: Stack(
+        clipBehavior: Clip.none,
+        fit: StackFit.expand,
+        children: [
+          SearchGroupScreenShell(
+            backgroundColor: HomeScreenColors.canvas,
+            contentPadding: EdgeInsets.zero,
+            child:
+                Consumer3<
+                  RakutenSearchProvider,
+                  RakutenManagedProductProvider,
+                  SavedShopProvider
+                >(
+                  builder: (context, search, managed, saved, _) {
+                    return Column(
+                      children: [
+                        Flexible(
+                          fit: FlexFit.loose,
+                          flex: 0,
+                          child: AnimatedSize(
+                            duration: const Duration(milliseconds: 240),
+                            curve: Curves.easeOutCubic,
+                            alignment: Alignment.topCenter,
+                            clipBehavior: Clip.hardEdge,
+                            child: _searchHeaderCollapsed
+                                ? _buildCollapsedSearchHeader(context, search)
+                                : ListView(
+                                    shrinkWrap: true,
+                                    physics: const ClampingScrollPhysics(),
+                                    keyboardDismissBehavior:
+                                        ScrollViewKeyboardDismissBehavior
+                                            .onDrag,
+                                    children: [
+                                      _buildModeAndInputArea(context, search),
+                                    ],
+                                  ),
+                          ),
+                        ),
+                        Divider(
+                          height: 1,
+                          thickness: 1,
+                          color: HomeScreenColors.inlineDivider,
+                        ),
+                        Expanded(
+                          child: _mode == _RakutenSearchMode.product
+                              ? GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  onTap: _dismissKeywordSearchKeyboard,
+                                  child: _buildResultArea(
+                                    context,
+                                    search,
+                                    managed,
+                                    saved,
+                                  ),
+                                )
+                              : _buildResultArea(
+                                  context,
+                                  search,
+                                  managed,
+                                  saved,
+                                ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+          ),
+          CommonDraggableEdgeFab(
+            mode: CommonFabMode.comment,
+            onCommentTap: () => _returnToShellWithTab(context, 2),
+            onAddTemplateTap: () {},
+          ),
+        ],
       ),
       bottomNavigationBar: _buildBottomNavigationBar(context),
     );

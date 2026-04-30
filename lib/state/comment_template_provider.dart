@@ -7,22 +7,18 @@ List<CommentTemplate> _builtInDefaultCommentTemplates() {
   final now = DateTime.now();
   return [
     CommentTemplate(
-      id: 'comment_builtin_follow_thanks_v1',
-      title: 'フォローありがとうございます',
-      body: 'フォローありがとうございます😊\n'
-          'これからROOM投稿を楽しく拝見させていただきます✨\n'
-          'よろしくお願いします🌸',
-      category: 'フォローお礼',
+      id: 'comment_builtin_follow_thanks_v2',
+      title: 'フォローありがとう',
+      body: 'フォローありがとうございます😊\n素敵な投稿楽しみにしています✨',
+      category: 'フォロー',
       isFavorite: true,
       createdAt: now,
       updatedAt: now,
     ),
     CommentTemplate(
-      id: 'comment_builtin_follow_done_v1',
+      id: 'comment_builtin_follow_done_v2',
       title: 'フォローしました',
-      body: '素敵なROOMですね😊\n'
-          '気になる投稿が多かったのでフォローさせていただきました✨\n'
-          'よろしくお願いします🌷',
+      body: '素敵なROOMですね😊\nフォローさせていただきました✨',
       category: 'フォロー',
       isFavorite: true,
       createdAt: now,
@@ -31,19 +27,36 @@ List<CommentTemplate> _builtInDefaultCommentTemplates() {
   ];
 }
 
+void _seedBuiltinTemplatesOnce({
+  required CommentTemplateRepository repository,
+  required List<CommentTemplate> templates,
+}) {
+  if (repository.loadBuiltinTemplatesSeeded()) return;
+  final candidates = _builtInDefaultCommentTemplates();
+  for (final c in candidates) {
+    final dup = templates.any(
+      (e) =>
+          e.title.trim() == c.title.trim() || e.body.trim() == c.body.trim(),
+    );
+    if (!dup) {
+      templates.add(c);
+    }
+  }
+  repository.saveTemplates(templates);
+  repository.saveBuiltinTemplatesSeeded(true);
+}
+
 /// コメントテンプレート一覧と「直近コピーしたコメント」を管理する Provider。
 class CommentTemplateProvider extends ChangeNotifier {
   CommentTemplateProvider({required CommentTemplateRepository repository})
     : _repository = repository,
       _templates = [] {
     _lastCopiedComment = repository.loadLastCopiedComment();
-    final loaded = repository.loadTemplates();
-    if (loaded.isNotEmpty) {
-      _templates.addAll(loaded);
-    } else {
-      final seeds = _builtInDefaultCommentTemplates();
-      _templates.addAll(seeds);
-      repository.saveTemplates(_templates);
+    _templates.addAll(repository.loadTemplates());
+    final n0 = _templates.length;
+    _seedBuiltinTemplatesOnce(repository: repository, templates: _templates);
+    if (_templates.length != n0) {
+      Future.microtask(notifyListeners);
     }
   }
 

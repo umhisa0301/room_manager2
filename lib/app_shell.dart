@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'navigation/app_shell_controller.dart';
 import 'navigation/rakuten_search_navigator.dart';
@@ -11,7 +10,9 @@ import 'screens/comments_placeholder_screen.dart';
 import 'screens/activity_placeholder_screen.dart';
 import 'screens/mypage_placeholder_screen.dart';
 import 'screens/saved_shops_screen.dart';
+import 'screens/comment_template_edit_screen.dart';
 import 'widgets/add_candidate_entry_sheet.dart';
+import 'widgets/common_draggable_edge_fab.dart';
 
 /// 下部ナビゲーション＋5タブのメインシェル（2番目は ROOMコレ管理）。
 /// 選択中はアクセント色＋背景ピルで視覚的に明確にする。
@@ -30,34 +31,6 @@ class _AppShellState extends State<AppShell> {
     ActivityPlaceholderScreen(),
     MypagePlaceholderScreen(),
   ];
-
-  bool _showCommentFabCoachmark = false;
-
-  @override
-  void initState() {
-    super.initState();
-    SharedPreferences.getInstance().then((p) {
-      final seen = p.getBool('ui_hint_comment_fab_seen_v1') ?? false;
-      if (!seen && mounted) {
-        setState(() => _showCommentFabCoachmark = true);
-      }
-    });
-  }
-
-  Future<void> _consumeCommentFabCoachmark() async {
-    if (!_showCommentFabCoachmark) return;
-    setState(() => _showCommentFabCoachmark = false);
-    try {
-      final p = await SharedPreferences.getInstance();
-      await p.setBool('ui_hint_comment_fab_seen_v1', true);
-    } catch (_) {}
-  }
-
-  Future<void> _openCommentsTab() async {
-    await _consumeCommentFabCoachmark();
-    if (!mounted) return;
-    context.read<AppShellController>().selectTab(2);
-  }
 
   Future<void> _openRakutenSearchFromSheet(BuildContext sheetContext) async {
     Navigator.of(sheetContext).pop();
@@ -98,83 +71,30 @@ class _AppShellState extends State<AppShell> {
   Widget build(BuildContext context) {
     final shell = context.watch<AppShellController>();
     final idx = shell.currentIndex;
-    final bottomLift = MediaQuery.paddingOf(context).bottom + 56;
-    final showGlobalCommentFab = idx != 2;
     return Scaffold(
-      body: IndexedStack(index: idx, children: _screens),
-      floatingActionButton: showGlobalCommentFab
-          ? Padding(
-              padding: EdgeInsets.only(bottom: bottomLift.clamp(52.0, 92.0)),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  if (_showCommentFabCoachmark)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4, bottom: 10),
-                      child: Material(
-                        elevation: 2,
-                        shadowColor: Colors.black.withValues(alpha: 0.14),
-                        borderRadius: BorderRadius.circular(14),
-                        color: AppColors.surface,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(12, 8, 4, 8),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 220,
-                                ),
-                                child: Text(
-                                  '投稿コメントを作れます',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge
-                                      ?.copyWith(
-                                        color: AppColors.textPrimary,
-                                        fontWeight: FontWeight.w700,
-                                        height: 1.25,
-                                      ),
-                                ),
-                              ),
-                              IconButton(
-                                visualDensity: VisualDensity.compact,
-                                tooltip: '閉じる',
-                                onPressed: _consumeCommentFabCoachmark,
-                                icon: Icon(
-                                  Icons.close_rounded,
-                                  size: 20,
-                                  color: AppColors.textSecondary.withValues(
-                                    alpha: 0.85,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  Tooltip(
-                    message: '投稿コメントを作れます',
-                    child: FloatingActionButton(
-                      heroTag: 'app_shell_comment_fab',
-                      elevation: 3.5,
-                      highlightElevation: 6,
-                      backgroundColor: AppColors.accentPrimary,
-                      foregroundColor: AppColors.textOnAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      onPressed: _openCommentsTab,
-                      child: const Icon(Icons.chat_bubble_rounded, size: 26),
-                    ),
+      body: Stack(
+        clipBehavior: Clip.none,
+        fit: StackFit.expand,
+        children: [
+          IndexedStack(index: idx, children: _screens),
+          CommonDraggableEdgeFab(
+            mode: idx == 2
+                ? CommonFabMode.addTemplate
+                : CommonFabMode.comment,
+            onCommentTap: () =>
+                context.read<AppShellController>().selectTab(2),
+            onAddTemplateTap: () {
+              Navigator.of(context).push<void>(
+                MaterialPageRoute<void>(
+                  builder: (_) => const CommentTemplateEditScreen(
+                    initialTemplate: null,
                   ),
-                ],
-              ),
-            )
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,

@@ -12,6 +12,22 @@ class CommentTemplateRepository {
 
   static const String _keyTemplates = 'comment_templates';
   static const String _keyLastCopied = 'last_copied_comment';
+  static const String _keyBuiltinSeeded = 'comment_builtin_templates_seeded_v1';
+
+  /// 組み込み初期テンプレを一度だけ投入したか（空にしても再投入しない）。
+  bool loadBuiltinTemplatesSeeded() {
+    try {
+      return _prefs.getBool(_keyBuiltinSeeded) ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  void saveBuiltinTemplatesSeeded(bool value) {
+    try {
+      _prefs.setBool(_keyBuiltinSeeded, value);
+    } catch (_) {}
+  }
 
   List<CommentTemplate> loadTemplates() {
     try {
