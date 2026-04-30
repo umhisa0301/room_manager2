@@ -80,19 +80,6 @@ class CommentsPlaceholderScreen extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'fab_comments_add_template',
-        tooltip: 'テンプレートを追加',
-        elevation: 3.5,
-        highlightElevation: 6,
-        backgroundColor: AppColors.accentPrimary,
-        foregroundColor: AppColors.textOnAccent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
-        onPressed: () => _openAdd(context),
-        child: const Icon(Icons.add_comment_rounded, size: 26),
-      ),
     );
   }
 
