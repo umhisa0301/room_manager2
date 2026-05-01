@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,8 +26,8 @@ class CommonDraggableEdgeFab extends StatefulWidget {
   /// 右側はみ出し（画面外に隠す量・24〜28）
   static const double peekHiddenFromRightEdge = 26;
 
-  /// 展開時の幅（128〜144）
-  static const double expandedWidth = 136;
+  /// 展開時の幅（矢印・余白・ラベルを含む）
+  static const double expandedWidth = 152;
 
   static const double fabHeight = 56;
 
@@ -48,6 +50,9 @@ class CommonDraggableEdgeFab extends StatefulWidget {
 
   static const String prefDragHintSeen = 'room_fab_drag_hint_seen_v1';
 
+  /// 初回のみ「←で閉じる」ヒントを表示したか
+  static const String prefChevronHintSeen = 'room_fab_chevron_hint_seen_v1';
+
   /// コメントタブの＋FAB（正方形の一辺）
   static const double plusFabSize = 56;
 
@@ -55,7 +60,8 @@ class CommonDraggableEdgeFab extends StatefulWidget {
   State<CommonDraggableEdgeFab> createState() => _CommonDraggableEdgeFabState();
 }
 
-class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
+class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab>
+    with SingleTickerProviderStateMixin {
   double? _fabTop;
   bool _prefsLoaded = false;
   bool _scheduledInitialFromLayout = false;
@@ -66,6 +72,15 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
   bool _verticalDragging = false;
   double? _longPressLastY;
   bool _clampPostFramePending = false;
+
+  AnimationController? _chevronHintController;
+  Animation<double>? _chevronHintOpacity;
+
+  @override
+  void dispose() {
+    _chevronHintController?.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -78,7 +93,81 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
   void didUpdateWidget(covariant CommonDraggableEdgeFab oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.shellTabIndex != oldWidget.shellTabIndex && _expanded) {
+      _disposeChevronHint();
       setState(() => _expanded = false);
+    }
+  }
+
+  void _disposeChevronHint() {
+    _chevronHintController?.dispose();
+    _chevronHintController = null;
+    _chevronHintOpacity = null;
+  }
+
+  void _collapseExpanded() {
+    _disposeChevronHint();
+    setState(() => _expanded = false);
+  }
+
+  void _expandFab() {
+    if (!_prefsLoaded) return;
+    setState(() => _expanded = true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _tryPlayChevronHint();
+    });
+  }
+
+  Future<void> _tryPlayChevronHint() async {
+    if (!mounted || !_expanded) return;
+    try {
+      final p = await SharedPreferences.getInstance();
+      if (!mounted || !_expanded) return;
+      if (p.getBool(CommonDraggableEdgeFab.prefChevronHintSeen) == true) {
+        return;
+      }
+      await p.setBool(CommonDraggableEdgeFab.prefChevronHintSeen, true);
+      if (!mounted || !_expanded) return;
+
+      _chevronHintController?.dispose();
+      _chevronHintController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 2000),
+      );
+      _chevronHintOpacity = TweenSequence<double>(
+        <TweenSequenceItem<double>>[
+          TweenSequenceItem<double>(
+            tween: ConstantTween<double>(1),
+            weight: 40,
+          ),
+          TweenSequenceItem<double>(
+            tween: Tween<double>(begin: 1, end: 0).chain(
+              CurveTween(curve: Curves.easeOut),
+            ),
+            weight: 60,
+          ),
+        ],
+      ).animate(_chevronHintController!);
+
+      void tick() {
+        if (mounted) setState(() {});
+      }
+
+      _chevronHintController!.addListener(tick);
+      await _chevronHintController!.forward();
+      _chevronHintController?.removeListener(tick);
+      if (mounted) {
+        _disposeChevronHint();
+        setState(() {});
+      }
+    } catch (_) {}
+  }
+
+  IconData _backChevronIcon() {
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.iOS:
+        return CupertinoIcons.back;
+      default:
+        return Icons.arrow_back_rounded;
     }
   }
 
@@ -141,7 +230,7 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
       ScaffoldMessenger.maybeOf(context)?.showSnackBar(
         const SnackBar(
           content: Text(
-            'タップで展開。外をタップで半収納。長押しのまま上下に動かして位置を変えられます',
+            '半収納はタップで展開。←で閉じるか、外をタップで半収納。長押しで位置移動',
           ),
         ),
       );
@@ -164,10 +253,6 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
 
   void _onTapComment() {
     if (!_prefsLoaded) return;
-    if (!_expanded) {
-      setState(() => _expanded = true);
-      return;
-    }
     widget.onCommentTap();
   }
 
@@ -266,7 +351,7 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
 
         final pillChild = GestureDetector(
           behavior: HitTestBehavior.translucent,
-          onTap: _onTapComment,
+          onTap: _expanded ? null : _expandFab,
           onLongPressStart: _onLongPressStart,
           onLongPressMoveUpdate: (d) =>
               _onLongPressMoveUpdate(d, topInset, h),
@@ -298,7 +383,11 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
             ),
             clipBehavior: Clip.antiAlias,
             child: _expanded
-                ? const _CommentExpandedPill()
+                ? _CommentExpandedRow(
+                    backIcon: _backChevronIcon(),
+                    onCollapse: _collapseExpanded,
+                    onOpenComment: _onTapComment,
+                  )
                 : const _CommentPeekTab(),
           ),
         );
@@ -306,15 +395,39 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
         final positionedChild = _expanded
             ? TapRegion(
                 onTapOutside: (_) {
-                  if (_expanded) setState(() => _expanded = false);
+                  if (_expanded) _collapseExpanded();
                 },
                 child: pillChild,
               )
             : pillChild;
 
-        final fabWithTooltip = Tooltip(
-          message: 'コメント',
-          child: positionedChild,
+        final fabWithTooltip = _expanded
+            ? positionedChild
+            : Tooltip(
+                message: 'コメント',
+                child: positionedChild,
+              );
+
+        final columnChild = Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            fabWithTooltip,
+            if (_chevronHintOpacity != null)
+              FadeTransition(
+                opacity: _chevronHintOpacity!,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    '←で閉じる',
+                    style: AppTextStyles.caption.copyWith(
+                      fontSize: 11,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ),
+              ),
+          ],
         );
 
         Widget positionWrapper(Widget child) {
@@ -338,7 +451,7 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
           clipBehavior: Clip.none,
           fit: StackFit.expand,
           children: [
-            positionWrapper(fabWithTooltip),
+            positionWrapper(columnChild),
           ],
         );
       },
@@ -588,37 +701,80 @@ class _CommentPeekTab extends StatelessWidget {
   }
 }
 
-class _CommentExpandedPill extends StatelessWidget {
-  const _CommentExpandedPill();
+class _CommentExpandedRow extends StatelessWidget {
+  const _CommentExpandedRow({
+    required this.backIcon,
+    required this.onCollapse,
+    required this.onOpenComment,
+  });
+
+  final IconData backIcon;
+  final VoidCallback onCollapse;
+  final VoidCallback onOpenComment;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          const Icon(
-            Icons.chat_bubble_rounded,
-            size: 22,
-            color: AppColors.textOnAccent,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            'コメント',
-            maxLines: 1,
-            softWrap: false,
-            overflow: TextOverflow.visible,
-            style: AppTextStyles.titleSmall.copyWith(
-              color: AppColors.textOnAccent,
-              fontSize: 14.5,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.1,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onCollapse,
+            splashColor: Colors.white24,
+            highlightColor: Colors.white12,
+            child: SizedBox(
+              width: 44,
+              child: Center(
+                child: Icon(
+                  backIcon,
+                  size: 21,
+                  color: AppColors.textOnAccent,
+                ),
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onOpenComment,
+              splashColor: Colors.white24,
+              highlightColor: Colors.white12,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.chat_bubble_rounded,
+                      size: 21,
+                      color: AppColors.textOnAccent,
+                    ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        'コメント',
+                        maxLines: 1,
+                        softWrap: false,
+                        overflow: TextOverflow.visible,
+                        style: AppTextStyles.titleSmall.copyWith(
+                          color: AppColors.textOnAccent,
+                          fontSize: 14.5,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.1,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
