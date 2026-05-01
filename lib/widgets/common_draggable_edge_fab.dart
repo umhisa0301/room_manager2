@@ -3,9 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../theme/app_theme.dart';
 
-/// コメント画面以外で表示する共通コメント FAB（半収納 ⇔ 展開の2状態のみ）。
+/// コメント画面以外で表示する右端収納型コメント FAB（半収納 ⇔ 展開）。
 ///
-/// [LayoutBuilder] 配下では [Positioned] を使わず、Align + Transform.translate で配置する。
+/// 内側に [Stack] を持ち、[Positioned] / [AnimatedPositioned] は必ずその [Stack] の直接の子とする。
 class CommonDraggableEdgeFab extends StatefulWidget {
   const CommonDraggableEdgeFab({
     super.key,
@@ -18,11 +18,14 @@ class CommonDraggableEdgeFab extends StatefulWidget {
 
   final VoidCallback onCommentTap;
 
-  /// 半収納時の幅（44〜48）
-  static const double peekWidth = 46;
+  /// 半収納時の幅（52 前後）
+  static const double peekWidth = 52;
 
-  /// 展開時の幅（110〜130）
-  static const double expandedWidth = 120;
+  /// 右側はみ出し（画面外に隠す量・24〜28）
+  static const double peekHiddenFromRightEdge = 26;
+
+  /// 展開時の幅（128〜144）
+  static const double expandedWidth = 136;
 
   static const double fabHeight = 56;
 
@@ -30,13 +33,15 @@ class CommonDraggableEdgeFab extends StatefulWidget {
 
   static const double edgeMargin = 8;
 
-  /// 画面内に見える幅。幅46に対し約35%が右外＝約30%弱が隠れる（要件30〜40%隠す）
-  static const double peekVisibleWidthOnScreen = 30;
-
-  /// フッター（body 下端＝BottomNavigationBar 直上）からのオフセット（12〜16）
+  /// フッター直上からのオフセット（12〜16）
   static const double marginAboveBodyBottom = 14;
 
   static const double minGapAboveFooter = 12;
+
+  /// 開閉アニメーション（180〜220ms）
+  static const Duration openCloseDuration = Duration(milliseconds: 200);
+
+  static const Curve openCloseCurve = Curves.easeOutCubic;
 
   /// FAB 上端の Y（body 左上基準）
   static const String prefTop = 'room_fab_dy';
@@ -61,9 +66,6 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
   bool _verticalDragging = false;
   double? _longPressLastY;
   bool _clampPostFramePending = false;
-
-  /// 展開時: 右方向スワイプの累積（半収納に戻す）
-  double _collapseSwipeAccumDx = 0;
 
   @override
   void initState() {
@@ -139,7 +141,7 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
       ScaffoldMessenger.maybeOf(context)?.showSnackBar(
         const SnackBar(
           content: Text(
-            'タップで展開。展開中は右にスワイプで半収納。長押しのまま上下に動かして位置を変えられます',
+            'タップで展開。外をタップで半収納。長押しのまま上下に動かして位置を変えられます',
           ),
         ),
       );
@@ -149,15 +151,18 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
   double _clampTop(double t, double topInset, double h) =>
       t.clamp(_minTop(topInset), _maxTop(h));
 
+  /// 右端スナップ：半収納は右に隠す、展開は余白付きで内側に収める
   double _leftForPeek(double w) =>
-      w - CommonDraggableEdgeFab.peekVisibleWidthOnScreen;
+      w -
+          CommonDraggableEdgeFab.peekWidth +
+          CommonDraggableEdgeFab.peekHiddenFromRightEdge;
 
   double _leftForExpanded(double w) =>
       w -
           CommonDraggableEdgeFab.expandedWidth -
           CommonDraggableEdgeFab.edgeMargin;
 
-  void _onTapComment(double topInset, double h) {
+  void _onTapComment() {
     if (!_prefsLoaded) return;
     if (!_expanded) {
       setState(() => _expanded = true);
@@ -207,6 +212,14 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
     _commitFabTop(topInset, h);
   }
 
+  static List<BoxShadow> get _fabShadow => [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.1),
+          blurRadius: 6,
+          offset: const Offset(0, 2),
+        ),
+      ];
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -246,79 +259,87 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
           });
         }
 
-        final fabWidth =
-            _expanded ? CommonDraggableEdgeFab.expandedWidth : CommonDraggableEdgeFab.peekWidth;
+        final fabWidth = _expanded
+            ? CommonDraggableEdgeFab.expandedWidth
+            : CommonDraggableEdgeFab.peekWidth;
         final left = _expanded ? _leftForExpanded(w) : _leftForPeek(w);
 
-        return Align(
-          alignment: Alignment.topLeft,
-          child: Transform.translate(
-            offset: Offset(left, top),
-            child: Tooltip(
-              message: 'コメント',
-              child: Material(
-                elevation: _expanded ? 5 : 4,
-                shadowColor: Colors.black.withValues(alpha: 0.2),
-                borderRadius: _expanded
-                    ? BorderRadius.circular(CommonDraggableEdgeFab.borderRadiusLarge)
-                    : const BorderRadius.only(
-                        topLeft: Radius.circular(
-                          CommonDraggableEdgeFab.borderRadiusLarge,
-                        ),
-                        bottomLeft: Radius.circular(
-                          CommonDraggableEdgeFab.borderRadiusLarge,
-                        ),
-                        topRight: Radius.circular(12),
-                        bottomRight: Radius.circular(12),
+        final pillChild = GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: _onTapComment,
+          onLongPressStart: _onLongPressStart,
+          onLongPressMoveUpdate: (d) =>
+              _onLongPressMoveUpdate(d, topInset, h),
+          onLongPressEnd: (_) => _onLongPressEnd(topInset, h),
+          onLongPressCancel: () =>
+              _onLongPressCancel(topInset, h),
+          child: AnimatedContainer(
+            duration: CommonDraggableEdgeFab.openCloseDuration,
+            curve: CommonDraggableEdgeFab.openCloseCurve,
+            width: fabWidth,
+            height: CommonDraggableEdgeFab.fabHeight,
+            decoration: BoxDecoration(
+              color: AppColors.accentPrimary,
+              borderRadius: _expanded
+                  ? BorderRadius.circular(
+                      CommonDraggableEdgeFab.borderRadiusLarge,
+                    )
+                  : const BorderRadius.only(
+                      topLeft: Radius.circular(
+                        CommonDraggableEdgeFab.borderRadiusLarge,
                       ),
-                color: AppColors.accentPrimary,
-                clipBehavior: Clip.antiAlias,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () => _onTapComment(topInset, h),
-                  onHorizontalDragStart: (_) {
-                    if (!_expanded) return;
-                    _collapseSwipeAccumDx = 0;
-                  },
-                  onHorizontalDragUpdate: (d) {
-                    if (!_expanded) return;
-                    if (d.delta.dx > 0) {
-                      _collapseSwipeAccumDx += d.delta.dx;
-                      if (_collapseSwipeAccumDx >= 24) {
-                        _collapseSwipeAccumDx = 0;
-                        setState(() => _expanded = false);
-                      }
-                    } else if (d.delta.dx < -3) {
-                      _collapseSwipeAccumDx = 0;
-                    }
-                  },
-                  onHorizontalDragEnd: (d) {
-                    if (_expanded &&
-                        d.velocity.pixelsPerSecond.dx > 180) {
-                      setState(() => _expanded = false);
-                    }
-                    _collapseSwipeAccumDx = 0;
-                  },
-                  onHorizontalDragCancel: () {
-                    _collapseSwipeAccumDx = 0;
-                  },
-                  onLongPressStart: _onLongPressStart,
-                  onLongPressMoveUpdate: (d) =>
-                      _onLongPressMoveUpdate(d, topInset, h),
-                  onLongPressEnd: (_) => _onLongPressEnd(topInset, h),
-                  onLongPressCancel: () =>
-                      _onLongPressCancel(topInset, h),
-                  child: SizedBox(
-                    width: fabWidth,
-                    height: CommonDraggableEdgeFab.fabHeight,
-                    child: _expanded
-                        ? const _CommentExpandedPill()
-                        : const _CommentPeekTab(),
-                  ),
-                ),
-              ),
+                      bottomLeft: Radius.circular(
+                        CommonDraggableEdgeFab.borderRadiusLarge,
+                      ),
+                      topRight: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
+                    ),
+              boxShadow: _fabShadow,
             ),
+            clipBehavior: Clip.antiAlias,
+            child: _expanded
+                ? const _CommentExpandedPill()
+                : const _CommentPeekTab(),
           ),
+        );
+
+        final positionedChild = _expanded
+            ? TapRegion(
+                onTapOutside: (_) {
+                  if (_expanded) setState(() => _expanded = false);
+                },
+                child: pillChild,
+              )
+            : pillChild;
+
+        final fabWithTooltip = Tooltip(
+          message: 'コメント',
+          child: positionedChild,
+        );
+
+        Widget positionWrapper(Widget child) {
+          if (_verticalDragging) {
+            return Positioned(
+              left: left,
+              top: top,
+              child: child,
+            );
+          }
+          return AnimatedPositioned(
+            duration: CommonDraggableEdgeFab.openCloseDuration,
+            curve: CommonDraggableEdgeFab.openCloseCurve,
+            left: left,
+            top: top,
+            child: child,
+          );
+        }
+
+        return Stack(
+          clipBehavior: Clip.none,
+          fit: StackFit.expand,
+          children: [
+            positionWrapper(fabWithTooltip),
+          ],
         );
       },
     );
@@ -435,7 +456,17 @@ class _CommentTabPlusFabState extends State<CommentTabPlusFab> {
   }
 
   double _leftForPlus(double w) =>
-      w - CommonDraggableEdgeFab.plusFabSize - CommonDraggableEdgeFab.edgeMargin;
+      w -
+          CommonDraggableEdgeFab.plusFabSize -
+          CommonDraggableEdgeFab.edgeMargin;
+
+  static List<BoxShadow> get _plusShadow => [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.1),
+          blurRadius: 6,
+          offset: const Offset(0, 2),
+        ),
+      ];
 
   @override
   void initState() {
@@ -484,40 +515,58 @@ class _CommentTabPlusFabState extends State<CommentTabPlusFab> {
 
         final left = _leftForPlus(w);
 
-        return Align(
-          alignment: Alignment.topLeft,
-          child: Transform.translate(
-            offset: Offset(left, top),
-            child: Tooltip(
-              message: 'テンプレートを追加',
-              child: Material(
-                elevation: 4,
-                shadowColor: Colors.black.withValues(alpha: 0.2),
-                shape: const CircleBorder(),
+        final fab = Tooltip(
+          message: 'テンプレートを追加',
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: widget.onPressed,
+            onLongPressStart: _onLongPressStart,
+            onLongPressMoveUpdate: (d) =>
+                _onLongPressMoveUpdate(d, topInset, h),
+            onLongPressEnd: (_) => _onLongPressEnd(topInset, h),
+            onLongPressCancel: () =>
+                _onLongPressCancel(topInset, h),
+            child: AnimatedContainer(
+              duration: CommonDraggableEdgeFab.openCloseDuration,
+              curve: CommonDraggableEdgeFab.openCloseCurve,
+              width: CommonDraggableEdgeFab.plusFabSize,
+              height: CommonDraggableEdgeFab.plusFabSize,
+              decoration: BoxDecoration(
                 color: AppColors.accentPrimary,
-                clipBehavior: Clip.antiAlias,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: widget.onPressed,
-                  onLongPressStart: _onLongPressStart,
-                  onLongPressMoveUpdate: (d) =>
-                      _onLongPressMoveUpdate(d, topInset, h),
-                  onLongPressEnd: (_) => _onLongPressEnd(topInset, h),
-                  onLongPressCancel: () =>
-                      _onLongPressCancel(topInset, h),
-                  child: SizedBox(
-                    width: CommonDraggableEdgeFab.plusFabSize,
-                    height: CommonDraggableEdgeFab.plusFabSize,
-                    child: Icon(
-                      Icons.add_rounded,
-                      size: 28,
-                      color: AppColors.textOnAccent,
-                    ),
-                  ),
-                ),
+                shape: BoxShape.circle,
+                boxShadow: _plusShadow,
+              ),
+              child: Icon(
+                Icons.add_rounded,
+                size: 28,
+                color: AppColors.textOnAccent,
               ),
             ),
           ),
+        );
+
+        if (_verticalDragging) {
+          return Stack(
+            clipBehavior: Clip.none,
+            fit: StackFit.expand,
+            children: [
+              Positioned(left: left, top: top, child: fab),
+            ],
+          );
+        }
+
+        return Stack(
+          clipBehavior: Clip.none,
+          fit: StackFit.expand,
+          children: [
+            AnimatedPositioned(
+              duration: CommonDraggableEdgeFab.openCloseDuration,
+              curve: CommonDraggableEdgeFab.openCloseCurve,
+              left: left,
+              top: top,
+              child: fab,
+            ),
+          ],
         );
       },
     );
@@ -532,7 +581,7 @@ class _CommentPeekTab extends StatelessWidget {
     return Center(
       child: Icon(
         Icons.chat_bubble_rounded,
-        size: 22,
+        size: 24,
         color: AppColors.textOnAccent,
       ),
     );
@@ -545,29 +594,27 @@ class _CommentExpandedPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
           const Icon(
             Icons.chat_bubble_rounded,
-            size: 20,
+            size: 22,
             color: AppColors.textOnAccent,
           ),
-          const SizedBox(width: 6),
-          Flexible(
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'コメント',
-                maxLines: 1,
-                style: AppTextStyles.titleSmall.copyWith(
-                  color: AppColors.textOnAccent,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.15,
-                ),
-              ),
+          const SizedBox(width: 8),
+          Text(
+            'コメント',
+            maxLines: 1,
+            softWrap: false,
+            overflow: TextOverflow.visible,
+            style: AppTextStyles.titleSmall.copyWith(
+              color: AppColors.textOnAccent,
+              fontSize: 14.5,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.1,
             ),
           ),
         ],
