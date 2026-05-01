@@ -26,8 +26,8 @@ class CommonDraggableEdgeFab extends StatefulWidget {
   /// 右側はみ出し（画面外に隠す量・24〜28）
   static const double peekHiddenFromRightEdge = 26;
 
-  /// 展開時の幅（矢印・余白・ラベルを含む）
-  static const double expandedWidth = 152;
+  /// 展開時の最小幅（閉じる・余白・ラベル・テキストスケールに耐える）
+  static const double expandedWidth = 168;
 
   static const double fabHeight = 56;
 
@@ -50,7 +50,7 @@ class CommonDraggableEdgeFab extends StatefulWidget {
 
   static const String prefDragHintSeen = 'room_fab_drag_hint_seen_v1';
 
-  /// 初回のみ「←で閉じる」ヒントを表示したか
+/// 初回のみ「×で半収納」ヒントを表示したか
   static const String prefChevronHintSeen = 'room_fab_chevron_hint_seen_v1';
 
   /// コメントタブの＋FAB（正方形の一辺）
@@ -162,12 +162,12 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab>
     } catch (_) {}
   }
 
-  IconData _backChevronIcon() {
+  IconData _closeIcon() {
     switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
-        return CupertinoIcons.back;
+        return CupertinoIcons.xmark;
       default:
-        return Icons.arrow_back_rounded;
+        return Icons.close_rounded;
     }
   }
 
@@ -230,7 +230,7 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab>
       ScaffoldMessenger.maybeOf(context)?.showSnackBar(
         const SnackBar(
           content: Text(
-            '半収納はタップで展開。←で閉じるか、外をタップで半収納。長押しで位置移動',
+            '半収納はタップで展開。×または外をタップで半収納。右の吹き出しでコメントへ。長押しで位置移動',
           ),
         ),
       );
@@ -246,10 +246,8 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab>
           CommonDraggableEdgeFab.peekWidth +
           CommonDraggableEdgeFab.peekHiddenFromRightEdge;
 
-  double _leftForExpanded(double w) =>
-      w -
-          CommonDraggableEdgeFab.expandedWidth -
-          CommonDraggableEdgeFab.edgeMargin;
+  double _leftForExpanded(double w, double fabW) =>
+      w - fabW - CommonDraggableEdgeFab.edgeMargin;
 
   void _onTapComment() {
     if (!_prefsLoaded) return;
@@ -299,9 +297,9 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab>
 
   static List<BoxShadow> get _fabShadow => [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.1),
-          blurRadius: 6,
-          offset: const Offset(0, 2),
+          color: Colors.black.withValues(alpha: 0.06),
+          blurRadius: 5,
+          offset: const Offset(0, 1.5),
         ),
       ];
 
@@ -344,10 +342,18 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab>
           });
         }
 
+        final textScaler = MediaQuery.textScalerOf(context);
+        final expandExtraWidth =
+            ((textScaler.scale(15) - 15) * 2.2).clamp(0.0, 44.0);
+        final expandedFabWidth =
+            CommonDraggableEdgeFab.expandedWidth + expandExtraWidth;
+
         final fabWidth = _expanded
-            ? CommonDraggableEdgeFab.expandedWidth
+            ? expandedFabWidth
             : CommonDraggableEdgeFab.peekWidth;
-        final left = _expanded ? _leftForExpanded(w) : _leftForPeek(w);
+        final left = _expanded
+            ? _leftForExpanded(w, expandedFabWidth)
+            : _leftForPeek(w);
 
         final pillChild = GestureDetector(
           behavior: HitTestBehavior.translucent,
@@ -382,13 +388,19 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab>
               boxShadow: _fabShadow,
             ),
             clipBehavior: Clip.antiAlias,
-            child: _expanded
-                ? _CommentExpandedRow(
-                    backIcon: _backChevronIcon(),
-                    onCollapse: _collapseExpanded,
-                    onOpenComment: _onTapComment,
-                  )
-                : const _CommentPeekTab(),
+            child: AnimatedScale(
+              duration: CommonDraggableEdgeFab.openCloseDuration,
+              curve: CommonDraggableEdgeFab.openCloseCurve,
+              scale: _expanded ? 1.01 : 1.0,
+              alignment: Alignment.centerRight,
+              child: _expanded
+                  ? _CommentExpandedRow(
+                      closeIcon: _closeIcon(),
+                      onCollapse: _collapseExpanded,
+                      onOpenComment: _onTapComment,
+                    )
+                  : const _CommentPeekTab(),
+            ),
           ),
         );
 
@@ -419,7 +431,7 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab>
                 child: Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
-                    '←で閉じる',
+                    '×で半収納',
                     style: AppTextStyles.caption.copyWith(
                       fontSize: 11,
                       color: AppColors.textSecondary,
@@ -575,9 +587,9 @@ class _CommentTabPlusFabState extends State<CommentTabPlusFab> {
 
   static List<BoxShadow> get _plusShadow => [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.1),
-          blurRadius: 6,
-          offset: const Offset(0, 2),
+          color: Colors.black.withValues(alpha: 0.06),
+          blurRadius: 5,
+          offset: const Offset(0, 1.5),
         ),
       ];
 
@@ -689,26 +701,39 @@ class _CommentTabPlusFabState extends State<CommentTabPlusFab> {
 class _CommentPeekTab extends StatelessWidget {
   const _CommentPeekTab();
 
+  static final Color _hintChevronColor =
+      AppColors.textOnAccent.withValues(alpha: 0.88);
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Icon(
-        Icons.chat_bubble_rounded,
-        size: 24,
-        color: AppColors.textOnAccent,
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.chevron_left_rounded,
+          size: 18,
+          color: _hintChevronColor,
+        ),
+        const SizedBox(width: 1),
+        const Icon(
+          Icons.chat_bubble_rounded,
+          size: 22,
+          color: AppColors.textOnAccent,
+        ),
+      ],
     );
   }
 }
 
 class _CommentExpandedRow extends StatelessWidget {
   const _CommentExpandedRow({
-    required this.backIcon,
+    required this.closeIcon,
     required this.onCollapse,
     required this.onOpenComment,
   });
 
-  final IconData backIcon;
+  final IconData closeIcon;
   final VoidCallback onCollapse;
   final VoidCallback onOpenComment;
 
@@ -717,19 +742,24 @@ class _CommentExpandedRow extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onCollapse,
-            splashColor: Colors.white24,
-            highlightColor: Colors.white12,
-            child: SizedBox(
-              width: 44,
-              child: Center(
-                child: Icon(
-                  backIcon,
-                  size: 21,
-                  color: AppColors.textOnAccent,
+        Semantics(
+          button: true,
+          label: '閉じて半収納',
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onCollapse,
+              splashColor: Colors.white24,
+              highlightColor: Colors.white12,
+              child: SizedBox(
+                width: 48,
+                height: CommonDraggableEdgeFab.fabHeight,
+                child: Center(
+                  child: Icon(
+                    closeIcon,
+                    size: 22,
+                    color: AppColors.textOnAccent,
+                  ),
                 ),
               ),
             ),
@@ -744,7 +774,7 @@ class _CommentExpandedRow extends StatelessWidget {
               splashColor: Colors.white24,
               highlightColor: Colors.white12,
               child: Padding(
-                padding: const EdgeInsets.only(right: 8),
+                padding: const EdgeInsets.only(right: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -754,17 +784,20 @@ class _CommentExpandedRow extends StatelessWidget {
                       color: AppColors.textOnAccent,
                     ),
                     const SizedBox(width: 8),
-                    Flexible(
-                      child: Text(
-                        'コメント',
-                        maxLines: 1,
-                        softWrap: false,
-                        overflow: TextOverflow.visible,
-                        style: AppTextStyles.titleSmall.copyWith(
-                          color: AppColors.textOnAccent,
-                          fontSize: 14.5,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.1,
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'コメント',
+                          maxLines: 1,
+                          softWrap: false,
+                          overflow: TextOverflow.visible,
+                          style: AppTextStyles.titleSmall.copyWith(
+                            color: AppColors.textOnAccent,
+                            fontSize: 14.5,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.1,
+                          ),
                         ),
                       ),
                     ),
