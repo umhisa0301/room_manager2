@@ -77,22 +77,23 @@ class _AppShellState extends State<AppShell> {
         fit: StackFit.expand,
         children: [
           IndexedStack(index: idx, children: _screens),
-          CommonDraggableEdgeFab(
-            mode: idx == 2
-                ? CommonFabMode.addTemplate
-                : CommonFabMode.comment,
-            onCommentTap: () =>
-                context.read<AppShellController>().selectTab(2),
-            onAddTemplateTap: () {
-              Navigator.of(context).push<void>(
-                MaterialPageRoute<void>(
-                  builder: (_) => const CommentTemplateEditScreen(
-                    initialTemplate: null,
+          if (idx != 2)
+            CommonDraggableEdgeFab(
+              onCommentTap: () =>
+                  context.read<AppShellController>().selectTab(2),
+            ),
+          if (idx == 2)
+            CommentTabPlusFab(
+              onPressed: () {
+                Navigator.of(context).push<void>(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const CommentTemplateEditScreen(
+                      initialTemplate: null,
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
+                );
+              },
+            ),
         ],
       ),
       bottomNavigationBar: Container(

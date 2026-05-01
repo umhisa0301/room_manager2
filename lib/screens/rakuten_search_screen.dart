@@ -489,9 +489,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 ),
           ),
           CommonDraggableEdgeFab(
-            mode: CommonFabMode.comment,
             onCommentTap: () => _returnToShellWithTab(context, 2),
-            onAddTemplateTap: () {},
           ),
         ],
       ),
