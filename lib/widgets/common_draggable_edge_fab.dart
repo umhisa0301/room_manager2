@@ -9,8 +9,12 @@ import '../theme/app_theme.dart';
 class CommonDraggableEdgeFab extends StatefulWidget {
   const CommonDraggableEdgeFab({
     super.key,
+    required this.shellTabIndex,
     required this.onCommentTap,
   });
+
+  /// シェル下部ナビの選択インデックス。切り替わったら FAB は半収納へ戻す。
+  final int shellTabIndex;
 
   final VoidCallback onCommentTap;
 
@@ -58,11 +62,22 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
   double? _longPressLastY;
   bool _clampPostFramePending = false;
 
+  /// 展開時: 右方向スワイプの累積（半収納に戻す）
+  double _collapseSwipeAccumDx = 0;
+
   @override
   void initState() {
     super.initState();
     _loadPrefs();
     WidgetsBinding.instance.addPostFrameCallback((_) => _maybeShowFirstHint());
+  }
+
+  @override
+  void didUpdateWidget(covariant CommonDraggableEdgeFab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.shellTabIndex != oldWidget.shellTabIndex && _expanded) {
+      setState(() => _expanded = false);
+    }
   }
 
   double _minTop(double topInset) =>
@@ -123,7 +138,9 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
       if (!mounted) return;
       ScaffoldMessenger.maybeOf(context)?.showSnackBar(
         const SnackBar(
-          content: Text('タップで展開。長押しのまま上下に動かして位置を変えられます'),
+          content: Text(
+            'タップで展開。展開中は右にスワイプで半収納。長押しのまま上下に動かして位置を変えられます',
+          ),
         ),
       );
     } catch (_) {}
@@ -259,6 +276,32 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () => _onTapComment(topInset, h),
+                  onHorizontalDragStart: (_) {
+                    if (!_expanded) return;
+                    _collapseSwipeAccumDx = 0;
+                  },
+                  onHorizontalDragUpdate: (d) {
+                    if (!_expanded) return;
+                    if (d.delta.dx > 0) {
+                      _collapseSwipeAccumDx += d.delta.dx;
+                      if (_collapseSwipeAccumDx >= 24) {
+                        _collapseSwipeAccumDx = 0;
+                        setState(() => _expanded = false);
+                      }
+                    } else if (d.delta.dx < -3) {
+                      _collapseSwipeAccumDx = 0;
+                    }
+                  },
+                  onHorizontalDragEnd: (d) {
+                    if (_expanded &&
+                        d.velocity.pixelsPerSecond.dx > 180) {
+                      setState(() => _expanded = false);
+                    }
+                    _collapseSwipeAccumDx = 0;
+                  },
+                  onHorizontalDragCancel: () {
+                    _collapseSwipeAccumDx = 0;
+                  },
                   onLongPressStart: _onLongPressStart,
                   onLongPressMoveUpdate: (d) =>
                       _onLongPressMoveUpdate(d, topInset, h),

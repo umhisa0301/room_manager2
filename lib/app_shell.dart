@@ -79,6 +79,7 @@ class _AppShellState extends State<AppShell> {
           IndexedStack(index: idx, children: _screens),
           if (idx != 2)
             CommonDraggableEdgeFab(
+              shellTabIndex: idx,
               onCommentTap: () =>
                   context.read<AppShellController>().selectTab(2),
             ),

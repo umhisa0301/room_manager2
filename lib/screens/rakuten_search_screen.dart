@@ -489,6 +489,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 ),
           ),
           CommonDraggableEdgeFab(
+            shellTabIndex:
+                context.watch<AppShellController>().currentIndex,
             onCommentTap: () => _returnToShellWithTab(context, 2),
           ),
         ],
