@@ -134,6 +134,8 @@ class _CommonDraggableEdgeFabState extends State<CommonDraggableEdgeFab> {
 
   double _leftForPeek(double w) =>
       w - CommonDraggableEdgeFab.peekVisibleWidthOnScreen;
+
+  double _leftForExpanded(double w) =>
       w -
           CommonDraggableEdgeFab.expandedWidth -
           CommonDraggableEdgeFab.edgeMargin;
