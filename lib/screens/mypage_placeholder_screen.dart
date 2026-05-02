@@ -22,10 +22,11 @@ import '../utils/user_profile_genre_migration.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
+import 'activity_placeholder_screen.dart';
 import 'closed_test_demo_screen.dart';
 import 'saved_shops_screen.dart';
 
-/// マイページ：今日のコレ探しを始めるための設定・運用ハブ。
+/// マイページ：設定・状態確認のハブ（ホームの行動・おすすめ導線はここでは持たない）。
 class MypagePlaceholderScreen extends StatelessWidget {
   const MypagePlaceholderScreen({super.key});
 
@@ -209,11 +210,14 @@ class MypagePlaceholderScreen extends StatelessWidget {
                           ),
                         );
                       },
-                    ),
-                    const SizedBox(height: _gap),
-                    MyPageOperationMenuCard(
-                      onOpenActivity: () =>
-                          context.read<AppShellController>().openActivityTab(),
+                      onTapTodayActivity: () {
+                        Navigator.of(context).push<void>(
+                          MaterialPageRoute<void>(
+                            builder: (_) =>
+                                const ActivityPlaceholderScreen(),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: _gap),
                     MyPageSettingsSection(
@@ -255,8 +259,6 @@ class MyPageHeader extends StatefulWidget {
 class _MyPageHeaderState extends State<MyPageHeader> {
   bool _isExpanded = false;
 
-  static const Color _orange = Color(0xFFE65100);
-  static const Color _orangeSurface = Color(0xFFFFF7E8);
   static const Duration _expandDuration = Duration(milliseconds: 200);
   static const Curve _expandCurve = Curves.easeOutCubic;
 
@@ -267,19 +269,33 @@ class _MyPageHeaderState extends State<MyPageHeader> {
     return '低（あと$remainingステップ）';
   }
 
-  String _collapsedHintLine(int firstIncomplete) {
+  String _nextStepShortTitle(int firstIncomplete) {
     switch (firstIncomplete) {
       case 0:
-        return 'ジャンル設定で精度UP';
+        return 'ジャンル設定';
       case 1:
-        return 'ROOM連携で精度UP';
+        return 'ROOM連携';
       case 2:
-        return 'プロフィール入力で精度UP';
+        return 'プロフィール入力';
       case 3:
-        return '保存ショップで精度UP';
+        return '保存ショップ';
       default:
-        return '設定を進めると精度が上がります';
+        return '';
     }
+  }
+
+  String _collapsedNextStepLine(int firstIncomplete) {
+    final t = _nextStepShortTitle(firstIncomplete);
+    if (t.isEmpty) return '次：設定を進める';
+    return '次：$t';
+  }
+
+  String _stepProgressDots(List<bool> stepDoneFlags) {
+    final b = StringBuffer();
+    for (final done in stepDoneFlags) {
+      b.write(done ? '●' : '○');
+    }
+    return b.toString();
   }
 
   @override
@@ -310,30 +326,9 @@ class _MyPageHeaderState extends State<MyPageHeader> {
     final remaining = 4 - completedCount;
     final allDone = remaining == 0;
 
-    VoidCallback? nextOnTap;
-    String nextTitle = '';
-    String nextDescription = '';
-    if (firstIncomplete == 0) {
-      nextOnTap = widget.onStepGenre;
-      nextTitle = 'ジャンル設定';
-      nextDescription = '興味のあるジャンルを選ぶと、あなた向けの候補が出やすくなります。';
-    } else if (firstIncomplete == 1) {
-      nextOnTap = widget.onStepRoom;
-      nextTitle = 'ROOM連携';
-      nextDescription = 'ROOMのURLを登録すると、投稿スタイルに近い商品を優先しやすくなります。';
-    } else if (firstIncomplete == 2) {
-      nextOnTap = widget.onStepProfile;
-      nextTitle = 'プロフィール入力';
-      nextDescription = '年代や属性を入れると、提案のブレが減ります。';
-    } else if (firstIncomplete == 3) {
-      nextOnTap = widget.onStepSavedShops;
-      nextTitle = '保存ショップ';
-      nextDescription = '保存したショップが多いほど精度が上がります。';
-    }
-
     if (allDone) {
       return AppCard(
-        padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+        padding: const EdgeInsets.all(18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -345,13 +340,13 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                     height: 1.25,
                   ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Text(
-              '✔ 設定完了',
+              '🎉 準備完了！おすすめ精度が最大になりました',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.success.withValues(alpha: 0.92),
+                    color: AppColors.success.withValues(alpha: 0.94),
                     fontWeight: FontWeight.w800,
-                    height: 1.2,
+                    height: 1.38,
                   ),
             ),
           ],
@@ -360,7 +355,7 @@ class _MyPageHeaderState extends State<MyPageHeader> {
     }
 
     return AppCard(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+      padding: const EdgeInsets.all(18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -377,9 +372,12 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
                             'おすすめ精度：${_accuracySummaryLine(remaining)}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
@@ -389,16 +387,18 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                                   height: 1.25,
                                 ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 2),
                           Text(
-                            _collapsedHintLine(firstIncomplete),
+                            _collapsedNextStepLine(firstIncomplete),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
                                 ?.copyWith(
                                   color: AppColors.textSecondary,
-                                  height: 1.35,
-                                  fontWeight: FontWeight.w600,
+                                  height: 1.3,
+                                  fontWeight: FontWeight.w700,
                                 ),
                           ),
                         ],
@@ -417,75 +417,6 @@ class _MyPageHeaderState extends State<MyPageHeader> {
               ),
             ),
           ),
-          if (firstIncomplete >= 0 && nextOnTap != null) ...[
-            const SizedBox(height: 14),
-            Text(
-              '次にやること',
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w800,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: nextOnTap,
-                borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-                child: Ink(
-                  decoration: BoxDecoration(
-                    color: _orangeSurface,
-                    borderRadius:
-                        BorderRadius.circular(AppDimensions.radiusButton),
-                    border: Border.all(color: _orange, width: 2),
-                  ),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(minHeight: 56),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.flag_outlined, color: _orange, size: 24),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  nextTitle,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall
-                                      ?.copyWith(
-                                        color: AppColors.textPrimary,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  nextDescription,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color: AppColors.textSecondary,
-                                        height: 1.35,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Icon(Icons.chevron_right_rounded,
-                              color: _orange, size: 24),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
           RepaintBoundary(
             child: ClipRect(
               child: AnimatedSize(
@@ -507,6 +438,21 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                                   color: AppColors.textSecondary,
                                   height: 1.35,
                                   fontWeight: FontWeight.w700,
+                                ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            _stepProgressDots(stepDoneFlags),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  color: AppColors.textPrimary.withValues(
+                                    alpha: 0.88,
+                                  ),
+                                  fontWeight: FontWeight.w800,
+                                  height: 1.1,
+                                  letterSpacing: 0.5,
                                 ),
                           ),
                           const SizedBox(height: 10),
@@ -703,6 +649,7 @@ class MyPageQuickSummaryCard extends StatelessWidget {
     required this.onTapCandidates,
     required this.onTapDone,
     required this.onTapSavedShops,
+    required this.onTapTodayActivity,
   });
 
   final int savedShopCount;
@@ -714,19 +661,39 @@ class MyPageQuickSummaryCard extends StatelessWidget {
   final VoidCallback onTapCandidates;
   final VoidCallback onTapDone;
   final VoidCallback onTapSavedShops;
+  final VoidCallback onTapTodayActivity;
 
   @override
   Widget build(BuildContext context) {
-    return AppCard(
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const AppSectionHeader(
-            title: '状態サマリー',
-            subtitle: '資産はタップで詳細へ · 活動は今日の実績（閲覧のみ）',
-            icon: Icons.list_alt_outlined,
+    final activityLine =
+        'コレ追加 +$todayCollectAddedCount / コメント +$todayCommentCount / 投稿 +$todayPostCount';
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.10),
+            offset: const Offset(0, 4),
+            blurRadius: 16,
           ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            offset: const Offset(0, 10),
+            blurRadius: 22,
+          ),
+        ],
+      ),
+      child: AppCard(
+        padding: const EdgeInsets.all(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const AppSectionHeader(
+              title: '状態サマリー',
+              subtitle: 'タップで資産の詳細または活動ダッシュボードへ',
+              icon: Icons.list_alt_outlined,
+            ),
           const SizedBox(height: 10),
           _MyPageSummarySectionTitle(
             title: '資産（ストック）',
@@ -758,17 +725,18 @@ class MyPageQuickSummaryCard extends StatelessWidget {
           const SizedBox(height: 12),
           _MyPageSummarySectionTitle(
             title: '今日の活動',
-            icon: Icons.bolt_rounded,
-            iconColor: const Color(0xFFE65100),
+            dense: true,
           ),
-          const SizedBox(height: 10),
-          _MyPageTodayActivityStrip(
-            collectAdded: todayCollectAddedCount,
-            comments: todayCommentCount,
-            posts: todayPostCount,
+          const SizedBox(height: 6),
+          _MyPageTodayActivityListTile(
+            title: '',
+            detailLine: activityLine,
+            subtitle: '詳細はダッシュボードで確認できます',
+            onTap: onTapTodayActivity,
           ),
         ],
       ),
+    ),
     );
   }
 }
@@ -776,14 +744,10 @@ class MyPageQuickSummaryCard extends StatelessWidget {
 class _MyPageSummarySectionTitle extends StatelessWidget {
   const _MyPageSummarySectionTitle({
     required this.title,
-    this.icon,
-    this.iconColor,
     this.dense = false,
   });
 
   final String title;
-  final IconData? icon;
-  final Color? iconColor;
   final bool dense;
 
   @override
@@ -793,92 +757,95 @@ class _MyPageSummarySectionTitle extends StatelessWidget {
           fontWeight: FontWeight.w800,
           letterSpacing: dense ? 0.2 : 0.4,
         );
-    if (icon == null) {
-      return Text(title, style: style);
-    }
-    return Row(
-      children: [
-        Icon(icon, size: dense ? 18 : 20, color: iconColor ?? AppColors.accentPrimary),
-        const SizedBox(width: 6),
-        Expanded(child: Text(title, style: style)),
-      ],
-    );
+    return Text(title, style: style);
   }
 }
 
-class _MyPageTodayActivityStrip extends StatelessWidget {
-  const _MyPageTodayActivityStrip({
-    required this.collectAdded,
-    required this.comments,
-    required this.posts,
+class _MyPageTodayActivityListTile extends StatelessWidget {
+  const _MyPageTodayActivityListTile({
+    required this.title,
+    required this.detailLine,
+    required this.subtitle,
+    required this.onTap,
   });
 
-  final int collectAdded;
-  final int comments;
-  final int posts;
+  final String title;
+  final String detailLine;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  static const Color _boltColor = Color(0xFFE65100);
 
   @override
   Widget build(BuildContext context) {
-    final base = Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: AppColors.textSecondary,
-          fontWeight: FontWeight.w700,
-          height: 1.25,
-        );
-    final accentStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: AppColors.textPrimary,
-          fontWeight: FontWeight.w900,
-          height: 1.15,
-        );
+    final accent = AppColors.accentPrimary;
 
-    Widget cell(String label, String valueText) {
-      return Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(label, textAlign: TextAlign.center, style: base),
-            const SizedBox(height: 4),
-            Text(valueText, textAlign: TextAlign.center, style: accentStyle),
-          ],
-        ),
-      );
-    }
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppColors.surfaceVariant.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-        border: Border.all(color: AppColors.divider.withValues(alpha: 0.35)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+    final content = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 54),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            cell('コレ追加', '+$collectAdded'),
-            _TodayActivityVDivider(color: AppColors.divider.withValues(alpha: 0.45)),
-            cell('コメント', '+$comments'),
-            _TodayActivityVDivider(color: AppColors.divider.withValues(alpha: 0.45)),
-            cell('投稿', '+$posts'),
+            Icon(Icons.bolt_rounded, size: 22, color: _boltColor),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (title.isNotEmpty) ...[
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w800,
+                          ),
+                    ),
+                    const SizedBox(height: 4),
+                  ],
+                  Text(
+                    detailLine,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w900,
+                          height: 1.22,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.35,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.textSecondary,
+                size: 22,
+              ),
+            ),
           ],
         ),
       ),
     );
-  }
-}
 
-class _TodayActivityVDivider extends StatelessWidget {
-  const _TodayActivityVDivider({required this.color});
-
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: SizedBox(
-        height: 44,
-        width: 1,
-        child: DecoratedBox(decoration: BoxDecoration(color: color)),
+    return Material(
+      color: AppColors.surfaceVariant.withValues(alpha: 0.22),
+      borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+        splashFactory: InkRipple.splashFactory,
+        splashColor: accent.withValues(alpha: 0.34),
+        highlightColor: accent.withValues(alpha: 0.14),
+        child: content,
       ),
     );
   }
@@ -989,44 +956,6 @@ class MyPageRoomLinkCard extends StatelessWidget {
                 ),
               ],
             ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class MyPageOperationMenuCard extends StatelessWidget {
-  const MyPageOperationMenuCard({
-    super.key,
-    required this.onOpenActivity,
-  });
-
-  final VoidCallback onOpenActivity;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppCard(
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const AppSectionHeader(
-            title: 'ショートカット',
-            subtitle: '補助的な導線です',
-            icon: Icons.tune_rounded,
-          ),
-          const SizedBox(height: 8),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return _OperationTile(
-                width: constraints.maxWidth,
-                icon: Icons.insights_outlined,
-                title: '活動',
-                subtitle: '運用状況を確認',
-                onTap: onOpenActivity,
-              );
-            },
           ),
         ],
       ),
@@ -1649,68 +1578,6 @@ class _SheetScaffold extends StatelessWidget {
                 onPressed: () => Navigator.of(context).pop(),
                 expand: true,
                 height: 44,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _OperationTile extends StatelessWidget {
-  const _OperationTile({
-    required this.width,
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
-
-  final double width;
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      child: AppCard(
-        onTap: onTap,
-        padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 52),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(icon, size: 20, color: AppColors.textSecondary),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w800,
-                          ),
-                    ),
-                    const SizedBox(height: 1),
-                    Text(
-                      subtitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),
