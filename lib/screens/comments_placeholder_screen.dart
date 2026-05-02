@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/comment_template.dart';
 import '../services/app_action_service.dart';
+import '../state/activity_log_provider.dart';
 import '../state/comment_template_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_button.dart';
@@ -108,7 +109,14 @@ class CommentsPlaceholderScreen extends StatelessWidget {
               context,
               text: templates[i].body,
               successMessage: 'コピーしました',
-              onSuccess: () => provider.setLastCopiedComment(templates[i].body),
+              onSuccess: () {
+                provider.setLastCopiedComment(templates[i].body);
+                if (context.mounted) {
+                  context
+                      .read<ActivityLogProvider>()
+                      .incrementTodayCommentCopyCount();
+                }
+              },
             );
           },
           onEdit: () {
