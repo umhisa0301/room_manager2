@@ -10,7 +10,11 @@ import '../models/user_profile.dart';
 import '../navigation/app_shell_controller.dart';
 import '../services/app_action_service.dart';
 import '../services/rakuten_genre_master_service.dart';
+import '../services/rakuten_room_home_stats.dart';
+import '../services/room_collect_post_limit.dart';
+import '../state/activity_log_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
+import '../state/room_activity_event_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
@@ -121,12 +125,23 @@ class MypagePlaceholderScreen extends StatelessWidget {
       body: SafeArea(
         top: false,
         child:
-            Consumer3<
+            Consumer5<
               UserProfileProvider,
               SavedShopProvider,
-              RakutenManagedProductProvider
+              RakutenManagedProductProvider,
+              RoomActivityEventProvider,
+              ActivityLogProvider
             >(
-              builder: (context, profileProvider, saved, managed, _) {
+              builder:
+                  (
+                    context,
+                    profileProvider,
+                    saved,
+                    managed,
+                    activityEvents,
+                    activityLog,
+                    _,
+                  ) {
                 final profile = profileProvider.profile;
                 final candidateCount = managed.items
                     .where(
@@ -136,6 +151,19 @@ class MypagePlaceholderScreen extends StatelessWidget {
                 final doneCount = managed.items
                     .where((e) => e.status == RakutenManagedProductStatus.done)
                     .length;
+                final now = DateTime.now();
+                final todayCollectAdded =
+                    RakutenRoomHomeStats.countDoneOnLocalCalendarDay(
+                  managed.items,
+                  now,
+                );
+                final todayPostCount = RoomCollectPostLimitSnapshot.compute(
+                  items: managed.items,
+                  events: activityEvents.events,
+                  now: now,
+                ).todayCount;
+                final todayCommentCount =
+                    activityLog.getTodayLog()?.commentCount ?? 0;
 
                 return ListView(
                   padding: EdgeInsets.fromLTRB(
@@ -165,6 +193,9 @@ class MypagePlaceholderScreen extends StatelessWidget {
                       candidateCount: candidateCount,
                       doneCount: doneCount,
                       savedShopCount: saved.shops.length,
+                      todayCollectAddedCount: todayCollectAdded,
+                      todayCommentCount: todayCommentCount,
+                      todayPostCount: todayPostCount,
                       onTapCandidates: () => context
                           .read<AppShellController>()
                           .openRoomCollect(initialTabIndex: 0),
@@ -199,7 +230,7 @@ class MypagePlaceholderScreen extends StatelessWidget {
   }
 }
 
-class MyPageHeader extends StatelessWidget {
+class MyPageHeader extends StatefulWidget {
   const MyPageHeader({
     super.key,
     required this.profile,
@@ -217,20 +248,51 @@ class MyPageHeader extends StatelessWidget {
   final VoidCallback onStepProfile;
   final VoidCallback onStepSavedShops;
 
+  @override
+  State<MyPageHeader> createState() => _MyPageHeaderState();
+}
+
+class _MyPageHeaderState extends State<MyPageHeader> {
+  bool _isExpanded = false;
+
   static const Color _orange = Color(0xFFE65100);
   static const Color _orangeSurface = Color(0xFFFFF7E8);
+  static const Duration _expandDuration = Duration(milliseconds: 200);
+  static const Curve _expandCurve = Curves.easeOutCubic;
+
+  String _accuracySummaryLine(int remaining) {
+    if (remaining <= 0) return '高';
+    if (remaining == 1) return '中（あと1ステップ）';
+    if (remaining == 2) return '中（あと2ステップ）';
+    return '低（あと$remainingステップ）';
+  }
+
+  String _collapsedHintLine(int firstIncomplete) {
+    switch (firstIncomplete) {
+      case 0:
+        return 'ジャンル設定で精度UP';
+      case 1:
+        return 'ROOM連携で精度UP';
+      case 2:
+        return 'プロフィール入力で精度UP';
+      case 3:
+        return '保存ショップで精度UP';
+      default:
+        return '設定を進めると精度が上がります';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final genreCount = profile.favoriteGenreIdList.length;
+    final genreCount = widget.profile.favoriteGenreIdList.length;
     final profileConfigured =
-        profile.displayName.trim().isNotEmpty ||
-        profile.age != null ||
-        profile.genderKey != null ||
-        profile.occupation.trim().isNotEmpty;
+        widget.profile.displayName.trim().isNotEmpty ||
+        widget.profile.age != null ||
+        widget.profile.genderKey != null ||
+        widget.profile.occupation.trim().isNotEmpty;
     final hasGenres = genreCount > 0;
-    final hasRoomUrl = profile.hasRoomUrl;
-    final savedDone = savedShopCount > 0;
+    final hasRoomUrl = widget.profile.hasRoomUrl;
+    final savedDone = widget.savedShopCount > 0;
 
     final stepGenreDone = hasGenres;
     final stepRoomDone = hasRoomUrl;
@@ -246,30 +308,55 @@ class MyPageHeader extends StatelessWidget {
     final completedCount = stepDoneFlags.where((e) => e).length;
     final firstIncomplete = stepDoneFlags.indexWhere((e) => !e);
     final remaining = 4 - completedCount;
-
-    final headline = remaining == 0
-        ? 'おすすめ精度の準備が整いました'
-        : 'あと$remainingステップで精度が上がります';
+    final allDone = remaining == 0;
 
     VoidCallback? nextOnTap;
     String nextTitle = '';
     String nextDescription = '';
     if (firstIncomplete == 0) {
-      nextOnTap = onStepGenre;
+      nextOnTap = widget.onStepGenre;
       nextTitle = 'ジャンル設定';
       nextDescription = '興味のあるジャンルを選ぶと、あなた向けの候補が出やすくなります。';
     } else if (firstIncomplete == 1) {
-      nextOnTap = onStepRoom;
+      nextOnTap = widget.onStepRoom;
       nextTitle = 'ROOM連携';
       nextDescription = 'ROOMのURLを登録すると、投稿スタイルに近い商品を優先しやすくなります。';
     } else if (firstIncomplete == 2) {
-      nextOnTap = onStepProfile;
+      nextOnTap = widget.onStepProfile;
       nextTitle = 'プロフィール入力';
       nextDescription = '年代や属性を入れると、提案のブレが減ります。';
     } else if (firstIncomplete == 3) {
-      nextOnTap = onStepSavedShops;
+      nextOnTap = widget.onStepSavedShops;
       nextTitle = '保存ショップ';
       nextDescription = '保存したショップが多いほど精度が上がります。';
+    }
+
+    if (allDone) {
+      return AppCard(
+        padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'おすすめ精度：高',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w800,
+                    height: 1.25,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '✔ 設定完了',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: AppColors.success.withValues(alpha: 0.92),
+                    fontWeight: FontWeight.w800,
+                    height: 1.2,
+                  ),
+            ),
+          ],
+        ),
+      );
     }
 
     return AppCard(
@@ -277,22 +364,58 @@ class MyPageHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            headline,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w800,
-                  height: 1.25,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => setState(() => _isExpanded = !_isExpanded),
+              borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'おすすめ精度：${_accuracySummaryLine(remaining)}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  color: AppColors.textPrimary,
+                                  fontWeight: FontWeight.w800,
+                                  height: 1.25,
+                                ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            _collapsedHintLine(firstIncomplete),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                                  color: AppColors.textSecondary,
+                                  height: 1.35,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Icon(
+                      _isExpanded
+                          ? Icons.expand_less_rounded
+                          : Icons.expand_more_rounded,
+                      color: AppColors.textSecondary,
+                      size: 26,
+                    ),
+                  ],
                 ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '進捗：$completedCount / 4 完了',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.35,
-                  fontWeight: FontWeight.w700,
-                ),
+              ),
+            ),
           ),
           if (firstIncomplete >= 0 && nextOnTap != null) ...[
             const SizedBox(height: 14),
@@ -363,43 +486,72 @@ class MyPageHeader extends StatelessWidget {
               ),
             ),
           ],
-          const SizedBox(height: 14),
-          _MyPageStepRow(
-            stepLabel: 'STEP1',
-            title: 'ジャンル設定',
-            description:
-                '興味のあるジャンルを選ぶと、あなた向けの候補が出やすくなります。',
-            isDone: stepGenreDone,
-            isNextStep: firstIncomplete == 0,
-            onTap: onStepGenre,
-          ),
-          const SizedBox(height: 8),
-          _MyPageStepRow(
-            stepLabel: 'STEP2',
-            title: 'ROOM連携',
-            description:
-                'ROOMのURLを登録すると、投稿スタイルに近い商品を優先しやすくなります。',
-            isDone: stepRoomDone,
-            isNextStep: firstIncomplete == 1,
-            onTap: onStepRoom,
-          ),
-          const SizedBox(height: 8),
-          _MyPageStepRow(
-            stepLabel: 'STEP3',
-            title: 'プロフィール入力',
-            description: '年代や属性を入れると、提案のブレが減ります。',
-            isDone: stepProfileDone,
-            isNextStep: firstIncomplete == 2,
-            onTap: onStepProfile,
-          ),
-          const SizedBox(height: 8),
-          _MyPageStepRow(
-            stepLabel: 'STEP4',
-            title: '保存ショップ',
-            description: '保存したショップが多いほど精度が上がります。',
-            isDone: stepSavedDone,
-            isNextStep: firstIncomplete == 3,
-            onTap: onStepSavedShops,
+          RepaintBoundary(
+            child: ClipRect(
+              child: AnimatedSize(
+                duration: _expandDuration,
+                curve: _expandCurve,
+                alignment: Alignment.topCenter,
+                clipBehavior: Clip.hardEdge,
+                child: _isExpanded
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(height: 14),
+                          Text(
+                            '進捗：$completedCount / 4 完了',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                                  color: AppColors.textSecondary,
+                                  height: 1.35,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
+                          const SizedBox(height: 10),
+                          _MyPageStepRow(
+                            stepLabel: 'STEP1',
+                            title: 'ジャンル設定',
+                            description:
+                                '興味のあるジャンルを選ぶと、あなた向けの候補が出やすくなります。',
+                            isDone: stepGenreDone,
+                            isNextStep: firstIncomplete == 0,
+                            onTap: widget.onStepGenre,
+                          ),
+                          const SizedBox(height: 8),
+                          _MyPageStepRow(
+                            stepLabel: 'STEP2',
+                            title: 'ROOM連携',
+                            description:
+                                'ROOMのURLを登録すると、投稿スタイルに近い商品を優先しやすくなります。',
+                            isDone: stepRoomDone,
+                            isNextStep: firstIncomplete == 1,
+                            onTap: widget.onStepRoom,
+                          ),
+                          const SizedBox(height: 8),
+                          _MyPageStepRow(
+                            stepLabel: 'STEP3',
+                            title: 'プロフィール入力',
+                            description: '年代や属性を入れると、提案のブレが減ります。',
+                            isDone: stepProfileDone,
+                            isNextStep: firstIncomplete == 2,
+                            onTap: widget.onStepProfile,
+                          ),
+                          const SizedBox(height: 8),
+                          _MyPageStepRow(
+                            stepLabel: 'STEP4',
+                            title: '保存ショップ',
+                            description: '保存したショップが多いほど精度が上がります。',
+                            isDone: stepSavedDone,
+                            isNextStep: firstIncomplete == 3,
+                            onTap: widget.onStepSavedShops,
+                          ),
+                        ],
+                      )
+                    : const SizedBox(width: double.infinity),
+              ),
+            ),
           ),
         ],
       ),
@@ -545,6 +697,9 @@ class MyPageQuickSummaryCard extends StatelessWidget {
     required this.savedShopCount,
     required this.candidateCount,
     required this.doneCount,
+    required this.todayCollectAddedCount,
+    required this.todayCommentCount,
+    required this.todayPostCount,
     required this.onTapCandidates,
     required this.onTapDone,
     required this.onTapSavedShops,
@@ -553,6 +708,9 @@ class MyPageQuickSummaryCard extends StatelessWidget {
   final int savedShopCount;
   final int candidateCount;
   final int doneCount;
+  final int todayCollectAddedCount;
+  final int todayCommentCount;
+  final int todayPostCount;
   final VoidCallback onTapCandidates;
   final VoidCallback onTapDone;
   final VoidCallback onTapSavedShops;
@@ -566,10 +724,15 @@ class MyPageQuickSummaryCard extends StatelessWidget {
         children: [
           const AppSectionHeader(
             title: '状態サマリー',
-            subtitle: 'タップして各画面へ進みます',
+            subtitle: '資産はタップで詳細へ · 活動は今日の実績（閲覧のみ）',
             icon: Icons.list_alt_outlined,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
+          _MyPageSummarySectionTitle(
+            title: '資産（ストック）',
+            dense: true,
+          ),
+          const SizedBox(height: 6),
           _SummaryListTile(
             icon: Icons.bookmark_add_outlined,
             label: 'コレ候補',
@@ -590,7 +753,132 @@ class MyPageQuickSummaryCard extends StatelessWidget {
             value: '$savedShopCount件',
             onTap: onTapSavedShops,
           ),
+          const SizedBox(height: 14),
+          Divider(height: 1, color: AppColors.divider.withValues(alpha: 0.35)),
+          const SizedBox(height: 12),
+          _MyPageSummarySectionTitle(
+            title: '今日の活動',
+            icon: Icons.bolt_rounded,
+            iconColor: const Color(0xFFE65100),
+          ),
+          const SizedBox(height: 10),
+          _MyPageTodayActivityStrip(
+            collectAdded: todayCollectAddedCount,
+            comments: todayCommentCount,
+            posts: todayPostCount,
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class _MyPageSummarySectionTitle extends StatelessWidget {
+  const _MyPageSummarySectionTitle({
+    required this.title,
+    this.icon,
+    this.iconColor,
+    this.dense = false,
+  });
+
+  final String title;
+  final IconData? icon;
+  final Color? iconColor;
+  final bool dense;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = Theme.of(context).textTheme.labelLarge?.copyWith(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w800,
+          letterSpacing: dense ? 0.2 : 0.4,
+        );
+    if (icon == null) {
+      return Text(title, style: style);
+    }
+    return Row(
+      children: [
+        Icon(icon, size: dense ? 18 : 20, color: iconColor ?? AppColors.accentPrimary),
+        const SizedBox(width: 6),
+        Expanded(child: Text(title, style: style)),
+      ],
+    );
+  }
+}
+
+class _MyPageTodayActivityStrip extends StatelessWidget {
+  const _MyPageTodayActivityStrip({
+    required this.collectAdded,
+    required this.comments,
+    required this.posts,
+  });
+
+  final int collectAdded;
+  final int comments;
+  final int posts;
+
+  @override
+  Widget build(BuildContext context) {
+    final base = Theme.of(context).textTheme.labelMedium?.copyWith(
+          color: AppColors.textSecondary,
+          fontWeight: FontWeight.w700,
+          height: 1.25,
+        );
+    final accentStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w900,
+          height: 1.15,
+        );
+
+    Widget cell(String label, String valueText) {
+      return Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(label, textAlign: TextAlign.center, style: base),
+            const SizedBox(height: 4),
+            Text(valueText, textAlign: TextAlign.center, style: accentStyle),
+          ],
+        ),
+      );
+    }
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColors.surfaceVariant.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+        border: Border.all(color: AppColors.divider.withValues(alpha: 0.35)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            cell('コレ追加', '+$collectAdded'),
+            _TodayActivityVDivider(color: AppColors.divider.withValues(alpha: 0.45)),
+            cell('コメント', '+$comments'),
+            _TodayActivityVDivider(color: AppColors.divider.withValues(alpha: 0.45)),
+            cell('投稿', '+$posts'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TodayActivityVDivider extends StatelessWidget {
+  const _TodayActivityVDivider({required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: SizedBox(
+        height: 44,
+        width: 1,
+        child: DecoratedBox(decoration: BoxDecoration(color: color)),
       ),
     );
   }
