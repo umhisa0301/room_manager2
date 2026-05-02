@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../navigation/app_shell_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/activity/activity_achievement_tab.dart';
 import '../widgets/activity/activity_analytics_tab.dart';
-import '../widgets/app_button.dart';
 import '../widgets/app_tab.dart';
 
 /// コレ活動：実績と分析の2タブ。
@@ -66,82 +64,54 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
         );
   }
 
+  /// タブ切替を各タブのスクロール先頭に置き、本文カードと重ならないようにする。
+  Widget _tabStripInScroll() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppDimensions.screenPaddingH,
+        4,
+        AppDimensions.screenPaddingH,
+        16,
+      ),
+      child: AppTabBar(
+        height: 50,
+        items: const [
+          AppTabItem(label: '実績', icon: Icons.emoji_events_outlined),
+          AppTabItem(label: '分析', icon: Icons.analytics_outlined),
+        ],
+        selectedIndex: _mainTabIndex,
+        onChanged: (index) {
+          setState(() => _mainTabIndex = index);
+          _tabController.animateTo(index);
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final shell = context.read<AppShellController>();
     final bottomSafe = MediaQuery.paddingOf(context).bottom;
-    // フッターナビ＋コメントFABが重ならないよう余白（活動タブは FAB 表示あり）
     final fabReserve = 72.0;
-    final scrollBottomInset = bottomSafe + fabReserve;
+    final navBarReserve = 56.0;
+    final scrollBottomInset = bottomSafe + fabReserve + navBarReserve;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(title: const Text('活動')),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        bottom: false,
+        child: TabBarView(
+          controller: _tabController,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppDimensions.screenPaddingH,
-                12,
-                AppDimensions.screenPaddingH,
-                0,
-              ),
-              child: AppTabBar(
-                height: 50,
-                items: const [
-                  AppTabItem(label: '実績', icon: Icons.emoji_events_outlined),
-                  AppTabItem(label: '分析', icon: Icons.analytics_outlined),
-                ],
-                selectedIndex: _mainTabIndex,
-                onChanged: (index) {
-                  setState(() => _mainTabIndex = index);
-                  _tabController.animateTo(index);
-                },
-              ),
+            ActivityAchievementTab(
+              onRefresh: _refresh,
+              bottomInset: scrollBottomInset,
+              leadingTabStrip: _tabStripInScroll,
             ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  ActivityAchievementTab(
-                    onRefresh: _refresh,
-                    bottomInset: scrollBottomInset,
-                  ),
-                  ActivityAnalyticsTab(
-                    onRefresh: _refresh,
-                    bottomInset: scrollBottomInset,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                AppDimensions.screenPaddingH,
-                8,
-                AppDimensions.screenPaddingH,
-                10 + bottomSafe,
-              ),
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 6,
-                children: [
-                  AppSecondaryButton(
-                    label: 'ROOMコレ',
-                    onPressed: () {
-                      shell.openRoomCollect(initialTabIndex: 0);
-                    },
-                    icon: const Icon(Icons.collections_bookmark_outlined),
-                  ),
-                  AppSecondaryButton(
-                    label: 'コメント',
-                    onPressed: () => shell.selectTab(2),
-                    icon: const Icon(Icons.chat_bubble_outline),
-                  ),
-                ],
-              ),
+            ActivityAnalyticsTab(
+              onRefresh: _refresh,
+              bottomInset: scrollBottomInset,
+              leadingTabStrip: _tabStripInScroll,
             ),
           ],
         ),
