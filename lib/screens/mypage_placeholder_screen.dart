@@ -10,7 +10,6 @@ import '../models/user_profile.dart';
 import '../navigation/app_shell_controller.dart';
 import '../services/app_action_service.dart';
 import '../services/rakuten_genre_master_service.dart';
-import '../services/rakuten_room_home_stats.dart';
 import '../services/room_collect_post_limit.dart';
 import '../state/activity_log_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -153,11 +152,6 @@ class MypagePlaceholderScreen extends StatelessWidget {
                     .where((e) => e.status == RakutenManagedProductStatus.done)
                     .length;
                 final now = DateTime.now();
-                final todayCollectAdded =
-                    RakutenRoomHomeStats.countDoneOnLocalCalendarDay(
-                  managed.items,
-                  now,
-                );
                 final todayPostCount = RoomCollectPostLimitSnapshot.compute(
                   items: managed.items,
                   events: activityEvents.events,
@@ -194,7 +188,6 @@ class MypagePlaceholderScreen extends StatelessWidget {
                       candidateCount: candidateCount,
                       doneCount: doneCount,
                       savedShopCount: saved.shops.length,
-                      todayCollectAddedCount: todayCollectAdded,
                       todayCommentCount: todayCommentCount,
                       todayPostCount: todayPostCount,
                       onTapCandidates: () => context
@@ -643,7 +636,6 @@ class MyPageQuickSummaryCard extends StatelessWidget {
     required this.savedShopCount,
     required this.candidateCount,
     required this.doneCount,
-    required this.todayCollectAddedCount,
     required this.todayCommentCount,
     required this.todayPostCount,
     required this.onTapCandidates,
@@ -655,7 +647,6 @@ class MyPageQuickSummaryCard extends StatelessWidget {
   final int savedShopCount;
   final int candidateCount;
   final int doneCount;
-  final int todayCollectAddedCount;
   final int todayCommentCount;
   final int todayPostCount;
   final VoidCallback onTapCandidates;
@@ -666,7 +657,7 @@ class MyPageQuickSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activityLine =
-        'コレ追加 +$todayCollectAddedCount / コメント +$todayCommentCount / 投稿 +$todayPostCount';
+        'ROOM投稿 $todayPostCount件 / コメントコピー $todayCommentCount回';
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -731,7 +722,7 @@ class MyPageQuickSummaryCard extends StatelessWidget {
             _MyPageTodayActivityListTile(
               title: '',
               detailLine: activityLine,
-              subtitle: '詳細はダッシュボードで確認できます',
+              subtitle: '活動タブで詳しく見られます',
               onTap: onTapTodayActivity,
             ),
           ],

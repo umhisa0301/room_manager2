@@ -35,6 +35,34 @@ class ActivityLogProvider extends ChangeNotifier {
     }
   }
 
+  /// 今日の「コメントコピー」回数を加算（既存の [collectedCount] は維持）。
+  void incrementTodayCommentCopyCount({int delta = 1}) {
+    final d = delta <= 0 ? 1 : delta;
+    final key = todayKey();
+    final now = DateTime.now();
+    final existing = findByDateKey(key);
+    if (existing == null) {
+      _logs.add(
+        ActivityLog(
+          dateKey: key,
+          collectedCount: 0,
+          commentCount: d,
+          memo: null,
+          createdAt: now,
+          updatedAt: now,
+        ),
+      );
+    } else {
+      final i = _logs.indexWhere((e) => e.dateKey == key);
+      _logs[i] = existing.copyWith(
+        commentCount: existing.commentCount + d,
+        updatedAt: now,
+      );
+    }
+    _persist();
+    notifyListeners();
+  }
+
   void upsertToday({
     required int collectedCount,
     required int commentCount,

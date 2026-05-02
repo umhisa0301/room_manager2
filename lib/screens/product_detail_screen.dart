@@ -5,6 +5,7 @@ import '../models/product.dart';
 import '../models/product_status.dart';
 import '../models/comment_template.dart';
 import '../state/product_list_provider.dart';
+import '../state/activity_log_provider.dart';
 import '../state/comment_template_provider.dart';
 import '../services/app_action_service.dart';
 import '../widgets/app_button.dart';
@@ -183,11 +184,16 @@ class _DetailBody extends StatelessWidget {
                           ? () => AppActionService.copyText(
                               context,
                               text: product.quickComment!.trim(),
-                              onSuccess: () => context
-                                  .read<CommentTemplateProvider>()
-                                  .setLastCopiedComment(
-                                    product.quickComment!.trim(),
-                                  ),
+                              onSuccess: () {
+                                context
+                                    .read<CommentTemplateProvider>()
+                                    .setLastCopiedComment(
+                                      product.quickComment!.trim(),
+                                    );
+                                context
+                                    .read<ActivityLogProvider>()
+                                    .incrementTodayCommentCopyCount();
+                              },
                             )
                           : null,
                       icon: const Icon(Icons.copy),
@@ -245,11 +251,16 @@ class _DetailBody extends StatelessWidget {
                           context,
                           text: product.quickComment!.trim(),
                           url: product.productUrl,
-                          onCopied: () => context
-                              .read<CommentTemplateProvider>()
-                              .setLastCopiedComment(
-                                product.quickComment!.trim(),
-                              ),
+                          onCopied: () {
+                            context
+                                .read<CommentTemplateProvider>()
+                                .setLastCopiedComment(
+                                  product.quickComment!.trim(),
+                                );
+                            context
+                                .read<ActivityLogProvider>()
+                                .incrementTodayCommentCopyCount();
+                          },
                         )
                       : null,
                   icon: const Icon(Icons.rocket_launch_outlined),
@@ -364,9 +375,14 @@ class _DetailBody extends StatelessWidget {
                   await AppActionService.copyText(
                     context,
                     text: t.body,
-                    onSuccess: () => context
-                        .read<CommentTemplateProvider>()
-                        .setLastCopiedComment(t.body),
+                    onSuccess: () {
+                      context
+                          .read<CommentTemplateProvider>()
+                          .setLastCopiedComment(t.body);
+                      context
+                          .read<ActivityLogProvider>()
+                          .incrementTodayCommentCopyCount();
+                    },
                   );
                 },
               );
