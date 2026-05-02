@@ -154,32 +154,46 @@ class MypagePlaceholderScreen extends StatelessWidget {
                   children: [
                     MyPageHeader(
                       profile: profile,
-                      onEditProfile: () => _openProfileEditSheet(context),
-                    ),
-                    const SizedBox(height: _gap),
-                    MyPageQuickSummaryCard(
-                      profile: profile,
                       savedShopCount: saved.shops.length,
-                      candidateCount: candidateCount,
-                      doneCount: doneCount,
-                      onEditProfile: () => _openProfileEditSheet(context),
-                      onEditGenres: () =>
+                      onStepGenre: () =>
                           _openFavoriteGenrePickerSheet(context),
-                      onEditRoomUrl: () => _openRoomUrlEditSheet(context),
+                      onStepRoom: () => _openRoomUrlEditSheet(context),
+                      onStepProfile: () => _openProfileEditSheet(context),
+                      onStepSavedShops: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const SavedShopsScreen(),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: _gap),
                     MyPageTodayRecommendationCard(
-                      profile: profile,
                       recommendationProvider: rec,
                       onOpenRecommendations: () =>
                           _openTodayRecommendations(context),
-                      onEditGenres: () =>
-                          _openFavoriteGenrePickerSheet(context),
+                      onOpenColeCandidateSearch: () => context
+                          .read<AppShellController>()
+                          .openRoomCollect(initialTabIndex: 0),
                     ),
                     const SizedBox(height: _gap),
-                    MyPageRoomLinkCard(
-                      profile: profile,
-                      onEditRoomUrl: () => _openRoomUrlEditSheet(context),
+                    MyPageQuickSummaryCard(
+                      candidateCount: candidateCount,
+                      doneCount: doneCount,
+                      savedShopCount: saved.shops.length,
+                      onTapCandidates: () => context
+                          .read<AppShellController>()
+                          .openRoomCollect(initialTabIndex: 0),
+                      onTapDone: () => context
+                          .read<AppShellController>()
+                          .openRoomCollect(initialTabIndex: 1),
+                      onTapSavedShops: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const SavedShopsScreen(),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: _gap),
                     MyPageOperationMenuCard(
@@ -223,80 +237,19 @@ class MyPageHeader extends StatelessWidget {
   const MyPageHeader({
     super.key,
     required this.profile,
-    required this.onEditProfile,
-  });
-
-  final UserProfile profile;
-  final VoidCallback onEditProfile;
-
-  @override
-  Widget build(BuildContext context) {
-    final name = profile.displayName.trim();
-    final title = name.isEmpty ? 'おすすめ精度を上げる設定' : '$nameさんの運用設定';
-    return AppCard(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w800,
-                    height: 1.25,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'おすすめ候補に使う情報をここで整えます。',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.35,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 10),
-          AppSecondaryButton(
-            label: '編集',
-            onPressed: onEditProfile,
-            icon: const Icon(Icons.edit_outlined),
-            height: 38,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class MyPageQuickSummaryCard extends StatelessWidget {
-  const MyPageQuickSummaryCard({
-    super.key,
-    required this.profile,
     required this.savedShopCount,
-    required this.candidateCount,
-    required this.doneCount,
-    required this.onEditProfile,
-    required this.onEditGenres,
-    required this.onEditRoomUrl,
+    required this.onStepGenre,
+    required this.onStepRoom,
+    required this.onStepProfile,
+    required this.onStepSavedShops,
   });
 
   final UserProfile profile;
   final int savedShopCount;
-  final int candidateCount;
-  final int doneCount;
-  final VoidCallback onEditProfile;
-  final VoidCallback onEditGenres;
-  final VoidCallback onEditRoomUrl;
+  final VoidCallback onStepGenre;
+  final VoidCallback onStepRoom;
+  final VoidCallback onStepProfile;
+  final VoidCallback onStepSavedShops;
 
   @override
   Widget build(BuildContext context) {
@@ -308,132 +261,309 @@ class MyPageQuickSummaryCard extends StatelessWidget {
         profile.occupation.trim().isNotEmpty;
     final hasGenres = genreCount > 0;
     final hasRoomUrl = profile.hasRoomUrl;
-    final accuracyScore = [
-      profileConfigured,
-      hasGenres,
-      hasRoomUrl,
-      savedShopCount > 0,
-    ].where((e) => e).length;
+    final savedDone = savedShopCount > 0;
+
+    final stepGenreDone = hasGenres;
+    final stepRoomDone = hasRoomUrl;
+    final stepProfileDone = profileConfigured;
+    final stepSavedDone = savedDone;
+
+    final accuracyBools = <bool>[
+      stepGenreDone,
+      stepRoomDone,
+      stepProfileDone,
+      stepSavedDone,
+    ];
+    final accuracyScore = accuracyBools.where((e) => e).length;
     final accuracyLabel = accuracyScore >= 3
         ? '高'
         : accuracyScore >= 2
         ? '中'
         : '低';
-    final accuracyColor = accuracyScore >= 3
-        ? AppColors.success
-        : accuracyScore >= 2
-        ? const Color(0xFFE65100)
-        : AppColors.textSecondary;
-    final accuracyMessage = accuracyScore >= 3
-        ? 'かなり当たりやすい状態です'
-        : accuracyScore >= 2
-        ? 'もう少しで当たりやすくなります'
-        : 'おすすめ精度が低いです';
-    final setup = !hasGenres
-        ? _SetupPrompt(
-            title: 'まずは好きなジャンルを設定',
-            body: 'あなたに合った商品だけを表示できるようになります',
-            label: 'ジャンルを設定する',
-            onTap: onEditGenres,
-          )
-        : !hasRoomUrl
-        ? _SetupPrompt(
-            title: 'ROOM URLを登録',
-            body: 'あなたの投稿に近い商品を優先表示します',
-            label: 'ROOM URLを登録する',
-            onTap: onEditRoomUrl,
-          )
-        : !profileConfigured
-        ? _SetupPrompt(
-            title: 'プロフィールを入力',
-            body: 'よりあなた向けの商品が表示されます',
-            label: 'プロフィールを入力する',
-            onTap: onEditProfile,
-          )
-        : null;
+    final accuracyLine = accuracyScore >= 3
+        ? '精度：高（すべてのステップ完了）'
+        : '精度：$accuracyLabel（あと${3 - accuracyScore}ステップで高）';
+
+    final stepDoneFlags = <bool>[
+      stepGenreDone,
+      stepRoomDone,
+      stepProfileDone,
+      stepSavedDone,
+    ];
+    final firstIncomplete = stepDoneFlags.indexWhere((e) => !e);
+
+    return AppCard(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'おすすめ精度を上げる',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w800,
+              height: 1.25,
+            ),
+          ),
+          const SizedBox(height: 12),
+          _MyPageStepRow(
+            stepLabel: 'STEP1',
+            title: 'ジャンル設定',
+            isDone: stepGenreDone,
+            emphasizeIncomplete: !stepGenreDone,
+            extraGenreUnset: !hasGenres,
+            isNextFocus: firstIncomplete == 0,
+            onTap: onStepGenre,
+          ),
+          const SizedBox(height: 8),
+          _MyPageStepRow(
+            stepLabel: 'STEP2',
+            title: 'ROOM連携',
+            isDone: stepRoomDone,
+            emphasizeIncomplete: !stepRoomDone,
+            extraGenreUnset: false,
+            isNextFocus: firstIncomplete == 1,
+            onTap: onStepRoom,
+          ),
+          const SizedBox(height: 8),
+          _MyPageStepRow(
+            stepLabel: 'STEP3',
+            title: 'プロフィール入力',
+            isDone: stepProfileDone,
+            emphasizeIncomplete: !stepProfileDone,
+            extraGenreUnset: false,
+            isNextFocus: firstIncomplete == 2,
+            onTap: onStepProfile,
+          ),
+          const SizedBox(height: 8),
+          _MyPageStepRow(
+            stepLabel: 'STEP4',
+            title: '保存ショップ',
+            isDone: stepSavedDone,
+            emphasizeIncomplete: !stepSavedDone,
+            extraGenreUnset: false,
+            isNextFocus: firstIncomplete == 3,
+            onTap: onStepSavedShops,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            accuracyLine,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.35,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MyPageStepRow extends StatelessWidget {
+  const _MyPageStepRow({
+    required this.stepLabel,
+    required this.title,
+    required this.isDone,
+    required this.emphasizeIncomplete,
+    required this.extraGenreUnset,
+    required this.isNextFocus,
+    required this.onTap,
+  });
+
+  final String stepLabel;
+  final String title;
+  final bool isDone;
+  final bool emphasizeIncomplete;
+  final bool extraGenreUnset;
+  final bool isNextFocus;
+  final VoidCallback onTap;
+
+  static const Color _orange = Color(0xFFE65100);
+  static const Color _orangeSurface = Color(0xFFFFF7E8);
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = emphasizeIncomplete ? _orange : AppColors.divider;
+    final bg = isDone
+        ? AppColors.surfaceVariant.withValues(alpha: 0.45)
+        : emphasizeIncomplete
+        ? _orangeSurface
+        : AppColors.surfaceVariant.withValues(alpha: 0.35);
+    final borderW = (emphasizeIncomplete && extraGenreUnset) || isNextFocus
+        ? 2.0
+        : 1.0;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+        child: Ink(
+          decoration: BoxDecoration(
+            color: bg,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+            border: Border.all(color: accent, width: borderW),
+          ),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 52),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              child: Row(
+                children: [
+                  if (isDone)
+                    Icon(Icons.check_circle_rounded,
+                        color: AppColors.success, size: 22)
+                  else
+                    Icon(Icons.circle_outlined,
+                        color: emphasizeIncomplete ? _orange : AppColors.textSecondary,
+                        size: 22),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          stepLabel,
+                          style:
+                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                                    color: emphasizeIncomplete
+                                        ? _orange
+                                        : AppColors.textSecondary,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                        ),
+                        Text(
+                          title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge
+                              ?.copyWith(
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.w800,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(Icons.chevron_right_rounded,
+                      color: AppColors.textSecondary, size: 22),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MyPageQuickSummaryCard extends StatelessWidget {
+  const MyPageQuickSummaryCard({
+    super.key,
+    required this.savedShopCount,
+    required this.candidateCount,
+    required this.doneCount,
+    required this.onTapCandidates,
+    required this.onTapDone,
+    required this.onTapSavedShops,
+  });
+
+  final int savedShopCount;
+  final int candidateCount;
+  final int doneCount;
+  final VoidCallback onTapCandidates;
+  final VoidCallback onTapDone;
+  final VoidCallback onTapSavedShops;
+
+  @override
+  Widget build(BuildContext context) {
     return AppCard(
       padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AppSectionHeader(
-            title: 'おすすめの当たりやすさ',
-            subtitle: '売れやすい商品候補を提案します',
-            icon: Icons.dashboard_customize_outlined,
-            trailing: _AccuracyBadge(
-              label: accuracyLabel,
-              color: accuracyColor,
-            ),
+          const AppSectionHeader(
+            title: '状態サマリー',
+            subtitle: 'タップして各画面へ進みます',
+            icon: Icons.list_alt_outlined,
           ),
           const SizedBox(height: 8),
-          Text(
-            accuracyMessage,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: accuracyColor,
-              height: 1.35,
-              fontWeight: FontWeight.w700,
-            ),
+          _SummaryListTile(
+            icon: Icons.bookmark_add_outlined,
+            label: 'コレ候補',
+            value: '$candidateCount件',
+            onTap: onTapCandidates,
           ),
-          const SizedBox(height: 4),
-          Text(
-            'あなたの情報をもとに「売れやすい商品候補」を提案します。',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.35,
-            ),
+          Divider(height: 1, color: AppColors.divider.withValues(alpha: 0.5)),
+          _SummaryListTile(
+            icon: Icons.collections_bookmark_outlined,
+            label: 'コレ済',
+            value: '$doneCount件',
+            onTap: onTapDone,
           ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _SummaryChip(
-                label: 'プロフィール',
-                value: profileConfigured ? '設定済み' : '未設定',
-                icon: Icons.person_outline,
-                isWarning: !profileConfigured,
-                onTap: onEditProfile,
-              ),
-              _SummaryChip(
-                label: '好きなジャンル',
-                value: '$genreCount件',
-                icon: Icons.category_outlined,
-                isWarning: !hasGenres,
-                onTap: onEditGenres,
-              ),
-              _SummaryChip(
-                label: 'ROOM',
-                value: hasRoomUrl ? '登録済み' : '未登録',
-                icon: Icons.link_rounded,
-                isWarning: !hasRoomUrl,
-                onTap: onEditRoomUrl,
-              ),
-              _SummaryChip(
-                label: '保存ショップ',
-                value: '$savedShopCount件',
-                icon: Icons.bookmarks_outlined,
-              ),
-              _SummaryChip(
-                label: 'コレ候補',
-                value: '$candidateCount件',
-                icon: Icons.bookmark_add_outlined,
-              ),
-              _SummaryChip(
-                label: 'コレ済',
-                value: '$doneCount件',
-                icon: Icons.collections_bookmark_outlined,
-              ),
-            ],
+          Divider(height: 1, color: AppColors.divider.withValues(alpha: 0.5)),
+          _SummaryListTile(
+            icon: Icons.bookmarks_outlined,
+            label: '保存ショップ',
+            value: '$savedShopCount件',
+            onTap: onTapSavedShops,
           ),
-          if (setup != null) ...[
-            const SizedBox(height: 10),
-            _SetupPromptView(prompt: setup),
-          ],
         ],
+      ),
+    );
+  }
+}
+
+class _SummaryListTile extends StatelessWidget {
+  const _SummaryListTile({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 52),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+            child: Row(
+              children: [
+                Icon(icon, size: 22, color: AppColors.textSecondary),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    label,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                ),
+                Text(
+                  value,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                Icon(Icons.chevron_right_rounded,
+                    color: AppColors.textSecondary, size: 22),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -442,32 +572,18 @@ class MyPageQuickSummaryCard extends StatelessWidget {
 class MyPageTodayRecommendationCard extends StatelessWidget {
   const MyPageTodayRecommendationCard({
     super.key,
-    required this.profile,
     required this.recommendationProvider,
     required this.onOpenRecommendations,
-    required this.onEditGenres,
+    required this.onOpenColeCandidateSearch,
   });
 
-  final UserProfile profile;
   final TodayRecommendationProvider recommendationProvider;
   final VoidCallback onOpenRecommendations;
-  final VoidCallback onEditGenres;
+  final VoidCallback onOpenColeCandidateSearch;
 
   @override
   Widget build(BuildContext context) {
-    final hasGenres = profile.favoriteGenreIdList.isNotEmpty;
-    final generated = recommendationProvider.totalCount > 0;
     final isLoading = recommendationProvider.isLoading;
-    final title = !hasGenres
-        ? 'おすすめを強くする'
-        : generated
-        ? '前回のおすすめがあります'
-        : '今日のコレ候補を探す';
-    final body = !hasGenres
-        ? 'ジャンルを設定すると精度が上がります。'
-        : generated
-        ? '未処理 ${recommendationProvider.pendingCount}件'
-        : 'あなたの設定をもとに、売れやすい商品を提案します。';
 
     return AppCard(
       elevated: true,
@@ -475,65 +591,33 @@ class MyPageTodayRecommendationCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Icon(
-                Icons.auto_awesome_rounded,
-                color: AppColors.accentPrimary,
-                size: 24,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
-                        height: 1.25,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      body,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.38,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          const AppSectionHeader(
+            title: '今日のおすすめ',
+            subtitle: '候補の提案とコレ探索',
+            icon: Icons.auto_awesome_rounded,
           ),
           const SizedBox(height: 12),
           AppPrimaryButton(
-            label: hasGenres ? (generated ? 'おすすめを見る' : 'おすすめを探す') : 'ジャンルを設定',
-            icon: Icon(
-              hasGenres ? Icons.travel_explore_rounded : Icons.category_rounded,
-            ),
+            label: 'おすすめを見る',
+            icon: const Icon(Icons.travel_explore_rounded),
             isLoading: isLoading,
-            onPressed: isLoading
-                ? null
-                : hasGenres
-                ? onOpenRecommendations
-                : onEditGenres,
+            onPressed:
+                isLoading ? null : onOpenRecommendations,
           ),
-          if (generated && hasGenres) ...[
-            const SizedBox(height: 8),
-            Align(
-              alignment: Alignment.centerRight,
-              child: AppSecondaryButton(
-                label: '再生成はおすすめ画面で実行',
-                onPressed: onOpenRecommendations,
-                icon: const Icon(Icons.refresh_rounded),
-                height: 36,
+          const SizedBox(height: 8),
+          Center(
+            child: TextButton.icon(
+              onPressed: onOpenColeCandidateSearch,
+              icon: const Icon(Icons.bookmark_add_outlined, size: 20),
+              label: const Text('コレ候補を探す'),
+              style: TextButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                minimumSize: const Size(48, 48),
+                foregroundColor: AppColors.accentPrimary,
               ),
             ),
-          ],
+          ),
         ],
       ),
     );
@@ -715,81 +799,6 @@ class MyPageSettingsSection extends StatelessWidget {
             icon: const Icon(Icons.policy_outlined),
             expand: true,
             height: 42,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SetupPrompt {
-  const _SetupPrompt({
-    required this.title,
-    required this.body,
-    required this.label,
-    required this.onTap,
-  });
-
-  final String title;
-  final String body;
-  final String label;
-  final VoidCallback onTap;
-}
-
-class _SetupPromptView extends StatelessWidget {
-  const _SetupPromptView({required this.prompt});
-
-  final _SetupPrompt prompt;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(10, 9, 10, 10),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFF7E8),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-        border: Border.all(color: const Color(0xFFE6C98E)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.tips_and_updates_outlined,
-            color: Color(0xFFE65100),
-            size: 20,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  prompt.title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  prompt.body,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.3,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          AppSecondaryButton(
-            label: prompt.label,
-            onPressed: prompt.onTap,
-            height: 36,
           ),
         ],
       ),
@@ -1258,94 +1267,6 @@ class _SheetScaffold extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _SummaryChip extends StatelessWidget {
-  const _SummaryChip({
-    required this.label,
-    required this.value,
-    required this.icon,
-    this.isWarning = false,
-    this.onTap,
-  });
-
-  final String label;
-  final String value;
-  final IconData icon;
-  final bool isWarning;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final bg = isWarning
-        ? const Color(0xFFFFF7E8)
-        : AppColors.surfaceVariant.withValues(alpha: 0.62);
-    final border = isWarning
-        ? const Color(0xFFE6C98E)
-        : AppColors.divider.withValues(alpha: 0.85);
-    final iconColor = isWarning
-        ? const Color(0xFFE65100)
-        : AppColors.textSecondary;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        decoration: BoxDecoration(
-          color: bg,
-          borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
-          border: Border.all(color: border),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 16, color: iconColor),
-            const SizedBox(width: 6),
-            Text(
-              '$label: ',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Text(
-              value,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _AccuracyBadge extends StatelessWidget {
-  const _AccuracyBadge({required this.label, required this.color});
-
-  final String label;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusChip),
-        border: Border.all(color: color.withValues(alpha: 0.28)),
-      ),
-      child: Text(
-        '精度 $label',
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: color,
-          fontWeight: FontWeight.w800,
         ),
       ),
     );
