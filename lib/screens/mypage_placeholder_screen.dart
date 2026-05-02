@@ -8,12 +8,10 @@ import '../models/rakuten_genre_master_entry.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/user_profile.dart';
 import '../navigation/app_shell_controller.dart';
-import '../navigation/rakuten_search_navigator.dart';
 import '../services/app_action_service.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
-import '../state/today_recommendation_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/user_profile_genre_migration.dart';
@@ -22,7 +20,6 @@ import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
 import 'closed_test_demo_screen.dart';
 import 'saved_shops_screen.dart';
-import 'today_recommendations_screen.dart';
 
 /// マイページ：今日のコレ探しを始めるための設定・運用ハブ。
 class MypagePlaceholderScreen extends StatelessWidget {
@@ -60,8 +57,13 @@ class MypagePlaceholderScreen extends StatelessWidget {
       isScrollControlled: true,
       useSafeArea: true,
       showDragHandle: true,
-      builder: (sheetContext) =>
-          FavoriteGenrePickerSheet(initialSelectedIds: initialIds),
+      builder: (sheetContext) {
+        final h = MediaQuery.sizeOf(sheetContext).height * 0.88;
+        return SizedBox(
+          height: h,
+          child: FavoriteGenrePickerSheet(initialSelectedIds: initialIds),
+        );
+      },
     );
     if (picked == null || !context.mounted) return;
     await _saveFavoriteGenres(
@@ -103,14 +105,6 @@ class MypagePlaceholderScreen extends StatelessWidget {
     ).showSnackBar(const SnackBar(content: Text('好きなジャンルを保存しました')));
   }
 
-  void _openTodayRecommendations(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => const TodayRecommendationsScreen(),
-      ),
-    );
-  }
-
   void _openClosedTestDemo(BuildContext context) {
     ensureClosedTestDemoAvailable();
     Navigator.of(context).push(
@@ -127,13 +121,12 @@ class MypagePlaceholderScreen extends StatelessWidget {
       body: SafeArea(
         top: false,
         child:
-            Consumer4<
+            Consumer3<
               UserProfileProvider,
               SavedShopProvider,
-              RakutenManagedProductProvider,
-              TodayRecommendationProvider
+              RakutenManagedProductProvider
             >(
-              builder: (context, profileProvider, saved, managed, rec, _) {
+              builder: (context, profileProvider, saved, managed, _) {
                 final profile = profileProvider.profile;
                 final candidateCount = managed.items
                     .where(
@@ -168,15 +161,6 @@ class MypagePlaceholderScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: _gap),
-                    MyPageTodayRecommendationCard(
-                      recommendationProvider: rec,
-                      onOpenRecommendations: () =>
-                          _openTodayRecommendations(context),
-                      onOpenColeCandidateSearch: () => context
-                          .read<AppShellController>()
-                          .openRoomCollect(initialTabIndex: 0),
-                    ),
-                    const SizedBox(height: _gap),
                     MyPageQuickSummaryCard(
                       candidateCount: candidateCount,
                       doneCount: doneCount,
@@ -197,26 +181,8 @@ class MypagePlaceholderScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: _gap),
                     MyPageOperationMenuCard(
-                      savedShopCount: saved.shops.length,
-                      onOpenComments: () =>
-                          context.read<AppShellController>().selectTab(2),
                       onOpenActivity: () =>
                           context.read<AppShellController>().openActivityTab(),
-                      onOpenSavedShops: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const SavedShopsScreen(),
-                          ),
-                        );
-                      },
-                      onOpenShopDiscovery: () {
-                        openRakutenSearchScreen(
-                          context,
-                          initialMode: RakutenSearchInitialMode.shopDiscovery,
-                        );
-                      },
-                      onOpenRoomColle: () =>
-                          context.read<AppShellController>().openRoomCollect(),
                     ),
                     const SizedBox(height: _gap),
                     MyPageSettingsSection(
@@ -251,6 +217,9 @@ class MyPageHeader extends StatelessWidget {
   final VoidCallback onStepProfile;
   final VoidCallback onStepSavedShops;
 
+  static const Color _orange = Color(0xFFE65100);
+  static const Color _orangeSurface = Color(0xFFFFF7E8);
+
   @override
   Widget build(BuildContext context) {
     final genreCount = profile.favoriteGenreIdList.length;
@@ -268,29 +237,40 @@ class MyPageHeader extends StatelessWidget {
     final stepProfileDone = profileConfigured;
     final stepSavedDone = savedDone;
 
-    final accuracyBools = <bool>[
-      stepGenreDone,
-      stepRoomDone,
-      stepProfileDone,
-      stepSavedDone,
-    ];
-    final accuracyScore = accuracyBools.where((e) => e).length;
-    final accuracyLabel = accuracyScore >= 3
-        ? '高'
-        : accuracyScore >= 2
-        ? '中'
-        : '低';
-    final accuracyLine = accuracyScore >= 3
-        ? '精度：高（すべてのステップ完了）'
-        : '精度：$accuracyLabel（あと${3 - accuracyScore}ステップで高）';
-
     final stepDoneFlags = <bool>[
       stepGenreDone,
       stepRoomDone,
       stepProfileDone,
       stepSavedDone,
     ];
+    final completedCount = stepDoneFlags.where((e) => e).length;
     final firstIncomplete = stepDoneFlags.indexWhere((e) => !e);
+    final remaining = 4 - completedCount;
+
+    final headline = remaining == 0
+        ? 'おすすめ精度の準備が整いました'
+        : 'あと$remainingステップで精度が上がります';
+
+    VoidCallback? nextOnTap;
+    String nextTitle = '';
+    String nextDescription = '';
+    if (firstIncomplete == 0) {
+      nextOnTap = onStepGenre;
+      nextTitle = 'ジャンル設定';
+      nextDescription = '興味のあるジャンルを選ぶと、あなた向けの候補が出やすくなります。';
+    } else if (firstIncomplete == 1) {
+      nextOnTap = onStepRoom;
+      nextTitle = 'ROOM連携';
+      nextDescription = 'ROOMのURLを登録すると、投稿スタイルに近い商品を優先しやすくなります。';
+    } else if (firstIncomplete == 2) {
+      nextOnTap = onStepProfile;
+      nextTitle = 'プロフィール入力';
+      nextDescription = '年代や属性を入れると、提案のブレが減ります。';
+    } else if (firstIncomplete == 3) {
+      nextOnTap = onStepSavedShops;
+      nextTitle = '保存ショップ';
+      nextDescription = '保存したショップが多いほど精度が上がります。';
+    }
 
     return AppCard(
       padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
@@ -298,61 +278,128 @@ class MyPageHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'おすすめ精度を上げる',
+            headline,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w800,
-              height: 1.25,
-            ),
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w800,
+                  height: 1.25,
+                ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
+          Text(
+            '進捗：$completedCount / 4 完了',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.35,
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+          if (firstIncomplete >= 0 && nextOnTap != null) ...[
+            const SizedBox(height: 14),
+            Text(
+              '次にやること',
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w800,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: nextOnTap,
+                borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    color: _orangeSurface,
+                    borderRadius:
+                        BorderRadius.circular(AppDimensions.radiusButton),
+                    border: Border.all(color: _orange, width: 2),
+                  ),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 56),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.flag_outlined, color: _orange, size: 24),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  nextTitle,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        color: AppColors.textPrimary,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  nextDescription,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: AppColors.textSecondary,
+                                        height: 1.35,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Icon(Icons.chevron_right_rounded,
+                              color: _orange, size: 24),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+          const SizedBox(height: 14),
           _MyPageStepRow(
             stepLabel: 'STEP1',
             title: 'ジャンル設定',
+            description:
+                '興味のあるジャンルを選ぶと、あなた向けの候補が出やすくなります。',
             isDone: stepGenreDone,
-            emphasizeIncomplete: !stepGenreDone,
-            extraGenreUnset: !hasGenres,
-            isNextFocus: firstIncomplete == 0,
+            isNextStep: firstIncomplete == 0,
             onTap: onStepGenre,
           ),
           const SizedBox(height: 8),
           _MyPageStepRow(
             stepLabel: 'STEP2',
             title: 'ROOM連携',
+            description:
+                'ROOMのURLを登録すると、投稿スタイルに近い商品を優先しやすくなります。',
             isDone: stepRoomDone,
-            emphasizeIncomplete: !stepRoomDone,
-            extraGenreUnset: false,
-            isNextFocus: firstIncomplete == 1,
+            isNextStep: firstIncomplete == 1,
             onTap: onStepRoom,
           ),
           const SizedBox(height: 8),
           _MyPageStepRow(
             stepLabel: 'STEP3',
             title: 'プロフィール入力',
+            description: '年代や属性を入れると、提案のブレが減ります。',
             isDone: stepProfileDone,
-            emphasizeIncomplete: !stepProfileDone,
-            extraGenreUnset: false,
-            isNextFocus: firstIncomplete == 2,
+            isNextStep: firstIncomplete == 2,
             onTap: onStepProfile,
           ),
           const SizedBox(height: 8),
           _MyPageStepRow(
             stepLabel: 'STEP4',
             title: '保存ショップ',
+            description: '保存したショップが多いほど精度が上がります。',
             isDone: stepSavedDone,
-            emphasizeIncomplete: !stepSavedDone,
-            extraGenreUnset: false,
-            isNextFocus: firstIncomplete == 3,
+            isNextStep: firstIncomplete == 3,
             onTap: onStepSavedShops,
-          ),
-          const SizedBox(height: 12),
-          Text(
-            accuracyLine,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.35,
-              fontWeight: FontWeight.w600,
-            ),
           ),
         ],
       ),
@@ -364,19 +411,17 @@ class _MyPageStepRow extends StatelessWidget {
   const _MyPageStepRow({
     required this.stepLabel,
     required this.title,
+    required this.description,
     required this.isDone,
-    required this.emphasizeIncomplete,
-    required this.extraGenreUnset,
-    required this.isNextFocus,
+    required this.isNextStep,
     required this.onTap,
   });
 
   final String stepLabel;
   final String title;
+  final String description;
   final bool isDone;
-  final bool emphasizeIncomplete;
-  final bool extraGenreUnset;
-  final bool isNextFocus;
+  final bool isNextStep;
   final VoidCallback onTap;
 
   static const Color _orange = Color(0xFFE65100);
@@ -384,15 +429,40 @@ class _MyPageStepRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accent = emphasizeIncomplete ? _orange : AppColors.divider;
-    final bg = isDone
-        ? AppColors.surfaceVariant.withValues(alpha: 0.45)
-        : emphasizeIncomplete
+    final borderColor = isNextStep
+        ? _orange
+        : isDone
+        ? AppColors.divider.withValues(alpha: 0.35)
+        : AppColors.divider.withValues(alpha: 0.28);
+    final borderW = isNextStep ? 2.0 : 1.0;
+    final bg = isNextStep
         ? _orangeSurface
-        : AppColors.surfaceVariant.withValues(alpha: 0.35);
-    final borderW = (emphasizeIncomplete && extraGenreUnset) || isNextFocus
-        ? 2.0
-        : 1.0;
+        : isDone
+        ? AppColors.surfaceVariant.withValues(alpha: 0.22)
+        : AppColors.surfaceVariant.withValues(alpha: 0.12);
+
+    final stepStyleColor = isNextStep
+        ? _orange
+        : isDone
+        ? AppColors.textSecondary.withValues(alpha: 0.5)
+        : AppColors.textSecondary.withValues(alpha: 0.42);
+    final titleStyleColor = isNextStep
+        ? AppColors.textPrimary
+        : isDone
+        ? AppColors.textSecondary.withValues(alpha: 0.72)
+        : AppColors.textSecondary.withValues(alpha: 0.48);
+    final descStyleColor = isNextStep
+        ? AppColors.textSecondary
+        : AppColors.textSecondary.withValues(alpha: 0.45);
+
+    final leadingIcon = isDone
+        ? Icon(Icons.check_circle_rounded,
+            color: AppColors.success.withValues(alpha: 0.72), size: 22)
+        : Icon(Icons.circle_outlined,
+            color: isNextStep
+                ? _orange
+                : AppColors.textSecondary.withValues(alpha: 0.45),
+            size: 22);
 
     return Material(
       color: Colors.transparent,
@@ -403,21 +473,19 @@ class _MyPageStepRow extends StatelessWidget {
           decoration: BoxDecoration(
             color: bg,
             borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-            border: Border.all(color: accent, width: borderW),
+            border: Border.all(color: borderColor, width: borderW),
           ),
           child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 52),
+            constraints: const BoxConstraints(minHeight: 56),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (isDone)
-                    Icon(Icons.check_circle_rounded,
-                        color: AppColors.success, size: 22)
-                  else
-                    Icon(Icons.circle_outlined,
-                        color: emphasizeIncomplete ? _orange : AppColors.textSecondary,
-                        size: 22),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: leadingIcon,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
@@ -427,27 +495,40 @@ class _MyPageStepRow extends StatelessWidget {
                           stepLabel,
                           style:
                               Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    color: emphasizeIncomplete
-                                        ? _orange
-                                        : AppColors.textSecondary,
+                                    color: stepStyleColor,
                                     fontWeight: FontWeight.w700,
                                   ),
                         ),
                         Text(
                           title,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge
-                              ?.copyWith(
-                                color: AppColors.textPrimary,
-                                fontWeight: FontWeight.w800,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.labelLarge?.copyWith(
+                                    color: titleStyleColor,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          description,
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: descStyleColor,
+                                    height: 1.35,
+                                  ),
                         ),
                       ],
                     ),
                   ),
-                  Icon(Icons.chevron_right_rounded,
-                      color: AppColors.textSecondary, size: 22),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Icon(
+                      Icons.chevron_right_rounded,
+                      color: isNextStep
+                          ? _orange
+                          : AppColors.textSecondary.withValues(alpha: 0.45),
+                      size: 22,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -534,6 +615,7 @@ class _SummaryListTile extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 52),
           child: Padding(
@@ -564,61 +646,6 @@ class _SummaryListTile extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class MyPageTodayRecommendationCard extends StatelessWidget {
-  const MyPageTodayRecommendationCard({
-    super.key,
-    required this.recommendationProvider,
-    required this.onOpenRecommendations,
-    required this.onOpenColeCandidateSearch,
-  });
-
-  final TodayRecommendationProvider recommendationProvider;
-  final VoidCallback onOpenRecommendations;
-  final VoidCallback onOpenColeCandidateSearch;
-
-  @override
-  Widget build(BuildContext context) {
-    final isLoading = recommendationProvider.isLoading;
-
-    return AppCard(
-      elevated: true,
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const AppSectionHeader(
-            title: '今日のおすすめ',
-            subtitle: '候補の提案とコレ探索',
-            icon: Icons.auto_awesome_rounded,
-          ),
-          const SizedBox(height: 12),
-          AppPrimaryButton(
-            label: 'おすすめを見る',
-            icon: const Icon(Icons.travel_explore_rounded),
-            isLoading: isLoading,
-            onPressed:
-                isLoading ? null : onOpenRecommendations,
-          ),
-          const SizedBox(height: 8),
-          Center(
-            child: TextButton.icon(
-              onPressed: onOpenColeCandidateSearch,
-              icon: const Icon(Icons.bookmark_add_outlined, size: 20),
-              label: const Text('コレ候補を探す'),
-              style: TextButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                minimumSize: const Size(48, 48),
-                foregroundColor: AppColors.accentPrimary,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -684,20 +711,10 @@ class MyPageRoomLinkCard extends StatelessWidget {
 class MyPageOperationMenuCard extends StatelessWidget {
   const MyPageOperationMenuCard({
     super.key,
-    required this.savedShopCount,
-    required this.onOpenComments,
     required this.onOpenActivity,
-    required this.onOpenSavedShops,
-    required this.onOpenShopDiscovery,
-    required this.onOpenRoomColle,
   });
 
-  final int savedShopCount;
-  final VoidCallback onOpenComments;
   final VoidCallback onOpenActivity;
-  final VoidCallback onOpenSavedShops;
-  final VoidCallback onOpenShopDiscovery;
-  final VoidCallback onOpenRoomColle;
 
   @override
   Widget build(BuildContext context) {
@@ -708,53 +725,18 @@ class MyPageOperationMenuCard extends StatelessWidget {
         children: [
           const AppSectionHeader(
             title: 'ショートカット',
-            subtitle: 'よく使う画面へ。',
+            subtitle: '補助的な導線です',
             icon: Icons.tune_rounded,
           ),
           const SizedBox(height: 8),
           LayoutBuilder(
             builder: (context, constraints) {
-              final tileWidth = (constraints.maxWidth - 8) / 2;
-              return Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  _OperationTile(
-                    width: tileWidth,
-                    icon: Icons.collections_bookmark_outlined,
-                    title: 'ROOMコレ',
-                    subtitle: '候補・コレ済',
-                    onTap: onOpenRoomColle,
-                  ),
-                  _OperationTile(
-                    width: tileWidth,
-                    icon: Icons.storefront_outlined,
-                    title: '保存ショップ',
-                    subtitle: '$savedShopCount件',
-                    onTap: onOpenSavedShops,
-                  ),
-                  _OperationTile(
-                    width: tileWidth,
-                    icon: Icons.travel_explore_outlined,
-                    title: 'ショップ発掘',
-                    subtitle: '新しい店を探す',
-                    onTap: onOpenShopDiscovery,
-                  ),
-                  _OperationTile(
-                    width: tileWidth,
-                    icon: Icons.add_comment_outlined,
-                    title: 'コメント',
-                    subtitle: 'テンプレ確認',
-                    onTap: onOpenComments,
-                  ),
-                  _OperationTile(
-                    width: tileWidth,
-                    icon: Icons.insights_outlined,
-                    title: '活動',
-                    subtitle: '運用状況',
-                    onTap: onOpenActivity,
-                  ),
-                ],
+              return _OperationTile(
+                width: constraints.maxWidth,
+                icon: Icons.insights_outlined,
+                title: '活動',
+                subtitle: '運用状況を確認',
+                onTap: onOpenActivity,
               );
             },
           ),
@@ -1046,113 +1028,152 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final maxHeight = MediaQuery.sizeOf(context).height * 0.85;
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
     final limitReached = _selected.length >= 5;
     return SafeArea(
       top: false,
       child: Padding(
         padding: EdgeInsets.only(bottom: bottomInset),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: maxHeight),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '好きなジャンルを選ぶ',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '好きなジャンルを選ぶ',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.surfaceVariant.withValues(alpha: 0.55),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: AppColors.divider.withValues(alpha: 0.65),
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '今日のおすすめ候補の精度に使います（${_selected.length}/5）。',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.35,
-                      ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.numbers_rounded,
+                          size: 22,
+                          color: AppColors.accentPrimary,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            '最大5件まで選べます（現在 ${_selected.length} / 5）',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(
+                                  color: AppColors.textPrimary,
+                                  fontWeight: FontWeight.w700,
+                                  height: 1.3,
+                                ),
+                          ),
+                        ),
+                      ],
                     ),
-                    if (_selected.isNotEmpty) ...[
-                      const SizedBox(height: 10),
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        children: [
-                          for (final id in _selected)
-                            InputChip(
-                              label: Text(_genreNameForId(id)),
-                              onDeleted: () =>
-                                  setState(() => _selected.remove(id)),
-                              backgroundColor: AppColors.surfaceVariant
-                                  .withValues(alpha: 0.7),
-                              side: BorderSide(
-                                color: AppColors.divider.withValues(alpha: 0.9),
-                              ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'タップでON/OFF。上限に達している項目はこれ以上追加できません。',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.35,
+                        ),
+                  ),
+                  if (_selected.isNotEmpty) ...[
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: [
+                        for (final id in _selected)
+                          InputChip(
+                            label: Text(_genreNameForId(id)),
+                            onDeleted: () =>
+                                setState(() => _selected.remove(id)),
+                            backgroundColor: AppColors.surfaceVariant
+                                .withValues(alpha: 0.7),
+                            side: BorderSide(
+                              color: AppColors.divider.withValues(alpha: 0.9),
                             ),
-                        ],
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  itemCount: _entries.length,
-                  itemBuilder: (context, index) {
-                    final e = _entries[index];
-                    final id = e.genreId;
-                    final selected = _selected.contains(id);
-                    final disabledByLimit = limitReached && !selected;
-                    // 年齢制限が関係しそうなジャンルは将来のおすすめ生成側で除外対象にできるよう、
-                    // ここではID/名称を保持したまま通常ジャンルとして表示する。
-                    return CheckboxListTile(
-                      value: selected,
-                      onChanged: disabledByLimit ? null : (v) => _toggle(id, v),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      title: Text(e.genreName),
-                      dense: true,
-                      visualDensity: VisualDensity.compact,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 4),
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                  20,
-                  10,
-                  20,
-                  12 + MediaQuery.paddingOf(context).bottom,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: AppSecondaryButton(
-                        label: 'キャンセル',
-                        onPressed: () => Navigator.of(context).pop(),
-                        expand: true,
-                        height: 44,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: AppPrimaryButton(
-                        label: '決定',
-                        onPressed: _apply,
-                        height: 44,
-                      ),
+                          ),
+                      ],
                     ),
                   ],
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 112,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: _entries.length,
+                itemBuilder: (context, index) {
+                  final e = _entries[index];
+                  final id = e.genreId;
+                  final selected = _selected.contains(id);
+                  final disabledByLimit = limitReached && !selected;
+                  return _GenreGridCell(
+                    label: e.genreName,
+                    icon: _iconForGenrePicker(e.genreName, e.genreId),
+                    selected: selected,
+                    disabled: disabledByLimit,
+                    onTap: () {
+                      if (disabledByLimit) return;
+                      _toggle(id, !selected);
+                    },
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                20,
+                10,
+                20,
+                12 + MediaQuery.paddingOf(context).bottom,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: AppSecondaryButton(
+                      label: 'キャンセル',
+                      onPressed: () => Navigator.of(context).pop(),
+                      expand: true,
+                      height: 48,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: AppPrimaryButton(
+                      label: '決定',
+                      onPressed: _apply,
+                      height: 48,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -1163,6 +1184,82 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
       if (entry.genreId == id) return entry.genreName;
     }
     return id;
+  }
+}
+
+class _GenreGridCell extends StatelessWidget {
+  const _GenreGridCell({
+    required this.label,
+    required this.icon,
+    required this.selected,
+    required this.disabled,
+    required this.onTap,
+  });
+
+  final String label;
+  final IconData icon;
+  final bool selected;
+  final bool disabled;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = AppColors.accentPrimary;
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        onTap: disabled ? null : onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: selected
+                  ? accent
+                  : AppColors.divider.withValues(alpha: 0.85),
+              width: selected ? 2 : 1,
+            ),
+            color: selected
+                ? AppColors.accentLight.withValues(alpha: 0.38)
+                : AppColors.surface,
+          ),
+          child: Opacity(
+            opacity: disabled ? 0.42 : 1,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    icon,
+                    size: 28,
+                    color: selected ? accent : AppColors.textSecondary,
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    label,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w700,
+                          height: 1.2,
+                        ),
+                  ),
+                  if (selected) ...[
+                    const SizedBox(height: 4),
+                    Icon(Icons.check_circle_rounded,
+                        size: 18, color: AppColors.success),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -1294,42 +1391,103 @@ class _OperationTile extends StatelessWidget {
       width: width,
       child: AppCard(
         onTap: onTap,
-        padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(icon, size: 20, color: AppColors.textSecondary),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w800,
+        padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 52),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(icon, size: 20, color: AppColors.textSecondary),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w800,
+                          ),
                     ),
-                  ),
-                  const SizedBox(height: 1),
-                  Text(
-                    subtitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
+                    const SizedBox(height: 1),
+                    Text(
+                      subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+IconData _iconForGenrePicker(String genreName, String genreId) {
+  final n = genreName;
+  if (n.contains('食品') ||
+      n.contains('スイーツ') ||
+      n.contains('お菓子') ||
+      n.contains('米')) {
+    return Icons.restaurant_outlined;
+  }
+  if (n.contains('ファッション') ||
+      n.contains('服') ||
+      n.contains('靴') ||
+      n.contains('バッグ')) {
+    return Icons.checkroom_outlined;
+  }
+  if (n.contains('本') || n.contains('電子') || n.contains('書籍')) {
+    return Icons.menu_book_outlined;
+  }
+  if (n.contains('家電') ||
+      n.contains('PC') ||
+      n.contains('スマホ') ||
+      n.contains('カメラ')) {
+    return Icons.devices_outlined;
+  }
+  if (n.contains('美容') || n.contains('コスメ') || n.contains('香水')) {
+    return Icons.brush_outlined;
+  }
+  if (n.contains('スポーツ') || n.contains('アウトドア') || n.contains('ゴルフ')) {
+    return Icons.hiking_outlined;
+  }
+  if (n.contains('花') || n.contains('ガーデン') || n.contains('園芸')) {
+    return Icons.local_florist_outlined;
+  }
+  if (n.contains('おもちゃ') || n.contains('ホビー') || n.contains('ゲーム')) {
+    return Icons.toys_outlined;
+  }
+  if (n.contains('車') || n.contains('バイク') || n.contains('自転車')) {
+    return Icons.pedal_bike_outlined;
+  }
+  if (n.contains('インテリア') || n.contains('家具') || n.contains('寝具')) {
+    return Icons.chair_outlined;
+  }
+  if (n.contains('ペット') || n.contains('動物')) {
+    return Icons.pets_outlined;
+  }
+  if (n.contains('雑貨') || n.contains('日用品')) {
+    return Icons.shopping_basket_outlined;
+  }
+  const fallbacks = <IconData>[
+    Icons.category_outlined,
+    Icons.shopping_bag_outlined,
+    Icons.storefront_outlined,
+    Icons.widgets_outlined,
+    Icons.inventory_2_outlined,
+    Icons.auto_awesome_outlined,
+  ];
+  return fallbacks[genreId.hashCode.abs() % fallbacks.length];
 }
 
 List<String> _profileFavoriteGenreIds(UserProfile profile) {
