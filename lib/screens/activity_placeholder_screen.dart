@@ -5,6 +5,7 @@ import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/activity/activity_achievement_tab.dart';
 import '../widgets/activity/activity_analytics_tab.dart';
+import '../widgets/activity/activity_screen_layout.dart';
 import '../widgets/app_tab.dart';
 
 /// コレ活動：実績と分析の2タブ。
@@ -30,6 +31,8 @@ class ActivityPlaceholderScreen extends StatefulWidget {
 
 class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
     with SingleTickerProviderStateMixin {
+  static const double _fabTrailingReserve = 52;
+
   late final TabController _tabController;
   int _mainTabIndex = 0;
 
@@ -68,10 +71,10 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
   Widget _tabStripInScroll() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-        AppDimensions.screenPaddingH,
+        ActivityScreenLayout.paddingH,
         4,
-        AppDimensions.screenPaddingH,
-        16,
+        ActivityScreenLayout.paddingH,
+        ActivityScreenLayout.sectionGap,
       ),
       child: AppTabBar(
         height: 50,
@@ -91,9 +94,11 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
   @override
   Widget build(BuildContext context) {
     final bottomSafe = MediaQuery.paddingOf(context).bottom;
-    final fabReserve = 72.0;
+    final textScale = MediaQuery.textScalerOf(context).scale(1.0);
+    // フッター + 半収納コメントFAB + 読みやすさ（大きい文字・ホームインジケータ）
+    final fabReserve = (80 * textScale).clamp(72.0, 104.0);
     final navBarReserve = 56.0;
-    final scrollBottomInset = bottomSafe + fabReserve + navBarReserve;
+    final scrollBottomInset = bottomSafe + fabReserve + navBarReserve + 24;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -106,11 +111,13 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
             ActivityAchievementTab(
               onRefresh: _refresh,
               bottomInset: scrollBottomInset,
+              fabTrailingPadding: _fabTrailingReserve,
               leadingTabStrip: _tabStripInScroll,
             ),
             ActivityAnalyticsTab(
               onRefresh: _refresh,
               bottomInset: scrollBottomInset,
+              fabTrailingPadding: _fabTrailingReserve,
               leadingTabStrip: _tabStripInScroll,
             ),
           ],
