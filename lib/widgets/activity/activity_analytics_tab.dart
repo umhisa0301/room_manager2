@@ -41,11 +41,14 @@ enum _ReactionFilter {
   none,
 }
 
+enum _OutcomeLens { combined, sold, likedOnly }
+
 enum _TrendSubTab { genre, shop, time }
 
 class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
   _ReactionFilter _filter = _ReactionFilter.all;
   bool _rankingExpanded = false;
+  _OutcomeLens _outcomeLens = _OutcomeLens.combined;
 
   @override
   Widget build(BuildContext context) {
@@ -86,23 +89,30 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
             _ReactionFilter.all => true,
             _ReactionFilter.sold => r.isSold,
             _ReactionFilter.liked => r.isLiked,
-            _ReactionFilter.weak => r.isWeak,
+            _ReactionFilter.weak => !r.isSold && !r.isLiked,
             _ReactionFilter.none => !r.isSold && !r.isLiked && !r.isWeak,
           };
         }).toList();
 
-        final insight = _buildInsightLine(
+        final outcomeSubset = _outcomeSubset(done, _outcomeLens);
+        final genreRows = _genreOutcomeAggregation(outcomeSubset);
+        final shopRows = _shopOutcomeAggregation(outcomeSubset);
+        final timeBuckets = _postedHourBuckets8(outcomeSubset, act.events);
+
+        final insight = _buildDecisionBrief(
+          context: context,
+          shell: shell,
           done: done,
+          outcomeSubset: outcomeSubset,
+          outcomeLens: _outcomeLens,
+          genreRows: genreRows,
+          shopRows: shopRows,
+          timeBuckets: timeBuckets,
           savedShopIds: saved.shops
               .map((e) => e.shopId.trim())
               .where((e) => e.isNotEmpty)
               .toSet(),
         );
-
-        final genreRows = _genreAggregation(done);
-        final shopRows = _shopAggregation(done);
-        final timeBuckets =
-            _postedHourBucketsSoldPriority(done, act.events);
 
         final kpi = RoomKpiCalculator.calculate(
           products: items
@@ -125,7 +135,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
               bottomPad,
             ),
             children: [
-              _InsightHeroCard(line: insight.line, hint: insight.hint),
+              _DecisionInsightCard(brief: insight),
               const SizedBox(height: ActivityScreenLayout.sectionGap),
               _RankingSection(
                 doneCount: doneCount,
@@ -139,7 +149,9 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
               ),
               const SizedBox(height: ActivityScreenLayout.sectionGap),
               _TrendSummaryCard(
-                doneCount: doneCount,
+                outcomeLens: _outcomeLens,
+                onOutcomeLensChanged: (o) => setState(() => _outcomeLens = o),
+                outcomeSubsetCount: outcomeSubset.length,
                 genreRows: genreRows,
                 shopRows: shopRows,
                 timeBuckets: timeBuckets,
@@ -157,116 +169,53 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     );
   }
 
-  static ({String line, String hint}) _buildInsightLine({
-    required List<RakutenManagedProduct> done,
-    required Set<String> savedShopIds,
-  }) {
-    if (done.length < 5) {
-      return (
-        line: '今はデータが少ないため、あと数件コレすると傾向が見えます',
-        hint: 'まずは評価しながらコレ済を増やすと、「反応が良かった商品」と傾向サマリーが効いてきます',
-      );
-    }
-
-    var soldN = 0;
-    var likedN = 0;
-    for (final p in done) {
-      if (p.feedbackSoldAt != null) soldN++;
-      if (p.feedbackLikedAt != null) likedN++;
-    }
-
-    if (soldN >= 1) {
-      return (
-        line: '売れた商品があるので、似たジャンルを少し増やすのがおすすめです',
-        hint: '傾向サマリーのジャンルとランキングを見て、近い見立ての候補を2〜3件ストックに足しましょう',
-      );
-    }
-
-    if (likedN >= 1) {
-      return (
-        line: 'まずは反応が出た商品に近い候補を増やしましょう',
-        hint: '価格帯や見た目が近い商品をROOMコレの候補に追加し、「反応あり」パターンを増やします',
-      );
-    }
-
-    var savedN = 0;
-    var savedGood = 0;
-    var otherN = 0;
-    var otherGood = 0;
-    final genreReact = <String, ({int n, int good})>{};
-    for (final p in done) {
-      final g = _genreLabel(p);
-      final react = p.feedbackSoldAt != null || p.feedbackLikedAt != null;
-      final bucket = genreReact.putIfAbsent(g, () => (n: 0, good: 0));
-      genreReact[g] = (
-        n: bucket.n + 1,
-        good: bucket.good + (react ? 1 : 0),
-      );
-      final sid = p.shopCode.trim();
-      if (sid.isNotEmpty && savedShopIds.contains(sid)) {
-        savedN++;
-        if (react) savedGood++;
-      } else {
-        otherN++;
-        if (react) otherGood++;
-      }
-    }
-
-    final savedRate = savedN > 0 ? savedGood / savedN : 0.0;
-    final otherRate = otherN > 0 ? otherGood / otherN : 0.0;
-
-    if (savedN >= 3 && savedRate > otherRate + 0.12) {
-      return (
-        line: '保存しているショップからの投稿比率が高いので、まずはお店の近くから探すのが近道です',
-        hint: 'ROOMコレで候補を足すとき、いつも買う店の新着・おすすめから当たりを探しましょう',
-      );
-    }
-
-    String? topGenre;
-    var topRate = -1.0;
-    genreReact.forEach((name, v) {
-      if (v.n < 2) return;
-      final r = v.good / v.n;
-      if (r > topRate) {
-        topRate = r;
-        topGenre = name;
-      }
-    });
-    if (topGenre != null && topRate >= 0.35 && topGenre != '未分類') {
-      final gLabel =
-          topGenre!.endsWith('ジャンル') ? topGenre! : '${topGenre!}ジャンル';
-      return (
-        line: '$gLabel 周りの当たりが出やすそうです。幅を少し持たせて試せます',
-        hint: '同じ売場イメージの商品を候補に追加し、反応が再現するか確かめましょう',
-      );
-    }
-
-    return (
-      line: 'このあと伸ばす軸を1つに決めると、改善が早くなります',
-      hint: '傾向サマリーと「反応が良かった商品」を見比べて、ジャンル・時間帯・ショップのどれを厚くするか選びましょう',
-    );
+  static List<RakutenManagedProduct> _outcomeSubset(
+    List<RakutenManagedProduct> done,
+    _OutcomeLens lens,
+  ) {
+    return switch (lens) {
+      _OutcomeLens.combined => done
+          .where(
+            (p) => p.feedbackSoldAt != null || p.feedbackLikedAt != null,
+          )
+          .toList(growable: false),
+      _OutcomeLens.sold => done
+          .where((p) => p.feedbackSoldAt != null)
+          .toList(growable: false),
+      _OutcomeLens.likedOnly => done
+          .where(
+            (p) =>
+                p.feedbackLikedAt != null && p.feedbackSoldAt == null,
+          )
+          .toList(growable: false),
+    };
   }
 
-  static String _genreLabel(RakutenManagedProduct p) {
-    final n = p.persistedGenreDisplayName?.trim();
-    if (n != null && n.isNotEmpty) return n;
-    return '未分類';
-  }
+  static List<String> get _threeHourLabels => const [
+        '0–3時',
+        '3–6時',
+        '6–9時',
+        '9–12時',
+        '12–15時',
+        '15–18時',
+        '18–21時',
+        '21–24時',
+      ];
 
-  static List<_AggRow> _genreAggregation(List<RakutenManagedProduct> done) {
-    final map = <String, ({int n, int good})>{};
-    for (final p in done) {
+  static List<_AggRow> _genreOutcomeAggregation(
+    List<RakutenManagedProduct> subset,
+  ) {
+    final map = <String, int>{};
+    for (final p in subset) {
       final k = _genreLabel(p);
-      final react = p.feedbackSoldAt != null || p.feedbackLikedAt != null;
-      final cur = map.putIfAbsent(k, () => (n: 0, good: 0));
-      map[k] = (n: cur.n + 1, good: cur.good + (react ? 1 : 0));
+      map[k] = (map[k] ?? 0) + 1;
     }
     final list = map.entries
         .map(
           (e) => _AggRow(
             label: e.key,
-            count: e.value.n,
-            reactCount: e.value.good,
+            count: e.value,
+            reactCount: e.value,
           ),
         )
         .toList();
@@ -274,21 +223,21 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     return list;
   }
 
-  static List<_AggRow> _shopAggregation(List<RakutenManagedProduct> done) {
-    final map = <String, ({int n, int good})>{};
-    for (final p in done) {
+  static List<_AggRow> _shopOutcomeAggregation(
+    List<RakutenManagedProduct> subset,
+  ) {
+    final map = <String, int>{};
+    for (final p in subset) {
       var k = p.shopName.trim();
       if (k.isEmpty) k = '（ショップ名なし）';
-      final react = p.feedbackSoldAt != null || p.feedbackLikedAt != null;
-      final cur = map.putIfAbsent(k, () => (n: 0, good: 0));
-      map[k] = (n: cur.n + 1, good: cur.good + (react ? 1 : 0));
+      map[k] = (map[k] ?? 0) + 1;
     }
     final list = map.entries
         .map(
           (e) => _AggRow(
             label: e.key,
-            count: e.value.n,
-            reactCount: e.value.good,
+            count: e.value,
+            reactCount: e.value,
           ),
         )
         .toList();
@@ -296,38 +245,23 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     return list;
   }
 
-  static List<({String label, int count})> _postedHourBucketsSoldPriority(
-    List<RakutenManagedProduct> done,
+  static List<({String label, int count})> _postedHourBuckets8(
+    List<RakutenManagedProduct> subset,
     List<RoomActivityEvent> events,
   ) {
-    final labels = ['朝', '昼', '夕', '夜', '深夜'];
-
-    List<({String label, int count})> pack(List<int> counts) => [
-          for (var i = 0; i < 5; i++)
-            (label: labels[i], count: counts[i]),
-        ];
-
-    void bump(RakutenManagedProduct p, List<int> counts) {
+    final counts = List<int>.filled(8, 0);
+    for (final p in subset) {
       final t = _postedInstantForProduct(p, events);
-      if (t == null) return;
-      counts[_bucketIndex(t.hour)]++;
+      if (t == null) continue;
+      final bin = t.hour.clamp(0, 23) ~/ 3;
+      if (bin >= 0 && bin < 8) {
+        counts[bin]++;
+      }
     }
-
-    final soldCounts = List<int>.filled(5, 0);
-    for (final p in done) {
-      if (p.feedbackSoldAt == null) continue;
-      bump(p, soldCounts);
-    }
-    if (soldCounts.fold<int>(0, (a, b) => a + b) > 0) {
-      return pack(soldCounts);
-    }
-
-    final reactCounts = List<int>.filled(5, 0);
-    for (final p in done) {
-      if (p.feedbackSoldAt == null && p.feedbackLikedAt == null) continue;
-      bump(p, reactCounts);
-    }
-    return pack(reactCounts);
+    final labels = _threeHourLabels;
+    return [
+      for (var i = 0; i < 8; i++) (label: labels[i], count: counts[i]),
+    ];
   }
 
   static DateTime? _postedInstantForProduct(
@@ -349,32 +283,146 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     return earliest;
   }
 
+  static _DecisionBrief _buildDecisionBrief({
+    required BuildContext context,
+    required AppShellController shell,
+    required List<RakutenManagedProduct> done,
+    required List<RakutenManagedProduct> outcomeSubset,
+    required _OutcomeLens outcomeLens,
+    required List<_AggRow> genreRows,
+    required List<_AggRow> shopRows,
+    required List<({String label, int count})> timeBuckets,
+    required Set<String> savedShopIds,
+  }) {
+    final navCtx = context;
+    void navRec() {
+      Navigator.of(navCtx).push<void>(
+        MaterialPageRoute<void>(
+          builder: (_) => const TodayRecommendationsScreen(),
+        ),
+      );
+    }
 
-  static int _bucketIndex(int hour) {
-    if (hour >= 5 && hour < 12) return 0;
-    if (hour >= 12 && hour < 17) return 1;
-    if (hour >= 17 && hour < 20) return 2;
-    if (hour >= 20 && hour <= 23) return 3;
-    return 4;
+    void navDone() {
+      shell.openRoomCollect(initialTabIndex: 1);
+    }
+
+    void navStale() {
+      shell.openRoomCollect(
+        initialTabIndex: 0,
+        candidateStalePreset: RoomColleStaleCandidatePreset.threePlus,
+      );
+    }
+
+    if (outcomeSubset.isEmpty) {
+      return _DecisionBrief(
+        conclusion:
+            'まだ「売れた／反応あり」の商品が${done.isEmpty ? 'コレ済にありません' : '足りません'}。',
+        rationale:
+            '分析は成果が付いたコレ済だけを使います。まずコレして評価を付けましょう。',
+        footnote: 'コレ済：${done.length}件　成果対象：0件',
+        actions: const [
+          'おすすめコレから候補を2件追加',
+          'コレ済に移して「売れた／反応あり」を付ける',
+        ],
+        onAddCandidates: navRec,
+        onViewWinners: navDone,
+        onOrganizeStale: navStale,
+      );
+    }
+
+    final n = outcomeSubset.length;
+    final topGenre = genreRows.isEmpty ? null : genreRows.first;
+    final topShop = shopRows.isEmpty ? null : shopRows.first;
+
+    var bestBi = 0;
+    var bestBc = -1;
+    var sumT = 0;
+    for (var i = 0; i < timeBuckets.length; i++) {
+      sumT += timeBuckets[i].count;
+      if (timeBuckets[i].count > bestBc) {
+        bestBc = timeBuckets[i].count;
+        bestBi = i;
+      }
+    }
+    final bestLabel = timeBuckets[bestBi].label;
+    final bestCount = timeBuckets[bestBi].count;
+    final pct = sumT <= 0 ? 0 : ((bestCount / sumT) * 100).round();
+
+    final lensJa = switch (outcomeLens) {
+      _OutcomeLens.combined => '総合（売れた＋反応あり）',
+      _OutcomeLens.sold => '売れた',
+      _OutcomeLens.likedOnly => '反応あり（売れ以外）',
+    };
+
+    final genreLine = topGenre != null && topGenre.count >= 1
+        ? '最多ジャンルは「${topGenre.label}」の${topGenre.count}件です。'
+        : '';
+    final shopLine = topShop != null && topShop.count >= 1
+        ? '最多ショップは「${_shortShopLabel(topShop.label)}」の${topShop.count}件です。'
+        : '';
+
+    final rationale = StringBuffer()
+      ..write('根拠（$lensJa・$n件）：')
+      ..write('\n');
+    if (sumT > 0 && bestCount > 0) {
+      rationale.write(
+        '・投稿時刻（アプリ記録）が「$bestLabel」に集中：$bestCount件（全体の$pct%）\n',
+      );
+    } else {
+      rationale.write('・時間帯の偏りはまだ読み取れません（記録時刻が少ない）\n');
+    }
+    if (genreLine.isNotEmpty) {
+      rationale.write('・$genreLine\n');
+    }
+    if (shopLine.isNotEmpty) {
+      rationale.write('・$shopLine\n');
+    }
+    if (savedShopIds.isNotEmpty && topShop != null) {
+      final sid = outcomeSubset
+          .where((p) => p.shopCode.trim().isNotEmpty)
+          .map((p) => p.shopCode.trim())
+          .where(savedShopIds.contains)
+          .length;
+      if (sid >= 2) {
+        rationale.write('・保存ショップ由来の成果が$sid件あります\n');
+      }
+    }
+
+    final actions = <String>[
+      if (sumT > 0 && bestCount > 0)
+        '$bestLabelの前後にROOM投稿を合わせる',
+      if (topGenre != null && topGenre.count >= 2)
+        '同ジャンルをあと3件候補に追加',
+      if (topShop != null && topShop.count >= 2)
+        '反応が良かったショップをROOMコレで再確認',
+    ];
+    if (actions.isEmpty) {
+      actions.addAll(const [
+        '候補を3件追加する',
+        'コレ済の評価を埋める',
+      ]);
+    }
+
+    final conclusion = sumT > 0 && bestCount > 0
+        ? '次の一手：「$bestLabel」に投稿を寄せるのが最優先です。'
+        : '次の一手：候補を増やして成果データを貯めるのが最優先です。';
+
+    return _DecisionBrief(
+      conclusion: conclusion,
+      rationale: rationale.toString().trim(),
+      footnote: '※ 時刻はコレ済の記録（端末時刻）。ROOMの実投稿と一致しない場合があります。',
+      actions: actions,
+      onAddCandidates: navRec,
+      onViewWinners: navDone,
+      onOrganizeStale: navStale,
+    );
   }
 
-  static String _genreSectionCopy(List<_AggRow> rows, int doneCount) {
-    if (rows.isEmpty || doneCount < 4) {
-      return 'まだどのジャンルに寄るかはっきりしません。しばらく続けると傾向が見えます';
-    }
-    final top = rows.first;
-    if (top.count <= 1) {
-      return 'まだどのジャンルに寄るかはっきりしません。しばらく続けると傾向が見えます';
-    }
-    return '「${top.label}」の比率がやや多めです（根拠：投稿済み商品の件数構成）';
-  }
-
-  static String _shopSectionCopy(List<_AggRow> rows, int doneCount) {
-    if (rows.isEmpty || doneCount < 4) {
-      return 'ショップ別は、件数が積み上がるほど意味が出てきます';
-    }
-    final top = rows.first;
-    return '「${_shortShopLabel(top.label)}」での投稿が多めです';
+  static String _genreLabel(RakutenManagedProduct p) {
+    final n = p.persistedGenreDisplayName?.trim();
+    if (n != null && n.isNotEmpty) return n;
+    return '未分類';
   }
 
   static String _shortShopLabel(String raw) {
@@ -383,13 +431,35 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     return '${t.substring(0, 16)}…';
   }
 
-  static String _timeSectionCopy(
+  /// 傾向サマリー（ジャンル）— 成果サブセットのみを対象にする。
+  static String _outcomeGenreSectionCopy(List<_AggRow> rows, int n) {
+    if (n < 4 || rows.isEmpty) {
+      return '成果（売れた／反応あり）がまだ少ないです。あと数件で傾向が読みやすくなります。';
+    }
+    final top = rows.first;
+    if (top.count < 2) {
+      return 'ジャンル間の差はまだ小さいです。同系統を増やすと差が出やすいです。';
+    }
+    return '「${top.label}」が${top.count}件で最多です（分析対象：$n件）。';
+  }
+
+  /// 傾向サマリー（ショップ）— 成果サブセットのみ。
+  static String _outcomeShopSectionCopy(List<_AggRow> rows, int n) {
+    if (n < 4 || rows.isEmpty) {
+      return '成果データがまだ少ないです。あと数件でショップ差が見えます。';
+    }
+    final top = rows.first;
+    return '「${_shortShopLabel(top.label)}」が${top.count}件で最多です（分析対象：$n件）。';
+  }
+
+  /// 傾向サマリー（時間帯）— 3時間単位・成果のみ。
+  static String _outcomeTimeSectionCopy(
     List<({String label, int count})> buckets,
-    int doneCount,
+    int n,
   ) {
     final sum = buckets.fold<int>(0, (a, b) => a + b.count);
-    if (sum == 0 || doneCount < 4) {
-      return '売れた／反応ありの投稿時刻がまだ少ないため参考値です';
+    if (n < 4 || sum == 0) {
+      return '記録された投稿時刻がまだ少ないため、時間帯の結論は出しません。';
     }
     var bestI = 0;
     var bestC = -1;
@@ -399,7 +469,8 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
         bestI = i;
       }
     }
-    return 'いつ投稿した商品に反応が出やすいかを見ています。「${buckets[bestI].label}」にやや寄っています';
+    final pct = ((bestC / sum) * 100).round();
+    return '「${buckets[bestI].label}」に$bestC件集中（$pct%）。';
   }
 }
 
@@ -417,61 +488,169 @@ class _AggRow {
   double get rate => count <= 0 ? 0 : reactCount / count;
 }
 
-class _InsightHeroCard extends StatelessWidget {
-  const _InsightHeroCard({required this.line, required this.hint});
+class _DecisionBrief {
+  const _DecisionBrief({
+    required this.conclusion,
+    required this.rationale,
+    required this.footnote,
+    required this.actions,
+    required this.onAddCandidates,
+    required this.onViewWinners,
+    required this.onOrganizeStale,
+  });
 
-  final String line;
-  final String hint;
+  final String conclusion;
+  final String rationale;
+  final String footnote;
+  final List<String> actions;
+  final VoidCallback onAddCandidates;
+  final VoidCallback onViewWinners;
+  final VoidCallback onOrganizeStale;
+}
+
+class _DecisionInsightCard extends StatelessWidget {
+  const _DecisionInsightCard({required this.brief});
+
+  final _DecisionBrief brief;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return AppCard(
       padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
       elevated: true,
       radius: ActivityScreenLayout.cardRadius,
-      borderColor: AppColors.accentPrimary.withValues(alpha: 0.2),
-      child: Row(
+      borderColor: AppColors.accentPrimary.withValues(alpha: 0.22),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.lightbulb_rounded,
-              size: 30, color: AppColors.accentPrimary),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.bolt_rounded, size: 28, color: AppColors.accentPrimary),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  '今日の気づき',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '① 結論',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.textTertiary,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.2,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            brief.conclusion,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w900,
+              height: 1.3,
+              fontSize: 20,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'おすすめ行動',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.textTertiary,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 8),
+          for (final a in brief.actions) ...[
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '今日の気づき',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 13,
-                      ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 3),
+                  child: Icon(
+                    Icons.arrow_right_rounded,
+                    size: 20,
+                    color: AppColors.accentPrimary,
+                  ),
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  line,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        height: 1.3,
-                        fontSize: 22,
-                      ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  hint,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.45,
-                        fontSize: 15,
-                      ),
+                Expanded(
+                  child: Text(
+                    '・$a',
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      height: 1.35,
+                      fontSize: 15,
+                    ),
+                  ),
                 ),
               ],
             ),
+            const SizedBox(height: 6),
+          ],
+          const SizedBox(height: 8),
+          Text(
+            '② 根拠',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.textTertiary,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            brief.rationale,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.45,
+              fontSize: 14,
+            ),
+          ),
+          if (brief.footnote.trim().isNotEmpty) ...[
+            const SizedBox(height: 12),
+            Text(
+              '③ 補足',
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: AppColors.textTertiary,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              brief.footnote,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.textTertiary,
+                height: 1.4,
+                fontSize: 12,
+              ),
+            ),
+          ],
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              AppSecondaryButton(
+                label: '候補を足す',
+                onPressed: brief.onAddCandidates,
+                icon: const Icon(Icons.add_rounded, size: 17),
+              ),
+              AppSecondaryButton(
+                label: 'コレ済を見る',
+                onPressed: brief.onViewWinners,
+                icon: const Icon(Icons.inventory_2_outlined, size: 17),
+              ),
+              AppSecondaryButton(
+                label: '放置候補',
+                onPressed: brief.onOrganizeStale,
+                icon: const Icon(Icons.schedule_rounded, size: 17),
+              ),
+            ],
           ),
         ],
       ),
@@ -547,8 +726,7 @@ class _RankingSection extends StatelessWidget {
                         _chip(context, 'すべて', _ReactionFilter.all),
                         _chip(context, '売れた', _ReactionFilter.sold),
                         _chip(context, '反応あり', _ReactionFilter.liked),
-                        _chip(context, '微妙', _ReactionFilter.weak),
-                        _chip(context, '未評価', _ReactionFilter.none),
+                        _chip(context, 'その他', _ReactionFilter.weak),
                         const SizedBox(width: 8),
                       ],
                     ),
@@ -804,7 +982,7 @@ class _RankingTile extends StatelessWidget {
   String _feedbackBadge(RoomKpiProductRecord r) {
     if (r.isSold) return '売れた';
     if (r.isLiked) return '反応あり';
-    if (r.isWeak) return '微妙';
+    if (r.isWeak) return 'その他';
     return '未評価';
   }
 }
@@ -841,13 +1019,17 @@ class _Thumb extends StatelessWidget {
 
 class _TrendSummaryCard extends StatefulWidget {
   const _TrendSummaryCard({
-    required this.doneCount,
+    required this.outcomeLens,
+    required this.onOutcomeLensChanged,
+    required this.outcomeSubsetCount,
     required this.genreRows,
     required this.shopRows,
     required this.timeBuckets,
   });
 
-  final int doneCount;
+  final _OutcomeLens outcomeLens;
+  final ValueChanged<_OutcomeLens> onOutcomeLensChanged;
+  final int outcomeSubsetCount;
   final List<_AggRow> genreRows;
   final List<_AggRow> shopRows;
   final List<({String label, int count})> timeBuckets;
@@ -861,10 +1043,20 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
   late _TrendSubTab _tab = _TrendSubTab.genre;
   bool _rowsExpanded = false;
 
+  String _lensLine() {
+    final n = widget.outcomeSubsetCount;
+    return switch (widget.outcomeLens) {
+      _OutcomeLens.combined =>
+        '分析対象：売れた＋反応あり（$n件）・投稿件数は見ていません',
+      _OutcomeLens.sold => '分析対象：売れたのみ（$n件）',
+      _OutcomeLens.likedOnly => '分析対象：反応あり（売れ以外）（$n件）',
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final reference = widget.doneCount < 6;
+    final reference = widget.outcomeSubsetCount < 6;
 
     return AppCard(
       padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
@@ -882,6 +1074,45 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
           ),
           const SizedBox(height: 6),
           Text(
+            _lensLine(),
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.textTertiary,
+              fontWeight: FontWeight.w700,
+              height: 1.35,
+            ),
+          ),
+          const SizedBox(height: 12),
+          SegmentedButton<_OutcomeLens>(
+            showSelectedIcon: false,
+            style: ButtonStyle(
+              visualDensity: VisualDensity.compact,
+              padding: WidgetStateProperty.all(
+                const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+              ),
+            ),
+            segments: const [
+              ButtonSegment(
+                value: _OutcomeLens.combined,
+                label: Text('総合'),
+              ),
+              ButtonSegment(
+                value: _OutcomeLens.sold,
+                label: Text('売れた'),
+              ),
+              ButtonSegment(
+                value: _OutcomeLens.likedOnly,
+                label: Text('反応あり'),
+              ),
+            ],
+            selected: {widget.outcomeLens},
+            onSelectionChanged: (s) {
+              if (s.isEmpty) return;
+              widget.onOutcomeLensChanged(s.first);
+              setState(() => _rowsExpanded = false);
+            },
+          ),
+          const SizedBox(height: 12),
+          Text(
             _tabIntro(),
             style: theme.textTheme.bodyMedium?.copyWith(
               color: AppColors.textSecondary,
@@ -892,7 +1123,7 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
           if (reference) ...[
             const SizedBox(height: 6),
             Text(
-              '※ 件数が少ないため参考値として見てください',
+              '※ 成果件数が少ないため参考値として見てください',
               style: theme.textTheme.labelSmall?.copyWith(
                 color: AppColors.textTertiary,
                 fontWeight: FontWeight.w600,
@@ -943,21 +1174,22 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
   }
 
   String _tabIntro() {
+    final n = widget.outcomeSubsetCount;
     return switch (_tab) {
       _TrendSubTab.genre =>
-        _ActivityAnalyticsTabState._genreSectionCopy(
+        _ActivityAnalyticsTabState._outcomeGenreSectionCopy(
           widget.genreRows,
-          widget.doneCount,
+          n,
         ),
       _TrendSubTab.shop =>
-        _ActivityAnalyticsTabState._shopSectionCopy(
+        _ActivityAnalyticsTabState._outcomeShopSectionCopy(
           widget.shopRows,
-          widget.doneCount,
+          n,
         ),
       _TrendSubTab.time =>
-        _ActivityAnalyticsTabState._timeSectionCopy(
+        _ActivityAnalyticsTabState._outcomeTimeSectionCopy(
           widget.timeBuckets,
-          widget.doneCount,
+          n,
         ),
     };
   }
@@ -966,14 +1198,15 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
     final theme = Theme.of(context);
     if (rows.isEmpty) {
       return Text(
-        'まだデータがありません',
+        'この条件の成果データがありません',
         style: theme.textTheme.bodyMedium?.copyWith(
           color: AppColors.textSecondary,
         ),
       );
     }
 
-    final denomTotal = widget.doneCount > 0 ? widget.doneCount : 1;
+    final denomTotal =
+        widget.outcomeSubsetCount > 0 ? widget.outcomeSubsetCount : 1;
     final cap = _rowsExpanded ? 5 : 3;
     final visible = rows.take(cap).toList();
     final maxShare = visible.fold<double>(
@@ -986,15 +1219,21 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'コレ済の件数シェア（相対）',
+          'ランキング（分析対象内の件数シェア）',
           style: theme.textTheme.labelMedium?.copyWith(
             color: AppColors.textTertiary,
             fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 12),
-        for (final r in visible) ...[
-          _trendDistRow(context, r, barDenom, denomTotal),
+        for (var rank = 0; rank < visible.length; rank++) ...[
+          _trendDistRow(
+            context,
+            visible[rank],
+            barDenom,
+            denomTotal,
+            rank + 1,
+          ),
           const SizedBox(height: 14),
         ],
         if (rows.length > 3)
@@ -1016,14 +1255,12 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
     _AggRow r,
     double barDenom,
     int denomTotal,
+    int rank,
   ) {
     final theme = Theme.of(context);
     final share = (r.count / denomTotal).clamp(0.0, 1.0);
     final progress = (share / barDenom).clamp(0.0, 1.0);
-    final mutedReact = r.reactCount == 0;
-    final reactLabel = widget.doneCount < 6
-        ? '${r.count}件中${r.reactCount}件に反応'
-        : '反応あり ${r.reactCount}件（${(r.rate * 100).round()}%）';
+    final pctOfAll = (share * 100).round();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1031,11 +1268,21 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              width: 26,
+              child: Text(
+                '$rank',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.accentPrimary,
+                  fontSize: 16,
+                ),
+              ),
+            ),
             Expanded(
-              flex: 5,
               child: Text(
                 r.label,
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w800,
@@ -1043,21 +1290,13 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
                 ),
               ),
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 5,
-              child: Text(
-                '${r.count}件 ・ $reactLabel',
-                maxLines: 2,
-                textAlign: TextAlign.end,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: mutedReact
-                      ? AppColors.textTertiary.withValues(alpha: 0.75)
-                      : AppColors.textSecondary,
-                  fontWeight: mutedReact ? FontWeight.w500 : FontWeight.w600,
-                  fontSize: 12,
-                ),
+            const SizedBox(width: 6),
+            Text(
+              '${r.count}件（$pctOfAll%）',
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w700,
+                fontSize: 12,
               ),
             ),
           ],
@@ -1069,9 +1308,7 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
             minHeight: 9,
             value: r.count <= 0 ? 0.0 : progress.clamp(0.06, 1.0),
             backgroundColor: AppColors.surfaceVariant,
-            color: AppColors.accentPrimary.withValues(
-              alpha: mutedReact ? 0.35 : 0.95,
-            ),
+            color: AppColors.accentPrimary.withValues(alpha: 0.95),
           ),
         ),
       ],
@@ -1080,123 +1317,151 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
 
   Widget _timeBody(BuildContext context) {
     final theme = Theme.of(context);
-    const chartTotalH = 150.0;
-    const labelBlockH = 40.0;
     final buckets = widget.timeBuckets;
     final sum = buckets.fold<int>(0, (a, b) => a + b.count);
-    final sparse = sum < 3 || widget.doneCount < 4;
+    final sparse = sum < 3 || widget.outcomeSubsetCount < 4;
     final maxC = buckets.fold<int>(0, (a, b) => a > b.count ? a : b.count);
     final denom = maxC > 0 ? maxC : 1;
-    final barBand = chartTotalH - labelBlockH;
+    var bestI = 0;
+    var bestC = -1;
+    for (var i = 0; i < buckets.length; i++) {
+      if (buckets[i].count > bestC) {
+        bestC = buckets[i].count;
+        bestI = i;
+      }
+    }
+    final hasBest = sum > 0 && bestC > 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          '売れた商品の投稿時間帯（端末の日時・コレ済の記録時刻を代理として使用）',
+          '3時間単位（0–3 … 21–24）・記録された投稿時刻を使用します',
           style: theme.textTheme.labelMedium?.copyWith(
             color: AppColors.textTertiary,
             fontWeight: FontWeight.w600,
           ),
         ),
         if (sparse) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
-            '※ まだ参考値です',
+            '※ まだ参考値です（成果${widget.outcomeSubsetCount}件）',
             style: theme.textTheme.labelSmall?.copyWith(
               color: AppColors.textTertiary,
               fontWeight: FontWeight.w600,
             ),
           ),
         ],
-        const SizedBox(height: 12),
-        SizedBox(
-          height: chartTotalH,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              for (final b in buckets)
+        if (hasBest) ...[
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.accentLight,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: AppColors.accentPrimary.withValues(alpha: 0.35),
+              ),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  '🔥 ゴールデンタイム',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.accentPrimary,
+                  ),
+                ),
+                const SizedBox(width: 8),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: LayoutBuilder(
-                              builder: (context, inner) {
-                                final w =
-                                    (inner.maxWidth * 0.82).clamp(28.0, 38.0);
-                                if (b.count <= 0) {
-                                  return Container(
-                                    width: w,
-                                    height: 6,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.divider
-                                          .withValues(alpha: 0.55),
-                                      borderRadius: const BorderRadius.vertical(
-                                        top: Radius.circular(6),
-                                        bottom: Radius.circular(4),
-                                      ),
-                                    ),
-                                  );
-                                }
-                                final rawH = barBand *
-                                    ((b.count / denom).clamp(0.0, 1.0));
-                                final h = rawH.clamp(18.0, barBand * 0.95);
-                                return Container(
-                                  width: w,
-                                  height: h,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.accentPrimary
-                                        .withValues(alpha: 0.92),
-                                    borderRadius: const BorderRadius.vertical(
-                                      top: Radius.circular(10),
-                                      bottom: Radius.circular(4),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: labelBlockH,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${b.count}',
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.labelSmall?.copyWith(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 12,
-                                  color: AppColors.textSecondary,
-                                ),
-                              ),
-                              Text(
-                                b.label,
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.labelSmall?.copyWith(
-                                  fontSize: 11,
-                                  color: AppColors.textTertiary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                  child: Text(
+                    '${buckets[bestI].label}・$bestC件',
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textSecondary,
                     ),
                   ),
                 ),
-            ],
+              ],
+            ),
+          ),
+        ],
+        const SizedBox(height: 12),
+        for (var i = 0; i < buckets.length; i++) ...[
+          _timeBucketRow(
+            context,
+            buckets[i],
+            buckets[i].count / denom,
+            i == bestI && buckets[i].count == bestC && buckets[i].count > 0,
+          ),
+          if (i < buckets.length - 1) const SizedBox(height: 8),
+        ],
+      ],
+    );
+  }
+
+  Widget _timeBucketRow(
+    BuildContext context,
+    ({String label, int count}) b,
+    double fill01,
+    bool showStrongest,
+  ) {
+    final theme = Theme.of(context);
+    final bar = b.count <= 0
+        ? 0.02
+        : fill01.clamp(0.08, 1.0).toDouble();
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 54,
+          child: Text(
+            b.label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w800,
+              fontSize: 11,
+            ),
           ),
         ),
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: LinearProgressIndicator(
+              minHeight: 10,
+              value: bar,
+              backgroundColor: AppColors.surfaceVariant,
+              color: AppColors.accentPrimary.withValues(
+                alpha: showStrongest ? 1.0 : 0.55,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        SizedBox(
+          width: 38,
+          child: Text(
+            '${b.count}件',
+            textAlign: TextAlign.right,
+            style: theme.textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w800,
+              fontSize: 12,
+            ),
+          ),
+        ),
+        if (showStrongest) ...[
+          const SizedBox(width: 4),
+          Text(
+            '←最強',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.accentPrimary,
+              fontWeight: FontWeight.w900,
+              fontSize: 11,
+            ),
+          ),
+        ],
       ],
     );
   }

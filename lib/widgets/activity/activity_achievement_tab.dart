@@ -69,6 +69,11 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
           now: now,
         );
         final todayStart = DateTime(now.year, now.month, now.day);
+        final todayCalendarPosts =
+            RakutenRoomHomeStats.countDoneOnLocalCalendarDay(
+          items,
+          todayStart,
+        );
         final todayCandidatesEvents = activityCountEventsOnLocalDay(
           events,
           todayStart,
@@ -104,7 +109,7 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
               ],
               _AchievementHeroCard(
                 items: items,
-                todayPosts: todayPosts,
+                todayCalendarPosts: todayCalendarPosts,
                 todayCandidates: todayCandidates,
                 streakDays: streak,
                 recPendingCount: recProv.pendingCount,
@@ -237,14 +242,14 @@ class _MilestoneToast extends StatelessWidget {
 class _AchievementHeroCard extends StatelessWidget {
   const _AchievementHeroCard({
     required this.items,
-    required this.todayPosts,
+    required this.todayCalendarPosts,
     required this.todayCandidates,
     required this.streakDays,
     required this.recPendingCount,
   });
 
   final List<RakutenManagedProduct> items;
-  final int todayPosts;
+  final int todayCalendarPosts;
   final int todayCandidates;
   final int streakDays;
   final int recPendingCount;
@@ -252,18 +257,28 @@ class _AchievementHeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final emptyDay = todayPosts == 0 && todayCandidates == 0;
+    final postGoal = ActivityScreenLayout.dailyPostProgressGoal;
+    final candGoal = ActivityScreenLayout.dailyCandidateProgressGoal;
+    final emptyDay = todayCalendarPosts == 0 && todayCandidates == 0;
     final primaryLine = emptyDay
         ? '今日はこれからROOM運用を始めましょう'
         : '今日もROOM運用できています';
     final subLine = emptyDay
         ? 'まずはおすすめコレを1件確認すると、流れが作れます'
-        : '小さな積み上げが次の反応につながります';
+        : '投稿・候補は「今日0時〜現在」の件数です（ROOM上限は下のカードで24時間を表示）';
 
     final candStock = items
         .where((e) => e.status == RakutenManagedProductStatus.candidate)
         .length;
     final lowCandidates = todayCandidates < 3;
+
+    final postPct = postGoal <= 0
+        ? 0.0
+        : (todayCalendarPosts / postGoal * 100).clamp(0.0, 100.0);
+    final candPct = candGoal <= 0
+        ? 0.0
+        : (todayCandidates / candGoal * 100).clamp(0.0, 100.0);
+    final todayProgressPct = ((postPct + candPct) / 2).round().clamp(0, 100);
 
     return AppCard(
       padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
@@ -301,68 +316,76 @@ class _AchievementHeroCard extends StatelessWidget {
               fontSize: 14,
             ),
           ),
-          const SizedBox(height: 12),
-          LayoutBuilder(
-            builder: (context, c) {
-              final narrow = c.maxWidth < 340;
-              final metrics = [
-                _heroMetricTile(
-                  context,
-                  icon: Icons.rocket_launch_rounded,
-                  label: 'ROOM投稿',
-                  valueText: '$todayPosts',
-                  minHeight: narrow ? 92 : 88,
+          const SizedBox(height: 14),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            decoration: BoxDecoration(
+              color: AppColors.accentLight.withValues(alpha: 0.45),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: AppColors.accentPrimary.withValues(alpha: 0.2),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '今日の進捗：$todayProgressPct%',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 17,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
-                _heroMetricTile(
-                  context,
-                  icon: Icons.add_circle_outline_rounded,
-                  label: '候補追加',
-                  valueText: '$todayCandidates',
-                  minHeight: narrow ? 92 : 88,
+                const SizedBox(height: 2),
+                Text(
+                  '目安は投稿$postGoal件・候補追加$candGoal件（暦日・今日0時〜）',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                    height: 1.3,
+                  ),
                 ),
-                _heroMetricTile(
-                  context,
-                  icon: Icons.local_fire_department_rounded,
-                  label: '連続活動',
-                  valueText: streakDays <= 0 ? '0日' : '$streakDays日',
-                  minHeight: narrow ? 92 : 88,
+                const SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(999),
+                  child: LinearProgressIndicator(
+                    minHeight: 10,
+                    value: todayProgressPct / 100.0,
+                    backgroundColor: AppColors.surfaceVariant,
+                    color: AppColors.accentPrimary,
+                  ),
                 ),
-              ];
-              if (narrow) {
-                return Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(child: metrics[0]),
-                        const SizedBox(width: 8),
-                        Expanded(child: metrics[1]),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(child: metrics[2]),
-                        const Spacer(),
-                      ],
-                    ),
-                  ],
-                );
-              }
-              return IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(child: metrics[0]),
-                    const SizedBox(width: 8),
-                    Expanded(child: metrics[1]),
-                    const SizedBox(width: 8),
-                    Expanded(child: metrics[2]),
-                  ],
-                ),
-              );
-            },
+              ],
+            ),
           ),
           const SizedBox(height: 14),
+          _heroKpiProgressRow(
+            context,
+            title: '投稿',
+            valueLine: '投稿：$todayCalendarPosts件　（$todayCalendarPosts / $postGoal件）',
+            progress: postPct / 100.0,
+            rateLine: '達成率：${postPct.round()}%',
+          ),
+          const SizedBox(height: 12),
+          _heroKpiProgressRow(
+            context,
+            title: '候補追加',
+            valueLine: '候補追加：$todayCandidates件　（$todayCandidates / $candGoal件）',
+            progress: candPct / 100.0,
+            rateLine: '達成率：${candPct.round()}%',
+          ),
+          const SizedBox(height: 12),
+          _heroKpiProgressRow(
+            context,
+            title: '連続活動',
+            valueLine: '連続：${streakDays <= 0 ? 0 : streakDays}日',
+            progress: null,
+            rateLine: '暦日ベースの連続活動日数です',
+          ),
+          const SizedBox(height: 16),
           Text(
             'すぐできること',
             style: theme.textTheme.labelLarge?.copyWith(
@@ -431,58 +454,57 @@ class _AchievementHeroCard extends StatelessWidget {
     );
   }
 
-  static Widget _heroMetricTile(
+  static Widget _heroKpiProgressRow(
     BuildContext context, {
-    required IconData icon,
-    required String label,
-    required String valueText,
-    required double minHeight,
+    required String title,
+    required String valueLine,
+    required double? progress,
+    required String rateLine,
   }) {
-    return AppCard(
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      radius: 14,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: minHeight),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(icon, size: 18, color: AppColors.accentPrimary),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    label,
-                    maxLines: 2,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: AppColors.textSecondary,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 11.5,
-                          height: 1.25,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-            Text(
-              valueText,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              softWrap: false,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    color: AppColors.textPrimary,
-                    fontSize: 26,
-                    height: 1.05,
-                  ),
-            ),
-          ],
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: theme.textTheme.labelMedium?.copyWith(
+            fontWeight: FontWeight.w800,
+            color: AppColors.textTertiary,
+            fontSize: 11,
+          ),
         ),
-      ),
+        const SizedBox(height: 4),
+        Text(
+          valueLine,
+          style: theme.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.w800,
+            fontSize: 15,
+            height: 1.25,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          rateLine,
+          style: theme.textTheme.labelMedium?.copyWith(
+            fontWeight: FontWeight.w700,
+            color: AppColors.textSecondary,
+            fontSize: 12,
+          ),
+        ),
+        if (progress != null) ...[
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              minHeight: 8,
+              value: progress.clamp(0.0, 1.0),
+              backgroundColor: AppColors.surfaceVariant,
+              color: AppColors.accentPrimary.withValues(alpha: 0.85),
+            ),
+          ),
+        ],
+      ],
     );
   }
 }
@@ -534,9 +556,18 @@ class _RoomPostLimitCard extends StatelessWidget {
               fontSize: 14,
             ),
           ),
+          const SizedBox(height: 6),
+          Text(
+            'あと ${snap.dailyRemaining} 件（24時間）／ この1時間あと ${snap.hourlyRemaining} 件',
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w800,
+              fontSize: 15,
+              color: AppColors.accentPrimary,
+            ),
+          ),
           const SizedBox(height: 10),
           Text(
-            '24時間投稿数：${snap.todayCount} / ${RoomCollectPostLimitSnapshot.dailyLimit}',
+            '直近24時間：${snap.todayCount} / ${RoomCollectPostLimitSnapshot.dailyLimit}件',
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w800,
               fontSize: 16,
@@ -544,20 +575,20 @@ class _RoomPostLimitCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'この1時間：${snap.hourCount} / ${RoomCollectPostLimitSnapshot.hourlyLimit}',
+            '直近1時間：${snap.hourCount} / ${RoomCollectPostLimitSnapshot.hourlyLimit}件',
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w800,
               fontSize: 16,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 4),
           _limitGaugeRow(
             context,
             label: '直近24時間の投稿数',
             used: snap.todayCount,
             limit: RoomCollectPostLimitSnapshot.dailyLimit,
             state: snap.dailyBarState,
-            remainingLabel: 'あと ${snap.dailyRemaining} 件',
+            remainingLabel: '',
             paceHint: _paceHint(
               reached: snap.isDailyReached,
               used: snap.todayCount,
@@ -931,7 +962,7 @@ class _ActivityLogTile extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     _subtitle(),
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
@@ -966,7 +997,7 @@ class _ActivityLogTile extends StatelessWidget {
       RoomActivityEventType.openedRakuten => '楽天ページを開く',
       RoomActivityEventType.feedbackLiked => '評価を変更：反応あり',
       RoomActivityEventType.feedbackSold => '評価を変更：売れた',
-      RoomActivityEventType.feedbackWeak => '評価を変更：微妙',
+      RoomActivityEventType.feedbackWeak => '評価を変更：その他',
       RoomActivityEventType.deleted => '候補から削除',
     };
   }
@@ -1012,7 +1043,7 @@ class _ProductThumb extends StatelessWidget {
   }
 }
 
-class _WeekTotalBarsCard extends StatelessWidget {
+class _WeekTotalBarsCard extends StatefulWidget {
   const _WeekTotalBarsCard({
     required this.items,
     required this.events,
@@ -1023,35 +1054,45 @@ class _WeekTotalBarsCard extends StatelessWidget {
   final List<RoomActivityEvent> events;
   final DateTime anchor;
 
-  static const double _chartOuterHeight = 150;
-  static const double _labelBlockHeight = 40;
-  static const double _barMaxFraction = 0.8;
-
   static const Color _candBarColor = Color(0xFF5C6BC0);
+
+  @override
+  State<_WeekTotalBarsCard> createState() => _WeekTotalBarsCardState();
+}
+
+class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
+  static const double _plotHeight = 168.0;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final today = DateTime(anchor.year, anchor.month, anchor.day);
+    final today = DateTime(widget.anchor.year, widget.anchor.month, widget.anchor.day);
     final series = <({DateTime day, int posts, int cand})>[];
 
     for (var i = 6; i >= 0; i--) {
       final day = today.subtract(Duration(days: i));
       final posts = RakutenRoomHomeStats.countDoneOnLocalCalendarDay(
-        items,
+        widget.items,
         day,
       );
       var cand = activityCountEventsOnLocalDay(
-        events,
+        widget.events,
         day,
         {RoomActivityEventType.candidateAdded},
       );
       final candFallback = activityCountCandidatesAddedOnLocalCalendarDay(
-        items,
+        widget.items,
         day,
       );
       if (candFallback > cand) cand = candFallback;
       series.add((day: day, posts: posts, cand: cand));
+    }
+
+    var weekPosts = 0;
+    var weekCand = 0;
+    for (final e in series) {
+      weekPosts += e.posts;
+      weekCand += e.cand;
     }
 
     var maxVal = 0;
@@ -1060,7 +1101,6 @@ class _WeekTotalBarsCard extends StatelessWidget {
       if (t > maxVal) maxVal = t;
     }
     final denom = maxVal <= 0 ? 1 : maxVal;
-    final barBand = _chartOuterHeight * _barMaxFraction;
 
     return AppCard(
       padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
@@ -1076,148 +1116,247 @@ class _WeekTotalBarsCard extends StatelessWidget {
               fontSize: 20,
             ),
           ),
-          const SizedBox(height: 6),
-          Text(
-            'ROOM投稿と候補追加の件数です。',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-              fontSize: 14,
-              height: 1.3,
+          const SizedBox(height: 10),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: AppColors.surfaceVariant.withValues(alpha: 0.35),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: AppColors.divider.withValues(alpha: 0.6),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '今週合計',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  '投稿：$weekPosts件　候補：$weekCand件',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
+          Text(
+            '各曜日は「投稿（ピンク）＋候補（青）」の件数です。0件も表示します。',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.35,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 12),
           SizedBox(
-            height: _chartOuterHeight,
-            child: LayoutBuilder(
-              builder: (context, c) {
-                final narrow = c.maxWidth < 340;
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    for (final e in series)
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: LayoutBuilder(
-                                    builder: (context, inner) {
-                                      final maxW = inner.maxWidth;
-                                      final barW =
-                                          (maxW * 0.85).clamp(24.0, 34.0);
-                                      final total = e.posts + e.cand;
-                                      final barH = total <= 0
-                                          ? 6.0
-                                          : (barBand * (total / denom))
-                                              .clamp(18.0, barBand);
-
-                                      if (total <= 0) {
-                                        return Container(
-                                          width: barW,
-                                          height: barH,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.divider
-                                                .withValues(alpha: 0.55),
-                                            borderRadius:
-                                                const BorderRadius.vertical(
-                                              top: Radius.circular(10),
-                                              bottom: Radius.circular(5),
-                                            ),
-                                          ),
-                                        );
-                                      }
-
-                                      return SizedBox(
-                                        width: barW,
-                                        height: barH,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              const BorderRadius.vertical(
-                                            top: Radius.circular(10),
-                                            bottom: Radius.circular(5),
-                                          ),
-                                          child: Column(
-                                            verticalDirection:
-                                                VerticalDirection.up,
-                                            children: [
-                                              if (e.posts > 0)
-                                                Expanded(
-                                                  flex: e.posts,
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    color:
-                                                        AppColors.accentPrimary,
-                                                  ),
-                                                ),
-                                              if (e.cand > 0)
-                                                Expanded(
-                                                  flex: e.cand,
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    color: _candBarColor,
-                                                  ),
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
+            height: _plotHeight,
+            child: TweenAnimationBuilder<double>(
+              tween: Tween(begin: 0, end: 1),
+              duration: const Duration(milliseconds: 720),
+              curve: Curves.easeOutCubic,
+              builder: (context, anim, _) {
+                return LayoutBuilder(
+                  builder: (context, c) {
+                    final narrow = c.maxWidth < 340;
+                    final barBand = _plotHeight * 0.62;
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (final e in series)
+                          Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 2),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    e.posts + e.cand == 0
+                                        ? '0件'
+                                        : '${e.posts}+${e.cand}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    style: theme.textTheme.labelSmall
+                                        ?.copyWith(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 10,
+                                      color: AppColors.textSecondary,
+                                    ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              SizedBox(
-                                height: _labelBlockHeight,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    if (!narrow)
-                                      Text(
-                                        '${e.day.day}',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                        style: theme.textTheme.labelSmall
-                                            ?.copyWith(
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 12,
-                                          color: AppColors.textSecondary,
-                                        ),
-                                      ),
-                                    Text(
-                                      _weekdayJa(e.day.weekday),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.center,
-                                      style:
-                                          theme.textTheme.labelSmall?.copyWith(
-                                        fontSize: 11,
-                                        color: AppColors.textTertiary,
-                                        fontWeight: FontWeight.w700,
+                                  const SizedBox(height: 4),
+                                  Expanded(
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: LayoutBuilder(
+                                        builder: (context, inner) {
+                                          final maxW = inner.maxWidth;
+                                          final barW = (maxW * 0.82)
+                                              .clamp(22.0, 32.0);
+                                          final total = e.posts + e.cand;
+                                          final targetH = total <= 0
+                                              ? 8.0
+                                              : (barBand * (total / denom))
+                                                  .clamp(20.0, barBand);
+                                          final barH = targetH * anim;
+                                          if (total <= 0) {
+                                            return Container(
+                                              width: barW,
+                                              height: barH.clamp(4.0, 8.0),
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                color: AppColors.divider
+                                                    .withValues(alpha: 0.5),
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              child: Text(
+                                                '0',
+                                                style: theme
+                                                    .textTheme.labelSmall
+                                                    ?.copyWith(
+                                                  fontSize: 9,
+                                                  fontWeight: FontWeight.w800,
+                                                  color: AppColors.textTertiary,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          return SizedBox(
+                                            width: barW,
+                                            height: barH,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  const BorderRadius.vertical(
+                                                top: Radius.circular(10),
+                                                bottom: Radius.circular(4),
+                                              ),
+                                              child: Column(
+                                                verticalDirection:
+                                                    VerticalDirection.up,
+                                                children: [
+                                                  if (e.posts > 0)
+                                                    Expanded(
+                                                      flex: e.posts,
+                                                      child: Container(
+                                                        width:
+                                                            double.infinity,
+                                                        color: AppColors
+                                                            .accentPrimary,
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          '${e.posts}',
+                                                          style: theme
+                                                              .textTheme
+                                                              .labelSmall
+                                                              ?.copyWith(
+                                                            color: AppColors
+                                                                .textOnAccent,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900,
+                                                            fontSize: 10,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  if (e.cand > 0)
+                                                    Expanded(
+                                                      flex: e.cand,
+                                                      child: Container(
+                                                        width:
+                                                            double.infinity,
+                                                        color:
+                                                            _WeekTotalBarsCard
+                                                                ._candBarColor,
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          '${e.cand}',
+                                                          style: theme
+                                                              .textTheme
+                                                              .labelSmall
+                                                              ?.copyWith(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900,
+                                                            fontSize: 10,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  SizedBox(
+                                    height: 36,
+                                    child: Column(
+                                      children: [
+                                        if (!narrow)
+                                          Text(
+                                            '${e.day.day}日',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.center,
+                                            style: theme.textTheme.labelSmall
+                                                ?.copyWith(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 11,
+                                              color: AppColors.textSecondary,
+                                            ),
+                                          ),
+                                        Text(
+                                          _weekdayJa(e.day.weekday),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                          style: theme.textTheme.labelSmall
+                                              ?.copyWith(
+                                            fontSize: 10,
+                                            color: AppColors.textTertiary,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                  ],
+                      ],
+                    );
+                  },
                 );
               },
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Wrap(
             spacing: 12,
             runSpacing: 6,
             children: [
               _legendDot(theme, AppColors.accentPrimary, '投稿'),
-              _legendDot(theme, _candBarColor, '候補'),
+              _legendDot(theme, _WeekTotalBarsCard._candBarColor, '候補'),
             ],
           ),
         ],

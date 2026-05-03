@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/app_theme.dart';
+import 'activity_screen_layout.dart';
 
-/// 活動画面用：ホーム／マイページに馴染むセグメント切替（上部固定想定）。
+/// 活動画面用：実績／分析を 50:50 で均等配置するセグメント。
 class ActivitySegmentedTabBar extends StatelessWidget {
   const ActivitySegmentedTabBar({
     super.key,
@@ -15,8 +16,6 @@ class ActivitySegmentedTabBar extends StatelessWidget {
   final ValueChanged<int> onChanged;
   final List<String> labels;
 
-  static const double tabBarHeight = 50;
-
   @override
   Widget build(BuildContext context) {
     assert(labels.length >= 2);
@@ -24,7 +23,7 @@ class ActivitySegmentedTabBar extends StatelessWidget {
     final idx = selectedIndex.clamp(0, n - 1);
 
     return SizedBox(
-      height: tabBarHeight,
+      height: ActivityScreenLayout.mainTabBarHeight,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -32,85 +31,87 @@ class ActivitySegmentedTabBar extends StatelessWidget {
           border: Border.all(
             color: AppColors.divider.withValues(alpha: 0.65),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: Stack(
-            fit: StackFit.expand,
-            clipBehavior: Clip.hardEdge,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(4),
-                child: AnimatedAlign(
-                  duration: const Duration(milliseconds: 260),
-                  curve: Curves.easeOutCubic,
-                  alignment: Alignment(
-                    2 * (idx + 0.5) / n - 1,
-                    0,
-                  ),
-                  child: FractionallySizedBox(
-                    widthFactor: 1 / n,
-                    heightFactor: 1,
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 260),
-                      curve: Curves.easeOutCubic,
-                      decoration: BoxDecoration(
-                        color: AppColors.accentPrimary,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+        child: Row(
+          children: [
+            for (var i = 0; i < n; i++)
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: _ActivityMainTabCell(
+                    label: labels[i],
+                    selected: i == idx,
+                    onTap: () => onChanged(i),
+                    roundedLeft: i == 0,
+                    roundedRight: i == n - 1,
                   ),
                 ),
               ),
-              Row(
-                children: [
-                  for (var i = 0; i < n; i++)
-                    Expanded(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () => onChanged(i),
-                          customBorder: const RoundedRectangleBorder(),
-                          child: SizedBox(
-                            height: tabBarHeight,
-                            child: Center(
-                              child: AnimatedDefaultTextStyle(
-                                duration: const Duration(milliseconds: 220),
-                                curve: Curves.easeOutCubic,
-                                style: Theme.of(context)
-                                        .textTheme
-                                        .labelLarge
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 15,
-                                          color: i == idx
-                                              ? AppColors.textOnAccent
-                                              : AppColors.textSecondary,
-                                        ) ??
-                                    TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 15,
-                                      color: i == idx
-                                          ? AppColors.textOnAccent
-                                          : AppColors.textSecondary,
-                                    ),
-                                child: Text(labels[i]),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ActivityMainTabCell extends StatelessWidget {
+  const _ActivityMainTabCell({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+    required this.roundedLeft,
+    required this.roundedRight,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  final bool roundedLeft;
+  final bool roundedRight;
+
+  @override
+  Widget build(BuildContext context) {
+    final r = BorderRadius.horizontal(
+      left: roundedLeft ? const Radius.circular(20) : Radius.zero,
+      right: roundedRight ? const Radius.circular(20) : Radius.zero,
+    );
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: r,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOutCubic,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: selected ? AppColors.accentPrimary : Colors.transparent,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: selected
+                ? [
+                    BoxShadow(
+                      color:
+                          AppColors.accentPrimary.withValues(alpha: 0.35),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
                     ),
-                ],
-              ),
-            ],
+                  ]
+                : null,
+          ),
+          child: Center(
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    fontWeight: selected ? FontWeight.w900 : FontWeight.w600,
+                    fontSize: 15,
+                    letterSpacing: selected ? 0.2 : 0,
+                    color: selected
+                        ? AppColors.textOnAccent
+                        : AppColors.textSecondary,
+                  ),
+            ),
           ),
         ),
       ),
