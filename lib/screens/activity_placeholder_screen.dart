@@ -5,8 +5,7 @@ import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/activity/activity_achievement_tab.dart';
 import '../widgets/activity/activity_analytics_tab.dart';
-import '../widgets/activity/activity_screen_layout.dart';
-import '../widgets/app_tab.dart';
+import '../widgets/activity/activity_segmented_tab_bar.dart';
 
 /// コレ活動：実績と分析の2タブ。
 class ActivityPlaceholderScreen extends StatefulWidget {
@@ -31,16 +30,17 @@ class ActivityPlaceholderScreen extends StatefulWidget {
 
 class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
     with SingleTickerProviderStateMixin {
-  static const double _fabTrailingReserve = 52;
-
   late final TabController _tabController;
-  int _mainTabIndex = 0;
+  late final ScrollController _achievementScroll;
+  late final ScrollController _analyticsScroll;
 
   @override
   void initState() {
     super.initState();
+    _achievementScroll = ScrollController();
+    _analyticsScroll = ScrollController();
     _tabController = TabController(length: 2, vsync: this);
-    _tabController.addListener(_syncMainTabIndex);
+    _tabController.addListener(_handleTabController);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<RakutenManagedProductProvider>().refreshManagedProductList(
@@ -51,14 +51,23 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
 
   @override
   void dispose() {
-    _tabController.removeListener(_syncMainTabIndex);
+    _tabController.removeListener(_handleTabController);
     _tabController.dispose();
+    _achievementScroll.dispose();
+    _analyticsScroll.dispose();
     super.dispose();
   }
 
-  void _syncMainTabIndex() {
-    if (!mounted || _mainTabIndex == _tabController.index) return;
-    setState(() => _mainTabIndex = _tabController.index);
+  void _handleTabController() {
+    if (_tabController.indexIsChanging) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final active =
+          _tabController.index == 0 ? _achievementScroll : _analyticsScroll;
+      if (active.hasClients) {
+        active.jumpTo(0);
+      }
+    });
   }
 
   Future<void> _refresh() {
@@ -67,58 +76,59 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
         );
   }
 
-  /// タブ切替を各タブのスクロール先頭に置き、本文カードと重ならないようにする。
-  Widget _tabStripInScroll() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        ActivityScreenLayout.paddingH,
-        4,
-        ActivityScreenLayout.paddingH,
-        ActivityScreenLayout.sectionGap,
-      ),
-      child: AppTabBar(
-        height: 50,
-        items: const [
-          AppTabItem(label: '実績', icon: Icons.emoji_events_outlined),
-          AppTabItem(label: '分析', icon: Icons.analytics_outlined),
-        ],
-        selectedIndex: _mainTabIndex,
-        onChanged: (index) {
-          setState(() => _mainTabIndex = index);
-          _tabController.animateTo(index);
-        },
-      ),
-    );
+  void _selectMainTab(int index) {
+    if (_tabController.index != index) {
+      _tabController.animateTo(index);
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final c = index == 0 ? _achievementScroll : _analyticsScroll;
+      if (c.hasClients) c.jumpTo(0);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final bottomSafe = MediaQuery.paddingOf(context).bottom;
-    final textScale = MediaQuery.textScalerOf(context).scale(1.0);
-    // フッター + 半収納コメントFAB + 読みやすさ（大きい文字・ホームインジケータ）
-    final fabReserve = (80 * textScale).clamp(72.0, 104.0);
-    final navBarReserve = 56.0;
-    final scrollBottomInset = bottomSafe + fabReserve + navBarReserve + 24;
+    const navBarReserve = 56.0;
+    final scrollBottomInset = bottomSafe + navBarReserve + 24;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(title: const Text('活動')),
       body: SafeArea(
         bottom: false,
-        child: TabBarView(
-          controller: _tabController,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ActivityAchievementTab(
-              onRefresh: _refresh,
-              bottomInset: scrollBottomInset,
-              fabTrailingPadding: _fabTrailingReserve,
-              leadingTabStrip: _tabStripInScroll,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 10, 24, 10),
+              child: ListenableBuilder(
+                listenable: _tabController,
+                builder: (context, _) {
+                  return ActivitySegmentedTabBar(
+                    selectedIndex: _tabController.index.clamp(0, 1),
+                    onChanged: _selectMainTab,
+                  );
+                },
+              ),
             ),
-            ActivityAnalyticsTab(
-              onRefresh: _refresh,
-              bottomInset: scrollBottomInset,
-              fabTrailingPadding: _fabTrailingReserve,
-              leadingTabStrip: _tabStripInScroll,
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  ActivityAchievementTab(
+                    onRefresh: _refresh,
+                    bottomInset: scrollBottomInset,
+                    scrollController: _achievementScroll,
+                  ),
+                  ActivityAnalyticsTab(
+                    onRefresh: _refresh,
+                    bottomInset: scrollBottomInset,
+                    scrollController: _analyticsScroll,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

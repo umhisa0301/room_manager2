@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/activity_log.dart';
 import '../../models/rakuten_managed_product.dart';
 import '../../models/room_activity_event.dart';
 import '../../models/room_colle_list_filters.dart';
@@ -11,7 +10,6 @@ import '../../screens/today_recommendations_screen.dart';
 import '../../services/rakuten_room_home_stats.dart';
 import '../../services/room_collect_post_limit.dart';
 import '../../services/room_kpi_calculator.dart';
-import '../../state/activity_log_provider.dart';
 import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
 import '../../state/today_recommendation_provider.dart';
@@ -27,14 +25,12 @@ class ActivityAchievementTab extends StatefulWidget {
     super.key,
     required this.onRefresh,
     required this.bottomInset,
-    required this.fabTrailingPadding,
-    required this.leadingTabStrip,
+    required this.scrollController,
   });
 
   final Future<void> Function() onRefresh;
   final double bottomInset;
-  final double fabTrailingPadding;
-  final Widget Function() leadingTabStrip;
+  final ScrollController scrollController;
 
   @override
   State<ActivityAchievementTab> createState() => _ActivityAchievementTabState();
@@ -47,14 +43,13 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer5<
+    return Consumer4<
       RakutenManagedProductProvider,
       RoomActivityEventProvider,
-      ActivityLogProvider,
       AppShellController,
       TodayRecommendationProvider
     >(
-      builder: (context, room, act, logProv, shell, recProv, _) {
+      builder: (context, room, act, shell, recProv, _) {
         final items = room.items;
         final events = act.events;
         final now = DateTime.now();
@@ -83,23 +78,23 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
         final todayCandidates = todayCandidatesEvents > 0
             ? todayCandidatesEvents
             : todayCandidatesFallback;
-        final commentCopies = logProv.getTodayLog()?.commentCount ?? 0;
         final streak = kpi.consecutiveActiveDays;
 
-        final bottomPad = widget.bottomInset + 32;
+        final bottomPad = widget.bottomInset;
 
         return RefreshIndicator(
           onRefresh: widget.onRefresh,
           child: ListView(
+            controller: widget.scrollController,
+            primary: false,
             physics: const AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.fromLTRB(
               ActivityScreenLayout.paddingH,
               8,
-              ActivityScreenLayout.paddingH + widget.fabTrailingPadding,
+              ActivityScreenLayout.paddingH,
               bottomPad,
             ),
             children: [
-              widget.leadingTabStrip(),
               if (_flashMilestone != null) ...[
                 _MilestoneToast(
                   milestone: _flashMilestone!,
@@ -108,11 +103,9 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
                 const SizedBox(height: ActivityScreenLayout.sectionGap),
               ],
               _AchievementHeroCard(
-                shell: shell,
                 items: items,
                 todayPosts: todayPosts,
                 todayCandidates: todayCandidates,
-                commentCopies: commentCopies,
                 streakDays: streak,
                 recPendingCount: recProv.pendingCount,
               ),
@@ -125,7 +118,6 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
               _WeekTotalBarsCard(
                 items: items,
                 events: events,
-                activityLogs: logProv.logs,
                 anchor: now,
               ),
               const SizedBox(height: ActivityScreenLayout.sectionGap),
@@ -244,28 +236,23 @@ class _MilestoneToast extends StatelessWidget {
 
 class _AchievementHeroCard extends StatelessWidget {
   const _AchievementHeroCard({
-    required this.shell,
     required this.items,
     required this.todayPosts,
     required this.todayCandidates,
-    required this.commentCopies,
     required this.streakDays,
     required this.recPendingCount,
   });
 
-  final AppShellController shell;
   final List<RakutenManagedProduct> items;
   final int todayPosts;
   final int todayCandidates;
-  final int commentCopies;
   final int streakDays;
   final int recPendingCount;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final emptyDay =
-        todayPosts == 0 && todayCandidates == 0 && commentCopies == 0;
+    final emptyDay = todayPosts == 0 && todayCandidates == 0;
     final primaryLine = emptyDay
         ? '今日はこれからROOM運用を始めましょう'
         : '今日もROOM運用できています';
@@ -276,7 +263,7 @@ class _AchievementHeroCard extends StatelessWidget {
     final candStock = items
         .where((e) => e.status == RakutenManagedProductStatus.candidate)
         .length;
-    final showSearchSecondary = candStock == 0 && recPendingCount == 0;
+    final lowCandidates = todayCandidates < 3;
 
     return AppCard(
       padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
@@ -291,111 +278,105 @@ class _AchievementHeroCard extends StatelessWidget {
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w900,
               color: AppColors.textPrimary,
-              fontSize: 21,
-            ),
-          ),
-          const SizedBox(height: 14),
-          Text(
-            primaryLine,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w900,
-              height: 1.25,
-              color: AppColors.textPrimary,
-              fontSize: 24,
+              fontSize: 20,
             ),
           ),
           const SizedBox(height: 10),
           Text(
+            primaryLine,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w900,
+              height: 1.22,
+              color: AppColors.textPrimary,
+              fontSize: 23,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
             subLine,
             style: theme.textTheme.bodyLarge?.copyWith(
               color: AppColors.textSecondary,
-              height: 1.4,
+              height: 1.35,
               fontWeight: FontWeight.w600,
-              fontSize: 15,
+              fontSize: 14,
             ),
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 12),
           LayoutBuilder(
             builder: (context, c) {
               final narrow = c.maxWidth < 340;
-              final chips = <Widget>[
-                _metricChip(
+              final metrics = [
+                _heroMetricTile(
                   context,
-                  labelPrimary: 'ROOM',
-                  labelSecondary: '投稿',
-                  value: '$todayPosts',
                   icon: Icons.rocket_launch_rounded,
-                  twoLineLabel: narrow,
+                  label: 'ROOM投稿',
+                  valueText: '$todayPosts',
+                  minHeight: narrow ? 92 : 88,
                 ),
-                _metricChip(
+                _heroMetricTile(
                   context,
-                  labelPrimary: '候補に',
-                  labelSecondary: '追加',
-                  value: '$todayCandidates',
                   icon: Icons.add_circle_outline_rounded,
-                  twoLineLabel: true,
+                  label: '候補追加',
+                  valueText: '$todayCandidates',
+                  minHeight: narrow ? 92 : 88,
                 ),
-                _metricChip(
+                _heroMetricTile(
                   context,
-                  labelPrimary: 'コメント',
-                  labelSecondary: 'コピー',
-                  value: '$commentCopies',
-                  icon: Icons.content_copy_rounded,
-                  twoLineLabel: true,
-                ),
-                _metricChip(
-                  context,
-                  labelPrimary: '連続',
-                  labelSecondary: '活動',
-                  value: streakDays <= 0 ? '0' : '$streakDays',
-                  valueSuffix: narrow ? '' : '日',
                   icon: Icons.local_fire_department_rounded,
-                  twoLineLabel: narrow,
+                  label: '連続活動',
+                  valueText: streakDays <= 0 ? '0日' : '$streakDays日',
+                  minHeight: narrow ? 92 : 88,
                 ),
               ];
               if (narrow) {
                 return Column(
                   children: [
-                    for (var i = 0; i < chips.length; i += 2)
-                      Padding(
-                        padding: EdgeInsets.only(
-                            bottom: i + 2 < chips.length ? 8 : 0),
-                        child: Row(
-                          children: [
-                            Expanded(child: chips[i]),
-                            if (i + 1 < chips.length) ...[
-                              const SizedBox(width: 8),
-                              Expanded(child: chips[i + 1]),
-                            ],
-                          ],
-                        ),
-                      ),
+                    Row(
+                      children: [
+                        Expanded(child: metrics[0]),
+                        const SizedBox(width: 8),
+                        Expanded(child: metrics[1]),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(child: metrics[2]),
+                        const Spacer(),
+                      ],
+                    ),
                   ],
                 );
               }
-              return Row(
-                children: [
-                  for (var i = 0; i < chips.length; i++) ...[
-                    if (i > 0) const SizedBox(width: 8),
-                    Expanded(child: chips[i]),
+              return IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(child: metrics[0]),
+                    const SizedBox(width: 8),
+                    Expanded(child: metrics[1]),
+                    const SizedBox(width: 8),
+                    Expanded(child: metrics[2]),
                   ],
-                ],
+                ),
               );
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 14),
           Text(
             'すぐできること',
             style: theme.textTheme.labelLarge?.copyWith(
               fontWeight: FontWeight.w800,
               color: AppColors.textSecondary,
-              fontSize: 13,
+              fontSize: 12,
             ),
           ),
-          const SizedBox(height: 10),
-          Row(
+          const SizedBox(height: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
+              Semantics(
+                button: true,
                 child: FilledButton.icon(
                   onPressed: () {
                     Navigator.of(context).push<void>(
@@ -404,15 +385,15 @@ class _AchievementHeroCard extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.auto_awesome_rounded, size: 20),
+                  icon: const Icon(Icons.auto_awesome_rounded, size: 22),
                   label: const Text('おすすめコレ'),
                   style: FilledButton.styleFrom(
                     backgroundColor: AppColors.accentPrimary,
                     foregroundColor: AppColors.textOnAccent,
-                    minimumSize: const Size(0, 48),
+                    minimumSize: const Size(double.infinity, 48),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12,
+                      horizontal: 16,
+                      vertical: 14,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -420,45 +401,29 @@ class _AchievementHeroCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: showSearchSecondary
-                    ? OutlinedButton.icon(
-                        onPressed: () => openRakutenSearchScreen(context),
-                        icon: const Icon(Icons.travel_explore_rounded, size: 20),
-                        label: const Text('候補を探す'),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColors.textPrimary,
-                          minimumSize: const Size(0, 48),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 12,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                        ),
-                      )
-                    : OutlinedButton.icon(
-                        onPressed: () => shell.selectTab(2),
-                        icon: const Icon(
-                          Icons.chat_bubble_outline_rounded,
-                          size: 20,
-                        ),
-                        label: const Text('コメント準備'),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColors.textPrimary,
-                          minimumSize: const Size(0, 48),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 12,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                        ),
+              if (lowCandidates &&
+                  (candStock == 0 || recPendingCount == 0)) ...[
+                const SizedBox(height: 8),
+                Semantics(
+                  button: true,
+                  child: OutlinedButton.icon(
+                    onPressed: () => openRakutenSearchScreen(context),
+                    icon: const Icon(Icons.travel_explore_rounded, size: 22),
+                    label: const Text('候補を探す'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.textPrimary,
+                      minimumSize: const Size(double.infinity, 48),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
                       ),
-              ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ],
@@ -466,84 +431,57 @@ class _AchievementHeroCard extends StatelessWidget {
     );
   }
 
-  Widget _metricChip(
+  static Widget _heroMetricTile(
     BuildContext context, {
-    required String labelPrimary,
-    required String labelSecondary,
-    required String value,
-    String valueSuffix = '',
     required IconData icon,
-    required bool twoLineLabel,
+    required String label,
+    required String valueText,
+    required double minHeight,
   }) {
     return AppCard(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
       radius: 14,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(icon, size: 18, color: AppColors.accentPrimary),
-              const SizedBox(width: 6),
-              Expanded(
-                child: twoLineLabel
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            labelPrimary,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 12,
-                                ),
-                          ),
-                          Text(
-                            labelSecondary,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 12,
-                                ),
-                          ),
-                        ],
-                      )
-                    : Text(
-                        '$labelPrimary$labelSecondary',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 13,
-                                ),
-                      ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '$value$valueSuffix',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.textPrimary,
-                  fontSize: 30,
-                  height: 1.1,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: minHeight),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(icon, size: 18, color: AppColors.accentPrimary),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    label,
+                    maxLines: 2,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 11.5,
+                          height: 1.25,
+                        ),
+                  ),
                 ),
-          ),
-        ],
+              ],
+            ),
+            Text(
+              valueText,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.textPrimary,
+                    fontSize: 26,
+                    height: 1.05,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -587,18 +525,18 @@ class _RoomPostLimitCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
-            '楽天ROOMの目安：1日200件・1時間100件',
+            'ROOMの目安：24時間あたり200件・この1時間あたり100件',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: AppColors.textSecondary,
-              height: 1.35,
-              fontSize: 15,
+              height: 1.3,
+              fontSize: 14,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
           Text(
-            '今日 ${snap.todayCount} / ${RoomCollectPostLimitSnapshot.dailyLimit}',
+            '24時間投稿数：${snap.todayCount} / ${RoomCollectPostLimitSnapshot.dailyLimit}',
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w800,
               fontSize: 16,
@@ -606,30 +544,30 @@ class _RoomPostLimitCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'この1時間 ${snap.hourCount} / ${RoomCollectPostLimitSnapshot.hourlyLimit}',
+            'この1時間：${snap.hourCount} / ${RoomCollectPostLimitSnapshot.hourlyLimit}',
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w800,
               fontSize: 16,
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           _limitGaugeRow(
             context,
-            label: '今日の投稿',
+            label: '直近24時間の投稿数',
             used: snap.todayCount,
             limit: RoomCollectPostLimitSnapshot.dailyLimit,
             state: snap.dailyBarState,
-            remainingLabel: '本日あと ${snap.dailyRemaining} 件',
+            remainingLabel: 'あと ${snap.dailyRemaining} 件',
             paceHint: _paceHint(
               reached: snap.isDailyReached,
               used: snap.todayCount,
               limit: RoomCollectPostLimitSnapshot.dailyLimit,
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           _limitGaugeRow(
             context,
-            label: 'この1時間の投稿',
+            label: 'この1時間の投稿数',
             used: snap.hourCount,
             limit: RoomCollectPostLimitSnapshot.hourlyLimit,
             state: snap.hourlyBarState,
@@ -642,15 +580,6 @@ class _RoomPostLimitCard extends StatelessWidget {
             footnote: snap.isHourlyReached
                 ? snap.recoveryFootnote(DateTime.now())
                 : null,
-          ),
-          const SizedBox(height: 12),
-          Text(
-            '上限に近い画面では、投稿操作が無効になり、この時間帯の上限メッセージが表示されます。',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.textTertiary,
-              height: 1.35,
-              fontSize: 12,
-            ),
           ),
           if (snap.isAnyLimitReached) ...[
             const SizedBox(height: 14),
@@ -669,7 +598,7 @@ class _RoomPostLimitCard extends StatelessWidget {
                 children: [
                   Text(
                     snap.isDailyReached
-                        ? '本日の上限です。時間を空けましょう'
+                        ? '直近24時間の上限です。時間を空けましょう'
                         : 'この時間帯の上限に達しています。少し時間を空けましょう',
                     style: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w900,
@@ -689,11 +618,6 @@ class _RoomPostLimitCard extends StatelessWidget {
                               RoomColleStaleCandidatePreset.threePlus,
                         ),
                         icon: const Icon(Icons.inventory_2_outlined, size: 18),
-                      ),
-                      AppSecondaryButton(
-                        label: 'コメント',
-                        onPressed: () => shell.selectTab(2),
-                        icon: const Icon(Icons.chat_bubble_outline, size: 18),
                       ),
                     ],
                   ),
@@ -1092,49 +1016,47 @@ class _WeekTotalBarsCard extends StatelessWidget {
   const _WeekTotalBarsCard({
     required this.items,
     required this.events,
-    required this.activityLogs,
     required this.anchor,
   });
 
   final List<RakutenManagedProduct> items;
   final List<RoomActivityEvent> events;
-  final List<ActivityLog> activityLogs;
   final DateTime anchor;
 
   static const double _chartOuterHeight = 150;
   static const double _labelBlockHeight = 40;
   static const double _barMaxFraction = 0.8;
 
+  static const Color _candBarColor = Color(0xFF5C6BC0);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final today = DateTime(anchor.year, anchor.month, anchor.day);
-    final series = <({
-      DateTime day,
-      int posts,
-      int cand,
-      int comments,
-    })>[];
-    final logMap = {for (final l in activityLogs) l.dateKey: l};
+    final series = <({DateTime day, int posts, int cand})>[];
+
     for (var i = 6; i >= 0; i--) {
       final day = today.subtract(Duration(days: i));
       final posts = RakutenRoomHomeStats.countDoneOnLocalCalendarDay(
         items,
         day,
       );
-      final cand = activityCountEventsOnLocalDay(
+      var cand = activityCountEventsOnLocalDay(
         events,
         day,
         {RoomActivityEventType.candidateAdded},
       );
-      final key = activityLogDateKey(day);
-      final comments = logMap[key]?.commentCount ?? 0;
-      series.add((day: day, posts: posts, cand: cand, comments: comments));
+      final candFallback = activityCountCandidatesAddedOnLocalCalendarDay(
+        items,
+        day,
+      );
+      if (candFallback > cand) cand = candFallback;
+      series.add((day: day, posts: posts, cand: cand));
     }
 
     var maxVal = 0;
     for (final e in series) {
-      final t = e.posts + e.cand + e.comments;
+      final t = e.posts + e.cand;
       if (t > maxVal) maxVal = t;
     }
     final denom = maxVal <= 0 ? 1 : maxVal;
@@ -1154,16 +1076,16 @@ class _WeekTotalBarsCard extends StatelessWidget {
               fontSize: 20,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
-            '7日間の1日あたりの合計アクションです',
+            'ROOM投稿と候補追加の件数です。',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: AppColors.textSecondary,
-              fontSize: 15,
-              height: 1.35,
+              fontSize: 14,
+              height: 1.3,
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           SizedBox(
             height: _chartOuterHeight,
             child: LayoutBuilder(
@@ -1185,26 +1107,60 @@ class _WeekTotalBarsCard extends StatelessWidget {
                                     builder: (context, inner) {
                                       final maxW = inner.maxWidth;
                                       final barW =
-                                          (maxW * 0.72).clamp(18.0, 24.0);
-                                      final total =
-                                          e.posts + e.cand + e.comments;
+                                          (maxW * 0.85).clamp(24.0, 34.0);
+                                      final total = e.posts + e.cand;
                                       final barH = total <= 0
-                                          ? 5.0
+                                          ? 6.0
                                           : (barBand * (total / denom))
-                                              .clamp(14.0, barBand);
-                                      final fill = total <= 0
-                                          ? AppColors.divider
-                                              .withValues(alpha: 0.55)
-                                          : AppColors.accentPrimary;
-                                      return Container(
+                                              .clamp(18.0, barBand);
+
+                                      if (total <= 0) {
+                                        return Container(
+                                          width: barW,
+                                          height: barH,
+                                          decoration: BoxDecoration(
+                                            color: AppColors.divider
+                                                .withValues(alpha: 0.55),
+                                            borderRadius:
+                                                const BorderRadius.vertical(
+                                              top: Radius.circular(10),
+                                              bottom: Radius.circular(5),
+                                            ),
+                                          ),
+                                        );
+                                      }
+
+                                      return SizedBox(
                                         width: barW,
                                         height: barH,
-                                        decoration: BoxDecoration(
-                                          color: fill,
+                                        child: ClipRRect(
                                           borderRadius:
                                               const BorderRadius.vertical(
-                                            top: Radius.circular(9),
-                                            bottom: Radius.circular(4),
+                                            top: Radius.circular(10),
+                                            bottom: Radius.circular(5),
+                                          ),
+                                          child: Column(
+                                            verticalDirection:
+                                                VerticalDirection.up,
+                                            children: [
+                                              if (e.posts > 0)
+                                                Expanded(
+                                                  flex: e.posts,
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    color:
+                                                        AppColors.accentPrimary,
+                                                  ),
+                                                ),
+                                              if (e.cand > 0)
+                                                Expanded(
+                                                  flex: e.cand,
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    color: _candBarColor,
+                                                  ),
+                                                ),
+                                            ],
                                           ),
                                         ),
                                       );
@@ -1261,19 +1217,8 @@ class _WeekTotalBarsCard extends StatelessWidget {
             runSpacing: 6,
             children: [
               _legendDot(theme, AppColors.accentPrimary, '投稿'),
-              _legendDot(theme, const Color(0xFF5C6BC0), '候補'),
-              _legendDot(theme, const Color(0xFF2E7D32), 'コメント'),
+              _legendDot(theme, _candBarColor, '候補'),
             ],
-          ),
-          const SizedBox(height: 6),
-          Text(
-            '棒は1日の合計アクションです',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.textTertiary,
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              height: 1.3,
-            ),
           ),
         ],
       ),

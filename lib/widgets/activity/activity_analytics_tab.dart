@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/rakuten_managed_product.dart';
+import '../../models/room_activity_event.dart';
 import '../../models/room_colle_list_filters.dart';
 import '../../navigation/app_shell_controller.dart';
 import '../../screens/today_recommendations_screen.dart';
 import '../../services/room_kpi_calculator.dart';
-import '../../state/activity_log_provider.dart';
 import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
 import '../../state/saved_shop_provider.dart';
@@ -22,14 +22,12 @@ class ActivityAnalyticsTab extends StatefulWidget {
     super.key,
     required this.onRefresh,
     required this.bottomInset,
-    required this.fabTrailingPadding,
-    required this.leadingTabStrip,
+    required this.scrollController,
   });
 
   final Future<void> Function() onRefresh;
   final double bottomInset;
-  final double fabTrailingPadding;
-  final Widget Function() leadingTabStrip;
+  final ScrollController scrollController;
 
   @override
   State<ActivityAnalyticsTab> createState() => _ActivityAnalyticsTabState();
@@ -51,14 +49,13 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
 
   @override
   Widget build(BuildContext context) {
-    final bottomPad = widget.bottomInset + 36;
+    final bottomPad = widget.bottomInset;
 
-    return Consumer4<
+    return Consumer3<
         RakutenManagedProductProvider,
         RoomActivityEventProvider,
-        SavedShopProvider,
-        ActivityLogProvider>(
-      builder: (context, managed, act, saved, log, _) {
+        SavedShopProvider>(
+      builder: (context, managed, act, saved, _) {
         final items = managed.items;
         final shell = context.read<AppShellController>();
         final now = DateTime.now();
@@ -100,12 +97,12 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
               .map((e) => e.shopId.trim())
               .where((e) => e.isNotEmpty)
               .toSet(),
-          commentCopiesToday: log.getTodayLog()?.commentCount ?? 0,
         );
 
         final genreRows = _genreAggregation(done);
         final shopRows = _shopAggregation(done);
-        final timeBuckets = _timeBuckets(done);
+        final timeBuckets =
+            _postedHourBucketsSoldPriority(done, act.events);
 
         final kpi = RoomKpiCalculator.calculate(
           products: items
@@ -118,15 +115,16 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
         return RefreshIndicator(
           onRefresh: widget.onRefresh,
           child: ListView(
+            controller: widget.scrollController,
+            primary: false,
             physics: const AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.fromLTRB(
               ActivityScreenLayout.paddingH,
-              0,
-              ActivityScreenLayout.paddingH + widget.fabTrailingPadding,
+              8,
+              ActivityScreenLayout.paddingH,
               bottomPad,
             ),
             children: [
-              widget.leadingTabStrip(),
               _InsightHeroCard(line: insight.line, hint: insight.hint),
               const SizedBox(height: ActivityScreenLayout.sectionGap),
               _RankingSection(
@@ -138,7 +136,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
                 expanded: _rankingExpanded,
                 onToggleExpanded: () =>
                     setState(() => _rankingExpanded = !_rankingExpanded),
-                chipTrailingPadding: widget.fabTrailingPadding,
               ),
               const SizedBox(height: ActivityScreenLayout.sectionGap),
               _TrendSummaryCard(
@@ -163,7 +160,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
   static ({String line, String hint}) _buildInsightLine({
     required List<RakutenManagedProduct> done,
     required Set<String> savedShopIds,
-    required int commentCopiesToday,
   }) {
     if (done.length < 5) {
       return (
@@ -245,13 +241,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
       );
     }
 
-    if (commentCopiesToday < 2 && done.length >= 8) {
-      return (
-        line: 'コメントの下書きをそろえると、投稿の流れが速くなります',
-        hint: 'コメントタブでテンプレを2つ作り、コピーしてROOMに貼る練習をしてみましょう',
-      );
-    }
-
     return (
       line: 'このあと伸ばす軸を1つに決めると、改善が早くなります',
       hint: '傾向サマリーと「反応が良かった商品」を見比べて、ジャンル・時間帯・ショップのどれを厚くするか選びましょう',
@@ -307,22 +296,59 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     return list;
   }
 
-  static List<({String label, int count})> _timeBuckets(
+  static List<({String label, int count})> _postedHourBucketsSoldPriority(
     List<RakutenManagedProduct> done,
+    List<RoomActivityEvent> events,
   ) {
     final labels = ['朝', '昼', '夕', '夜', '深夜'];
-    final counts = List<int>.filled(5, 0);
-    for (final p in done) {
-      final h = p.doneAt?.hour;
-      if (h == null) continue;
-      final b = _bucketIndex(h);
-      counts[b]++;
+
+    List<({String label, int count})> pack(List<int> counts) => [
+          for (var i = 0; i < 5; i++)
+            (label: labels[i], count: counts[i]),
+        ];
+
+    void bump(RakutenManagedProduct p, List<int> counts) {
+      final t = _postedInstantForProduct(p, events);
+      if (t == null) return;
+      counts[_bucketIndex(t.hour)]++;
     }
-    return [
-      for (var i = 0; i < 5; i++)
-        (label: labels[i], count: counts[i]),
-    ];
+
+    final soldCounts = List<int>.filled(5, 0);
+    for (final p in done) {
+      if (p.feedbackSoldAt == null) continue;
+      bump(p, soldCounts);
+    }
+    if (soldCounts.fold<int>(0, (a, b) => a + b) > 0) {
+      return pack(soldCounts);
+    }
+
+    final reactCounts = List<int>.filled(5, 0);
+    for (final p in done) {
+      if (p.feedbackSoldAt == null && p.feedbackLikedAt == null) continue;
+      bump(p, reactCounts);
+    }
+    return pack(reactCounts);
   }
+
+  static DateTime? _postedInstantForProduct(
+    RakutenManagedProduct p,
+    List<RoomActivityEvent> events,
+  ) {
+    final doneAt = p.doneAt;
+    if (doneAt != null) return doneAt;
+    final id = p.productId.trim();
+    if (id.isEmpty) return null;
+    DateTime? earliest;
+    for (final e in events) {
+      if (e.type != RoomActivityEventType.movedToCored) continue;
+      if (e.productId.trim() != id) continue;
+      if (earliest == null || e.createdAt.isBefore(earliest)) {
+        earliest = e.createdAt;
+      }
+    }
+    return earliest;
+  }
+
 
   static int _bucketIndex(int hour) {
     if (hour >= 5 && hour < 12) return 0;
@@ -363,7 +389,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
   ) {
     final sum = buckets.fold<int>(0, (a, b) => a + b.count);
     if (sum == 0 || doneCount < 4) {
-      return 'コレ済の時刻データが少ないため、参考値です';
+      return '売れた／反応ありの投稿時刻がまだ少ないため参考値です';
     }
     var bestI = 0;
     var bestC = -1;
@@ -373,7 +399,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
         bestI = i;
       }
     }
-    return '${buckets[bestI].label}の時間帯にコレ済が集まりやすいようです';
+    return 'いつ投稿した商品に反応が出やすいかを見ています。「${buckets[bestI].label}」にやや寄っています';
   }
 }
 
@@ -462,7 +488,6 @@ class _RankingSection extends StatelessWidget {
     required this.shell,
     required this.expanded,
     required this.onToggleExpanded,
-    required this.chipTrailingPadding,
   });
 
   final int doneCount;
@@ -472,7 +497,6 @@ class _RankingSection extends StatelessWidget {
   final AppShellController shell;
   final bool expanded;
   final VoidCallback onToggleExpanded;
-  final double chipTrailingPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -506,25 +530,31 @@ class _RankingSection extends StatelessWidget {
           ),
           if (!emptyBecauseNoDone) ...[
             const SizedBox(height: 14),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              clipBehavior: Clip.none,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  right: ActivityScreenLayout.paddingH + chipTrailingPadding,
-                  left: 2,
-                ),
-                child: Row(
-                  children: [
-                    _chip(context, 'すべて', _ReactionFilter.all),
-                    _chip(context, '売れた', _ReactionFilter.sold),
-                    _chip(context, '反応あり', _ReactionFilter.liked),
-                    _chip(context, '微妙', _ReactionFilter.weak),
-                    _chip(context, '未評価', _ReactionFilter.none),
-                    const SizedBox(width: 8),
-                  ],
-                ),
-              ),
+            LayoutBuilder(
+              builder: (context, _) {
+                final fabReserve =
+                    MediaQuery.viewPaddingOf(context).right + 56;
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  clipBehavior: Clip.none,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 2,
+                      right: fabReserve.clamp(16.0, 72.0),
+                    ),
+                    child: Row(
+                      children: [
+                        _chip(context, 'すべて', _ReactionFilter.all),
+                        _chip(context, '売れた', _ReactionFilter.sold),
+                        _chip(context, '反応あり', _ReactionFilter.liked),
+                        _chip(context, '微妙', _ReactionFilter.weak),
+                        _chip(context, '未評価', _ReactionFilter.none),
+                        const SizedBox(width: 8),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 12),
           ],
@@ -623,9 +653,9 @@ class _RankingSection extends StatelessWidget {
           color: sel ? AppColors.accentPrimary : AppColors.divider,
           width: 1,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         labelPadding: const EdgeInsets.symmetric(horizontal: 4),
-        visualDensity: VisualDensity.compact,
+        materialTapTargetSize: MaterialTapTargetSize.padded,
       ),
     );
   }
@@ -656,85 +686,114 @@ class _RankingTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child: SizedBox(
-            height: 100,
+          child: IntrinsicHeight(
             child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 28,
-                child: Text(
-                  '$rank',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        color: AppColors.accentPrimary,
-                        fontSize: 18,
-                      ),
-                ),
-              ),
-              _Thumb(url: product.imageUrl),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.itemName.trim().isEmpty
-                          ? '商品名なし'
-                          : product.itemName.trim(),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 15,
-                          ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      price,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      product.shopName.trim().isEmpty
-                          ? 'ショップ名なし'
-                          : product.shopName.trim(),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textTertiary,
-                            fontSize: 12,
-                          ),
-                    ),
-                    const SizedBox(height: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppColors.accentLight,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 28,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 18),
                       child: Text(
-                        badge,
+                        '$rank',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w900,
+                              color: AppColors.accentPrimary,
+                              fontSize: 17,
+                            ),
+                      ),
+                    ),
+                  ),
+                ),
+                _Thumb(url: product.imageUrl),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        product.itemName.trim().isEmpty
+                            ? '商品名なし'
+                            : product.itemName.trim(),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: AppColors.accentPrimary,
+                            Theme.of(context).textTheme.titleSmall?.copyWith(
                                   fontWeight: FontWeight.w800,
+                                  fontSize: 15,
+                                  height: 1.25,
                                 ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 4),
+                      Text(
+                        price,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        product.shopName.trim().isEmpty
+                            ? 'ショップ名なし'
+                            : product.shopName.trim(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: AppColors.textTertiary,
+                                  fontSize: 12,
+                                ),
+                      ),
+                      const SizedBox(height: 8),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.accentLight,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            badge,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(
+                                  color: AppColors.accentPrimary,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 12,
+                                ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Icon(Icons.chevron_right_rounded,
-                  color: AppColors.textTertiary, size: 22),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: Center(
+                    child: Icon(
+                      Icons.chevron_right_rounded,
+                      color: AppColors.textTertiary,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -761,8 +820,8 @@ class _Thumb extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        width: 60,
-        height: 60,
+        width: 58,
+        height: 58,
         color: AppColors.surfaceVariant,
         child: u.isEmpty
             ? Icon(Icons.image_not_supported_outlined,
@@ -1034,7 +1093,7 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'コレ済にした時刻（端末の日時）',
+          '売れた商品の投稿時間帯（端末の日時・コレ済の記録時刻を代理として使用）',
           style: theme.textTheme.labelMedium?.copyWith(
             color: AppColors.textTertiary,
             fontWeight: FontWeight.w600,
@@ -1068,7 +1127,7 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
                             child: LayoutBuilder(
                               builder: (context, inner) {
                                 final w =
-                                    (inner.maxWidth * 0.78).clamp(24.0, 32.0);
+                                    (inner.maxWidth * 0.82).clamp(28.0, 38.0);
                                 if (b.count <= 0) {
                                   return Container(
                                     width: w,

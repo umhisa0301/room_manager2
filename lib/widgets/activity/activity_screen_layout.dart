@@ -2,8 +2,8 @@
 class ActivityScreenLayout {
   ActivityScreenLayout._();
 
-  static const double paddingH = 16;
-  static const double cardPadding = 20;
-  static const double sectionGap = 16;
-  static const double cardRadius = 20;
+  static const double paddingH = 13;
+  static const double cardPadding = 16;
+  static const double sectionGap = 12;
+  static const double cardRadius = 18;
 }
