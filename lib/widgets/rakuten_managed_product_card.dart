@@ -315,7 +315,7 @@ class RakutenManagedProductCard extends StatelessWidget {
           final m = collectPostingBlockedMessage.trim();
           postTooltip = m.isNotEmpty
               ? m
-              : '本日またはこの1時間の投稿上限に達しています。ホームの表示をご確認ください。';
+              : '直近24時間またはこの1時間の投稿上限に達しています。ホームの表示をご確認ください。';
         } else {
           postTooltip = 'ROOMのURLを開き、一覧をコレ済に移します。';
         }

@@ -657,7 +657,7 @@ class MyPageQuickSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activityLine =
-        'ROOM投稿 $todayPostCount件 / コメントコピー $todayCommentCount回';
+        '直近24時間のROOM投稿 $todayPostCount件 / コメントコピー $todayCommentCount回';
 
     return DecoratedBox(
       decoration: BoxDecoration(

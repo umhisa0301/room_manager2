@@ -73,3 +73,19 @@ int activityCountEventsOnLocalDay(
   }
   return n;
 }
+
+/// ローカル暦日ごとの「候補へ追加」（`addedAt` ベース）。イベント欠損時のフォールバック用。
+int activityCountCandidatesAddedOnLocalCalendarDay(
+  List<RakutenManagedProduct> items,
+  DateTime localDay,
+) {
+  final start = DateTime(localDay.year, localDay.month, localDay.day);
+  final end = start.add(const Duration(days: 1));
+  var n = 0;
+  for (final e in items) {
+    final a = e.addedAt;
+    if (a.isBefore(start) || !a.isBefore(end)) continue;
+    n++;
+  }
+  return n;
+}

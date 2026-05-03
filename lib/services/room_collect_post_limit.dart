@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_activity_event.dart';
 
-/// ROOM コレ投稿の1日・1時間上限表示・判定用スナップショット。
 enum RoomCollectPostLimitBarState { normal, warning, reached }
 
+/// ROOM コレ投稿の「直近24時間」・「直近1時間」上限表示・判定用スナップショット。
+///
+/// [todayCount] は名称互換のため残しており、実態は **直近24時間以内** の投稿（コレ済）件数です。
 class RoomCollectPostLimitSnapshot {
   const RoomCollectPostLimitSnapshot({
     required this.todayCount,
@@ -19,6 +21,7 @@ class RoomCollectPostLimitSnapshot {
   static const int dailyWarningThreshold = 160;
   static const int hourlyWarningThreshold = 80;
 
+  /// 直近24時間ウィンドウ内の投稿件数（旧フィールド名 `todayCount`）。
   final int todayCount;
   final int hourCount;
   final bool hasAnyCollectRecord;
@@ -30,11 +33,14 @@ class RoomCollectPostLimitSnapshot {
   int get hourlyRemaining => (hourlyLimit - hourCount).clamp(0, hourlyLimit);
 
   bool get isDailyReached => todayCount >= dailyLimit;
+
   bool get isHourlyReached => hourCount >= hourlyLimit;
+
   bool get isAnyLimitReached => isDailyReached || isHourlyReached;
 
   bool get isDailyWarning =>
       !isDailyReached && todayCount >= dailyWarningThreshold;
+
   bool get isHourlyWarning =>
       !isHourlyReached && hourCount >= hourlyWarningThreshold;
 
@@ -55,13 +61,15 @@ class RoomCollectPostLimitSnapshot {
 
   /// 上限で投稿できない理由（到達時）。未到達は null。
   String get reachedBlockTitle {
-    if (isDailyReached) return '本日の上限です';
+    if (isDailyReached) return '直近24時間の上限です';
     if (isHourlyReached) return 'この1時間は上限です';
     return '';
   }
 
   String get reachedBlockBodyLine {
-    if (isDailyReached) return '明日また再開してください。';
+    if (isDailyReached) {
+      return '24時間より古い投稿がカウントから外れるまでお待ちください。';
+    }
     if (isHourlyReached) return '少し待ってから再開してください。';
     return '';
   }
@@ -70,7 +78,7 @@ class RoomCollectPostLimitSnapshot {
   String? get userBlockMessage {
     if (!isAnyLimitReached) return null;
     if (isDailyReached) {
-      return '本日の上限です。明日また再開してください。';
+      return '直近24時間の上限です。古い投稿がカウントから外れるまでお待ちください。';
     }
     if (isHourlyReached) {
       return 'この1時間は上限です。少し待ってから再開してください。';
@@ -113,15 +121,14 @@ class RoomCollectPostLimitSnapshot {
       timestamps.add(event.createdAt);
     }
 
-    final todayStart = DateTime(now.year, now.month, now.day);
-    final tomorrowStart = todayStart.add(const Duration(days: 1));
+    final rollingStart = now.subtract(const Duration(hours: 24));
     final hourStart = now.subtract(const Duration(minutes: 60));
-    var todayCount = 0;
+    var rolling24hCount = 0;
     final hourTimestamps = <DateTime>[];
 
     for (final at in timestamps) {
-      if (!at.isBefore(todayStart) && at.isBefore(tomorrowStart)) {
-        todayCount++;
+      if (!at.isBefore(rollingStart) && !at.isAfter(now)) {
+        rolling24hCount++;
       }
       if (!at.isBefore(hourStart) && !at.isAfter(now)) {
         hourTimestamps.add(at);
@@ -130,7 +137,7 @@ class RoomCollectPostLimitSnapshot {
     hourTimestamps.sort();
 
     return RoomCollectPostLimitSnapshot(
-      todayCount: todayCount,
+      todayCount: rolling24hCount,
       hourCount: hourTimestamps.length,
       hasAnyCollectRecord: timestamps.isNotEmpty,
       hourRecoveryAt: hourTimestamps.isEmpty
@@ -159,7 +166,7 @@ Future<void> showCollectPostBlockedDialog(
   final detail = snapshot.isHourlyReached
       ? snapshot.recoveryFootnote(now)
       : snapshot.isDailyReached
-          ? '本日のカウントは0時を過ぎるとリセットされます。'
+          ? 'カウントは「直近24時間」の投稿のみです。0時ではリセットされません。'
           : '';
 
   if (!context.mounted) return;
@@ -167,7 +174,7 @@ Future<void> showCollectPostBlockedDialog(
     context: context,
     builder: (ctx) {
       return AlertDialog(
-        title: Text(snapshot.isDailyReached ? '本日の上限' : '1時間の上限'),
+        title: Text(snapshot.isDailyReached ? '直近24時間の上限' : '1時間の上限'),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

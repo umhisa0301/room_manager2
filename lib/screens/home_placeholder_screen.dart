@@ -534,15 +534,15 @@ class _HomeTodayProgressCard extends StatelessWidget {
           ],
           const SizedBox(height: 12),
           _CollectLimitProgressLine(
-            title: '今日の投稿数',
+            title: '直近24時間の投稿数',
             usedCount: collectLimit.todayCount,
             limit: RoomCollectPostLimitSnapshot.dailyLimit,
             state: collectLimit.dailyBarState,
-            rightLabel: '本日あと${collectLimit.dailyRemaining}件',
+            rightLabel: 'あと${collectLimit.dailyRemaining}件',
           ),
           const SizedBox(height: 12),
           _CollectLimitProgressLine(
-            title: '1時間の投稿数',
+            title: 'この1時間の投稿数',
             usedCount: collectLimit.hourCount,
             limit: RoomCollectPostLimitSnapshot.hourlyLimit,
             state: collectLimit.hourlyBarState,
@@ -576,7 +576,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
   _HomeActionSpec _primaryAction() {
     if (collectLimit.isDailyReached) {
       return _HomeActionSpec(
-        label: '今日の結果を見る',
+        label: '運用の状況を見る',
         icon: Icons.insights_rounded,
         onPressed: onOpenActivity,
       );
@@ -850,8 +850,9 @@ class _HomeLimitAlertCard extends StatelessWidget {
     late final List<_HomeActionSpec> actions;
 
     if (collectLimit.isDailyReached) {
-      title = '本日の上限に達しました';
-      message = '本日の上限です。明日また再開してください。';
+      title = '直近24時間の上限に達しました';
+      message =
+          '直近24時間の上限です。24時間より古い投稿がカウントから外れるまでお待ちください。';
       actions = [
         _HomeActionSpec(
           label: '活動を見る',
@@ -886,8 +887,8 @@ class _HomeLimitAlertCard extends StatelessWidget {
         ),
       ];
     } else if (collectLimit.isDailyWarning) {
-      title = '今日の上限が近づいています';
-      message = '本日あと${collectLimit.dailyRemaining}件です。';
+      title = '直近24時間の上限が近づいています';
+      message = 'あと${collectLimit.dailyRemaining}件です。';
       actions = [
         _HomeActionSpec(
           label: 'コレ済を見る',

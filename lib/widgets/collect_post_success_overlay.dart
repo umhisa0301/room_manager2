@@ -157,7 +157,7 @@ class _CollectPostSuccessCelebrationLayerState
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  '今日 ${widget.todayOrdinal}件目',
+                                  '直近24時間で ${widget.todayOrdinal}件目',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
