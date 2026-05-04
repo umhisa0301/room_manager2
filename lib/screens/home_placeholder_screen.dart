@@ -872,7 +872,7 @@ class _HomeLimitAlertCard extends StatelessWidget {
           '直近24時間の上限です。24時間より古い投稿がカウントから外れるまでお待ちください。';
       actions = [
         _HomeActionSpec(
-          label: '活動を見る',
+          label: '分析を見る',
           icon: Icons.insights_outlined,
           onPressed: onActivity,
         ),
@@ -1499,7 +1499,7 @@ class _RoomStatsCardGrid extends StatelessWidget {
                   role: _RoomMetricTileRole.history,
                   title: '前回コレ日時',
                   valueMain: lastPrimary,
-                  caption: '活動ログを開く',
+                  caption: '分析タブを開く',
                   icon: Icons.history_rounded,
                   valueProminent: false,
                   compactDeck: deck,

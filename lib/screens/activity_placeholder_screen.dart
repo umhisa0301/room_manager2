@@ -95,7 +95,7 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('活動')),
+      appBar: AppBar(title: const Text('分析')),
       body: SafeArea(
         bottom: false,
         child: Column(

@@ -14,8 +14,8 @@ import 'screens/comment_template_edit_screen.dart';
 import 'widgets/add_candidate_entry_sheet.dart';
 import 'widgets/common_draggable_edge_fab.dart';
 
-/// 下部ナビゲーション＋5タブのメインシェル（2番目は ROOMコレ管理）。
-/// 選択中はアクセント色＋背景ピルで視覚的に明確にする。
+/// 下部ナビ5項目（ホーム・探す・分析・ROOMコレ・マイページ）＋ [IndexedStack] で5画面。
+/// コメントはフッター外（index 2）・FAB から遷移。選択中はアクセント色＋背景ピル。
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
 
@@ -135,26 +135,23 @@ class _AppShellState extends State<AppShell> {
                 ),
                 Expanded(
                   child: _NavItem(
-                    icon: Icons.travel_explore_outlined,
-                    selectedIcon: Icons.travel_explore_rounded,
+                    icon: Icons.add_circle_outline_rounded,
+                    selectedIcon: Icons.add_circle_rounded,
                     label: '探す',
-                    tooltip: '楽天検索',
+                    tooltip: '候補を追加',
                     isSelected: false,
-                    onTap: () {
-                      openRakutenSearchScreen(context);
-                    },
+                    onTap: _showAddCandidateSheet,
                   ),
                 ),
                 Expanded(
                   child: _NavItem(
-                    icon: Icons.add_circle_outline_rounded,
-                    selectedIcon: Icons.add_circle_rounded,
-                    label: '＋',
+                    icon: Icons.insights_outlined,
+                    selectedIcon: Icons.insights_rounded,
+                    label: '分析',
                     tooltip: null,
-                    isSelected: false,
-                    onTap: () {
-                      _showAddCandidateSheet();
-                    },
+                    isSelected: idx == 3,
+                    onTap: () =>
+                        context.read<AppShellController>().selectTab(3),
                   ),
                 ),
                 Expanded(

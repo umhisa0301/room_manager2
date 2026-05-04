@@ -212,8 +212,8 @@ class HomeInsightBuilder {
       items.add(
         const HomeInsightItem(
           title: '今週は反応が良いです',
-          message: '評価ログの流れが良い状態です。活動タブで振り返れます。',
-          actionLabel: '活動を見る',
+          message: '評価ログの流れが良い状態です。分析タブで振り返れます。',
+          actionLabel: '分析を見る',
           actionType: 'weekly_activity',
         ),
       );
@@ -235,7 +235,7 @@ class HomeInsightBuilder {
         const HomeInsightItem(
           title: '順調です',
           message: 'このペースでROOM活動を続けていきましょう。',
-          actionLabel: '活動を見る',
+          actionLabel: '分析を見る',
           actionType: 'activity',
         ),
       );
