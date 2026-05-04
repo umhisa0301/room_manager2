@@ -35,6 +35,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
   int get pendingCount => _bundle?.pendingCount ?? 0;
   bool get isCompleted => _bundle?.isCompleted ?? false;
 
+  /// 永続化済みバンドルを再読込（他画面での更新や pull-to-refresh 後の表示同期用）。
+  void reloadBundleFromStorage() {
+    _bundle = _repository.load();
+    _errorMessage = null;
+    notifyListeners();
+  }
+
   /// 本日バンドルのローカル日キー（YYYY-MM-DD）。永続化・日付またぎ判定に使用。
   String? get activeLocalDateKey => _bundle?.localDateKey;
 
@@ -161,6 +168,43 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final candidateItems = managedItems
         .where((e) => e.status == RakutenManagedProductStatus.candidate)
         .toList(growable: false);
+    final soldOutcomeItems = doneItems
+        .where((e) => e.feedbackSoldAt != null)
+        .toList(growable: false);
+    final reactedOutcomeItems = doneItems
+        .where(
+          (e) => e.feedbackSoldAt != null || e.feedbackLikedAt != null,
+        )
+        .toList(growable: false);
+    final likedOnlyOutcomeItems = reactedOutcomeItems
+        .where(
+          (e) => e.feedbackLikedAt != null && e.feedbackSoldAt == null,
+        )
+        .toList(growable: false);
+    final now = DateTime.now();
+    final recentCandidates = candidateItems
+        .where((c) {
+          final d = c.addedAt;
+          final day = DateTime(d.year, d.month, d.day);
+          final today = DateTime(now.year, now.month, now.day);
+          return today.difference(day).inDays <= 14;
+        })
+        .toList(growable: false);
+    final staleCandidates = candidateItems
+        .where((c) {
+          try {
+            final day = DateTime(
+              c.addedAt.year,
+              c.addedAt.month,
+              c.addedAt.day,
+            );
+            final today = DateTime(now.year, now.month, now.day);
+            return today.difference(day).inDays >= 3;
+          } catch (_) {
+            return false;
+          }
+        })
+        .toList(growable: false);
 
     final pool = <RakutenSearchItem>[];
     // 好きなジャンルがある場合はジャンル指定を優先し、ユーザーごとに候補母集団を変える。
@@ -232,6 +276,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
                 doneItems: doneItems,
                 candidateItems: candidateItems,
                 managedShopFrequency: scoreHintShops,
+                soldOutcomeItems: soldOutcomeItems,
+                reactedOutcomeItems: reactedOutcomeItems,
+                likedOnlyOutcomeItems: likedOnlyOutcomeItems,
+                recentCandidatesForBridge: recentCandidates,
+                staleCandidatesForBridge: staleCandidates,
               ),
             )
             .toList()
@@ -374,6 +423,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required List<RakutenManagedProduct> doneItems,
     required List<RakutenManagedProduct> candidateItems,
     required Map<String, int> managedShopFrequency,
+    required List<RakutenManagedProduct> soldOutcomeItems,
+    required List<RakutenManagedProduct> reactedOutcomeItems,
+    required List<RakutenManagedProduct> likedOnlyOutcomeItems,
+    required List<RakutenManagedProduct> recentCandidatesForBridge,
+    required List<RakutenManagedProduct> staleCandidatesForBridge,
   }) {
     final genreMatch = _genreMatchScore(
       item,
@@ -394,15 +448,26 @@ class TodayRecommendationProvider extends ChangeNotifier {
 
     final marketScore = _marketScore(item, priceScore: priceScore);
 
+    final outcomeBoost = _outcomeInsightBoost(
+      item,
+      soldItems: soldOutcomeItems,
+      reactedItems: reactedOutcomeItems,
+      likedOnlyItems: likedOnlyOutcomeItems,
+      recentBridgeCandidates: recentCandidatesForBridge,
+      staleBridgeCandidates: staleCandidatesForBridge,
+    );
+
     // ROOM向けの調整値。履歴一致だけに寄せすぎず、
     // 「売れ筋として強い商品」を前に出せるよう市場性をやや厚めに見る。
     final personalizedScore =
         genreMatch * 2.2 +
         doneSimilarity * 3.0 +
         candidateSimilarity * 1.5 +
-        shopMatch * 1.2;
+        shopMatch * 1.2 +
+        outcomeBoost;
     final finalScore = personalizedScore * 4 + marketScore * 5 + priceScore * 2;
     final isPersonalized =
+        outcomeBoost >= 1.5 ||
         doneSimilarity >= 0.35 ||
         candidateSimilarity >= 0.45 ||
         genreMatch >= 0.55 ||
@@ -424,6 +489,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         genreMatch: genreMatch,
         popularity: popularity,
         priceScore: priceScore,
+        outcomeBoost: outcomeBoost,
       ),
       section: section,
     );
@@ -488,6 +554,127 @@ class TodayRecommendationProvider extends ChangeNotifier {
     return 0;
   }
 
+  /// 分析で使う「反応が良かった商品」に寄せた加点（優先度はコメント順）。
+  double _outcomeInsightBoost(
+    RakutenSearchItem item, {
+    required List<RakutenManagedProduct> soldItems,
+    required List<RakutenManagedProduct> reactedItems,
+    required List<RakutenManagedProduct> likedOnlyItems,
+    required List<RakutenManagedProduct> recentBridgeCandidates,
+    required List<RakutenManagedProduct> staleBridgeCandidates,
+  }) {
+    if (reactedItems.isEmpty) return 0;
+
+    final gid = item.genreId.trim();
+    var boost = 0.0;
+
+    if (gid.isNotEmpty &&
+        soldItems.any((p) => p.genreId.trim() == gid)) {
+      boost += 2.8;
+    }
+
+    final sc = item.shopCode.trim();
+    if (sc.isNotEmpty && soldItems.any((p) => p.shopCode.trim() == sc)) {
+      boost += 2.3;
+    }
+
+    final matchedSoldGenre =
+        gid.isNotEmpty && soldItems.any((p) => p.genreId.trim() == gid);
+    if (!matchedSoldGenre) {
+      if (gid.isNotEmpty && likedOnlyItems.any((p) => p.genreId.trim() == gid)) {
+        boost += 1.9;
+      } else {
+        var simReacted = likedOnlyItems.isEmpty
+            ? 0.0
+            : _historySimilarity(item, likedOnlyItems);
+        final simAllReacted = _historySimilarity(item, reactedItems);
+        if (simAllReacted > simReacted) simReacted = simAllReacted;
+        if (simReacted >= 0.34) {
+          boost += 1.45;
+        }
+      }
+    }
+
+    var bridge = 0.0;
+    for (final c in recentBridgeCandidates) {
+      final sim = _managedProductTokenSimilarity(item, c);
+      if (sim < 0.32) continue;
+      final anchor = _historySimilarity(
+        RakutenSearchItem(
+          productId: c.productId,
+          itemName: c.itemName,
+          itemPrice: c.itemPrice,
+          itemUrl: c.itemUrl,
+          affiliateUrl: c.affiliateUrl,
+          imageUrl: c.imageUrl,
+          shopName: c.shopName,
+          shopCode: c.shopCode,
+          genreId: c.genreId,
+          genreName: c.genreName,
+          reviewCount: 0,
+          reviewAverage: 0,
+        ),
+        reactedItems,
+      );
+      if (anchor >= 0.34) {
+        final score = sim * 1.35;
+        if (score > bridge) bridge = score;
+      }
+    }
+    if (bridge >= 0.4) {
+      boost += 1.15;
+    } else if (bridge >= 0.32) {
+      boost += 0.75;
+    }
+
+    var staleBridge = 0.0;
+    for (final c in staleBridgeCandidates) {
+      final sim = _managedProductTokenSimilarity(item, c);
+      if (sim < 0.3) continue;
+      final anchor = _historySimilarity(
+        RakutenSearchItem(
+          productId: c.productId,
+          itemName: c.itemName,
+          itemPrice: c.itemPrice,
+          itemUrl: c.itemUrl,
+          affiliateUrl: c.affiliateUrl,
+          imageUrl: c.imageUrl,
+          shopName: c.shopName,
+          shopCode: c.shopCode,
+          genreId: c.genreId,
+          genreName: c.genreName,
+          reviewCount: 0,
+          reviewAverage: 0,
+        ),
+        reactedItems,
+      );
+      if (anchor >= 0.32) {
+        if (sim > staleBridge) staleBridge = sim;
+      }
+    }
+    if (staleBridge >= 0.36) {
+      boost += 0.85;
+    } else if (staleBridge >= 0.28) {
+      boost += 0.45;
+    }
+
+    return boost.clamp(0.0, 12.0);
+  }
+
+  double _managedProductTokenSimilarity(
+    RakutenSearchItem item,
+    RakutenManagedProduct p,
+  ) {
+    final itemTokens = _nameTokens(item.itemName);
+    final historyTokens = _nameTokens(p.itemName);
+    if (itemTokens.isEmpty || historyTokens.isEmpty) return 0;
+    final overlap = itemTokens.intersection(historyTokens).length;
+    final denom = itemTokens.length < historyTokens.length
+        ? itemTokens.length
+        : historyTokens.length;
+    return (overlap / denom).clamp(0.0, 1.0);
+  }
+
   double _historySimilarity(
     RakutenSearchItem item,
     List<RakutenManagedProduct> history,
@@ -543,7 +730,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required double genreMatch,
     required double popularity,
     required double priceScore,
+    required double outcomeBoost,
   }) {
+    if (outcomeBoost >= 2.2) return '成果商品（分析）に近い';
     if (doneSimilarity >= 0.45) return 'あなたのコレ履歴に基づく';
     if (shopMatch > 0) return '保存ショップ由来';
     if (candidateSimilarity >= 0.45) return '候補にした商品に近い';

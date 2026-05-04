@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../models/rakuten_managed_product.dart';
 import '../../models/room_activity_event.dart';
-import '../../models/room_colle_list_filters.dart';
 import '../../navigation/app_shell_controller.dart';
+import '../../navigation/rakuten_search_navigator.dart';
 import '../../screens/today_recommendations_screen.dart';
 import '../../services/room_kpi_calculator.dart';
 import '../../state/rakuten_managed_product_provider.dart';
@@ -61,7 +61,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
       builder: (context, managed, act, saved, _) {
         final items = managed.items;
         final shell = context.read<AppShellController>();
-        final now = DateTime.now();
         final done = items
             .where(
               (e) =>
@@ -114,14 +113,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
               .toSet(),
         );
 
-        final kpi = RoomKpiCalculator.calculate(
-          products: items
-              .map(RoomKpiProductRecord.fromManagedProduct)
-              .toList(growable: false),
-          events: act.events,
-          now: now,
-        );
-
         return RefreshIndicator(
           onRefresh: widget.onRefresh,
           child: ListView(
@@ -155,12 +146,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
                 genreRows: genreRows,
                 shopRows: shopRows,
                 timeBuckets: timeBuckets,
-              ),
-              const SizedBox(height: ActivityScreenLayout.sectionGap),
-              _ImprovementActionsCard(
-                shell: shell,
-                staleCandidates: kpi.staleCandidateCount,
-                contextForNav: context,
               ),
             ],
           ),
@@ -307,13 +292,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
       shell.openRoomCollect(initialTabIndex: 1);
     }
 
-    void navStale() {
-      shell.openRoomCollect(
-        initialTabIndex: 0,
-        candidateStalePreset: RoomColleStaleCandidatePreset.threePlus,
-      );
-    }
-
     if (outcomeSubset.isEmpty) {
       return _DecisionBrief(
         conclusion:
@@ -321,13 +299,20 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
         rationale:
             '分析は成果が付いたコレ済だけを使います。まずコレして評価を付けましょう。',
         footnote: 'コレ済：${done.length}件　成果対象：0件',
-        actions: const [
-          'おすすめコレから候補を2件追加',
-          'コレ済に移して「売れた／反応あり」を付ける',
+        nextSteps: [
+          _NextStepAction(
+            title: 'おすすめコレから候補を2件追加する',
+            basis: '候補があればコレして、成果ラベルを付けられる状態を作れます',
+            buttonLabel: 'おすすめコレを開く',
+            onPressed: navRec,
+          ),
+          _NextStepAction(
+            title: 'コレ済に移して「売れた／反応あり」を付ける',
+            basis: '分析の「次の一手」はこの成果ログからだけ組み立てます',
+            buttonLabel: 'コレ済一覧を開く',
+            onPressed: navDone,
+          ),
         ],
-        onAddCandidates: navRec,
-        onViewWinners: navDone,
-        onOrganizeStale: navStale,
       );
     }
 
@@ -389,33 +374,65 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
       }
     }
 
-    final actions = <String>[
-      if (sumT > 0 && bestCount > 0)
-        '$bestLabelの前後にROOM投稿を合わせる',
-      if (topGenre != null && topGenre.count >= 2)
-        '同ジャンルをあと3件候補に追加',
-      if (topShop != null && topShop.count >= 2)
-        '反応が良かったショップをROOMコレで再確認',
-    ];
-    if (actions.isEmpty) {
-      actions.addAll(const [
-        '候補を3件追加する',
-        'コレ済の評価を埋める',
-      ]);
+    final nextSteps = <_NextStepAction>[];
+    if (sumT > 0 && bestCount > 0) {
+      nextSteps.add(
+        _NextStepAction(
+          title: '$bestLabel前後にROOM投稿する',
+          basis: '成果の投稿記録が「$bestLabel」に$bestCount件集中しています（全体の$pct%）',
+          buttonLabel: '候補一覧を開く',
+          onPressed: () => shell.openRoomCollect(initialTabIndex: 0),
+        ),
+      );
+    }
+    if (topGenre != null && topGenre.count >= 2) {
+      nextSteps.add(
+        _NextStepAction(
+          title: '「${topGenre.label}」系をあと3件候補に追加する',
+          basis: '最多ジャンルは「${topGenre.label}」の${topGenre.count}件です',
+          buttonLabel: 'おすすめコレを開く',
+          onPressed: navRec,
+        ),
+      );
+    }
+    if (topShop != null && topShop.count >= 2) {
+      nextSteps.add(
+        _NextStepAction(
+          title: '「${_shortShopLabel(topShop.label)}」から類似商品を探す',
+          basis: '最多ショップは「${_shortShopLabel(topShop.label)}」の${topShop.count}件です',
+          buttonLabel: '楽天で検索',
+          onPressed: () => openRakutenSearchScreen(navCtx),
+        ),
+      );
+    }
+    if (nextSteps.isEmpty) {
+      nextSteps.add(
+        _NextStepAction(
+          title: '候補を増やして成果のサンプルを厚くする',
+          basis: '成果は$n件ありますが、時間帯・ジャンル・ショップの偏りがまだはっきりしません',
+          buttonLabel: 'おすすめコレを開く',
+          onPressed: navRec,
+        ),
+      );
+      nextSteps.add(
+        _NextStepAction(
+          title: 'コレ済の評価を最新に保つ',
+          basis: '「売れた／反応あり」が増えると、次の一手の根拠が強くなります',
+          buttonLabel: 'コレ済一覧を開く',
+          onPressed: navDone,
+        ),
+      );
     }
 
     final conclusion = sumT > 0 && bestCount > 0
-        ? '次の一手：「$bestLabel」に投稿を寄せるのが最優先です。'
-        : '次の一手：候補を増やして成果データを貯めるのが最優先です。';
+        ? '「$bestLabel」に成果が寄っています。'
+        : '成果は出ていますが、次はサンプルを増やして傾向を固めましょう。';
 
     return _DecisionBrief(
       conclusion: conclusion,
       rationale: rationale.toString().trim(),
       footnote: '※ 時刻はコレ済の記録（端末時刻）。ROOMの実投稿と一致しない場合があります。',
-      actions: actions,
-      onAddCandidates: navRec,
-      onViewWinners: navDone,
-      onOrganizeStale: navStale,
+      nextSteps: nextSteps.take(3).toList(growable: false),
     );
   }
 
@@ -488,24 +505,32 @@ class _AggRow {
   double get rate => count <= 0 ? 0 : reactCount / count;
 }
 
+class _NextStepAction {
+  const _NextStepAction({
+    required this.title,
+    required this.basis,
+    required this.buttonLabel,
+    required this.onPressed,
+  });
+
+  final String title;
+  final String basis;
+  final String buttonLabel;
+  final VoidCallback onPressed;
+}
+
 class _DecisionBrief {
   const _DecisionBrief({
     required this.conclusion,
     required this.rationale,
     required this.footnote,
-    required this.actions,
-    required this.onAddCandidates,
-    required this.onViewWinners,
-    required this.onOrganizeStale,
+    required this.nextSteps,
   });
 
   final String conclusion;
   final String rationale;
   final String footnote;
-  final List<String> actions;
-  final VoidCallback onAddCandidates;
-  final VoidCallback onViewWinners;
-  final VoidCallback onOrganizeStale;
+  final List<_NextStepAction> nextSteps;
 }
 
 class _DecisionInsightCard extends StatelessWidget {
@@ -561,38 +586,39 @@ class _DecisionInsightCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'おすすめ行動',
+            '次の一手（最大3件）',
             style: theme.textTheme.labelSmall?.copyWith(
               color: AppColors.textTertiary,
               fontWeight: FontWeight.w800,
             ),
           ),
-          const SizedBox(height: 8),
-          for (final a in brief.actions) ...[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 3),
-                  child: Icon(
-                    Icons.arrow_right_rounded,
-                    size: 20,
-                    color: AppColors.accentPrimary,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    '・$a',
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      height: 1.35,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-              ],
+          const SizedBox(height: 10),
+          for (var i = 0; i < brief.nextSteps.length; i++) ...[
+            if (i > 0) const SizedBox(height: 14),
+            Text(
+              '${i + 1}. ${brief.nextSteps[i].title}',
+              style: theme.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w800,
+                height: 1.35,
+                fontSize: 15,
+              ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 4),
+            Text(
+              brief.nextSteps[i].basis,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.4,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+            AppSecondaryButton(
+              label: brief.nextSteps[i].buttonLabel,
+              onPressed: brief.nextSteps[i].onPressed,
+              icon: const Icon(Icons.arrow_forward_rounded, size: 17),
+            ),
           ],
           const SizedBox(height: 8),
           Text(
@@ -630,28 +656,6 @@ class _DecisionInsightCard extends StatelessWidget {
               ),
             ),
           ],
-          const SizedBox(height: 16),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              AppSecondaryButton(
-                label: '候補を足す',
-                onPressed: brief.onAddCandidates,
-                icon: const Icon(Icons.add_rounded, size: 17),
-              ),
-              AppSecondaryButton(
-                label: 'コレ済を見る',
-                onPressed: brief.onViewWinners,
-                icon: const Icon(Icons.inventory_2_outlined, size: 17),
-              ),
-              AppSecondaryButton(
-                label: '放置候補',
-                onPressed: brief.onOrganizeStale,
-                icon: const Icon(Icons.schedule_rounded, size: 17),
-              ),
-            ],
-          ),
         ],
       ),
     );
@@ -1462,143 +1466,6 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
             ),
           ),
         ],
-      ],
-    );
-  }
-}
-
-typedef _ActSpec = ({String title, String body, String label, VoidCallback onTap});
-
-class _ImprovementActionsCard extends StatelessWidget {
-  const _ImprovementActionsCard({
-    required this.shell,
-    required this.staleCandidates,
-    required this.contextForNav,
-  });
-
-  final AppShellController shell;
-  final int staleCandidates;
-  final BuildContext contextForNav;
-
-  @override
-  Widget build(BuildContext context) {
-    final specs = <_ActSpec>[];
-
-    if (staleCandidates > 0) {
-      specs.add((
-        title: '放置候補を整理する',
-        body: 'ストックが軽くなると、次の判断が速くなります',
-        label: '放置候補を開く',
-        onTap: () => shell.openRoomCollect(
-          initialTabIndex: 0,
-          candidateStalePreset: RoomColleStaleCandidatePreset.threePlus,
-        ),
-      ));
-    }
-    specs.add((
-      title: '反応に近い候補を足す',
-      body: 'おすすめコレから、すぐストックに追加できます',
-      label: 'おすすめコレを開く',
-      onTap: () {
-        Navigator.of(contextForNav).push<void>(
-          MaterialPageRoute<void>(
-            builder: (_) => const TodayRecommendationsScreen(),
-          ),
-        );
-      },
-    ));
-    specs.add((
-      title: 'コレ済で評価を振り返る',
-      body: '売れた・反応ありを見直すと次の方針が立てやすいです',
-      label: 'ROOMコレ（コレ済）を開く',
-      onTap: () => shell.openRoomCollect(initialTabIndex: 1),
-    ));
-
-    final picked = specs.take(3).toList();
-
-    return AppCard(
-      padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
-      elevated: true,
-      radius: ActivityScreenLayout.cardRadius,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '次にやること',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 20,
-                ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            '優先度の高い順に最大3つです。',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontSize: 15,
-                ),
-          ),
-          const SizedBox(height: 12),
-          for (var i = 0; i < picked.length; i++) ...[
-            if (i > 0)
-              Divider(
-                height: 20,
-                color: AppColors.divider.withValues(alpha: 0.6),
-              ),
-            _actionTile(
-              context,
-              title: picked[i].title,
-              body: picked[i].body,
-              label: picked[i].label,
-              onTap: picked[i].onTap,
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _actionTile(
-    BuildContext context, {
-    required String title,
-    required String body,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          minVerticalPadding: 4,
-          title: Text(
-            title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16,
-                ),
-          ),
-          subtitle: Padding(
-            padding: const EdgeInsets.only(top: 6),
-            child: Text(
-              body,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.38,
-                    fontSize: 14,
-                  ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 4),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: AppSecondaryButton(
-            label: label,
-            onPressed: onTap,
-            icon: const Icon(Icons.arrow_forward_rounded, size: 18),
-          ),
-        ),
       ],
     );
   }

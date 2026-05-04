@@ -250,6 +250,16 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     });
   }
 
+  Future<void> _refreshHome() async {
+    if (!mounted) return;
+    final room = context.read<RakutenManagedProductProvider>();
+    await room.refreshManagedProductList(showLoadingIndicator: false);
+    if (!mounted) return;
+    context.read<RoomActivityEventProvider>().reloadFromStorage();
+    if (!mounted) return;
+    context.read<TodayRecommendationProvider>().reloadBundleFromStorage();
+  }
+
   void _openRoomList(
     BuildContext context, {
     int initialTabIndex = 0,
@@ -366,81 +376,88 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                         (recProvider.totalCount - recProvider.pendingCount)
                             .clamp(0, recProvider.totalCount);
 
-                    return SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          _HomeUi.screenPaddingH,
-                          _HomeUi.screenPaddingV,
-                          _HomeUi.screenPaddingH,
-                          bottomInset + navBarReserve + _HomeUi.listBottomExtra,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            _HomeMomentumHeader(displayName: displayName),
-                            SizedBox(height: _HomeUi.gapSection),
-                            _HomeTodayProgressCard(
-                              kpi: kpi,
-                              collectLimit: collectLimit,
-                              candidateCount: nCandidate,
-                              totalCount: recProvider.totalCount,
-                              pendingCount: recProvider.pendingCount,
-                              isCompleted: recProvider.isCompleted,
-                              isLoading: recProvider.isLoading,
-                              hasTodaySuggestions: hasTodaySuggestions,
-                              todayDoneCountForRec: todayDoneCountForRec,
-                              recTotalCount: recProvider.totalCount,
-                              recommendationHintLine:
-                                  todayRecommendationHomeHintLine(
-                                bundle: recProvider.bundle,
+                    return RefreshIndicator(
+                      onRefresh: _refreshHome,
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            _HomeUi.screenPaddingH,
+                            _HomeUi.screenPaddingV,
+                            _HomeUi.screenPaddingH,
+                            bottomInset +
+                                navBarReserve +
+                                _HomeUi.listBottomExtra,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              _HomeMomentumHeader(displayName: displayName),
+                              SizedBox(height: _HomeUi.gapSection),
+                              _HomeTodayProgressCard(
+                                kpi: kpi,
+                                collectLimit: collectLimit,
+                                candidateCount: nCandidate,
+                                totalCount: recProvider.totalCount,
+                                pendingCount: recProvider.pendingCount,
+                                isCompleted: recProvider.isCompleted,
                                 isLoading: recProvider.isLoading,
+                                hasTodaySuggestions: hasTodaySuggestions,
+                                todayDoneCountForRec: todayDoneCountForRec,
+                                recTotalCount: recProvider.totalCount,
+                                recommendationHintLine:
+                                    todayRecommendationHomeHintLine(
+                                  bundle: recProvider.bundle,
+                                  isLoading: recProvider.isLoading,
+                                ),
+                                onOpenSearch: () =>
+                                    openRakutenSearchScreen(context),
+                                onOpenCandidates: () =>
+                                    _openRoomList(context, initialTabIndex: 0),
+                                onOpenActivity: () => _openActivity(context),
+                                onPrimaryRecommendations: () =>
+                                    _openTodayRecommendations(context),
                               ),
-                              onOpenSearch: () =>
-                                  openRakutenSearchScreen(context),
-                              onOpenCandidates: () =>
-                                  _openRoomList(context, initialTabIndex: 0),
-                              onOpenActivity: () => _openActivity(context),
-                              onPrimaryRecommendations: () =>
-                                  _openTodayRecommendations(context),
-                            ),
-                            _HomeLimitAlertCard(
-                              collectLimit: collectLimit,
-                              onOrganizeCandidates: () =>
-                                  _openRoomList(context, initialTabIndex: 0),
-                              onComments: () => _openComments(context),
-                              onDoneList: () =>
-                                  _openRoomList(context, initialTabIndex: 1),
-                              onActivity: () => _openActivity(context),
-                            ),
-                            SizedBox(height: _HomeUi.gapSection),
-                            _RecentCandidatesHomeSection(
-                              candidates: recentCandidates,
-                              candidateTotalCount: nCandidate,
-                              onOpenCandidateTap: (productId) => _openRoomList(
-                                context,
-                                focusCandidateProductId: productId,
+                              _HomeLimitAlertCard(
+                                collectLimit: collectLimit,
+                                onOrganizeCandidates: () => _openRoomList(
+                                  context,
+                                  initialTabIndex: 0,
+                                ),
+                                onComments: () => _openComments(context),
+                                onDoneList: () =>
+                                    _openRoomList(context, initialTabIndex: 1),
+                                onActivity: () => _openActivity(context),
                               ),
-                              onOpenFullList: () => _openRoomList(context),
-                            ),
-                            SizedBox(height: _HomeUi.gapSection),
-                            _RoomManagementSection(
-                              candidateTotal: nCandidate,
-                              doneTotal: nDone,
-                              todayDoneCount: nTodayDone,
-                              lastDoneAt: lastDone,
-                              onCandidateTap: () =>
-                                  _openRoomList(context, initialTabIndex: 0),
-                              onDoneTap: () =>
-                                  _openRoomList(context, initialTabIndex: 1),
-                              onTodayTap: () => _openRoomList(
-                                context,
-                                initialTabIndex: 1,
-                                doneFilterLocalDay: todayLocalDay,
+                              SizedBox(height: _HomeUi.gapSection),
+                              _RecentCandidatesHomeSection(
+                                candidates: recentCandidates,
+                                candidateTotalCount: nCandidate,
+                                onOpenCandidateTap: (productId) => _openRoomList(
+                                  context,
+                                  focusCandidateProductId: productId,
+                                ),
+                                onOpenFullList: () => _openRoomList(context),
                               ),
-                              onLastCollectTap: () => _openActivity(context),
-                            ),
-                          ],
+                              SizedBox(height: _HomeUi.gapSection),
+                              _RoomManagementSection(
+                                candidateTotal: nCandidate,
+                                doneTotal: nDone,
+                                todayDoneCount: nTodayDone,
+                                lastDoneAt: lastDone,
+                                onCandidateTap: () =>
+                                    _openRoomList(context, initialTabIndex: 0),
+                                onDoneTap: () =>
+                                    _openRoomList(context, initialTabIndex: 1),
+                                onTodayTap: () => _openRoomList(
+                                  context,
+                                  initialTabIndex: 1,
+                                  doneFilterLocalDay: todayLocalDay,
+                                ),
+                                onLastCollectTap: () => _openActivity(context),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );

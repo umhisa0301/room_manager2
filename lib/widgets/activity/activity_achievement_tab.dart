@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../../models/rakuten_managed_product.dart';
 import '../../models/room_activity_event.dart';
-import '../../models/room_colle_list_filters.dart';
 import '../../navigation/app_shell_controller.dart';
 import '../../navigation/rakuten_search_navigator.dart';
 import '../../screens/today_recommendations_screen.dart';
@@ -14,7 +13,6 @@ import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
 import '../../state/today_recommendation_provider.dart';
 import '../../theme/app_theme.dart';
-import '../../widgets/app_button.dart';
 import '../../widgets/app_card.dart';
 import 'activity_navigation_helpers.dart';
 import 'activity_screen_layout.dart';
@@ -113,11 +111,7 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
                 todayCandidates: todayCandidates,
                 streakDays: streak,
                 recPendingCount: recProv.pendingCount,
-              ),
-              const SizedBox(height: ActivityScreenLayout.sectionGap),
-              _RoomPostLimitCard(
-                snapshot: collectLimit,
-                shell: shell,
+                collectLimit: collectLimit,
               ),
               const SizedBox(height: ActivityScreenLayout.sectionGap),
               _WeekTotalBarsCard(
@@ -246,6 +240,7 @@ class _AchievementHeroCard extends StatelessWidget {
     required this.todayCandidates,
     required this.streakDays,
     required this.recPendingCount,
+    required this.collectLimit,
   });
 
   final List<RakutenManagedProduct> items;
@@ -253,6 +248,7 @@ class _AchievementHeroCard extends StatelessWidget {
   final int todayCandidates;
   final int streakDays;
   final int recPendingCount;
+  final RoomCollectPostLimitSnapshot collectLimit;
 
   @override
   Widget build(BuildContext context) {
@@ -265,7 +261,7 @@ class _AchievementHeroCard extends StatelessWidget {
         : '今日もROOM運用できています';
     final subLine = emptyDay
         ? 'まずはおすすめコレを1件確認すると、流れが作れます'
-        : '投稿・候補は「今日0時〜現在」の件数です（ROOM上限は下のカードで24時間を表示）';
+        : '投稿・候補は「今日0時〜現在」の件数です。ROOMの投稿上限の詳細はホームの「今日のROOM運用」で';
 
     final candStock = items
         .where((e) => e.status == RakutenManagedProductStatus.candidate)
@@ -314,6 +310,49 @@ class _AchievementHeroCard extends StatelessWidget {
               height: 1.35,
               fontWeight: FontWeight.w600,
               fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.surfaceVariant.withValues(alpha: 0.35),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: AppColors.divider.withValues(alpha: 0.55),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'ROOM投稿の上限（要約）',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.textTertiary,
+                    fontSize: 11,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  '直近24時間：${collectLimit.todayCount} / ${RoomCollectPostLimitSnapshot.dailyLimit}件',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    height: 1.32,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'この1時間：${collectLimit.hourCount} / ${RoomCollectPostLimitSnapshot.hourlyLimit}件',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    height: 1.32,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 14),
@@ -508,271 +547,6 @@ class _AchievementHeroCard extends StatelessWidget {
     );
   }
 }
-
-class _RoomPostLimitCard extends StatelessWidget {
-  const _RoomPostLimitCard({
-    required this.snapshot,
-    required this.shell,
-  });
-
-  final RoomCollectPostLimitSnapshot snapshot;
-  final AppShellController shell;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final snap = snapshot;
-    final agg = _aggregateState(snap);
-
-    return AppCard(
-      padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
-      elevated: true,
-      radius: ActivityScreenLayout.cardRadius,
-      borderColor: AppColors.divider.withValues(alpha: 0.85),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.speed_rounded, color: _stateColor(agg), size: 26),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  'ROOM投稿の上限',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(
-            'ROOMの目安：24時間あたり200件・この1時間あたり100件',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.3,
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            'あと ${snap.dailyRemaining} 件（24時間）／ この1時間あと ${snap.hourlyRemaining} 件',
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-              fontSize: 15,
-              color: AppColors.accentPrimary,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            '直近24時間：${snap.todayCount} / ${RoomCollectPostLimitSnapshot.dailyLimit}件',
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-              fontSize: 16,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '直近1時間：${snap.hourCount} / ${RoomCollectPostLimitSnapshot.hourlyLimit}件',
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-              fontSize: 16,
-            ),
-          ),
-          const SizedBox(height: 4),
-          _limitGaugeRow(
-            context,
-            label: '直近24時間の投稿数',
-            used: snap.todayCount,
-            limit: RoomCollectPostLimitSnapshot.dailyLimit,
-            state: snap.dailyBarState,
-            remainingLabel: '',
-            paceHint: _paceHint(
-              reached: snap.isDailyReached,
-              used: snap.todayCount,
-              limit: RoomCollectPostLimitSnapshot.dailyLimit,
-            ),
-          ),
-          const SizedBox(height: 10),
-          _limitGaugeRow(
-            context,
-            label: 'この1時間の投稿数',
-            used: snap.hourCount,
-            limit: RoomCollectPostLimitSnapshot.hourlyLimit,
-            state: snap.hourlyBarState,
-            remainingLabel: 'この1時間あと ${snap.hourlyRemaining} 件',
-            paceHint: _paceHint(
-              reached: snap.isHourlyReached,
-              used: snap.hourCount,
-              limit: RoomCollectPostLimitSnapshot.hourlyLimit,
-            ),
-            footnote: snap.isHourlyReached
-                ? snap.recoveryFootnote(DateTime.now())
-                : null,
-          ),
-          if (snap.isAnyLimitReached) ...[
-            const SizedBox(height: 14),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFF3F5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: AppColors.error.withValues(alpha: 0.35),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    snap.isDailyReached
-                        ? '直近24時間の上限です。時間を空けましょう'
-                        : 'この時間帯の上限に達しています。少し時間を空けましょう',
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      color: AppColors.error,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      AppSecondaryButton(
-                        label: '候補を整理',
-                        onPressed: () => shell.openRoomCollect(
-                          initialTabIndex: 0,
-                          candidateStalePreset:
-                              RoomColleStaleCandidatePreset.threePlus,
-                        ),
-                        icon: const Icon(Icons.inventory_2_outlined, size: 18),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  String? _paceHint({
-    required bool reached,
-    required int used,
-    required int limit,
-  }) {
-    if (reached) return '上限に達しました。時間を空けましょう';
-    if (limit <= 0) return null;
-    final ratio = used / limit;
-    if (ratio >= 0.8) return '少しペースを落としましょう';
-    return null;
-  }
-
-  Color _stateColor(_AggState s) {
-    return switch (s) {
-      _AggState.calm => AppColors.accentPrimary,
-      _AggState.caution => const Color(0xFFE67E22),
-      _AggState.danger => AppColors.error,
-    };
-  }
-
-  _AggState _aggregateState(RoomCollectPostLimitSnapshot s) {
-    if (s.isAnyLimitReached) return _AggState.danger;
-    if (s.isDailyWarning || s.isHourlyWarning) return _AggState.caution;
-    return _AggState.calm;
-  }
-
-  Widget _limitGaugeRow(
-    BuildContext context, {
-    required String label,
-    required int used,
-    required int limit,
-    required RoomCollectPostLimitBarState state,
-    required String remainingLabel,
-    String? paceHint,
-    String? footnote,
-  }) {
-    final color = switch (state) {
-      RoomCollectPostLimitBarState.normal => AppColors.accentPrimary,
-      RoomCollectPostLimitBarState.warning => const Color(0xFFE67E22),
-      RoomCollectPostLimitBarState.reached => AppColors.error,
-    };
-    final progress = limit <= 0 ? 0.0 : (used / limit).clamp(0.0, 1.0);
-    final theme = Theme.of(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                label,
-                style: theme.textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 14,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                remainingLabel,
-                textAlign: TextAlign.end,
-                maxLines: 2,
-                softWrap: true,
-                style: theme.textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12,
-                  color: state == RoomCollectPostLimitBarState.normal
-                      ? AppColors.textSecondary
-                      : color,
-                ),
-              ),
-            ),
-          ],
-        ),
-        if (paceHint != null) ...[
-          const SizedBox(height: 4),
-          Text(
-            paceHint,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w700,
-              fontSize: 12,
-            ),
-          ),
-        ],
-        const SizedBox(height: 8),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(999),
-          child: LinearProgressIndicator(
-            minHeight: 9,
-            value: progress,
-            backgroundColor: AppColors.surfaceVariant,
-            color: color,
-          ),
-        ),
-        if (footnote != null && footnote.isNotEmpty) ...[
-          const SizedBox(height: 6),
-          Text(
-            footnote,
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.textTertiary,
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-}
-
-enum _AggState { calm, caution, danger }
 
 class _TodayActivityLogSection extends StatefulWidget {
   const _TodayActivityLogSection({
@@ -1151,7 +925,7 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
           ),
           const SizedBox(height: 12),
           Text(
-            '各曜日は「投稿（ピンク）＋候補（青）」の件数です。0件も表示します。',
+            '各曜日は下に投稿数、棒の内側は候補数（ピンク＝投稿、青＝候補）です。0件も表示します。',
             style: theme.textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
               height: 1.35,
@@ -1181,19 +955,36 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                   const EdgeInsets.symmetric(horizontal: 2),
                               child: Column(
                                 children: [
-                                  Text(
-                                    e.posts + e.cand == 0
-                                        ? '0件'
-                                        : '${e.posts}+${e.cand}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.labelSmall
-                                        ?.copyWith(
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 10,
-                                      color: AppColors.textSecondary,
-                                    ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        '候補 ${e.cand}件',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 9,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        e.posts + e.cand == 0
+                                            ? '投稿 0件'
+                                            : '投稿 ${e.posts}件',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 10,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(height: 4),
                                   Expanded(
