@@ -22,8 +22,8 @@ Future<void> showAddCandidateEntryBottomSheet({
   return showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
-    isScrollControlled: false,
-    useSafeArea: true,
+    isScrollControlled: true,
+    useSafeArea: false,
     backgroundColor: AppColors.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
@@ -31,18 +31,35 @@ Future<void> showAddCandidateEntryBottomSheet({
       ),
     ),
     builder: (sheetContext) {
-      return SafeArea(
-        top: false,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: RakutenSearchScreenUi.addCandidateSheetContentPadding,
-            child: AddCandidateEntrySheetBody(
-              onTapRakutenProductSearch: () =>
-                  onTapRakutenProductSearch(sheetContext),
-              onTapGenreSearch: () => onTapGenreSearch(sheetContext),
-              onTapSavedShops: () => onTapSavedShops(sheetContext),
-              onTapAddFromUrl: () => onTapAddFromUrl(sheetContext),
-              onTapShopDiscovery: () => onTapShopDiscovery(sheetContext),
+      final mq = MediaQuery.of(sheetContext);
+      final keyboardBottom = mq.viewInsets.bottom;
+      final viewHeight = mq.size.height;
+      final topBlocking = mq.padding.top;
+      final availBody = (viewHeight - keyboardBottom - topBlocking).clamp(
+        240.0,
+        viewHeight,
+      );
+      final sheetHeight = (availBody * 0.78).clamp(280.0, availBody * 0.85);
+
+      return AnimatedPadding(
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.easeOut,
+        padding: EdgeInsets.only(bottom: keyboardBottom),
+        child: SizedBox(
+          height: sheetHeight,
+          width: double.infinity,
+          child: SafeArea(
+            top: false,
+            child: SingleChildScrollView(
+              padding: RakutenSearchScreenUi.addCandidateSheetContentPadding,
+              child: AddCandidateEntrySheetBody(
+                onTapRakutenProductSearch: () =>
+                    onTapRakutenProductSearch(sheetContext),
+                onTapGenreSearch: () => onTapGenreSearch(sheetContext),
+                onTapSavedShops: () => onTapSavedShops(sheetContext),
+                onTapAddFromUrl: () => onTapAddFromUrl(sheetContext),
+                onTapShopDiscovery: () => onTapShopDiscovery(sheetContext),
+              ),
             ),
           ),
         ),

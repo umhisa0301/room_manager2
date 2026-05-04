@@ -23,6 +23,7 @@ class RakutenSearchResultCard extends StatelessWidget {
     this.onToggleSelected,
     this.selectionDisabledLabel,
     this.genreDisplayLineOverride,
+    this.sourceContextLabel,
   });
 
   final RakutenSearchItem item;
@@ -38,6 +39,9 @@ class RakutenSearchResultCard extends StatelessWidget {
   /// 指定時はジャンル行にこれを表示（検索結果の API 解決名など）。
   /// null のときは [RakutenProductGenreDisplay.resolve]（API名・マスタ・未分類）。
   final String? genreDisplayLineOverride;
+
+  /// 一覧の出所（例: 保存ショップ）。指定時はアクション行の直前に小さく表示する。
+  final String? sourceContextLabel;
 
   static const double _contentGap = 6;
   static const double _metaGap = 4;
@@ -163,6 +167,22 @@ class RakutenSearchResultCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: genreLineStyle,
+                        ),
+                      ],
+                      if (sourceContextLabel != null &&
+                          sourceContextLabel!.trim().isNotEmpty) ...[
+                        const SizedBox(height: _metaGap),
+                        Text(
+                          sourceContextLabel!.trim(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: genreLineStyle.copyWith(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.accentPrimary.withValues(
+                              alpha: 0.92,
+                            ),
+                          ),
                         ),
                       ],
                       if (localStatus != RakutenManagedProductStatus.none &&

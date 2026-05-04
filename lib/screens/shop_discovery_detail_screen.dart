@@ -376,14 +376,14 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                   }
                   return ListView.separated(
                     padding: EdgeInsets.fromLTRB(
-                      0,
+                      RakutenSearchScreenUi.screenPadH,
                       RakutenSearchScreenUi.listScrollTopPad,
-                      0,
+                      RakutenSearchScreenUi.screenPadH,
                       AppDimensions.spacingLg,
                     ),
                     itemCount: items.length,
                     separatorBuilder: (_, __) =>
-                        const SizedBox(height: AppDimensions.spacingSm + 2),
+                        SizedBox(height: RakutenSearchScreenUi.listCardGap),
                     itemBuilder: (context, index) {
                       final item = items[index];
                       return RakutenSearchResultCard(
@@ -391,6 +391,8 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                         localStatus: managed.statusForProduct(item.productId),
                         isRegistering: managed.isRegistering(item.productId),
                         genreDisplayLineOverride: _genreLineForItem(item),
+                        sourceContextLabel:
+                            _shouldLoadItemsFromShopCode ? '保存ショップ' : null,
                         onRegisterCandidate: () async {
                           final err = await managed.registerCandidate(item);
                           if (!context.mounted) return;

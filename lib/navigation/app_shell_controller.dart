@@ -24,10 +24,10 @@ class RoomCollectNavigationIntent {
   final RoomColleStaleCandidatePreset? candidateStalePreset;
 }
 
-/// アプリシェル（下部5タブ）の選択インデックスと、タブ間の導線用インテントを集約する。
+/// アプリシェル（下部ナビ: ホーム・探す・ROOMコレ・分析・マイページ）の選択インデックスと、
+/// タブ間の導線用インテントを集約する。
 ///
-/// - タブ切り替えは [selectTab]（= フッタータップ相当）。
-/// - ホームから ROOMコレ／活動へは `Navigator.push` せず [openRoomCollect] / [openActivityTab] で統一する。
+/// [IndexedStack] の対応: 0=ホーム, 1=ROOMコレ, 2=コメント（フッター非表示）, 3=分析, 4=マイページ
 class AppShellController extends ChangeNotifier {
   AppShellController() : _currentIndex = 0;
 
@@ -83,7 +83,7 @@ class AppShellController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 活動タブ（インデックス3）へ。フッターを維持。
+  /// 分析タブ（インデックス3）へ。フッターを維持。
   void openActivityTab() {
     if (_currentIndex == 3) return;
     _currentIndex = 3;

@@ -15,8 +15,9 @@ import 'screens/comment_template_edit_screen.dart';
 import 'widgets/add_candidate_entry_sheet.dart';
 import 'widgets/common_draggable_edge_fab.dart';
 
-/// 下部ナビ5項目（ホーム・探す・分析・ROOMコレ・マイページ）＋ [IndexedStack] で5画面。
-/// コメントはフッター外（index 2）・FAB から遷移。選択中はアクセント色＋背景ピル。
+/// 下部ナビ表示は ホーム・探す・ROOMコレ・分析・マイページ。
+/// [IndexedStack] は 0=ホーム, 1=ROOMコレ, 2=コメント（フッター非表示）, 3=分析, 4=マイページ。
+/// コメントはフッター外・[CommonDraggableEdgeFab] / コメントタブ内 FAB から遷移。
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
 
@@ -169,17 +170,6 @@ class _AppShellState extends State<AppShell> {
                 ),
                 Expanded(
                   child: _NavItem(
-                    icon: Icons.insights_outlined,
-                    selectedIcon: Icons.insights_rounded,
-                    label: '分析',
-                    tooltip: null,
-                    isSelected: idx == 3,
-                    onTap: () =>
-                        context.read<AppShellController>().selectTab(3),
-                  ),
-                ),
-                Expanded(
-                  child: _NavItem(
                     icon: Icons.collections_bookmark_outlined,
                     selectedIcon: Icons.collections_bookmark,
                     label: 'ROOMコレ',
@@ -187,6 +177,17 @@ class _AppShellState extends State<AppShell> {
                     isSelected: idx == 1,
                     onTap: () =>
                         context.read<AppShellController>().selectTab(1),
+                  ),
+                ),
+                Expanded(
+                  child: _NavItem(
+                    icon: Icons.insights_outlined,
+                    selectedIcon: Icons.insights_rounded,
+                    label: '分析',
+                    tooltip: null,
+                    isSelected: idx == 3,
+                    onTap: () =>
+                        context.read<AppShellController>().selectTab(3),
                   ),
                 ),
                 Expanded(

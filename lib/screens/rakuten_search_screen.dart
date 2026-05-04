@@ -590,19 +590,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               ),
               Expanded(
                 child: _RakutenSearchBottomNavItem(
-                  icon: Icons.travel_explore_outlined,
-                  selectedIcon: Icons.travel_explore_rounded,
-                  label: '探す',
-                  isSelected: true,
-                  onTap: () {},
-                ),
-              ),
-              Expanded(
-                child: _RakutenSearchBottomNavItem(
                   icon: Icons.add_circle_outline_rounded,
                   selectedIcon: Icons.add_circle_rounded,
-                  label: '＋',
-                  isSelected: false,
+                  label: '探す',
+                  isSelected: true,
                   onTap: () {
                     _showAddCandidateSheet();
                   },
@@ -615,6 +606,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   label: 'ROOMコレ',
                   isSelected: false,
                   onTap: () => _returnToShellWithTab(context, 1),
+                ),
+              ),
+              Expanded(
+                child: _RakutenSearchBottomNavItem(
+                  icon: Icons.insights_outlined,
+                  selectedIcon: Icons.insights_rounded,
+                  label: '分析',
+                  isSelected: false,
+                  onTap: () => _returnToShellWithTab(context, 3),
                 ),
               ),
               Expanded(
