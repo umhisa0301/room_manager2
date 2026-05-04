@@ -32,6 +32,7 @@ import '../widgets/app_text_field.dart';
 import '../widgets/common_draggable_edge_fab.dart';
 import '../widgets/search_group_screen_shell.dart';
 import '../widgets/shop_discovery_card.dart';
+import 'add_candidate_from_url_screen.dart';
 import 'saved_shops_screen.dart';
 import 'shop_discovery_detail_screen.dart';
 
@@ -504,6 +505,24 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
+  Future<void> _openGenreSearchFromSheet(BuildContext sheetContext) async {
+    Navigator.of(sheetContext).pop();
+    await Future<void>.delayed(Duration.zero);
+    if (!mounted) return;
+    _onModeChanged(_RakutenSearchMode.genre);
+  }
+
+  Future<void> _openAddFromUrlFromSheet(BuildContext sheetContext) async {
+    Navigator.of(sheetContext).pop();
+    await Future<void>.delayed(Duration.zero);
+    if (!mounted) return;
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (_) => const AddCandidateFromUrlScreen(),
+      ),
+    );
+  }
+
   Future<void> _openSavedShopsFromSheet(BuildContext sheetContext) async {
     Navigator.of(sheetContext).pop();
     await Future<void>.delayed(Duration.zero);
@@ -518,8 +537,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       context: context,
       onTapRakutenProductSearch: (sheetContext) async {
         Navigator.of(sheetContext).pop();
+        await Future<void>.delayed(Duration.zero);
+        if (!mounted) return;
+        _onModeChanged(_RakutenSearchMode.product);
       },
+      onTapGenreSearch: _openGenreSearchFromSheet,
       onTapSavedShops: _openSavedShopsFromSheet,
+      onTapAddFromUrl: _openAddFromUrlFromSheet,
       onTapShopDiscovery: (sheetContext) async {
         Navigator.of(sheetContext).pop();
         await Future<void>.delayed(Duration.zero);

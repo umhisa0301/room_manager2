@@ -10,6 +10,7 @@ class RakutenProductSearchCondition {
     this.minReviewAverage,
     this.minCommentCount,
     this.shopCode,
+    this.itemCode,
     this.genreId,
     this.sort,
   });
@@ -22,6 +23,8 @@ class RakutenProductSearchCondition {
   final double? minReviewAverage;
   final int? minCommentCount;
   final String? shopCode;
+  /// 楽天商品検索 API の `itemCode`（URL から追加など）。
+  final String? itemCode;
   final String? genreId;
   final String? sort;
 
@@ -35,6 +38,7 @@ class RakutenProductSearchCondition {
       minReviewAverage: minReviewAverage,
       minCommentCount: minCommentCount,
       shopCode: _normalizeOptional(shopCode),
+      itemCode: _normalizeOptional(itemCode),
       genreId: _normalizeOptional(genreId),
       sort: _normalizeOptional(sort),
     );

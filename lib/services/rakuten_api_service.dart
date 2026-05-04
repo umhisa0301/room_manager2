@@ -117,13 +117,17 @@ class RakutenApiService {
     final keywordTrimmed = normalized.keyword.trim();
     final genreTrimmed = normalized.genreId?.trim() ?? '';
     final shopTrimmed = normalized.shopCode?.trim() ?? '';
+    final itemTrimmed = normalized.itemCode?.trim() ?? '';
     final hasGenre = genreTrimmed.isNotEmpty;
     final hasShop = shopTrimmed.isNotEmpty;
+    final hasItem = itemTrimmed.isNotEmpty;
 
     if (keywordTrimmed.isNotEmpty) {
       params['keyword'] = keywordTrimmed;
-    } else if (!hasGenre && !hasShop) {
-      throw Exception('楽天API: キーワードが空のときは genreId または shopCode が必要です。');
+    } else if (!hasGenre && !hasShop && !hasItem) {
+      throw Exception(
+        '楽天API: キーワードが空のときは genreId・shopCode・itemCode のいずれかが必要です。',
+      );
     }
 
     if (normalized.minPrice != null) {
@@ -143,6 +147,9 @@ class RakutenApiService {
     }
     if (hasShop) {
       params['shopCode'] = shopTrimmed;
+    }
+    if (hasItem) {
+      params['itemCode'] = itemTrimmed;
     }
     if (hasGenre) {
       params['genreId'] = genreTrimmed;
@@ -173,6 +180,8 @@ class RakutenApiService {
     required String genreTrimmed,
     required bool hasShop,
     required String shopTrimmed,
+    required bool hasItem,
+    required String itemTrimmed,
   }) {
     if (!kDebugMode) return;
     final label = mode == _RakutenApiMode.openapi ? 'openapi' : 'legacy';
@@ -188,6 +197,7 @@ class RakutenApiService {
       'keyword=${keywordTrimmed.isEmpty ? '(omit)' : keywordTrimmed} '
       'genreId=${hasGenre ? genreTrimmed : '-'} '
       'shopCode=${hasShop ? shopTrimmed : '-'} '
+      'itemCode=${hasItem ? itemTrimmed : '-'} '
       'shopName=未送信(APIはshopCodeのみ)',
     );
   }
@@ -207,8 +217,10 @@ class RakutenApiService {
     final keywordTrimmed = normalized.keyword.trim();
     final genreTrimmed = normalized.genreId?.trim() ?? '';
     final shopTrimmed = normalized.shopCode?.trim() ?? '';
+    final itemTrimmed = normalized.itemCode?.trim() ?? '';
     final hasGenre = genreTrimmed.isNotEmpty;
     final hasShop = shopTrimmed.isNotEmpty;
+    final hasItem = itemTrimmed.isNotEmpty;
 
     var mode = _resolveSearchMode();
     _debugLogSearchPlan(
@@ -220,6 +232,8 @@ class RakutenApiService {
       genreTrimmed: genreTrimmed,
       hasShop: hasShop,
       shopTrimmed: shopTrimmed,
+      hasItem: hasItem,
+      itemTrimmed: itemTrimmed,
     );
 
     var params = _paramsForSearchMode(mode, common);

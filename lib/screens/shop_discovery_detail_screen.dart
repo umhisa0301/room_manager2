@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 
 import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
+import '../models/rakuten_product_search_condition.dart';
 import '../repository/genre_master_repository.dart';
+import '../repository/rakuten_search_repository.dart';
 import '../services/app_action_service.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../utils/rakuten_product_genre_display.dart';
@@ -37,22 +39,67 @@ class ShopDiscoveryDetailScreen extends StatefulWidget {
 class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
   _ShopDetailSort _sort = _ShopDetailSort.reviewCount;
 
+  /// 表示用商品（保存ショップ等で初期が空のときは shopCode 検索で埋める）。
+  late List<RakutenSearchItem> _items;
+  bool _shopItemsLoading = false;
+  String? _shopItemsError;
+  bool _didRequestShopItems = false;
+
   /// ジャンルAPI解決後の表示名（キーは genreId 文字列）。
   Map<String, String> _genreLabels = const {};
+
+  bool get _shouldLoadItemsFromShopCode =>
+      widget.items.isEmpty && widget.summary.shopKey.trim().isNotEmpty;
 
   @override
   void initState() {
     super.initState();
+    _items = List<RakutenSearchItem>.from(widget.items);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<SavedShopProvider>().markViewed(widget.summary.shopKey);
-      _prefetchGenreLabels();
+      if (_shouldLoadItemsFromShopCode) {
+        _loadItemsFromShopCode();
+      } else {
+        _prefetchGenreLabelsFor(_items);
+      }
     });
   }
 
-  Future<void> _prefetchGenreLabels() async {
+  Future<void> _loadItemsFromShopCode() async {
+    final code = widget.summary.shopKey.trim();
+    if (code.isEmpty) return;
+    setState(() {
+      _shopItemsLoading = true;
+      _shopItemsError = null;
+      _didRequestShopItems = true;
+    });
+    try {
+      final repo = context.read<RakutenSearchRepository>();
+      final fetched = await repo.search(
+        condition: RakutenProductSearchCondition(
+          keyword: '',
+          shopCode: code,
+        ),
+      );
+      if (!mounted) return;
+      setState(() {
+        _items = fetched;
+        _shopItemsLoading = false;
+      });
+      await _prefetchGenreLabelsFor(_items);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _shopItemsLoading = false;
+        _shopItemsError = e.toString();
+      });
+    }
+  }
+
+  Future<void> _prefetchGenreLabelsFor(List<RakutenSearchItem> items) async {
     final repo = context.read<GenreMasterRepository>();
-    final ids = widget.items
+    final ids = items
         .map((e) => int.tryParse(e.genreId.trim()))
         .whereType<int>()
         .where((id) => id > 0)
@@ -73,7 +120,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
       }
       RakutenGenreMasterService.instance.mergeRuntimeGenreNames(next);
       if (mounted) {
-        setState(() => _genreLabels = next);
+        setState(() => _genreLabels = {..._genreLabels, ...next});
       }
     } catch (_) {}
   }
@@ -92,7 +139,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
   }
 
   List<RakutenSearchItem> _sortedItems() {
-    final out = List<RakutenSearchItem>.from(widget.items);
+    final out = List<RakutenSearchItem>.from(_items);
     switch (_sort) {
       case _ShopDetailSort.reviewCount:
         out.sort((a, b) => b.reviewCount.compareTo(a.reviewCount));
@@ -223,6 +270,60 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
             Expanded(
               child: Consumer<RakutenManagedProductProvider>(
                 builder: (context, managed, _) {
+                  if (_shopItemsLoading) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const CircularProgressIndicator(),
+                          SizedBox(
+                            height: RakutenSearchScreenUi.gapFieldStack + 4,
+                          ),
+                          Text(
+                            'ショップの商品を読み込み中…',
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: AppColors.textSecondary,
+                                  height: 1.5,
+                                ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  if (_shopItemsError != null) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal:
+                              AppDimensions.spacingMd + AppDimensions.spacingSm,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '商品一覧の取得に失敗しました。\n$_shopItemsError',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: AppColors.textSecondary,
+                                    height: 1.5,
+                                  ),
+                            ),
+                            SizedBox(
+                              height: RakutenSearchScreenUi.gapSection,
+                            ),
+                            AppPrimaryButton(
+                              label: '再読み込み',
+                              expand: false,
+                              onPressed: _loadItemsFromShopCode,
+                              icon: const Icon(Icons.refresh_rounded),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                   if (items.isEmpty) {
                     return Center(
                       child: Padding(
@@ -230,15 +331,45 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                           horizontal:
                               AppDimensions.spacingMd + AppDimensions.spacingSm,
                         ),
-                        child: Text(
-                          'このショップの表示対象商品がありません。\n'
-                          '検索条件を変えて再発掘すると、商品が表示される場合があります。',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: AppColors.textSecondary,
-                                height: 1.5,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              _didRequestShopItems && _items.isEmpty
+                                  ? 'この条件では商品が0件でした。\n'
+                                        '店舗の公開商品がない・APIの表記と shopCode が一致していない場合があります。'
+                                  : widget.summary.shopKey.trim().isEmpty
+                                  ? 'ショップ識別子がなく商品を表示できません。\n'
+                                        '保存ショップ一覧から開き直してください。'
+                                  : 'このショップの表示対象商品がありません。\n'
+                                        '検索条件を変えて再発掘すると、商品が表示される場合があります。',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: AppColors.textSecondary,
+                                    height: 1.5,
+                                  ),
+                            ),
+                            if (_shouldLoadItemsFromShopCode ||
+                                _didRequestShopItems) ...[
+                              SizedBox(
+                                height: RakutenSearchScreenUi.gapSection,
                               ),
+                              AppPrimaryButton(
+                                label: '再取得',
+                                expand: false,
+                                onPressed: _loadItemsFromShopCode,
+                                icon: const Icon(Icons.refresh_rounded),
+                              ),
+                              SizedBox(height: AppDimensions.spacingSm),
+                              AppSecondaryButton(
+                                label: 'ショップを外部で開く',
+                                expand: false,
+                                onPressed: () => _openShopUrl(context),
+                                icon: const Icon(Icons.open_in_new_rounded),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
                     );

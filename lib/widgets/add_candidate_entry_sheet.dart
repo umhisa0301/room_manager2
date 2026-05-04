@@ -8,13 +8,15 @@ import '../theme/rakuten_search_screen_tokens.dart';
 typedef AddCandidateEntrySheetAction =
     Future<void> Function(BuildContext sheetContext);
 
-/// 「候補を追加」入口3択のモーダルボトムシート（見た目・文言のみ共通化）。
+/// 「候補を追加」入口5件のモーダルボトムシート（見た目・文言のみ共通化）。
 ///
 /// 各アクションは呼び出し元で定義する（シートを閉じる・遷移する等の挙動は共通化しない）。
 Future<void> showAddCandidateEntryBottomSheet({
   required BuildContext context,
   required AddCandidateEntrySheetAction onTapRakutenProductSearch,
+  required AddCandidateEntrySheetAction onTapGenreSearch,
   required AddCandidateEntrySheetAction onTapSavedShops,
+  required AddCandidateEntrySheetAction onTapAddFromUrl,
   required AddCandidateEntrySheetAction onTapShopDiscovery,
 }) {
   return showModalBottomSheet<void>(
@@ -37,7 +39,9 @@ Future<void> showAddCandidateEntryBottomSheet({
             child: AddCandidateEntrySheetBody(
               onTapRakutenProductSearch: () =>
                   onTapRakutenProductSearch(sheetContext),
+              onTapGenreSearch: () => onTapGenreSearch(sheetContext),
               onTapSavedShops: () => onTapSavedShops(sheetContext),
+              onTapAddFromUrl: () => onTapAddFromUrl(sheetContext),
               onTapShopDiscovery: () => onTapShopDiscovery(sheetContext),
             ),
           ),
@@ -47,17 +51,21 @@ Future<void> showAddCandidateEntryBottomSheet({
   );
 }
 
-/// 入口3択の本文（タイトル・説明・3行）。シートの外枠は [showAddCandidateEntryBottomSheet] 側。
+/// 入口5件の本文（タイトル・説明・5行）。シートの外枠は [showAddCandidateEntryBottomSheet] 側。
 class AddCandidateEntrySheetBody extends StatelessWidget {
   const AddCandidateEntrySheetBody({
     super.key,
     required this.onTapRakutenProductSearch,
+    required this.onTapGenreSearch,
     required this.onTapSavedShops,
+    required this.onTapAddFromUrl,
     required this.onTapShopDiscovery,
   });
 
   final VoidCallback onTapRakutenProductSearch;
+  final VoidCallback onTapGenreSearch;
   final VoidCallback onTapSavedShops;
+  final VoidCallback onTapAddFromUrl;
   final VoidCallback onTapShopDiscovery;
 
   @override
@@ -87,20 +95,34 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
         AddCandidateEntrySheetMenuItem(
           icon: Icons.travel_explore_rounded,
           title: '楽天で商品を探す',
-          description: '楽天検索から候補を追加します',
+          description: 'キーワード検索から候補を追加します',
           onTap: onTapRakutenProductSearch,
+        ),
+        const SizedBox(height: AppDimensions.spacingSm),
+        AddCandidateEntrySheetMenuItem(
+          icon: Icons.category_rounded,
+          title: 'ジャンルから探す',
+          description: 'ジャンル指定の一覧から候補を追加します',
+          onTap: onTapGenreSearch,
         ),
         const SizedBox(height: AppDimensions.spacingSm),
         AddCandidateEntrySheetMenuItem(
           icon: Icons.storefront_rounded,
           title: '保存ショップから探す',
-          description: '登録済みショップから候補を探します',
+          description: '登録済みショップの商品一覧から探します',
           onTap: onTapSavedShops,
         ),
         const SizedBox(height: AppDimensions.spacingSm),
         AddCandidateEntrySheetMenuItem(
+          icon: Icons.link_rounded,
+          title: 'URLから追加',
+          description: '楽天市場のURLからコードを読み取り検索します',
+          onTap: onTapAddFromUrl,
+        ),
+        const SizedBox(height: AppDimensions.spacingSm),
+        AddCandidateEntrySheetMenuItem(
           icon: Icons.hiking_rounded,
-          title: 'ショップ発掘を開く',
+          title: 'ショップ発掘',
           description: '新しいショップを探して候補追加につなげます',
           onTap: onTapShopDiscovery,
         ),

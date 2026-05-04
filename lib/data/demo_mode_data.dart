@@ -338,6 +338,9 @@ abstract final class DemoModeData {
     final src = searchItems();
     return src
         .where((e) {
+          if (c.itemCode != null && c.itemCode!.isNotEmpty) {
+            if (e.productId.trim() != c.itemCode!.trim()) return false;
+          }
           if (c.shopCode != null && c.shopCode!.isNotEmpty) {
             if (e.shopCode.trim() != c.shopCode!.trim()) return false;
           }

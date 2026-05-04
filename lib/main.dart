@@ -125,6 +125,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<GenreMasterRepository>.value(value: genreMasterRepository),
+        Provider<RakutenSearchRepository>.value(value: rakutenSearchRepository),
         ChangeNotifierProvider(create: (_) => AppShellController()),
         Provider<PendingCollectNoticeRepository>.value(
           value: pendingCollectNoticeRepository,
