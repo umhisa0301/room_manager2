@@ -256,12 +256,9 @@ class _AchievementHeroCard extends StatelessWidget {
     final postGoal = ActivityScreenLayout.dailyPostProgressGoal;
     final candGoal = ActivityScreenLayout.dailyCandidateProgressGoal;
     final emptyDay = todayCalendarPosts == 0 && todayCandidates == 0;
-    final primaryLine = emptyDay
-        ? '今日はこれからROOM運用を始めましょう'
-        : '今日もROOM運用できています';
-    final subLine = emptyDay
-        ? 'まずはおすすめコレを1件確認すると、流れが作れます'
-        : '投稿・候補は「今日0時〜現在」の件数です。ROOMの投稿上限の詳細はホームの「今日のROOM運用」で';
+    final statusLine = emptyDay
+        ? '今日0時〜 まだ動きがありません'
+        : '今日0時〜現在の集計（上限の詳細はホーム）';
 
     final candStock = items
         .where((e) => e.status == RakutenManagedProductStatus.candidate)
@@ -289,33 +286,23 @@ class _AchievementHeroCard extends StatelessWidget {
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w900,
               color: AppColors.textPrimary,
-              fontSize: 20,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            primaryLine,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w900,
-              height: 1.22,
-              color: AppColors.textPrimary,
-              fontSize: 23,
+              fontSize: 18,
             ),
           ),
           const SizedBox(height: 6),
           Text(
-            subLine,
-            style: theme.textTheme.bodyLarge?.copyWith(
+            statusLine,
+            style: theme.textTheme.labelMedium?.copyWith(
               color: AppColors.textSecondary,
-              height: 1.35,
               fontWeight: FontWeight.w600,
-              fontSize: 14,
+              fontSize: 12.5,
+              height: 1.28,
             ),
           ),
           const SizedBox(height: 10),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: BoxDecoration(
               color: AppColors.surfaceVariant.withValues(alpha: 0.35),
               borderRadius: BorderRadius.circular(12),
@@ -327,104 +314,81 @@ class _AchievementHeroCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ROOM投稿の上限（要約）',
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    color: AppColors.textTertiary,
-                    fontSize: 11,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  '直近24時間：${collectLimit.todayCount} / ${RoomCollectPostLimitSnapshot.dailyLimit}件',
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  'ROOM上限（要約）',
+                  style: theme.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w800,
-                    height: 1.32,
-                    fontSize: 14,
+                    color: AppColors.textTertiary,
+                    fontSize: 10,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'この1時間：${collectLimit.hourCount} / ${RoomCollectPostLimitSnapshot.hourlyLimit}件',
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  '24h ${collectLimit.todayCount}/${RoomCollectPostLimitSnapshot.dailyLimit}件　'
+                  '1h ${collectLimit.hourCount}/${RoomCollectPostLimitSnapshot.hourlyLimit}件',
+                  style: theme.textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w800,
-                    height: 1.32,
-                    fontSize: 14,
+                    height: 1.25,
+                    fontSize: 13,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 14),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            decoration: BoxDecoration(
-              color: AppColors.accentLight.withValues(alpha: 0.45),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: AppColors.accentPrimary.withValues(alpha: 0.2),
+          const SizedBox(height: 12),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _compactTodayMetricTile(
+                  context,
+                  label: '投稿',
+                  valueTop: '$todayCalendarPosts',
+                  valueBottom: '/ $postGoal',
+                  caption: '${postPct.round()}%',
+                ),
               ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _compactTodayMetricTile(
+                  context,
+                  label: '候補',
+                  valueTop: '$todayCandidates',
+                  valueBottom: '/ $candGoal',
+                  caption: '${candPct.round()}%',
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _compactTodayMetricTile(
+                  context,
+                  label: '連続',
+                  valueTop: '${streakDays <= 0 ? 0 : streakDays}',
+                  valueBottom: '日',
+                  caption: '活動',
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              minHeight: 9,
+              value: todayProgressPct / 100.0,
+              backgroundColor: AppColors.surfaceVariant,
+              color: AppColors.accentPrimary,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '今日の進捗：$todayProgressPct%',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 17,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  '目安は投稿$postGoal件・候補追加$candGoal件（暦日・今日0時〜）',
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    height: 1.3,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(999),
-                  child: LinearProgressIndicator(
-                    minHeight: 10,
-                    value: todayProgressPct / 100.0,
-                    backgroundColor: AppColors.surfaceVariant,
-                    color: AppColors.accentPrimary,
-                  ),
-                ),
-              ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '今日の目標まで 約$todayProgressPct%（投稿・候補の平均）',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.textTertiary,
+              fontWeight: FontWeight.w600,
+              fontSize: 11,
             ),
           ),
           const SizedBox(height: 14),
-          _heroKpiProgressRow(
-            context,
-            title: '投稿',
-            valueLine: '投稿：$todayCalendarPosts件　（$todayCalendarPosts / $postGoal件）',
-            progress: postPct / 100.0,
-            rateLine: '達成率：${postPct.round()}%',
-          ),
-          const SizedBox(height: 12),
-          _heroKpiProgressRow(
-            context,
-            title: '候補追加',
-            valueLine: '候補追加：$todayCandidates件　（$todayCandidates / $candGoal件）',
-            progress: candPct / 100.0,
-            rateLine: '達成率：${candPct.round()}%',
-          ),
-          const SizedBox(height: 12),
-          _heroKpiProgressRow(
-            context,
-            title: '連続活動',
-            valueLine: '連続：${streakDays <= 0 ? 0 : streakDays}日',
-            progress: null,
-            rateLine: '暦日ベースの連続活動日数です',
-          ),
-          const SizedBox(height: 16),
           Text(
             'すぐできること',
             style: theme.textTheme.labelLarge?.copyWith(
@@ -493,57 +457,71 @@ class _AchievementHeroCard extends StatelessWidget {
     );
   }
 
-  static Widget _heroKpiProgressRow(
+  static Widget _compactTodayMetricTile(
     BuildContext context, {
-    required String title,
-    required String valueLine,
-    required double? progress,
-    required String rateLine,
+    required String label,
+    required String valueTop,
+    required String valueBottom,
+    required String caption,
   }) {
     final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: theme.textTheme.labelMedium?.copyWith(
-            fontWeight: FontWeight.w800,
-            color: AppColors.textTertiary,
-            fontSize: 11,
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppColors.accentLight.withValues(alpha: 0.35),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.accentPrimary.withValues(alpha: 0.14),
         ),
-        const SizedBox(height: 4),
-        Text(
-          valueLine,
-          style: theme.textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.w800,
-            fontSize: 15,
-            height: 1.25,
-            color: AppColors.textPrimary,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.labelSmall?.copyWith(
+              fontWeight: FontWeight.w800,
+              color: AppColors.textTertiary,
+              fontSize: 10,
+            ),
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          rateLine,
-          style: theme.textTheme.labelMedium?.copyWith(
-            fontWeight: FontWeight.w700,
-            color: AppColors.textSecondary,
-            fontSize: 12,
-          ),
-        ),
-        if (progress != null) ...[
           const SizedBox(height: 6),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(999),
-            child: LinearProgressIndicator(
-              minHeight: 8,
-              value: progress.clamp(0.0, 1.0),
-              backgroundColor: AppColors.surfaceVariant,
-              color: AppColors.accentPrimary.withValues(alpha: 0.85),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text(
+                valueTop,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 22,
+                  height: 1.05,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(width: 2),
+              Text(
+                valueBottom,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 11,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            caption,
+            style: theme.textTheme.labelSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: AppColors.textSecondary,
+              fontSize: 10,
             ),
           ),
         ],
-      ],
+      ),
     );
   }
 }
@@ -925,11 +903,11 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
           ),
           const SizedBox(height: 12),
           Text(
-            '各曜日は下に投稿数、棒の内側は候補数（ピンク＝投稿、青＝候補）です。0件も表示します。',
+            '棒の高さは投稿＋候補の合計。真ん中の一行がその日内訳です。',
             style: theme.textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
               height: 1.35,
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -955,38 +933,7 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                   const EdgeInsets.symmetric(horizontal: 2),
                               child: Column(
                                 children: [
-                                  Column(
-                                    children: [
-                                      Text(
-                                        '候補 ${e.cand}件',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                        style: theme.textTheme.labelSmall
-                                            ?.copyWith(
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 9,
-                                          color: AppColors.textSecondary,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        e.posts + e.cand == 0
-                                            ? '投稿 0件'
-                                            : '投稿 ${e.posts}件',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                        style: theme.textTheme.labelSmall
-                                            ?.copyWith(
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 10,
-                                          color: AppColors.textSecondary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: 2),
                                   Expanded(
                                     child: Align(
                                       alignment: Alignment.bottomCenter,
@@ -1012,14 +959,16 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                                 borderRadius:
                                                     BorderRadius.circular(6),
                                               ),
-                                              child: Text(
-                                                '0',
-                                                style: theme
-                                                    .textTheme.labelSmall
-                                                    ?.copyWith(
-                                                  fontSize: 9,
-                                                  fontWeight: FontWeight.w800,
-                                                  color: AppColors.textTertiary,
+                                              child: Center(
+                                                child: Text(
+                                                  '0',
+                                                  style: theme
+                                                      .textTheme.labelSmall
+                                                      ?.copyWith(
+                                                    fontSize: 9,
+                                                    fontWeight: FontWeight.w800,
+                                                    color: AppColors.textTertiary,
+                                                  ),
                                                 ),
                                               ),
                                             );
@@ -1045,22 +994,6 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                                             double.infinity,
                                                         color: AppColors
                                                             .accentPrimary,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          '${e.posts}',
-                                                          style: theme
-                                                              .textTheme
-                                                              .labelSmall
-                                                              ?.copyWith(
-                                                            color: AppColors
-                                                                .textOnAccent,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w900,
-                                                            fontSize: 10,
-                                                          ),
-                                                        ),
                                                       ),
                                                     ),
                                                   if (e.cand > 0)
@@ -1072,21 +1005,6 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                                         color:
                                                             _WeekTotalBarsCard
                                                                 ._candBarColor,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          '${e.cand}',
-                                                          style: theme
-                                                              .textTheme
-                                                              .labelSmall
-                                                              ?.copyWith(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w900,
-                                                            fontSize: 10,
-                                                          ),
-                                                        ),
                                                       ),
                                                     ),
                                                 ],
@@ -1095,6 +1013,21 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                           );
                                         },
                                       ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    '投稿${e.posts}・候補${e.cand}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    style: theme.textTheme.labelSmall?.copyWith(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 9.5,
+                                      height: 1.15,
+                                      color: e.posts + e.cand == 0
+                                          ? AppColors.textTertiary
+                                          : AppColors.textSecondary,
                                     ),
                                   ),
                                   const SizedBox(height: 6),

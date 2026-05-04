@@ -335,9 +335,9 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     final pct = sumT <= 0 ? 0 : ((bestCount / sumT) * 100).round();
 
     final lensJa = switch (outcomeLens) {
-      _OutcomeLens.combined => '総合（売れた＋反応あり）',
-      _OutcomeLens.sold => '売れた',
-      _OutcomeLens.likedOnly => '反応あり（売れ以外）',
+      _OutcomeLens.combined => '売れた＋反応あり',
+      _OutcomeLens.sold => '売れた商品',
+      _OutcomeLens.likedOnly => '反応あり・売れ以外',
     };
 
     final genreLine = topGenre != null && topGenre.count >= 1
@@ -348,7 +348,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
         : '';
 
     final rationale = StringBuffer()
-      ..write('根拠（$lensJa・$n件）：')
+      ..write('$n件のコレ済から読み取れること（$lensJa）：')
       ..write('\n');
     if (sumT > 0 && bestCount > 0) {
       rationale.write(
@@ -380,17 +380,22 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
         _NextStepAction(
           title: '$bestLabel前後にROOM投稿する',
           basis: '成果の投稿記録が「$bestLabel」に$bestCount件集中しています（全体の$pct%）',
-          buttonLabel: '候補一覧を開く',
+          buttonLabel: '$bestLabel向け候補を見る',
           onPressed: () => shell.openRoomCollect(initialTabIndex: 0),
         ),
       );
     }
     if (topGenre != null && topGenre.count >= 2) {
+      final genreCta = switch (outcomeLens) {
+        _OutcomeLens.sold => '売れたジャンルの商品を探す',
+        _OutcomeLens.likedOnly => '「${topGenre.label}」の商品を探す',
+        _OutcomeLens.combined => '成果の出たジャンルの商品を探す',
+      };
       nextSteps.add(
         _NextStepAction(
           title: '「${topGenre.label}」系をあと3件候補に追加する',
           basis: '最多ジャンルは「${topGenre.label}」の${topGenre.count}件です',
-          buttonLabel: 'おすすめコレを開く',
+          buttonLabel: genreCta,
           onPressed: navRec,
         ),
       );
@@ -400,7 +405,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
         _NextStepAction(
           title: '「${_shortShopLabel(topShop.label)}」から類似商品を探す',
           basis: '最多ショップは「${_shortShopLabel(topShop.label)}」の${topShop.count}件です',
-          buttonLabel: '楽天で検索',
+          buttonLabel: '反応が良かったショップを見る',
           onPressed: () => openRakutenSearchScreen(navCtx),
         ),
       );
@@ -662,6 +667,7 @@ class _DecisionInsightCard extends StatelessWidget {
   }
 }
 
+/// 反応ランキング本体。将来「似た商品を探す」「同じショップを見る」は [_RankingTile] 行の下に足しやすい。
 class _RankingSection extends StatelessWidget {
   const _RankingSection({
     required this.doneCount,
@@ -843,6 +849,7 @@ class _RankingSection extends StatelessWidget {
   }
 }
 
+/// 1件分の行。現状は [onTap] のみ。将来、アイコン行や副CTAを [child] 直下に足せる構造。
 class _RankingTile extends StatelessWidget {
   const _RankingTile({
     required this.rank,
@@ -1047,14 +1054,48 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
   late _TrendSubTab _tab = _TrendSubTab.genre;
   bool _rowsExpanded = false;
 
-  String _lensLine() {
+  /// 見出し＋件数の2行（口語に近いトーンで揃える）。
+  Widget _lensContextHeader(BuildContext context) {
+    final theme = Theme.of(context);
     final n = widget.outcomeSubsetCount;
-    return switch (widget.outcomeLens) {
-      _OutcomeLens.combined =>
-        '分析対象：売れた＋反応あり（$n件）・投稿件数は見ていません',
-      _OutcomeLens.sold => '分析対象：売れたのみ（$n件）',
-      _OutcomeLens.likedOnly => '分析対象：反応あり（売れ以外）（$n件）',
+    final (line1, line2) = switch (widget.outcomeLens) {
+      _OutcomeLens.combined => (
+        '売れた商品と「反応あり」の傾向',
+        '$n件をもとに分析しています',
+      ),
+      _OutcomeLens.sold => (
+        '売れた商品の傾向',
+        '$n件をもとに分析しています',
+      ),
+      _OutcomeLens.likedOnly => (
+        '反応あり・売れたものは含めない傾向',
+        '$n件をもとに分析しています',
+      ),
     };
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          line1,
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w800,
+            height: 1.35,
+            fontSize: 14,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          line2,
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: AppColors.textTertiary,
+            fontWeight: FontWeight.w600,
+            height: 1.35,
+            fontSize: 12,
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -1077,14 +1118,7 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
             ),
           ),
           const SizedBox(height: 6),
-          Text(
-            _lensLine(),
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.textTertiary,
-              fontWeight: FontWeight.w700,
-              height: 1.35,
-            ),
-          ),
+          _lensContextHeader(context),
           const SizedBox(height: 12),
           SegmentedButton<_OutcomeLens>(
             showSelectedIcon: false,
