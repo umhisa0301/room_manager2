@@ -40,6 +40,7 @@ class RakutenManagedProduct {
     required this.extractionStatus,
     required this.extractionErrorMessage,
     this.extractedAt,
+    this.roomUrl = '',
     this.doneAt,
     this.feedbackLikedAt,
     this.feedbackSoldAt,
@@ -76,6 +77,10 @@ class RakutenManagedProduct {
   final RakutenUrlExtractionStatus extractionStatus;
   final String extractionErrorMessage;
   final DateTime? extractedAt;
+
+  /// 楽天ROOM の **商品ページ** URL（`room.rakuten.co.jp/...`。ROOM同期・「ROOMで見る」用）。
+  /// [extractedUrl] は商品ページから XPath 抽出した **コレ導線URL** で別用途。
+  final String roomUrl;
 
   /// コレ済に移した日時（候補時は null）。
   final DateTime? doneAt;
@@ -123,6 +128,8 @@ class RakutenManagedProduct {
     String? extractionErrorMessage,
     DateTime? extractedAt,
     bool clearExtractedAt = false,
+    String? roomUrl,
+    bool clearRoomUrl = false,
     DateTime? doneAt,
     bool clearDoneAt = false,
     DateTime? feedbackLikedAt,
@@ -154,6 +161,7 @@ class RakutenManagedProduct {
       extractionErrorMessage:
           extractionErrorMessage ?? this.extractionErrorMessage,
       extractedAt: clearExtractedAt ? null : (extractedAt ?? this.extractedAt),
+      roomUrl: clearRoomUrl ? '' : (roomUrl ?? this.roomUrl),
       doneAt: clearDoneAt ? null : (doneAt ?? this.doneAt),
       feedbackLikedAt: clearFeedbackLiked
           ? null
@@ -195,6 +203,7 @@ class RakutenManagedProduct {
       extractionStatus: RakutenUrlExtractionStatus.notStarted,
       extractionErrorMessage: '',
       extractedAt: null,
+      roomUrl: '',
       doneAt: null,
       feedbackLikedAt: null,
       feedbackSoldAt: null,
@@ -224,6 +233,7 @@ class RakutenManagedProduct {
       'extractionStatus': extractionStatus.name,
       'extractionErrorMessage': extractionErrorMessage,
       'extractedAt': extractedAt?.toIso8601String(),
+      'roomUrl': roomUrl,
       'doneAt': doneAt?.toIso8601String(),
       'feedbackLikedAt': feedbackLikedAt?.toIso8601String(),
       'feedbackSoldAt': feedbackSoldAt?.toIso8601String(),
@@ -380,6 +390,7 @@ class RakutenManagedProduct {
       extractionStatus: extractionStatus,
       extractionErrorMessage: (json['extractionErrorMessage'] ?? '').toString(),
       extractedAt: extractedAt,
+      roomUrl: (json['roomUrl'] ?? '').toString(),
       doneAt: doneAt,
       feedbackLikedAt: feedbackLikedAt,
       feedbackSoldAt: feedbackSoldAt,

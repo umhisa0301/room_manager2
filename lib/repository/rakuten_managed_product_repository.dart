@@ -7,7 +7,11 @@ import '../config/demo_mode.dart';
 import '../data/demo_mode_data.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
+import '../models/room_collected_persist_kind.dart';
+import '../models/room_collected_persist_outcome.dart';
+import '../services/rakuten_item_url_parser.dart';
 import '../utils/rakuten_product_genre_display.dart';
+import '../utils/room_rakuten_url_normalize.dart';
 
 /// 楽天検索由来の商品をローカル管理する（コレ候補・将来のコレ済・抽出結果などの拡張前提）。
 class RakutenManagedProductRepository {
@@ -267,6 +271,132 @@ class RakutenManagedProductRepository {
       return '';
     }
     return s;
+  }
+
+  /// ROOM 商品ページ同期（単品・将来の一括の共通永続化）。
+  ///
+  /// **処理順**: roomUrl キー重複 → productId 既存のマージ可否 → 新規コレ済插入。
+  Future<RoomCollectedPersistOutcome> persistRoomCollectedFromRoomPage({
+    required String roomUrlStoredCanonical,
+    required String normalizedRoomUrlKey,
+    required RakutenItemUrlParseResult parsedItem,
+    String roomPageTitle = '',
+    String roomPageImageUrl = '',
+  }) async {
+    if (kDemoModeEnabled) {
+      return const RoomCollectedPersistOutcome(
+        kind: RoomCollectedPersistKind.demoUnsupported,
+      );
+    }
+    final key = normalizedRoomUrlKey.trim();
+    if (key.isEmpty) {
+      return const RoomCollectedPersistOutcome(
+        kind: RoomCollectedPersistKind.alreadyCollectedSkip,
+      );
+    }
+
+    final list = List<RakutenManagedProduct>.from(loadAll());
+    for (final e in list) {
+      final ek = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(e.roomUrl);
+      if (ek.isNotEmpty && ek == key) {
+        return RoomCollectedPersistOutcome(
+          kind: RoomCollectedPersistKind.roomPageAlreadySynced,
+          productId: e.productId,
+        );
+      }
+    }
+
+    final productId = parsedItem.compositeProductId;
+    final now = DateTime.now();
+
+    RakutenManagedProduct? existing;
+    var existingIndex = -1;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].productId == productId) {
+        existing = list[i];
+        existingIndex = i;
+        break;
+      }
+    }
+
+    if (existing != null && existingIndex >= 0) {
+      final storedRoom = existing.roomUrl.trim();
+      if (storedRoom.isNotEmpty) {
+        final rk = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(
+          storedRoom,
+        );
+        if (rk == key) {
+          return RoomCollectedPersistOutcome(
+            kind: RoomCollectedPersistKind.roomPageAlreadySynced,
+            productId: existing.productId,
+          );
+        }
+        return RoomCollectedPersistOutcome(
+          kind: RoomCollectedPersistKind.alreadyCollectedSkip,
+          productId: existing.productId,
+        );
+      }
+
+      final t = roomPageTitle.trim();
+      final img = roomPageImageUrl.trim();
+      list[existingIndex] = existing.copyWith(
+        roomUrl: roomUrlStoredCanonical,
+        itemUrl: parsedItem.rakutenUrl.isNotEmpty
+            ? parsedItem.rakutenUrl
+            : existing.itemUrl,
+        shopCode: parsedItem.shopCode.isNotEmpty
+            ? parsedItem.shopCode
+            : existing.shopCode,
+        itemName: t.isNotEmpty ? t : existing.itemName,
+        imageUrl: img.isNotEmpty ? img : existing.imageUrl,
+        updatedAt: now,
+      );
+      await _saveAll(list);
+      return RoomCollectedPersistOutcome(
+        kind: RoomCollectedPersistKind.updatedRoomUrlOnly,
+        productId: productId,
+      );
+    }
+
+    final title = roomPageTitle.trim().isNotEmpty
+        ? roomPageTitle.trim()
+        : '（ROOM同期）';
+    final image = roomPageImageUrl.trim();
+
+    list.add(
+      RakutenManagedProduct(
+        productId: productId,
+        itemName: title,
+        itemPrice: 0,
+        itemUrl: parsedItem.rakutenUrl,
+        affiliateUrl: '',
+        imageUrl: image,
+        shopName: '',
+        shopCode: parsedItem.shopCode,
+        shopUrl: '',
+        genreId: '',
+        genreName: '',
+        resolvedGenreName: '',
+        status: RakutenManagedProductStatus.done,
+        createdAt: now,
+        updatedAt: now,
+        addedAt: now,
+        extractedUrl: '',
+        extractionStatus: RakutenUrlExtractionStatus.notStarted,
+        extractionErrorMessage: '',
+        extractedAt: null,
+        roomUrl: roomUrlStoredCanonical,
+        doneAt: now,
+        feedbackLikedAt: null,
+        feedbackSoldAt: null,
+        feedbackWeakAt: null,
+      ),
+    );
+    await _saveAll(list);
+    return RoomCollectedPersistOutcome(
+      kind: RoomCollectedPersistKind.insertedNewCollected,
+      productId: productId,
+    );
   }
 
   Future<void> _saveAll(List<RakutenManagedProduct> items) async {

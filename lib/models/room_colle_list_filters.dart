@@ -412,7 +412,8 @@ bool _matchesPrice(RakutenManagedProduct e, int? minYen, int? maxYen) {
   }
 }
 
-bool _hasRoomUrl(RakutenManagedProduct e) => e.extractedUrl.trim().isNotEmpty;
+bool _hasRoomUrl(RakutenManagedProduct e) =>
+    e.extractedUrl.trim().isNotEmpty || e.roomUrl.trim().isNotEmpty;
 
 bool _matchesCandidateOnly(
   RakutenManagedProduct e,

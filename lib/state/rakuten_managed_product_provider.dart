@@ -13,6 +13,7 @@ import '../services/app_action_service.dart';
 import '../services/room_collect_post_limit.dart';
 import '../services/room_url_extraction_coordinator.dart';
 import '../services/room_url_extraction_service.dart';
+import '../services/room_collected_register_service.dart';
 import '../widgets/collect_post_success_overlay.dart';
 
 /// 楽天ROOM管理の一覧画面用ロード状態。
@@ -26,7 +27,10 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     required RoomActivityEventProvider activityEventProvider,
   }) : _repository = repository,
        _pendingCollectNoticeRepository = pendingCollectNoticeRepository,
-       _activityEventProvider = activityEventProvider {
+       _activityEventProvider = activityEventProvider,
+       _roomCollectedRegisterService = RoomCollectedRegisterService(
+         repository: repository,
+       ) {
     _reloadFromStorage();
     _listUiStatus = RakutenManagedProductListUiStatus.ready;
     _listUiErrorMessage = null;
@@ -35,6 +39,7 @@ class RakutenManagedProductProvider extends ChangeNotifier {
   final RakutenManagedProductRepository _repository;
   final PendingCollectNoticeRepository _pendingCollectNoticeRepository;
   final RoomActivityEventProvider _activityEventProvider;
+  final RoomCollectedRegisterService _roomCollectedRegisterService;
 
   static String _newEventId(String productId, RoomActivityEventType type) =>
       '${DateTime.now().microsecondsSinceEpoch}_${productId.trim()}_${type.name}';
@@ -297,25 +302,71 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         p.extractedUrl.trim().isNotEmpty;
   }
 
+  /// ROOM 商品ページ URL からコレ済行を登録・更新する（HTTP 解析ベース）。
+  Future<RoomCollectedRegisterViewResult> registerCollectedFromRoomProductPage(
+    String rawRoomUrl,
+  ) async {
+    try {
+      final r =
+          await _roomCollectedRegisterService.registerFromRoomProductPageUrl(
+            rawRoomUrl,
+          );
+      _reloadFromStorage();
+      _listUiStatus = RakutenManagedProductListUiStatus.ready;
+      _listUiErrorMessage = null;
+      if (kDebugMode) {
+        debugPrint(
+          '[ROOMコレ診断] registerCollectedFromRoomProductPage '
+          'kind=${r.kind} productId=${r.productId ?? '-'}',
+        );
+      }
+      notifyListeners();
+      return r;
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint(
+          '[RakutenManagedProduct] registerCollectedFromRoomProductPage: $e\n$st',
+        );
+      }
+      return RoomCollectedRegisterViewResult(
+        kind: RoomCollectedRegisterUiKind.failed,
+        message: RoomCollectedRegisterService.messageFetchFailed,
+      );
+    }
+  }
+
   /// コレ済に更新してから ROOM（抽出 URL）を開く。
   /// 上限超過・入力不備はダイアログで通知する。成功時は true（URL 起動まで試行した場合も含む）。
+  ///
+  /// [notifyInsteadOfDialogs] を渡した場合、入力不備・上限・永続化失敗など **ブロッキング通知** は
+  /// コールバックへ委譲し [AlertDialog] / 上限ダイアログを出さない（URL から追加の BottomSheet 向け）。
+  /// 成功時オーバーレイと ROOM URL 起動は従来どおり行う。
   Future<bool> collectRoomAndLaunch(
     BuildContext context,
-    String productId,
-  ) async {
+    String productId, {
+    void Function(String message)? notifyInsteadOfDialogs,
+  }) async {
+    void notifyOrDialog(String message) {
+      if (notifyInsteadOfDialogs != null) {
+        notifyInsteadOfDialogs(message);
+      } else {
+        _collectIssueDialog(context, message);
+      }
+    }
+
     final id = productId.trim();
     if (id.isEmpty) {
-      _collectIssueDialog(context, '商品IDが空です');
+      notifyOrDialog('商品IDが空です');
       return false;
     }
     final p = _repository.getByProductId(id);
     if (p == null) {
-      _collectIssueDialog(context, '商品が見つかりません');
+      notifyOrDialog('商品が見つかりません');
       return false;
     }
     if (p.extractionStatus != RakutenUrlExtractionStatus.success ||
         p.extractedUrl.trim().isEmpty) {
-      _collectIssueDialog(context, 'ROOM用URLがまだ取得できていません');
+      notifyOrDialog('ROOM用URLがまだ取得できていません');
       return false;
     }
     final nowPre = DateTime.now();
@@ -325,7 +376,17 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       now: nowPre,
     );
     if (!preLimit.canAcceptAnotherCollect) {
-      if (context.mounted) {
+      if (notifyInsteadOfDialogs != null) {
+        final headline = preLimit.userBlockMessage ?? '現在は投稿できません。';
+        final detail = preLimit.isHourlyReached
+            ? preLimit.recoveryFootnote(nowPre)
+            : preLimit.isDailyReached
+                ? 'カウントは「直近24時間」の投稿のみです。0時ではリセットされません。'
+                : '';
+        notifyInsteadOfDialogs(
+          detail.isNotEmpty ? '$headline\n\n$detail' : headline,
+        );
+      } else if (context.mounted) {
         await showCollectPostBlockedDialog(context, preLimit);
       }
       return false;
@@ -368,8 +429,7 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         debugPrint('[RakutenManagedProduct] collectRoomAndLaunch failed: $e');
       }
       if (context.mounted) {
-        _collectIssueDialog(
-          context,
+        notifyOrDialog(
           'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。',
         );
       }
@@ -379,8 +439,7 @@ class RakutenManagedProductProvider extends ChangeNotifier {
         debugPrint('[RakutenManagedProduct] collectRoomAndLaunch failed: $e');
       }
       if (context.mounted) {
-        _collectIssueDialog(
-          context,
+        notifyOrDialog(
           'コレ済への更新に失敗しました。通信状況を確認のうえ、もう一度お試しください。',
         );
       }

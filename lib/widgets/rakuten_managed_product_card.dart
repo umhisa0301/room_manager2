@@ -50,7 +50,18 @@ class RakutenManagedProductCard extends StatelessWidget {
       product.extractionStatus == RakutenUrlExtractionStatus.success &&
       product.extractedUrl.trim().isNotEmpty;
 
-  bool get _hasRoomUrl => product.extractedUrl.trim().isNotEmpty;
+  /// ROOM 商品ページ or コレ導線用に抽出した URL（バッジ表示用）。
+  bool get _hasRoomLinkForBadge =>
+      product.extractedUrl.trim().isNotEmpty ||
+      product.roomUrl.trim().isNotEmpty;
+
+  String get _roomBrowseOpenUrl {
+    final r = product.roomUrl.trim();
+    if (r.isNotEmpty) return r;
+    return product.extractedUrl.trim();
+  }
+
+  bool get _canOpenRoomBrowse => _roomBrowseOpenUrl.isNotEmpty;
 
   static String _safeItemName(RakutenManagedProduct product) {
     try {
@@ -194,7 +205,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     if (isSavedShop) {
       badges.add(const _SmallBadge(label: '保存ショップ', color: Color(0xFF1565C0)));
     }
-    if (_hasRoomUrl) {
+    if (_hasRoomLinkForBadge) {
       badges.add(
         const _SmallBadge(label: 'ROOM URLあり', color: Color(0xFF2E7D32)),
       );
@@ -445,14 +456,16 @@ class RakutenManagedProductCard extends StatelessWidget {
             SizedBox(
               width: itemWidth,
               child: Tooltip(
-                message: _hasRoomUrl ? 'ROOMの画面を開きます' : 'ROOM用のリンクが取得されていません',
+                message: _canOpenRoomBrowse
+                    ? '楽天ROOMの商品ページを開きます'
+                    : 'ROOM用のリンクが取得されていません',
                 child: _DecisionActionButton(
-                  label: 'ROOMで確認',
+                  label: 'ROOMで見る',
                   tone: _DecisionActionTone.external,
-                  onPressed: _hasRoomUrl
+                  onPressed: _canOpenRoomBrowse
                       ? () => AppActionService.openUrl(
                           context,
-                          url: product.extractedUrl.trim(),
+                          url: _roomBrowseOpenUrl,
                         )
                       : null,
                 ),
