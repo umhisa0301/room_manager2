@@ -158,28 +158,41 @@ class RakutenManagedProductCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (!isCandidate) ...[
-                        if (product.roomUrl.trim().isNotEmpty)
-                          const Wrap(
-                            spacing: 5,
-                            runSpacing: 4,
-                            children: [
-                              _SmallBadge(
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 4,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            if (product.roomUrl.trim().isNotEmpty)
+                              const _SmallBadge(
                                 label: 'ROOM投稿済み',
                                 color: Color(0xFF1B5E20),
-                              ),
-                            ],
-                          )
-                        else
-                          Wrap(
-                            spacing: 5,
-                            runSpacing: 4,
-                            children: [
-                              _SmallBadge(
+                              )
+                            else
+                              const _SmallBadge(
                                 label: '未取り込み',
                                 color: Color(0xFF6D4C41),
                               ),
-                            ],
-                          ),
+                            if (product.roomLikeCount != null)
+                              Text(
+                                '♡${product.roomLikeCount}',
+                                style: reactionStyle.copyWith(
+                                  color: product.roomLikeCount! > 0
+                                      ? AppColors.accentPrimary
+                                      : AppColors.textTertiary,
+                                ),
+                              ),
+                            if (product.roomCommentCount != null)
+                              Text(
+                                '💬${product.roomCommentCount}',
+                                style: reactionStyle.copyWith(
+                                  color: product.roomCommentCount! > 0
+                                      ? AppColors.accentPrimary
+                                      : AppColors.textTertiary,
+                                ),
+                              ),
+                          ],
+                        ),
                         const SizedBox(height: 6),
                       ],
                       if (isCandidate) ...[
@@ -210,27 +223,6 @@ class RakutenManagedProductCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: timestampStyle,
                       ),
-                      if (!isCandidate &&
-                          (product.roomLikeCount != null ||
-                              product.roomCommentCount != null)) ...[
-                        const SizedBox(height: 4),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 4,
-                          children: [
-                            if (product.roomLikeCount != null)
-                              Text(
-                                '♡${product.roomLikeCount}',
-                                style: reactionStyle,
-                              ),
-                            if (product.roomCommentCount != null)
-                              Text(
-                                '💬${product.roomCommentCount}',
-                                style: reactionStyle,
-                              ),
-                          ],
-                        ),
-                      ],
                       const SizedBox(height: 6),
                       Builder(
                         builder: (ctx) {
@@ -240,11 +232,17 @@ class RakutenManagedProductCard extends StatelessWidget {
                           final tip = isCandidate
                               ? null
                               : _donePostedMetaTooltip(product);
+                          final compactPostedMeta =
+                              !isCandidate &&
+                              product.coredActivitySource ==
+                                  RakutenCoredActivitySource.roomImport;
                           Widget child = Text(
                             line,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: timestampStyle,
+                            style: compactPostedMeta
+                                ? reactionStyle
+                                : timestampStyle,
                           );
                           if (tip != null) {
                             child = Tooltip(message: tip, child: child);

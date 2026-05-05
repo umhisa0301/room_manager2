@@ -1016,19 +1016,38 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                     ),
                                   ),
                                   const SizedBox(height: 4),
-                                  Text(
-                                    '投稿${e.posts}・候補${e.cand}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.labelSmall?.copyWith(
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 9.5,
-                                      height: 1.15,
-                                      color: e.posts + e.cand == 0
-                                          ? AppColors.textTertiary
-                                          : AppColors.textSecondary,
-                                    ),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '投稿 ${e.posts}',
+                                        textAlign: TextAlign.center,
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 9.5,
+                                          height: 1.15,
+                                          color: e.posts + e.cand == 0
+                                              ? AppColors.textTertiary
+                                              : AppColors.textSecondary,
+                                        ),
+                                      ),
+                                      Text(
+                                        '候補 ${e.cand}',
+                                        textAlign: TextAlign.center,
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 9.5,
+                                          height: 1.15,
+                                          color: e.posts + e.cand == 0
+                                              ? AppColors.textTertiary
+                                              : AppColors.textSecondary,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(height: 6),
                                   SizedBox(

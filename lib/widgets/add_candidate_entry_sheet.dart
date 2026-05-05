@@ -31,35 +31,22 @@ Future<void> showAddCandidateEntryBottomSheet({
       ),
     ),
     builder: (sheetContext) {
-      final mq = MediaQuery.of(sheetContext);
-      final keyboardBottom = mq.viewInsets.bottom;
-      final viewHeight = mq.size.height;
-      final topBlocking = mq.padding.top;
-      final availBody = (viewHeight - keyboardBottom - topBlocking).clamp(
-        240.0,
-        viewHeight,
-      );
-      final sheetHeight = (availBody * 0.78).clamp(280.0, availBody * 0.85);
-
+      final keyboardBottom = MediaQuery.viewInsetsOf(sheetContext).bottom;
       return AnimatedPadding(
         duration: const Duration(milliseconds: 100),
         curve: Curves.easeOut,
         padding: EdgeInsets.only(bottom: keyboardBottom),
-        child: SizedBox(
-          height: sheetHeight,
-          width: double.infinity,
-          child: SafeArea(
-            top: false,
-            child: SingleChildScrollView(
-              padding: RakutenSearchScreenUi.addCandidateSheetContentPadding,
-              child: AddCandidateEntrySheetBody(
-                onTapRakutenProductSearch: () =>
-                    onTapRakutenProductSearch(sheetContext),
-                onTapGenreSearch: () => onTapGenreSearch(sheetContext),
-                onTapSavedShops: () => onTapSavedShops(sheetContext),
-                onTapAddFromUrl: () => onTapAddFromUrl(sheetContext),
-                onTapShopDiscovery: () => onTapShopDiscovery(sheetContext),
-              ),
+        child: SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            padding: RakutenSearchScreenUi.addCandidateSheetContentPadding,
+            child: AddCandidateEntrySheetBody(
+              onTapRakutenProductSearch: () =>
+                  onTapRakutenProductSearch(sheetContext),
+              onTapGenreSearch: () => onTapGenreSearch(sheetContext),
+              onTapSavedShops: () => onTapSavedShops(sheetContext),
+              onTapAddFromUrl: () => onTapAddFromUrl(sheetContext),
+              onTapShopDiscovery: () => onTapShopDiscovery(sheetContext),
             ),
           ),
         ),
@@ -105,7 +92,7 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
         ),
         const SizedBox(height: AppDimensions.spacingXs),
         Text(
-          '追加方法を選ぶと、既存の画面へ移動します',
+          '選んだ方法の画面へ移動します',
           style: RakutenSearchScreenUi.bodyCaption(context),
         ),
         const SizedBox(height: AppDimensions.spacingMd),
@@ -133,7 +120,7 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
         AddCandidateEntrySheetMenuItem(
           icon: Icons.link_rounded,
           title: 'URLから追加',
-          description: '楽天市場のURLからコードを読み取り検索します',
+          description: '商品ページのURLから検索します',
           onTap: onTapAddFromUrl,
         ),
         const SizedBox(height: AppDimensions.spacingSm),
@@ -201,8 +188,11 @@ class AddCandidateEntrySheetMenuItem extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       description,
+                      maxLines: 3,
+                      softWrap: true,
                       style: AppTextStyles.bodySmall.copyWith(
                         color: AppColors.textSecondary,
+                        height: 1.3,
                       ),
                     ),
                   ],

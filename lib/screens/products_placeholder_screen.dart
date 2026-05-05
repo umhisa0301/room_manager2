@@ -2438,7 +2438,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                       const SizedBox(width: 10),
                                       Expanded(
                                         child: Text(
-                                          'ROOM投稿を取り込むと、ROOMで見るボタンが使えるようになります。ホームの「ROOM投稿取り込み」またはマイページから実行できます。',
+                                          'コレ済からROOMの商品ページを開けます。ホームまたはマイページの「ROOM投稿取り込み」から実行できます。',
+                                          softWrap: true,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall

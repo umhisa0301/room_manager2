@@ -992,7 +992,8 @@ class MyPageRoomSyncSection extends StatelessWidget {
             children: [
               AppSectionHeader(
                 title: 'ROOM投稿取り込み',
-                subtitle: '楽天ROOMの最新投稿を確認して、まだ取り込んでいない商品を追加します。',
+                subtitle:
+                    '未取り込みのROOM投稿を${RoomImportLimitPolicy.freeBatchLimit}件ずつ追加します。',
                 icon: Icons.downloading_rounded,
               ),
               const SizedBox(height: 8),

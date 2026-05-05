@@ -545,7 +545,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                '楽天ROOMの投稿済み商品を、コレ済に追加できます。\n反応数も確認できます。',
+                '楽天ROOMの投稿をコレ済に追加。反応数も確認できます。',
                 style: _HomeUi.sectionBody(context),
               ),
               const SizedBox(height: 12),

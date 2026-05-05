@@ -177,14 +177,14 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
   }
 
   static List<String> get _threeHourLabels => const [
-        '0–3時',
-        '3–6時',
-        '6–9時',
-        '9–12時',
-        '12–15時',
-        '15–18時',
-        '18–21時',
-        '21–24時',
+        '0–3',
+        '3–6',
+        '6–9',
+        '9–12',
+        '12–15',
+        '15–18',
+        '18–21',
+        '21–24',
       ];
 
   static List<_AggRow> _genreOutcomeAggregation(
@@ -1375,7 +1375,7 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          '3時間単位（0–3 … 21–24）・記録された投稿時刻を使用します',
+          '3時間単位・記録された投稿時刻を使用します',
           style: theme.textTheme.labelMedium?.copyWith(
             color: AppColors.textTertiary,
             fontWeight: FontWeight.w600,
@@ -1454,14 +1454,15 @@ class _TrendSummaryCardState extends State<_TrendSummaryCard> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          width: 54,
+          width: 56,
           child: Text(
             b.label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+            softWrap: true,
             style: theme.textTheme.labelMedium?.copyWith(
               fontWeight: FontWeight.w800,
               fontSize: 11,
+              height: 1.15,
             ),
           ),
         ),

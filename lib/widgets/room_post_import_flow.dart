@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
@@ -12,7 +11,6 @@ import '../services/room_sync_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
-import '../utils/room_sync_log.dart';
 
 /// [RoomPostImportFlow.executeBatch] から通知される進捗。
 typedef RoomPostImportProgressCallback =
@@ -142,34 +140,49 @@ abstract final class RoomPostImportFlow {
                   ),
                 ),
                 const SizedBox(height: 22),
-                GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 2.85,
-                  children: [
-                    _SummaryMiniCard(
-                      label: '新しく追加',
-                      value: result.newlyCollectedCount,
-                      emphasize: result.newlyCollectedCount > 0,
-                    ),
-                    _SummaryMiniCard(
-                      label: '確認済み',
-                      value: result.listingCheckedCount,
-                    ),
-                    _SummaryMiniCard(
-                      label: 'すでに登録済み',
-                      value: result.listingSyncedSkipCount,
-                    ),
-                    _SummaryMiniCard(
-                      label: '失敗',
-                      value: result.failedCount,
-                      emphasize: result.failedCount > 0,
-                      emphasizeColor: AppColors.error,
-                    ),
-                  ],
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    const spacing = 12.0;
+                    final w = constraints.maxWidth;
+                    final half = w > spacing
+                        ? (w - spacing) / 2
+                        : w;
+                    Widget cell(_SummaryMiniCard c) =>
+                        SizedBox(width: half, child: c);
+                    return Wrap(
+                      spacing: spacing,
+                      runSpacing: spacing,
+                      children: [
+                        cell(
+                          _SummaryMiniCard(
+                            label: '新しく追加',
+                            value: result.newlyCollectedCount,
+                            emphasize: result.newlyCollectedCount > 0,
+                          ),
+                        ),
+                        cell(
+                          _SummaryMiniCard(
+                            label: '確認済み',
+                            value: result.listingCheckedCount,
+                          ),
+                        ),
+                        cell(
+                          _SummaryMiniCard(
+                            label: 'すでに登録済み',
+                            value: result.listingSyncedSkipCount,
+                          ),
+                        ),
+                        cell(
+                          _SummaryMiniCard(
+                            label: '失敗',
+                            value: result.failedCount,
+                            emphasize: result.failedCount > 0,
+                            emphasizeColor: AppColors.error,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
                 if (result.roomUrlAddedCount > 0) ...[
                   const SizedBox(height: 12),
@@ -209,6 +222,32 @@ abstract final class RoomPostImportFlow {
                   ),
                   const SizedBox(height: 10),
                   ...result.newlyCollectedSamples
+                      .take(3)
+                      .map(
+                        (p) => Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: _ImportedProductPreviewTile(product: p),
+                        ),
+                      ),
+                ],
+                if (result.reactionHighlightSamples.isNotEmpty) ...[
+                  const SizedBox(height: 22),
+                  Text(
+                    '反応があった商品',
+                    style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'いいね・コメントが付いていた商品です（最大3件）',
+                    style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ...result.reactionHighlightSamples
                       .take(3)
                       .map(
                         (p) => Padding(
@@ -348,10 +387,11 @@ class _SummaryMiniCard extends StatelessWidget {
             Text(
               label,
               maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+              softWrap: true,
               style: theme.textTheme.labelMedium?.copyWith(
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w600,
+                height: 1.2,
               ),
             ),
             const SizedBox(height: 4),
@@ -374,7 +414,6 @@ class _ImportedProductPreviewTile extends StatelessWidget {
     final title = product.itemName.trim().isEmpty
         ? 'ROOM投稿の商品'
         : product.itemName.trim();
-    final showDevIds = kDebugMode && debugVerboseRoomImport;
     final provider = context.read<RakutenManagedProductProvider>();
 
     return DecoratedBox(
@@ -458,7 +497,9 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                               '♡${product.roomLikeCount}',
                               style: theme.textTheme.labelMedium?.copyWith(
                                 fontWeight: FontWeight.w800,
-                                color: AppColors.textSecondary,
+                                color: product.roomLikeCount! > 0
+                                    ? AppColors.accentPrimary
+                                    : AppColors.textTertiary,
                               ),
                             ),
                           if (product.roomCommentCount != null)
@@ -466,23 +507,13 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                               '💬${product.roomCommentCount}',
                               style: theme.textTheme.labelMedium?.copyWith(
                                 fontWeight: FontWeight.w800,
-                                color: AppColors.textSecondary,
+                                color: product.roomCommentCount! > 0
+                                    ? AppColors.accentPrimary
+                                    : AppColors.textTertiary,
                               ),
                             ),
                         ],
                       ),
-                      if (showDevIds) ...[
-                        const SizedBox(height: 6),
-                        Text(
-                          _devSubtitle(product),
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: AppColors.textTertiary,
-                            height: 1.25,
-                          ),
-                        ),
-                      ],
                     ],
                   ),
                 ),
@@ -536,14 +567,4 @@ class _ImportedProductPreviewTile extends StatelessWidget {
     );
   }
 
-  static String _devSubtitle(RakutenManagedProduct p) {
-    final shop = p.shopCode.trim();
-    final item = p.productId.trim();
-    if (shop.isNotEmpty && item.isNotEmpty) {
-      return 'shopCode $shop · itemCode $item';
-    }
-    final itemUrl = p.itemUrl.trim();
-    if (itemUrl.isNotEmpty) return itemUrl;
-    return item.isNotEmpty ? 'itemCode $item' : '商品コード未取得';
-  }
 }
