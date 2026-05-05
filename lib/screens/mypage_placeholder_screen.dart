@@ -8,9 +8,9 @@ import '../models/rakuten_genre_master_entry.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/user_profile.dart';
 import '../navigation/app_shell_controller.dart';
-import '../repository/rakuten_managed_product_repository.dart';
 import '../services/app_action_service.dart';
-import '../services/room_sync_service.dart';
+import '../services/room_import_limit_policy.dart';
+import '../widgets/room_post_import_flow.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../services/room_collect_post_limit.dart';
 import '../state/activity_log_provider.dart';
@@ -971,53 +971,66 @@ class MyPageRoomSyncSection extends StatefulWidget {
 
 class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
   bool _busy = false;
-  int _currentIndex = 0;
-  int _batchTotal = 0;
+  int _completed = 0;
+  int _total = 0;
+  String _processingHint = '';
 
-  Future<void> _runSync(BuildContext context) async {
-    final profile = context.read<UserProfileProvider>().profile;
-    final roomUrl = profile.roomUrl.trim();
+  Future<void> _runImport() async {
+    if (_busy) return;
+    final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
     if (roomUrl.isEmpty) return;
 
     setState(() {
       _busy = true;
-      _currentIndex = 0;
-      _batchTotal = 0;
+      _completed = 0;
+      _total = 0;
+      _processingHint = '';
     });
 
     final managed = context.read<RakutenManagedProductProvider>();
-    final repo = context.read<RakutenManagedProductRepository>();
 
-    final service = RoomSyncService(
-      repository: repo,
-    );
-
-    final result = await service.syncPostedRoomProducts(
-      userRoomProfileUrl: roomUrl,
-      maxItems: RoomSyncService.defaultMaxBatch,
-      onCheckingProgress: (current, total) {
-        if (!context.mounted) return;
+    final result = await RoomPostImportFlow.executeBatch(
+      context,
+      onProgress: ({
+        required bool busy,
+        required int completed,
+        required int total,
+        required String processingHint,
+      }) {
+        if (!mounted) return;
         setState(() {
-          _currentIndex = current;
-          _batchTotal = total;
+          _busy = busy;
+          _completed = completed;
+          _total = total;
+          if (processingHint.isNotEmpty) {
+            _processingHint = processingHint;
+          }
         });
       },
     );
 
-    if (!context.mounted) return;
+    if (!mounted) return;
+
+    await managed.refreshManagedProductList(showLoadingIndicator: false);
+
+    if (!mounted) return;
+
     setState(() {
       _busy = false;
     });
 
-    await managed.refreshManagedProductList(showLoadingIndicator: false);
-
-    if (!context.mounted) return;
+    if (result == null) {
+      if (!mounted) return;
+      widget.onEditRoomUrl();
+      return;
+    }
 
     if (result.hasFatalError) {
+      if (!mounted) return;
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('ROOM同期'),
+          title: const Text('ROOM投稿取り込み'),
           content: Text(result.fatalErrorMessage!.trim()),
           actions: [
             TextButton(
@@ -1030,82 +1043,23 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       return;
     }
 
-    final doneSummary = result.processedCount > 0;
+    final added = result.newlyCollectedCount > 0 || result.roomUrlAddedCount > 0;
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          doneSummary
-              ? 'ROOM同期が完了しました'
-              : 'ROOM一覧の確認が完了しました（新規同期なし）',
+          added
+              ? 'ROOM投稿の取り込みが完了しました'
+              : 'ROOM投稿の確認が終わりました（追加なし）',
         ),
       ),
     );
 
-    await showModalBottomSheet<void>(
-      context: context,
-      showDragHandle: true,
-      builder: (ctx) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  '同期結果',
-                  style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text('確認済み：${result.listingCheckedCount}件'),
-                Text('同期済みスキップ：${result.listingSyncedSkipCount}件'),
-                Text('新規登録：${result.newlyCollectedCount}件'),
-                if (result.roomUrlAddedCount > 0)
-                  Text('登録済みにROOM URL追加：${result.roomUrlAddedCount}件'),
-                if (result.skippedCount > 0)
-                  Text(
-                    '※商品ページ保存処理でのスキップ：${result.skippedCount}件',
-                    style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.35,
-                    ),
-                  ),
-                Text('取得失敗：${result.failedCount}件'),
-                Text('追加取得：${result.additionalFetchStatusLabel}'),
-                if (result.failedRoomUrls.isNotEmpty) ...[
-                  const SizedBox(height: 12),
-                  Text(
-                    '失敗したURL（先頭3件）',
-                    style: Theme.of(ctx).textTheme.labelMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  ...result.failedRoomUrls.take(3).map(
-                    (u) => Padding(
-                      padding: const EdgeInsets.only(bottom: 6),
-                      child: Text(
-                        u,
-                        style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.35,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 20),
-                FilledButton(
-                  onPressed: () => Navigator.pop(ctx),
-                  child: const Text('閉じる'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+    if (!mounted) return;
+    await RoomPostImportFlow.showResultSheet(
+      context,
+      result: result,
+      onImportAnotherBatch: () => _runImport(),
     );
   }
 
@@ -1121,19 +1075,19 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const AppSectionHeader(
-            title: 'ROOM同期',
+            title: 'ROOM投稿取り込み',
             subtitle:
-                '楽天ROOMで投稿済みの商品を取得し、アプリのコレ済判定に反映します。',
-            icon: Icons.sync_rounded,
+                '楽天ROOMの最新投稿を確認して、まだ取り込んでいない商品をコレ済に追加します。',
+            icon: Icons.downloading_rounded,
           ),
           const SizedBox(height: 8),
           if (!hasUrl) ...[
             Text(
-              'ROOM URLを登録してください',
+              'ROOMのプロフィールURLを登録してください',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.35,
-              ),
+                    color: AppColors.textSecondary,
+                    height: 1.35,
+                  ),
             ),
             const SizedBox(height: 8),
             TextButton(
@@ -1142,28 +1096,50 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
             ),
           ] else ...[
             if (_busy) ...[
+              Text(
+                'ROOM投稿を確認中',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                _processingHint.isNotEmpty
+                    ? _processingHint
+                    : '楽天ROOMの商品ページを確認しています',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                    ),
+              ),
+              const SizedBox(height: 10),
+              if (_total > 0)
+                Text(
+                  '$_completed / $_total件 完了',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              const SizedBox(height: 6),
               LinearProgressIndicator(
-                value: _batchTotal > 0 && _currentIndex > 0
-                    ? _currentIndex / _batchTotal
+                value: _total > 0 && _completed >= 0
+                    ? (_completed / _total).clamp(0.0, 1.0)
                     : null,
               ),
-              const SizedBox(height: 6),
-              Text(
-                _batchTotal == 0
-                    ? '準備しています…'
-                    : _currentIndex == 0
-                        ? '$_batchTotal件を処理します…'
-                        : '$_batchTotal件中 $_currentIndex件を確認中',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.35,
-                ),
-              ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
             ],
             FilledButton(
-              onPressed: _busy ? null : () => _runSync(context),
-              child: const Text('10件同期する'),
+              onPressed: _busy ? null : _runImport,
+              child: Text(
+                '投稿済みを${RoomImportLimitPolicy.freeBatchLimit}件取り込む',
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '無料版は${RoomImportLimitPolicy.freeBatchLimit}件ずつ取り込みできます',
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
             ),
           ],
         ],

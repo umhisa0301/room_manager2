@@ -55,14 +55,6 @@ class RakutenManagedProductCard extends StatelessWidget {
       product.extractedUrl.trim().isNotEmpty ||
       product.roomUrl.trim().isNotEmpty;
 
-  String get _roomBrowseOpenUrl {
-    final r = product.roomUrl.trim();
-    if (r.isNotEmpty) return r;
-    return product.extractedUrl.trim();
-  }
-
-  bool get _canOpenRoomBrowse => _roomBrowseOpenUrl.isNotEmpty;
-
   static String _safeItemName(RakutenManagedProduct product) {
     try {
       final t = product.itemName.trim();
@@ -136,6 +128,19 @@ class RakutenManagedProductCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      if (!isCandidate && product.isRoomSynced) ...[
+                        const Wrap(
+                          spacing: 5,
+                          runSpacing: 4,
+                          children: [
+                            _SmallBadge(
+                              label: 'ROOM投稿済み',
+                              color: Color(0xFF1B5E20),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                      ],
                       if (isCandidate) ...[
                         _candidateBadges(context),
                         const SizedBox(height: 6),
@@ -422,9 +427,33 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   Widget _doneActions(BuildContext context) {
     final provider = context.read<RakutenManagedProductProvider>();
+    final roomPage = product.roomUrl.trim();
+    final hasRoomPage = roomPage.isNotEmpty;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         const gap = 6.0;
+        final rakuten = _DecisionActionButton(
+          label: '楽天で見る',
+          tone: _DecisionActionTone.external,
+          onPressed: () async {
+            final err = await provider.openRakutenItemPage(
+              context,
+              product.productId,
+            );
+            if (!context.mounted) return;
+            if (err != null) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(err)));
+            }
+          },
+        );
+
+        if (!hasRoomPage) {
+          return SizedBox(width: constraints.maxWidth, child: rakuten);
+        }
+
         final narrow = constraints.maxWidth < 300;
         final itemWidth = narrow
             ? constraints.maxWidth
@@ -434,40 +463,78 @@ class RakutenManagedProductCard extends StatelessWidget {
           spacing: gap,
           runSpacing: gap,
           children: [
-            SizedBox(
-              width: itemWidth,
-              child: _DecisionActionButton(
-                label: '楽天で見る',
-                tone: _DecisionActionTone.external,
-                onPressed: () async {
-                  final err = await provider.openRakutenItemPage(
-                    context,
-                    product.productId,
-                  );
-                  if (!context.mounted) return;
-                  if (err != null) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(err)));
-                  }
-                },
-              ),
-            ),
+            SizedBox(width: itemWidth, child: rakuten),
             SizedBox(
               width: itemWidth,
               child: Tooltip(
-                message: _canOpenRoomBrowse
-                    ? '楽天ROOMの商品ページを開きます'
-                    : 'ROOM用のリンクが取得されていません',
-                child: _DecisionActionButton(
-                  label: 'ROOMで見る',
-                  tone: _DecisionActionTone.external,
-                  onPressed: _canOpenRoomBrowse
-                      ? () => AppActionService.openUrl(
-                          context,
-                          url: _roomBrowseOpenUrl,
-                        )
-                      : null,
+                message: '楽天ROOMの商品ページを開きます',
+                child: OutlinedButton(
+                  onPressed: () => AppActionService.openUrl(
+                    context,
+                    url: roomPage,
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.accentPrimary,
+                    backgroundColor: Colors.transparent,
+                    side: BorderSide(
+                      color: AppColors.accentPrimary.withValues(alpha: 0.72),
+                    ),
+                    elevation: 0,
+                    minimumSize: const Size(0, 40),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 8,
+                    ),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    visualDensity: VisualDensity.compact,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    textStyle: AppTextStyles.label.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('ROOMで見る'),
+                        if (product.isRoomSynced) ...[
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF2E7D32).withValues(
+                                alpha: 0.12,
+                              ),
+                              borderRadius: BorderRadius.circular(999),
+                              border: Border.all(
+                                color: const Color(
+                                  0xFF2E7D32,
+                                ).withValues(alpha: 0.35),
+                              ),
+                            ),
+                            child: Text(
+                              '取り込み済み',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall
+                                  ?.copyWith(
+                                    color: const Color(0xFF2E7D32),
+                                    fontWeight: FontWeight.w800,
+                                    height: 1.1,
+                                    fontSize: 10,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

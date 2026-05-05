@@ -8,6 +8,7 @@ import '../navigation/rakuten_search_navigator.dart';
 import 'today_recommendations_screen.dart';
 import '../services/rakuten_room_home_stats.dart';
 import '../services/room_collect_post_limit.dart';
+import '../services/room_import_limit_policy.dart';
 import '../services/room_kpi_calculator.dart';
 import '../utils/today_recommendation_ui_tags.dart';
 import '../state/room_activity_event_provider.dart';
@@ -19,6 +20,7 @@ import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../widgets/app_button.dart';
 import '../widgets/room_colle_product_list_card_layout.dart';
+import '../widgets/room_post_import_flow.dart';
 
 // --- ホーム画面：レイアウト・タイポ・装飾の統一（画面ロジックとは分離）---
 
@@ -376,6 +378,16 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                         (recProvider.totalCount - recProvider.pendingCount)
                             .clamp(0, recProvider.totalCount);
 
+                    final profileRoomUrl =
+                        userProfileProvider.profile.roomUrl.trim();
+                    final roomImportedDoneCount = items
+                        .where(
+                          (e) =>
+                              e.status == RakutenManagedProductStatus.done &&
+                              e.roomUrl.trim().isNotEmpty,
+                        )
+                        .length;
+
                     return RefreshIndicator(
                       onRefresh: _refreshHome,
                       child: SingleChildScrollView(
@@ -417,6 +429,12 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 onOpenActivity: () => _openActivity(context),
                                 onPrimaryRecommendations: () =>
                                     _openTodayRecommendations(context),
+                              ),
+                              SizedBox(height: _HomeUi.gapSection),
+                              _HomeRoomPostImportSection(
+                                hasRoomProfileUrl: profileRoomUrl.isNotEmpty,
+                                importedDoneCount: roomImportedDoneCount,
+                                recentRoomPosts24h: collectLimit.todayCount,
                               ),
                               _HomeLimitAlertCard(
                                 collectLimit: collectLimit,
@@ -463,6 +481,275 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     );
                   },
             ),
+      ),
+    );
+  }
+}
+
+/// ホーム：ROOM投稿取り込みの優先導線。
+class _HomeRoomPostImportSection extends StatefulWidget {
+  const _HomeRoomPostImportSection({
+    required this.hasRoomProfileUrl,
+    required this.importedDoneCount,
+    required this.recentRoomPosts24h,
+  });
+
+  final bool hasRoomProfileUrl;
+  final int importedDoneCount;
+  final int recentRoomPosts24h;
+
+  @override
+  State<_HomeRoomPostImportSection> createState() =>
+      _HomeRoomPostImportSectionState();
+}
+
+class _HomeRoomPostImportSectionState extends State<_HomeRoomPostImportSection> {
+  bool _busy = false;
+  int _completed = 0;
+  int _total = 0;
+  String _hint = '';
+
+  Future<void> _runImport() async {
+    if (_busy || !widget.hasRoomProfileUrl) return;
+
+    setState(() {
+      _busy = true;
+      _completed = 0;
+      _total = 0;
+      _hint = '';
+    });
+
+    final managed = context.read<RakutenManagedProductProvider>();
+    final result = await RoomPostImportFlow.executeBatch(
+      context,
+      onProgress: ({
+        required bool busy,
+        required int completed,
+        required int total,
+        required String processingHint,
+      }) {
+        if (!mounted) return;
+        setState(() {
+          _busy = busy;
+          _completed = completed;
+          _total = total;
+          if (processingHint.isNotEmpty) {
+            _hint = processingHint;
+          }
+        });
+      },
+    );
+
+    if (!mounted) return;
+
+    await managed.refreshManagedProductList(showLoadingIndicator: false);
+
+    if (!mounted) return;
+
+    setState(() {
+      _busy = false;
+    });
+
+    if (result == null) {
+      if (!mounted) return;
+      context.read<AppShellController>().selectTab(4);
+      return;
+    }
+
+    if (result.hasFatalError) {
+      if (!mounted) return;
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('ROOM投稿取り込み'),
+          content: Text(result.fatalErrorMessage!.trim()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('閉じる'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    final added = result.newlyCollectedCount > 0 || result.roomUrlAddedCount > 0;
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          added
+              ? 'ROOM投稿の取り込みが完了しました'
+              : 'ROOM投稿の確認が終わりました（追加なし）',
+        ),
+      ),
+    );
+
+    if (!mounted) return;
+    await RoomPostImportFlow.showResultSheet(
+      context,
+      result: result,
+      onImportAnotherBatch: () => _runImport(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final statusLine = !widget.hasRoomProfileUrl
+        ? 'マイページでROOMのプロフィールURLを登録すると使えます'
+        : widget.importedDoneCount <= 0
+            ? 'まだROOM投稿を取り込んでいません'
+            : '取り込み済み：${widget.importedDoneCount}件\n'
+                '直近24時間のROOM投稿：${widget.recentRoomPosts24h}件';
+
+    return Container(
+      width: double.infinity,
+      decoration: _HomeUi.searchEntrySectionDecoration(),
+      padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'ROOM投稿取り込み',
+            style: _HomeUi.sectionTitle(context).copyWith(
+              color: HomeScreenColors.accentSectionHeading,
+              fontSize: 17,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '楽天ROOMで投稿済みの商品を、コレ済としてまとめて登録できます。',
+            style: _HomeUi.sectionBody(context),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            statusLine,
+            style: _HomeUi.bodyEmphasis(context).copyWith(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 14),
+          if (!widget.hasRoomProfileUrl) ...[
+            OutlinedButton.icon(
+              onPressed: () =>
+                  context.read<AppShellController>().selectTab(4),
+              icon: const Icon(Icons.person_outline_rounded, size: 20),
+              label: const Text('マイページでROOM URLを登録'),
+            ),
+          ] else ...[
+            if (_busy) ...[
+              Text(
+                'ROOM投稿を確認中',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                _hint.isNotEmpty ? _hint : '楽天ROOMの商品ページを確認しています',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: HomeScreenColors.bodyOnSection,
+                      height: 1.35,
+                    ),
+              ),
+              const SizedBox(height: 10),
+              if (_total > 0)
+                Text(
+                  '$_completed / $_total件 完了',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                ),
+              const SizedBox(height: 6),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(999),
+                child: LinearProgressIndicator(
+                  minHeight: 8,
+                  value: _total > 0 && _completed >= 0
+                      ? (_completed / _total).clamp(0.0, 1.0)
+                      : null,
+                  backgroundColor: HomeScreenColors.progressTrack,
+                  color: AppColors.accentPrimary,
+                ),
+              ),
+              const SizedBox(height: 14),
+            ],
+            DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.accentPrimary.withValues(alpha: 0.18),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: FilledButton(
+                onPressed: _busy ? null : _runImport,
+                style: FilledButton.styleFrom(
+                  foregroundColor: AppColors.textOnAccent,
+                  backgroundColor: AppColors.accentPrimary,
+                  elevation: 0,
+                  minimumSize: const Size(double.infinity, 52),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  textStyle: AppTextStyles.button.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                child: Text(
+                  '投稿済みを${RoomImportLimitPolicy.freeBatchLimit}件取り込む',
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '楽天ROOMで投稿済みの商品を、アプリの「コレ済」に取り込みます。',
+              style: _HomeUi.tapHint(context),
+            ),
+            Text(
+              '無料版は${RoomImportLimitPolicy.freeBatchLimit}件ずつ取り込みできます',
+              style: _HomeUi.tapHint(context),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              '※まだ取り込んでいないROOM投稿だけが対象です（完全な一致保証ではありません）。',
+              style: _HomeUi.tapHint(context).copyWith(fontSize: 11),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: null,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.textTertiary,
+                side: BorderSide(color: AppColors.divider.withValues(alpha: 0.7)),
+              ),
+              child: const Text('広告を見て追加で10件取り込む'),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '※準備中（Rewarded Ad 連携後に有効化）',
+              style: _HomeUi.tapHint(context).copyWith(fontSize: 11),
+            ),
+            const SizedBox(height: 8),
+            OutlinedButton(
+              onPressed: null,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.textTertiary,
+                side: BorderSide(color: AppColors.divider.withValues(alpha: 0.7)),
+              ),
+              child: const Text('Proならまとめて取り込み'),
+            ),
+            Text(
+              '※準備中（サブスク連携後に有効化）',
+              style: _HomeUi.tapHint(context).copyWith(fontSize: 11),
+            ),
+          ],
+        ],
       ),
     );
   }

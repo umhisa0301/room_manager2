@@ -18,8 +18,10 @@ class RoomCollectedRegisterService {
   final RakutenManagedProductRepository _repository;
   final RoomUrlResolver _resolver;
 
-  static const String messageRoomPageAlreadySynced = 'このROOM商品は同期済みです';
-  static const String messageAlreadyCollected = 'この商品は既にコレ済です';
+  static const String messageRoomPageAlreadySynced =
+      'このROOM投稿はすでに取り込み済みです';
+  static const String messageAlreadyCollected =
+      'この商品はすでにコレ済です';
   static const String messageRegistered = 'ROOM投稿済み商品として登録しました';
   static const String messageFetchFailed =
       'ROOMページから楽天商品情報を取得できませんでした';

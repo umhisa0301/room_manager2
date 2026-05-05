@@ -535,7 +535,7 @@ class RakutenManagedProductRepository {
 
     final title = roomPageTitle.trim().isNotEmpty
         ? roomPageTitle.trim()
-        : '（ROOM同期）';
+        : '（ROOM投稿）';
     final image = roomPageImageUrl.trim();
     final newId = parsedItem.itemPathSegment.trim().isNotEmpty
         ? parsedItem.itemPathSegment.trim()

@@ -1,3 +1,5 @@
+import 'rakuten_managed_product.dart';
+
 /// [RoomSyncService] の1バッチあたりの集計（全件同期・履歴への拡張前提）。
 class RoomSyncResult {
   const RoomSyncResult({
@@ -12,6 +14,7 @@ class RoomSyncResult {
     this.listingSyncedSkipCount = 0,
     this.listingInitialCandidateCount = 0,
     this.additionalFetchStatusLabel = '不要',
+    this.newlyCollectedSamples = const [],
   });
 
   /// 一覧段階で同期済み判定した件数（FINISH ログの processedChecked 相当）。
@@ -25,6 +28,9 @@ class RoomSyncResult {
 
   /// 追加取得の状態（例: 不要 / 実行済み(API) / 失敗(API) / 未対応 …）。
   final String additionalFetchStatusLabel;
+
+  /// 今バッチでコレ済に **新規追加** された商品のプレビュー（最大3件・UI用）。
+  final List<RakutenManagedProduct> newlyCollectedSamples;
 
   /// 実際に1件ずつ確認した ROOM 商品ページ数（最大10など）。
   final int processedCount;

@@ -2322,6 +2322,71 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        Consumer<RakutenManagedProductProvider>(
+                          builder: (context, managed, _) {
+                            final done = managed.items
+                                .where(
+                                  (e) =>
+                                      e.status ==
+                                      RakutenManagedProductStatus.done,
+                                )
+                                .toList();
+                            final missingRoom = done
+                                .where((e) => e.roomUrl.trim().isEmpty)
+                                .length;
+                            if (done.length < 5 || missingRoom < 4) {
+                              return const SizedBox.shrink();
+                            }
+                            return Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                _kRoomListScreenPadH,
+                                0,
+                                _kRoomListScreenPadH,
+                                _RoomColleUi.gapFieldStack,
+                              ),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: HomeScreenColors.deckFill.withValues(
+                                    alpha: 0.95,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: HomeScreenColors.deckOutline,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        Icons.tips_and_updates_outlined,
+                                        size: 22,
+                                        color: HomeScreenColors
+                                            .statusAccentStrong
+                                            .withValues(alpha: 0.85),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Text(
+                                          'ROOM投稿を取り込むと、ROOMで見るボタンが使えるようになります。ホームの「ROOM投稿取り込み」またはマイページから実行できます。',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall
+                                              ?.copyWith(
+                                                height: 1.38,
+                                                color: AppColors.textSecondary,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                         _RoomColleCompactFilterStrip(
                           criteria: _doneListFilters,
                           excludeUrlNotReady: false,

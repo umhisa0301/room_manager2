@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import '../config/demo_mode.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_collected_persist_kind.dart';
@@ -8,6 +6,7 @@ import '../repository/rakuten_managed_product_repository.dart';
 import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_sync_log.dart';
 import 'rakuten_item_url_parser.dart';
+import 'room_import_limit_policy.dart';
 import 'room_url_resolver.dart';
 import 'room_user_posted_listing_fetcher.dart';
 
@@ -31,7 +30,7 @@ class RoomSyncService {
   final RoomUrlResolver _resolver;
   final RoomUserPostedListingFetcher _listingFetcher;
 
-  static const int defaultMaxBatch = 10;
+  static const int defaultMaxBatch = RoomImportLimitPolicy.freeBatchLimit;
   static const int _collectsApiPageLimit = 20;
   static const int _maxCollectsApiPages = 40;
 
@@ -40,35 +39,33 @@ class RoomSyncService {
     required String userRoomProfileUrl,
     int maxItems = defaultMaxBatch,
     void Function(int currentIndex, int batchSize)? onCheckingProgress,
+    void Function(String hint)? onProcessingHint,
   }) async {
-    roomSyncLog('START');
-    roomSyncLog('登録済みユーザーROOM URL: $userRoomProfileUrl');
-    roomSyncLog('今回の最大処理件数: $maxItems');
+    roomSyncSummaryLog('ROOM投稿取り込み 開始（最大$maxItems件）');
 
     if (kDemoModeEnabled) {
       roomSyncWarn('デモモードのため中断（fatal 相当）');
-      roomSyncLog('FINISH (demo) processedChecked=0 queued=0 newly=0 roomAdd=0 skip=0 fail=0');
       return const RoomSyncResult(
         processedCount: 0,
         newlyCollectedCount: 0,
         roomUrlAddedCount: 0,
         skippedCount: 0,
         failedCount: 0,
-        fatalErrorMessage: 'デモモードではROOM同期を実行できません',
+        fatalErrorMessage: 'デモモードではROOM投稿取り込みを実行できません',
       );
     }
 
     final profile = userRoomProfileUrl.trim();
     if (profile.isEmpty) {
       roomSyncWarn('ROOM URL 空のため中断');
-      roomSyncLog('FINISH (empty profile)');
       return const RoomSyncResult(
         processedCount: 0,
         newlyCollectedCount: 0,
         roomUrlAddedCount: 0,
         skippedCount: 0,
         failedCount: 0,
-        fatalErrorMessage: 'ROOM URLが未登録です',
+        fatalErrorMessage:
+            'マイページで楽天ROOMのプロフィールURLを登録してください',
       );
     }
 
@@ -77,7 +74,9 @@ class RoomSyncService {
       profile,
       onListingHtml: (h) => listingHtml = h,
     );
-    roomSyncLog('一覧HTMLから得られたROOM商品URL総数（未同期フィルタ前）: ${initialOrdered.length}');
+    roomSyncVerboseLog(
+      '一覧HTMLから得られたROOM商品URL総数（未取り込みフィルタ前）: ${initialOrdered.length}',
+    );
 
     final listingInitialCandidateCount = initialOrdered.length;
 
@@ -85,16 +84,14 @@ class RoomSyncService {
       roomSyncError(
         'ROOMの投稿一覧を取得できませんでした（抽出0件または接続失敗）。',
       );
-      roomSyncLog(
-        'FINISH (fatal listing) processedChecked=0 queued=0 newly=0 roomAdd=0 skip=0 fail=0',
-      );
       return const RoomSyncResult(
         processedCount: 0,
         newlyCollectedCount: 0,
         roomUrlAddedCount: 0,
         skippedCount: 0,
         failedCount: 0,
-        fatalErrorMessage: 'ROOMの投稿一覧を取得できませんでした。URLを確認するか、しばらくしてからもう一度お試しください',
+        fatalErrorMessage:
+            'ROOMの投稿一覧を取得できませんでした。URLを確認するか、しばらくしてからもう一度お試しください',
       );
     }
 
@@ -106,10 +103,14 @@ class RoomSyncService {
           workingManagedList,
         );
 
-    roomSyncLog('初期HTML候補数: $listingInitialCandidateCount');
     final initialUnsynced =
         initialOrdered.where((k) => !syncedRoomKeys.contains(k)).length;
-    roomSyncLog('初期HTML未同期候補数: $initialUnsynced');
+    roomSyncSummaryLog(
+      '投稿一覧 ${initialOrdered.length}件 · 未取り込み推定 $initialUnsynced件',
+    );
+
+    roomSyncVerboseLog('初期HTML候補数: $listingInitialCandidateCount');
+    roomSyncVerboseLog('初期HTML未取り込み候補数: $initialUnsynced');
 
     final userSeg = _roomUserSegment(profile);
     final orderedKeys = List<String>.from(initialOrdered);
@@ -138,7 +139,7 @@ class RoomSyncService {
       final allInitialSynced = initialOrdered.isNotEmpty &&
           initialOrdered.every(syncedRoomKeys.contains);
       if (allInitialSynced) {
-        roomSyncLog('初期HTML候補がすべて同期済みのため追加取得を試行します');
+        roomSyncVerboseLog('初期HTML候補がすべて取り込み済みのため追加取得を試行します');
       }
 
       var numericUserId = listingHtml == null
@@ -149,7 +150,9 @@ class RoomSyncService {
       if (numericUserId == null || numericUserId.isEmpty) {
         final itemsUri = _itemsListingUri(profile);
         if (itemsUri != null && itemsUri != Uri.parse(profile)) {
-          roomSyncLog('userData.id 未取得のため /items へ再GETして再試行: $itemsUri');
+          roomSyncVerboseLog(
+            'userData.id 未取得のため /items へ再GETして再試行: $itemsUri',
+          );
           final h = await _listingFetcher.fetchListingHtmlBody(itemsUri.toString());
           if (h != null) {
             RoomUserPostedListingFetcher.logListingHtmlInvestigation(h);
@@ -163,15 +166,17 @@ class RoomSyncService {
 
       if (numericUserId == null || numericUserId.isEmpty || userSeg.isEmpty) {
         additionalFetchStatus = '未対応（WebView fallback 候補）';
-        roomSyncLog('追加取得方式: 未対応（API用 userData.id 未取得またはユーザーセグメント空）');
+        roomSyncVerboseLog(
+          '追加取得方式: 未対応（API用 userData.id 未取得またはユーザーセグメント空）',
+        );
       } else {
-        roomSyncLog('追加取得方式: API');
+        roomSyncVerboseLog('追加取得方式: API');
         additionalFetchStatus = '実行済み(API)';
         String? cursor;
         for (var pageIdx = 0;
             pageIdx < _maxCollectsApiPages && toProcess.length < maxItems;
             pageIdx++) {
-          roomSyncLog(
+          roomSyncVerboseLog(
             '追加取得 page/cursor: ${cursor ?? '(先頭ページ)'}',
           );
           final page = await _listingFetcher.fetchCollectsApiPage(
@@ -186,7 +191,7 @@ class RoomSyncService {
             break;
           }
 
-          roomSyncLog('追加取得候補数: ${page.roomPageKeysOrdered.length}');
+          roomSyncVerboseLog('追加取得候補数: ${page.roomPageKeysOrdered.length}');
           var appended = 0;
           for (final k in page.roomPageKeysOrdered) {
             if (seenKeys.contains(k)) continue;
@@ -198,7 +203,7 @@ class RoomSyncService {
 
           final unsyncedAmongDiscovered =
               orderedKeys.where((k) => !syncedRoomKeys.contains(k)).length;
-          roomSyncLog('追加取得後の未同期候補数: $unsyncedAmongDiscovered');
+          roomSyncVerboseLog('追加取得後の未取り込み候補数: $unsyncedAmongDiscovered');
 
           cursor = page.nextAfterId;
           if (cursor == null ||
@@ -213,17 +218,14 @@ class RoomSyncService {
         }
       }
     } else {
-      roomSyncLog('追加取得方式: 不要（初期候補でキュー充足見込み）');
+      roomSyncVerboseLog('追加取得方式: 不要（初期候補でキュー充足見込み）');
     }
 
-    roomSyncLog('同期対象キュー件数: ${toProcess.length}');
+    roomSyncVerboseLog('取り込み対象キュー件数: ${toProcess.length}');
 
     if (toProcess.isEmpty) {
-      roomSyncLog(
-        '処理キューが空（一覧上は最大限走査、またはすべて同期済み）',
-      );
-      roomSyncLog(
-        'FINISH processedChecked=$listingChecked queued=0 newly=0 roomAdd=0 skip=$listingSkip fail=0',
+      roomSyncSummaryLog(
+        '完了 · キューなし（一覧確認 $listingChecked件 · リスト側スキップ $listingSkip件）',
       );
       return RoomSyncResult(
         processedCount: 0,
@@ -243,36 +245,43 @@ class RoomSyncService {
     var skipped = 0;
     var failed = 0;
     final failedUrls = <String>[];
+    final newlyCollectedSamples = <RakutenManagedProduct>[];
 
     final batchSize = toProcess.length;
+    final traceDetailed = roomSyncVerboseTracing;
     onCheckingProgress?.call(0, batchSize);
+    onProcessingHint?.call('楽天ROOMの投稿一覧を確認しています');
+
     for (var i = 0; i < toProcess.length; i++) {
       final roomPageUrl = toProcess[i];
       final ordinal = i + 1;
-      roomSyncLog('$ordinal件目の商品を確認');
-      roomSyncLog('roomUrl: $roomPageUrl');
-      onCheckingProgress?.call(i + 1, batchSize);
+      roomSyncVerboseLog('$ordinal件目の商品を確認');
+      roomSyncVerboseLog('roomUrl: $roomPageUrl');
 
+      onProcessingHint?.call('ROOM投稿の商品ページを確認しています');
       final normalizedKey =
           RoomRakutenUrlNormalize.normalizeRoomProductPageKey(roomPageUrl);
       final preSynced = syncedRoomKeys.contains(normalizedKey);
-      roomSyncLog('同期済み判定（再確認）: $preSynced');
+      roomSyncVerboseLog('取り込み済み判定（再確認）: $preSynced');
       if (preSynced) {
-        roomSyncLog('同期済みのためスキップ: $roomPageUrl');
+        roomSyncVerboseLog('取り込み済みのためスキップ: $roomPageUrl');
         skipped++;
+        onCheckingProgress?.call(i + 1, batchSize);
         continue;
       }
 
       RoomUrlResolveOutcome resolved;
       try {
+        onProcessingHint?.call('楽天URLを取得中です');
         resolved = await _resolver.resolveRakutenItemUrlFromRoomPage(
           roomPageUrl,
-          traceRoomSync: kDebugMode,
+          traceRoomSync: traceDetailed,
         );
       } catch (e, st) {
         roomSyncError('ROOM商品ページ解決で例外', e, st);
         failed++;
         failedUrls.add(roomPageUrl);
+        onCheckingProgress?.call(i + 1, batchSize);
         continue;
       }
 
@@ -283,39 +292,42 @@ class RoomSyncService {
         );
         failed++;
         failedUrls.add(roomPageUrl);
+        onCheckingProgress?.call(i + 1, batchSize);
         continue;
       }
 
       final parsed = resolved.rakutenItem;
-      roomSyncLog('楽天URL解析開始: ${parsed.rakutenUrl}');
-      roomSyncLog(
+      roomSyncVerboseLog('楽天URL解析開始: ${parsed.rakutenUrl}');
+      roomSyncVerboseLog(
         '使用した正規表現: ${RakutenItemUrlParser.itemRakutenUrlPattern.pattern}',
       );
       final verified = RakutenItemUrlParser.tryParse(parsed.rakutenUrl);
       if (verified == null) {
         roomSyncError('shopCode / itemCode の抽出に失敗');
-        roomSyncLog('対象URL: ${parsed.rakutenUrl}');
-        roomSyncLog(
+        roomSyncVerboseLog('対象URL: ${parsed.rakutenUrl}');
+        roomSyncVerboseLog(
           '使用した正規表現: ${RakutenItemUrlParser.itemRakutenUrlPattern.pattern}',
         );
         failed++;
         failedUrls.add(roomPageUrl);
+        onCheckingProgress?.call(i + 1, batchSize);
         continue;
       }
-      roomSyncLog('shopCode: ${verified.shopCode}');
-      roomSyncLog('itemCode: ${verified.itemPathSegment}');
+      roomSyncVerboseLog('shopCode: ${verified.shopCode}');
+      roomSyncVerboseLog('itemCode: ${verified.itemPathSegment}');
 
-      roomSyncLog('APIスキップ（仕様により）');
-      roomSyncLog('最低限データで保存');
+      roomSyncVerboseLog('APIスキップ（仕様により）');
+      roomSyncVerboseLog('最低限データで保存');
 
       try {
+        onProcessingHint?.call('コレ済に追加しています');
         final outcome = await _repository.persistRoomCollectedFromRoomPage(
           roomUrlStoredCanonical: normalizedKey,
           normalizedRoomUrlKey: normalizedKey,
           parsedItem: parsed,
           roomPageTitle: resolved.roomPageTitle ?? '',
           roomPageImageUrl: resolved.roomPageImageUrl ?? '',
-          traceRoomSync: kDebugMode,
+          traceRoomSync: traceDetailed,
           workingMutableList: workingManagedList,
         );
 
@@ -326,14 +338,25 @@ class RoomSyncService {
           failedUrls.add(roomPageUrl);
         } else if (k == RoomCollectedPersistKind.roomPageAlreadySynced ||
             k == RoomCollectedPersistKind.alreadyCollectedSkip) {
-          roomSyncLog('保存種別: スキップ (${k.name})');
+          roomSyncVerboseLog('保存種別: スキップ (${k.name})');
           skipped++;
         } else if (k == RoomCollectedPersistKind.updatedRoomUrlOnly) {
-          roomSyncLog('保存種別: 既存商品へROOM URL追加 完了');
+          roomSyncVerboseLog('保存種別: 既存商品へROOM URL追加 完了');
           roomAdd++;
         } else if (k == RoomCollectedPersistKind.insertedNewCollected) {
-          roomSyncLog('保存種別: 新規コレ済登録 完了');
+          roomSyncVerboseLog('保存種別: 新規コレ済登録 完了');
           newly++;
+          if (newlyCollectedSamples.length < 3) {
+            final pid = outcome.productId?.trim() ?? '';
+            if (pid.isNotEmpty) {
+              for (final row in workingManagedList) {
+                if (row.productId.trim() == pid) {
+                  newlyCollectedSamples.add(row);
+                  break;
+                }
+              }
+            }
+          }
         }
         if (k == RoomCollectedPersistKind.updatedRoomUrlOnly ||
             k == RoomCollectedPersistKind.insertedNewCollected) {
@@ -344,18 +367,17 @@ class RoomSyncService {
         failed++;
         failedUrls.add(roomPageUrl);
       }
+
+      onCheckingProgress?.call(i + 1, batchSize);
     }
 
-    roomSyncLog('FINISH');
-    roomSyncLog('処理対象: $batchSize');
-    roomSyncLog('新規登録: $newly');
-    roomSyncLog('ROOM URL追加: $roomAdd');
-    roomSyncLog('同期済みスキップ: $skipped');
-    roomSyncLog('取得失敗: $failed');
-    roomSyncLog('failedRoomUrls: $failedUrls');
-    roomSyncLog(
-      'FINISH processedChecked=$listingChecked queued=$batchSize newly=$newly roomAdd=$roomAdd skip=$listingSkip fail=$failed',
+    roomSyncSummaryLog(
+      '完了 · 確認キュー $batchSize件 · 新規コレ済$newly · ROOMリンク追加$roomAdd · '
+      'ページ側スキップ$skipped · 失敗$failed · 一覧スキップ$listingSkip',
     );
+    if (failedUrls.isNotEmpty) {
+      roomSyncVerboseLog('failedRoomUrls: $failedUrls');
+    }
 
     return RoomSyncResult(
       processedCount: batchSize,
@@ -368,6 +390,8 @@ class RoomSyncService {
       listingSyncedSkipCount: listingSkip,
       listingInitialCandidateCount: listingInitialCandidateCount,
       additionalFetchStatusLabel: additionalFetchStatus,
+      newlyCollectedSamples:
+          List<RakutenManagedProduct>.unmodifiable(newlyCollectedSamples),
     );
   }
 

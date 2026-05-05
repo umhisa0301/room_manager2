@@ -1,11 +1,25 @@
 import 'package:flutter/foundation.dart';
 
-/// ROOM 同期の詳細トレース（デバッグビルドのみ）。
-void roomSyncLog(String message) {
+/// URL・ページ本文など **冗長** なROOM取り込みトレース。
+/// 開発で個別調査するときのみ `true` にする（通常は false）。
+bool roomSyncVerboseTracing = false;
+
+/// 通常開発時に残すサマリーのみ（開始・件数・完了・エラー）。
+void roomSyncSummaryLog(String message) {
   if (kDebugMode) {
     debugPrint('[ROOM_SYNC] $message');
   }
 }
+
+/// [roomSyncVerboseTracing] が true のときだけの詳細ログ。
+void roomSyncVerboseLog(String message) {
+  if (kDebugMode && roomSyncVerboseTracing) {
+    debugPrint('[ROOM_SYNC][VERBOSE] $message');
+  }
+}
+
+/// 後方互換：従来の [roomSyncLog] は詳細扱いに寄せ、通常は出さない。
+void roomSyncLog(String message) => roomSyncVerboseLog(message);
 
 void roomSyncWarn(String message) {
   if (kDebugMode) {
