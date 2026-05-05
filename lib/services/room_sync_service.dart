@@ -1,12 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 import '../config/demo_mode.dart';
-import '../models/rakuten_product_search_condition.dart';
-import '../models/rakuten_search_item.dart';
 import '../models/room_collected_persist_kind.dart';
 import '../models/room_sync_result.dart';
 import '../repository/rakuten_managed_product_repository.dart';
-import '../repository/rakuten_search_repository.dart';
 import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_sync_log.dart';
 import 'rakuten_item_url_parser.dart';
@@ -17,19 +14,19 @@ import 'room_user_posted_listing_fetcher.dart';
 ///
 /// - 一覧取得・roomUrl 事前照合・ROOM 商品ページ解析・楽天URL抽出・DB更新をまとめる。
 /// - 単品登録は既存 [RoomCollectedRegisterService] 経由の [persistRoomCollectedFromRoomPage] を再利用。
+///
+/// 楽天 IchibaItem/Search は **itemCode 単体検索非対応**のため、ROOM同期では API での詳細取得は行わない。
+// TODO: 必要であれば商品詳細はスクレイピング or 別APIで補完
 class RoomSyncService {
   RoomSyncService({
     required RakutenManagedProductRepository repository,
-    required RakutenSearchRepository searchRepository,
     RoomUrlResolver? roomUrlResolver,
     RoomUserPostedListingFetcher? listingFetcher,
   }) : _repository = repository,
-       _searchRepository = searchRepository,
        _resolver = roomUrlResolver ?? RoomUrlResolver(),
        _listingFetcher = listingFetcher ?? RoomUserPostedListingFetcher();
 
   final RakutenManagedProductRepository _repository;
-  final RakutenSearchRepository _searchRepository;
   final RoomUrlResolver _resolver;
   final RoomUserPostedListingFetcher _listingFetcher;
 
@@ -190,16 +187,8 @@ class RoomSyncService {
       roomSyncLog('shopCode: ${verified.shopCode}');
       roomSyncLog('itemCode: ${verified.itemPathSegment}');
 
-      roomSyncLog('楽天API商品詳細取得開始');
-      roomSyncLog('shopCode: ${parsed.shopCode}');
-      roomSyncLog('itemCode: ${parsed.itemPathSegment}');
-      final apiItem = await _tryFetchRakutenItem(parsed);
-      if (apiItem != null) {
-        roomSyncLog('API取得成功: 商品名 ${apiItem.itemName}');
-      } else {
-        roomSyncWarn('API取得失敗または0件');
-        roomSyncLog('最低限データで保存します');
-      }
+      roomSyncLog('APIスキップ（仕様により）');
+      roomSyncLog('最低限データで保存');
 
       try {
         final outcome = await _repository.persistRoomCollectedFromRoomPage(
@@ -208,7 +197,6 @@ class RoomSyncService {
           parsedItem: parsed,
           roomPageTitle: resolved.roomPageTitle ?? '',
           roomPageImageUrl: resolved.roomPageImageUrl ?? '',
-          apiEnrichedItem: apiItem,
           traceRoomSync: kDebugMode,
         );
 
@@ -251,30 +239,5 @@ class RoomSyncService {
       failedCount: failed,
       failedRoomUrls: failedUrls,
     );
-  }
-
-  Future<RakutenSearchItem?> _tryFetchRakutenItem(
-    RakutenItemUrlParseResult parsed,
-  ) async {
-    final wantSc = parsed.shopCode.trim();
-    final wantSeg = parsed.itemPathSegment.trim();
-    if (wantSc.isEmpty || wantSeg.isEmpty) return null;
-    try {
-      final items = await _searchRepository.search(
-        condition: RakutenProductSearchCondition(
-          shopCode: wantSc,
-          itemCode: wantSeg,
-        ),
-      );
-      for (final it in items) {
-        if (it.shopCode.trim() == wantSc && it.productId.trim() == wantSeg) {
-          return it;
-        }
-      }
-      return items.isNotEmpty ? items.first : null;
-    } catch (e, st) {
-      roomSyncError('楽天API search 例外', e, st);
-      return null;
-    }
   }
 }

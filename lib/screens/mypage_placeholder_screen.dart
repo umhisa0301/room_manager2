@@ -9,7 +9,6 @@ import '../models/rakuten_managed_product.dart';
 import '../models/user_profile.dart';
 import '../navigation/app_shell_controller.dart';
 import '../repository/rakuten_managed_product_repository.dart';
-import '../repository/rakuten_search_repository.dart';
 import '../services/app_action_service.dart';
 import '../services/room_sync_service.dart';
 import '../services/rakuten_genre_master_service.dart';
@@ -988,11 +987,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
 
     final managed = context.read<RakutenManagedProductProvider>();
     final repo = context.read<RakutenManagedProductRepository>();
-    final searchRepo = context.read<RakutenSearchRepository>();
 
     final service = RoomSyncService(
       repository: repo,
-      searchRepository: searchRepo,
     );
 
     final result = await service.syncPostedRoomProducts(
