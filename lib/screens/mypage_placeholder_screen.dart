@@ -1030,15 +1030,15 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       return;
     }
 
-    if (result.processedCount == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('同期する新規のROOM投稿はありませんでした')),
-      );
-      return;
-    }
-
+    final doneSummary = result.processedCount > 0;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('ROOM同期が完了しました')),
+      SnackBar(
+        content: Text(
+          doneSummary
+              ? 'ROOM同期が完了しました'
+              : 'ROOM一覧の確認が完了しました（新規同期なし）',
+        ),
+      ),
     );
 
     await showModalBottomSheet<void>(
@@ -1059,10 +1059,21 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text('新規コレ済登録：${result.newlyCollectedCount}件'),
-                Text('登録済みにROOM URL追加：${result.roomUrlAddedCount}件'),
-                Text('同期済みスキップ：${result.skippedCount}件'),
+                Text('確認済み：${result.listingCheckedCount}件'),
+                Text('同期済みスキップ：${result.listingSyncedSkipCount}件'),
+                Text('新規登録：${result.newlyCollectedCount}件'),
+                if (result.roomUrlAddedCount > 0)
+                  Text('登録済みにROOM URL追加：${result.roomUrlAddedCount}件'),
+                if (result.skippedCount > 0)
+                  Text(
+                    '※商品ページ保存処理でのスキップ：${result.skippedCount}件',
+                    style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                    ),
+                  ),
                 Text('取得失敗：${result.failedCount}件'),
+                Text('追加取得：${result.additionalFetchStatusLabel}'),
                 if (result.failedRoomUrls.isNotEmpty) ...[
                   const SizedBox(height: 12),
                   Text(

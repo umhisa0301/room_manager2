@@ -8,7 +8,23 @@ class RoomSyncResult {
     required this.failedCount,
     this.failedRoomUrls = const [],
     this.fatalErrorMessage,
+    this.listingCheckedCount = 0,
+    this.listingSyncedSkipCount = 0,
+    this.listingInitialCandidateCount = 0,
+    this.additionalFetchStatusLabel = '不要',
   });
+
+  /// 一覧段階で同期済み判定した件数（FINISH ログの processedChecked 相当）。
+  final int listingCheckedCount;
+
+  /// 一覧段階で「既に同期済み」によりスキップした件数。
+  final int listingSyncedSkipCount;
+
+  /// 初期HTML抽出で得た候補数（スクロール前の最初の塊）。
+  final int listingInitialCandidateCount;
+
+  /// 追加取得の状態（例: 不要 / 実行済み(API) / 失敗(API) / 未対応 …）。
+  final String additionalFetchStatusLabel;
 
   /// 実際に1件ずつ確認した ROOM 商品ページ数（最大10など）。
   final int processedCount;

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
@@ -8,7 +9,7 @@ import '../utils/room_sync_log.dart';
 /// ユーザーの ROOM プロフィールURL起点で、投稿済み ROOM **商品ページ** URL を HTML から収集する。
 ///
 /// - HTTP のみ（WebView なし）。ROOM 側のマークアップ変更に弱い拡張点として正規表現・パス判定を局所化。
-/// - 将来: ページング・同期オフセット引数を足せる構造。
+/// - スクロール相当の追加件数は [fetchCollectsApiPage]（公開 collects JSON API）で取得。
 class RoomUserPostedListingFetcher {
   RoomUserPostedListingFetcher({
     http.Client? httpClient,
@@ -32,8 +33,223 @@ class RoomUserPostedListingFetcher {
 
   static final RegExp _postIdFallbackPattern = RegExp(postIdFallbackPatternSource);
 
+  /// ROOM 一覧 HTML（主に `/items`）内の調査ログ（埋め込み JSON / キーワード出現回数）。
+  static void logListingHtmlInvestigation(String html) {
+    final h = html;
+    int count(String needle) {
+      if (needle.isEmpty) return 0;
+      var c = 0;
+      final sub = needle;
+      for (var i = h.indexOf(sub); i >= 0; i = h.indexOf(sub, i + sub.length)) {
+        c++;
+      }
+      return c;
+    }
+
+    roomSyncLog(
+      'LIST調査 __NEXT_DATA__=${count('__NEXT_DATA__')} '
+      '__INITIAL_STATE__=${count('__INITIAL_STATE__')} '
+      'initialState(部分一致)=${count('initialState')} '
+      'api=${count('api')} item=${count('item')} cursor=${count('cursor')} '
+      'page=${count('page')} offset=${count('offset')} since=${count('since')} '
+      'continuation=${count('continuation')} roomId=${count('roomId')} '
+      'userId=${count('userId')}',
+    );
+    final id = tryParseNumericUserIdFromInitialState(h);
+    roomSyncLog(
+      'LIST調査 __INITIAL_STATE__ からの userData.id: ${id ?? '(未取得)'}',
+    );
+  }
+
+  /// `window.__INITIAL_STATE__` 内の `userData.id`（数値ユーザーID）。collects API のパスに使用。
+  static String? tryParseNumericUserIdFromInitialState(String html) {
+    const prefix = 'window.__INITIAL_STATE__ = ';
+    final startIdx = html.indexOf(prefix);
+    if (startIdx < 0) return null;
+    var j = startIdx + prefix.length;
+    while (j < html.length && (html[j] == ' ' || html[j] == '\n' || html[j] == '\r')) {
+      j++;
+    }
+    if (j >= html.length || html[j] != '{') return null;
+    final jsonStart = j;
+    var depth = 0;
+    var inString = false;
+    var stringQuote = 0;
+    var escape = false;
+    for (; j < html.length; j++) {
+      final ch = html[j];
+      if (escape) {
+        escape = false;
+        continue;
+      }
+      if (inString) {
+        if (ch == r'\') {
+          escape = true;
+          continue;
+        }
+        if (ch.codeUnitAt(0) == stringQuote) {
+          inString = false;
+          stringQuote = 0;
+        }
+        continue;
+      }
+      switch (ch) {
+        case '"':
+        case "'":
+          inString = true;
+          stringQuote = ch.codeUnitAt(0);
+          continue;
+        case '{':
+          depth++;
+          continue;
+        case '}':
+          depth--;
+          if (depth == 0) {
+            final raw = html.substring(jsonStart, j + 1);
+            return _readUserDataIdFromInitialStateJson(raw);
+          }
+          continue;
+        default:
+          continue;
+      }
+    }
+    return null;
+  }
+
+  static String? _readUserDataIdFromInitialStateJson(String raw) {
+    if (raw.isEmpty) return null;
+    try {
+      final decoded = jsonDecode(raw) as Map<String, dynamic>;
+      final userData = decoded['userData'];
+      if (userData is! Map<String, dynamic>) return null;
+      final id = userData['id'];
+      if (id is String && RegExp(r'^\d+$').hasMatch(id)) return id;
+      if (id is int) return id.toString();
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// 一覧ページの HTML 本文のみ取得（プロフィールが `/items` 以外でもホスト妥当なら GET）。
+  Future<String?> fetchListingHtmlBody(String userRoomProfileUrl) async {
+    final trimmed = userRoomProfileUrl.trim();
+    if (trimmed.isEmpty) return null;
+    late Uri uri;
+    try {
+      uri = Uri.parse(trimmed);
+    } catch (_) {
+      return null;
+    }
+    if (!uri.hasScheme || !_isRoomHost(uri.host)) return null;
+    final res = await _getRoomListingPage(uri);
+    if (res == null ||
+        res.statusCode < 200 ||
+        res.statusCode >= 400 ||
+        res.body.isEmpty) {
+      return null;
+    }
+    return res.body;
+  }
+
+  /// 楽天ROOM公開API `GET /api/{numericUserId}/collects` の1ページ分を解析する。
+  Future<RoomCollectsApiPage?> fetchCollectsApiPage({
+    required String numericUserId,
+    required String roomUserSegment,
+    String? afterId,
+    int limit = 20,
+  }) async {
+    if (!RegExp(r'^\d+$').hasMatch(numericUserId)) {
+      roomSyncWarn('collects API: numericUserId が不正のため中断');
+      return null;
+    }
+    final q = <String, String>{
+      'api_version': '1',
+      'limit': limit.clamp(1, 50).toString(),
+    };
+    if (afterId != null && afterId.isNotEmpty) {
+      q['after_id'] = afterId;
+    }
+    final uri = Uri.https(
+      'room.rakuten.co.jp',
+      '/api/$numericUserId/collects',
+      q,
+    );
+    roomSyncLog('collects API GET: $uri');
+    late http.Response res;
+    try {
+      res = await _client
+          .get(
+            uri,
+            headers: {
+              'User-Agent':
+                  'Mozilla/5.0 (compatible; RoomManagerApp/1.0; +https://example.invalid)',
+              'Accept': 'application/json',
+              'Referer': 'https://room.rakuten.co.jp/$roomUserSegment/items',
+            },
+          )
+          .timeout(_timeout);
+    } on TimeoutException catch (e, st) {
+      roomSyncError('collects API タイムアウト', e, st);
+      return null;
+    } catch (e, st) {
+      roomSyncError('collects API 例外', e, st);
+      return null;
+    }
+
+    roomSyncLog('collects API HTTP status: ${res.statusCode}');
+    if (res.statusCode < 200 ||
+        res.statusCode >= 400 ||
+        res.body.isEmpty) {
+      roomSyncWarn('collects API 応答不正（未取得扱い）');
+      return null;
+    }
+
+    try {
+      final decoded = jsonDecode(res.body);
+      if (decoded is! Map<String, dynamic>) return null;
+      final status = decoded['status'];
+      final code = decoded['code'];
+      if (status != 'success' || code != 200) {
+        roomSyncWarn('collects API JSON status 非 success: status=$status code=$code');
+        return null;
+      }
+      final data = decoded['data'];
+      if (data is! List<dynamic>) return null;
+      final meta = decoded['meta'];
+      String? nextAfter;
+      if (meta is Map<String, dynamic>) {
+        final a = meta['after_id'];
+        if (a is String && a.isNotEmpty) nextAfter = a;
+      }
+
+      final out = <String>[];
+      for (final row in data) {
+        if (row is! Map<String, dynamic>) continue;
+        final id = row['id'];
+        if (id is! String || id.isEmpty) continue;
+        if (!RegExp(r'^\d{8,}$').hasMatch(id)) continue;
+        final built = 'https://room.rakuten.co.jp/$roomUserSegment/$id';
+        final key = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(built);
+        if (key.isNotEmpty) out.add(key);
+      }
+
+      return RoomCollectsApiPage(
+        roomPageKeysOrdered: out,
+        nextAfterId: nextAfter,
+        rawItemCount: data.length,
+      );
+    } catch (e, st) {
+      roomSyncError('collects API JSON 解析失敗', e, st);
+      return null;
+    }
+  }
+
   /// 投稿の古い→新しいなど **一覧上の出現順** を可能な限り保持した URL リスト（重複キーは除外）。
-  Future<List<String>> fetchPostedRoomProductPageUrls(String userRoomProfileUrl) async {
+  Future<List<String>> fetchPostedRoomProductPageUrls(
+    String userRoomProfileUrl, {
+    void Function(String html)? onListingHtml,
+  }) async {
     final trimmed = userRoomProfileUrl.trim();
     roomSyncLog('ROOM一覧取得処理: fetchPostedRoomProductPageUrls 開始');
     roomSyncLog('入力ROOM URL: ${trimmed.isEmpty ? '(空)' : trimmed}');
@@ -71,23 +287,8 @@ class RoomUserPostedListingFetcher {
       'User-Agent: Mozilla/5.0 (compatible; RoomManagerApp/1.0; +https://example.invalid)',
     );
 
-    late http.Response res;
-    try {
-      res = await _client
-          .get(
-            uri,
-            headers: const {
-              'User-Agent':
-                  'Mozilla/5.0 (compatible; RoomManagerApp/1.0; +https://example.invalid)',
-              'Accept': 'text/html,application/xhtml+xml',
-            },
-          )
-          .timeout(_timeout);
-    } on TimeoutException catch (e, st) {
-      roomSyncError('ROOM一覧ページ取得失敗: タイムアウト', e, st);
-      return [];
-    } catch (e, st) {
-      roomSyncError('ROOM一覧ページ取得失敗: 例外', e, st);
+    final res = await _getRoomListingPage(uri);
+    if (res == null) {
       return [];
     }
 
@@ -103,6 +304,8 @@ class RoomUserPostedListingFetcher {
     }
 
     final html = res.body;
+    logListingHtmlInvestigation(html);
+    onListingHtml?.call(html);
     final decoded = RoomUrlResolverStyleUnescape.unescapeBasicXmlEntities(html);
     final candidates = _collectFromHtml(html: html, decodedHtml: decoded, baseUri: uri);
     roomSyncLog('ROOM商品URL抽出開始（生候補・重複あり）');
@@ -170,6 +373,27 @@ class RoomUserPostedListingFetcher {
     }
 
     return out;
+  }
+
+  Future<http.Response?> _getRoomListingPage(Uri uri) async {
+    try {
+      return await _client
+          .get(
+            uri,
+            headers: const {
+              'User-Agent':
+                  'Mozilla/5.0 (compatible; RoomManagerApp/1.0; +https://example.invalid)',
+              'Accept': 'text/html,application/xhtml+xml',
+            },
+          )
+          .timeout(_timeout);
+    } on TimeoutException catch (e, st) {
+      roomSyncError('ROOM一覧ページ取得失敗: タイムアウト', e, st);
+      return null;
+    } catch (e, st) {
+      roomSyncError('ROOM一覧ページ取得失敗: 例外', e, st);
+      return null;
+    }
   }
 
   static String _exampleItemsUrl(Uri u) {
@@ -256,6 +480,19 @@ class RoomUserPostedListingFetcher {
 }
 
 /// [RoomUrlResolver] と同等の最低限エスケープ解除（クラス共有せず局所で保持し、既存ファイル名を増やさない）。
+/// [/api/{id}/collects] 相当の1ページぶん（正規化済み ROOM 商品ページキー列）。
+class RoomCollectsApiPage {
+  const RoomCollectsApiPage({
+    required this.roomPageKeysOrdered,
+    this.nextAfterId,
+    required this.rawItemCount,
+  });
+
+  final List<String> roomPageKeysOrdered;
+  final String? nextAfterId;
+  final int rawItemCount;
+}
+
 abstract final class RoomUrlResolverStyleUnescape {
   static String unescapeBasicXmlEntities(String s) {
     return s

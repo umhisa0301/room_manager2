@@ -31,6 +31,8 @@ class RoomSyncService {
   final RoomUserPostedListingFetcher _listingFetcher;
 
   static const int defaultMaxBatch = 10;
+  static const int _collectsApiPageLimit = 20;
+  static const int _maxCollectsApiPages = 40;
 
   /// 未同期の ROOM 商品を最大 [maxItems] 件処理する。
   Future<RoomSyncResult> syncPostedRoomProducts({
@@ -44,7 +46,7 @@ class RoomSyncService {
 
     if (kDemoModeEnabled) {
       roomSyncWarn('デモモードのため中断（fatal 相当）');
-      roomSyncLog('FINISH (demo) processed=0');
+      roomSyncLog('FINISH (demo) processedChecked=0 queued=0 newly=0 roomAdd=0 skip=0 fail=0');
       return const RoomSyncResult(
         processedCount: 0,
         newlyCollectedCount: 0,
@@ -69,17 +71,21 @@ class RoomSyncService {
       );
     }
 
-    final discovered = await _listingFetcher.fetchPostedRoomProductPageUrls(
+    String? listingHtml;
+    final initialOrdered = await _listingFetcher.fetchPostedRoomProductPageUrls(
       profile,
+      onListingHtml: (h) => listingHtml = h,
     );
-    roomSyncLog('一覧HTMLから得られたROOM商品URL総数（未同期フィルタ前）: ${discovered.length}');
+    roomSyncLog('一覧HTMLから得られたROOM商品URL総数（未同期フィルタ前）: ${initialOrdered.length}');
 
-    if (discovered.isEmpty) {
+    final listingInitialCandidateCount = initialOrdered.length;
+
+    if (initialOrdered.isEmpty) {
       roomSyncError(
         'ROOMの投稿一覧を取得できませんでした（抽出0件または接続失敗）。',
       );
       roomSyncLog(
-        'FINISH (fatal listing) newly=0 roomAdd=0 skip=0 fail=0 processed=0',
+        'FINISH (fatal listing) processedChecked=0 queued=0 newly=0 roomAdd=0 skip=0 fail=0',
       );
       return const RoomSyncResult(
         processedCount: 0,
@@ -91,32 +97,139 @@ class RoomSyncService {
       );
     }
 
+    roomSyncLog('初期HTML候補数: $listingInitialCandidateCount');
+    final initialUnsynced = initialOrdered
+        .where(
+          (k) => !_repository.isRoomProductPageKeySynced(k),
+        )
+        .length;
+    roomSyncLog('初期HTML未同期候補数: $initialUnsynced');
+
+    final userSeg = _roomUserSegment(profile);
+    final orderedKeys = List<String>.from(initialOrdered);
+    final seenKeys = orderedKeys.toSet();
+    var discoveryIdx = 0;
+    var listingChecked = 0;
+    var listingSkip = 0;
     final toProcess = <String>[];
-    roomSyncLog('未同期ROOM商品の選別（最大$maxItems件までキュー）');
-    for (final u in discovered) {
-      if (toProcess.length >= maxItems) break;
-      final k = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(u);
-      final synced = _repository.isRoomProductPageKeySynced(k);
-      roomSyncLog('roomUrl: $u');
-      roomSyncLog('同期済み判定（DB）: $synced');
-      if (synced) {
-        roomSyncLog('同期済みのためスキップ（一覧段階）: $u');
-        continue;
+
+    void advanceQueueFromDiscovery() {
+      while (toProcess.length < maxItems && discoveryIdx < orderedKeys.length) {
+        final k = orderedKeys[discoveryIdx++];
+        listingChecked++;
+        if (_repository.isRoomProductPageKeySynced(k)) {
+          listingSkip++;
+        } else {
+          toProcess.add(k);
+        }
       }
-      toProcess.add(u);
     }
+
+    advanceQueueFromDiscovery();
+
+    var additionalFetchStatus = '不要';
+    if (toProcess.length < maxItems) {
+      final allInitialSynced = initialOrdered.isNotEmpty &&
+          initialOrdered.every(_repository.isRoomProductPageKeySynced);
+      if (allInitialSynced) {
+        roomSyncLog('初期HTML候補がすべて同期済みのため追加取得を試行します');
+      }
+
+      var numericUserId = listingHtml == null
+          ? null
+          : RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
+              listingHtml!,
+            );
+      if (numericUserId == null || numericUserId.isEmpty) {
+        final itemsUri = _itemsListingUri(profile);
+        if (itemsUri != null && itemsUri != Uri.parse(profile)) {
+          roomSyncLog('userData.id 未取得のため /items へ再GETして再試行: $itemsUri');
+          final h = await _listingFetcher.fetchListingHtmlBody(itemsUri.toString());
+          if (h != null) {
+            RoomUserPostedListingFetcher.logListingHtmlInvestigation(h);
+            numericUserId =
+                RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
+                  h,
+                );
+          }
+        }
+      }
+
+      if (numericUserId == null || numericUserId.isEmpty || userSeg.isEmpty) {
+        additionalFetchStatus = '未対応（WebView fallback 候補）';
+        roomSyncLog('追加取得方式: 未対応（API用 userData.id 未取得またはユーザーセグメント空）');
+      } else {
+        roomSyncLog('追加取得方式: API');
+        additionalFetchStatus = '実行済み(API)';
+        String? cursor;
+        for (var pageIdx = 0;
+            pageIdx < _maxCollectsApiPages && toProcess.length < maxItems;
+            pageIdx++) {
+          roomSyncLog(
+            '追加取得 page/cursor: ${cursor ?? '(先頭ページ)'}',
+          );
+          final page = await _listingFetcher.fetchCollectsApiPage(
+            numericUserId: numericUserId,
+            roomUserSegment: userSeg,
+            afterId: cursor,
+            limit: _collectsApiPageLimit,
+          );
+          if (page == null) {
+            additionalFetchStatus = '失敗(API)';
+            roomSyncWarn('追加取得 collects API が失敗したため打ち切り');
+            break;
+          }
+
+          roomSyncLog('追加取得候補数: ${page.roomPageKeysOrdered.length}');
+          var appended = 0;
+          for (final k in page.roomPageKeysOrdered) {
+            if (seenKeys.contains(k)) continue;
+            seenKeys.add(k);
+            orderedKeys.add(k);
+            appended++;
+          }
+          advanceQueueFromDiscovery();
+
+          final unsyncedAmongDiscovered = orderedKeys
+              .where((k) => !_repository.isRoomProductPageKeySynced(k))
+              .length;
+          roomSyncLog('追加取得後の未同期候補数: $unsyncedAmongDiscovered');
+
+          cursor = page.nextAfterId;
+          if (cursor == null ||
+              cursor.isEmpty ||
+              page.rawItemCount == 0) {
+            break;
+          }
+          if (appended == 0 && toProcess.length < maxItems) {
+            // 重複のみのページが返る場合もあるためカーソルで先へ進む。
+            continue;
+          }
+        }
+      }
+    } else {
+      roomSyncLog('追加取得方式: 不要（初期候補でキュー充足見込み）');
+    }
+
+    roomSyncLog('同期対象キュー件数: ${toProcess.length}');
 
     if (toProcess.isEmpty) {
       roomSyncLog(
-        '処理キューが空（すべて同期済み、または件数制限前に該当なし）',
+        '処理キューが空（一覧上は最大限走査、またはすべて同期済み）',
       );
-      roomSyncLog('FINISH processed=0 newly=0 roomAdd=0 skip=0 fail=0');
-      return const RoomSyncResult(
+      roomSyncLog(
+        'FINISH processedChecked=$listingChecked queued=0 newly=0 roomAdd=0 skip=$listingSkip fail=0',
+      );
+      return RoomSyncResult(
         processedCount: 0,
         newlyCollectedCount: 0,
         roomUrlAddedCount: 0,
         skippedCount: 0,
         failedCount: 0,
+        listingCheckedCount: listingChecked,
+        listingSyncedSkipCount: listingSkip,
+        listingInitialCandidateCount: listingInitialCandidateCount,
+        additionalFetchStatusLabel: additionalFetchStatus,
       );
     }
 
@@ -230,6 +343,9 @@ class RoomSyncService {
     roomSyncLog('同期済みスキップ: $skipped');
     roomSyncLog('取得失敗: $failed');
     roomSyncLog('failedRoomUrls: $failedUrls');
+    roomSyncLog(
+      'FINISH processedChecked=$listingChecked queued=$batchSize newly=$newly roomAdd=$roomAdd skip=$listingSkip fail=$failed',
+    );
 
     return RoomSyncResult(
       processedCount: batchSize,
@@ -238,6 +354,38 @@ class RoomSyncService {
       skippedCount: skipped,
       failedCount: failed,
       failedRoomUrls: failedUrls,
+      listingCheckedCount: listingChecked,
+      listingSyncedSkipCount: listingSkip,
+      listingInitialCandidateCount: listingInitialCandidateCount,
+      additionalFetchStatusLabel: additionalFetchStatus,
     );
+  }
+
+  static String _roomUserSegment(String profile) {
+    try {
+      final u = Uri.parse(profile.trim());
+      final segs = u.pathSegments.where((s) => s.isNotEmpty).toList();
+      return segs.isEmpty ? '' : segs.first;
+    } catch (_) {
+      return '';
+    }
+  }
+
+  /// プロフィール URL を `/items` 付きの一覧 URL に揃える（同一なら null）。
+  static Uri? _itemsListingUri(String profile) {
+    try {
+      final u = Uri.parse(profile.trim());
+      if (!u.hasScheme || u.host.isEmpty) return null;
+      final segs = u.pathSegments.where((s) => s.isNotEmpty).toList();
+      if (segs.length >= 2 && segs.last == 'items') {
+        return null;
+      }
+      final trimmed =
+          u.path.isEmpty ? '' : u.path.replaceAll(RegExp(r'/+$'), '');
+      final newPath = '${trimmed.isEmpty ? '' : trimmed}/items';
+      return u.replace(path: newPath.startsWith('/') ? newPath : '/$newPath');
+    } catch (_) {
+      return null;
+    }
   }
 }
