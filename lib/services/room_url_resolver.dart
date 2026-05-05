@@ -11,6 +11,8 @@ import 'rakuten_item_url_parser.dart';
 ///
 /// **Step 1（本実装）**: HTTP で HTML を取得し [RakutenItemUrlParser] で `item.rakuten.co.jp` を検索。
 ///
+/// **Step 2**: `hb.afl.rakuten.co.jp` リンクの `pc` クエリ（URLエンコードされた item URL）をデコードして採用。
+///
 /// **WebView フォールバック**: ROOM 側が JS 必須でリンクが HTML に現れない場合、
 /// 既存の [RoomUrlExtractionCoordinator] 経由でページを描画し DOM から href を拾う
 /// 拡張が可能（本クラスは [resolveRakutenItemUrlFromRoomPage] の戻りで失敗理由を区別できる）。
@@ -23,6 +25,11 @@ class RoomUrlResolver {
 
   final http.Client _client;
   final Duration _timeout;
+
+  static final RegExp _aflUrlPattern = RegExp(
+    r'https?://hb\.afl\.rakuten\.co\.jp/[^\s"<>]+',
+    caseSensitive: false,
+  );
 
   /// HTTP のみ。将来的に `useWebViewFallback: true` で Coordinator に委譲可能な拡張点。
   ///
@@ -111,52 +118,42 @@ class RoomUrlResolver {
     }
 
     final decoded = _unescapeBasicXmlEntities(body);
+    final aflUrlsOrdered = _collectAflUrlsUniqueOrdered(decoded, body);
+
     if (traceRoomSync) {
-      roomSyncLog('楽天で見るURL抽出開始（item.rakuten.co.jp / 他）');
+      roomSyncLog('楽天で見るURL抽出開始（① item.rakuten 直接 → ② afl pc デコード）');
       final decList = RakutenItemUrlParser.findAllMatchesInText(decoded);
       final rawList = RakutenItemUrlParser.findAllMatchesInText(body);
       final merged = <String>[];
-      final seenUrl = <String>{};
+      final seenItem = <String>{};
       void addAll(List<RakutenItemUrlParseResult> list) {
         for (final r in list) {
           final u = r.rakutenUrl.trim();
-          if (u.isEmpty || seenUrl.contains(u)) continue;
-          seenUrl.add(u);
+          if (u.isEmpty || seenItem.contains(u)) continue;
+          seenItem.add(u);
           merged.add(u);
         }
       }
 
       addAll(decList);
       addAll(rawList);
-      final aflRe = RegExp(
-        r'https?://hb\.afl\.rakuten\.co\.jp/[^\s"<>]+',
-        caseSensitive: false,
-      );
-      final aflUrls = <String>[];
-      for (final m in aflRe.allMatches(decoded)) {
-        final s = m.group(0);
-        if (s != null && !aflUrls.contains(s)) aflUrls.add(s);
-      }
-      for (final m in aflRe.allMatches(body)) {
-        final s = m.group(0);
-        if (s != null && !aflUrls.contains(s)) aflUrls.add(s);
-      }
       roomSyncLog('楽天URL候補数（item.rakuten ユニーク）: ${merged.length}');
       for (var i = 0; i < merged.length; i++) {
         roomSyncLog('楽天URL候補[${i + 1}] (item): ${merged[i]}');
       }
-      roomSyncLog('楽天アフィリエイトURL候補数: ${aflUrls.length}');
-      for (var i = 0; i < aflUrls.length; i++) {
-        roomSyncLog('楽天URL候補[${i + 1}] (afl): ${aflUrls[i]}');
+      roomSyncLog('楽天アフィリエイトURL候補数: ${aflUrlsOrdered.length}');
+      for (var i = 0; i < aflUrlsOrdered.length; i++) {
+        roomSyncLog('楽天URL候補[${i + 1}] (afl): ${aflUrlsOrdered[i]}');
       }
     }
 
     var parsed = RakutenItemUrlParser.findFirstInText(decoded);
     parsed ??= RakutenItemUrlParser.findFirstInText(body);
+    parsed ??= _tryParseItemFromFirstAflPc(aflUrlsOrdered, traceRoomSync);
 
     if (parsed == null) {
       if (traceRoomSync) {
-        roomSyncWarn('楽天URLを取得できませんでした（item パターン不一致）');
+        roomSyncWarn('楽天URLを取得できませんでした（item 直接・afl pc いずれも不一致）');
         final sample = decoded.isNotEmpty ? decoded : body;
         final lower = sample.toLowerCase();
         roomSyncWarn(
@@ -178,7 +175,7 @@ class RoomUrlResolver {
     }
 
     if (traceRoomSync) {
-      roomSyncLog('採用した楽天URL: ${parsed.rakutenUrl}');
+      roomSyncLog('採用楽天URL: ${parsed.rakutenUrl}');
     }
 
     final meta = _readOpenGraphTitleAndImage(decoded.isNotEmpty ? decoded : body);
@@ -187,6 +184,102 @@ class RoomUrlResolver {
       roomPageTitle: meta.$1,
       roomPageImageUrl: meta.$2,
     );
+  }
+
+  /// `decodedHtml` → `rawHtml` の順で走査し、重複を除いた afl URL 一覧（先着順）。
+  static List<String> _collectAflUrlsUniqueOrdered(
+    String decodedHtml,
+    String rawHtml,
+  ) {
+    final seen = <String>{};
+    final out = <String>[];
+    void scan(String s) {
+      for (final m in _aflUrlPattern.allMatches(s)) {
+        final u = m.group(0)?.trim();
+        if (u == null || u.isEmpty || seen.contains(u)) continue;
+        seen.add(u);
+        out.add(u);
+      }
+    }
+
+    scan(decodedHtml);
+    scan(rawHtml);
+    return out;
+  }
+
+  /// 最初に [RakutenItemUrlParser.tryParse] 成功した afl の `pc` デコード結果を返す。
+  static RakutenItemUrlParseResult? _tryParseItemFromFirstAflPc(
+    List<String> aflUrls,
+    bool traceRoomSync,
+  ) {
+    for (final raw in aflUrls) {
+      final aflUrl = raw.trim();
+      if (aflUrl.isEmpty) continue;
+
+      if (traceRoomSync) {
+        roomSyncLog('aflURL: $aflUrl');
+      }
+
+      final uri = Uri.tryParse(aflUrl);
+      if (uri == null) {
+        if (traceRoomSync) {
+          roomSyncWarn('aflURL の Uri 解析に失敗');
+        }
+        continue;
+      }
+
+      final pc = uri.queryParameters['pc'];
+      if (pc == null || pc.trim().isEmpty) {
+        if (traceRoomSync) {
+          roomSyncLog('pc param: (なしまたは空)');
+        }
+        continue;
+      }
+
+      if (traceRoomSync) {
+        roomSyncLog('pc param: $pc');
+      }
+
+      final String decodedPc;
+      try {
+        decodedPc = Uri.decodeFull(pc.trim());
+      } catch (e, st) {
+        if (traceRoomSync) {
+          roomSyncError('pc の Uri.decodeFull に失敗', e, st);
+        }
+        continue;
+      }
+
+      final decTrim = decodedPc.trim();
+      if (decTrim.isEmpty) {
+        if (traceRoomSync) {
+          roomSyncWarn('decoded URL: (空)');
+        }
+        continue;
+      }
+
+      if (traceRoomSync) {
+        roomSyncLog('decoded URL: $decTrim');
+      }
+
+      if (!decTrim.toLowerCase().contains('item.rakuten.co.jp')) {
+        if (traceRoomSync) {
+          roomSyncWarn('decode後に item.rakuten.co.jp を含みません');
+        }
+        continue;
+      }
+
+      final parsed = RakutenItemUrlParser.tryParse(decTrim);
+      if (parsed != null) {
+        return parsed;
+      }
+
+      if (traceRoomSync) {
+        roomSyncWarn('RakutenItemUrlParser.tryParse が decode URL で失敗');
+      }
+    }
+
+    return null;
   }
 
   /// `&amp;` 等を最低限戻し、href 内の item.rakuten を拾いやすくする。

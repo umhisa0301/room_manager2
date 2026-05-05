@@ -27,6 +27,11 @@ class RoomUserPostedListingFetcher {
   static const String listingHrefPatternSource =
       r'''href\s*=\s*["']([^"']+)["']''';
 
+  /// ログ用: 投稿IDフォールバック（1700始まり13桁以上想定）。
+  static const String postIdFallbackPatternSource = r'\b(1700\d{9,})\b';
+
+  static final RegExp _postIdFallbackPattern = RegExp(postIdFallbackPatternSource);
+
   /// 投稿の古い→新しいなど **一覧上の出現順** を可能な限り保持した URL リスト（重複キーは除外）。
   Future<List<String>> fetchPostedRoomProductPageUrls(String userRoomProfileUrl) async {
     final trimmed = userRoomProfileUrl.trim();
@@ -126,7 +131,7 @@ class RoomUserPostedListingFetcher {
     }
 
     if (out.isEmpty) {
-      roomSyncWarn('ROOM商品URLを1件も抽出できませんでした');
+      roomSyncWarn('ROOM商品URLを1件も抽出できませんでした（href/絶対URL経路）');
       roomSyncWarn('使用した正規表現（絶対URL）: $listingAbsoluteUrlPatternSource');
       roomSyncWarn('使用した正規表現（href）: $listingHrefPatternSource');
       roomSyncWarn(
@@ -135,6 +140,33 @@ class RoomUserPostedListingFetcher {
       roomSyncWarn(
         'HTML内に 1700 形式の商品IDらしき文字列(13桁以上の連続数字)を含むか: ${_htmlHasLongDigitId(html)}',
       );
+
+      if (userSeg.isEmpty) {
+        roomSyncWarn('ROOM ユーザーセグメントが空のため投稿IDフォールバックをスキップ');
+      } else {
+        roomSyncLog(
+          'href/絶対URLからの抽出が0件のため、投稿ID fallback抽出を開始',
+        );
+        roomSyncLog('使用した正規表現（投稿ID）: $postIdFallbackPatternSource');
+        final postIds = _extractPostIdCandidates(html, decoded);
+        roomSyncLog('投稿ID候補数: ${postIds.length}');
+        for (var i = 0; i < postIds.length; i++) {
+          roomSyncLog('投稿ID[${i + 1}]: ${postIds[i]}');
+        }
+        const fallbackRoomUrlMax = 10;
+        var addedFromFallback = 0;
+        for (final postId in postIds) {
+          if (addedFromFallback >= fallbackRoomUrlMax) break;
+          final built = 'https://room.rakuten.co.jp/$userSeg/$postId';
+          final key = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(built);
+          if (key.isEmpty || seen.contains(key)) continue;
+          seen.add(key);
+          out.add(key);
+          addedFromFallback++;
+          roomSyncLog('fallback生成ROOM URL[$addedFromFallback]: $key');
+        }
+        roomSyncLog('fallback後ROOM商品URL件数: ${out.length}');
+      }
     }
 
     return out;
@@ -147,6 +179,24 @@ class RoomUserPostedListingFetcher {
 
   static bool _htmlHasLongDigitId(String html) {
     return RegExp(r'\d{13,}').hasMatch(html);
+  }
+
+  /// HTML / エスケープ解除HTML の両方から、出現順でユニークな投稿ID候補を列挙。
+  static List<String> _extractPostIdCandidates(String html, String decodedHtml) {
+    final ordered = <String>[];
+    final seenIds = <String>{};
+    void scan(String source) {
+      for (final m in _postIdFallbackPattern.allMatches(source)) {
+        final id = (m.group(1) ?? '').trim();
+        if (id.isEmpty || seenIds.contains(id)) continue;
+        seenIds.add(id);
+        ordered.add(id);
+      }
+    }
+
+    scan(html);
+    scan(decodedHtml);
+    return ordered;
   }
 
   static bool _isRoomHost(String host) {
