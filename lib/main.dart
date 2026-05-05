@@ -126,6 +126,9 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<GenreMasterRepository>.value(value: genreMasterRepository),
         Provider<RakutenSearchRepository>.value(value: rakutenSearchRepository),
+        Provider<RakutenManagedProductRepository>.value(
+          value: rakutenManagedProductRepository,
+        ),
         ChangeNotifierProvider(create: (_) => AppShellController()),
         Provider<PendingCollectNoticeRepository>.value(
           value: pendingCollectNoticeRepository,

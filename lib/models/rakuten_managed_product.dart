@@ -45,6 +45,8 @@ class RakutenManagedProduct {
     this.feedbackLikedAt,
     this.feedbackSoldAt,
     this.feedbackWeakAt,
+    this.isRoomSynced = false,
+    this.roomSyncedAt,
   });
 
   /// 楽天の itemCode（アプリ内の [RakutenSearchItem.productId] と同一）。
@@ -94,6 +96,12 @@ class RakutenManagedProduct {
   /// ユーザー評価「微妙」を付けた日時。
   final DateTime? feedbackWeakAt;
 
+  /// 楽天ROOM の商品ページ URL を同期済みとして確定したか（将来の履歴・再同期の拡張用）。
+  final bool isRoomSynced;
+
+  /// [isRoomSynced] を立てた日時（未同期は null）。
+  final DateTime? roomSyncedAt;
+
   /// ブラウザで開くURL（アフィリエイトURLを優先）。
   String get browserLaunchUrl =>
       affiliateUrl.trim().isNotEmpty ? affiliateUrl.trim() : itemUrl;
@@ -138,6 +146,9 @@ class RakutenManagedProduct {
     bool clearFeedbackSold = false,
     DateTime? feedbackWeakAt,
     bool clearFeedbackWeak = false,
+    bool? isRoomSynced,
+    DateTime? roomSyncedAt,
+    bool clearRoomSyncedAt = false,
   }) {
     return RakutenManagedProduct(
       productId: productId ?? this.productId,
@@ -172,6 +183,10 @@ class RakutenManagedProduct {
       feedbackWeakAt: clearFeedbackWeak
           ? null
           : (feedbackWeakAt ?? this.feedbackWeakAt),
+      isRoomSynced: isRoomSynced ?? this.isRoomSynced,
+      roomSyncedAt: clearRoomSyncedAt
+          ? null
+          : (roomSyncedAt ?? this.roomSyncedAt),
     );
   }
 
@@ -208,6 +223,8 @@ class RakutenManagedProduct {
       feedbackLikedAt: null,
       feedbackSoldAt: null,
       feedbackWeakAt: null,
+      isRoomSynced: false,
+      roomSyncedAt: null,
     );
   }
 
@@ -238,6 +255,8 @@ class RakutenManagedProduct {
       'feedbackLikedAt': feedbackLikedAt?.toIso8601String(),
       'feedbackSoldAt': feedbackSoldAt?.toIso8601String(),
       'feedbackWeakAt': feedbackWeakAt?.toIso8601String(),
+      'isRoomSynced': isRoomSynced,
+      'roomSyncedAt': roomSyncedAt?.toIso8601String(),
     };
   }
 
@@ -353,6 +372,13 @@ class RakutenManagedProduct {
       feedbackWeakAt = parseDt(fw);
     }
 
+    final isRoomSynced = json['isRoomSynced'] == true;
+    DateTime? roomSyncedAt;
+    final rsAt = json['roomSyncedAt']?.toString();
+    if (rsAt != null && rsAt.isNotEmpty) {
+      roomSyncedAt = parseDt(rsAt);
+    }
+
     final statusRaw = (json['status'] ?? '').toString().trim();
     var status = RakutenManagedProductStatus.values.firstWhere(
       (e) => e.name == statusRaw,
@@ -395,6 +421,8 @@ class RakutenManagedProduct {
       feedbackLikedAt: feedbackLikedAt,
       feedbackSoldAt: feedbackSoldAt,
       feedbackWeakAt: feedbackWeakAt,
+      isRoomSynced: isRoomSynced,
+      roomSyncedAt: roomSyncedAt,
     );
   }
 }

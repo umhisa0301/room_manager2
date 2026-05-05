@@ -100,6 +100,33 @@ class RakutenManagedProductRepository {
     return null;
   }
 
+  /// 正規化キーで ROOM 商品ページが既に永続化されているか（HTTP 取得前の短絡用）。
+  bool isRoomProductPageKeySynced(String normalizedRoomUrlKey) {
+    if (kDemoModeEnabled) {
+      return false;
+    }
+    final key = normalizedRoomUrlKey.trim();
+    if (key.isEmpty) return false;
+    for (final e in loadAll()) {
+      final ek = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(e.roomUrl);
+      if (ek.isNotEmpty && ek == key) return true;
+    }
+    return false;
+  }
+
+  static bool _matchesPersistParsedItem(
+    RakutenManagedProduct e,
+    RakutenItemUrlParseResult p,
+  ) {
+    if (e.productId.trim() == p.compositeProductId) return true;
+    final sc = p.shopCode.trim();
+    final seg = p.itemPathSegment.trim();
+    if (sc.isEmpty || seg.isEmpty) return false;
+    if (e.shopCode.trim() != sc) return false;
+    final pid = e.productId.trim();
+    return pid == seg;
+  }
+
   /// 検索結果1件をコレ候補として保存。同一 [RakutenSearchItem.productId] が既にあれば何もしない（重複防止）。
   /// 新規追加した場合は true。
   Future<bool> registerCandidateFromSearchItem(RakutenSearchItem item) async {
@@ -275,13 +302,14 @@ class RakutenManagedProductRepository {
 
   /// ROOM 商品ページ同期（単品・将来の一括の共通永続化）。
   ///
-  /// **処理順**: roomUrl キー重複 → productId 既存のマージ可否 → 新規コレ済插入。
+  /// **処理順**: roomUrl キー重複 → shopCode+itemCode 既存のマージ可否 → 新規コレ済插入。
   Future<RoomCollectedPersistOutcome> persistRoomCollectedFromRoomPage({
     required String roomUrlStoredCanonical,
     required String normalizedRoomUrlKey,
     required RakutenItemUrlParseResult parsedItem,
     String roomPageTitle = '',
     String roomPageImageUrl = '',
+    RakutenSearchItem? apiEnrichedItem,
   }) async {
     if (kDemoModeEnabled) {
       return const RoomCollectedPersistOutcome(
@@ -306,13 +334,12 @@ class RakutenManagedProductRepository {
       }
     }
 
-    final productId = parsedItem.compositeProductId;
     final now = DateTime.now();
 
     RakutenManagedProduct? existing;
     var existingIndex = -1;
     for (var i = 0; i < list.length; i++) {
-      if (list[i].productId == productId) {
+      if (_matchesPersistParsedItem(list[i], parsedItem)) {
         existing = list[i];
         existingIndex = i;
         break;
@@ -339,7 +366,7 @@ class RakutenManagedProductRepository {
 
       final t = roomPageTitle.trim();
       final img = roomPageImageUrl.trim();
-      list[existingIndex] = existing.copyWith(
+      var next = existing.copyWith(
         roomUrl: roomUrlStoredCanonical,
         itemUrl: parsedItem.rakutenUrl.isNotEmpty
             ? parsedItem.rakutenUrl
@@ -350,11 +377,65 @@ class RakutenManagedProductRepository {
         itemName: t.isNotEmpty ? t : existing.itemName,
         imageUrl: img.isNotEmpty ? img : existing.imageUrl,
         updatedAt: now,
+        status: RakutenManagedProductStatus.done,
+        doneAt: existing.doneAt ?? now,
+        isRoomSynced: true,
+        roomSyncedAt: now,
       );
+
+      final api = apiEnrichedItem;
+      if (api != null) {
+        final resolvedLabel = _resolvedGenreLabelForSearchItem(api);
+        next = next.copyWith(
+          itemName: api.itemName.trim().isNotEmpty ? api.itemName : next.itemName,
+          itemPrice: api.itemPrice,
+          affiliateUrl: api.affiliateUrl.trim().isNotEmpty
+              ? api.affiliateUrl
+              : next.affiliateUrl,
+          shopName: api.shopName.trim().isNotEmpty ? api.shopName : next.shopName,
+          shopUrl: api.shopUrl.trim().isNotEmpty ? api.shopUrl : next.shopUrl,
+          genreId: api.genreId.trim().isNotEmpty ? api.genreId : next.genreId,
+          genreName: api.genreName.trim().isNotEmpty ? api.genreName : next.genreName,
+          resolvedGenreName: resolvedLabel.isNotEmpty
+              ? resolvedLabel
+              : next.resolvedGenreName,
+          imageUrl: api.imageUrl.trim().isNotEmpty ? api.imageUrl : next.imageUrl,
+        );
+      }
+
+      list[existingIndex] = next;
       await _saveAll(list);
       return RoomCollectedPersistOutcome(
         kind: RoomCollectedPersistKind.updatedRoomUrlOnly,
-        productId: productId,
+        productId: existing.productId,
+      );
+    }
+
+    final apiNew = apiEnrichedItem;
+    if (apiNew != null) {
+      final resolvedLabel = _resolvedGenreLabelForSearchItem(apiNew);
+      final row = RakutenManagedProduct.fromSearchItem(
+        apiNew,
+        status: RakutenManagedProductStatus.done,
+        now: now,
+        resolvedGenreName: resolvedLabel,
+      ).copyWith(
+        roomUrl: roomUrlStoredCanonical,
+        itemUrl: parsedItem.rakutenUrl.isNotEmpty
+            ? parsedItem.rakutenUrl
+            : apiNew.itemUrl,
+        shopCode: parsedItem.shopCode.isNotEmpty
+            ? parsedItem.shopCode
+            : apiNew.shopCode,
+        doneAt: now,
+        isRoomSynced: true,
+        roomSyncedAt: now,
+      );
+      list.add(row);
+      await _saveAll(list);
+      return RoomCollectedPersistOutcome(
+        kind: RoomCollectedPersistKind.insertedNewCollected,
+        productId: row.productId,
       );
     }
 
@@ -362,10 +443,13 @@ class RakutenManagedProductRepository {
         ? roomPageTitle.trim()
         : '（ROOM同期）';
     final image = roomPageImageUrl.trim();
+    final newId = parsedItem.itemPathSegment.trim().isNotEmpty
+        ? parsedItem.itemPathSegment.trim()
+        : parsedItem.compositeProductId;
 
     list.add(
       RakutenManagedProduct(
-        productId: productId,
+        productId: newId,
         itemName: title,
         itemPrice: 0,
         itemUrl: parsedItem.rakutenUrl,
@@ -390,12 +474,14 @@ class RakutenManagedProductRepository {
         feedbackLikedAt: null,
         feedbackSoldAt: null,
         feedbackWeakAt: null,
+        isRoomSynced: true,
+        roomSyncedAt: now,
       ),
     );
     await _saveAll(list);
     return RoomCollectedPersistOutcome(
       kind: RoomCollectedPersistKind.insertedNewCollected,
-      productId: productId,
+      productId: newId,
     );
   }
 

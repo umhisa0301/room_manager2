@@ -8,7 +8,10 @@ import '../models/rakuten_genre_master_entry.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/user_profile.dart';
 import '../navigation/app_shell_controller.dart';
+import '../repository/rakuten_managed_product_repository.dart';
+import '../repository/rakuten_search_repository.dart';
 import '../services/app_action_service.dart';
+import '../services/room_sync_service.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../services/room_collect_post_limit.dart';
 import '../state/activity_log_provider.dart';
@@ -211,6 +214,10 @@ class MypagePlaceholderScreen extends StatelessWidget {
                           ),
                         );
                       },
+                    ),
+                    const SizedBox(height: _gap),
+                    MyPageRoomSyncSection(
+                      onEditRoomUrl: () => _openRoomUrlEditSheet(context),
                     ),
                     const SizedBox(height: _gap),
                     MyPageSettingsSection(
@@ -948,6 +955,209 @@ class MyPageRoomLinkCard extends StatelessWidget {
               ],
             ],
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class MyPageRoomSyncSection extends StatefulWidget {
+  const MyPageRoomSyncSection({super.key, required this.onEditRoomUrl});
+
+  final VoidCallback onEditRoomUrl;
+
+  @override
+  State<MyPageRoomSyncSection> createState() => _MyPageRoomSyncSectionState();
+}
+
+class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
+  bool _busy = false;
+  int _currentIndex = 0;
+  int _batchTotal = 0;
+
+  Future<void> _runSync(BuildContext context) async {
+    final profile = context.read<UserProfileProvider>().profile;
+    final roomUrl = profile.roomUrl.trim();
+    if (roomUrl.isEmpty) return;
+
+    setState(() {
+      _busy = true;
+      _currentIndex = 0;
+      _batchTotal = 0;
+    });
+
+    final managed = context.read<RakutenManagedProductProvider>();
+    final repo = context.read<RakutenManagedProductRepository>();
+    final searchRepo = context.read<RakutenSearchRepository>();
+
+    final service = RoomSyncService(
+      repository: repo,
+      searchRepository: searchRepo,
+    );
+
+    final result = await service.syncPostedRoomProducts(
+      userRoomProfileUrl: roomUrl,
+      maxItems: RoomSyncService.defaultMaxBatch,
+      onCheckingProgress: (current, total) {
+        if (!context.mounted) return;
+        setState(() {
+          _currentIndex = current;
+          _batchTotal = total;
+        });
+      },
+    );
+
+    if (!context.mounted) return;
+    setState(() {
+      _busy = false;
+    });
+
+    await managed.refreshManagedProductList(showLoadingIndicator: false);
+
+    if (!context.mounted) return;
+
+    if (result.hasFatalError) {
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('ROOM同期'),
+          content: Text(result.fatalErrorMessage!.trim()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('閉じる'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    if (result.processedCount == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('同期する新規のROOM投稿はありませんでした')),
+      );
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('ROOM同期が完了しました')),
+    );
+
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  '同期結果',
+                  style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text('新規コレ済登録：${result.newlyCollectedCount}件'),
+                Text('登録済みにROOM URL追加：${result.roomUrlAddedCount}件'),
+                Text('同期済みスキップ：${result.skippedCount}件'),
+                Text('取得失敗：${result.failedCount}件'),
+                if (result.failedRoomUrls.isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    '失敗したURL（先頭3件）',
+                    style: Theme.of(ctx).textTheme.labelMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  ...result.failedRoomUrls.take(3).map(
+                    (u) => Padding(
+                      padding: const EdgeInsets.only(bottom: 6),
+                      child: Text(
+                        u,
+                        style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.35,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 20),
+                FilledButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('閉じる'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final profile = context.watch<UserProfileProvider>().profile;
+    final roomUrl = profile.roomUrl.trim();
+    final hasUrl = roomUrl.isNotEmpty;
+
+    return AppCard(
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const AppSectionHeader(
+            title: 'ROOM同期',
+            subtitle:
+                '楽天ROOMで投稿済みの商品を取得し、アプリのコレ済判定に反映します。',
+            icon: Icons.sync_rounded,
+          ),
+          const SizedBox(height: 8),
+          if (!hasUrl) ...[
+            Text(
+              'ROOM URLを登録してください',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.35,
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: widget.onEditRoomUrl,
+              child: const Text('ROOM URLを登録'),
+            ),
+          ] else ...[
+            if (_busy) ...[
+              LinearProgressIndicator(
+                value: _batchTotal > 0 && _currentIndex > 0
+                    ? _currentIndex / _batchTotal
+                    : null,
+              ),
+              const SizedBox(height: 6),
+              Text(
+                _batchTotal == 0
+                    ? '準備しています…'
+                    : _currentIndex == 0
+                        ? '$_batchTotal件を処理します…'
+                        : '$_batchTotal件中 $_currentIndex件を確認中',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.35,
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+            FilledButton(
+              onPressed: _busy ? null : () => _runSync(context),
+              child: const Text('10件同期する'),
+            ),
+          ],
         ],
       ),
     );
