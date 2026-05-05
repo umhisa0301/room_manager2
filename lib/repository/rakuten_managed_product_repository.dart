@@ -12,6 +12,7 @@ import '../models/room_collected_persist_outcome.dart';
 import '../services/rakuten_item_url_parser.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../utils/room_rakuten_url_normalize.dart';
+import '../utils/room_sync_log.dart';
 
 /// 楽天検索由来の商品をローカル管理する（コレ候補・将来のコレ済・抽出結果などの拡張前提）。
 class RakutenManagedProductRepository {
@@ -310,28 +311,49 @@ class RakutenManagedProductRepository {
     String roomPageTitle = '',
     String roomPageImageUrl = '',
     RakutenSearchItem? apiEnrichedItem,
+    bool traceRoomSync = false,
   }) async {
     if (kDemoModeEnabled) {
+      if (traceRoomSync) {
+        roomSyncWarn('デモモードのため永続化スキップ（demoUnsupported）');
+      }
       return const RoomCollectedPersistOutcome(
         kind: RoomCollectedPersistKind.demoUnsupported,
       );
     }
     final key = normalizedRoomUrlKey.trim();
     if (key.isEmpty) {
+      if (traceRoomSync) {
+        roomSyncWarn('normalizedRoomUrlKey が空のためスキップ（alreadyCollectedSkip）');
+      }
       return const RoomCollectedPersistOutcome(
         kind: RoomCollectedPersistKind.alreadyCollectedSkip,
       );
+    }
+
+    if (traceRoomSync) {
+      roomSyncLog('DB照合開始 normalizedRoomUrlKey=$key');
+      roomSyncLog('roomUrl保存済み（同一キー先行検索）に該当するか確認');
     }
 
     final list = List<RakutenManagedProduct>.from(loadAll());
     for (final e in list) {
       final ek = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(e.roomUrl);
       if (ek.isNotEmpty && ek == key) {
+        if (traceRoomSync) {
+          roomSyncLog('既に同期済みのため登録処理をスキップします（roomPageAlreadySynced）');
+          roomSyncLog('roomUrl保存済み: true（既存 productId=${e.productId}）');
+          roomSyncLog('shopCode + itemCode 登録済み: (同一行)');
+        }
         return RoomCollectedPersistOutcome(
           kind: RoomCollectedPersistKind.roomPageAlreadySynced,
           productId: e.productId,
         );
       }
+    }
+
+    if (traceRoomSync) {
+      roomSyncLog('roomUrl保存済み: false（このキーでは未登録）');
     }
 
     final now = DateTime.now();
@@ -346,6 +368,13 @@ class RakutenManagedProductRepository {
       }
     }
 
+    if (traceRoomSync) {
+      roomSyncLog(
+        'shopCode + itemCode 登録済み: ${existing != null} '
+        '(shop=${parsedItem.shopCode} itemPath=${parsedItem.itemPathSegment})',
+      );
+    }
+
     if (existing != null && existingIndex >= 0) {
       final storedRoom = existing.roomUrl.trim();
       if (storedRoom.isNotEmpty) {
@@ -353,15 +382,29 @@ class RakutenManagedProductRepository {
           storedRoom,
         );
         if (rk == key) {
+          if (traceRoomSync) {
+            roomSyncLog('既に同期済みのため登録処理をスキップします（同一商品・同一room）');
+          }
           return RoomCollectedPersistOutcome(
             kind: RoomCollectedPersistKind.roomPageAlreadySynced,
             productId: existing.productId,
+          );
+        }
+        if (traceRoomSync) {
+          roomSyncLog(
+            '既存行に別ROOMが紐付いているためスキップ（alreadyCollectedSkip） '
+            'storedRoomKey=$rk',
           );
         }
         return RoomCollectedPersistOutcome(
           kind: RoomCollectedPersistKind.alreadyCollectedSkip,
           productId: existing.productId,
         );
+      }
+
+      if (traceRoomSync) {
+        roomSyncLog('既存コレ済商品にROOM URLを追加します');
+        roomSyncLog('保存開始 保存種別: 既存商品へROOM URL追加');
       }
 
       final t = roomPageTitle.trim();
@@ -404,7 +447,17 @@ class RakutenManagedProductRepository {
       }
 
       list[existingIndex] = next;
-      await _saveAll(list);
+      try {
+        await _saveAll(list);
+        if (traceRoomSync) {
+          roomSyncLog('保存成功（既存商品へROOM URL追加）');
+        }
+      } catch (e, st) {
+        if (traceRoomSync) {
+          roomSyncError('保存失敗（既存商品へROOM URL追加）', e, st);
+        }
+        rethrow;
+      }
       return RoomCollectedPersistOutcome(
         kind: RoomCollectedPersistKind.updatedRoomUrlOnly,
         productId: existing.productId,
@@ -413,6 +466,10 @@ class RakutenManagedProductRepository {
 
     final apiNew = apiEnrichedItem;
     if (apiNew != null) {
+      if (traceRoomSync) {
+        roomSyncLog('未登録商品のため楽天APIで詳細取得済み行をコレ済として新規保存します');
+        roomSyncLog('保存開始 保存種別: 新規コレ済登録（APIあり）');
+      }
       final resolvedLabel = _resolvedGenreLabelForSearchItem(apiNew);
       final row = RakutenManagedProduct.fromSearchItem(
         apiNew,
@@ -432,11 +489,26 @@ class RakutenManagedProductRepository {
         roomSyncedAt: now,
       );
       list.add(row);
-      await _saveAll(list);
+      try {
+        await _saveAll(list);
+        if (traceRoomSync) {
+          roomSyncLog('保存成功（新規コレ済・APIあり）');
+        }
+      } catch (e, st) {
+        if (traceRoomSync) {
+          roomSyncError('保存失敗（新規コレ済・APIあり）', e, st);
+        }
+        rethrow;
+      }
       return RoomCollectedPersistOutcome(
         kind: RoomCollectedPersistKind.insertedNewCollected,
         productId: row.productId,
       );
+    }
+
+    if (traceRoomSync) {
+      roomSyncLog('API無し・最低限データで新規コレ済登録します');
+      roomSyncLog('保存開始 保存種別: 新規コレ済登録（最低限）');
     }
 
     final title = roomPageTitle.trim().isNotEmpty
@@ -478,7 +550,17 @@ class RakutenManagedProductRepository {
         roomSyncedAt: now,
       ),
     );
-    await _saveAll(list);
+    try {
+      await _saveAll(list);
+      if (traceRoomSync) {
+        roomSyncLog('保存成功（新規コレ済・最低限）');
+      }
+    } catch (e, st) {
+      if (traceRoomSync) {
+        roomSyncError('保存失敗（新規コレ済・最低限）', e, st);
+      }
+      rethrow;
+    }
     return RoomCollectedPersistOutcome(
       kind: RoomCollectedPersistKind.insertedNewCollected,
       productId: newId,

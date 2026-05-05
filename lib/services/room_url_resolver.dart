@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/room_rakuten_url_normalize.dart';
+import '../utils/room_sync_log.dart';
 import 'rakuten_item_url_parser.dart';
 
 /// ROOM 商品ページから楽天市場の商品URLを推定する。
@@ -24,15 +25,24 @@ class RoomUrlResolver {
   final Duration _timeout;
 
   /// HTTP のみ。将来的に `useWebViewFallback: true` で Coordinator に委譲可能な拡張点。
+  ///
+  /// [traceRoomSync] が true のとき、[ROOM_SYNC] プレフィックス付きで詳細ログを出す（kDebugMode のみ）。
   Future<RoomUrlResolveOutcome> resolveRakutenItemUrlFromRoomPage(
     String roomPageUrl, {
     bool useWebViewFallback = false,
+    bool traceRoomSync = false,
   }) async {
     final trimmed = roomPageUrl.trim();
     if (trimmed.isEmpty) {
+      if (traceRoomSync) {
+        roomSyncWarn('ROOM商品ページURLが空（invalidInput）');
+      }
       return const RoomUrlResolveFailure(RoomUrlResolveFailureKind.invalidInput);
     }
     if (!RoomRakutenUrlNormalize.isLikelyRoomProductPageUrl(trimmed)) {
+      if (traceRoomSync) {
+        roomSyncWarn('ROOM商品ページURLとして不正（notRoomUrl）: $trimmed');
+      }
       return const RoomUrlResolveFailure(RoomUrlResolveFailureKind.notRoomUrl);
     }
     if (useWebViewFallback) {
@@ -45,6 +55,12 @@ class RoomUrlResolver {
 
     late http.Response res;
     try {
+      if (traceRoomSync) {
+        roomSyncLog('ROOM商品ページへ接続: $trimmed');
+        roomSyncLog(
+          'User-Agent: Mozilla/5.0 (compatible; RoomManagerApp/1.0; +https://example.invalid)',
+        );
+      }
       res = await _client
           .get(
             Uri.parse(trimmed),
@@ -55,16 +71,31 @@ class RoomUrlResolver {
             },
           )
           .timeout(_timeout);
-    } on TimeoutException {
+    } on TimeoutException catch (e, st) {
+      if (traceRoomSync) {
+        roomSyncError('ROOM商品ページ取得失敗: timeout', e, st);
+      }
       return const RoomUrlResolveFailure(RoomUrlResolveFailureKind.timeout);
     } catch (e, st) {
       if (kDebugMode) {
         debugPrint('[RoomUrlResolver] HTTP 失敗: $e\n$st');
       }
+      if (traceRoomSync) {
+        roomSyncError('ROOM商品ページ取得失敗: exception', e, st);
+      }
       return const RoomUrlResolveFailure(RoomUrlResolveFailureKind.networkError);
     }
 
+    if (traceRoomSync) {
+      roomSyncLog('HTTP status: ${res.statusCode}');
+      roomSyncPreview('ROOM商品ページ response body', res.body, maxLength: 500);
+    }
+
     if (res.statusCode < 200 || res.statusCode >= 400) {
+      if (traceRoomSync) {
+        roomSyncError('ROOM商品ページ取得失敗 status=${res.statusCode}');
+        roomSyncPreview('ROOM商品ページ error body', res.body, maxLength: 500);
+      }
       return RoomUrlResolveFailure(
         RoomUrlResolveFailureKind.httpError,
         debugDetail: 'status=${res.statusCode}',
@@ -73,17 +104,81 @@ class RoomUrlResolver {
 
     final body = res.body;
     if (body.isEmpty) {
+      if (traceRoomSync) {
+        roomSyncWarn('ROOM商品ページ response body が空（emptyBody）');
+      }
       return const RoomUrlResolveFailure(RoomUrlResolveFailureKind.emptyBody);
     }
 
     final decoded = _unescapeBasicXmlEntities(body);
+    if (traceRoomSync) {
+      roomSyncLog('楽天で見るURL抽出開始（item.rakuten.co.jp / 他）');
+      final decList = RakutenItemUrlParser.findAllMatchesInText(decoded);
+      final rawList = RakutenItemUrlParser.findAllMatchesInText(body);
+      final merged = <String>[];
+      final seenUrl = <String>{};
+      void addAll(List<RakutenItemUrlParseResult> list) {
+        for (final r in list) {
+          final u = r.rakutenUrl.trim();
+          if (u.isEmpty || seenUrl.contains(u)) continue;
+          seenUrl.add(u);
+          merged.add(u);
+        }
+      }
+
+      addAll(decList);
+      addAll(rawList);
+      final aflRe = RegExp(
+        r'https?://hb\.afl\.rakuten\.co\.jp/[^\s"<>]+',
+        caseSensitive: false,
+      );
+      final aflUrls = <String>[];
+      for (final m in aflRe.allMatches(decoded)) {
+        final s = m.group(0);
+        if (s != null && !aflUrls.contains(s)) aflUrls.add(s);
+      }
+      for (final m in aflRe.allMatches(body)) {
+        final s = m.group(0);
+        if (s != null && !aflUrls.contains(s)) aflUrls.add(s);
+      }
+      roomSyncLog('楽天URL候補数（item.rakuten ユニーク）: ${merged.length}');
+      for (var i = 0; i < merged.length; i++) {
+        roomSyncLog('楽天URL候補[${i + 1}] (item): ${merged[i]}');
+      }
+      roomSyncLog('楽天アフィリエイトURL候補数: ${aflUrls.length}');
+      for (var i = 0; i < aflUrls.length; i++) {
+        roomSyncLog('楽天URL候補[${i + 1}] (afl): ${aflUrls[i]}');
+      }
+    }
+
     var parsed = RakutenItemUrlParser.findFirstInText(decoded);
     parsed ??= RakutenItemUrlParser.findFirstInText(body);
 
     if (parsed == null) {
+      if (traceRoomSync) {
+        roomSyncWarn('楽天URLを取得できませんでした（item パターン不一致）');
+        final sample = decoded.isNotEmpty ? decoded : body;
+        final lower = sample.toLowerCase();
+        roomSyncWarn(
+          'HTML内に item.rakuten.co.jp を含むか: ${lower.contains('item.rakuten.co.jp')}',
+        );
+        roomSyncWarn(
+          'HTML内に hb.afl.rakuten.co.jp を含むか: ${lower.contains('hb.afl.rakuten.co.jp')}',
+        );
+        roomSyncWarn(
+          'HTML内に 「楽天市場で見る」を含むか: ${sample.contains('楽天市場で見る')}',
+        );
+        roomSyncWarn(
+          'HTML内に 「楽天で見る」を含むか: ${sample.contains('楽天で見る')}',
+        );
+      }
       return const RoomUrlResolveFailure(
         RoomUrlResolveFailureKind.rakutenLinkNotFound,
       );
+    }
+
+    if (traceRoomSync) {
+      roomSyncLog('採用した楽天URL: ${parsed.rakutenUrl}');
     }
 
     final meta = _readOpenGraphTitleAndImage(decoded.isNotEmpty ? decoded : body);
