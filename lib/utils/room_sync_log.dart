@@ -10,6 +10,13 @@ void roomSyncSummaryLog(String message) {
   }
 }
 
+/// [debugVerboseRoomImport] が true のときだけの ROOM 反応数パース調査ログ。
+void roomImportReactionVerboseLog(String message) {
+  if (kDebugMode && debugVerboseRoomImport) {
+    debugPrint('[ROOM_IMPORT] $message');
+  }
+}
+
 /// [debugVerboseRoomImport] が true のときだけの詳細ログ。
 void roomSyncVerboseLog(String message) {
   if (kDebugMode && debugVerboseRoomImport) {
@@ -60,8 +67,9 @@ void roomSyncChunked(String label, String text, {int chunkSize = 800}) {
   var part = 0;
   while (start < text.length) {
     part++;
-    final end =
-        start + chunkSize > text.length ? text.length : start + chunkSize;
+    final end = start + chunkSize > text.length
+        ? text.length
+        : start + chunkSize;
     debugPrint('[ROOM_SYNC] $label part$part: ${text.substring(start, end)}');
     start = end;
   }

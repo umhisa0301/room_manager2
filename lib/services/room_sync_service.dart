@@ -335,6 +335,8 @@ class RoomSyncService {
           roomPageImageUrl: resolved.roomPageImageUrl ?? '',
           traceRoomSync: traceDetailed,
           workingMutableList: workingManagedList,
+          roomLikeCount: resolved.roomLikeCount,
+          roomCommentCount: resolved.roomCommentCount,
         );
 
         final k = outcome.kind;

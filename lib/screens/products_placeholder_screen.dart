@@ -1405,6 +1405,8 @@ List<RakutenManagedProduct> _sortRoomColleListItems(
     return ad.compareTo(bd);
   }
 
+  // 将来: ROOMいいね順は lib/models/room_colle_advanced_query.dart の比較関数へ配線予定。
+
   switch (preset) {
     case RoomColleListSortPreset.recentFirst:
       out.sort(

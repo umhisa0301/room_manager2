@@ -314,8 +314,9 @@ class RakutenManagedProductRepository {
       genreId: item.genreId,
       traceItemCode: null,
     ).trim();
-    final out =
-        (s.isEmpty || s == RakutenProductGenreDisplay.unknownLabel) ? '' : s;
+    final out = (s.isEmpty || s == RakutenProductGenreDisplay.unknownLabel)
+        ? ''
+        : s;
     if (pid.isNotEmpty) _resolvedGenreLabelByProductId[pid] = out;
     return out;
   }
@@ -323,6 +324,23 @@ class RakutenManagedProductRepository {
   /// ROOM 商品ページ同期（単品・将来の一括の共通永続化）。
   ///
   /// **処理順**: roomUrl キー重複 → shopCode+itemCode 既存のマージ可否 → 新規コレ済插入。
+  RakutenManagedProduct _mergeParsedRoomReactions(
+    RakutenManagedProduct row,
+    int? roomLikeCount,
+    int? roomCommentCount,
+    DateTime now,
+  ) {
+    if (roomLikeCount == null && roomCommentCount == null) return row;
+    var next = row;
+    if (roomLikeCount != null) {
+      next = next.copyWith(roomLikeCount: roomLikeCount);
+    }
+    if (roomCommentCount != null) {
+      next = next.copyWith(roomCommentCount: roomCommentCount);
+    }
+    return next.copyWith(roomReactionUpdatedAt: now);
+  }
+
   Future<RoomCollectedPersistOutcome> persistRoomCollectedFromRoomPage({
     required String roomUrlStoredCanonical,
     required String normalizedRoomUrlKey,
@@ -334,6 +352,8 @@ class RakutenManagedProductRepository {
 
     /// バッチ処理などで [loadAll] を繰り返さないための共有リスト（破壊的に更新される）。
     List<RakutenManagedProduct>? workingMutableList,
+    int? roomLikeCount,
+    int? roomCommentCount,
   }) async {
     if (kDemoModeEnabled) {
       if (traceRoomSync) {
@@ -358,8 +378,8 @@ class RakutenManagedProductRepository {
       roomSyncLog('roomUrl保存済み（同一キー先行検索）に該当するか確認');
     }
 
-    final list = workingMutableList ??
-        List<RakutenManagedProduct>.from(loadAll());
+    final list =
+        workingMutableList ?? List<RakutenManagedProduct>.from(loadAll());
     for (final e in list) {
       final ek = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(e.roomUrl);
       if (ek.isNotEmpty && ek == key) {
@@ -368,6 +388,7 @@ class RakutenManagedProductRepository {
           roomSyncLog('roomUrl保存済み: true（既存 productId=${e.productId}）');
           roomSyncLog('shopCode + itemCode 登録済み: (同一行)');
         }
+        // TODO(RoomReactionRefresh): 軽量モードで反応数のみ更新できるようにする（再利用実行時など）。
         return RoomCollectedPersistOutcome(
           kind: RoomCollectedPersistKind.roomPageAlreadySynced,
           productId: e.productId,
@@ -408,6 +429,7 @@ class RakutenManagedProductRepository {
           if (traceRoomSync) {
             roomSyncLog('既に同期済みのため登録処理をスキップします（同一商品・同一room）');
           }
+          // TODO(RoomReactionRefresh): 軽量モードで反応数のみ更新。
           return RoomCollectedPersistOutcome(
             kind: RoomCollectedPersistKind.roomPageAlreadySynced,
             productId: existing.productId,
@@ -453,21 +475,36 @@ class RakutenManagedProductRepository {
       if (api != null) {
         final resolvedLabel = _resolvedGenreLabelForSearchItem(api);
         next = next.copyWith(
-          itemName: api.itemName.trim().isNotEmpty ? api.itemName : next.itemName,
+          itemName: api.itemName.trim().isNotEmpty
+              ? api.itemName
+              : next.itemName,
           itemPrice: api.itemPrice,
           affiliateUrl: api.affiliateUrl.trim().isNotEmpty
               ? api.affiliateUrl
               : next.affiliateUrl,
-          shopName: api.shopName.trim().isNotEmpty ? api.shopName : next.shopName,
+          shopName: api.shopName.trim().isNotEmpty
+              ? api.shopName
+              : next.shopName,
           shopUrl: api.shopUrl.trim().isNotEmpty ? api.shopUrl : next.shopUrl,
           genreId: api.genreId.trim().isNotEmpty ? api.genreId : next.genreId,
-          genreName: api.genreName.trim().isNotEmpty ? api.genreName : next.genreName,
+          genreName: api.genreName.trim().isNotEmpty
+              ? api.genreName
+              : next.genreName,
           resolvedGenreName: resolvedLabel.isNotEmpty
               ? resolvedLabel
               : next.resolvedGenreName,
-          imageUrl: api.imageUrl.trim().isNotEmpty ? api.imageUrl : next.imageUrl,
+          imageUrl: api.imageUrl.trim().isNotEmpty
+              ? api.imageUrl
+              : next.imageUrl,
         );
       }
+
+      next = _mergeParsedRoomReactions(
+        next,
+        roomLikeCount,
+        roomCommentCount,
+        now,
+      );
 
       list[existingIndex] = next;
       try {
@@ -494,23 +531,31 @@ class RakutenManagedProductRepository {
         roomSyncLog('保存開始 保存種別: 新規コレ済登録（APIあり）');
       }
       final resolvedLabel = _resolvedGenreLabelForSearchItem(apiNew);
-      final row = RakutenManagedProduct.fromSearchItem(
-        apiNew,
-        status: RakutenManagedProductStatus.done,
-        now: now,
-        resolvedGenreName: resolvedLabel,
-      ).copyWith(
-        roomUrl: roomUrlStoredCanonical,
-        itemUrl: parsedItem.rakutenUrl.isNotEmpty
-            ? parsedItem.rakutenUrl
-            : apiNew.itemUrl,
-        shopCode: parsedItem.shopCode.isNotEmpty
-            ? parsedItem.shopCode
-            : apiNew.shopCode,
-        doneAt: now,
-        isRoomSynced: true,
-        roomSyncedAt: now,
-        coredActivitySource: RakutenCoredActivitySource.roomImport,
+      var row =
+          RakutenManagedProduct.fromSearchItem(
+            apiNew,
+            status: RakutenManagedProductStatus.done,
+            now: now,
+            resolvedGenreName: resolvedLabel,
+          ).copyWith(
+            roomUrl: roomUrlStoredCanonical,
+            itemUrl: parsedItem.rakutenUrl.isNotEmpty
+                ? parsedItem.rakutenUrl
+                : apiNew.itemUrl,
+            shopCode: parsedItem.shopCode.isNotEmpty
+                ? parsedItem.shopCode
+                : apiNew.shopCode,
+            doneAt: now,
+            isRoomSynced: true,
+            roomSyncedAt: now,
+            coredActivitySource: RakutenCoredActivitySource.roomImport,
+            importedAt: now,
+          );
+      row = _mergeParsedRoomReactions(
+        row,
+        roomLikeCount,
+        roomCommentCount,
+        now,
       );
       list.add(row);
       try {
@@ -544,35 +589,41 @@ class RakutenManagedProductRepository {
         : parsedItem.compositeProductId;
 
     list.add(
-      RakutenManagedProduct(
-        productId: newId,
-        itemName: title,
-        itemPrice: 0,
-        itemUrl: parsedItem.rakutenUrl,
-        affiliateUrl: '',
-        imageUrl: image,
-        shopName: '',
-        shopCode: parsedItem.shopCode,
-        shopUrl: '',
-        genreId: '',
-        genreName: '',
-        resolvedGenreName: '',
-        status: RakutenManagedProductStatus.done,
-        createdAt: now,
-        updatedAt: now,
-        addedAt: now,
-        extractedUrl: '',
-        extractionStatus: RakutenUrlExtractionStatus.notStarted,
-        extractionErrorMessage: '',
-        extractedAt: null,
-        roomUrl: roomUrlStoredCanonical,
-        doneAt: now,
-        feedbackLikedAt: null,
-        feedbackSoldAt: null,
-        feedbackWeakAt: null,
-        isRoomSynced: true,
-        roomSyncedAt: now,
-        coredActivitySource: RakutenCoredActivitySource.roomImport,
+      _mergeParsedRoomReactions(
+        RakutenManagedProduct(
+          productId: newId,
+          itemName: title,
+          itemPrice: 0,
+          itemUrl: parsedItem.rakutenUrl,
+          affiliateUrl: '',
+          imageUrl: image,
+          shopName: '',
+          shopCode: parsedItem.shopCode,
+          shopUrl: '',
+          genreId: '',
+          genreName: '',
+          resolvedGenreName: '',
+          status: RakutenManagedProductStatus.done,
+          createdAt: now,
+          updatedAt: now,
+          addedAt: now,
+          extractedUrl: '',
+          extractionStatus: RakutenUrlExtractionStatus.notStarted,
+          extractionErrorMessage: '',
+          extractedAt: null,
+          roomUrl: roomUrlStoredCanonical,
+          doneAt: now,
+          feedbackLikedAt: null,
+          feedbackSoldAt: null,
+          feedbackWeakAt: null,
+          isRoomSynced: true,
+          roomSyncedAt: now,
+          coredActivitySource: RakutenCoredActivitySource.roomImport,
+          importedAt: now,
+        ),
+        roomLikeCount,
+        roomCommentCount,
+        now,
       ),
     );
     try {

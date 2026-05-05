@@ -6,6 +6,9 @@ import 'rakuten_search_item.dart';
 enum RakutenCoredActivitySource {
   appPost,
   roomImport,
+
+  /// アプリ外などでコレ済にした経路（投稿カウント対象外）。
+  manual,
 }
 
 /// 楽天ROOM周りでローカル管理する商品の状態（将来「コレ済」等を追加しやすい）。
@@ -55,6 +58,10 @@ class RakutenManagedProduct {
     this.roomSyncedAt,
     this.coredActivitySource = RakutenCoredActivitySource.appPost,
     this.roomPostedAt,
+    this.importedAt,
+    this.roomLikeCount,
+    this.roomCommentCount,
+    this.roomReactionUpdatedAt,
   });
 
   /// 楽天の itemCode（アプリ内の [RakutenSearchItem.productId] と同一）。
@@ -116,6 +123,18 @@ class RakutenManagedProduct {
   /// 楽天ROOM上で実際に投稿された日時（取り込みでは未取得のことが多く null）。
   final DateTime? roomPostedAt;
 
+  /// ROOM投稿取り込みなどでコレ済に入れた日時（アプリ側の取り込み基準）。
+  final DateTime? importedAt;
+
+  /// ROOM 商品ページ由来のいいね数（未取得は null、0 は取得結果が 0）。
+  final int? roomLikeCount;
+
+  /// ROOM 商品ページ由来のコメント数（未取得は null）。
+  final int? roomCommentCount;
+
+  /// [roomLikeCount] / [roomCommentCount] を最後に更新した日時。
+  final DateTime? roomReactionUpdatedAt;
+
   /// アプリの「投稿として」カウントするコレ済か。
   bool get countsTowardPostedCollectMetrics {
     if (!RakutenManagedProduct.isMemberForStatusTab(
@@ -124,7 +143,7 @@ class RakutenManagedProduct {
     )) {
       return false;
     }
-    return coredActivitySource != RakutenCoredActivitySource.roomImport;
+    return coredActivitySource == RakutenCoredActivitySource.appPost;
   }
 
   /// ブラウザで開くURL（アフィリエイトURLを優先）。
@@ -177,6 +196,14 @@ class RakutenManagedProduct {
     RakutenCoredActivitySource? coredActivitySource,
     DateTime? roomPostedAt,
     bool clearRoomPostedAt = false,
+    DateTime? importedAt,
+    bool clearImportedAt = false,
+    int? roomLikeCount,
+    bool clearRoomLikeCount = false,
+    int? roomCommentCount,
+    bool clearRoomCommentCount = false,
+    DateTime? roomReactionUpdatedAt,
+    bool clearRoomReactionUpdatedAt = false,
   }) {
     return RakutenManagedProduct(
       productId: productId ?? this.productId,
@@ -216,7 +243,19 @@ class RakutenManagedProduct {
           ? null
           : (roomSyncedAt ?? this.roomSyncedAt),
       coredActivitySource: coredActivitySource ?? this.coredActivitySource,
-      roomPostedAt: clearRoomPostedAt ? null : (roomPostedAt ?? this.roomPostedAt),
+      roomPostedAt: clearRoomPostedAt
+          ? null
+          : (roomPostedAt ?? this.roomPostedAt),
+      importedAt: clearImportedAt ? null : (importedAt ?? this.importedAt),
+      roomLikeCount: clearRoomLikeCount
+          ? null
+          : (roomLikeCount ?? this.roomLikeCount),
+      roomCommentCount: clearRoomCommentCount
+          ? null
+          : (roomCommentCount ?? this.roomCommentCount),
+      roomReactionUpdatedAt: clearRoomReactionUpdatedAt
+          ? null
+          : (roomReactionUpdatedAt ?? this.roomReactionUpdatedAt),
     );
   }
 
@@ -257,6 +296,10 @@ class RakutenManagedProduct {
       roomSyncedAt: null,
       coredActivitySource: RakutenCoredActivitySource.appPost,
       roomPostedAt: null,
+      importedAt: null,
+      roomLikeCount: null,
+      roomCommentCount: null,
+      roomReactionUpdatedAt: null,
     );
   }
 
@@ -291,6 +334,10 @@ class RakutenManagedProduct {
       'roomSyncedAt': roomSyncedAt?.toIso8601String(),
       'coredActivitySource': coredActivitySource.name,
       'roomPostedAt': roomPostedAt?.toIso8601String(),
+      'importedAt': importedAt?.toIso8601String(),
+      'roomLikeCount': roomLikeCount,
+      'roomCommentCount': roomCommentCount,
+      'roomReactionUpdatedAt': roomReactionUpdatedAt?.toIso8601String(),
     };
   }
 
@@ -428,6 +475,31 @@ class RakutenManagedProduct {
       roomPostedAt = parseDt(rpAt);
     }
 
+    DateTime? importedAt;
+    final imAt = json['importedAt']?.toString();
+    if (imAt != null && imAt.isNotEmpty) {
+      importedAt = parseDt(imAt);
+    }
+
+    DateTime? roomReactionUpdatedAt;
+    final ruAt = json['roomReactionUpdatedAt']?.toString();
+    if (ruAt != null && ruAt.isNotEmpty) {
+      roomReactionUpdatedAt = parseDt(ruAt);
+    }
+
+    int? readOptInt(String key) {
+      final v = json[key];
+      if (v == null) return null;
+      if (v is int) return v;
+      if (v is num) return v.toInt();
+      final s = v.toString().trim();
+      if (s.isEmpty) return null;
+      return int.tryParse(s);
+    }
+
+    final roomLikeCount = readOptInt('roomLikeCount');
+    final roomCommentCount = readOptInt('roomCommentCount');
+
     final statusRaw = (json['status'] ?? '').toString().trim();
     var status = RakutenManagedProductStatus.values.firstWhere(
       (e) => e.name == statusRaw,
@@ -474,6 +546,10 @@ class RakutenManagedProduct {
       roomSyncedAt: roomSyncedAt,
       coredActivitySource: coredSource,
       roomPostedAt: roomPostedAt,
+      importedAt: importedAt,
+      roomLikeCount: roomLikeCount,
+      roomCommentCount: roomCommentCount,
+      roomReactionUpdatedAt: roomReactionUpdatedAt,
     );
   }
 }

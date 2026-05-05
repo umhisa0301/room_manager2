@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_sync_log.dart';
 import 'rakuten_item_url_parser.dart';
+import 'room_room_page_reaction_parse.dart';
 
 /// ROOM 商品ページから楽天市場の商品URLを推定する。
 ///
@@ -179,10 +180,13 @@ class RoomUrlResolver {
     }
 
     final meta = _readOpenGraphTitleAndImage(decoded.isNotEmpty ? decoded : body);
+    final reaction = RoomRoomPageReactionParse.tryParse(body);
     return RoomUrlResolveSuccess(
       rakutenItem: parsed,
       roomPageTitle: meta.$1,
       roomPageImageUrl: meta.$2,
+      roomLikeCount: reaction.roomLikeCount,
+      roomCommentCount: reaction.roomCommentCount,
     );
   }
 
@@ -336,11 +340,19 @@ final class RoomUrlResolveSuccess extends RoomUrlResolveOutcome {
     required this.rakutenItem,
     this.roomPageTitle,
     this.roomPageImageUrl,
+    this.roomLikeCount,
+    this.roomCommentCount,
   });
 
   final RakutenItemUrlParseResult rakutenItem;
   final String? roomPageTitle;
   final String? roomPageImageUrl;
+
+  /// ROOM HTML から推定したいいね数（未取得は null）。
+  final int? roomLikeCount;
+
+  /// ROOM HTML から推定したコメント数（未取得は null）。
+  final int? roomCommentCount;
 }
 
 final class RoomUrlResolveFailure extends RoomUrlResolveOutcome {

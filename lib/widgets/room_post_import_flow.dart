@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
@@ -11,6 +12,7 @@ import '../services/room_sync_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../utils/room_sync_log.dart';
 
 /// [RoomPostImportFlow.executeBatch] から通知される進捗。
 typedef RoomPostImportProgressCallback =
@@ -108,83 +110,96 @@ abstract final class RoomPostImportFlow {
       builder: (ctx) {
         return SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 22),
+            padding: const EdgeInsets.fromLTRB(24, 12, 24, 28),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   '取り込み完了',
+                  textAlign: TextAlign.center,
                   style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 18),
                 Text(
-                  _primaryOutcomeLine(result),
-                  style: Theme.of(ctx).textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    height: 1.35,
+                  _heroOutcomeLine(result),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(ctx).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.accentPrimary,
+                    height: 1.15,
                   ),
                 ),
-                const SizedBox(height: 16),
-                _SummaryRow(
-                  label: '新しく追加',
-                  count: result.newlyCollectedCount,
-                  emphasize: result.newlyCollectedCount > 0,
+                const SizedBox(height: 14),
+                Text(
+                  'ROOM投稿済みの商品をコレ済に反映しました',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.45,
+                  ),
                 ),
-                _SummaryRow(
-                  label: 'すでに取り込み済み',
-                  count: result.listingSyncedSkipCount,
-                ),
-                _SummaryRow(label: '確認した商品', count: result.listingCheckedCount),
-                _SummaryRow(
-                  label: '取り込めなかった商品',
-                  count: result.failedCount,
-                  emphasize: result.failedCount > 0,
-                  emphasizeColor: AppColors.error,
+                const SizedBox(height: 22),
+                GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 2.85,
+                  children: [
+                    _SummaryMiniCard(
+                      label: '新しく追加',
+                      value: result.newlyCollectedCount,
+                      emphasize: result.newlyCollectedCount > 0,
+                    ),
+                    _SummaryMiniCard(
+                      label: '確認済み',
+                      value: result.listingCheckedCount,
+                    ),
+                    _SummaryMiniCard(
+                      label: 'すでに登録済み',
+                      value: result.listingSyncedSkipCount,
+                    ),
+                    _SummaryMiniCard(
+                      label: '失敗',
+                      value: result.failedCount,
+                      emphasize: result.failedCount > 0,
+                      emphasizeColor: AppColors.error,
+                    ),
+                  ],
                 ),
                 if (result.roomUrlAddedCount > 0) ...[
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   Text(
-                    '※既存のコレ済にROOMページを紐付け：${result.roomUrlAddedCount}件',
+                    'ROOMページ紐付け：${result.roomUrlAddedCount}件',
+                    textAlign: TextAlign.center,
                     style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                       height: 1.35,
                     ),
                   ),
                 ],
-                const SizedBox(height: 12),
+                const SizedBox(height: 14),
                 Text(
-                  '楽天ROOMで投稿済みの商品を、アプリの「コレ済」に追加しました。',
+                  '※ROOM本体の投稿数には加算しません',
+                  textAlign: TextAlign.center,
                   style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.4,
-                  ),
-                ),
-                Text(
-                  '※実際のROOM投稿数・ホームの投稿上限カウントには加算されません（アプリから「投稿する」した分のみ）。',
-                  style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.4,
-                  ),
-                ),
-                Text(
-                  '楽天ROOM側で新しく投稿した場合は、再度取り込むと反映されます。',
-                  style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.4,
+                    color: AppColors.textTertiary,
+                    height: 1.35,
                   ),
                 ),
                 if (result.newlyCollectedSamples.isNotEmpty) ...[
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 22),
                   Text(
                     '今回追加した商品（一部）',
                     style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 6),
                   Text(
                     '最新3件のみ表示しています。すべて見る場合はコレ済一覧へ。',
                     style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
@@ -192,19 +207,19 @@ abstract final class RoomPostImportFlow {
                       height: 1.35,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   ...result.newlyCollectedSamples
                       .take(3)
                       .map(
                         (p) => Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.only(bottom: 12),
                           child: _ImportedProductPreviewTile(product: p),
                         ),
                       ),
                 ],
                 if (result.failedCount > 0 &&
                     result.failedRoomUrls.isNotEmpty) ...[
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   Text(
                     '取り込めなかったROOMページ（先頭3件）',
                     style: Theme.of(ctx).textTheme.labelMedium?.copyWith(
@@ -228,8 +243,13 @@ abstract final class RoomPostImportFlow {
                         ),
                       ),
                 ],
-                const SizedBox(height: 18),
+                const SizedBox(height: 26),
                 FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 54),
+                    backgroundColor: AppColors.accentPrimary,
+                    foregroundColor: AppColors.textOnAccent,
+                  ),
                   onPressed: () {
                     Navigator.pop(ctx);
                     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -239,11 +259,18 @@ abstract final class RoomPostImportFlow {
                           .openRoomCollect(initialTabIndex: 1);
                     });
                   },
-                  icon: const Icon(Icons.task_alt_rounded, size: 20),
-                  label: const Text('コレ済をすべて見る'),
+                  icon: const Icon(Icons.task_alt_rounded, size: 22),
+                  label: const Text(
+                    'コレ済をすべて見る',
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                  ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 48),
+                    foregroundColor: AppColors.accentPrimary,
+                  ),
                   onPressed: () async {
                     Navigator.pop(ctx);
                     final next = await startBatch();
@@ -257,7 +284,6 @@ abstract final class RoomPostImportFlow {
                   icon: const Icon(Icons.playlist_add_rounded, size: 20),
                   label: Text('もう${RoomImportLimitPolicy.freeBatchLimit}件取り込む'),
                 ),
-                const SizedBox(height: 8),
                 TextButton(
                   onPressed: () => Navigator.pop(ctx),
                   child: const Text('閉じる'),
@@ -270,55 +296,68 @@ abstract final class RoomPostImportFlow {
     );
   }
 
-  static String _primaryOutcomeLine(RoomSyncResult r) {
+  static String _heroOutcomeLine(RoomSyncResult r) {
     final n = r.newlyCollectedCount;
     final add = r.roomUrlAddedCount;
-    if (n > 0) {
-      return '$n件の商品をコレ済に追加しました';
-    }
-    if (add > 0) {
-      return '既存のコレ済にROOMページを$add件ぶん紐付けました';
-    }
+    if (n > 0) return '$n件追加しました';
+    if (add > 0) return 'ROOMページを$add件紐付けました';
     if (r.failedCount > 0 && r.processedCount == 0) {
-      return 'このバッチではコレ済への追加がありませんでした';
+      return '追加できませんでした';
     }
     if (r.processedCount == 0) {
-      return '取り込む新しいROOM投稿は見つかりませんでした';
+      return '新しい投稿は見つかりませんでした';
     }
-    return 'このバッチでは新しいコレ済の追加はありませんでした（確認のみ）';
+    return '追加はありませんでした';
   }
 }
 
-class _SummaryRow extends StatelessWidget {
-  const _SummaryRow({
+class _SummaryMiniCard extends StatelessWidget {
+  const _SummaryMiniCard({
     required this.label,
-    required this.count,
+    required this.value,
     this.emphasize = false,
     this.emphasizeColor,
   });
 
   final String label;
-  final int count;
+  final int value;
   final bool emphasize;
   final Color? emphasizeColor;
 
   @override
   Widget build(BuildContext context) {
-    final base = Theme.of(context).textTheme.bodyMedium;
-    final style = base?.copyWith(
-      fontWeight: emphasize ? FontWeight.w800 : FontWeight.w600,
+    final theme = Theme.of(context);
+    final valueStyle = theme.textTheme.titleMedium?.copyWith(
+      fontWeight: FontWeight.w900,
       color: emphasize
           ? (emphasizeColor ?? AppColors.accentPrimary)
           : AppColors.textPrimary,
-      height: 1.35,
     );
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
-      child: Row(
-        children: [
-          Expanded(child: Text(label, style: style)),
-          Text('$count件', style: style),
-        ],
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.divider.withValues(alpha: 0.55)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              label,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text('$value', style: valueStyle),
+          ],
+        ),
       ),
     );
   }
@@ -335,7 +374,7 @@ class _ImportedProductPreviewTile extends StatelessWidget {
     final title = product.itemName.trim().isEmpty
         ? 'ROOM投稿の商品'
         : product.itemName.trim();
-    final sub = _subtitle(product);
+    final showDevIds = kDebugMode && debugVerboseRoomImport;
     final provider = context.read<RakutenManagedProductProvider>();
 
     return DecoratedBox(
@@ -381,16 +420,69 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                           height: 1.25,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        sub,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.3,
-                        ),
+                      const SizedBox(height: 6),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 6,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          if (product.roomUrl.trim().isNotEmpty)
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: const Color(
+                                  0xFF1B5E20,
+                                ).withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(999),
+                                border: Border.all(
+                                  color: const Color(
+                                    0xFF1B5E20,
+                                  ).withValues(alpha: 0.35),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 3,
+                                ),
+                                child: Text(
+                                  'ROOM投稿済み',
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    color: const Color(0xFF1B5E20),
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          if (product.roomLikeCount != null)
+                            Text(
+                              '♡${product.roomLikeCount}',
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          if (product.roomCommentCount != null)
+                            Text(
+                              '💬${product.roomCommentCount}',
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                        ],
                       ),
+                      if (showDevIds) ...[
+                        const SizedBox(height: 6),
+                        Text(
+                          _devSubtitle(product),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: AppColors.textTertiary,
+                            height: 1.25,
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -444,7 +536,7 @@ class _ImportedProductPreviewTile extends StatelessWidget {
     );
   }
 
-  static String _subtitle(RakutenManagedProduct p) {
+  static String _devSubtitle(RakutenManagedProduct p) {
     final shop = p.shopCode.trim();
     final item = p.productId.trim();
     if (shop.isNotEmpty && item.isNotEmpty) {

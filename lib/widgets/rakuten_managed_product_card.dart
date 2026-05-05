@@ -84,15 +84,41 @@ class RakutenManagedProductCard extends StatelessWidget {
     return id.isEmpty ? 'ジャンル未設定' : 'ジャンル $id';
   }
 
-  static String _dateMetaLabel({
-    required bool isCandidate,
-    required DateTime? instant,
-  }) {
-    final stamp = formatRoomColleCardTimestamp(instant, DateTime.now());
+  static String _candidateRegisteredMetaLine(DateTime addedAt) {
+    final stamp = formatRoomColleCardTimestamp(addedAt, DateTime.now());
     if (stamp == null || stamp.isEmpty) {
-      return isCandidate ? '登録日 -' : '投稿日 -';
+      return '登録日 -';
     }
-    return isCandidate ? '登録日 $stamp' : '投稿日 $stamp';
+    return '登録日 $stamp';
+  }
+
+  static String _donePostedMetaLine(RakutenManagedProduct p) {
+    switch (p.coredActivitySource) {
+      case RakutenCoredActivitySource.roomImport:
+        final rp = p.roomPostedAt;
+        if (rp != null) {
+          final s = formatRoomColleCardTimestamp(rp, DateTime.now());
+          return (s == null || s.isEmpty) ? 'ROOM投稿日：-' : 'ROOM投稿日 $s';
+        }
+        return 'ROOM投稿日：-';
+      case RakutenCoredActivitySource.manual:
+        final inst = p.doneAt ?? p.addedAt;
+        final s = formatRoomColleCardTimestamp(inst, DateTime.now());
+        if (s == null || s.isEmpty) return '登録日 -';
+        return '登録日 $s';
+      case RakutenCoredActivitySource.appPost:
+        final s = formatRoomColleCardTimestamp(p.doneAt, DateTime.now());
+        if (s == null || s.isEmpty) return '投稿日 -';
+        return '投稿日 $s';
+    }
+  }
+
+  static String? _donePostedMetaTooltip(RakutenManagedProduct p) {
+    if (p.coredActivitySource != RakutenCoredActivitySource.roomImport) {
+      return null;
+    }
+    if (p.roomPostedAt != null) return null;
+    return 'ROOMで投稿済みの商品です。投稿日は取得できていません。';
   }
 
   static String _ratingLabel(RakutenManagedProduct product) {
@@ -109,8 +135,10 @@ class RakutenManagedProductCard extends StatelessWidget {
     final theme = Theme.of(context);
     final titleStyle = RoomColleProductListCardLayout.titleTextStyle(theme);
     final priceStyle = RoomColleProductListCardLayout.priceTextStyle(theme);
-    final tsInstant = isCandidate ? product.addedAt : product.doneAt;
     final timestampStyle = RoomColleProductListCardLayout.metaTextStyle(theme);
+    final reactionStyle =
+        (timestampStyle ?? theme.textTheme.bodySmall ?? const TextStyle())
+            .copyWith(fontSize: 11, fontWeight: FontWeight.w700);
 
     return RoomColleProductListCardShell(
       child: Padding(
@@ -182,15 +210,47 @@ class RakutenManagedProductCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: timestampStyle,
                       ),
-                      const SizedBox(height: 6),
-                      Text(
-                        _dateMetaLabel(
-                          isCandidate: isCandidate,
-                          instant: tsInstant,
+                      if (!isCandidate &&
+                          (product.roomLikeCount != null ||
+                              product.roomCommentCount != null)) ...[
+                        const SizedBox(height: 4),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 4,
+                          children: [
+                            if (product.roomLikeCount != null)
+                              Text(
+                                '♡${product.roomLikeCount}',
+                                style: reactionStyle,
+                              ),
+                            if (product.roomCommentCount != null)
+                              Text(
+                                '💬${product.roomCommentCount}',
+                                style: reactionStyle,
+                              ),
+                          ],
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: timestampStyle,
+                      ],
+                      const SizedBox(height: 6),
+                      Builder(
+                        builder: (ctx) {
+                          final line = isCandidate
+                              ? _candidateRegisteredMetaLine(product.addedAt)
+                              : _donePostedMetaLine(product);
+                          final tip = isCandidate
+                              ? null
+                              : _donePostedMetaTooltip(product);
+                          Widget child = Text(
+                            line,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: timestampStyle,
+                          );
+                          if (tip != null) {
+                            child = Tooltip(message: tip, child: child);
+                          }
+                          return child;
+                        },
                       ),
                     ],
                   ),

@@ -322,6 +322,17 @@ bool _matchesRelativeDate(DateTime? raw, RoomColleRegisteredDatePreset preset) {
   }
 }
 
+DateTime? _effectivePostedDateForDoneFilter(RakutenManagedProduct e) {
+  switch (e.coredActivitySource) {
+    case RakutenCoredActivitySource.roomImport:
+      return e.roomPostedAt;
+    case RakutenCoredActivitySource.manual:
+      return e.doneAt ?? e.addedAt;
+    case RakutenCoredActivitySource.appPost:
+      return e.doneAt;
+  }
+}
+
 bool _matchesPostedDate(DateTime? raw, RoomCollePostedDatePreset preset) {
   if (preset == RoomCollePostedDatePreset.all) return true;
   if (raw == null) return false;
@@ -447,7 +458,12 @@ bool _matchesDoneOnly(
     return false;
   }
   if (criteria.doneRoomConfirmedOnly && !_hasRoomUrl(e)) return false;
-  if (!_matchesPostedDate(e.doneAt, criteria.postedDatePreset)) return false;
+  if (!_matchesPostedDate(
+    _effectivePostedDateForDoneFilter(e),
+    criteria.postedDatePreset,
+  )) {
+    return false;
+  }
   return true;
 }
 

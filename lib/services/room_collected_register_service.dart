@@ -71,6 +71,8 @@ class RoomCollectedRegisterService {
       parsedItem: parsed,
       roomPageTitle: resolved.roomPageTitle ?? '',
       roomPageImageUrl: resolved.roomPageImageUrl ?? '',
+      roomLikeCount: resolved.roomLikeCount,
+      roomCommentCount: resolved.roomCommentCount,
     );
 
     switch (persist.kind) {
