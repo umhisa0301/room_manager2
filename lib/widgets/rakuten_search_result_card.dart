@@ -24,6 +24,7 @@ class RakutenSearchResultCard extends StatelessWidget {
     this.selectionDisabledLabel,
     this.genreDisplayLineOverride,
     this.sourceContextLabel,
+    this.compactListLayout = false,
   });
 
   final RakutenSearchItem item;
@@ -43,14 +44,25 @@ class RakutenSearchResultCard extends StatelessWidget {
   /// 一覧の出所（例: 保存ショップ）。指定時はアクション行の直前に小さく表示する。
   final String? sourceContextLabel;
 
+  /// 保存ショップの商品一覧など、縦幅を抑えたいとき。既定は通常の検索結果と同じ見え方。
+  final bool compactListLayout;
+
+  static const double _compactThumbWidth = 88;
+
   static const double _contentGap = 6;
   static const double _metaGap = 4;
-  static const double _buttonGap = 8;
+  static const double _buttonGapB = 8;
   static const EdgeInsets _rightColumnPadding = EdgeInsets.fromLTRB(
     12,
     10,
     12,
     10,
+  );
+  static const EdgeInsets _rightColumnPaddingCompact = EdgeInsets.fromLTRB(
+    8,
+    8,
+    10,
+    8,
   );
 
   static String _safeItemName(RakutenSearchItem item) {
@@ -73,6 +85,13 @@ class RakutenSearchResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final compact = compactListLayout && !selectionMode;
+    final contentGap = compact ? 4.0 : _contentGap;
+    final metaGap = compact ? 2.0 : _metaGap;
+    final rightPad = compact ? _rightColumnPaddingCompact : _rightColumnPadding;
+    final titleMaxLines = RoomColleProductListCardLayout.titleMaxLines;
+    final thumbW = compact ? _compactThumbWidth : null;
+
     final theme = Theme.of(context);
     final titleStyle = RoomColleProductListCardLayout.titleTextStyle(theme);
     final priceStyle = RoomColleProductListCardLayout.priceTextStyle(theme);
@@ -106,6 +125,7 @@ class RakutenSearchResultCard extends StatelessWidget {
         genreLineStyle;
 
     return RoomColleProductListCardShell(
+      minHeight: thumbW,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -114,10 +134,13 @@ class RakutenSearchResultCard extends StatelessWidget {
               padding: const EdgeInsets.only(left: 6, right: 2),
               child: Center(child: _buildSelectionControl(context)),
             ),
-          RoomColleProductListCardThumbSlot(child: _heroImage()),
+          RoomColleProductListCardThumbSlot(
+            slotWidth: thumbW,
+            child: _heroImage(compact: compact),
+          ),
           Expanded(
             child: Padding(
-              padding: _rightColumnPadding,
+              padding: rightPad,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
@@ -126,13 +149,19 @@ class RakutenSearchResultCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      if (compact &&
+                          sourceContextLabel != null &&
+                          sourceContextLabel!.trim().isNotEmpty) ...[
+                        _SourceContextChip(label: sourceContextLabel!.trim()),
+                        SizedBox(height: metaGap + 1),
+                      ],
                       Text(
                         _safeItemName(item),
-                        maxLines: RoomColleProductListCardLayout.titleMaxLines,
+                        maxLines: titleMaxLines,
                         overflow: TextOverflow.ellipsis,
                         style: titleStyle,
                       ),
-                      const SizedBox(height: _contentGap),
+                      SizedBox(height: contentGap),
                       Text(
                         RoomColleProductListCardLayout.formatPriceYen(
                           item.itemPrice,
@@ -141,12 +170,12 @@ class RakutenSearchResultCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: priceStyle,
                       ),
-                      const SizedBox(height: _metaGap),
+                      SizedBox(height: metaGap),
                       _ratingRow(
                         reviewScoreStyle: reviewScoreStyle,
                         reviewCountStyle: reviewCountStyle,
                       ),
-                      const SizedBox(height: _metaGap),
+                      SizedBox(height: metaGap),
                       Text(
                         _safeShopName(item),
                         maxLines: RoomColleProductListCardLayout.shopMaxLines,
@@ -154,7 +183,7 @@ class RakutenSearchResultCard extends StatelessWidget {
                         style: shopStyle,
                       ),
                       if (item.genreId.trim().isNotEmpty) ...[
-                        const SizedBox(height: _metaGap),
+                        SizedBox(height: metaGap),
                         Text(
                           genreDisplayLineOverride ??
                               RakutenProductGenreDisplay.resolve(
@@ -169,9 +198,10 @@ class RakutenSearchResultCard extends StatelessWidget {
                           style: genreLineStyle,
                         ),
                       ],
-                      if (sourceContextLabel != null &&
+                      if (!compact &&
+                          sourceContextLabel != null &&
                           sourceContextLabel!.trim().isNotEmpty) ...[
-                        const SizedBox(height: _metaGap),
+                        SizedBox(height: metaGap),
                         Text(
                           sourceContextLabel!.trim(),
                           maxLines: 1,
@@ -200,8 +230,8 @@ class RakutenSearchResultCard extends StatelessWidget {
                       ],
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  _searchResultActions(context),
+                  SizedBox(height: compact ? 6 : 10),
+                  _searchResultActions(context, compact: compact),
                 ],
               ),
             ),
@@ -237,35 +267,48 @@ class RakutenSearchResultCard extends StatelessWidget {
     );
   }
 
-  Widget _searchResultActions(BuildContext context) {
+  Widget _searchResultActions(BuildContext context, {required bool compact}) {
+    final rakuten = _SearchCardActionButton(
+      label: '楽天で見る',
+      icon: Icons.open_in_new_rounded,
+      onPressed: () =>
+          AppActionService.openUrl(context, url: item.browserLaunchUrl),
+      compact: compact,
+      subtle: compact,
+    );
+    final register = _buildRegisterAction(context, compact: compact);
+    if (compact) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(flex: 5, child: register),
+          SizedBox(width: compact ? 6 : _buttonGapB),
+          Expanded(flex: 3, child: rakuten),
+        ],
+      );
+    }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(
-          child: _SearchCardActionButton(
-            label: '楽天で見る',
-            icon: Icons.open_in_new_rounded,
-            onPressed: () =>
-                AppActionService.openUrl(context, url: item.browserLaunchUrl),
-          ),
-        ),
-        const SizedBox(width: _buttonGap),
-        Expanded(child: _buildRegisterAction(context)),
+        Expanded(child: rakuten),
+        SizedBox(width: _buttonGapB),
+        Expanded(child: register),
       ],
     );
   }
 
-  Widget _buildRegisterAction(BuildContext context) {
+  Widget _buildRegisterAction(BuildContext context, {bool compact = false}) {
     final isCandidate = localStatus == RakutenManagedProductStatus.candidate;
     final isDone = localStatus == RakutenManagedProductStatus.done;
 
     if (isDone) {
       return Tooltip(
         message: 'ROOMコレでコレ済の商品です。再度コレ候補へは登録できません。',
-        child: const _SearchCardActionButton(
+        child: _SearchCardActionButton(
           label: 'コレ済',
           icon: Icons.check_circle_outline_rounded,
           onPressed: null,
+          compact: compact,
         ),
       );
     }
@@ -273,10 +316,11 @@ class RakutenSearchResultCard extends StatelessWidget {
     if (isCandidate) {
       return Tooltip(
         message: 'コレ候補に登録済みです。重複登録はできません。ROOMコレの候補一覧から確認できます。',
-        child: const _SearchCardActionButton(
+        child: _SearchCardActionButton(
           label: '候補に登録済',
           icon: Icons.bookmark_added_outlined,
           onPressed: null,
+          compact: compact,
         ),
       );
     }
@@ -289,6 +333,7 @@ class RakutenSearchResultCard extends StatelessWidget {
         primary: true,
         onPressed: isRegistering ? null : onRegisterCandidate,
         isLoading: isRegistering,
+        compact: compact,
       ),
     );
   }
@@ -321,7 +366,7 @@ class RakutenSearchResultCard extends StatelessWidget {
     );
   }
 
-  Widget _heroImage() {
+  Widget _heroImage({bool compact = false}) {
     Widget child;
     try {
       final url = item.imageUrl.trim();
@@ -329,22 +374,58 @@ class RakutenSearchResultCard extends StatelessWidget {
         child = Image.network(
           url,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => Center(child: _thumbPlaceholder()),
+          errorBuilder: (_, __, ___) =>
+              Center(child: _thumbPlaceholder(compact: compact)),
         );
       } else {
-        child = Center(child: _thumbPlaceholder());
+        child = Center(child: _thumbPlaceholder(compact: compact));
       }
     } catch (_) {
-      child = Center(child: _thumbPlaceholder());
+      child = Center(child: _thumbPlaceholder(compact: compact));
     }
     return ColoredBox(color: AppColors.surfaceVariant, child: child);
   }
 
-  Widget _thumbPlaceholder() {
+  Widget _thumbPlaceholder({bool compact = false}) {
     return Icon(
       Icons.image_outlined,
-      size: 30,
+      size: compact ? 24 : 30,
       color: AppColors.textTertiary.withValues(alpha: 0.65),
+    );
+  }
+}
+
+class _SourceContextChip extends StatelessWidget {
+  const _SourceContextChip({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+        decoration: BoxDecoration(
+          color: AppColors.textTertiary.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(
+            color: AppColors.divider.withValues(alpha: 0.55),
+          ),
+        ),
+        child: Text(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: AppColors.textTertiary,
+            fontWeight: FontWeight.w600,
+            fontSize: 10,
+            height: 1.15,
+            letterSpacing: 0.02,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -356,30 +437,40 @@ class _SearchCardActionButton extends StatelessWidget {
     required this.onPressed,
     this.primary = false,
     this.isLoading = false,
+    this.compact = false,
+    this.subtle = false,
   });
 
   static const double _height = 48;
+  static const double _heightCompact = 40;
 
   final String label;
   final IconData icon;
   final VoidCallback? onPressed;
   final bool primary;
   final bool isLoading;
+  final bool compact;
+  final bool subtle;
 
   @override
   Widget build(BuildContext context) {
     final enabled = onPressed != null && !isLoading;
     final foreground = primary
         ? AppColors.textOnAccent
+        : subtle
+        ? AppColors.textTertiary
         : AppColors.textSecondary;
     final background = primary ? AppColors.accentPrimary : Colors.transparent;
     final border = primary
         ? AppColors.accentPrimary
+        : subtle
+        ? AppColors.divider.withValues(alpha: 0.45)
         : AppColors.divider.withValues(alpha: 0.86);
+    final h = compact ? _heightCompact : _height;
 
     return SizedBox(
       width: double.infinity,
-      height: _height,
+      height: h,
       child: OutlinedButton(
         onPressed: enabled ? onPressed : null,
         style: OutlinedButton.styleFrom(
@@ -393,13 +484,22 @@ class _SearchCardActionButton extends StatelessWidget {
               : Colors.transparent,
           side: BorderSide(color: enabled ? border : AppColors.divider),
           elevation: primary && enabled ? 1.2 : 0,
-          minimumSize: const Size(0, _height),
-          fixedSize: const Size.fromHeight(_height),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          tapTargetSize: MaterialTapTargetSize.padded,
-          visualDensity: VisualDensity.standard,
+          minimumSize: Size(0, h),
+          fixedSize: Size.fromHeight(h),
+          padding: EdgeInsets.symmetric(
+            horizontal: compact ? 6 : 8,
+            vertical: compact ? 6 : 8,
+          ),
+          tapTargetSize: compact
+              ? MaterialTapTargetSize.shrinkWrap
+              : MaterialTapTargetSize.padded,
+          visualDensity: compact
+              ? VisualDensity.compact
+              : VisualDensity.standard,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(primary ? 14 : 999),
+            borderRadius: BorderRadius.circular(
+              primary ? (compact ? 12 : 14) : 999,
+            ),
           ),
         ),
         child: Center(
@@ -418,7 +518,7 @@ class _SearchCardActionButton extends StatelessWidget {
                     ),
                   ),
                 ] else ...[
-                  Icon(icon, size: 17),
+                  Icon(icon, size: compact ? (subtle ? 14 : 16) : 17),
                 ],
                 const SizedBox(width: 5),
                 Text(

@@ -102,15 +102,23 @@ abstract final class RoomColleProductListCardLayout {
 
 /// ROOMコレ一覧と楽天検索結果で共有する商品カードの外枠。
 class RoomColleProductListCardShell extends StatelessWidget {
-  const RoomColleProductListCardShell({super.key, required this.child});
+  const RoomColleProductListCardShell({
+    super.key,
+    required this.child,
+    this.minHeight,
+  });
 
   final Widget child;
+
+  /// 左サムネ幅に合わせる場合など。未指定時は [RoomColleProductListCardLayout.thumbSlotWidth]。
+  final double? minHeight;
 
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: const BoxConstraints(
-        minHeight: RoomColleProductListCardLayout.thumbSlotWidth,
+      constraints: BoxConstraints(
+        minHeight:
+            minHeight ?? RoomColleProductListCardLayout.thumbSlotWidth,
       ),
       child: AppCard(
         padding: EdgeInsets.zero,
@@ -126,14 +134,22 @@ class RoomColleProductListCardShell extends StatelessWidget {
 
 /// 左列：ROOM コレと同一のサムネスロット（1:1・角丸 8・右境界線）。
 class RoomColleProductListCardThumbSlot extends StatelessWidget {
-  const RoomColleProductListCardThumbSlot({super.key, required this.child});
+  const RoomColleProductListCardThumbSlot({
+    super.key,
+    required this.child,
+    this.slotWidth,
+  });
 
   final Widget child;
 
+  /// 未指定時は [RoomColleProductListCardLayout.thumbSlotWidth]。
+  final double? slotWidth;
+
   @override
   Widget build(BuildContext context) {
+    final w = slotWidth ?? RoomColleProductListCardLayout.thumbSlotWidth;
     return Container(
-      width: RoomColleProductListCardLayout.thumbSlotWidth,
+      width: w,
       constraints: const BoxConstraints(
         minHeight: RoomColleProductListCardLayout.minCardHeight,
       ),

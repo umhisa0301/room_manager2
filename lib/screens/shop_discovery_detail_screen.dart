@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 import '../models/rakuten_product_search_condition.dart';
+import '../navigation/rakuten_search_navigator.dart';
 import '../repository/genre_master_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../services/app_action_service.dart';
@@ -160,19 +161,11 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
     final isSaved = saved.isSaved(widget.summary.shopKey);
     return Scaffold(
       backgroundColor: HomeScreenColors.canvas,
-      appBar: AppBar(
-        title: const Text('ショップ詳細'),
-        actions: [
-          IconButton(
-            tooltip: 'このショップを外部で開く',
-            onPressed: () => _openShopUrl(context),
-            icon: const Icon(Icons.open_in_new_rounded),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('ショップ詳細')),
       body: SearchGroupScreenShell(
         backgroundColor: HomeScreenColors.canvas,
-        subtitle: '探すグループ · 発掘・保存ショップから開いた店の商品を並べ替えながら、コレ候補登録につなげます。',
+        subtitle:
+            '探すグループ · 並べ替えたうえで各商品から「候補に追加」し、コレ登録まで進められます。',
         child: Column(
           children: [
             _ShopDetailHeader(
@@ -194,31 +187,12 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                 );
               },
               onBackToSearch: () => Navigator.of(context).maybePop(),
-            ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.fromLTRB(
-                0,
-                RakutenSearchScreenUi.gapFieldStack + 3,
-                0,
-                RakutenSearchScreenUi.gapListAfterDivider,
-              ),
-              padding: const EdgeInsets.all(
-                RakutenSearchScreenUi.inputDeckPadding,
-              ),
-              decoration: RakutenSearchScreenUi.modeTabDeckDecoration(),
-              child: Text(
-                '使い方: 商品検索画面と同じく、各商品カードから「候補に追加」できます。',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.4,
-                ),
-              ),
+              onOpenExternal: () => _openShopUrl(context),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(
                 0,
-                RakutenSearchScreenUi.gapListAfterDivider,
+                RakutenSearchScreenUi.gapFieldStack,
                 0,
                 RakutenSearchScreenUi.gapResultStatusRowBottom,
               ),
@@ -237,8 +211,8 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                       SizedBox(width: RakutenSearchScreenUi.gapIconToTitle),
                       Expanded(
                         child: Text(
-                          '商品一覧（${items.length}件）',
-                          maxLines: 2,
+                          '商品${items.length}件',
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
@@ -334,15 +308,32 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            Icon(
+                              Icons.inventory_2_outlined,
+                              size: 44,
+                              color: AppColors.textTertiary.withValues(
+                                alpha: 0.65,
+                              ),
+                            ),
+                            SizedBox(
+                              height: RakutenSearchScreenUi.gapFieldStack,
+                            ),
+                            Text(
+                              '商品を見つけられませんでした',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.titleSmall
+                                  ?.copyWith(
+                                    color: AppColors.textPrimary,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                            ),
+                            SizedBox(height: AppDimensions.spacingSm),
                             Text(
                               _didRequestShopItems && _items.isEmpty
-                                  ? 'この条件では商品が0件でした。\n'
-                                        '店舗の公開商品がない・APIの表記と shopCode が一致していない場合があります。'
+                                  ? '公開商品がないか、一覧取得の条件により表示できないことがあります。'
                                   : widget.summary.shopKey.trim().isEmpty
-                                  ? 'ショップ識別子がなく商品を表示できません。\n'
-                                        '保存ショップ一覧から開き直してください。'
-                                  : 'このショップの表示対象商品がありません。\n'
-                                        '検索条件を変えて再発掘すると、商品が表示される場合があります。',
+                                  ? 'ショップ情報がないため商品を表示できません。保存ショップ一覧から開き直してください。'
+                                  : 'まだ表示できる商品がありません。発掘画面の条件を変えて探し直すと表示される場合があります。',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(
@@ -356,6 +347,19 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                                 height: RakutenSearchScreenUi.gapSection,
                               ),
                               AppPrimaryButton(
+                                label: '商品名で探す',
+                                expand: false,
+                                onPressed: () {
+                                  openRakutenSearchScreen(
+                                    context,
+                                    initialMode:
+                                        RakutenSearchInitialMode.product,
+                                  );
+                                },
+                                icon: const Icon(Icons.search_rounded),
+                              ),
+                              SizedBox(height: AppDimensions.spacingSm),
+                              AppSecondaryButton(
                                 label: '再取得',
                                 expand: false,
                                 onPressed: _loadItemsFromShopCode,
@@ -393,6 +397,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                         genreDisplayLineOverride: _genreLineForItem(item),
                         sourceContextLabel:
                             _shouldLoadItemsFromShopCode ? '保存ショップ' : null,
+                        compactListLayout: _shouldLoadItemsFromShopCode,
                         onRegisterCandidate: () async {
                           final err = await managed.registerCandidate(item);
                           if (!context.mounted) return;
@@ -432,12 +437,14 @@ class _ShopDetailHeader extends StatelessWidget {
     required this.isSaved,
     required this.onSaveToggle,
     required this.onBackToSearch,
+    required this.onOpenExternal,
   });
 
   final String shopName;
   final bool isSaved;
   final VoidCallback onSaveToggle;
   final VoidCallback onBackToSearch;
+  final VoidCallback onOpenExternal;
 
   @override
   Widget build(BuildContext context) {
@@ -453,57 +460,129 @@ class _ShopDetailHeader extends StatelessWidget {
             shopName,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          SizedBox(height: AppDimensions.spacingXs + 2),
-          Text(
-            'このショップの商品を比較しながら、コレ候補登録まで進められます。',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.4,
+              fontWeight: FontWeight.w800,
+              height: 1.25,
+              letterSpacing: -0.2,
             ),
           ),
           SizedBox(height: AppDimensions.spacingSm),
           Wrap(
-            spacing: AppDimensions.spacingSm,
-            runSpacing: AppDimensions.spacingXs,
+            spacing: 6,
+            runSpacing: 6,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              AppPrimaryButton(
-                label: isSaved ? '保存済み' : 'このショップを保存',
-                onPressed: onSaveToggle,
+              _HeaderMiniButton(
+                filled: isSaved,
+                label: isSaved ? '保存済み' : '保存',
                 icon: Icon(
                   isSaved
                       ? Icons.bookmark_added_rounded
                       : Icons.bookmark_add_outlined,
                   size: 18,
                 ),
-                expand: false,
-                height: 44,
+                onPressed: onSaveToggle,
               ),
-              AppSecondaryButton(
-                label: '条件を変えて再検索',
+              _HeaderMiniButton(
+                label: '条件変更',
+                icon: const Icon(Icons.tune_rounded, size: 18),
                 onPressed: onBackToSearch,
-                icon: const Icon(Icons.tune_rounded),
-                height: 44,
+              ),
+              _HeaderMiniButton(
+                label: '外部で開く',
+                icon: const Icon(Icons.open_in_new_rounded, size: 18),
+                onPressed: onOpenExternal,
               ),
               IconButton(
-                tooltip: '保存ショップ一覧を開く',
-                icon: const Icon(Icons.bookmarks_outlined, size: 20),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => const SavedShopsScreen(),
-                    ),
+                tooltip: 'その他',
+                icon: const Icon(Icons.more_horiz_rounded, size: 22),
+                visualDensity: VisualDensity.compact,
+                style: IconButton.styleFrom(
+                  foregroundColor: AppColors.textSecondary,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                onPressed: () async {
+                  final choice = await showModalBottomSheet<String>(
+                    context: context,
+                    showDragHandle: true,
+                    builder: (ctx) {
+                      return SafeArea(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListTile(
+                              leading: const Icon(Icons.bookmarks_outlined),
+                              title: const Text('保存ショップ一覧'),
+                              onTap: () => Navigator.pop(ctx, 'saved'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   );
+                  if (!context.mounted || choice == null) return;
+                  if (choice == 'saved') {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const SavedShopsScreen(),
+                      ),
+                    );
+                  }
                 },
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _HeaderMiniButton extends StatelessWidget {
+  const _HeaderMiniButton({
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+    this.filled = false,
+  });
+
+  final String label;
+  final Widget icon;
+  final VoidCallback onPressed;
+  final bool filled;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = TextButton.styleFrom(
+      foregroundColor: filled
+          ? AppColors.accentPrimary
+          : AppColors.textSecondary,
+      backgroundColor: filled
+          ? AppColors.accentLight.withValues(alpha: 0.42)
+          : Colors.transparent,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      minimumSize: const Size(0, 36),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(999),
+        side: BorderSide(
+          color: filled
+              ? AppColors.accentPrimary.withValues(alpha: 0.22)
+              : AppColors.divider.withValues(alpha: 0.75),
+        ),
+      ),
+    );
+    return TextButton.icon(
+      onPressed: onPressed,
+      style: style,
+      icon: icon,
+      label: Text(
+        label,
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+          letterSpacing: -0.1,
+        ),
       ),
     );
   }
@@ -537,51 +616,38 @@ class _SortMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          '並び順',
+    return Theme(
+      data: Theme.of(
+        context,
+      ).copyWith(visualDensity: VisualDensity.compact),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<_ShopDetailSort>(
+          value: value,
+          isDense: true,
+          alignment: AlignmentDirectional.centerEnd,
+          icon: Icon(
+            Icons.expand_more_rounded,
+            size: 18,
+            color: HomeScreenColors.leadOnSection,
+          ),
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: HomeScreenColors.footnoteMuted,
+            color: HomeScreenColors.leadOnSection,
             fontWeight: FontWeight.w700,
           ),
+          items: _order
+              .map(
+                (mode) => DropdownMenuItem<_ShopDetailSort>(
+                  value: mode,
+                  child: Text(_shopDetailSortLabel(mode)),
+                ),
+              )
+              .toList(growable: false),
+          onChanged: (next) {
+            if (next == null || next == value) return;
+            onChanged(next);
+          },
         ),
-        const SizedBox(width: AppDimensions.spacingXs),
-        Theme(
-          data: Theme.of(
-            context,
-          ).copyWith(visualDensity: VisualDensity.compact),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<_ShopDetailSort>(
-              value: value,
-              isDense: true,
-              alignment: AlignmentDirectional.centerEnd,
-              icon: Icon(
-                Icons.expand_more_rounded,
-                size: 18,
-                color: HomeScreenColors.leadOnSection,
-              ),
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: HomeScreenColors.leadOnSection,
-                fontWeight: FontWeight.w700,
-              ),
-              items: _order
-                  .map(
-                    (mode) => DropdownMenuItem<_ShopDetailSort>(
-                      value: mode,
-                      child: Text(_shopDetailSortLabel(mode)),
-                    ),
-                  )
-                  .toList(growable: false),
-              onChanged: (next) {
-                if (next == null || next == value) return;
-                onChanged(next);
-              },
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
