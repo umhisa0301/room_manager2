@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../config/demo_mode.dart';
+import '../models/rakuten_managed_product.dart';
 import '../models/room_collected_persist_kind.dart';
 import '../models/room_sync_result.dart';
 import '../repository/rakuten_managed_product_repository.dart';
@@ -97,12 +98,17 @@ class RoomSyncService {
       );
     }
 
+    /// ROOM同期バッチ中は共有し、[persistRoomCollectedFromRoomPage] に渡して再読込を避ける。
+    final workingManagedList =
+        List<RakutenManagedProduct>.from(_repository.loadAll());
+    final syncedRoomKeys =
+        RakutenManagedProductRepository.normalizedRoomProductUrlKeys(
+          workingManagedList,
+        );
+
     roomSyncLog('初期HTML候補数: $listingInitialCandidateCount');
-    final initialUnsynced = initialOrdered
-        .where(
-          (k) => !_repository.isRoomProductPageKeySynced(k),
-        )
-        .length;
+    final initialUnsynced =
+        initialOrdered.where((k) => !syncedRoomKeys.contains(k)).length;
     roomSyncLog('初期HTML未同期候補数: $initialUnsynced');
 
     final userSeg = _roomUserSegment(profile);
@@ -117,7 +123,7 @@ class RoomSyncService {
       while (toProcess.length < maxItems && discoveryIdx < orderedKeys.length) {
         final k = orderedKeys[discoveryIdx++];
         listingChecked++;
-        if (_repository.isRoomProductPageKeySynced(k)) {
+        if (syncedRoomKeys.contains(k)) {
           listingSkip++;
         } else {
           toProcess.add(k);
@@ -130,7 +136,7 @@ class RoomSyncService {
     var additionalFetchStatus = '不要';
     if (toProcess.length < maxItems) {
       final allInitialSynced = initialOrdered.isNotEmpty &&
-          initialOrdered.every(_repository.isRoomProductPageKeySynced);
+          initialOrdered.every(syncedRoomKeys.contains);
       if (allInitialSynced) {
         roomSyncLog('初期HTML候補がすべて同期済みのため追加取得を試行します');
       }
@@ -190,9 +196,8 @@ class RoomSyncService {
           }
           advanceQueueFromDiscovery();
 
-          final unsyncedAmongDiscovered = orderedKeys
-              .where((k) => !_repository.isRoomProductPageKeySynced(k))
-              .length;
+          final unsyncedAmongDiscovered =
+              orderedKeys.where((k) => !syncedRoomKeys.contains(k)).length;
           roomSyncLog('追加取得後の未同期候補数: $unsyncedAmongDiscovered');
 
           cursor = page.nextAfterId;
@@ -250,7 +255,7 @@ class RoomSyncService {
 
       final normalizedKey =
           RoomRakutenUrlNormalize.normalizeRoomProductPageKey(roomPageUrl);
-      final preSynced = _repository.isRoomProductPageKeySynced(normalizedKey);
+      final preSynced = syncedRoomKeys.contains(normalizedKey);
       roomSyncLog('同期済み判定（再確認）: $preSynced');
       if (preSynced) {
         roomSyncLog('同期済みのためスキップ: $roomPageUrl');
@@ -311,6 +316,7 @@ class RoomSyncService {
           roomPageTitle: resolved.roomPageTitle ?? '',
           roomPageImageUrl: resolved.roomPageImageUrl ?? '',
           traceRoomSync: kDebugMode,
+          workingMutableList: workingManagedList,
         );
 
         final k = outcome.kind;
@@ -328,6 +334,10 @@ class RoomSyncService {
         } else if (k == RoomCollectedPersistKind.insertedNewCollected) {
           roomSyncLog('保存種別: 新規コレ済登録 完了');
           newly++;
+        }
+        if (k == RoomCollectedPersistKind.updatedRoomUrlOnly ||
+            k == RoomCollectedPersistKind.insertedNewCollected) {
+          syncedRoomKeys.add(normalizedKey);
         }
       } catch (e, st) {
         roomSyncError('永続化例外（persistRoomCollectedFromRoomPage）', e, st);

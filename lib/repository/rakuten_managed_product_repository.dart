@@ -22,6 +22,23 @@ class RakutenManagedProductRepository {
 
   static const String _keyList = 'rakuten_room_managed_products_v1';
 
+  /// ROOM 商品ページキー照合用（メモリ上の一覧から構築）。
+  static Set<String> normalizedRoomProductUrlKeys(
+    Iterable<RakutenManagedProduct> items,
+  ) {
+    final out = <String>{};
+    for (final e in items) {
+      final k = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(e.roomUrl);
+      if (k.isNotEmpty) out.add(k);
+    }
+    return out;
+  }
+
+  static bool _debugLoggedLoadAllSummaryOnce = false;
+
+  /// [RakutenSearchItem] ごとの表示ジャンル解決結果（同一 productId の再計算抑止）。
+  final Map<String, String> _resolvedGenreLabelByProductId = {};
+
   /// [status] に一致する商品だけを返す（更新日時の新しい順）。
   List<RakutenManagedProduct> loadByStatus(RakutenManagedProductStatus status) {
     final list = loadAll()
@@ -44,7 +61,6 @@ class RakutenManagedProductRepository {
       if (decoded is! List) return [];
 
       final out = <RakutenManagedProduct>[];
-      var rakutenGenreLoadLogCount = 0;
       for (final entry in decoded) {
         try {
           Map<String, dynamic>? map;
@@ -62,14 +78,6 @@ class RakutenManagedProductRepository {
           }
           final item = RakutenManagedProduct.fromJson(map);
           if (item != null) {
-            if (kDebugMode && rakutenGenreLoadLogCount < 5) {
-              rakutenGenreLoadLogCount++;
-              debugPrint(
-                '[RakutenGenre][LOAD] itemCode=${item.productId} '
-                'loaded.genreId=${item.genreId} loaded.genreName=${item.genreName} '
-                'loaded.resolvedGenreName=${item.resolvedGenreName}',
-              );
-            }
             out.add(item);
           }
         } catch (e, st) {
@@ -78,9 +86,11 @@ class RakutenManagedProductRepository {
           }
         }
       }
-      if (kDebugMode) {
+      if (kDebugMode && !_debugLoggedLoadAllSummaryOnce) {
+        _debugLoggedLoadAllSummaryOnce = true;
         debugPrint(
-          '[ROOMコレ診断] loadAll 成功 parsed=${out.length} rawJsonList=${decoded.length}',
+          '[ROOMコレ診断] loadAll 初回サマリー parsed=${out.length} '
+          'rawJsonList=${decoded.length}',
         );
       }
       return out;
@@ -286,8 +296,16 @@ class RakutenManagedProductRepository {
   }
 
   /// 検索一覧と同じルールの表示名（未分類・空 genreId は保存しない）。
-  static String _resolvedGenreLabelForSearchItem(RakutenSearchItem item) {
-    if (item.genreId.trim().isEmpty) return '';
+  String _resolvedGenreLabelForSearchItem(RakutenSearchItem item) {
+    final pid = item.productId.trim();
+    if (pid.isNotEmpty) {
+      final cached = _resolvedGenreLabelByProductId[pid];
+      if (cached != null) return cached;
+    }
+    if (item.genreId.trim().isEmpty) {
+      if (pid.isNotEmpty) _resolvedGenreLabelByProductId[pid] = '';
+      return '';
+    }
     final s = RakutenProductGenreDisplay.resolve(
       apiGenreName: item.genreName,
       persistedGenreName: null,
@@ -295,10 +313,10 @@ class RakutenManagedProductRepository {
       genreId: item.genreId,
       traceItemCode: null,
     ).trim();
-    if (s.isEmpty || s == RakutenProductGenreDisplay.unknownLabel) {
-      return '';
-    }
-    return s;
+    final out =
+        (s.isEmpty || s == RakutenProductGenreDisplay.unknownLabel) ? '' : s;
+    if (pid.isNotEmpty) _resolvedGenreLabelByProductId[pid] = out;
+    return out;
   }
 
   /// ROOM 商品ページ同期（単品・将来の一括の共通永続化）。
@@ -312,6 +330,9 @@ class RakutenManagedProductRepository {
     String roomPageImageUrl = '',
     RakutenSearchItem? apiEnrichedItem,
     bool traceRoomSync = false,
+
+    /// バッチ処理などで [loadAll] を繰り返さないための共有リスト（破壊的に更新される）。
+    List<RakutenManagedProduct>? workingMutableList,
   }) async {
     if (kDemoModeEnabled) {
       if (traceRoomSync) {
@@ -336,7 +357,8 @@ class RakutenManagedProductRepository {
       roomSyncLog('roomUrl保存済み（同一キー先行検索）に該当するか確認');
     }
 
-    final list = List<RakutenManagedProduct>.from(loadAll());
+    final list = workingMutableList ??
+        List<RakutenManagedProduct>.from(loadAll());
     for (final e in list) {
       final ek = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(e.roomUrl);
       if (ek.isNotEmpty && ek == key) {
