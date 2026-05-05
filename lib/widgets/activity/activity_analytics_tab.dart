@@ -253,6 +253,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     RakutenManagedProduct p,
     List<RoomActivityEvent> events,
   ) {
+    if (!p.countsTowardPostedCollectMetrics) return null;
     final doneAt = p.doneAt;
     if (doneAt != null) return doneAt;
     final id = p.productId.trim();

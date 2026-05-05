@@ -34,13 +34,23 @@ class RoomSyncService {
   static const int _collectsApiPageLimit = 20;
   static const int _maxCollectsApiPages = 40;
 
+  static bool _postedRoomImportInFlight = false;
+
   /// 未同期の ROOM 商品を最大 [maxItems] 件処理する。
-  Future<RoomSyncResult> syncPostedRoomProducts({
+  Future<RoomSyncResult?> syncPostedRoomProducts({
     required String userRoomProfileUrl,
     int maxItems = defaultMaxBatch,
     void Function(int currentIndex, int batchSize)? onCheckingProgress,
     void Function(String hint)? onProcessingHint,
   }) async {
+    if (_postedRoomImportInFlight) {
+      roomSyncSummaryLog(
+        'ROOM投稿取り込み 実行中のためスキップ（二重起動防止）',
+      );
+      return null;
+    }
+    _postedRoomImportInFlight = true;
+    try {
     roomSyncSummaryLog('ROOM投稿取り込み 開始（最大$maxItems件）');
 
     if (kDemoModeEnabled) {
@@ -248,9 +258,8 @@ class RoomSyncService {
     final newlyCollectedSamples = <RakutenManagedProduct>[];
 
     final batchSize = toProcess.length;
-    final traceDetailed = roomSyncVerboseTracing;
+    final traceDetailed = debugVerboseRoomImport;
     onCheckingProgress?.call(0, batchSize);
-    onProcessingHint?.call('楽天ROOMの投稿一覧を確認しています');
 
     for (var i = 0; i < toProcess.length; i++) {
       final roomPageUrl = toProcess[i];
@@ -258,7 +267,6 @@ class RoomSyncService {
       roomSyncVerboseLog('$ordinal件目の商品を確認');
       roomSyncVerboseLog('roomUrl: $roomPageUrl');
 
-      onProcessingHint?.call('ROOM投稿の商品ページを確認しています');
       final normalizedKey =
           RoomRakutenUrlNormalize.normalizeRoomProductPageKey(roomPageUrl);
       final preSynced = syncedRoomKeys.contains(normalizedKey);
@@ -272,7 +280,6 @@ class RoomSyncService {
 
       RoomUrlResolveOutcome resolved;
       try {
-        onProcessingHint?.call('楽天URLを取得中です');
         resolved = await _resolver.resolveRakutenItemUrlFromRoomPage(
           roomPageUrl,
           traceRoomSync: traceDetailed,
@@ -320,7 +327,6 @@ class RoomSyncService {
       roomSyncVerboseLog('最低限データで保存');
 
       try {
-        onProcessingHint?.call('コレ済に追加しています');
         final outcome = await _repository.persistRoomCollectedFromRoomPage(
           roomUrlStoredCanonical: normalizedKey,
           normalizedRoomUrlKey: normalizedKey,
@@ -393,6 +399,9 @@ class RoomSyncService {
       newlyCollectedSamples:
           List<RakutenManagedProduct>.unmodifiable(newlyCollectedSamples),
     );
+    } finally {
+      _postedRoomImportInFlight = false;
+    }
   }
 
   static String _roomUserSegment(String profile) {

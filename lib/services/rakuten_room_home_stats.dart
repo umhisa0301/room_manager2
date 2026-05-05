@@ -42,6 +42,7 @@ class RakutenRoomHomeStats {
       }
       final d = e.doneAt;
       if (d == null) continue;
+      if (!e.countsTowardPostedCollectMetrics) continue;
       final localDay = DateTime(d.year, d.month, d.day);
       if (localDay == target) n++;
     }
@@ -60,6 +61,7 @@ class RakutenRoomHomeStats {
       }
       final d = e.doneAt;
       if (d == null) continue;
+      if (!e.countsTowardPostedCollectMetrics) continue;
       if (max == null || d.isAfter(max)) max = d;
     }
     return max;

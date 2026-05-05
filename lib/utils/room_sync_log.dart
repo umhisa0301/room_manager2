@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-/// URL・ページ本文など **冗長** なROOM取り込みトレース。
-/// 開発で個別調査するときのみ `true` にする（通常は false）。
-bool roomSyncVerboseTracing = false;
+/// URL一覧・HTMLプレビューなどROOM取り込みの詳細ログ。通常は false。
+bool debugVerboseRoomImport = false;
 
 /// 通常開発時に残すサマリーのみ（開始・件数・完了・エラー）。
 void roomSyncSummaryLog(String message) {
@@ -11,9 +10,9 @@ void roomSyncSummaryLog(String message) {
   }
 }
 
-/// [roomSyncVerboseTracing] が true のときだけの詳細ログ。
+/// [debugVerboseRoomImport] が true のときだけの詳細ログ。
 void roomSyncVerboseLog(String message) {
-  if (kDebugMode && roomSyncVerboseTracing) {
+  if (kDebugMode && debugVerboseRoomImport) {
     debugPrint('[ROOM_SYNC][VERBOSE] $message');
   }
 }
@@ -41,7 +40,7 @@ void roomSyncError(String message, [Object? error, StackTrace? stackTrace]) {
 
 /// 長文は分割して出力（debugPrint の省略対策）。
 void roomSyncPreview(String label, String text, {int maxLength = 800}) {
-  if (!kDebugMode) return;
+  if (!kDebugMode || !debugVerboseRoomImport) return;
   debugPrint('[ROOM_SYNC] $label length: ${text.length}');
   if (text.isEmpty) {
     debugPrint('[ROOM_SYNC] $label preview: (empty)');

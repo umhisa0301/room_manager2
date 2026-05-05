@@ -2,6 +2,12 @@ import 'package:flutter/foundation.dart';
 
 import 'rakuten_search_item.dart';
 
+/// コレ済へ移した経路（投稿上限・分析の「投稿」カウントは [appPost] のみ）。
+enum RakutenCoredActivitySource {
+  appPost,
+  roomImport,
+}
+
 /// 楽天ROOM周りでローカル管理する商品の状態（将来「コレ済」等を追加しやすい）。
 enum RakutenManagedProductStatus {
   /// 未登録（永続化されていない想定。照合時は一覧に無い場合と同義）。
@@ -47,6 +53,8 @@ class RakutenManagedProduct {
     this.feedbackWeakAt,
     this.isRoomSynced = false,
     this.roomSyncedAt,
+    this.coredActivitySource = RakutenCoredActivitySource.appPost,
+    this.roomPostedAt,
   });
 
   /// 楽天の itemCode（アプリ内の [RakutenSearchItem.productId] と同一）。
@@ -102,6 +110,23 @@ class RakutenManagedProduct {
   /// [isRoomSynced] を立てた日時（未同期は null）。
   final DateTime? roomSyncedAt;
 
+  /// コレ済にした経路（投稿上限・分析の投稿カウントは [RakutenCoredActivitySource.appPost] のみ）。
+  final RakutenCoredActivitySource coredActivitySource;
+
+  /// 楽天ROOM上で実際に投稿された日時（取り込みでは未取得のことが多く null）。
+  final DateTime? roomPostedAt;
+
+  /// アプリの「投稿として」カウントするコレ済か。
+  bool get countsTowardPostedCollectMetrics {
+    if (!RakutenManagedProduct.isMemberForStatusTab(
+      this,
+      RakutenManagedProductStatus.done,
+    )) {
+      return false;
+    }
+    return coredActivitySource != RakutenCoredActivitySource.roomImport;
+  }
+
   /// ブラウザで開くURL（アフィリエイトURLを優先）。
   String get browserLaunchUrl =>
       affiliateUrl.trim().isNotEmpty ? affiliateUrl.trim() : itemUrl;
@@ -149,6 +174,9 @@ class RakutenManagedProduct {
     bool? isRoomSynced,
     DateTime? roomSyncedAt,
     bool clearRoomSyncedAt = false,
+    RakutenCoredActivitySource? coredActivitySource,
+    DateTime? roomPostedAt,
+    bool clearRoomPostedAt = false,
   }) {
     return RakutenManagedProduct(
       productId: productId ?? this.productId,
@@ -187,6 +215,8 @@ class RakutenManagedProduct {
       roomSyncedAt: clearRoomSyncedAt
           ? null
           : (roomSyncedAt ?? this.roomSyncedAt),
+      coredActivitySource: coredActivitySource ?? this.coredActivitySource,
+      roomPostedAt: clearRoomPostedAt ? null : (roomPostedAt ?? this.roomPostedAt),
     );
   }
 
@@ -225,6 +255,8 @@ class RakutenManagedProduct {
       feedbackWeakAt: null,
       isRoomSynced: false,
       roomSyncedAt: null,
+      coredActivitySource: RakutenCoredActivitySource.appPost,
+      roomPostedAt: null,
     );
   }
 
@@ -257,6 +289,8 @@ class RakutenManagedProduct {
       'feedbackWeakAt': feedbackWeakAt?.toIso8601String(),
       'isRoomSynced': isRoomSynced,
       'roomSyncedAt': roomSyncedAt?.toIso8601String(),
+      'coredActivitySource': coredActivitySource.name,
+      'roomPostedAt': roomPostedAt?.toIso8601String(),
     };
   }
 
@@ -379,6 +413,21 @@ class RakutenManagedProduct {
       roomSyncedAt = parseDt(rsAt);
     }
 
+    RakutenCoredActivitySource coredSource = RakutenCoredActivitySource.appPost;
+    final srcRaw = json['coredActivitySource']?.toString().trim();
+    if (srcRaw != null && srcRaw.isNotEmpty) {
+      coredSource = RakutenCoredActivitySource.values.firstWhere(
+        (e) => e.name == srcRaw,
+        orElse: () => RakutenCoredActivitySource.appPost,
+      );
+    }
+
+    DateTime? roomPostedAt;
+    final rpAt = json['roomPostedAt']?.toString();
+    if (rpAt != null && rpAt.isNotEmpty) {
+      roomPostedAt = parseDt(rpAt);
+    }
+
     final statusRaw = (json['status'] ?? '').toString().trim();
     var status = RakutenManagedProductStatus.values.firstWhere(
       (e) => e.name == statusRaw,
@@ -423,6 +472,8 @@ class RakutenManagedProduct {
       feedbackWeakAt: feedbackWeakAt,
       isRoomSynced: isRoomSynced,
       roomSyncedAt: roomSyncedAt,
+      coredActivitySource: coredSource,
+      roomPostedAt: roomPostedAt,
     );
   }
 }

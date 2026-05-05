@@ -18,6 +18,7 @@ import '../state/rakuten_managed_product_provider.dart';
 import '../state/room_activity_event_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
+import '../state/room_import_controller.dart';
 import '../theme/app_theme.dart';
 import '../utils/user_profile_genre_migration.dart';
 import '../widgets/app_button.dart';
@@ -144,89 +145,92 @@ class MypagePlaceholderScreen extends StatelessWidget {
                     activityLog,
                     _,
                   ) {
-                final profile = profileProvider.profile;
-                final candidateCount = managed.items
-                    .where(
-                      (e) => e.status == RakutenManagedProductStatus.candidate,
-                    )
-                    .length;
-                final doneCount = managed.items
-                    .where((e) => e.status == RakutenManagedProductStatus.done)
-                    .length;
-                final now = DateTime.now();
-                final todayPostCount = RoomCollectPostLimitSnapshot.compute(
-                  items: managed.items,
-                  events: activityEvents.events,
-                  now: now,
-                ).todayCount;
-                final todayCommentCount =
-                    activityLog.getTodayLog()?.commentCount ?? 0;
+                    final profile = profileProvider.profile;
+                    final candidateCount = managed.items
+                        .where(
+                          (e) =>
+                              e.status == RakutenManagedProductStatus.candidate,
+                        )
+                        .length;
+                    final doneCount = managed.items
+                        .where(
+                          (e) => e.status == RakutenManagedProductStatus.done,
+                        )
+                        .length;
+                    final now = DateTime.now();
+                    final todayPostCount = RoomCollectPostLimitSnapshot.compute(
+                      items: managed.items,
+                      events: activityEvents.events,
+                      now: now,
+                    ).todayCount;
+                    final todayCommentCount =
+                        activityLog.getTodayLog()?.commentCount ?? 0;
 
-                return ListView(
-                  padding: EdgeInsets.fromLTRB(
-                    _screenPadH,
-                    AppDimensions.spacingMd,
-                    _screenPadH,
-                    bottomPad,
-                  ),
-                  children: [
-                    MyPageHeader(
-                      profile: profile,
-                      savedShopCount: saved.shops.length,
-                      onStepGenre: () =>
-                          _openFavoriteGenrePickerSheet(context),
-                      onStepRoom: () => _openRoomUrlEditSheet(context),
-                      onStepProfile: () => _openProfileEditSheet(context),
-                      onStepSavedShops: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const SavedShopsScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: _gap),
-                    MyPageQuickSummaryCard(
-                      candidateCount: candidateCount,
-                      doneCount: doneCount,
-                      savedShopCount: saved.shops.length,
-                      todayCommentCount: todayCommentCount,
-                      todayPostCount: todayPostCount,
-                      onTapCandidates: () => context
-                          .read<AppShellController>()
-                          .openRoomCollect(initialTabIndex: 0),
-                      onTapDone: () => context
-                          .read<AppShellController>()
-                          .openRoomCollect(initialTabIndex: 1),
-                      onTapSavedShops: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const SavedShopsScreen(),
-                          ),
-                        );
-                      },
-                      onTapTodayActivity: () {
-                        Navigator.of(context).push<void>(
-                          MaterialPageRoute<void>(
-                            builder: (_) =>
-                                const ActivityPlaceholderScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: _gap),
-                    MyPageRoomSyncSection(
-                      onEditRoomUrl: () => _openRoomUrlEditSheet(context),
-                    ),
-                    const SizedBox(height: _gap),
-                    MyPageSettingsSection(
-                      onOpenDemo: kClosedTestDemoAvailable
-                          ? () => _openClosedTestDemo(context)
-                          : null,
-                    ),
-                  ],
-                );
-              },
+                    return ListView(
+                      padding: EdgeInsets.fromLTRB(
+                        _screenPadH,
+                        AppDimensions.spacingMd,
+                        _screenPadH,
+                        bottomPad,
+                      ),
+                      children: [
+                        MyPageHeader(
+                          profile: profile,
+                          savedShopCount: saved.shops.length,
+                          onStepGenre: () =>
+                              _openFavoriteGenrePickerSheet(context),
+                          onStepRoom: () => _openRoomUrlEditSheet(context),
+                          onStepProfile: () => _openProfileEditSheet(context),
+                          onStepSavedShops: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const SavedShopsScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: _gap),
+                        MyPageQuickSummaryCard(
+                          candidateCount: candidateCount,
+                          doneCount: doneCount,
+                          savedShopCount: saved.shops.length,
+                          todayCommentCount: todayCommentCount,
+                          todayPostCount: todayPostCount,
+                          onTapCandidates: () => context
+                              .read<AppShellController>()
+                              .openRoomCollect(initialTabIndex: 0),
+                          onTapDone: () => context
+                              .read<AppShellController>()
+                              .openRoomCollect(initialTabIndex: 1),
+                          onTapSavedShops: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const SavedShopsScreen(),
+                              ),
+                            );
+                          },
+                          onTapTodayActivity: () {
+                            Navigator.of(context).push<void>(
+                              MaterialPageRoute<void>(
+                                builder: (_) =>
+                                    const ActivityPlaceholderScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: _gap),
+                        MyPageRoomSyncSection(
+                          onEditRoomUrl: () => _openRoomUrlEditSheet(context),
+                        ),
+                        const SizedBox(height: _gap),
+                        MyPageSettingsSection(
+                          onOpenDemo: kClosedTestDemoAvailable
+                              ? () => _openClosedTestDemo(context)
+                              : null,
+                        ),
+                      ],
+                    );
+                  },
             ),
       ),
     );
@@ -334,19 +338,19 @@ class _MyPageHeaderState extends State<MyPageHeader> {
             Text(
               'おすすめ精度：高',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w800,
-                    height: 1.25,
-                  ),
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w800,
+                height: 1.25,
+              ),
             ),
             const SizedBox(height: 10),
             Text(
               '🎉 準備完了！おすすめ精度が最大になりました',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.success.withValues(alpha: 0.94),
-                    fontWeight: FontWeight.w800,
-                    height: 1.38,
-                  ),
+                color: AppColors.success.withValues(alpha: 0.94),
+                fontWeight: FontWeight.w800,
+                height: 1.38,
+              ),
             ),
           ],
         ),
@@ -377,9 +381,7 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                             'おすすめ精度：${_accuracySummaryLine(remaining)}',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
+                            style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w800,
@@ -391,9 +393,7 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                             _collapsedNextStepLine(firstIncomplete),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
+                            style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
                                   color: AppColors.textSecondary,
                                   height: 1.3,
@@ -430,9 +430,7 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                           const SizedBox(height: 14),
                           Text(
                             '進捗：$completedCount / 4 完了',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
+                            style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
                                   color: AppColors.textSecondary,
                                   height: 1.35,
@@ -442,9 +440,7 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                           const SizedBox(height: 6),
                           Text(
                             _stepProgressDots(stepDoneFlags),
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
+                            style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(
                                   color: AppColors.textPrimary.withValues(
                                     alpha: 0.88,
@@ -458,8 +454,7 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                           _MyPageStepRow(
                             stepLabel: 'STEP1',
                             title: 'ジャンル設定',
-                            description:
-                                '興味のあるジャンルを選ぶと、あなた向けの候補が出やすくなります。',
+                            description: '興味のあるジャンルを選ぶと、あなた向けの候補が出やすくなります。',
                             isDone: stepGenreDone,
                             isNextStep: firstIncomplete == 0,
                             onTap: widget.onStepGenre,
@@ -553,13 +548,18 @@ class _MyPageStepRow extends StatelessWidget {
         : AppColors.textSecondary.withValues(alpha: 0.45);
 
     final leadingIcon = isDone
-        ? Icon(Icons.check_circle_rounded,
-            color: AppColors.success.withValues(alpha: 0.72), size: 22)
-        : Icon(Icons.circle_outlined,
+        ? Icon(
+            Icons.check_circle_rounded,
+            color: AppColors.success.withValues(alpha: 0.72),
+            size: 22,
+          )
+        : Icon(
+            Icons.circle_outlined,
             color: isNextStep
                 ? _orange
                 : AppColors.textSecondary.withValues(alpha: 0.45),
-            size: 22);
+            size: 22,
+          );
 
     return Material(
       color: Colors.transparent,
@@ -590,28 +590,25 @@ class _MyPageStepRow extends StatelessWidget {
                       children: [
                         Text(
                           stepLabel,
-                          style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    color: stepStyleColor,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: stepStyleColor,
+                                fontWeight: FontWeight.w700,
+                              ),
                         ),
                         Text(
                           title,
-                          style:
-                              Theme.of(context).textTheme.labelLarge?.copyWith(
-                                    color: titleStyleColor,
-                                    fontWeight: FontWeight.w800,
-                                  ),
+                          style: Theme.of(context).textTheme.labelLarge
+                              ?.copyWith(
+                                color: titleStyleColor,
+                                fontWeight: FontWeight.w800,
+                              ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           description,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: descStyleColor,
-                                    height: 1.35,
-                                  ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: descStyleColor, height: 1.35),
                         ),
                       ],
                     ),
@@ -692,10 +689,7 @@ class MyPageQuickSummaryCard extends StatelessWidget {
               icon: Icons.list_alt_outlined,
             ),
             const SizedBox(height: 10),
-            _MyPageSummarySectionTitle(
-              title: '資産（ストック）',
-              dense: true,
-            ),
+            _MyPageSummarySectionTitle(title: '資産（ストック）', dense: true),
             const SizedBox(height: 6),
             _SummaryListTile(
               icon: Icons.bookmark_add_outlined,
@@ -718,12 +712,12 @@ class MyPageQuickSummaryCard extends StatelessWidget {
               onTap: onTapSavedShops,
             ),
             const SizedBox(height: 14),
-            Divider(height: 1, color: AppColors.divider.withValues(alpha: 0.35)),
-            const SizedBox(height: 12),
-            _MyPageSummarySectionTitle(
-              title: '今日の活動',
-              dense: true,
+            Divider(
+              height: 1,
+              color: AppColors.divider.withValues(alpha: 0.35),
             ),
+            const SizedBox(height: 12),
+            _MyPageSummarySectionTitle(title: '今日の活動', dense: true),
             const SizedBox(height: 6),
             _MyPageTodayActivityListTile(
               title: '',
@@ -732,17 +726,14 @@ class MyPageQuickSummaryCard extends StatelessWidget {
               onTap: onTapTodayActivity,
             ),
           ],
+        ),
       ),
-    ),
     );
   }
 }
 
 class _MyPageSummarySectionTitle extends StatelessWidget {
-  const _MyPageSummarySectionTitle({
-    required this.title,
-    this.dense = false,
-  });
+  const _MyPageSummarySectionTitle({required this.title, this.dense = false});
 
   final String title;
   final bool dense;
@@ -750,10 +741,10 @@ class _MyPageSummarySectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: AppColors.textPrimary,
-          fontWeight: FontWeight.w800,
-          letterSpacing: dense ? 0.2 : 0.4,
-        );
+      color: AppColors.textPrimary,
+      fontWeight: FontWeight.w800,
+      letterSpacing: dense ? 0.2 : 0.4,
+    );
     return Text(title, style: style);
   }
 }
@@ -794,27 +785,27 @@ class _MyPageTodayActivityListTile extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w800,
-                          ),
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     const SizedBox(height: 4),
                   ],
                   Text(
                     detailLine,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w900,
-                          height: 1.22,
-                        ),
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w900,
+                      height: 1.22,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.35,
-                        ),
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                    ),
                   ),
                 ],
               ),
@@ -880,20 +871,23 @@ class _SummaryListTile extends StatelessWidget {
                   child: Text(
                     label,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
                 Text(
                   value,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                Icon(Icons.chevron_right_rounded,
-                    color: AppColors.textSecondary, size: 22),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: AppColors.textSecondary,
+                  size: 22,
+                ),
               ],
             ),
           ),
@@ -960,106 +954,22 @@ class MyPageRoomLinkCard extends StatelessWidget {
   }
 }
 
-class MyPageRoomSyncSection extends StatefulWidget {
+class MyPageRoomSyncSection extends StatelessWidget {
   const MyPageRoomSyncSection({super.key, required this.onEditRoomUrl});
 
   final VoidCallback onEditRoomUrl;
 
-  @override
-  State<MyPageRoomSyncSection> createState() => _MyPageRoomSyncSectionState();
-}
-
-class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
-  bool _busy = false;
-  int _completed = 0;
-  int _total = 0;
-  String _processingHint = '';
-
-  Future<void> _runImport() async {
-    if (_busy) return;
+  Future<void> _handleImport(BuildContext context) async {
     final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
     if (roomUrl.isEmpty) return;
-
-    setState(() {
-      _busy = true;
-      _completed = 0;
-      _total = 0;
-      _processingHint = '';
-    });
-
-    final managed = context.read<RakutenManagedProductProvider>();
-
-    final result = await RoomPostImportFlow.executeBatch(
+    final ctl = context.read<RoomImportController>();
+    final result = await ctl.runImport(context);
+    if (!context.mounted) return;
+    if (result == null) return;
+    await RoomPostImportFlow.presentPostImportUi(
       context,
-      onProgress: ({
-        required bool busy,
-        required int completed,
-        required int total,
-        required String processingHint,
-      }) {
-        if (!mounted) return;
-        setState(() {
-          _busy = busy;
-          _completed = completed;
-          _total = total;
-          if (processingHint.isNotEmpty) {
-            _processingHint = processingHint;
-          }
-        });
-      },
-    );
-
-    if (!mounted) return;
-
-    await managed.refreshManagedProductList(showLoadingIndicator: false);
-
-    if (!mounted) return;
-
-    setState(() {
-      _busy = false;
-    });
-
-    if (result == null) {
-      if (!mounted) return;
-      widget.onEditRoomUrl();
-      return;
-    }
-
-    if (result.hasFatalError) {
-      if (!mounted) return;
-      await showDialog<void>(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('ROOM投稿取り込み'),
-          content: Text(result.fatalErrorMessage!.trim()),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('閉じる'),
-            ),
-          ],
-        ),
-      );
-      return;
-    }
-
-    final added = result.newlyCollectedCount > 0 || result.roomUrlAddedCount > 0;
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          added
-              ? 'ROOM投稿の取り込みが完了しました'
-              : 'ROOM投稿の確認が終わりました（追加なし）',
-        ),
-      ),
-    );
-
-    if (!mounted) return;
-    await RoomPostImportFlow.showResultSheet(
-      context,
-      result: result,
-      onImportAnotherBatch: () => _runImport(),
+      result,
+      startBatch: () => ctl.runImport(context),
     );
   }
 
@@ -1069,81 +979,79 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
     final roomUrl = profile.roomUrl.trim();
     final hasUrl = roomUrl.isNotEmpty;
 
-    return AppCard(
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const AppSectionHeader(
-            title: 'ROOM投稿取り込み',
-            subtitle:
-                '楽天ROOMの最新投稿を確認して、まだ取り込んでいない商品をコレ済に追加します。',
-            icon: Icons.downloading_rounded,
-          ),
-          const SizedBox(height: 8),
-          if (!hasUrl) ...[
-            Text(
-              'ROOMのプロフィールURLを登録してください',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+    return Consumer<RoomImportController>(
+      builder: (context, ctl, _) {
+        final busy = ctl.isRunning;
+        final completed = ctl.checkedCount;
+        final total = ctl.targetCount;
+
+        return AppCard(
+          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AppSectionHeader(
+                title: 'ROOM投稿取り込み',
+                subtitle: '楽天ROOMの最新投稿を確認して、まだ取り込んでいない商品を追加します。',
+                icon: Icons.downloading_rounded,
+              ),
+              const SizedBox(height: 8),
+              if (!hasUrl) ...[
+                Text(
+                  'ROOMのプロフィールURLを登録してください',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.35,
                   ),
-            ),
-            const SizedBox(height: 8),
-            TextButton(
-              onPressed: widget.onEditRoomUrl,
-              child: const Text('ROOM URLを登録'),
-            ),
-          ] else ...[
-            if (_busy) ...[
-              Text(
-                'ROOM投稿を確認中',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                ),
+                const SizedBox(height: 8),
+                TextButton(
+                  onPressed: onEditRoomUrl,
+                  child: const Text('ROOM URLを登録'),
+                ),
+              ] else ...[
+                if (busy) ...[
+                  Text(
+                    'ROOM投稿を確認中',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                _processingHint.isNotEmpty
-                    ? _processingHint
-                    : '楽天ROOMの商品ページを確認しています',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.35,
-                    ),
-              ),
-              const SizedBox(height: 10),
-              if (_total > 0)
-                Text(
-                  '$_completed / $_total件 完了',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  ),
+                  const SizedBox(height: 10),
+                  if (total > 0)
+                    Text(
+                      '$completed / $total件',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
+                    ),
+                  const SizedBox(height: 6),
+                  LinearProgressIndicator(
+                    value: total > 0 && completed >= 0
+                        ? (completed / total).clamp(0.0, 1.0)
+                        : null,
+                  ),
+                  const SizedBox(height: 12),
+                ],
+                FilledButton(
+                  onPressed: busy ? null : () => _handleImport(context),
+                  child: Text(
+                    '投稿済みを${RoomImportLimitPolicy.freeBatchLimit}件取り込む',
+                  ),
                 ),
-              const SizedBox(height: 6),
-              LinearProgressIndicator(
-                value: _total > 0 && _completed >= 0
-                    ? (_completed / _total).clamp(0.0, 1.0)
-                    : null,
-              ),
-              const SizedBox(height: 12),
-            ],
-            FilledButton(
-              onPressed: _busy ? null : _runImport,
-              child: Text(
-                '投稿済みを${RoomImportLimitPolicy.freeBatchLimit}件取り込む',
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              '無料版は${RoomImportLimitPolicy.freeBatchLimit}件ずつ取り込みできます',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                const SizedBox(height: 6),
+                Text(
+                  '無料版は${RoomImportLimitPolicy.freeBatchLimit}件ずつ取り込めます',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
-            ),
-          ],
-        ],
-      ),
+                ),
+                // TODO(RewardedAd|Subscription): 広告／Pro による追加バッチ導線をここに復帰。
+              ],
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -1447,8 +1355,8 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
                   Text(
                     '好きなジャンルを選ぶ',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Container(
@@ -1474,9 +1382,7 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
                         Expanded(
                           child: Text(
                             '最大5件まで選べます（現在 ${_selected.length} / 5）',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium
+                            style: Theme.of(context).textTheme.labelMedium
                                 ?.copyWith(
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w700,
@@ -1491,9 +1397,9 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
                   Text(
                     'タップでON/OFF。上限に達している項目はこれ以上追加できません。',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.35,
-                        ),
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                    ),
                   ),
                   if (_selected.isNotEmpty) ...[
                     const SizedBox(height: 10),
@@ -1521,8 +1427,7 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
             Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-                gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisExtent: 112,
                   crossAxisSpacing: 10,
@@ -1645,15 +1550,18 @@ class _GenreGridCell extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w700,
-                          height: 1.2,
-                        ),
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w700,
+                      height: 1.2,
+                    ),
                   ),
                   if (selected) ...[
                     const SizedBox(height: 4),
-                    Icon(Icons.check_circle_rounded,
-                        size: 18, color: AppColors.success),
+                    Icon(
+                      Icons.check_circle_rounded,
+                      size: 18,
+                      color: AppColors.success,
+                    ),
                   ],
                 ],
               ),

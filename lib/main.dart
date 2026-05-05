@@ -30,6 +30,7 @@ import 'repository/user_profile_repository.dart';
 import 'repository/saved_shop_repository.dart';
 import 'repository/today_recommendation_repository.dart';
 import 'state/user_profile_provider.dart';
+import 'state/room_import_controller.dart';
 import 'state/saved_shop_provider.dart';
 import 'state/today_recommendation_provider.dart';
 import 'navigation/app_shell_controller.dart';
@@ -130,6 +131,7 @@ class MyApp extends StatelessWidget {
           value: rakutenManagedProductRepository,
         ),
         ChangeNotifierProvider(create: (_) => AppShellController()),
+        ChangeNotifierProvider(create: (_) => RoomImportController()),
         Provider<PendingCollectNoticeRepository>.value(
           value: pendingCollectNoticeRepository,
         ),

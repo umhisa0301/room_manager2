@@ -13,15 +13,54 @@ import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 
 /// [RoomPostImportFlow.executeBatch] から通知される進捗。
-typedef RoomPostImportProgressCallback = void Function({
-  required bool busy,
-  required int completed,
-  required int total,
-  required String processingHint,
-});
+typedef RoomPostImportProgressCallback =
+    void Function({
+      required bool busy,
+      required int completed,
+      required int total,
+    });
 
 /// ホーム / マイページ共通の ROOM 投稿取り込み（内部 API は [RoomSyncService] のまま）。
 abstract final class RoomPostImportFlow {
+  /// 取り込み後のダイアログ・SnackBar・結果シート。
+  static Future<void> presentPostImportUi(
+    BuildContext context,
+    RoomSyncResult? result, {
+    required Future<RoomSyncResult?> Function() startBatch,
+  }) async {
+    if (result == null) return;
+    if (!context.mounted) return;
+
+    if (result.hasFatalError) {
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('ROOM投稿取り込み'),
+          content: Text(result.fatalErrorMessage!.trim()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('閉じる'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    final added =
+        result.newlyCollectedCount > 0 || result.roomUrlAddedCount > 0;
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(added ? 'ROOM投稿の取り込みが完了しました' : 'ROOM投稿の確認が終わりました（追加なし）'),
+      ),
+    );
+
+    if (!context.mounted) return;
+    await showResultSheet(context, result: result, startBatch: startBatch);
+  }
+
   /// 1バッチ実行して結果を返す（ROOM URL 未登録時は null）。
   static Future<RoomSyncResult?> executeBatch(
     BuildContext context, {
@@ -39,12 +78,7 @@ abstract final class RoomPostImportFlow {
     var lastCompleted = 0;
     var lastTotal = 0;
 
-    onProgress(
-      busy: true,
-      completed: 0,
-      total: 0,
-      processingHint: '',
-    );
+    onProgress(busy: true, completed: 0, total: 0);
 
     final result = await service.syncPostedRoomProducts(
       userRoomProfileUrl: profile,
@@ -52,29 +86,11 @@ abstract final class RoomPostImportFlow {
       onCheckingProgress: (current, total) {
         lastCompleted = current;
         lastTotal = total;
-        onProgress(
-          busy: true,
-          completed: current,
-          total: total,
-          processingHint: '',
-        );
-      },
-      onProcessingHint: (hint) {
-        onProgress(
-          busy: true,
-          completed: lastCompleted,
-          total: lastTotal,
-          processingHint: hint,
-        );
+        onProgress(busy: true, completed: current, total: total);
       },
     );
 
-    onProgress(
-      busy: false,
-      completed: 0,
-      total: 0,
-      processingHint: '',
-    );
+    onProgress(busy: false, completed: lastCompleted, total: lastTotal);
     return result;
   }
 
@@ -82,7 +98,7 @@ abstract final class RoomPostImportFlow {
   static Future<void> showResultSheet(
     BuildContext context, {
     required RoomSyncResult result,
-    Future<void> Function()? onImportAnotherBatch,
+    required Future<RoomSyncResult?> Function() startBatch,
   }) async {
     final navigatorContext = context;
     await showModalBottomSheet<void>(
@@ -100,16 +116,16 @@ abstract final class RoomPostImportFlow {
                 Text(
                   '取り込み完了',
                   style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   _primaryOutcomeLine(result),
                   style: Theme.of(ctx).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        height: 1.35,
-                      ),
+                    fontWeight: FontWeight.w700,
+                    height: 1.35,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 _SummaryRow(
@@ -121,10 +137,7 @@ abstract final class RoomPostImportFlow {
                   label: 'すでに取り込み済み',
                   count: result.listingSyncedSkipCount,
                 ),
-                _SummaryRow(
-                  label: '確認した商品',
-                  count: result.listingCheckedCount,
-                ),
+                _SummaryRow(label: '確認した商品', count: result.listingCheckedCount),
                 _SummaryRow(
                   label: '取り込めなかった商品',
                   count: result.failedCount,
@@ -136,98 +149,113 @@ abstract final class RoomPostImportFlow {
                   Text(
                     '※既存のコレ済にROOMページを紐付け：${result.roomUrlAddedCount}件',
                     style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.35,
-                        ),
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                    ),
                   ),
                 ],
                 const SizedBox(height: 12),
                 Text(
-                  '楽天ROOMで投稿済みの商品を、アプリの「コレ済」に反映しました。',
+                  '楽天ROOMで投稿済みの商品を、アプリの「コレ済」に追加しました。',
                   style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.4,
-                      ),
+                    color: AppColors.textSecondary,
+                    height: 1.4,
+                  ),
+                ),
+                Text(
+                  '※実際のROOM投稿数・ホームの投稿上限カウントには加算されません（アプリから「投稿する」した分のみ）。',
+                  style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.4,
+                  ),
                 ),
                 Text(
                   '楽天ROOM側で新しく投稿した場合は、再度取り込むと反映されます。',
                   style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.4,
-                      ),
+                    color: AppColors.textSecondary,
+                    height: 1.4,
+                  ),
                 ),
                 if (result.newlyCollectedSamples.isNotEmpty) ...[
                   const SizedBox(height: 18),
                   Text(
-                    '今回追加した商品',
+                    '今回追加した商品（一部）',
                     style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '最新3件のみ表示しています。すべて見る場合はコレ済一覧へ。',
+                    style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ...result.newlyCollectedSamples.take(3).map(
+                  ...result.newlyCollectedSamples
+                      .take(3)
+                      .map(
                         (p) => Padding(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: _ImportedProductPreviewTile(product: p),
                         ),
                       ),
                 ],
-                if (result.failedCount > 0 && result.failedRoomUrls.isNotEmpty) ...[
+                if (result.failedCount > 0 &&
+                    result.failedRoomUrls.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Text(
                     '取り込めなかったROOMページ（先頭3件）',
                     style: Theme.of(ctx).textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.error,
-                        ),
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.error,
+                    ),
                   ),
                   const SizedBox(height: 4),
-                  ...result.failedRoomUrls.take(3).map(
+                  ...result.failedRoomUrls
+                      .take(3)
+                      .map(
                         (u) => Padding(
                           padding: const EdgeInsets.only(bottom: 6),
                           child: Text(
                             u,
                             style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  height: 1.35,
-                                ),
+                              color: AppColors.textSecondary,
+                              height: 1.35,
+                            ),
                           ),
                         ),
                       ),
                 ],
-                const SizedBox(height: 8),
-                Text(
-                  '追加取得：${result.additionalFetchStatusLabel}',
-                  style: Theme.of(ctx).textTheme.labelSmall?.copyWith(
-                        color: AppColors.textTertiary,
-                      ),
-                ),
                 const SizedBox(height: 18),
                 FilledButton.icon(
                   onPressed: () {
                     Navigator.pop(ctx);
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       if (!navigatorContext.mounted) return;
-                      navigatorContext.read<AppShellController>().openRoomCollect(
-                            initialTabIndex: 1,
-                          );
+                      navigatorContext
+                          .read<AppShellController>()
+                          .openRoomCollect(initialTabIndex: 1);
                     });
                   },
                   icon: const Icon(Icons.task_alt_rounded, size: 20),
-                  label: const Text('コレ済を見る'),
+                  label: const Text('コレ済をすべて見る'),
                 ),
                 const SizedBox(height: 8),
                 OutlinedButton.icon(
-                  onPressed: onImportAnotherBatch == null
-                      ? null
-                      : () async {
-                          Navigator.pop(ctx);
-                          await onImportAnotherBatch();
-                        },
+                  onPressed: () async {
+                    Navigator.pop(ctx);
+                    final next = await startBatch();
+                    if (!navigatorContext.mounted || next == null) return;
+                    await presentPostImportUi(
+                      navigatorContext,
+                      next,
+                      startBatch: startBatch,
+                    );
+                  },
                   icon: const Icon(Icons.playlist_add_rounded, size: 20),
-                  label: Text(
-                    'もう${RoomImportLimitPolicy.freeBatchLimit}件取り込む',
-                  ),
+                  label: Text('もう${RoomImportLimitPolicy.freeBatchLimit}件取り込む'),
                 ),
                 const SizedBox(height: 8),
                 TextButton(
@@ -377,9 +405,9 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                   onPressed: product.roomUrl.trim().isEmpty
                       ? null
                       : () => AppActionService.openUrl(
-                            context,
-                            url: product.roomUrl.trim(),
-                          ),
+                          context,
+                          url: product.roomUrl.trim(),
+                        ),
                   icon: const Icon(Icons.open_in_new_rounded, size: 16),
                   label: const Text('ROOMで見る'),
                 ),
@@ -390,8 +418,9 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                       product.productId,
                     );
                     if (!context.mounted || err == null) return;
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(err)));
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(err)));
                   },
                   icon: const Icon(Icons.shopping_bag_outlined, size: 16),
                   label: const Text('楽天で見る'),

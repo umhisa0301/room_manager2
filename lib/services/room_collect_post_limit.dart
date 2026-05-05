@@ -110,6 +110,7 @@ class RoomCollectPostLimitSnapshot {
       }
       final doneAt = item.doneAt;
       if (doneAt == null) continue;
+      if (!item.countsTowardPostedCollectMetrics) continue;
       timestamps.add(doneAt);
       final id = item.productId.trim();
       if (id.isNotEmpty) productIdsWithDoneAt.add(id);

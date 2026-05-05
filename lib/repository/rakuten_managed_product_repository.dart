@@ -255,6 +255,7 @@ class RakutenManagedProductRepository {
         status: RakutenManagedProductStatus.done,
         doneAt: now,
         updatedAt: now,
+        coredActivitySource: RakutenCoredActivitySource.appPost,
       );
     });
   }
@@ -509,6 +510,7 @@ class RakutenManagedProductRepository {
         doneAt: now,
         isRoomSynced: true,
         roomSyncedAt: now,
+        coredActivitySource: RakutenCoredActivitySource.roomImport,
       );
       list.add(row);
       try {
@@ -570,6 +572,7 @@ class RakutenManagedProductRepository {
         feedbackWeakAt: null,
         isRoomSynced: true,
         roomSyncedAt: now,
+        coredActivitySource: RakutenCoredActivitySource.roomImport,
       ),
     );
     try {

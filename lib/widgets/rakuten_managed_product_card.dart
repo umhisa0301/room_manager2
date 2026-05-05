@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/rakuten_managed_product.dart';
 import '../services/app_action_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
+import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/room_colle_list_accent.dart';
 import '../utils/room_colle_card_time_format.dart';
@@ -128,17 +129,29 @@ class RakutenManagedProductCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (!isCandidate && product.isRoomSynced) ...[
-                        const Wrap(
-                          spacing: 5,
-                          runSpacing: 4,
-                          children: [
-                            _SmallBadge(
-                              label: 'ROOM投稿済み',
-                              color: Color(0xFF1B5E20),
-                            ),
-                          ],
-                        ),
+                      if (!isCandidate) ...[
+                        if (product.roomUrl.trim().isNotEmpty)
+                          const Wrap(
+                            spacing: 5,
+                            runSpacing: 4,
+                            children: [
+                              _SmallBadge(
+                                label: 'ROOM投稿済み',
+                                color: Color(0xFF1B5E20),
+                              ),
+                            ],
+                          )
+                        else
+                          Wrap(
+                            spacing: 5,
+                            runSpacing: 4,
+                            children: [
+                              _SmallBadge(
+                                label: '未取り込み',
+                                color: Color(0xFF6D4C41),
+                              ),
+                            ],
+                          ),
                         const SizedBox(height: 6),
                       ],
                       if (isCandidate) ...[
@@ -429,6 +442,31 @@ class RakutenManagedProductCard extends StatelessWidget {
     final provider = context.read<RakutenManagedProductProvider>();
     final roomPage = product.roomUrl.trim();
     final hasRoomPage = roomPage.isNotEmpty;
+    final postUrl = product.extractedUrl.trim();
+    final canOpenRoomPost =
+        product.extractionStatus == RakutenUrlExtractionStatus.success &&
+        postUrl.isNotEmpty;
+
+    Future<void> openRoomPostFlow() async {
+      if (canOpenRoomPost) {
+        await AppActionService.openUrl(context, url: postUrl);
+        return;
+      }
+      final profileRoom = context
+          .read<UserProfileProvider>()
+          .profile
+          .roomUrl
+          .trim();
+      if (profileRoom.isNotEmpty) {
+        await AppActionService.openUrl(context, url: profileRoom);
+      } else if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('マイページでROOMのプロフィールURLを登録してください')),
+        );
+      }
+    }
+
+    const roomViewAccent = Color(0xFFD81B60);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -450,94 +488,70 @@ class RakutenManagedProductCard extends StatelessWidget {
           },
         );
 
-        if (!hasRoomPage) {
-          return SizedBox(width: constraints.maxWidth, child: rakuten);
-        }
-
         final narrow = constraints.maxWidth < 300;
         final itemWidth = narrow
             ? constraints.maxWidth
             : (constraints.maxWidth - gap) / 2;
+
+        if (hasRoomPage) {
+          final roomView = Tooltip(
+            message: '楽天ROOMの商品ページを開きます',
+            child: SizedBox(
+              height: 40,
+              child: OutlinedButton(
+                onPressed: () =>
+                    AppActionService.openUrl(context, url: roomPage),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: roomViewAccent,
+                  backgroundColor: Colors.transparent,
+                  side: BorderSide(
+                    color: roomViewAccent.withValues(alpha: 0.72),
+                  ),
+                  elevation: 0,
+                  minimumSize: const Size(0, 40),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 8,
+                  ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  visualDensity: VisualDensity.compact,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  textStyle: AppTextStyles.label.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                child: const FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text('ROOMで見る'),
+                ),
+              ),
+            ),
+          );
+
+          return Wrap(
+            spacing: gap,
+            runSpacing: gap,
+            children: [
+              SizedBox(width: itemWidth, child: rakuten),
+              SizedBox(width: itemWidth, child: roomView),
+            ],
+          );
+        }
+
+        final roomPost = _DecisionActionButton(
+          label: 'ROOM投稿へ',
+          tone: _DecisionActionTone.primary,
+          onPressed: () => openRoomPostFlow(),
+        );
 
         return Wrap(
           spacing: gap,
           runSpacing: gap,
           children: [
             SizedBox(width: itemWidth, child: rakuten),
-            SizedBox(
-              width: itemWidth,
-              child: Tooltip(
-                message: '楽天ROOMの商品ページを開きます',
-                child: OutlinedButton(
-                  onPressed: () => AppActionService.openUrl(
-                    context,
-                    url: roomPage,
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.accentPrimary,
-                    backgroundColor: Colors.transparent,
-                    side: BorderSide(
-                      color: AppColors.accentPrimary.withValues(alpha: 0.72),
-                    ),
-                    elevation: 0,
-                    minimumSize: const Size(0, 40),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 8,
-                    ),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity.compact,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                    textStyle: AppTextStyles.label.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text('ROOMで見る'),
-                        if (product.isRoomSynced) ...[
-                          const SizedBox(width: 6),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF2E7D32).withValues(
-                                alpha: 0.12,
-                              ),
-                              borderRadius: BorderRadius.circular(999),
-                              border: Border.all(
-                                color: const Color(
-                                  0xFF2E7D32,
-                                ).withValues(alpha: 0.35),
-                              ),
-                            ),
-                            child: Text(
-                              '取り込み済み',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(
-                                    color: const Color(0xFF2E7D32),
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.1,
-                                    fontSize: 10,
-                                  ),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            SizedBox(width: itemWidth, child: roomPost),
           ],
         );
       },
