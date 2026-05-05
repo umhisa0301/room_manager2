@@ -16,6 +16,7 @@ class RoomColleUiStateRepository {
   static const int _maxSearchLen = 512;
   static const int _schemaV2 = 2;
   static const int _schemaV3 = 3;
+  static const int _schemaV4 = 4;
 
   /// 読み込みと検証。失敗時は [RoomColleUiStateSnapshot.defaults] を返し、必要なら永続を削除。
   RoomColleUiStateSnapshot loadSanitized() {
@@ -69,6 +70,7 @@ class RoomColleUiStateRepository {
 
       final hasV3 =
           schemaNum == _schemaV3 ||
+          schemaNum == _schemaV4 ||
           (map['candidateListFilters'] is Map && map['doneListFilters'] is Map);
 
       if (hasV3) {
@@ -112,6 +114,9 @@ class RoomColleUiStateRepository {
             ? pileBannerRaw
             : false;
 
+        final autoRaw = map['doneReactionQuickAutoAppliedOnce'];
+        final reactionAutoApplied = autoRaw is bool ? autoRaw : false;
+
         return RoomColleUiStateSnapshot(
           tabIndex: tabIndex,
           candidateListFilters: cFilters,
@@ -119,6 +124,7 @@ class RoomColleUiStateRepository {
           candidateExcludeUrlNotReady: exclude,
           doneLocalDay: doneLocalDay,
           staleCandidatePileBannerDismissed: pileBannerDismissed,
+          doneReactionQuickAutoAppliedOnce: reactionAutoApplied,
         );
       }
 
@@ -149,6 +155,7 @@ class RoomColleUiStateRepository {
           doneListFilters: RoomColleListFilterCriteria(keyword: doneQ),
           candidateExcludeUrlNotReady: exclude,
           doneLocalDay: doneLocalDay,
+          doneReactionQuickAutoAppliedOnce: false,
         );
       }
 
@@ -167,6 +174,7 @@ class RoomColleUiStateRepository {
         doneListFilters: RoomColleListFilterCriteria(keyword: legacyQ),
         candidateExcludeUrlNotReady: excludeUrlNotReady,
         doneLocalDay: doneLocalDay,
+        doneReactionQuickAutoAppliedOnce: false,
       );
     } catch (e, st) {
       if (kDebugMode) {
@@ -182,7 +190,7 @@ class RoomColleUiStateRepository {
       final cSan = _sanitizeFilterCriteriaKeywords(snap.candidateListFilters);
       final dSan = _sanitizeFilterCriteriaKeywords(snap.doneListFilters);
       final map = <String, dynamic>{
-        'schema': _schemaV3,
+        'schema': _schemaV4,
         'tabIndex': snap.tabIndex.clamp(0, 1),
         'candidateSearchQuery': _sanitizeSearchQuery(cSan.keyword),
         'doneSearchQuery': _sanitizeSearchQuery(dSan.keyword),
@@ -192,6 +200,7 @@ class RoomColleUiStateRepository {
         'doneLocalDay': snap.doneLocalDay?.toIso8601String(),
         'staleCandidatePileBannerDismissed':
             snap.staleCandidatePileBannerDismissed,
+        'doneReactionQuickAutoAppliedOnce': snap.doneReactionQuickAutoAppliedOnce,
       };
       await _prefs.setString(_key, jsonEncode(map));
     } catch (e, st) {
@@ -243,6 +252,7 @@ class RoomColleUiStateSnapshot {
     required this.candidateExcludeUrlNotReady,
     this.doneLocalDay,
     this.staleCandidatePileBannerDismissed = false,
+    this.doneReactionQuickAutoAppliedOnce = false,
   });
 
   final int tabIndex;
@@ -259,6 +269,9 @@ class RoomColleUiStateSnapshot {
   /// 7日超候補が5件以上のときのナッジバナーをユーザーが閉じたか（候補タブ用）。
   final bool staleCandidatePileBannerDismissed;
 
+  /// コレ済「反応あり」の初回自動選択を一度試みたら true（以降は自動で戻さない）。
+  final bool doneReactionQuickAutoAppliedOnce;
+
   /// 永続 v2 / UI 互換用。常に [candidateListFilters.keyword] と一致。
   String get candidateSearchQuery => candidateListFilters.keyword;
 
@@ -272,5 +285,6 @@ class RoomColleUiStateSnapshot {
     candidateExcludeUrlNotReady: false,
     doneLocalDay: null,
     staleCandidatePileBannerDismissed: false,
+    doneReactionQuickAutoAppliedOnce: false,
   );
 }

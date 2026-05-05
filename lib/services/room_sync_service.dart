@@ -256,6 +256,9 @@ class RoomSyncService {
     var failed = 0;
     final failedUrls = <String>[];
     final newlyCollectedSamples = <RakutenManagedProduct>[];
+    final reactionHitsByPid = <String, RakutenManagedProduct>{};
+    final reactionHitOrdinal = <String, int>{};
+    var reactionOrdinalSeq = 0;
 
     final batchSize = toProcess.length;
     final traceDetailed = debugVerboseRoomImport;
@@ -366,6 +369,26 @@ class RoomSyncService {
             }
           }
         }
+        if (k != RoomCollectedPersistKind.demoUnsupported) {
+          final pid = outcome.productId?.trim() ?? '';
+          if (pid.isNotEmpty) {
+            RakutenManagedProduct? hitRow;
+            for (final row in workingManagedList) {
+              if (row.productId.trim() == pid) {
+                hitRow = row;
+                break;
+              }
+            }
+            if (hitRow != null) {
+              final lc = hitRow.roomLikeCount;
+              final cc = hitRow.roomCommentCount;
+              if ((lc != null && lc > 0) || (cc != null && cc > 0)) {
+                reactionHitsByPid[pid] = hitRow;
+                reactionHitOrdinal.putIfAbsent(pid, () => reactionOrdinalSeq++);
+              }
+            }
+          }
+        }
         if (k == RoomCollectedPersistKind.updatedRoomUrlOnly ||
             k == RoomCollectedPersistKind.insertedNewCollected) {
           syncedRoomKeys.add(normalizedKey);
@@ -387,6 +410,23 @@ class RoomSyncService {
       roomSyncVerboseLog('failedRoomUrls: $failedUrls');
     }
 
+    final highlightKeys = reactionHitsByPid.keys.toList();
+    highlightKeys.sort((a, b) {
+      final pa = reactionHitsByPid[a]!;
+      final pb = reactionHitsByPid[b]!;
+      final ca = pa.roomCommentCount ?? -1;
+      final cb = pb.roomCommentCount ?? -1;
+      if (cb != ca) return cb.compareTo(ca);
+      final la = pa.roomLikeCount ?? -1;
+      final lb = pb.roomLikeCount ?? -1;
+      if (lb != la) return lb.compareTo(la);
+      return (reactionHitOrdinal[a] ?? 0).compareTo(reactionHitOrdinal[b] ?? 0);
+    });
+    final reactionHighlightSamples = highlightKeys
+        .take(3)
+        .map((k) => reactionHitsByPid[k]!)
+        .toList(growable: false);
+
     return RoomSyncResult(
       processedCount: batchSize,
       newlyCollectedCount: newly,
@@ -400,6 +440,8 @@ class RoomSyncService {
       additionalFetchStatusLabel: additionalFetchStatus,
       newlyCollectedSamples:
           List<RakutenManagedProduct>.unmodifiable(newlyCollectedSamples),
+      reactionHighlightSamples:
+          List<RakutenManagedProduct>.unmodifiable(reactionHighlightSamples),
     );
     } finally {
       _postedRoomImportInFlight = false;

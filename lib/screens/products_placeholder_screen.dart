@@ -551,10 +551,29 @@ List<Widget> _roomColleFilterSummaryChips(RoomColleListFilterCriteria c) {
   if (c.candidateHasRoomUrlOnly) addBoolChip('ROOM URLあり');
   if (c.candidateTodayRecommendationOnly) addBoolChip('今日のおすすめ');
   if (c.candidateUnpostedOnly) addBoolChip('未投稿');
-  if (c.doneFeedbackSold) addBoolChip('売れた');
-  if (c.doneFeedbackLiked) addBoolChip('反応あり');
-  if (c.doneFeedbackWeak) addBoolChip('微妙');
-  if (c.doneFeedbackUnrated) addBoolChip('未評価');
+  switch (c.doneQuickFilter) {
+    case RoomColleDoneQuickFilterPreset.all:
+      if (c.doneFeedbackSold) addBoolChip('売れた');
+      if (c.doneFeedbackLiked) addBoolChip('反応あり');
+      if (c.doneFeedbackWeak) addBoolChip('微妙');
+      if (c.doneFeedbackUnrated) addBoolChip('未評価');
+      break;
+    case RoomColleDoneQuickFilterPreset.sold:
+      addBoolChip('売れた');
+      break;
+    case RoomColleDoneQuickFilterPreset.roomReaction:
+      addBoolChip('反応あり');
+      break;
+    case RoomColleDoneQuickFilterPreset.roomCommentOnly:
+      addBoolChip('コメントあり');
+      break;
+    case RoomColleDoneQuickFilterPreset.roomLikeOnly:
+      addBoolChip('いいねあり');
+      break;
+    case RoomColleDoneQuickFilterPreset.roomPosted:
+      addBoolChip('ROOM投稿済み');
+      break;
+  }
   if (c.doneRoomConfirmedOnly) addBoolChip('ROOMで確認済み');
   switch (c.postedDatePreset) {
     case RoomCollePostedDatePreset.all:
@@ -620,8 +639,6 @@ enum _RoomColleCandidateStateFilter {
   todayRecommendation,
 }
 
-enum _RoomColleDoneEvaluationFilter { all, sold, liked, weak, unrated }
-
 class _RoomColleFilterEditorSheetState
     extends State<_RoomColleFilterEditorSheet> {
   static const String _shopAll = '__all__';
@@ -633,7 +650,7 @@ class _RoomColleFilterEditorSheetState
   late final TextEditingController _minPriceCtrl;
   late final TextEditingController _maxPriceCtrl;
   late _RoomColleCandidateStateFilter _candidateState;
-  late _RoomColleDoneEvaluationFilter _doneEvaluation;
+  late RoomColleDoneQuickFilterPreset _doneQuickFilterPreset;
 
   @override
   void initState() {
@@ -651,7 +668,7 @@ class _RoomColleFilterEditorSheetState
       text: _formatYenInput(widget.initial.priceMaxYen?.toString() ?? ''),
     );
     _candidateState = _candidateStateFromCriteria(widget.initial);
-    _doneEvaluation = _doneEvaluationFromCriteria(widget.initial);
+    _doneQuickFilterPreset = _doneQuickFilterPresetFromCriteria(widget.initial);
   }
 
   @override
@@ -731,16 +748,14 @@ class _RoomColleFilterEditorSheetState
     return _RoomColleCandidateStateFilter.all;
   }
 
-  _RoomColleDoneEvaluationFilter _doneEvaluationFromCriteria(
+  RoomColleDoneQuickFilterPreset _doneQuickFilterPresetFromCriteria(
     RoomColleListFilterCriteria criteria,
   ) {
-    if (criteria.doneFeedbackSold) return _RoomColleDoneEvaluationFilter.sold;
-    if (criteria.doneFeedbackLiked) return _RoomColleDoneEvaluationFilter.liked;
-    if (criteria.doneFeedbackWeak) return _RoomColleDoneEvaluationFilter.weak;
-    if (criteria.doneFeedbackUnrated) {
-      return _RoomColleDoneEvaluationFilter.unrated;
+    if (criteria.doneQuickFilter != RoomColleDoneQuickFilterPreset.all) {
+      return criteria.doneQuickFilter;
     }
-    return _RoomColleDoneEvaluationFilter.all;
+    if (criteria.doneFeedbackSold) return RoomColleDoneQuickFilterPreset.sold;
+    return RoomColleDoneQuickFilterPreset.all;
   }
 
   int? _tryParseYenField(TextEditingController c) {
@@ -776,7 +791,7 @@ class _RoomColleFilterEditorSheetState
       _shopValue = _shopAll;
       _genreId = null;
       _candidateState = _RoomColleCandidateStateFilter.all;
-      _doneEvaluation = _RoomColleDoneEvaluationFilter.all;
+      _doneQuickFilterPreset = RoomColleDoneQuickFilterPreset.all;
       _minPriceCtrl.clear();
       _maxPriceCtrl.clear();
     });
@@ -833,18 +848,29 @@ class _RoomColleFilterEditorSheetState
       candidateUnpostedOnly:
           widget.isCandidateTab &&
           _candidateState == _RoomColleCandidateStateFilter.unposted,
-      doneFeedbackSold:
-          !widget.isCandidateTab &&
-          _doneEvaluation == _RoomColleDoneEvaluationFilter.sold,
-      doneFeedbackLiked:
-          !widget.isCandidateTab &&
-          _doneEvaluation == _RoomColleDoneEvaluationFilter.liked,
-      doneFeedbackWeak:
-          !widget.isCandidateTab &&
-          _doneEvaluation == _RoomColleDoneEvaluationFilter.weak,
-      doneFeedbackUnrated:
-          !widget.isCandidateTab &&
-          _doneEvaluation == _RoomColleDoneEvaluationFilter.unrated,
+      doneQuickFilter: widget.isCandidateTab
+          ? widget.initial.doneQuickFilter
+          : _doneQuickFilterPreset,
+      doneFeedbackSold: widget.isCandidateTab
+          ? widget.initial.doneFeedbackSold
+          : (_doneQuickFilterPreset == RoomColleDoneQuickFilterPreset.all
+              ? widget.initial.doneFeedbackSold
+              : false),
+      doneFeedbackLiked: widget.isCandidateTab
+          ? widget.initial.doneFeedbackLiked
+          : (_doneQuickFilterPreset == RoomColleDoneQuickFilterPreset.all
+              ? widget.initial.doneFeedbackLiked
+              : false),
+      doneFeedbackWeak: widget.isCandidateTab
+          ? widget.initial.doneFeedbackWeak
+          : (_doneQuickFilterPreset == RoomColleDoneQuickFilterPreset.all
+              ? widget.initial.doneFeedbackWeak
+              : false),
+      doneFeedbackUnrated: widget.isCandidateTab
+          ? widget.initial.doneFeedbackUnrated
+          : (_doneQuickFilterPreset == RoomColleDoneQuickFilterPreset.all
+              ? widget.initial.doneFeedbackUnrated
+              : false),
       doneRoomConfirmedOnly: false,
     );
     Navigator.of(context).pop(
@@ -1006,27 +1032,32 @@ class _RoomColleFilterEditorSheetState
     ];
   }
 
-  List<DropdownMenuItem<_RoomColleDoneEvaluationFilter>> _evaluationItems() {
+  List<DropdownMenuItem<RoomColleDoneQuickFilterPreset>>
+  _doneQuickFilterPresetItems() {
     return const [
       DropdownMenuItem(
-        value: _RoomColleDoneEvaluationFilter.all,
+        value: RoomColleDoneQuickFilterPreset.all,
         child: Text('すべて'),
       ),
       DropdownMenuItem(
-        value: _RoomColleDoneEvaluationFilter.sold,
+        value: RoomColleDoneQuickFilterPreset.sold,
         child: Text('売れた'),
       ),
       DropdownMenuItem(
-        value: _RoomColleDoneEvaluationFilter.liked,
+        value: RoomColleDoneQuickFilterPreset.roomReaction,
         child: Text('反応あり'),
       ),
       DropdownMenuItem(
-        value: _RoomColleDoneEvaluationFilter.weak,
-        child: Text('微妙'),
+        value: RoomColleDoneQuickFilterPreset.roomCommentOnly,
+        child: Text('コメントあり'),
       ),
       DropdownMenuItem(
-        value: _RoomColleDoneEvaluationFilter.unrated,
-        child: Text('未評価'),
+        value: RoomColleDoneQuickFilterPreset.roomLikeOnly,
+        child: Text('いいねあり'),
+      ),
+      DropdownMenuItem(
+        value: RoomColleDoneQuickFilterPreset.roomPosted,
+        child: Text('ROOM投稿済み'),
       ),
     ];
   }
@@ -1181,13 +1212,13 @@ class _RoomColleFilterEditorSheetState
                                 },
                               )
                             else
-                              _dropdown<_RoomColleDoneEvaluationFilter>(
+                              _dropdown<RoomColleDoneQuickFilterPreset>(
                                 label: '評価',
-                                value: _doneEvaluation,
-                                items: _evaluationItems(),
+                                value: _doneQuickFilterPreset,
+                                items: _doneQuickFilterPresetItems(),
                                 onChanged: (v) {
                                   if (v != null) {
-                                    setState(() => _doneEvaluation = v);
+                                    setState(() => _doneQuickFilterPreset = v);
                                   }
                                 },
                               ),
@@ -1564,6 +1595,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
 
   /// [RoomColleUiStateSnapshot.staleCandidatePileBannerDismissed] と同期。
   bool _stalePileBannerDismissed = false;
+
+  /// [RoomColleUiStateSnapshot.doneReactionQuickAutoAppliedOnce] と同期。
+  bool _doneReactionQuickAutoAppliedOnce = false;
   Timer? _persistSearchDebounce;
 
   String? get _focusCandidateTargetId {
@@ -1650,6 +1684,34 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     _persistRoomColleUiNow();
   }
 
+  void _maybeAutoSelectDoneRoomReactionFilter(
+    RakutenManagedProductProvider managed,
+  ) {
+    if (_doneReactionQuickAutoAppliedOnce) return;
+    if (!_doneListFilters.isDoneFilterDefaultForAutoReaction) return;
+    final doneItems =
+        managed.sortedItemsForStatus(RakutenManagedProductStatus.done);
+    final hasReaction = doneItems.any((e) {
+      final lc = e.roomLikeCount;
+      final cc = e.roomCommentCount;
+      return (lc != null && lc > 0) || (cc != null && cc > 0);
+    });
+    if (!mounted) return;
+    setState(() {
+      _doneReactionQuickAutoAppliedOnce = true;
+      if (hasReaction) {
+        _doneListFilters = _doneListFilters.copyWith(
+          doneQuickFilter: RoomColleDoneQuickFilterPreset.roomReaction,
+          doneFeedbackSold: false,
+          doneFeedbackLiked: false,
+          doneFeedbackWeak: false,
+          doneFeedbackUnrated: false,
+        );
+      }
+    });
+    _persistRoomColleUiNow();
+  }
+
   TextEditingController get _activeRoomColleSearchController =>
       _tabController.index == 0
       ? _candidateSearchController
@@ -1695,6 +1757,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       candidateExcludeUrlNotReady: _candidateExcludeUrlNotReady,
       doneLocalDay: _doneLocalDayFilter,
       staleCandidatePileBannerDismissed: _stalePileBannerDismissed,
+      doneReactionQuickAutoAppliedOnce: _doneReactionQuickAutoAppliedOnce,
     );
   }
 
@@ -1773,6 +1836,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       _candidateSearchController.clear();
       _doneSearchController.clear();
       _doneLocalDayFilter = null;
+      _doneReactionQuickAutoAppliedOnce = false;
     });
     await _roomColleUiRepo.clearPersisted();
     await _roomColleUiRepo.saveSanitized(RoomColleUiStateSnapshot.defaults);
@@ -1789,6 +1853,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     _doneSearchController = TextEditingController();
     _roomColleUiRepo = context.read<RoomColleUiStateRepository>();
     final persisted = _roomColleUiRepo.loadSanitized();
+    _doneReactionQuickAutoAppliedOnce = persisted.doneReactionQuickAutoAppliedOnce;
 
     if (_roomColleScreenHasExplicitRouteArgs(widget)) {
       _doneLocalDayFilter = _normalizeDoneDayFilter(
@@ -1837,6 +1902,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       _tryConsumeRoomCollectIntent();
       await managed.refreshManagedProductList(showLoadingIndicator: false);
       if (!mounted) return;
+      _maybeAutoSelectDoneRoomReactionFilter(managed);
       if (kDebugMode) {
         final m = context.read<RakutenManagedProductProvider>();
         final nCand = m

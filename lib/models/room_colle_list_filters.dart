@@ -49,6 +49,27 @@ RoomCollePostedDatePreset roomCollePostedDatePresetFromWire(String? raw) {
   );
 }
 
+/// コレ済タブのクイックフィルター（評価プリセット）。
+enum RoomColleDoneQuickFilterPreset {
+  all,
+  sold,
+  roomReaction,
+  roomCommentOnly,
+  roomLikeOnly,
+  roomPosted,
+}
+
+RoomColleDoneQuickFilterPreset roomColleDoneQuickFilterPresetFromWire(
+  String? raw,
+) {
+  final t = raw?.trim();
+  if (t == null || t.isEmpty) return RoomColleDoneQuickFilterPreset.all;
+  return RoomColleDoneQuickFilterPreset.values.firstWhere(
+    (e) => e.name == t,
+    orElse: () => RoomColleDoneQuickFilterPreset.all,
+  );
+}
+
 enum RoomColleShopFilterMode { all, saved, shopName }
 
 RoomColleShopFilterMode roomColleShopFilterModeFromWire(String? raw) {
@@ -81,6 +102,7 @@ class RoomColleListFilterCriteria {
     this.doneFeedbackLiked = false,
     this.doneFeedbackWeak = false,
     this.doneFeedbackUnrated = false,
+    this.doneQuickFilter = RoomColleDoneQuickFilterPreset.all,
     this.doneRoomConfirmedOnly = false,
     this.postedDatePreset = RoomCollePostedDatePreset.all,
   });
@@ -103,6 +125,7 @@ class RoomColleListFilterCriteria {
   final bool doneFeedbackLiked;
   final bool doneFeedbackWeak;
   final bool doneFeedbackUnrated;
+  final RoomColleDoneQuickFilterPreset doneQuickFilter;
   final bool doneRoomConfirmedOnly;
   final RoomCollePostedDatePreset postedDatePreset;
 
@@ -130,8 +153,39 @@ class RoomColleListFilterCriteria {
         doneRoomConfirmedOnly) {
       return true;
     }
+    if (doneQuickFilter != RoomColleDoneQuickFilterPreset.all) return true;
     if (postedDatePreset != RoomCollePostedDatePreset.all) return true;
     return false;
+  }
+
+  /// ROOMのいいね／コメントで「反応あり」自動適用してよいか（キーワード・日付など未設定）。
+  bool get isDoneFilterDefaultForAutoReaction {
+    if (keyword.trim().isNotEmpty) return false;
+    if (registeredDatePreset != RoomColleRegisteredDatePreset.all) {
+      return false;
+    }
+    if (shopFilterMode != RoomColleShopFilterMode.all) return false;
+    if ((shopName?.trim() ?? '').isNotEmpty) return false;
+    if (staleCandidatePreset != RoomColleStaleCandidatePreset.none) {
+      return false;
+    }
+    if ((genreId?.trim() ?? '').isNotEmpty) return false;
+    if (priceMinYen != null || priceMaxYen != null) return false;
+    if (candidateHasRoomUrlOnly ||
+        candidateTodayRecommendationOnly ||
+        candidateUnpostedOnly) {
+      return false;
+    }
+    if (doneQuickFilter != RoomColleDoneQuickFilterPreset.all) return false;
+    if (doneFeedbackSold ||
+        doneFeedbackLiked ||
+        doneFeedbackWeak ||
+        doneFeedbackUnrated ||
+        doneRoomConfirmedOnly) {
+      return false;
+    }
+    if (postedDatePreset != RoomCollePostedDatePreset.all) return false;
+    return true;
   }
 
   bool get hasAnyReducingFilter =>
@@ -157,6 +211,7 @@ class RoomColleListFilterCriteria {
     bool? doneFeedbackLiked,
     bool? doneFeedbackWeak,
     bool? doneFeedbackUnrated,
+    RoomColleDoneQuickFilterPreset? doneQuickFilter,
     bool? doneRoomConfirmedOnly,
     RoomCollePostedDatePreset? postedDatePreset,
   }) {
@@ -180,6 +235,7 @@ class RoomColleListFilterCriteria {
       doneFeedbackLiked: doneFeedbackLiked ?? this.doneFeedbackLiked,
       doneFeedbackWeak: doneFeedbackWeak ?? this.doneFeedbackWeak,
       doneFeedbackUnrated: doneFeedbackUnrated ?? this.doneFeedbackUnrated,
+      doneQuickFilter: doneQuickFilter ?? this.doneQuickFilter,
       doneRoomConfirmedOnly:
           doneRoomConfirmedOnly ?? this.doneRoomConfirmedOnly,
       postedDatePreset: postedDatePreset ?? this.postedDatePreset,
@@ -203,6 +259,7 @@ class RoomColleListFilterCriteria {
       'doneFeedbackLiked': doneFeedbackLiked,
       'doneFeedbackWeak': doneFeedbackWeak,
       'doneFeedbackUnrated': doneFeedbackUnrated,
+      'doneQuickFilter': doneQuickFilter.name,
       'doneRoomConfirmedOnly': doneRoomConfirmedOnly,
       'postedDatePreset': postedDatePreset.name,
     };
@@ -264,6 +321,18 @@ class RoomColleListFilterCriteria {
         doneFeedbackLiked: readBool(m['doneFeedbackLiked']),
         doneFeedbackWeak: readBool(m['doneFeedbackWeak']),
         doneFeedbackUnrated: readBool(m['doneFeedbackUnrated']),
+        doneQuickFilter: () {
+          final hasKey = m.containsKey('doneQuickFilter');
+          var dq = roomColleDoneQuickFilterPresetFromWire(
+            m['doneQuickFilter']?.toString(),
+          );
+          if (!hasKey) {
+            if (readBool(m['doneFeedbackSold'])) {
+              dq = RoomColleDoneQuickFilterPreset.sold;
+            }
+          }
+          return dq;
+        }(),
         doneRoomConfirmedOnly: readBool(m['doneRoomConfirmedOnly']),
         postedDatePreset: roomCollePostedDatePresetFromWire(
           m['postedDatePreset']?.toString(),
@@ -426,6 +495,30 @@ bool _matchesPrice(RakutenManagedProduct e, int? minYen, int? maxYen) {
 bool _hasRoomUrl(RakutenManagedProduct e) =>
     e.extractedUrl.trim().isNotEmpty || e.roomUrl.trim().isNotEmpty;
 
+bool _matchesDoneQuickFilter(
+  RakutenManagedProduct e,
+  RoomColleDoneQuickFilterPreset preset,
+) {
+  switch (preset) {
+    case RoomColleDoneQuickFilterPreset.all:
+      return true;
+    case RoomColleDoneQuickFilterPreset.sold:
+      return e.feedbackSoldAt != null;
+    case RoomColleDoneQuickFilterPreset.roomReaction:
+      final lc = e.roomLikeCount;
+      final cc = e.roomCommentCount;
+      return (lc != null && lc > 0) || (cc != null && cc > 0);
+    case RoomColleDoneQuickFilterPreset.roomCommentOnly:
+      final cc = e.roomCommentCount;
+      return cc != null && cc > 0;
+    case RoomColleDoneQuickFilterPreset.roomLikeOnly:
+      final lc = e.roomLikeCount;
+      return lc != null && lc > 0;
+    case RoomColleDoneQuickFilterPreset.roomPosted:
+      return e.roomUrl.trim().isNotEmpty;
+  }
+}
+
 bool _matchesCandidateOnly(
   RakutenManagedProduct e,
   RoomColleListFilterCriteria criteria,
@@ -448,14 +541,19 @@ bool _matchesDoneOnly(
   if (e.status != RakutenManagedProductStatus.done && e.doneAt == null) {
     return true;
   }
-  if (criteria.doneFeedbackSold && e.feedbackSoldAt == null) return false;
-  if (criteria.doneFeedbackLiked && e.feedbackLikedAt == null) return false;
-  if (criteria.doneFeedbackWeak && e.feedbackWeakAt == null) return false;
-  if (criteria.doneFeedbackUnrated &&
-      (e.feedbackSoldAt != null ||
-          e.feedbackLikedAt != null ||
-          e.feedbackWeakAt != null)) {
-    return false;
+  final quick = criteria.doneQuickFilter;
+  if (quick != RoomColleDoneQuickFilterPreset.all) {
+    if (!_matchesDoneQuickFilter(e, quick)) return false;
+  } else {
+    if (criteria.doneFeedbackSold && e.feedbackSoldAt == null) return false;
+    if (criteria.doneFeedbackLiked && e.feedbackLikedAt == null) return false;
+    if (criteria.doneFeedbackWeak && e.feedbackWeakAt == null) return false;
+    if (criteria.doneFeedbackUnrated &&
+        (e.feedbackSoldAt != null ||
+            e.feedbackLikedAt != null ||
+            e.feedbackWeakAt != null)) {
+      return false;
+    }
   }
   if (criteria.doneRoomConfirmedOnly && !_hasRoomUrl(e)) return false;
   if (!_matchesPostedDate(

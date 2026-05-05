@@ -15,6 +15,7 @@ class RoomSyncResult {
     this.listingInitialCandidateCount = 0,
     this.additionalFetchStatusLabel = '不要',
     this.newlyCollectedSamples = const [],
+    this.reactionHighlightSamples = const [],
   });
 
   /// 一覧段階で同期済み判定した件数（FINISH ログの processedChecked 相当）。
@@ -31,6 +32,9 @@ class RoomSyncResult {
 
   /// 今バッチでコレ済に **新規追加** された商品のプレビュー（最大3件・UI用）。
   final List<RakutenManagedProduct> newlyCollectedSamples;
+
+  /// 今バッチで確認し ROOM のいいね／コメントが付いていた商品（最大3件・UI用）。
+  final List<RakutenManagedProduct> reactionHighlightSamples;
 
   /// 実際に1件ずつ確認した ROOM 商品ページ数（最大10など）。
   final int processedCount;
