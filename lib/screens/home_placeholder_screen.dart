@@ -13,6 +13,7 @@ import '../services/room_kpi_calculator.dart';
 import '../utils/today_recommendation_ui_tags.dart';
 import '../state/room_activity_event_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
+import '../state/bulk_operation_state_controller.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../state/user_profile_provider.dart';
@@ -516,9 +517,13 @@ class _HomeRoomPostImportSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<RoomImportController>(
-      builder: (context, ctl, _) {
-        final busy = ctl.isRunning;
+    return Consumer2<RoomImportController, BulkOperationStateController>(
+      builder: (context, ctl, bulk, _) {
+        final busy =
+            ctl.isRunning ||
+            bulk.isMetadataEnriching ||
+            bulk.isBulkCandidateRegistering;
+
         final completed = ctl.checkedCount;
         final total = ctl.targetCount;
 

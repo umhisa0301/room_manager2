@@ -187,13 +187,6 @@ class RakutenSearchRepository {
         : icRaw;
     final apiItemCode = icRaw.contains(':') ? icRaw : '$sc:$icRaw';
 
-    if (kDebugMode) {
-      debugPrint('[ROOM_IMPORT_ENRICH] 商品情報補完開始');
-      debugPrint('[ROOM_IMPORT_ENRICH] shopCode: $sc');
-      debugPrint('[ROOM_IMPORT_ENRICH] itemCode: $numericItemCode');
-      debugPrint('[ROOM_IMPORT_ENRICH] apiItemCode: $apiItemCode');
-    }
-
     final condition = RakutenProductSearchCondition(
       keyword: '',
       itemCode: apiItemCode,
@@ -210,12 +203,6 @@ class RakutenSearchRepository {
         page: 1,
         hits: 30,
       );
-      if (kDebugMode) {
-        debugPrint(
-          '[ROOM_IMPORT_ENRICH] request itemCode=$apiItemCode '
-          '(shopCode query omitted)',
-        );
-      }
       final rawItems = raw['Items'];
       if (rawItems is! List || rawItems.isEmpty) {
         if (kDebugMode) {
@@ -223,7 +210,6 @@ class RakutenSearchRepository {
         }
         return null;
       }
-      Map<String, dynamic>? matchedRaw;
       final parsed = <RakutenSearchItem>[];
       for (final entry in rawItems) {
         try {
@@ -232,10 +218,6 @@ class RakutenSearchRepository {
           final item = _mapToModel(map);
           if (item == null) continue;
           parsed.add(item);
-          if (matchedRaw == null &&
-              _roomImportEnrichmentItemMatches(item, numericItemCode, sc)) {
-            matchedRaw = map;
-          }
         } catch (e, st) {
           if (kDebugMode) {
             debugPrint('[ROOM_IMPORT_ENRICH] parse skip: $e');
@@ -245,48 +227,27 @@ class RakutenSearchRepository {
       }
       final best = _pickRoomImportEnrichmentItem(parsed, numericItemCode, sc);
       if (kDebugMode) {
-        if (matchedRaw != null) {
-          final rawGid = _stringField(matchedRaw['genreId']).trim();
-          final g1 = _stringField(matchedRaw['genreName']).trim();
-          final g2 = _stringField(matchedRaw['itemGenreName']).trim();
-          final rawGn = g1.isNotEmpty ? g1 : g2;
+        debugPrint('[ROOM_IMPORT_ENRICH] apiItemCode=$apiItemCode');
+        if (best != null) {
+          debugPrint('[ROOM_IMPORT_ENRICH] response title=${best.itemName}');
+          debugPrint('[ROOM_IMPORT_ENRICH] response shopName=${best.shopName}');
           debugPrint(
-            '[ROOM_IMPORT_ENRICH] response genreId: '
-            '${rawGid.isEmpty ? '(none)' : rawGid}',
+            '[ROOM_IMPORT_ENRICH] response genreId='
+            '${best.genreId.trim().isEmpty ? '(none)' : best.genreId}',
           );
+          final gn = best.genreName.trim();
           debugPrint(
-            '[ROOM_IMPORT_ENRICH] response genreName: '
-            '${rawGn.isEmpty ? 'null' : rawGn}',
+            '[ROOM_IMPORT_ENRICH] response genreName='
+            '${gn.isEmpty ? 'null' : gn}',
           );
-          if (rawGid.isEmpty) {
+          if (best.genreId.trim().isEmpty) {
             debugPrint(
               '[ROOM_IMPORT_ENRICH] API response item has no genreId',
             );
           }
         } else {
-          debugPrint('[ROOM_IMPORT_ENRICH] response genreId: (no matched Item)');
+          debugPrint('[ROOM_IMPORT_ENRICH] no matching item after parse');
         }
-        if (best != null) {
-          debugPrint(
-            '[ROOM_IMPORT_ENRICH] parsed genreId: '
-            '${best.genreId.trim().isEmpty ? '(empty)' : best.genreId}',
-          );
-        }
-      }
-      if (kDebugMode && best != null && best.genreId.trim().isEmpty) {
-        debugPrint(
-          '[ROOM_IMPORT_ENRICH] parsed RakutenSearchItem has empty genreId',
-        );
-      }
-      if (kDebugMode && best != null) {
-        debugPrint(
-          '[ROOM_IMPORT_ENRICH] success title=${best.itemName} '
-          'shopName=${best.shopName} genreId=${best.genreId} '
-          'genreName=${best.genreName} reviewAverage=${best.reviewAverage} '
-          'reviewCount=${best.reviewCount} itemUrl=${best.itemUrl}',
-        );
-      } else if (kDebugMode) {
-        debugPrint('[ROOM_IMPORT_ENRICH] no matching item after parse');
       }
       return best;
     } catch (e, st) {

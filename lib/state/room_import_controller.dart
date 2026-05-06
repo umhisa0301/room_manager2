@@ -3,9 +3,10 @@ import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../models/room_sync_result.dart';
-import '../state/rakuten_managed_product_provider.dart';
-import '../state/user_profile_provider.dart';
+import 'rakuten_managed_product_provider.dart';
+import 'user_profile_provider.dart';
 import '../widgets/room_post_import_flow.dart';
+import 'bulk_operation_state_controller.dart';
 
 /// ROOM 取り込みのフェーズ（ホーム／マイページ共通）。
 enum RoomImportPhase { idle, running, completed, failed }
@@ -15,6 +16,11 @@ enum RoomImportPhase { idle, running, completed, failed }
 /// TODO(RewardedAd|Subscription): RoomImportLimitPolicy.effectiveBatchLimit と連動して
 /// `phase` 以外に「追加バッチ解放済み」などを持てるようにする。
 class RoomImportController extends ChangeNotifier {
+  RoomImportController({BulkOperationStateController? bulkOperationState})
+    : _bulkOperationState = bulkOperationState;
+
+  final BulkOperationStateController? _bulkOperationState;
+
   RoomImportPhase _phase = RoomImportPhase.idle;
   int _checkedCount = 0;
   int _targetCount = 0;
@@ -60,6 +66,7 @@ class RoomImportController extends ChangeNotifier {
     _phase = RoomImportPhase.running;
     _checkedCount = 0;
     _targetCount = 0;
+    _bulkOperationState?.setRoomImportRunning(true);
     notifyListeners();
 
     try {
@@ -106,6 +113,7 @@ class RoomImportController extends ChangeNotifier {
       notifyListeners();
       return result;
     } finally {
+      _bulkOperationState?.setRoomImportRunning(false);
       if (_phase == RoomImportPhase.running) {
         _phase = RoomImportPhase.idle;
         notifyListeners();

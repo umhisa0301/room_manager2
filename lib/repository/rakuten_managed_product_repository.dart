@@ -224,21 +224,17 @@ class RakutenManagedProductRepository {
       final mergedGenreId =
           api.genreId.trim().isNotEmpty ? api.genreId : e.genreId;
       if (kDebugMode) {
-        final apiGn = api.genreName.trim();
+        debugPrint('[ROOM_IMPORT_ENRICH] response title=${api.itemName}');
+        debugPrint('[ROOM_IMPORT_ENRICH] response shopName=${api.shopName}');
         debugPrint(
-          '[ROOM_IMPORT_ENRICH] response genreId: '
+          '[ROOM_IMPORT_ENRICH] response genreId='
           '${api.genreId.trim().isEmpty ? '(none)' : api.genreId}',
         );
         debugPrint(
-          '[ROOM_IMPORT_ENRICH] response genreName: '
-          '${apiGn.isEmpty ? 'null' : api.genreName}',
+          '[ROOM_IMPORT_ENRICH] response genreName='
+          '${api.genreName.trim().isEmpty ? 'null' : api.genreName}',
         );
-        debugPrint(
-          '[ROOM_IMPORT_ENRICH] resolvedGenreName: '
-          '${resolvedLabel.trim().isEmpty ? '(empty)' : resolvedLabel}',
-        );
-        debugPrint('[ROOM_IMPORT_ENRICH] saved genreId: $mergedGenreId');
-        debugPrint('[ROOM_IMPORT_ENRICH] saved genreName: $mergedGenreName');
+        debugPrint('[ROOM_IMPORT_ENRICH] saved success');
       }
       return e.copyWith(
         itemName: api.itemName.trim().isNotEmpty ? api.itemName : e.itemName,
@@ -256,6 +252,8 @@ class RakutenManagedProductRepository {
         resolvedGenreName: resolvedLabel.isNotEmpty
             ? resolvedLabel
             : e.resolvedGenreName,
+        reviewAverage: api.reviewAverage,
+        reviewCount: api.reviewCount,
         updatedAt: now,
         roomImportMetadataEnriching: false,
       );
@@ -575,6 +573,8 @@ class RakutenManagedProductRepository {
           imageUrl: api.imageUrl.trim().isNotEmpty
               ? api.imageUrl
               : next.imageUrl,
+          reviewAverage: api.reviewAverage,
+          reviewCount: api.reviewCount,
           roomImportMetadataEnriching: false,
         );
       }

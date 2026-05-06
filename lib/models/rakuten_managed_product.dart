@@ -63,6 +63,8 @@ class RakutenManagedProduct {
     this.roomCommentCount,
     this.roomReactionUpdatedAt,
     this.roomImportMetadataEnriching = false,
+    this.reviewAverage = 0,
+    this.reviewCount = 0,
   });
 
   /// 楽天の itemCode（アプリ内の [RakutenSearchItem.productId] と同一）。
@@ -139,6 +141,12 @@ class RakutenManagedProduct {
   /// ROOM取り込みメタデータを楽天APIで補完している途中（一覧では「確認中」表示）。
   final bool roomImportMetadataEnriching;
 
+  /// 楽天API由来のレビュー平均（検索・ROOM取り込み補完で更新）。
+  final double reviewAverage;
+
+  /// 楽天API由来のレビュー件数。
+  final int reviewCount;
+
   /// アプリの「投稿として」カウントするコレ済か。
   bool get countsTowardPostedCollectMetrics {
     if (!RakutenManagedProduct.isMemberForStatusTab(
@@ -209,6 +217,8 @@ class RakutenManagedProduct {
     DateTime? roomReactionUpdatedAt,
     bool clearRoomReactionUpdatedAt = false,
     bool? roomImportMetadataEnriching,
+    double? reviewAverage,
+    int? reviewCount,
   }) {
     return RakutenManagedProduct(
       productId: productId ?? this.productId,
@@ -263,6 +273,8 @@ class RakutenManagedProduct {
           : (roomReactionUpdatedAt ?? this.roomReactionUpdatedAt),
       roomImportMetadataEnriching:
           roomImportMetadataEnriching ?? this.roomImportMetadataEnriching,
+      reviewAverage: reviewAverage ?? this.reviewAverage,
+      reviewCount: reviewCount ?? this.reviewCount,
     );
   }
 
@@ -308,6 +320,8 @@ class RakutenManagedProduct {
       roomCommentCount: null,
       roomReactionUpdatedAt: null,
       roomImportMetadataEnriching: false,
+      reviewAverage: item.reviewAverage,
+      reviewCount: item.reviewCount,
     );
   }
 
@@ -347,6 +361,8 @@ class RakutenManagedProduct {
       'roomCommentCount': roomCommentCount,
       'roomReactionUpdatedAt': roomReactionUpdatedAt?.toIso8601String(),
       'roomImportMetadataEnriching': roomImportMetadataEnriching,
+      'reviewAverage': reviewAverage,
+      'reviewCount': reviewCount,
     };
   }
 
@@ -512,6 +528,23 @@ class RakutenManagedProduct {
     final roomImportMetadataEnriching =
         json['roomImportMetadataEnriching'] == true;
 
+    final rav = json['reviewAverage'];
+    var reviewAverage = 0.0;
+    if (rav is num) {
+      reviewAverage = rav.toDouble();
+    } else if (rav is String) {
+      reviewAverage = double.tryParse(rav.trim()) ?? 0;
+    }
+    final rcv = json['reviewCount'];
+    var reviewCount = 0;
+    if (rcv is int) {
+      reviewCount = rcv;
+    } else if (rcv is num) {
+      reviewCount = rcv.toInt();
+    } else if (rcv != null) {
+      reviewCount = int.tryParse(rcv.toString().trim()) ?? 0;
+    }
+
     final statusRaw = (json['status'] ?? '').toString().trim();
     var status = RakutenManagedProductStatus.values.firstWhere(
       (e) => e.name == statusRaw,
@@ -563,6 +596,8 @@ class RakutenManagedProduct {
       roomCommentCount: roomCommentCount,
       roomReactionUpdatedAt: roomReactionUpdatedAt,
       roomImportMetadataEnriching: roomImportMetadataEnriching,
+      reviewAverage: reviewAverage,
+      reviewCount: reviewCount,
     );
   }
 }

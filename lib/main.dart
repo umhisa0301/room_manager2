@@ -14,6 +14,8 @@ import 'repository/genre_master_repository.dart';
 import 'services/genre_master_service.dart';
 import 'services/rakuten_genre_master_service.dart';
 import 'repository/rakuten_search_repository.dart';
+import 'repository/easy_initial_setup_repository.dart';
+import 'state/bulk_operation_state_controller.dart';
 import 'state/product_list_provider.dart';
 import 'state/comment_template_provider.dart';
 import 'state/activity_log_provider.dart';
@@ -132,13 +134,23 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => LegalConsentRepository(prefs),
         ),
+        ChangeNotifierProvider(
+          create: (_) => EasyInitialSetupRepository(prefs),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => BulkOperationStateController(),
+        ),
         Provider<GenreMasterRepository>.value(value: genreMasterRepository),
         Provider<RakutenSearchRepository>.value(value: rakutenSearchRepository),
         Provider<RakutenManagedProductRepository>.value(
           value: rakutenManagedProductRepository,
         ),
         ChangeNotifierProvider(create: (_) => AppShellController()),
-        ChangeNotifierProvider(create: (_) => RoomImportController()),
+        ChangeNotifierProvider(
+          create: (ctx) => RoomImportController(
+            bulkOperationState: ctx.read<BulkOperationStateController>(),
+          ),
+        ),
         Provider<PendingCollectNoticeRepository>.value(
           value: pendingCollectNoticeRepository,
         ),
