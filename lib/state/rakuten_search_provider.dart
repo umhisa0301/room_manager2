@@ -114,7 +114,9 @@ class RakutenSearchProvider extends ChangeNotifier {
         normalized.genreId != null && normalized.genreId!.isNotEmpty;
     final hasShop =
         normalized.shopCode != null && normalized.shopCode!.trim().isNotEmpty;
-    if (!hasKeyword && !hasGenre && !hasShop) {
+    final hasItem =
+        normalized.itemCode != null && normalized.itemCode!.trim().isNotEmpty;
+    if (!hasKeyword && !hasGenre && !hasShop && !hasItem) {
       _status = RakutenSearchStatus.idle;
       _results = const [];
       _errorMessage = '';

@@ -170,33 +170,120 @@ class RakutenSearchRepository {
     return afterFilter;
   }
 
-  /// ROOM取り込みコレ済のメタデータ補完用。`shopCode` + `itemCode` で商品検索APIを利用する。
+  /// ROOM取り込みコレ済のメタデータ補完用。楽天APIの `itemCode` に `shopCode:商品コード` 形式で渡す。
   ///
-  /// 取り込み直後の軽量補完および将来の [RoomImportMetadataEnrichmentBatch] で再利用する。
+  /// `shopCode` クエリは **付けず**（`itemCode` 複合指定のみ）。取り込み直後の軽量補完および
+  /// [RoomImportMetadataEnrichmentService.enrichRoomImportedProducts] で再利用する。
   Future<RakutenSearchItem?> fetchFirstItemForRoomImportEnrichment({
     required String shopCode,
     required String itemCode,
   }) async {
     final sc = shopCode.trim();
-    final ic = itemCode.trim();
-    if (sc.isEmpty || ic.isEmpty) return null;
+    final icRaw = itemCode.trim();
+    if (sc.isEmpty || icRaw.isEmpty) return null;
+
+    final numericItemCode = icRaw.contains(':')
+        ? icRaw.split(':').last.trim()
+        : icRaw;
+    final apiItemCode = icRaw.contains(':') ? icRaw : '$sc:$icRaw';
+
+    if (kDebugMode) {
+      debugPrint('[ROOM_IMPORT_ENRICH] 商品情報補完開始');
+      debugPrint('[ROOM_IMPORT_ENRICH] shopCode: $sc');
+      debugPrint('[ROOM_IMPORT_ENRICH] itemCode: $numericItemCode');
+      debugPrint('[ROOM_IMPORT_ENRICH] apiItemCode: $apiItemCode');
+    }
+
     final condition = RakutenProductSearchCondition(
       keyword: '',
-      shopCode: sc,
-      itemCode: ic,
+      itemCode: apiItemCode,
     ).normalized();
+
     try {
-      final items = await search(condition: condition);
-      for (final it in items) {
-        if (it.productId.trim() == ic) return it;
+      if (kDemoModeEnabled) {
+        final items = await search(condition: condition);
+        return _pickRoomImportEnrichmentItem(items, numericItemCode, sc);
       }
-      return items.isNotEmpty ? items.first : null;
+
+      final raw = await _apiService.searchItems(
+        condition: condition,
+        page: 1,
+        hits: 30,
+      );
+      if (kDebugMode) {
+        debugPrint(
+          '[ROOM_IMPORT_ENRICH] request itemCode=$apiItemCode '
+          '(shopCode query omitted)',
+        );
+      }
+      final rawItems = raw['Items'];
+      if (rawItems is! List || rawItems.isEmpty) {
+        if (kDebugMode) {
+          debugPrint('[ROOM_IMPORT_ENRICH] empty Items');
+        }
+        return null;
+      }
+      final parsed = <RakutenSearchItem>[];
+      for (final entry in rawItems) {
+        try {
+          final map = _unwrapItem(entry);
+          final item = _mapToModel(map);
+          if (item != null) parsed.add(item);
+        } catch (e, st) {
+          if (kDebugMode) {
+            debugPrint('[ROOM_IMPORT_ENRICH] parse skip: $e');
+            debugPrint('$st');
+          }
+        }
+      }
+      final best = _pickRoomImportEnrichmentItem(parsed, numericItemCode, sc);
+      if (kDebugMode && best != null) {
+        debugPrint(
+          '[ROOM_IMPORT_ENRICH] success title=${best.itemName} '
+          'shopName=${best.shopName} genreId=${best.genreId} '
+          'genreName=${best.genreName} reviewAverage=${best.reviewAverage} '
+          'reviewCount=${best.reviewCount} itemUrl=${best.itemUrl}',
+        );
+      } else if (kDebugMode) {
+        debugPrint('[ROOM_IMPORT_ENRICH] no matching item after parse');
+      }
+      return best;
     } catch (e, st) {
       if (kDebugMode) {
-        debugPrint('[Rakuten] room import enrichment failed: $e\n$st');
+        debugPrint('[ROOM_IMPORT_ENRICH] failed: $e');
+        debugPrint('$st');
       }
       return null;
     }
+  }
+
+  RakutenSearchItem? _pickRoomImportEnrichmentItem(
+    List<RakutenSearchItem> items,
+    String numericItemCode,
+    String shopCodeRaw,
+  ) {
+    final nic = numericItemCode.trim();
+    final sc = shopCodeRaw.trim();
+    for (final it in items) {
+      if (_roomImportEnrichmentItemMatches(it, nic, sc)) return it;
+    }
+    return items.isNotEmpty ? items.first : null;
+  }
+
+  bool _roomImportEnrichmentItemMatches(
+    RakutenSearchItem it,
+    String numericItemCode,
+    String shopCodeRaw,
+  ) {
+    final pid = it.productId.trim();
+    final nic = numericItemCode.trim();
+    if (nic.isNotEmpty && pid == nic) return true;
+    final prefixed = '$shopCodeRaw:$nic';
+    if (pid == prefixed) return true;
+    if (nic.isNotEmpty && pid.endsWith(nic) && pid.contains(':')) {
+      return true;
+    }
+    return false;
   }
 
   /// キーワード検索タブ専用: [excludeRegisteredProductIds]（楽天 itemCode / [RakutenSearchItem.productId]）と
