@@ -87,12 +87,12 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
         ),
         const SizedBox(height: AppDimensions.spacingXs / 2),
         Text(
-          '候補を追加',
+          '候補を追加（探す）',
           style: RakutenSearchScreenUi.sectionHeadingAccent(context),
         ),
         const SizedBox(height: AppDimensions.spacingXs),
         Text(
-          '選んだ方法の画面へ移動します',
+          '目的に合わせて画面へ移動します（保存ショップで探す／ショップ発掘など）。',
           style: RakutenSearchScreenUi.bodyCaption(context),
         ),
         const SizedBox(height: AppDimensions.spacingMd),
@@ -127,7 +127,7 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
         AddCandidateEntrySheetMenuItem(
           icon: Icons.hiking_rounded,
           title: 'ショップ発掘',
-          description: '新しいショップを探して候補追加につなげます',
+          description: '新しいショップを見つけて保存します（店内検索の材料になります）',
           onTap: onTapShopDiscovery,
         ),
       ],

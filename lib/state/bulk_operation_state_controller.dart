@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 /// DB 更新を伴う一括処理の競合防止用（ROOM取り込み・一括候補登録・メタデータ補完など）。
 class BulkOperationStateController extends ChangeNotifier {
+  static const String blockingSnackMessage =
+      '処理中です。完了後に操作してください';
   bool _roomImport = false;
   bool _bulkCandidate = false;
   bool _metadataEnrich = false;
@@ -38,7 +40,7 @@ class BulkOperationStateController extends ChangeNotifier {
     if (!isAnyBlockingOperationRunning) return false;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('処理中です。完了してからもう一度お試しください'),
+        content: Text(blockingSnackMessage),
       ),
     );
     return true;

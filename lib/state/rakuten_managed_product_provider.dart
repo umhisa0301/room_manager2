@@ -10,11 +10,13 @@ import '../repository/pending_collect_notice_repository.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import 'room_activity_event_provider.dart';
+import 'bulk_operation_state_controller.dart';
 import '../services/app_action_service.dart';
 import '../services/room_collect_post_limit.dart';
 import '../services/room_url_extraction_coordinator.dart';
 import '../services/room_url_extraction_service.dart';
 import '../services/room_collected_register_service.dart';
+import '../utils/managed_product_diag_log.dart';
 import '../widgets/collect_post_success_overlay.dart';
 
 /// 楽天ROOM管理の一覧画面用ロード状態。
@@ -27,9 +29,11 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     required PendingCollectNoticeRepository pendingCollectNoticeRepository,
     required RoomActivityEventProvider activityEventProvider,
     RakutenSearchRepository? rakutenSearchRepository,
+    BulkOperationStateController? bulkOperationState,
   }) : _repository = repository,
        _pendingCollectNoticeRepository = pendingCollectNoticeRepository,
        _activityEventProvider = activityEventProvider,
+       _bulkOperationState = bulkOperationState,
        _roomCollectedRegisterService = RoomCollectedRegisterService(
          repository: repository,
          searchRepository: rakutenSearchRepository,
@@ -42,6 +46,7 @@ class RakutenManagedProductProvider extends ChangeNotifier {
   final RakutenManagedProductRepository _repository;
   final PendingCollectNoticeRepository _pendingCollectNoticeRepository;
   final RoomActivityEventProvider _activityEventProvider;
+  final BulkOperationStateController? _bulkOperationState;
   final RoomCollectedRegisterService _roomCollectedRegisterService;
 
   static String _newEventId(String productId, RoomActivityEventType type) =>
@@ -77,6 +82,9 @@ class RakutenManagedProductProvider extends ChangeNotifier {
   /// [showLoadingIndicator] が false のときは [RakutenManagedProductListUiStatus.loading] にしない（初回同期用）。
   Future<void> refreshManagedProductList({
     bool showLoadingIndicator = true,
+    String loadSource = 'provider',
+    String filter = '',
+    String tab = '',
   }) async {
     if (showLoadingIndicator) {
       _listUiStatus = RakutenManagedProductListUiStatus.loading;
@@ -85,7 +93,25 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     }
     try {
       await Future<void>.delayed(Duration.zero);
+      final before = ManagedProductDiagLog.pendingAndDoneCounts(_items);
       _items = _repository.loadAll();
+      final after = ManagedProductDiagLog.pendingAndDoneCounts(_items);
+      ManagedProductDiagLog.logSave(
+        action: 'refresh',
+        productId: '',
+        itemCode: '',
+        beforePendingCount: before.$1,
+        afterPendingCount: after.$1,
+        beforeDoneCount: before.$2,
+        afterDoneCount: after.$2,
+      );
+      ManagedProductDiagLog.logLoad(
+        source: loadSource,
+        pendingCount: after.$1,
+        doneCount: after.$2,
+        filter: filter,
+        tab: tab,
+      );
       _listUiStatus = RakutenManagedProductListUiStatus.ready;
       _listUiErrorMessage = null;
       if (kDebugMode) {
@@ -168,12 +194,28 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     _items = _repository.loadAll();
   }
 
+  String? _bulkBlocksMutation(String blockedAction) {
+    final b = _bulkOperationState;
+    if (b == null || !b.isAnyBlockingOperationRunning) {
+      return null;
+    }
+    ManagedProductDiagLog.logMutationLock(
+      isBulkRunning: true,
+      blockedAction: blockedAction,
+    );
+    return BulkOperationStateController.blockingSnackMessage;
+  }
+
   /// コレ候補として登録。成功時は null、失敗時はエラーメッセージ。
   /// 既に候補・コレ済の場合は重複せず成功扱い（null）。URL抽出は新規登録時のみ非同期で開始。
   Future<String?> registerCandidate(RakutenSearchItem item) async {
     final id = item.productId.trim();
     if (id.isEmpty) {
       return '商品IDが空のため登録できません';
+    }
+    final blocked = _bulkBlocksMutation('addCandidate');
+    if (blocked != null) {
+      return blocked;
     }
     if (_registeringProductIds.contains(id)) {
       return null;
@@ -307,6 +349,13 @@ class RakutenManagedProductProvider extends ChangeNotifier {
   Future<RoomCollectedRegisterViewResult> registerCollectedFromRoomProductPage(
     String rawRoomUrl,
   ) async {
+    final blocked = _bulkBlocksMutation('registerCollectedFromRoomProductPage');
+    if (blocked != null) {
+      return RoomCollectedRegisterViewResult(
+        kind: RoomCollectedRegisterUiKind.failed,
+        message: blocked,
+      );
+    }
     try {
       final r =
           await _roomCollectedRegisterService.registerFromRoomProductPageUrl(
@@ -358,6 +407,17 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     final id = productId.trim();
     if (id.isEmpty) {
       notifyOrDialog('商品IDが空です');
+      return false;
+    }
+    final bulkMsg = _bulkBlocksMutation('collectRoomAndLaunch');
+    if (bulkMsg != null) {
+      if (notifyInsteadOfDialogs != null) {
+        notifyInsteadOfDialogs(bulkMsg);
+      } else if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(bulkMsg)),
+        );
+      }
       return false;
     }
     final p = _repository.getByProductId(id);
@@ -511,6 +571,11 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     final p = _repository.getByProductId(id);
     if (p == null) return '商品が見つかりません';
 
+    final blocked = _bulkBlocksMutation('toggleFeedback');
+    if (blocked != null) {
+      return blocked;
+    }
+
     final now = DateTime.now();
     late final RakutenManagedProduct next;
     RoomActivityEventType? eventOnEnable;
@@ -574,6 +639,10 @@ class RakutenManagedProductProvider extends ChangeNotifier {
   ) async {
     final id = productId.trim();
     if (id.isEmpty) return '商品IDが空です';
+    final blocked = _bulkBlocksMutation('remove');
+    if (blocked != null) {
+      return blocked;
+    }
     try {
       await _repository.removeCandidateProduct(id);
       try {

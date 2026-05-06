@@ -1901,7 +1901,11 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         managed.recoverListUiSilently();
       }
       _tryConsumeRoomCollectIntent();
-      await managed.refreshManagedProductList(showLoadingIndicator: false);
+      await managed.refreshManagedProductList(
+        showLoadingIndicator: false,
+        loadSource: 'screen',
+        tab: _tabController.index == 0 ? 'candidate' : 'done',
+      );
       if (!mounted) return;
       _maybeAutoSelectDoneRoomReactionFilter(managed);
       if (kDebugMode) {
@@ -1932,7 +1936,11 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         managed.recoverListUiSilently();
       }
       _tryConsumeRoomCollectIntent();
-      managed.refreshManagedProductList(showLoadingIndicator: false);
+      managed.refreshManagedProductList(
+        showLoadingIndicator: false,
+        loadSource: 'screen',
+        tab: _tabController.index == 0 ? 'candidate' : 'done',
+      );
     } else {
       _tryConsumeRoomCollectIntent();
     }

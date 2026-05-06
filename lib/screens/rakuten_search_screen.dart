@@ -1096,7 +1096,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   ),
                   SizedBox(height: RakutenSearchScreenUi.gapBeforePrimaryCta),
                   AppPrimaryButton(
-                    label: 'このショップで検索',
+                    label: 'このショップで探す',
                     icon: const Icon(Icons.search_rounded, size: 22),
                     onPressed: canSearch ? () => _runSearch(context) : null,
                   ),
@@ -2263,7 +2263,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         : '';
     final title = scoped.isEmpty
         ? '検索結果'
-        : (shopNm.isNotEmpty ? '$shopNm 内の検索結果' : '$scoped 内の検索結果');
+        : (shopNm.isNotEmpty ? '$shopNm店内の検索結果' : '$scoped店内の検索結果');
     final kw = search.lastKeyword.trim();
     final chipStyle = Theme.of(
       context,
@@ -2291,7 +2291,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               ),
               if (kw.isNotEmpty)
                 Chip(
-                  label: Text(kw, style: chipStyle),
+                  label: Text('キーワード：$kw', style: chipStyle),
                   visualDensity: VisualDensity.compact,
                 ),
             ],

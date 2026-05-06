@@ -184,6 +184,7 @@ class MyApp extends StatelessWidget {
             pendingCollectNoticeRepository: pendingCollectNoticeRepository,
             activityEventProvider: ctx.read<RoomActivityEventProvider>(),
             rakutenSearchRepository: rakutenSearchRepository,
+            bulkOperationState: ctx.read<BulkOperationStateController>(),
           ),
         ),
         ChangeNotifierProvider(

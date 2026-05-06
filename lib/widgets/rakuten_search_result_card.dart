@@ -7,6 +7,7 @@ import '../utils/rakuten_product_genre_display.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
+import 'app_button.dart';
 import 'room_colle_product_list_card_layout.dart';
 
 /// 楽天検索結果の1商品カード（ROOM コレ一覧カードと同一 UI ルール）。
@@ -268,15 +269,16 @@ class RakutenSearchResultCard extends StatelessWidget {
   }
 
   Widget _searchResultActions(BuildContext context, {required bool compact}) {
-    final rakuten = _SearchCardActionButton(
+    final h = compact ? 40.0 : 48.0;
+    final rakuten = AppOutlineButton(
       label: '楽天で見る',
-      icon: Icons.open_in_new_rounded,
+      icon: Icon(Icons.open_in_new, size: compact ? 16.0 : 18.0),
+      height: h,
+      expand: true,
       onPressed: () =>
           AppActionService.openUrl(context, url: item.browserLaunchUrl),
-      compact: compact,
-      subtle: compact,
     );
-    final register = _buildRegisterAction(context, compact: compact);
+    final register = _buildRegisterAction(context, compact: compact, height: h);
     if (compact) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -297,18 +299,23 @@ class RakutenSearchResultCard extends StatelessWidget {
     );
   }
 
-  Widget _buildRegisterAction(BuildContext context, {bool compact = false}) {
+  Widget _buildRegisterAction(
+    BuildContext context, {
+    bool compact = false,
+    required double height,
+  }) {
     final isCandidate = localStatus == RakutenManagedProductStatus.candidate;
     final isDone = localStatus == RakutenManagedProductStatus.done;
 
     if (isDone) {
       return Tooltip(
         message: 'ROOMコレでコレ済の商品です。再度コレ候補へは登録できません。',
-        child: _SearchCardActionButton(
+        child: AppOutlineButton(
           label: 'コレ済',
-          icon: Icons.check_circle_outline_rounded,
+          icon: Icon(Icons.check_circle_outline, size: compact ? 16.0 : 18.0),
+          height: height,
+          expand: true,
           onPressed: null,
-          compact: compact,
         ),
       );
     }
@@ -316,24 +323,25 @@ class RakutenSearchResultCard extends StatelessWidget {
     if (isCandidate) {
       return Tooltip(
         message: 'コレ候補に登録済みです。重複登録はできません。ROOMコレの候補一覧から確認できます。',
-        child: _SearchCardActionButton(
-          label: '候補に登録済',
-          icon: Icons.bookmark_added_outlined,
+        child: AppOutlineButton(
+          label: '候補に登録済み',
+          icon: Icon(Icons.bookmark_added_outlined, size: compact ? 16.0 : 18.0),
+          height: height,
+          expand: true,
           onPressed: null,
-          compact: compact,
         ),
       );
     }
 
     return Tooltip(
       message: 'ROOMコレの候補に追加します。あとから候補一覧で比較・整理できます。',
-      child: _SearchCardActionButton(
+      child: AppPrimaryButton(
         label: '候補に追加',
-        icon: Icons.add_rounded,
-        primary: true,
-        onPressed: isRegistering ? null : onRegisterCandidate,
+        icon: Icon(Icons.add, size: compact ? 16.0 : 18.0),
+        height: height,
+        expand: true,
         isLoading: isRegistering,
-        compact: compact,
+        onPressed: isRegistering ? null : onRegisterCandidate,
       ),
     );
   }
@@ -430,117 +438,6 @@ class _SourceContextChip extends StatelessWidget {
   }
 }
 
-class _SearchCardActionButton extends StatelessWidget {
-  const _SearchCardActionButton({
-    required this.label,
-    required this.icon,
-    required this.onPressed,
-    this.primary = false,
-    this.isLoading = false,
-    this.compact = false,
-    this.subtle = false,
-  });
-
-  static const double _height = 48;
-  static const double _heightCompact = 40;
-
-  final String label;
-  final IconData icon;
-  final VoidCallback? onPressed;
-  final bool primary;
-  final bool isLoading;
-  final bool compact;
-  final bool subtle;
-
-  @override
-  Widget build(BuildContext context) {
-    final enabled = onPressed != null && !isLoading;
-    final foreground = primary
-        ? AppColors.textOnAccent
-        : subtle
-        ? AppColors.textTertiary
-        : AppColors.textSecondary;
-    final background = primary ? AppColors.accentPrimary : Colors.transparent;
-    final border = primary
-        ? AppColors.accentPrimary
-        : subtle
-        ? AppColors.divider.withValues(alpha: 0.45)
-        : AppColors.divider.withValues(alpha: 0.86);
-    final h = compact ? _heightCompact : _height;
-
-    return SizedBox(
-      width: double.infinity,
-      height: h,
-      child: OutlinedButton(
-        onPressed: enabled ? onPressed : null,
-        style: OutlinedButton.styleFrom(
-          foregroundColor: foreground,
-          backgroundColor: background,
-          disabledForegroundColor: primary
-              ? AppColors.textOnAccent.withValues(alpha: 0.72)
-              : AppColors.textTertiary,
-          disabledBackgroundColor: primary
-              ? AppColors.accentPrimary.withValues(alpha: 0.34)
-              : Colors.transparent,
-          side: BorderSide(color: enabled ? border : AppColors.divider),
-          elevation: primary && enabled ? 1.2 : 0,
-          minimumSize: Size(0, h),
-          fixedSize: Size.fromHeight(h),
-          padding: EdgeInsets.symmetric(
-            horizontal: compact ? 6 : 8,
-            vertical: compact ? 6 : 8,
-          ),
-          tapTargetSize: compact
-              ? MaterialTapTargetSize.shrinkWrap
-              : MaterialTapTargetSize.padded,
-          visualDensity: compact
-              ? VisualDensity.compact
-              : VisualDensity.standard,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              primary ? (compact ? 12 : 14) : 999,
-            ),
-          ),
-        ),
-        child: Center(
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (isLoading) ...[
-                  SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: AppColors.textOnAccent.withValues(alpha: 0.9),
-                    ),
-                  ),
-                ] else ...[
-                  Icon(icon, size: compact ? (subtle ? 14 : 16) : 17),
-                ],
-                const SizedBox(width: 5),
-                Text(
-                  label,
-                  maxLines: 1,
-                  softWrap: false,
-                  style: AppTextStyles.label.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: foreground,
-                    height: 1.1,
-                    letterSpacing: -0.25,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 /// ROOM コレのメトリクスバッジと同系の、カード内ミニ状態表示。
 class _SearchCardStatusLozenge extends StatelessWidget {
   const _SearchCardStatusLozenge({required this.status});
@@ -559,7 +456,7 @@ class _SearchCardStatusLozenge extends StatelessWidget {
     final fg = isDone
         ? HomeScreenColors.metricRoleDoneIcon
         : HomeScreenColors.metricRoleCandidateIcon;
-    final label = isDone ? 'コレ済' : '候補に登録済';
+    final label = isDone ? 'コレ済' : '候補に登録済み';
     final icon = isDone
         ? Icons.verified_outlined
         : Icons.bookmark_added_outlined;
