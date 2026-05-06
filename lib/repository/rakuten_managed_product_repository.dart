@@ -202,6 +202,42 @@ class RakutenManagedProductRepository {
     await _saveAll(out);
   }
 
+  /// ROOM取り込み済みコレの商品を、楽天検索APIの1件結果でマージ更新する（バッチ補完用）。
+  Future<void> mergeRoomImportMetadataFromSearchItem({
+    required String productId,
+    required RakutenSearchItem api,
+  }) async {
+    if (kDemoModeEnabled) {
+      return;
+    }
+    await updateManagedProduct(productId, (e) {
+      final resolvedLabel = _resolvedGenreLabelForSearchItem(api);
+      final now = DateTime.now();
+      final apiShop = api.shopName.trim();
+      final mergedShopName =
+          apiShop.isNotEmpty && apiShop != 'ショップ名不明' ? apiShop : e.shopName;
+      return e.copyWith(
+        itemName: api.itemName.trim().isNotEmpty ? api.itemName : e.itemName,
+        itemPrice: api.itemPrice > 0 ? api.itemPrice : e.itemPrice,
+        itemUrl: api.itemUrl.trim().isNotEmpty ? api.itemUrl : e.itemUrl,
+        affiliateUrl: api.affiliateUrl.trim().isNotEmpty
+            ? api.affiliateUrl
+            : e.affiliateUrl,
+        imageUrl: api.imageUrl.trim().isNotEmpty ? api.imageUrl : e.imageUrl,
+        shopName: mergedShopName,
+        shopUrl: api.shopUrl.trim().isNotEmpty ? api.shopUrl : e.shopUrl,
+        shopCode: api.shopCode.trim().isNotEmpty ? api.shopCode : e.shopCode,
+        genreId: api.genreId.trim().isNotEmpty ? api.genreId : e.genreId,
+        genreName: api.genreName.trim().isNotEmpty ? api.genreName : e.genreName,
+        resolvedGenreName: resolvedLabel.isNotEmpty
+            ? resolvedLabel
+            : e.resolvedGenreName,
+        updatedAt: now,
+        roomImportMetadataEnriching: false,
+      );
+    });
+  }
+
   /// URL 抽出開始（コレ候補登録直後）。
   Future<void> markExtractionExtracting(String productId) async {
     await _mapProduct(productId, (e) {
@@ -482,9 +518,12 @@ class RakutenManagedProductRepository {
           affiliateUrl: api.affiliateUrl.trim().isNotEmpty
               ? api.affiliateUrl
               : next.affiliateUrl,
-          shopName: api.shopName.trim().isNotEmpty
-              ? api.shopName
-              : next.shopName,
+          shopName: () {
+            final s = api.shopName.trim();
+            return (s.isNotEmpty && s != 'ショップ名不明')
+                ? api.shopName
+                : next.shopName;
+          }(),
           shopUrl: api.shopUrl.trim().isNotEmpty ? api.shopUrl : next.shopUrl,
           genreId: api.genreId.trim().isNotEmpty ? api.genreId : next.genreId,
           genreName: api.genreName.trim().isNotEmpty
@@ -496,6 +535,7 @@ class RakutenManagedProductRepository {
           imageUrl: api.imageUrl.trim().isNotEmpty
               ? api.imageUrl
               : next.imageUrl,
+          roomImportMetadataEnriching: false,
         );
       }
 
@@ -545,6 +585,10 @@ class RakutenManagedProductRepository {
             shopCode: parsedItem.shopCode.isNotEmpty
                 ? parsedItem.shopCode
                 : apiNew.shopCode,
+            shopName: () {
+              final s = apiNew.shopName.trim();
+              return (s.isNotEmpty && s != 'ショップ名不明') ? apiNew.shopName : '';
+            }(),
             doneAt: now,
             isRoomSynced: true,
             roomSyncedAt: now,

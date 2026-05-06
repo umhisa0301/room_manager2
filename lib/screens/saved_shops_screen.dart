@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/rakuten_search_item.dart';
-import '../models/shop_discovery_summary.dart';
 import '../navigation/rakuten_search_navigator.dart';
+import '../services/app_action_service.dart';
 import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
@@ -12,7 +11,6 @@ import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/search_group_screen_shell.dart';
-import 'shop_discovery_detail_screen.dart';
 
 class SavedShopsScreen extends StatelessWidget {
   const SavedShopsScreen({super.key});
@@ -38,7 +36,8 @@ class SavedShopsScreen extends StatelessWidget {
       ),
       body: SearchGroupScreenShell(
         backgroundColor: HomeScreenColors.canvas,
-        subtitle: '探すグループ · 楽天検索やショップ発掘で保存したショップを一覧し、再訪やコレ候補登録につなげます。',
+        subtitle:
+            '保存した楽天ショップを管理します。「このショップで探す」から店内キーワード検索へ進めます。',
         child: Consumer<SavedShopProvider>(
           builder: (context, saved, _) {
             final shops = saved.shops;
@@ -46,7 +45,8 @@ class SavedShopsScreen extends StatelessWidget {
               return AppScreenEmptyCenter(
                 icon: Icons.bookmarks_outlined,
                 title: '保存ショップはまだありません',
-                body: '楽天検索の「ショップ発掘」で候補を探し、気に入ったショップを保存すると、ここからすぐ開けます。',
+                body:
+                    'ショップ発掘などでショップを保存すると、ここから検索やページ閲覧に再利用できます。',
                 actions: [
                   AppPrimaryButton(
                     label: 'ショップ発掘を開く',
@@ -90,30 +90,33 @@ class SavedShopsScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final shop = shops[index];
                       return _SavedShopCard(
+                        shopId: shop.shopId,
                         shopName: shop.shopName,
+                        shopUrl: shop.shopUrl,
                         savedAt: shop.savedAt,
                         lastViewedAt: shop.lastViewedAt,
-                        onOpen: () async {
+                        onSearchInShop: () async {
                           await saved.markViewed(shop.shopId);
                           if (!context.mounted) return;
-                          final summary = ShopDiscoverySummary(
-                            shopKey: shop.shopId,
-                            shopName: shop.shopName,
-                            shopUrl: shop.shopUrl,
-                            hitItemCount: 0,
-                            maxReviewCount: 0,
-                            avgReviewAverage: 0,
-                            discoveryScore: 0,
-                            representativeItems: const [],
+                          await openRakutenSearchScreen(
+                            context,
+                            savedShopKeywordEntry: true,
+                            initialSavedShopCode: shop.shopId,
                           );
-                          await Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => ShopDiscoveryDetailScreen(
-                                summary: summary,
-                                items: const <RakutenSearchItem>[],
+                        },
+                        onOpenShopUrl: () async {
+                          await saved.markViewed(shop.shopId);
+                          if (!context.mounted) return;
+                          final url = shop.shopUrl.trim();
+                          if (url.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('ショップURLが登録されていません'),
                               ),
-                            ),
-                          );
+                            );
+                            return;
+                          }
+                          await AppActionService.openUrl(context, url: url);
                         },
                         onRemove: () async {
                           await saved.removeShop(shop.shopId);
@@ -165,7 +168,7 @@ class _SavedShopsSummaryCard extends StatelessWidget {
           children: [
             Text(
               '保存 $totalCount件 / 閲覧済み $viewedCount件\n'
-              '保存ショップから再訪して、候補登録を続けられます。',
+              '保存ショップの解除・店内検索の起点として使います。',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.4,
@@ -190,18 +193,24 @@ class _SavedShopsSummaryCard extends StatelessWidget {
 
 class _SavedShopCard extends StatelessWidget {
   const _SavedShopCard({
+    required this.shopId,
     required this.shopName,
+    required this.shopUrl,
     required this.savedAt,
     required this.lastViewedAt,
-    required this.onOpen,
+    required this.onSearchInShop,
+    required this.onOpenShopUrl,
     required this.onRemove,
   });
 
+  final String shopId;
   final String shopName;
+  final String shopUrl;
   final DateTime savedAt;
   final DateTime? lastViewedAt;
-  final VoidCallback onOpen;
-  final VoidCallback onRemove;
+  final Future<void> Function() onSearchInShop;
+  final Future<void> Function() onOpenShopUrl;
+  final Future<void> Function() onRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -221,6 +230,15 @@ class _SavedShopCard extends StatelessWidget {
           ),
           SizedBox(height: AppDimensions.spacingXs + 2),
           Text(
+            'ショップID: $shopId',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textTertiary),
+          ),
+          SizedBox(height: AppDimensions.spacingXs / 2),
+          Text(
             '保存日: ${_format(savedAt)}',
             style: Theme.of(
               context,
@@ -234,13 +252,22 @@ class _SavedShopCard extends StatelessWidget {
             ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
           ),
           SizedBox(height: AppDimensions.spacingSm),
+          AppPrimaryButton(
+            label: 'このショップで探す',
+            onPressed: onSearchInShop,
+            icon: const Icon(Icons.search_rounded),
+            height: 46,
+          ),
+          SizedBox(height: AppDimensions.spacingSm),
           Row(
             children: [
               Expanded(
-                child: AppPrimaryButton(
-                  label: 'このショップを見る',
-                  onPressed: onOpen,
-                  icon: const Icon(Icons.storefront_outlined),
+                child: AppSecondaryButton(
+                  label: 'ショップページを開く',
+                  onPressed:
+                      shopUrl.trim().isEmpty ? null : () => onOpenShopUrl(),
+                  icon: const Icon(Icons.open_in_new_rounded),
+                  expand: true,
                   height: 44,
                 ),
               ),

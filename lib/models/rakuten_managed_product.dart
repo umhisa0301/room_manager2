@@ -62,6 +62,7 @@ class RakutenManagedProduct {
     this.roomLikeCount,
     this.roomCommentCount,
     this.roomReactionUpdatedAt,
+    this.roomImportMetadataEnriching = false,
   });
 
   /// 楽天の itemCode（アプリ内の [RakutenSearchItem.productId] と同一）。
@@ -135,6 +136,9 @@ class RakutenManagedProduct {
   /// [roomLikeCount] / [roomCommentCount] を最後に更新した日時。
   final DateTime? roomReactionUpdatedAt;
 
+  /// ROOM取り込みメタデータを楽天APIで補完している途中（一覧では「確認中」表示）。
+  final bool roomImportMetadataEnriching;
+
   /// アプリの「投稿として」カウントするコレ済か。
   bool get countsTowardPostedCollectMetrics {
     if (!RakutenManagedProduct.isMemberForStatusTab(
@@ -204,6 +208,7 @@ class RakutenManagedProduct {
     bool clearRoomCommentCount = false,
     DateTime? roomReactionUpdatedAt,
     bool clearRoomReactionUpdatedAt = false,
+    bool? roomImportMetadataEnriching,
   }) {
     return RakutenManagedProduct(
       productId: productId ?? this.productId,
@@ -256,6 +261,8 @@ class RakutenManagedProduct {
       roomReactionUpdatedAt: clearRoomReactionUpdatedAt
           ? null
           : (roomReactionUpdatedAt ?? this.roomReactionUpdatedAt),
+      roomImportMetadataEnriching:
+          roomImportMetadataEnriching ?? this.roomImportMetadataEnriching,
     );
   }
 
@@ -300,6 +307,7 @@ class RakutenManagedProduct {
       roomLikeCount: null,
       roomCommentCount: null,
       roomReactionUpdatedAt: null,
+      roomImportMetadataEnriching: false,
     );
   }
 
@@ -338,6 +346,7 @@ class RakutenManagedProduct {
       'roomLikeCount': roomLikeCount,
       'roomCommentCount': roomCommentCount,
       'roomReactionUpdatedAt': roomReactionUpdatedAt?.toIso8601String(),
+      'roomImportMetadataEnriching': roomImportMetadataEnriching,
     };
   }
 
@@ -500,6 +509,9 @@ class RakutenManagedProduct {
     final roomLikeCount = readOptInt('roomLikeCount');
     final roomCommentCount = readOptInt('roomCommentCount');
 
+    final roomImportMetadataEnriching =
+        json['roomImportMetadataEnriching'] == true;
+
     final statusRaw = (json['status'] ?? '').toString().trim();
     var status = RakutenManagedProductStatus.values.firstWhere(
       (e) => e.name == statusRaw,
@@ -550,6 +562,7 @@ class RakutenManagedProduct {
       roomLikeCount: roomLikeCount,
       roomCommentCount: roomCommentCount,
       roomReactionUpdatedAt: roomReactionUpdatedAt,
+      roomImportMetadataEnriching: roomImportMetadataEnriching,
     );
   }
 }

@@ -8,12 +8,14 @@ Future<void> openRakutenSearchScreen(
   BuildContext context, {
   RakutenSearchInitialMode initialMode = RakutenSearchInitialMode.product,
   bool savedShopKeywordEntry = false,
+  String? initialSavedShopCode,
 }) {
   return Navigator.of(context).push<void>(
     MaterialPageRoute<void>(
       builder: (_) => RakutenSearchScreen(
         initialMode: initialMode,
         savedShopKeywordEntry: savedShopKeywordEntry,
+        initialSavedShopCode: initialSavedShopCode,
       ),
     ),
   );

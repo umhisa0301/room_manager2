@@ -84,6 +84,20 @@ class RakutenManagedProductCard extends StatelessWidget {
     return id.isEmpty ? 'ジャンル未設定' : 'ジャンル $id';
   }
 
+  String _shopDisplayLine() {
+    if (product.roomImportMetadataEnriching) return 'ショップ確認中';
+    final sn = product.shopName.trim();
+    if (sn.isNotEmpty && sn != 'ショップ名不明') return sn;
+    final sc = product.shopCode.trim();
+    if (sc.isNotEmpty) return 'ショップ：$sc';
+    return 'ショップ未設定';
+  }
+
+  String _genreDisplayLine() {
+    if (product.roomImportMetadataEnriching) return 'ジャンル確認中';
+    return _genreLabel();
+  }
+
   static String _candidateRegisteredMetaLine(DateTime addedAt) {
     final stamp = formatRoomColleCardTimestamp(addedAt, DateTime.now());
     if (stamp == null || stamp.isEmpty) {
@@ -218,7 +232,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                       ],
                       const SizedBox(height: 6),
                       Text(
-                        '${product.shopName.trim().isEmpty ? 'ショップ未設定' : product.shopName.trim()} / ${_genreLabel()}',
+                        '${_shopDisplayLine()} / ${_genreDisplayLine()}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: timestampStyle,
