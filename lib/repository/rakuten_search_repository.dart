@@ -223,12 +223,19 @@ class RakutenSearchRepository {
         }
         return null;
       }
+      Map<String, dynamic>? matchedRaw;
       final parsed = <RakutenSearchItem>[];
       for (final entry in rawItems) {
         try {
           final map = _unwrapItem(entry);
+          if (map == null) continue;
           final item = _mapToModel(map);
-          if (item != null) parsed.add(item);
+          if (item == null) continue;
+          parsed.add(item);
+          if (matchedRaw == null &&
+              _roomImportEnrichmentItemMatches(item, numericItemCode, sc)) {
+            matchedRaw = map;
+          }
         } catch (e, st) {
           if (kDebugMode) {
             debugPrint('[ROOM_IMPORT_ENRICH] parse skip: $e');
@@ -237,6 +244,40 @@ class RakutenSearchRepository {
         }
       }
       final best = _pickRoomImportEnrichmentItem(parsed, numericItemCode, sc);
+      if (kDebugMode) {
+        if (matchedRaw != null) {
+          final rawGid = _stringField(matchedRaw['genreId']).trim();
+          final g1 = _stringField(matchedRaw['genreName']).trim();
+          final g2 = _stringField(matchedRaw['itemGenreName']).trim();
+          final rawGn = g1.isNotEmpty ? g1 : g2;
+          debugPrint(
+            '[ROOM_IMPORT_ENRICH] response genreId: '
+            '${rawGid.isEmpty ? '(none)' : rawGid}',
+          );
+          debugPrint(
+            '[ROOM_IMPORT_ENRICH] response genreName: '
+            '${rawGn.isEmpty ? 'null' : rawGn}',
+          );
+          if (rawGid.isEmpty) {
+            debugPrint(
+              '[ROOM_IMPORT_ENRICH] API response item has no genreId',
+            );
+          }
+        } else {
+          debugPrint('[ROOM_IMPORT_ENRICH] response genreId: (no matched Item)');
+        }
+        if (best != null) {
+          debugPrint(
+            '[ROOM_IMPORT_ENRICH] parsed genreId: '
+            '${best.genreId.trim().isEmpty ? '(empty)' : best.genreId}',
+          );
+        }
+      }
+      if (kDebugMode && best != null && best.genreId.trim().isEmpty) {
+        debugPrint(
+          '[ROOM_IMPORT_ENRICH] parsed RakutenSearchItem has empty genreId',
+        );
+      }
       if (kDebugMode && best != null) {
         debugPrint(
           '[ROOM_IMPORT_ENRICH] success title=${best.itemName} '

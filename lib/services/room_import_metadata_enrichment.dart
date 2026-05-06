@@ -77,9 +77,22 @@ class RoomImportMetadataEnrichmentService {
     if (e.shopCode.trim().isEmpty || e.productId.trim().isEmpty) {
       return false;
     }
-    final shopMissing = e.shopName.trim().isEmpty;
-    final genreMissing =
-        e.genreName.trim().isEmpty && e.genreId.trim().isEmpty;
-    return shopMissing || genreMissing;
+    final shopNeeds = _isShopNameNeedsEnrichment(e.shopName);
+    final genreNeeds = _isGenreNameNeedsEnrichment(e.genreName);
+    return shopNeeds || genreNeeds;
+  }
+
+  /// [shopName] が未設定・プレースホルダのとき API で上書き対象にする。
+  static bool _isShopNameNeedsEnrichment(String? raw) {
+    final t = (raw ?? '').trim();
+    return t.isEmpty ||
+        t == 'ショップ未設定' ||
+        t == 'ショップ名不明';
+  }
+
+  /// [genreName] が未設定・プレースホルダのとき API で名前解決の対象にする。
+  static bool _isGenreNameNeedsEnrichment(String? raw) {
+    final t = (raw ?? '').trim();
+    return t.isEmpty || t == 'ジャンル未設定';
   }
 }

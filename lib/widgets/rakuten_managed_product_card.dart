@@ -73,21 +73,14 @@ class RakutenManagedProductCard extends StatelessWidget {
     }
   }
 
-  String _genreLabel() {
-    final id = product.genreId.trim();
-    final prefetched = genrePrefetchLabels?[id];
-    final persisted = product.persistedGenreDisplayName?.trim();
-    if (prefetched != null && prefetched.trim().isNotEmpty) {
-      return prefetched.trim();
-    }
-    if (persisted != null && persisted.isNotEmpty) return persisted;
-    return id.isEmpty ? 'ジャンル未設定' : 'ジャンル $id';
-  }
-
   String _shopDisplayLine() {
     if (product.roomImportMetadataEnriching) return 'ショップ確認中';
     final sn = product.shopName.trim();
-    if (sn.isNotEmpty && sn != 'ショップ名不明') return sn;
+    if (sn.isNotEmpty &&
+        sn != 'ショップ名不明' &&
+        sn != 'ショップ未設定') {
+      return sn;
+    }
     final sc = product.shopCode.trim();
     if (sc.isNotEmpty) return 'ショップ：$sc';
     return 'ショップ未設定';
@@ -95,7 +88,17 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   String _genreDisplayLine() {
     if (product.roomImportMetadataEnriching) return 'ジャンル確認中';
-    return _genreLabel();
+    final gn = product.genreName.trim();
+    if (gn.isNotEmpty && gn != 'ジャンル未設定') return gn;
+    final rn = product.resolvedGenreName.trim();
+    if (rn.isNotEmpty && rn != 'ジャンル未設定') return rn;
+    final id = product.genreId.trim();
+    if (id.isNotEmpty) {
+      final prefetched = genrePrefetchLabels?[id]?.trim();
+      if (prefetched != null && prefetched.isNotEmpty) return prefetched;
+      return 'ジャンル確認中';
+    }
+    return 'ジャンル未設定';
   }
 
   static String _candidateRegisteredMetaLine(DateTime addedAt) {
@@ -143,6 +146,17 @@ class RakutenManagedProductCard extends StatelessWidget {
     return '評価 楽天で確認';
   }
 
+  static const Color _roomReactionPink = Color(0xFFE91E63);
+
+  bool _roomImportDoneHasPositiveReaction() {
+    if (product.coredActivitySource != RakutenCoredActivitySource.roomImport) {
+      return false;
+    }
+    final lc = product.roomLikeCount ?? 0;
+    final cc = product.roomCommentCount ?? 0;
+    return lc > 0 || cc > 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     final isCandidate = variant == RakutenManagedProductCardVariant.candidate;
@@ -177,7 +191,12 @@ class RakutenManagedProductCard extends StatelessWidget {
                           runSpacing: 4,
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            if (product.roomUrl.trim().isNotEmpty)
+                            if (_roomImportDoneHasPositiveReaction())
+                              _SmallBadge(
+                                label: '反応あり',
+                                color: _roomReactionPink,
+                              )
+                            else if (product.roomUrl.trim().isNotEmpty)
                               const _SmallBadge(
                                 label: 'ROOM投稿済み',
                                 color: Color(0xFF1B5E20),
@@ -192,7 +211,11 @@ class RakutenManagedProductCard extends StatelessWidget {
                                 '♡${product.roomLikeCount}',
                                 style: reactionStyle.copyWith(
                                   color: product.roomLikeCount! > 0
-                                      ? AppColors.accentPrimary
+                                      ? (product.coredActivitySource ==
+                                              RakutenCoredActivitySource
+                                                  .roomImport
+                                          ? _roomReactionPink
+                                          : AppColors.accentPrimary)
                                       : AppColors.textTertiary,
                                 ),
                               ),
@@ -201,7 +224,11 @@ class RakutenManagedProductCard extends StatelessWidget {
                                 '💬${product.roomCommentCount}',
                                 style: reactionStyle.copyWith(
                                   color: product.roomCommentCount! > 0
-                                      ? AppColors.accentPrimary
+                                      ? (product.coredActivitySource ==
+                                              RakutenCoredActivitySource
+                                                  .roomImport
+                                          ? _roomReactionPink
+                                          : AppColors.accentPrimary)
                                       : AppColors.textTertiary,
                                 ),
                               ),

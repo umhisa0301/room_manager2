@@ -10,6 +10,9 @@ import '../models/user_profile.dart';
 import '../navigation/app_shell_controller.dart';
 import '../services/app_action_service.dart';
 import '../services/room_import_limit_policy.dart';
+import '../repository/rakuten_managed_product_repository.dart';
+import '../repository/rakuten_search_repository.dart';
+import '../services/room_import_metadata_enrichment.dart';
 import '../widgets/room_post_import_flow.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../services/room_collect_post_limit.dart';
@@ -954,10 +957,17 @@ class MyPageRoomLinkCard extends StatelessWidget {
   }
 }
 
-class MyPageRoomSyncSection extends StatelessWidget {
+class MyPageRoomSyncSection extends StatefulWidget {
   const MyPageRoomSyncSection({super.key, required this.onEditRoomUrl});
 
   final VoidCallback onEditRoomUrl;
+
+  @override
+  State<MyPageRoomSyncSection> createState() => _MyPageRoomSyncSectionState();
+}
+
+class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
+  bool _metadataEnrichBusy = false;
 
   Future<void> _handleImport(BuildContext context) async {
     final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
@@ -973,6 +983,48 @@ class MyPageRoomSyncSection extends StatelessWidget {
     );
   }
 
+  Future<void> _handleEnrichRoomMetadata(BuildContext context) async {
+    final messenger = ScaffoldMessenger.of(context);
+    if (_metadataEnrichBusy) return;
+    if (kDemoModeEnabled) {
+      messenger.showSnackBar(
+        const SnackBar(content: Text('デモモードでは商品情報の補完は実行できません')),
+      );
+      return;
+    }
+    setState(() => _metadataEnrichBusy = true);
+    try {
+      final searchRepo = context.read<RakutenSearchRepository>();
+      final productRepo = context.read<RakutenManagedProductRepository>();
+      final managedProv = context.read<RakutenManagedProductProvider>();
+      final svc = RoomImportMetadataEnrichmentService(
+        searchRepository: searchRepo,
+        productRepository: productRepo,
+      );
+      messenger.showSnackBar(
+        const SnackBar(content: Text('商品情報を補完しています…')),
+      );
+      final n = await svc.enrichRoomImportedProducts(limit: 20);
+      if (!mounted) return;
+      await managedProv.refreshManagedProductList();
+      if (!mounted) return;
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            'ショップ名・ジャンル名を更新しました（成功 $n 件／上限20件まで）',
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      messenger.showSnackBar(
+        SnackBar(content: Text('商品情報の補完に失敗しました: $e')),
+      );
+    } finally {
+      if (mounted) setState(() => _metadataEnrichBusy = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final profile = context.watch<UserProfileProvider>().profile;
@@ -984,6 +1036,7 @@ class MyPageRoomSyncSection extends StatelessWidget {
         final busy = ctl.isRunning;
         final completed = ctl.checkedCount;
         final total = ctl.targetCount;
+        final actionLocked = busy || _metadataEnrichBusy;
 
         return AppCard(
           padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
@@ -1007,7 +1060,7 @@ class MyPageRoomSyncSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 TextButton(
-                  onPressed: onEditRoomUrl,
+                  onPressed: widget.onEditRoomUrl,
                   child: const Text('ROOM URLを登録'),
                 ),
               ] else ...[
@@ -1035,9 +1088,25 @@ class MyPageRoomSyncSection extends StatelessWidget {
                   const SizedBox(height: 12),
                 ],
                 FilledButton(
-                  onPressed: busy ? null : () => _handleImport(context),
+                  onPressed: actionLocked ? null : () => _handleImport(context),
                   child: Text(
                     '投稿済みを${RoomImportLimitPolicy.freeBatchLimit}件取り込む',
+                  ),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  onPressed: actionLocked
+                      ? null
+                      : () => _handleEnrichRoomMetadata(context),
+                  icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
+                  label: const Text('商品情報を補完する'),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  '取り込み済み商品のショップ名・ジャンル名を更新します（最大20件）。',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.35,
                   ),
                 ),
                 const SizedBox(height: 6),

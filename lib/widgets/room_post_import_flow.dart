@@ -410,7 +410,15 @@ class _SummaryMiniCard extends StatelessWidget {
 class _ImportedProductPreviewTile extends StatelessWidget {
   const _ImportedProductPreviewTile({required this.product});
 
+  static const Color _roomReactionPink = Color(0xFFE91E63);
+
   final RakutenManagedProduct product;
+
+  bool _hasPositiveRoomReaction() {
+    final lc = product.roomLikeCount ?? 0;
+    final cc = product.roomCommentCount ?? 0;
+    return lc > 0 || cc > 0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -469,7 +477,34 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                         runSpacing: 6,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          if (product.roomUrl.trim().isNotEmpty)
+                          if (_hasPositiveRoomReaction())
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: _roomReactionPink.withValues(
+                                  alpha: 0.1,
+                                ),
+                                borderRadius: BorderRadius.circular(999),
+                                border: Border.all(
+                                  color: _roomReactionPink.withValues(
+                                    alpha: 0.35,
+                                  ),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 3,
+                                ),
+                                child: Text(
+                                  '反応あり',
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    color: _roomReactionPink,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
+                            )
+                          else if (product.roomUrl.trim().isNotEmpty)
                             DecoratedBox(
                               decoration: BoxDecoration(
                                 color: const Color(
@@ -502,7 +537,7 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                               style: theme.textTheme.labelMedium?.copyWith(
                                 fontWeight: FontWeight.w800,
                                 color: product.roomLikeCount! > 0
-                                    ? AppColors.accentPrimary
+                                    ? _roomReactionPink
                                     : AppColors.textTertiary,
                               ),
                             ),
@@ -512,7 +547,7 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                               style: theme.textTheme.labelMedium?.copyWith(
                                 fontWeight: FontWeight.w800,
                                 color: product.roomCommentCount! > 0
-                                    ? AppColors.accentPrimary
+                                    ? _roomReactionPink
                                     : AppColors.textTertiary,
                               ),
                             ),

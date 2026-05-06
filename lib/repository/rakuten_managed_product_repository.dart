@@ -216,6 +216,30 @@ class RakutenManagedProductRepository {
       final apiShop = api.shopName.trim();
       final mergedShopName =
           apiShop.isNotEmpty && apiShop != 'ショップ名不明' ? apiShop : e.shopName;
+      final mergedGenreName = _mergedGenreNameForRoomImportApi(
+        api: api,
+        resolvedLabel: resolvedLabel,
+        existingGenreName: e.genreName,
+      );
+      final mergedGenreId =
+          api.genreId.trim().isNotEmpty ? api.genreId : e.genreId;
+      if (kDebugMode) {
+        final apiGn = api.genreName.trim();
+        debugPrint(
+          '[ROOM_IMPORT_ENRICH] response genreId: '
+          '${api.genreId.trim().isEmpty ? '(none)' : api.genreId}',
+        );
+        debugPrint(
+          '[ROOM_IMPORT_ENRICH] response genreName: '
+          '${apiGn.isEmpty ? 'null' : api.genreName}',
+        );
+        debugPrint(
+          '[ROOM_IMPORT_ENRICH] resolvedGenreName: '
+          '${resolvedLabel.trim().isEmpty ? '(empty)' : resolvedLabel}',
+        );
+        debugPrint('[ROOM_IMPORT_ENRICH] saved genreId: $mergedGenreId');
+        debugPrint('[ROOM_IMPORT_ENRICH] saved genreName: $mergedGenreName');
+      }
       return e.copyWith(
         itemName: api.itemName.trim().isNotEmpty ? api.itemName : e.itemName,
         itemPrice: api.itemPrice > 0 ? api.itemPrice : e.itemPrice,
@@ -227,8 +251,8 @@ class RakutenManagedProductRepository {
         shopName: mergedShopName,
         shopUrl: api.shopUrl.trim().isNotEmpty ? api.shopUrl : e.shopUrl,
         shopCode: api.shopCode.trim().isNotEmpty ? api.shopCode : e.shopCode,
-        genreId: api.genreId.trim().isNotEmpty ? api.genreId : e.genreId,
-        genreName: api.genreName.trim().isNotEmpty ? api.genreName : e.genreName,
+        genreId: mergedGenreId,
+        genreName: mergedGenreName,
         resolvedGenreName: resolvedLabel.isNotEmpty
             ? resolvedLabel
             : e.resolvedGenreName,
@@ -330,6 +354,19 @@ class RakutenManagedProductRepository {
       throw Exception('商品が見つかりません');
     }
     await _saveAll(next);
+  }
+
+  /// ROOM取り込みAPI補完で保存する `genreName`（API名優先、無ければマスタ解決名）。
+  String _mergedGenreNameForRoomImportApi({
+    required RakutenSearchItem api,
+    required String resolvedLabel,
+    required String existingGenreName,
+  }) {
+    final raw = api.genreName.trim();
+    if (raw.isNotEmpty) return api.genreName;
+    final r = resolvedLabel.trim();
+    if (r.isNotEmpty) return r;
+    return existingGenreName;
   }
 
   /// 検索一覧と同じルールの表示名（未分類・空 genreId は保存しない）。
@@ -510,6 +547,11 @@ class RakutenManagedProductRepository {
       final api = apiEnrichedItem;
       if (api != null) {
         final resolvedLabel = _resolvedGenreLabelForSearchItem(api);
+        final mergedGn = _mergedGenreNameForRoomImportApi(
+          api: api,
+          resolvedLabel: resolvedLabel,
+          existingGenreName: next.genreName,
+        );
         next = next.copyWith(
           itemName: api.itemName.trim().isNotEmpty
               ? api.itemName
@@ -526,9 +568,7 @@ class RakutenManagedProductRepository {
           }(),
           shopUrl: api.shopUrl.trim().isNotEmpty ? api.shopUrl : next.shopUrl,
           genreId: api.genreId.trim().isNotEmpty ? api.genreId : next.genreId,
-          genreName: api.genreName.trim().isNotEmpty
-              ? api.genreName
-              : next.genreName,
+          genreName: mergedGn,
           resolvedGenreName: resolvedLabel.isNotEmpty
               ? resolvedLabel
               : next.resolvedGenreName,
@@ -571,6 +611,11 @@ class RakutenManagedProductRepository {
         roomSyncLog('保存開始 保存種別: 新規コレ済登録（APIあり）');
       }
       final resolvedLabel = _resolvedGenreLabelForSearchItem(apiNew);
+      final mergedNewGenreName = _mergedGenreNameForRoomImportApi(
+        api: apiNew,
+        resolvedLabel: resolvedLabel,
+        existingGenreName: '',
+      );
       var row =
           RakutenManagedProduct.fromSearchItem(
             apiNew,
@@ -589,6 +634,7 @@ class RakutenManagedProductRepository {
               final s = apiNew.shopName.trim();
               return (s.isNotEmpty && s != 'ショップ名不明') ? apiNew.shopName : '';
             }(),
+            genreName: mergedNewGenreName,
             doneAt: now,
             isRoomSynced: true,
             roomSyncedAt: now,
