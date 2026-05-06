@@ -467,9 +467,11 @@ class RakutenManagedProductCard extends StatelessWidget {
           children: [
             SizedBox(
               width: narrow ? halfWidth : thirdWidth,
-              child: _DecisionActionButton(
+              child: AppOutlineButton(
                 label: '楽天で見る',
-                tone: _DecisionActionTone.external,
+                icon: const Icon(Icons.open_in_new, size: 16),
+                height: 40,
+                expand: true,
                 onPressed: () async {
                   final err = await provider.openRakutenItemPage(
                     context,
@@ -488,9 +490,10 @@ class RakutenManagedProductCard extends StatelessWidget {
               width: narrow ? halfWidth : thirdWidth,
               child: Tooltip(
                 message: postTooltip,
-                child: _DecisionActionButton(
+                child: AppPrimaryButton(
                   label: '投稿する',
-                  tone: _DecisionActionTone.primary,
+                  height: 40,
+                  expand: true,
                   onPressed: postActionsDisabled
                       ? null
                       : () async {
@@ -508,9 +511,10 @@ class RakutenManagedProductCard extends StatelessWidget {
             ),
             SizedBox(
               width: narrow ? constraints.maxWidth : thirdWidth,
-              child: _DecisionActionButton(
+              child: AppSecondaryButton(
                 label: '候補から外す',
-                tone: _DecisionActionTone.destructive,
+                height: 40,
+                expand: true,
                 onPressed: () => _confirmRemoveCandidate(context, provider),
               ),
             ),
@@ -578,27 +582,9 @@ class RakutenManagedProductCard extends StatelessWidget {
       }
     }
 
-    const roomViewAccent = Color(0xFFD81B60);
-
     return LayoutBuilder(
       builder: (context, constraints) {
         const gap = 6.0;
-        final rakuten = _DecisionActionButton(
-          label: '楽天で見る',
-          tone: _DecisionActionTone.external,
-          onPressed: () async {
-            final err = await provider.openRakutenItemPage(
-              context,
-              product.productId,
-            );
-            if (!context.mounted) return;
-            if (err != null) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(err)));
-            }
-          },
-        );
 
         final narrow = constraints.maxWidth < 300;
         final itemWidth = narrow
@@ -608,37 +594,13 @@ class RakutenManagedProductCard extends StatelessWidget {
         if (hasRoomPage) {
           final roomView = Tooltip(
             message: '楽天ROOMの商品ページを開きます',
-            child: SizedBox(
+            child: AppOutlineButton(
+              label: 'ROOMで見る',
+              icon: const Icon(Icons.open_in_new, size: 16),
               height: 40,
-              child: OutlinedButton(
-                onPressed: () =>
-                    AppActionService.openUrl(context, url: roomPage),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: roomViewAccent,
-                  backgroundColor: Colors.transparent,
-                  side: BorderSide(
-                    color: roomViewAccent.withValues(alpha: 0.72),
-                  ),
-                  elevation: 0,
-                  minimumSize: const Size(0, 40),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 8,
-                  ),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  visualDensity: VisualDensity.compact,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                  textStyle: AppTextStyles.label.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                child: const FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text('ROOMで見る'),
-                ),
-              ),
+              expand: true,
+              onPressed: () =>
+                  AppActionService.openUrl(context, url: roomPage),
             ),
           );
 
@@ -646,15 +608,36 @@ class RakutenManagedProductCard extends StatelessWidget {
             spacing: gap,
             runSpacing: gap,
             children: [
-              SizedBox(width: itemWidth, child: rakuten),
+              SizedBox(
+                width: itemWidth,
+                child: AppOutlineButton(
+                  label: '楽天で見る',
+                  icon: const Icon(Icons.open_in_new, size: 16),
+                  height: 40,
+                  expand: true,
+                  onPressed: () async {
+                    final err = await provider.openRakutenItemPage(
+                      context,
+                      product.productId,
+                    );
+                    if (!context.mounted) return;
+                    if (err != null) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(err)));
+                    }
+                  },
+                ),
+              ),
               SizedBox(width: itemWidth, child: roomView),
             ],
           );
         }
 
-        final roomPost = _DecisionActionButton(
+        final roomPost = AppPrimaryButton(
           label: 'ROOM投稿へ',
-          tone: _DecisionActionTone.primary,
+          height: 40,
+          expand: true,
           onPressed: () => openRoomPostFlow(),
         );
 
@@ -662,7 +645,27 @@ class RakutenManagedProductCard extends StatelessWidget {
           spacing: gap,
           runSpacing: gap,
           children: [
-            SizedBox(width: itemWidth, child: rakuten),
+            SizedBox(
+              width: itemWidth,
+              child: AppOutlineButton(
+                label: '楽天で見る',
+                icon: const Icon(Icons.open_in_new, size: 16),
+                height: 40,
+                expand: true,
+                onPressed: () async {
+                  final err = await provider.openRakutenItemPage(
+                    context,
+                    product.productId,
+                  );
+                  if (!context.mounted) return;
+                  if (err != null) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(err)));
+                  }
+                },
+              ),
+            ),
             SizedBox(width: itemWidth, child: roomPost),
           ],
         );
@@ -723,70 +726,6 @@ class _SmallBadge extends StatelessWidget {
             fontWeight: FontWeight.w800,
             height: 1.15,
           ),
-        ),
-      ),
-    );
-  }
-}
-
-enum _DecisionActionTone { external, primary, destructive }
-
-class _DecisionActionButton extends StatelessWidget {
-  const _DecisionActionButton({
-    required this.label,
-    required this.tone,
-    required this.onPressed,
-  });
-
-  final String label;
-  final _DecisionActionTone tone;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final isPrimary = tone == _DecisionActionTone.primary;
-    final isDestructive = tone == _DecisionActionTone.destructive;
-    final fg = isPrimary
-        ? AppColors.textOnAccent
-        : isDestructive
-        ? AppColors.textSecondary
-        : AppColors.accentPrimary;
-    final bg = isPrimary
-        ? AppColors.accentPrimary
-        : isDestructive
-        ? AppColors.surfaceVariant
-        : Colors.transparent;
-    final border = isPrimary
-        ? AppColors.accentPrimary
-        : isDestructive
-        ? AppColors.divider
-        : AppColors.accentPrimary.withValues(alpha: 0.72);
-
-    return SizedBox(
-      height: 40,
-      child: OutlinedButton(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          foregroundColor: fg,
-          backgroundColor: bg,
-          disabledForegroundColor: AppColors.textTertiary,
-          disabledBackgroundColor: isPrimary
-              ? AppColors.accentPrimary.withValues(alpha: 0.28)
-              : AppColors.surfaceVariant.withValues(alpha: 0.75),
-          side: BorderSide(color: border, width: isPrimary ? 0 : 1),
-          elevation: isPrimary ? 1.2 : 0,
-          minimumSize: const Size(0, 40),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          visualDensity: VisualDensity.compact,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(999),
-          ),
-          textStyle: AppTextStyles.label.copyWith(fontWeight: FontWeight.w800),
-        ),
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(label, maxLines: 1, softWrap: false),
         ),
       ),
     );

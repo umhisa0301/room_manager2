@@ -11,6 +11,7 @@ import '../models/room_collected_persist_kind.dart';
 import '../models/room_collected_persist_outcome.dart';
 import '../services/rakuten_item_url_parser.dart';
 import '../utils/rakuten_product_genre_display.dart';
+import '../utils/managed_product_diag_log.dart';
 import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_sync_log.dart';
 
@@ -138,15 +139,67 @@ class RakutenManagedProductRepository {
     return pid == seg;
   }
 
+  /// ROOM取り込みバッチの共有リスト保存直前に、同期開始後にディスクへ追加された行を取り込む。
+  /// 古いスナップショットの [_saveAll] が候補追加を上書き消去するのを防ぐ。
+  void _mergeConcurrentDiskAddsIntoWorkingList(
+    List<RakutenManagedProduct> working,
+  ) {
+    if (kDemoModeEnabled) {
+      return;
+    }
+    final disk = loadAll();
+    final ids = <String>{for (final e in working) e.productId};
+    for (final d in disk) {
+      final id = d.productId.trim();
+      if (id.isEmpty || ids.contains(id)) continue;
+      working.add(d);
+      ids.add(id);
+    }
+  }
+
+  Future<void> _saveAllMaybeMerged({
+    required List<RakutenManagedProduct> list,
+    required List<RakutenManagedProduct>? workingMutableList,
+  }) async {
+    if (workingMutableList != null) {
+      _mergeConcurrentDiskAddsIntoWorkingList(list);
+    }
+    await _saveAll(list);
+  }
+
+  void _debugLogRoomImportSave(String productId) {
+    if (!kDebugMode) return;
+    final c = ManagedProductDiagLog.pendingAndDoneCounts(loadAll());
+    ManagedProductDiagLog.logSave(
+      action: 'roomImport',
+      productId: productId,
+      itemCode: '',
+      beforePendingCount: -1,
+      afterPendingCount: c.$1,
+      beforeDoneCount: -1,
+      afterDoneCount: c.$2,
+    );
+  }
+
   /// 検索結果1件をコレ候補として保存。同一 [RakutenSearchItem.productId] が既にあれば何もしない（重複防止）。
   /// 新規追加した場合は true。
   Future<bool> registerCandidateFromSearchItem(RakutenSearchItem item) async {
     if (kDemoModeEnabled) {
       return false;
     }
+    final beforeCounts = ManagedProductDiagLog.pendingAndDoneCounts(loadAll());
     final list = List<RakutenManagedProduct>.from(loadAll());
     for (final e in list) {
       if (e.productId == item.productId) {
+        ManagedProductDiagLog.logSave(
+          action: 'addCandidate',
+          productId: item.productId,
+          itemCode: item.productId,
+          beforePendingCount: beforeCounts.$1,
+          afterPendingCount: beforeCounts.$1,
+          beforeDoneCount: beforeCounts.$2,
+          afterDoneCount: beforeCounts.$2,
+        );
         return false;
       }
     }
@@ -165,6 +218,16 @@ class RakutenManagedProductRepository {
     }
     list.add(candidate);
     await _saveAll(list);
+    final afterCounts = ManagedProductDiagLog.pendingAndDoneCounts(loadAll());
+    ManagedProductDiagLog.logSave(
+      action: 'addCandidate',
+      productId: item.productId,
+      itemCode: item.productId,
+      beforePendingCount: beforeCounts.$1,
+      afterPendingCount: afterCounts.$1,
+      beforeDoneCount: beforeCounts.$2,
+      afterDoneCount: afterCounts.$2,
+    );
     if (kDebugMode) {
       debugPrint(
         '[ROOMコレ診断] registerCandidateFromSearchItem 保存 productId=${item.productId} '
@@ -297,6 +360,10 @@ class RakutenManagedProductRepository {
 
   /// コレ候補をコレ済に移す（ROOM 抽出 URL 利用後）。
   Future<void> markCollectedDone(String productId) async {
+    final id = productId.trim();
+    final beforeCounts = kDemoModeEnabled
+        ? (0, 0)
+        : ManagedProductDiagLog.pendingAndDoneCounts(loadAll());
     final now = DateTime.now();
     await _mapProduct(productId, (e) {
       if (e.status != RakutenManagedProductStatus.candidate) {
@@ -309,6 +376,18 @@ class RakutenManagedProductRepository {
         coredActivitySource: RakutenCoredActivitySource.appPost,
       );
     });
+    if (!kDemoModeEnabled) {
+      final afterCounts = ManagedProductDiagLog.pendingAndDoneCounts(loadAll());
+      ManagedProductDiagLog.logSave(
+        action: 'addDone',
+        productId: id,
+        itemCode: id,
+        beforePendingCount: beforeCounts.$1,
+        afterPendingCount: afterCounts.$1,
+        beforeDoneCount: beforeCounts.$2,
+        afterDoneCount: afterCounts.$2,
+      );
+    }
   }
 
   /// フィードバックフラグなど、一覧要素の任意更新。
@@ -324,6 +403,7 @@ class RakutenManagedProductRepository {
     if (kDemoModeEnabled) {
       return;
     }
+    final beforeCounts = ManagedProductDiagLog.pendingAndDoneCounts(loadAll());
     final list = List<RakutenManagedProduct>.from(loadAll());
     final id = productId.trim();
     if (id.isEmpty) {
@@ -345,6 +425,16 @@ class RakutenManagedProductRepository {
       throw Exception('商品が見つかりません');
     }
     await _saveAll(next);
+    final afterCounts = ManagedProductDiagLog.pendingAndDoneCounts(loadAll());
+    ManagedProductDiagLog.logSave(
+      action: 'remove',
+      productId: id,
+      itemCode: id,
+      beforePendingCount: beforeCounts.$1,
+      afterPendingCount: afterCounts.$1,
+      beforeDoneCount: beforeCounts.$2,
+      afterDoneCount: afterCounts.$2,
+    );
   }
 
   /// ROOM取り込みAPI補完で保存する `genreName`（API名優先、無ければマスタ解決名）。
@@ -619,7 +709,11 @@ class RakutenManagedProductRepository {
 
       list[existingIndex] = next;
       try {
-        await _saveAll(list);
+        await _saveAllMaybeMerged(
+          list: list,
+          workingMutableList: workingMutableList,
+        );
+        _debugLogRoomImportSave(existing.productId);
         if (traceRoomSync) {
           roomSyncLog('保存成功（既存商品へROOM URL追加）');
         }
@@ -690,7 +784,11 @@ class RakutenManagedProductRepository {
       );
       list.add(row);
       try {
-        await _saveAll(list);
+        await _saveAllMaybeMerged(
+          list: list,
+          workingMutableList: workingMutableList,
+        );
+        _debugLogRoomImportSave(row.productId);
         if (traceRoomSync) {
           roomSyncLog('保存成功（新規コレ済・APIあり）');
         }
@@ -764,7 +862,11 @@ class RakutenManagedProductRepository {
       ),
     );
     try {
-      await _saveAll(list);
+      await _saveAllMaybeMerged(
+        list: list,
+        workingMutableList: workingMutableList,
+      );
+      _debugLogRoomImportSave(newId);
       if (traceRoomSync) {
         roomSyncLog('保存成功（新規コレ済・最低限）');
       }

@@ -156,6 +156,70 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     );
   }
 
+  List<Widget> _buildSetupBottomActions(BuildContext context) {
+    final profile = context.watch<UserProfileProvider>().profile;
+    final savedCount = context.watch<SavedShopProvider>().shops.length;
+    if (_pageIndex == 0) {
+      return [
+        AppPrimaryButton(
+          label: '保存して次へ',
+          height: 48,
+          onPressed: () => _goNext(context),
+        ),
+        const SizedBox(height: 8),
+        Align(
+          alignment: Alignment.center,
+          child: TextButton(
+            onPressed: () => _persistDismissAndLeave(context, markSkipped: true),
+            child: const Text('あとで設定する'),
+          ),
+        ),
+      ];
+    }
+    if (_pageIndex == 1) {
+      final hasGenres = profile.favoriteGenreIdList.isNotEmpty;
+      return [
+        AppPrimaryButton(
+          label: hasGenres ? '次へ' : 'ジャンルを選んで次へ',
+          height: 48,
+          onPressed:
+              hasGenres ? () => _goNext(context) : () => _openGenrePicker(context),
+        ),
+        const SizedBox(height: 8),
+        Align(
+          alignment: Alignment.center,
+          child: TextButton(
+            onPressed: () => _skipStep(context),
+            child: const Text('スキップして次へ'),
+          ),
+        ),
+      ];
+    }
+    return [
+      AppPrimaryButton(
+        label: savedCount >= 1 ? 'はじめる' : 'ショップ発掘を開く',
+        height: 48,
+        icon: savedCount >= 1
+            ? null
+            : const Icon(Icons.travel_explore_rounded),
+        onPressed: savedCount >= 1
+            ? () => _persistDismissAndLeave(context, markCompleted: true)
+            : () => openRakutenSearchScreen(
+                  context,
+                  initialMode: RakutenSearchInitialMode.shopDiscovery,
+                ),
+      ),
+      const SizedBox(height: 8),
+      Align(
+        alignment: Alignment.center,
+        child: TextButton(
+          onPressed: () => _persistDismissAndLeave(context, markSkipped: true),
+          child: const Text('あとで設定する'),
+        ),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = _pageController;
@@ -226,32 +290,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              AppPrimaryButton(
-                label: _pageIndex >= 2 ? 'はじめる' : '次へ',
-                height: 48,
-                onPressed: () => _goNext(context),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => _skipStep(context),
-                      child: const Text('スキップ'),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () => _persistDismissAndLeave(
-                        context,
-                        markSkipped: true,
-                      ),
-                      child: const Text('あとで設定する'),
-                    ),
-                  ),
-                ],
-              ),
+              ..._buildSetupBottomActions(context),
             ],
           ),
         ),
@@ -368,10 +407,11 @@ class _StepGenres extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            OutlinedButton.icon(
+            AppOutlineButton(
+              label: 'ジャンルを選ぶ',
+              icon: const Icon(Icons.category_outlined, size: 18),
+              height: 44,
               onPressed: onPickGenres,
-              icon: const Icon(Icons.category_outlined),
-              label: const Text('ジャンルを選ぶ'),
             ),
           ],
         ),
@@ -428,9 +468,10 @@ class _StepSavedShops extends StatelessWidget {
               onPressed: onOpenDiscovery,
             ),
             const SizedBox(height: 8),
-            OutlinedButton(
+            AppOutlineButton(
+              label: '保存ショップ一覧',
+              height: 44,
               onPressed: onOpenSavedList,
-              child: const Text('保存ショップ一覧'),
             ),
           ],
         ),
