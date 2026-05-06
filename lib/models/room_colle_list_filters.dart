@@ -515,7 +515,12 @@ bool _matchesDoneQuickFilter(
       final lc = e.roomLikeCount;
       return lc != null && lc > 0;
     case RoomColleDoneQuickFilterPreset.roomPosted:
-      return e.roomUrl.trim().isNotEmpty;
+      if (e.roomUrl.trim().isEmpty) return false;
+      final lcR = e.roomLikeCount;
+      final ccR = e.roomCommentCount;
+      final hasPosR =
+          (lcR != null && lcR > 0) || (ccR != null && ccR > 0);
+      return !hasPosR;
   }
 }
 
