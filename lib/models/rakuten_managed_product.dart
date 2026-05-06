@@ -33,7 +33,8 @@ class RakutenManagedProduct {
     required this.itemName,
     required this.itemPrice,
     required this.itemUrl,
-    required this.affiliateUrl,
+    this.affiliateUrl,
+    this.rakutenUrl,
     required this.imageUrl,
     required this.shopName,
     required this.shopCode,
@@ -72,7 +73,12 @@ class RakutenManagedProduct {
   final String itemName;
   final int itemPrice;
   final String itemUrl;
-  final String affiliateUrl;
+
+  /// アフィリエイト経由の商品URL（ROOMページの `hb.afl.rakuten.co.jp` やAPIの `affiliateUrl`）。
+  final String? affiliateUrl;
+
+  /// 通常の商品ページURLの別保存（ROOM取り込み時は [itemUrl] と同じPC復元URLを入れる想定）。
+  final String? rakutenUrl;
   final String imageUrl;
   final String shopName;
   final String shopCode;
@@ -158,9 +164,11 @@ class RakutenManagedProduct {
     return coredActivitySource == RakutenCoredActivitySource.appPost;
   }
 
-  /// ブラウザで開くURL（アフィリエイトURLを優先）。
-  String get browserLaunchUrl =>
-      affiliateUrl.trim().isNotEmpty ? affiliateUrl.trim() : itemUrl;
+  /// 「楽天で見る」で開くURL（[affiliateUrl] → [itemUrl] → [rakutenUrl]）。
+  String get rakutenOpenUrl => ProductUrlResolver.resolveRakutenOpenUrl(this);
+
+  /// ブラウザで開くURL（[rakutenOpenUrl] と同一の優先順位）。
+  String get browserLaunchUrl => rakutenOpenUrl;
 
   /// 一覧ジャンル行の「永続化名」向け（解決済み [resolvedGenreName] を優先）。
   String? get persistedGenreDisplayName {
@@ -176,6 +184,9 @@ class RakutenManagedProduct {
     int? itemPrice,
     String? itemUrl,
     String? affiliateUrl,
+    bool clearAffiliateUrl = false,
+    String? rakutenUrl,
+    bool clearRakutenUrl = false,
     String? imageUrl,
     String? shopName,
     String? shopCode,
@@ -225,7 +236,10 @@ class RakutenManagedProduct {
       itemName: itemName ?? this.itemName,
       itemPrice: itemPrice ?? this.itemPrice,
       itemUrl: itemUrl ?? this.itemUrl,
-      affiliateUrl: affiliateUrl ?? this.affiliateUrl,
+      affiliateUrl: clearAffiliateUrl
+          ? null
+          : (affiliateUrl ?? this.affiliateUrl),
+      rakutenUrl: clearRakutenUrl ? null : (rakutenUrl ?? this.rakutenUrl),
       imageUrl: imageUrl ?? this.imageUrl,
       shopName: shopName ?? this.shopName,
       shopCode: shopCode ?? this.shopCode,
@@ -290,7 +304,10 @@ class RakutenManagedProduct {
       itemName: item.itemName,
       itemPrice: item.itemPrice,
       itemUrl: item.itemUrl,
-      affiliateUrl: item.affiliateUrl,
+      affiliateUrl: item.affiliateUrl.trim().isEmpty
+          ? null
+          : item.affiliateUrl.trim(),
+      rakutenUrl: item.itemUrl.trim().isEmpty ? null : item.itemUrl.trim(),
       imageUrl: item.imageUrl,
       shopName: item.shopName,
       shopCode: item.shopCode,
@@ -332,6 +349,7 @@ class RakutenManagedProduct {
       'itemPrice': itemPrice,
       'itemUrl': itemUrl,
       'affiliateUrl': affiliateUrl,
+      'rakutenUrl': rakutenUrl,
       'imageUrl': imageUrl,
       'shopName': shopName,
       'shopCode': shopCode,
@@ -402,6 +420,12 @@ class RakutenManagedProduct {
       return int.tryParse(raw.trim()) ?? 0;
     }
     return 0;
+  }
+
+  static String? _optionalTrimmedUrl(dynamic raw) {
+    if (raw == null) return null;
+    final s = raw.toString().trim();
+    return s.isEmpty ? null : s;
   }
 
   static RakutenManagedProduct? fromJson(Map<String, dynamic>? json) {
@@ -566,7 +590,8 @@ class RakutenManagedProduct {
       itemName: itemName,
       itemPrice: _readItemPrice(json['itemPrice']),
       itemUrl: itemUrl,
-      affiliateUrl: (json['affiliateUrl'] ?? '').toString(),
+      affiliateUrl: _optionalTrimmedUrl(json['affiliateUrl']),
+      rakutenUrl: _optionalTrimmedUrl(json['rakutenUrl']),
       imageUrl: (json['imageUrl'] ?? '').toString(),
       shopName: (json['shopName'] ?? '').toString(),
       shopCode: (json['shopCode'] ?? '').toString(),
@@ -599,5 +624,18 @@ class RakutenManagedProduct {
       reviewAverage: reviewAverage,
       reviewCount: reviewCount,
     );
+  }
+}
+
+/// 「楽天で見る」のURL優先解決（[RakutenManagedProduct] 向け）。
+abstract final class ProductUrlResolver {
+  static String resolveRakutenOpenUrl(RakutenManagedProduct product) {
+    final a = product.affiliateUrl?.trim() ?? '';
+    if (a.isNotEmpty) return a;
+    final i = product.itemUrl.trim();
+    if (i.isNotEmpty) return i;
+    final r = product.rakutenUrl?.trim() ?? '';
+    if (r.isNotEmpty) return r;
+    return '';
   }
 }

@@ -358,6 +358,7 @@ class RoomSyncService {
           roomUrlStoredCanonical: normalizedKey,
           normalizedRoomUrlKey: normalizedKey,
           parsedItem: parsed,
+          roomPageAffiliateUrl: resolved.roomPageAffiliateUrl,
           roomPageTitle: resolved.roomPageTitle ?? '',
           roomPageImageUrl: resolved.roomPageImageUrl ?? '',
           apiEnrichedItem: apiEnriched,

@@ -64,6 +64,7 @@ void main() {
       );
       expect(out, isA<RoomUrlResolveSuccess>());
       final s = out as RoomUrlResolveSuccess;
+      expect(s.roomPageAffiliateUrl, isNull);
       expect(s.rakutenItem.shopCode, 'shopdemo');
       expect(s.rakutenItem.itemPathSegment, '12345');
       expect(s.roomPageTitle, 'TestTitle');

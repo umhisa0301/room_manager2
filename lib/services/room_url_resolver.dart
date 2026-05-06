@@ -148,9 +148,21 @@ class RoomUrlResolver {
       }
     }
 
-    var parsed = RakutenItemUrlParser.findFirstInText(decoded);
+    String? roomPageAffiliateUrl;
+    RakutenItemUrlParseResult? parsed =
+        RakutenItemUrlParser.findFirstInText(decoded);
     parsed ??= RakutenItemUrlParser.findFirstInText(body);
-    parsed ??= _tryParseItemFromFirstAflPc(aflUrlsOrdered, traceRoomSync);
+    if (parsed == null) {
+      final pair = _tryParseItemFromFirstAflPc(aflUrlsOrdered, traceRoomSync);
+      if (pair != null) {
+        parsed = pair.item;
+        final raw = pair.aflSourceUrl.trim();
+        roomPageAffiliateUrl = raw.isEmpty ? null : raw;
+      }
+    } else if (aflUrlsOrdered.isNotEmpty) {
+      final raw = aflUrlsOrdered.first.trim();
+      roomPageAffiliateUrl = raw.isEmpty ? null : raw;
+    }
 
     if (parsed == null) {
       if (traceRoomSync) {
@@ -183,6 +195,7 @@ class RoomUrlResolver {
     final reaction = RoomRoomPageReactionParse.tryParse(body);
     return RoomUrlResolveSuccess(
       rakutenItem: parsed,
+      roomPageAffiliateUrl: roomPageAffiliateUrl,
       roomPageTitle: meta.$1,
       roomPageImageUrl: meta.$2,
       roomLikeCount: reaction.roomLikeCount,
@@ -211,8 +224,9 @@ class RoomUrlResolver {
     return out;
   }
 
-  /// 最初に [RakutenItemUrlParser.tryParse] 成功した afl の `pc` デコード結果を返す。
-  static RakutenItemUrlParseResult? _tryParseItemFromFirstAflPc(
+  /// 最初に [RakutenItemUrlParser.tryParse] 成功した afl の `pc` デコード結果と、その元 afl URL を返す。
+  static ({RakutenItemUrlParseResult item, String aflSourceUrl})?
+  _tryParseItemFromFirstAflPc(
     List<String> aflUrls,
     bool traceRoomSync,
   ) {
@@ -275,7 +289,7 @@ class RoomUrlResolver {
 
       final parsed = RakutenItemUrlParser.tryParse(decTrim);
       if (parsed != null) {
-        return parsed;
+        return (item: parsed, aflSourceUrl: aflUrl);
       }
 
       if (traceRoomSync) {
@@ -338,6 +352,7 @@ sealed class RoomUrlResolveOutcome {
 final class RoomUrlResolveSuccess extends RoomUrlResolveOutcome {
   const RoomUrlResolveSuccess({
     required this.rakutenItem,
+    this.roomPageAffiliateUrl,
     this.roomPageTitle,
     this.roomPageImageUrl,
     this.roomLikeCount,
@@ -345,6 +360,9 @@ final class RoomUrlResolveSuccess extends RoomUrlResolveOutcome {
   });
 
   final RakutenItemUrlParseResult rakutenItem;
+
+  /// ROOM商品ページHTML上の `hb.afl.rakuten.co.jp` リンク（先着／pc デコードに使ったもの）。
+  final String? roomPageAffiliateUrl;
   final String? roomPageTitle;
   final String? roomPageImageUrl;
 

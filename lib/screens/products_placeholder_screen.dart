@@ -1412,8 +1412,9 @@ List<RakutenManagedProduct> _filterExcludeUrlNotReady(
       return false;
     }
     return e.extractedUrl.trim().isNotEmpty ||
-        e.affiliateUrl.trim().isNotEmpty ||
-        e.itemUrl.trim().isNotEmpty;
+        (e.affiliateUrl?.trim().isNotEmpty ?? false) ||
+        e.itemUrl.trim().isNotEmpty ||
+        (e.rakutenUrl?.trim().isNotEmpty ?? false);
   }).toList();
 }
 

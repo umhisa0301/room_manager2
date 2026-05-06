@@ -43,7 +43,7 @@ class RakutenSearchItem {
   /// 楽天APIが返すジャンル名（あれば）。無い場合は空文字。
   final String genreName;
 
-  /// 「楽天で見る」で開くURL（アフィリエイトURLを優先）。
+  /// 「楽天で見る」で開くURL（[affiliateUrl] を優先し、無ければ通常の [itemUrl]）。
   String get browserLaunchUrl =>
       affiliateUrl.trim().isNotEmpty ? affiliateUrl.trim() : itemUrl;
 

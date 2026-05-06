@@ -495,6 +495,12 @@ class RakutenSearchRepository {
     var productId = _stringField(json['itemCode']).trim();
     var itemName = _stringField(json['itemName']).trim();
     var affiliateUrl = _stringField(json['affiliateUrl']).trim();
+    if (affiliateUrl.isEmpty) {
+      affiliateUrl = _stringField(json['affiliateUrlMobile']).trim();
+    }
+    if (affiliateUrl.isEmpty) {
+      affiliateUrl = _stringField(json['affiliateURL']).trim();
+    }
     var itemUrl = _stringField(json['itemUrl']).trim();
     if (itemUrl.isEmpty && affiliateUrl.isNotEmpty) {
       itemUrl = affiliateUrl;
@@ -547,6 +553,8 @@ class RakutenSearchRepository {
       genreName: genreName,
     );
     if (kDebugMode) {
+      debugPrint('[RAKUTEN_URL] itemUrl=${item.itemUrl}');
+      debugPrint('[RAKUTEN_URL] affiliateUrl=${item.affiliateUrl}');
       _rakutenGenreLogApi(json, productId);
       _rakutenGenreLogMap(item);
     }

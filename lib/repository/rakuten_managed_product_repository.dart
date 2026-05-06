@@ -240,8 +240,9 @@ class RakutenManagedProductRepository {
         itemName: api.itemName.trim().isNotEmpty ? api.itemName : e.itemName,
         itemPrice: api.itemPrice > 0 ? api.itemPrice : e.itemPrice,
         itemUrl: api.itemUrl.trim().isNotEmpty ? api.itemUrl : e.itemUrl,
+        rakutenUrl: api.itemUrl.trim().isNotEmpty ? api.itemUrl.trim() : e.rakutenUrl,
         affiliateUrl: api.affiliateUrl.trim().isNotEmpty
-            ? api.affiliateUrl
+            ? api.affiliateUrl.trim()
             : e.affiliateUrl,
         imageUrl: api.imageUrl.trim().isNotEmpty ? api.imageUrl : e.imageUrl,
         shopName: mergedShopName,
@@ -412,10 +413,38 @@ class RakutenManagedProductRepository {
     return next.copyWith(roomReactionUpdatedAt: now);
   }
 
+  /// ROOMページ由来のアフィリエイトとAPIの `affiliateUrl` をマージ（API優先）。
+  String? _mergeAffiliateForRoomPersist({
+    required String? roomPageAffiliateUrl,
+    required RakutenSearchItem? api,
+    required String? existingAffiliate,
+  }) {
+    final apiAff = api?.affiliateUrl.trim() ?? '';
+    if (apiAff.isNotEmpty) return apiAff;
+    final roomAff = roomPageAffiliateUrl?.trim() ?? '';
+    if (roomAff.isNotEmpty) return roomAff;
+    return existingAffiliate;
+  }
+
+  /// PC復元URL優先、無ければAPI・既存の通常URL。
+  (String itemUrl, String? rakutenUrl) _normalUrlsForRoomPersist({
+    required RakutenItemUrlParseResult parsedItem,
+    RakutenSearchItem? api,
+    required String fallbackItemUrl,
+    required String? fallbackRakutenUrl,
+  }) {
+    final pc = parsedItem.rakutenUrl.trim();
+    if (pc.isNotEmpty) return (pc, pc);
+    final fromApi = api?.itemUrl.trim() ?? '';
+    if (fromApi.isNotEmpty) return (fromApi, fromApi);
+    return (fallbackItemUrl, fallbackRakutenUrl);
+  }
+
   Future<RoomCollectedPersistOutcome> persistRoomCollectedFromRoomPage({
     required String roomUrlStoredCanonical,
     required String normalizedRoomUrlKey,
     required RakutenItemUrlParseResult parsedItem,
+    String? roomPageAffiliateUrl,
     String roomPageTitle = '',
     String roomPageImageUrl = '',
     RakutenSearchItem? apiEnrichedItem,
@@ -525,11 +554,16 @@ class RakutenManagedProductRepository {
 
       final t = roomPageTitle.trim();
       final img = roomPageImageUrl.trim();
+      final urls = _normalUrlsForRoomPersist(
+        parsedItem: parsedItem,
+        api: apiEnrichedItem,
+        fallbackItemUrl: existing.itemUrl,
+        fallbackRakutenUrl: existing.rakutenUrl,
+      );
       var next = existing.copyWith(
         roomUrl: roomUrlStoredCanonical,
-        itemUrl: parsedItem.rakutenUrl.isNotEmpty
-            ? parsedItem.rakutenUrl
-            : existing.itemUrl,
+        itemUrl: urls.$1,
+        rakutenUrl: urls.$2,
         shopCode: parsedItem.shopCode.isNotEmpty
             ? parsedItem.shopCode
             : existing.shopCode,
@@ -555,9 +589,6 @@ class RakutenManagedProductRepository {
               ? api.itemName
               : next.itemName,
           itemPrice: api.itemPrice,
-          affiliateUrl: api.affiliateUrl.trim().isNotEmpty
-              ? api.affiliateUrl
-              : next.affiliateUrl,
           shopName: () {
             final s = api.shopName.trim();
             return (s.isNotEmpty && s != 'ショップ名不明')
@@ -578,6 +609,14 @@ class RakutenManagedProductRepository {
           roomImportMetadataEnriching: false,
         );
       }
+
+      next = next.copyWith(
+        affiliateUrl: _mergeAffiliateForRoomPersist(
+          roomPageAffiliateUrl: roomPageAffiliateUrl,
+          api: apiEnrichedItem,
+          existingAffiliate: existing.affiliateUrl,
+        ),
+      );
 
       next = _mergeParsedRoomReactions(
         next,
@@ -616,6 +655,12 @@ class RakutenManagedProductRepository {
         resolvedLabel: resolvedLabel,
         existingGenreName: '',
       );
+      final urlsNew = _normalUrlsForRoomPersist(
+        parsedItem: parsedItem,
+        api: apiNew,
+        fallbackItemUrl: '',
+        fallbackRakutenUrl: null,
+      );
       var row =
           RakutenManagedProduct.fromSearchItem(
             apiNew,
@@ -624,9 +669,13 @@ class RakutenManagedProductRepository {
             resolvedGenreName: resolvedLabel,
           ).copyWith(
             roomUrl: roomUrlStoredCanonical,
-            itemUrl: parsedItem.rakutenUrl.isNotEmpty
-                ? parsedItem.rakutenUrl
-                : apiNew.itemUrl,
+            itemUrl: urlsNew.$1.isNotEmpty ? urlsNew.$1 : apiNew.itemUrl,
+            rakutenUrl: urlsNew.$2,
+            affiliateUrl: _mergeAffiliateForRoomPersist(
+              roomPageAffiliateUrl: roomPageAffiliateUrl,
+              api: apiNew,
+              existingAffiliate: null,
+            ),
             shopCode: parsedItem.shopCode.isNotEmpty
                 ? parsedItem.shopCode
                 : apiNew.shopCode,
@@ -678,14 +727,20 @@ class RakutenManagedProductRepository {
         ? parsedItem.itemPathSegment.trim()
         : parsedItem.compositeProductId;
 
+    final pcOnly = parsedItem.rakutenUrl.trim();
     list.add(
       _mergeParsedRoomReactions(
         RakutenManagedProduct(
           productId: newId,
           itemName: title,
           itemPrice: 0,
-          itemUrl: parsedItem.rakutenUrl,
-          affiliateUrl: '',
+          itemUrl: pcOnly,
+          rakutenUrl: pcOnly.isNotEmpty ? pcOnly : null,
+          affiliateUrl: _mergeAffiliateForRoomPersist(
+            roomPageAffiliateUrl: roomPageAffiliateUrl,
+            api: null,
+            existingAffiliate: null,
+          ),
           imageUrl: image,
           shopName: '',
           shopCode: parsedItem.shopCode,

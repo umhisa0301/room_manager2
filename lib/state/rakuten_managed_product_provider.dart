@@ -269,7 +269,7 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 楽天の商品ページ URL（itemUrl）を外部ブラウザで開く。
+  /// 楽天の商品ページ URL を外部ブラウザで開く（[RakutenManagedProduct.rakutenOpenUrl]）。
   Future<String?> openRakutenItemPage(
     BuildContext context,
     String productId,
@@ -278,9 +278,7 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     if (id.isEmpty) return '商品IDが空です';
     final p = _repository.getByProductId(id);
     if (p == null) return '商品が見つかりません';
-    final url = p.itemUrl.trim().isNotEmpty
-        ? p.itemUrl.trim()
-        : p.browserLaunchUrl.trim();
+    final url = p.rakutenOpenUrl.trim();
     if (url.isEmpty) return '商品URLがありません';
     await AppActionService.openUrl(context, url: url);
     if (context.mounted) {

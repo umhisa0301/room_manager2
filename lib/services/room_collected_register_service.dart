@@ -90,6 +90,7 @@ class RoomCollectedRegisterService {
       roomUrlStoredCanonical: normalizedRoomKey,
       normalizedRoomUrlKey: normalizedRoomKey,
       parsedItem: parsed,
+      roomPageAffiliateUrl: resolved.roomPageAffiliateUrl,
       roomPageTitle: resolved.roomPageTitle ?? '',
       roomPageImageUrl: resolved.roomPageImageUrl ?? '',
       apiEnrichedItem: apiEnriched,
