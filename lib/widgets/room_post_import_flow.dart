@@ -415,9 +415,9 @@ class _ImportedProductPreviewTile extends StatelessWidget {
   final RakutenManagedProduct product;
 
   bool _hasPositiveRoomReaction() {
-    final lc = product.roomLikeCount ?? 0;
-    final cc = product.roomCommentCount ?? 0;
-    return lc > 0 || cc > 0;
+    final lc = product.roomLikeCount;
+    final cc = product.roomCommentCount;
+    return (lc != null && lc > 0) || (cc != null && cc > 0);
   }
 
   @override

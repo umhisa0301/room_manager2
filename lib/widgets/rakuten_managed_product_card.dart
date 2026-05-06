@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -148,13 +149,30 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   static const Color _roomReactionPink = Color(0xFFE91E63);
 
-  bool _roomImportDoneHasPositiveReaction() {
-    if (product.coredActivitySource != RakutenCoredActivitySource.roomImport) {
-      return false;
-    }
-    final lc = product.roomLikeCount ?? 0;
-    final cc = product.roomCommentCount ?? 0;
-    return lc > 0 || cc > 0;
+  /// ROOM API 由来のいいね／コメント（null は未取得）に基づく「反応あり」。
+  bool _roomApiHasPositiveReaction() {
+    final lc = product.roomLikeCount;
+    final cc = product.roomCommentCount;
+    return (lc != null && lc > 0) || (cc != null && cc > 0);
+  }
+
+  void _debugLogReactionStatusChip() {
+    if (!kDebugMode) return;
+    if (product.status != RakutenManagedProductStatus.done) return;
+    final lc = product.roomLikeCount;
+    final cc = product.roomCommentCount;
+    final hasPos = (lc != null && lc > 0) || (cc != null && cc > 0);
+    final chip = hasPos
+        ? '反応あり'
+        : (product.roomUrl.trim().isNotEmpty ? 'ROOM投稿済み' : '未取り込み');
+    debugPrint('[REACTION_STATUS] productId=${product.productId}');
+    debugPrint('[REACTION_STATUS] roomLikeCount=$lc');
+    debugPrint('[REACTION_STATUS] roomCommentCount=$cc');
+    debugPrint('[REACTION_STATUS] resolvedChip=$chip');
+  }
+
+  Color _heartCommentAccent(int? count) {
+    return count != null && count > 0 ? _roomReactionPink : AppColors.textTertiary;
   }
 
   @override
@@ -167,6 +185,10 @@ class RakutenManagedProductCard extends StatelessWidget {
     final reactionStyle =
         (timestampStyle ?? theme.textTheme.bodySmall ?? const TextStyle())
             .copyWith(fontSize: 11, fontWeight: FontWeight.w700);
+
+    if (!isCandidate) {
+      _debugLogReactionStatusChip();
+    }
 
     return RoomColleProductListCardShell(
       child: Padding(
@@ -191,7 +213,7 @@ class RakutenManagedProductCard extends StatelessWidget {
                           runSpacing: 4,
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            if (_roomImportDoneHasPositiveReaction())
+                            if (_roomApiHasPositiveReaction())
                               _SmallBadge(
                                 label: '反応あり',
                                 color: _roomReactionPink,
@@ -210,26 +232,17 @@ class RakutenManagedProductCard extends StatelessWidget {
                               Text(
                                 '♡${product.roomLikeCount}',
                                 style: reactionStyle.copyWith(
-                                  color: product.roomLikeCount! > 0
-                                      ? (product.coredActivitySource ==
-                                              RakutenCoredActivitySource
-                                                  .roomImport
-                                          ? _roomReactionPink
-                                          : AppColors.accentPrimary)
-                                      : AppColors.textTertiary,
+                                  color:
+                                      _heartCommentAccent(product.roomLikeCount),
                                 ),
                               ),
                             if (product.roomCommentCount != null)
                               Text(
                                 '💬${product.roomCommentCount}',
                                 style: reactionStyle.copyWith(
-                                  color: product.roomCommentCount! > 0
-                                      ? (product.coredActivitySource ==
-                                              RakutenCoredActivitySource
-                                                  .roomImport
-                                          ? _roomReactionPink
-                                          : AppColors.accentPrimary)
-                                      : AppColors.textTertiary,
+                                  color: _heartCommentAccent(
+                                    product.roomCommentCount,
+                                  ),
                                 ),
                               ),
                           ],

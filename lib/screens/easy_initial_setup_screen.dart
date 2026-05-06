@@ -26,39 +26,49 @@ class EasyInitialSetupScreen extends StatefulWidget {
 }
 
 class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
-  final PageController _pageController = PageController();
+  PageController? _pageController;
   final TextEditingController _roomUrlController = TextEditingController();
   int _pageIndex = 0;
+  bool _pageControllerAttached = false;
+
+  int _firstIncompletePage(UserProfile profile, int savedShopCount) {
+    if (!profile.hasRoomUrl) return 0;
+    if (profile.favoriteGenreIdList.isEmpty) return 1;
+    if (savedShopCount <= 0) return 2;
+    return 2;
+  }
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!mounted) return;
-      final profile = context.read<UserProfileProvider>().profile;
-      _roomUrlController.text = profile.roomUrl;
-      final saved = context.read<SavedShopProvider>().shops.length;
-      final repo = context.read<EasyInitialSetupRepository>();
-      if (profile.hasRoomUrl &&
-          profile.favoriteGenreIdList.isNotEmpty &&
-          saved > 0) {
-        await repo.dismiss();
-      }
-      if (mounted) setState(() {});
-    });
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_pageControllerAttached) return;
+    _pageControllerAttached = true;
+    final profile = context.read<UserProfileProvider>().profile;
+    _roomUrlController.text = profile.roomUrl;
+    final saved = context.read<SavedShopProvider>().shops.length;
+    final start = _firstIncompletePage(profile, saved);
+    _pageIndex = start;
+    _pageController = PageController(initialPage: start);
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _pageController?.dispose();
     _roomUrlController.dispose();
     super.dispose();
   }
 
-  Future<void> _persistDismissAndLeave(BuildContext context) async {
+  Future<void> _persistDismissAndLeave(
+    BuildContext context, {
+    bool markCompleted = false,
+    bool markSkipped = false,
+  }) async {
     final nav = Navigator.of(context);
     final embedded = widget.embeddedInEntryHost;
-    await context.read<EasyInitialSetupRepository>().dismiss();
+    await context.read<EasyInitialSetupRepository>().dismiss(
+          markFlowCompleted: markCompleted,
+          markFlowSkipped: markSkipped,
+        );
     if (!mounted) return;
     if (!embedded) {
       nav.pop();
@@ -119,28 +129,28 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     if (_pageIndex == 0) {
       await _saveRoomUrlStep(context);
       if (!mounted) return;
-      _pageController.nextPage(
+      _pageController!.nextPage(
         duration: const Duration(milliseconds: 260),
         curve: Curves.easeOutCubic,
       );
       return;
     }
     if (_pageIndex == 1) {
-      _pageController.nextPage(
+      _pageController!.nextPage(
         duration: const Duration(milliseconds: 260),
         curve: Curves.easeOutCubic,
       );
       return;
     }
-    await _persistDismissAndLeave(context);
+    await _persistDismissAndLeave(context, markCompleted: true);
   }
 
-  void _skipStep(BuildContext context) {
+  void _skipStep(BuildContext context) async {
     if (_pageIndex >= 2) {
-      _persistDismissAndLeave(context);
+      await _persistDismissAndLeave(context, markSkipped: true);
       return;
     }
-    _pageController.nextPage(
+    _pageController!.nextPage(
       duration: const Duration(milliseconds: 260),
       curve: Curves.easeOutCubic,
     );
@@ -148,6 +158,12 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = _pageController;
+    if (controller == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: AppColors.surface,
@@ -182,7 +198,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
               const SizedBox(height: 14),
               Expanded(
                 child: PageView(
-                  controller: _pageController,
+                  controller: controller,
                   physics: const NeverScrollableScrollPhysics(),
                   onPageChanged: (i) => setState(() => _pageIndex = i),
                   children: [
@@ -227,7 +243,10 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: TextButton(
-                      onPressed: () => _persistDismissAndLeave(context),
+                      onPressed: () => _persistDismissAndLeave(
+                        context,
+                        markSkipped: true,
+                      ),
                       child: const Text('あとで設定する'),
                     ),
                   ),

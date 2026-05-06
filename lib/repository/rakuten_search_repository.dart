@@ -192,10 +192,39 @@ class RakutenSearchRepository {
       itemCode: apiItemCode,
     ).normalized();
 
+    debugPrint('[ROOM_IMPORT_ENRICH] shopCode=$sc');
+    debugPrint('[ROOM_IMPORT_ENRICH] itemCode=$icRaw');
+    debugPrint('[ROOM_IMPORT_ENRICH] apiItemCode=$apiItemCode');
+    debugPrint(
+      '[ROOM_IMPORT_ENRICH] requestParams='
+      'format=json&applicationId=*&hits=30&page=1&keyword=(omit)&'
+      'itemCode=$apiItemCode&shopCode=(omit)',
+    );
+
     try {
       if (kDemoModeEnabled) {
         final items = await search(condition: condition);
-        return _pickRoomImportEnrichmentItem(items, numericItemCode, sc);
+        final bestDemo = _pickRoomImportEnrichmentItem(items, numericItemCode, sc);
+        debugPrint('[ROOM_IMPORT_ENRICH] response status=demo searchItems');
+        if (bestDemo != null) {
+          debugPrint('[ROOM_IMPORT_ENRICH] response title=${bestDemo.itemName}');
+          debugPrint(
+            '[ROOM_IMPORT_ENRICH] response shopName=${bestDemo.shopName}',
+          );
+          debugPrint(
+            '[ROOM_IMPORT_ENRICH] response genreId='
+            '${bestDemo.genreId.trim().isEmpty ? '(none)' : bestDemo.genreId}',
+          );
+          final gn = bestDemo.genreName.trim();
+          debugPrint(
+            '[ROOM_IMPORT_ENRICH] response genreName=${gn.isEmpty ? 'null' : gn}',
+          );
+          debugPrint(
+            '[ROOM_IMPORT_ENRICH] response affiliateUrl exists='
+            '${bestDemo.affiliateUrl.trim().isNotEmpty}',
+          );
+        }
+        return bestDemo;
       }
 
       final raw = await _apiService.searchItems(
@@ -204,10 +233,12 @@ class RakutenSearchRepository {
         hits: 30,
       );
       final rawItems = raw['Items'];
+      debugPrint(
+        '[ROOM_IMPORT_ENRICH] response status='
+        '${rawItems is List ? 'Items len=${rawItems.length}' : 'no Items'}',
+      );
       if (rawItems is! List || rawItems.isEmpty) {
-        if (kDebugMode) {
-          debugPrint('[ROOM_IMPORT_ENRICH] empty Items');
-        }
+        debugPrint('[ROOM_IMPORT_ENRICH] empty Items');
         return null;
       }
       final parsed = <RakutenSearchItem>[];
@@ -226,33 +257,29 @@ class RakutenSearchRepository {
         }
       }
       final best = _pickRoomImportEnrichmentItem(parsed, numericItemCode, sc);
-      if (kDebugMode) {
-        debugPrint('[ROOM_IMPORT_ENRICH] apiItemCode=$apiItemCode');
-        if (best != null) {
-          debugPrint('[ROOM_IMPORT_ENRICH] response title=${best.itemName}');
-          debugPrint('[ROOM_IMPORT_ENRICH] response shopName=${best.shopName}');
-          debugPrint(
-            '[ROOM_IMPORT_ENRICH] response genreId='
-            '${best.genreId.trim().isEmpty ? '(none)' : best.genreId}',
-          );
-          final gn = best.genreName.trim();
-          debugPrint(
-            '[ROOM_IMPORT_ENRICH] response genreName='
-            '${gn.isEmpty ? 'null' : gn}',
-          );
-          if (best.genreId.trim().isEmpty) {
-            debugPrint(
-              '[ROOM_IMPORT_ENRICH] API response item has no genreId',
-            );
-          }
-        } else {
-          debugPrint('[ROOM_IMPORT_ENRICH] no matching item after parse');
-        }
+      debugPrint('[ROOM_IMPORT_ENRICH] apiItemCode=$apiItemCode');
+      if (best != null) {
+        debugPrint('[ROOM_IMPORT_ENRICH] response title=${best.itemName}');
+        debugPrint('[ROOM_IMPORT_ENRICH] response shopName=${best.shopName}');
+        debugPrint(
+          '[ROOM_IMPORT_ENRICH] response genreId='
+          '${best.genreId.trim().isEmpty ? '(none)' : best.genreId}',
+        );
+        final gn = best.genreName.trim();
+        debugPrint(
+          '[ROOM_IMPORT_ENRICH] response genreName=${gn.isEmpty ? 'null' : gn}',
+        );
+        debugPrint(
+          '[ROOM_IMPORT_ENRICH] response affiliateUrl exists='
+          '${best.affiliateUrl.trim().isNotEmpty}',
+        );
+      } else {
+        debugPrint('[ROOM_IMPORT_ENRICH] no matching item after parse');
       }
       return best;
     } catch (e, st) {
+      debugPrint('[ROOM_IMPORT_ENRICH] response status=exception $e');
       if (kDebugMode) {
-        debugPrint('[ROOM_IMPORT_ENRICH] failed: $e');
         debugPrint('$st');
       }
       return null;

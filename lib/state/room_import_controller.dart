@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config/demo_mode.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_sync_result.dart';
+import '../repository/rakuten_managed_product_repository.dart';
+import '../repository/rakuten_search_repository.dart';
+import '../services/room_import_metadata_enrichment.dart';
 import 'rakuten_managed_product_provider.dart';
 import 'user_profile_provider.dart';
 import '../widgets/room_post_import_flow.dart';
@@ -45,6 +49,29 @@ class RoomImportController extends ChangeNotifier {
 
   List<RakutenManagedProduct> get latestAddedItems =>
       List<RakutenManagedProduct>.unmodifiable(_latestAddedItems);
+
+  Future<void> _enrichRoomImportMetadataAfterBatch(BuildContext context) async {
+    if (kDemoModeEnabled || !context.mounted) return;
+    try {
+      _bulkOperationState?.setMetadataEnriching(true);
+      final svc = RoomImportMetadataEnrichmentService(
+        searchRepository: context.read<RakutenSearchRepository>(),
+        productRepository: context.read<RakutenManagedProductRepository>(),
+      );
+      await svc.enrichRoomImportedProducts(limit: 20);
+    } catch (e, st) {
+      debugPrint('[RoomImportController] metadata enrich batch: $e\n$st');
+    } finally {
+      _bulkOperationState?.setMetadataEnriching(false);
+      if (context.mounted) {
+        try {
+          await context
+              .read<RakutenManagedProductProvider>()
+              .refreshManagedProductList(showLoadingIndicator: false);
+        } catch (_) {}
+      }
+    }
+  }
 
   void _applyResultSnapshot(RoomSyncResult r) {
     _newlyAddedCount = r.newlyCollectedCount;
@@ -96,6 +123,15 @@ class RoomImportController extends ChangeNotifier {
         await context
             .read<RakutenManagedProductProvider>()
             .refreshManagedProductList(showLoadingIndicator: false);
+      }
+
+      if (context.mounted &&
+          result != null &&
+          !result.hasFatalError &&
+          (result.newlyCollectedCount > 0 ||
+              result.roomUrlAddedCount > 0 ||
+              result.listingCheckedCount > 0)) {
+        await _enrichRoomImportMetadataAfterBatch(context);
       }
 
       if (result == null) {

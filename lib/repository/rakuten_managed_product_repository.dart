@@ -223,19 +223,6 @@ class RakutenManagedProductRepository {
       );
       final mergedGenreId =
           api.genreId.trim().isNotEmpty ? api.genreId : e.genreId;
-      if (kDebugMode) {
-        debugPrint('[ROOM_IMPORT_ENRICH] response title=${api.itemName}');
-        debugPrint('[ROOM_IMPORT_ENRICH] response shopName=${api.shopName}');
-        debugPrint(
-          '[ROOM_IMPORT_ENRICH] response genreId='
-          '${api.genreId.trim().isEmpty ? '(none)' : api.genreId}',
-        );
-        debugPrint(
-          '[ROOM_IMPORT_ENRICH] response genreName='
-          '${api.genreName.trim().isEmpty ? 'null' : api.genreName}',
-        );
-        debugPrint('[ROOM_IMPORT_ENRICH] saved success');
-      }
       return e.copyWith(
         itemName: api.itemName.trim().isNotEmpty ? api.itemName : e.itemName,
         itemPrice: api.itemPrice > 0 ? api.itemPrice : e.itemPrice,
@@ -259,6 +246,11 @@ class RakutenManagedProductRepository {
         roomImportMetadataEnriching: false,
       );
     });
+    final row = getByProductId(productId.trim());
+    if (row != null) {
+      debugPrint('[ROOM_IMPORT_ENRICH] saved shopName=${row.shopName}');
+      debugPrint('[ROOM_IMPORT_ENRICH] saved genreName=${row.genreName}');
+    }
   }
 
   /// URL 抽出開始（コレ候補登録直後）。

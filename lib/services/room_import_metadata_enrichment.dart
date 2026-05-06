@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../models/rakuten_managed_product.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
@@ -32,6 +34,7 @@ class RoomImportMetadataEnrichmentService {
       final shop = row.shopCode.trim();
       final pid = row.productId.trim();
       if (shop.isEmpty || pid.isEmpty) continue;
+      debugPrint('[ROOM_IMPORT_ENRICH] start productId=$pid');
       try {
         await _productRepository.updateManagedProduct(pid, (e) {
           return e.copyWith(roomImportMetadataEnriching: true);
@@ -79,7 +82,9 @@ class RoomImportMetadataEnrichmentService {
     }
     final shopNeeds = _isShopNameNeedsEnrichment(e.shopName);
     final genreNeeds = _isGenreNameNeedsEnrichment(e.genreName);
-    return shopNeeds || genreNeeds;
+    final aff = e.affiliateUrl?.trim() ?? '';
+    final affiliateNeeds = aff.isEmpty;
+    return shopNeeds || genreNeeds || affiliateNeeds;
   }
 
   /// [shopName] が未設定・プレースホルダのとき API で上書き対象にする。
