@@ -112,8 +112,8 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
         const SizedBox(height: AppDimensions.spacingSm),
         AddCandidateEntrySheetMenuItem(
           icon: Icons.storefront_rounded,
-          title: '保存ショップから探す',
-          description: '登録済みショップの商品一覧から探します',
+          title: '保存ショップで探す',
+          description: '保存したショップを選び、その店内だけをキーワード検索します',
           onTap: onTapSavedShops,
         ),
         const SizedBox(height: AppDimensions.spacingSm),

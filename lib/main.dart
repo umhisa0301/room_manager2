@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'theme/app_theme.dart';
-import 'app_shell.dart';
+import 'repository/legal_consent_repository.dart';
+import 'widgets/app_entry_host.dart';
 import 'services/rakuten_api_service.dart';
 import 'repository/product_repository.dart';
 import 'repository/comment_template_repository.dart';
@@ -85,6 +86,7 @@ void main() async {
       savedShopRepository: savedShopRepository,
       todayRecommendationRepository: todayRecommendationRepository,
       genreMasterRepository: genreMasterRepository,
+      prefs: prefs,
     ),
   );
 }
@@ -105,6 +107,7 @@ class MyApp extends StatelessWidget {
     required this.savedShopRepository,
     required this.todayRecommendationRepository,
     required this.genreMasterRepository,
+    required this.prefs,
   });
 
   final ProductRepository productRepository;
@@ -120,11 +123,15 @@ class MyApp extends StatelessWidget {
   final SavedShopRepository savedShopRepository;
   final TodayRecommendationRepository todayRecommendationRepository;
   final GenreMasterRepository genreMasterRepository;
+  final SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => LegalConsentRepository(prefs),
+        ),
         Provider<GenreMasterRepository>.value(value: genreMasterRepository),
         Provider<RakutenSearchRepository>.value(value: rakutenSearchRepository),
         Provider<RakutenManagedProductRepository>.value(
@@ -164,6 +171,7 @@ class MyApp extends StatelessWidget {
             repository: rakutenManagedProductRepository,
             pendingCollectNoticeRepository: pendingCollectNoticeRepository,
             activityEventProvider: ctx.read<RoomActivityEventProvider>(),
+            rakutenSearchRepository: rakutenSearchRepository,
           ),
         ),
         ChangeNotifierProvider(
@@ -191,7 +199,7 @@ class MyApp extends StatelessWidget {
           );
         },
         navigatorObservers: <NavigatorObserver>[appRouteObserver],
-        home: const AppShell(),
+        home: const AppEntryHost(),
       ),
     );
   }

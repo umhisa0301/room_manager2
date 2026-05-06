@@ -8,6 +8,7 @@ import '../models/rakuten_search_item.dart';
 import '../models/room_activity_event.dart';
 import '../repository/pending_collect_notice_repository.dart';
 import '../repository/rakuten_managed_product_repository.dart';
+import '../repository/rakuten_search_repository.dart';
 import 'room_activity_event_provider.dart';
 import '../services/app_action_service.dart';
 import '../services/room_collect_post_limit.dart';
@@ -25,11 +26,13 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     required RakutenManagedProductRepository repository,
     required PendingCollectNoticeRepository pendingCollectNoticeRepository,
     required RoomActivityEventProvider activityEventProvider,
+    RakutenSearchRepository? rakutenSearchRepository,
   }) : _repository = repository,
        _pendingCollectNoticeRepository = pendingCollectNoticeRepository,
        _activityEventProvider = activityEventProvider,
        _roomCollectedRegisterService = RoomCollectedRegisterService(
          repository: repository,
+         searchRepository: rakutenSearchRepository,
        ) {
     _reloadFromStorage();
     _listUiStatus = RakutenManagedProductListUiStatus.ready;

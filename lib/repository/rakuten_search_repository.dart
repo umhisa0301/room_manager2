@@ -170,6 +170,35 @@ class RakutenSearchRepository {
     return afterFilter;
   }
 
+  /// ROOM取り込みコレ済のメタデータ補完用。`shopCode` + `itemCode` で商品検索APIを利用する。
+  ///
+  /// 取り込み直後の軽量補完および将来の [RoomImportMetadataEnrichmentBatch] で再利用する。
+  Future<RakutenSearchItem?> fetchFirstItemForRoomImportEnrichment({
+    required String shopCode,
+    required String itemCode,
+  }) async {
+    final sc = shopCode.trim();
+    final ic = itemCode.trim();
+    if (sc.isEmpty || ic.isEmpty) return null;
+    final condition = RakutenProductSearchCondition(
+      keyword: '',
+      shopCode: sc,
+      itemCode: ic,
+    ).normalized();
+    try {
+      final items = await search(condition: condition);
+      for (final it in items) {
+        if (it.productId.trim() == ic) return it;
+      }
+      return items.isNotEmpty ? items.first : null;
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[Rakuten] room import enrichment failed: $e\n$st');
+      }
+      return null;
+    }
+  }
+
   /// キーワード検索タブ専用: [excludeRegisteredProductIds]（楽天 itemCode / [RakutenSearchItem.productId]）と
   /// [excludeSavedShopCodes]（保存ショップの shopCode）を除いたうえで、
   /// 表示候補が [targetVisibleCount] 件に達するか API が尽きるまで、ページを **1ページずつ** 順取得する。

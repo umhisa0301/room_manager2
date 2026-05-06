@@ -1,5 +1,7 @@
+import '../models/rakuten_search_item.dart';
 import '../models/room_collected_persist_kind.dart';
 import '../repository/rakuten_managed_product_repository.dart';
+import '../repository/rakuten_search_repository.dart';
 import '../utils/room_rakuten_url_normalize.dart';
 import 'rakuten_item_url_parser.dart';
 import 'room_url_resolver.dart';
@@ -12,11 +14,14 @@ class RoomCollectedRegisterService {
   RoomCollectedRegisterService({
     required RakutenManagedProductRepository repository,
     RoomUrlResolver? roomUrlResolver,
+    RakutenSearchRepository? searchRepository,
   }) : _repository = repository,
-       _resolver = roomUrlResolver ?? RoomUrlResolver();
+       _resolver = roomUrlResolver ?? RoomUrlResolver(),
+       _searchRepository = searchRepository;
 
   final RakutenManagedProductRepository _repository;
   final RoomUrlResolver _resolver;
+  final RakutenSearchRepository? _searchRepository;
 
   static const String messageRoomPageAlreadySynced =
       'このROOM投稿はすでに取り込み済みです';
@@ -65,12 +70,29 @@ class RoomCollectedRegisterService {
       );
     }
 
+    RakutenSearchItem? apiEnriched;
+    final searchRepo = _searchRepository;
+    if (searchRepo != null &&
+        verify.shopCode.trim().isNotEmpty &&
+        verify.itemPathSegment.trim().isNotEmpty) {
+      try {
+        apiEnriched =
+            await searchRepo.fetchFirstItemForRoomImportEnrichment(
+          shopCode: verify.shopCode,
+          itemCode: verify.itemPathSegment,
+        );
+      } catch (_) {
+        apiEnriched = null;
+      }
+    }
+
     final persist = await _repository.persistRoomCollectedFromRoomPage(
       roomUrlStoredCanonical: normalizedRoomKey,
       normalizedRoomUrlKey: normalizedRoomKey,
       parsedItem: parsed,
       roomPageTitle: resolved.roomPageTitle ?? '',
       roomPageImageUrl: resolved.roomPageImageUrl ?? '',
+      apiEnrichedItem: apiEnriched,
       roomLikeCount: resolved.roomLikeCount,
       roomCommentCount: resolved.roomCommentCount,
     );

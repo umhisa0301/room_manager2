@@ -5,6 +5,7 @@ import '../models/rakuten_managed_product.dart';
 import '../models/room_sync_result.dart';
 import '../navigation/app_shell_controller.dart';
 import '../repository/rakuten_managed_product_repository.dart';
+import '../repository/rakuten_search_repository.dart';
 import '../services/app_action_service.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_sync_service.dart';
@@ -72,7 +73,10 @@ abstract final class RoomPostImportFlow {
     }
 
     final repo = context.read<RakutenManagedProductRepository>();
-    final service = RoomSyncService(repository: repo);
+    final service = RoomSyncService(
+      repository: repo,
+      searchRepository: context.read<RakutenSearchRepository>(),
+    );
     final limit = RoomImportLimitPolicy.effectiveBatchLimit();
 
     var lastCompleted = 0;

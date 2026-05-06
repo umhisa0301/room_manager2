@@ -43,9 +43,13 @@ class RakutenSearchScreen extends StatefulWidget {
   const RakutenSearchScreen({
     super.key,
     this.initialMode = RakutenSearchInitialMode.product,
+    this.savedShopKeywordEntry = false,
   });
 
   final RakutenSearchInitialMode initialMode;
+
+  /// true のとき「保存ショップで探す」として、[SavedShopProvider] のショップ＋キーワードで検索する。
+  final bool savedShopKeywordEntry;
 
   @override
   State<RakutenSearchScreen> createState() => _RakutenSearchScreenState();
@@ -83,6 +87,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   String? _selectedDiscoveryGenreId;
   bool _selectionMode = false;
   bool _isBulkRegistering = false;
+  bool _savedShopKeywordFlow = false;
   final Set<String> _selectedProductIds = <String>{};
   bool _routeSubscribed = false;
   RakutenKeywordSearchSortMode _genreExploreSort =
@@ -118,6 +123,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }
   }
 
+  bool get _savedShopKeywordEntryEffective =>
+      widget.savedShopKeywordEntry || _savedShopKeywordFlow;
+
   void _resetSearchUi() {
     _keywordController.clear();
     _minPriceController.clear();
@@ -143,6 +151,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _mode = _initialSearchMode;
     _genreExploreSort = RakutenKeywordSearchSortMode.defaultOrder;
     _keywordSort = RakutenKeywordSearchSortMode.defaultOrder;
+    _savedShopKeywordFlow = false;
     context.read<RakutenSearchProvider>().resetTransientState();
     if (mounted) setState(() {});
   }
@@ -429,6 +438,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           SearchGroupScreenShell(
             backgroundColor: HomeScreenColors.canvas,
             contentPadding: EdgeInsets.zero,
+            title: _savedShopKeywordEntryEffective ? '保存ショップで探す' : null,
+            subtitle: _savedShopKeywordEntryEffective
+                ? 'ショップを選んでからキーワード検索します（店内のみ）'
+                : null,
             child:
                 Consumer3<
                   RakutenSearchProvider,
@@ -527,9 +540,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     Navigator.of(sheetContext).pop();
     await Future<void>.delayed(Duration.zero);
     if (!mounted) return;
-    await Navigator.of(context).push<void>(
-      MaterialPageRoute<void>(builder: (_) => const SavedShopsScreen()),
-    );
+    setState(() {
+      _savedShopKeywordFlow = true;
+    });
+    _onModeChanged(_RakutenSearchMode.product);
   }
 
   Future<void> _showAddCandidateSheet() {
@@ -703,6 +717,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   void _runSearch(BuildContext context) {
     _dismissKeywordSearchKeyboard();
+    if (_savedShopKeywordEntryEffective) {
+      final scopedShop = _effectiveShopCodeForApi(context);
+      if (scopedShop == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('保存ショップを選んでください')),
+        );
+        return;
+      }
+    }
     final detailError = _validateKeywordSearchInputs();
     if (detailError != null) {
       ScaffoldMessenger.of(
@@ -725,6 +748,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         .map((e) => e.shopId.trim())
         .where((e) => e.isNotEmpty)
         .toSet();
+    final scopedShopFilter = _effectiveShopCodeForApi(context);
+    final excludeSavedForKeywordPass =
+        _savedShopKeywordEntryEffective && scopedShopFilter != null
+        ? savedShopCodes.difference({scopedShopFilter})
+        : savedShopCodes;
     if (kDebugMode) {
       final c = condition;
       debugPrint(
@@ -733,14 +761,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         'genreName(lookup)=${_labelForGenre(c.genreId) ?? '-'} '
         'shopCode=${c.shopCode ?? '-'} '
         'shopName(saved lookup)=${_savedShopNameForLog(context, c.shopCode)} hits=30 '
-        'excludeRegistered=${excludeIds.length} savedShopExcludeSet=${savedShopCodes.length} '
-        '(scoped shop はリポジトリで saved 除外対象外)',
+        'excludeRegistered=${excludeIds.length} '
+        'savedShopExcludeSet=${excludeSavedForKeywordPass.length} ',
       );
     }
     context.read<RakutenSearchProvider>().searchWithCondition(
       condition,
       excludeRegisteredProductIds: excludeIds,
-      excludeSavedShopCodes: savedShopCodes,
+      excludeSavedShopCodes: excludeSavedForKeywordPass,
     );
   }
 
@@ -994,6 +1022,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       _dismissKeywordSearchKeyboard();
     }
     setState(() {
+      if (next != _RakutenSearchMode.product) {
+        _savedShopKeywordFlow = false;
+      }
       _mode = next;
       _selectionMode = false;
       _selectedProductIds.clear();

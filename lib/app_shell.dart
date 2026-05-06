@@ -10,7 +10,6 @@ import 'screens/comments_placeholder_screen.dart';
 import 'screens/activity_placeholder_screen.dart';
 import 'screens/add_candidate_from_url_screen.dart';
 import 'screens/mypage_placeholder_screen.dart';
-import 'screens/saved_shops_screen.dart';
 import 'screens/comment_template_edit_screen.dart';
 import 'widgets/add_candidate_entry_sheet.dart';
 import 'widgets/common_draggable_edge_fab.dart';
@@ -66,8 +65,9 @@ class _AppShellState extends State<AppShell> {
     Navigator.of(sheetContext).pop();
     await Future<void>.delayed(Duration.zero);
     if (!mounted) return;
-    await Navigator.of(context).push<void>(
-      MaterialPageRoute<void>(builder: (_) => const SavedShopsScreen()),
+    await openRakutenSearchScreen(
+      context,
+      savedShopKeywordEntry: true,
     );
   }
 
