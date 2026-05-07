@@ -7,6 +7,7 @@ import '../constants/legal_urls.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/user_profile.dart';
 import '../navigation/app_shell_controller.dart';
+import '../repository/easy_initial_setup_repository.dart';
 import '../services/app_action_service.dart';
 import '../services/room_import_limit_policy.dart';
 import '../repository/rakuten_managed_product_repository.dart';
@@ -24,6 +25,7 @@ import '../state/bulk_operation_state_controller.dart';
 import '../state/room_import_controller.dart';
 import '../theme/app_theme.dart';
 import '../utils/user_profile_genre_migration.dart';
+import '../utils/onboarding_ui_log.dart';
 import '../widgets/favorite_genre_picker_sheet.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
@@ -124,6 +126,15 @@ class MypagePlaceholderScreen extends StatelessWidget {
     );
   }
 
+  void _openEasyInitialSetup(BuildContext context) {
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (_) =>
+            const EasyInitialSetupScreen(embeddedInEntryHost: false),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final bottomPad = MediaQuery.paddingOf(context).bottom + _navReserve;
@@ -133,12 +144,13 @@ class MypagePlaceholderScreen extends StatelessWidget {
       body: SafeArea(
         top: false,
         child:
-            Consumer5<
+            Consumer6<
               UserProfileProvider,
               SavedShopProvider,
               RakutenManagedProductProvider,
               RoomActivityEventProvider,
-              ActivityLogProvider
+              ActivityLogProvider,
+              EasyInitialSetupRepository
             >(
               builder:
                   (
@@ -148,9 +160,26 @@ class MypagePlaceholderScreen extends StatelessWidget {
                     managed,
                     activityEvents,
                     activityLog,
+                    setup,
                     _,
                   ) {
                     final profile = profileProvider.profile;
+                    final missingRoomUrl = !profile.hasRoomUrl;
+                    final missingGenre = profile.favoriteGenreIdList.isEmpty;
+                    final missingSavedShop = saved.shops.isEmpty;
+                    final showMyPageSetupCard =
+                        !setup.initialSetupCompleted &&
+                        (missingRoomUrl || missingGenre || missingSavedShop);
+                    logOnboardingUi(
+                      route: 'myPage',
+                      termsAccepted: true,
+                      initialSetupCompleted: setup.initialSetupCompleted,
+                      initialSetupSkipped: setup.initialSetupSkipped,
+                      missingRoomUrl: missingRoomUrl,
+                      missingGenre: missingGenre,
+                      missingSavedShop: missingSavedShop,
+                      showMyPageSetupCard: showMyPageSetupCard,
+                    );
                     final candidateCount = managed.items
                         .where(
                           (e) =>
@@ -179,22 +208,25 @@ class MypagePlaceholderScreen extends StatelessWidget {
                         bottomPad,
                       ),
                       children: [
-                        MyPageHeader(
-                          profile: profile,
-                          savedShopCount: saved.shops.length,
-                          onStepGenre: () =>
-                              _openFavoriteGenrePickerSheet(context),
-                          onStepRoom: () => _openRoomUrlEditSheet(context),
-                          onStepProfile: () => _openProfileEditSheet(context),
-                          onStepSavedShops: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const SavedShopsScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: _gap),
+                        if (showMyPageSetupCard) ...[
+                          MyPageHeader(
+                            profile: profile,
+                            savedShopCount: saved.shops.length,
+                            onOpenSetup: () => _openEasyInitialSetup(context),
+                            onStepGenre: () =>
+                                _openFavoriteGenrePickerSheet(context),
+                            onStepRoom: () => _openRoomUrlEditSheet(context),
+                            onStepProfile: () => _openProfileEditSheet(context),
+                            onStepSavedShops: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute<void>(
+                                  builder: (_) => const SavedShopsScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: _gap),
+                        ],
                         MyPageQuickSummaryCard(
                           candidateCount: candidateCount,
                           doneCount: doneCount,
@@ -224,31 +256,6 @@ class MypagePlaceholderScreen extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: _gap),
-                        ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: CircleAvatar(
-                            backgroundColor: AppColors.accentLight.withValues(
-                              alpha: 0.35,
-                            ),
-                            child: const Icon(Icons.tune_rounded),
-                          ),
-                          title: const Text('かんたん初期設定'),
-                          subtitle: const Text(
-                            'ROOM URL・ジャンル・保存ショップ',
-                          ),
-                          trailing: const Icon(Icons.chevron_right_rounded),
-                          onTap: () {
-                            Navigator.of(context).push<void>(
-                              MaterialPageRoute<void>(
-                                builder: (_) =>
-                                    const EasyInitialSetupScreen(
-                                      embeddedInEntryHost: false,
-                                    ),
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: _gap),
                         MyPageRoomSyncSection(
                           onEditRoomUrl: () => _openRoomUrlEditSheet(context),
                         ),
@@ -257,6 +264,8 @@ class MypagePlaceholderScreen extends StatelessWidget {
                           onOpenDemo: kClosedTestDemoAvailable
                               ? () => _openClosedTestDemo(context)
                               : null,
+                          onOpenInitialSetup: () =>
+                              _openEasyInitialSetup(context),
                         ),
                       ],
                     );
@@ -272,6 +281,7 @@ class MyPageHeader extends StatefulWidget {
     super.key,
     required this.profile,
     required this.savedShopCount,
+    required this.onOpenSetup,
     required this.onStepGenre,
     required this.onStepRoom,
     required this.onStepProfile,
@@ -280,6 +290,7 @@ class MyPageHeader extends StatefulWidget {
 
   final UserProfile profile;
   final int savedShopCount;
+  final VoidCallback onOpenSetup;
   final VoidCallback onStepGenre;
   final VoidCallback onStepRoom;
   final VoidCallback onStepProfile;
@@ -305,12 +316,10 @@ class _MyPageHeaderState extends State<MyPageHeader> {
   String _nextStepShortTitle(int firstIncomplete) {
     switch (firstIncomplete) {
       case 0:
-        return 'ジャンル設定';
+        return 'ROOMプロフィールURL';
       case 1:
-        return 'ROOM連携';
+        return 'よく使うジャンル';
       case 2:
-        return 'プロフィール入力';
-      case 3:
         return '保存ショップ';
       default:
         return '';
@@ -334,29 +343,18 @@ class _MyPageHeaderState extends State<MyPageHeader> {
   @override
   Widget build(BuildContext context) {
     final genreCount = widget.profile.favoriteGenreIdList.length;
-    final profileConfigured =
-        widget.profile.displayName.trim().isNotEmpty ||
-        widget.profile.age != null ||
-        widget.profile.genderKey != null ||
-        widget.profile.occupation.trim().isNotEmpty;
     final hasGenres = genreCount > 0;
     final hasRoomUrl = widget.profile.hasRoomUrl;
     final savedDone = widget.savedShopCount > 0;
 
-    final stepGenreDone = hasGenres;
     final stepRoomDone = hasRoomUrl;
-    final stepProfileDone = profileConfigured;
+    final stepGenreDone = hasGenres;
     final stepSavedDone = savedDone;
 
-    final stepDoneFlags = <bool>[
-      stepGenreDone,
-      stepRoomDone,
-      stepProfileDone,
-      stepSavedDone,
-    ];
+    final stepDoneFlags = <bool>[stepRoomDone, stepGenreDone, stepSavedDone];
     final completedCount = stepDoneFlags.where((e) => e).length;
     final firstIncomplete = stepDoneFlags.indexWhere((e) => !e);
-    final remaining = 4 - completedCount;
+    final remaining = 3 - completedCount;
     final allDone = remaining == 0;
 
     if (allDone) {
@@ -459,7 +457,7 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                         children: [
                           const SizedBox(height: 14),
                           Text(
-                            '進捗：$completedCount / 4 完了',
+                            '進捗：$completedCount / 3 完了',
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
                                   color: AppColors.textSecondary,
@@ -483,38 +481,28 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                           const SizedBox(height: 10),
                           _MyPageStepRow(
                             stepLabel: 'STEP1',
-                            title: 'ジャンル設定',
-                            description: '興味のあるジャンルを選ぶと、あなた向けの候補が出やすくなります。',
-                            isDone: stepGenreDone,
-                            isNextStep: firstIncomplete == 0,
-                            onTap: widget.onStepGenre,
-                          ),
-                          const SizedBox(height: 8),
-                          _MyPageStepRow(
-                            stepLabel: 'STEP2',
-                            title: 'ROOM連携',
-                            description:
-                                'ROOMのURLを登録すると、投稿スタイルに近い商品を優先しやすくなります。',
+                            title: 'ROOMプロフィールURL',
+                            description: 'ROOM投稿取り込みに使います。あとから変更できます。',
                             isDone: stepRoomDone,
-                            isNextStep: firstIncomplete == 1,
+                            isNextStep: firstIncomplete == 0,
                             onTap: widget.onStepRoom,
                           ),
                           const SizedBox(height: 8),
                           _MyPageStepRow(
-                            stepLabel: 'STEP3',
-                            title: 'プロフィール入力',
-                            description: '年代や属性を入れると、提案のブレが減ります。',
-                            isDone: stepProfileDone,
-                            isNextStep: firstIncomplete == 2,
-                            onTap: widget.onStepProfile,
+                            stepLabel: 'STEP2',
+                            title: 'よく使うジャンル',
+                            description: 'おすすめ候補の精度が上がります。スキップできます。',
+                            isDone: stepGenreDone,
+                            isNextStep: firstIncomplete == 1,
+                            onTap: widget.onStepGenre,
                           ),
                           const SizedBox(height: 8),
                           _MyPageStepRow(
-                            stepLabel: 'STEP4',
+                            stepLabel: 'STEP3',
                             title: '保存ショップ',
-                            description: '保存したショップが多いほど精度が上がります。',
+                            description: 'よく使うショップ内で商品を探しやすくなります。',
                             isDone: stepSavedDone,
-                            isNextStep: firstIncomplete == 3,
+                            isNextStep: firstIncomplete == 2,
                             onTap: widget.onStepSavedShops,
                           ),
                         ],
@@ -522,6 +510,13 @@ class _MyPageHeaderState extends State<MyPageHeader> {
                     : const SizedBox(width: double.infinity),
               ),
             ),
+          ),
+          const SizedBox(height: 14),
+          AppPrimaryButton(
+            label: 'かんたん初期設定を再開',
+            height: 46,
+            icon: const Icon(Icons.play_arrow_rounded),
+            onPressed: widget.onOpenSetup,
           ),
         ],
       ),
@@ -1030,25 +1025,17 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
         searchRepository: searchRepo,
         productRepository: productRepo,
       );
-      messenger.showSnackBar(
-        const SnackBar(content: Text('商品情報を補完しています…')),
-      );
+      messenger.showSnackBar(const SnackBar(content: Text('商品情報を補完しています…')));
       final n = await svc.enrichRoomImportedProducts(limit: 20);
       if (!mounted) return;
       await managedProv.refreshManagedProductList();
       if (!mounted) return;
       messenger.showSnackBar(
-        SnackBar(
-          content: Text(
-            'ショップ名・ジャンル名を更新しました（成功 $n 件／上限20件まで）',
-          ),
-        ),
+        SnackBar(content: Text('ショップ名・ジャンル名を更新しました（成功 $n 件／上限20件まで）')),
       );
     } catch (e) {
       if (!mounted) return;
-      messenger.showSnackBar(
-        SnackBar(content: Text('商品情報の補完に失敗しました: $e')),
-      );
+      messenger.showSnackBar(SnackBar(content: Text('商品情報の補完に失敗しました: $e')));
     } finally {
       bulk.setMetadataEnriching(false);
     }
@@ -1156,9 +1143,14 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
 }
 
 class MyPageSettingsSection extends StatelessWidget {
-  const MyPageSettingsSection({super.key, this.onOpenDemo});
+  const MyPageSettingsSection({
+    super.key,
+    this.onOpenDemo,
+    required this.onOpenInitialSetup,
+  });
 
   final VoidCallback? onOpenDemo;
+  final VoidCallback onOpenInitialSetup;
 
   @override
   Widget build(BuildContext context) {
@@ -1183,6 +1175,14 @@ class MyPageSettingsSection extends StatelessWidget {
             ),
             const SizedBox(height: 8),
           ],
+          AppSecondaryButton(
+            label: 'かんたん初期設定をやり直す',
+            onPressed: onOpenInitialSetup,
+            icon: const Icon(Icons.tune_rounded),
+            expand: true,
+            height: 38,
+          ),
+          const SizedBox(height: 8),
           OutlinedButton.icon(
             onPressed: () => AppActionService.openUrl(
               context,
@@ -1193,10 +1193,8 @@ class MyPageSettingsSection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           OutlinedButton.icon(
-            onPressed: () => AppActionService.openUrl(
-              context,
-              url: LegalUrls.privacyPolicy,
-            ),
+            onPressed: () =>
+                AppActionService.openUrl(context, url: LegalUrls.privacyPolicy),
             icon: const Icon(Icons.shield_outlined),
             label: const Text('プライバシーポリシーを開く'),
           ),
@@ -1395,6 +1393,7 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
     );
   }
 }
+
 class _GenderChipField extends StatelessWidget {
   const _GenderChipField({required this.value, required this.onChanged});
 

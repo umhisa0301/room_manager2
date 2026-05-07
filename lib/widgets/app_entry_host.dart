@@ -6,6 +6,9 @@ import '../repository/easy_initial_setup_repository.dart';
 import '../repository/legal_consent_repository.dart';
 import '../screens/easy_initial_setup_screen.dart';
 import '../screens/legal_consent_screen.dart';
+import '../state/saved_shop_provider.dart';
+import '../state/user_profile_provider.dart';
+import '../utils/onboarding_ui_log.dart';
 
 /// 規約同意済みなら [AppShell]、未なら [LegalConsentScreen]。
 /// 初期設定ウィザード未完了なら [EasyInitialSetupScreen] を優先。
@@ -17,56 +20,87 @@ class AppEntryHost extends StatefulWidget {
 }
 
 class _AppEntryHostState extends State<AppEntryHost> {
-  String? _lastOnboardingRouteLogged;
+  String? _lastOnboardingUiLogSignature;
 
   void _logOnboarding({
     required bool termsAccepted,
     required EasyInitialSetupRepository setup,
     required String route,
+    required bool missingRoomUrl,
+    required bool missingGenre,
+    required bool missingSavedShop,
+    required bool showMyPageSetupCard,
   }) {
-    if (_lastOnboardingRouteLogged == route) return;
-    _lastOnboardingRouteLogged = route;
-    final shouldShow = termsAccepted && !setup.isDismissed;
-    debugPrint('[ONBOARDING] termsAccepted=$termsAccepted');
-    debugPrint(
-      '[ONBOARDING] initialSetupCompleted=${setup.initialSetupCompleted}',
+    final signature = [
+      route,
+      termsAccepted,
+      setup.initialSetupCompleted,
+      setup.initialSetupSkipped,
+      missingRoomUrl,
+      missingGenre,
+      missingSavedShop,
+      showMyPageSetupCard,
+    ].join('|');
+    if (_lastOnboardingUiLogSignature == signature) return;
+    _lastOnboardingUiLogSignature = signature;
+    logOnboardingUi(
+      route: route,
+      termsAccepted: termsAccepted,
+      initialSetupCompleted: setup.initialSetupCompleted,
+      initialSetupSkipped: setup.initialSetupSkipped,
+      missingRoomUrl: missingRoomUrl,
+      missingGenre: missingGenre,
+      missingSavedShop: missingSavedShop,
+      showMyPageSetupCard: showMyPageSetupCard,
     );
-    debugPrint('[ONBOARDING] initialSetupSkipped=${setup.initialSetupSkipped}');
-    debugPrint('[ONBOARDING] shouldShowInitialSetup=$shouldShow');
-    debugPrint('[ONBOARDING] route=$route');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LegalConsentRepository>(
-      builder: (context, legal, _) {
-        if (!legal.isAccepted) {
-          _logOnboarding(
-            termsAccepted: false,
-            setup: context.read<EasyInitialSetupRepository>(),
-            route: 'legal_consent',
-          );
-          return const LegalConsentScreen();
-        }
-        return Consumer<EasyInitialSetupRepository>(
-          builder: (context, setup, _) {
-            if (!setup.isDismissed) {
-              _logOnboarding(
-                termsAccepted: true,
-                setup: setup,
-                route: 'easy_initial_setup',
-              );
-              return const EasyInitialSetupScreen(embeddedInEntryHost: true);
-            }
-            _logOnboarding(
-              termsAccepted: true,
-              setup: setup,
-              route: 'app_shell',
-            );
-            return const AppShell();
-          },
-        );
-      },
+    final legal = context.watch<LegalConsentRepository>();
+    final setup = context.watch<EasyInitialSetupRepository>();
+    final profile = context.watch<UserProfileProvider>().profile;
+    final savedShopCount = context.watch<SavedShopProvider>().shops.length;
+    final missingRoomUrl = !profile.hasRoomUrl;
+    final missingGenre = profile.favoriteGenreIdList.isEmpty;
+    final missingSavedShop = savedShopCount <= 0;
+    final showMyPageSetupCard =
+        !setup.initialSetupCompleted &&
+        (missingRoomUrl || missingGenre || missingSavedShop);
+
+    if (!legal.isAccepted) {
+      _logOnboarding(
+        termsAccepted: false,
+        setup: setup,
+        route: 'legal',
+        missingRoomUrl: missingRoomUrl,
+        missingGenre: missingGenre,
+        missingSavedShop: missingSavedShop,
+        showMyPageSetupCard: false,
+      );
+      return const LegalConsentScreen();
+    }
+    if (!setup.isDismissed) {
+      _logOnboarding(
+        termsAccepted: true,
+        setup: setup,
+        route: 'easySetup',
+        missingRoomUrl: missingRoomUrl,
+        missingGenre: missingGenre,
+        missingSavedShop: missingSavedShop,
+        showMyPageSetupCard: false,
+      );
+      return const EasyInitialSetupScreen(embeddedInEntryHost: true);
+    }
+    _logOnboarding(
+      termsAccepted: true,
+      setup: setup,
+      route: 'home',
+      missingRoomUrl: missingRoomUrl,
+      missingGenre: missingGenre,
+      missingSavedShop: missingSavedShop,
+      showMyPageSetupCard: showMyPageSetupCard,
     );
+    return const AppShell();
   }
 }

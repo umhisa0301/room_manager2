@@ -8,6 +8,7 @@ import '../services/rakuten_genre_master_service.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../utils/onboarding_ui_log.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
@@ -30,6 +31,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   final TextEditingController _roomUrlController = TextEditingController();
   int _pageIndex = 0;
   bool _pageControllerAttached = false;
+  String? _lastOnboardingUiLogSignature;
 
   int _firstIncompletePage(UserProfile profile, int savedShopCount) {
     if (!profile.hasRoomUrl) return 0;
@@ -66,9 +68,9 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     final nav = Navigator.of(context);
     final embedded = widget.embeddedInEntryHost;
     await context.read<EasyInitialSetupRepository>().dismiss(
-          markFlowCompleted: markCompleted,
-          markFlowSkipped: markSkipped,
-        );
+      markFlowCompleted: markCompleted,
+      markFlowSkipped: markSkipped,
+    );
     if (!mounted) return;
     if (!embedded) {
       nav.pop();
@@ -102,7 +104,11 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     );
     if (picked == null || !mounted) return;
     final svc = RakutenGenreMasterService.instance;
-    final idList = picked.map((e) => e.trim()).where((e) => e.isNotEmpty).take(5).toList();
+    final idList = picked
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .take(5)
+        .toList();
     final names = <String>[];
     for (final id in idList) {
       final n = svc.getGenreNameById(id);
@@ -145,6 +151,40 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     await _persistDismissAndLeave(context, markCompleted: true);
   }
 
+  void _logEasySetupState(
+    UserProfile profile,
+    int savedShopCount,
+    EasyInitialSetupRepository setup,
+  ) {
+    final missingRoomUrl = !profile.hasRoomUrl;
+    final missingGenre = profile.favoriteGenreIdList.isEmpty;
+    final missingSavedShop = savedShopCount <= 0;
+    final showMyPageSetupCard =
+        !setup.initialSetupCompleted &&
+        (missingRoomUrl || missingGenre || missingSavedShop);
+    final signature = [
+      _pageIndex,
+      setup.initialSetupCompleted,
+      setup.initialSetupSkipped,
+      missingRoomUrl,
+      missingGenre,
+      missingSavedShop,
+      showMyPageSetupCard,
+    ].join('|');
+    if (_lastOnboardingUiLogSignature == signature) return;
+    _lastOnboardingUiLogSignature = signature;
+    logOnboardingUi(
+      route: 'easySetup',
+      termsAccepted: true,
+      initialSetupCompleted: setup.initialSetupCompleted,
+      initialSetupSkipped: setup.initialSetupSkipped,
+      missingRoomUrl: missingRoomUrl,
+      missingGenre: missingGenre,
+      missingSavedShop: missingSavedShop,
+      showMyPageSetupCard: showMyPageSetupCard,
+    );
+  }
+
   void _skipStep(BuildContext context) async {
     if (_pageIndex >= 2) {
       await _persistDismissAndLeave(context, markSkipped: true);
@@ -170,7 +210,8 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
         Align(
           alignment: Alignment.center,
           child: TextButton(
-            onPressed: () => _persistDismissAndLeave(context, markSkipped: true),
+            onPressed: () =>
+                _persistDismissAndLeave(context, markSkipped: true),
             child: const Text('あとで設定する'),
           ),
         ),
@@ -182,8 +223,9 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
         AppPrimaryButton(
           label: hasGenres ? '次へ' : 'ジャンルを選んで次へ',
           height: 48,
-          onPressed:
-              hasGenres ? () => _goNext(context) : () => _openGenrePicker(context),
+          onPressed: hasGenres
+              ? () => _goNext(context)
+              : () => _openGenrePicker(context),
         ),
         const SizedBox(height: 8),
         Align(
@@ -199,15 +241,13 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       AppPrimaryButton(
         label: savedCount >= 1 ? 'はじめる' : 'ショップ発掘を開く',
         height: 48,
-        icon: savedCount >= 1
-            ? null
-            : const Icon(Icons.travel_explore_rounded),
+        icon: savedCount >= 1 ? null : const Icon(Icons.travel_explore_rounded),
         onPressed: savedCount >= 1
             ? () => _persistDismissAndLeave(context, markCompleted: true)
             : () => openRakutenSearchScreen(
-                  context,
-                  initialMode: RakutenSearchInitialMode.shopDiscovery,
-                ),
+                context,
+                initialMode: RakutenSearchInitialMode.shopDiscovery,
+              ),
       ),
       const SizedBox(height: 8),
       Align(
@@ -224,11 +264,13 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   Widget build(BuildContext context) {
     final controller = _pageController;
     if (controller == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final theme = Theme.of(context);
+    final profile = context.watch<UserProfileProvider>().profile;
+    final savedShopCount = context.watch<SavedShopProvider>().shops.length;
+    final setup = context.watch<EasyInitialSetupRepository>();
+    _logEasySetupState(profile, savedShopCount, setup);
     return Scaffold(
       backgroundColor: AppColors.surface,
       appBar: AppBar(
@@ -253,9 +295,17 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
               Row(
                 children: [
                   _StepDot(active: _pageIndex == 0, label: '1'),
-                  Expanded(child: Divider(color: AppColors.divider.withValues(alpha: 0.7))),
+                  Expanded(
+                    child: Divider(
+                      color: AppColors.divider.withValues(alpha: 0.7),
+                    ),
+                  ),
                   _StepDot(active: _pageIndex == 1, label: '2'),
-                  Expanded(child: Divider(color: AppColors.divider.withValues(alpha: 0.7))),
+                  Expanded(
+                    child: Divider(
+                      color: AppColors.divider.withValues(alpha: 0.7),
+                    ),
+                  ),
                   _StepDot(active: _pageIndex == 2, label: '3'),
                 ],
               ),
@@ -310,24 +360,19 @@ class _StepDot extends StatelessWidget {
     final c = active ? AppColors.accentPrimary : AppColors.textTertiary;
     return CircleAvatar(
       radius: 14,
-      backgroundColor: active ? AppColors.accentLight : AppColors.surfaceVariant,
+      backgroundColor: active
+          ? AppColors.accentLight
+          : AppColors.surfaceVariant,
       child: Text(
         label,
-        style: TextStyle(
-          fontWeight: FontWeight.w900,
-          fontSize: 12,
-          color: c,
-        ),
+        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, color: c),
       ),
     );
   }
 }
 
 class _StepRoomUrl extends StatelessWidget {
-  const _StepRoomUrl({
-    required this.controller,
-    required this.onChanged,
-  });
+  const _StepRoomUrl({required this.controller, required this.onChanged});
 
   final TextEditingController controller;
   final VoidCallback onChanged;
@@ -342,14 +387,14 @@ class _StepRoomUrl extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Step 1：ROOMプロフィールURL',
+              'ROOMプロフィールURL',
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w900,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'ROOM投稿取り込みに使います。',
+              'ROOM投稿取り込みに使います。あとから変更できます。',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.35,
@@ -386,14 +431,14 @@ class _StepGenres extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Step 2：よく使うジャンル',
+              'よく使うジャンル',
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w900,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'おすすめ候補の精度が上がります。',
+              'おすすめ候補の精度が上がります。スキップできます。',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.35,
@@ -440,7 +485,7 @@ class _StepSavedShops extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Step 3：保存ショップ',
+              '保存ショップ',
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w900,
               ),
