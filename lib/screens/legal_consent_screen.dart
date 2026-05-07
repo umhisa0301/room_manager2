@@ -76,6 +76,7 @@ class _LegalConsentScreenState extends State<LegalConsentScreen> {
                             onPressed: () => AppActionService.openUrl(
                               context,
                               url: LegalUrls.termsOfService,
+                              failureMessage: 'ページを開けませんでした。通信状態を確認してください',
                             ),
                             child: const Text('利用規約を開く'),
                           ),
@@ -83,6 +84,7 @@ class _LegalConsentScreenState extends State<LegalConsentScreen> {
                             onPressed: () => AppActionService.openUrl(
                               context,
                               url: LegalUrls.privacyPolicy,
+                              failureMessage: 'ページを開けませんでした。通信状態を確認してください',
                             ),
                             child: const Text('プライバシーポリシーを開く'),
                           ),
@@ -98,7 +100,7 @@ class _LegalConsentScreenState extends State<LegalConsentScreen> {
                 contentPadding: EdgeInsets.zero,
                 controlAffinity: ListTileControlAffinity.leading,
                 title: Text(
-                  '利用規約とプライバシーポリシーに同意します',
+                  '利用規約とプライバシーポリシーを確認し、同意します',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),

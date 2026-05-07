@@ -26,6 +26,7 @@ class AppActionService {
     BuildContext context, {
     required String url,
     bool showUserFeedback = true,
+    String failureMessage = 'URLを開けませんでした',
   }) async {
     final uri = Uri.tryParse(url.trim());
     if (uri == null || (uri.scheme != 'http' && uri.scheme != 'https')) {
@@ -41,14 +42,14 @@ class AppActionService {
       if (!ok && showUserFeedback && context.mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text('URLを開けませんでした')));
+        ).showSnackBar(SnackBar(content: Text(failureMessage)));
       }
       return ok;
     } catch (_) {
       if (showUserFeedback && context.mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text('URLを開けませんでした')));
+        ).showSnackBar(SnackBar(content: Text(failureMessage)));
       }
       return false;
     }

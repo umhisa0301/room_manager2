@@ -78,6 +78,7 @@ class EasyInitialSetupRepository extends ChangeNotifier {
       await _prefs.setBool(completedKey, true);
       await _prefs.setBool(skippedKey, false);
     } else if (markFlowSkipped) {
+      await _prefs.setBool(completedKey, false);
       await _prefs.setBool(skippedKey, true);
     }
     await _prefs.setBool(dismissedKey, true);
