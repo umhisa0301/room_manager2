@@ -121,7 +121,7 @@ class ShopDiscoveryCard extends StatelessWidget {
               if (showOpenShopAction) ...[
                 Expanded(
                   child: AppPrimaryButton(
-                    label: '商品を見て候補登録',
+                    label: '候補に追加',
                     onPressed: onOpenShop,
                     icon: const Icon(Icons.storefront_outlined),
                     height: 52,
@@ -206,11 +206,21 @@ class _ThumbStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return Text(
-        '代表商品がありません',
-        style: Theme.of(
-          context,
-        ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+      return Container(
+        height: 58,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: HomeScreenColors.candidateThumbPlaceholder.withValues(
+            alpha: 0.35,
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          '商品画像取得中',
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+        ),
       );
     }
     return Row(
@@ -238,7 +248,16 @@ class _ThumbItem extends StatelessWidget {
           alpha: 0.35,
         ),
         child: item.imageUrl.trim().isEmpty
-            ? Icon(Icons.image_outlined, color: HomeScreenColors.footnoteMuted)
+            ? Center(
+                child: Text(
+                  '商品画像取得中',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: HomeScreenColors.footnoteMuted,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              )
             : Image.network(
                 item.imageUrl,
                 fit: BoxFit.cover,

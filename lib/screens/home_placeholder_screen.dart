@@ -435,6 +435,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                     todayRecommendationHomeHintLine(
                                       bundle: recProvider.bundle,
                                       isLoading: recProvider.isLoading,
+                                      postStyleKeys: userProfileProvider
+                                          .profile
+                                          .postStyleList,
                                     ),
                                 onOpenSearch: () =>
                                     openRakutenSearchScreen(context),

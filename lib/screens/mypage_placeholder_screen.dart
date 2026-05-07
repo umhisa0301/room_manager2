@@ -27,6 +27,7 @@ import '../theme/app_theme.dart';
 import '../utils/user_profile_genre_migration.dart';
 import '../utils/onboarding_ui_log.dart';
 import '../widgets/favorite_genre_picker_sheet.dart';
+import '../widgets/post_style_picker_sheet.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
@@ -63,14 +64,36 @@ class MypagePlaceholderScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _openGenderEditSheet(BuildContext context) async {
-    await showModalBottomSheet<void>(
+  Future<void> _openPostStylePickerSheet(BuildContext context) async {
+    final profile = context.read<UserProfileProvider>().profile;
+    final picked = await showModalBottomSheet<List<String>>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
       showDragHandle: true,
-      builder: (sheetContext) => const GenderEditSheet(),
+      builder: (sheetContext) =>
+          PostStylePickerSheet(initialSelectedKeys: profile.postStyleList),
     );
+    if (picked == null || !context.mounted) return;
+    final base = context.read<UserProfileProvider>().profile;
+    final next = UserProfile(
+      displayName: base.displayName,
+      age: base.age,
+      genderKey: base.genderKey,
+      occupation: base.occupation,
+      favoriteGenres: base.favoriteGenres,
+      favoriteGenreIds: base.favoriteGenreIds,
+      postStyles: picked
+          .where(UserProfile.postStyleKeys.contains)
+          .take(3)
+          .join('、'),
+      roomUrl: base.roomUrl,
+    );
+    await context.read<UserProfileProvider>().saveProfile(next);
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('投稿スタイルを保存しました')));
   }
 
   Future<void> _openFavoriteGenrePickerSheet(BuildContext context) async {
@@ -120,6 +143,7 @@ class MypagePlaceholderScreen extends StatelessWidget {
       occupation: base.occupation,
       favoriteGenres: names.join('、'),
       favoriteGenreIds: idList.join('、'),
+      postStyles: base.postStyles,
       roomUrl: base.roomUrl,
     );
     await context.read<UserProfileProvider>().saveProfile(next);
@@ -247,7 +271,8 @@ class MypagePlaceholderScreen extends StatelessWidget {
                           profile: profile,
                           savedShopCount: saved.shops.length,
                           onEditNickname: () => _openProfileEditSheet(context),
-                          onEditGender: () => _openGenderEditSheet(context),
+                          onEditPostStyles: () =>
+                              _openPostStylePickerSheet(context),
                           onEditRoomUrl: () => _openRoomUrlEditSheet(context),
                           onEditGenres: () =>
                               _openFavoriteGenrePickerSheet(context),
@@ -1242,7 +1267,7 @@ class MyPageRegisteredContentCard extends StatelessWidget {
     required this.profile,
     required this.savedShopCount,
     required this.onEditNickname,
-    required this.onEditGender,
+    required this.onEditPostStyles,
     required this.onEditRoomUrl,
     required this.onEditGenres,
     required this.onOpenSavedShops,
@@ -1251,7 +1276,7 @@ class MyPageRegisteredContentCard extends StatelessWidget {
   final UserProfile profile;
   final int savedShopCount;
   final VoidCallback onEditNickname;
-  final VoidCallback onEditGender;
+  final VoidCallback onEditPostStyles;
   final VoidCallback onEditRoomUrl;
   final VoidCallback onEditGenres;
   final VoidCallback onOpenSavedShops;
@@ -1259,7 +1284,7 @@ class MyPageRegisteredContentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nickname = profile.displayName.trim().isEmpty ? '未設定' : '登録済み';
-    final gender = UserProfile.genderLabelJa(profile.genderKey) ?? '未設定';
+    final postStyles = profile.postStyleLabelsText;
     final roomUrl = profile.hasRoomUrl ? '登録済み' : '未設定';
     final genreCount = profile.favoriteGenreIdList.length;
     return AppCard(
@@ -1269,7 +1294,7 @@ class MyPageRegisteredContentCard extends StatelessWidget {
         children: [
           const AppSectionHeader(
             title: '登録内容',
-            subtitle: 'ROOM URL・ニックネーム・ジャンル・保存ショップを確認できます',
+            subtitle: 'ROOM URL・ニックネーム・投稿スタイル・ジャンル・保存ショップを確認できます',
             icon: Icons.assignment_ind_outlined,
           ),
           const SizedBox(height: 10),
@@ -1279,9 +1304,9 @@ class MyPageRegisteredContentCard extends StatelessWidget {
             onTap: onEditNickname,
           ),
           _RegisteredContentRow(
-            title: '性別',
-            value: gender,
-            onTap: onEditGender,
+            title: '投稿スタイル',
+            value: postStyles,
+            onTap: onEditPostStyles,
           ),
           _RegisteredContentRow(
             title: 'ROOM URL',
@@ -1387,6 +1412,7 @@ class _ProfileEditSheetState extends State<ProfileEditSheet> {
       occupation: base.occupation,
       favoriteGenres: base.favoriteGenres,
       favoriteGenreIds: base.favoriteGenreIds,
+      postStyles: base.postStyles,
       roomUrl: base.roomUrl,
     );
     final messenger = ScaffoldMessenger.of(context);
@@ -1419,112 +1445,6 @@ class _ProfileEditSheetState extends State<ProfileEditSheet> {
       ],
       primaryLabel: '保存',
       onPrimary: _save,
-    );
-  }
-}
-
-class GenderEditSheet extends StatefulWidget {
-  const GenderEditSheet({super.key});
-
-  @override
-  State<GenderEditSheet> createState() => _GenderEditSheetState();
-}
-
-class _GenderEditSheetState extends State<GenderEditSheet> {
-  String? _genderKey;
-
-  @override
-  void initState() {
-    super.initState();
-    _genderKey = context.read<UserProfileProvider>().profile.genderKey;
-  }
-
-  Future<void> _save() async {
-    final base = context.read<UserProfileProvider>().profile;
-    final next = UserProfile(
-      displayName: base.displayName,
-      age: base.age,
-      genderKey: _genderKey,
-      occupation: base.occupation,
-      favoriteGenres: base.favoriteGenres,
-      favoriteGenreIds: base.favoriteGenreIds,
-      roomUrl: base.roomUrl,
-    );
-    final messenger = ScaffoldMessenger.of(context);
-    await context.read<UserProfileProvider>().saveProfile(next);
-    if (!mounted) return;
-    Navigator.of(context).pop();
-    messenger.showSnackBar(const SnackBar(content: Text('性別を保存しました')));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _SheetScaffold(
-      title: '性別を編集',
-      body: [
-        Text(
-          'おすすめ傾向の調整に使えます。未回答でもすべての機能を使えます。',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: AppColors.textSecondary,
-            height: 1.35,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 12),
-        _GenderEditChoices(
-          value: _genderKey,
-          onChanged: (v) => setState(() => _genderKey = v),
-        ),
-      ],
-      primaryLabel: '保存',
-      onPrimary: _save,
-    );
-  }
-}
-
-class _GenderEditChoices extends StatelessWidget {
-  const _GenderEditChoices({required this.value, required this.onChanged});
-
-  final String? value;
-  final ValueChanged<String?> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final items = <({String label, String? value})>[
-      (label: '未設定', value: null),
-      (label: '男性', value: UserProfile.genderMale),
-      (label: '女性', value: UserProfile.genderFemale),
-      (label: 'その他', value: UserProfile.genderOther),
-      (label: '回答しない', value: UserProfile.genderPreferNot),
-    ];
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        for (final item in items)
-          ChoiceChip(
-            label: Text(item.label),
-            selected: value == item.value,
-            showCheckmark: false,
-            selectedColor: AppColors.accentLight,
-            backgroundColor: AppColors.surface,
-            side: BorderSide(
-              color: value == item.value
-                  ? AppColors.accentPrimary.withValues(alpha: 0.45)
-                  : AppColors.divider.withValues(alpha: 0.9),
-            ),
-            labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: value == item.value
-                  ? AppColors.accentPrimary
-                  : AppColors.textSecondary,
-              fontWeight: value == item.value
-                  ? FontWeight.w800
-                  : FontWeight.w600,
-            ),
-            visualDensity: VisualDensity.compact,
-            onSelected: (_) => onChanged(item.value),
-          ),
-      ],
     );
   }
 }
@@ -1605,6 +1525,7 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
       occupation: base.occupation,
       favoriteGenres: base.favoriteGenres,
       favoriteGenreIds: base.favoriteGenreIds,
+      postStyles: base.postStyles,
       roomUrl: url,
     );
     final messenger = ScaffoldMessenger.of(context);
@@ -1673,7 +1594,7 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
         ],
         const SizedBox(height: 8),
         Text(
-          'あなたのROOM投稿を自動でコレ済みに追加できます。未入力でも保存できます。',
+          'あなたのROOM投稿を自動で記録します。投稿済み判定や重複防止に使えます。未入力でも保存できます。',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: AppColors.textSecondary,
             height: 1.35,

@@ -160,6 +160,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
         .toSet();
+    final postStyles = profile.effectivePostStyleList.toSet();
     final keywords = _buildKeywords(profile, managedItems);
     final scoreHintShops = _countManagedShopFrequency(managedItems);
     final doneItems = managedItems
@@ -172,14 +173,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
         .where((e) => e.feedbackSoldAt != null)
         .toList(growable: false);
     final reactedOutcomeItems = doneItems
-        .where(
-          (e) => e.feedbackSoldAt != null || e.feedbackLikedAt != null,
-        )
+        .where((e) => e.feedbackSoldAt != null || e.feedbackLikedAt != null)
         .toList(growable: false);
     final likedOnlyOutcomeItems = reactedOutcomeItems
-        .where(
-          (e) => e.feedbackLikedAt != null && e.feedbackSoldAt == null,
-        )
+        .where((e) => e.feedbackLikedAt != null && e.feedbackSoldAt == null)
         .toList(growable: false);
     final now = DateTime.now();
     final recentCandidates = candidateItems
@@ -211,11 +208,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
     for (final genreId in favoriteGenreIds.take(5)) {
       final keyword = keywords.isEmpty ? '人気' : keywords.first;
       final list = await _searchRepository.search(
-        condition: RakutenProductSearchCondition(
+        condition: _conditionWithPostStyles(
           keyword: keyword,
           genreId: genreId,
-          minReviewCount: 10,
-          minReviewAverage: 3.6,
+          postStyles: postStyles,
         ),
       );
       pool.addAll(list.take(24));
@@ -225,11 +221,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
     for (final shop in savedShops.take(2)) {
       final keyword = keywords.isEmpty ? '人気' : keywords.first;
       final list = await _searchRepository.search(
-        condition: RakutenProductSearchCondition(
+        condition: _conditionWithPostStyles(
           keyword: keyword,
           shopCode: shop.shopId.trim(),
-          minReviewCount: 20,
-          minReviewAverage: 3.8,
+          postStyles: postStyles,
         ),
       );
       pool.addAll(list.take(20));
@@ -237,20 +232,18 @@ class TodayRecommendationProvider extends ChangeNotifier {
     // 通常検索
     for (final keyword in keywords.take(4)) {
       final list = await _searchRepository.search(
-        condition: RakutenProductSearchCondition(
+        condition: _conditionWithPostStyles(
           keyword: keyword,
-          minReviewCount: 20,
-          minReviewAverage: 3.8,
+          postStyles: postStyles,
         ),
       );
       pool.addAll(list.take(30));
     }
     if (pool.isEmpty) {
       final fallback = await _searchRepository.search(
-        condition: const RakutenProductSearchCondition(
+        condition: _conditionWithPostStyles(
           keyword: '人気',
-          minReviewCount: 20,
-          minReviewAverage: 3.8,
+          postStyles: postStyles,
         ),
       );
       pool.addAll(fallback.take(40));
@@ -281,6 +274,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
                 likedOnlyOutcomeItems: likedOnlyOutcomeItems,
                 recentCandidatesForBridge: recentCandidates,
                 staleCandidatesForBridge: staleCandidates,
+                postStyles: postStyles,
               ),
             )
             .toList()
@@ -347,6 +341,51 @@ class TodayRecommendationProvider extends ChangeNotifier {
       map[code] = (map[code] ?? 0) + 1;
     }
     return map;
+  }
+
+  RakutenProductSearchCondition _conditionWithPostStyles({
+    required String keyword,
+    required Set<String> postStyles,
+    String? genreId,
+    String? shopCode,
+  }) {
+    return RakutenProductSearchCondition(
+      keyword: keyword,
+      genreId: genreId,
+      shopCode: shopCode,
+      minPrice: postStyles.contains(UserProfile.postStylePremium) ? 5000 : null,
+      maxPrice: postStyles.contains(UserProfile.postStyleAffordable)
+          ? 3500
+          : null,
+      minReviewCount:
+          postStyles.contains(UserProfile.postStyleHighlyRated) ||
+              postStyles.contains(UserProfile.postStyleReviewRich)
+          ? 20
+          : 10,
+      minReviewAverage: postStyles.contains(UserProfile.postStyleHighlyRated)
+          ? 4.2
+          : 3.6,
+      sort: _sortForPostStyles(postStyles),
+    ).normalized();
+  }
+
+  String? _sortForPostStyles(Set<String> postStyles) {
+    if (postStyles.contains(UserProfile.postStyleAffordable)) {
+      return '+itemPrice';
+    }
+    if (postStyles.contains(UserProfile.postStylePremium)) {
+      return '-itemPrice';
+    }
+    if (postStyles.contains(UserProfile.postStyleHighlyRated)) {
+      return '-reviewAverage';
+    }
+    if (postStyles.contains(UserProfile.postStyleReviewRich)) {
+      return '-reviewCount';
+    }
+    if (postStyles.contains(UserProfile.postStyleTrend)) {
+      return '-updateTimestamp';
+    }
+    return null;
   }
 
   List<_ScoredRecommendation> _pickBalancedRecommendations(
@@ -428,6 +467,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required List<RakutenManagedProduct> likedOnlyOutcomeItems,
     required List<RakutenManagedProduct> recentCandidatesForBridge,
     required List<RakutenManagedProduct> staleCandidatesForBridge,
+    required Set<String> postStyles,
   }) {
     final genreMatch = _genreMatchScore(
       item,
@@ -447,6 +487,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final priceScore = _priceScore(item);
 
     final marketScore = _marketScore(item, priceScore: priceScore);
+    final styleScore = _postStyleScore(item, postStyles);
 
     final outcomeBoost = _outcomeInsightBoost(
       item,
@@ -465,7 +506,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
         candidateSimilarity * 1.5 +
         shopMatch * 1.2 +
         outcomeBoost;
-    final finalScore = personalizedScore * 4 + marketScore * 5 + priceScore * 2;
+    final finalScore =
+        personalizedScore * 4 +
+        marketScore * 5 +
+        priceScore * 2 +
+        styleScore * 3;
     final isPersonalized =
         outcomeBoost >= 1.5 ||
         doneSimilarity >= 0.35 ||
@@ -539,6 +584,42 @@ class TodayRecommendationProvider extends ChangeNotifier {
     return reviewCountScore + ratingScore + priceScore;
   }
 
+  double _postStyleScore(RakutenSearchItem item, Set<String> postStyles) {
+    var score = 0.0;
+    final name = item.itemName;
+    if (postStyles.contains(UserProfile.postStyleAffordable) &&
+        item.itemPrice > 0 &&
+        item.itemPrice <= 3500) {
+      score += 1.2;
+    }
+    if (postStyles.contains(UserProfile.postStylePremium) &&
+        item.itemPrice >= 5000) {
+      score += 1.4;
+    }
+    if (postStyles.contains(UserProfile.postStyleHighlyRated) &&
+        item.reviewAverage >= 4.2) {
+      score += 1.2;
+    }
+    if (postStyles.contains(UserProfile.postStyleReviewRich) &&
+        item.reviewCount >= 80) {
+      score += 1.2;
+    }
+    if (postStyles.contains(UserProfile.postStyleSocial) &&
+        item.imageUrl.trim().isNotEmpty &&
+        RegExp(r'雑貨|インテリア|ファッション|美容|コスメ|ギフト').hasMatch(name)) {
+      score += 1.3;
+    }
+    if (postStyles.contains(UserProfile.postStylePractical) &&
+        RegExp(r'日用品|キッチン|食品|ベビー|収納|家電|掃除|洗濯').hasMatch(name)) {
+      score += 1.1;
+    }
+    if (postStyles.contains(UserProfile.postStyleTrend) &&
+        RegExp(r'新作|新着|季節|限定|母の日|父の日|夏|冬').hasMatch(name)) {
+      score += 0.9;
+    }
+    return score;
+  }
+
   double _genreMatchScore(
     RakutenSearchItem item,
     Set<String> favoriteGenreIds,
@@ -568,8 +649,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final gid = item.genreId.trim();
     var boost = 0.0;
 
-    if (gid.isNotEmpty &&
-        soldItems.any((p) => p.genreId.trim() == gid)) {
+    if (gid.isNotEmpty && soldItems.any((p) => p.genreId.trim() == gid)) {
       boost += 2.8;
     }
 
@@ -581,7 +661,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final matchedSoldGenre =
         gid.isNotEmpty && soldItems.any((p) => p.genreId.trim() == gid);
     if (!matchedSoldGenre) {
-      if (gid.isNotEmpty && likedOnlyItems.any((p) => p.genreId.trim() == gid)) {
+      if (gid.isNotEmpty &&
+          likedOnlyItems.any((p) => p.genreId.trim() == gid)) {
         boost += 1.9;
       } else {
         var simReacted = likedOnlyItems.isEmpty

@@ -17,6 +17,7 @@ import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/favorite_genre_picker_sheet.dart';
+import '../widgets/post_style_picker_sheet.dart';
 import '../widgets/shop_discovery_card.dart';
 
 /// 規約同意後の「かんたん初期設定」（スキップ可能）。
@@ -34,7 +35,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   PageController? _pageController;
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _roomUrlController = TextEditingController();
-  String? _genderKey;
+  Set<String> _postStyleKeys = <String>{};
   int _pageIndex = 0;
   bool _pageControllerAttached = false;
   String? _lastOnboardingUiLogSignature;
@@ -63,7 +64,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     _pageControllerAttached = true;
     final profile = context.read<UserProfileProvider>().profile;
     _nicknameController.text = profile.displayName;
-    _genderKey = profile.genderKey;
+    _postStyleKeys = profile.postStyleList.toSet();
     _roomUrlController.text = profile.roomUrl;
     final saved = context.read<SavedShopProvider>().shops.length;
     final start = widget.embeddedInEntryHost
@@ -86,10 +87,11 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     final next = UserProfile(
       displayName: _nicknameController.text.trim(),
       age: base.age,
-      genderKey: _genderKey,
+      genderKey: base.genderKey,
       occupation: base.occupation,
       favoriteGenres: base.favoriteGenres,
       favoriteGenreIds: base.favoriteGenreIds,
+      postStyles: _postStyleKeys.take(3).join('、'),
       roomUrl: base.roomUrl,
     );
     await context.read<UserProfileProvider>().saveProfile(next);
@@ -163,6 +165,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       occupation: base.occupation,
       favoriteGenres: base.favoriteGenres,
       favoriteGenreIds: base.favoriteGenreIds,
+      postStyles: base.postStyles,
       roomUrl: url,
     );
     await profileProv.saveProfile(next);
@@ -201,11 +204,32 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       occupation: base.occupation,
       favoriteGenres: names.join('、'),
       favoriteGenreIds: idList.join('、'),
+      postStyles: base.postStyles,
       roomUrl: base.roomUrl,
     );
     await profileProv.saveProfile(next);
     if (!mounted) return;
     setState(() {
+      _shopRecommendationStarted = false;
+      _shopRecommendationFailedReason = null;
+      _shopRecommendations = const [];
+    });
+  }
+
+  Future<void> _openPostStylePicker(BuildContext context) async {
+    final picked = await showModalBottomSheet<List<String>>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (_) =>
+          PostStylePickerSheet(initialSelectedKeys: _postStyleKeys.toList()),
+    );
+    if (picked == null || !mounted) return;
+    setState(() {
+      _postStyleKeys = picked
+          .where(UserProfile.postStyleKeys.contains)
+          .take(3)
+          .toSet();
       _shopRecommendationStarted = false;
       _shopRecommendationFailedReason = null;
       _shopRecommendations = const [];
@@ -226,8 +250,9 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
         .join(',');
     debugPrint(
       '[ONBOARDING_SHOP_RECOMMEND] '
-      'step=3 '
+      'step=4 '
       'selectedGenres=$selectedGenres '
+      'postStyles=${context.read<UserProfileProvider>().profile.effectivePostStyleList.join(',')} '
       'recommendationStarted=$recommendationStarted '
       'recommendationCount=$recommendationCount '
       'savedShopCount=$savedShopCount '
@@ -256,13 +281,13 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       final profile = profileProvider.profile;
       final condition = _shopRecommendationCondition(
         profile.favoriteGenreIdList,
-        _shopRecommendationMode,
+        profile.effectivePostStyleList,
       );
       final items = await searchRepository.search(condition: condition);
       if (!mounted) return;
       final recs = _rankShopRecommendations(
         ShopDiscoveryAggregator.aggregate(items, shopLimit: 5, itemsPerShop: 3),
-        _shopRecommendationMode,
+        profile.effectivePostStyleList,
       );
       setState(() {
         _isLoadingShopRecommendations = false;
@@ -278,7 +303,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
           'shopName=${summary.shopName} '
           'imageCount=${imageItems.length} '
           'firstImageUrl=${imageItems.isEmpty ? '' : imageItems.first.imageUrl} '
-          'reason=${imageItems.isEmpty ? 'imageUrlsEmpty' : _shopRecommendationMode.logValue}',
+          'reason=${imageItems.isEmpty ? 'imageUrlsEmpty' : profile.effectivePostStyleList.join(',')}',
         );
       }
       _logShopRecommend(
@@ -420,19 +445,23 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   List<Widget> _buildSetupBottomActions(BuildContext context) {
     final profile = context.watch<UserProfileProvider>().profile;
     if (_pageIndex == 0) {
+      final styleCount = _postStyleKeys.length;
       return [
         AppPrimaryButton(
-          label: '保存して次へ',
+          label: styleCount == 0 ? '投稿スタイルを選ぶ' : '$styleCount件で次へ',
           height: 48,
-          onPressed: () => _goNext(context),
+          onPressed: styleCount == 0
+              ? () => _openPostStylePicker(context)
+              : () => _goNext(context),
         ),
         const SizedBox(height: 8),
         Align(
           alignment: Alignment.center,
           child: TextButton(
-            onPressed: () =>
-                _persistDismissAndLeave(context, markSkipped: true),
-            child: const Text('あとで設定する'),
+            onPressed: styleCount == 0
+                ? () => _skipStep(context)
+                : () => _openPostStylePicker(context),
+            child: Text(styleCount == 0 ? 'スキップして次へ' : '変更する'),
           ),
         ),
       ];
@@ -459,7 +488,9 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       final hasGenres = profile.favoriteGenreIdList.isNotEmpty;
       return [
         AppPrimaryButton(
-          label: hasGenres ? '次へ' : 'ジャンルを選んで次へ',
+          label: hasGenres
+              ? '${profile.favoriteGenreIdList.length}件で次へ'
+              : 'ジャンルを選ぶ',
           height: 48,
           onPressed: hasGenres
               ? () => _goNext(context)
@@ -469,15 +500,22 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
         Align(
           alignment: Alignment.center,
           child: TextButton(
-            onPressed: () => _skipStep(context),
-            child: const Text('スキップして次へ'),
+            onPressed: hasGenres
+                ? () => _openGenrePicker(context)
+                : () => _skipStep(context),
+            child: Text(hasGenres ? '変更する' : 'スキップして次へ'),
           ),
         ),
       ];
     }
+    final savedShopCount = context.watch<SavedShopProvider>().shops.length;
     return [
       AppPrimaryButton(
-        label: _shopRecommendationStarted ? 'はじめる' : 'おすすめショップを見る',
+        label: _shopRecommendationStarted
+            ? savedShopCount > 0
+                  ? '保存したショップで始める'
+                  : 'おすすめショップを保存して始める'
+            : 'おすすめショップを見る',
         height: 48,
         icon: _shopRecommendationStarted
             ? null
@@ -622,8 +660,8 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
                     children: [
                       _StepProfile(
                         controller: _nicknameController,
-                        genderKey: _genderKey,
-                        onGenderChanged: (v) => setState(() => _genderKey = v),
+                        postStyleKeys: _postStyleKeys,
+                        onPickPostStyles: () => _openPostStylePicker(context),
                       ),
                       _StepRoomUrl(
                         controller: _roomUrlController,
@@ -705,13 +743,13 @@ class _StepDot extends StatelessWidget {
 class _StepProfile extends StatelessWidget {
   const _StepProfile({
     required this.controller,
-    required this.genderKey,
-    required this.onGenderChanged,
+    required this.postStyleKeys,
+    required this.onPickPostStyles,
   });
 
   final TextEditingController controller;
-  final String? genderKey;
-  final ValueChanged<String?> onGenderChanged;
+  final Set<String> postStyleKeys;
+  final VoidCallback onPickPostStyles;
 
   @override
   Widget build(BuildContext context) {
@@ -730,7 +768,7 @@ class _StepProfile extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'ニックネームは、今後おすすめ文や投稿文の生成に使えます。\n性別はおすすめ傾向の調整に使えます。未回答でも使えます。',
+              'ニックネームは、今後おすすめ文や投稿文の生成に使えます。\n投稿スタイルは、おすすめ候補やショップ提案の調整に使います。あとから変更できます。',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.35,
@@ -753,7 +791,10 @@ class _StepProfile extends StatelessWidget {
               textInputAction: TextInputAction.done,
             ),
             const SizedBox(height: 12),
-            _GenderChoiceChips(value: genderKey, onChanged: onGenderChanged),
+            _PostStyleSummary(
+              selectedKeys: postStyleKeys.toList(growable: false),
+              onPick: onPickPostStyles,
+            ),
           ],
         ),
       ),
@@ -761,59 +802,55 @@ class _StepProfile extends StatelessWidget {
   }
 }
 
-class _GenderChoiceChips extends StatelessWidget {
-  const _GenderChoiceChips({required this.value, required this.onChanged});
+class _PostStyleSummary extends StatelessWidget {
+  const _PostStyleSummary({required this.selectedKeys, required this.onPick});
 
-  final String? value;
-  final ValueChanged<String?> onChanged;
+  final List<String> selectedKeys;
+  final VoidCallback onPick;
 
   @override
   Widget build(BuildContext context) {
-    final items = <({String label, String? value})>[
-      (label: '男性', value: UserProfile.genderMale),
-      (label: '女性', value: UserProfile.genderFemale),
-      (label: 'その他', value: UserProfile.genderOther),
-      (label: '回答しない', value: UserProfile.genderPreferNot),
-    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '性別（任意）',
+          '投稿スタイル（最大3件）',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: AppColors.textSecondary,
             fontWeight: FontWeight.w800,
           ),
         ),
         const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            for (final item in items)
-              ChoiceChip(
-                label: Text(item.label),
-                selected: value == item.value,
-                showCheckmark: false,
-                selectedColor: AppColors.accentLight,
-                backgroundColor: AppColors.surface,
-                side: BorderSide(
-                  color: value == item.value
-                      ? AppColors.accentPrimary.withValues(alpha: 0.45)
-                      : AppColors.divider.withValues(alpha: 0.9),
+        if (selectedKeys.isEmpty)
+          Text(
+            '未選択の場合は内部的に「バランス」として扱います。',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textTertiary,
+              height: 1.35,
+            ),
+          )
+        else
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final key in selectedKeys)
+                Chip(
+                  label: Text(UserProfile.postStyleLabelJa(key)),
+                  backgroundColor: AppColors.accentLight,
+                  labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.accentPrimary,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
-                labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: value == item.value
-                      ? AppColors.accentPrimary
-                      : AppColors.textSecondary,
-                  fontWeight: value == item.value
-                      ? FontWeight.w800
-                      : FontWeight.w600,
-                ),
-                visualDensity: VisualDensity.compact,
-                onSelected: (_) => onChanged(item.value),
-              ),
-          ],
+            ],
+          ),
+        const SizedBox(height: 10),
+        AppOutlineButton(
+          label: selectedKeys.isEmpty ? '投稿スタイルを選ぶ' : '投稿スタイルを変更',
+          icon: const Icon(Icons.auto_awesome_rounded, size: 18),
+          height: 44,
+          onPressed: onPick,
         ),
       ],
     );
@@ -850,7 +887,7 @@ class _StepRoomUrl extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'あなたのROOM投稿を自動でコレ済みに追加できます',
+              'あなたのROOM投稿を自動で記録します。投稿済み判定や重複防止に使えます。',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.35,
@@ -1035,7 +1072,7 @@ class _StepSavedShops extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              '気になるショップを保存すると、あとから店内検索に使えます。',
+              'よく使うショップを保存すると、店内検索から候補を探しやすくなります。',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: AppColors.textTertiary,
                 height: 1.35,
@@ -1097,7 +1134,14 @@ class _StepSavedShops extends StatelessWidget {
                     isSaved: isSaved,
                     showOpenShopAction: false,
                     disableSavedAction: true,
-                    reasonText: _recommendReasonFor(mode, summary, index),
+                    reasonText: _recommendReasonFor(
+                      context
+                          .watch<UserProfileProvider>()
+                          .profile
+                          .effectivePostStyleList,
+                      summary,
+                      index,
+                    ),
                     onOpenShop: () {},
                     onSave: () => onSaveShop(summary),
                   ),
@@ -1257,90 +1301,118 @@ enum _ShopRecommendationMode {
 
 RakutenProductSearchCondition _shopRecommendationCondition(
   List<String> genreIds,
-  _ShopRecommendationMode mode,
+  List<String> postStyleKeys,
 ) {
   final genreId = genreIds.isNotEmpty ? genreIds.first.trim() : '';
-  final keyword = genreId.isEmpty ? _fallbackKeywordForMode(mode) : '';
+  final styles = postStyleKeys.isEmpty
+      ? const [UserProfile.postStyleBalance]
+      : postStyleKeys;
+  final keyword = genreId.isEmpty ? _fallbackKeywordForStyles(styles) : '';
   return RakutenProductSearchCondition(
     keyword: keyword,
     genreId: genreId.isNotEmpty ? genreId : null,
-    maxPrice: mode == _ShopRecommendationMode.affordable ? 3500 : null,
-    minReviewCount: mode == _ShopRecommendationMode.highlyRated ? 20 : null,
-    minReviewAverage: mode == _ShopRecommendationMode.highlyRated ? 4.2 : null,
+    maxPrice: styles.contains(UserProfile.postStyleAffordable) ? 3500 : null,
+    minPrice: styles.contains(UserProfile.postStylePremium) ? 5000 : null,
+    minReviewCount:
+        styles.contains(UserProfile.postStyleHighlyRated) ||
+            styles.contains(UserProfile.postStyleReviewRich)
+        ? 20
+        : null,
+    minReviewAverage: styles.contains(UserProfile.postStyleHighlyRated)
+        ? 4.2
+        : null,
+    sort: _sortForPostStyles(styles),
   ).normalized();
 }
 
-String _fallbackKeywordForMode(_ShopRecommendationMode mode) {
-  switch (mode) {
-    case _ShopRecommendationMode.affordable:
-      return '日用品 お得';
-    case _ShopRecommendationMode.highlyRated:
-      return '食品 高評価';
-    case _ShopRecommendationMode.social:
-      return '雑貨 インテリア';
-    case _ShopRecommendationMode.practical:
-      return '日用品 キッチン 食品';
-    case _ShopRecommendationMode.balance:
-      return '日用品 キッチン ベビー 食品';
+String _fallbackKeywordForStyles(List<String> styles) {
+  if (styles.contains(UserProfile.postStyleSocial)) return '雑貨 インテリア';
+  if (styles.contains(UserProfile.postStylePractical)) {
+    return '日用品 キッチン 食品';
   }
+  if (styles.contains(UserProfile.postStyleAffordable)) return '日用品 お得';
+  if (styles.contains(UserProfile.postStylePremium)) return '家電 美容 高級';
+  if (styles.contains(UserProfile.postStyleHighlyRated)) return '食品 高評価';
+  if (styles.contains(UserProfile.postStyleTrend)) return '季節 新着 トレンド';
+  return '日用品 キッチン ベビー 食品';
+}
+
+String? _sortForPostStyles(List<String> styles) {
+  if (styles.contains(UserProfile.postStyleAffordable)) return '+itemPrice';
+  if (styles.contains(UserProfile.postStylePremium)) return '-itemPrice';
+  if (styles.contains(UserProfile.postStyleHighlyRated)) {
+    return '-reviewAverage';
+  }
+  if (styles.contains(UserProfile.postStyleReviewRich)) return '-reviewCount';
+  if (styles.contains(UserProfile.postStyleTrend)) return '-updateTimestamp';
+  return null;
 }
 
 List<ShopDiscoverySummary> _rankShopRecommendations(
   List<ShopDiscoverySummary> source,
-  _ShopRecommendationMode mode,
+  List<String> postStyleKeys,
 ) {
   final out = [...source];
-  switch (mode) {
-    case _ShopRecommendationMode.affordable:
-      out.sort((a, b) => b.hitItemCount.compareTo(a.hitItemCount));
-      break;
-    case _ShopRecommendationMode.highlyRated:
-      out.sort((a, b) {
-        final avg = b.avgReviewAverage.compareTo(a.avgReviewAverage);
-        if (avg != 0) return avg;
-        return b.maxReviewCount.compareTo(a.maxReviewCount);
-      });
-      break;
-    case _ShopRecommendationMode.social:
-      out.sort((a, b) {
-        final bi = b.representativeItems
-            .where((e) => e.imageUrl.trim().isNotEmpty)
-            .length;
-        final ai = a.representativeItems
-            .where((e) => e.imageUrl.trim().isNotEmpty)
-            .length;
-        final byImage = bi.compareTo(ai);
-        if (byImage != 0) return byImage;
-        return b.discoveryScore.compareTo(a.discoveryScore);
-      });
-      break;
-    case _ShopRecommendationMode.practical:
-    case _ShopRecommendationMode.balance:
-      out.sort((a, b) => b.discoveryScore.compareTo(a.discoveryScore));
-      break;
+  final styles = postStyleKeys.isEmpty
+      ? const [UserProfile.postStyleBalance]
+      : postStyleKeys;
+  if (styles.contains(UserProfile.postStyleSocial)) {
+    out.sort((a, b) {
+      final bi = b.representativeItems
+          .where((e) => e.imageUrl.trim().isNotEmpty)
+          .length;
+      final ai = a.representativeItems
+          .where((e) => e.imageUrl.trim().isNotEmpty)
+          .length;
+      final byImage = bi.compareTo(ai);
+      if (byImage != 0) return byImage;
+      return b.discoveryScore.compareTo(a.discoveryScore);
+    });
+  } else if (styles.contains(UserProfile.postStyleHighlyRated) ||
+      styles.contains(UserProfile.postStyleReviewRich)) {
+    out.sort((a, b) {
+      final avg = b.avgReviewAverage.compareTo(a.avgReviewAverage);
+      if (avg != 0) return avg;
+      return b.maxReviewCount.compareTo(a.maxReviewCount);
+    });
+  } else if (styles.contains(UserProfile.postStyleAffordable)) {
+    out.sort((a, b) => b.hitItemCount.compareTo(a.hitItemCount));
+  } else {
+    out.sort((a, b) => b.discoveryScore.compareTo(a.discoveryScore));
   }
   return out.take(5).toList(growable: false);
 }
 
 String _recommendReasonFor(
-  _ShopRecommendationMode mode,
+  List<String> postStyleKeys,
   ShopDiscoverySummary summary,
   int index,
 ) {
-  switch (mode) {
-    case _ShopRecommendationMode.affordable:
-      return 'お手頃価格の商品が多いショップです';
-    case _ShopRecommendationMode.highlyRated:
-      return 'レビュー数が多く、候補探しに使いやすいショップです';
-    case _ShopRecommendationMode.social:
-      return summary.representativeItems.any(
-            (e) => e.imageUrl.trim().isNotEmpty,
-          )
-          ? '画像つきの商品が多く、SNS投稿に向いています'
-          : '雑貨・インテリア寄りの商品を探しやすいショップです';
-    case _ShopRecommendationMode.practical:
-      return '継続投稿しやすい実用ジャンルの商品が多いショップです';
-    case _ShopRecommendationMode.balance:
-      return index == 0 ? '選択ジャンルに近い商品が多いショップです' : '商品数・評価・レビュー数のバランスが良いショップです';
+  final styles = postStyleKeys.isEmpty
+      ? const [UserProfile.postStyleBalance]
+      : postStyleKeys;
+  if (styles.contains(UserProfile.postStyleAffordable)) {
+    return 'お手頃価格の商品が多いショップです';
   }
+  if (styles.contains(UserProfile.postStylePremium)) {
+    return '高単価の商品を探しやすいショップです';
+  }
+  if (styles.contains(UserProfile.postStyleHighlyRated)) {
+    return '高評価の商品が多いショップです';
+  }
+  if (styles.contains(UserProfile.postStyleReviewRich)) {
+    return 'レビュー件数が多く、紹介しやすい商品が多いショップです';
+  }
+  if (styles.contains(UserProfile.postStyleSocial)) {
+    return summary.representativeItems.any((e) => e.imageUrl.trim().isNotEmpty)
+        ? 'SNS映えしやすい画像の商品が多いショップです'
+        : '雑貨・インテリア寄りの商品を探しやすいショップです';
+  }
+  if (styles.contains(UserProfile.postStylePractical)) {
+    return '継続投稿しやすい実用ジャンルの商品が多いショップです';
+  }
+  if (styles.contains(UserProfile.postStyleTrend)) {
+    return '新しさや季節感を意識して候補を探しやすいショップです';
+  }
+  return index == 0 ? '選択ジャンルに近い商品が多いショップです' : '商品数・評価・レビュー数のバランスが良いショップです';
 }

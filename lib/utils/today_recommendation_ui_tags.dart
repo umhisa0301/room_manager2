@@ -1,4 +1,5 @@
 import '../models/today_recommendation.dart';
+import '../models/user_profile.dart';
 
 const int todayRecommendationTagMax = 3;
 
@@ -45,10 +46,14 @@ List<String> todayRecommendationUiTags(TodayRecommendationEntry entry) {
 String? todayRecommendationHomeHintLine({
   required TodayRecommendationBundle? bundle,
   required bool isLoading,
+  List<String> postStyleKeys = const [],
 }) {
   if (isLoading) return null;
+  final styleHint = _postStyleHint(postStyleKeys);
   if (bundle == null || bundle.entries.isEmpty) {
-    return 'おすすめは、好きなジャンル・コレ履歴・保存ショップ・売れ筋価格帯を組み合わせて選びます。';
+    return styleHint == null
+        ? 'おすすめは、好きなジャンル・コレ履歴・保存ショップ・売れ筋価格帯を組み合わせて選びます。'
+        : 'おすすめは、$styleHintを意識して選びます。';
   }
   final pending = bundle.entries
       .where((e) => e.decision == TodayRecommendationDecision.pending)
@@ -61,5 +66,20 @@ String? todayRecommendationHomeHintLine({
     return '今日の候補は、プロフィールとコレ履歴に合わせて並んでいます。';
   }
   final tail = t1.take(2).join('・');
-  return '先頭候補の目安：$tail';
+  return '先頭候補の目安：${styleHint ?? tail}';
+}
+
+String? _postStyleHint(List<String> postStyleKeys) {
+  final styles = postStyleKeys.take(3).toSet();
+  if (styles.isEmpty) return null;
+  if (styles.contains(UserProfile.postStylePremium) &&
+      (styles.contains(UserProfile.postStyleHighlyRated) ||
+          styles.contains(UserProfile.postStyleReviewRich))) {
+    return '高単価・レビュー多め';
+  }
+  if (styles.contains(UserProfile.postStyleSocial) &&
+      styles.contains(UserProfile.postStyleAffordable)) {
+    return '見た目で選びやすい・買いやすい価格';
+  }
+  return styles.map(UserProfile.postStyleLabelJa).take(2).join('・');
 }
