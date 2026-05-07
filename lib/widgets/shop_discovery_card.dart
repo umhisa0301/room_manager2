@@ -14,6 +14,9 @@ class ShopDiscoveryCard extends StatelessWidget {
     required this.isSaved,
     required this.onOpenShop,
     required this.onSave,
+    this.showOpenShopAction = true,
+    this.disableSavedAction = false,
+    this.reasonText,
   });
 
   final ShopDiscoverySummary summary;
@@ -21,6 +24,9 @@ class ShopDiscoveryCard extends StatelessWidget {
   final bool isSaved;
   final VoidCallback onOpenShop;
   final VoidCallback onSave;
+  final bool showOpenShopAction;
+  final bool disableSavedAction;
+  final String? reasonText;
 
   @override
   Widget build(BuildContext context) {
@@ -96,24 +102,37 @@ class ShopDiscoveryCard extends StatelessWidget {
               ),
             ],
           ),
+          if (reasonText != null && reasonText!.trim().isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              reasonText!.trim(),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: HomeScreenColors.metricTileCaptionColor,
+                height: 1.35,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
           const SizedBox(height: 10),
           _ThumbStrip(items: summary.representativeItems.take(3).toList()),
           const SizedBox(height: 12),
           Row(
             children: [
-              Expanded(
-                child: AppPrimaryButton(
-                  label: '商品を見て候補登録',
-                  onPressed: onOpenShop,
-                  icon: const Icon(Icons.storefront_outlined),
-                  height: 52,
+              if (showOpenShopAction) ...[
+                Expanded(
+                  child: AppPrimaryButton(
+                    label: '商品を見て候補登録',
+                    onPressed: onOpenShop,
+                    icon: const Icon(Icons.storefront_outlined),
+                    height: 52,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
+                const SizedBox(width: 8),
+              ],
               Expanded(
                 child: AppSecondaryButton(
                   label: isSaved ? '保存済み' : '保存する',
-                  onPressed: onSave,
+                  onPressed: isSaved && disableSavedAction ? null : onSave,
                   icon: Icon(
                     isSaved
                         ? Icons.bookmark_added_rounded
