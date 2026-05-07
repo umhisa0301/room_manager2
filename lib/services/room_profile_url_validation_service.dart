@@ -21,10 +21,31 @@ class RoomProfileUrlFormatResult {
 }
 
 class RoomProfileExistsResult {
-  const RoomProfileExistsResult({required this.exists, required this.logValue});
+  const RoomProfileExistsResult({
+    required this.exists,
+    required this.canSave,
+    required this.logValue,
+    required this.message,
+  });
 
   final bool exists;
+  final bool canSave;
   final String logValue;
+  final String message;
+}
+
+class RoomProfileUrlParseResult {
+  const RoomProfileUrlParseResult({
+    required this.isValid,
+    required this.logValue,
+    this.roomId = '',
+    this.errorMessage,
+  });
+
+  final bool isValid;
+  final String logValue;
+  final String roomId;
+  final String? errorMessage;
 }
 
 class RoomProfileUrlValidationService {
@@ -39,41 +60,45 @@ class RoomProfileUrlValidationService {
   final bool _ownsClient;
   final Duration _timeout;
 
-  static const String genericErrorMessage = 'ROOMプロフィールを確認できませんでした';
+  static const String formatErrorMessage = 'ROOMプロフィールURLの形式ではありません';
+  static const String notFoundMessage = 'ROOMプロフィールが見つかりませんでした';
+  static const String pendingMessage = 'URL形式は正しいですが、通信環境により確認できませんでした';
+  static const String successMessage = 'ROOMプロフィールURLを確認しました';
+  static const String genericErrorMessage = formatErrorMessage;
 
-  static RoomProfileUrlFormatResult validateFormat(String rawUrl) {
+  static RoomProfileUrlParseResult parse(String rawUrl) {
     final trimmed = rawUrl.trim();
     if (trimmed.isEmpty) {
-      return const RoomProfileUrlFormatResult(isValid: true, logValue: 'empty');
+      return const RoomProfileUrlParseResult(isValid: true, logValue: 'empty');
     }
 
     final uri = Uri.tryParse(trimmed);
     if (uri == null || !uri.hasScheme || uri.host.trim().isEmpty) {
-      return const RoomProfileUrlFormatResult(
+      return const RoomProfileUrlParseResult(
         isValid: false,
         logValue: 'invalidFormat',
-        errorMessage: genericErrorMessage,
+        errorMessage: formatErrorMessage,
       );
     }
     if (uri.scheme.toLowerCase() != 'https') {
-      return const RoomProfileUrlFormatResult(
+      return const RoomProfileUrlParseResult(
         isValid: false,
         logValue: 'invalidScheme',
-        errorMessage: genericErrorMessage,
+        errorMessage: formatErrorMessage,
       );
     }
     if (uri.host.toLowerCase() != 'room.rakuten.co.jp') {
-      return const RoomProfileUrlFormatResult(
+      return const RoomProfileUrlParseResult(
         isValid: false,
         logValue: 'invalidHost',
-        errorMessage: genericErrorMessage,
+        errorMessage: formatErrorMessage,
       );
     }
     if (uri.hasQuery || uri.hasFragment) {
-      return const RoomProfileUrlFormatResult(
+      return const RoomProfileUrlParseResult(
         isValid: false,
         logValue: 'invalidDecoration',
-        errorMessage: genericErrorMessage,
+        errorMessage: formatErrorMessage,
       );
     }
 
@@ -82,48 +107,109 @@ class RoomProfileUrlValidationService {
         .where((e) => e.isNotEmpty)
         .toList(growable: false);
     if (segments.isEmpty) {
-      return const RoomProfileUrlFormatResult(
+      return const RoomProfileUrlParseResult(
         isValid: false,
         logValue: 'topOnly',
-        errorMessage: genericErrorMessage,
+        errorMessage: formatErrorMessage,
       );
     }
-    if (segments.length != 1) {
-      return const RoomProfileUrlFormatResult(
+    if (segments.length > 2) {
+      return const RoomProfileUrlParseResult(
         isValid: false,
         logValue: 'roomProductUrl',
-        errorMessage: genericErrorMessage,
+        errorMessage: formatErrorMessage,
+      );
+    }
+    if (segments.length == 2) {
+      final suffix = segments[1];
+      if (RegExp(r'^\d{8,}$').hasMatch(suffix)) {
+        return const RoomProfileUrlParseResult(
+          isValid: false,
+          logValue: 'roomProductUrl',
+          errorMessage: formatErrorMessage,
+        );
+      }
+      if (suffix != 'items' && suffix != 'collections' && suffix != 'likes') {
+        return const RoomProfileUrlParseResult(
+          isValid: false,
+          logValue: 'unsupportedProfilePath',
+          errorMessage: formatErrorMessage,
+        );
+      }
+    }
+
+    final roomId = segments.first;
+    if (roomId == 'api' ||
+        roomId == 'items' ||
+        roomId == 'collections' ||
+        roomId == 'likes' ||
+        RegExp(r'^\d{8,}$').hasMatch(roomId) ||
+        !RegExp(r'^[A-Za-z0-9_.~-]+$').hasMatch(roomId)) {
+      return const RoomProfileUrlParseResult(
+        isValid: false,
+        logValue: 'notProfileUrl',
+        errorMessage: formatErrorMessage,
       );
     }
 
-    final userSegment = segments.single;
-    if (userSegment == 'api' ||
-        userSegment == 'items' ||
-        RegExp(r'^\d{8,}$').hasMatch(userSegment)) {
+    return RoomProfileUrlParseResult(
+      isValid: true,
+      logValue: 'valid',
+      roomId: roomId,
+    );
+  }
+
+  static String normalize(RoomProfileUrlParseResult parsed) {
+    if (!parsed.isValid || parsed.roomId.trim().isEmpty) return '';
+    return Uri.https('room.rakuten.co.jp', '/${parsed.roomId}').toString();
+  }
+
+  static RoomProfileUrlFormatResult validateFormat(String rawUrl) {
+    final parsed = parse(rawUrl);
+    if (!parsed.isValid) {
+      return RoomProfileUrlFormatResult(
+        isValid: false,
+        logValue: parsed.logValue,
+        errorMessage: parsed.errorMessage,
+      );
+    }
+    if (parsed.logValue == 'empty') {
+      return const RoomProfileUrlFormatResult(isValid: true, logValue: 'empty');
+    }
+
+    final normalized = normalize(parsed);
+    if (normalized.isEmpty) {
       return const RoomProfileUrlFormatResult(
         isValid: false,
-        logValue: 'notProfileUrl',
-        errorMessage: genericErrorMessage,
+        logValue: 'invalidFormat',
+        errorMessage: formatErrorMessage,
       );
     }
 
     return RoomProfileUrlFormatResult(
       isValid: true,
       logValue: 'valid',
-      normalizedUrl: Uri.https(
-        'room.rakuten.co.jp',
-        '/$userSegment',
-      ).toString(),
+      normalizedUrl: normalized,
     );
   }
 
   Future<RoomProfileExistsResult> verifyExists(String normalizedUrl) async {
     final format = validateFormat(normalizedUrl);
     if (format.isEmpty) {
-      return const RoomProfileExistsResult(exists: true, logValue: 'skipped');
+      return const RoomProfileExistsResult(
+        exists: true,
+        canSave: true,
+        logValue: 'skipped',
+        message: '',
+      );
     }
     if (!format.isValid || format.normalizedUrl.isEmpty) {
-      return const RoomProfileExistsResult(exists: false, logValue: 'false');
+      return const RoomProfileExistsResult(
+        exists: false,
+        canSave: false,
+        logValue: 'invalidFormat',
+        message: formatErrorMessage,
+      );
     }
 
     final uri = Uri.parse(format.normalizedUrl);
@@ -138,11 +224,29 @@ class RoomProfileUrlValidationService {
             },
           )
           .timeout(_timeout);
-      if (res.statusCode == 404 ||
-          res.statusCode < 200 ||
-          res.statusCode >= 400 ||
-          res.body.trim().isEmpty) {
-        return const RoomProfileExistsResult(exists: false, logValue: 'false');
+      if (res.statusCode == 404) {
+        return const RoomProfileExistsResult(
+          exists: false,
+          canSave: false,
+          logValue: 'notFound',
+          message: notFoundMessage,
+        );
+      }
+      if (res.statusCode == 403 || res.statusCode == 429) {
+        return const RoomProfileExistsResult(
+          exists: false,
+          canSave: true,
+          logValue: 'pendingBlocked',
+          message: pendingMessage,
+        );
+      }
+      if (res.statusCode < 200 || res.statusCode >= 400) {
+        return const RoomProfileExistsResult(
+          exists: false,
+          canSave: true,
+          logValue: 'pendingHttp',
+          message: pendingMessage,
+        );
       }
       final html = res.body;
       final hasInitialUserId =
@@ -158,12 +262,24 @@ class RoomProfileUrlValidationService {
       final ok = hasInitialUserId || looksLikeRoomProfile;
       return RoomProfileExistsResult(
         exists: ok,
-        logValue: ok ? 'true' : 'false',
+        canSave: true,
+        logValue: ok ? 'true' : 'pendingUnverified',
+        message: ok ? successMessage : pendingMessage,
       );
     } on TimeoutException {
-      return const RoomProfileExistsResult(exists: false, logValue: 'timeout');
+      return const RoomProfileExistsResult(
+        exists: false,
+        canSave: true,
+        logValue: 'pendingTimeout',
+        message: pendingMessage,
+      );
     } catch (_) {
-      return const RoomProfileExistsResult(exists: false, logValue: 'false');
+      return const RoomProfileExistsResult(
+        exists: false,
+        canSave: true,
+        logValue: 'pendingNetwork',
+        message: pendingMessage,
+      );
     } finally {
       if (_ownsClient) {
         _client.close();

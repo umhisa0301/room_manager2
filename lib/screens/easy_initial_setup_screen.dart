@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/rakuten_product_search_condition.dart';
 import '../models/shop_discovery_summary.dart';
 import '../models/user_profile.dart';
 import '../repository/easy_initial_setup_repository.dart';
+import '../repository/rakuten_search_repository.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/rakuten_genre_master_service.dart';
+import '../services/shop_discovery_aggregator.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
@@ -41,6 +44,8 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   bool _isLoadingShopRecommendations = false;
   String? _shopRecommendationFailedReason;
   List<ShopDiscoverySummary> _shopRecommendations = const [];
+  _ShopRecommendationMode _shopRecommendationMode =
+      _ShopRecommendationMode.balance;
 
   int _firstIncompletePage(UserProfile profile, int savedShopCount) {
     if (!profile.hasRoomUrl) return 0;
@@ -102,7 +107,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     if (!format.isValid) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(RoomProfileUrlValidationService.genericErrorMessage),
+          content: Text(RoomProfileUrlValidationService.formatErrorMessage),
         ),
       );
       return false;
@@ -121,16 +126,10 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       setState(() {
         _isCheckingRoomProfile = false;
         _roomProfileExists = exists.logValue;
-        _roomUrlErrorText = exists.exists
-            ? null
-            : RoomProfileUrlValidationService.genericErrorMessage;
+        _roomUrlErrorText = exists.canSave ? null : exists.message;
       });
-      if (!exists.exists) {
-        messenger.showSnackBar(
-          const SnackBar(
-            content: Text(RoomProfileUrlValidationService.genericErrorMessage),
-          ),
-        );
+      messenger.showSnackBar(SnackBar(content: Text(exists.message)));
+      if (!exists.canSave) {
         return false;
       }
       url = format.normalizedUrl;
@@ -231,22 +230,58 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     );
     final profileProvider = context.read<UserProfileProvider>();
     final savedShopProvider = context.read<SavedShopProvider>();
-    await Future<void>.delayed(const Duration(milliseconds: 420));
-    if (!mounted) return;
-    final profile = profileProvider.profile;
-    final recs = _suggestedShopSummaries(profile.favoriteGenreIdList);
-    setState(() {
-      _isLoadingShopRecommendations = false;
-      _shopRecommendations = recs;
-      _shopRecommendationFailedReason = recs.isEmpty ? 'empty' : null;
-    });
-    _logShopRecommend(
-      recommendationStarted: true,
-      recommendationCount: recs.length,
-      savedShopCount: savedShopProvider.shops.length,
-      shopSaved: false,
-      failedReason: recs.isEmpty ? 'empty' : '',
-    );
+    final searchRepository = context.read<RakutenSearchRepository>();
+    try {
+      final profile = profileProvider.profile;
+      final condition = _shopRecommendationCondition(
+        profile.favoriteGenreIdList,
+        _shopRecommendationMode,
+      );
+      final items = await searchRepository.search(condition: condition);
+      if (!mounted) return;
+      final recs = _rankShopRecommendations(
+        ShopDiscoveryAggregator.aggregate(items, shopLimit: 5, itemsPerShop: 3),
+        _shopRecommendationMode,
+      );
+      setState(() {
+        _isLoadingShopRecommendations = false;
+        _shopRecommendations = recs;
+        _shopRecommendationFailedReason = recs.isEmpty ? 'empty' : null;
+      });
+      for (final summary in recs) {
+        final imageItems = summary.representativeItems
+            .where((e) => e.imageUrl.trim().isNotEmpty)
+            .toList(growable: false);
+        debugPrint(
+          '[ONBOARDING_SHOP_RECOMMEND] '
+          'shopName=${summary.shopName} '
+          'imageCount=${imageItems.length} '
+          'firstImageUrl=${imageItems.isEmpty ? '' : imageItems.first.imageUrl} '
+          'reason=${imageItems.isEmpty ? 'imageUrlsEmpty' : _shopRecommendationMode.logValue}',
+        );
+      }
+      _logShopRecommend(
+        recommendationStarted: true,
+        recommendationCount: recs.length,
+        savedShopCount: savedShopProvider.shops.length,
+        shopSaved: false,
+        failedReason: recs.isEmpty ? 'empty' : '',
+      );
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isLoadingShopRecommendations = false;
+        _shopRecommendations = const [];
+        _shopRecommendationFailedReason = 'searchFailed';
+      });
+      _logShopRecommend(
+        recommendationStarted: true,
+        recommendationCount: 0,
+        savedShopCount: savedShopProvider.shops.length,
+        shopSaved: false,
+        failedReason: 'searchFailed',
+      );
+    }
   }
 
   Future<void> _saveRecommendedShop(
@@ -270,6 +305,16 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       shopSaved: true,
     );
     setState(() {});
+  }
+
+  void _setShopRecommendationMode(_ShopRecommendationMode mode) {
+    if (_shopRecommendationMode == mode) return;
+    setState(() {
+      _shopRecommendationMode = mode;
+      _shopRecommendationStarted = false;
+      _shopRecommendationFailedReason = null;
+      _shopRecommendations = const [];
+    });
   }
 
   void _goNext(BuildContext context) async {
@@ -488,6 +533,8 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
                       recommendations: _shopRecommendations,
                       failedReason: _shopRecommendationFailedReason,
                       recommendationStarted: _shopRecommendationStarted,
+                      mode: _shopRecommendationMode,
+                      onModeChanged: _setShopRecommendationMode,
                       onSaveShop: (summary) =>
                           _saveRecommendedShop(context, summary),
                       onSkip: () =>
@@ -693,6 +740,8 @@ class _StepSavedShops extends StatelessWidget {
     required this.recommendations,
     required this.failedReason,
     required this.recommendationStarted,
+    required this.mode,
+    required this.onModeChanged,
     required this.onSaveShop,
     required this.onSkip,
   });
@@ -701,6 +750,8 @@ class _StepSavedShops extends StatelessWidget {
   final List<ShopDiscoverySummary> recommendations;
   final String? failedReason;
   final bool recommendationStarted;
+  final _ShopRecommendationMode mode;
+  final ValueChanged<_ShopRecommendationMode> onModeChanged;
   final ValueChanged<ShopDiscoverySummary> onSaveShop;
   final VoidCallback onSkip;
 
@@ -722,7 +773,7 @@ class _StepSavedShops extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              '選んだジャンルから、よく使えそうなショップを提案します。',
+              '選んだジャンルと探し方から、保存しやすいショップを提案します。',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.35,
@@ -738,6 +789,20 @@ class _StepSavedShops extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
+            _ShopRecommendationModePicker(
+              selected: mode,
+              onChanged: onModeChanged,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '探し方：${mode.label}\n${mode.description}',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.35,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 12),
             Text(
               '保存ショップ：$n件',
               style: theme.textTheme.bodySmall?.copyWith(
@@ -747,14 +812,7 @@ class _StepSavedShops extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             if (!recommendationStarted)
-              _InlineShopIntroCard(
-                candidateCount: _suggestedShopSummaries(
-                  context
-                      .watch<UserProfileProvider>()
-                      .profile
-                      .favoriteGenreIdList,
-                ).length,
-              )
+              const _InlineShopIntroCard(candidateCount: 3)
             else if (isLoading)
               const _InlineShopLoadingCard()
             else if (failedReason != null || recommendations.isEmpty)
@@ -776,7 +834,7 @@ class _StepSavedShops extends StatelessWidget {
                     isSaved: isSaved,
                     showOpenShopAction: false,
                     disableSavedAction: true,
-                    reasonText: _recommendReasonFor(index),
+                    reasonText: _recommendReasonFor(mode, summary, index),
                     onOpenShop: () {},
                     onSave: () => onSaveShop(summary),
                   ),
@@ -879,141 +937,147 @@ class _InlineShopEmptyCard extends StatelessWidget {
   }
 }
 
-List<ShopDiscoverySummary> _suggestedShopSummaries(List<String> genreIds) {
-  final joined = genreIds.join(',');
-  if (joined.contains('100227') || joined.contains('100371')) {
-    return _foodShopSummaries;
+class _ShopRecommendationModePicker extends StatelessWidget {
+  const _ShopRecommendationModePicker({
+    required this.selected,
+    required this.onChanged,
+  });
+
+  final _ShopRecommendationMode selected;
+  final ValueChanged<_ShopRecommendationMode> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        for (final mode in _ShopRecommendationMode.values)
+          ChoiceChip(
+            label: Text(mode.label),
+            selected: selected == mode,
+            showCheckmark: false,
+            selectedColor: AppColors.accentLight,
+            backgroundColor: AppColors.surface,
+            side: BorderSide(
+              color: selected == mode
+                  ? AppColors.accentPrimary.withValues(alpha: 0.45)
+                  : AppColors.divider.withValues(alpha: 0.9),
+            ),
+            labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: selected == mode
+                  ? AppColors.accentPrimary
+                  : AppColors.textSecondary,
+              fontWeight: selected == mode ? FontWeight.w800 : FontWeight.w600,
+            ),
+            visualDensity: VisualDensity.compact,
+            onSelected: (_) => onChanged(mode),
+          ),
+      ],
+    );
   }
-  if (joined.contains('100939')) {
-    return _interiorShopSummaries;
-  }
-  if (joined.contains('565004')) {
-    return _dailyShopSummaries;
-  }
-  return _genericShopSummaries;
 }
 
-String _recommendReasonFor(int index) {
-  const reasons = [
-    '選択ジャンルに近い商品が多いショップです',
-    'レビュー数が多い商品を扱っています',
-    '候補探しに使いやすいショップです',
-    '日常的に使いやすい商品がまとまっています',
-    'ROOM投稿の幅を広げやすいショップです',
-  ];
-  return reasons[index.clamp(0, reasons.length - 1)];
+enum _ShopRecommendationMode {
+  balance('バランス', '商品数・評価・レビュー数をもとに選んでいます', 'balance'),
+  affordable('お手頃価格', '低〜中価格帯の商品が多いショップを優先します', 'affordable'),
+  highlyRated('高評価', '平均評価とレビュー件数を優先します', 'highlyRated'),
+  social('SNS映え', '画像つき商品や雑貨・インテリア寄りの商品を優先します', 'social'),
+  practical('実用的', '日用品・食品など継続投稿しやすい商品を優先します', 'practical');
+
+  const _ShopRecommendationMode(this.label, this.description, this.logValue);
+
+  final String label;
+  final String description;
+  final String logValue;
 }
 
-final List<ShopDiscoverySummary> _genericShopSummaries = const [
-  ShopDiscoverySummary(
-    shopKey: 'rakuten24',
-    shopName: '楽天24',
-    shopUrl: 'https://www.rakuten.co.jp/rakuten24/',
-    hitItemCount: 28,
-    maxReviewCount: 12400,
-    avgReviewAverage: 4.42,
-    discoveryScore: 184.2,
-    representativeItems: [
-      ShopRepresentativeItem(itemName: '日用品', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: '食品', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: 'コスメ', imageUrl: '', itemUrl: ''),
-    ],
-  ),
-  ShopDiscoverySummary(
-    shopKey: 'book',
-    shopName: '楽天ブックス',
-    shopUrl: 'https://www.rakuten.co.jp/book/',
-    hitItemCount: 18,
-    maxReviewCount: 8200,
-    avgReviewAverage: 4.55,
-    discoveryScore: 162.8,
-    representativeItems: [
-      ShopRepresentativeItem(itemName: '本', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: '雑誌', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: 'DVD', imageUrl: '', itemUrl: ''),
-    ],
-  ),
-  ShopDiscoverySummary(
-    shopKey: 'tamachanshop',
-    shopName: 'タマチャンショップ',
-    shopUrl: 'https://www.rakuten.co.jp/kyunan/',
-    hitItemCount: 15,
-    maxReviewCount: 6800,
-    avgReviewAverage: 4.48,
-    discoveryScore: 151.3,
-    representativeItems: [
-      ShopRepresentativeItem(itemName: '食品', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: 'ナッツ', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: '健康食品', imageUrl: '', itemUrl: ''),
-    ],
-  ),
-];
+RakutenProductSearchCondition _shopRecommendationCondition(
+  List<String> genreIds,
+  _ShopRecommendationMode mode,
+) {
+  final genreId = genreIds.isNotEmpty ? genreIds.first.trim() : '';
+  final keyword = genreId.isEmpty ? _fallbackKeywordForMode(mode) : '';
+  return RakutenProductSearchCondition(
+    keyword: keyword,
+    genreId: genreId.isNotEmpty ? genreId : null,
+    maxPrice: mode == _ShopRecommendationMode.affordable ? 3500 : null,
+    minReviewCount: mode == _ShopRecommendationMode.highlyRated ? 20 : null,
+    minReviewAverage: mode == _ShopRecommendationMode.highlyRated ? 4.2 : null,
+  ).normalized();
+}
 
-final List<ShopDiscoverySummary> _foodShopSummaries = [
-  const ShopDiscoverySummary(
-    shopKey: 'sawaicoffee',
-    shopName: '澤井珈琲Beans＆Leaf',
-    shopUrl: 'https://www.rakuten.co.jp/sawaicoffee-tea/',
-    hitItemCount: 22,
-    maxReviewCount: 15400,
-    avgReviewAverage: 4.61,
-    discoveryScore: 196.4,
-    representativeItems: [
-      ShopRepresentativeItem(itemName: 'コーヒー', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: 'ドリップ', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: '豆', imageUrl: '', itemUrl: ''),
-    ],
-  ),
-  ..._genericShopSummaries,
-];
+String _fallbackKeywordForMode(_ShopRecommendationMode mode) {
+  switch (mode) {
+    case _ShopRecommendationMode.affordable:
+      return '日用品 お得';
+    case _ShopRecommendationMode.highlyRated:
+      return '食品 高評価';
+    case _ShopRecommendationMode.social:
+      return '雑貨 インテリア';
+    case _ShopRecommendationMode.practical:
+      return '日用品 キッチン 食品';
+    case _ShopRecommendationMode.balance:
+      return '日用品 キッチン ベビー 食品';
+  }
+}
 
-final List<ShopDiscoverySummary> _interiorShopSummaries = [
-  const ShopDiscoverySummary(
-    shopKey: 'low-ya',
-    shopName: 'LOWYA',
-    shopUrl: 'https://www.rakuten.co.jp/low-ya/',
-    hitItemCount: 19,
-    maxReviewCount: 9100,
-    avgReviewAverage: 4.36,
-    discoveryScore: 169.5,
-    representativeItems: [
-      ShopRepresentativeItem(itemName: '家具', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: '収納', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: 'インテリア', imageUrl: '', itemUrl: ''),
-    ],
-  ),
-  const ShopDiscoverySummary(
-    shopKey: 'air-rhizome',
-    shopName: 'エア・リゾーム',
-    shopUrl: 'https://www.rakuten.co.jp/air-rhizome/',
-    hitItemCount: 14,
-    maxReviewCount: 6200,
-    avgReviewAverage: 4.32,
-    discoveryScore: 143.8,
-    representativeItems: [
-      ShopRepresentativeItem(itemName: 'ラック', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: 'テーブル', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: 'チェア', imageUrl: '', itemUrl: ''),
-    ],
-  ),
-  _genericShopSummaries[0],
-  _genericShopSummaries[1],
-];
+List<ShopDiscoverySummary> _rankShopRecommendations(
+  List<ShopDiscoverySummary> source,
+  _ShopRecommendationMode mode,
+) {
+  final out = [...source];
+  switch (mode) {
+    case _ShopRecommendationMode.affordable:
+      out.sort((a, b) => b.hitItemCount.compareTo(a.hitItemCount));
+      break;
+    case _ShopRecommendationMode.highlyRated:
+      out.sort((a, b) {
+        final avg = b.avgReviewAverage.compareTo(a.avgReviewAverage);
+        if (avg != 0) return avg;
+        return b.maxReviewCount.compareTo(a.maxReviewCount);
+      });
+      break;
+    case _ShopRecommendationMode.social:
+      out.sort((a, b) {
+        final bi = b.representativeItems
+            .where((e) => e.imageUrl.trim().isNotEmpty)
+            .length;
+        final ai = a.representativeItems
+            .where((e) => e.imageUrl.trim().isNotEmpty)
+            .length;
+        final byImage = bi.compareTo(ai);
+        if (byImage != 0) return byImage;
+        return b.discoveryScore.compareTo(a.discoveryScore);
+      });
+      break;
+    case _ShopRecommendationMode.practical:
+    case _ShopRecommendationMode.balance:
+      out.sort((a, b) => b.discoveryScore.compareTo(a.discoveryScore));
+      break;
+  }
+  return out.take(5).toList(growable: false);
+}
 
-final List<ShopDiscoverySummary> _dailyShopSummaries = [
-  const ShopDiscoverySummary(
-    shopKey: 'soukai',
-    shopName: '爽快ドラッグ',
-    shopUrl: 'https://www.rakuten.co.jp/soukai/',
-    hitItemCount: 21,
-    maxReviewCount: 11800,
-    avgReviewAverage: 4.39,
-    discoveryScore: 178.0,
-    representativeItems: [
-      ShopRepresentativeItem(itemName: '日用品', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: '洗剤', imageUrl: '', itemUrl: ''),
-      ShopRepresentativeItem(itemName: '衛生用品', imageUrl: '', itemUrl: ''),
-    ],
-  ),
-  ..._genericShopSummaries,
-];
+String _recommendReasonFor(
+  _ShopRecommendationMode mode,
+  ShopDiscoverySummary summary,
+  int index,
+) {
+  switch (mode) {
+    case _ShopRecommendationMode.affordable:
+      return 'お手頃価格の商品が多いショップです';
+    case _ShopRecommendationMode.highlyRated:
+      return 'レビュー数が多く、候補探しに使いやすいショップです';
+    case _ShopRecommendationMode.social:
+      return summary.representativeItems.any(
+            (e) => e.imageUrl.trim().isNotEmpty,
+          )
+          ? '画像つきの商品が多く、SNS投稿に向いています'
+          : '雑貨・インテリア寄りの商品を探しやすいショップです';
+    case _ShopRecommendationMode.practical:
+      return '継続投稿しやすい実用ジャンルの商品が多いショップです';
+    case _ShopRecommendationMode.balance:
+      return index == 0 ? '選択ジャンルに近い商品が多いショップです' : '商品数・評価・レビュー数のバランスが良いショップです';
+  }
+}

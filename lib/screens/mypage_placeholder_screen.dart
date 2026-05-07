@@ -1319,7 +1319,7 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
     if (!format.isValid) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(RoomProfileUrlValidationService.genericErrorMessage),
+          content: Text(RoomProfileUrlValidationService.formatErrorMessage),
         ),
       );
       return;
@@ -1337,16 +1337,12 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
       if (!mounted) return;
       setState(() {
         _isCheckingRoomProfile = false;
-        _roomUrlErrorText = exists.exists
-            ? null
-            : RoomProfileUrlValidationService.genericErrorMessage;
+        _roomUrlErrorText = exists.canSave ? null : exists.message;
       });
-      if (!exists.exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(RoomProfileUrlValidationService.genericErrorMessage),
-          ),
-        );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(exists.message)));
+      if (!exists.canSave) {
         return;
       }
       url = format.normalizedUrl;
