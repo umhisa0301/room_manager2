@@ -297,7 +297,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       shopUrl: summary.shopUrl,
     );
     if (!mounted) return;
-    messenger.showSnackBar(const SnackBar(content: Text('保存ショップに追加しました')));
+    messenger.showSnackBar(const SnackBar(content: Text('保存しました')));
     _logShopRecommend(
       recommendationStarted: _shopRecommendationStarted,
       recommendationCount: _shopRecommendations.length,

@@ -63,6 +63,8 @@ class RoomProfileUrlValidationService {
   static const String formatErrorMessage = 'ROOMプロフィールURLの形式ではありません';
   static const String notFoundMessage = 'ROOMプロフィールが見つかりませんでした';
   static const String pendingMessage = 'URL形式は正しいですが、通信環境により確認できませんでした';
+  static const String networkPendingMessage =
+      '通信環境により確認できませんでした。URL形式は正しいため保存できます';
   static const String successMessage = 'ROOMプロフィールURLを確認しました';
   static const String genericErrorMessage = formatErrorMessage;
 
@@ -271,14 +273,14 @@ class RoomProfileUrlValidationService {
         exists: false,
         canSave: true,
         logValue: 'pendingTimeout',
-        message: pendingMessage,
+        message: networkPendingMessage,
       );
     } catch (_) {
       return const RoomProfileExistsResult(
         exists: false,
         canSave: true,
         logValue: 'pendingNetwork',
-        message: pendingMessage,
+        message: networkPendingMessage,
       );
     } finally {
       if (_ownsClient) {

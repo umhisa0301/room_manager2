@@ -171,7 +171,10 @@ void main() {
 
       expect(result.exists, isFalse);
       expect(result.canSave, isTrue);
-      expect(result.message, RoomProfileUrlValidationService.pendingMessage);
+      expect(
+        result.message,
+        RoomProfileUrlValidationService.networkPendingMessage,
+      );
     });
   });
 }
