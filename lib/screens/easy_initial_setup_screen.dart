@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/user_profile.dart';
 import '../navigation/rakuten_search_navigator.dart';
 import '../repository/easy_initial_setup_repository.dart';
+import '../services/room_profile_url_validation_service.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
@@ -32,6 +33,10 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   int _pageIndex = 0;
   bool _pageControllerAttached = false;
   String? _lastOnboardingUiLogSignature;
+  bool _isCheckingRoomProfile = false;
+  String? _roomUrlErrorText;
+  String _roomUrlValidationResult = 'notChecked';
+  String _roomProfileExists = 'unknown';
 
   int _firstIncompletePage(UserProfile profile, int savedShopCount) {
     if (!profile.hasRoomUrl) return 0;
@@ -77,9 +82,56 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     }
   }
 
-  Future<void> _saveRoomUrlStep(BuildContext context) async {
+  Future<bool> _saveRoomUrlStep(BuildContext context) async {
+    if (_isCheckingRoomProfile) return false;
+    FocusManager.instance.primaryFocus?.unfocus();
+    final messenger = ScaffoldMessenger.of(context);
+    final profileProv = context.read<UserProfileProvider>();
     final base = context.read<UserProfileProvider>().profile;
-    final url = _roomUrlController.text.trim();
+    final rawUrl = _roomUrlController.text.trim();
+    final format = RoomProfileUrlValidationService.validateFormat(rawUrl);
+    setState(() {
+      _roomUrlValidationResult = format.logValue;
+      _roomProfileExists = format.isEmpty ? 'skipped' : 'unknown';
+      _roomUrlErrorText = format.errorMessage;
+    });
+    if (!format.isValid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(RoomProfileUrlValidationService.genericErrorMessage),
+        ),
+      );
+      return false;
+    }
+
+    var url = '';
+    if (!format.isEmpty) {
+      setState(() {
+        _isCheckingRoomProfile = true;
+        _roomUrlErrorText = null;
+      });
+      final exists = await RoomProfileUrlValidationService().verifyExists(
+        format.normalizedUrl,
+      );
+      if (!mounted) return false;
+      setState(() {
+        _isCheckingRoomProfile = false;
+        _roomProfileExists = exists.logValue;
+        _roomUrlErrorText = exists.exists
+            ? null
+            : RoomProfileUrlValidationService.genericErrorMessage;
+      });
+      if (!exists.exists) {
+        messenger.showSnackBar(
+          const SnackBar(
+            content: Text(RoomProfileUrlValidationService.genericErrorMessage),
+          ),
+        );
+        return false;
+      }
+      url = format.normalizedUrl;
+    }
+
     final next = UserProfile(
       displayName: base.displayName,
       age: base.age,
@@ -89,7 +141,8 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       favoriteGenreIds: base.favoriteGenreIds,
       roomUrl: url,
     );
-    await context.read<UserProfileProvider>().saveProfile(next);
+    await profileProv.saveProfile(next);
+    return true;
   }
 
   Future<void> _openGenrePicker(BuildContext context) async {
@@ -133,8 +186,9 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
 
   void _goNext(BuildContext context) async {
     if (_pageIndex == 0) {
-      await _saveRoomUrlStep(context);
+      final saved = await _saveRoomUrlStep(context);
       if (!mounted) return;
+      if (!saved) return;
       _pageController!.nextPage(
         duration: const Duration(milliseconds: 260),
         curve: Curves.easeOutCubic,
@@ -170,6 +224,8 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       missingGenre,
       missingSavedShop,
       showMyPageSetupCard,
+      _roomUrlValidationResult,
+      _roomProfileExists,
     ].join('|');
     if (_lastOnboardingUiLogSignature == signature) return;
     _lastOnboardingUiLogSignature = signature;
@@ -182,6 +238,8 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       missingGenre: missingGenre,
       missingSavedShop: missingSavedShop,
       showMyPageSetupCard: showMyPageSetupCard,
+      roomUrlValidationResult: _roomUrlValidationResult,
+      roomProfileExists: _roomProfileExists,
     );
   }
 
@@ -204,7 +262,8 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
         AppPrimaryButton(
           label: '保存して次へ',
           height: 48,
-          onPressed: () => _goNext(context),
+          isLoading: _isCheckingRoomProfile,
+          onPressed: _isCheckingRoomProfile ? null : () => _goNext(context),
         ),
         const SizedBox(height: 8),
         Align(
@@ -239,9 +298,9 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     }
     return [
       AppPrimaryButton(
-        label: savedCount >= 1 ? 'はじめる' : 'ショップ発掘を開く',
+        label: savedCount >= 1 ? 'はじめる' : 'おすすめショップを見る',
         height: 48,
-        icon: savedCount >= 1 ? null : const Icon(Icons.travel_explore_rounded),
+        icon: savedCount >= 1 ? null : const Icon(Icons.auto_awesome_rounded),
         onPressed: savedCount >= 1
             ? () => _persistDismissAndLeave(context, markCompleted: true)
             : () => openRakutenSearchScreen(
@@ -318,6 +377,8 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
                   children: [
                     _StepRoomUrl(
                       controller: _roomUrlController,
+                      errorText: _roomUrlErrorText,
+                      isChecking: _isCheckingRoomProfile,
                       onChanged: () => setState(() {}),
                     ),
                     _StepGenres(onPickGenres: () => _openGenrePicker(context)),
@@ -372,9 +433,16 @@ class _StepDot extends StatelessWidget {
 }
 
 class _StepRoomUrl extends StatelessWidget {
-  const _StepRoomUrl({required this.controller, required this.onChanged});
+  const _StepRoomUrl({
+    required this.controller,
+    required this.errorText,
+    required this.isChecking,
+    required this.onChanged,
+  });
 
   final TextEditingController controller;
+  final String? errorText;
+  final bool isChecking;
   final VoidCallback onChanged;
 
   @override
@@ -387,17 +455,26 @@ class _StepRoomUrl extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'ROOMプロフィールURL',
+              'ROOM投稿取り込み',
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w900,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'ROOM投稿取り込みに使います。あとから変更できます。',
+              'あなたのROOM投稿を自動でコレ済みに追加できます',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.35,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'あとから変更できます',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.textTertiary,
+                height: 1.35,
+                fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 12),
@@ -407,6 +484,44 @@ class _StepRoomUrl extends StatelessWidget {
               hintText: '例：https://room.rakuten.co.jp/…',
               onChanged: (_) => onChanged(),
             ),
+            if (isChecking || errorText != null) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  if (isChecking) ...[
+                    const SizedBox(
+                      width: 14,
+                      height: 14,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '確認中...',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ] else ...[
+                    Icon(
+                      Icons.error_outline_rounded,
+                      size: 16,
+                      color: AppColors.error,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        errorText!,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: AppColors.error,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ],
           ],
         ),
       ),
@@ -438,7 +553,7 @@ class _StepGenres extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'おすすめ候補の精度が上がります。スキップできます。',
+              'おすすめ候補の精度が上がります\nスキップできます',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.35,
@@ -458,6 +573,17 @@ class _StepGenres extends StatelessWidget {
               height: 44,
               onPressed: onPickGenres,
             ),
+            if (count > 0) ...[
+              const SizedBox(height: 10),
+              Text(
+                '選択ジャンルからおすすめショップも提案できます',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: AppColors.textTertiary,
+                  height: 1.35,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -478,6 +604,8 @@ class _StepSavedShops extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final n = context.watch<SavedShopProvider>().shops.length;
+    final profile = context.watch<UserProfileProvider>().profile;
+    final suggestions = _suggestedShopNames(profile.favoriteGenreIdList);
     return SingleChildScrollView(
       child: AppCard(
         padding: const EdgeInsets.all(14),
@@ -485,42 +613,110 @@ class _StepSavedShops extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              '保存ショップ',
+              'おすすめショップ',
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w900,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'よく使うショップ内で商品を探しやすくなります。',
+              '選んだジャンルから\nあなた向けショップを提案します',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.35,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 6),
             Text(
-              '現在の保存数：$n 件',
+              'あとから変更できます',
               style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.textTertiary,
+                height: 1.35,
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 10),
-            AppPrimaryButton(
-              label: 'ショップ発掘を開く',
-              icon: const Icon(Icons.travel_explore_rounded),
-              height: 44,
-              onPressed: onOpenDiscovery,
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: AppColors.accentLight.withValues(alpha: 0.45),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppColors.accentPrimary.withValues(alpha: 0.18),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'あなた向けおすすめショップ',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${suggestions.length}件を提案できます',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ...suggestions.map(
+                    (name) => Padding(
+                      padding: const EdgeInsets.only(bottom: 6),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.storefront_outlined,
+                            size: 16,
+                            color: AppColors.accentPrimary,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 8),
-            AppOutlineButton(
-              label: '保存ショップ一覧',
-              height: 44,
-              onPressed: onOpenSavedList,
-            ),
+            if (n > 0) ...[
+              const SizedBox(height: 10),
+              AppOutlineButton(
+                label: '保存ショップ一覧',
+                height: 44,
+                onPressed: onOpenSavedList,
+              ),
+            ],
           ],
         ),
       ),
     );
   }
+}
+
+List<String> _suggestedShopNames(List<String> genreIds) {
+  final joined = genreIds.join(',');
+  if (joined.contains('100227') || joined.contains('100371')) {
+    return const ['楽天24', 'タマチャンショップ', '澤井珈琲Beans＆Leaf'];
+  }
+  if (joined.contains('100939')) {
+    return const ['LOWYA', 'scope version.R', 'エア・リゾーム'];
+  }
+  if (joined.contains('565004')) {
+    return const ['楽天24', '爽快ドラッグ', 'ケンコーコム'];
+  }
+  return const ['楽天24', 'タマチャンショップ', '澤井珈琲Beans＆Leaf'];
 }

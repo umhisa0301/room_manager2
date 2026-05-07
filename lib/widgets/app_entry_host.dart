@@ -6,6 +6,7 @@ import '../repository/easy_initial_setup_repository.dart';
 import '../repository/legal_consent_repository.dart';
 import '../screens/easy_initial_setup_screen.dart';
 import '../screens/legal_consent_screen.dart';
+import '../services/room_profile_url_validation_service.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../utils/onboarding_ui_log.dart';
@@ -30,6 +31,8 @@ class _AppEntryHostState extends State<AppEntryHost> {
     required bool missingGenre,
     required bool missingSavedShop,
     required bool showMyPageSetupCard,
+    required String roomUrlValidationResult,
+    required String roomProfileExists,
   }) {
     final signature = [
       route,
@@ -40,6 +43,8 @@ class _AppEntryHostState extends State<AppEntryHost> {
       missingGenre,
       missingSavedShop,
       showMyPageSetupCard,
+      roomUrlValidationResult,
+      roomProfileExists,
     ].join('|');
     if (_lastOnboardingUiLogSignature == signature) return;
     _lastOnboardingUiLogSignature = signature;
@@ -52,6 +57,8 @@ class _AppEntryHostState extends State<AppEntryHost> {
       missingGenre: missingGenre,
       missingSavedShop: missingSavedShop,
       showMyPageSetupCard: showMyPageSetupCard,
+      roomUrlValidationResult: roomUrlValidationResult,
+      roomProfileExists: roomProfileExists,
     );
   }
 
@@ -67,6 +74,10 @@ class _AppEntryHostState extends State<AppEntryHost> {
     final showMyPageSetupCard =
         !setup.initialSetupCompleted &&
         (missingRoomUrl || missingGenre || missingSavedShop);
+    final roomUrlFormat = RoomProfileUrlValidationService.validateFormat(
+      profile.roomUrl,
+    );
+    final roomProfileExists = missingRoomUrl ? 'skipped' : 'unknown';
 
     if (!legal.isAccepted) {
       _logOnboarding(
@@ -77,6 +88,8 @@ class _AppEntryHostState extends State<AppEntryHost> {
         missingGenre: missingGenre,
         missingSavedShop: missingSavedShop,
         showMyPageSetupCard: false,
+        roomUrlValidationResult: roomUrlFormat.logValue,
+        roomProfileExists: roomProfileExists,
       );
       return const LegalConsentScreen();
     }
@@ -89,6 +102,8 @@ class _AppEntryHostState extends State<AppEntryHost> {
         missingGenre: missingGenre,
         missingSavedShop: missingSavedShop,
         showMyPageSetupCard: false,
+        roomUrlValidationResult: roomUrlFormat.logValue,
+        roomProfileExists: roomProfileExists,
       );
       return const EasyInitialSetupScreen(embeddedInEntryHost: true);
     }
@@ -100,6 +115,8 @@ class _AppEntryHostState extends State<AppEntryHost> {
       missingGenre: missingGenre,
       missingSavedShop: missingSavedShop,
       showMyPageSetupCard: showMyPageSetupCard,
+      roomUrlValidationResult: roomUrlFormat.logValue,
+      roomProfileExists: roomProfileExists,
     );
     return const AppShell();
   }

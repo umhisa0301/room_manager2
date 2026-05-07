@@ -461,6 +461,41 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
+  Widget _buildExplicitBackButton(BuildContext context) {
+    if (!Navigator.of(context).canPop()) return const SizedBox.shrink();
+    return Material(
+      color: HomeScreenColors.standaloneCardFill.withValues(alpha: 0.96),
+      borderRadius: BorderRadius.circular(999),
+      elevation: 1.5,
+      shadowColor: HomeScreenColors.cardShadowColor,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(999),
+        onTap: () => Navigator.of(context).maybePop(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 16,
+                color: HomeScreenColors.titlePrimary,
+              ),
+              const SizedBox(width: 5),
+              Text(
+                '戻る',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: HomeScreenColors.titlePrimary,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final kbInset = MediaQuery.viewInsetsOf(context).bottom;
@@ -544,9 +579,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     },
                   ),
             ),
+            Positioned(
+              left: 12,
+              top: MediaQuery.paddingOf(context).top + 8,
+              child: _buildExplicitBackButton(context),
+            ),
             CommonDraggableEdgeFab(
-              shellTabIndex:
-                  context.watch<AppShellController>().currentIndex,
+              shellTabIndex: context.watch<AppShellController>().currentIndex,
               onCommentTap: () => _returnToShellWithTab(context, 2),
             ),
           ],
@@ -567,9 +606,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (!mounted) return;
     if (_savedShopRouteLocked) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('保存ショップで探すでは別の探し方に切り替えられません'),
-        ),
+        const SnackBar(content: Text('保存ショップで探すでは別の探し方に切り替えられません')),
       );
       return;
     }
@@ -615,9 +652,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         if (!mounted) return;
         if (_savedShopRouteLocked) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('保存ショップで探すでは別の探し方に切り替えられません'),
-            ),
+            const SnackBar(content: Text('保存ショップで探すでは別の探し方に切り替えられません')),
           );
           return;
         }
@@ -712,8 +747,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return '商品名を入力してください';
       }
     } else {
-      final kwErr = RakutenKeywordDetailConditionsValidation
-          .validateKeywordTabSearchKeyword(_keywordController.text);
+      final kwErr =
+          RakutenKeywordDetailConditionsValidation.validateKeywordTabSearchKeyword(
+            _keywordController.text,
+          );
       if (kwErr != null) return kwErr;
     }
     return RakutenKeywordDetailConditionsValidation.validateAll(
@@ -787,9 +824,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (_savedShopKeywordEntryEffective) {
       final scopedShop = _effectiveShopCodeForApi(context);
       if (scopedShop == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('ショップを選んでください')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('ショップを選んでください')));
         return;
       }
     }
@@ -974,8 +1011,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         child: AppScreenEmptyCenter(
           icon: Icons.bookmarks_outlined,
           title: '保存ショップはまだありません',
-          body:
-              'ショップ発掘などでショップを保存すると、ここから店内検索に使えます。',
+          body: 'ショップ発掘などでショップを保存すると、ここから店内検索に使えます。',
           actions: [
             AppPrimaryButton(
               label: 'ショップ発掘を開く',
@@ -998,9 +1034,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     final scoped = _effectiveShopCodeForApi(context);
     final picked = scoped != null ? savedProv.findById(scoped) : null;
     final canSearch =
-        !loading &&
-        scoped != null &&
-        _keywordController.text.trim().isNotEmpty;
+        !loading && scoped != null && _keywordController.text.trim().isNotEmpty;
     return Padding(
       padding: EdgeInsets.fromLTRB(
         RakutenSearchScreenUi.screenPadH,
@@ -1115,11 +1149,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     SavedShopProvider savedProv,
   ) {
     if (_savedShopKeywordEntryEffective) {
-      return _buildSavedShopKeywordDedicatedDeck(
-        context,
-        search,
-        savedProv,
-      );
+      return _buildSavedShopKeywordDedicatedDeck(context, search, savedProv);
     }
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -3323,8 +3353,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         return const RakutenSearchIdleView(
           icon: Icons.storefront_outlined,
           title: '発掘結果はここに並びます',
-          subtitle:
-              'キーワードやジャンルからショップを探し、気に入った店は結果から保存できます。',
+          subtitle: 'キーワードやジャンルからショップを探し、気に入った店は結果から保存できます。',
           stateFootnote: '実行までこのエリアは更新されません。',
           compactLayout: true,
         );

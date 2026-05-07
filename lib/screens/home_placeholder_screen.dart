@@ -5,6 +5,7 @@ import '../models/rakuten_managed_product.dart';
 import '../models/room_colle_list_filters.dart';
 import '../navigation/app_shell_controller.dart';
 import '../navigation/rakuten_search_navigator.dart';
+import 'mypage_placeholder_screen.dart';
 import 'today_recommendations_screen.dart';
 import '../services/rakuten_room_home_stats.dart';
 import '../services/room_collect_post_limit.dart';
@@ -317,6 +318,17 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     );
   }
 
+  Future<void> _openRoomUrlEditSheet(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      builder: (_) =>
+          const RoomUrlEditSheet(successMessage: 'ROOMプロフィールを登録しました'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -436,6 +448,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                               _HomeRoomPostImportSection(
                                 hasRoomProfileUrl: profileRoomUrl.isNotEmpty,
                                 importedDoneCount: roomImportedDoneCount,
+                                onOpenRoomUrl: () =>
+                                    _openRoomUrlEditSheet(context),
                               ),
                               _HomeLimitAlertCard(
                                 collectLimit: collectLimit,
@@ -491,10 +505,12 @@ class _HomeRoomPostImportSection extends StatelessWidget {
   const _HomeRoomPostImportSection({
     required this.hasRoomProfileUrl,
     required this.importedDoneCount,
+    required this.onOpenRoomUrl,
   });
 
   final bool hasRoomProfileUrl;
   final int importedDoneCount;
+  final VoidCallback onOpenRoomUrl;
 
   Future<void> _handleImport(BuildContext context) async {
     if (!hasRoomProfileUrl) return;
@@ -504,7 +520,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
     if (result == null) {
       final url = context.read<UserProfileProvider>().profile.roomUrl.trim();
       if (url.isEmpty) {
-        context.read<AppShellController>().selectTab(4);
+        onOpenRoomUrl();
       }
       return;
     }
@@ -528,7 +544,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
         final total = ctl.targetCount;
 
         final statusLine = !hasRoomProfileUrl
-            ? 'マイページでROOMのプロフィールURLを登録すると使えます'
+            ? 'ROOMプロフィールURLを登録すると自動取り込みが使えます'
             : importedDoneCount <= 0
             ? 'まだROOM投稿を取り込んでいません'
             : '取り込み済み：$importedDoneCount件';
@@ -563,10 +579,9 @@ class _HomeRoomPostImportSection extends StatelessWidget {
               const SizedBox(height: 14),
               if (!hasRoomProfileUrl) ...[
                 OutlinedButton.icon(
-                  onPressed: () =>
-                      context.read<AppShellController>().selectTab(4),
-                  icon: const Icon(Icons.person_outline_rounded, size: 20),
-                  label: const Text('マイページでROOM URLを登録'),
+                  onPressed: onOpenRoomUrl,
+                  icon: const Icon(Icons.auto_awesome_rounded, size: 20),
+                  label: const Text('ROOMプロフィールを登録'),
                 ),
               ] else ...[
                 if (busy) ...[

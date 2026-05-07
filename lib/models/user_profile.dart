@@ -31,6 +31,7 @@ class UserProfile {
     }
   }
 
+  /// ニックネーム（任意）。将来の AI おすすめ文・投稿文生成にも利用する。
   final String displayName;
   final int? age;
   final String? genderKey;

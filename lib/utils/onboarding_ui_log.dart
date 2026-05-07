@@ -10,6 +10,8 @@ void logOnboardingUi({
   required bool missingGenre,
   required bool missingSavedShop,
   required bool showMyPageSetupCard,
+  String roomUrlValidationResult = 'notChecked',
+  String roomProfileExists = 'unknown',
 }) {
   debugPrint(
     '[ONBOARDING_UI] '
@@ -20,6 +22,8 @@ void logOnboardingUi({
     'missingRoomUrl=$missingRoomUrl '
     'missingGenre=$missingGenre '
     'missingSavedShop=$missingSavedShop '
-    'showMyPageSetupCard=$showMyPageSetupCard',
+    'showMyPageSetupCard=$showMyPageSetupCard '
+    'roomUrlValidationResult=$roomUrlValidationResult '
+    'roomProfileExists=$roomProfileExists',
   );
 }

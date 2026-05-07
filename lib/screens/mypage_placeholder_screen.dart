@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../config/demo_mode.dart';
@@ -8,6 +7,7 @@ import '../models/rakuten_managed_product.dart';
 import '../models/user_profile.dart';
 import '../navigation/app_shell_controller.dart';
 import '../repository/easy_initial_setup_repository.dart';
+import '../services/room_profile_url_validation_service.dart';
 import '../services/app_action_service.dart';
 import '../services/room_import_limit_policy.dart';
 import '../repository/rakuten_managed_product_repository.dart';
@@ -170,6 +170,10 @@ class MypagePlaceholderScreen extends StatelessWidget {
                     final showMyPageSetupCard =
                         !setup.initialSetupCompleted &&
                         (missingRoomUrl || missingGenre || missingSavedShop);
+                    final roomUrlFormat =
+                        RoomProfileUrlValidationService.validateFormat(
+                          profile.roomUrl,
+                        );
                     logOnboardingUi(
                       route: 'myPage',
                       termsAccepted: true,
@@ -179,6 +183,8 @@ class MypagePlaceholderScreen extends StatelessWidget {
                       missingGenre: missingGenre,
                       missingSavedShop: missingSavedShop,
                       showMyPageSetupCard: showMyPageSetupCard,
+                      roomUrlValidationResult: roomUrlFormat.logValue,
+                      roomProfileExists: missingRoomUrl ? 'skipped' : 'unknown',
                     );
                     final candidateCount = managed.items
                         .where(
@@ -1213,49 +1219,28 @@ class ProfileEditSheet extends StatefulWidget {
 
 class _ProfileEditSheetState extends State<ProfileEditSheet> {
   late final TextEditingController _nameController;
-  late final TextEditingController _ageController;
-  late final TextEditingController _occupationController;
-  String? _genderKey;
 
   @override
   void initState() {
     super.initState();
     final p = context.read<UserProfileProvider>().profile;
     _nameController = TextEditingController(text: p.displayName);
-    _ageController = TextEditingController(
-      text: p.age != null ? '${p.age}' : '',
-    );
-    _occupationController = TextEditingController(text: p.occupation);
-    _genderKey = p.genderKey;
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _ageController.dispose();
-    _occupationController.dispose();
     super.dispose();
   }
 
   Future<void> _save() async {
     FocusManager.instance.primaryFocus?.unfocus();
     final base = context.read<UserProfileProvider>().profile;
-    final ageText = _ageController.text.trim();
-    int? age;
-    if (ageText.isNotEmpty) {
-      age = int.tryParse(ageText);
-      if (age == null || age < 0 || age > 150) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('年齢は 0〜150 の数値で入力するか、空にしてください')),
-        );
-        return;
-      }
-    }
     final next = UserProfile(
       displayName: _nameController.text.trim(),
-      age: age,
-      genderKey: _genderKey,
-      occupation: _occupationController.text.trim(),
+      age: base.age,
+      genderKey: base.genderKey,
+      occupation: base.occupation,
       favoriteGenres: base.favoriteGenres,
       favoriteGenreIds: base.favoriteGenreIds,
       roomUrl: base.roomUrl,
@@ -1270,37 +1255,22 @@ class _ProfileEditSheetState extends State<ProfileEditSheet> {
   @override
   Widget build(BuildContext context) {
     return _SheetScaffold(
-      title: 'プロフィールを編集',
+      title: 'ニックネームを編集',
       body: [
         AppTextField(
           controller: _nameController,
-          textInputAction: TextInputAction.next,
-          labelText: 'ユーザー名（任意）',
-          hintText: 'ニックネームなど',
-        ),
-        const SizedBox(height: 12),
-        AppTextField(
-          controller: _ageController,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(3),
-          ],
-          textInputAction: TextInputAction.next,
-          labelText: '年齢（任意）',
-          hintText: '例: 30',
-        ),
-        const SizedBox(height: 12),
-        _GenderChipField(
-          value: _genderKey,
-          onChanged: (v) => setState(() => _genderKey = v),
-        ),
-        const SizedBox(height: 12),
-        AppTextField(
-          controller: _occupationController,
           textInputAction: TextInputAction.done,
-          labelText: '職業（任意）',
-          hintText: '例: 会社員',
+          labelText: 'ニックネーム（任意）',
+          hintText: '例: まい',
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'AIのおすすめ文や投稿文に使用します。未設定でもすべての機能を使えます。',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppColors.textSecondary,
+            height: 1.35,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
       primaryLabel: '保存',
@@ -1310,7 +1280,9 @@ class _ProfileEditSheetState extends State<ProfileEditSheet> {
 }
 
 class RoomUrlEditSheet extends StatefulWidget {
-  const RoomUrlEditSheet({super.key});
+  const RoomUrlEditSheet({super.key, this.successMessage = 'ROOM URLを保存しました'});
+
+  final String successMessage;
 
   @override
   State<RoomUrlEditSheet> createState() => _RoomUrlEditSheetState();
@@ -1318,6 +1290,8 @@ class RoomUrlEditSheet extends StatefulWidget {
 
 class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
   late final TextEditingController _roomUrlController;
+  bool _isCheckingRoomProfile = false;
+  String? _roomUrlErrorText;
 
   @override
   void initState() {
@@ -1334,8 +1308,50 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
   }
 
   Future<void> _save() async {
+    if (_isCheckingRoomProfile) return;
     FocusManager.instance.primaryFocus?.unfocus();
     final base = context.read<UserProfileProvider>().profile;
+    final rawUrl = _roomUrlController.text.trim();
+    final format = RoomProfileUrlValidationService.validateFormat(rawUrl);
+    setState(() {
+      _roomUrlErrorText = format.errorMessage;
+    });
+    if (!format.isValid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(RoomProfileUrlValidationService.genericErrorMessage),
+        ),
+      );
+      return;
+    }
+
+    var url = '';
+    if (!format.isEmpty) {
+      setState(() {
+        _isCheckingRoomProfile = true;
+        _roomUrlErrorText = null;
+      });
+      final exists = await RoomProfileUrlValidationService().verifyExists(
+        format.normalizedUrl,
+      );
+      if (!mounted) return;
+      setState(() {
+        _isCheckingRoomProfile = false;
+        _roomUrlErrorText = exists.exists
+            ? null
+            : RoomProfileUrlValidationService.genericErrorMessage;
+      });
+      if (!exists.exists) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(RoomProfileUrlValidationService.genericErrorMessage),
+          ),
+        );
+        return;
+      }
+      url = format.normalizedUrl;
+    }
+
     final next = UserProfile(
       displayName: base.displayName,
       age: base.age,
@@ -1343,32 +1359,75 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
       occupation: base.occupation,
       favoriteGenres: base.favoriteGenres,
       favoriteGenreIds: base.favoriteGenreIds,
-      roomUrl: _roomUrlController.text.trim(),
+      roomUrl: url,
     );
     final messenger = ScaffoldMessenger.of(context);
     await context.read<UserProfileProvider>().saveProfile(next);
     if (!mounted) return;
     Navigator.of(context).pop();
-    messenger.showSnackBar(const SnackBar(content: Text('ROOM URLを保存しました')));
+    messenger.showSnackBar(SnackBar(content: Text(widget.successMessage)));
   }
 
   @override
   Widget build(BuildContext context) {
-    final hasUrl = _roomUrlController.text.trim().isNotEmpty;
+    final format = RoomProfileUrlValidationService.validateFormat(
+      _roomUrlController.text,
+    );
+    final hasUrl = _roomUrlController.text.trim().isNotEmpty && format.isValid;
     return _SheetScaffold(
-      title: 'ROOM URLを編集',
+      title: 'ROOMプロフィールを登録',
       body: [
         AppTextField(
           controller: _roomUrlController,
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.url,
-          labelText: '楽天ROOMのURL（任意）',
+          labelText: 'ROOMプロフィールURL（任意）',
           hintText: '例: https://room.rakuten.co.jp/xxxx',
-          onChanged: (_) => setState(() {}),
+          onChanged: (_) => setState(() {
+            _roomUrlErrorText = null;
+          }),
         ),
+        if (_isCheckingRoomProfile || _roomUrlErrorText != null) ...[
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              if (_isCheckingRoomProfile) ...[
+                const SizedBox(
+                  width: 14,
+                  height: 14,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '確認中...',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ] else ...[
+                Icon(
+                  Icons.error_outline_rounded,
+                  size: 16,
+                  color: AppColors.error,
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    _roomUrlErrorText!,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.error,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ],
         const SizedBox(height: 8),
         Text(
-          '未入力でも保存できます。登録するとマイページからROOMをすぐ開けます。',
+          'あなたのROOM投稿を自動でコレ済みに追加できます。未入力でも保存できます。',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: AppColors.textSecondary,
             height: 1.35,
@@ -1390,56 +1449,8 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
       ],
       primaryLabel: '保存',
       onPrimary: _save,
-    );
-  }
-}
-
-class _GenderChipField extends StatelessWidget {
-  const _GenderChipField({required this.value, required this.onChanged});
-
-  final String? value;
-  final ValueChanged<String?> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final items = <({String label, String? value})>[
-      (label: '選択しない', value: null),
-      (label: '男性', value: UserProfile.genderMale),
-      (label: '女性', value: UserProfile.genderFemale),
-      (label: 'その他', value: UserProfile.genderOther),
-      (label: '回答しない', value: UserProfile.genderPreferNot),
-    ];
-    return InputDecorator(
-      decoration: const InputDecoration(labelText: '性別（任意）'),
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: [
-          for (final item in items)
-            ChoiceChip(
-              label: Text(item.label),
-              selected: value == item.value,
-              showCheckmark: false,
-              onSelected: (_) => onChanged(item.value),
-              selectedColor: AppColors.accentLight,
-              backgroundColor: AppColors.surface,
-              side: BorderSide(
-                color: value == item.value
-                    ? AppColors.accentPrimary.withValues(alpha: 0.45)
-                    : AppColors.divider.withValues(alpha: 0.9),
-              ),
-              labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: value == item.value
-                    ? AppColors.accentPrimary
-                    : AppColors.textSecondary,
-                fontWeight: value == item.value
-                    ? FontWeight.w800
-                    : FontWeight.w600,
-              ),
-              visualDensity: VisualDensity.compact,
-            ),
-        ],
-      ),
+      primaryEnabled: !_isCheckingRoomProfile,
+      isPrimaryLoading: _isCheckingRoomProfile,
     );
   }
 }
@@ -1450,12 +1461,16 @@ class _SheetScaffold extends StatelessWidget {
     required this.body,
     required this.primaryLabel,
     required this.onPrimary,
+    this.primaryEnabled = true,
+    this.isPrimaryLoading = false,
   });
 
   final String title;
   final List<Widget> body;
   final String primaryLabel;
   final VoidCallback onPrimary;
+  final bool primaryEnabled;
+  final bool isPrimaryLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -1485,7 +1500,11 @@ class _SheetScaffold extends StatelessWidget {
               const SizedBox(height: 12),
               ...body,
               const SizedBox(height: 16),
-              AppPrimaryButton(label: primaryLabel, onPressed: onPrimary),
+              AppPrimaryButton(
+                label: primaryLabel,
+                onPressed: primaryEnabled ? onPrimary : null,
+                isLoading: isPrimaryLoading,
+              ),
               const SizedBox(height: 8),
               AppSecondaryButton(
                 label: '閉じる',
