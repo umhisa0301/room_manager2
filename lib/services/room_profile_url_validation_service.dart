@@ -166,6 +166,24 @@ class RoomProfileUrlValidationService {
     return Uri.https('room.rakuten.co.jp', '/${parsed.roomId}').toString();
   }
 
+  static String extractRoomId(String input) {
+    final parsed = parse(input);
+    return parsed.isValid ? parsed.roomId.trim() : '';
+  }
+
+  static String normalizeProfileUrl(String input) {
+    final parsed = parse(input);
+    return normalize(parsed);
+  }
+
+  static String buildItemsUrl(String profileUrl) {
+    final normalized = normalizeProfileUrl(profileUrl);
+    if (normalized.isEmpty) return '';
+    final roomId = extractRoomId(normalized);
+    if (roomId.isEmpty) return '';
+    return Uri.https('room.rakuten.co.jp', '/$roomId/items').toString();
+  }
+
   static RoomProfileUrlFormatResult validateFormat(String rawUrl) {
     final parsed = parse(rawUrl);
     if (!parsed.isValid) {

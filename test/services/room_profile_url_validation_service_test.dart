@@ -103,6 +103,35 @@ void main() {
     });
   });
 
+  group('RoomProfileUrlValidationService URL helpers', () {
+    test('extractRoomId extracts roomId from profile child routes', () {
+      expect(
+        RoomProfileUrlValidationService.extractRoomId(
+          'https://room.rakuten.co.jp/room_def277c8b5/items',
+        ),
+        'room_def277c8b5',
+      );
+    });
+
+    test('normalizeProfileUrl always stores profile URL', () {
+      expect(
+        RoomProfileUrlValidationService.normalizeProfileUrl(
+          'https://room.rakuten.co.jp/room_def277c8b5/likes',
+        ),
+        'https://room.rakuten.co.jp/room_def277c8b5',
+      );
+    });
+
+    test('buildItemsUrl builds posting list URL from saved profile URL', () {
+      expect(
+        RoomProfileUrlValidationService.buildItemsUrl(
+          'https://room.rakuten.co.jp/room_def277c8b5',
+        ),
+        'https://room.rakuten.co.jp/room_def277c8b5/items',
+      );
+    });
+  });
+
   group('RoomProfileUrlValidationService.verifyExists', () {
     test('200系は保存可能な確認成功にする', () async {
       final service = RoomProfileUrlValidationService(

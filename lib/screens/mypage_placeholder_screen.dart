@@ -63,6 +63,16 @@ class MypagePlaceholderScreen extends StatelessWidget {
     );
   }
 
+  Future<void> _openGenderEditSheet(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      builder: (sheetContext) => const GenderEditSheet(),
+    );
+  }
+
   Future<void> _openFavoriteGenrePickerSheet(BuildContext context) async {
     final profile = context.read<UserProfileProvider>().profile;
     final initialIds = _profileFavoriteGenreIds(profile);
@@ -233,6 +243,23 @@ class MypagePlaceholderScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: _gap),
                         ],
+                        MyPageRegisteredContentCard(
+                          profile: profile,
+                          savedShopCount: saved.shops.length,
+                          onEditNickname: () => _openProfileEditSheet(context),
+                          onEditGender: () => _openGenderEditSheet(context),
+                          onEditRoomUrl: () => _openRoomUrlEditSheet(context),
+                          onEditGenres: () =>
+                              _openFavoriteGenrePickerSheet(context),
+                          onOpenSavedShops: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const SavedShopsScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: _gap),
                         MyPageQuickSummaryCard(
                           candidateCount: candidateCount,
                           doneCount: doneCount,
@@ -1181,11 +1208,10 @@ class MyPageSettingsSection extends StatelessWidget {
             ),
             const SizedBox(height: 8),
           ],
-          AppSecondaryButton(
+          AppOutlineButton(
             label: 'かんたん初期設定をやり直す',
             onPressed: onOpenInitialSetup,
             icon: const Icon(Icons.tune_rounded),
-            expand: true,
             height: 38,
           ),
           const SizedBox(height: 8),
@@ -1206,6 +1232,124 @@ class MyPageSettingsSection extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class MyPageRegisteredContentCard extends StatelessWidget {
+  const MyPageRegisteredContentCard({
+    super.key,
+    required this.profile,
+    required this.savedShopCount,
+    required this.onEditNickname,
+    required this.onEditGender,
+    required this.onEditRoomUrl,
+    required this.onEditGenres,
+    required this.onOpenSavedShops,
+  });
+
+  final UserProfile profile;
+  final int savedShopCount;
+  final VoidCallback onEditNickname;
+  final VoidCallback onEditGender;
+  final VoidCallback onEditRoomUrl;
+  final VoidCallback onEditGenres;
+  final VoidCallback onOpenSavedShops;
+
+  @override
+  Widget build(BuildContext context) {
+    final nickname = profile.displayName.trim().isEmpty ? '未設定' : '登録済み';
+    final gender = UserProfile.genderLabelJa(profile.genderKey) ?? '未設定';
+    final roomUrl = profile.hasRoomUrl ? '登録済み' : '未設定';
+    final genreCount = profile.favoriteGenreIdList.length;
+    return AppCard(
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const AppSectionHeader(
+            title: '登録内容',
+            subtitle: 'ROOM URL・ニックネーム・ジャンル・保存ショップを確認できます',
+            icon: Icons.assignment_ind_outlined,
+          ),
+          const SizedBox(height: 10),
+          _RegisteredContentRow(
+            title: 'ニックネーム',
+            value: nickname,
+            onTap: onEditNickname,
+          ),
+          _RegisteredContentRow(
+            title: '性別',
+            value: gender,
+            onTap: onEditGender,
+          ),
+          _RegisteredContentRow(
+            title: 'ROOM URL',
+            value: roomUrl,
+            onTap: onEditRoomUrl,
+          ),
+          _RegisteredContentRow(
+            title: 'よく使うジャンル',
+            value: '$genreCount件',
+            onTap: onEditGenres,
+          ),
+          _RegisteredContentRow(
+            title: '保存ショップ',
+            value: '$savedShopCount件',
+            onTap: onOpenSavedShops,
+            showDivider: false,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RegisteredContentRow extends StatelessWidget {
+  const _RegisteredContentRow({
+    required this.title,
+    required this.value,
+    required this.onTap,
+    this.showDivider = true,
+  });
+
+  final String title;
+  final String value;
+  final VoidCallback onTap;
+  final bool showDivider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          dense: true,
+          contentPadding: EdgeInsets.zero,
+          title: Text(
+            title,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w800,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                value,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
+            ],
+          ),
+          onTap: onTap,
+        ),
+        if (showDivider) Divider(height: 1, color: AppColors.divider),
+      ],
     );
   }
 }
@@ -1275,6 +1419,112 @@ class _ProfileEditSheetState extends State<ProfileEditSheet> {
       ],
       primaryLabel: '保存',
       onPrimary: _save,
+    );
+  }
+}
+
+class GenderEditSheet extends StatefulWidget {
+  const GenderEditSheet({super.key});
+
+  @override
+  State<GenderEditSheet> createState() => _GenderEditSheetState();
+}
+
+class _GenderEditSheetState extends State<GenderEditSheet> {
+  String? _genderKey;
+
+  @override
+  void initState() {
+    super.initState();
+    _genderKey = context.read<UserProfileProvider>().profile.genderKey;
+  }
+
+  Future<void> _save() async {
+    final base = context.read<UserProfileProvider>().profile;
+    final next = UserProfile(
+      displayName: base.displayName,
+      age: base.age,
+      genderKey: _genderKey,
+      occupation: base.occupation,
+      favoriteGenres: base.favoriteGenres,
+      favoriteGenreIds: base.favoriteGenreIds,
+      roomUrl: base.roomUrl,
+    );
+    final messenger = ScaffoldMessenger.of(context);
+    await context.read<UserProfileProvider>().saveProfile(next);
+    if (!mounted) return;
+    Navigator.of(context).pop();
+    messenger.showSnackBar(const SnackBar(content: Text('性別を保存しました')));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _SheetScaffold(
+      title: '性別を編集',
+      body: [
+        Text(
+          'おすすめ傾向の調整に使えます。未回答でもすべての機能を使えます。',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppColors.textSecondary,
+            height: 1.35,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 12),
+        _GenderEditChoices(
+          value: _genderKey,
+          onChanged: (v) => setState(() => _genderKey = v),
+        ),
+      ],
+      primaryLabel: '保存',
+      onPrimary: _save,
+    );
+  }
+}
+
+class _GenderEditChoices extends StatelessWidget {
+  const _GenderEditChoices({required this.value, required this.onChanged});
+
+  final String? value;
+  final ValueChanged<String?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = <({String label, String? value})>[
+      (label: '未設定', value: null),
+      (label: '男性', value: UserProfile.genderMale),
+      (label: '女性', value: UserProfile.genderFemale),
+      (label: 'その他', value: UserProfile.genderOther),
+      (label: '回答しない', value: UserProfile.genderPreferNot),
+    ];
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        for (final item in items)
+          ChoiceChip(
+            label: Text(item.label),
+            selected: value == item.value,
+            showCheckmark: false,
+            selectedColor: AppColors.accentLight,
+            backgroundColor: AppColors.surface,
+            side: BorderSide(
+              color: value == item.value
+                  ? AppColors.accentPrimary.withValues(alpha: 0.45)
+                  : AppColors.divider.withValues(alpha: 0.9),
+            ),
+            labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: value == item.value
+                  ? AppColors.accentPrimary
+                  : AppColors.textSecondary,
+              fontWeight: value == item.value
+                  ? FontWeight.w800
+                  : FontWeight.w600,
+            ),
+            visualDensity: VisualDensity.compact,
+            onSelected: (_) => onChanged(item.value),
+          ),
+      ],
     );
   }
 }

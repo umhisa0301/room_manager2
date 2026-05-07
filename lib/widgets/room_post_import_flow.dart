@@ -8,6 +8,7 @@ import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../services/app_action_service.dart';
 import '../services/room_import_limit_policy.dart';
+import '../services/room_profile_url_validation_service.dart';
 import '../services/room_sync_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
@@ -67,7 +68,9 @@ abstract final class RoomPostImportFlow {
     BuildContext context, {
     required RoomPostImportProgressCallback onProgress,
   }) async {
-    final profile = context.read<UserProfileProvider>().profile.roomUrl.trim();
+    final profile = RoomProfileUrlValidationService.normalizeProfileUrl(
+      context.read<UserProfileProvider>().profile.roomUrl,
+    );
     if (profile.isEmpty) {
       return null;
     }
@@ -148,9 +151,7 @@ abstract final class RoomPostImportFlow {
                   builder: (context, constraints) {
                     const spacing = 12.0;
                     final w = constraints.maxWidth;
-                    final half = w > spacing
-                        ? (w - spacing) / 2
-                        : w;
+                    final half = w > spacing ? (w - spacing) / 2 : w;
                     Widget cell(_SummaryMiniCard c) =>
                         SizedBox(width: half, child: c);
                     return Wrap(
@@ -480,9 +481,7 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                           if (_hasPositiveRoomReaction())
                             DecoratedBox(
                               decoration: BoxDecoration(
-                                color: _roomReactionPink.withValues(
-                                  alpha: 0.1,
-                                ),
+                                color: _roomReactionPink.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(999),
                                 border: Border.all(
                                   color: _roomReactionPink.withValues(
@@ -605,5 +604,4 @@ class _ImportedProductPreviewTile extends StatelessWidget {
       ),
     );
   }
-
 }

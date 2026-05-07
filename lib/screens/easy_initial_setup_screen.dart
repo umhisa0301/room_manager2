@@ -32,7 +32,9 @@ class EasyInitialSetupScreen extends StatefulWidget {
 
 class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   PageController? _pageController;
+  final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _roomUrlController = TextEditingController();
+  String? _genderKey;
   int _pageIndex = 0;
   bool _pageControllerAttached = false;
   String? _lastOnboardingUiLogSignature;
@@ -48,10 +50,10 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       _ShopRecommendationMode.balance;
 
   int _firstIncompletePage(UserProfile profile, int savedShopCount) {
-    if (!profile.hasRoomUrl) return 0;
-    if (profile.favoriteGenreIdList.isEmpty) return 1;
-    if (savedShopCount <= 0) return 2;
-    return 2;
+    if (!profile.hasRoomUrl) return 1;
+    if (profile.favoriteGenreIdList.isEmpty) return 2;
+    if (savedShopCount <= 0) return 3;
+    return 3;
   }
 
   @override
@@ -60,9 +62,13 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     if (_pageControllerAttached) return;
     _pageControllerAttached = true;
     final profile = context.read<UserProfileProvider>().profile;
+    _nicknameController.text = profile.displayName;
+    _genderKey = profile.genderKey;
     _roomUrlController.text = profile.roomUrl;
     final saved = context.read<SavedShopProvider>().shops.length;
-    final start = _firstIncompletePage(profile, saved);
+    final start = widget.embeddedInEntryHost
+        ? 0
+        : _firstIncompletePage(profile, saved);
     _pageIndex = start;
     _pageController = PageController(initialPage: start);
   }
@@ -70,8 +76,23 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   @override
   void dispose() {
     _pageController?.dispose();
+    _nicknameController.dispose();
     _roomUrlController.dispose();
     super.dispose();
+  }
+
+  Future<void> _saveProfileStep(BuildContext context) async {
+    final base = context.read<UserProfileProvider>().profile;
+    final next = UserProfile(
+      displayName: _nicknameController.text.trim(),
+      age: base.age,
+      genderKey: _genderKey,
+      occupation: base.occupation,
+      favoriteGenres: base.favoriteGenres,
+      favoriteGenreIds: base.favoriteGenreIds,
+      roomUrl: base.roomUrl,
+    );
+    await context.read<UserProfileProvider>().saveProfile(next);
   }
 
   Future<void> _persistDismissAndLeave(
@@ -319,6 +340,15 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
 
   void _goNext(BuildContext context) async {
     if (_pageIndex == 0) {
+      await _saveProfileStep(context);
+      if (!mounted) return;
+      _pageController!.nextPage(
+        duration: const Duration(milliseconds: 260),
+        curve: Curves.easeOutCubic,
+      );
+      return;
+    }
+    if (_pageIndex == 1) {
       final saved = await _saveRoomUrlStep(context);
       if (!mounted) return;
       if (!saved) return;
@@ -328,7 +358,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       );
       return;
     }
-    if (_pageIndex == 1) {
+    if (_pageIndex == 2) {
       _pageController!.nextPage(
         duration: const Duration(milliseconds: 260),
         curve: Curves.easeOutCubic,
@@ -377,7 +407,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   }
 
   void _skipStep(BuildContext context) async {
-    if (_pageIndex >= 2) {
+    if (_pageIndex >= 3) {
       await _persistDismissAndLeave(context, markSkipped: true);
       return;
     }
@@ -394,8 +424,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
         AppPrimaryButton(
           label: '保存して次へ',
           height: 48,
-          isLoading: _isCheckingRoomProfile,
-          onPressed: _isCheckingRoomProfile ? null : () => _goNext(context),
+          onPressed: () => _goNext(context),
         ),
         const SizedBox(height: 8),
         Align(
@@ -409,6 +438,24 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       ];
     }
     if (_pageIndex == 1) {
+      return [
+        AppPrimaryButton(
+          label: '保存して次へ',
+          height: 48,
+          isLoading: _isCheckingRoomProfile,
+          onPressed: _isCheckingRoomProfile ? null : () => _goNext(context),
+        ),
+        const SizedBox(height: 8),
+        Align(
+          alignment: Alignment.center,
+          child: TextButton(
+            onPressed: () => _skipStep(context),
+            child: const Text('スキップして次へ'),
+          ),
+        ),
+      ];
+    }
+    if (_pageIndex == 2) {
       final hasGenres = profile.favoriteGenreIdList.isNotEmpty;
       return [
         AppPrimaryButton(
@@ -476,101 +523,299 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     final savedShopCount = context.watch<SavedShopProvider>().shops.length;
     final setup = context.watch<EasyInitialSetupRepository>();
     _logEasySetupState(profile, savedShopCount, setup);
+    Future<bool> handleWillPop() async {
+      if (_pageIndex > 0) {
+        await _pageController?.previousPage(
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOutCubic,
+        );
+        return false;
+      }
+      return true;
+    }
+
     return Scaffold(
       backgroundColor: AppColors.surface,
       appBar: AppBar(
         title: const Text('かんたん初期設定'),
         automaticallyImplyLeading: !widget.embeddedInEntryHost,
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'あとからマイページで変更できます。',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w600,
-                  height: 1.35,
+        leading: _pageIndex > 0
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back_rounded),
+                onPressed: () => _pageController?.previousPage(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
                 ),
-              ),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  _StepDot(active: _pageIndex == 0, label: '1'),
-                  Expanded(
-                    child: Divider(
-                      color: AppColors.divider.withValues(alpha: 0.7),
-                    ),
+              )
+            : null,
+      ),
+      body: PopScope(
+        canPop: _pageIndex == 0,
+        onPopInvokedWithResult: (didPop, _) {
+          if (didPop) return;
+          handleWillPop();
+        },
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'あとからマイページで変更できます。',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w600,
+                    height: 1.35,
                   ),
-                  _StepDot(active: _pageIndex == 1, label: '2'),
-                  Expanded(
-                    child: Divider(
-                      color: AppColors.divider.withValues(alpha: 0.7),
-                    ),
-                  ),
-                  _StepDot(active: _pageIndex == 2, label: '3'),
-                ],
-              ),
-              const SizedBox(height: 14),
-              Expanded(
-                child: PageView(
-                  controller: controller,
-                  physics: const NeverScrollableScrollPhysics(),
-                  onPageChanged: (i) => setState(() => _pageIndex = i),
+                ),
+                const SizedBox(height: 14),
+                Row(
                   children: [
-                    _StepRoomUrl(
-                      controller: _roomUrlController,
-                      errorText: _roomUrlErrorText,
-                      isChecking: _isCheckingRoomProfile,
-                      onChanged: () => setState(() {}),
+                    _StepDot(
+                      active: _pageIndex == 0,
+                      enabled: true,
+                      label: '1',
+                      onTap: () => _jumpToStep(0),
                     ),
-                    _StepGenres(onPickGenres: () => _openGenrePicker(context)),
-                    _StepSavedShops(
-                      isLoading: _isLoadingShopRecommendations,
-                      recommendations: _shopRecommendations,
-                      failedReason: _shopRecommendationFailedReason,
-                      recommendationStarted: _shopRecommendationStarted,
-                      mode: _shopRecommendationMode,
-                      onModeChanged: _setShopRecommendationMode,
-                      onSaveShop: (summary) =>
-                          _saveRecommendedShop(context, summary),
-                      onSkip: () =>
-                          _persistDismissAndLeave(context, markSkipped: true),
+                    Expanded(
+                      child: Divider(
+                        color: AppColors.divider.withValues(alpha: 0.7),
+                      ),
+                    ),
+                    _StepDot(
+                      active: _pageIndex == 1,
+                      enabled: _pageIndex >= 1,
+                      label: '2',
+                      onTap: () => _jumpToStep(1),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        color: AppColors.divider.withValues(alpha: 0.7),
+                      ),
+                    ),
+                    _StepDot(
+                      active: _pageIndex == 2,
+                      enabled: _pageIndex >= 2,
+                      label: '3',
+                      onTap: () => _jumpToStep(2),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        color: AppColors.divider.withValues(alpha: 0.7),
+                      ),
+                    ),
+                    _StepDot(
+                      active: _pageIndex == 3,
+                      enabled: _pageIndex >= 3,
+                      label: '4',
+                      onTap: () => _jumpToStep(3),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 12),
-              ..._buildSetupBottomActions(context),
-            ],
+                const SizedBox(height: 14),
+                Expanded(
+                  child: PageView(
+                    controller: controller,
+                    physics: const NeverScrollableScrollPhysics(),
+                    onPageChanged: (i) => setState(() => _pageIndex = i),
+                    children: [
+                      _StepProfile(
+                        controller: _nicknameController,
+                        genderKey: _genderKey,
+                        onGenderChanged: (v) => setState(() => _genderKey = v),
+                      ),
+                      _StepRoomUrl(
+                        controller: _roomUrlController,
+                        errorText: _roomUrlErrorText,
+                        isChecking: _isCheckingRoomProfile,
+                        onChanged: () => setState(() {}),
+                      ),
+                      _StepGenres(
+                        onPickGenres: () => _openGenrePicker(context),
+                      ),
+                      _StepSavedShops(
+                        isLoading: _isLoadingShopRecommendations,
+                        recommendations: _shopRecommendations,
+                        failedReason: _shopRecommendationFailedReason,
+                        recommendationStarted: _shopRecommendationStarted,
+                        mode: _shopRecommendationMode,
+                        onModeChanged: _setShopRecommendationMode,
+                        onSaveShop: (summary) =>
+                            _saveRecommendedShop(context, summary),
+                        onSkip: () =>
+                            _persistDismissAndLeave(context, markSkipped: true),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ..._buildSetupBottomActions(context),
+              ],
+            ),
           ),
+        ),
+      ),
+    );
+  }
+
+  void _jumpToStep(int index) {
+    if (index > _pageIndex) return;
+    _pageController?.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 220),
+      curve: Curves.easeOutCubic,
+    );
+  }
+}
+
+class _StepDot extends StatelessWidget {
+  const _StepDot({
+    required this.active,
+    required this.enabled,
+    required this.label,
+    required this.onTap,
+  });
+
+  final bool active;
+  final bool enabled;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = active ? AppColors.accentPrimary : AppColors.textTertiary;
+    return InkWell(
+      customBorder: const CircleBorder(),
+      onTap: enabled ? onTap : null,
+      child: CircleAvatar(
+        radius: 14,
+        backgroundColor: active
+            ? AppColors.accentLight
+            : AppColors.surfaceVariant,
+        child: Text(
+          label,
+          style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, color: c),
         ),
       ),
     );
   }
 }
 
-class _StepDot extends StatelessWidget {
-  const _StepDot({required this.active, required this.label});
+class _StepProfile extends StatelessWidget {
+  const _StepProfile({
+    required this.controller,
+    required this.genderKey,
+    required this.onGenderChanged,
+  });
 
-  final bool active;
-  final String label;
+  final TextEditingController controller;
+  final String? genderKey;
+  final ValueChanged<String?> onGenderChanged;
 
   @override
   Widget build(BuildContext context) {
-    final c = active ? AppColors.accentPrimary : AppColors.textTertiary;
-    return CircleAvatar(
-      radius: 14,
-      backgroundColor: active
-          ? AppColors.accentLight
-          : AppColors.surfaceVariant,
-      child: Text(
-        label,
-        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, color: c),
+    final theme = Theme.of(context);
+    return SingleChildScrollView(
+      child: AppCard(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'プロフィール',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'ニックネームは、今後おすすめ文や投稿文の生成に使えます。\n性別はおすすめ傾向の調整に使えます。未回答でも使えます。',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.35,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'すべて後から変更できます。任意項目は未入力でも始められます。',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.textTertiary,
+                height: 1.35,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 12),
+            AppTextField(
+              controller: controller,
+              labelText: 'ニックネーム（任意）',
+              hintText: '例: まい',
+              textInputAction: TextInputAction.done,
+            ),
+            const SizedBox(height: 12),
+            _GenderChoiceChips(value: genderKey, onChanged: onGenderChanged),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _GenderChoiceChips extends StatelessWidget {
+  const _GenderChoiceChips({required this.value, required this.onChanged});
+
+  final String? value;
+  final ValueChanged<String?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = <({String label, String? value})>[
+      (label: '男性', value: UserProfile.genderMale),
+      (label: '女性', value: UserProfile.genderFemale),
+      (label: 'その他', value: UserProfile.genderOther),
+      (label: '回答しない', value: UserProfile.genderPreferNot),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '性別（任意）',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppColors.textSecondary,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final item in items)
+              ChoiceChip(
+                label: Text(item.label),
+                selected: value == item.value,
+                showCheckmark: false,
+                selectedColor: AppColors.accentLight,
+                backgroundColor: AppColors.surface,
+                side: BorderSide(
+                  color: value == item.value
+                      ? AppColors.accentPrimary.withValues(alpha: 0.45)
+                      : AppColors.divider.withValues(alpha: 0.9),
+                ),
+                labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: value == item.value
+                      ? AppColors.accentPrimary
+                      : AppColors.textSecondary,
+                  fontWeight: value == item.value
+                      ? FontWeight.w800
+                      : FontWeight.w600,
+                ),
+                visualDensity: VisualDensity.compact,
+                onSelected: (_) => onChanged(item.value),
+              ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -613,7 +858,7 @@ class _StepRoomUrl extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              'あとから変更できます',
+              'すべて後から変更できます。任意項目は未入力でも始められます。',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: AppColors.textTertiary,
                 height: 1.35,
@@ -702,6 +947,15 @@ class _StepGenres extends StatelessWidget {
                 height: 1.35,
               ),
             ),
+            const SizedBox(height: 6),
+            Text(
+              'すべて後から変更できます。任意項目は未入力でも始められます。',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.textTertiary,
+                height: 1.35,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
             const SizedBox(height: 12),
             Text(
               count > 0 ? '選択中：$count 件' : 'まだ選択されていません（スキップできます）',
@@ -782,6 +1036,15 @@ class _StepSavedShops extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               '気になるショップを保存すると、あとから店内検索に使えます。',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.textTertiary,
+                height: 1.35,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'すべて後から変更できます。任意項目は未入力でも始められます。',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: AppColors.textTertiary,
                 height: 1.35,
