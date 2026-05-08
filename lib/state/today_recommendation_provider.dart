@@ -478,6 +478,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
           postStyles: postStyles,
         ),
         maxPages: 1,
+        searchPurpose: RakutenSearchPurpose.recommendation,
       );
       _apiLogStatus(status: 200, rawCount: list.length);
       final reasonCounts = <String, int>{};

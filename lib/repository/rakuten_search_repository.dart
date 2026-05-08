@@ -70,6 +70,8 @@ class RakutenKeywordManagedFetchSummary {
 }
 
 /// APIレスポンスをアプリ用モデルへ変換する責務。
+enum RakutenSearchPurpose { normal, recommendation }
+
 class RakutenSearchRepository {
   RakutenSearchRepository({required RakutenApiService apiService})
     : _apiService = apiService;
@@ -86,6 +88,7 @@ class RakutenSearchRepository {
   Future<List<RakutenSearchItem>> search({
     required RakutenProductSearchCondition condition,
     int maxPages = 5,
+    RakutenSearchPurpose searchPurpose = RakutenSearchPurpose.normal,
   }) async {
     if (kDemoModeEnabled) {
       return DemoModeData.querySearchItems(condition);
@@ -152,6 +155,15 @@ class RakutenSearchRepository {
       debugPrint('[Rakuten] $gsTag mapped item count=${results.length}');
       debugPrint('[Rakuten] $gsTag before filter count=${results.length}');
     }
+    if (searchPurpose == RakutenSearchPurpose.recommendation) {
+      if (kDebugMode) {
+        debugPrint(
+          '[Rakuten] recommendation purpose skip app-side filter count=${results.length}',
+        );
+      }
+      return results;
+    }
+
     List<RakutenSearchItem> afterFilter;
     try {
       afterFilter = _applyAppSideFilters(results, normalized);
