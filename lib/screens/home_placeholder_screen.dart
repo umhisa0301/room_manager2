@@ -710,7 +710,6 @@ class _HomeTodayProgressCard extends StatelessWidget {
     );
 
     final primary = _primaryAction();
-    final recommendationCta = _recommendationCtaAction();
     final pendingLine = isLoading && totalCount == 0
         ? 'おすすめ未処理：算出中'
         : 'おすすめ未処理：$pendingCount件';
@@ -785,12 +784,6 @@ class _HomeTodayProgressCard extends StatelessWidget {
               color: HomeScreenColors.bodyOnSection,
             ),
           ),
-          const SizedBox(height: 12),
-          _HomeHeroCtaButton(
-            icon: recommendationCta.icon,
-            label: recommendationCta.label,
-            onPressed: recommendationCta.onPressed,
-          ),
           const SizedBox(height: 14),
           _HomeHeroCtaButton(
             icon: primary.icon,
@@ -803,38 +796,9 @@ class _HomeTodayProgressCard extends StatelessWidget {
   }
 
   _HomeActionSpec _primaryAction() {
-    if (collectLimit.isDailyReached) {
-      return _HomeActionSpec(
-        label: '運用の状況を見る',
-        icon: Icons.insights_rounded,
-        onPressed: onOpenActivity,
-      );
-    }
-    if (collectLimit.isHourlyReached) {
-      return _HomeActionSpec(
-        label: '候補を整理',
-        icon: Icons.inventory_2_outlined,
-        onPressed: onOpenCandidates,
-      );
-    }
-    if (candidateCount == 0) {
-      return _HomeActionSpec(
-        label: '候補を探す',
-        icon: Icons.travel_explore_rounded,
-        onPressed: onOpenSearch,
-      );
-    }
-    return _HomeActionSpec(
-      label: '候補を整理',
-      icon: Icons.inventory_2_outlined,
-      onPressed: onOpenCandidates,
-    );
-  }
-
-  _HomeActionSpec _recommendationCtaAction() {
     if (pendingCount > 0) {
       return _HomeActionSpec(
-        label: 'おすすめを見る',
+        label: 'おすすめコレを見る',
         icon: Icons.auto_awesome_rounded,
         onPressed: onPrimaryRecommendations,
       );
