@@ -1431,7 +1431,7 @@ class _ProfileEditSheetState extends State<ProfileEditSheet> {
           controller: _nameController,
           textInputAction: TextInputAction.done,
           labelText: 'ニックネーム（任意）',
-          hintText: '例: まい',
+          hintText: '例: ルーマネ',
         ),
         const SizedBox(height: 8),
         Text(

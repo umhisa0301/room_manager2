@@ -828,7 +828,7 @@ class _StepProfile extends StatelessWidget {
             AppTextField(
               controller: controller,
               labelText: 'ニックネーム（任意）',
-              hintText: '例: まい',
+              hintText: '例: ルーマネ',
               textInputAction: TextInputAction.done,
             ),
             const SizedBox(height: 12),

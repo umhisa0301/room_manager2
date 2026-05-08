@@ -1118,7 +1118,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     controller: _keywordController,
                     onChanged: (_) => setState(() {}),
                     labelText: 'このショップ内で探す',
-                    hintText: '例：アンパンマン、ベビー、スーツ',
+                    hintText: '例：イヤホン、ベビー、スーツ',
                     prefixIcon: const Icon(Icons.search_rounded),
                   ),
                   Align(
