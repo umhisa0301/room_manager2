@@ -710,6 +710,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
     );
 
     final primary = _primaryAction();
+    final recommendationCta = _recommendationCtaAction();
     final pendingLine = isLoading && totalCount == 0
         ? 'おすすめ未処理：算出中'
         : 'おすすめ未処理：$pendingCount件';
@@ -764,7 +765,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            pendingLine,
+            '今日のおすすめ',
             maxLines: 2,
             softWrap: true,
             style: _HomeUi.bodyEmphasis(context).copyWith(
@@ -772,6 +773,23 @@ class _HomeTodayProgressCard extends StatelessWidget {
               height: 1.35,
               color: HomeScreenColors.titlePrimary,
             ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            pendingLine.replaceFirst('おすすめ未処理', '未確認候補'),
+            maxLines: 2,
+            softWrap: true,
+            style: _HomeUi.tapHint(context).copyWith(
+              fontSize: 13,
+              height: 1.3,
+              color: HomeScreenColors.bodyOnSection,
+            ),
+          ),
+          const SizedBox(height: 12),
+          _HomeHeroCtaButton(
+            icon: recommendationCta.icon,
+            label: recommendationCta.label,
+            onPressed: recommendationCta.onPressed,
           ),
           const SizedBox(height: 14),
           _HomeHeroCtaButton(
@@ -799,13 +817,6 @@ class _HomeTodayProgressCard extends StatelessWidget {
         onPressed: onOpenCandidates,
       );
     }
-    if (pendingCount > 0) {
-      return _HomeActionSpec(
-        label: 'おすすめコレを見る',
-        icon: Icons.auto_awesome_rounded,
-        onPressed: onPrimaryRecommendations,
-      );
-    }
     if (candidateCount == 0) {
       return _HomeActionSpec(
         label: '候補を探す',
@@ -817,6 +828,21 @@ class _HomeTodayProgressCard extends StatelessWidget {
       label: '候補を整理',
       icon: Icons.inventory_2_outlined,
       onPressed: onOpenCandidates,
+    );
+  }
+
+  _HomeActionSpec _recommendationCtaAction() {
+    if (pendingCount > 0) {
+      return _HomeActionSpec(
+        label: 'おすすめを見る',
+        icon: Icons.auto_awesome_rounded,
+        onPressed: onPrimaryRecommendations,
+      );
+    }
+    return _HomeActionSpec(
+      label: '候補を探す',
+      icon: Icons.travel_explore_rounded,
+      onPressed: onOpenSearch,
     );
   }
 }

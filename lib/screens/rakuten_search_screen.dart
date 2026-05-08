@@ -461,35 +461,29 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  Widget _buildExplicitBackButton(BuildContext context) {
+  Widget _buildInlineBackButton(BuildContext context) {
     if (!Navigator.of(context).canPop()) return const SizedBox.shrink();
-    return Material(
-      color: HomeScreenColors.standaloneCardFill.withValues(alpha: 0.96),
-      borderRadius: BorderRadius.circular(999),
-      elevation: 1.5,
-      shadowColor: HomeScreenColors.cardShadowColor,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(999),
-        onTap: () => Navigator.of(context).maybePop(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 16,
-                color: HomeScreenColors.titlePrimary,
-              ),
-              const SizedBox(width: 5),
-              Text(
-                '戻る',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: HomeScreenColors.titlePrimary,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ],
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 44),
+        child: OutlinedButton.icon(
+          onPressed: () => Navigator.of(context).maybePop(),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: HomeScreenColors.leadOnSection,
+            side: BorderSide(color: HomeScreenColors.sectionOutlineNeutral),
+            visualDensity: VisualDensity.compact,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(999),
+            ),
+          ),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 14),
+          label: Text(
+            '戻る',
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ),
       ),
@@ -578,11 +572,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       );
                     },
                   ),
-            ),
-            Positioned(
-              left: 12,
-              top: MediaQuery.paddingOf(context).top + 8,
-              child: _buildExplicitBackButton(context),
             ),
             CommonDraggableEdgeFab(
               shellTabIndex: context.watch<AppShellController>().currentIndex,
@@ -1180,6 +1169,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                                  _buildInlineBackButton(context),
+                                  if (Navigator.of(context).canPop())
+                                    const SizedBox(
+                                      height: RakutenSearchScreenUi.gapFieldStack,
+                                    ),
                   _SearchModeSegmented(mode: _mode, onChanged: _onModeChanged),
                   SizedBox(
                     height: RakutenSearchScreenUi.gapKeywordToControls - 1,
