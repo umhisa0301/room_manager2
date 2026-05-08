@@ -239,7 +239,8 @@ class HomePlaceholderScreen extends StatefulWidget {
 }
 
 class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
-  String? _lastAutoRegeneratedDateKey;
+  DateTime? _lastAutoRegenerateTriedAt;
+  static const Duration _autoRegenerateCooldown = Duration(minutes: 5);
 
   @override
   void initState() {
@@ -247,12 +248,21 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       final room = context.read<RakutenManagedProductProvider>();
+      final recommender = context.read<TodayRecommendationProvider>();
       await room.refreshManagedProductList(showLoadingIndicator: false);
       if (!mounted) return;
-      await context.read<TodayRecommendationProvider>().ensureToday(
+      _trace('trigger=homeInit');
+      _trace('action=ensureToday');
+      await recommender.ensureToday(
         profile: context.read<UserProfileProvider>().profile,
         managedItems: room.items,
         savedShops: context.read<SavedShopProvider>().shops,
+        trigger: 'homeInit',
+      );
+      await _regenerateRecommendationsIfNeeded(
+        recommender: recommender,
+        roomProvider: room,
+        trigger: 'homeInit',
       );
     });
   }
@@ -265,16 +275,20 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     context.read<RoomActivityEventProvider>().reloadFromStorage();
     if (!mounted) return;
     final recommender = context.read<TodayRecommendationProvider>();
+    _trace('trigger=refresh');
+    _trace('action=ensureToday');
     recommender.reloadBundleFromStorage();
     await recommender.ensureToday(
       profile: context.read<UserProfileProvider>().profile,
       managedItems: room.items,
       savedShops: context.read<SavedShopProvider>().shops,
+      trigger: 'refresh',
     );
     await _regenerateRecommendationsIfNeeded(
       recommender: recommender,
       roomProvider: room,
       force: true,
+      trigger: 'refresh',
     );
   }
 
@@ -319,16 +333,22 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   Future<void> _openTodayRecommendations(BuildContext context) async {
     final recommender = context.read<TodayRecommendationProvider>();
     final roomProvider = context.read<RakutenManagedProductProvider>();
+    _trace('trigger=cta');
+    _trace('action=ensureToday');
     await recommender.ensureToday(
       profile: context.read<UserProfileProvider>().profile,
       managedItems: roomProvider.items,
       savedShops: context.read<SavedShopProvider>().shops,
+      trigger: 'cta',
     );
-    await _regenerateRecommendationsIfNeeded(
-      recommender: recommender,
-      roomProvider: roomProvider,
-      force: true,
-    );
+    if (recommender.pendingCount <= 0) {
+      await _regenerateRecommendationsIfNeeded(
+        recommender: recommender,
+        roomProvider: roomProvider,
+        force: true,
+        trigger: 'cta',
+      );
+    }
     if (!context.mounted) return;
     await Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -341,25 +361,39 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     required TodayRecommendationProvider recommender,
     required RakutenManagedProductProvider roomProvider,
     bool force = false,
+    String trigger = 'ensure',
   }) async {
-    if (!mounted || recommender.isLoading) return;
-    final todayKey = _localDateKey(DateTime.now());
-    if (!force && _lastAutoRegeneratedDateKey == todayKey) return;
-    if (!force && recommender.pendingCount > 0) return;
-    if (!force && recommender.totalCount > 0 && recommender.pendingCount > 0) {
+    if (!mounted) return;
+    _trace('alreadyGenerating=${recommender.isLoading}');
+    _trace(
+      'lastGeneratedAt=${recommender.bundle?.generatedAt.toIso8601String() ?? 'null'}',
+    );
+    if (recommender.isLoading) return;
+    if (!force && recommender.bundle != null) {
+      _trace('shouldSkipBecauseRecentlyTried=true');
       return;
     }
-    _lastAutoRegeneratedDateKey = todayKey;
+    final now = DateTime.now();
+    final skipBecauseRecentlyTried =
+        !force &&
+        _lastAutoRegenerateTriedAt != null &&
+        now.difference(_lastAutoRegenerateTriedAt!) < _autoRegenerateCooldown;
+    _trace('shouldSkipBecauseRecentlyTried=$skipBecauseRecentlyTried');
+    if (skipBecauseRecentlyTried) return;
+    _lastAutoRegenerateTriedAt = now;
+    _trace('action=regenerateToday');
     await recommender.regenerateToday(
       profile: context.read<UserProfileProvider>().profile,
       managedItems: roomProvider.items,
       savedShops: context.read<SavedShopProvider>().shops,
+      trigger: trigger,
+      manual: force,
     );
   }
 
-  String _localDateKey(DateTime dateTime) {
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '${dateTime.year}-${two(dateTime.month)}-${two(dateTime.day)}';
+  void _trace(String message) {
+    if (!mounted) return;
+    debugPrint('[RECOMMEND_TRACE] $message');
   }
 
   Future<void> _openRoomUrlEditSheet(BuildContext context) async {
@@ -435,14 +469,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     final todayDoneCountForRec =
                         (recProvider.totalCount - recProvider.pendingCount)
                             .clamp(0, recProvider.totalCount);
-                    WidgetsBinding.instance.addPostFrameCallback((_) async {
-                      if (!mounted) return;
-                      await _regenerateRecommendationsIfNeeded(
-                        recommender: recProvider,
-                        roomProvider: roomProvider,
-                      );
-                    });
-
                     final profileRoomUrl = userProfileProvider.profile.roomUrl
                         .trim();
                     final roomImportedDoneCount = items
@@ -479,6 +505,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 pendingCount: recProvider.pendingCount,
                                 isCompleted: recProvider.isCompleted,
                                 isLoading: recProvider.isLoading,
+                                generationStatus: recProvider.generationStatus,
                                 hasTodaySuggestions: hasTodaySuggestions,
                                 todayDoneCountForRec: todayDoneCountForRec,
                                 recTotalCount: recProvider.totalCount,
@@ -491,13 +518,24 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                           .postStyleList,
                                     ),
                                 recommendationStatusMessage:
-                                    recProvider.errorMessage != null &&
-                                        recProvider.totalCount == 0 &&
-                                        !recProvider.isLoading
-                                    ? '候補を作れませんでした。条件を増やすと精度が上がります'
+                                    recProvider.generationStatus ==
+                                        TodayRecommendationGenerationStatus
+                                            .failedRateLimit
+                                    ? 'おすすめを準備できませんでした。少し時間をおいて再試行してください'
+                                    : recProvider.generationStatus ==
+                                              TodayRecommendationGenerationStatus
+                                                  .failedApiError
+                                    ? 'おすすめを準備できませんでした。少し時間をおいて再試行してください'
+                                    : recProvider.generationStatus ==
+                                              TodayRecommendationGenerationStatus
+                                                  .empty
+                                    ? '条件を増やすと候補を作りやすくなります'
                                     : null,
-                                onOpenSearch: () =>
-                                    openRakutenSearchScreen(context),
+                                onOpenSearch: () {
+                                  _trace('trigger=cta');
+                                  _trace('action=openSearch');
+                                  openRakutenSearchScreen(context);
+                                },
                                 onOpenCandidates: () =>
                                     _openRoomList(context, initialTabIndex: 0),
                                 onOpenActivity: () => _openActivity(context),
@@ -729,6 +767,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
     required this.pendingCount,
     required this.isCompleted,
     required this.isLoading,
+    required this.generationStatus,
     required this.hasTodaySuggestions,
     required this.todayDoneCountForRec,
     required this.recTotalCount,
@@ -747,6 +786,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
   final int pendingCount;
   final bool isCompleted;
   final bool isLoading;
+  final TodayRecommendationGenerationStatus generationStatus;
   final bool hasTodaySuggestions;
   final int todayDoneCountForRec;
   final int recTotalCount;
@@ -769,8 +809,8 @@ class _HomeTodayProgressCard extends StatelessWidget {
     );
 
     final primary = _primaryAction();
-    final pendingLine = isLoading && totalCount == 0
-        ? 'おすすめ未処理：算出中'
+    final pendingLine = generationStatus == TodayRecommendationGenerationStatus.loading
+        ? 'おすすめを準備中です'
         : 'おすすめ未処理：$pendingCount件';
 
     return Container(
@@ -834,7 +874,9 @@ class _HomeTodayProgressCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            pendingLine.replaceFirst('おすすめ未処理', '未確認候補'),
+            generationStatus == TodayRecommendationGenerationStatus.loading
+                ? pendingLine
+                : pendingLine.replaceFirst('おすすめ未処理', '未確認候補'),
             maxLines: 2,
             softWrap: true,
             style: _HomeUi.tapHint(context).copyWith(
@@ -859,7 +901,10 @@ class _HomeTodayProgressCard extends StatelessWidget {
           _HomeHeroCtaButton(
             icon: primary.icon,
             label: primary.label,
-            onPressed: primary.onPressed,
+            onPressed:
+                generationStatus == TodayRecommendationGenerationStatus.loading
+                ? null
+                : primary.onPressed,
           ),
         ],
       ),
@@ -867,17 +912,25 @@ class _HomeTodayProgressCard extends StatelessWidget {
   }
 
   _HomeActionSpec _primaryAction() {
-    if (isLoading) {
+    if (isLoading || generationStatus == TodayRecommendationGenerationStatus.loading) {
       return _HomeActionSpec(
-        label: 'おすすめを準備中',
+        label: '準備中',
         icon: Icons.auto_awesome_rounded,
-        onPressed: onPrimaryRecommendations,
+        onPressed: () {},
       );
     }
     if (pendingCount > 0) {
       return _HomeActionSpec(
         label: 'おすすめコレを見る',
         icon: Icons.auto_awesome_rounded,
+        onPressed: onPrimaryRecommendations,
+      );
+    }
+    if (generationStatus == TodayRecommendationGenerationStatus.failedRateLimit ||
+        generationStatus == TodayRecommendationGenerationStatus.failedApiError) {
+      return _HomeActionSpec(
+        label: '再試行',
+        icon: Icons.refresh_rounded,
         onPressed: onPrimaryRecommendations,
       );
     }
@@ -898,7 +951,7 @@ class _HomeHeroCtaButton extends StatelessWidget {
 
   final IconData icon;
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

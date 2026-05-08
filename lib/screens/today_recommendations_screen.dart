@@ -41,6 +41,7 @@ class _TodayRecommendationsScreenState
       profile: profile,
       managedItems: managed,
       savedShops: saved,
+      trigger: 'ensure',
     );
   }
 
@@ -53,6 +54,8 @@ class _TodayRecommendationsScreenState
       profile: profile,
       managedItems: managed,
       savedShops: saved,
+      trigger: 'cta',
+      manual: true,
     );
   }
 

@@ -11,6 +11,15 @@ import '../repository/today_recommendation_repository.dart';
 import '../utils/user_profile_preferred_genre_words.dart';
 import 'rakuten_managed_product_provider.dart';
 
+enum TodayRecommendationGenerationStatus {
+  idle,
+  loading,
+  ready,
+  empty,
+  failedRateLimit,
+  failedApiError,
+}
+
 class TodayRecommendationProvider extends ChangeNotifier {
   TodayRecommendationProvider({
     required TodayRecommendationRepository repository,
@@ -26,10 +35,17 @@ class TodayRecommendationProvider extends ChangeNotifier {
   TodayRecommendationBundle? _bundle;
   bool _isLoading = false;
   String? _errorMessage;
+  TodayRecommendationGenerationStatus _generationStatus =
+      TodayRecommendationGenerationStatus.idle;
+  DateTime? _cooldownUntil;
+  static const Duration _autoRetryCooldown = Duration(minutes: 5);
 
   TodayRecommendationBundle? get bundle => _bundle;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
+  TodayRecommendationGenerationStatus get generationStatus => _generationStatus;
+  bool get isInCooldown =>
+      _cooldownUntil != null && DateTime.now().isBefore(_cooldownUntil!);
 
   int get totalCount => _bundle?.entries.length ?? 0;
   int get pendingCount => _bundle?.pendingCount ?? 0;
@@ -39,6 +55,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
   void reloadBundleFromStorage() {
     _bundle = _repository.load();
     _errorMessage = null;
+    _generationStatus = _bundle == null
+        ? TodayRecommendationGenerationStatus.idle
+        : (_bundle!.entries.isEmpty
+              ? TodayRecommendationGenerationStatus.empty
+              : TodayRecommendationGenerationStatus.ready);
     notifyListeners();
   }
 
@@ -61,15 +82,24 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required UserProfile profile,
     required List<RakutenManagedProduct> managedItems,
     required List<SavedShop> savedShops,
+    String trigger = 'ensure',
   }) async {
+    _trace('trigger=$trigger');
+    _trace('action=ensureToday');
+    _trace('alreadyGenerating=$_isLoading');
+    _trace('lastGeneratedAt=${_bundle?.generatedAt.toIso8601String() ?? 'null'}');
     final todayKey = _localDateKey(DateTime.now());
     if (_bundle != null && _bundle!.localDateKey == todayKey) {
+      _trace('shouldSkipBecauseRecentlyTried=true');
+      _guard('skip reason=hasTodayBundle');
       return;
     }
+    _trace('shouldSkipBecauseRecentlyTried=false');
     await regenerateToday(
       profile: profile,
       managedItems: managedItems,
       savedShops: savedShops,
+      trigger: trigger,
     );
   }
 
@@ -77,9 +107,24 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required UserProfile profile,
     required List<RakutenManagedProduct> managedItems,
     required List<SavedShop> savedShops,
+    String trigger = 'unknown',
+    bool manual = false,
   }) async {
+    _trace('trigger=$trigger');
+    _trace('action=regenerateToday');
+    _trace('alreadyGenerating=$_isLoading');
+    _trace('lastGeneratedAt=${_bundle?.generatedAt.toIso8601String() ?? 'null'}');
+    if (_isLoading) {
+      _guard('skip reason=alreadyGenerating');
+      return;
+    }
+    if (!manual && isInCooldown) {
+      _guard('skip reason=cooldown');
+      return;
+    }
     _isLoading = true;
     _errorMessage = null;
+    _generationStatus = TodayRecommendationGenerationStatus.loading;
     notifyListeners();
     try {
       final generated = await _generate(
@@ -87,14 +132,36 @@ class TodayRecommendationProvider extends ChangeNotifier {
         managedItems: managedItems,
         savedShops: savedShops,
       );
+      _cooldownUntil = null;
       _bundle = generated;
-      await _repository.save(generated);
+      final canSaveEmpty =
+          generated.entries.isEmpty &&
+          generated.localDateKey == _localDateKey(DateTime.now());
+      if (generated.entries.isNotEmpty || canSaveEmpty) {
+        await _repository.save(generated);
+        _saveLog(saved: true, count: generated.entries.length);
+      } else {
+        _saveLog(saved: false, reason: 'noEntriesNotSaved');
+      }
+      _generationStatus = generated.entries.isEmpty
+          ? TodayRecommendationGenerationStatus.empty
+          : TodayRecommendationGenerationStatus.ready;
     } catch (e, st) {
       if (kDebugMode) {
         debugPrint('[TodayRecommendation] regenerateToday failed: $e');
         debugPrint('$st');
       }
-      _errorMessage = '今日のおすすめを用意できませんでした。通信状況を確認し、もう一度「再生成」をお試しください。';
+      final msg = e.toString().toLowerCase();
+      if (msg.contains('(429)') ||
+          msg.contains('allowed requests has been exceeded')) {
+        _generationStatus = TodayRecommendationGenerationStatus.failedRateLimit;
+        _cooldownUntil = DateTime.now().add(_autoRetryCooldown);
+      } else {
+        _generationStatus = TodayRecommendationGenerationStatus.failedApiError;
+      }
+      _errorMessage = 'おすすめを準備できませんでした。少し時間をおいて再試行してください';
+      _resultLog(status: 'failed', reason: _failureTypeFromError(e));
+      _saveLog(saved: false, reason: _failureTypeFromError(e));
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -143,6 +210,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required List<RakutenManagedProduct> managedItems,
     required List<SavedShop> savedShops,
   }) async {
+    _trace('generate start');
+    _trace('profile nickname=${profile.displayName.trim()}');
     final excludeIds = managedItems
         .where(
           (e) =>
@@ -161,6 +230,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
         .where((e) => e.isNotEmpty)
         .toSet();
     final postStyles = profile.effectivePostStyleList.toSet();
+    _trace('favoriteGenreIds=${favoriteGenreIds.join(',')}');
+    _trace('searchPreferences=${postStyles.join(',')}');
+    _trace('savedShopCount=${savedShops.length}');
     final keywords = _buildKeywords(profile, managedItems);
     final scoreHintShops = _countManagedShopFrequency(managedItems);
     final doneItems = managedItems
@@ -169,6 +241,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final candidateItems = managedItems
         .where((e) => e.status == RakutenManagedProductStatus.candidate)
         .toList(growable: false);
+    _trace('doneProductCount=${doneItems.length}');
+    _trace('candidateProductCount=${candidateItems.length}');
     final soldOutcomeItems = doneItems
         .where((e) => e.feedbackSoldAt != null)
         .toList(growable: false);
@@ -203,63 +277,70 @@ class TodayRecommendationProvider extends ChangeNotifier {
         })
         .toList(growable: false);
 
-    final pool = <RakutenSearchItem>[];
-    // 好きなジャンルがある場合はジャンル指定を優先し、ユーザーごとに候補母集団を変える。
-    for (final genreId in favoriteGenreIds.take(5)) {
-      final keyword = keywords.isEmpty ? '人気' : keywords.first;
-      final list = await _searchRepository.search(
-        condition: _conditionWithPostStyles(
-          keyword: keyword,
-          genreId: genreId,
-          postStyles: postStyles,
-        ),
-      );
-      pool.addAll(list.take(24));
-    }
-
-    // 保存済ショップを優先取得（上位2ショップ）
-    for (final shop in savedShops.take(2)) {
-      final keyword = keywords.isEmpty ? '人気' : keywords.first;
-      final list = await _searchRepository.search(
-        condition: _conditionWithPostStyles(
-          keyword: keyword,
-          shopCode: shop.shopId.trim(),
-          postStyles: postStyles,
-        ),
-      );
-      pool.addAll(list.take(20));
-    }
-    // 通常検索
-    for (final keyword in keywords.take(4)) {
-      final list = await _searchRepository.search(
-        condition: _conditionWithPostStyles(
-          keyword: keyword,
-          postStyles: postStyles,
-        ),
-      );
-      pool.addAll(list.take(30));
-    }
-    if (pool.isEmpty) {
-      final fallback = await _searchRepository.search(
-        condition: _conditionWithPostStyles(
-          keyword: '人気',
-          postStyles: postStyles,
-        ),
-      );
-      pool.addAll(fallback.take(40));
-    }
-
+    final plans = _buildSearchPlans(
+      favoriteGenreIds: favoriteGenreIds,
+      savedShops: savedShops,
+      doneItems: doneItems,
+      candidateItems: candidateItems,
+      keywords: keywords,
+      postStyles: postStyles,
+    );
+    _planLogCount(plans.length);
     final dedup = <String, RakutenSearchItem>{};
+    var allPlansNoItems = true;
+    for (var i = 0; i < plans.length; i++) {
+      final p = plans[i];
+      _planLog(
+        index: i + 1,
+        keyword: p.keyword,
+        genreId: p.genreId,
+        shopCode: p.shopCode,
+        preference: _sortForPostStyles(postStyles),
+      );
+      final list = await _runSearchPlan(
+        source: p.source,
+        planIndex: i + 1,
+        keyword: p.keyword,
+        genreId: p.genreId,
+        shopCode: p.shopCode,
+        postStyles: postStyles,
+        excludeIds: excludeIds,
+      );
+      if (list.isNotEmpty) allPlansNoItems = false;
+      for (final item in list) {
+        if (dedup.length >= 10) break;
+        _trace('raw item itemCode=${item.productId} title=${item.itemName}');
+        final exclusion = _excludeReason(
+          item: item,
+          excludeIds: excludeIds,
+          doneItems: doneItems,
+          candidateItems: candidateItems,
+          dedup: dedup,
+        );
+        if (exclusion != null) {
+          _trace('exclude reason=$exclusion');
+          continue;
+        }
+        _trace('accepted itemCode=${item.productId} title=${item.itemName}');
+        dedup[item.productId.trim()] = item;
+      }
+      if (dedup.length >= 10) break;
+    }
+
+    if (dedup.isEmpty && allPlansNoItems) {
+      _resultLog(status: 'empty', reason: 'allPlansNoItems');
+    }
+
+    final pool = dedup.values.toList(growable: false);
+    final dedupForScoring = <String, RakutenSearchItem>{};
     for (final item in pool) {
-      final id = item.productId.trim();
-      if (id.isEmpty || excludeIds.contains(id)) continue;
-      if (_shouldExcludeRecommendationItem(item)) continue;
-      dedup.putIfAbsent(id, () => item);
+      _trace('raw item itemCode=${item.productId} title=${item.itemName}');
+      dedupForScoring.putIfAbsent(item.productId.trim(), () => item);
     }
 
     final genreWords = UserProfilePreferredGenreWords.fromProfile(profile);
     final scored =
-        dedup.values
+        dedupForScoring.values
             .map(
               (item) => _scoreRecommendation(
                 item,
@@ -292,11 +373,265 @@ class TodayRecommendationProvider extends ChangeNotifier {
           ),
         )
         .toList(growable: false);
+    if (kDebugMode) {
+      debugPrint('[RECOMMEND] final count: ${entries.length}');
+    }
+    _trace('finalCandidateCount=${entries.length}');
+    _trace('failureType=${entries.isEmpty ? 'empty' : 'none'}');
+    _resultLog(
+      status: entries.isEmpty ? 'empty' : 'success',
+      count: entries.length,
+      reason: entries.isEmpty ? 'allPlansNoItems' : null,
+    );
     return TodayRecommendationBundle(
       localDateKey: _localDateKey(DateTime.now()),
       generatedAt: DateTime.now(),
       entries: entries,
     );
+  }
+
+  List<_RecommendSearchPlan> _buildSearchPlans({
+    required Set<String> favoriteGenreIds,
+    required List<SavedShop> savedShops,
+    required List<RakutenManagedProduct> doneItems,
+    required List<RakutenManagedProduct> candidateItems,
+    required List<String> keywords,
+    required Set<String> postStyles,
+  }) {
+    final out = <_RecommendSearchPlan>[];
+    final keyword = keywords.isEmpty ? '人気' : keywords.first;
+    for (final gid in favoriteGenreIds.take(2)) {
+      out.add(
+        _RecommendSearchPlan(
+          source: 'genre',
+          keyword: keyword,
+          genreId: gid,
+          shopCode: null,
+        ),
+      );
+    }
+    for (final shop in savedShops.take(1)) {
+      out.add(
+        _RecommendSearchPlan(
+          source: 'shop',
+          keyword: keyword,
+          genreId: null,
+          shopCode: shop.shopId.trim(),
+        ),
+      );
+    }
+    final trendGenre = _topGenreFromHistory(doneItems, candidateItems);
+    if (trendGenre != null && trendGenre.isNotEmpty) {
+      out.add(
+        _RecommendSearchPlan(
+          source: 'style',
+          keyword: keyword,
+          genreId: trendGenre,
+          shopCode: null,
+        ),
+      );
+    }
+    out.add(
+      const _RecommendSearchPlan(
+        source: 'style',
+        keyword: '人気',
+        genreId: null,
+        shopCode: null,
+      ),
+    );
+    final maxPlan = postStyles.isEmpty ? 3 : 5;
+    return out.take(maxPlan).toList(growable: false);
+  }
+
+  String? _topGenreFromHistory(
+    List<RakutenManagedProduct> doneItems,
+    List<RakutenManagedProduct> candidateItems,
+  ) {
+    final counts = <String, int>{};
+    for (final e in [...doneItems, ...candidateItems]) {
+      final gid = e.genreId.trim();
+      if (gid.isEmpty) continue;
+      counts[gid] = (counts[gid] ?? 0) + 1;
+    }
+    if (counts.isEmpty) return null;
+    final sorted = counts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    return sorted.first.key;
+  }
+
+  Future<List<RakutenSearchItem>> _runSearchPlan({
+    required String source,
+    required int planIndex,
+    required String keyword,
+    required String? genreId,
+    required String? shopCode,
+    required Set<String> postStyles,
+    required Set<String> excludeIds,
+  }) async {
+    _apiLogStart(index: planIndex, page: 1);
+    try {
+      final list = await _searchRepository.search(
+        condition: _conditionWithPostStyles(
+          keyword: keyword,
+          genreId: genreId,
+          shopCode: shopCode,
+          postStyles: postStyles,
+        ),
+        maxPages: 1,
+      );
+      _apiLogStatus(status: 200, rawCount: list.length);
+      final reasonCounts = <String, int>{};
+      final afterExclude = list.where((e) {
+        final reason = _excludeReason(
+          item: e,
+          excludeIds: excludeIds,
+          doneItems: const <RakutenManagedProduct>[],
+          candidateItems: const <RakutenManagedProduct>[],
+          dedup: const <String, RakutenSearchItem>{},
+          checkDedup: false,
+        );
+        if (reason == null) return true;
+        reasonCounts[reason] = (reasonCounts[reason] ?? 0) + 1;
+        return false;
+      }).length;
+      _filterLog(
+        raw: list.length,
+        afterExclude: afterExclude,
+        reasonCounts: reasonCounts,
+      );
+      return list;
+    } catch (e) {
+      final msg = e.toString();
+      final apiStatus = _extractStatusCode(msg) ?? 'error';
+      _apiLogStatus(status: apiStatus, rawCount: 0);
+      if (msg.contains('(429)') ||
+          msg.toLowerCase().contains('allowed requests has been exceeded')) {
+        _resultLog(status: 'failed', reason: 'rateLimit');
+      } else if (msg.contains('(400)') || msg.contains('(500)')) {
+        _resultLog(status: 'failed', reason: 'apiError');
+      } else {
+        _resultLog(status: 'failed', reason: 'exception');
+      }
+      rethrow;
+    }
+  }
+
+  String? _extractStatusCode(String message) {
+    final m = RegExp(r'\((\d{3})\)').firstMatch(message);
+    return m?.group(1);
+  }
+
+  void _trace(String message) {
+    if (!kDebugMode) return;
+    debugPrint('[RECOMMEND_TRACE] $message');
+  }
+
+  String? _excludeReason({
+    required RakutenSearchItem item,
+    required Set<String> excludeIds,
+    required List<RakutenManagedProduct> doneItems,
+    required List<RakutenManagedProduct> candidateItems,
+    required Map<String, RakutenSearchItem> dedup,
+    bool checkDedup = true,
+  }) {
+    final id = item.productId.trim();
+    if (id.isEmpty) return 'missingItemCode';
+    if (item.itemName.trim().isEmpty) return 'missingTitle';
+    final hasAnyUrl =
+        item.itemUrl.trim().isNotEmpty || item.affiliateUrl.trim().isNotEmpty;
+    if (!hasAnyUrl) return 'invalidUrl';
+    if (excludeIds.contains(id)) {
+      if (doneItems.any((e) => e.productId.trim() == id)) return 'alreadyDone';
+      if (candidateItems.any((e) => e.productId.trim() == id)) {
+        return 'alreadyCandidate';
+      }
+      return 'other';
+    }
+    if (checkDedup && dedup.containsKey(id)) return 'duplicate';
+    return null;
+  }
+
+  void _planLogCount(int count) {
+    if (!kDebugMode) return;
+    debugPrint('[RECOMMEND_PLAN] count=$count');
+  }
+
+  void _planLog({
+    required int index,
+    required String keyword,
+    required String? genreId,
+    required String? shopCode,
+    required String? preference,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[RECOMMEND_PLAN] index=$index keyword=$keyword genreId=${genreId ?? ''} '
+      'shopCode=${shopCode ?? ''} preference=${preference ?? ''}',
+    );
+  }
+
+  void _apiLogStart({required int index, required int page}) {
+    if (!kDebugMode) return;
+    debugPrint('[RECOMMEND_API] start index=$index page=$page');
+  }
+
+  void _apiLogStatus({required Object status, required int rawCount}) {
+    if (!kDebugMode) return;
+    debugPrint('[RECOMMEND_API] status=$status rawCount=$rawCount');
+  }
+
+  void _filterLog({
+    required int raw,
+    required int afterExclude,
+    required Map<String, int> reasonCounts,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[RECOMMEND_FILTER] raw=$raw afterExclude=$afterExclude reasonCounts=$reasonCounts',
+    );
+  }
+
+  void _resultLog({
+    required String status,
+    String? reason,
+    int? count,
+  }) {
+    if (!kDebugMode) return;
+    if (reason != null) {
+      debugPrint('[RECOMMEND_RESULT] status=$status reason=$reason');
+      return;
+    }
+    debugPrint('[RECOMMEND_RESULT] status=$status count=${count ?? 0}');
+  }
+
+  void _saveLog({required bool saved, String? reason, int? count}) {
+    if (!kDebugMode) return;
+    if (saved) {
+      debugPrint('[RECOMMEND_SAVE] savedBundle=true count=${count ?? 0}');
+    } else {
+      debugPrint('[RECOMMEND_SAVE] savedBundle=false reason=${reason ?? 'unknown'}');
+    }
+  }
+
+  void _guard(String message) {
+    if (!kDebugMode) return;
+    debugPrint('[RECOMMEND_GUARD] $message');
+  }
+
+  String _failureTypeFromError(Object e) {
+    final msg = e.toString().toLowerCase();
+    if (msg.contains('(429)') ||
+        msg.contains('allowed requests has been exceeded')) {
+      return 'rateLimit';
+    }
+    if (msg.contains('(400)') ||
+        msg.contains('(401)') ||
+        msg.contains('(403)') ||
+        msg.contains('(500)') ||
+        msg.contains('api')) {
+      return 'apiError';
+    }
+    return 'exception';
   }
 
   List<String> _buildKeywords(
@@ -349,14 +684,32 @@ class TodayRecommendationProvider extends ChangeNotifier {
     String? genreId,
     String? shopCode,
   }) {
+    final rawMinPrice = postStyles.contains(UserProfile.postStylePremium)
+        ? 5000
+        : null;
+    final rawMaxPrice = postStyles.contains(UserProfile.postStyleAffordable)
+        ? 3500
+        : null;
+    final sanitizedPrice = _sanitizePriceRange(
+      minPrice: rawMinPrice,
+      maxPrice: rawMaxPrice,
+    );
+    final searchPreference = _sortForPostStyles(postStyles);
+    _logRecommendSearchParams(
+      keyword: keyword,
+      genreId: genreId,
+      searchPreference: searchPreference,
+      minPrice: rawMinPrice,
+      maxPrice: rawMaxPrice,
+      sanitizedMinPrice: sanitizedPrice.minPrice,
+      sanitizedMaxPrice: sanitizedPrice.maxPrice,
+    );
     return RakutenProductSearchCondition(
       keyword: keyword,
       genreId: genreId,
       shopCode: shopCode,
-      minPrice: postStyles.contains(UserProfile.postStylePremium) ? 5000 : null,
-      maxPrice: postStyles.contains(UserProfile.postStyleAffordable)
-          ? 3500
-          : null,
+      minPrice: sanitizedPrice.minPrice,
+      maxPrice: sanitizedPrice.maxPrice,
       minReviewCount:
           postStyles.contains(UserProfile.postStyleHighlyRated) ||
               postStyles.contains(UserProfile.postStyleReviewRich)
@@ -365,8 +718,46 @@ class TodayRecommendationProvider extends ChangeNotifier {
       minReviewAverage: postStyles.contains(UserProfile.postStyleHighlyRated)
           ? 4.2
           : 3.6,
-      sort: _sortForPostStyles(postStyles),
+      sort: searchPreference,
     ).normalized();
+  }
+
+  ({int? minPrice, int? maxPrice}) _sanitizePriceRange({
+    required int? minPrice,
+    required int? maxPrice,
+  }) {
+    final normalizedMin = (minPrice != null && minPrice > 0) ? minPrice : null;
+    final normalizedMax = (maxPrice != null && maxPrice > 0) ? maxPrice : null;
+    if (normalizedMin == null || normalizedMax == null) {
+      return (minPrice: null, maxPrice: null);
+    }
+    if (normalizedMin >= normalizedMax) {
+      return (minPrice: null, maxPrice: null);
+    }
+    return (minPrice: normalizedMin, maxPrice: normalizedMax);
+  }
+
+  void _logRecommendSearchParams({
+    required String keyword,
+    required String? genreId,
+    required String? searchPreference,
+    required int? minPrice,
+    required int? maxPrice,
+    required int? sanitizedMinPrice,
+    required int? sanitizedMaxPrice,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint('[RECOMMEND] search keyword=$keyword');
+    debugPrint('[RECOMMEND] genreId=${genreId ?? ''}');
+    debugPrint('[RECOMMEND] searchPreference=${searchPreference ?? ''}');
+    debugPrint('[RECOMMEND] minPrice=${minPrice?.toString() ?? 'null'}');
+    debugPrint('[RECOMMEND] maxPrice=${maxPrice?.toString() ?? 'null'}');
+    debugPrint(
+      '[RECOMMEND] sanitizedMinPrice=${sanitizedMinPrice?.toString() ?? 'null'}',
+    );
+    debugPrint(
+      '[RECOMMEND] sanitizedMaxPrice=${sanitizedMaxPrice?.toString() ?? 'null'}',
+    );
   }
 
   String? _sortForPostStyles(Set<String> postStyles) {
@@ -538,17 +929,6 @@ class TodayRecommendationProvider extends ChangeNotifier {
       ),
       section: section,
     );
-  }
-
-  bool _shouldExcludeRecommendationItem(RakutenSearchItem item) {
-    final price = item.itemPrice;
-    if (price < 500) return true;
-    // 3万円以上はROOMの衝動買い候補として重く、まずは安全側で除外する。
-    // 将来、レビュー数・評価が非常に強い高単価だけ残す余地はここで調整する。
-    if (price >= 30000) return true;
-    if (price >= 10000 && item.reviewCount == 0) return true;
-    if (item.reviewCount > 0 && item.reviewAverage < 3.5) return true;
-    return false;
   }
 
   double _priceScore(RakutenSearchItem item) {
@@ -843,4 +1223,18 @@ class _ScoredRecommendation {
   final double priceScore;
   final String reason;
   final TodayRecommendationSection section;
+}
+
+class _RecommendSearchPlan {
+  const _RecommendSearchPlan({
+    required this.source,
+    required this.keyword,
+    required this.genreId,
+    required this.shopCode,
+  });
+
+  final String source;
+  final String keyword;
+  final String? genreId;
+  final String? shopCode;
 }

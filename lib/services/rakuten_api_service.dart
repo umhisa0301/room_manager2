@@ -283,6 +283,7 @@ class RakutenApiService {
         '[Rakuten] response status=${response.statusCode} page=$page '
         'bytes=${response.bodyBytes.length}',
       );
+      debugPrint('[RECOMMEND_TRACE] apiStatus=${response.statusCode}');
     }
 
     Map<String, dynamic>? bodyMap;
@@ -334,6 +335,11 @@ class RakutenApiService {
         throw Exception(_invalidApplicationIdUserMessage(errMsg));
       }
       throw Exception('楽天API: $errMsg');
+    }
+    if (kDebugMode) {
+      final items = bodyMap['Items'];
+      final rawCount = items is List ? items.length : 0;
+      debugPrint('[RECOMMEND_TRACE] rawCount=$rawCount');
     }
     return bodyMap;
   }

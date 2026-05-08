@@ -85,14 +85,16 @@ class RakutenSearchRepository {
 
   Future<List<RakutenSearchItem>> search({
     required RakutenProductSearchCondition condition,
+    int maxPages = 5,
   }) async {
     if (kDemoModeEnabled) {
       return DemoModeData.querySearchItems(condition);
     }
     final normalized = condition.normalized();
     final results = <RakutenSearchItem>[];
-    // 最大5ページ分（約100件）を取得 — 逐次・1ページ失敗時は可能な範囲で継続
-    for (var page = 1; page <= 5; page++) {
+    final boundedMaxPages = maxPages < 1 ? 1 : maxPages;
+    // 既定は最大5ページ分（約100件）。呼び出し側で maxPages=1 を渡せば1ページだけ取得。
+    for (var page = 1; page <= boundedMaxPages; page++) {
       try {
         if (page > 1) {
           await Future<void>.delayed(const Duration(milliseconds: 180));

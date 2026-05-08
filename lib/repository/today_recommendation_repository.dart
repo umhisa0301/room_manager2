@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/demo_mode.dart';
@@ -21,8 +22,15 @@ class TodayRecommendationRepository {
     try {
       final decoded = jsonDecode(raw);
       if (decoded is! Map<String, dynamic>) return null;
-      return TodayRecommendationBundle.fromJson(decoded);
+      final bundle = TodayRecommendationBundle.fromJson(decoded);
+      if (kDebugMode) {
+        debugPrint('[RECOMMEND_TRACE] savedBundle=${bundle != null}');
+      }
+      return bundle;
     } catch (_) {
+      if (kDebugMode) {
+        debugPrint('[RECOMMEND_TRACE] savedBundle=false');
+      }
       return null;
     }
   }
@@ -32,5 +40,8 @@ class TodayRecommendationRepository {
       return;
     }
     await _prefs.setString(_key, jsonEncode(bundle.toJson()));
+    if (kDebugMode) {
+      debugPrint('[RECOMMEND_TRACE] savedBundle=true');
+    }
   }
 }
