@@ -448,7 +448,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       final styleCount = _postStyleKeys.length;
       return [
         AppPrimaryButton(
-          label: styleCount == 0 ? '投稿スタイルを選ぶ' : '$styleCount件で次へ',
+          label: styleCount == 0 ? '探し方を選ぶ' : '$styleCount件で次へ',
           height: 48,
           onPressed: styleCount == 0
               ? () => _openPostStylePicker(context)
@@ -768,7 +768,7 @@ class _StepProfile extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'ニックネームは、今後おすすめ文や投稿文の生成に使えます。\n投稿スタイルは、おすすめ候補やショップ提案の調整に使います。あとから変更できます。',
+              'ニックネームは、今後おすすめ文や投稿文の生成に使えます。\n探し方は、おすすめ候補やショップ提案の調整に使います。あとから変更できます。',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
                 height: 1.35,
@@ -814,7 +814,7 @@ class _PostStyleSummary extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '投稿スタイル（最大3件）',
+          '探し方（最大3件）',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: AppColors.textSecondary,
             fontWeight: FontWeight.w800,
@@ -847,7 +847,7 @@ class _PostStyleSummary extends StatelessWidget {
           ),
         const SizedBox(height: 10),
         AppOutlineButton(
-          label: selectedKeys.isEmpty ? '投稿スタイルを選ぶ' : '投稿スタイルを変更',
+          label: selectedKeys.isEmpty ? '探し方を選ぶ' : '探し方を変更',
           icon: const Icon(Icons.auto_awesome_rounded, size: 18),
           height: 44,
           onPressed: onPick,
@@ -1289,7 +1289,7 @@ enum _ShopRecommendationMode {
   balance('バランス', '商品数・評価・レビュー数をもとに選んでいます', 'balance'),
   affordable('お手頃価格', '低〜中価格帯の商品が多いショップを優先します', 'affordable'),
   highlyRated('高評価', '平均評価とレビュー件数を優先します', 'highlyRated'),
-  social('SNS映え', '画像つき商品や雑貨・インテリア寄りの商品を優先します', 'social'),
+  social('見た目重視', '画像つき商品や雑貨・インテリア寄りの商品を優先します', 'social'),
   practical('実用的', '日用品・食品など継続投稿しやすい商品を優先します', 'practical');
 
   const _ShopRecommendationMode(this.label, this.description, this.logValue);
@@ -1405,7 +1405,7 @@ String _recommendReasonFor(
   }
   if (styles.contains(UserProfile.postStyleSocial)) {
     return summary.representativeItems.any((e) => e.imageUrl.trim().isNotEmpty)
-        ? 'SNS映えしやすい画像の商品が多いショップです'
+        ? '見た目で選びやすい画像の商品が多いショップです'
         : '雑貨・インテリア寄りの商品を探しやすいショップです';
   }
   if (styles.contains(UserProfile.postStylePractical)) {

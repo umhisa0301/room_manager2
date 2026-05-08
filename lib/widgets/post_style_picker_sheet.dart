@@ -51,14 +51,14 @@ class _PostStylePickerSheetState extends State<PostStylePickerSheet> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '投稿スタイルを選ぶ',
+                '探し方を選ぶ',
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w900),
               ),
               const SizedBox(height: 8),
               Text(
-                'おすすめ候補やショップ提案の並び順に使います。最大3件まで選べます。',
+                'おすすめ候補やショップ提案の調整に使います。最大3件まで選べます。',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                   height: 1.35,

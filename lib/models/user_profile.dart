@@ -63,7 +63,7 @@ class UserProfile {
       case postStyleHighlyRated:
         return '高評価';
       case postStyleSocial:
-        return 'SNS映え';
+        return '見た目重視';
       case postStylePractical:
         return '実用的';
       case postStyleReviewRich:
@@ -108,7 +108,7 @@ class UserProfile {
   /// 好きなジャンルの楽天 `genreId` を `、` または `,` 区切りで保持（最大5件想定・UI側で制御）。
   final String favoriteGenreIds;
 
-  /// ROOM運用の投稿スタイル。`postStyleKeys` の値を `、` または `,` 区切りで最大3件保持する。
+  /// 商品探索の傾向設定。`postStyleKeys` の値を `、` または `,` 区切りで最大3件保持する。
   final String postStyles;
 
   /// 楽天ROOMのプロフィールまたはトップページURL

@@ -93,7 +93,7 @@ class MypagePlaceholderScreen extends StatelessWidget {
     if (!context.mounted) return;
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(const SnackBar(content: Text('投稿スタイルを保存しました')));
+    ).showSnackBar(const SnackBar(content: Text('探し方を保存しました')));
   }
 
   Future<void> _openFavoriteGenrePickerSheet(BuildContext context) async {
@@ -1294,7 +1294,7 @@ class MyPageRegisteredContentCard extends StatelessWidget {
         children: [
           const AppSectionHeader(
             title: '登録内容',
-            subtitle: 'ROOM URL・ニックネーム・投稿スタイル・ジャンル・保存ショップを確認できます',
+            subtitle: 'ROOM URL・ニックネーム・探し方・ジャンル・保存ショップを確認できます',
             icon: Icons.assignment_ind_outlined,
           ),
           const SizedBox(height: 10),
@@ -1304,7 +1304,7 @@ class MyPageRegisteredContentCard extends StatelessWidget {
             onTap: onEditNickname,
           ),
           _RegisteredContentRow(
-            title: '投稿スタイル',
+            title: '探し方',
             value: postStyles,
             onTap: onEditPostStyles,
           ),
