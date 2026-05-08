@@ -15,12 +15,17 @@ List<String> todayRecommendationUiTags(TodayRecommendationEntry entry) {
 
   final r = entry.reason.trim();
   if (r.contains('コレ履歴')) add('コレ履歴に基づく');
+  if (r.contains('コレ済に近い')) add('コレ済に近い');
   if (r.contains('保存ショップ')) add('保存ショップ由来');
+  if (r.contains('保存ショップから')) add('保存ショップから');
   if (r.contains('ジャンル')) add('好きなジャンルに近い');
   if (r.contains('候補にした')) add('候補に近い');
   if (r.contains('売れ筋価格')) add('売れ筋価格帯');
   if (r.contains('人気')) add('人気の候補');
   if (r.contains('新しい候補')) add('発掘候補');
+  if (r.contains('お手頃価格')) add('お手頃価格');
+  if (r.contains('高単価候補')) add('高単価候補');
+  if (r.contains('発掘枠')) add('発掘枠');
 
   final item = entry.item;
   if (item.reviewCount >= 80) add('レビュー多め');

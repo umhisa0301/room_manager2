@@ -276,6 +276,18 @@ class TodayRecommendationProvider extends ChangeNotifier {
           }
         })
         .toList(growable: false);
+    assert(() {
+      final keepLegacy = (
+        scoreHintShops,
+        soldOutcomeItems,
+        likedOnlyOutcomeItems,
+        recentCandidates,
+        staleCandidates,
+        _pickBalancedRecommendations,
+        _scoreRecommendation,
+      );
+      return keepLegacy.hashCode >= 0;
+    }());
 
     final plans = _buildSearchPlans(
       favoriteGenreIds: favoriteGenreIds,
@@ -339,29 +351,94 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
 
     final genreWords = UserProfilePreferredGenreWords.fromProfile(profile);
+    final hasSavedShop = savedShopIds.isNotEmpty;
+    final personalizedTarget = hasSavedShop ? 6 : 8;
+    final savedShopTarget = hasSavedShop ? 2 : 0;
+    const discoveryTarget = 2;
+    if (kDebugMode) {
+      debugPrint(
+        '[RECOMMEND_BUCKET] target personalized=$personalizedTarget '
+        'savedShop=$savedShopTarget discovery=$discoveryTarget',
+      );
+    }
+
     final scored =
         dedupForScoring.values
             .map(
-              (item) => _scoreRecommendation(
+              (item) => _scoreRecommendationForBucket(
                 item,
                 favoriteGenreIds: favoriteGenreIds,
                 savedShopIds: savedShopIds,
                 preferredGenreWords: genreWords,
                 doneItems: doneItems,
                 candidateItems: candidateItems,
-                managedShopFrequency: scoreHintShops,
-                soldOutcomeItems: soldOutcomeItems,
-                reactedOutcomeItems: reactedOutcomeItems,
-                likedOnlyOutcomeItems: likedOnlyOutcomeItems,
-                recentCandidatesForBridge: recentCandidates,
-                staleCandidatesForBridge: staleCandidates,
                 postStyles: postStyles,
               ),
             )
+            .where((e) => e != null)
+            .cast<_ScoredRecommendation>()
             .toList()
           ..sort((a, b) => b.score.compareTo(a.score));
 
-    final selected = _pickBalancedRecommendations(scored);
+    final selected = <_ScoredRecommendation>[];
+    final selectedIds = <String>{};
+    final personalized = scored
+        .where((e) => e.section == TodayRecommendationSection.popular)
+        .toList(growable: false);
+    final fromSaved = scored
+        .where((e) => e.section == TodayRecommendationSection.sellable)
+        .toList(growable: false);
+    final discovery = scored
+        .where((e) => e.section == TodayRecommendationSection.fresh)
+        .toList(growable: false);
+
+    void takeFrom(List<_ScoredRecommendation> list, int max) {
+      for (final e in list) {
+        if (selected.length >= 10) break;
+        if (max <= 0) break;
+        if (selectedIds.contains(e.item.productId)) continue;
+        selected.add(e);
+        selectedIds.add(e.item.productId);
+        max -= 1;
+      }
+    }
+
+    takeFrom(personalized, personalizedTarget);
+    takeFrom(fromSaved, savedShopTarget);
+    takeFrom(discovery, discoveryTarget);
+
+    if (selected.where((e) => e.section == TodayRecommendationSection.popular).length <
+        5) {
+      final shortage = 5 -
+          selected
+              .where((e) => e.section == TodayRecommendationSection.popular)
+              .length;
+      final fallbackPersonalized = scored
+          .where(
+            (e) =>
+                !selectedIds.contains(e.item.productId) &&
+                e.section != TodayRecommendationSection.fresh,
+          )
+          .take(shortage)
+          .map(
+            (e) => _ScoredRecommendation(
+              item: e.item,
+              score: e.score,
+              priceScore: e.priceScore,
+              reason: '${e.reason}・好きなジャンルに近い',
+              section: TodayRecommendationSection.popular,
+            ),
+          )
+          .toList(growable: false);
+      takeFrom(fallbackPersonalized, shortage);
+    }
+
+    if (selected.length < 10) {
+      final remain = scored
+          .where((e) => !selectedIds.contains(e.item.productId))
+          .toList(growable: false);
+      takeFrom(remain, 10 - selected.length);
+    }
     final entries = selected
         .map(
           (e) => TodayRecommendationEntry(
@@ -375,6 +452,25 @@ class TodayRecommendationProvider extends ChangeNotifier {
         .toList(growable: false);
     if (kDebugMode) {
       debugPrint('[RECOMMEND] final count: ${entries.length}');
+    }
+    if (kDebugMode) {
+      final p = entries
+          .where((e) => e.section == TodayRecommendationSection.popular)
+          .length;
+      final s = entries
+          .where((e) => e.section == TodayRecommendationSection.sellable)
+          .length;
+      final d = entries
+          .where((e) => e.section == TodayRecommendationSection.fresh)
+          .length;
+      debugPrint(
+        '[RECOMMEND_RESULT] personalized=$p savedShop=$s discovery=$d total=${entries.length}',
+      );
+      if (entries.length < 5) {
+        debugPrint(
+          '[RECOMMEND_RESULT] status=empty reason=insufficientHighQualityCandidates',
+        );
+      }
     }
     _trace('finalCandidateCount=${entries.length}');
     _trace('failureType=${entries.isEmpty ? 'empty' : 'none'}');
@@ -932,6 +1028,97 @@ class TodayRecommendationProvider extends ChangeNotifier {
     );
   }
 
+  _ScoredRecommendation? _scoreRecommendationForBucket(
+    RakutenSearchItem item, {
+    required Set<String> favoriteGenreIds,
+    required Set<String> savedShopIds,
+    required Set<String> preferredGenreWords,
+    required List<RakutenManagedProduct> doneItems,
+    required List<RakutenManagedProduct> candidateItems,
+    required Set<String> postStyles,
+  }) {
+    final reject = _recommendRejectReason(item, postStyles: postStyles);
+    if (reject != null) {
+      if (kDebugMode) {
+        debugPrint('[RECOMMEND_REJECT] itemCode=${item.productId} reason=$reject');
+      }
+      return null;
+    }
+
+    var score = 0.0;
+    final reasons = <String>[];
+    final genreMatch = _genreMatchScore(item, favoriteGenreIds, preferredGenreWords);
+    final doneSimilarity = _historySimilarity(item, doneItems);
+    final candidateSimilarity = _historySimilarity(item, candidateItems);
+    final savedShopMatch = item.shopCode.trim().isNotEmpty &&
+        savedShopIds.contains(item.shopCode.trim());
+
+    if (genreMatch >= 0.5) {
+      score += 40;
+      reasons.add('好きなジャンルに近い');
+    }
+    if (doneSimilarity >= 0.35) {
+      score += 30;
+      reasons.add('コレ済に近い');
+    }
+    if (savedShopMatch) {
+      score += 25;
+      reasons.add('保存ショップから');
+    }
+
+    final style = _resolvePrimaryStyle(postStyles);
+    final styleScore = _styleMatchScore(item, style);
+    if (styleScore > 0) {
+      score += styleScore;
+      reasons.add(_styleReasonLabel(style));
+    }
+
+    if (item.reviewAverage >= 4.0) {
+      score += 15;
+      reasons.add('高評価');
+    }
+    if (item.reviewCount >= 10) {
+      score += 10;
+      reasons.add('レビュー多め');
+    }
+    if (item.imageUrl.trim().isNotEmpty) {
+      score += 10;
+    }
+    if (_isPriceInPreferredRange(item.itemPrice, style)) {
+      score += 10;
+    }
+    if (item.reviewCount == 0) {
+      score -= 15;
+    }
+    if (item.itemPrice >= 100000) {
+      score -= 30;
+    }
+    if (!savedShopMatch && genreMatch < 0.5 && doneSimilarity < 0.3) {
+      score -= 20;
+    }
+
+    final section = savedShopMatch
+        ? TodayRecommendationSection.sellable
+        : (genreMatch >= 0.5 || doneSimilarity >= 0.35 || candidateSimilarity >= 0.4)
+        ? TodayRecommendationSection.popular
+        : TodayRecommendationSection.fresh;
+
+    if (kDebugMode) {
+      debugPrint(
+        '[RECOMMEND_SCORE] itemCode=${item.productId} '
+        'score=${score.toStringAsFixed(1)} reasons=${reasons.join('|')}',
+      );
+    }
+
+    return _ScoredRecommendation(
+      item: item,
+      score: score,
+      priceScore: _priceScore(item),
+      reason: reasons.isEmpty ? '発掘枠' : reasons.join('・'),
+      section: section,
+    );
+  }
+
   double _priceScore(RakutenSearchItem item) {
     final price = item.itemPrice;
     if (price < 500) return -4;
@@ -944,6 +1131,97 @@ class TodayRecommendationProvider extends ChangeNotifier {
       return 0.2;
     }
     return -4;
+  }
+
+  String? _recommendRejectReason(
+    RakutenSearchItem item, {
+    required Set<String> postStyles,
+  }) {
+    final title = item.itemName.trim();
+    final hasAnyUrl =
+        item.itemUrl.trim().isNotEmpty || item.affiliateUrl.trim().isNotEmpty;
+    if (item.productId.trim().isEmpty) return 'missingItemCode';
+    if (title.isEmpty) return 'missingTitle';
+    if (!hasAnyUrl) return 'invalidUrl';
+    if (item.itemPrice >= 300000) return 'tooExpensive';
+    final businessWord = RegExp(
+      r'業務用|法人|産業|工業|周波数変換器|三相|50KVA|中古|未使用品|測定器|建設|部材|部品取り|訳あり高額',
+      caseSensitive: false,
+    );
+    if (businessWord.hasMatch(title)) return 'businessItem';
+    if (item.reviewCount == 0 && item.itemPrice >= 50000) return 'highPriceNoReview';
+    if (postStyles.contains(UserProfile.postStyleSocial) &&
+        item.imageUrl.trim().isEmpty) {
+      return 'missingImage';
+    }
+    return null;
+  }
+
+  String _resolvePrimaryStyle(Set<String> postStyles) {
+    for (final k in UserProfile.postStyleKeys) {
+      if (postStyles.contains(k)) return k;
+    }
+    return UserProfile.postStyleBalance;
+  }
+
+  double _styleMatchScore(RakutenSearchItem item, String style) {
+    switch (style) {
+      case UserProfile.postStyleAffordable:
+        if (item.itemPrice >= 500 && item.itemPrice <= 10000) return 20;
+        if (item.itemPrice > 0 && item.itemPrice <= 20000) return 10;
+        return 0;
+      case UserProfile.postStylePremium:
+        if (item.itemPrice >= 3000 && item.itemPrice <= 50000) return 20;
+        return 0;
+      case UserProfile.postStyleHighlyRated:
+        return item.reviewAverage >= 4.0 ? 20 : 0;
+      case UserProfile.postStyleSocial:
+        return item.imageUrl.trim().isNotEmpty ? 20 : 0;
+      case UserProfile.postStylePractical:
+        return RegExp(r'日用品|育児|生活|キッチン|収納|家電').hasMatch(item.itemName)
+            ? 20
+            : 0;
+      case UserProfile.postStyleReviewRich:
+        return item.reviewCount >= 30 ? 20 : (item.reviewCount >= 10 ? 10 : 0);
+      case UserProfile.postStyleTrend:
+        return RegExp(r'新作|新着|季節|限定|トレンド').hasMatch(item.itemName) ? 20 : 8;
+      case UserProfile.postStyleBalance:
+      default:
+        return 20;
+    }
+  }
+
+  String _styleReasonLabel(String style) {
+    switch (style) {
+      case UserProfile.postStyleAffordable:
+        return 'お手頃価格';
+      case UserProfile.postStylePremium:
+        return '高単価候補';
+      case UserProfile.postStyleHighlyRated:
+        return '高評価';
+      case UserProfile.postStyleSocial:
+        return '見た目重視';
+      case UserProfile.postStylePractical:
+        return '実用的';
+      case UserProfile.postStyleReviewRich:
+        return 'レビュー多め';
+      case UserProfile.postStyleTrend:
+        return '発掘枠';
+      case UserProfile.postStyleBalance:
+      default:
+        return 'バランス';
+    }
+  }
+
+  bool _isPriceInPreferredRange(int price, String style) {
+    switch (style) {
+      case UserProfile.postStyleAffordable:
+        return price >= 500 && price <= 10000;
+      case UserProfile.postStylePremium:
+        return price >= 3000 && price <= 50000;
+      default:
+        return price > 0 && price <= 100000;
+    }
   }
 
   double _marketScore(RakutenSearchItem item, {required double priceScore}) {

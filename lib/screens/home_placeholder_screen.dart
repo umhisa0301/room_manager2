@@ -518,6 +518,10 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                           .postStyleList,
                                     ),
                                 recommendationStatusMessage:
+                                    recProvider.totalCount > 0 &&
+                                        recProvider.totalCount < 5
+                                    ? '候補を増やすにはジャンルや探し方を追加してください'
+                                    :
                                     recProvider.generationStatus ==
                                         TodayRecommendationGenerationStatus
                                             .failedRateLimit

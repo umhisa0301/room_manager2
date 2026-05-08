@@ -204,22 +204,22 @@ class _RecommendationSectionHeader extends StatelessWidget {
   String _sectionTitle(TodayRecommendationSection section) {
     switch (section) {
       case TodayRecommendationSection.sellable:
-        return '売れ筋';
+        return '保存ショップから';
       case TodayRecommendationSection.popular:
         return 'あなた向け';
       case TodayRecommendationSection.fresh:
-        return '新着・発掘';
+        return '発掘枠';
     }
   }
 
   String _sectionSubtitle(TodayRecommendationSection section) {
     switch (section) {
       case TodayRecommendationSection.sellable:
-        return '価格帯・レビュー数・評価がROOM向きの候補です。';
+        return '保存したショップの中から、投稿しやすい候補です。';
       case TodayRecommendationSection.popular:
         return '好きなジャンル・コレ履歴・保存ショップに近い候補です。';
       case TodayRecommendationSection.fresh:
-        return 'いつもの傾向から少し広げた候補です。';
+        return 'いつもの傾向を少し広げた候補です。';
     }
   }
 }
