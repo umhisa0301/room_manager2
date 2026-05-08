@@ -239,6 +239,8 @@ class HomePlaceholderScreen extends StatefulWidget {
 }
 
 class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
+  String? _lastAutoRegeneratedDateKey;
+
   @override
   void initState() {
     super.initState();
@@ -262,7 +264,18 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     if (!mounted) return;
     context.read<RoomActivityEventProvider>().reloadFromStorage();
     if (!mounted) return;
-    context.read<TodayRecommendationProvider>().reloadBundleFromStorage();
+    final recommender = context.read<TodayRecommendationProvider>();
+    recommender.reloadBundleFromStorage();
+    await recommender.ensureToday(
+      profile: context.read<UserProfileProvider>().profile,
+      managedItems: room.items,
+      savedShops: context.read<SavedShopProvider>().shops,
+    );
+    await _regenerateRecommendationsIfNeeded(
+      recommender: recommender,
+      roomProvider: room,
+      force: true,
+    );
   }
 
   void _openRoomList(
@@ -305,10 +318,16 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
 
   Future<void> _openTodayRecommendations(BuildContext context) async {
     final recommender = context.read<TodayRecommendationProvider>();
+    final roomProvider = context.read<RakutenManagedProductProvider>();
     await recommender.ensureToday(
       profile: context.read<UserProfileProvider>().profile,
-      managedItems: context.read<RakutenManagedProductProvider>().items,
+      managedItems: roomProvider.items,
       savedShops: context.read<SavedShopProvider>().shops,
+    );
+    await _regenerateRecommendationsIfNeeded(
+      recommender: recommender,
+      roomProvider: roomProvider,
+      force: true,
     );
     if (!context.mounted) return;
     await Navigator.of(context).push(
@@ -316,6 +335,31 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
         builder: (_) => const TodayRecommendationsScreen(),
       ),
     );
+  }
+
+  Future<void> _regenerateRecommendationsIfNeeded({
+    required TodayRecommendationProvider recommender,
+    required RakutenManagedProductProvider roomProvider,
+    bool force = false,
+  }) async {
+    if (!mounted || recommender.isLoading) return;
+    final todayKey = _localDateKey(DateTime.now());
+    if (!force && _lastAutoRegeneratedDateKey == todayKey) return;
+    if (!force && recommender.pendingCount > 0) return;
+    if (!force && recommender.totalCount > 0 && recommender.pendingCount > 0) {
+      return;
+    }
+    _lastAutoRegeneratedDateKey = todayKey;
+    await recommender.regenerateToday(
+      profile: context.read<UserProfileProvider>().profile,
+      managedItems: roomProvider.items,
+      savedShops: context.read<SavedShopProvider>().shops,
+    );
+  }
+
+  String _localDateKey(DateTime dateTime) {
+    String two(int n) => n.toString().padLeft(2, '0');
+    return '${dateTime.year}-${two(dateTime.month)}-${two(dateTime.day)}';
   }
 
   Future<void> _openRoomUrlEditSheet(BuildContext context) async {
@@ -391,6 +435,13 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     final todayDoneCountForRec =
                         (recProvider.totalCount - recProvider.pendingCount)
                             .clamp(0, recProvider.totalCount);
+                    WidgetsBinding.instance.addPostFrameCallback((_) async {
+                      if (!mounted) return;
+                      await _regenerateRecommendationsIfNeeded(
+                        recommender: recProvider,
+                        roomProvider: roomProvider,
+                      );
+                    });
 
                     final profileRoomUrl = userProfileProvider.profile.roomUrl
                         .trim();
@@ -439,6 +490,12 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                           .profile
                                           .postStyleList,
                                     ),
+                                recommendationStatusMessage:
+                                    recProvider.errorMessage != null &&
+                                        recProvider.totalCount == 0 &&
+                                        !recProvider.isLoading
+                                    ? '候補を作れませんでした。条件を増やすと精度が上がります'
+                                    : null,
                                 onOpenSearch: () =>
                                     openRakutenSearchScreen(context),
                                 onOpenCandidates: () =>
@@ -676,6 +733,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
     required this.todayDoneCountForRec,
     required this.recTotalCount,
     required this.recommendationHintLine,
+    required this.recommendationStatusMessage,
     required this.onOpenSearch,
     required this.onOpenCandidates,
     required this.onOpenActivity,
@@ -693,6 +751,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
   final int todayDoneCountForRec;
   final int recTotalCount;
   final String? recommendationHintLine;
+  final String? recommendationStatusMessage;
   final VoidCallback onOpenSearch;
   final VoidCallback onOpenCandidates;
   final VoidCallback onOpenActivity;
@@ -784,6 +843,18 @@ class _HomeTodayProgressCard extends StatelessWidget {
               color: HomeScreenColors.bodyOnSection,
             ),
           ),
+          if (recommendationStatusMessage != null) ...[
+            const SizedBox(height: 6),
+            Text(
+              recommendationStatusMessage!,
+              maxLines: 3,
+              softWrap: true,
+              style: _HomeUi.tapHint(context).copyWith(
+                fontSize: 12,
+                color: HomeScreenColors.footnoteMuted,
+              ),
+            ),
+          ],
           const SizedBox(height: 14),
           _HomeHeroCtaButton(
             icon: primary.icon,
@@ -796,6 +867,13 @@ class _HomeTodayProgressCard extends StatelessWidget {
   }
 
   _HomeActionSpec _primaryAction() {
+    if (isLoading) {
+      return _HomeActionSpec(
+        label: 'おすすめを準備中',
+        icon: Icons.auto_awesome_rounded,
+        onPressed: onPrimaryRecommendations,
+      );
+    }
     if (pendingCount > 0) {
       return _HomeActionSpec(
         label: 'おすすめコレを見る',
