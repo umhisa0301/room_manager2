@@ -754,7 +754,20 @@ class _DismissKeyboardOnInteract extends StatelessWidget {
 
   final Widget child;
 
-  void _dismiss() {
+  bool _isTapInsideFocusedEditableText(TapDownDetails details) {
+    final focusedContext = FocusManager.instance.primaryFocus?.context;
+    if (focusedContext == null) return false;
+    final focusedWidget = focusedContext.widget;
+    if (focusedWidget is! EditableText) return false;
+    final renderObject = focusedContext.findRenderObject();
+    if (renderObject is! RenderBox || !renderObject.hasSize) return false;
+    final topLeft = renderObject.localToGlobal(Offset.zero);
+    final rect = topLeft & renderObject.size;
+    return rect.contains(details.globalPosition);
+  }
+
+  void _dismissOnTapOutsideEditable(TapDownDetails details) {
+    if (_isTapInsideFocusedEditableText(details)) return;
     FocusManager.instance.primaryFocus?.unfocus();
   }
 
@@ -762,14 +775,8 @@ class _DismissKeyboardOnInteract extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: _dismiss,
-      child: NotificationListener<ScrollStartNotification>(
-        onNotification: (_) {
-          _dismiss();
-          return false;
-        },
-        child: child,
-      ),
+      onTapDown: _dismissOnTapOutsideEditable,
+      child: child,
     );
   }
 }
