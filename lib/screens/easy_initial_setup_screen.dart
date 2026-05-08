@@ -47,8 +47,10 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   bool _isLoadingShopRecommendations = false;
   String? _shopRecommendationFailedReason;
   List<ShopDiscoverySummary> _shopRecommendations = const [];
-  _ShopRecommendationMode _shopRecommendationMode =
-      _ShopRecommendationMode.balance;
+
+  void _dismissKeyboard() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
 
   int _firstIncompletePage(UserProfile profile, int savedShopCount) {
     if (!profile.hasRoomUrl) return 1;
@@ -102,6 +104,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     bool markCompleted = false,
     bool markSkipped = false,
   }) async {
+    _dismissKeyboard();
     final nav = Navigator.of(context);
     final embedded = widget.embeddedInEntryHost;
     await context.read<EasyInitialSetupRepository>().dismiss(
@@ -116,7 +119,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
 
   Future<bool> _saveRoomUrlStep(BuildContext context) async {
     if (_isCheckingRoomProfile) return false;
-    FocusManager.instance.primaryFocus?.unfocus();
+    _dismissKeyboard();
     final messenger = ScaffoldMessenger.of(context);
     final profileProv = context.read<UserProfileProvider>();
     final base = context.read<UserProfileProvider>().profile;
@@ -173,6 +176,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   }
 
   Future<void> _openGenrePicker(BuildContext context) async {
+    _dismissKeyboard();
     final base = context.read<UserProfileProvider>().profile;
     final profileProv = context.read<UserProfileProvider>();
     final initial = base.favoriteGenreIdList;
@@ -217,6 +221,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   }
 
   Future<void> _openPostStylePicker(BuildContext context) async {
+    _dismissKeyboard();
     final picked = await showModalBottomSheet<List<String>>(
       context: context,
       isScrollControlled: true,
@@ -263,6 +268,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
 
   Future<void> _loadShopRecommendations(BuildContext context) async {
     if (_isLoadingShopRecommendations) return;
+    _dismissKeyboard();
     setState(() {
       _shopRecommendationStarted = true;
       _isLoadingShopRecommendations = true;
@@ -334,6 +340,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     BuildContext context,
     ShopDiscoverySummary summary,
   ) async {
+    _dismissKeyboard();
     final saved = context.read<SavedShopProvider>();
     if (saved.isSaved(summary.shopKey)) return;
     final messenger = ScaffoldMessenger.of(context);
@@ -353,17 +360,8 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     setState(() {});
   }
 
-  void _setShopRecommendationMode(_ShopRecommendationMode mode) {
-    if (_shopRecommendationMode == mode) return;
-    setState(() {
-      _shopRecommendationMode = mode;
-      _shopRecommendationStarted = false;
-      _shopRecommendationFailedReason = null;
-      _shopRecommendations = const [];
-    });
-  }
-
   void _goNext(BuildContext context) async {
+    _dismissKeyboard();
     if (_pageIndex == 0) {
       await _saveProfileStep(context);
       if (!mounted) return;
@@ -432,6 +430,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   }
 
   void _skipStep(BuildContext context) async {
+    _dismissKeyboard();
     if (_pageIndex >= 3) {
       await _persistDismissAndLeave(context, markSkipped: true);
       return;
@@ -562,6 +561,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     final setup = context.watch<EasyInitialSetupRepository>();
     _logEasySetupState(profile, savedShopCount, setup);
     Future<bool> handleWillPop() async {
+      _dismissKeyboard();
       if (_pageIndex > 0) {
         await _pageController?.previousPage(
           duration: const Duration(milliseconds: 220),
@@ -580,10 +580,13 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
         leading: _pageIndex > 0
             ? IconButton(
                 icon: const Icon(Icons.arrow_back_rounded),
-                onPressed: () => _pageController?.previousPage(
-                  duration: const Duration(milliseconds: 220),
-                  curve: Curves.easeOutCubic,
-                ),
+                onPressed: () {
+                  _dismissKeyboard();
+                  _pageController?.previousPage(
+                    duration: const Duration(milliseconds: 220),
+                    curve: Curves.easeOutCubic,
+                  );
+                },
               )
             : null,
       ),
@@ -594,102 +597,107 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
           handleWillPop();
         },
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'あとからマイページで変更できます。',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w600,
-                    height: 1.35,
+          child: _DismissKeyboardOnInteract(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'あとからマイページで変更できます。',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w600,
+                      height: 1.35,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 14),
-                Row(
-                  children: [
-                    _StepDot(
-                      active: _pageIndex == 0,
-                      enabled: true,
-                      label: '1',
-                      onTap: () => _jumpToStep(0),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: AppColors.divider.withValues(alpha: 0.7),
-                      ),
-                    ),
-                    _StepDot(
-                      active: _pageIndex == 1,
-                      enabled: _pageIndex >= 1,
-                      label: '2',
-                      onTap: () => _jumpToStep(1),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: AppColors.divider.withValues(alpha: 0.7),
-                      ),
-                    ),
-                    _StepDot(
-                      active: _pageIndex == 2,
-                      enabled: _pageIndex >= 2,
-                      label: '3',
-                      onTap: () => _jumpToStep(2),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: AppColors.divider.withValues(alpha: 0.7),
-                      ),
-                    ),
-                    _StepDot(
-                      active: _pageIndex == 3,
-                      enabled: _pageIndex >= 3,
-                      label: '4',
-                      onTap: () => _jumpToStep(3),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                Expanded(
-                  child: PageView(
-                    controller: controller,
-                    physics: const NeverScrollableScrollPhysics(),
-                    onPageChanged: (i) => setState(() => _pageIndex = i),
+                  const SizedBox(height: 14),
+                  Row(
                     children: [
-                      _StepProfile(
-                        controller: _nicknameController,
-                        postStyleKeys: _postStyleKeys,
-                        onPickPostStyles: () => _openPostStylePicker(context),
+                      _StepDot(
+                        active: _pageIndex == 0,
+                        enabled: true,
+                        label: '1',
+                        onTap: () => _jumpToStep(0),
                       ),
-                      _StepRoomUrl(
-                        controller: _roomUrlController,
-                        errorText: _roomUrlErrorText,
-                        isChecking: _isCheckingRoomProfile,
-                        onChanged: () => setState(() {}),
+                      Expanded(
+                        child: Divider(
+                          color: AppColors.divider.withValues(alpha: 0.7),
+                        ),
                       ),
-                      _StepGenres(
-                        onPickGenres: () => _openGenrePicker(context),
+                      _StepDot(
+                        active: _pageIndex == 1,
+                        enabled: _pageIndex >= 1,
+                        label: '2',
+                        onTap: () => _jumpToStep(1),
                       ),
-                      _StepSavedShops(
-                        isLoading: _isLoadingShopRecommendations,
-                        recommendations: _shopRecommendations,
-                        failedReason: _shopRecommendationFailedReason,
-                        recommendationStarted: _shopRecommendationStarted,
-                        mode: _shopRecommendationMode,
-                        onModeChanged: _setShopRecommendationMode,
-                        onSaveShop: (summary) =>
-                            _saveRecommendedShop(context, summary),
-                        onSkip: () =>
-                            _persistDismissAndLeave(context, markSkipped: true),
+                      Expanded(
+                        child: Divider(
+                          color: AppColors.divider.withValues(alpha: 0.7),
+                        ),
+                      ),
+                      _StepDot(
+                        active: _pageIndex == 2,
+                        enabled: _pageIndex >= 2,
+                        label: '3',
+                        onTap: () => _jumpToStep(2),
+                      ),
+                      Expanded(
+                        child: Divider(
+                          color: AppColors.divider.withValues(alpha: 0.7),
+                        ),
+                      ),
+                      _StepDot(
+                        active: _pageIndex == 3,
+                        enabled: _pageIndex >= 3,
+                        label: '4',
+                        onTap: () => _jumpToStep(3),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 12),
-                ..._buildSetupBottomActions(context),
-              ],
+                  const SizedBox(height: 14),
+                  Expanded(
+                    child: PageView(
+                      controller: controller,
+                      physics: const NeverScrollableScrollPhysics(),
+                      onPageChanged: (i) {
+                        _dismissKeyboard();
+                        setState(() => _pageIndex = i);
+                      },
+                      children: [
+                        _StepProfile(
+                          controller: _nicknameController,
+                          postStyleKeys: _postStyleKeys,
+                          onPickPostStyles: () => _openPostStylePicker(context),
+                        ),
+                        _StepRoomUrl(
+                          controller: _roomUrlController,
+                          errorText: _roomUrlErrorText,
+                          isChecking: _isCheckingRoomProfile,
+                          onChanged: () => setState(() {}),
+                        ),
+                        _StepGenres(
+                          onPickGenres: () => _openGenrePicker(context),
+                        ),
+                        _StepSavedShops(
+                          isLoading: _isLoadingShopRecommendations,
+                          recommendations: _shopRecommendations,
+                          failedReason: _shopRecommendationFailedReason,
+                          recommendationStarted: _shopRecommendationStarted,
+                          onSaveShop: (summary) =>
+                              _saveRecommendedShop(context, summary),
+                          onSkip: () => _persistDismissAndLeave(
+                            context,
+                            markSkipped: true,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  ..._buildSetupBottomActions(context),
+                ],
+              ),
             ),
           ),
         ),
@@ -699,6 +707,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
 
   void _jumpToStep(int index) {
     if (index > _pageIndex) return;
+    _dismissKeyboard();
     _pageController?.animateToPage(
       index,
       duration: const Duration(milliseconds: 220),
@@ -735,6 +744,31 @@ class _StepDot extends StatelessWidget {
           label,
           style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, color: c),
         ),
+      ),
+    );
+  }
+}
+
+class _DismissKeyboardOnInteract extends StatelessWidget {
+  const _DismissKeyboardOnInteract({required this.child});
+
+  final Widget child;
+
+  void _dismiss() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: _dismiss,
+      child: NotificationListener<ScrollStartNotification>(
+        onNotification: (_) {
+          _dismiss();
+          return false;
+        },
+        child: child,
       ),
     );
   }
@@ -1031,8 +1065,6 @@ class _StepSavedShops extends StatelessWidget {
     required this.recommendations,
     required this.failedReason,
     required this.recommendationStarted,
-    required this.mode,
-    required this.onModeChanged,
     required this.onSaveShop,
     required this.onSkip,
   });
@@ -1041,8 +1073,6 @@ class _StepSavedShops extends StatelessWidget {
   final List<ShopDiscoverySummary> recommendations;
   final String? failedReason;
   final bool recommendationStarted;
-  final _ShopRecommendationMode mode;
-  final ValueChanged<_ShopRecommendationMode> onModeChanged;
   final ValueChanged<ShopDiscoverySummary> onSaveShop;
   final VoidCallback onSkip;
 
@@ -1050,6 +1080,11 @@ class _StepSavedShops extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final n = context.watch<SavedShopProvider>().shops.length;
+    final profile = context.watch<UserProfileProvider>().profile;
+    final styleLabels = profile.effectivePostStyleList
+        .map(UserProfile.postStyleLabelJa)
+        .toList(growable: false);
+    final genreLabels = _genreLabelsForShopSummary(profile);
     return SingleChildScrollView(
       child: AppCard(
         padding: const EdgeInsets.all(14),
@@ -1089,18 +1124,9 @@ class _StepSavedShops extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _ShopRecommendationModePicker(
-              selected: mode,
-              onChanged: onModeChanged,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '探し方：${mode.label}\n${mode.description}',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.35,
-                fontWeight: FontWeight.w700,
-              ),
+            _ShopConditionSummary(
+              styleLabels: styleLabels,
+              genreLabels: genreLabels,
             ),
             const SizedBox(height: 12),
             Text(
@@ -1135,10 +1161,7 @@ class _StepSavedShops extends StatelessWidget {
                     showOpenShopAction: false,
                     disableSavedAction: true,
                     reasonText: _recommendReasonFor(
-                      context
-                          .watch<UserProfileProvider>()
-                          .profile
-                          .effectivePostStyleList,
+                      profile.effectivePostStyleList,
                       summary,
                       index,
                     ),
@@ -1244,59 +1267,126 @@ class _InlineShopEmptyCard extends StatelessWidget {
   }
 }
 
-class _ShopRecommendationModePicker extends StatelessWidget {
-  const _ShopRecommendationModePicker({
-    required this.selected,
-    required this.onChanged,
+class _ShopConditionSummary extends StatelessWidget {
+  const _ShopConditionSummary({
+    required this.styleLabels,
+    required this.genreLabels,
   });
 
-  final _ShopRecommendationMode selected;
-  final ValueChanged<_ShopRecommendationMode> onChanged;
+  final List<String> styleLabels;
+  final List<String> genreLabels;
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        for (final mode in _ShopRecommendationMode.values)
-          ChoiceChip(
-            label: Text(mode.label),
-            selected: selected == mode,
-            showCheckmark: false,
-            selectedColor: AppColors.accentLight,
-            backgroundColor: AppColors.surface,
-            side: BorderSide(
-              color: selected == mode
-                  ? AppColors.accentPrimary.withValues(alpha: 0.45)
-                  : AppColors.divider.withValues(alpha: 0.9),
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceVariant.withValues(alpha: 0.38),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.divider.withValues(alpha: 0.75)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            '現在の条件',
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w900,
             ),
-            labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: selected == mode
-                  ? AppColors.accentPrimary
-                  : AppColors.textSecondary,
-              fontWeight: selected == mode ? FontWeight.w800 : FontWeight.w600,
-            ),
-            visualDensity: VisualDensity.compact,
-            onSelected: (_) => onChanged(mode),
           ),
+          const SizedBox(height: 8),
+          _ConditionLabelRow(title: '探し方', labels: styleLabels),
+          const SizedBox(height: 8),
+          _ConditionLabelRow(
+            title: 'ジャンル',
+            labels: genreLabels.isEmpty ? const ['未設定'] : genreLabels,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'これらをもとに、保存しやすいショップを提案しています。',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.35,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ConditionLabelRow extends StatelessWidget {
+  const _ConditionLabelRow({required this.title, required this.labels});
+
+  final String title;
+  final List<String> labels;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppColors.textTertiary,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: 5),
+        Wrap(
+          spacing: 6,
+          runSpacing: 6,
+          children: [
+            for (final label in labels) _ConditionLabelChip(label: label),
+          ],
+        ),
       ],
     );
   }
 }
 
-enum _ShopRecommendationMode {
-  balance('バランス', '商品数・評価・レビュー数をもとに選んでいます', 'balance'),
-  affordable('お手頃価格', '低〜中価格帯の商品が多いショップを優先します', 'affordable'),
-  highlyRated('高評価', '平均評価とレビュー件数を優先します', 'highlyRated'),
-  social('見た目重視', '画像つき商品や雑貨・インテリア寄りの商品を優先します', 'social'),
-  practical('実用的', '日用品・食品など継続投稿しやすい商品を優先します', 'practical');
-
-  const _ShopRecommendationMode(this.label, this.description, this.logValue);
+class _ConditionLabelChip extends StatelessWidget {
+  const _ConditionLabelChip({required this.label});
 
   final String label;
-  final String description;
-  final String logValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: AppColors.divider.withValues(alpha: 0.85)),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: AppColors.textSecondary,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    );
+  }
+}
+
+List<String> _genreLabelsForShopSummary(UserProfile profile) {
+  final names = profile.favoriteGenreList;
+  if (names.isNotEmpty) return names.take(3).toList(growable: false);
+
+  final service = RakutenGenreMasterService.instance;
+  return profile.favoriteGenreIdList
+      .map(service.getGenreNameById)
+      .where(
+        (name) =>
+            name.isNotEmpty &&
+            name != RakutenGenreMasterService.unknownGenreDisplayLabel,
+      )
+      .take(3)
+      .toList(growable: false);
 }
 
 RakutenProductSearchCondition _shopRecommendationCondition(
