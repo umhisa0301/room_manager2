@@ -59,19 +59,19 @@ class UserProfile {
       case postStyleBalance:
         return 'バランス';
       case postStyleAffordable:
-        return 'お手頃価格';
+        return '買いやすい価格';
       case postStylePremium:
         return '高単価';
       case postStyleHighlyRated:
         return '高評価';
       case postStyleSocial:
-        return '見た目重視';
+        return '見た目で選ぶ';
       case postStylePractical:
         return '実用的';
       case postStyleReviewRich:
         return 'レビュー多め';
       case postStyleTrend:
-        return '新着・トレンド';
+        return '発掘・トレンド';
       default:
         return key;
     }

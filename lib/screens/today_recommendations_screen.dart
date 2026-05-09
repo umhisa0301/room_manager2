@@ -208,7 +208,7 @@ class _RecommendationSectionHeader extends StatelessWidget {
       case TodayRecommendationSection.popular:
         return 'あなた向け';
       case TodayRecommendationSection.fresh:
-        return '発掘枠';
+        return '発掘・トレンド';
     }
   }
 
@@ -219,7 +219,7 @@ class _RecommendationSectionHeader extends StatelessWidget {
       case TodayRecommendationSection.popular:
         return '好きなジャンル・コレ履歴・保存ショップに近い候補です。';
       case TodayRecommendationSection.fresh:
-        return 'いつもの傾向を少し広げた候補です。';
+        return 'いつもの傾向を少し広げた候補です。最大3件に抑えています。';
     }
   }
 }

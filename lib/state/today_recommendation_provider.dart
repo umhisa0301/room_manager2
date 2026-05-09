@@ -355,14 +355,14 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
 
     final genreWords = UserProfilePreferredGenreWords.fromProfile(profile);
-    final hasSavedShop = savedShopIds.isNotEmpty;
-    final personalizedTarget = hasSavedShop ? 6 : 8;
-    final savedShopTarget = hasSavedShop ? 2 : 0;
-    const discoveryTarget = 2;
+    const personalizedTarget = 7;
+    const discoveryTarget = 3;
     if (kDebugMode) {
       debugPrint(
-        '[RECOMMEND_BUCKET] target personalized=$personalizedTarget '
-        'savedShop=$savedShopTarget discovery=$discoveryTarget',
+        '[RECOMMEND_BUCKET] type=personal target=$personalizedTarget actual=0',
+      );
+      debugPrint(
+        '[RECOMMEND_BUCKET] type=discovery target=$discoveryTarget actual=0',
       );
     }
 
@@ -389,9 +389,6 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final personalized = scored
         .where((e) => e.section == TodayRecommendationSection.popular)
         .toList(growable: false);
-    final fromSaved = scored
-        .where((e) => e.section == TodayRecommendationSection.sellable)
-        .toList(growable: false);
     final discovery = scored
         .where((e) => e.section == TodayRecommendationSection.fresh)
         .toList(growable: false);
@@ -408,7 +405,6 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
 
     takeFrom(personalized, personalizedTarget);
-    takeFrom(fromSaved, savedShopTarget);
     takeFrom(discovery, discoveryTarget);
 
     if (selected.where((e) => e.section == TodayRecommendationSection.popular).length <
@@ -439,7 +435,17 @@ class TodayRecommendationProvider extends ChangeNotifier {
 
     if (selected.length < 10) {
       final remain = scored
-          .where((e) => !selectedIds.contains(e.item.productId))
+          .where(
+            (e) =>
+                !selectedIds.contains(e.item.productId) &&
+                (e.section != TodayRecommendationSection.fresh ||
+                    selected
+                            .where(
+                              (x) => x.section == TodayRecommendationSection.fresh,
+                            )
+                            .length <
+                        discoveryTarget),
+          )
           .toList(growable: false);
       takeFrom(remain, 10 - selected.length);
     }
@@ -461,14 +467,17 @@ class TodayRecommendationProvider extends ChangeNotifier {
       final p = entries
           .where((e) => e.section == TodayRecommendationSection.popular)
           .length;
-      final s = entries
-          .where((e) => e.section == TodayRecommendationSection.sellable)
-          .length;
       final d = entries
           .where((e) => e.section == TodayRecommendationSection.fresh)
           .length;
       debugPrint(
-        '[RECOMMEND_RESULT] personalized=$p savedShop=$s discovery=$d total=${entries.length}',
+        '[RECOMMEND_BUCKET] type=personal target=$personalizedTarget actual=$p',
+      );
+      debugPrint(
+        '[RECOMMEND_BUCKET] type=discovery target=$discoveryTarget actual=$d',
+      );
+      debugPrint(
+        '[RECOMMEND_RESULT] personalCount=$p discoveryCount=$d total=${entries.length}',
       );
       if (entries.length < 5) {
         debugPrint(
@@ -785,12 +794,12 @@ class TodayRecommendationProvider extends ChangeNotifier {
     String? genreId,
     String? shopCode,
   }) {
-    final rawMinPrice = postStyles.contains(UserProfile.postStylePremium)
-        ? 5000
-        : null;
+    final rawMinPrice = postStyles.contains(UserProfile.postStyleAffordable)
+        ? 500
+        : (postStyles.contains(UserProfile.postStylePremium) ? 3000 : null);
     final rawMaxPrice = postStyles.contains(UserProfile.postStyleAffordable)
-        ? 3500
-        : null;
+        ? 10000
+        : (postStyles.contains(UserProfile.postStylePremium) ? 50000 : null);
     final sanitizedPrice = _sanitizePriceRange(
       minPrice: rawMinPrice,
       maxPrice: rawMaxPrice,
@@ -863,7 +872,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
 
   String? _sortForPostStyles(Set<String> postStyles) {
     if (postStyles.contains(UserProfile.postStyleAffordable)) {
-      return '+itemPrice';
+      return '-reviewCount';
     }
     if (postStyles.contains(UserProfile.postStylePremium)) {
       return '-itemPrice';
@@ -1045,6 +1054,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (reject != null) {
       if (kDebugMode) {
         debugPrint('[RECOMMEND_REJECT] itemCode=${item.productId} reason=$reject');
+        debugPrint('[RECOMMEND_EXCLUDE] itemCode=${item.productId} reason=$reject');
       }
       return null;
     }
@@ -1077,7 +1087,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       reasons.add(_styleReasonLabel(style));
     }
 
-    if (item.reviewAverage >= 4.0) {
+    if (item.reviewAverage >= 4.0 && item.reviewCount >= 3) {
       score += 15;
       reasons.add('高評価');
     }
@@ -1101,16 +1111,19 @@ class TodayRecommendationProvider extends ChangeNotifier {
       score -= 20;
     }
 
-    final section = savedShopMatch
-        ? TodayRecommendationSection.sellable
-        : (genreMatch >= 0.5 || doneSimilarity >= 0.35 || candidateSimilarity >= 0.4)
+    final section = (savedShopMatch ||
+            genreMatch >= 0.5 ||
+            doneSimilarity >= 0.35 ||
+            candidateSimilarity >= 0.4)
         ? TodayRecommendationSection.popular
         : TodayRecommendationSection.fresh;
 
     if (kDebugMode) {
       debugPrint(
-        '[RECOMMEND_SCORE] itemCode=${item.productId} '
-        'score=${score.toStringAsFixed(1)} reasons=${reasons.join('|')}',
+        '[RECOMMEND_SCORE] itemCode=${item.productId} price=${item.itemPrice} '
+        'reviewAverage=${item.reviewAverage.toStringAsFixed(2)} '
+        'reviewCount=${item.reviewCount} score=${score.toStringAsFixed(1)} '
+        'reasons=${reasons.join('|')}',
       );
     }
 
@@ -1148,6 +1161,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (title.isEmpty) return 'missingTitle';
     if (!hasAnyUrl) return 'invalidUrl';
     if (item.itemPrice >= 300000) return 'tooExpensive';
+    if (postStyles.contains(UserProfile.postStyleAffordable) &&
+        item.itemPrice > 0 &&
+        item.itemPrice < 300) {
+      return 'tooCheap';
+    }
     final businessWord = RegExp(
       r'業務用|法人|産業|工業|周波数変換器|三相|50KVA|中古|未使用品|測定器|建設|部材|部品取り|訳あり高額',
       caseSensitive: false,

@@ -75,7 +75,7 @@ String? todayRecommendationHomeHintLine({
 }
 
 String? _postStyleHint(List<String> postStyleKeys) {
-  final styles = postStyleKeys.take(3).toSet();
+  final styles = postStyleKeys.take(1).toSet();
   if (styles.isEmpty) return null;
   if (styles.contains(UserProfile.postStylePremium) &&
       (styles.contains(UserProfile.postStyleHighlyRated) ||
@@ -86,5 +86,5 @@ String? _postStyleHint(List<String> postStyleKeys) {
       styles.contains(UserProfile.postStyleAffordable)) {
     return '見た目で選びやすい・買いやすい価格';
   }
-  return styles.map(UserProfile.postStyleLabelJa).take(2).join('・');
+  return styles.map(UserProfile.postStyleLabelJa).take(1).join('・');
 }

@@ -525,15 +525,15 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                     recProvider.generationStatus ==
                                         TodayRecommendationGenerationStatus
                                             .failedRateLimit
-                                    ? 'おすすめを準備できませんでした。少し時間をおいて再試行してください'
+                                    ? '候補を準備できませんでした'
                                     : recProvider.generationStatus ==
                                               TodayRecommendationGenerationStatus
                                                   .failedApiError
-                                    ? 'おすすめを準備できませんでした。少し時間をおいて再試行してください'
+                                    ? '候補を準備できませんでした'
                                     : recProvider.generationStatus ==
                                               TodayRecommendationGenerationStatus
                                                   .empty
-                                    ? '条件を増やすと候補を作りやすくなります'
+                                    ? '候補を準備できませんでした'
                                     : null,
                                 onOpenSearch: () {
                                   _trace('trigger=cta');
@@ -933,15 +933,22 @@ class _HomeTodayProgressCard extends StatelessWidget {
     if (generationStatus == TodayRecommendationGenerationStatus.failedRateLimit ||
         generationStatus == TodayRecommendationGenerationStatus.failedApiError) {
       return _HomeActionSpec(
-        label: '再試行',
+        label: 'おすすめを再生成',
+        icon: Icons.refresh_rounded,
+        onPressed: onPrimaryRecommendations,
+      );
+    }
+    if (generationStatus == TodayRecommendationGenerationStatus.empty) {
+      return _HomeActionSpec(
+        label: 'おすすめを再生成',
         icon: Icons.refresh_rounded,
         onPressed: onPrimaryRecommendations,
       );
     }
     return _HomeActionSpec(
-      label: '候補を探す',
-      icon: Icons.travel_explore_rounded,
-      onPressed: onOpenSearch,
+      label: 'おすすめを再生成',
+      icon: Icons.refresh_rounded,
+      onPressed: onPrimaryRecommendations,
     );
   }
 }
