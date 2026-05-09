@@ -1492,7 +1492,7 @@ String _recommendReasonFor(
       ? const [UserProfile.postStyleBalance]
       : postStyleKeys;
   if (styles.contains(UserProfile.postStyleAffordable)) {
-    return 'お手頃価格の商品が多いショップです';
+    return '買いやすい価格の商品が多いショップです';
   }
   if (styles.contains(UserProfile.postStylePremium)) {
     return '高単価の商品を探しやすいショップです';

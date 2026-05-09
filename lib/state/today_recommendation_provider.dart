@@ -233,6 +233,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final postStyles = <String>{selectedStyle};
     if (kDebugMode) {
       debugPrint('[RECOMMEND_STYLE] selected=$selectedStyle');
+      debugPrint('[SEARCH_STYLE_TRACE] selectedStyle=$selectedStyle');
     }
     _trace('favoriteGenreIds=${favoriteGenreIds.join(',')}');
     _trace('searchPreferences=${postStyles.join(',')}');
@@ -425,6 +426,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
           reason: 'shortfallAfterPlans',
         );
       }
+      debugPrint(
+        '[RECOMMEND_RESULT] style=$selectedStyle personalCount=${finalized.personalCount} '
+        'discoveryCount=${finalized.discoveryCount} total=${entries.length}',
+      );
     }
     _trace('finalCandidateCount=${entries.length}');
     _trace('failureType=${entries.isEmpty ? 'empty' : 'none'}');
@@ -700,7 +705,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
 
     takeFrom(popular, 7);
     takeFrom(sellable, 3);
-    takeFrom(fresh, 3);
+    // 発掘枠は補完目的。初回は2件に抑え、不足時のみ最大3件まで許可する。
+    takeFrom(fresh, 2);
 
     if (selected.length < 10) {
       for (final e in scored) {
@@ -1101,7 +1107,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final reject = _recommendRejectReason(item, postStyles: postStyles);
     if (reject != null) {
       if (kDebugMode) {
-        debugPrint('[RECOMMEND_EXCLUDE] itemCode=${item.productId} reason=$reject');
+        debugPrint(
+          '[RECOMMEND_EXCLUDE] itemCode=${item.productId} price=${item.itemPrice} reason=$reject',
+        );
       }
       return null;
     }
@@ -1153,6 +1161,30 @@ class TodayRecommendationProvider extends ChangeNotifier {
       reasons.add(_styleReasonLabel(style));
     }
 
+    // 価格未取得は即除外しないが、強く減点して弱い候補は上位に来ないようにする。
+    if (item.itemPrice <= 0) {
+      score -= 35;
+      reasons.add('価格不明');
+    }
+
+    if (style == UserProfile.postStyleAffordable) {
+      if (item.itemPrice >= 500 && item.itemPrice <= 10000) {
+        score += 25;
+      }
+      if (item.reviewCount >= 10) score += 15;
+      if (item.reviewAverage >= 4.0) score += 10;
+      if (item.imageUrl.trim().isNotEmpty) score += 10;
+      if (item.reviewCount == 0) score -= 30;
+    }
+
+    if (style == UserProfile.postStylePremium) {
+      if (item.itemPrice >= 3000 && item.itemPrice < 50000) {
+        score += 25;
+      }
+      if (item.reviewCount >= 10) score += 15;
+      if (item.reviewAverage >= 4.0) score += 10;
+    }
+
     if (style == UserProfile.postStyleHighlyRated) {
       if (item.reviewAverage >= 4.2 && item.reviewCount >= 15) {
         score += 18;
@@ -1169,6 +1201,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (item.reviewCount >= 10) {
       score += 10;
       reasons.add('レビュー多め');
+      if (style == UserProfile.postStyleReviewRich && item.reviewAverage < 3.8) {
+        score -= 18;
+      }
     }
     if (item.imageUrl.trim().isNotEmpty) {
       score += 10;
@@ -1184,6 +1219,18 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
     if (!savedShopMatch && genreMatch < 0.5 && doneSimilarity < 0.3) {
       score -= 20;
+    }
+    if (style == UserProfile.postStyleTrend &&
+        genreMatch < 0.5 &&
+        doneSimilarity < 0.35 &&
+        candidateSimilarity < 0.35) {
+      score -= 18;
+    }
+    if (style == UserProfile.postStylePractical &&
+        !RegExp(
+          r'日用品|生活雑貨|生活|キッチン|収納|ベビー|育児|家電小物|掃除|洗濯|食品|防災|家電',
+        ).hasMatch('${item.itemName} ${item.genreName}')) {
+      score -= 12;
     }
 
     TodayRecommendationSection section;
@@ -1242,21 +1289,27 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (item.productId.trim().isEmpty) return 'missingItemCode';
     if (title.isEmpty) return 'missingTitle';
     if (!hasAnyUrl) return 'invalidUrl';
-    if (item.itemPrice >= 300000) return 'tooExpensive';
-    if (postStyles.contains(UserProfile.postStyleAffordable) &&
-        item.itemPrice > 0 &&
-        item.itemPrice < 300) {
+    // 今日のおすすめ限定: 価格帯の下限/上限を共通化。
+    if (item.itemPrice > 0 && item.itemPrice < 500) {
       return 'tooCheap';
     }
+    if (item.itemPrice >= 50000) return 'tooExpensive';
     final businessWord = RegExp(
-      r'業務用|法人|産業|工業|周波数変換器|三相|50KVA|中古|未使用品|測定器|建設|部材|部品取り|訳あり高額',
+      r'業務用|法人|産業|工業|周波数変換器|三相|50KVA|中古|未使用品|測定器|建設|部材|部品取り|訳あり高額|ジャンク',
       caseSensitive: false,
     );
     if (businessWord.hasMatch(title)) return 'businessItem';
-    if (item.reviewCount == 0 && item.itemPrice >= 50000) return 'highPriceNoReview';
+    if (item.reviewCount == 0 && item.itemPrice >= 30000) return 'highPriceNoReview';
     if (postStyles.contains(UserProfile.postStyleSocial) &&
         item.imageUrl.trim().isEmpty) {
       return 'missingImage';
+    }
+    if (postStyles.contains(UserProfile.postStyleSocial)) {
+      final imageUrl = item.imageUrl.trim();
+      if (imageUrl.isNotEmpty &&
+          !RegExp(r'^https?://', caseSensitive: false).hasMatch(imageUrl)) {
+        return 'invalidImageUrl';
+      }
     }
     return null;
   }
@@ -1278,20 +1331,24 @@ class TodayRecommendationProvider extends ChangeNotifier {
         if (item.itemPrice >= 3000 && item.itemPrice <= 50000) return 20;
         return 0;
       case UserProfile.postStyleHighlyRated:
-        return item.reviewAverage >= 4.0 ? 20 : 0;
+        if (item.reviewAverage >= 4.0 && item.reviewCount >= 10) return 20;
+        if (item.reviewAverage >= 4.0 && item.reviewCount >= 5) return 8;
+        return 0;
       case UserProfile.postStyleSocial:
         return item.imageUrl.trim().isNotEmpty ? 20 : 0;
       case UserProfile.postStylePractical:
-        return RegExp(r'日用品|育児|生活|キッチン|収納|家電').hasMatch(item.itemName)
+        return RegExp(
+              r'日用品|生活雑貨|生活|キッチン|収納|ベビー|育児|家電小物|掃除|洗濯|食品|防災|家電',
+            ).hasMatch('${item.itemName} ${item.genreName}')
             ? 20
             : 0;
       case UserProfile.postStyleReviewRich:
         return item.reviewCount >= 30 ? 20 : (item.reviewCount >= 10 ? 10 : 0);
       case UserProfile.postStyleTrend:
-        return RegExp(r'新作|新着|季節|限定|トレンド').hasMatch(item.itemName) ? 20 : 8;
+        return RegExp(r'新作|新着|季節|限定|トレンド').hasMatch(item.itemName) ? 20 : 2;
       case UserProfile.postStyleBalance:
       default:
-        return 20;
+        return 8;
     }
   }
 
