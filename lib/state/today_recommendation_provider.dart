@@ -229,7 +229,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
         .toSet();
-    final postStyles = profile.effectivePostStyleList.toSet();
+    final selectedStyle = profile.selectedSearchStyle;
+    final postStyles = <String>{selectedStyle};
+    if (kDebugMode) {
+      debugPrint('[RECOMMEND_STYLE] selected=$selectedStyle');
+    }
     _trace('favoriteGenreIds=${favoriteGenreIds.join(',')}');
     _trace('searchPreferences=${postStyles.join(',')}');
     _trace('savedShopCount=${savedShops.length}');

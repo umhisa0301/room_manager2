@@ -93,7 +93,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       occupation: base.occupation,
       favoriteGenres: base.favoriteGenres,
       favoriteGenreIds: base.favoriteGenreIds,
-      postStyles: _postStyleKeys.take(3).join('、'),
+      postStyles: _postStyleKeys.take(1).join('、'),
       roomUrl: base.roomUrl,
     );
     await context.read<UserProfileProvider>().saveProfile(next);
@@ -233,12 +233,15 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     setState(() {
       _postStyleKeys = picked
           .where(UserProfile.postStyleKeys.contains)
-          .take(3)
+          .take(1)
           .toSet();
       _shopRecommendationStarted = false;
       _shopRecommendationFailedReason = null;
       _shopRecommendations = const [];
     });
+    debugPrint(
+      '[SEARCH_STYLE_SAVE] selected=${_postStyleKeys.isEmpty ? 'null' : _postStyleKeys.first}',
+    );
   }
 
   void _logShopRecommend({
@@ -447,7 +450,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       final styleCount = _postStyleKeys.length;
       return [
         AppPrimaryButton(
-          label: styleCount == 0 ? '探し方を選ぶ' : '$styleCount件で次へ',
+          label: styleCount == 0 ? '探し方を選ぶ' : 'この探し方で次へ',
           height: 48,
           onPressed: styleCount == 0
               ? () => _openPostStylePicker(context)
@@ -855,7 +858,7 @@ class _PostStyleSummary extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '探し方（最大3件）',
+          '探し方（1つ選べます）',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: AppColors.textSecondary,
             fontWeight: FontWeight.w800,

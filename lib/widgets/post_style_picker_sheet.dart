@@ -14,24 +14,20 @@ class PostStylePickerSheet extends StatefulWidget {
 }
 
 class _PostStylePickerSheetState extends State<PostStylePickerSheet> {
-  late final Set<String> _selected;
+  String? _selected;
 
   @override
   void initState() {
     super.initState();
     _selected = widget.initialSelectedKeys
         .where(UserProfile.postStyleKeys.contains)
-        .take(3)
-        .toSet();
+        .cast<String?>()
+        .firstWhere((e) => e != null, orElse: () => null);
   }
 
-  void _toggle(String key) {
+  void _select(String key) {
     setState(() {
-      if (_selected.contains(key)) {
-        _selected.remove(key);
-      } else if (_selected.length < 3) {
-        _selected.add(key);
-      }
+      _selected = _selected == key ? null : key;
     });
   }
 
@@ -58,48 +54,29 @@ class _PostStylePickerSheetState extends State<PostStylePickerSheet> {
               ),
               const SizedBox(height: 8),
               Text(
-                'おすすめ候補やショップ提案の調整に使います。最大3件まで選べます。',
+                'おすすめ候補やショップ提案の調整に使います。1つ選べます。',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                   height: 1.35,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              if (_selected.isNotEmpty) ...[
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    for (final key in _selected)
-                      Chip(
-                        label: Text(UserProfile.postStyleLabelJa(key)),
-                        backgroundColor: AppColors.accentLight,
-                        labelStyle: Theme.of(context).textTheme.labelSmall
-                            ?.copyWith(
-                              color: AppColors.accentPrimary,
-                              fontWeight: FontWeight.w800,
-                            ),
-                      ),
-                  ],
-                ),
-              ],
               const SizedBox(height: 14),
               for (final key in UserProfile.postStyleKeys) ...[
                 _PostStyleOptionTile(
                   styleKey: key,
-                  selected: _selected.contains(key),
-                  enabled: _selected.contains(key) || _selected.length < 3,
-                  onTap: () => _toggle(key),
+                  selected: _selected == key,
+                  enabled: true,
+                  onTap: () => _select(key),
                 ),
                 const SizedBox(height: 8),
               ],
               const SizedBox(height: 8),
               AppPrimaryButton(
-                label: _selected.isEmpty ? '未選択で保存' : '${_selected.length}件で保存',
+                label: _selected == null ? '未選択で保存' : 'この探し方で保存',
                 onPressed: () => Navigator.of(
                   context,
-                ).pop(_selected.toList(growable: false)),
+                ).pop(_selected == null ? <String>[] : <String>[_selected!]),
               ),
               const SizedBox(height: 8),
               AppSecondaryButton(

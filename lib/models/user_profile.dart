@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 /// ユーザー情報（将来の AI コメント生成などに利用想定。すべて任意）。
 class UserProfile {
   const UserProfile({
@@ -108,7 +110,7 @@ class UserProfile {
   /// 好きなジャンルの楽天 `genreId` を `、` または `,` 区切りで保持（最大5件想定・UI側で制御）。
   final String favoriteGenreIds;
 
-  /// 商品探索の傾向設定。`postStyleKeys` の値を `、` または `,` 区切りで最大3件保持する。
+  /// 商品探索の傾向設定。`postStyleKeys` の値を `、` または `,` 区切りで1件保持する。
   final String postStyles;
 
   /// 楽天ROOMのプロフィールまたはトップページURL
@@ -167,7 +169,16 @@ class UserProfile {
       if (seen.contains(text)) continue;
       seen.add(text);
       normalized.add(text);
-      if (normalized.length >= 3) break;
+      if (normalized.isNotEmpty) break;
+    }
+    final allValid = tokens
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty && postStyleKeys.contains(e))
+        .toList(growable: false);
+    if (kDebugMode && allValid.length > 1 && normalized.isNotEmpty) {
+      debugPrint(
+        '[SEARCH_STYLE_MIGRATE] old=${allValid.join(",")} new=${normalized.first}',
+      );
     }
     return normalized;
   }
@@ -177,10 +188,14 @@ class UserProfile {
     return selected.isEmpty ? const [postStyleBalance] : selected;
   }
 
+  /// 単一選択の探し方。未選択時は [postStyleBalance]。
+  String get selectedSearchStyle =>
+      postStyleList.isEmpty ? postStyleBalance : postStyleList.first;
+
   String get postStyleLabelsText {
     final selected = postStyleList;
     if (selected.isEmpty) return '未設定';
-    return selected.map(postStyleLabelJa).join('・');
+    return postStyleLabelJa(selected.first);
   }
 
   Map<String, dynamic> toJson() {

@@ -3,7 +3,7 @@ import 'package:room_manager2/models/user_profile.dart';
 
 void main() {
   group('UserProfile postStyles', () {
-    test('fromJson keeps existing data and reads postStyles', () {
+    test('fromJson keeps existing data and reads first postStyle', () {
       final profile = UserProfile.fromJson({
         'displayName': 'mai',
         'genderKey': UserProfile.genderFemale,
@@ -12,23 +12,16 @@ void main() {
 
       expect(profile.displayName, 'mai');
       expect(profile.genderKey, UserProfile.genderFemale);
-      expect(profile.postStyleList, [
-        UserProfile.postStylePremium,
-        UserProfile.postStyleSocial,
-        UserProfile.postStyleHighlyRated,
-      ]);
+      expect(profile.postStyleList, [UserProfile.postStylePremium]);
+      expect(profile.selectedSearchStyle, UserProfile.postStylePremium);
     });
 
-    test('postStyleList ignores unknown values and caps at three', () {
+    test('postStyleList ignores unknown values and keeps single value', () {
       const profile = UserProfile(
         postStyles: 'premium、unknown、social、highly_rated、affordable',
       );
 
-      expect(profile.postStyleList, [
-        UserProfile.postStylePremium,
-        UserProfile.postStyleSocial,
-        UserProfile.postStyleHighlyRated,
-      ]);
+      expect(profile.postStyleList, [UserProfile.postStylePremium]);
     });
 
     test(

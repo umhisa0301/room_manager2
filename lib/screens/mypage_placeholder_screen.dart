@@ -85,9 +85,12 @@ class MypagePlaceholderScreen extends StatelessWidget {
       favoriteGenreIds: base.favoriteGenreIds,
       postStyles: picked
           .where(UserProfile.postStyleKeys.contains)
-          .take(3)
+          .take(1)
           .join('、'),
       roomUrl: base.roomUrl,
+    );
+    debugPrint(
+      '[SEARCH_STYLE_SAVE] selected=${picked.where(UserProfile.postStyleKeys.contains).take(1).join()}',
     );
     await context.read<UserProfileProvider>().saveProfile(next);
     if (!context.mounted) return;
