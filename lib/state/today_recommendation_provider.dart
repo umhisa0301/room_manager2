@@ -311,6 +311,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
 
     final genreWords = UserProfilePreferredGenreWords.fromProfile(profile);
+    final reactionProfile = _buildReactionProfile(
+      managedItems: managedItems,
+      doneItems: doneItems,
+      candidateItems: candidateItems,
+    );
     for (var i = 0; i < plans.length; i++) {
       final preview = _finalizeFromPool(
         pool: pool,
@@ -326,6 +331,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         likedOnlyOutcomeItems: likedOnlyOutcomeItems,
         recentCandidatesForBridge: recentCandidates,
         staleCandidatesForBridge: staleCandidates,
+        reactionProfile: reactionProfile,
       );
       if (!canCallMoreApi(preview.entries.length)) break;
 
@@ -406,6 +412,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       likedOnlyOutcomeItems: likedOnlyOutcomeItems,
       recentCandidatesForBridge: recentCandidates,
       staleCandidatesForBridge: staleCandidates,
+      reactionProfile: reactionProfile,
     );
     final entries = finalized.entries;
 
@@ -618,6 +625,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required List<RakutenManagedProduct> likedOnlyOutcomeItems,
     required List<RakutenManagedProduct> recentCandidatesForBridge,
     required List<RakutenManagedProduct> staleCandidatesForBridge,
+    required _ReactionProfile reactionProfile,
   }) {
     final scored =
         pool.values
@@ -636,6 +644,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
                 likedOnlyOutcomeItems: likedOnlyOutcomeItems,
                 recentCandidatesForBridge: recentCandidatesForBridge,
                 staleCandidatesForBridge: staleCandidatesForBridge,
+                reactionProfile: reactionProfile,
               ),
             )
             .where((e) => e != null)
@@ -690,6 +699,53 @@ class TodayRecommendationProvider extends ChangeNotifier {
 
     final selected = <_ScoredRecommendation>[];
     final selectedIds = <String>{};
+    final shopCounts = <String, int>{};
+    final genreCounts = <String, int>{};
+    final priceBandCounts = <String, int>{};
+    final tokenCounts = <String, int>{};
+
+    bool canAddByDiversity(_ScoredRecommendation e) {
+      final shop = e.item.shopCode.trim();
+      final genre = e.item.genreId.trim();
+      final band = _priceBand(e.item.itemPrice);
+      final token = _titleCoreToken(e.item.itemName);
+      if (shop.isNotEmpty && (shopCounts[shop] ?? 0) >= 2) {
+        if (kDebugMode) {
+          debugPrint('[RECOMMEND_DIVERSITY] reducedBecause=sameShop shopCode=$shop');
+        }
+        return false;
+      }
+      if (genre.isNotEmpty && (genreCounts[genre] ?? 0) >= 3) {
+        if (kDebugMode) {
+          debugPrint('[RECOMMEND_DIVERSITY] reducedBecause=sameGenre genreId=$genre');
+        }
+        return false;
+      }
+      if ((priceBandCounts[band] ?? 0) >= 4) {
+        if (kDebugMode) {
+          debugPrint('[RECOMMEND_DIVERSITY] reducedBecause=samePriceBand band=$band');
+        }
+        return false;
+      }
+      if (token.isNotEmpty && (tokenCounts[token] ?? 0) >= 2) {
+        if (kDebugMode) {
+          debugPrint('[RECOMMEND_DIVERSITY] reducedBecause=sameTitleToken token=$token');
+        }
+        return false;
+      }
+      return true;
+    }
+
+    void markDiversity(_ScoredRecommendation e) {
+      final shop = e.item.shopCode.trim();
+      final genre = e.item.genreId.trim();
+      final band = _priceBand(e.item.itemPrice);
+      final token = _titleCoreToken(e.item.itemName);
+      if (shop.isNotEmpty) shopCounts[shop] = (shopCounts[shop] ?? 0) + 1;
+      if (genre.isNotEmpty) genreCounts[genre] = (genreCounts[genre] ?? 0) + 1;
+      priceBandCounts[band] = (priceBandCounts[band] ?? 0) + 1;
+      if (token.isNotEmpty) tokenCounts[token] = (tokenCounts[token] ?? 0) + 1;
+    }
 
     void takeFrom(List<_ScoredRecommendation> list, int max) {
       for (final e in list) {
@@ -697,15 +753,17 @@ class TodayRecommendationProvider extends ChangeNotifier {
         if (max <= 0) return;
         final id = e.item.productId.trim();
         if (id.isEmpty || selectedIds.contains(id)) continue;
+        if (!canAddByDiversity(e)) continue;
         selected.add(e);
         selectedIds.add(id);
+        markDiversity(e);
         max -= 1;
       }
     }
 
-    takeFrom(popular, 7);
+    takeFrom(popular, 6);
     takeFrom(sellable, 3);
-    // 発掘枠は補完目的。初回は2件に抑え、不足時のみ最大3件まで許可する。
+    // 発掘枠は補完目的。初回は2件まで。
     takeFrom(fresh, 2);
 
     if (selected.length < 10) {
@@ -713,6 +771,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         if (selected.length >= 10) break;
         final id = e.item.productId.trim();
         if (id.isEmpty || selectedIds.contains(id)) continue;
+        if (!canAddByDiversity(e)) continue;
         final freshCount =
             selected.where((x) => x.section == TodayRecommendationSection.fresh).length;
         if (e.section == TodayRecommendationSection.fresh && freshCount >= 3) {
@@ -720,6 +779,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         }
         selected.add(e);
         selectedIds.add(id);
+        markDiversity(e);
       }
     }
     return selected;
@@ -1072,7 +1132,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
 
   String? _sortForPostStyles(Set<String> postStyles) {
     if (postStyles.contains(UserProfile.postStyleAffordable)) {
-      return '-reviewCount';
+      return null;
     }
     if (postStyles.contains(UserProfile.postStylePremium)) {
       return '-itemPrice';
@@ -1103,6 +1163,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required List<RakutenManagedProduct> likedOnlyOutcomeItems,
     required List<RakutenManagedProduct> recentCandidatesForBridge,
     required List<RakutenManagedProduct> staleCandidatesForBridge,
+    required _ReactionProfile reactionProfile,
   }) {
     final reject = _recommendRejectReason(item, postStyles: postStyles);
     if (reject != null) {
@@ -1161,18 +1222,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
       reasons.add(_styleReasonLabel(style));
     }
 
-    // 価格未取得は即除外しないが、強く減点して弱い候補は上位に来ないようにする。
-    if (item.itemPrice <= 0) {
-      score -= 35;
-      reasons.add('価格不明');
-    }
-
     if (style == UserProfile.postStyleAffordable) {
       if (item.itemPrice >= 500 && item.itemPrice <= 10000) {
         score += 25;
       }
-      if (item.reviewCount >= 10) score += 15;
-      if (item.reviewAverage >= 4.0) score += 10;
+      if (item.reviewAverage >= 4.0) score += 15;
+      if (item.reviewCount >= 3) score += 10;
+      if (item.reviewCount >= 10) score += 5;
       if (item.imageUrl.trim().isNotEmpty) score += 10;
       if (item.reviewCount == 0) score -= 30;
     }
@@ -1233,6 +1289,14 @@ class TodayRecommendationProvider extends ChangeNotifier {
       score -= 12;
     }
 
+    final reaction = _reactionMatchScore(item, reactionProfile);
+    score += reaction.score;
+    reasons.addAll(reaction.reasons);
+
+    final postability = _postabilityScore(item);
+    score += postability.score;
+    reasons.addAll(postability.reasons);
+
     TodayRecommendationSection section;
     if (savedShopMatch && meta.fromShopPlan) {
       section = TodayRecommendationSection.sellable;
@@ -1289,8 +1353,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (item.productId.trim().isEmpty) return 'missingItemCode';
     if (title.isEmpty) return 'missingTitle';
     if (!hasAnyUrl) return 'invalidUrl';
+    if (item.itemPrice <= 0) return 'missingPrice';
     // 今日のおすすめ限定: 価格帯の下限/上限を共通化。
-    if (item.itemPrice > 0 && item.itemPrice < 500) {
+    if (item.itemPrice < 500) {
       return 'tooCheap';
     }
     if (item.itemPrice >= 50000) return 'tooExpensive';
@@ -1563,6 +1628,165 @@ class TodayRecommendationProvider extends ChangeNotifier {
     return out;
   }
 
+  _ReactionProfile _buildReactionProfile({
+    required List<RakutenManagedProduct> managedItems,
+    required List<RakutenManagedProduct> doneItems,
+    required List<RakutenManagedProduct> candidateItems,
+  }) {
+    final commentGenres = <String>{};
+    final likeGenres = <String>{};
+    final commentShops = <String>{};
+    final likeShops = <String>{};
+    final priceBands = <String>{};
+    final keywordTokens = <String>{};
+
+    for (final p in managedItems) {
+      final comments = p.roomCommentCount ?? 0;
+      final likes = p.roomLikeCount ?? 0;
+      final gid = p.genreId.trim();
+      final shop = p.shopCode.trim();
+      final hasCommentSignal = comments >= 1 || p.feedbackSoldAt != null;
+      final hasLikeSignal = likes >= 5 || p.feedbackLikedAt != null;
+      if (hasCommentSignal) {
+        if (gid.isNotEmpty) commentGenres.add(gid);
+        if (shop.isNotEmpty) commentShops.add(shop);
+      }
+      if (hasLikeSignal) {
+        if (gid.isNotEmpty) likeGenres.add(gid);
+        if (shop.isNotEmpty) likeShops.add(shop);
+      }
+      if (hasCommentSignal || hasLikeSignal) {
+        if (p.itemPrice > 0) priceBands.add(_priceBand(p.itemPrice));
+        keywordTokens.addAll(_nameTokens(p.itemName).take(4));
+      }
+    }
+    // 反応が少ない場合は最低限、履歴を弱いシグナルとして取り込む。
+    if (commentGenres.isEmpty && likeGenres.isEmpty) {
+      for (final p in [...doneItems, ...candidateItems].take(30)) {
+        final gid = p.genreId.trim();
+        final shop = p.shopCode.trim();
+        if (gid.isNotEmpty) likeGenres.add(gid);
+        if (shop.isNotEmpty) likeShops.add(shop);
+        if (p.itemPrice > 0) priceBands.add(_priceBand(p.itemPrice));
+        keywordTokens.addAll(_nameTokens(p.itemName).take(2));
+      }
+    }
+    if (kDebugMode) {
+      debugPrint(
+        '[RECOMMEND_REACTION] commentGenres=${commentGenres.length} '
+        'likeGenres=${likeGenres.length} commentShops=${commentShops.length} '
+        'likeShops=${likeShops.length} priceBands=${priceBands.join(",")}',
+      );
+    }
+    return _ReactionProfile(
+      commentGenres: commentGenres,
+      likeGenres: likeGenres,
+      commentShops: commentShops,
+      likeShops: likeShops,
+      priceBands: priceBands,
+      keywordTokens: keywordTokens,
+    );
+  }
+
+  ({double score, List<String> reasons}) _reactionMatchScore(
+    RakutenSearchItem item,
+    _ReactionProfile profile,
+  ) {
+    var score = 0.0;
+    final reasons = <String>[];
+    final gid = item.genreId.trim();
+    final shop = item.shopCode.trim();
+    final band = _priceBand(item.itemPrice);
+    final itemTokens = _nameTokens(item.itemName);
+
+    if (gid.isNotEmpty && profile.commentGenres.contains(gid)) {
+      score += 30;
+      reasons.add('コメント反応あり');
+    }
+    if (shop.isNotEmpty && profile.commentShops.contains(shop)) {
+      score += 25;
+      reasons.add('コメント反応あり');
+    }
+    if (gid.isNotEmpty && profile.likeGenres.contains(gid)) {
+      score += 20;
+      reasons.add('♡されやすい');
+    }
+    if (shop.isNotEmpty && profile.likeShops.contains(shop)) {
+      score += 15;
+      reasons.add('♡されやすい');
+    }
+    if (profile.priceBands.contains(band)) {
+      score += 15;
+    }
+    if (itemTokens.any(profile.keywordTokens.contains)) {
+      score += 15;
+    }
+    if (kDebugMode && score > 0) {
+      debugPrint(
+        '[RECOMMEND_REACTION_SCORE] itemCode=${item.productId} '
+        'score=${score.toStringAsFixed(1)} reasons=${reasons.join("|")}',
+      );
+    }
+    return (score: score, reasons: reasons);
+  }
+
+  ({double score, List<String> reasons}) _postabilityScore(
+    RakutenSearchItem item,
+  ) {
+    var score = 0.0;
+    final reasons = <String>[];
+    final title = item.itemName.trim();
+    final practicalWord = RegExp(
+      r'育児|日用品|キッチン|収納|食品|生活雑貨|ベビー|掃除|洗濯|防災',
+    );
+    final giftWord = RegExp(r'ギフト|贈り物|プレゼント|母の日|父の日|お祝い');
+
+    if (item.imageUrl.trim().isNotEmpty) {
+      score += 15;
+      reasons.add('投稿しやすい');
+    }
+    if (title.length >= 6 && title.length <= 42 && !_looksLikeModelOnly(title)) {
+      score += 10;
+    }
+    if (practicalWord.hasMatch('$title ${item.genreName}')) {
+      score += 15;
+      reasons.add('投稿しやすい');
+    }
+    if (giftWord.hasMatch(title)) score += 10;
+    if (item.reviewAverage >= 4.0) score += 10;
+    if (item.reviewCount >= 10) score += 10;
+    if (item.itemPrice >= 500 && item.itemPrice <= 10000) score += 10;
+    if (_looksLikeModelOnly(title)) score -= 20;
+    if (title.length >= 70) score -= 10;
+
+    if (kDebugMode) {
+      debugPrint(
+        '[RECOMMEND_POSTABILITY] itemCode=${item.productId} '
+        'score=${score.toStringAsFixed(1)} reasons=${reasons.join("|")}',
+      );
+    }
+    return (score: score, reasons: reasons);
+  }
+
+  String _priceBand(int price) {
+    if (price < 2000) return '500-1999';
+    if (price < 5000) return '2000-4999';
+    if (price < 10000) return '5000-9999';
+    if (price < 20000) return '10000-19999';
+    return '20000-49999';
+  }
+
+  String _titleCoreToken(String title) {
+    final tokens = _nameTokens(title).toList(growable: false);
+    if (tokens.isEmpty) return '';
+    return tokens.first;
+  }
+
+  bool _looksLikeModelOnly(String title) {
+    final t = title.replaceAll(' ', '');
+    return RegExp(r'^[a-zA-Z0-9\-_/]{6,}$').hasMatch(t);
+  }
+
   String _localDateKey(DateTime dateTime) {
     String two(int n) => n.toString().padLeft(2, '0');
     return '${dateTime.year}-${two(dateTime.month)}-${two(dateTime.day)}';
@@ -1590,6 +1814,24 @@ class _ItemPoolMeta {
   bool fromDiscoveryPhase = false;
   bool fromRelaxedPhase = false;
   bool fromPersonalPhase = false;
+}
+
+class _ReactionProfile {
+  const _ReactionProfile({
+    required this.commentGenres,
+    required this.likeGenres,
+    required this.commentShops,
+    required this.likeShops,
+    required this.priceBands,
+    required this.keywordTokens,
+  });
+
+  final Set<String> commentGenres;
+  final Set<String> likeGenres;
+  final Set<String> commentShops;
+  final Set<String> likeShops;
+  final Set<String> priceBands;
+  final Set<String> keywordTokens;
 }
 
 class _RecommendSearchPlan {
