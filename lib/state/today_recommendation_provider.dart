@@ -703,6 +703,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final genreCounts = <String, int>{};
     final priceBandCounts = <String, int>{};
     final tokenCounts = <String, int>{};
+    final mainTopicCounts = <String, int>{};
 
     bool canAddByDiversity(_ScoredRecommendation e) {
       final shop = e.item.shopCode.trim();
@@ -733,6 +734,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
         }
         return false;
       }
+      final mainTopic = _mainTopicKey(e.item.itemName);
+      if (mainTopic.isNotEmpty && (mainTopicCounts[mainTopic] ?? 0) >= 2) {
+        if (kDebugMode) {
+          debugPrint('[RECOMMEND_DIVERSITY] reducedBecause=sameMainTopic');
+        }
+        return false;
+      }
       return true;
     }
 
@@ -745,6 +753,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
       if (genre.isNotEmpty) genreCounts[genre] = (genreCounts[genre] ?? 0) + 1;
       priceBandCounts[band] = (priceBandCounts[band] ?? 0) + 1;
       if (token.isNotEmpty) tokenCounts[token] = (tokenCounts[token] ?? 0) + 1;
+      final mainTopic = _mainTopicKey(e.item.itemName);
+      if (mainTopic.isNotEmpty) {
+        mainTopicCounts[mainTopic] = (mainTopicCounts[mainTopic] ?? 0) + 1;
+      }
     }
 
     void takeFrom(List<_ScoredRecommendation> list, int max) {
@@ -1290,12 +1302,22 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
 
     final reaction = _reactionMatchScore(item, reactionProfile);
-    score += reaction.score;
-    reasons.addAll(reaction.reasons);
-
+    final roomFit = _roomFitScore(item);
+    final reviewEvidence = _reviewEvidenceScore(item);
     final postability = _postabilityScore(item);
-    score += postability.score;
+    final weightedBoost =
+        roomFit.score * 2.8 +
+        reaction.score * 2.1 +
+        reviewEvidence * 1.6 +
+        postability.score * 0.8;
+    score += weightedBoost;
+    reasons.addAll(roomFit.reasons);
+    reasons.addAll(reaction.reasons);
     reasons.addAll(postability.reasons);
+
+    if (item.reviewCount < 3 && item.reviewAverage < 4.0) {
+      score -= 45;
+    }
 
     TodayRecommendationSection section;
     if (savedShopMatch && meta.fromShopPlan) {
@@ -1315,7 +1337,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
         'title=${item.itemName.trim()} '
         'price=${item.itemPrice} '
         'reviewAverage=${item.reviewAverage.toStringAsFixed(2)} '
-        'reviewCount=${item.reviewCount} score=${score.toStringAsFixed(1)} '
+        'reviewCount=${item.reviewCount} roomFit=${roomFit.score.toStringAsFixed(1)} '
+        'reaction=${reaction.score.toStringAsFixed(1)} '
+        'reviewEvidence=${reviewEvidence.toStringAsFixed(1)} '
+        'postability=${postability.score.toStringAsFixed(1)} '
+        'score=${score.toStringAsFixed(1)} '
         'reasons=${reasons.join('|')}',
       );
     }
@@ -1768,6 +1794,75 @@ class TodayRecommendationProvider extends ChangeNotifier {
     return (score: score, reasons: reasons);
   }
 
+  ({double score, List<String> reasons}) _roomFitScore(
+    RakutenSearchItem item,
+  ) {
+    var score = 0.0;
+    final reasons = <String>[];
+    final text = '${item.itemName} ${item.genreName}'.toLowerCase();
+    final fitWords = <String>[
+      '育児',
+      '時短',
+      '日用品',
+      'キッチン',
+      '収納',
+      '美容',
+      'おしゃれ',
+      'sns映え',
+      'ギフト',
+      '可愛い',
+      '便利',
+    ];
+    for (final w in fitWords) {
+      if (text.contains(w)) score += 8;
+    }
+    if (fitWords.any(text.contains)) reasons.add('ROOM向き');
+
+    final unfitWords = <String>[
+      '宿泊券',
+      '旅行券',
+      '香典返し',
+      '法人',
+      '工具',
+      '工事',
+      'ライセンス',
+      'co2',
+      'セキュリティ',
+      '業務用',
+      '保守',
+      'ソフトウェアライセンス',
+    ];
+    var unfitHit = false;
+    for (final w in unfitWords) {
+      if (text.contains(w.toLowerCase())) {
+        score -= 26;
+        unfitHit = true;
+      }
+    }
+    if (unfitHit && kDebugMode) {
+      debugPrint(
+        '[RECOMMEND_ROOM_UNFIT] itemCode=${item.productId} title=${item.itemName}',
+      );
+    }
+    if (kDebugMode) {
+      debugPrint(
+        '[RECOMMEND_ROOM_FIT] itemCode=${item.productId} score=${score.toStringAsFixed(1)} reasons=${reasons.join("|")}',
+      );
+    }
+    return (score: score, reasons: reasons);
+  }
+
+  double _reviewEvidenceScore(RakutenSearchItem item) {
+    var score = 0.0;
+    if (item.reviewAverage >= 4.0) score += 12;
+    if (item.reviewCount >= 3) score += 10;
+    if (item.reviewCount >= 10) score += 12;
+    if (item.reviewCount >= 30) score += 10;
+    if (item.reviewCount < 3 && item.reviewAverage < 4.0) score -= 30;
+    if (item.reviewCount == 0) score -= 25;
+    return score;
+  }
+
   String _priceBand(int price) {
     if (price < 2000) return '500-1999';
     if (price < 5000) return '2000-4999';
@@ -1780,6 +1875,15 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final tokens = _nameTokens(title).toList(growable: false);
     if (tokens.isEmpty) return '';
     return tokens.first;
+  }
+
+  String _mainTopicKey(String title) {
+    final normalized = title.toLowerCase();
+    if (normalized.contains('カタログギフト')) return 'カタログギフト';
+    if (normalized.contains('ふるさと納税')) return 'ふるさと納税';
+    if (normalized.contains('宿泊券')) return '宿泊券';
+    if (normalized.contains('旅行券')) return '旅行券';
+    return '';
   }
 
   bool _looksLikeModelOnly(String title) {
