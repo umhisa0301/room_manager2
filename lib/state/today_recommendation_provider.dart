@@ -238,7 +238,6 @@ class TodayRecommendationProvider extends ChangeNotifier {
     _trace('searchPreferences=${postStyles.join(',')}');
     _trace('savedShopCount=${savedShops.length}');
     final keywords = _buildKeywords(profile, managedItems);
-    final scoreHintShops = _countManagedShopFrequency(managedItems);
     final doneItems = managedItems
         .where((e) => e.status == RakutenManagedProductStatus.done)
         .toList(growable: false);
@@ -280,20 +279,15 @@ class TodayRecommendationProvider extends ChangeNotifier {
           }
         })
         .toList(growable: false);
-    assert(() {
-      final keepLegacy = (
-        scoreHintShops,
-        soldOutcomeItems,
-        likedOnlyOutcomeItems,
-        recentCandidates,
-        staleCandidates,
-        _pickBalancedRecommendations,
-        _scoreRecommendation,
+    if (kDebugMode) {
+      debugPrint(
+        '[RECOMMEND_START] genreCount=${favoriteGenreIds.length} '
+        'savedShopCount=${savedShops.length} doneCount=${doneItems.length} '
+        'candidateCount=${candidateItems.length} selectedStyle=$selectedStyle',
       );
-      return keepLegacy.hashCode >= 0;
-    }());
+    }
 
-    final plans = _buildSearchPlans(
+    final plans = _buildPhasedSearchPlans(
       favoriteGenreIds: favoriteGenreIds,
       savedShops: savedShops,
       doneItems: doneItems,
@@ -302,186 +296,133 @@ class TodayRecommendationProvider extends ChangeNotifier {
       postStyles: postStyles,
     );
     _planLogCount(plans.length);
-    final dedup = <String, RakutenSearchItem>{};
+
+    final pool = <String, RakutenSearchItem>{};
+    final metaById = <String, _ItemPoolMeta>{};
+    var apiCalls = 0;
     var allPlansNoItems = true;
+    const maxApiHard = 10;
+
+    bool canCallMoreApi(int entryCount) {
+      if (entryCount >= 10) return false;
+      if (apiCalls >= maxApiHard) return false;
+      return true;
+    }
+
+    final genreWords = UserProfilePreferredGenreWords.fromProfile(profile);
     for (var i = 0; i < plans.length; i++) {
+      final preview = _finalizeFromPool(
+        pool: pool,
+        metaById: metaById,
+        favoriteGenreIds: favoriteGenreIds,
+        savedShopIds: savedShopIds,
+        preferredGenreWords: genreWords,
+        doneItems: doneItems,
+        candidateItems: candidateItems,
+        postStyles: postStyles,
+        soldOutcomeItems: soldOutcomeItems,
+        reactedOutcomeItems: reactedOutcomeItems,
+        likedOnlyOutcomeItems: likedOnlyOutcomeItems,
+        recentCandidatesForBridge: recentCandidates,
+        staleCandidatesForBridge: staleCandidates,
+      );
+      if (!canCallMoreApi(preview.entries.length)) break;
+
       final p = plans[i];
-      _planLog(
+      _phaseLog(p.phase);
+      final condition = _conditionWithPostStyles(
+        keyword: p.keyword,
+        postStyles: postStyles,
+        genreId: p.genreId,
+        shopCode: p.shopCode,
+        relaxLevel: p.relaxLevel,
+        sortOverride: p.sortOverride,
+      );
+      _planLogDetailed(
         index: i + 1,
+        phase: p.phase,
+        relaxLevel: p.relaxLevel,
+        source: p.source,
         keyword: p.keyword,
         genreId: p.genreId,
         shopCode: p.shopCode,
-        preference: _sortForPostStyles(postStyles),
+        condition: condition,
+        postStyles: postStyles,
       );
+
       final list = await _runSearchPlan(
+        phase: p.phase,
         source: p.source,
         planIndex: i + 1,
-        keyword: p.keyword,
-        genreId: p.genreId,
-        shopCode: p.shopCode,
-        postStyles: postStyles,
+        condition: condition,
         excludeIds: excludeIds,
       );
+      apiCalls += 1;
       if (list.isNotEmpty) allPlansNoItems = false;
       for (final item in list) {
-        if (dedup.length >= 10) break;
         _trace('raw item itemCode=${item.productId} title=${item.itemName}');
         final exclusion = _excludeReason(
           item: item,
           excludeIds: excludeIds,
           doneItems: doneItems,
           candidateItems: candidateItems,
-          dedup: dedup,
+          dedup: pool,
         );
         if (exclusion != null) {
           _trace('exclude reason=$exclusion');
           continue;
         }
         _trace('accepted itemCode=${item.productId} title=${item.itemName}');
-        dedup[item.productId.trim()] = item;
+        final id = item.productId.trim();
+        pool[id] = item;
+        final m = metaById.putIfAbsent(id, () => _ItemPoolMeta());
+        if (p.phase == 'personal' || p.phase == 'fallback') {
+          m.fromPersonalPhase = true;
+        }
+        if (p.phase == 'relaxed') m.fromRelaxedPhase = true;
+        if (p.phase == 'discovery') m.fromDiscoveryPhase = true;
+        if (p.source == 'shop') m.fromShopPlan = true;
       }
-      if (dedup.length >= 10) break;
+
+      if (pool.length > 45) break;
     }
 
-    if (dedup.isEmpty && allPlansNoItems) {
+    if (pool.isEmpty && allPlansNoItems) {
       _resultLog(status: 'empty', reason: 'allPlansNoItems');
     }
 
-    final pool = dedup.values.toList(growable: false);
-    final dedupForScoring = <String, RakutenSearchItem>{};
-    for (final item in pool) {
-      _trace('raw item itemCode=${item.productId} title=${item.itemName}');
-      dedupForScoring.putIfAbsent(item.productId.trim(), () => item);
-    }
+    final finalized = _finalizeFromPool(
+      pool: pool,
+      metaById: metaById,
+      favoriteGenreIds: favoriteGenreIds,
+      savedShopIds: savedShopIds,
+      preferredGenreWords: genreWords,
+      doneItems: doneItems,
+      candidateItems: candidateItems,
+      postStyles: postStyles,
+      soldOutcomeItems: soldOutcomeItems,
+      reactedOutcomeItems: reactedOutcomeItems,
+      likedOnlyOutcomeItems: likedOnlyOutcomeItems,
+      recentCandidatesForBridge: recentCandidates,
+      staleCandidatesForBridge: staleCandidates,
+    );
+    final entries = finalized.entries;
 
-    final genreWords = UserProfilePreferredGenreWords.fromProfile(profile);
-    const personalizedTarget = 7;
-    const discoveryTarget = 3;
     if (kDebugMode) {
-      debugPrint(
-        '[RECOMMEND_BUCKET] type=personal target=$personalizedTarget actual=0',
-      );
-      debugPrint(
-        '[RECOMMEND_BUCKET] type=discovery target=$discoveryTarget actual=0',
-      );
-    }
-
-    final scored =
-        dedupForScoring.values
-            .map(
-              (item) => _scoreRecommendationForBucket(
-                item,
-                favoriteGenreIds: favoriteGenreIds,
-                savedShopIds: savedShopIds,
-                preferredGenreWords: genreWords,
-                doneItems: doneItems,
-                candidateItems: candidateItems,
-                postStyles: postStyles,
-              ),
-            )
-            .where((e) => e != null)
-            .cast<_ScoredRecommendation>()
-            .toList()
-          ..sort((a, b) => b.score.compareTo(a.score));
-
-    final selected = <_ScoredRecommendation>[];
-    final selectedIds = <String>{};
-    final personalized = scored
-        .where((e) => e.section == TodayRecommendationSection.popular)
-        .toList(growable: false);
-    final discovery = scored
-        .where((e) => e.section == TodayRecommendationSection.fresh)
-        .toList(growable: false);
-
-    void takeFrom(List<_ScoredRecommendation> list, int max) {
-      for (final e in list) {
-        if (selected.length >= 10) break;
-        if (max <= 0) break;
-        if (selectedIds.contains(e.item.productId)) continue;
-        selected.add(e);
-        selectedIds.add(e.item.productId);
-        max -= 1;
-      }
-    }
-
-    takeFrom(personalized, personalizedTarget);
-    takeFrom(discovery, discoveryTarget);
-
-    if (selected.where((e) => e.section == TodayRecommendationSection.popular).length <
-        5) {
-      final shortage = 5 -
-          selected
-              .where((e) => e.section == TodayRecommendationSection.popular)
-              .length;
-      final fallbackPersonalized = scored
-          .where(
-            (e) =>
-                !selectedIds.contains(e.item.productId) &&
-                e.section != TodayRecommendationSection.fresh,
-          )
-          .take(shortage)
-          .map(
-            (e) => _ScoredRecommendation(
-              item: e.item,
-              score: e.score,
-              priceScore: e.priceScore,
-              reason: '${e.reason}・好きなジャンルに近い',
-              section: TodayRecommendationSection.popular,
-            ),
-          )
-          .toList(growable: false);
-      takeFrom(fallbackPersonalized, shortage);
-    }
-
-    if (selected.length < 10) {
-      final remain = scored
-          .where(
-            (e) =>
-                !selectedIds.contains(e.item.productId) &&
-                (e.section != TodayRecommendationSection.fresh ||
-                    selected
-                            .where(
-                              (x) => x.section == TodayRecommendationSection.fresh,
-                            )
-                            .length <
-                        discoveryTarget),
-          )
-          .toList(growable: false);
-      takeFrom(remain, 10 - selected.length);
-    }
-    final entries = selected
-        .map(
-          (e) => TodayRecommendationEntry(
-            item: e.item,
-            reason: e.reason,
-            section: e.section,
-            score: e.score,
-            priceScore: e.priceScore,
-          ),
-        )
-        .toList(growable: false);
-    if (kDebugMode) {
+      debugPrint('[RECOMMEND] apiCalls=$apiCalls poolSize=${pool.length}');
       debugPrint('[RECOMMEND] final count: ${entries.length}');
-    }
-    if (kDebugMode) {
-      final p = entries
-          .where((e) => e.section == TodayRecommendationSection.popular)
-          .length;
-      final d = entries
-          .where((e) => e.section == TodayRecommendationSection.fresh)
-          .length;
       debugPrint(
-        '[RECOMMEND_BUCKET] type=personal target=$personalizedTarget actual=$p',
+        '[RECOMMEND_BUCKET] personal=${finalized.personalCount} '
+        'relaxed=${finalized.relaxedCount} discovery=${finalized.discoveryCount} '
+        'total=${entries.length}',
       );
-      debugPrint(
-        '[RECOMMEND_BUCKET] type=discovery target=$discoveryTarget actual=$d',
-      );
-      debugPrint(
-        '[RECOMMEND_RESULT] personalCount=$p discoveryCount=$d total=${entries.length}',
-      );
-      if (entries.length < 5) {
-        debugPrint(
-          '[RECOMMEND_RESULT] status=empty reason=insufficientHighQualityCandidates',
+      if (entries.isEmpty) {
+        debugPrint('[RECOMMEND_RESULT] status=empty reason=noAcceptedItems');
+      } else if (entries.length < 10) {
+        _resultLog(
+          status: 'partial',
+          count: entries.length,
+          reason: 'shortfallAfterPlans',
         );
       }
     }
@@ -499,7 +440,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
     );
   }
 
-  List<_RecommendSearchPlan> _buildSearchPlans({
+  /// フェーズ順に並べた検索プラン（API は上位から試し、10件または上限まで）。
+  List<_RecommendSearchPlan> _buildPhasedSearchPlans({
     required Set<String> favoriteGenreIds,
     required List<SavedShop> savedShops,
     required List<RakutenManagedProduct> doneItems,
@@ -507,89 +449,291 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required List<String> keywords,
     required Set<String> postStyles,
   }) {
-    final out = <_RecommendSearchPlan>[];
-    final keyword = keywords.isEmpty ? '人気' : keywords.first;
-    for (final gid in favoriteGenreIds.take(2)) {
-      out.add(
+    final favList = favoriteGenreIds.toList(growable: false);
+    final keywordPrimary = keywords.isEmpty ? '人気' : keywords.first;
+    final keywordAlt =
+        keywords.length >= 2 ? keywords[1] : (keywords.isEmpty ? 'ランキング' : '売れ筋');
+    final historyGenres = _topGenresFromHistory(doneItems, candidateItems, limit: 4);
+    final plans = <_RecommendSearchPlan>[];
+
+    void addPlan(_RecommendSearchPlan plan) => plans.add(plan);
+
+    // Phase 1 personal（最大4）：ジャンル×探し方 × 保存ショップ × 履歴ジャンル
+    for (final gid in favList.take(2)) {
+      addPlan(
         _RecommendSearchPlan(
+          phase: 'personal',
+          relaxLevel: 0,
           source: 'genre',
-          keyword: keyword,
+          keyword: keywordPrimary,
           genreId: gid,
           shopCode: null,
         ),
       );
     }
     for (final shop in savedShops.take(1)) {
-      out.add(
+      final sid = shop.shopId.trim();
+      if (sid.isEmpty) continue;
+      addPlan(
         _RecommendSearchPlan(
+          phase: 'personal',
+          relaxLevel: 0,
           source: 'shop',
-          keyword: keyword,
+          keyword: keywordPrimary,
           genreId: null,
-          shopCode: shop.shopId.trim(),
+          shopCode: sid,
         ),
       );
     }
-    final trendGenre = _topGenreFromHistory(doneItems, candidateItems);
-    if (trendGenre != null && trendGenre.isNotEmpty) {
-      out.add(
+    for (final gid in historyGenres) {
+      if (favList.take(2).contains(gid)) continue;
+      addPlan(
         _RecommendSearchPlan(
+          phase: 'personal',
+          relaxLevel: 0,
           source: 'style',
-          keyword: keyword,
-          genreId: trendGenre,
+          keyword: keywordPrimary,
+          genreId: gid,
+          shopCode: null,
+        ),
+      );
+      break;
+    }
+
+    // Phase 2 relaxed（最大3）：レビュー・価格を緩めつつジャンル軸は維持
+    for (final gid in favList.take(2)) {
+      addPlan(
+        _RecommendSearchPlan(
+          phase: 'relaxed',
+          relaxLevel: 1,
+          source: 'genre',
+          keyword: keywordAlt,
+          genreId: gid,
           shopCode: null,
         ),
       );
     }
-    out.add(
+    if (savedShops.length >= 2) {
+      final sid = savedShops[1].shopId.trim();
+      if (sid.isNotEmpty) {
+        addPlan(
+          _RecommendSearchPlan(
+            phase: 'relaxed',
+            relaxLevel: 1,
+            source: 'shop',
+            keyword: keywordAlt,
+            genreId: null,
+            shopCode: sid,
+          ),
+        );
+      }
+    } else if (favList.length > 2) {
+      addPlan(
+        _RecommendSearchPlan(
+          phase: 'relaxed',
+          relaxLevel: 2,
+          source: 'genre',
+          keyword: keywordAlt,
+          genreId: favList[2],
+          shopCode: null,
+        ),
+      );
+    }
+
+    // Phase 3 discovery（最大2）：広め・トレンド寄り（枠は後段ピックで最大3）
+    addPlan(
+      _RecommendSearchPlan(
+        phase: 'discovery',
+        relaxLevel: 2,
+        source: 'style',
+        keyword: keywordPrimary,
+        genreId: historyGenres.length >= 2 ? historyGenres[1] : null,
+        shopCode: null,
+        sortOverride: postStyles.contains(UserProfile.postStyleTrend)
+            ? '-updateTimestamp'
+            : '-reviewCount',
+      ),
+    );
+    addPlan(
       const _RecommendSearchPlan(
+        phase: 'discovery',
+        relaxLevel: 3,
         source: 'style',
         keyword: '人気',
         genreId: null,
         shopCode: null,
+        sortOverride: '-reviewCount',
       ),
     );
-    final maxPlan = postStyles.isEmpty ? 3 : 5;
-    return out.take(maxPlan).toList(growable: false);
+
+    // fallback（1）：フィルタをほぼ外した広い検索
+    addPlan(
+      _RecommendSearchPlan(
+        phase: 'fallback',
+        relaxLevel: 3,
+        source: 'style',
+        keyword: '売れ筋',
+        genreId: null,
+        shopCode: null,
+        sortOverride: null,
+      ),
+    );
+
+    return plans;
   }
 
-  String? _topGenreFromHistory(
+  List<String> _topGenresFromHistory(
     List<RakutenManagedProduct> doneItems,
-    List<RakutenManagedProduct> candidateItems,
-  ) {
+    List<RakutenManagedProduct> candidateItems, {
+    required int limit,
+  }) {
     final counts = <String, int>{};
     for (final e in [...doneItems, ...candidateItems]) {
       final gid = e.genreId.trim();
       if (gid.isEmpty) continue;
       counts[gid] = (counts[gid] ?? 0) + 1;
     }
-    if (counts.isEmpty) return null;
+    if (counts.isEmpty) return const [];
     final sorted = counts.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
-    return sorted.first.key;
+    return sorted.take(limit).map((e) => e.key).toList(growable: false);
+  }
+
+  ({List<TodayRecommendationEntry> entries, int personalCount, int relaxedCount, int discoveryCount}) _finalizeFromPool({
+    required Map<String, RakutenSearchItem> pool,
+    required Map<String, _ItemPoolMeta> metaById,
+    required Set<String> favoriteGenreIds,
+    required Set<String> savedShopIds,
+    required Set<String> preferredGenreWords,
+    required List<RakutenManagedProduct> doneItems,
+    required List<RakutenManagedProduct> candidateItems,
+    required Set<String> postStyles,
+    required List<RakutenManagedProduct> soldOutcomeItems,
+    required List<RakutenManagedProduct> reactedOutcomeItems,
+    required List<RakutenManagedProduct> likedOnlyOutcomeItems,
+    required List<RakutenManagedProduct> recentCandidatesForBridge,
+    required List<RakutenManagedProduct> staleCandidatesForBridge,
+  }) {
+    final scored =
+        pool.values
+            .map(
+              (item) => _scoreRecommendationForBucket(
+                item,
+                meta: metaById[item.productId.trim()] ?? _ItemPoolMeta(),
+                favoriteGenreIds: favoriteGenreIds,
+                savedShopIds: savedShopIds,
+                preferredGenreWords: preferredGenreWords,
+                doneItems: doneItems,
+                candidateItems: candidateItems,
+                postStyles: postStyles,
+                soldOutcomeItems: soldOutcomeItems,
+                reactedOutcomeItems: reactedOutcomeItems,
+                likedOnlyOutcomeItems: likedOnlyOutcomeItems,
+                recentCandidatesForBridge: recentCandidatesForBridge,
+                staleCandidatesForBridge: staleCandidatesForBridge,
+              ),
+            )
+            .where((e) => e != null)
+            .cast<_ScoredRecommendation>()
+            .toList()
+          ..sort((a, b) => b.score.compareTo(a.score));
+
+    final picked = _pickBalancedBySection(scored);
+    final entries =
+        picked
+            .map(
+              (e) => TodayRecommendationEntry(
+                item: e.item,
+                reason: e.reason,
+                section: e.section,
+                score: e.score,
+                priceScore: e.priceScore,
+              ),
+            )
+            .toList(growable: false);
+
+    final personalCount = entries
+        .where((e) => e.section == TodayRecommendationSection.popular)
+        .length;
+    final relaxedCount = entries
+        .where((e) => e.section == TodayRecommendationSection.sellable)
+        .length;
+    final discoveryCount = entries
+        .where((e) => e.section == TodayRecommendationSection.fresh)
+        .length;
+    return (
+      entries: entries,
+      personalCount: personalCount,
+      relaxedCount: relaxedCount,
+      discoveryCount: discoveryCount,
+    );
+  }
+
+  /// あなた向け〜7、保存ショップ枠〜3、発掘〜3 を優先しつつ最大10件。
+  List<_ScoredRecommendation> _pickBalancedBySection(
+    List<_ScoredRecommendation> scored,
+  ) {
+    final popular = scored
+        .where((e) => e.section == TodayRecommendationSection.popular)
+        .toList(growable: false);
+    final sellable = scored
+        .where((e) => e.section == TodayRecommendationSection.sellable)
+        .toList(growable: false);
+    final fresh = scored
+        .where((e) => e.section == TodayRecommendationSection.fresh)
+        .toList(growable: false);
+
+    final selected = <_ScoredRecommendation>[];
+    final selectedIds = <String>{};
+
+    void takeFrom(List<_ScoredRecommendation> list, int max) {
+      for (final e in list) {
+        if (selected.length >= 10) return;
+        if (max <= 0) return;
+        final id = e.item.productId.trim();
+        if (id.isEmpty || selectedIds.contains(id)) continue;
+        selected.add(e);
+        selectedIds.add(id);
+        max -= 1;
+      }
+    }
+
+    takeFrom(popular, 7);
+    takeFrom(sellable, 3);
+    takeFrom(fresh, 3);
+
+    if (selected.length < 10) {
+      for (final e in scored) {
+        if (selected.length >= 10) break;
+        final id = e.item.productId.trim();
+        if (id.isEmpty || selectedIds.contains(id)) continue;
+        final freshCount =
+            selected.where((x) => x.section == TodayRecommendationSection.fresh).length;
+        if (e.section == TodayRecommendationSection.fresh && freshCount >= 3) {
+          continue;
+        }
+        selected.add(e);
+        selectedIds.add(id);
+      }
+    }
+    return selected;
   }
 
   Future<List<RakutenSearchItem>> _runSearchPlan({
+    required String phase,
     required String source,
     required int planIndex,
-    required String keyword,
-    required String? genreId,
-    required String? shopCode,
-    required Set<String> postStyles,
+    required RakutenProductSearchCondition condition,
     required Set<String> excludeIds,
   }) async {
-    _apiLogStart(index: planIndex, page: 1);
+    _apiLogStart(index: planIndex, page: 1, phase: phase);
     try {
       final list = await _searchRepository.search(
-        condition: _conditionWithPostStyles(
-          keyword: keyword,
-          genreId: genreId,
-          shopCode: shopCode,
-          postStyles: postStyles,
-        ),
+        condition: condition,
         maxPages: 1,
         searchPurpose: RakutenSearchPurpose.recommendation,
       );
-      _apiLogStatus(status: 200, rawCount: list.length);
+      _apiLogStatus(phase: phase, status: 200, rawCount: list.length);
       final reasonCounts = <String, int>{};
       final afterExclude = list.where((e) {
         final reason = _excludeReason(
@@ -613,7 +757,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     } catch (e) {
       final msg = e.toString();
       final apiStatus = _extractStatusCode(msg) ?? 'error';
-      _apiLogStatus(status: apiStatus, rawCount: 0);
+      _apiLogStatus(phase: phase, status: apiStatus, rawCount: 0);
       if (msg.contains('(429)') ||
           msg.toLowerCase().contains('allowed requests has been exceeded')) {
         _resultLog(status: 'failed', reason: 'rateLimit');
@@ -666,28 +810,48 @@ class TodayRecommendationProvider extends ChangeNotifier {
     debugPrint('[RECOMMEND_PLAN] count=$count');
   }
 
-  void _planLog({
+  void _phaseLog(String phase) {
+    if (!kDebugMode) return;
+    debugPrint('[RECOMMEND_PHASE] phase=$phase');
+  }
+
+  void _planLogDetailed({
     required int index,
+    required String phase,
+    required int relaxLevel,
+    required String source,
     required String keyword,
     required String? genreId,
     required String? shopCode,
-    required String? preference,
+    required RakutenProductSearchCondition condition,
+    required Set<String> postStyles,
   }) {
     if (!kDebugMode) return;
+    final styleKey = _resolvePrimaryStyle(postStyles);
     debugPrint(
-      '[RECOMMEND_PLAN] index=$index keyword=$keyword genreId=${genreId ?? ''} '
-      'shopCode=${shopCode ?? ''} preference=${preference ?? ''}',
+      '[RECOMMEND_PLAN] phase=$phase relax=$relaxLevel source=$source index=$index '
+      'keyword=$keyword genreId=${genreId ?? ''} shopCode=${shopCode ?? ''} '
+      'style=$styleKey minPrice=${condition.minPrice ?? ''} '
+      'maxPrice=${condition.maxPrice ?? ''} sort=${condition.sort ?? ''}',
     );
   }
 
-  void _apiLogStart({required int index, required int page}) {
+  void _apiLogStart({
+    required int index,
+    required int page,
+    required String phase,
+  }) {
     if (!kDebugMode) return;
-    debugPrint('[RECOMMEND_API] start index=$index page=$page');
+    debugPrint('[RECOMMEND_API] phase=$phase start index=$index page=$page');
   }
 
-  void _apiLogStatus({required Object status, required int rawCount}) {
+  void _apiLogStatus({
+    required String phase,
+    required Object status,
+    required int rawCount,
+  }) {
     if (!kDebugMode) return;
-    debugPrint('[RECOMMEND_API] status=$status rawCount=$rawCount');
+    debugPrint('[RECOMMEND_API] phase=$phase status=$status rawCount=$rawCount');
   }
 
   void _filterLog({
@@ -707,6 +871,12 @@ class TodayRecommendationProvider extends ChangeNotifier {
     int? count,
   }) {
     if (!kDebugMode) return;
+    if (reason != null && count != null) {
+      debugPrint(
+        '[RECOMMEND_RESULT] status=$status count=$count reason=$reason',
+      );
+      return;
+    }
     if (reason != null) {
       debugPrint('[RECOMMEND_RESULT] status=$status reason=$reason');
       return;
@@ -776,35 +946,65 @@ class TodayRecommendationProvider extends ChangeNotifier {
     return normalized;
   }
 
-  Map<String, int> _countManagedShopFrequency(
-    List<RakutenManagedProduct> managedItems,
-  ) {
-    final map = <String, int>{};
-    for (final item in managedItems) {
-      final code = item.shopCode.trim();
-      if (code.isEmpty) continue;
-      map[code] = (map[code] ?? 0) + 1;
-    }
-    return map;
-  }
-
   RakutenProductSearchCondition _conditionWithPostStyles({
     required String keyword,
     required Set<String> postStyles,
     String? genreId,
     String? shopCode,
+    int relaxLevel = 0,
+    String? sortOverride,
   }) {
-    final rawMinPrice = postStyles.contains(UserProfile.postStyleAffordable)
+    var rawMinPrice = postStyles.contains(UserProfile.postStyleAffordable)
         ? 500
         : (postStyles.contains(UserProfile.postStylePremium) ? 3000 : null);
-    final rawMaxPrice = postStyles.contains(UserProfile.postStyleAffordable)
+    var rawMaxPrice = postStyles.contains(UserProfile.postStyleAffordable)
         ? 10000
         : (postStyles.contains(UserProfile.postStylePremium) ? 50000 : null);
+
+    if (relaxLevel >= 3) {
+      rawMinPrice = null;
+      rawMaxPrice = null;
+    } else if (relaxLevel >= 2 &&
+        (postStyles.contains(UserProfile.postStyleAffordable) ||
+            postStyles.contains(UserProfile.postStylePremium))) {
+      rawMinPrice = null;
+      rawMaxPrice = null;
+    }
+
     final sanitizedPrice = _sanitizePriceRange(
       minPrice: rawMinPrice,
       maxPrice: rawMaxPrice,
     );
-    final searchPreference = _sortForPostStyles(postStyles);
+    final searchPreference = sortOverride ?? _sortForPostStyles(postStyles);
+
+    var minReviewCount =
+        postStyles.contains(UserProfile.postStyleHighlyRated) ||
+            postStyles.contains(UserProfile.postStyleReviewRich)
+        ? 20
+        : 10;
+    var minReviewAverage = postStyles.contains(UserProfile.postStyleHighlyRated)
+        ? 4.2
+        : 3.6;
+
+    if (relaxLevel >= 3) {
+      minReviewCount = 0;
+      minReviewAverage = 0;
+    } else if (relaxLevel == 2) {
+      minReviewCount = (minReviewCount - 12).clamp(3, 1000);
+      minReviewAverage = (minReviewAverage - 0.8).clamp(3.2, 5.0);
+    } else if (relaxLevel == 1) {
+      minReviewCount = (minReviewCount - 5).clamp(5, 1000);
+      minReviewAverage = (minReviewAverage - 0.4).clamp(3.4, 5.0);
+    }
+
+    // API が 0 を不正とする場合に備え、緩和後はレビュー下限を送らない。
+    final sendReviewCount = relaxLevel >= 3 || minReviewCount <= 0
+        ? null
+        : minReviewCount;
+    final sendReviewAverage = relaxLevel >= 3 || minReviewAverage <= 0
+        ? null
+        : minReviewAverage;
+
     _logRecommendSearchParams(
       keyword: keyword,
       genreId: genreId,
@@ -820,14 +1020,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
       shopCode: shopCode,
       minPrice: sanitizedPrice.minPrice,
       maxPrice: sanitizedPrice.maxPrice,
-      minReviewCount:
-          postStyles.contains(UserProfile.postStyleHighlyRated) ||
-              postStyles.contains(UserProfile.postStyleReviewRich)
-          ? 20
-          : 10,
-      minReviewAverage: postStyles.contains(UserProfile.postStyleHighlyRated)
-          ? 4.2
-          : 3.6,
+      minReviewCount: sendReviewCount,
+      minReviewAverage: sendReviewAverage,
       sort: searchPreference,
     ).normalized();
   }
@@ -889,171 +1083,24 @@ class TodayRecommendationProvider extends ChangeNotifier {
     return null;
   }
 
-  List<_ScoredRecommendation> _pickBalancedRecommendations(
-    List<_ScoredRecommendation> scored,
-  ) {
-    if (scored.length <= 10) return scored;
-    final out = <_ScoredRecommendation>[];
-
-    bool canAdd(_ScoredRecommendation item, {required bool relaxed}) {
-      final productId = item.item.productId.trim();
-      if (productId.isEmpty) return false;
-      if (out.any((e) => e.item.productId.trim() == productId)) return false;
-
-      final shopCode = item.item.shopCode.trim();
-      final genreId = item.item.genreId.trim();
-      if (!relaxed && out.isNotEmpty) {
-        final last = out.last.item;
-        if (shopCode.isNotEmpty && shopCode == last.shopCode.trim()) {
-          return false;
-        }
-        if (genreId.isNotEmpty && genreId == last.genreId.trim()) {
-          return false;
-        }
-      }
-      if (!relaxed && shopCode.isNotEmpty) {
-        final shopCount = out
-            .where((e) => e.item.shopCode.trim() == shopCode)
-            .length;
-        if (shopCount >= 2) return false;
-      }
-      if (!relaxed && genreId.isNotEmpty) {
-        final genreCount = out
-            .where((e) => e.item.genreId.trim() == genreId)
-            .length;
-        if (genreCount >= 3) return false;
-      }
-      return true;
-    }
-
-    void addFrom(TodayRecommendationSection section, int max) {
-      for (final item in scored.where((e) => e.section == section)) {
-        if (out.length >= 10) break;
-        final sectionCount = out.where((e) => e.section == section).length;
-        if (sectionCount >= max) break;
-        if (canAdd(item, relaxed: false)) {
-          out.add(item);
-        }
-      }
-    }
-
-    addFrom(TodayRecommendationSection.popular, 5);
-    addFrom(TodayRecommendationSection.sellable, 4);
-    addFrom(TodayRecommendationSection.fresh, 2);
-    for (final item in scored) {
-      if (out.length >= 10) break;
-      if (canAdd(item, relaxed: false)) {
-        out.add(item);
-      }
-    }
-    for (final item in scored) {
-      if (out.length >= 10) break;
-      if (canAdd(item, relaxed: true)) {
-        out.add(item);
-      }
-    }
-    return out;
-  }
-
-  _ScoredRecommendation _scoreRecommendation(
+  _ScoredRecommendation? _scoreRecommendationForBucket(
     RakutenSearchItem item, {
+    required _ItemPoolMeta meta,
     required Set<String> favoriteGenreIds,
     required Set<String> savedShopIds,
     required Set<String> preferredGenreWords,
     required List<RakutenManagedProduct> doneItems,
     required List<RakutenManagedProduct> candidateItems,
-    required Map<String, int> managedShopFrequency,
+    required Set<String> postStyles,
     required List<RakutenManagedProduct> soldOutcomeItems,
     required List<RakutenManagedProduct> reactedOutcomeItems,
     required List<RakutenManagedProduct> likedOnlyOutcomeItems,
     required List<RakutenManagedProduct> recentCandidatesForBridge,
     required List<RakutenManagedProduct> staleCandidatesForBridge,
-    required Set<String> postStyles,
-  }) {
-    final genreMatch = _genreMatchScore(
-      item,
-      favoriteGenreIds,
-      preferredGenreWords,
-    );
-    final doneSimilarity = _historySimilarity(item, doneItems);
-    final candidateSimilarity = _historySimilarity(item, candidateItems);
-    final shopCode = item.shopCode.trim();
-    final shopMatch =
-        shopCode.isNotEmpty &&
-            (savedShopIds.contains(shopCode) ||
-                (managedShopFrequency[shopCode] ?? 0) > 0)
-        ? 1.0
-        : 0.0;
-    final popularity = _popularityScore(item);
-    final priceScore = _priceScore(item);
-
-    final marketScore = _marketScore(item, priceScore: priceScore);
-    final styleScore = _postStyleScore(item, postStyles);
-
-    final outcomeBoost = _outcomeInsightBoost(
-      item,
-      soldItems: soldOutcomeItems,
-      reactedItems: reactedOutcomeItems,
-      likedOnlyItems: likedOnlyOutcomeItems,
-      recentBridgeCandidates: recentCandidatesForBridge,
-      staleBridgeCandidates: staleCandidatesForBridge,
-    );
-
-    // ROOM向けの調整値。履歴一致だけに寄せすぎず、
-    // 「売れ筋として強い商品」を前に出せるよう市場性をやや厚めに見る。
-    final personalizedScore =
-        genreMatch * 2.2 +
-        doneSimilarity * 3.0 +
-        candidateSimilarity * 1.5 +
-        shopMatch * 1.2 +
-        outcomeBoost;
-    final finalScore =
-        personalizedScore * 4 +
-        marketScore * 5 +
-        priceScore * 2 +
-        styleScore * 3;
-    final isPersonalized =
-        outcomeBoost >= 1.5 ||
-        doneSimilarity >= 0.35 ||
-        candidateSimilarity >= 0.45 ||
-        genreMatch >= 0.55 ||
-        shopMatch > 0;
-    final section = isPersonalized
-        ? TodayRecommendationSection.popular
-        : marketScore >= 4.6 && priceScore >= 1.5
-        ? TodayRecommendationSection.sellable
-        : TodayRecommendationSection.fresh;
-
-    return _ScoredRecommendation(
-      item: item,
-      score: finalScore,
-      priceScore: priceScore,
-      reason: _reasonFor(
-        doneSimilarity: doneSimilarity,
-        candidateSimilarity: candidateSimilarity,
-        shopMatch: shopMatch,
-        genreMatch: genreMatch,
-        popularity: popularity,
-        priceScore: priceScore,
-        outcomeBoost: outcomeBoost,
-      ),
-      section: section,
-    );
-  }
-
-  _ScoredRecommendation? _scoreRecommendationForBucket(
-    RakutenSearchItem item, {
-    required Set<String> favoriteGenreIds,
-    required Set<String> savedShopIds,
-    required Set<String> preferredGenreWords,
-    required List<RakutenManagedProduct> doneItems,
-    required List<RakutenManagedProduct> candidateItems,
-    required Set<String> postStyles,
   }) {
     final reject = _recommendRejectReason(item, postStyles: postStyles);
     if (reject != null) {
       if (kDebugMode) {
-        debugPrint('[RECOMMEND_REJECT] itemCode=${item.productId} reason=$reject');
         debugPrint('[RECOMMEND_EXCLUDE] itemCode=${item.productId} reason=$reject');
       }
       return null;
@@ -1067,6 +1114,21 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final savedShopMatch = item.shopCode.trim().isNotEmpty &&
         savedShopIds.contains(item.shopCode.trim());
 
+    final outcomeBoost = _outcomeInsightBoost(
+      item,
+      soldItems: soldOutcomeItems,
+      reactedItems: reactedOutcomeItems,
+      likedOnlyItems: likedOnlyOutcomeItems,
+      recentBridgeCandidates: recentCandidatesForBridge,
+      staleBridgeCandidates: staleCandidatesForBridge,
+    );
+    if (outcomeBoost >= 1.5) {
+      score += 22;
+      reasons.add('反応の良かった履歴に近い');
+    } else if (outcomeBoost >= 0.75) {
+      score += 12;
+    }
+
     if (genreMatch >= 0.5) {
       score += 40;
       reasons.add('好きなジャンルに近い');
@@ -1074,6 +1136,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (doneSimilarity >= 0.35) {
       score += 30;
       reasons.add('コレ済に近い');
+    }
+    if (candidateSimilarity >= 0.45) {
+      score += 15;
+      reasons.add('候補に近い');
     }
     if (savedShopMatch) {
       score += 25;
@@ -1087,9 +1153,18 @@ class TodayRecommendationProvider extends ChangeNotifier {
       reasons.add(_styleReasonLabel(style));
     }
 
-    if (item.reviewAverage >= 4.0 && item.reviewCount >= 3) {
-      score += 15;
-      reasons.add('高評価');
+    if (style == UserProfile.postStyleHighlyRated) {
+      if (item.reviewAverage >= 4.2 && item.reviewCount >= 15) {
+        score += 18;
+        reasons.add('高評価');
+      } else if (item.reviewAverage >= 4.5 && item.reviewCount < 8) {
+        score -= 25;
+      }
+    } else {
+      if (item.reviewAverage >= 4.0 && item.reviewCount >= 10) {
+        score += 15;
+        reasons.add('高評価');
+      }
     }
     if (item.reviewCount >= 10) {
       score += 10;
@@ -1111,16 +1186,23 @@ class TodayRecommendationProvider extends ChangeNotifier {
       score -= 20;
     }
 
-    final section = (savedShopMatch ||
-            genreMatch >= 0.5 ||
-            doneSimilarity >= 0.35 ||
-            candidateSimilarity >= 0.4)
-        ? TodayRecommendationSection.popular
-        : TodayRecommendationSection.fresh;
+    TodayRecommendationSection section;
+    if (savedShopMatch && meta.fromShopPlan) {
+      section = TodayRecommendationSection.sellable;
+    } else if (meta.fromDiscoveryPhase &&
+        genreMatch < 0.5 &&
+        doneSimilarity < 0.35 &&
+        !savedShopMatch) {
+      section = TodayRecommendationSection.fresh;
+    } else {
+      section = TodayRecommendationSection.popular;
+    }
 
     if (kDebugMode) {
       debugPrint(
-        '[RECOMMEND_SCORE] itemCode=${item.productId} price=${item.itemPrice} '
+        '[RECOMMEND_SCORE] itemCode=${item.productId} '
+        'title=${item.itemName.trim()} '
+        'price=${item.itemPrice} '
         'reviewAverage=${item.reviewAverage.toStringAsFixed(2)} '
         'reviewCount=${item.reviewCount} score=${score.toStringAsFixed(1)} '
         'reasons=${reasons.join('|')}',
@@ -1131,7 +1213,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       item: item,
       score: score,
       priceScore: _priceScore(item),
-      reason: reasons.isEmpty ? '発掘枠' : reasons.join('・'),
+      reason: reasons.isEmpty ? '発掘・トレンド' : reasons.join('・'),
       section: section,
     );
   }
@@ -1216,19 +1298,19 @@ class TodayRecommendationProvider extends ChangeNotifier {
   String _styleReasonLabel(String style) {
     switch (style) {
       case UserProfile.postStyleAffordable:
-        return 'お手頃価格';
+        return '買いやすい価格';
       case UserProfile.postStylePremium:
         return '高単価候補';
       case UserProfile.postStyleHighlyRated:
         return '高評価';
       case UserProfile.postStyleSocial:
-        return '見た目重視';
+        return '見た目で選ぶ';
       case UserProfile.postStylePractical:
         return '実用的';
       case UserProfile.postStyleReviewRich:
         return 'レビュー多め';
       case UserProfile.postStyleTrend:
-        return '発掘枠';
+        return '発掘・トレンド';
       case UserProfile.postStyleBalance:
       default:
         return 'バランス';
@@ -1244,61 +1326,6 @@ class TodayRecommendationProvider extends ChangeNotifier {
       default:
         return price > 0 && price <= 100000;
     }
-  }
-
-  double _marketScore(RakutenSearchItem item, {required double priceScore}) {
-    final reviewCountScore = switch (item.reviewCount) {
-      >= 300 => 3.0,
-      >= 100 => 2.4,
-      >= 30 => 1.5,
-      >= 10 => 0.8,
-      _ => 0.2,
-    };
-    final rating = item.reviewAverage;
-    final ratingScore = rating >= 4.5
-        ? (item.reviewCount >= 20 ? 2.0 : 0.8)
-        : rating >= 4.0
-        ? 1.4
-        : rating >= 3.5
-        ? 0.5
-        : -1.5;
-    return reviewCountScore + ratingScore + priceScore;
-  }
-
-  double _postStyleScore(RakutenSearchItem item, Set<String> postStyles) {
-    var score = 0.0;
-    final name = item.itemName;
-    if (postStyles.contains(UserProfile.postStyleAffordable) &&
-        item.itemPrice > 0 &&
-        item.itemPrice <= 3500) {
-      score += 1.2;
-    }
-    if (postStyles.contains(UserProfile.postStylePremium) &&
-        item.itemPrice >= 5000) {
-      score += 1.4;
-    }
-    if (postStyles.contains(UserProfile.postStyleHighlyRated) &&
-        item.reviewAverage >= 4.2) {
-      score += 1.2;
-    }
-    if (postStyles.contains(UserProfile.postStyleReviewRich) &&
-        item.reviewCount >= 80) {
-      score += 1.2;
-    }
-    if (postStyles.contains(UserProfile.postStyleSocial) &&
-        item.imageUrl.trim().isNotEmpty &&
-        RegExp(r'雑貨|インテリア|ファッション|美容|コスメ|ギフト').hasMatch(name)) {
-      score += 1.3;
-    }
-    if (postStyles.contains(UserProfile.postStylePractical) &&
-        RegExp(r'日用品|キッチン|食品|ベビー|収納|家電|掃除|洗濯').hasMatch(name)) {
-      score += 1.1;
-    }
-    if (postStyles.contains(UserProfile.postStyleTrend) &&
-        RegExp(r'新作|新着|季節|限定|母の日|父の日|夏|冬').hasMatch(name)) {
-      score += 0.9;
-    }
-    return score;
   }
 
   double _genreMatchScore(
@@ -1479,31 +1506,6 @@ class TodayRecommendationProvider extends ChangeNotifier {
     return out;
   }
 
-  double _popularityScore(RakutenSearchItem item) {
-    final reviewScore = (item.reviewCount / 800).clamp(0.0, 1.0);
-    final ratingScore = (item.reviewAverage / 5).clamp(0.0, 1.0);
-    return (reviewScore * 0.65 + ratingScore * 0.35).clamp(0.0, 1.0);
-  }
-
-  String _reasonFor({
-    required double doneSimilarity,
-    required double candidateSimilarity,
-    required double shopMatch,
-    required double genreMatch,
-    required double popularity,
-    required double priceScore,
-    required double outcomeBoost,
-  }) {
-    if (outcomeBoost >= 2.2) return '成果商品（分析）に近い';
-    if (doneSimilarity >= 0.45) return 'あなたのコレ履歴に基づく';
-    if (shopMatch > 0) return '保存ショップ由来';
-    if (candidateSimilarity >= 0.45) return '候補にした商品に近い';
-    if (genreMatch >= 0.55) return '好きなジャンルに近い';
-    if (priceScore >= 3) return '売れ筋価格帯';
-    if (popularity >= 0.70) return '人気の候補';
-    return '新しい候補';
-  }
-
   String _localDateKey(DateTime dateTime) {
     String two(int n) => n.toString().padLeft(2, '0');
     return '${dateTime.year}-${two(dateTime.month)}-${two(dateTime.day)}';
@@ -1526,16 +1528,29 @@ class _ScoredRecommendation {
   final TodayRecommendationSection section;
 }
 
+class _ItemPoolMeta {
+  bool fromShopPlan = false;
+  bool fromDiscoveryPhase = false;
+  bool fromRelaxedPhase = false;
+  bool fromPersonalPhase = false;
+}
+
 class _RecommendSearchPlan {
   const _RecommendSearchPlan({
+    required this.phase,
+    required this.relaxLevel,
     required this.source,
     required this.keyword,
     required this.genreId,
     required this.shopCode,
+    this.sortOverride,
   });
 
+  final String phase;
+  final int relaxLevel;
   final String source;
   final String keyword;
   final String? genreId;
   final String? shopCode;
+  final String? sortOverride;
 }

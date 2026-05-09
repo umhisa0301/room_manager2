@@ -1,7 +1,7 @@
 import '../models/today_recommendation.dart';
 import '../models/user_profile.dart';
 
-const int todayRecommendationTagMax = 3;
+const int todayRecommendationTagMax = 2;
 
 /// おすすめカード向けのラベル（最大 [todayRecommendationTagMax]）。保存形式に依存しない。
 List<String> todayRecommendationUiTags(TodayRecommendationEntry entry) {
@@ -23,6 +23,7 @@ List<String> todayRecommendationUiTags(TodayRecommendationEntry entry) {
   if (r.contains('売れ筋価格')) add('売れ筋価格帯');
   if (r.contains('人気')) add('人気の候補');
   if (r.contains('新しい候補')) add('発掘候補');
+  if (r.contains('発掘・トレンド')) add('発掘・トレンド');
   if (r.contains('お手頃価格')) add('お手頃価格');
   if (r.contains('高単価候補')) add('高単価候補');
   if (r.contains('発掘枠')) add('発掘枠');
