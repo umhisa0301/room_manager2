@@ -1,6 +1,6 @@
 param(
-    [string]$RakutenAppId = "",
-    [string]$RakutenAffiliateId = "",
+    [string]$RakutenAppId = "1067117285680395162",
+    [string]$RakutenAffiliateId = "3d96198d.dce5f4ee.3d96198e.ed8cdd87",
     [string]$RemoteVideoPath = "/sdcard/Movies/play_demo.mp4",
     [int]$VideoBitRate = 8000000,
     [switch]$DemoMode
