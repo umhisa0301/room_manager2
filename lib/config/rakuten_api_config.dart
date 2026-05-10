@@ -7,6 +7,20 @@
 class RakutenApiConfig {
   RakutenApiConfig._();
 
+  /// 商品検索APIのプロキシ先（VPS）。
+  ///
+  /// TODO(iOS/Android監査): 本番運用では HTTPS 化したエンドポイントに置き換えること。
+  static const String proxyBaseUrl = String.fromEnvironment(
+    'RAKUTEN_PROXY_BASE_URL',
+    defaultValue: 'http://160.251.136.10/api',
+  );
+
+  /// 商品検索を楽天API直叩きではなくVPSプロキシ経由にするか。
+  static const bool useProxyForItemSearch = bool.fromEnvironment(
+    'RAKUTEN_USE_PROXY',
+    defaultValue: true,
+  );
+
   static const String applicationId = String.fromEnvironment(
     'RAKUTEN_APP_ID',
     defaultValue: '',

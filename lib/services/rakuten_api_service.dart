@@ -16,6 +16,7 @@ enum _RakutenApiMode { openapi, legacy }
 /// - **legacy**: `app.rakuten.co.jp` の 2022-06-01。accessKey なし・OpenAPI 専用ヘッダーなし。
 /// - **openapi**: `openapi.rakuten.co.jp` の 2026-04-01。applicationId + accessKey + 必要ヘッダー。
 class RakutenApiService {
+  static const String _proxyPath = '/rakuten';
   static const String _baseUrlOpenApi =
       'https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260401';
 
@@ -32,7 +33,7 @@ class RakutenApiService {
     int page = 1,
     int hits = 20,
   }) async {
-    if (!RakutenApiConfig.hasValidAppId) {
+    if (!RakutenApiConfig.useProxyForItemSearch && !RakutenApiConfig.hasValidAppId) {
       throw Exception('楽天APIのアプリIDが未設定です。');
     }
     Object? lastError;
@@ -101,6 +102,15 @@ class RakutenApiService {
     }
   }
 
+  /// プロキシ向け（VPS）では認証情報は付与しない。
+  static Map<String, String> _paramsForProxy(Map<String, String> common) {
+    final m = Map<String, String>.from(common);
+    m.remove('applicationId');
+    m.remove('accessKey');
+    m.remove('affiliateId');
+    return m;
+  }
+
   /// キーワード・ジャンル・店舗・価格・レビュー・affiliate までを組み立てる（accessKey は含めない）。
   static Map<String, String> _buildCommonSearchParams({
     required RakutenProductSearchCondition normalized,
@@ -158,9 +168,11 @@ class RakutenApiService {
     if (sortTrimmed.isNotEmpty) {
       params['sort'] = sortTrimmed;
     }
-    final aff = RakutenApiConfig.affiliateId.trim();
-    if (aff.isNotEmpty) {
-      params['affiliateId'] = aff;
+    if (!RakutenApiConfig.useProxyForItemSearch) {
+      final aff = RakutenApiConfig.affiliateId.trim();
+      if (aff.isNotEmpty) {
+        params['affiliateId'] = aff;
+      }
     }
     return params;
   }
@@ -184,15 +196,19 @@ class RakutenApiService {
     required String itemTrimmed,
   }) {
     if (!kDebugMode) return;
+    final proxy = RakutenApiConfig.useProxyForItemSearch;
     final label = mode == _RakutenApiMode.openapi ? 'openapi' : 'legacy';
-    final base = _baseUrlForMode(mode);
+    final base = proxy
+        ? '${RakutenApiConfig.proxyBaseUrl.trim()}$_proxyPath'
+        : _baseUrlForMode(mode);
     final uri = Uri.parse(base);
-    final openapiHeaders = mode == _RakutenApiMode.openapi;
+    final openapiHeaders = !proxy && mode == _RakutenApiMode.openapi;
     debugPrint(
-      '[Rakuten] request start mode=$label page=$page hits=$hits '
+      '[Rakuten] request start mode=${proxy ? 'proxy' : label} page=$page hits=$hits '
       'url=${uri.scheme}://${uri.host}${uri.path} '
+      'useProxy=${RakutenApiConfig.useProxyForItemSearch} '
       'forceLegacy=${RakutenApiConfig.forceLegacy} '
-      'accessKeySent=${mode == _RakutenApiMode.openapi} '
+      'accessKeySent=${!proxy && mode == _RakutenApiMode.openapi} '
       'openapiHeaders=$openapiHeaders '
       'keyword=${keywordTrimmed.isEmpty ? '(omit)' : keywordTrimmed} '
       'genreId=${hasGenre ? genreTrimmed : '-'} '
@@ -223,6 +239,7 @@ class RakutenApiService {
     final hasItem = itemTrimmed.isNotEmpty;
 
     var mode = _resolveSearchMode();
+    final useProxy = RakutenApiConfig.useProxyForItemSearch;
     _debugLogSearchPlan(
       mode: mode,
       page: page,
@@ -236,9 +253,11 @@ class RakutenApiService {
       itemTrimmed: itemTrimmed,
     );
 
-    var params = _paramsForSearchMode(mode, common);
-    var headers = _headersForSearchMode(mode);
-    final baseUrl = _baseUrlForMode(mode);
+    var params = useProxy ? _paramsForProxy(common) : _paramsForSearchMode(mode, common);
+    var headers = <String, String>{'User-Agent': _userAgent};
+    final baseUrl = useProxy
+        ? '${RakutenApiConfig.proxyBaseUrl.trim()}$_proxyPath'
+        : _baseUrlForMode(mode);
 
     http.Response response;
     try {
@@ -248,6 +267,12 @@ class RakutenApiService {
         headers: headers,
       );
     } catch (e) {
+      if (useProxy) {
+        if (kDebugMode) {
+          debugPrint('[Rakuten] proxy network error page=$page: $e');
+        }
+        rethrow;
+      }
       // OpenAPI 選択時のみ DNS 失敗なら legacy へ1回だけ試す（経路を明示ログ）。
       if (mode == _RakutenApiMode.openapi && _isLikelyDnsFailure(e)) {
         if (kDebugMode) {
@@ -323,6 +348,13 @@ class RakutenApiService {
       }
       throw Exception('楽天APIレスポンス形式が不正です');
     }
+    // 旧VPS応答互換: { ok: true, data: <rakutenResponse> } を受けた場合は data を展開する。
+    final wrapped = bodyMap['data'];
+    if (wrapped is Map<String, dynamic>) {
+      bodyMap = wrapped;
+    } else if (wrapped is Map) {
+      bodyMap = Map<String, dynamic>.from(wrapped);
+    }
     final errMsg = _rakutenErrorMessage(bodyMap);
     if (errMsg != null) {
       if (kDebugMode) {
@@ -354,8 +386,10 @@ class RakutenApiService {
       final path = Uri.parse(baseUrl).path;
       final hasOrigin = headers.containsKey('Origin');
       final hasReferer = headers.containsKey('Referer');
+      final usesProxy = path.endsWith(_proxyPath);
       debugPrint(
         '[Rakuten] GET $path … '
+        'proxy=${usesProxy ? 'yes' : 'no'} '
         'headers: User-Agent=set Origin=${hasOrigin ? 'set' : 'omit'} '
         'Referer=${hasReferer ? 'set' : 'omit'}',
       );
