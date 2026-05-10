@@ -413,3 +413,219 @@ _**Agent (default)**_
 <summary>Tool use: **read_file_v2**</summary>
 
 </details></tool-use>
+
+_**Agent (default)**_
+
+原因は `easy_initial_setup` 画面内の共通ラッパー `_DismissKeyboardOnInteract` が `GestureDetector.onTap` とスクロール開始で無条件 `unfocus()` している点でした。これからこのラッパーを「`EditableText` 領域タップ時は閉じない」「スクロール開始では閉じない」に弱め、明示操作時の `unfocus()`（次へ・変更など）は既存維持で調整します。
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:/dev/app_project/room_manager2/lib/screens/easy_initial_setup_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: ls</summary>
+
+```bash
+ls
+```
+
+```
+
+    Directory: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\terminals
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          2026/05/08    16:41          31514 1.txt
+-a---          2026/05/07    13:48             97 3.txt
+-a---          2026/05/08    14:27            324 85800.txt
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:/Users/muram/.cursor/projects/c-dev-app-project-room-manager2/terminals/1.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:/Users/muram/.cursor/projects/c-dev-app-project-room-manager2/terminals/3.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:/Users/muram/.cursor/projects/c-dev-app-project-room-manager2/terminals/85800.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+修正を反映したので、これから `flutter analyze` と `flutter test` を順に実行して副作用がないか確認します。
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: flutter analyze && flutter test</summary>
+
+```bash
+flutter analyze && flutter test
+```
+
+```
+Analyzing room_manager2...                                      
+No issues found! (ran in 6.4s)
+00:00 +0: loading C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が最優先
+00:00 +1: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が無ければ itemUrl
+00:00 +2: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliate と item が空なら rakutenUrl
+00:00 +3: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads postStyles
+00:00 +4: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and caps at three
+00:00 +5: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles effectivePostStyleList uses balance without showing it as selected
+00:00 +6: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 通常URL・クエリ付きで itemCode を抽出する
+00:00 +7: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 末尾スラッシュなしでも itemCode を抽出する
+00:00 +8: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 検索結果ホストは非商品ページエラーになる
+00:00 +9: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天以外のURLは商品ページURLエラーになる
+00:00 +10: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl item.rakuten で商品セグメントが不正なら確認できないエラー
+00:00 +11: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ済みがコレ候補より優先される
+00:00 +12: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ候補として分類される
+00:00 +13: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts 未登録
+00:01 +14: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser https の item.rakuten から shop / セグメント / 正規URL
+00:01 +15: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser http でも抽出できる
+00:01 +16: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser HTML 内の複数リンクから数値ID付きを優先
+00:01 +17: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RoomUrlResolver ROOM HTML から楽天商品URLを取得できる
+00:01 +18: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMプロフィールURLを許可して正規化する
+00:01 +19: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /items 付きROOMプロフィールURLを許可して正規化する
+00:01 +20: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /collections と /likes もプロフィール導線として許可する
+00:01 +21: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 空は任意入力として許可する
+00:01 +22: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat httpは拒否する
+00:01 +23: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 楽天市場URLは拒否する
+00:01 +24: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMトップURLのみは拒否する
+00:01 +25: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOM商品URL相当の複数パスは拒否する
+00:01 +26: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat roomIdなしの /items は拒否する
+00:01 +27: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 短縮URLは拒否する
+00:01 +28: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers extractRoomId extracts roomId from profile child routes
+00:01 +29: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers normalizeProfileUrl always stores profile URL
+00:01 +30: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers buildItemsUrl builds posting list URL from saved profile URL
+00:01 +31: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 200系は保存可能な確認成功にする
+00:01 +32: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 404は保存不可にする
+00:01 +33: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 403/429は形式OKなら確認保留で保存可能にする
+00:01 +34: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 通信失敗は形式OKなら確認保留で保存可能にする
+00:01 +35: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:02 +36: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+00:02 +37: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからない場合は null
+00:02 +38: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints">
+<details>
+<summary>Tool use: **read_lints**</summary>
+
+
+Parameters:
+
+```json
+{
+  "paths": [
+    "C:/dev/app_project/room_manager2/lib/screens/easy_initial_setup_screen.dart"
+  ]
+}
+```
+Result:
+
+```json
+{
+  "linterErrorsByFile": [
+    {
+      "relativeWorkspacePath": "C:/dev/app_project/room_manager2/lib/screens/easy_initial_setup_screen.dart"
+    }
+  ]
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints"><details>
+<summary>Tool use: **read_lints**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+`easy_initial_setup` 画面のキーボード競合を、`_DismissKeyboardOnInteract` の挙動を弱める形で修正しました。
+
+主な変更は `lib/screens/easy_initial_setup_screen.dart` です。
+
+- `GestureDetector.onTap` の**無条件 `unfocus()`**をやめ、`onTapDown` で判定するよう変更
+- フォーカス中ウィジェットが `EditableText` の場合、**タップ座標がその入力欄内なら `unfocus()` しない**ようにした
+- `ScrollStartNotification` での自動 `unfocus()` を削除（スクロール開始時の即閉じ競合を回避）
+- 既存の明示操作（`次へ`、`変更する`、BottomSheet オープン、スキップ等）で呼んでいる `_dismissKeyboard()` はそのまま維持
+
+これで意図としては以下になります。
+
+- ニックネーム欄タップ時はキーボード維持
+- 余白タップ時は閉じる
+- 明示ボタン操作時は閉じる
+- スクロール起点の自動 close は発生しない
+
+実行結果:
+
+- `flutter analyze` ✅ 問題なし
+- `flutter test` ✅ 全テスト通過（`All tests passed!`）
+- 変更ファイルに対する lint チェック (`ReadLints`) ✅ 問題なし
+
+必要なら次に、実機で「ニックネーム入力中に固定ボタンが跳ねないか」の確認観点を短くチェックリスト化します。
