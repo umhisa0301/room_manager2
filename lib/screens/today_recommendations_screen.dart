@@ -74,7 +74,8 @@ class _TodayRecommendationsScreenState
                     '保存済みのプロフィールや検索履歴に基づき、候補を集めています。通信状況により少し時間がかかることがあります。',
               );
             }
-            if (rec.errorMessage != null) {
+            if (rec.errorMessage != null &&
+                (rec.bundle == null || rec.bundle!.entries.isEmpty)) {
               return AppScreenErrorCenter(
                 title: 'おすすめを表示できませんでした',
                 message: rec.errorMessage!,

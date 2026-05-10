@@ -519,21 +519,19 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                     ),
                                 recommendationStatusMessage:
                                     recProvider.totalCount > 0 &&
-                                        recProvider.totalCount < 5
-                                    ? '候補を増やすにはジャンルや探し方を追加してください'
-                                    :
-                                    recProvider.generationStatus ==
-                                        TodayRecommendationGenerationStatus
-                                            .failedRateLimit
-                                    ? '候補を準備できませんでした'
-                                    : recProvider.generationStatus ==
-                                              TodayRecommendationGenerationStatus
-                                                  .failedApiError
-                                    ? '候補を準備できませんでした'
-                                    : recProvider.generationStatus ==
-                                              TodayRecommendationGenerationStatus
-                                                  .empty
-                                    ? '候補を準備できませんでした'
+                                        recProvider.totalCount < 10
+                                    ? '今日は${recProvider.totalCount}件のおすすめを用意しました'
+                                    : recProvider.totalCount == 0 &&
+                                          (recProvider.generationStatus ==
+                                                  TodayRecommendationGenerationStatus
+                                                      .failedRateLimit ||
+                                              recProvider.generationStatus ==
+                                                  TodayRecommendationGenerationStatus
+                                                      .failedApiError ||
+                                              recProvider.generationStatus ==
+                                                  TodayRecommendationGenerationStatus
+                                                      .empty)
+                                    ? 'おすすめを準備できませんでした'
                                     : null,
                                 onOpenSearch: () {
                                   _trace('trigger=cta');
@@ -813,7 +811,8 @@ class _HomeTodayProgressCard extends StatelessWidget {
     );
 
     final primary = _primaryAction();
-    final pendingLine = generationStatus == TodayRecommendationGenerationStatus.loading
+    final pendingLine =
+        generationStatus == TodayRecommendationGenerationStatus.loading
         ? 'おすすめを準備中です'
         : 'おすすめ未処理：$pendingCount件';
 
@@ -895,10 +894,9 @@ class _HomeTodayProgressCard extends StatelessWidget {
               recommendationStatusMessage!,
               maxLines: 3,
               softWrap: true,
-              style: _HomeUi.tapHint(context).copyWith(
-                fontSize: 12,
-                color: HomeScreenColors.footnoteMuted,
-              ),
+              style: _HomeUi.tapHint(
+                context,
+              ).copyWith(fontSize: 12, color: HomeScreenColors.footnoteMuted),
             ),
           ],
           const SizedBox(height: 14),
@@ -916,7 +914,8 @@ class _HomeTodayProgressCard extends StatelessWidget {
   }
 
   _HomeActionSpec _primaryAction() {
-    if (isLoading || generationStatus == TodayRecommendationGenerationStatus.loading) {
+    if (isLoading ||
+        generationStatus == TodayRecommendationGenerationStatus.loading) {
       return _HomeActionSpec(
         label: '準備中',
         icon: Icons.auto_awesome_rounded,
@@ -930,8 +929,10 @@ class _HomeTodayProgressCard extends StatelessWidget {
         onPressed: onPrimaryRecommendations,
       );
     }
-    if (generationStatus == TodayRecommendationGenerationStatus.failedRateLimit ||
-        generationStatus == TodayRecommendationGenerationStatus.failedApiError) {
+    if (generationStatus ==
+            TodayRecommendationGenerationStatus.failedRateLimit ||
+        generationStatus ==
+            TodayRecommendationGenerationStatus.failedApiError) {
       return _HomeActionSpec(
         label: 'おすすめを再生成',
         icon: Icons.refresh_rounded,

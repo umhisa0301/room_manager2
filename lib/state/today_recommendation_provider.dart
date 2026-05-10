@@ -16,6 +16,7 @@ enum TodayRecommendationGenerationStatus {
   loading,
   ready,
   empty,
+  partialSuccess,
   failedRateLimit,
   failedApiError,
 }
@@ -87,7 +88,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     _trace('trigger=$trigger');
     _trace('action=ensureToday');
     _trace('alreadyGenerating=$_isLoading');
-    _trace('lastGeneratedAt=${_bundle?.generatedAt.toIso8601String() ?? 'null'}');
+    _trace(
+      'lastGeneratedAt=${_bundle?.generatedAt.toIso8601String() ?? 'null'}',
+    );
     final todayKey = _localDateKey(DateTime.now());
     if (_bundle != null && _bundle!.localDateKey == todayKey) {
       _trace('shouldSkipBecauseRecentlyTried=true');
@@ -113,7 +116,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     _trace('trigger=$trigger');
     _trace('action=regenerateToday');
     _trace('alreadyGenerating=$_isLoading');
-    _trace('lastGeneratedAt=${_bundle?.generatedAt.toIso8601String() ?? 'null'}');
+    _trace(
+      'lastGeneratedAt=${_bundle?.generatedAt.toIso8601String() ?? 'null'}',
+    );
     if (_isLoading) {
       _guard('skip reason=alreadyGenerating');
       return;
@@ -145,23 +150,38 @@ class TodayRecommendationProvider extends ChangeNotifier {
       }
       _generationStatus = generated.entries.isEmpty
           ? TodayRecommendationGenerationStatus.empty
-          : TodayRecommendationGenerationStatus.ready;
+          : (generated.entries.length < 10
+                ? TodayRecommendationGenerationStatus.partialSuccess
+                : TodayRecommendationGenerationStatus.ready);
     } catch (e, st) {
       if (kDebugMode) {
         debugPrint('[TodayRecommendation] regenerateToday failed: $e');
         debugPrint('$st');
       }
-      final msg = e.toString().toLowerCase();
-      if (msg.contains('(429)') ||
-          msg.contains('allowed requests has been exceeded')) {
-        _generationStatus = TodayRecommendationGenerationStatus.failedRateLimit;
-        _cooldownUntil = DateTime.now().add(_autoRetryCooldown);
+      if (_bundle != null && _bundle!.entries.isNotEmpty) {
+        _errorMessage = null;
+        _generationStatus = _bundle!.entries.length < 10
+            ? TodayRecommendationGenerationStatus.partialSuccess
+            : TodayRecommendationGenerationStatus.ready;
+        _saveLog(keepPreviousBundle: true, reason: _failureTypeFromError(e));
+        _resultLog(
+          status: 'partialSuccess',
+          count: _bundle!.entries.length,
+          reason: 'keepPreviousBundle',
+        );
       } else {
-        _generationStatus = TodayRecommendationGenerationStatus.failedApiError;
+        final msg = e.toString().toLowerCase();
+        if (msg.contains('(429)') ||
+            msg.contains('allowed requests has been exceeded')) {
+          _generationStatus = TodayRecommendationGenerationStatus.failedRateLimit;
+          _cooldownUntil = DateTime.now().add(_autoRetryCooldown);
+        } else {
+          _generationStatus = TodayRecommendationGenerationStatus.failedApiError;
+        }
+        _errorMessage = 'おすすめを準備できませんでした。少し時間をおいて再試行してください';
+        _resultLog(status: 'failed', reason: _failureTypeFromError(e), count: 0);
+        _saveLog(saved: false, reason: _failureTypeFromError(e));
       }
-      _errorMessage = 'おすすめを準備できませんでした。少し時間をおいて再試行してください';
-      _resultLog(status: 'failed', reason: _failureTypeFromError(e));
-      _saveLog(saved: false, reason: _failureTypeFromError(e));
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -302,6 +322,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final metaById = <String, _ItemPoolMeta>{};
     var apiCalls = 0;
     var allPlansNoItems = true;
+    var rateLimited = false;
     const maxApiHard = 10;
 
     bool canCallMoreApi(int entryCount) {
@@ -316,7 +337,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
       doneItems: doneItems,
       candidateItems: candidateItems,
     );
-    for (var i = 0; i < plans.length; i++) {
+    final guardedPlanCount = plans.length > 1 ? plans.length - 1 : plans.length;
+    var i = 0;
+    for (; i < guardedPlanCount; i++) {
       final preview = _finalizeFromPool(
         pool: pool,
         metaById: metaById,
@@ -357,13 +380,22 @@ class TodayRecommendationProvider extends ChangeNotifier {
         postStyles: postStyles,
       );
 
-      final list = await _runSearchPlan(
-        phase: p.phase,
-        source: p.source,
-        planIndex: i + 1,
-        condition: condition,
-        excludeIds: excludeIds,
-      );
+      List<RakutenSearchItem> list;
+      try {
+        list = await _runSearchPlan(
+          phase: p.phase,
+          source: p.source,
+          planIndex: i + 1,
+          condition: condition,
+          excludeIds: excludeIds,
+        );
+      } catch (e) {
+        if (_isRateLimitError(e)) {
+          rateLimited = true;
+          break;
+        }
+        rethrow;
+      }
       apiCalls += 1;
       if (list.isNotEmpty) allPlansNoItems = false;
       for (final item in list) {
@@ -394,11 +426,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       if (pool.length > 45) break;
     }
 
-    if (pool.isEmpty && allPlansNoItems) {
-      _resultLog(status: 'empty', reason: 'allPlansNoItems');
-    }
-
-    final finalized = _finalizeFromPool(
+    var finalized = _finalizeFromPool(
       pool: pool,
       metaById: metaById,
       favoriteGenreIds: favoriteGenreIds,
@@ -414,6 +442,83 @@ class TodayRecommendationProvider extends ChangeNotifier {
       staleCandidatesForBridge: staleCandidates,
       reactionProfile: reactionProfile,
     );
+    if (!rateLimited && finalized.entries.length < 10) {
+      final hasExtraPlan = i < plans.length;
+      if (kDebugMode) {
+        debugPrint('[RECOMMEND_API_GUARD] extraSearchAllowed=$hasExtraPlan');
+      }
+      if (hasExtraPlan) {
+        final p = plans[i];
+        final condition = _conditionWithPostStyles(
+          keyword: p.keyword,
+          postStyles: postStyles,
+          genreId: p.genreId,
+          shopCode: p.shopCode,
+          relaxLevel: p.relaxLevel,
+          sortOverride: p.sortOverride,
+        );
+        try {
+          final list = await _runSearchPlan(
+            phase: p.phase,
+            source: p.source,
+            planIndex: i + 1,
+            condition: condition,
+            excludeIds: excludeIds,
+          );
+          apiCalls += 1;
+          if (list.isNotEmpty) allPlansNoItems = false;
+          for (final item in list) {
+            final exclusion = _excludeReason(
+              item: item,
+              excludeIds: excludeIds,
+              doneItems: doneItems,
+              candidateItems: candidateItems,
+              dedup: pool,
+            );
+            if (exclusion != null) continue;
+            final id = item.productId.trim();
+            pool[id] = item;
+            final m = metaById.putIfAbsent(id, () => _ItemPoolMeta());
+            if (p.phase == 'personal' || p.phase == 'fallback') {
+              m.fromPersonalPhase = true;
+            }
+            if (p.phase == 'relaxed') m.fromRelaxedPhase = true;
+            if (p.phase == 'discovery') m.fromDiscoveryPhase = true;
+            if (p.source == 'shop') m.fromShopPlan = true;
+          }
+          finalized = _finalizeFromPool(
+            pool: pool,
+            metaById: metaById,
+            favoriteGenreIds: favoriteGenreIds,
+            savedShopIds: savedShopIds,
+            preferredGenreWords: genreWords,
+            doneItems: doneItems,
+            candidateItems: candidateItems,
+            postStyles: postStyles,
+            soldOutcomeItems: soldOutcomeItems,
+            reactedOutcomeItems: reactedOutcomeItems,
+            likedOnlyOutcomeItems: likedOnlyOutcomeItems,
+            recentCandidatesForBridge: recentCandidates,
+            staleCandidatesForBridge: staleCandidates,
+            reactionProfile: reactionProfile,
+          );
+        } catch (e) {
+          if (_isRateLimitError(e)) {
+            rateLimited = true;
+          } else {
+            rethrow;
+          }
+        }
+      }
+    } else if (kDebugMode) {
+      debugPrint('[RECOMMEND_API_GUARD] skipExtraSearch reason=poolHasEnoughBackfill');
+      debugPrint('[RECOMMEND_API_GUARD] extraSearchAllowed=false');
+    }
+
+    if (pool.isEmpty && allPlansNoItems) {
+      _resultLog(status: 'failed', reason: 'allPlansNoItems', count: 0);
+    }
+
     final entries = finalized.entries;
 
     if (kDebugMode) {
@@ -425,13 +530,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         'total=${entries.length}',
       );
       if (entries.isEmpty) {
-        debugPrint('[RECOMMEND_RESULT] status=empty reason=noAcceptedItems');
-      } else if (entries.length < 10) {
-        _resultLog(
-          status: 'partial',
-          count: entries.length,
-          reason: 'shortfallAfterPlans',
-        );
+        debugPrint('[RECOMMEND_RESULT] status=failed count=0');
       }
       debugPrint(
         '[RECOMMEND_RESULT] style=$selectedStyle personalCount=${finalized.personalCount} '
@@ -440,11 +539,18 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
     _trace('finalCandidateCount=${entries.length}');
     _trace('failureType=${entries.isEmpty ? 'empty' : 'none'}');
-    _resultLog(
-      status: entries.isEmpty ? 'empty' : 'success',
-      count: entries.length,
-      reason: entries.isEmpty ? 'allPlansNoItems' : null,
-    );
+    if (rateLimited && entries.isNotEmpty) {
+      _resultLog(status: 'partialSuccess', count: entries.length);
+    } else {
+      _resultLog(
+        status: entries.isEmpty ? 'failed' : 'success',
+        count: entries.length,
+        reason: entries.isEmpty ? 'allPlansNoItems' : null,
+      );
+    }
+    if (rateLimited && entries.isEmpty) {
+      throw Exception('Rakuten API rate limit (429)');
+    }
     return TodayRecommendationBundle(
       localDateKey: _localDateKey(DateTime.now()),
       generatedAt: DateTime.now(),
@@ -463,9 +569,14 @@ class TodayRecommendationProvider extends ChangeNotifier {
   }) {
     final favList = favoriteGenreIds.toList(growable: false);
     final keywordPrimary = keywords.isEmpty ? '人気' : keywords.first;
-    final keywordAlt =
-        keywords.length >= 2 ? keywords[1] : (keywords.isEmpty ? 'ランキング' : '売れ筋');
-    final historyGenres = _topGenresFromHistory(doneItems, candidateItems, limit: 4);
+    final keywordAlt = keywords.length >= 2
+        ? keywords[1]
+        : (keywords.isEmpty ? 'ランキング' : '売れ筋');
+    final historyGenres = _topGenresFromHistory(
+      doneItems,
+      candidateItems,
+      limit: 4,
+    );
     final plans = <_RecommendSearchPlan>[];
 
     void addPlan(_RecommendSearchPlan plan) => plans.add(plan);
@@ -611,7 +722,26 @@ class TodayRecommendationProvider extends ChangeNotifier {
     return sorted.take(limit).map((e) => e.key).toList(growable: false);
   }
 
-  ({List<TodayRecommendationEntry> entries, int personalCount, int relaxedCount, int discoveryCount}) _finalizeFromPool({
+  bool _passesBackfillQualityGate(
+    RakutenSearchItem item, {
+    required Set<String> postStyles,
+  }) {
+    if (_recommendRejectReason(item, postStyles: postStyles) != null) {
+      return false;
+    }
+    if (item.itemPrice < 500 || item.itemPrice >= 50000) return false;
+    if (!(item.reviewCount >= 3 || item.reviewAverage >= 4.0)) return false;
+    if (item.imageUrl.trim().isEmpty) return false;
+    return item.itemUrl.trim().isNotEmpty || item.affiliateUrl.trim().isNotEmpty;
+  }
+
+  ({
+    List<TodayRecommendationEntry> entries,
+    int personalCount,
+    int relaxedCount,
+    int discoveryCount,
+  })
+  _finalizeFromPool({
     required Map<String, RakutenSearchItem> pool,
     required Map<String, _ItemPoolMeta> metaById,
     required Set<String> favoriteGenreIds,
@@ -627,44 +757,76 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required List<RakutenManagedProduct> staleCandidatesForBridge,
     required _ReactionProfile reactionProfile,
   }) {
-    final scored =
-        pool.values
-            .map(
-              (item) => _scoreRecommendationForBucket(
-                item,
-                meta: metaById[item.productId.trim()] ?? _ItemPoolMeta(),
-                favoriteGenreIds: favoriteGenreIds,
-                savedShopIds: savedShopIds,
-                preferredGenreWords: preferredGenreWords,
-                doneItems: doneItems,
-                candidateItems: candidateItems,
-                postStyles: postStyles,
-                soldOutcomeItems: soldOutcomeItems,
-                reactedOutcomeItems: reactedOutcomeItems,
-                likedOnlyOutcomeItems: likedOnlyOutcomeItems,
-                recentCandidatesForBridge: recentCandidatesForBridge,
-                staleCandidatesForBridge: staleCandidatesForBridge,
-                reactionProfile: reactionProfile,
-              ),
-            )
-            .where((e) => e != null)
-            .cast<_ScoredRecommendation>()
-            .toList()
-          ..sort((a, b) => b.score.compareTo(a.score));
+    final scored = <_ScoredRecommendation>[];
+    for (final item in pool.values) {
+      final scoredItem = _scoreRecommendationForBucket(
+        item,
+        meta: metaById[item.productId.trim()] ?? _ItemPoolMeta(),
+        favoriteGenreIds: favoriteGenreIds,
+        savedShopIds: savedShopIds,
+        preferredGenreWords: preferredGenreWords,
+        doneItems: doneItems,
+        candidateItems: candidateItems,
+        postStyles: postStyles,
+        soldOutcomeItems: soldOutcomeItems,
+        reactedOutcomeItems: reactedOutcomeItems,
+        likedOnlyOutcomeItems: likedOnlyOutcomeItems,
+        recentCandidatesForBridge: recentCandidatesForBridge,
+        staleCandidatesForBridge: staleCandidatesForBridge,
+        reactionProfile: reactionProfile,
+      );
+      if (scoredItem != null) scored.add(scoredItem);
+    }
+    scored.sort((a, b) => b.score.compareTo(a.score));
+    if (kDebugMode) {
+      debugPrint(
+        '[RECOMMEND_POOL] raw=${pool.length} valid=${scored.length} scored=${scored.length}',
+      );
+    }
 
     final picked = _pickBalancedBySection(scored);
-    final entries =
-        picked
-            .map(
-              (e) => TodayRecommendationEntry(
-                item: e.item,
-                reason: e.reason,
-                section: e.section,
-                score: e.score,
-                priceScore: e.priceScore,
-              ),
-            )
-            .toList(growable: false);
+    if (kDebugMode) {
+      debugPrint('[RECOMMEND_SELECT] strictSelected=${picked.length}');
+    }
+    final entryList = picked
+        .map(
+          (e) => TodayRecommendationEntry(
+            item: e.item,
+            reason: e.reason,
+            section: e.section,
+            score: e.score,
+            priceScore: e.priceScore,
+          ),
+        )
+        .toList(growable: true);
+
+    if (entryList.length < 10) {
+      final selectedIds = entryList.map((e) => e.item.productId.trim()).toSet();
+      var added = 0;
+      for (final e in scored) {
+        if (entryList.length >= 10) break;
+        final id = e.item.productId.trim();
+        if (id.isEmpty || selectedIds.contains(id)) continue;
+        if (!_passesBackfillQualityGate(e.item, postStyles: postStyles)) continue;
+        entryList.add(
+          TodayRecommendationEntry(
+            item: e.item,
+            reason: e.reason,
+            section: e.section,
+            score: e.score,
+            priceScore: e.priceScore,
+          ),
+        );
+        selectedIds.add(id);
+        added += 1;
+      }
+      if (kDebugMode && added > 0) {
+        debugPrint('[RECOMMEND_BACKFILL] fromExistingPool=true added=$added');
+        debugPrint('[RECOMMEND_BACKFILL] reason=diversityRelaxed');
+        debugPrint('[RECOMMEND_BACKFILL] added=$added total=${entryList.length}');
+      }
+    }
+    final entries = entryList.toList(growable: false);
 
     final personalCount = entries
         .where((e) => e.section == TodayRecommendationSection.popular)
@@ -705,43 +867,29 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final tokenCounts = <String, int>{};
     final mainTopicCounts = <String, int>{};
 
-    bool canAddByDiversity(_ScoredRecommendation e) {
+    double adjustedScore(_ScoredRecommendation e) {
+      var score = e.score;
       final shop = e.item.shopCode.trim();
       final genre = e.item.genreId.trim();
       final band = _priceBand(e.item.itemPrice);
       final token = _titleCoreToken(e.item.itemName);
-      if (shop.isNotEmpty && (shopCounts[shop] ?? 0) >= 2) {
-        if (kDebugMode) {
-          debugPrint('[RECOMMEND_DIVERSITY] reducedBecause=sameShop shopCode=$shop');
-        }
-        return false;
-      }
-      if (genre.isNotEmpty && (genreCounts[genre] ?? 0) >= 3) {
-        if (kDebugMode) {
-          debugPrint('[RECOMMEND_DIVERSITY] reducedBecause=sameGenre genreId=$genre');
-        }
-        return false;
-      }
-      if ((priceBandCounts[band] ?? 0) >= 4) {
-        if (kDebugMode) {
-          debugPrint('[RECOMMEND_DIVERSITY] reducedBecause=samePriceBand band=$band');
-        }
-        return false;
-      }
-      if (token.isNotEmpty && (tokenCounts[token] ?? 0) >= 2) {
-        if (kDebugMode) {
-          debugPrint('[RECOMMEND_DIVERSITY] reducedBecause=sameTitleToken token=$token');
-        }
-        return false;
-      }
       final mainTopic = _mainTopicKey(e.item.itemName);
       if (mainTopic.isNotEmpty && (mainTopicCounts[mainTopic] ?? 0) >= 2) {
-        if (kDebugMode) {
-          debugPrint('[RECOMMEND_DIVERSITY] reducedBecause=sameMainTopic');
-        }
-        return false;
+        score -= 40;
       }
-      return true;
+      if (token.isNotEmpty && (tokenCounts[token] ?? 0) >= 2) {
+        score -= 35;
+      }
+      if (genre.isNotEmpty && (genreCounts[genre] ?? 0) >= 3) {
+        score -= 25;
+      }
+      if (shop.isNotEmpty && (shopCounts[shop] ?? 0) >= 2) {
+        score -= 30;
+      }
+      if ((priceBandCounts[band] ?? 0) >= 4) {
+        score -= 18;
+      }
+      return score;
     }
 
     void markDiversity(_ScoredRecommendation e) {
@@ -760,16 +908,40 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
 
     void takeFrom(List<_ScoredRecommendation> list, int max) {
-      for (final e in list) {
-        if (selected.length >= 10) return;
-        if (max <= 0) return;
-        final id = e.item.productId.trim();
-        if (id.isEmpty || selectedIds.contains(id)) continue;
-        if (!canAddByDiversity(e)) continue;
-        selected.add(e);
-        selectedIds.add(id);
-        markDiversity(e);
-        max -= 1;
+      for (var n = 0; n < max && selected.length < 10; n++) {
+        _ScoredRecommendation? best;
+        var bestScore = double.negativeInfinity;
+        for (final e in list) {
+          final id = e.item.productId.trim();
+          if (id.isEmpty || selectedIds.contains(id)) continue;
+          final s = adjustedScore(e);
+          if (s > bestScore) {
+            bestScore = s;
+            best = e;
+          }
+        }
+        if (best == null) return;
+        if (kDebugMode) {
+          final mainTopic = _mainTopicKey(best.item.itemName);
+          final genre = best.item.genreId.trim();
+          final token = _titleCoreToken(best.item.itemName);
+          final shop = best.item.shopCode.trim();
+          if (mainTopic.isNotEmpty && (mainTopicCounts[mainTopic] ?? 0) >= 2) {
+            debugPrint('[RECOMMEND_DIVERSITY] demotedBecause=sameMainTopic penalty=-40');
+          }
+          if (genre.isNotEmpty && (genreCounts[genre] ?? 0) >= 3) {
+            debugPrint('[RECOMMEND_DIVERSITY] demotedBecause=sameGenre penalty=-25');
+          }
+          if (token.isNotEmpty && (tokenCounts[token] ?? 0) >= 2) {
+            debugPrint('[RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35');
+          }
+          if (shop.isNotEmpty && (shopCounts[shop] ?? 0) >= 2) {
+            debugPrint('[RECOMMEND_DIVERSITY] demotedBecause=sameShop penalty=-30');
+          }
+        }
+        selected.add(best);
+        selectedIds.add(best.item.productId.trim());
+        markDiversity(best);
       }
     }
 
@@ -783,9 +955,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
         if (selected.length >= 10) break;
         final id = e.item.productId.trim();
         if (id.isEmpty || selectedIds.contains(id)) continue;
-        if (!canAddByDiversity(e)) continue;
-        final freshCount =
-            selected.where((x) => x.section == TodayRecommendationSection.fresh).length;
+        final freshCount = selected
+            .where((x) => x.section == TodayRecommendationSection.fresh)
+            .length;
         if (e.section == TodayRecommendationSection.fresh && freshCount >= 3) {
           continue;
         }
@@ -838,11 +1010,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
       _apiLogStatus(phase: phase, status: apiStatus, rawCount: 0);
       if (msg.contains('(429)') ||
           msg.toLowerCase().contains('allowed requests has been exceeded')) {
-        _resultLog(status: 'failed', reason: 'rateLimit');
+        _resultLog(status: 'failed', reason: 'rateLimit', count: 0);
       } else if (msg.contains('(400)') || msg.contains('(500)')) {
-        _resultLog(status: 'failed', reason: 'apiError');
+        _resultLog(status: 'failed', reason: 'apiError', count: 0);
       } else {
-        _resultLog(status: 'failed', reason: 'exception');
+        _resultLog(status: 'failed', reason: 'exception', count: 0);
       }
       rethrow;
     }
@@ -929,7 +1101,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required int rawCount,
   }) {
     if (!kDebugMode) return;
-    debugPrint('[RECOMMEND_API] phase=$phase status=$status rawCount=$rawCount');
+    debugPrint(
+      '[RECOMMEND_API] phase=$phase status=$status rawCount=$rawCount',
+    );
   }
 
   void _filterLog({
@@ -943,11 +1117,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     );
   }
 
-  void _resultLog({
-    required String status,
-    String? reason,
-    int? count,
-  }) {
+  void _resultLog({required String status, String? reason, int? count}) {
     if (!kDebugMode) return;
     if (reason != null && count != null) {
       debugPrint(
@@ -962,13 +1132,30 @@ class TodayRecommendationProvider extends ChangeNotifier {
     debugPrint('[RECOMMEND_RESULT] status=$status count=${count ?? 0}');
   }
 
-  void _saveLog({required bool saved, String? reason, int? count}) {
+  void _saveLog({
+    bool? saved,
+    bool keepPreviousBundle = false,
+    String? reason,
+    int? count,
+  }) {
     if (!kDebugMode) return;
-    if (saved) {
+    if (keepPreviousBundle) {
+      debugPrint('[RECOMMEND_SAVE] keepPreviousBundle=true reason=${reason ?? ''}');
+      return;
+    }
+    if (saved == true) {
       debugPrint('[RECOMMEND_SAVE] savedBundle=true count=${count ?? 0}');
     } else {
-      debugPrint('[RECOMMEND_SAVE] savedBundle=false reason=${reason ?? 'unknown'}');
+      debugPrint(
+        '[RECOMMEND_SAVE] savedBundle=false reason=${reason ?? 'unknown'}',
+      );
     }
+  }
+
+  bool _isRateLimitError(Object e) {
+    final msg = e.toString().toLowerCase();
+    return msg.contains('(429)') ||
+        msg.contains('allowed requests has been exceeded');
   }
 
   void _guard(String message) {
@@ -1189,10 +1376,15 @@ class TodayRecommendationProvider extends ChangeNotifier {
 
     var score = 0.0;
     final reasons = <String>[];
-    final genreMatch = _genreMatchScore(item, favoriteGenreIds, preferredGenreWords);
+    final genreMatch = _genreMatchScore(
+      item,
+      favoriteGenreIds,
+      preferredGenreWords,
+    );
     final doneSimilarity = _historySimilarity(item, doneItems);
     final candidateSimilarity = _historySimilarity(item, candidateItems);
-    final savedShopMatch = item.shopCode.trim().isNotEmpty &&
+    final savedShopMatch =
+        item.shopCode.trim().isNotEmpty &&
         savedShopIds.contains(item.shopCode.trim());
 
     final outcomeBoost = _outcomeInsightBoost(
@@ -1269,7 +1461,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (item.reviewCount >= 10) {
       score += 10;
       reasons.add('レビュー多め');
-      if (style == UserProfile.postStyleReviewRich && item.reviewAverage < 3.8) {
+      if (style == UserProfile.postStyleReviewRich &&
+          item.reviewAverage < 3.8) {
         score -= 18;
       }
     }
@@ -1386,11 +1579,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
     if (item.itemPrice >= 50000) return 'tooExpensive';
     final businessWord = RegExp(
-      r'業務用|法人|産業|工業|周波数変換器|三相|50KVA|中古|未使用品|測定器|建設|部材|部品取り|訳あり高額|ジャンク',
+      r'業務用|法人|産業|工業|周波数変換器|三相|50KVA|中古|未使用品|測定器|建設|部材|部品取り|訳あり高額|ジャンク|ライセンス|許諾',
       caseSensitive: false,
     );
     if (businessWord.hasMatch(title)) return 'businessItem';
-    if (item.reviewCount == 0 && item.itemPrice >= 30000) return 'highPriceNoReview';
+    if (item.reviewCount == 0 && item.itemPrice >= 30000) {
+      return 'highPriceNoReview';
+    }
     if (postStyles.contains(UserProfile.postStyleSocial) &&
         item.imageUrl.trim().isEmpty) {
       return 'missingImage';
@@ -1762,16 +1957,16 @@ class TodayRecommendationProvider extends ChangeNotifier {
     var score = 0.0;
     final reasons = <String>[];
     final title = item.itemName.trim();
-    final practicalWord = RegExp(
-      r'育児|日用品|キッチン|収納|食品|生活雑貨|ベビー|掃除|洗濯|防災',
-    );
+    final practicalWord = RegExp(r'育児|日用品|キッチン|収納|食品|生活雑貨|ベビー|掃除|洗濯|防災');
     final giftWord = RegExp(r'ギフト|贈り物|プレゼント|母の日|父の日|お祝い');
 
     if (item.imageUrl.trim().isNotEmpty) {
       score += 15;
       reasons.add('投稿しやすい');
     }
-    if (title.length >= 6 && title.length <= 42 && !_looksLikeModelOnly(title)) {
+    if (title.length >= 6 &&
+        title.length <= 42 &&
+        !_looksLikeModelOnly(title)) {
       score += 10;
     }
     if (practicalWord.hasMatch('$title ${item.genreName}')) {
@@ -1794,9 +1989,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     return (score: score, reasons: reasons);
   }
 
-  ({double score, List<String> reasons}) _roomFitScore(
-    RakutenSearchItem item,
-  ) {
+  ({double score, List<String> reasons}) _roomFitScore(RakutenSearchItem item) {
     var score = 0.0;
     final reasons = <String>[];
     final text = '${item.itemName} ${item.genreName}'.toLowerCase();
