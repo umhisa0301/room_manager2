@@ -63,8 +63,8 @@ class RoomSyncService {
       roomSyncSummaryLog('ROOM投稿取り込み 開始（最大$maxItems件）');
       roomImportPerfLog('totalStart');
       roomImportPerfLog('prepareStart');
-      onProcessingHint?.call('準備中: 投稿一覧を取得しています');
-      roomImportUiLog('phase=preparing message=投稿一覧を取得しています');
+      onProcessingHint?.call('ROOM投稿を確認しています');
+      roomImportUiLog('phase=preparing message=ROOM投稿を確認しています');
 
       if (kDemoModeEnabled) {
         roomSyncWarn('デモモードのため中断（fatal 相当）');
@@ -110,11 +110,14 @@ class RoomSyncService {
       roomSyncLog('ROOM投稿一覧URL（取得用）: $listingUrl');
       roomImportPerfLog('fetchRoomListStart url=$listingUrl');
       final prepareSw = Stopwatch()..start();
+      final swRoomListHtml = Stopwatch()..start();
+      roomImportListingLog('source=html page=1 url=$listingUrl');
       final initialOrdered = await _listingFetcher
           .fetchPostedRoomProductPageUrls(
             listingUrl,
             onListingHtml: (h) => listingHtml = h,
           );
+      swRoomListHtml.stop();
       roomSyncVerboseLog(
         '一覧HTMLから得られたROOM商品URL総数（未取り込みフィルタ前）: ${initialOrdered.length}',
       );
@@ -139,13 +142,17 @@ class RoomSyncService {
       }
 
       /// ROOM同期バッチ中は共有し、[persistRoomCollectedFromRoomPage] に渡して再読込を避ける。
+      final swExistingProducts = Stopwatch()..start();
       final workingManagedList = List<RakutenManagedProduct>.from(
         _repository.loadAll(),
       );
+      swExistingProducts.stop();
+      final swSyncedKeys = Stopwatch()..start();
       final syncedRoomKeys =
           RakutenManagedProductRepository.normalizedRoomProductUrlKeys(
             workingManagedList,
           );
+      swSyncedKeys.stop();
 
       final initialUnsynced = initialOrdered
           .where((k) => !syncedRoomKeys.contains(k))
@@ -157,6 +164,7 @@ class RoomSyncService {
       roomSyncVerboseLog('初期HTML候補数: $listingInitialCandidateCount');
       roomSyncVerboseLog('初期HTML未取り込み候補数: $initialUnsynced');
 
+      final swQueueBuild = Stopwatch()..start();
       final userSeg = _roomUserSegment(profile);
       final orderedKeys = List<String>.from(initialOrdered);
       final seenKeys = orderedKeys.toSet();
@@ -179,7 +187,14 @@ class RoomSyncService {
       }
 
       advanceQueueFromDiscovery();
+      if (toProcess.length >= maxItems) {
+        roomImportListingLog(
+          'stop reason=enoughItems count=${toProcess.length} source=html',
+        );
+      }
+      swQueueBuild.stop();
 
+      final swCollects = Stopwatch()..start();
       var additionalFetchStatus = '不要';
       if (toProcess.length < maxItems) {
         final allInitialSynced =
@@ -197,18 +212,37 @@ class RoomSyncService {
         if (numericUserId == null || numericUserId.isEmpty) {
           final itemsUri = _itemsListingUri(profile);
           if (itemsUri != null) {
-            roomSyncVerboseLog(
-              'userData.id 未取得のため /items へ再GETして再試行: $itemsUri',
-            );
-            final h = await _listingFetcher.fetchListingHtmlBody(
-              itemsUri.toString(),
-            );
-            if (h != null) {
-              RoomUserPostedListingFetcher.logListingHtmlInvestigation(h);
+            final listingNorm = _canonicalRoomListingUrl(listingUrl);
+            final itemsNorm = _canonicalRoomListingUrl(itemsUri.toString());
+            final sameListingUrl = listingNorm == itemsNorm;
+            if (sameListingUrl && (listingHtml ?? '').isNotEmpty) {
+              roomSyncVerboseLog(
+                'userData.id 未取得だが一覧URL同一のため再GETせず HTML を再利用',
+              );
+              roomImportListingLog(
+                'source=html_reuse page=1 url=$itemsUri reason=sameAsInitialListing',
+              );
               numericUserId =
                   RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
-                    h,
+                    listingHtml!,
                   );
+            } else {
+              roomSyncVerboseLog(
+                'userData.id 未取得のため /items へ再GETして再試行: $itemsUri',
+              );
+              roomImportListingLog(
+                'source=html page=2 url=$itemsUri reason=userIdFromInitialState',
+              );
+              final h = await _listingFetcher.fetchListingHtmlBody(
+                itemsUri.toString(),
+              );
+              if (h != null) {
+                RoomUserPostedListingFetcher.logListingHtmlInvestigation(h);
+                numericUserId =
+                    RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
+                      h,
+                    );
+              }
             }
           }
         }
@@ -226,6 +260,11 @@ class RoomSyncService {
             pageIdx++
           ) {
             roomSyncVerboseLog('追加取得 page/cursor: ${cursor ?? '(先頭ページ)'}');
+            roomImportListingLog(
+              'source=collects page=${pageIdx + 1} '
+              'url=https://room.rakuten.co.jp/api/$numericUserId/collects '
+              'cursor=${cursor ?? '(start)'}',
+            );
             final page = await _listingFetcher.fetchCollectsApiPage(
               numericUserId: numericUserId,
               roomUserSegment: userSeg,
@@ -253,8 +292,20 @@ class RoomSyncService {
                 .length;
             roomSyncVerboseLog('追加取得後の未取り込み候補数: $unsyncedAmongDiscovered');
 
+            if (toProcess.length >= maxItems) {
+              roomImportListingLog(
+                'stop reason=enoughItems count=${toProcess.length} '
+                'source=collects page=${pageIdx + 1}',
+              );
+              break;
+            }
+
             cursor = page.nextAfterId;
             if (cursor == null || cursor.isEmpty || page.rawItemCount == 0) {
+              roomImportListingLog(
+                'stop reason=apiNoMore cursorEmpty=${cursor == null || cursor.isEmpty} '
+                'rawItemCount=${page.rawItemCount}',
+              );
               break;
             }
             if (appended == 0 && toProcess.length < maxItems) {
@@ -267,6 +318,7 @@ class RoomSyncService {
         roomSyncVerboseLog('追加取得方式: 不要（初期候補でキュー充足見込み）');
       }
 
+      swCollects.stop();
       roomSyncVerboseLog('取り込み対象キュー件数: ${toProcess.length}');
       prepareSw.stop();
       roomImportPerfLog(
@@ -274,8 +326,32 @@ class RoomSyncService {
       );
       if (kDebugMode) {
         RoomImportDebugLogBuffer.notePrepareMs(prepareSw.elapsedMilliseconds);
+        roomImportPrepareDetailLog(
+          'roomListHtmlFetchMs',
+          swRoomListHtml.elapsedMilliseconds,
+        );
+        roomImportPrepareDetailLog(
+          'collectsFetchMs',
+          swCollects.elapsedMilliseconds,
+        );
+        roomImportPrepareDetailLog(
+          'existingProductsLoadMs',
+          swExistingProducts.elapsedMilliseconds,
+        );
+        roomImportPrepareDetailLog(
+          'syncedKeyBuildMs',
+          swSyncedKeys.elapsedMilliseconds,
+        );
+        roomImportPrepareDetailLog(
+          'queueBuildMs',
+          swQueueBuild.elapsedMilliseconds,
+        );
       }
-      onProcessingHint?.call('取り込み対象 ${toProcess.length} 件を処理します');
+      onProcessingHint?.call(
+        toProcess.isEmpty
+            ? 'ROOM投稿を確認しています'
+            : '0/${toProcess.length}件を取り込み中',
+      );
       roomImportUiLog('phase=processing current=0 total=${toProcess.length}');
 
       if (toProcess.isEmpty) {
@@ -315,6 +391,7 @@ class RoomSyncService {
         final ordinal = i + 1;
         roomImportPerfLog('itemStart index=$ordinal roomUrl=$roomPageUrl');
         roomImportUiLog('phase=processing current=$ordinal total=$batchSize');
+        onProcessingHint?.call('$ordinal/$batchSize件を取り込み中');
         roomSyncVerboseLog('$ordinal件目の商品を確認');
         roomSyncVerboseLog('roomUrl: $roomPageUrl');
 
@@ -639,6 +716,17 @@ class RoomSyncService {
       return Uri.parse(itemsUrl);
     } catch (_) {
       return null;
+    }
+  }
+
+  /// 同一 ROOM 一覧 URL の再 GET を避けるための比較用キー。
+  static String _canonicalRoomListingUrl(String raw) {
+    try {
+      final u = Uri.parse(raw.trim());
+      final path = u.path.endsWith('/') ? u.path.substring(0, u.path.length - 1) : u.path;
+      return '${u.scheme}://${u.host.toLowerCase()}$path'.toLowerCase();
+    } catch (_) {
+      return raw.trim().toLowerCase();
     }
   }
 }

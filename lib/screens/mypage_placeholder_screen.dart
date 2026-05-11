@@ -1110,10 +1110,22 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
 
     return Consumer2<RoomImportController, BulkOperationStateController>(
       builder: (context, ctl, bulk, _) {
-        final busy = ctl.isRunning;
+        final busy = ctl.isRunning || bulk.isMetadataEnriching;
+        final enrichingOnly =
+            !ctl.isRunning && bulk.isMetadataEnriching;
         final completed = ctl.checkedCount;
         final total = ctl.targetCount;
         final actionLocked = bulk.isAnyBlockingOperationRunning;
+
+        final busyTitle = enrichingOnly
+            ? '商品情報を整えています'
+            : (ctl.isRunning
+                  ? (total > 0
+                        ? '$completed / $total件を取り込み中'
+                        : (ctl.importProcessingHint.isNotEmpty
+                              ? ctl.importProcessingHint
+                              : 'ROOM投稿を確認しています'))
+                  : 'ROOM投稿を確認中');
 
         return AppCard(
           padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
@@ -1143,13 +1155,13 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
               ] else ...[
                 if (busy) ...[
                   Text(
-                    'ROOM投稿を確認中',
+                    busyTitle,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  if (total > 0)
+                  if (ctl.isRunning && total > 0)
                     Text(
                       '$completed / $total件',
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -1158,7 +1170,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                     ),
                   const SizedBox(height: 6),
                   LinearProgressIndicator(
-                    value: total > 0 && completed >= 0
+                    value: ctl.isRunning &&
+                            total > 0 &&
+                            completed >= 0
                         ? (completed / total).clamp(0.0, 1.0)
                         : null,
                   ),

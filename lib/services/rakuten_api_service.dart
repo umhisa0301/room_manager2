@@ -332,7 +332,7 @@ class RakutenApiService {
       )) {
         throw Exception(_invalidApplicationIdUserMessage(detail));
       }
-      throw _RakutenApiTransportException(
+      throw RakutenApiTransportException(
         statusCode: response.statusCode,
         message:
             '楽天API呼び出しに失敗しました (${response.statusCode})'
@@ -404,9 +404,9 @@ bool _isLikelyDnsFailure(Object e) {
       s.contains('no address associated with hostname');
 }
 
-/// 通信層のHTTPステータス（リトライ判定用）。同一ファイル内のみ。
-class _RakutenApiTransportException implements Exception {
-  _RakutenApiTransportException({
+/// 通信層のHTTPステータス（リトライ判定・ROOM補完の 429 検知など）。
+class RakutenApiTransportException implements Exception {
+  RakutenApiTransportException({
     required this.statusCode,
     required this.message,
   });
@@ -421,7 +421,7 @@ class _RakutenApiTransportException implements Exception {
 bool _isRetriableFailure(Object e) {
   if (e is TimeoutException) return true;
   if (e is http.ClientException) return true;
-  if (e is _RakutenApiTransportException) {
+  if (e is RakutenApiTransportException) {
     final c = e.statusCode;
     if (c >= 500 && c <= 504) return true;
     return false;

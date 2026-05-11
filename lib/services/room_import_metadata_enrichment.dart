@@ -4,6 +4,7 @@ import '../models/rakuten_managed_product.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../utils/room_sync_log.dart';
+import 'room_import_limit_policy.dart';
 
 /// Phase 3 向けに ROOM 取り込みコレのメタデータをバッチで API 補完するサービス。
 ///
@@ -26,15 +27,64 @@ class RoomImportMetadataEnrichmentService {
   /// - [shopCode] と [productId]（楽天 itemCode の数字側）が両方ある行のみ対象
   /// - 失敗しても次の行へ進む
   /// - 成功時は [RakutenManagedProductRepository.mergeRoomImportMetadataFromSearchItem] でマージ
-  Future<int> enrichRoomImportedProducts({required int limit}) async {
-    if (limit <= 0) return 0;
+  ///
+  /// [applyPostImportAutoCap] が true のときだけ [RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls]
+  /// で API 試行回数を抑える（取り込み直後の軽量補完用）。マイページの手動補完では false のまま。
+  Future<int> enrichRoomImportedProducts({
+    required int limit,
+    bool applyPostImportAutoCap = false,
+  }) async {
+    final maxApiCalls = limit <= 0
+        ? 0
+        : (applyPostImportAutoCap
+              ? (limit > RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls
+                    ? RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls
+                    : limit)
+              : limit);
+    if (maxApiCalls <= 0) {
+      if (applyPostImportAutoCap) {
+        roomImportPerfLog('enrichmentSkipped reason=autoDisabled');
+      }
+      return 0;
+    }
+
     final rows = _productRepository.loadAll();
-    final pending = rows.where(_needsRoomImportMetadataEnrichment).take(limit);
+    final pendingAll = rows.where(_needsRoomImportMetadataEnrichment).toList();
+
+    final failedApiKeys = <String>{};
+    var consecutiveHttp400 = 0;
+    var consecutiveNoItem = 0;
+    var apiAttempts = 0;
     var okCount = 0;
-    for (final row in pending) {
+    String? pendingLastShopForApiWalk;
+    var didApiForCurrentShopBlock = false;
+
+    for (final row in pendingAll) {
+      if (apiAttempts >= maxApiCalls) break;
+
       final shop = row.shopCode.trim();
       final pid = row.productId.trim();
       if (shop.isEmpty || pid.isEmpty) continue;
+
+      if (shop != pendingLastShopForApiWalk) {
+        pendingLastShopForApiWalk = shop;
+        didApiForCurrentShopBlock = false;
+      }
+
+      if (_rowHasShopGenreImage(row)) {
+        continue;
+      }
+
+      final icRaw = pid;
+      final apiItemCode = icRaw.contains(':') ? icRaw : '$shop:$icRaw';
+      if (failedApiKeys.contains(apiItemCode)) {
+        continue;
+      }
+
+      if (didApiForCurrentShopBlock) {
+        continue;
+      }
+
       debugPrint('[ROOM_IMPORT_ENRICH] start productId=$pid');
       try {
         await _productRepository.updateManagedProduct(pid, (e) {
@@ -43,38 +93,105 @@ class RoomImportMetadataEnrichmentService {
       } catch (_) {
         continue;
       }
+
+      RoomImportEnrichmentFetchEnvelope env;
       try {
-        final apiSw = Stopwatch()..start();
         RoomImportDebugLogBuffer.incEnrichment();
-        final api = await _searchRepository
-            .fetchFirstItemForRoomImportEnrichment(
-              shopCode: shop,
-              itemCode: pid,
-            );
-        roomImportApiLog(
-          'type=enrichment status=${api == null ? 'empty' : 'ok'} durationMs=${apiSw.elapsedMilliseconds}',
+        apiAttempts++;
+        didApiForCurrentShopBlock = true;
+        env = await _searchRepository.fetchFirstItemForRoomImportEnrichmentEnvelope(
+          shopCode: shop,
+          itemCode: pid,
         );
-        roomImportApiLog('rateLimitDetected=false');
-        if (api == null) {
+      } catch (e, st) {
+        debugPrint('[ROOM_IMPORT_ENRICH] envelope exception $e\n$st');
+        await _productRepository.updateManagedProduct(pid, (e) {
+          return e.copyWith(roomImportMetadataEnriching: false);
+        });
+        roomImportPerfLog('enrichmentStopped reason=tooManyFailures');
+        roomImportEnrichStopLog('exception');
+        break;
+      }
+
+      if (env.rateLimited || env.httpStatus == 429) {
+        roomImportApiLog('rateLimitDetected=true');
+        roomImportPerfLog('enrichmentStopped reason=rateLimit');
+        roomImportEnrichStopLog('rateLimit');
+        await _productRepository.updateManagedProduct(pid, (e) {
+          return e.copyWith(roomImportMetadataEnriching: false);
+        });
+        break;
+      }
+
+      if (env.httpStatus == 400) {
+        failedApiKeys.add(apiItemCode);
+        consecutiveHttp400++;
+        consecutiveNoItem = 0;
+        if (consecutiveHttp400 >= 2) {
+          roomImportPerfLog('enrichmentStopped reason=tooManyFailures');
+          roomImportEnrichStopLog('proxyFailed');
           await _productRepository.updateManagedProduct(pid, (e) {
             return e.copyWith(roomImportMetadataEnriching: false);
           });
-          continue;
+          break;
         }
-        await _productRepository.mergeRoomImportMetadataFromSearchItem(
-          productId: pid,
-          api: api,
-        );
-        okCount++;
-      } catch (_) {
-        roomImportApiLog('type=enrichment status=exception durationMs=-1');
         roomImportApiLog('rateLimitDetected=false');
         await _productRepository.updateManagedProduct(pid, (e) {
           return e.copyWith(roomImportMetadataEnriching: false);
         });
+        continue;
       }
+
+      consecutiveHttp400 = 0;
+
+      if (env.item == null) {
+        consecutiveNoItem++;
+        if (consecutiveNoItem >= 3) {
+          roomImportPerfLog('enrichmentStopped reason=tooManyFailures');
+          roomImportEnrichStopLog('emptyResponses');
+          await _productRepository.updateManagedProduct(pid, (e) {
+            return e.copyWith(roomImportMetadataEnriching: false);
+          });
+          break;
+        }
+        await _productRepository.updateManagedProduct(pid, (e) {
+          return e.copyWith(roomImportMetadataEnriching: false);
+        });
+        continue;
+      }
+
+      consecutiveNoItem = 0;
+
+      try {
+        await _productRepository.mergeRoomImportMetadataFromSearchItem(
+          productId: pid,
+          api: env.item!,
+        );
+        okCount++;
+      } catch (_) {
+        await _productRepository.updateManagedProduct(pid, (e) {
+          return e.copyWith(roomImportMetadataEnriching: false);
+        });
+        continue;
+      }
+
+      await _productRepository.updateManagedProduct(pid, (e) {
+        return e.copyWith(roomImportMetadataEnriching: false);
+      });
+    }
+
+    if (kDebugMode && apiAttempts > 0) {
+      roomImportPerfLog(
+        'enrichmentBatchSummary apiAttempts=$apiAttempts updated=$okCount',
+      );
     }
     return okCount;
+  }
+
+  static bool _rowHasShopGenreImage(RakutenManagedProduct e) {
+    return !_isShopNameNeedsEnrichment(e.shopName) &&
+        !_isGenreNameNeedsEnrichment(e.genreName) &&
+        e.imageUrl.trim().isNotEmpty;
   }
 
   static bool _needsRoomImportMetadataEnrichment(RakutenManagedProduct e) {
@@ -88,6 +205,9 @@ class RoomImportMetadataEnrichmentService {
       return false;
     }
     if (e.shopCode.trim().isEmpty || e.productId.trim().isEmpty) {
+      return false;
+    }
+    if (_rowHasShopGenreImage(e)) {
       return false;
     }
     final shopNeeds = _isShopNameNeedsEnrichment(e.shopName);

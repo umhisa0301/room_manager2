@@ -12,6 +12,10 @@ abstract final class RoomImportLimitPolicy {
   /// Pro 相当のまとめ取り込み上限（プレースホルダー）。全件は別フラグで表現予定。
   static const int proBatchLimit = 50;
 
+  /// 取り込みバッチ完了後に **自動で走らせる** メタデータ補完の楽天API試行上限（1セッション）。
+  /// 0 で自動補完オフ。体感速度・429回避のため既定は小さめ。
+  static const int postBatchAutoEnrichMaxApiCalls = 3;
+
   /// 現状は無料のみ。将来 `hasPro` / `rewardedGranted` を参照して返す。
   static int effectiveBatchLimit({
     bool hasPro = false,

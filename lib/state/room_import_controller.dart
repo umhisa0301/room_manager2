@@ -1,3 +1,5 @@
+import 'dart:async' show unawaited;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +9,7 @@ import '../models/rakuten_managed_product.dart';
 import '../models/room_sync_result.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
+import '../services/room_import_limit_policy.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../utils/room_sync_log.dart';
@@ -53,27 +56,42 @@ class RoomImportController extends ChangeNotifier {
   List<RakutenManagedProduct> get latestAddedItems =>
       List<RakutenManagedProduct>.unmodifiable(_latestAddedItems);
 
-  /// 補完した件数（API 成功マージ数）。未実行・デモ・未マウント時は 0。
-  Future<int> _enrichRoomImportMetadataAfterBatch(BuildContext context) async {
-    if (kDemoModeEnabled || !context.mounted) return 0;
+  String _importProcessingHint = '';
+
+  /// [RoomSyncService.onProcessingHint] から渡る短文（ホーム等の進捗表示用）。
+  String get importProcessingHint => _importProcessingHint;
+
+  /// 取り込み本体完了後の軽量メタ補完（UI は待たない）。
+  Future<void> _enrichRoomImportMetadataDeferred(BuildContext context) async {
+    if (kDemoModeEnabled || !context.mounted) return;
     final enrichSw = Stopwatch()..start();
-    roomImportPerfLog('enrichmentStart');
-    var updated = 0;
+    roomImportPerfLog('enrichmentStart deferred');
     try {
       _bulkOperationState?.setMetadataEnriching(true);
+      notifyListeners();
       final svc = RoomImportMetadataEnrichmentService(
         searchRepository: context.read<RakutenSearchRepository>(),
         productRepository: context.read<RakutenManagedProductRepository>(),
       );
-      updated = await svc.enrichRoomImportedProducts(limit: 20);
-      roomImportPerfLog(
-        'enrichmentEnd updated=$updated durationMs=${enrichSw.elapsedMilliseconds}',
+      final updated = await svc.enrichRoomImportedProducts(
+        limit: RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls,
+        applyPostImportAutoCap: true,
       );
-    } catch (e, st) {
-      debugPrint('[RoomImportController] metadata enrich batch: $e\n$st');
-      updated = -1;
+      enrichSw.stop();
       roomImportPerfLog(
-        'enrichmentEnd updated=-1 durationMs=${enrichSw.elapsedMilliseconds}',
+        'enrichmentEnd deferred updated=$updated durationMs=${enrichSw.elapsedMilliseconds}',
+      );
+      if (kDebugMode) {
+        debugPrint(
+          '[ROOM_IMPORT_DEFERRED_ENRICH] updated=$updated '
+          'durationMs=${enrichSw.elapsedMilliseconds}',
+        );
+      }
+    } catch (e, st) {
+      debugPrint('[RoomImportController] metadata enrich deferred: $e\n$st');
+      enrichSw.stop();
+      roomImportPerfLog(
+        'enrichmentEnd deferred updated=-1 durationMs=${enrichSw.elapsedMilliseconds}',
       );
     } finally {
       _bulkOperationState?.setMetadataEnriching(false);
@@ -83,9 +101,9 @@ class RoomImportController extends ChangeNotifier {
               .read<RakutenManagedProductProvider>()
               .refreshManagedProductList(showLoadingIndicator: false);
         } catch (_) {}
+        notifyListeners();
       }
     }
-    return updated;
   }
 
   void _applyResultSnapshot(RoomSyncResult r) {
@@ -110,12 +128,12 @@ class RoomImportController extends ChangeNotifier {
     _phase = RoomImportPhase.running;
     _checkedCount = 0;
     _targetCount = 0;
+    _importProcessingHint = '';
     _bulkOperationState?.setRoomImportRunning(true);
     notifyListeners();
 
     RoomSyncResult? result;
-    var enrichBatchMs = 0;
-    var enrichUpdated = 0;
+    var deferEnrich = false;
     try {
       try {
         result = await RoomPostImportFlow.executeBatch(
@@ -132,6 +150,10 @@ class RoomImportController extends ChangeNotifier {
                   notifyListeners();
                 }
               },
+          onProcessingHint: (hint) {
+            _importProcessingHint = hint;
+            notifyListeners();
+          },
         );
       } catch (e, st) {
         debugPrint('[RoomImportController] executeBatch failed: $e\n$st');
@@ -144,25 +166,24 @@ class RoomImportController extends ChangeNotifier {
             .refreshManagedProductList(showLoadingIndicator: false);
       }
 
-      if (context.mounted &&
+      final wouldEnrichAfterImport =
+          context.mounted &&
           result != null &&
           !result.hasFatalError &&
           (result.newlyCollectedCount > 0 ||
               result.roomUrlAddedCount > 0 ||
-              result.listingCheckedCount > 0)) {
-        final enrichSw = Stopwatch()..start();
-        enrichUpdated = await _enrichRoomImportMetadataAfterBatch(context);
-        enrichSw.stop();
-        enrichBatchMs = enrichSw.elapsedMilliseconds;
+              result.listingCheckedCount > 0);
+      deferEnrich =
+          wouldEnrichAfterImport &&
+          RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls > 0;
+      if (wouldEnrichAfterImport &&
+          RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls <= 0) {
+        roomImportPerfLog('enrichmentSkipped reason=autoDisabled');
       }
 
       if (result == null) {
         _phase = RoomImportPhase.idle;
-        notifyListeners();
-        return null;
-      }
-
-      if (result.hasFatalError) {
+      } else if (result.hasFatalError) {
         _phase = RoomImportPhase.failed;
       } else {
         _phase = RoomImportPhase.completed;
@@ -172,13 +193,12 @@ class RoomImportController extends ChangeNotifier {
         );
       }
       notifyListeners();
-      return result;
     } finally {
       if (kDebugMode) {
         RoomImportDebugLogBuffer.emitImportSummary(
           result: result,
-          enrichmentBatchMs: enrichBatchMs,
-          enrichmentUpdated: enrichUpdated,
+          enrichmentBatchMs: 0,
+          enrichmentUpdated: 0,
         );
       }
       _bulkOperationState?.setRoomImportRunning(false);
@@ -187,5 +207,9 @@ class RoomImportController extends ChangeNotifier {
         notifyListeners();
       }
     }
+    if (deferEnrich && context.mounted) {
+      unawaited(_enrichRoomImportMetadataDeferred(context));
+    }
+    return result;
   }
 }

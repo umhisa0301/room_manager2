@@ -644,8 +644,23 @@ class _HomeRoomPostImportSection extends StatelessWidget {
             bulk.isMetadataEnriching ||
             bulk.isBulkCandidateRegistering;
 
+        final enrichingOnly =
+            !ctl.isRunning &&
+            bulk.isMetadataEnriching &&
+            !bulk.isBulkCandidateRegistering;
+
         final completed = ctl.checkedCount;
         final total = ctl.targetCount;
+
+        final busyTitle = enrichingOnly
+            ? '商品情報を整えています'
+            : (ctl.isRunning
+                  ? (total > 0
+                        ? '$completed / $total件を取り込み中'
+                        : (ctl.importProcessingHint.isNotEmpty
+                              ? ctl.importProcessingHint
+                              : 'ROOM投稿を確認しています'))
+                  : 'ROOM投稿を確認中');
 
         final statusLine = !hasRoomProfileUrl
             ? 'ROOMプロフィールURLを登録すると自動取り込みが使えます'
@@ -690,13 +705,13 @@ class _HomeRoomPostImportSection extends StatelessWidget {
               ] else ...[
                 if (busy) ...[
                   Text(
-                    'ROOM投稿を確認中',
+                    busyTitle,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  if (total > 0)
+                  if (ctl.isRunning && total > 0)
                     Text(
                       '$completed / $total件',
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -708,7 +723,9 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     borderRadius: BorderRadius.circular(999),
                     child: LinearProgressIndicator(
                       minHeight: 8,
-                      value: total > 0 && completed >= 0
+                      value: ctl.isRunning &&
+                              total > 0 &&
+                              completed >= 0
                           ? (completed / total).clamp(0.0, 1.0)
                           : null,
                       backgroundColor: HomeScreenColors.progressTrack,

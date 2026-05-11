@@ -246,3 +246,30 @@ void roomImportUiLog(String message) {
     RoomImportDebugLogBuffer.add(line);
   }
 }
+
+/// ROOM 取り込み prepare フェーズの内訳（計測用）。
+void roomImportPrepareDetailLog(String field, int ms) {
+  final line = '[ROOM_IMPORT_PREPARE_DETAIL] $field=${ms}ms';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+/// ROOM 一覧・collects の取得経路（ページング理由の切り分け用）。
+void roomImportListingLog(String message) {
+  final line = '[ROOM_IMPORT_LISTING] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+/// ROOM 取り込み後のメタ補完（enrichment）の打ち切り理由。
+void roomImportEnrichStopLog(String reason) {
+  final line = '[ROOM_IMPORT_ENRICH] stop reason=$reason';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}

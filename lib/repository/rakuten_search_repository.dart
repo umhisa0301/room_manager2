@@ -73,6 +73,21 @@ class RakutenKeywordManagedFetchSummary {
 /// APIレスポンスをアプリ用モデルへ変換する責務。
 enum RakutenSearchPurpose { normal, recommendation }
 
+/// ROOM 取り込みメタ補完用の1件検索結果（HTTP 429/400 の分類用）。
+class RoomImportEnrichmentFetchEnvelope {
+  const RoomImportEnrichmentFetchEnvelope({
+    this.item,
+    this.httpStatus,
+    this.rateLimited = false,
+    this.exceptionMessage,
+  });
+
+  final RakutenSearchItem? item;
+  final int? httpStatus;
+  final bool rateLimited;
+  final String? exceptionMessage;
+}
+
 class RakutenSearchRepository {
   RakutenSearchRepository({required RakutenApiService apiService})
     : _apiService = apiService;
@@ -189,14 +204,17 @@ class RakutenSearchRepository {
   ///
   /// `shopCode` クエリは **付けず**（`itemCode` 複合指定のみ）。取り込み直後の軽量補完および
   /// [RoomImportMetadataEnrichmentService.enrichRoomImportedProducts] で再利用する。
-  Future<RakutenSearchItem?> fetchFirstItemForRoomImportEnrichment({
+  Future<RoomImportEnrichmentFetchEnvelope>
+  fetchFirstItemForRoomImportEnrichmentEnvelope({
     required String shopCode,
     required String itemCode,
   }) async {
     final apiSw = Stopwatch()..start();
     final sc = shopCode.trim();
     final icRaw = itemCode.trim();
-    if (sc.isEmpty || icRaw.isEmpty) return null;
+    if (sc.isEmpty || icRaw.isEmpty) {
+      return const RoomImportEnrichmentFetchEnvelope();
+    }
 
     final numericItemCode = icRaw.contains(':')
         ? icRaw.split(':').last.trim()
@@ -246,7 +264,15 @@ class RakutenSearchRepository {
             '${bestDemo.affiliateUrl.trim().isNotEmpty}',
           );
         }
-        return bestDemo;
+        roomImportApiLog(
+          'type=rakutenItem status=ok durationMs=${apiSw.elapsedMilliseconds}',
+        );
+        roomImportApiLog('rateLimitDetected=false');
+        return RoomImportEnrichmentFetchEnvelope(
+          item: bestDemo,
+          httpStatus: 200,
+          rateLimited: false,
+        );
       }
 
       final raw = await _apiService.searchItems(
@@ -265,7 +291,9 @@ class RakutenSearchRepository {
       );
       if (rawItems is! List || rawItems.isEmpty) {
         debugPrint('[ROOM_IMPORT_ENRICH] empty Items');
-        return null;
+        return const RoomImportEnrichmentFetchEnvelope(
+          httpStatus: 200,
+        );
       }
       final parsed = <RakutenSearchItem>[];
       for (final entry in rawItems) {
@@ -302,18 +330,61 @@ class RakutenSearchRepository {
       } else {
         debugPrint('[ROOM_IMPORT_ENRICH] no matching item after parse');
       }
-      return best;
+      return RoomImportEnrichmentFetchEnvelope(
+        item: best,
+        httpStatus: 200,
+        rateLimited: false,
+      );
     } catch (e, st) {
+      if (e is RakutenApiTransportException) {
+        final c = e.statusCode;
+        final rl = c == 429;
+        roomImportApiLog(
+          'type=rakutenItem status=${rl ? 'rateLimited' : 'httpError'} '
+          'http=$c durationMs=${apiSw.elapsedMilliseconds}',
+        );
+        roomImportApiLog('rateLimitDetected=$rl');
+        debugPrint('[ROOM_IMPORT_ENRICH] response status=transport http=$c');
+        if (kDebugMode) {
+          debugPrint('$st');
+        }
+        return RoomImportEnrichmentFetchEnvelope(
+          item: null,
+          httpStatus: c,
+          rateLimited: rl,
+          exceptionMessage: e.message,
+        );
+      }
+      final msg = e.toString();
+      final low = msg.toLowerCase();
+      final rl = low.contains('429') || low.contains('ratelimit');
       roomImportApiLog(
         'type=rakutenItem status=exception durationMs=${apiSw.elapsedMilliseconds}',
       );
-      roomImportApiLog('rateLimitDetected=false');
+      roomImportApiLog('rateLimitDetected=$rl');
       debugPrint('[ROOM_IMPORT_ENRICH] response status=exception $e');
       if (kDebugMode) {
         debugPrint('$st');
       }
-      return null;
+      return RoomImportEnrichmentFetchEnvelope(
+        item: null,
+        httpStatus: null,
+        rateLimited: rl,
+        exceptionMessage: msg,
+      );
     }
+  }
+
+  /// [fetchFirstItemForRoomImportEnrichmentEnvelope] の互換ラッパー。
+  Future<RakutenSearchItem?> fetchFirstItemForRoomImportEnrichment({
+    required String shopCode,
+    required String itemCode,
+  }) async {
+    final env = await fetchFirstItemForRoomImportEnrichmentEnvelope(
+      shopCode: shopCode,
+      itemCode: itemCode,
+    );
+    return env.item;
   }
 
   RakutenSearchItem? _pickRoomImportEnrichmentItem(

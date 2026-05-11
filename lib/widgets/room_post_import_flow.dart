@@ -111,13 +111,14 @@ abstract final class RoomPostImportFlow {
       return;
     }
 
-    final added =
-        result.newlyCollectedCount > 0 || result.roomUrlAddedCount > 0;
     if (!context.mounted) return;
+    final snackText = result.newlyCollectedCount > 0
+        ? '${result.newlyCollectedCount}件を取り込みました'
+        : (result.roomUrlAddedCount > 0
+              ? 'ROOMページを${result.roomUrlAddedCount}件紐付けました'
+              : 'ROOM投稿の確認が終わりました（追加なし）');
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(added ? 'ROOM投稿の取り込みが完了しました' : 'ROOM投稿の確認が終わりました（追加なし）'),
-      ),
+      SnackBar(content: Text(snackText)),
     );
 
     if (!context.mounted) return;
@@ -128,6 +129,7 @@ abstract final class RoomPostImportFlow {
   static Future<RoomSyncResult?> executeBatch(
     BuildContext context, {
     required RoomPostImportProgressCallback onProgress,
+    void Function(String hint)? onProcessingHint,
   }) async {
     final profile = RoomProfileUrlValidationService.normalizeProfileUrl(
       context.read<UserProfileProvider>().profile.roomUrl,
@@ -147,7 +149,7 @@ abstract final class RoomPostImportFlow {
     var lastTotal = 0;
 
     onProgress(busy: true, completed: 0, total: 0);
-    roomImportUiLog('phase=preparing message=ROOM投稿の確認を開始します');
+    roomImportUiLog('phase=preparing message=ROOM投稿を確認しています');
 
     final result = await service.syncPostedRoomProducts(
       userRoomProfileUrl: profile,
@@ -158,6 +160,7 @@ abstract final class RoomPostImportFlow {
         onProgress(busy: true, completed: current, total: total);
         roomImportUiLog('phase=processing current=$current total=$total');
       },
+      onProcessingHint: onProcessingHint,
     );
 
     onProgress(busy: false, completed: lastCompleted, total: lastTotal);
@@ -184,7 +187,9 @@ abstract final class RoomPostImportFlow {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '取り込み完了',
+                  result.newlyCollectedCount > 0
+                      ? '${result.newlyCollectedCount}件を取り込みました'
+                      : '取り込み完了',
                   textAlign: TextAlign.center,
                   style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
@@ -428,7 +433,7 @@ abstract final class RoomPostImportFlow {
   static String _heroOutcomeLine(RoomSyncResult r) {
     final n = r.newlyCollectedCount;
     final add = r.roomUrlAddedCount;
-    if (n > 0) return '$n件追加しました';
+    if (n > 0) return '$n件を取り込みました';
     if (add > 0) return 'ROOMページを$add件紐付けました';
     if (r.failedCount > 0 && r.processedCount == 0) {
       return '追加できませんでした';
