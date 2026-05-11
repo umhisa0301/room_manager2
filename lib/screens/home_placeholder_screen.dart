@@ -252,6 +252,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
       await room.refreshManagedProductList(showLoadingIndicator: false);
       if (!mounted) return;
       _trace('trigger=homeInit');
+      _trigger('postFrame');
       _trace('action=ensureToday');
       await recommender.ensureToday(
         profile: context.read<UserProfileProvider>().profile,
@@ -276,6 +277,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     if (!mounted) return;
     final recommender = context.read<TodayRecommendationProvider>();
     _trace('trigger=refresh');
+    _trigger('refresh');
     _trace('action=ensureToday');
     recommender.reloadBundleFromStorage();
     await recommender.ensureToday(
@@ -284,12 +286,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
       savedShops: context.read<SavedShopProvider>().shops,
       trigger: 'refresh',
     );
-    await _regenerateRecommendationsIfNeeded(
-      recommender: recommender,
-      roomProvider: room,
-      force: true,
-      trigger: 'refresh',
-    );
+    _guard('skipReason=refreshDoesNotForceRegenerate');
   }
 
   void _openRoomList(
@@ -334,6 +331,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     final recommender = context.read<TodayRecommendationProvider>();
     final roomProvider = context.read<RakutenManagedProductProvider>();
     _trace('trigger=cta');
+    _trigger('cta');
     _trace('action=ensureToday');
     await recommender.ensureToday(
       profile: context.read<UserProfileProvider>().profile,
@@ -341,18 +339,13 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
       savedShops: context.read<SavedShopProvider>().shops,
       trigger: 'cta',
     );
-    if (recommender.pendingCount <= 0) {
-      await _regenerateRecommendationsIfNeeded(
-        recommender: recommender,
-        roomProvider: roomProvider,
-        force: true,
-        trigger: 'cta',
-      );
+    if (recommender.pendingCount <= 0 && recommender.hasTodayBundleWithEntries) {
+      _guard('skipReason=pendingZeroButBundleExists');
     }
     if (!context.mounted) return;
     await Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => const TodayRecommendationsScreen(),
+        builder: (_) => const TodayRecommendationsScreen(skipInitialEnsure: true),
       ),
     );
   }
@@ -371,6 +364,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     if (recommender.isLoading) return;
     if (!force && recommender.bundle != null) {
       _trace('shouldSkipBecauseRecentlyTried=true');
+      _guard('skipReason=bundleExists');
       return;
     }
     final now = DateTime.now();
@@ -394,6 +388,16 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   void _trace(String message) {
     if (!mounted) return;
     debugPrint('[RECOMMEND_TRACE] $message');
+  }
+
+  void _trigger(String source) {
+    if (!mounted) return;
+    debugPrint('[RECOMMEND_TRIGGER] source=$source');
+  }
+
+  void _guard(String reason) {
+    if (!mounted) return;
+    debugPrint('[RECOMMEND_GUARD] $reason');
   }
 
   Future<void> _openRoomUrlEditSheet(BuildContext context) async {

@@ -39,7 +39,20 @@ class TodayRecommendationProvider extends ChangeNotifier {
   TodayRecommendationGenerationStatus _generationStatus =
       TodayRecommendationGenerationStatus.idle;
   DateTime? _cooldownUntil;
-  static const Duration _autoRetryCooldown = Duration(minutes: 5);
+  DateTime? _lastEnsureAt;
+  String? _lastEnsureSource;
+  DateTime? _lastRegenerateAt;
+  bool _lastRateLimitFailure = false;
+  String? _lastGuardReason;
+  static const Duration _recentEnsureWindow = Duration(seconds: 3);
+  static const Duration _manualRegenerateCooldown = Duration(minutes: 5);
+  static const Duration _recentGenerateCooldown = Duration(minutes: 15);
+  static const Duration _rateLimitCooldown = Duration(minutes: 12);
+  static const String _logTagTrigger = '[RECOMMEND_TRIGGER]';
+  static const String _logTagGuard = '[RECOMMEND_GUARD]';
+  static const String _logTagGenerate = '[RECOMMEND_GENERATE]';
+  static const String _logTagApi = '[RECOMMEND_API]';
+  static const String _logTagSummary = '[RECOMMEND_SUMMARY]';
 
   TodayRecommendationBundle? get bundle => _bundle;
   bool get isLoading => _isLoading;
@@ -47,6 +60,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
   TodayRecommendationGenerationStatus get generationStatus => _generationStatus;
   bool get isInCooldown =>
       _cooldownUntil != null && DateTime.now().isBefore(_cooldownUntil!);
+  DateTime? get lastEnsureAt => _lastEnsureAt;
+  String? get lastEnsureSource => _lastEnsureSource;
+  DateTime? get lastRegenerateAt => _lastRegenerateAt;
+  String? get lastGuardReason => _lastGuardReason;
 
   int get totalCount => _bundle?.entries.length ?? 0;
   int get pendingCount => _bundle?.pendingCount ?? 0;
@@ -79,22 +96,49 @@ class TodayRecommendationProvider extends ChangeNotifier {
     return '$m月$d日';
   }
 
+  bool get hasTodayBundle {
+    final b = _bundle;
+    if (b == null) return false;
+    return b.localDateKey == _localDateKey(DateTime.now());
+  }
+
+  bool get hasTodayBundleWithEntries {
+    final b = _bundle;
+    if (b == null) return false;
+    if (b.localDateKey != _localDateKey(DateTime.now())) return false;
+    return b.entries.isNotEmpty;
+  }
+
   Future<void> ensureToday({
     required UserProfile profile,
     required List<RakutenManagedProduct> managedItems,
     required List<SavedShop> savedShops,
     String trigger = 'ensure',
   }) async {
+    final now = DateTime.now();
+    final previousEnsureAt = _lastEnsureAt;
+    final previousEnsureSource = _lastEnsureSource;
+    _lastEnsureAt = now;
+    _lastEnsureSource = trigger;
+    _trigger(source: trigger);
     _trace('trigger=$trigger');
     _trace('action=ensureToday');
     _trace('alreadyGenerating=$_isLoading');
     _trace(
       'lastGeneratedAt=${_bundle?.generatedAt.toIso8601String() ?? 'null'}',
     );
-    final todayKey = _localDateKey(DateTime.now());
+    final todayKey = _localDateKey(now);
+    if (trigger == 'screenOpen' &&
+        previousEnsureAt != null &&
+        previousEnsureSource != null &&
+        previousEnsureSource != 'screenOpen' &&
+        now.difference(previousEnsureAt) < _recentEnsureWindow) {
+      _guard('skipReason=recentEnsure');
+      return;
+    }
     if (_bundle != null && _bundle!.localDateKey == todayKey) {
       _trace('shouldSkipBecauseRecentlyTried=true');
-      _guard('skip reason=hasTodayBundle');
+      _guard('skipReason=sameDay');
       return;
     }
     _trace('shouldSkipBecauseRecentlyTried=false');
@@ -113,6 +157,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     String trigger = 'unknown',
     bool manual = false,
   }) async {
+    final now = DateTime.now();
+    _lastGuardReason = null;
+    _trigger(source: trigger);
     _trace('trigger=$trigger');
     _trace('action=regenerateToday');
     _trace('alreadyGenerating=$_isLoading');
@@ -120,13 +167,30 @@ class TodayRecommendationProvider extends ChangeNotifier {
       'lastGeneratedAt=${_bundle?.generatedAt.toIso8601String() ?? 'null'}',
     );
     if (_isLoading) {
-      _guard('skip reason=alreadyGenerating');
+      _guard('skipReason=alreadyGenerating');
+      return;
+    }
+    if (_lastRateLimitFailure && isInCooldown) {
+      _guard('skipReason=rateLimitCooldown');
+      return;
+    }
+    if (manual &&
+        _lastRegenerateAt != null &&
+        now.difference(_lastRegenerateAt!) < _manualRegenerateCooldown) {
+      _guard('skipReason=manualCooldown');
+      return;
+    }
+    if (!manual &&
+        _lastRegenerateAt != null &&
+        now.difference(_lastRegenerateAt!) < _recentGenerateCooldown) {
+      _guard('skipReason=recentlyGenerated');
       return;
     }
     if (!manual && isInCooldown) {
-      _guard('skip reason=cooldown');
+      _guard('skipReason=cooldown');
       return;
     }
+    _lastRegenerateAt = now;
     _isLoading = true;
     _errorMessage = null;
     _generationStatus = TodayRecommendationGenerationStatus.loading;
@@ -138,6 +202,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         savedShops: savedShops,
       );
       _cooldownUntil = null;
+      _lastRateLimitFailure = false;
       _bundle = generated;
       final canSaveEmpty =
           generated.entries.isEmpty &&
@@ -158,6 +223,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
         debugPrint('[TodayRecommendation] regenerateToday failed: $e');
         debugPrint('$st');
       }
+      final isRateLimit = _isRateLimitError(e);
+      if (isRateLimit) {
+        _cooldownUntil = DateTime.now().add(_rateLimitCooldown);
+        _lastRateLimitFailure = true;
+      }
       if (_bundle != null && _bundle!.entries.isNotEmpty) {
         _errorMessage = null;
         _generationStatus = _bundle!.entries.length < 10
@@ -174,9 +244,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
         if (msg.contains('(429)') ||
             msg.contains('allowed requests has been exceeded')) {
           _generationStatus = TodayRecommendationGenerationStatus.failedRateLimit;
-          _cooldownUntil = DateTime.now().add(_autoRetryCooldown);
+          _cooldownUntil = DateTime.now().add(_rateLimitCooldown);
+          _lastRateLimitFailure = true;
         } else {
           _generationStatus = TodayRecommendationGenerationStatus.failedApiError;
+          _lastRateLimitFailure = false;
         }
         _errorMessage = 'おすすめを準備できませんでした。少し時間をおいて再試行してください';
         _resultLog(status: 'failed', reason: _failureTypeFromError(e), count: 0);
@@ -230,6 +302,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required List<RakutenManagedProduct> managedItems,
     required List<SavedShop> savedShops,
   }) async {
+    final generateStartedAt = DateTime.now();
     _trace('generate start');
     _trace('profile nickname=${profile.displayName.trim()}');
     final excludeIds = managedItems
@@ -317,10 +390,16 @@ class TodayRecommendationProvider extends ChangeNotifier {
       postStyles: postStyles,
     );
     _planLogCount(plans.length);
+    _generateLog(
+      stage: 'start',
+      requestCount: 0,
+      planCount: plans.length,
+    );
 
     final pool = <String, RakutenSearchItem>{};
     final metaById = <String, _ItemPoolMeta>{};
     var apiCalls = 0;
+    var excludedCount = 0;
     var allPlansNoItems = true;
     var rateLimited = false;
     const maxApiHard = 10;
@@ -379,6 +458,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
         condition: condition,
         postStyles: postStyles,
       );
+      _apiLogDetailed(
+        planIndex: i + 1,
+        keyword: p.keyword,
+        genreId: p.genreId,
+        shopCode: p.shopCode,
+        page: 1,
+      );
 
       List<RakutenSearchItem> list;
       try {
@@ -408,6 +494,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
           dedup: pool,
         );
         if (exclusion != null) {
+          excludedCount += 1;
           _trace('exclude reason=$exclusion');
           continue;
         }
@@ -449,6 +536,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
       }
       if (hasExtraPlan) {
         final p = plans[i];
+        _apiLogDetailed(
+          planIndex: i + 1,
+          keyword: p.keyword,
+          genreId: p.genreId,
+          shopCode: p.shopCode,
+          page: 1,
+        );
         final condition = _conditionWithPostStyles(
           keyword: p.keyword,
           postStyles: postStyles,
@@ -475,7 +569,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
               candidateItems: candidateItems,
               dedup: pool,
             );
-            if (exclusion != null) continue;
+            if (exclusion != null) {
+              excludedCount += 1;
+              continue;
+            }
             final id = item.productId.trim();
             pool[id] = item;
             final m = metaById.putIfAbsent(id, () => _ItemPoolMeta());
@@ -551,6 +648,19 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (rateLimited && entries.isEmpty) {
       throw Exception('Rakuten API rate limit (429)');
     }
+    final durationMs = DateTime.now().difference(generateStartedAt).inMilliseconds;
+    _generateLog(
+      stage: 'end',
+      requestCount: apiCalls,
+      planCount: plans.length,
+    );
+    _summaryLog(
+      totalApiRequests: apiCalls,
+      totalPlans: plans.length,
+      selectedCount: entries.length,
+      excludedCount: excludedCount,
+      durationMs: durationMs,
+    );
     return TodayRecommendationBundle(
       localDateKey: _localDateKey(DateTime.now()),
       generatedAt: DateTime.now(),
@@ -1092,7 +1202,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required String phase,
   }) {
     if (!kDebugMode) return;
-    debugPrint('[RECOMMEND_API] phase=$phase start index=$index page=$page');
+    debugPrint('$_logTagApi phase=$phase start index=$index page=$page');
   }
 
   void _apiLogStatus({
@@ -1101,8 +1211,20 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required int rawCount,
   }) {
     if (!kDebugMode) return;
+    debugPrint('$_logTagApi phase=$phase status=$status rawCount=$rawCount');
+  }
+
+  void _apiLogDetailed({
+    required int planIndex,
+    required String keyword,
+    required String? genreId,
+    required String? shopCode,
+    required int page,
+  }) {
+    if (!kDebugMode) return;
     debugPrint(
-      '[RECOMMEND_API] phase=$phase status=$status rawCount=$rawCount',
+      '$_logTagApi planIndex=$planIndex keyword=$keyword '
+      'genreId=${genreId ?? ''} shopCode=${shopCode ?? ''} page=$page',
     );
   }
 
@@ -1159,8 +1281,39 @@ class TodayRecommendationProvider extends ChangeNotifier {
   }
 
   void _guard(String message) {
+    _lastGuardReason = message.trim();
     if (!kDebugMode) return;
-    debugPrint('[RECOMMEND_GUARD] $message');
+    debugPrint('$_logTagGuard $message');
+  }
+
+  void _trigger({required String source}) {
+    if (!kDebugMode) return;
+    debugPrint('$_logTagTrigger source=$source');
+  }
+
+  void _generateLog({
+    required String stage,
+    required int requestCount,
+    required int planCount,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '$_logTagGenerate $stage requestCount=$requestCount planCount=$planCount',
+    );
+  }
+
+  void _summaryLog({
+    required int totalApiRequests,
+    required int totalPlans,
+    required int selectedCount,
+    required int excludedCount,
+    required int durationMs,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '$_logTagSummary totalApiRequests=$totalApiRequests totalPlans=$totalPlans '
+      'selectedCount=$selectedCount excludedCount=$excludedCount durationMs=$durationMs',
+    );
   }
 
   String _failureTypeFromError(Object e) {

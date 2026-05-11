@@ -14,7 +14,12 @@ import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
 
 class TodayRecommendationsScreen extends StatefulWidget {
-  const TodayRecommendationsScreen({super.key});
+  const TodayRecommendationsScreen({
+    super.key,
+    this.skipInitialEnsure = false,
+  });
+
+  final bool skipInitialEnsure;
 
   @override
   State<TodayRecommendationsScreen> createState() =>
@@ -27,6 +32,11 @@ class _TodayRecommendationsScreenState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.skipInitialEnsure) {
+        debugPrint('[RECOMMEND_GUARD] skipReason=recentEnsure');
+        return;
+      }
+      debugPrint('[RECOMMEND_TRIGGER] source=screenOpen');
       _ensureToday();
     });
   }
@@ -41,11 +51,12 @@ class _TodayRecommendationsScreenState
       profile: profile,
       managedItems: managed,
       savedShops: saved,
-      trigger: 'ensure',
+      trigger: 'screenOpen',
     );
   }
 
   Future<void> _regenerate() async {
+    if (!mounted) return;
     final recommender = context.read<TodayRecommendationProvider>();
     final profile = context.read<UserProfileProvider>().profile;
     final managed = context.read<RakutenManagedProductProvider>().items;
@@ -54,9 +65,18 @@ class _TodayRecommendationsScreenState
       profile: profile,
       managedItems: managed,
       savedShops: saved,
-      trigger: 'cta',
+      trigger: 'manual',
       manual: true,
     );
+    if (!mounted) return;
+    final guard = recommender.lastGuardReason ?? '';
+    if (guard.contains('manualCooldown') ||
+        guard.contains('rateLimitCooldown') ||
+        guard.contains('recentlyGenerated')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('少し時間をおいてから再生成してください')),
+      );
+    }
   }
 
   @override

@@ -423,7 +423,6 @@ bool _isRetriableFailure(Object e) {
   if (e is http.ClientException) return true;
   if (e is _RakutenApiTransportException) {
     final c = e.statusCode;
-    if (c == 429) return true;
     if (c >= 500 && c <= 504) return true;
     return false;
   }
