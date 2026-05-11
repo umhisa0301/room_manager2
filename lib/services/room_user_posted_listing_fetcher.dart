@@ -31,7 +31,9 @@ class RoomUserPostedListingFetcher {
   /// ログ用: 投稿IDフォールバック（1700始まり13桁以上想定）。
   static const String postIdFallbackPatternSource = r'\b(1700\d{9,})\b';
 
-  static final RegExp _postIdFallbackPattern = RegExp(postIdFallbackPatternSource);
+  static final RegExp _postIdFallbackPattern = RegExp(
+    postIdFallbackPatternSource,
+  );
 
   /// ROOM 一覧 HTML（主に `/items`）内の調査ログ（埋め込み JSON / キーワード出現回数）。
   static void logListingHtmlInvestigation(String html) {
@@ -56,9 +58,7 @@ class RoomUserPostedListingFetcher {
       'userId=${count('userId')}',
     );
     final id = tryParseNumericUserIdFromInitialState(h);
-    roomSyncLog(
-      'LIST調査 __INITIAL_STATE__ からの userData.id: ${id ?? '(未取得)'}',
-    );
+    roomSyncLog('LIST調査 __INITIAL_STATE__ からの userData.id: ${id ?? '(未取得)'}');
   }
 
   /// `window.__INITIAL_STATE__` 内の `userData.id`（数値ユーザーID）。collects API のパスに使用。
@@ -67,7 +67,8 @@ class RoomUserPostedListingFetcher {
     final startIdx = html.indexOf(prefix);
     if (startIdx < 0) return null;
     var j = startIdx + prefix.length;
-    while (j < html.length && (html[j] == ' ' || html[j] == '\n' || html[j] == '\r')) {
+    while (j < html.length &&
+        (html[j] == ' ' || html[j] == '\n' || html[j] == '\r')) {
       j++;
     }
     if (j >= html.length || html[j] != '{') return null;
@@ -143,6 +144,7 @@ class RoomUserPostedListingFetcher {
     }
     if (!uri.hasScheme || !_isRoomHost(uri.host)) return null;
     final res = await _getRoomListingPage(uri);
+    RoomImportDebugLogBuffer.incRoomList();
     if (res == null ||
         res.statusCode < 200 ||
         res.statusCode >= 400 ||
@@ -159,8 +161,13 @@ class RoomUserPostedListingFetcher {
     String? afterId,
     int limit = 20,
   }) async {
+    final apiSw = Stopwatch()..start();
+    var statusCode = -1;
     if (!RegExp(r'^\d+$').hasMatch(numericUserId)) {
       roomSyncWarn('collects API: numericUserId が不正のため中断');
+      roomImportApiLog(
+        'type=roomList status=invalidInput durationMs=${apiSw.elapsedMilliseconds}',
+      );
       return null;
     }
     final q = <String, String>{
@@ -189,18 +196,20 @@ class RoomUserPostedListingFetcher {
             },
           )
           .timeout(_timeout);
+      statusCode = res.statusCode;
     } on TimeoutException catch (e, st) {
       roomSyncError('collects API タイムアウト', e, st);
+      RoomImportDebugLogBuffer.incRoomList();
       return null;
     } catch (e, st) {
       roomSyncError('collects API 例外', e, st);
+      RoomImportDebugLogBuffer.incRoomList();
       return null;
     }
 
+    RoomImportDebugLogBuffer.incRoomList();
     roomSyncLog('collects API HTTP status: ${res.statusCode}');
-    if (res.statusCode < 200 ||
-        res.statusCode >= 400 ||
-        res.body.isEmpty) {
+    if (res.statusCode < 200 || res.statusCode >= 400 || res.body.isEmpty) {
       roomSyncWarn('collects API 応答不正（未取得扱い）');
       return null;
     }
@@ -211,7 +220,9 @@ class RoomUserPostedListingFetcher {
       final status = decoded['status'];
       final code = decoded['code'];
       if (status != 'success' || code != 200) {
-        roomSyncWarn('collects API JSON status 非 success: status=$status code=$code');
+        roomSyncWarn(
+          'collects API JSON status 非 success: status=$status code=$code',
+        );
         return null;
       }
       final data = decoded['data'];
@@ -242,6 +253,11 @@ class RoomUserPostedListingFetcher {
     } catch (e, st) {
       roomSyncError('collects API JSON 解析失敗', e, st);
       return null;
+    } finally {
+      roomImportApiLog(
+        'type=roomList status=$statusCode durationMs=${apiSw.elapsedMilliseconds}',
+      );
+      roomImportApiLog('rateLimitDetected=${statusCode == 429}');
     }
   }
 
@@ -250,12 +266,16 @@ class RoomUserPostedListingFetcher {
     String userRoomProfileUrl, {
     void Function(String html)? onListingHtml,
   }) async {
+    final fetchSw = Stopwatch()..start();
     final trimmed = userRoomProfileUrl.trim();
     roomSyncLog('ROOM一覧取得処理: fetchPostedRoomProductPageUrls 開始');
     roomSyncLog('入力ROOM URL: ${trimmed.isEmpty ? '(空)' : trimmed}');
 
     if (trimmed.isEmpty) {
       roomSyncWarn('入力ROOM URL が空のため中断');
+      roomImportPerfLog(
+        'fetchRoomListEnd status=invalidInput htmlBytes=0 durationMs=${fetchSw.elapsedMilliseconds}',
+      );
       return [];
     }
     Uri uri;
@@ -263,18 +283,22 @@ class RoomUserPostedListingFetcher {
       uri = Uri.parse(trimmed);
     } catch (e, st) {
       roomSyncError('ROOM URL の Uri 解析に失敗', e, st);
+      roomImportPerfLog(
+        'fetchRoomListEnd status=invalidUrl htmlBytes=0 durationMs=${fetchSw.elapsedMilliseconds}',
+      );
       return [];
     }
 
     roomSyncLog('正規化後ROOM URL（HTTP GET に使用）: ${uri.toString()}');
-    roomSyncLog(
-      '補足: 現行実装では /items 等のパスは自動付与しません（入力の Uri をそのまま GET します）。',
-    );
+    roomSyncLog('補足: 現行実装では /items 等のパスは自動付与しません（入力の Uri をそのまま GET します）。');
     roomSyncLog('参考 /items を付けた場合の例URL: ${_exampleItemsUrl(uri)}');
 
     if (!uri.hasScheme || !_isRoomHost(uri.host)) {
       roomSyncWarn(
         'スキームまたはホスト不正のため中断 hasScheme=${uri.hasScheme} host=${uri.host}',
+      );
+      roomImportPerfLog(
+        'fetchRoomListEnd status=invalidHost htmlBytes=0 durationMs=${fetchSw.elapsedMilliseconds}',
       );
       return [];
     }
@@ -288,7 +312,11 @@ class RoomUserPostedListingFetcher {
     );
 
     final res = await _getRoomListingPage(uri);
+    RoomImportDebugLogBuffer.incRoomList();
     if (res == null) {
+      roomImportPerfLog(
+        'fetchRoomListEnd status=fetchFailed htmlBytes=0 durationMs=${fetchSw.elapsedMilliseconds}',
+      );
       return [];
     }
 
@@ -300,14 +328,32 @@ class RoomUserPostedListingFetcher {
         'ROOM一覧ページ取得失敗 status=${res.statusCode} bodyEmpty=${res.body.isEmpty}',
       );
       roomSyncPreview('ROOM一覧 error body preview', res.body, maxLength: 500);
+      roomImportPerfLog(
+        'fetchRoomListEnd status=${res.statusCode} htmlBytes=${res.body.length} durationMs=${fetchSw.elapsedMilliseconds}',
+      );
+      roomImportApiLog(
+        'type=roomList status=${res.statusCode} durationMs=${fetchSw.elapsedMilliseconds}',
+      );
+      roomImportApiLog('rateLimitDetected=${res.statusCode == 429}');
       return [];
     }
+    roomImportPerfLog(
+      'fetchRoomListEnd status=${res.statusCode} htmlBytes=${res.body.length} durationMs=${fetchSw.elapsedMilliseconds}',
+    );
+    roomImportApiLog(
+      'type=roomList status=${res.statusCode} durationMs=${fetchSw.elapsedMilliseconds}',
+    );
+    roomImportApiLog('rateLimitDetected=${res.statusCode == 429}');
 
     final html = res.body;
     logListingHtmlInvestigation(html);
     onListingHtml?.call(html);
     final decoded = RoomUrlResolverStyleUnescape.unescapeBasicXmlEntities(html);
-    final candidates = _collectFromHtml(html: html, decodedHtml: decoded, baseUri: uri);
+    final candidates = _collectFromHtml(
+      html: html,
+      decodedHtml: decoded,
+      baseUri: uri,
+    );
     roomSyncLog('ROOM商品URL抽出開始（生候補・重複あり）');
     roomSyncLog('抽出候補数（フィルタ前 href/絶対URL 総数）: ${candidates.length}');
 
@@ -347,9 +393,7 @@ class RoomUserPostedListingFetcher {
       if (userSeg.isEmpty) {
         roomSyncWarn('ROOM ユーザーセグメントが空のため投稿IDフォールバックをスキップ');
       } else {
-        roomSyncLog(
-          'href/絶対URLからの抽出が0件のため、投稿ID fallback抽出を開始',
-        );
+        roomSyncLog('href/絶対URLからの抽出が0件のため、投稿ID fallback抽出を開始');
         roomSyncLog('使用した正規表現（投稿ID）: $postIdFallbackPatternSource');
         final postIds = _extractPostIdCandidates(html, decoded);
         roomSyncLog('投稿ID候補数: ${postIds.length}');
@@ -361,7 +405,9 @@ class RoomUserPostedListingFetcher {
         for (final postId in postIds) {
           if (addedFromFallback >= fallbackRoomUrlMax) break;
           final built = 'https://room.rakuten.co.jp/$userSeg/$postId';
-          final key = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(built);
+          final key = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(
+            built,
+          );
           if (key.isEmpty || seen.contains(key)) continue;
           seen.add(key);
           out.add(key);
@@ -406,7 +452,10 @@ class RoomUserPostedListingFetcher {
   }
 
   /// HTML / エスケープ解除HTML の両方から、出現順でユニークな投稿ID候補を列挙。
-  static List<String> _extractPostIdCandidates(String html, String decodedHtml) {
+  static List<String> _extractPostIdCandidates(
+    String html,
+    String decodedHtml,
+  ) {
     final ordered = <String>[];
     final seenIds = <String>{};
     void scan(String source) {
@@ -448,10 +497,7 @@ class RoomUserPostedListingFetcher {
     required Uri baseUri,
   }) {
     final out = <String>[];
-    final reAbs = RegExp(
-      listingAbsoluteUrlPatternSource,
-      caseSensitive: false,
-    );
+    final reAbs = RegExp(listingAbsoluteUrlPatternSource, caseSensitive: false);
     for (final m in reAbs.allMatches(html)) {
       final s = m.group(0);
       if (s != null) out.add(s);
@@ -461,10 +507,7 @@ class RoomUserPostedListingFetcher {
       if (s != null) out.add(s);
     }
 
-    final reHref = RegExp(
-      listingHrefPatternSource,
-      caseSensitive: false,
-    );
+    final reHref = RegExp(listingHrefPatternSource, caseSensitive: false);
     for (final m in reHref.allMatches(html)) {
       final ref = (m.group(1) ?? '').trim();
       if (ref.isEmpty || ref.startsWith('#')) continue;

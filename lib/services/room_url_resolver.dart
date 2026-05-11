@@ -45,7 +45,9 @@ class RoomUrlResolver {
       if (traceRoomSync) {
         roomSyncWarn('ROOM商品ページURLが空（invalidInput）');
       }
-      return const RoomUrlResolveFailure(RoomUrlResolveFailureKind.invalidInput);
+      return const RoomUrlResolveFailure(
+        RoomUrlResolveFailureKind.invalidInput,
+      );
     }
     if (!RoomRakutenUrlNormalize.isLikelyRoomProductPageUrl(trimmed)) {
       if (traceRoomSync) {
@@ -62,6 +64,7 @@ class RoomUrlResolver {
     }
 
     late http.Response res;
+    final pageFetchSw = Stopwatch()..start();
     try {
       if (traceRoomSync) {
         roomSyncLog('ROOM商品ページへ接続: $trimmed');
@@ -83,6 +86,7 @@ class RoomUrlResolver {
       if (traceRoomSync) {
         roomSyncError('ROOM商品ページ取得失敗: timeout', e, st);
       }
+      RoomImportDebugLogBuffer.incRoomPage();
       return const RoomUrlResolveFailure(RoomUrlResolveFailureKind.timeout);
     } catch (e, st) {
       if (kDebugMode) {
@@ -91,8 +95,17 @@ class RoomUrlResolver {
       if (traceRoomSync) {
         roomSyncError('ROOM商品ページ取得失敗: exception', e, st);
       }
-      return const RoomUrlResolveFailure(RoomUrlResolveFailureKind.networkError);
+      RoomImportDebugLogBuffer.incRoomPage();
+      return const RoomUrlResolveFailure(
+        RoomUrlResolveFailureKind.networkError,
+      );
     }
+    pageFetchSw.stop();
+    RoomImportDebugLogBuffer.incRoomPage();
+    roomImportApiLog(
+      'type=roomPage status=${res.statusCode} durationMs=${pageFetchSw.elapsedMilliseconds}',
+    );
+    roomImportApiLog('rateLimitDetected=${res.statusCode == 429}');
 
     if (traceRoomSync) {
       roomSyncLog('HTTP status: ${res.statusCode}');
@@ -149,8 +162,9 @@ class RoomUrlResolver {
     }
 
     String? roomPageAffiliateUrl;
-    RakutenItemUrlParseResult? parsed =
-        RakutenItemUrlParser.findFirstInText(decoded);
+    RakutenItemUrlParseResult? parsed = RakutenItemUrlParser.findFirstInText(
+      decoded,
+    );
     parsed ??= RakutenItemUrlParser.findFirstInText(body);
     if (parsed == null) {
       final pair = _tryParseItemFromFirstAflPc(aflUrlsOrdered, traceRoomSync);
@@ -175,12 +189,8 @@ class RoomUrlResolver {
         roomSyncWarn(
           'HTML内に hb.afl.rakuten.co.jp を含むか: ${lower.contains('hb.afl.rakuten.co.jp')}',
         );
-        roomSyncWarn(
-          'HTML内に 「楽天市場で見る」を含むか: ${sample.contains('楽天市場で見る')}',
-        );
-        roomSyncWarn(
-          'HTML内に 「楽天で見る」を含むか: ${sample.contains('楽天で見る')}',
-        );
+        roomSyncWarn('HTML内に 「楽天市場で見る」を含むか: ${sample.contains('楽天市場で見る')}');
+        roomSyncWarn('HTML内に 「楽天で見る」を含むか: ${sample.contains('楽天で見る')}');
       }
       return const RoomUrlResolveFailure(
         RoomUrlResolveFailureKind.rakutenLinkNotFound,
@@ -191,7 +201,9 @@ class RoomUrlResolver {
       roomSyncLog('採用楽天URL: ${parsed.rakutenUrl}');
     }
 
-    final meta = _readOpenGraphTitleAndImage(decoded.isNotEmpty ? decoded : body);
+    final meta = _readOpenGraphTitleAndImage(
+      decoded.isNotEmpty ? decoded : body,
+    );
     final reaction = RoomRoomPageReactionParse.tryParse(body);
     return RoomUrlResolveSuccess(
       rakutenItem: parsed,
@@ -226,10 +238,7 @@ class RoomUrlResolver {
 
   /// 最初に [RakutenItemUrlParser.tryParse] 成功した afl の `pc` デコード結果と、その元 afl URL を返す。
   static ({RakutenItemUrlParseResult item, String aflSourceUrl})?
-  _tryParseItemFromFirstAflPc(
-    List<String> aflUrls,
-    bool traceRoomSync,
-  ) {
+  _tryParseItemFromFirstAflPc(List<String> aflUrls, bool traceRoomSync) {
     for (final raw in aflUrls) {
       final aflUrl = raw.trim();
       if (aflUrl.isEmpty) continue;

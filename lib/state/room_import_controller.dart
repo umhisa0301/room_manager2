@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,7 @@ import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
+import '../utils/room_sync_log.dart';
 import 'rakuten_managed_product_provider.dart';
 import 'user_profile_provider.dart';
 import '../widgets/room_post_import_flow.dart';
@@ -51,17 +53,28 @@ class RoomImportController extends ChangeNotifier {
   List<RakutenManagedProduct> get latestAddedItems =>
       List<RakutenManagedProduct>.unmodifiable(_latestAddedItems);
 
-  Future<void> _enrichRoomImportMetadataAfterBatch(BuildContext context) async {
-    if (kDemoModeEnabled || !context.mounted) return;
+  /// 補完した件数（API 成功マージ数）。未実行・デモ・未マウント時は 0。
+  Future<int> _enrichRoomImportMetadataAfterBatch(BuildContext context) async {
+    if (kDemoModeEnabled || !context.mounted) return 0;
+    final enrichSw = Stopwatch()..start();
+    roomImportPerfLog('enrichmentStart');
+    var updated = 0;
     try {
       _bulkOperationState?.setMetadataEnriching(true);
       final svc = RoomImportMetadataEnrichmentService(
         searchRepository: context.read<RakutenSearchRepository>(),
         productRepository: context.read<RakutenManagedProductRepository>(),
       );
-      await svc.enrichRoomImportedProducts(limit: 20);
+      updated = await svc.enrichRoomImportedProducts(limit: 20);
+      roomImportPerfLog(
+        'enrichmentEnd updated=$updated durationMs=${enrichSw.elapsedMilliseconds}',
+      );
     } catch (e, st) {
       debugPrint('[RoomImportController] metadata enrich batch: $e\n$st');
+      updated = -1;
+      roomImportPerfLog(
+        'enrichmentEnd updated=-1 durationMs=${enrichSw.elapsedMilliseconds}',
+      );
     } finally {
       _bulkOperationState?.setMetadataEnriching(false);
       if (context.mounted) {
@@ -72,6 +85,7 @@ class RoomImportController extends ChangeNotifier {
         } catch (_) {}
       }
     }
+    return updated;
   }
 
   void _applyResultSnapshot(RoomSyncResult r) {
@@ -99,8 +113,10 @@ class RoomImportController extends ChangeNotifier {
     _bulkOperationState?.setRoomImportRunning(true);
     notifyListeners();
 
+    RoomSyncResult? result;
+    var enrichBatchMs = 0;
+    var enrichUpdated = 0;
     try {
-      RoomSyncResult? result;
       try {
         result = await RoomPostImportFlow.executeBatch(
           context,
@@ -134,7 +150,10 @@ class RoomImportController extends ChangeNotifier {
           (result.newlyCollectedCount > 0 ||
               result.roomUrlAddedCount > 0 ||
               result.listingCheckedCount > 0)) {
-        await _enrichRoomImportMetadataAfterBatch(context);
+        final enrichSw = Stopwatch()..start();
+        enrichUpdated = await _enrichRoomImportMetadataAfterBatch(context);
+        enrichSw.stop();
+        enrichBatchMs = enrichSw.elapsedMilliseconds;
       }
 
       if (result == null) {
@@ -148,10 +167,20 @@ class RoomImportController extends ChangeNotifier {
       } else {
         _phase = RoomImportPhase.completed;
         _applyResultSnapshot(result);
+        roomImportUiLog(
+          'phase=finished added=${result.newlyCollectedCount} updated=${result.roomUrlAddedCount} skipped=${result.skippedCount} failed=${result.failedCount}',
+        );
       }
       notifyListeners();
       return result;
     } finally {
+      if (kDebugMode) {
+        RoomImportDebugLogBuffer.emitImportSummary(
+          result: result,
+          enrichmentBatchMs: enrichBatchMs,
+          enrichmentUpdated: enrichUpdated,
+        );
+      }
       _bulkOperationState?.setRoomImportRunning(false);
       if (_phase == RoomImportPhase.running) {
         _phase = RoomImportPhase.idle;

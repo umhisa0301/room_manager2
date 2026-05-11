@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ import '../services/app_action_service.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/room_sync_service.dart';
+import '../utils/room_sync_log.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
@@ -24,6 +26,44 @@ typedef RoomPostImportProgressCallback =
 
 /// ホーム / マイページ共通の ROOM 投稿取り込み（内部 API は [RoomSyncService] のまま）。
 abstract final class RoomPostImportFlow {
+  static Future<void> _copyRoomImportDebugLog(BuildContext context) async {
+    await RoomImportDebugLogBuffer.copyToClipboard();
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('ROOM取り込みログをコピーしました')));
+  }
+
+  static void _showRoomImportDebugLogDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (dCtx) {
+        return AlertDialog(
+          title: const Text('ROOM取り込み デバッグログ'),
+          content: SizedBox(
+            width: double.maxFinite,
+            height: 420,
+            child: Scrollbar(
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                child: SelectableText(
+                  RoomImportDebugLogBuffer.dump(),
+                  style: const TextStyle(fontSize: 11, height: 1.25),
+                ),
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dCtx),
+              child: const Text('閉じる'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   /// 取り込み後のダイアログ・SnackBar・結果シート。
   static Future<void> presentPostImportUi(
     BuildContext context,
@@ -38,8 +78,29 @@ abstract final class RoomPostImportFlow {
         context: context,
         builder: (ctx) => AlertDialog(
           title: const Text('ROOM投稿取り込み'),
-          content: Text(result.fatalErrorMessage!.trim()),
+          content: SingleChildScrollView(
+            child: Text(result.fatalErrorMessage!.trim()),
+          ),
           actions: [
+            if (kDebugMode) ...[
+              TextButton(
+                onPressed: () async {
+                  await RoomImportDebugLogBuffer.copyToClipboard();
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('ROOM取り込みログをコピーしました')),
+                    );
+                  }
+                },
+                child: const Text('デバッグログをコピー'),
+              ),
+              TextButton(
+                onPressed: () {
+                  _showRoomImportDebugLogDialog(ctx);
+                },
+                child: const Text('デバッグログを表示'),
+              ),
+            ],
             TextButton(
               onPressed: () => Navigator.pop(ctx),
               child: const Text('閉じる'),
@@ -86,6 +147,7 @@ abstract final class RoomPostImportFlow {
     var lastTotal = 0;
 
     onProgress(busy: true, completed: 0, total: 0);
+    roomImportUiLog('phase=preparing message=ROOM投稿の確認を開始します');
 
     final result = await service.syncPostedRoomProducts(
       userRoomProfileUrl: profile,
@@ -94,6 +156,7 @@ abstract final class RoomPostImportFlow {
         lastCompleted = current;
         lastTotal = total;
         onProgress(busy: true, completed: current, total: total);
+        roomImportUiLog('phase=processing current=$current total=$total');
       },
     );
 
@@ -286,6 +349,28 @@ abstract final class RoomPostImportFlow {
                           ),
                         ),
                       ),
+                ],
+                if (kDebugMode) ...[
+                  const SizedBox(height: 20),
+                  const Divider(height: 1),
+                  const SizedBox(height: 12),
+                  Text(
+                    '開発用（debug のみ）',
+                    style: Theme.of(ctx).textTheme.labelSmall?.copyWith(
+                      color: AppColors.textTertiary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  OutlinedButton(
+                    onPressed: () => _copyRoomImportDebugLog(navigatorContext),
+                    child: const Text('デバッグログをコピー'),
+                  ),
+                  const SizedBox(height: 8),
+                  OutlinedButton(
+                    onPressed: () => _showRoomImportDebugLogDialog(ctx),
+                    child: const Text('デバッグログを表示'),
+                  ),
                 ],
                 const SizedBox(height: 26),
                 FilledButton.icon(

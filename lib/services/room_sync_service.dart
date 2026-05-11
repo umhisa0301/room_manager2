@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../config/demo_mode.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_collected_persist_kind.dart';
@@ -53,8 +55,16 @@ class RoomSyncService {
       return null;
     }
     _postedRoomImportInFlight = true;
+    final totalSw = Stopwatch()..start();
     try {
+      if (kDebugMode) {
+        RoomImportDebugLogBuffer.clear();
+      }
       roomSyncSummaryLog('ROOM投稿取り込み 開始（最大$maxItems件）');
+      roomImportPerfLog('totalStart');
+      roomImportPerfLog('prepareStart');
+      onProcessingHint?.call('準備中: 投稿一覧を取得しています');
+      roomImportUiLog('phase=preparing message=投稿一覧を取得しています');
 
       if (kDemoModeEnabled) {
         roomSyncWarn('デモモードのため中断（fatal 相当）');
@@ -98,6 +108,8 @@ class RoomSyncService {
       }
       roomSyncLog('ROOMプロフィールURL（保存値）: $profile');
       roomSyncLog('ROOM投稿一覧URL（取得用）: $listingUrl');
+      roomImportPerfLog('fetchRoomListStart url=$listingUrl');
+      final prepareSw = Stopwatch()..start();
       final initialOrdered = await _listingFetcher
           .fetchPostedRoomProductPageUrls(
             listingUrl,
@@ -108,6 +120,10 @@ class RoomSyncService {
       );
 
       final listingInitialCandidateCount = initialOrdered.length;
+      roomImportPerfLog('extractRoomItemsStart');
+      roomImportPerfLog(
+        'extractRoomItemsEnd found=$listingInitialCandidateCount durationMs=0',
+      );
 
       if (initialOrdered.isEmpty) {
         roomSyncError('ROOMの投稿一覧を取得できませんでした（抽出0件または接続失敗）。');
@@ -252,6 +268,15 @@ class RoomSyncService {
       }
 
       roomSyncVerboseLog('取り込み対象キュー件数: ${toProcess.length}');
+      prepareSw.stop();
+      roomImportPerfLog(
+        'prepareEnd durationMs=${prepareSw.elapsedMilliseconds}',
+      );
+      if (kDebugMode) {
+        RoomImportDebugLogBuffer.notePrepareMs(prepareSw.elapsedMilliseconds);
+      }
+      onProcessingHint?.call('取り込み対象 ${toProcess.length} 件を処理します');
+      roomImportUiLog('phase=processing current=0 total=${toProcess.length}');
 
       if (toProcess.isEmpty) {
         roomSyncSummaryLog(
@@ -285,8 +310,11 @@ class RoomSyncService {
       onCheckingProgress?.call(0, batchSize);
 
       for (var i = 0; i < toProcess.length; i++) {
+        final itemSw = Stopwatch()..start();
         final roomPageUrl = toProcess[i];
         final ordinal = i + 1;
+        roomImportPerfLog('itemStart index=$ordinal roomUrl=$roomPageUrl');
+        roomImportUiLog('phase=processing current=$ordinal total=$batchSize');
         roomSyncVerboseLog('$ordinal件目の商品を確認');
         roomSyncVerboseLog('roomUrl: $roomPageUrl');
 
@@ -296,12 +324,21 @@ class RoomSyncService {
         roomSyncVerboseLog('取り込み済み判定（再確認）: $preSynced');
         if (preSynced) {
           roomSyncVerboseLog('取り込み済みのためスキップ: $roomPageUrl');
+          roomImportPerfLog(
+            'existingCheckEnd index=$ordinal exists=true durationMs=0',
+          );
+          itemSw.stop();
+          roomImportPerfLog(
+            'itemEnd index=$ordinal result=skipped durationMs=${itemSw.elapsedMilliseconds}',
+          );
           skipped++;
           onCheckingProgress?.call(i + 1, batchSize);
           continue;
         }
 
         RoomUrlResolveOutcome resolved;
+        roomImportPerfLog('roomPageFetchStart index=$ordinal');
+        final roomPageSw = Stopwatch()..start();
         try {
           resolved = await _resolver.resolveRakutenItemUrlFromRoomPage(
             roomPageUrl,
@@ -312,8 +349,23 @@ class RoomSyncService {
           failed++;
           failedUrls.add(roomPageUrl);
           onCheckingProgress?.call(i + 1, batchSize);
+          roomPageSw.stop();
+          roomImportPerfLog(
+            'roomPageFetchEnd index=$ordinal status=exception htmlBytes=0 durationMs=${roomPageSw.elapsedMilliseconds}',
+          );
+          itemSw.stop();
+          roomImportPerfLog(
+            'itemEnd index=$ordinal result=failed durationMs=${itemSw.elapsedMilliseconds}',
+          );
           continue;
         }
+        roomPageSw.stop();
+        final resolvedStatus = resolved is RoomUrlResolveSuccess
+            ? 200
+            : 'resolveFailed';
+        roomImportPerfLog(
+          'roomPageFetchEnd index=$ordinal status=$resolvedStatus htmlBytes=-1 durationMs=${roomPageSw.elapsedMilliseconds}',
+        );
 
         if (resolved is! RoomUrlResolveSuccess) {
           final f = resolved as RoomUrlResolveFailure;
@@ -323,15 +375,27 @@ class RoomSyncService {
           failed++;
           failedUrls.add(roomPageUrl);
           onCheckingProgress?.call(i + 1, batchSize);
+          itemSw.stop();
+          roomImportPerfLog(
+            'itemEnd index=$ordinal result=failed durationMs=${itemSw.elapsedMilliseconds}',
+          );
           continue;
         }
 
         final parsed = resolved.rakutenItem;
+        roomImportPerfLog('rakutenUrlResolveStart index=$ordinal');
+        final rakutenResolveSw = Stopwatch()..start();
         roomSyncVerboseLog('楽天URL解析開始: ${parsed.rakutenUrl}');
         roomSyncVerboseLog(
           '使用した正規表現: ${RakutenItemUrlParser.itemRakutenUrlPattern.pattern}',
         );
         final verified = RakutenItemUrlParser.tryParse(parsed.rakutenUrl);
+        rakutenResolveSw.stop();
+        roomImportPerfLog(
+          'rakutenUrlResolveEnd index=$ordinal durationMs=${rakutenResolveSw.elapsedMilliseconds}',
+        );
+        roomImportPerfLog('parseCodesStart index=$ordinal');
+        final parseCodesSw = Stopwatch()..start();
         if (verified == null) {
           roomSyncError('shopCode / itemCode の抽出に失敗');
           roomSyncVerboseLog('対象URL: ${parsed.rakutenUrl}');
@@ -341,8 +405,24 @@ class RoomSyncService {
           failed++;
           failedUrls.add(roomPageUrl);
           onCheckingProgress?.call(i + 1, batchSize);
+          parseCodesSw.stop();
+          roomImportPerfLog(
+            'parseCodesEnd index=$ordinal shopCode=- itemCode=- durationMs=${parseCodesSw.elapsedMilliseconds}',
+          );
+          itemSw.stop();
+          roomImportPerfLog(
+            'itemEnd index=$ordinal result=failed durationMs=${itemSw.elapsedMilliseconds}',
+          );
           continue;
         }
+        parseCodesSw.stop();
+        roomImportPerfLog(
+          'parseCodesEnd index=$ordinal shopCode=${verified.shopCode} itemCode=${verified.itemPathSegment} durationMs=${parseCodesSw.elapsedMilliseconds}',
+        );
+        roomImportPerfLog('existingCheckStart index=$ordinal');
+        roomImportPerfLog(
+          'existingCheckEnd index=$ordinal exists=false durationMs=0',
+        );
         roomSyncVerboseLog('shopCode: ${verified.shopCode}');
         roomSyncVerboseLog('itemCode: ${verified.itemPathSegment}');
 
@@ -351,16 +431,37 @@ class RoomSyncService {
         if (searchRepo != null &&
             verified.shopCode.trim().isNotEmpty &&
             verified.itemPathSegment.trim().isNotEmpty) {
+          roomImportPerfLog(
+            'rakutenApiFetchStart index=$ordinal itemCode=${verified.itemPathSegment}',
+          );
+          final rakutenApiSw = Stopwatch()..start();
           try {
+            RoomImportDebugLogBuffer.incRakutenItemFromSync();
             apiEnriched = await searchRepo
                 .fetchFirstItemForRoomImportEnrichment(
                   shopCode: verified.shopCode,
                   itemCode: verified.itemPathSegment,
                 );
+            rakutenApiSw.stop();
+            roomImportPerfLog(
+              'rakutenApiFetchEnd index=$ordinal status=ok durationMs=${rakutenApiSw.elapsedMilliseconds}',
+            );
+            roomImportApiLog(
+              'type=rakutenItem status=ok durationMs=${rakutenApiSw.elapsedMilliseconds}',
+            );
+            roomImportApiLog('rateLimitDetected=false');
             if (traceDetailed && apiEnriched != null) {
               roomSyncVerboseLog('楽天商品検索APIでメタデータを補完しました');
             }
           } catch (e, st) {
+            rakutenApiSw.stop();
+            roomImportPerfLog(
+              'rakutenApiFetchEnd index=$ordinal status=exception durationMs=${rakutenApiSw.elapsedMilliseconds}',
+            );
+            roomImportApiLog(
+              'type=rakutenItem status=exception durationMs=${rakutenApiSw.elapsedMilliseconds}',
+            );
+            roomImportApiLog('rateLimitDetected=false');
             if (traceDetailed) {
               roomSyncVerboseLog('楽天API補完スキップ: $e');
               roomSyncVerboseLog('$st');
@@ -370,6 +471,13 @@ class RoomSyncService {
         }
 
         try {
+          roomImportPerfLog('reactionParseStart index=$ordinal');
+          roomImportPerfLog(
+            'reactionParseEnd index=$ordinal likes=${resolved.roomLikeCount ?? -1} comments=${resolved.roomCommentCount ?? -1} durationMs=0',
+          );
+          roomImportPerfLog('saveStart index=$ordinal');
+          roomImportUiLog('phase=saving current=$ordinal');
+          final saveSw = Stopwatch()..start();
           final outcome = await _repository.persistRoomCollectedFromRoomPage(
             roomUrlStoredCanonical: normalizedKey,
             normalizedRoomUrlKey: normalizedKey,
@@ -383,22 +491,31 @@ class RoomSyncService {
             roomLikeCount: resolved.roomLikeCount,
             roomCommentCount: resolved.roomCommentCount,
           );
+          saveSw.stop();
+          roomImportPerfLog(
+            'saveEnd index=$ordinal durationMs=${saveSw.elapsedMilliseconds}',
+          );
 
           final k = outcome.kind;
+          String itemResult = 'updated';
           if (k == RoomCollectedPersistKind.demoUnsupported) {
             roomSyncWarn('保存種別: デモ拒否');
             failed++;
             failedUrls.add(roomPageUrl);
+            itemResult = 'failed';
           } else if (k == RoomCollectedPersistKind.roomPageAlreadySynced ||
               k == RoomCollectedPersistKind.alreadyCollectedSkip) {
             roomSyncVerboseLog('保存種別: スキップ (${k.name})');
             skipped++;
+            itemResult = 'skipped';
           } else if (k == RoomCollectedPersistKind.updatedRoomUrlOnly) {
             roomSyncVerboseLog('保存種別: 既存商品へROOM URL追加 完了');
             roomAdd++;
+            itemResult = 'updated';
           } else if (k == RoomCollectedPersistKind.insertedNewCollected) {
             roomSyncVerboseLog('保存種別: 新規コレ済登録 完了');
             newly++;
+            itemResult = 'added';
             if (newlyCollectedSamples.length < 3) {
               final pid = outcome.productId?.trim() ?? '';
               if (pid.isNotEmpty) {
@@ -438,10 +555,18 @@ class RoomSyncService {
               k == RoomCollectedPersistKind.insertedNewCollected) {
             syncedRoomKeys.add(normalizedKey);
           }
+          itemSw.stop();
+          roomImportPerfLog(
+            'itemEnd index=$ordinal result=$itemResult durationMs=${itemSw.elapsedMilliseconds}',
+          );
         } catch (e, st) {
           roomSyncError('永続化例外（persistRoomCollectedFromRoomPage）', e, st);
           failed++;
           failedUrls.add(roomPageUrl);
+          itemSw.stop();
+          roomImportPerfLog(
+            'itemEnd index=$ordinal result=failed durationMs=${itemSw.elapsedMilliseconds}',
+          );
         }
 
         onCheckingProgress?.call(i + 1, batchSize);
@@ -493,6 +618,11 @@ class RoomSyncService {
         ),
       );
     } finally {
+      totalSw.stop();
+      if (kDebugMode) {
+        RoomImportDebugLogBuffer.noteTotalMs(totalSw.elapsedMilliseconds);
+      }
+      roomImportPerfLog('totalEnd durationMs=${totalSw.elapsedMilliseconds}');
       _postedRoomImportInFlight = false;
     }
   }

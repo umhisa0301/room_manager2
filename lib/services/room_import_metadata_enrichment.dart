@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../models/rakuten_managed_product.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
+import '../utils/room_sync_log.dart';
 
 /// Phase 3 向けに ROOM 取り込みコレのメタデータをバッチで API 補完するサービス。
 ///
@@ -43,10 +44,17 @@ class RoomImportMetadataEnrichmentService {
         continue;
       }
       try {
-        final api = await _searchRepository.fetchFirstItemForRoomImportEnrichment(
-          shopCode: shop,
-          itemCode: pid,
+        final apiSw = Stopwatch()..start();
+        RoomImportDebugLogBuffer.incEnrichment();
+        final api = await _searchRepository
+            .fetchFirstItemForRoomImportEnrichment(
+              shopCode: shop,
+              itemCode: pid,
+            );
+        roomImportApiLog(
+          'type=enrichment status=${api == null ? 'empty' : 'ok'} durationMs=${apiSw.elapsedMilliseconds}',
         );
+        roomImportApiLog('rateLimitDetected=false');
         if (api == null) {
           await _productRepository.updateManagedProduct(pid, (e) {
             return e.copyWith(roomImportMetadataEnriching: false);
@@ -59,6 +67,8 @@ class RoomImportMetadataEnrichmentService {
         );
         okCount++;
       } catch (_) {
+        roomImportApiLog('type=enrichment status=exception durationMs=-1');
+        roomImportApiLog('rateLimitDetected=false');
         await _productRepository.updateManagedProduct(pid, (e) {
           return e.copyWith(roomImportMetadataEnriching: false);
         });
@@ -90,9 +100,7 @@ class RoomImportMetadataEnrichmentService {
   /// [shopName] が未設定・プレースホルダのとき API で上書き対象にする。
   static bool _isShopNameNeedsEnrichment(String? raw) {
     final t = (raw ?? '').trim();
-    return t.isEmpty ||
-        t == 'ショップ未設定' ||
-        t == 'ショップ名不明';
+    return t.isEmpty || t == 'ショップ未設定' || t == 'ショップ名不明';
   }
 
   /// [genreName] が未設定・プレースホルダのとき API で名前解決の対象にする。

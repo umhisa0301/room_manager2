@@ -7,6 +7,7 @@ import '../models/rakuten_search_item.dart';
 import '../services/genre_master_service.dart';
 import '../services/rakuten_api_service.dart';
 import '../utils/rakuten_product_genre_display.dart';
+import '../utils/room_sync_log.dart';
 
 /// キーワード検索（管理除外パス）のページング終了理由。
 enum RakutenKeywordSearchStopReason {
@@ -192,6 +193,7 @@ class RakutenSearchRepository {
     required String shopCode,
     required String itemCode,
   }) async {
+    final apiSw = Stopwatch()..start();
     final sc = shopCode.trim();
     final icRaw = itemCode.trim();
     if (sc.isEmpty || icRaw.isEmpty) return null;
@@ -218,10 +220,16 @@ class RakutenSearchRepository {
     try {
       if (kDemoModeEnabled) {
         final items = await search(condition: condition);
-        final bestDemo = _pickRoomImportEnrichmentItem(items, numericItemCode, sc);
+        final bestDemo = _pickRoomImportEnrichmentItem(
+          items,
+          numericItemCode,
+          sc,
+        );
         debugPrint('[ROOM_IMPORT_ENRICH] response status=demo searchItems');
         if (bestDemo != null) {
-          debugPrint('[ROOM_IMPORT_ENRICH] response title=${bestDemo.itemName}');
+          debugPrint(
+            '[ROOM_IMPORT_ENRICH] response title=${bestDemo.itemName}',
+          );
           debugPrint(
             '[ROOM_IMPORT_ENRICH] response shopName=${bestDemo.shopName}',
           );
@@ -247,6 +255,10 @@ class RakutenSearchRepository {
         hits: 30,
       );
       final rawItems = raw['Items'];
+      roomImportApiLog(
+        'type=rakutenItem status=ok durationMs=${apiSw.elapsedMilliseconds}',
+      );
+      roomImportApiLog('rateLimitDetected=false');
       debugPrint(
         '[ROOM_IMPORT_ENRICH] response status='
         '${rawItems is List ? 'Items len=${rawItems.length}' : 'no Items'}',
@@ -292,6 +304,10 @@ class RakutenSearchRepository {
       }
       return best;
     } catch (e, st) {
+      roomImportApiLog(
+        'type=rakutenItem status=exception durationMs=${apiSw.elapsedMilliseconds}',
+      );
+      roomImportApiLog('rateLimitDetected=false');
       debugPrint('[ROOM_IMPORT_ENRICH] response status=exception $e');
       if (kDebugMode) {
         debugPrint('$st');
