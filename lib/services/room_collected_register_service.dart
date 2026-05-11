@@ -71,18 +71,23 @@ class RoomCollectedRegisterService {
     }
 
     RakutenSearchItem? apiEnriched;
+    var rakutenApiPartialData = false;
     final searchRepo = _searchRepository;
     if (searchRepo != null &&
         verify.shopCode.trim().isNotEmpty &&
         verify.itemPathSegment.trim().isNotEmpty) {
       try {
-        apiEnriched =
-            await searchRepo.fetchFirstItemForRoomImportEnrichment(
+        final env = await searchRepo.fetchFirstItemForRoomImportEnrichmentEnvelope(
           shopCode: verify.shopCode,
           itemCode: verify.itemPathSegment,
         );
+        apiEnriched = env.item;
+        rakutenApiPartialData =
+            env.item == null ||
+            (env.httpStatus != null && env.httpStatus != 200);
       } catch (_) {
         apiEnriched = null;
+        rakutenApiPartialData = true;
       }
     }
 
@@ -96,6 +101,8 @@ class RoomCollectedRegisterService {
       apiEnrichedItem: apiEnriched,
       roomLikeCount: resolved.roomLikeCount,
       roomCommentCount: resolved.roomCommentCount,
+      listingHintPriceYen: resolved.listingHintPriceYen,
+      rakutenApiPartialData: rakutenApiPartialData,
     );
 
     switch (persist.kind) {

@@ -215,6 +215,9 @@ class RoomUrlResolver {
       decoded.isNotEmpty ? decoded : body,
     );
     final reaction = RoomRoomPageReactionParse.tryParse(body);
+    final priceHint = _extractListingHintPriceYenFromText(
+      decoded.isNotEmpty ? decoded : body,
+    );
     return RoomUrlResolveSuccess(
       rakutenItem: parsed,
       roomPageAffiliateUrl: roomPageAffiliateUrl,
@@ -222,7 +225,30 @@ class RoomUrlResolver {
       roomPageImageUrl: meta.$2,
       roomLikeCount: reaction.roomLikeCount,
       roomCommentCount: reaction.roomCommentCount,
+      listingHintPriceYen: priceHint,
     );
+  }
+
+  /// 一覧カード断片・商品ページ HTML から税込らしき金額を拾う（楽天APIが無いときの補助）。
+  static int? _extractListingHintPriceYenFromText(String text) {
+    if (text.isEmpty) return null;
+    final yen = RegExp(r'[¥￥]\s*([0-9]{1,3}(?:,[0-9]{3})+|[0-9]{2,})');
+    final m = yen.firstMatch(text);
+    if (m != null && m.groupCount >= 1) {
+      final digits = (m.group(1) ?? '').replaceAll(',', '');
+      final v = int.tryParse(digits);
+      if (v != null && v > 0 && v < 100000000) return v;
+    }
+    final jsonPrice = RegExp(
+      r'"(?:itemPrice|price|minPrice|item_price)"\s*:\s*([0-9]+)',
+      caseSensitive: false,
+    );
+    final jm = jsonPrice.firstMatch(text);
+    if (jm != null) {
+      final v = int.tryParse(jm.group(1) ?? '');
+      if (v != null && v > 0 && v < 100000000) return v;
+    }
+    return null;
   }
 
   /// 一覧HTMLの断片から [parseFetchedRoomPageHtml] と同等の解決を試みる。失敗時は null。
@@ -261,7 +287,19 @@ class RoomUrlResolver {
       final end = start + after;
       final hi = end > html.length ? html.length : end;
       final snippet = html.substring(lo, hi);
-      final ok = tryParseRoomPageFromHtmlSnippet(snippet, traceRoomSync: false);
+      var ok = tryParseRoomPageFromHtmlSnippet(snippet, traceRoomSync: false);
+      final hint = _extractListingHintPriceYenFromText(snippet);
+      if (ok != null && hint != null) {
+        ok = RoomUrlResolveSuccess(
+          rakutenItem: ok.rakutenItem,
+          roomPageAffiliateUrl: ok.roomPageAffiliateUrl,
+          roomPageTitle: ok.roomPageTitle,
+          roomPageImageUrl: ok.roomPageImageUrl,
+          roomLikeCount: ok.roomLikeCount,
+          roomCommentCount: ok.roomCommentCount,
+          listingHintPriceYen: hint,
+        );
+      }
       if (ok != null) {
         _mergeListingFastPathEntry(sink, key, ok);
       }
@@ -339,6 +377,15 @@ class RoomUrlResolver {
       }
     }
 
+    final collectPrice = _readOptionalIntFromMap(row, const [
+      'price',
+      'item_price',
+      'itemPrice',
+      'min_price',
+      'minPrice',
+      'search_price',
+      'searchPrice',
+    ]);
     final success = RoomUrlResolveSuccess(
       rakutenItem: item,
       roomPageAffiliateUrl: aflAff,
@@ -354,6 +401,8 @@ class RoomUrlResolver {
         'commentCount',
         'comments',
       ]),
+      listingHintPriceYen:
+          collectPrice != null && collectPrice > 0 ? collectPrice : null,
     );
     _mergeListingFastPathEntry(sink, key, success);
   }
@@ -373,7 +422,10 @@ class RoomUrlResolver {
       final i = (s.roomPageImageUrl ?? '').trim().length;
       final l = s.roomLikeCount != null ? 1 : 0;
       final c = s.roomCommentCount != null ? 1 : 0;
-      return t * 2 + i + l * 3 + c * 3;
+      final p = (s.listingHintPriceYen != null && s.listingHintPriceYen! > 0)
+          ? 4
+          : 0;
+      return t * 2 + i + l * 3 + c * 3 + p;
     }
 
     if (score(next) >= score(prev)) {
@@ -574,6 +626,7 @@ final class RoomUrlResolveSuccess extends RoomUrlResolveOutcome {
     this.roomPageImageUrl,
     this.roomLikeCount,
     this.roomCommentCount,
+    this.listingHintPriceYen,
   });
 
   final RakutenItemUrlParseResult rakutenItem;
@@ -588,6 +641,9 @@ final class RoomUrlResolveSuccess extends RoomUrlResolveOutcome {
 
   /// ROOM HTML から推定したコメント数（未取得は null）。
   final int? roomCommentCount;
+
+  /// 一覧HTML／collects から拾った参考価格（円）。楽天APIが無い・失敗時の補助。
+  final int? listingHintPriceYen;
 }
 
 final class RoomUrlResolveFailure extends RoomUrlResolveOutcome {

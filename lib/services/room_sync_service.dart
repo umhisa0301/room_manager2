@@ -557,6 +557,9 @@ class RoomSyncService {
         roomSyncVerboseLog('itemCode: ${verified.itemPathSegment}');
 
         RakutenSearchItem? apiEnriched;
+        var rakutenApiPartialData = false;
+        final listingHintFromResolve =
+            resolved.listingHintPriceYen;
         final searchRepo = _searchRepository;
         if (searchRepo != null &&
             verified.shopCode.trim().isNotEmpty &&
@@ -567,31 +570,36 @@ class RoomSyncService {
           final rakutenApiSw = Stopwatch()..start();
           try {
             RoomImportDebugLogBuffer.incRakutenItemFromSync();
-            apiEnriched = await searchRepo
-                .fetchFirstItemForRoomImportEnrichment(
+            final env = await searchRepo
+                .fetchFirstItemForRoomImportEnrichmentEnvelope(
                   shopCode: verified.shopCode,
                   itemCode: verified.itemPathSegment,
                 );
+            apiEnriched = env.item;
+            rakutenApiPartialData =
+                env.item == null ||
+                (env.httpStatus != null && env.httpStatus != 200);
             rakutenApiSw.stop();
             roomImportPerfLog(
-              'rakutenApiFetchEnd index=$ordinal status=ok durationMs=${rakutenApiSw.elapsedMilliseconds}',
+              'rakutenApiFetchEnd index=$ordinal '
+              'partialData=$rakutenApiPartialData '
+              'durationMs=${rakutenApiSw.elapsedMilliseconds}',
             );
-            roomImportApiLog(
-              'type=rakutenItem status=ok durationMs=${rakutenApiSw.elapsedMilliseconds}',
-            );
-            roomImportApiLog('rateLimitDetected=false');
-            if (traceDetailed && apiEnriched != null) {
+            if (traceDetailed && apiEnriched != null && !rakutenApiPartialData) {
               roomSyncVerboseLog('楽天商品検索APIでメタデータを補完しました');
             }
           } catch (e, st) {
             rakutenApiSw.stop();
+            rakutenApiPartialData = true;
             roomImportPerfLog(
-              'rakutenApiFetchEnd index=$ordinal status=exception durationMs=${rakutenApiSw.elapsedMilliseconds}',
+              'rakutenApiFetchEnd index=$ordinal status=exception '
+              'partialData=true durationMs=${rakutenApiSw.elapsedMilliseconds}',
             );
             roomImportApiLog(
               'type=rakutenItem status=exception durationMs=${rakutenApiSw.elapsedMilliseconds}',
             );
             roomImportApiLog('rateLimitDetected=false');
+            roomImportApiLog('partialData=true reason=exception');
             if (traceDetailed) {
               roomSyncVerboseLog('楽天API補完スキップ: $e');
               roomSyncVerboseLog('$st');
@@ -620,6 +628,8 @@ class RoomSyncService {
             workingMutableList: workingManagedList,
             roomLikeCount: resolved.roomLikeCount,
             roomCommentCount: resolved.roomCommentCount,
+            listingHintPriceYen: listingHintFromResolve,
+            rakutenApiPartialData: rakutenApiPartialData,
           );
           saveSw.stop();
           roomImportPerfLog(

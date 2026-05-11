@@ -536,6 +536,12 @@ class RakutenManagedProductRepository {
     List<RakutenManagedProduct>? workingMutableList,
     int? roomLikeCount,
     int? roomCommentCount,
+
+    /// 一覧HTML／collects 由来の参考価格（円）。API 失敗時も 0 円より優先。
+    int? listingHintPriceYen,
+
+    /// 楽天検索APIが完全には取れなかった（プロキシ400・Items空など）。
+    bool rakutenApiPartialData = false,
   }) async {
     if (kDemoModeEnabled) {
       if (traceRoomSync) {
@@ -660,6 +666,11 @@ class RakutenManagedProductRepository {
 
       final api = apiEnrichedItem;
       if (api != null) {
+        if (api.itemPrice <= 0) {
+          roomImportSaveLog(
+            'preservedExistingPrice=true reason=apiPriceNonPositive',
+          );
+        }
         final resolvedLabel = _resolvedGenreLabelForSearchItem(api);
         final mergedGn = _mergedGenreNameForRoomImportApi(
           api: api,
@@ -670,7 +681,7 @@ class RakutenManagedProductRepository {
           itemName: api.itemName.trim().isNotEmpty
               ? api.itemName
               : next.itemName,
-          itemPrice: api.itemPrice,
+          itemPrice: api.itemPrice > 0 ? api.itemPrice : next.itemPrice,
           shopName: () {
             final s = api.shopName.trim();
             return (s.isNotEmpty && s != 'ショップ名不明')
@@ -679,17 +690,22 @@ class RakutenManagedProductRepository {
           }(),
           shopUrl: api.shopUrl.trim().isNotEmpty ? api.shopUrl : next.shopUrl,
           genreId: api.genreId.trim().isNotEmpty ? api.genreId : next.genreId,
-          genreName: mergedGn,
+          genreName: mergedGn.trim().isNotEmpty ? mergedGn : next.genreName,
           resolvedGenreName: resolvedLabel.isNotEmpty
               ? resolvedLabel
               : next.resolvedGenreName,
           imageUrl: api.imageUrl.trim().isNotEmpty
               ? api.imageUrl
               : next.imageUrl,
-          reviewAverage: api.reviewAverage,
+          reviewAverage: api.reviewAverage > 0
+              ? api.reviewAverage
+              : next.reviewAverage,
           reviewCount: api.reviewCount,
           roomImportMetadataEnriching: false,
         );
+        if (rakutenApiPartialData) {
+          roomImportSaveLog('partialSuccess=true existingRowMerge=true');
+        }
       }
 
       next = next.copyWith(
@@ -729,86 +745,6 @@ class RakutenManagedProductRepository {
       );
     }
 
-    final apiNew = apiEnrichedItem;
-    if (apiNew != null) {
-      if (traceRoomSync) {
-        roomSyncLog('未登録商品のため楽天APIで詳細取得済み行をコレ済として新規保存します');
-        roomSyncLog('保存開始 保存種別: 新規コレ済登録（APIあり）');
-      }
-      final resolvedLabel = _resolvedGenreLabelForSearchItem(apiNew);
-      final mergedNewGenreName = _mergedGenreNameForRoomImportApi(
-        api: apiNew,
-        resolvedLabel: resolvedLabel,
-        existingGenreName: '',
-      );
-      final urlsNew = _normalUrlsForRoomPersist(
-        parsedItem: parsedItem,
-        api: apiNew,
-        fallbackItemUrl: '',
-        fallbackRakutenUrl: null,
-      );
-      var row =
-          RakutenManagedProduct.fromSearchItem(
-            apiNew,
-            status: RakutenManagedProductStatus.done,
-            now: now,
-            resolvedGenreName: resolvedLabel,
-          ).copyWith(
-            roomUrl: roomUrlStoredCanonical,
-            itemUrl: urlsNew.$1.isNotEmpty ? urlsNew.$1 : apiNew.itemUrl,
-            rakutenUrl: urlsNew.$2,
-            affiliateUrl: _mergeAffiliateForRoomPersist(
-              roomPageAffiliateUrl: roomPageAffiliateUrl,
-              api: apiNew,
-              existingAffiliate: null,
-            ),
-            shopCode: parsedItem.shopCode.isNotEmpty
-                ? parsedItem.shopCode
-                : apiNew.shopCode,
-            shopName: () {
-              final s = apiNew.shopName.trim();
-              return (s.isNotEmpty && s != 'ショップ名不明') ? apiNew.shopName : '';
-            }(),
-            genreName: mergedNewGenreName,
-            doneAt: now,
-            isRoomSynced: true,
-            roomSyncedAt: now,
-            coredActivitySource: RakutenCoredActivitySource.roomImport,
-            importedAt: now,
-          );
-      row = _mergeParsedRoomReactions(
-        row,
-        roomLikeCount,
-        roomCommentCount,
-        now,
-      );
-      list.add(row);
-      try {
-        await _saveAllMaybeMerged(
-          list: list,
-          workingMutableList: workingMutableList,
-        );
-        _debugLogRoomImportSave(row.productId);
-        if (traceRoomSync) {
-          roomSyncLog('保存成功（新規コレ済・APIあり）');
-        }
-      } catch (e, st) {
-        if (traceRoomSync) {
-          roomSyncError('保存失敗（新規コレ済・APIあり）', e, st);
-        }
-        rethrow;
-      }
-      return RoomCollectedPersistOutcome(
-        kind: RoomCollectedPersistKind.insertedNewCollected,
-        productId: row.productId,
-      );
-    }
-
-    if (traceRoomSync) {
-      roomSyncLog('API無し・最低限データで新規コレ済登録します');
-      roomSyncLog('保存開始 保存種別: 新規コレ済登録（最低限）');
-    }
-
     final title = roomPageTitle.trim().isNotEmpty
         ? roomPageTitle.trim()
         : '（ROOM投稿）';
@@ -816,51 +752,127 @@ class RakutenManagedProductRepository {
     final newId = parsedItem.itemPathSegment.trim().isNotEmpty
         ? parsedItem.itemPathSegment.trim()
         : parsedItem.compositeProductId;
-
     final pcOnly = parsedItem.rakutenUrl.trim();
-    list.add(
-      _mergeParsedRoomReactions(
-        RakutenManagedProduct(
-          productId: newId,
-          itemName: title,
-          itemPrice: 0,
-          itemUrl: pcOnly,
-          rakutenUrl: pcOnly.isNotEmpty ? pcOnly : null,
-          affiliateUrl: _mergeAffiliateForRoomPersist(
-            roomPageAffiliateUrl: roomPageAffiliateUrl,
-            api: null,
-            existingAffiliate: null,
-          ),
-          imageUrl: image,
-          shopName: '',
-          shopCode: parsedItem.shopCode,
-          shopUrl: '',
-          genreId: '',
-          genreName: '',
-          resolvedGenreName: '',
-          status: RakutenManagedProductStatus.done,
-          createdAt: now,
-          updatedAt: now,
-          addedAt: now,
-          extractedUrl: '',
-          extractionStatus: RakutenUrlExtractionStatus.notStarted,
-          extractionErrorMessage: '',
-          extractedAt: null,
-          roomUrl: roomUrlStoredCanonical,
-          doneAt: now,
-          feedbackLikedAt: null,
-          feedbackSoldAt: null,
-          feedbackWeakAt: null,
-          isRoomSynced: true,
-          roomSyncedAt: now,
-          coredActivitySource: RakutenCoredActivitySource.roomImport,
-          importedAt: now,
-        ),
-        roomLikeCount,
-        roomCommentCount,
-        now,
+    final hintRaw = listingHintPriceYen;
+    final hintYen =
+        (hintRaw != null && hintRaw > 0) ? hintRaw : 0;
+
+    var row = RakutenManagedProduct(
+      productId: newId,
+      itemName: title,
+      itemPrice: hintYen,
+      itemUrl: pcOnly,
+      rakutenUrl: pcOnly.isNotEmpty ? pcOnly : null,
+      affiliateUrl: _mergeAffiliateForRoomPersist(
+        roomPageAffiliateUrl: roomPageAffiliateUrl,
+        api: null,
+        existingAffiliate: null,
       ),
+      imageUrl: image,
+      shopName: '',
+      shopCode: parsedItem.shopCode,
+      shopUrl: '',
+      genreId: '',
+      genreName: '',
+      resolvedGenreName: '',
+      status: RakutenManagedProductStatus.done,
+      createdAt: now,
+      updatedAt: now,
+      addedAt: now,
+      extractedUrl: '',
+      extractionStatus: RakutenUrlExtractionStatus.notStarted,
+      extractionErrorMessage: '',
+      extractedAt: null,
+      roomUrl: roomUrlStoredCanonical,
+      doneAt: now,
+      feedbackLikedAt: null,
+      feedbackSoldAt: null,
+      feedbackWeakAt: null,
+      isRoomSynced: true,
+      roomSyncedAt: now,
+      coredActivitySource: RakutenCoredActivitySource.roomImport,
+      importedAt: now,
     );
+
+    final apiNew = apiEnrichedItem;
+    if (apiNew != null) {
+      if (traceRoomSync) {
+        roomSyncLog(
+          '未登録商品: 一覧ROOM由来を土台に、楽天APIで上書きできる項目のみマージします',
+        );
+        roomSyncLog('保存開始 保存種別: 新規コレ済登録（一覧＋APIマージ）');
+      }
+      final resolvedLabel = _resolvedGenreLabelForSearchItem(apiNew);
+      final mergedNewGenreName = _mergedGenreNameForRoomImportApi(
+        api: apiNew,
+        resolvedLabel: resolvedLabel,
+        existingGenreName: row.genreName,
+      );
+      final urlsNew = _normalUrlsForRoomPersist(
+        parsedItem: parsedItem,
+        api: apiNew,
+        fallbackItemUrl: row.itemUrl,
+        fallbackRakutenUrl: row.rakutenUrl,
+      );
+      row = row.copyWith(
+        itemName: apiNew.itemName.trim().isNotEmpty ? apiNew.itemName : row.itemName,
+        itemPrice: apiNew.itemPrice > 0 ? apiNew.itemPrice : row.itemPrice,
+        itemUrl: urlsNew.$1.isNotEmpty ? urlsNew.$1 : row.itemUrl,
+        rakutenUrl: urlsNew.$2 ?? row.rakutenUrl,
+        affiliateUrl: _mergeAffiliateForRoomPersist(
+          roomPageAffiliateUrl: roomPageAffiliateUrl,
+          api: apiNew,
+          existingAffiliate: row.affiliateUrl,
+        ),
+        shopCode: parsedItem.shopCode.isNotEmpty
+            ? parsedItem.shopCode
+            : (apiNew.shopCode.trim().isNotEmpty ? apiNew.shopCode : row.shopCode),
+        shopName: () {
+          final s = apiNew.shopName.trim();
+          return (s.isNotEmpty && s != 'ショップ名不明')
+              ? apiNew.shopName
+              : row.shopName;
+        }(),
+        shopUrl: apiNew.shopUrl.trim().isNotEmpty ? apiNew.shopUrl : row.shopUrl,
+        genreId: apiNew.genreId.trim().isNotEmpty ? apiNew.genreId : row.genreId,
+        genreName: mergedNewGenreName.trim().isNotEmpty
+            ? mergedNewGenreName
+            : row.genreName,
+        resolvedGenreName: resolvedLabel.isNotEmpty
+            ? resolvedLabel
+            : row.resolvedGenreName,
+        imageUrl:
+            apiNew.imageUrl.trim().isNotEmpty ? apiNew.imageUrl : row.imageUrl,
+        reviewAverage: apiNew.reviewAverage > 0
+            ? apiNew.reviewAverage
+            : row.reviewAverage,
+        reviewCount: apiNew.reviewCount,
+      );
+      if (rakutenApiPartialData) {
+        roomImportSaveLog('partialSuccess=true newRow=true mergedWeakApi=true');
+        roomImportSaveLog(
+          'preservedListingHintPrice=${apiNew.itemPrice <= 0 && hintYen > 0}',
+        );
+      }
+    } else {
+      if (traceRoomSync) {
+        roomSyncLog('API無し・一覧ROOM情報で新規コレ済登録します');
+        roomSyncLog('保存開始 保存種別: 新規コレ済登録（一覧のみ）');
+      }
+      if (rakutenApiPartialData) {
+        roomImportSaveLog(
+          'partialSuccess=true newRow=true apiUnavailable=true',
+        );
+      }
+    }
+
+    row = _mergeParsedRoomReactions(
+      row,
+      roomLikeCount,
+      roomCommentCount,
+      now,
+    );
+    list.add(row);
     try {
       await _saveAllMaybeMerged(
         list: list,
@@ -868,11 +880,11 @@ class RakutenManagedProductRepository {
       );
       _debugLogRoomImportSave(newId);
       if (traceRoomSync) {
-        roomSyncLog('保存成功（新規コレ済・最低限）');
+        roomSyncLog('保存成功（新規コレ済・一覧ベース）');
       }
     } catch (e, st) {
       if (traceRoomSync) {
-        roomSyncError('保存失敗（新規コレ済・最低限）', e, st);
+        roomSyncError('保存失敗（新規コレ済・一覧ベース）', e, st);
       }
       rethrow;
     }

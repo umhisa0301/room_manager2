@@ -281,16 +281,18 @@ class RakutenSearchRepository {
         hits: 30,
       );
       final rawItems = raw['Items'];
-      roomImportApiLog(
-        'type=rakutenItem status=ok durationMs=${apiSw.elapsedMilliseconds}',
-      );
-      roomImportApiLog('rateLimitDetected=false');
       debugPrint(
         '[ROOM_IMPORT_ENRICH] response status='
         '${rawItems is List ? 'Items len=${rawItems.length}' : 'no Items'}',
       );
       if (rawItems is! List || rawItems.isEmpty) {
         debugPrint('[ROOM_IMPORT_ENRICH] empty Items');
+        roomImportApiLog(
+          'type=rakutenItem status=noItems partialData=true '
+          'durationMs=${apiSw.elapsedMilliseconds}',
+        );
+        roomImportApiLog('rateLimitDetected=false');
+        roomImportApiLog('partialData=true reason=emptyItems');
         return const RoomImportEnrichmentFetchEnvelope(
           httpStatus: 200,
         );
@@ -330,6 +332,15 @@ class RakutenSearchRepository {
       } else {
         debugPrint('[ROOM_IMPORT_ENRICH] no matching item after parse');
       }
+      final partial = best == null;
+      roomImportApiLog(
+        'type=rakutenItem status=${partial ? 'partial' : 'ok'} '
+        'partialData=$partial durationMs=${apiSw.elapsedMilliseconds}',
+      );
+      roomImportApiLog('rateLimitDetected=false');
+      if (partial) {
+        roomImportApiLog('partialData=true reason=noMatchingItem');
+      }
       return RoomImportEnrichmentFetchEnvelope(
         item: best,
         httpStatus: 200,
@@ -344,6 +355,7 @@ class RakutenSearchRepository {
           'http=$c durationMs=${apiSw.elapsedMilliseconds}',
         );
         roomImportApiLog('rateLimitDetected=$rl');
+        roomImportApiLog('partialData=true reason=transportHttp');
         debugPrint('[ROOM_IMPORT_ENRICH] response status=transport http=$c');
         if (kDebugMode) {
           debugPrint('$st');
@@ -362,6 +374,7 @@ class RakutenSearchRepository {
         'type=rakutenItem status=exception durationMs=${apiSw.elapsedMilliseconds}',
       );
       roomImportApiLog('rateLimitDetected=$rl');
+      roomImportApiLog('partialData=true reason=genericException');
       debugPrint('[ROOM_IMPORT_ENRICH] response status=exception $e');
       if (kDebugMode) {
         debugPrint('$st');

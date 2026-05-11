@@ -239,6 +239,15 @@ void roomImportApiLog(String message) {
   }
 }
 
+/// ROOM 取り込み永続化の整合性（価格・画像の preserve 等）。
+void roomImportSaveLog(String message) {
+  final line = '[ROOM_IMPORT_SAVE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void roomImportUiLog(String message) {
   final line = '[ROOM_IMPORT_UI] $message';
   if (kDebugMode) {
