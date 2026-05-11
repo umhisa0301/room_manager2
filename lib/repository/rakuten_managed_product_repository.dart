@@ -139,6 +139,17 @@ class RakutenManagedProductRepository {
     return pid == seg;
   }
 
+  /// ROOM同期バッチで、[shopCode + itemCode] が既にコレ済か検索する（APIスキップ判定用）。
+  static RakutenManagedProduct? managedProductMatchingParsedRoomItem(
+    List<RakutenManagedProduct> list,
+    RakutenItemUrlParseResult parsed,
+  ) {
+    for (final e in list) {
+      if (_matchesPersistParsedItem(e, parsed)) return e;
+    }
+    return null;
+  }
+
   /// ROOM取り込みバッチの共有リスト保存直前に、同期開始後にディスクへ追加された行を取り込む。
   /// 古いスナップショットの [_saveAll] が候補追加を上書き消去するのを防ぐ。
   void _mergeConcurrentDiskAddsIntoWorkingList(
@@ -542,6 +553,9 @@ class RakutenManagedProductRepository {
 
     /// 楽天検索APIが完全には取れなかった（プロキシ400・Items空など）。
     bool rakutenApiPartialData = false,
+
+    /// 楽天API失敗後に ROOM 商品ページからメタを補填できた。
+    bool roomImportFallbackRecovered = false,
   }) async {
     if (kDemoModeEnabled) {
       if (traceRoomSync) {
@@ -707,6 +721,9 @@ class RakutenManagedProductRepository {
           roomImportSaveLog('partialSuccess=true existingRowMerge=true');
         }
       }
+      if (rakutenApiPartialData && roomImportFallbackRecovered) {
+        roomImportSaveLog('partialSuccess=true fallbackRecovered=true');
+      }
 
       next = next.copyWith(
         affiliateUrl: _mergeAffiliateForRoomPersist(
@@ -864,6 +881,9 @@ class RakutenManagedProductRepository {
           'partialSuccess=true newRow=true apiUnavailable=true',
         );
       }
+    }
+    if (rakutenApiPartialData && roomImportFallbackRecovered) {
+      roomImportSaveLog('partialSuccess=true fallbackRecovered=true');
     }
 
     row = _mergeParsedRoomReactions(

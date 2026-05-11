@@ -229,6 +229,54 @@ class RoomUrlResolver {
     );
   }
 
+  /// 一覧高速パス由来の解決結果に、後から取得した ROOM 商品ページ HTML のメタをマージする。
+  ///
+  /// 楽天API失敗時のフォールバックで、タイトル・画像・参考価格をフルページ側で補う。
+  static RoomUrlResolveSuccess mergeRoomResolveSuccessPreferFetched({
+    required RoomUrlResolveSuccess listingOrFast,
+    required RoomUrlResolveSuccess fetchedFullPage,
+  }) {
+    String pickTitle(String? a, String? b) {
+      final tb = b?.trim() ?? '';
+      if (tb.isNotEmpty) return tb;
+      return a?.trim() ?? '';
+    }
+
+    String pickImg(String? a, String? b) {
+      final tb = b?.trim() ?? '';
+      if (tb.isNotEmpty) return tb;
+      return a?.trim() ?? '';
+    }
+
+    int? pickHint(int? a, int? b) {
+      if (b != null && b > 0) return b;
+      if (a != null && a > 0) return a;
+      return b ?? a;
+    }
+
+    final affFetched = fetchedFullPage.roomPageAffiliateUrl?.trim() ?? '';
+    return RoomUrlResolveSuccess(
+      rakutenItem: listingOrFast.rakutenItem,
+      roomPageAffiliateUrl:
+          affFetched.isNotEmpty ? fetchedFullPage.roomPageAffiliateUrl : listingOrFast.roomPageAffiliateUrl,
+      roomPageTitle: pickTitle(
+        listingOrFast.roomPageTitle,
+        fetchedFullPage.roomPageTitle,
+      ),
+      roomPageImageUrl: pickImg(
+        listingOrFast.roomPageImageUrl,
+        fetchedFullPage.roomPageImageUrl,
+      ),
+      roomLikeCount: fetchedFullPage.roomLikeCount ?? listingOrFast.roomLikeCount,
+      roomCommentCount:
+          fetchedFullPage.roomCommentCount ?? listingOrFast.roomCommentCount,
+      listingHintPriceYen: pickHint(
+        listingOrFast.listingHintPriceYen,
+        fetchedFullPage.listingHintPriceYen,
+      ),
+    );
+  }
+
   /// 一覧カード断片・商品ページ HTML から税込らしき金額を拾う（楽天APIが無いときの補助）。
   static int? _extractListingHintPriceYenFromText(String text) {
     if (text.isEmpty) return null;

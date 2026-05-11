@@ -24,6 +24,13 @@ abstract final class RoomImportDebugLogBuffer {
   /// バッチ後メタデータ補完での楽天 API 呼び出し回数。
   static int enrichmentCalls = 0;
 
+  /// 1同期セッション内の楽天商品検索API（ROOM同期ループ）レポート用。
+  static int apiSkippedCount = 0;
+  static int apiExecutedCount = 0;
+  static int fallbackRecoveredCount = 0;
+  static int apiRateLimitedCount = 0;
+  static int apiHttp400Count = 0;
+
   static bool _capturing = false;
   static bool _sessionOpened = false;
   static int _prepareMs = -1;
@@ -37,6 +44,11 @@ abstract final class RoomImportDebugLogBuffer {
     roomPageCalls = 0;
     rakutenItemCalls = 0;
     enrichmentCalls = 0;
+    apiSkippedCount = 0;
+    apiExecutedCount = 0;
+    fallbackRecoveredCount = 0;
+    apiRateLimitedCount = 0;
+    apiHttp400Count = 0;
     _prepareMs = -1;
     _totalMs = -1;
     _capturing = true;
@@ -75,6 +87,31 @@ abstract final class RoomImportDebugLogBuffer {
   static void incEnrichment() {
     if (!kDebugMode || !_capturing) return;
     enrichmentCalls++;
+  }
+
+  static void incApiSkipped() {
+    if (!kDebugMode || !_capturing) return;
+    apiSkippedCount++;
+  }
+
+  static void incApiExecuted() {
+    if (!kDebugMode || !_capturing) return;
+    apiExecutedCount++;
+  }
+
+  static void incFallbackRecovered() {
+    if (!kDebugMode || !_capturing) return;
+    fallbackRecoveredCount++;
+  }
+
+  static void incApiRateLimited() {
+    if (!kDebugMode || !_capturing) return;
+    apiRateLimitedCount++;
+  }
+
+  static void incApiHttp400() {
+    if (!kDebugMode || !_capturing) return;
+    apiHttp400Count++;
   }
 
   static void add(String line) {
@@ -242,6 +279,38 @@ void roomImportApiLog(String message) {
 /// ROOM 取り込み永続化の整合性（価格・画像の preserve 等）。
 void roomImportSaveLog(String message) {
   final line = '[ROOM_IMPORT_SAVE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportSkipApiLog(String message) {
+  final line = '[ROOM_IMPORT_SKIP_API] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportFallbackLog(String message) {
+  final line = '[ROOM_IMPORT_FALLBACK] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportItemCodeDiagLog(String message) {
+  final line = '[ROOM_IMPORT_ITEMCODE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportApiSummaryLog(String message) {
+  final line = '[ROOM_IMPORT_API_SUMMARY] $message';
   if (kDebugMode) {
     debugPrint(line);
     RoomImportDebugLogBuffer.add(line);
