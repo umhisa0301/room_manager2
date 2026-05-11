@@ -166,6 +166,14 @@ class RoomSyncService {
 
       final swQueueBuild = Stopwatch()..start();
       final userSeg = _roomUserSegment(profile);
+      final listingFastPath = <String, RoomUrlResolveSuccess>{};
+      if ((listingHtml ?? '').isNotEmpty && userSeg.isNotEmpty) {
+        RoomUrlResolver.mergeListingFastPathHintsFromHtml(
+          listingHtml!,
+          userSeg,
+          listingFastPath,
+        );
+      }
       final orderedKeys = List<String>.from(initialOrdered);
       final seenKeys = orderedKeys.toSet();
       var discoveryIdx = 0;
@@ -238,6 +246,13 @@ class RoomSyncService {
               );
               if (h != null) {
                 RoomUserPostedListingFetcher.logListingHtmlInvestigation(h);
+                if (userSeg.isNotEmpty) {
+                  RoomUrlResolver.mergeListingFastPathHintsFromHtml(
+                    h,
+                    userSeg,
+                    listingFastPath,
+                  );
+                }
                 numericUserId =
                     RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
                       h,
@@ -278,6 +293,13 @@ class RoomSyncService {
             }
 
             roomSyncVerboseLog('追加取得候補数: ${page.roomPageKeysOrdered.length}');
+            for (final raw in page.rawCollectRows) {
+              RoomUrlResolver.mergeListingFastPathFromCollectsRow(
+                raw,
+                userSeg,
+                listingFastPath,
+              );
+            }
             var appended = 0;
             for (final k in page.roomPageKeysOrdered) {
               if (seenKeys.contains(k)) continue;
@@ -346,6 +368,15 @@ class RoomSyncService {
           'queueBuildMs',
           swQueueBuild.elapsedMilliseconds,
         );
+        var prepareFastPathOverlap = 0;
+        for (final k in toProcess) {
+          if (listingFastPath.containsKey(k)) prepareFastPathOverlap++;
+        }
+        roomFastPathSummaryLog(
+          'prepareQueueCanFastPath=$prepareFastPathOverlap '
+          'prepareQueueSize=${toProcess.length} '
+          'listingIndexedKeys=${listingFastPath.length}',
+        );
       }
       onProcessingHint?.call(
         toProcess.isEmpty
@@ -385,6 +416,10 @@ class RoomSyncService {
       final traceDetailed = debugVerboseRoomImport;
       onCheckingProgress?.call(0, batchSize);
 
+      var fastPathCount = 0;
+      var fallbackRoomPageCount = 0;
+      var totalRoomPageMs = 0;
+
       for (var i = 0; i < toProcess.length; i++) {
         final itemSw = Stopwatch()..start();
         final roomPageUrl = toProcess[i];
@@ -416,33 +451,51 @@ class RoomSyncService {
         RoomUrlResolveOutcome resolved;
         roomImportPerfLog('roomPageFetchStart index=$ordinal');
         final roomPageSw = Stopwatch()..start();
-        try {
-          resolved = await _resolver.resolveRakutenItemUrlFromRoomPage(
-            roomPageUrl,
-            traceRoomSync: traceDetailed,
-          );
-        } catch (e, st) {
-          roomSyncError('ROOM商品ページ解決で例外', e, st);
-          failed++;
-          failedUrls.add(roomPageUrl);
-          onCheckingProgress?.call(i + 1, batchSize);
+        final fast = listingFastPath[normalizedKey];
+        if (fast != null) {
+          resolved = fast;
           roomPageSw.stop();
-          roomImportPerfLog(
-            'roomPageFetchEnd index=$ordinal status=exception htmlBytes=0 durationMs=${roomPageSw.elapsedMilliseconds}',
+          fastPathCount++;
+          roomFastPathLog(
+            'resolvedFromListing=true shopCode=${fast.rakutenItem.shopCode} '
+            'itemCode=${fast.rakutenItem.itemPathSegment} roomKey=$normalizedKey',
           );
-          itemSw.stop();
           roomImportPerfLog(
-            'itemEnd index=$ordinal result=failed durationMs=${itemSw.elapsedMilliseconds}',
+            'roomPageFetchEnd index=$ordinal status=fastPath durationMs=${roomPageSw.elapsedMilliseconds}',
           );
-          continue;
+        } else {
+          try {
+            resolved = await _resolver.resolveRakutenItemUrlFromRoomPage(
+              roomPageUrl,
+              traceRoomSync: traceDetailed,
+            );
+          } catch (e, st) {
+            roomSyncError('ROOM商品ページ解決で例外', e, st);
+            failed++;
+            failedUrls.add(roomPageUrl);
+            onCheckingProgress?.call(i + 1, batchSize);
+            roomPageSw.stop();
+            fallbackRoomPageCount++;
+            totalRoomPageMs += roomPageSw.elapsedMilliseconds;
+            roomImportPerfLog(
+              'roomPageFetchEnd index=$ordinal status=exception htmlBytes=0 durationMs=${roomPageSw.elapsedMilliseconds}',
+            );
+            itemSw.stop();
+            roomImportPerfLog(
+              'itemEnd index=$ordinal result=failed durationMs=${itemSw.elapsedMilliseconds}',
+            );
+            continue;
+          }
+          roomPageSw.stop();
+          fallbackRoomPageCount++;
+          totalRoomPageMs += roomPageSw.elapsedMilliseconds;
+          final resolvedStatus = resolved is RoomUrlResolveSuccess
+              ? 200
+              : 'resolveFailed';
+          roomImportPerfLog(
+            'roomPageFetchEnd index=$ordinal status=$resolvedStatus htmlBytes=-1 durationMs=${roomPageSw.elapsedMilliseconds}',
+          );
         }
-        roomPageSw.stop();
-        final resolvedStatus = resolved is RoomUrlResolveSuccess
-            ? 200
-            : 'resolveFailed';
-        roomImportPerfLog(
-          'roomPageFetchEnd index=$ordinal status=$resolvedStatus htmlBytes=-1 durationMs=${roomPageSw.elapsedMilliseconds}',
-        );
 
         if (resolved is! RoomUrlResolveSuccess) {
           final f = resolved as RoomUrlResolveFailure;
@@ -647,6 +700,22 @@ class RoomSyncService {
         }
 
         onCheckingProgress?.call(i + 1, batchSize);
+      }
+
+      if (kDebugMode && batchSize > 0) {
+        final avgMs = fallbackRoomPageCount > 0
+            ? totalRoomPageMs / fallbackRoomPageCount
+            : 0.0;
+        final estimatedSavedMs = fallbackRoomPageCount > 0
+            ? (fastPathCount * avgMs).round()
+            : 0;
+        roomFastPathSummaryLog(
+          'fastPathCount=$fastPathCount '
+          'fallbackRoomPageCount=$fallbackRoomPageCount '
+          'avgRoomPageMs=${fallbackRoomPageCount > 0 ? avgMs.toStringAsFixed(0) : 'na'} '
+          'estimatedSavedMs=$estimatedSavedMs '
+          'listingIndexedKeys=${listingFastPath.length}',
+        );
       }
 
       roomSyncSummaryLog(

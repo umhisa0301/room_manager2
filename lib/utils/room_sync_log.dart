@@ -273,3 +273,21 @@ void roomImportEnrichStopLog(String reason) {
     RoomImportDebugLogBuffer.add(line);
   }
 }
+
+/// 一覧HTML／collects 由来の楽天URL高速解決（ROOM 商品ページ GET 省略）の1件ログ。
+void roomFastPathLog(String message) {
+  final line = '[ROOM_FASTPATH] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+/// 1バッチあとの高速パス集計（比較用）。
+void roomFastPathSummaryLog(String message) {
+  final line = '[ROOM_FASTPATH_SUMMARY] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}

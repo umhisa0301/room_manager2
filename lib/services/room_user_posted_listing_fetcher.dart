@@ -235,11 +235,13 @@ class RoomUserPostedListingFetcher {
       }
 
       final out = <String>[];
+      final rawRows = <Map<String, dynamic>>[];
       for (final row in data) {
         if (row is! Map<String, dynamic>) continue;
         final id = row['id'];
         if (id is! String || id.isEmpty) continue;
         if (!RegExp(r'^\d{8,}$').hasMatch(id)) continue;
+        rawRows.add(row);
         final built = 'https://room.rakuten.co.jp/$roomUserSegment/$id';
         final key = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(built);
         if (key.isNotEmpty) out.add(key);
@@ -249,6 +251,7 @@ class RoomUserPostedListingFetcher {
         roomPageKeysOrdered: out,
         nextAfterId: nextAfter,
         rawItemCount: data.length,
+        rawCollectRows: rawRows,
       );
     } catch (e, st) {
       roomSyncError('collects API JSON 解析失敗', e, st);
@@ -529,11 +532,15 @@ class RoomCollectsApiPage {
     required this.roomPageKeysOrdered,
     this.nextAfterId,
     required this.rawItemCount,
+    this.rawCollectRows = const [],
   });
 
   final List<String> roomPageKeysOrdered;
   final String? nextAfterId;
   final int rawItemCount;
+
+  /// [fetchCollectsApiPage] の `data` 要素（楽天URL等の高速パス用）。
+  final List<Map<String, dynamic>> rawCollectRows;
 }
 
 abstract final class RoomUrlResolverStyleUnescape {

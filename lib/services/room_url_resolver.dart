@@ -131,6 +131,16 @@ class RoomUrlResolver {
       return const RoomUrlResolveFailure(RoomUrlResolveFailureKind.emptyBody);
     }
 
+    return parseFetchedRoomPageHtml(body, traceRoomSync: traceRoomSync);
+  }
+
+  /// ROOM 商品ページの HTML 本文から楽天URL・OG・反応数を解決する（HTTP 層は呼び出し側）。
+  ///
+  /// [RoomSyncService] の一覧HTML高速パスでも同じロジックを使う。
+  static RoomUrlResolveOutcome parseFetchedRoomPageHtml(
+    String body, {
+    bool traceRoomSync = false,
+  }) {
     final decoded = _unescapeBasicXmlEntities(body);
     final aflUrlsOrdered = _collectAflUrlsUniqueOrdered(decoded, body);
 
@@ -213,6 +223,204 @@ class RoomUrlResolver {
       roomLikeCount: reaction.roomLikeCount,
       roomCommentCount: reaction.roomCommentCount,
     );
+  }
+
+  /// 一覧HTMLの断片から [parseFetchedRoomPageHtml] と同等の解決を試みる。失敗時は null。
+  static RoomUrlResolveSuccess? tryParseRoomPageFromHtmlSnippet(
+    String htmlFragment, {
+    bool traceRoomSync = false,
+  }) {
+    if (htmlFragment.trim().isEmpty) return null;
+    final o = parseFetchedRoomPageHtml(htmlFragment, traceRoomSync: traceRoomSync);
+    return o is RoomUrlResolveSuccess ? o : null;
+  }
+
+  /// `/items` 等の一覧HTMLから、各投稿キーごとの解決候補を [sink] にマージする。
+  static void mergeListingFastPathHintsFromHtml(
+    String html,
+    String roomUserSegment,
+    Map<String, RoomUrlResolveSuccess> sink,
+  ) {
+    final seg = roomUserSegment.trim();
+    if (html.isEmpty || seg.isEmpty) return;
+    final re = RegExp(
+      r'https?://(?:www\.)?room\.rakuten\.co\.jp/' + RegExp.escape(seg) + r'/(\d{8,})\b',
+      caseSensitive: false,
+    );
+    final seenPost = <String>{};
+    for (final m in re.allMatches(html)) {
+      final postId = m.group(1) ?? '';
+      if (postId.isEmpty || !seenPost.add(postId)) continue;
+      final fullUrl = 'https://room.rakuten.co.jp/$seg/$postId';
+      final key = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(fullUrl);
+      if (key.isEmpty) continue;
+      final start = m.start;
+      const before = 6000;
+      const after = 9000;
+      final lo = start > before ? start - before : 0;
+      final end = start + after;
+      final hi = end > html.length ? html.length : end;
+      final snippet = html.substring(lo, hi);
+      final ok = tryParseRoomPageFromHtmlSnippet(snippet, traceRoomSync: false);
+      if (ok != null) {
+        _mergeListingFastPathEntry(sink, key, ok);
+      }
+    }
+  }
+
+  /// collects API の1行から高速パス用の解決候補を [sink] にマージする。
+  static void mergeListingFastPathFromCollectsRow(
+    Map<String, dynamic> row,
+    String roomUserSegment,
+    Map<String, RoomUrlResolveSuccess> sink,
+  ) {
+    final seg = roomUserSegment.trim();
+    if (seg.isEmpty) return;
+    final id = row['id'];
+    if (id is! String || !RegExp(r'^\d{8,}$').hasMatch(id)) return;
+    final built = 'https://room.rakuten.co.jp/$seg/$id';
+    final key = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(built);
+    if (key.isEmpty) return;
+
+    final aflAcc = <String>[];
+    RakutenItemUrlParseResult? parsed;
+    void onItem(RakutenItemUrlParseResult p) {
+      parsed ??= p;
+    }
+
+    _scanJsonForRakutenInCollects(row, aflAcc, onItem);
+
+    String? aflAff;
+    if (parsed == null && aflAcc.isNotEmpty) {
+      final uniq = aflAcc.toSet().toList();
+      final pair = _tryParseItemFromFirstAflPc(uniq, false);
+      if (pair != null) {
+        parsed = pair.item;
+        final raw = pair.aflSourceUrl.trim();
+        aflAff = raw.isEmpty ? null : raw;
+      }
+    } else if (parsed != null && aflAcc.isNotEmpty) {
+      final raw = aflAcc.first.trim();
+      aflAff = raw.isEmpty ? null : raw;
+    }
+
+    if (parsed == null) return;
+    final RakutenItemUrlParseResult item = parsed!;
+
+    String? pageTitle;
+    for (final k in const [
+      'title',
+      'item_name',
+      'itemName',
+      'name',
+      'item_title',
+      'itemTitle',
+    ]) {
+      final v = row[k];
+      if (v is String && v.trim().isNotEmpty) {
+        pageTitle = v.trim();
+        break;
+      }
+    }
+    String? pageImg;
+    for (final k in const [
+      'image_url',
+      'imageUrl',
+      'thumbnail_url',
+      'thumbnailUrl',
+      'image',
+      'item_image_url',
+      'itemImageUrl',
+    ]) {
+      final v = row[k];
+      if (v is String && v.trim().startsWith('http')) {
+        pageImg = v.trim();
+        break;
+      }
+    }
+
+    final success = RoomUrlResolveSuccess(
+      rakutenItem: item,
+      roomPageAffiliateUrl: aflAff,
+      roomPageTitle: pageTitle,
+      roomPageImageUrl: pageImg,
+      roomLikeCount: _readOptionalIntFromMap(row, const [
+        'like_count',
+        'likeCount',
+        'likes',
+      ]),
+      roomCommentCount: _readOptionalIntFromMap(row, const [
+        'comment_count',
+        'commentCount',
+        'comments',
+      ]),
+    );
+    _mergeListingFastPathEntry(sink, key, success);
+  }
+
+  static void _mergeListingFastPathEntry(
+    Map<String, RoomUrlResolveSuccess> sink,
+    String key,
+    RoomUrlResolveSuccess next,
+  ) {
+    final prev = sink[key];
+    if (prev == null) {
+      sink[key] = next;
+      return;
+    }
+    int score(RoomUrlResolveSuccess s) {
+      final t = (s.roomPageTitle ?? '').trim().length;
+      final i = (s.roomPageImageUrl ?? '').trim().length;
+      final l = s.roomLikeCount != null ? 1 : 0;
+      final c = s.roomCommentCount != null ? 1 : 0;
+      return t * 2 + i + l * 3 + c * 3;
+    }
+
+    if (score(next) >= score(prev)) {
+      sink[key] = next;
+    }
+  }
+
+  static int? _readOptionalIntFromMap(
+    Map<String, dynamic> row,
+    List<String> keys,
+  ) {
+    for (final k in keys) {
+      final v = row[k];
+      if (v is int) return v;
+      if (v is double) return v.round();
+      if (v is String) return int.tryParse(v.trim());
+    }
+    return null;
+  }
+
+  static void _scanJsonForRakutenInCollects(
+    dynamic v,
+    List<String> aflAcc,
+    void Function(RakutenItemUrlParseResult) onItem,
+  ) {
+    if (v is String) {
+      final s = v;
+      if (s.contains('item.rakuten.co.jp')) {
+        final p =
+            RakutenItemUrlParser.findFirstInText(s) ?? RakutenItemUrlParser.tryParse(s);
+        if (p != null) onItem(p);
+      }
+      if (s.contains('hb.afl.rakuten')) {
+        for (final m in _aflUrlPattern.allMatches(s)) {
+          final u = m.group(0)?.trim();
+          if (u != null && u.isNotEmpty) aflAcc.add(u);
+        }
+      }
+    } else if (v is Map) {
+      v.forEach((dynamic k, dynamic val) {
+        _scanJsonForRakutenInCollects(val, aflAcc, onItem);
+      });
+    } else if (v is List) {
+      for (final e in v) {
+        _scanJsonForRakutenInCollects(e, aflAcc, onItem);
+      }
+    }
   }
 
   /// `decodedHtml` → `rawHtml` の順で走査し、重複を除いた afl URL 一覧（先着順）。
