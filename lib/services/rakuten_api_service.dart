@@ -337,6 +337,7 @@ class RakutenApiService {
         message:
             '楽天API呼び出しに失敗しました (${response.statusCode})'
             '${detail.isNotEmpty ? ': $detail' : ''}',
+        responseBodyPreview: _truncateBody(response.body, 480),
       );
     }
 
@@ -409,10 +410,14 @@ class RakutenApiTransportException implements Exception {
   RakutenApiTransportException({
     required this.statusCode,
     required this.message,
+    this.responseBodyPreview,
   });
 
   final int statusCode;
   final String message;
+
+  /// 上流・プロキシのエラー本文先頭（診断用。PII を避けるため短く切る）。
+  final String? responseBodyPreview;
 
   @override
   String toString() => message;

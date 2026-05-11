@@ -309,6 +309,15 @@ void roomImportItemCodeDiagLog(String message) {
   }
 }
 
+/// 楽天 itemCode 補完APIの HTTP・プロキシ・レスポンス先頭の診断用。
+void roomImportItemCodeApiDiagLog(String message) {
+  final line = '[ROOM_IMPORT_ITEMCODE_API_DIAG] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void roomImportApiSummaryLog(String message) {
   final line = '[ROOM_IMPORT_API_SUMMARY] $message';
   if (kDebugMode) {

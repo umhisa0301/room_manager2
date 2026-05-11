@@ -771,8 +771,9 @@ class RakutenManagedProductRepository {
         : parsedItem.compositeProductId;
     final pcOnly = parsedItem.rakutenUrl.trim();
     final hintRaw = listingHintPriceYen;
-    final hintYen =
-        (hintRaw != null && hintRaw > 0) ? hintRaw : 0;
+    final hintYen = (hintRaw != null && hintRaw > 0)
+        ? hintRaw
+        : (rakutenApiPartialData ? -1 : 0);
 
     var row = RakutenManagedProduct(
       productId: newId,

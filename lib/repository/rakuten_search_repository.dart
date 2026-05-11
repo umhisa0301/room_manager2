@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../config/demo_mode.dart';
+import '../config/rakuten_api_config.dart';
 import '../data/demo_mode_data.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
@@ -80,12 +81,41 @@ class RoomImportEnrichmentFetchEnvelope {
     this.httpStatus,
     this.rateLimited = false,
     this.exceptionMessage,
+    this.responseBodyPreview,
   });
 
   final RakutenSearchItem? item;
   final int? httpStatus;
   final bool rateLimited;
   final String? exceptionMessage;
+
+  /// 通信エラー時のレスポンス本文先頭（診断用）。
+  final String? responseBodyPreview;
+}
+
+void _logRoomImportItemCodeApiDiag({
+  required String apiItemCode,
+  required String shopCode,
+  required String itemCode,
+  required RakutenProductSearchCondition condition,
+  required RoomImportEnrichmentFetchEnvelope env,
+  String? previewOverride,
+}) {
+  if (!kDebugMode) return;
+  final proxy = RakutenApiConfig.useProxyForItemSearch;
+  final kw = condition.keyword.trim();
+  final raw = previewOverride ?? env.responseBodyPreview ?? '';
+  final oneLine = raw.replaceAll(RegExp(r'\s+'), ' ').trim();
+  final prev = oneLine.length > 360 ? '${oneLine.substring(0, 360)}…' : oneLine;
+  roomImportItemCodeApiDiagLog(
+    'apiItemCode=$apiItemCode shopCode=$shopCode itemCode=$itemCode '
+    'proxyMode=${proxy ? 'proxy' : 'direct'} '
+    'keywordOmitted=${kw.isEmpty} '
+    'shopCodeOmitted=true '
+    'hits=30 '
+    'httpStatus=${env.httpStatus ?? '-'} '
+    'responseBodyPreview=${prev.isEmpty ? '-' : prev}',
+  );
 }
 
 class RakutenSearchRepository {
@@ -268,11 +298,19 @@ class RakutenSearchRepository {
           'type=rakutenItem status=ok durationMs=${apiSw.elapsedMilliseconds}',
         );
         roomImportApiLog('rateLimitDetected=false');
-        return RoomImportEnrichmentFetchEnvelope(
+        final envDemo = RoomImportEnrichmentFetchEnvelope(
           item: bestDemo,
           httpStatus: 200,
           rateLimited: false,
         );
+        _logRoomImportItemCodeApiDiag(
+          apiItemCode: apiItemCode,
+          shopCode: sc,
+          itemCode: icRaw,
+          condition: condition,
+          env: envDemo,
+        );
+        return envDemo;
       }
 
       final raw = await _apiService.searchItems(
@@ -293,9 +331,18 @@ class RakutenSearchRepository {
         );
         roomImportApiLog('rateLimitDetected=false');
         roomImportApiLog('partialData=true reason=emptyItems');
-        return const RoomImportEnrichmentFetchEnvelope(
+        const envEmpty = RoomImportEnrichmentFetchEnvelope(
           httpStatus: 200,
         );
+        _logRoomImportItemCodeApiDiag(
+          apiItemCode: apiItemCode,
+          shopCode: sc,
+          itemCode: icRaw,
+          condition: condition,
+          env: envEmpty,
+          previewOverride: '(empty Items)',
+        );
+        return envEmpty;
       }
       final parsed = <RakutenSearchItem>[];
       for (final entry in rawItems) {
@@ -341,11 +388,20 @@ class RakutenSearchRepository {
       if (partial) {
         roomImportApiLog('partialData=true reason=noMatchingItem');
       }
-      return RoomImportEnrichmentFetchEnvelope(
+      final envOk = RoomImportEnrichmentFetchEnvelope(
         item: best,
         httpStatus: 200,
         rateLimited: false,
       );
+      _logRoomImportItemCodeApiDiag(
+        apiItemCode: apiItemCode,
+        shopCode: sc,
+        itemCode: icRaw,
+        condition: condition,
+        env: envOk,
+        previewOverride: partial ? '(noMatchingItem)' : null,
+      );
+      return envOk;
     } catch (e, st) {
       if (e is RakutenApiTransportException) {
         final c = e.statusCode;
@@ -360,12 +416,21 @@ class RakutenSearchRepository {
         if (kDebugMode) {
           debugPrint('$st');
         }
-        return RoomImportEnrichmentFetchEnvelope(
+        final envTransport = RoomImportEnrichmentFetchEnvelope(
           item: null,
           httpStatus: c,
           rateLimited: rl,
           exceptionMessage: e.message,
+          responseBodyPreview: e.responseBodyPreview,
         );
+        _logRoomImportItemCodeApiDiag(
+          apiItemCode: apiItemCode,
+          shopCode: sc,
+          itemCode: icRaw,
+          condition: condition,
+          env: envTransport,
+        );
+        return envTransport;
       }
       final msg = e.toString();
       final low = msg.toLowerCase();
@@ -379,12 +444,21 @@ class RakutenSearchRepository {
       if (kDebugMode) {
         debugPrint('$st');
       }
-      return RoomImportEnrichmentFetchEnvelope(
+      final envEx = RoomImportEnrichmentFetchEnvelope(
         item: null,
         httpStatus: null,
         rateLimited: rl,
         exceptionMessage: msg,
       );
+      _logRoomImportItemCodeApiDiag(
+        apiItemCode: apiItemCode,
+        shopCode: sc,
+        itemCode: icRaw,
+        condition: condition,
+        env: envEx,
+        previewOverride: msg.length > 360 ? '${msg.substring(0, 360)}…' : msg,
+      );
+      return envEx;
     }
   }
 
