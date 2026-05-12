@@ -677,14 +677,9 @@ class RoomSyncService {
           RoomImportDebugLogBuffer.incApiExecuted();
           final icRaw = verified.itemPathSegment.trim();
           final sc = verified.shopCode.trim();
-          final apiItemCode = icRaw.contains(':') ? icRaw : '$sc:$icRaw';
           roomImportItemCodeDiagLog(
-            'shopCode=$sc itemCode=$icRaw apiItemCode=$apiItemCode '
-            'containsSlash=${icRaw.contains('/')} '
-            'containsEncoded=${icRaw.contains('%')} '
-            'length=${icRaw.length} '
-            'requestParams=format=json&applicationId=*&hits=30&page=1&keyword=(omit)&'
-            'itemCode=$apiItemCode&shopCode=(omit)',
+            'shopCode=$sc itemCode=$icRaw '
+            'roomImportItemApiUsesSplitShopAndPureItemCode=true',
           );
 
           roomImportPerfLog(

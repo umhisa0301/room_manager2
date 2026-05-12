@@ -75,9 +75,8 @@ class RoomImportMetadataEnrichmentService {
         continue;
       }
 
-      final icRaw = pid;
-      final apiItemCode = icRaw.contains(':') ? icRaw : '$shop:$icRaw';
-      if (failedApiKeys.contains(apiItemCode)) {
+      final failKey = '$shop\x1f$pid';
+      if (failedApiKeys.contains(failKey)) {
         continue;
       }
 
@@ -124,7 +123,7 @@ class RoomImportMetadataEnrichmentService {
       }
 
       if (env.httpStatus == 400) {
-        failedApiKeys.add(apiItemCode);
+        failedApiKeys.add(failKey);
         consecutiveHttp400++;
         consecutiveNoItem = 0;
         if (consecutiveHttp400 >= 2) {

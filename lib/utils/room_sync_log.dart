@@ -326,6 +326,30 @@ void roomImportItemCodeDiagLog(String message) {
   }
 }
 
+void roomImportItemApiParamsLog(String message) {
+  final line = '[ROOM_IMPORT_ITEM_API_PARAMS] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportItemApiBlockedLog(String message) {
+  final line = '[ROOM_IMPORT_ITEM_API_BLOCKED] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportItemApiSuccessLog(String message) {
+  final line = '[ROOM_IMPORT_ITEM_API_SUCCESS] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 /// 楽天 itemCode 補完APIの HTTP・プロキシ・レスポンス先頭の診断用。
 void roomImportItemCodeApiDiagLog(String message) {
   final line = '[ROOM_IMPORT_ITEMCODE_API_DIAG] $message';

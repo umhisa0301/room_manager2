@@ -94,9 +94,8 @@ class RoomImportEnrichmentFetchEnvelope {
 }
 
 void _logRoomImportItemCodeApiDiag({
-  required String apiItemCode,
-  required String shopCode,
-  required String itemCode,
+  required String shopCodeForLog,
+  required String itemCodeForLog,
   required RakutenProductSearchCondition condition,
   required RoomImportEnrichmentFetchEnvelope env,
   String? previewOverride,
@@ -104,18 +103,64 @@ void _logRoomImportItemCodeApiDiag({
   if (!kDebugMode) return;
   final proxy = RakutenApiConfig.useProxyForItemSearch;
   final kw = condition.keyword.trim();
+  final sc = condition.shopCode?.trim() ?? '';
+  final ic = condition.itemCode?.trim() ?? '';
   final raw = previewOverride ?? env.responseBodyPreview ?? '';
   final oneLine = raw.replaceAll(RegExp(r'\s+'), ' ').trim();
   final prev = oneLine.length > 360 ? '${oneLine.substring(0, 360)}…' : oneLine;
   roomImportItemCodeApiDiagLog(
-    'apiItemCode=$apiItemCode shopCode=$shopCode itemCode=$itemCode '
+    'shopCode=$shopCodeForLog itemCode=$itemCodeForLog '
     'proxyMode=${proxy ? 'proxy' : 'direct'} '
     'keywordOmitted=${kw.isEmpty} '
-    'shopCodeOmitted=true '
-    'hits=30 '
+    'shopCodeOmitted=${sc.isEmpty} '
+    'itemCodeOmitted=${ic.isEmpty} '
     'httpStatus=${env.httpStatus ?? '-'} '
     'responsePreview=${prev.isEmpty ? '-' : prev}',
   );
+}
+
+String _roomImportOmitParam(String? s) {
+  final t = s?.trim() ?? '';
+  return t.isEmpty ? '(omit)' : t;
+}
+
+void _roomImportItemApiParamsLine(
+  RakutenProductSearchCondition c, {
+  required String phase,
+}) {
+  final n = c.normalized();
+  roomImportItemApiParamsLog(
+    'mode=roomImport phase=$phase '
+    'keyword=${_roomImportOmitParam(n.keyword)} '
+    'shopCode=${_roomImportOmitParam(n.shopCode)} '
+    'itemCode=${_roomImportOmitParam(n.itemCode)} '
+    'apiItemCodeDeprecated=none usesColonItemCode=false',
+  );
+}
+
+/// ROOM 補完用に `shopCode` とコロンを含まない純粋 `itemCode` に正規化する。
+/// `item:path` 形式は最後の `:` で分割し、店舗は左辺（呼び出し側の [shopCode] が空のときのみ左辺を採用）。
+/// 正規化不能（ネストした `:` 等）のときは null。
+({String shop, String pureItem})? _roomImportNormalizeShopAndPureItem({
+  required String shopCode,
+  required String itemCode,
+}) {
+  var sc = shopCode.trim();
+  var ic = itemCode.trim();
+  if (ic.isEmpty) return null;
+  if (ic.contains(':')) {
+    final i = ic.lastIndexOf(':');
+    final left = ic.substring(0, i).trim();
+    final right = ic.substring(i + 1).trim();
+    if (right.isEmpty || right.contains(':')) return null;
+    ic = right;
+    if (sc.isEmpty) {
+      sc = left;
+    }
+  }
+  if (ic.contains(':')) return null;
+  if (sc.isEmpty || ic.isEmpty) return null;
+  return (shop: sc, pureItem: ic);
 }
 
 class RakutenSearchRepository {
@@ -230,94 +275,66 @@ class RakutenSearchRepository {
     return afterFilter;
   }
 
-  /// ROOM取り込みコレ済のメタデータ補完用。楽天APIの `itemCode` に `shopCode:商品コード` 形式で渡す。
+  /// ROOM取り込みコレ済のメタデータ補完用。
   ///
-  /// `shopCode` クエリは **付けず**（`itemCode` 複合指定のみ）。取り込み直後の軽量補完および
-  /// [RoomImportMetadataEnrichmentService.enrichRoomImportedProducts] で再利用する。
+  /// 楽天APIには **`shopCode` と純粋な `itemCode` を別パラメータ**で渡す（`shop:item` を itemCode に載せない）。
+  /// 400 または空ヒット時は `keyword` + `shopCode`（itemCode 省略）へ1段フォールバックする。
+  /// 取り込み直後の補完および [RoomImportMetadataEnrichmentService.enrichRoomImportedProducts] で利用。
   Future<RoomImportEnrichmentFetchEnvelope>
   fetchFirstItemForRoomImportEnrichmentEnvelope({
     required String shopCode,
     required String itemCode,
   }) async {
     final apiSw = Stopwatch()..start();
-    final sc = shopCode.trim();
-    final icRaw = itemCode.trim();
-    if (sc.isEmpty || icRaw.isEmpty) {
+    final icRawIn = itemCode.trim();
+    if (icRawIn.isEmpty) {
+      apiSw.stop();
       return const RoomImportEnrichmentFetchEnvelope();
     }
 
-    final numericItemCode = icRaw.contains(':')
-        ? icRaw.split(':').last.trim()
-        : icRaw;
-    final apiItemCode = icRaw.contains(':') ? icRaw : '$sc:$icRaw';
-
-    final condition = RakutenProductSearchCondition(
-      keyword: '',
-      itemCode: apiItemCode,
-    ).normalized();
-
-    debugPrint('[ROOM_IMPORT_ENRICH] shopCode=$sc');
-    debugPrint('[ROOM_IMPORT_ENRICH] itemCode=$icRaw');
-    debugPrint('[ROOM_IMPORT_ENRICH] apiItemCode=$apiItemCode');
-    debugPrint(
-      '[ROOM_IMPORT_ENRICH] requestParams='
-      'format=json&applicationId=*&hits=30&page=1&keyword=(omit)&'
-      'itemCode=$apiItemCode&shopCode=(omit)',
+    final resolved = _roomImportNormalizeShopAndPureItem(
+      shopCode: shopCode,
+      itemCode: itemCode,
     );
-
-    try {
-      if (kDemoModeEnabled) {
-        final items = await search(condition: condition);
-        final bestDemo = _pickRoomImportEnrichmentItem(
-          items,
-          numericItemCode,
-          sc,
-        );
-        debugPrint('[ROOM_IMPORT_ENRICH] response status=demo searchItems');
-        if (bestDemo != null) {
-          debugPrint(
-            '[ROOM_IMPORT_ENRICH] response title=${bestDemo.itemName}',
-          );
-          debugPrint(
-            '[ROOM_IMPORT_ENRICH] response shopName=${bestDemo.shopName}',
-          );
-          debugPrint(
-            '[ROOM_IMPORT_ENRICH] response genreId='
-            '${bestDemo.genreId.trim().isEmpty ? '(none)' : bestDemo.genreId}',
-          );
-          final gn = bestDemo.genreName.trim();
-          debugPrint(
-            '[ROOM_IMPORT_ENRICH] response genreName=${gn.isEmpty ? 'null' : gn}',
-          );
-          debugPrint(
-            '[ROOM_IMPORT_ENRICH] response affiliateUrl exists='
-            '${bestDemo.affiliateUrl.trim().isNotEmpty}',
-          );
-        }
-        roomImportApiLog(
-          'type=rakutenItem status=ok durationMs=${apiSw.elapsedMilliseconds}',
-        );
-        roomImportApiLog('rateLimitDetected=false');
-        final envDemo = RoomImportEnrichmentFetchEnvelope(
-          item: bestDemo,
-          httpStatus: 200,
-          rateLimited: false,
-        );
-        _logRoomImportItemCodeApiDiag(
-          apiItemCode: apiItemCode,
-          shopCode: sc,
-          itemCode: icRaw,
-          condition: condition,
-          env: envDemo,
-        );
-        return envDemo;
-      }
-
-      final raw = await _apiService.searchItems(
-        condition: condition,
-        page: 1,
-        hits: 30,
+    if (resolved == null) {
+      apiSw.stop();
+      roomImportItemApiBlockedLog('reason=colonItemCode itemCode=$icRawIn');
+      return RoomImportEnrichmentFetchEnvelope(
+        httpStatus: 400,
+        exceptionMessage: 'itemCode is not valid',
       );
+    }
+    final sc = resolved.shop;
+    final icPure = resolved.pureItem;
+
+    RakutenProductSearchCondition planShopItem() =>
+        RakutenProductSearchCondition(keyword: '', shopCode: sc, itemCode: icPure);
+
+    RakutenProductSearchCondition planKeyword() =>
+        RakutenProductSearchCondition(keyword: icPure, shopCode: sc, itemCode: null);
+
+    Future<Map<String, dynamic>> callSearch(
+      RakutenProductSearchCondition c,
+      String phase,
+    ) async {
+      final n = c.normalized();
+      final qic = n.itemCode ?? '';
+      if (qic.contains(':')) {
+        roomImportItemApiBlockedLog('reason=colonItemCode itemCode=$qic');
+        throw RakutenApiTransportException(
+          statusCode: 400,
+          message: 'itemCode is not valid',
+          responseBodyPreview: 'blocked:colonInQueryItemCode',
+        );
+      }
+      _roomImportItemApiParamsLine(c, phase: phase);
+      return _apiService.searchItems(condition: n, page: 1, hits: 30);
+    }
+
+    RoomImportEnrichmentFetchEnvelope envelopeFromRaw({
+      required Map<String, dynamic> raw,
+      required RakutenProductSearchCondition conditionUsed,
+    }) {
       final rawItems = raw['Items'];
       debugPrint(
         '[ROOM_IMPORT_ENRICH] response status='
@@ -331,14 +348,11 @@ class RakutenSearchRepository {
         );
         roomImportApiLog('rateLimitDetected=false');
         roomImportApiLog('partialData=true reason=emptyItems');
-        const envEmpty = RoomImportEnrichmentFetchEnvelope(
-          httpStatus: 200,
-        );
+        const envEmpty = RoomImportEnrichmentFetchEnvelope(httpStatus: 200);
         _logRoomImportItemCodeApiDiag(
-          apiItemCode: apiItemCode,
-          shopCode: sc,
-          itemCode: icRaw,
-          condition: condition,
+          shopCodeForLog: sc,
+          itemCodeForLog: icPure,
+          condition: conditionUsed,
           env: envEmpty,
           previewOverride: '(empty Items)',
         );
@@ -359,9 +373,12 @@ class RakutenSearchRepository {
           }
         }
       }
-      final best = _pickRoomImportEnrichmentItem(parsed, numericItemCode, sc);
-      debugPrint('[ROOM_IMPORT_ENRICH] apiItemCode=$apiItemCode');
+      final best = _pickRoomImportEnrichmentItem(parsed, icPure, sc);
       if (best != null) {
+        roomImportItemApiSuccessLog(
+          'price=${best.itemPrice} image=${best.imageUrl.trim().isNotEmpty} '
+          'shopName=${best.shopName} genreName=${best.genreName}',
+        );
         debugPrint('[ROOM_IMPORT_ENRICH] response title=${best.itemName}');
         debugPrint('[ROOM_IMPORT_ENRICH] response shopName=${best.shopName}');
         debugPrint(
@@ -394,14 +411,89 @@ class RakutenSearchRepository {
         rateLimited: false,
       );
       _logRoomImportItemCodeApiDiag(
-        apiItemCode: apiItemCode,
-        shopCode: sc,
-        itemCode: icRaw,
-        condition: condition,
+        shopCodeForLog: sc,
+        itemCodeForLog: icPure,
+        condition: conditionUsed,
         env: envOk,
         previewOverride: partial ? '(noMatchingItem)' : null,
       );
       return envOk;
+    }
+
+    debugPrint('[ROOM_IMPORT_ENRICH] shopCode=$sc');
+    debugPrint('[ROOM_IMPORT_ENRICH] itemCode=$icPure');
+
+    try {
+      if (kDemoModeEnabled) {
+        final demoCond = planShopItem().normalized();
+        _roomImportItemApiParamsLine(planShopItem(), phase: 'demo');
+        final items = await search(condition: demoCond);
+        final bestDemo = _pickRoomImportEnrichmentItem(items, icPure, sc);
+        debugPrint('[ROOM_IMPORT_ENRICH] response status=demo searchItems');
+        if (bestDemo != null) {
+          roomImportItemApiSuccessLog(
+            'price=${bestDemo.itemPrice} image=${bestDemo.imageUrl.trim().isNotEmpty} '
+            'shopName=${bestDemo.shopName} genreName=${bestDemo.genreName}',
+          );
+        }
+        roomImportApiLog(
+          'type=rakutenItem status=ok durationMs=${apiSw.elapsedMilliseconds}',
+        );
+        roomImportApiLog('rateLimitDetected=false');
+        final envDemo = RoomImportEnrichmentFetchEnvelope(
+          item: bestDemo,
+          httpStatus: 200,
+          rateLimited: false,
+        );
+        _logRoomImportItemCodeApiDiag(
+          shopCodeForLog: sc,
+          itemCodeForLog: icPure,
+          condition: demoCond,
+          env: envDemo,
+        );
+        apiSw.stop();
+        return envDemo;
+      }
+
+      Map<String, dynamic> raw;
+      RakutenProductSearchCondition usedCond = planShopItem().normalized();
+      var usedKeywordFallback = false;
+
+      try {
+        raw = await callSearch(planShopItem(), 'shopItem');
+      } on RakutenApiTransportException catch (e) {
+        if (e.statusCode == 400) {
+          usedKeywordFallback = true;
+          raw = await callSearch(planKeyword(), 'keywordFallback400');
+          usedCond = planKeyword().normalized();
+        } else {
+          rethrow;
+        }
+      }
+
+      var rawItems = raw['Items'];
+      if (rawItems is! List || rawItems.isEmpty) {
+        if (!usedKeywordFallback) {
+          usedKeywordFallback = true;
+          raw = await callSearch(planKeyword(), 'keywordFallbackEmpty');
+          usedCond = planKeyword().normalized();
+          rawItems = raw['Items'];
+        }
+      }
+
+      if (rawItems is! List || rawItems.isEmpty) {
+        apiSw.stop();
+        return envelopeFromRaw(raw: raw, conditionUsed: usedCond);
+      }
+
+      if (_pickFirstRoomImportItemFromApiRaw(raw, icPure, sc) == null &&
+          !usedKeywordFallback) {
+        raw = await callSearch(planKeyword(), 'keywordFallbackNoMatch');
+        usedCond = planKeyword().normalized();
+      }
+
+      apiSw.stop();
+      return envelopeFromRaw(raw: raw, conditionUsed: usedCond);
     } catch (e, st) {
       if (e is RakutenApiTransportException) {
         final c = e.statusCode;
@@ -424,12 +516,12 @@ class RakutenSearchRepository {
           responseBodyPreview: e.responseBodyPreview,
         );
         _logRoomImportItemCodeApiDiag(
-          apiItemCode: apiItemCode,
-          shopCode: sc,
-          itemCode: icRaw,
-          condition: condition,
+          shopCodeForLog: sc,
+          itemCodeForLog: icPure,
+          condition: planShopItem().normalized(),
           env: envTransport,
         );
+        apiSw.stop();
         return envTransport;
       }
       final msg = e.toString();
@@ -451,13 +543,13 @@ class RakutenSearchRepository {
         exceptionMessage: msg,
       );
       _logRoomImportItemCodeApiDiag(
-        apiItemCode: apiItemCode,
-        shopCode: sc,
-        itemCode: icRaw,
-        condition: condition,
+        shopCodeForLog: sc,
+        itemCodeForLog: icPure,
+        condition: planShopItem().normalized(),
         env: envEx,
         previewOverride: msg.length > 360 ? '${msg.substring(0, 360)}…' : msg,
       );
+      apiSw.stop();
       return envEx;
     }
   }
@@ -485,6 +577,26 @@ class RakutenSearchRepository {
       if (_roomImportEnrichmentItemMatches(it, nic, sc)) return it;
     }
     return items.isNotEmpty ? items.first : null;
+  }
+
+  RakutenSearchItem? _pickFirstRoomImportItemFromApiRaw(
+    Map<String, dynamic> raw,
+    String pureItemForPick,
+    String shopForPick,
+  ) {
+    final rawItems = raw['Items'];
+    if (rawItems is! List || rawItems.isEmpty) return null;
+    final parsed = <RakutenSearchItem>[];
+    for (final entry in rawItems) {
+      try {
+        final map = _unwrapItem(entry);
+        if (map == null) continue;
+        final item = _mapToModel(map);
+        if (item == null) continue;
+        parsed.add(item);
+      } catch (_) {}
+    }
+    return _pickRoomImportEnrichmentItem(parsed, pureItemForPick, shopForPick);
   }
 
   bool _roomImportEnrichmentItemMatches(

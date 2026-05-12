@@ -367,6 +367,8 @@ class RakutenManagedProductRepository {
     if (kDemoModeEnabled) {
       return;
     }
+    final id = productId.trim();
+    final before = getByProductId(id);
     await updateManagedProduct(productId, (e) {
       final resolvedLabel = _resolvedGenreLabelForSearchItem(api);
       final now = DateTime.now();
@@ -403,7 +405,28 @@ class RakutenManagedProductRepository {
         roomImportMetadataEnriching: false,
       );
     });
-    final row = getByProductId(productId.trim());
+    final after = getByProductId(id);
+    if (before != null && after != null) {
+      final apiShopOk =
+          api.shopName.trim().isNotEmpty && api.shopName.trim() != 'ショップ名不明';
+      final priceSaved = api.itemPrice > 0 &&
+          after.itemPrice == api.itemPrice &&
+          (before.itemPrice != after.itemPrice || before.itemPrice <= 0);
+      final imageSaved = api.imageUrl.trim().isNotEmpty &&
+          after.imageUrl.trim() == api.imageUrl.trim() &&
+          (before.imageUrl.trim().isEmpty ||
+              before.imageUrl.trim() != after.imageUrl.trim());
+      final shopNameSaved = apiShopOk &&
+          after.shopName.trim() == api.shopName.trim() &&
+          before.shopName.trim() != after.shopName.trim();
+      final genreNameSaved = after.genreName.trim() != before.genreName.trim() &&
+          (api.genreId.trim().isNotEmpty || api.genreName.trim().isNotEmpty);
+      roomImportSaveLog(
+        'priceSaved=$priceSaved imageSaved=$imageSaved '
+        'shopNameSaved=$shopNameSaved genreNameSaved=$genreNameSaved',
+      );
+    }
+    final row = getByProductId(id);
     if (row != null) {
       debugPrint('[ROOM_IMPORT_ENRICH] saved shopName=${row.shopName}');
       debugPrint('[ROOM_IMPORT_ENRICH] saved genreName=${row.genreName}');
