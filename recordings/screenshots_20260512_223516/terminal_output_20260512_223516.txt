@@ -1,0 +1,1499 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-12 22:35:16
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260512_223516.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260512_223516.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260512_223516.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260512_223516.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260512_223516.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260512_223516
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260512_223516\terminal_output_20260512_223516.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 22828).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             10.2s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.3s
+D/FlutterJNI(27099): Beginning load of flutter...
+D/FlutterJNI(27099): flutter (null) was loaded normally!
+I/flutter (27099): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (27099): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter (27099): verifyMode=false
+I/flutter (27099): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                
+I/flutter (27099): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+Syncing files to device SHG08...                                   183ms
+
+Flutter run key commands.
+r Hot reload. 
+h List all available interactive commands.
+R Hot restart.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:53327/5Jouq48qy_M=/
+I/flutter (27099): [ROOMコレ診断] loadAll 初回サマリー parsed=181 rawJsonList=181
+I/flutter (27099): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (27099): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (27099): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (27099): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=181 afterFilterLen=181 surface=ok_list ui=ready
+I/flutter (27099): [ROOMコレ診断] 描画リスト先頭 productId=c572054 title=＼クーポン利用で7,990円〜／【365日即日発送】~58%OFF ブラックフォーマル レディース 喪服 アンサンブル ワンピース ジャケット 洗える 前開き 体型カバー ゆったり 大きいサイズ 30代 40代 50代 オールシーズン 年中 試着チケット対象 status=done len=181
+I/flutter (27099): [REACTION_STATUS] productId=c572054
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=ta1606
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=b5043
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [ROOM_IMPORT_ENRICH_QUEUE] pending=166 eligible=166 skippedCooldown=0 skippedFailed=0
+I/flutter (27099): [ROOM_IMPORT_ENRICH_PICK] productId=fu-624 failureReason= failureCount=0 selected=true
+I/flutter (27099): [ROOM_IMPORT_ENRICH_TARGET] productId=fu-624 needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/Choreographer(27099): Skipped 209 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:53327/5Jouq48qy_M=/
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=refresh
+I/flutter (27099): productId=
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=0
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=181
+I/flutter (27099): afterDoneCount=181
+I/flutter (27099): [MANAGED_PRODUCT_LOAD]
+I/flutter (27099): source=provider
+I/flutter (27099): pendingCount=0
+I/flutter (27099): doneCount=181
+I/flutter (27099): filter=
+I/flutter (27099): tab=
+I/flutter (27099): [ROOMコレ診断] refreshManagedProductList 完了 total=181 candidate=0 done=181 ui=ready
+I/flutter (27099): [ROOM_IMPORT_PERF] enrichmentSkipped reason=singleFlightBusy
+I/flutter (27099): [ROOM_IMPORT_ENRICH_SKIP] reason=singleFlightBusy
+I/flutter (27099): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (27099): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter (27099): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (27099): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (27099): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (27099): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (27099): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (27099): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-12T00:34:39.945840
+I/flutter (27099): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (27099): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (27099): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (27099): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-12T00:34:39.945840
+I/flutter (27099): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (27099): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=refresh
+I/flutter (27099): productId=
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=0
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=181
+I/flutter (27099): afterDoneCount=181
+I/flutter (27099): [MANAGED_PRODUCT_LOAD]
+I/flutter (27099): source=screen
+I/flutter (27099): pendingCount=0
+I/flutter (27099): doneCount=181
+I/flutter (27099): filter=
+I/flutter (27099): tab=done
+I/flutter (27099): [ROOMコレ診断] refreshManagedProductList 完了 total=181 candidate=0 done=181 ui=ready
+I/flutter (27099): [ROOMコレ診断] ROOMコレ画面起動後 total=181 candidate=0 done=181 listUi=RakutenManagedProductListUiStatus.ready tabIdx=1
+I/flutter (27099): [ROOM_IMPORT_PERF] enrichmentSkipped reason=singleFlightBusy
+I/flutter (27099): [ROOM_IMPORT_ENRICH_SKIP] reason=singleFlightBusy
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=refresh
+I/flutter (27099): productId=
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=0
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=181
+I/flutter (27099): afterDoneCount=181
+I/flutter (27099): [MANAGED_PRODUCT_LOAD]
+I/flutter (27099): source=provider
+I/flutter (27099): pendingCount=0
+I/flutter (27099): doneCount=181
+I/flutter (27099): filter=
+I/flutter (27099): tab=
+I/flutter (27099): [ROOMコレ診断] refreshManagedProductList 完了 total=181 candidate=0 done=181 ui=ready
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=refresh
+I/flutter (27099): productId=
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=0
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=181
+I/flutter (27099): afterDoneCount=181
+I/flutter (27099): [MANAGED_PRODUCT_LOAD]
+I/flutter (27099): source=provider
+I/flutter (27099): pendingCount=0
+I/flutter (27099): doneCount=181
+I/flutter (27099): filter=
+I/flutter (27099): tab=
+I/flutter (27099): [ROOMコレ診断] refreshManagedProductList 完了 total=181 candidate=0 done=181 ui=ready
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=refresh
+I/flutter (27099): productId=
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=0
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=181
+I/flutter (27099): afterDoneCount=181
+I/flutter (27099): [MANAGED_PRODUCT_LOAD]
+I/flutter (27099): source=provider
+I/flutter (27099): pendingCount=0
+I/flutter (27099): doneCount=181
+I/flutter (27099): filter=
+I/flutter (27099): tab=
+I/flutter (27099): [ROOMコレ診断] refreshManagedProductList 完了 total=181 candidate=0 done=181 ui=ready
+I/flutter (27099): [ROOM_IMPORT_ENRICH_API] productId=fu-624 index=1 maxPerRun=1 manualPacing=false delayMs=0 shopCode=girl-k itemCode=fu-624
+I/flutter (27099): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=fu-624 source=itemUrl apiShop=girl-k apiItem=fu-624 storedShop=girl-k storedProductId=fu-624
+I/flutter (27099): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter (27099): productId=fu-624
+I/flutter (27099): rawKeyword=【46％OFF】パーティードレス 結婚式 ワンピース ドレス 袖あり 大きいサイズ フォーマル ロング丈 ロングドレス レース 長袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 フレア ハ
+I/flutter (27099): normalizedKeyword=パーティードレス 結婚式 ワンピース ドレス 袖あり 大きいサイズ
+I/flutter (27099): rawLength=120
+I/flutter (27099): normalizedLength=33
+I/flutter (27099): phase=shopItemFallback
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_START]
+I/flutter (27099): productId=fu-624
+I/flutter (27099): shopCode=girl-k
+I/flutter (27099): itemCode=fu-624
+I/flutter (27099): keyword=パーティードレス 結婚式 ワンピース ドレス 袖あり 大きいサイズ
+I/flutter (27099): verifyMode=false
+I/flutter (27099): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=fu-624 keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (27099): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=girl-k itemCode=fu-624 shopName=未送信(APIはshopCodeのみ)
+I/flutter (27099): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (27099): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=girl-k%3Afu-624
+I/flutter (27099): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (27099): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=181 afterFilterLen=181 surface=ok_list ui=ready
+I/flutter (27099): [ROOMコレ診断] 描画リスト先頭 productId=c572054 title=＼クーポン利用で7,990円〜／【365日即日発送】~58%OFF ブラックフォーマル レディース 喪服 アンサンブル ワンピース ジャケット 洗える 前開き 体型カバー ゆったり 大きいサイズ 30代 40代 50代 オールシーズン 年中 試着チケット対象 status=done len=181
+I/flutter (27099): [REACTION_STATUS] productId=c572054
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=ta1606
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=b5043
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/WebViewFactory(27099): Loading com.google.android.webview version 147.0.7727.137 (code 772713703)
+D/ApplicationLoaders(27099): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(27099): Loading /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(27099): Configuring clns-5 for other apk /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/lib/arm64:/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(27099): version=147.0.7727.137 (772713703) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(27099): Load /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+D/nativeloader(27099): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+I/chromium(27099): [0512/223546.541605:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(27099): Successfully loaded native library
+I/cr_CachingUmaRecorder(27099): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(27099): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(27099): #registerProvider() provider:WV.yk@19fb2a4 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(27099): #setManagerAndSource() 0
+I/cr_DisplayManager(27099): Is Display Topology available: false
+I/cr_CombinedPProvider(27099): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(27099): Compat change id reported: 183155436; UID 10458; state: ENABLED
+I/cr_AppResProvider(27099): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(27099): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(27099): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(27099): #flushPolicies()
+W/chromium(27099): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(27099): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 103712643
+D/CompatibilityChangeReporter(27099): Compat change id reported: 214741472; UID 10458; state: ENABLED
+I/CameraManagerGlobal(27099): Connecting to camera service
+D/CompatibilityChangeReporter(27099): Compat change id reported: 171228096; UID 10458; state: ENABLED
+I/PlatformViewsController(27099): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(27099): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(27099): Compat change id reported: 236825255; UID 10458; state: ENABLED
+W/libc    (27099): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(27099): type=1400 audit(0.0:501206): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(27099): Compat change id reported: 193247900; UID 10458; state: ENABLED
+I/Choreographer(27099): Skipped 71 frames!  The application may be doing too much work on its main thread.
+W/libc    (27099): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(27099): type=1400 audit(0.0:501207): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(27099): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(27099): Build Date              : 08/23/22
+I/AdrenoVK-0(27099): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(27099): Local Branch            : 
+I/AdrenoVK-0(27099): Remote Branch           : 
+I/AdrenoVK-0(27099): Remote Branch           : 
+I/AdrenoVK-0(27099): Reconstruct Branch      : 
+I/AdrenoVK-0(27099): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(27099): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(27099): Davey! duration=1276ms; Flags=1, FrameTimelineVsyncId=573768518, IntendedVsync=4091525825515376, Vsync=4091527012075115, InputEventId=0, HandleInputStart=4091527016318005, AnimationStart=4091527016319255, PerformTraversalsStart=4091527016343422, DrawStart=4091527032177016, FrameDeadline=4091525842182042, FrameInterval=4091527015457432, FrameStartTime=16666666, SyncQueued=4091527086433630, SyncStart=4091527086537328, IssueDrawCommandsStart=4091527087210089, SwapBuffers=4091527100697120, FrameCompleted=4091527102057068, DequeueBufferDuration=3154323, QueueBufferDuration=682344, GpuCompleted=4091527102057068, SwapBuffersCompleted=4091527101707328, DisplayPresentTime=0, CommandSubmissionCompleted=4091527100697120, 
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+I/flutter (27099): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (27099): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (27099): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (27099): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (27099): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:708:19)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:252:14)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #6      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): 
+I/flutter (27099): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=1634
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (27099): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:708:19)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:252:14)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #6      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): 
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_TRIGGERED]
+I/flutter (27099): reason=itemCodeInvalid
+I/flutter (27099): productId=fu-624
+I/flutter (27099): shopCode=girl-k
+I/flutter (27099): itemCode=fu-624
+I/flutter (27099): keyword=パーティードレス 結婚式 ワンピース ドレス 袖あり 大きいサイズ
+I/flutter (27099): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem_keywordShopFallback proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=(omit) keyword=パーティードレス 結婚式 ワンピース ドレス 袖あり 大きいサイズ genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (27099): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=パーティードレス 結婚式 ワンピース ドレス 袖あり 大きいサイズ genreId=- shopCode=girl-k itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (27099): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (27099): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%83%91%E3%83%BC%E3%83%86%E3%82%A3%E3%83%BC%E3%83%89%E3%83%AC%E3%82%B9+%E7%B5%90%E5%A9%9A%E5%BC%8F+%E3%83%AF%E3%83%B3%E3%83%94%E3%83%BC%E3%82%B9+%E3%83%89%E3%83%AC%E3%82%B9+%E8%A2%96%E3%81%82%E3%82%8A+%E5%A4%A7%E3%81%8D%E3%81%84%E3%82%B5%E3%82%A4%E3%82%BA&shopCode=girl-k
+D/ProfileInstaller(27099): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(27099): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(27099): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+E/FrameEvents(27099): updateAcquireFence: Did not find frame.
+I/flutter (27099): [Rakuten] response status=200 page=1 bytes=389271
+I/flutter (27099): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (27099): [RECOMMEND_TRACE] rawCount=30
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-518%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10013189%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-518%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10013189%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10013189 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10013189 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-576%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014168%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-576%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014168%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014168 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014168 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-577%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014193%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-577%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014193%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014193 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014193 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-81823%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014187%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-81823%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014187%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014187 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014187 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-560%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10013706%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-560%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10013706%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10013706 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10013706 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-583%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014426%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-583%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014426%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014426 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014426 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-2195%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014021%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-2195%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014021%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014021 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014021 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-2297%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014188%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-2297%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014188%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014188 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014188 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fto-353%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10012151%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fto-353%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10012151%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10012151 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10012151 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fvn-565%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014007%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fvn-565%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014007%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014007 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014007 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-584%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014425%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-584%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014425%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014425 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014425 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-82431%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014651%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-82431%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014651%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014651 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014651 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Foutlet-sel-a%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015451%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Foutlet-sel-a%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015451%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015451 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015451 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-615%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015334%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-615%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015334%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015334 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015334 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-582%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014427%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-582%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014427%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014427 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014427 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-579%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014189%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-579%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014189%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014189 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014189 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-2976%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014530%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-2976%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014530%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014530 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014530 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fad-50016%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015326%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fad-50016%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015326%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015326 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015326 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-599%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014995%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-599%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014995%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014995 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014995 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-557%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10013723%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-557%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10013723%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10013723 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10013723 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-607%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015184%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-607%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015184%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015184 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015184 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-605%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015164%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-605%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015164%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015164 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015164 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-x012%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015229%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-x012%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015229%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015229 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015229 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-602%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015096%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-602%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015096%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015096 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015096 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-609%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015172%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-609%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015172%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015172 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015172 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-n008%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015055%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-n008%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015055%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015055 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015055 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-pl003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015056%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-pl003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015056%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015056 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015056 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-82538%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015061%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-82538%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015061%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015061 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015061 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-82382%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014650%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-82382%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014650%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014650 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014650 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-82536%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014867%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fas-82536%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014867%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014867 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014867 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_RESULT]
+I/flutter (27099): status=noExactUrlMatch
+I/flutter (27099): productId=fu-624
+I/flutter (27099): shopCode=girl-k
+I/flutter (27099): keyword=パーティードレス 結婚式 ワンピース ドレス 袖あり 大きいサイズ
+I/flutter (27099): candidates=itemCode=girl-k:10013189 itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc… | itemCode=girl-k:10014168 itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc… | itemCode=girl-k:10014193 itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc… | itemCode=girl-k:10014187 itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc… | itemCode=girl-k:10013706 itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc… | itemCode=girl-k:10014426 itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc… | itemCode=girl-k:10014021 itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc… | itemCode=girl-k:10014188 itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc… | itemCode=girl-k:10012151 itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc… | itemCode=girl
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FAIL] productId=fu-624 method=shopItem reason=noItems
+I/flutter (27099): [ROOM_IMPORT_ENRICH_SUMMARY] apiAttempts=2 updated=0 failedProducts=1 skipped=15 pausedByRateLimit=false remainingPending=166 successIds=
+I/flutter (27099): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=2 updated=0 failedProducts=1
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=refresh
+I/flutter (27099): productId=
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=0
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=181
+I/flutter (27099): afterDoneCount=181
+I/flutter (27099): [MANAGED_PRODUCT_LOAD]
+I/flutter (27099): source=provider
+I/flutter (27099): pendingCount=0
+I/flutter (27099): doneCount=181
+I/flutter (27099): filter=
+I/flutter (27099): tab=
+I/flutter (27099): [ROOMコレ診断] refreshManagedProductList 完了 total=181 candidate=0 done=181 ui=ready
+I/flutter (27099): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (27099): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=181 afterFilterLen=181 surface=ok_list ui=ready
+I/flutter (27099): [ROOMコレ診断] 描画リスト先頭 productId=c572054 title=＼クーポン利用で7,990円〜／【365日即日発送】~58%OFF ブラックフォーマル レディース 喪服 アンサンブル ワンピース ジャケット 洗える 前開き 体型カバー ゆったり 大きいサイズ 30代 40代 50代 オールシーズン 年中 試着チケット対象 status=done len=181
+I/flutter (27099): [REACTION_STATUS] productId=c572054
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=ta1606
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=b5043
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter (27099): [ROOM_SYNC] ROOM投稿取り込み 開始（最大10件）
+I/flutter (27099): [ROOM_IMPORT_PERF] totalStart
+I/flutter (27099): [ROOM_IMPORT_PERF] prepareStart
+I/flutter (27099): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter (27099): [ROOM_IMPORT_PERF] fetchRoomListStart url=https://room.rakuten.co.jp/room_def277c8b5/items
+I/flutter (27099): [ROOM_IMPORT_LISTING] source=html page=1 url=https://room.rakuten.co.jp/room_def277c8b5/items
+I/flutter (27099): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=181 afterFilterLen=181 surface=ok_list ui=ready
+I/flutter (27099): [ROOMコレ診断] 描画リスト先頭 productId=c572054 title=＼クーポン利用で7,990円〜／【365日即日発送】~58%OFF ブラックフォーマル レディース 喪服 アンサンブル ワンピース ジャケット 洗える 前開き 体型カバー ゆったり 大きいサイズ 30代 40代 50代 オールシーズン 年中 試着チケット対象 status=done len=181
+I/flutter (27099): [REACTION_STATUS] productId=c572054
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=ta1606
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=b5043
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=2
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+W/o.room_manager2(27099): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/base.apk' with 1 weak references
+W/o.room_manager2(27099): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (27099): [ROOM_IMPORT_PERF] fetchRoomListEnd status=200 htmlBytes=34204 durationMs=8786
+I/flutter (27099): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8786
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_SYNC][WARN] ROOM商品URLを1件も抽出できませんでした（href/絶対URL経路）
+I/flutter (27099): [ROOM_SYNC][WARN] 使用した正規表現（絶対URL）: https?://(?:www\.)?room\.rakuten\.co\.jp/[^\s"<>]+
+I/flutter (27099): [ROOM_SYNC][WARN] 使用した正規表現（href）: href\s*=\s*["']([^"']+)["']
+I/flutter (27099): [ROOM_SYNC][WARN] HTML内に room.rakuten.co.jp を含むか: true
+I/flutter (27099): [ROOM_SYNC][WARN] HTML内に 1700 形式の商品IDらしき文字列(13桁以上の連続数字)を含むか: true
+I/flutter (27099): [ROOM_IMPORT_PERF] extractRoomItemsStart
+I/flutter (27099): [ROOM_IMPORT_PERF] extractRoomItemsEnd found=6 durationMs=0
+I/flutter (27099): [ROOM_SYNC] 投稿一覧 6件 · 未取り込み推定 0件
+I/flutter (27099): [ROOM_IMPORT_LISTING] source=collects page=1 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=(start)
+I/flutter (27099): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8731
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_LISTING] source=collects page=2 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371376907673
+I/flutter (27099): [ROOM_IMPORT_API] type=roomList status=200 durationMs=10687
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_LISTING] source=collects page=3 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371376262136
+I/flutter (27099): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8495
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_LISTING] source=collects page=4 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371375484235
+I/flutter (27099): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8603
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_LISTING] source=collects page=5 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371374707866
+I/flutter (27099): [ROOM_IMPORT_API] type=roomList status=200 durationMs=10442
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_LISTING] source=collects page=6 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371373952116
+I/flutter (27099): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9469
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_LISTING] source=collects page=7 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371275664287
+I/flutter (27099): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9414
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_LISTING] source=collects page=8 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371274812134
+I/flutter (27099): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8386
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_LISTING] source=collects page=9 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371273986331
+I/flutter (27099): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8451
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_LISTING] source=collects page=10 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371273258400
+I/flutter (27099): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9568
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_LISTING] stop reason=enoughItems count=10 source=collects page=10
+I/flutter (27099): [ROOM_IMPORT_PERF] prepareEnd durationMs=101286
+I/flutter (27099): [ROOM_IMPORT_PREPARE_DETAIL] roomListHtmlFetchMs=8891ms
+I/flutter (27099): [ROOM_IMPORT_PREPARE_DETAIL] collectsFetchMs=92321ms
+I/flutter (27099): [ROOM_IMPORT_PREPARE_DETAIL] existingProductsLoadMs=58ms
+I/flutter (27099): [ROOM_IMPORT_PREPARE_DETAIL] syncedKeyBuildMs=0ms
+I/flutter (27099): [ROOM_IMPORT_PREPARE_DETAIL] queueBuildMs=11ms
+I/flutter (27099): [ROOM_FASTPATH_SUMMARY] prepareQueueCanFastPath=10 prepareQueueSize=10 listingIndexedKeys=200
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=0 total=10
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=0 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] itemStart index=1 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371273186267
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=1 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchStart index=1
+I/flutter (27099): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=b5322 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371273186267
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchEnd index=1 status=fastPath durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=1
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=1 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesStart index=1
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesEnd index=1 shopCode=ashblond itemCode=b5322 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckStart index=1
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckEnd index=1 exists=false durationMs=0
+I/flutter (27099): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=b5322
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseStart index=1
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseEnd index=1 likes=2 comments=0 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] saveStart index=1
+I/flutter (27099): [ROOM_IMPORT_UI] phase=saving current=1
+I/flutter (27099): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=roomImport
+I/flutter (27099): productId=b5322
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=-1
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=-1
+I/flutter (27099): afterDoneCount=182
+I/flutter (27099): [ROOM_IMPORT_PERF] saveEnd index=1 durationMs=82
+I/flutter (27099): [ROOM_IMPORT_PERF] itemEnd index=1 result=added durationMs=89
+I/flutter (27099): [ROOM_IMPORT_PERF] itemStart index=2 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371273158140
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=2 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchStart index=2
+I/flutter (27099): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=y84206 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371273158140
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchEnd index=2 status=fastPath durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=2
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=2 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesStart index=2
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=1 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesEnd index=2 shopCode=ashblond itemCode=y84206 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckStart index=2
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckEnd index=2 exists=false durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseStart index=2
+I/flutter (27099): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=y84206
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseEnd index=2 likes=1 comments=0 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] saveStart index=2
+I/flutter (27099): [ROOM_IMPORT_UI] phase=saving current=2
+I/flutter (27099): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=roomImport
+I/flutter (27099): productId=y84206
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=-1
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=-1
+I/flutter (27099): afterDoneCount=183
+I/flutter (27099): [ROOM_IMPORT_PERF] saveEnd index=2 durationMs=57
+I/flutter (27099): [ROOM_IMPORT_PERF] itemEnd index=2 result=added durationMs=59
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=2 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] itemStart index=3 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371273123673
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=3 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchStart index=3
+I/flutter (27099): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=c569915-sale2 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371273123673
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchEnd index=3 status=fastPath durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=3
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=3 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesStart index=3
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesEnd index=3 shopCode=ashblond itemCode=c569915-sale2 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckStart index=3
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckEnd index=3 exists=false durationMs=0
+I/flutter (27099): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=c569915-sale2
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseStart index=3
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseEnd index=3 likes=0 comments=0 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] saveStart index=3
+I/flutter (27099): [ROOM_IMPORT_UI] phase=saving current=3
+I/flutter (27099): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=roomImport
+I/flutter (27099): productId=c569915-sale2
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=-1
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=-1
+I/flutter (27099): afterDoneCount=184
+I/flutter (27099): [ROOM_IMPORT_PERF] saveEnd index=3 durationMs=56
+I/flutter (27099): [ROOM_IMPORT_PERF] itemEnd index=3 result=added durationMs=58
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=3 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] itemStart index=4 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371273099125
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=4 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchStart index=4
+I/flutter (27099): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=t5282 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371273099125
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchEnd index=4 status=fastPath durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=4
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=4 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesStart index=4
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesEnd index=4 shopCode=ashblond itemCode=t5282 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckStart index=4
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckEnd index=4 exists=false durationMs=0
+I/flutter (27099): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=t5282
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseStart index=4
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseEnd index=4 likes=0 comments=0 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] saveStart index=4
+I/flutter (27099): [ROOM_IMPORT_UI] phase=saving current=4
+I/flutter (27099): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=roomImport
+I/flutter (27099): productId=t5282
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=-1
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=-1
+I/flutter (27099): afterDoneCount=185
+I/flutter (27099): [ROOM_IMPORT_PERF] saveEnd index=4 durationMs=50
+I/flutter (27099): [ROOM_IMPORT_PERF] itemEnd index=4 result=added durationMs=52
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=4 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] itemStart index=5 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371273074174
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=5 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchStart index=5
+I/flutter (27099): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=t9020 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371273074174
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchEnd index=5 status=fastPath durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=5
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=5 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesStart index=5
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesEnd index=5 shopCode=ashblond itemCode=t9020 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckStart index=5
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckEnd index=5 exists=false durationMs=0
+I/flutter (27099): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=t9020
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseStart index=5
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseEnd index=5 likes=0 comments=0 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] saveStart index=5
+I/flutter (27099): [ROOM_IMPORT_UI] phase=saving current=5
+I/flutter (27099): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=roomImport
+I/flutter (27099): productId=t9020
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=-1
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=-1
+I/flutter (27099): afterDoneCount=186
+I/flutter (27099): [ROOM_IMPORT_PERF] saveEnd index=5 durationMs=49
+I/flutter (27099): [ROOM_IMPORT_PERF] itemEnd index=5 result=added durationMs=51
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=5 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] itemStart index=6 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371273049355
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=6 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchStart index=6
+I/flutter (27099): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=u5275-bkf roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371273049355
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchEnd index=6 status=fastPath durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=6
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=6 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesStart index=6
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesEnd index=6 shopCode=ashblond itemCode=u5275-bkf durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckStart index=6
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckEnd index=6 exists=false durationMs=0
+I/flutter (27099): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=u5275-bkf
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseStart index=6
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseEnd index=6 likes=0 comments=0 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] saveStart index=6
+I/flutter (27099): [ROOM_IMPORT_UI] phase=saving current=6
+I/flutter (27099): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=roomImport
+I/flutter (27099): productId=u5275-bkf
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=-1
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=-1
+I/flutter (27099): afterDoneCount=187
+I/flutter (27099): [ROOM_IMPORT_PERF] saveEnd index=6 durationMs=116
+I/flutter (27099): [ROOM_IMPORT_PERF] itemEnd index=6 result=added durationMs=119
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=6 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] itemStart index=7 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371273022404
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=7 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchStart index=7
+I/flutter (27099): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=c562016 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371273022404
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchEnd index=7 status=fastPath durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=7
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=7 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesStart index=7
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesEnd index=7 shopCode=ashblond itemCode=c562016 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckStart index=7
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckEnd index=7 exists=false durationMs=0
+I/flutter (27099): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=c562016
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseStart index=7
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseEnd index=7 likes=1 comments=0 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] saveStart index=7
+I/flutter (27099): [ROOM_IMPORT_UI] phase=saving current=7
+I/flutter (27099): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=roomImport
+I/flutter (27099): productId=c562016
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=-1
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=-1
+I/flutter (27099): afterDoneCount=188
+I/flutter (27099): [ROOM_IMPORT_PERF] saveEnd index=7 durationMs=53
+I/flutter (27099): [ROOM_IMPORT_PERF] itemEnd index=7 result=added durationMs=73
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=7 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] itemStart index=8 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371272994261
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=8 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchStart index=8
+I/flutter (27099): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=k483109 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371272994261
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchEnd index=8 status=fastPath durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=8
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=8 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesStart index=8
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesEnd index=8 shopCode=ashblond itemCode=k483109 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckStart index=8
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckEnd index=8 exists=false durationMs=0
+I/flutter (27099): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=k483109
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseStart index=8
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseEnd index=8 likes=0 comments=0 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] saveStart index=8
+I/flutter (27099): [ROOM_IMPORT_UI] phase=saving current=8
+I/flutter (27099): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=roomImport
+I/flutter (27099): productId=k483109
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=-1
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=-1
+I/flutter (27099): afterDoneCount=189
+I/flutter (27099): [ROOM_IMPORT_PERF] saveEnd index=8 durationMs=46
+I/flutter (27099): [ROOM_IMPORT_PERF] itemEnd index=8 result=added durationMs=48
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=8 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] itemStart index=9 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371272965683
+W/WindowOnBackDispatcher(27099): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(27099): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=9 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchStart index=9
+I/flutter (27099): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=t5312 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371272965683
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchEnd index=9 status=fastPath durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=9
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=9 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesStart index=9
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesEnd index=9 shopCode=ashblond itemCode=t5312 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckStart index=9
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckEnd index=9 exists=false durationMs=0
+I/flutter (27099): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=t5312
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseStart index=9
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseEnd index=9 likes=4 comments=0 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] saveStart index=9
+I/flutter (27099): [ROOM_IMPORT_UI] phase=saving current=9
+I/flutter (27099): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=roomImport
+I/flutter (27099): productId=t5312
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=-1
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=-1
+I/flutter (27099): afterDoneCount=190
+I/flutter (27099): [ROOM_IMPORT_PERF] saveEnd index=9 durationMs=50
+I/flutter (27099): [ROOM_IMPORT_PERF] itemEnd index=9 result=added durationMs=51
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=9 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] itemStart index=10 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371272928376
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=10 total=10
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchStart index=10
+I/flutter (27099): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=t5315 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371272928376
+I/flutter (27099): [ROOM_IMPORT_PERF] roomPageFetchEnd index=10 status=fastPath durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=10
+I/flutter (27099): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=10 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesStart index=10
+I/flutter (27099): [ROOM_IMPORT_PERF] parseCodesEnd index=10 shopCode=ashblond itemCode=t5315 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckStart index=10
+I/flutter (27099): [ROOM_IMPORT_PERF] existingCheckEnd index=10 exists=false durationMs=0
+I/flutter (27099): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=t5315
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseStart index=10
+I/flutter (27099): [ROOM_IMPORT_PERF] reactionParseEnd index=10 likes=4 comments=0 durationMs=0
+I/flutter (27099): [ROOM_IMPORT_PERF] saveStart index=10
+I/flutter (27099): [ROOM_IMPORT_UI] phase=saving current=10
+I/flutter (27099): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=roomImport
+I/flutter (27099): productId=t5315
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=-1
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=-1
+I/flutter (27099): afterDoneCount=191
+I/flutter (27099): [ROOM_IMPORT_PERF] saveEnd index=10 durationMs=60
+I/flutter (27099): [ROOM_IMPORT_PERF] itemEnd index=10 result=added durationMs=61
+I/flutter (27099): [ROOM_IMPORT_UI] phase=processing current=10 total=10
+I/flutter (27099): [ROOM_IMPORT_API_SUMMARY] apiExecuted=0 apiSkipped=10 reason=deferredEnrichment fallbackRecovered=0 rateLimited=0 http400=0
+I/flutter (27099): [ROOM_FASTPATH_SUMMARY] fastPathCount=10 fallbackRoomPageCount=0 avgRoomPageMs=na estimatedSavedMs=0 listingIndexedKeys=200
+I/flutter (27099): [ROOM_SYNC] 完了 · 確認キュー 10件 · 新規コレ済10 · ROOMリンク追加0 · ページ側スキップ0 · 失敗0 · 一覧スキップ181
+I/flutter (27099): [ROOM_IMPORT_PERF] totalEnd durationMs=101972
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=refresh
+I/flutter (27099): productId=
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=0
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=181
+I/flutter (27099): afterDoneCount=191
+I/flutter (27099): [MANAGED_PRODUCT_LOAD]
+I/flutter (27099): source=provider
+I/flutter (27099): pendingCount=0
+I/flutter (27099): doneCount=191
+I/flutter (27099): filter=
+I/flutter (27099): tab=
+I/flutter (27099): [ROOMコレ診断] refreshManagedProductList 完了 total=191 candidate=0 done=191 ui=ready
+I/flutter (27099): [ROOM_IMPORT_UI] phase=finished added=10 updated=0 skipped=0 failed=0
+I/flutter (27099): [ROOM_IMPORT_SUMMARY] totalMs=101972 prepareMs=101286 itemCount=10 added=10 updated=0 skipped=0 failed=0 roomListCalls=11 roomPageCalls=0 rakutenItemCalls=0 enrichmentCalls=0 enrichmentBatchMs=0 enrichmentUpdated=0
+I/flutter (27099): [ROOM_IMPORT_PERF] enrichmentStart deferred
+I/flutter (27099): [ROOM_IMPORT_ENRICH_QUEUE] pending=176 eligible=175 skippedCooldown=1 skippedFailed=0
+I/flutter (27099): [ROOM_IMPORT_ENRICH_PICK] productId=ef-fu-786 failureReason= failureCount=0 selected=true
+I/flutter (27099): [ROOM_IMPORT_ENRICH_TARGET] productId=ef-fu-786 needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/flutter (27099): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (27099): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=191 afterFilterLen=191 surface=ok_list ui=ready
+I/flutter (27099): [ROOMコレ診断] 描画リスト先頭 productId=t5315 title=【365日即日発送】59%OFF入学式 セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 スカート セットアップ 入園式 卒園式 お宮参り 七五三 レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=191
+I/flutter (27099): [REACTION_STATUS] productId=t5315
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=t5312
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=k483109
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=0
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (27099): [ROOM_IMPORT_ENRICH_API] productId=ef-fu-786 index=1 maxPerRun=1 manualPacing=false delayMs=0 shopCode=girl-k itemCode=ef-fu-786
+I/flutter (27099): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=ef-fu-786 source=itemUrl apiShop=girl-k apiItem=ef-fu-786 storedShop=girl-k storedProductId=ef-fu-786
+I/flutter (27099): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter (27099): productId=ef-fu-786
+I/flutter (27099): rawKeyword=【40％OFF】ブラウス トップス レディース 長袖 きれいめ 1枚で決まる ゆったり 着痩せ シャツ プルオーバー カットソー おしゃれ 体型カバー かわいい 可愛い クルーネック シンプル 無地 大きいサイズ 七分袖 フリル ギャザー
+I/flutter (27099): normalizedKeyword=ブラウス トップス レディース 長袖 きれいめ 1枚で決まる ゆったり
+I/flutter (27099): rawLength=119
+I/flutter (27099): normalizedLength=35
+I/flutter (27099): phase=shopItemFallback
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_START]
+I/flutter (27099): productId=ef-fu-786
+I/flutter (27099): shopCode=girl-k
+I/flutter (27099): itemCode=ef-fu-786
+I/flutter (27099): keyword=ブラウス トップス レディース 長袖 きれいめ 1枚で決まる ゆったり
+I/flutter (27099): verifyMode=false
+I/flutter (27099): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=ef-fu-786 keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (27099): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=girl-k itemCode=ef-fu-786 shopName=未送信(APIはshopCodeのみ)
+I/flutter (27099): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (27099): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=girl-k%3Aef-fu-786
+I/flutter (27099): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=191 afterFilterLen=191 surface=ok_list ui=ready
+I/flutter (27099): [ROOMコレ診断] 描画リスト先頭 productId=t5315 title=【365日即日発送】59%OFF入学式 セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 スカート セットアップ 入園式 卒園式 お宮参り 七五三 レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=191
+I/flutter (27099): [REACTION_STATUS] productId=t5315
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=t5312
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=k483109
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=0
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (27099): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (27099): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (27099): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (27099): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (27099): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:708:19)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:252:14)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #6      RoomImportController._enrichRoomImportMetadataDeferred (package:room_manager2/state/room_import_controller.dart:109:22)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): 
+I/flutter (27099): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=319
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (27099): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:708:19)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:252:14)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #6      RoomImportController._enrichRoomImportMetadataDeferred (package:room_manager2/state/room_import_controller.dart:109:22)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): 
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_TRIGGERED]
+I/flutter (27099): reason=itemCodeInvalid
+I/flutter (27099): productId=ef-fu-786
+I/flutter (27099): shopCode=girl-k
+I/flutter (27099): itemCode=ef-fu-786
+I/flutter (27099): keyword=ブラウス トップス レディース 長袖 きれいめ 1枚で決まる ゆったり
+I/flutter (27099): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem_keywordShopFallback proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=(omit) keyword=ブラウス トップス レディース 長袖 きれいめ 1枚で決まる ゆったり genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (27099): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=ブラウス トップス レディース 長袖 きれいめ 1枚で決まる ゆったり genreId=- shopCode=girl-k itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (27099): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (27099): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B9+%E3%83%88%E3%83%83%E3%83%97%E3%82%B9+%E3%83%AC%E3%83%87%E3%82%A3%E3%83%BC%E3%82%B9+%E9%95%B7%E8%A2%96+%E3%81%8D%E3%82%8C%E3%81%84%E3%82%81+1%E6%9E%9A%E3%81%A7%E6%B1%BA%E3%81%BE%E3%82%8B+%E3%82%86%E3%81%A3%E3%81%9F%E3%82%8A&shopCode=girl-k
+I/flutter (27099): [Rakuten] response status=200 page=1 bytes=338047
+I/flutter (27099): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (27099): [RECOMMEND_TRACE] rawCount=30
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-803%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015968%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-803%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015968%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015968 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015968 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-686%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015556%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-686%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015556%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015556 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015556 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-616%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015467%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-616%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015467%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015467 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015467 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-557%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015376%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-557%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015376%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015376 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015376 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-773%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015892%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-773%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015892%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015892 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015892 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-677%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015568%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-677%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015568%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015568 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015568 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-575%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015399%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-575%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015399%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015399 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015399 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-699%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015604%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-699%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015604%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015604 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015604 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-574%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015420%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-574%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015420%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015420 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015420 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-416%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015169%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-416%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015169%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015169 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015169 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-559%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015378%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-559%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015378%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015378 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015378 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-263%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014727%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-263%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014727%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014727 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014727 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-617%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015492%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-617%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015492%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015492 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015492 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-786%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015901%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-786%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015901%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015901 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015901 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fap-zn-32008%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015947%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fap-zn-32008%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015947%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015947 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015947 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-459%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015195%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-459%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015195%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015195 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-187%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014526%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015195 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-187%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014526%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014526 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014526 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-701%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015606%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-701%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015606%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015606 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015606 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-875%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016498%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-875%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016498%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10016498 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10016498 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-802%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015967%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-802%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015967%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015967 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015967 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-702%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015607%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-702%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015607%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015607 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015607 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-793%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015873%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-793%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015873%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015873 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015873 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fap-mc-043%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015905%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fap-mc-043%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015905%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015905 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015905 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-421%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015173%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-421%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015173%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015173 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015173 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-700%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015605%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-700%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015605%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015605 rawGenreId=206471 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015605 model.genreId=206471 model.genreName= jsonRaw=シャツ・ブラウス jsonRolled=シャツ・ブラウス displayGenre=シャツ・ブラウス
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-469%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015210%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-469%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015210%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015210 rawGenreId=303656 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015210 model.genreId=303656 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-881%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016549%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-881%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016549%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10016549 rawGenreId=303656 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10016549 model.genreId=303656 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-477%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015211%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-477%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015211%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015211 rawGenreId=303656 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015211 model.genreId=303656 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-815%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016484%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-815%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016484%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10016484 rawGenreId=303656 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10016484 model.genreId=303656 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-836%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016524%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-836%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016524%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10016524 rawGenreId=403923 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10016524 model.genreId=403923 model.genreName= jsonRaw=スウェット・トレーナー jsonRolled=スウェット・トレーナー displayGenre=スウェット・トレーナー
+I/flutter (27099): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter (27099): [ROOM_IMPORT_ENRICH] saved shopName=パーティードレス通販 GIRL
+I/flutter (27099): [ROOM_IMPORT_ENRICH] saved genreName=シャツ・ブラウス
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_RESULT]
+I/flutter (27099): status=success
+I/flutter (27099): method=keywordShopCodeUrlMatch
+I/flutter (27099): productId=ef-fu-786
+I/flutter (27099): matchedItemCode=girl-k:10015901
+I/flutter (27099): matchedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-786%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015901%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): matchedAffiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-786%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015901%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): price=4990
+I/flutter (27099): shopName=パーティードレス通販 GIRL
+I/flutter (27099): apiGenreName=(empty)
+I/flutter (27099): mappedGenreName=シャツ・ブラウス
+I/flutter (27099): savedGenreName=シャツ・ブラウス
+I/flutter (27099): [ROOM_IMPORT_ENRICH_SUCCESS] productId=ef-fu-786 price=4990 image=https://thumbnail.image.rakuten.co.jp/@0_mall/girl-k/cabinet/item_image/dress19/… shopName=パーティードレス通販 GIRL genreName=
+I/flutter (27099): [ROOM_IMPORT_ENRICH_SUMMARY] apiAttempts=2 updated=1 failedProducts=0 skipped=15 pausedByRateLimit=false remainingPending=175 successIds=ef-fu-786
+I/flutter (27099): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=2 updated=1 failedProducts=0
+I/flutter (27099): [ROOM_IMPORT_ENRICH_SUCCESS_IDS] ef-fu-786
+I/flutter (27099): [ROOM_IMPORT_PERF] enrichmentEnd deferred updated=1 durationMs=1847
+I/flutter (27099): [ROOM_IMPORT_DEFERRED_ENRICH] updated=1 durationMs=1847
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=refresh
+I/flutter (27099): productId=
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=0
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=191
+I/flutter (27099): afterDoneCount=191
+I/flutter (27099): [MANAGED_PRODUCT_LOAD]
+I/flutter (27099): source=provider
+I/flutter (27099): pendingCount=0
+I/flutter (27099): doneCount=191
+I/flutter (27099): filter=
+I/flutter (27099): tab=
+I/flutter (27099): [ROOMコレ診断] refreshManagedProductList 完了 total=191 candidate=0 done=191 ui=ready
+I/flutter (27099): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (27099): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=191 afterFilterLen=191 surface=ok_list ui=ready
+I/flutter (27099): [ROOMコレ診断] 描画リスト先頭 productId=t5315 title=【365日即日発送】59%OFF入学式 セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 スカート セットアップ 入園式 卒園式 お宮参り 七五三 レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=191
+I/flutter (27099): [REACTION_STATUS] productId=t5315
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=t5312
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=k483109
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=0
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (27099): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=191 afterFilterLen=191 surface=ok_list ui=ready
+I/flutter (27099): [ROOMコレ診断] 描画リスト先頭 productId=t5315 title=【365日即日発送】59%OFF入学式 セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 スカート セットアップ 入園式 卒園式 お宮参り 七五三 レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=191
+I/flutter (27099): [REACTION_STATUS] productId=t5315
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=t5312
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=k483109
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=0
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (27099): [ROOM_IMPORT_ENRICH_QUEUE] pending=175 eligible=174 skippedCooldown=1 skippedFailed=0
+I/flutter (27099): [ROOM_IMPORT_ENRICH_PICK] productId=ef-fu-796 failureReason= failureCount=0 selected=true
+I/flutter (27099): [ROOM_IMPORT_ENRICH_TARGET] productId=ef-fu-796 needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=refresh
+I/flutter (27099): productId=
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=0
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=191
+I/flutter (27099): afterDoneCount=191
+I/flutter (27099): [MANAGED_PRODUCT_LOAD]
+I/flutter (27099): source=screen
+I/flutter (27099): pendingCount=0
+I/flutter (27099): doneCount=191
+I/flutter (27099): filter=
+I/flutter (27099): tab=done
+I/flutter (27099): [ROOMコレ診断] refreshManagedProductList 完了 total=191 candidate=0 done=191 ui=ready
+I/flutter (27099): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (27099): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=191 afterFilterLen=191 surface=ok_list ui=ready
+I/flutter (27099): [ROOMコレ診断] 描画リスト先頭 productId=t5315 title=【365日即日発送】59%OFF入学式 セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 スカート セットアップ 入園式 卒園式 お宮参り 七五三 レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=191
+I/flutter (27099): [REACTION_STATUS] productId=t5315
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=t5312
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=k483109
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=0
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (27099): [ROOM_IMPORT_ENRICH_API] productId=ef-fu-796 index=1 maxPerRun=1 manualPacing=false delayMs=0 shopCode=girl-k itemCode=ef-fu-796
+I/flutter (27099): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=ef-fu-796 source=itemUrl apiShop=girl-k apiItem=ef-fu-796 storedShop=girl-k storedProductId=ef-fu-796
+I/flutter (27099): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter (27099): productId=ef-fu-796
+I/flutter (27099): rawKeyword=【1000円OFF】スカート ロング ミモレ丈 ゴム レディース カジュアル ボトムス ロングスカート おしゃれ 大きいサイズ 可愛い かわいい きれいめ 20代 30代 40代 50代 フレアスカート フレア タックスカート ゆったり 体
+I/flutter (27099): normalizedKeyword=スカート ロング ミモレ丈 ゴム レディース カジュアル ボトムス
+I/flutter (27099): rawLength=120
+I/flutter (27099): normalizedLength=33
+I/flutter (27099): phase=shopItemFallback
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_START]
+I/flutter (27099): productId=ef-fu-796
+I/flutter (27099): shopCode=girl-k
+I/flutter (27099): itemCode=ef-fu-796
+I/flutter (27099): keyword=スカート ロング ミモレ丈 ゴム レディース カジュアル ボトムス
+I/flutter (27099): verifyMode=false
+I/flutter (27099): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=ef-fu-796 keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (27099): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=girl-k itemCode=ef-fu-796 shopName=未送信(APIはshopCodeのみ)
+I/flutter (27099): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (27099): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=girl-k%3Aef-fu-796
+I/flutter (27099): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (27099): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (27099): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (27099): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (27099): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:708:19)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:252:14)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #6      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): 
+I/flutter (27099): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=331
+I/flutter (27099): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (27099): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (27099): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (27099): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:708:19)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:252:14)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): #6      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (27099): <asynchronous suspension>
+I/flutter (27099): 
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_TRIGGERED]
+I/flutter (27099): reason=itemCodeInvalid
+I/flutter (27099): productId=ef-fu-796
+I/flutter (27099): shopCode=girl-k
+I/flutter (27099): itemCode=ef-fu-796
+I/flutter (27099): keyword=スカート ロング ミモレ丈 ゴム レディース カジュアル ボトムス
+I/flutter (27099): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem_keywordShopFallback proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=(omit) keyword=スカート ロング ミモレ丈 ゴム レディース カジュアル ボトムス genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (27099): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=スカート ロング ミモレ丈 ゴム レディース カジュアル ボトムス genreId=- shopCode=girl-k itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (27099): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (27099): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%82%B9%E3%82%AB%E3%83%BC%E3%83%88+%E3%83%AD%E3%83%B3%E3%82%B0+%E3%83%9F%E3%83%A2%E3%83%AC%E4%B8%88+%E3%82%B4%E3%83%A0+%E3%83%AC%E3%83%87%E3%82%A3%E3%83%BC%E3%82%B9+%E3%82%AB%E3%82%B8%E3%83%A5%E3%82%A2%E3%83%AB+%E3%83%9C%E3%83%88%E3%83%A0%E3%82%B9&shopCode=girl-k
+I/flutter (27099): [Rakuten] response status=200 page=1 bytes=322943
+I/flutter (27099): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (27099): [RECOMMEND_TRACE] rawCount=30
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-645%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015517%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-645%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015517%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015517 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015517 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-641%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015513%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-641%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015513%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015513 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015513 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-794%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015865%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-794%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015865%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015865 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015865 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-638%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015506%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-638%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015506%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015506 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015506 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-765%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015793%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-765%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015793%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015793 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015793 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-789%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015863%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-789%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015863%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015863 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015863 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-372%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014994%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-372%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014994%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014994 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014994 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fap-mc-038%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016048%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fap-mc-038%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016048%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10016048 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10016048 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-513%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015400%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-513%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015400%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015400 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015400 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fuw-207%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10011713%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fuw-207%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10011713%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10011713 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10011713 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-865%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016408%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-865%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016408%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10016408 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10016408 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-849%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016530%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-849%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016530%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10016530 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10016530 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-833%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016491%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-833%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016491%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10016491 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10016491 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Flm-fu-005%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015159%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Flm-fu-005%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015159%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015159 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015159 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-373%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014980%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-373%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014980%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014980 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014980 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Flm-fu-009%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015161%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Flm-fu-009%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015161%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015161 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015161 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-277%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014702%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-277%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014702%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014702 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-612%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015459%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-612%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015459%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015459 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014702 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015459 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-818%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016510%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-818%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016510%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10016510 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10016510 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fap-mc-072%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016122%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fap-mc-072%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016122%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10016122 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10016122 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-752%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015819%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-752%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015819%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015819 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015819 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Flm-fu-001%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015157%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Flm-fu-001%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015157%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015157 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015157 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-129%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014399%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-129%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014399%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10014399 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10014399 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-708%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015587%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-708%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015587%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015587 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015587 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-768%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015812%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-768%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015812%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015812 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015812 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-642%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015551%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-642%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015551%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015551 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015551 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-643%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015548%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-643%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015548%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015548 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015548 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Flw-to-dlz-938%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015658%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Flw-to-dlz-938%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015658%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015658 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015658 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-796%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015867%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-796%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015867%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015867 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015867 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-764%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015861%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-764%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015861%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): [RakutenGenre][API] itemCode=girl-k:10015861 rawGenreId=110734 rawGenreName= rawKeys=genreId
+I/flutter (27099): [RakutenGenre][MAP] itemCode=girl-k:10015861 model.genreId=110734 model.genreName= jsonRaw=スカート jsonRolled=スカート displayGenre=スカート
+I/flutter (27099): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter (27099): [ROOM_IMPORT_ENRICH] saved shopName=パーティードレス通販 GIRL
+I/flutter (27099): [ROOM_IMPORT_ENRICH] saved genreName=スカート
+I/flutter (27099): [ROOM_IMPORT_ENRICH_FALLBACK_RESULT]
+I/flutter (27099): status=success
+I/flutter (27099): method=keywordShopCodeUrlMatch
+I/flutter (27099): productId=ef-fu-796
+I/flutter (27099): matchedItemCode=girl-k:10015867
+I/flutter (27099): matchedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-796%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015867%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): matchedAffiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-796%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015867%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (27099): price=6490
+I/flutter (27099): shopName=パーティードレス通販 GIRL
+I/flutter (27099): apiGenreName=(empty)
+I/flutter (27099): mappedGenreName=スカート
+I/flutter (27099): savedGenreName=スカート
+I/flutter (27099): [ROOM_IMPORT_ENRICH_SUCCESS] productId=ef-fu-796 price=6490 image=https://thumbnail.image.rakuten.co.jp/@0_mall/girl-k/cabinet/item_image/dress19/… shopName=パーティードレス通販 GIRL genreName=
+I/flutter (27099): [ROOM_IMPORT_ENRICH_SUMMARY] apiAttempts=2 updated=1 failedProducts=0 skipped=16 pausedByRateLimit=false remainingPending=174 successIds=ef-fu-796
+I/flutter (27099): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=2 updated=1 failedProducts=0
+I/flutter (27099): [ROOM_IMPORT_ENRICH_SUCCESS_IDS] ef-fu-796
+I/flutter (27099): [MANAGED_PRODUCT_SAVE]
+I/flutter (27099): action=refresh
+I/flutter (27099): productId=
+I/flutter (27099): itemCode=
+I/flutter (27099): beforePendingCount=0
+I/flutter (27099): afterPendingCount=0
+I/flutter (27099): beforeDoneCount=191
+I/flutter (27099): afterDoneCount=191
+I/flutter (27099): [MANAGED_PRODUCT_LOAD]
+I/flutter (27099): source=provider
+I/flutter (27099): pendingCount=0
+I/flutter (27099): doneCount=191
+I/flutter (27099): filter=
+I/flutter (27099): tab=
+I/flutter (27099): [ROOMコレ診断] refreshManagedProductList 完了 total=191 candidate=0 done=191 ui=ready
+I/flutter (27099): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (27099): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=191 afterFilterLen=191 surface=ok_list ui=ready
+I/flutter (27099): [ROOMコレ診断] 描画リスト先頭 productId=t5315 title=【365日即日発送】59%OFF入学式 セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 スカート セットアップ 入園式 卒園式 お宮参り 七五三 レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=191
+I/flutter (27099): [REACTION_STATUS] productId=t5315
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=t5312
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] productId=k483109
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=0
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (27099): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=191 afterFilterLen=191 surface=ok_list ui=ready
+I/flutter (27099): [ROOMコレ診断] 描画リスト先頭 productId=t5315 title=【365日即日発送】59%OFF入学式 セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 スカート セットアップ 入園式 卒園式 お宮参り 七五三 レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=191
+I/flutter (27099): [REACTION_STATUS] productId=t5315
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=t5312
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=4
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (27099): [REACTION_STATUS] productId=k483109
+I/flutter (27099): [REACTION_STATUS] roomLikeCount=0
+I/flutter (27099): [REACTION_STATUS] roomCommentCount=0
+I/flutter (27099): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260512_223516\room_manager2_shot_001.png
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260512_223516.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260512_223516.mp4 (14159813 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260512_223516
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260512_223516\terminal_output_20260512_223516.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260512_223516.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260512_223516.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260512_223516.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260512_223516.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260512_223516.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
