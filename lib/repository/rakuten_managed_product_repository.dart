@@ -673,6 +673,9 @@ class RakutenManagedProductRepository {
     /// 一覧HTML／collects 由来の参考価格（円）。API 失敗時も 0 円より優先。
     int? listingHintPriceYen,
 
+    /// ROOM バッチ取り込み時 true: 一覧ヒント価格を新規行に保存しない（楽天API補完に委ねる）。
+    bool suppressListingHintPrice = false,
+
     /// 楽天検索APIが完全には取れなかった（プロキシ400・Items空など）。
     bool rakutenApiPartialData = false,
 
@@ -977,9 +980,14 @@ class RakutenManagedProductRepository {
         : parsedItem.compositeProductId;
     final pcOnly = parsedItem.rakutenUrl.trim();
     final hintRaw = listingHintPriceYen;
-    final hintYen = (hintRaw != null && hintRaw > 0)
-        ? hintRaw
-        : (rakutenApiPartialData ? -1 : 0);
+    final int hintYen;
+    if (suppressListingHintPrice) {
+      hintYen = 0;
+    } else {
+      hintYen = (hintRaw != null && hintRaw > 0)
+          ? hintRaw
+          : (rakutenApiPartialData ? -1 : 0);
+    }
 
     var row = RakutenManagedProduct(
       productId: newId,

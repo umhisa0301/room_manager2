@@ -8,6 +8,7 @@ import '../navigation/app_shell_controller.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../services/app_action_service.dart';
 import '../services/room_import_limit_policy.dart';
+import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/room_sync_service.dart';
 import '../utils/room_sync_log.dart';
@@ -175,6 +176,10 @@ abstract final class RoomPostImportFlow {
       isScrollControlled: true,
       showDragHandle: true,
       builder: (ctx) {
+        final pendingEnrich =
+            RoomImportMetadataEnrichmentService.countPendingEnrichment(
+              ctx.read<RakutenManagedProductProvider>().items,
+            );
         return SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(24, 12, 24, 28),
@@ -273,6 +278,38 @@ abstract final class RoomPostImportFlow {
                     height: 1.35,
                   ),
                 ),
+                if (pendingEnrich > 0) ...[
+                  const SizedBox(height: 16),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: AppColors.accentPrimary.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            '商品情報の補完（楽天API）',
+                            style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            '未補完が $pendingEnrich 件あります。マイページの'
+                            '「取り込み商品の情報を補完」ボタンから実行してください。',
+                            style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+                              height: 1.45,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
                 if (result.newlyCollectedSamples.isNotEmpty) ...[
                   const SizedBox(height: 22),
                   Text(

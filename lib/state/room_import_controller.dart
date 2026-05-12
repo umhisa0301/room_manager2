@@ -1,5 +1,3 @@
-import 'dart:async' show unawaited;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,9 +5,6 @@ import 'package:provider/provider.dart';
 import '../config/demo_mode.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_sync_result.dart';
-import '../repository/rakuten_managed_product_repository.dart';
-import '../repository/rakuten_search_repository.dart';
-import '../services/room_import_limit_policy.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../utils/room_sync_log.dart';
@@ -61,83 +56,13 @@ class RoomImportController extends ChangeNotifier {
   /// [RoomSyncService.onProcessingHint] から渡る短文（ホーム等の進捗表示用）。
   String get importProcessingHint => _importProcessingHint;
 
-  /// ROOMコレ表示・マイページ表示などで、低速キューのメタ補完を **控えめに** 1 回だけ試す。
-  /// 取り込み本体とは独立（メタ補完中バナーは立てない）。
+  /// ROOMコレ表示・マイページ表示などで呼ばれていた低速補完フック。
+  ///
+  /// 取り込みと楽天API補完を分離したため、**自動補完は行わない**（手動ボタンへ誘導）。
   Future<void> tickSlowRoomMetadataEnrichmentIfNeeded(
     BuildContext context,
   ) async {
     if (kDemoModeEnabled || !context.mounted) return;
-    final bulk = context.read<BulkOperationStateController>();
-    if (bulk.isRoomImportRunning ||
-        bulk.isBulkCandidateRegistering ||
-        bulk.isMetadataEnriching) {
-      return;
-    }
-    try {
-      final svc = RoomImportMetadataEnrichmentService(
-        searchRepository: context.read<RakutenSearchRepository>(),
-        productRepository: context.read<RakutenManagedProductRepository>(),
-      );
-      await svc.enrichRoomImportedProducts(
-        limit: RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls,
-        applyPostImportAutoCap: true,
-      );
-    } catch (e, st) {
-      debugPrint('[RoomImportController] tickSlowEnrich: $e\n$st');
-    }
-    if (context.mounted) {
-      try {
-        await context
-            .read<RakutenManagedProductProvider>()
-            .refreshManagedProductList(showLoadingIndicator: false);
-      } catch (_) {}
-    }
-  }
-
-  /// 取り込み本体完了後の軽量メタ補完（UI は待たない）。
-  Future<void> _enrichRoomImportMetadataDeferred(BuildContext context) async {
-    if (kDemoModeEnabled || !context.mounted) return;
-    final enrichSw = Stopwatch()..start();
-    roomImportPerfLog('enrichmentStart deferred');
-    try {
-      _bulkOperationState?.setMetadataEnriching(true);
-      notifyListeners();
-      final svc = RoomImportMetadataEnrichmentService(
-        searchRepository: context.read<RakutenSearchRepository>(),
-        productRepository: context.read<RakutenManagedProductRepository>(),
-      );
-      final result = await svc.enrichRoomImportedProducts(
-        limit: RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls,
-        applyPostImportAutoCap: true,
-      );
-      final updated = result.updated;
-      enrichSw.stop();
-      roomImportPerfLog(
-        'enrichmentEnd deferred updated=$updated durationMs=${enrichSw.elapsedMilliseconds}',
-      );
-      if (kDebugMode) {
-        debugPrint(
-          '[ROOM_IMPORT_DEFERRED_ENRICH] updated=$updated '
-          'durationMs=${enrichSw.elapsedMilliseconds}',
-        );
-      }
-    } catch (e, st) {
-      debugPrint('[RoomImportController] metadata enrich deferred: $e\n$st');
-      enrichSw.stop();
-      roomImportPerfLog(
-        'enrichmentEnd deferred updated=-1 durationMs=${enrichSw.elapsedMilliseconds}',
-      );
-    } finally {
-      _bulkOperationState?.setMetadataEnriching(false);
-      if (context.mounted) {
-        try {
-          await context
-              .read<RakutenManagedProductProvider>()
-              .refreshManagedProductList(showLoadingIndicator: false);
-        } catch (_) {}
-        notifyListeners();
-      }
-    }
   }
 
   void _applyResultSnapshot(RoomSyncResult r) {
@@ -159,6 +84,10 @@ class RoomImportController extends ChangeNotifier {
     );
     if (profile.isEmpty) return null;
 
+    roomImportFlowLog(
+      'action=importStart message=ROOM取り込みでは価格・画像・ショップ・ジャンルは更新しません',
+    );
+
     _phase = RoomImportPhase.running;
     _checkedCount = 0;
     _targetCount = 0;
@@ -167,7 +96,6 @@ class RoomImportController extends ChangeNotifier {
     notifyListeners();
 
     RoomSyncResult? result;
-    var deferEnrich = false;
     try {
       try {
         result = await RoomPostImportFlow.executeBatch(
@@ -200,21 +128,6 @@ class RoomImportController extends ChangeNotifier {
             .refreshManagedProductList(showLoadingIndicator: false);
       }
 
-      final wouldEnrichAfterImport =
-          context.mounted &&
-          result != null &&
-          !result.hasFatalError &&
-          (result.newlyCollectedCount > 0 ||
-              result.roomUrlAddedCount > 0 ||
-              result.listingCheckedCount > 0);
-      deferEnrich =
-          wouldEnrichAfterImport &&
-          RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls > 0;
-      if (wouldEnrichAfterImport &&
-          RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls <= 0) {
-        roomImportPerfLog('enrichmentSkipped reason=autoDisabled');
-      }
-
       if (result == null) {
         _phase = RoomImportPhase.idle;
       } else if (result.hasFatalError) {
@@ -241,9 +154,30 @@ class RoomImportController extends ChangeNotifier {
         notifyListeners();
       }
     }
-    if (deferEnrich && context.mounted) {
-      unawaited(_enrichRoomImportMetadataDeferred(context));
+
+    var pendingEnrich = 0;
+    if (context.mounted) {
+      pendingEnrich = RoomImportMetadataEnrichmentService.countPendingEnrichment(
+        context.read<RakutenManagedProductProvider>().items,
+      );
     }
+
+    roomImportFlowLog(
+      'action=importEnd '
+      'newItems=${result?.newlyCollectedCount ?? 0} '
+      'updatedRoomReactions=${result?.reactionsResyncedCount ?? 0} '
+      'roomUrlAdded=${result?.roomUrlAddedCount ?? 0} '
+      'pendingEnrich=$pendingEnrich '
+      'enrichmentAutoStarted=false '
+      'message=ROOM取り込みでは価格・画像・ショップ・ジャンルは更新しません',
+    );
+
+    roomImportDeferredEnrichDecisionLog(
+      'shouldStart=false reason=postImportDeferredEnrichRemoved '
+      'manualBusy=${_bulkOperationState?.isMetadataEnriching ?? false} '
+      'autoBusy=${RoomImportMetadataEnrichmentService.isEnrichmentSingleFlightHeld}',
+    );
+
     return result;
   }
 }
