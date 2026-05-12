@@ -1,0 +1,373 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-12 20:54:55
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (set)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260512_205455.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260512_205455.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260512_205455.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260512_205455.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260512_205455.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260512_205455
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260512_205455\terminal_output_20260512_205455.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 25968).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID=--dart-define=ROOM_IMPORT_ENRICH_VERIFY=true --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             18.1s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.7s
+D/FlutterJNI(16462): Beginning load of flutter...
+D/FlutterJNI(16462): flutter (null) was loaded normally!
+I/flutter (16462): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (16462): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                   102ms
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:55816/6WIX2579Ul0=/
+I/flutter (16462): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (16462): [ROOMコレ診断] loadAll 初回サマリー parsed=141 rawJsonList=141
+I/flutter (16462): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (16462): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/Choreographer(16462): Skipped 126 frames!  The application may be doing too much work on its main thread.
+I/flutter (16462): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (16462): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=141 afterFilterLen=141 surface=ok_list ui=ready
+I/flutter (16462): [ROOMコレ診断] 描画リスト先頭 productId=b1146-135399 title=＼対象商品2点以上で5％OFF／【365日即日発送】26%OFF スーツ インナー カットソー Tシャツ きれいめ ブラウス レディース 半袖 トップス 大きいサイズ オフィス カジュアル シワになりにくい イージーケア 洗える ビジネス おしゃれ [M便 1/2] 【メール便送料無料】 status=done len=141
+I/flutter (16462): [REACTION_STATUS] productId=b1146-135399
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=0
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (16462): [REACTION_STATUS] productId=j5004
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=1
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (16462): [REACTION_STATUS] productId=c562810
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=1
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (16462): [REACTION_STATUS] productId=c561530-c561531
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=0
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (16462): [ROOM_IMPORT_ENRICH_QUEUE] pending=133 eligible=130 skippedCooldown=3 skippedFailed=0
+I/flutter (16462): [ROOM_IMPORT_ENRICH_PICK] productId=21978 failureReason= failureCount=0 selected=true
+I/flutter (16462): [ROOM_IMPORT_ENRICH_TARGET] productId=21978 needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:55816/6WIX2579Ul0=/
+I/flutter (16462): [MANAGED_PRODUCT_SAVE]
+I/flutter (16462): action=refresh
+I/flutter (16462): productId=
+I/flutter (16462): itemCode=
+I/flutter (16462): beforePendingCount=0
+I/flutter (16462): afterPendingCount=0
+I/flutter (16462): beforeDoneCount=141
+I/flutter (16462): afterDoneCount=141
+I/flutter (16462): [MANAGED_PRODUCT_LOAD]
+I/flutter (16462): source=provider
+I/flutter (16462): pendingCount=0
+I/flutter (16462): doneCount=141
+I/flutter (16462): filter=
+I/flutter (16462): tab=
+I/flutter (16462): [ROOMコレ診断] refreshManagedProductList 完了 total=141 candidate=0 done=141 ui=ready
+I/flutter (16462): [ROOM_IMPORT_PERF] enrichmentSkipped reason=singleFlightBusy
+I/flutter (16462): [ROOM_IMPORT_ENRICH_SKIP] reason=singleFlightBusy
+I/flutter (16462): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (16462): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter (16462): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (16462): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (16462): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (16462): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (16462): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (16462): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-12T00:34:39.945840
+I/flutter (16462): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (16462): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (16462): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (16462): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-12T00:34:39.945840
+I/flutter (16462): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (16462): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter (16462): [MANAGED_PRODUCT_SAVE]
+I/flutter (16462): action=refresh
+I/flutter (16462): productId=
+I/flutter (16462): itemCode=
+I/flutter (16462): beforePendingCount=0
+I/flutter (16462): afterPendingCount=0
+I/flutter (16462): beforeDoneCount=141
+I/flutter (16462): [MANAGED_PRODUCT_LOAD]
+I/flutter (16462): afterDoneCount=141
+I/flutter (16462): source=screen
+I/flutter (16462): pendingCount=0
+I/flutter (16462): doneCount=141
+I/flutter (16462): filter=
+I/flutter (16462): tab=done
+I/flutter (16462): [ROOMコレ診断] refreshManagedProductList 完了 total=141 candidate=0 done=141 ui=ready
+I/flutter (16462): [ROOMコレ診断] ROOMコレ画面起動後 total=141 candidate=0 done=141 listUi=RakutenManagedProductListUiStatus.ready tabIdx=1
+I/flutter (16462): [ROOM_IMPORT_PERF] enrichmentSkipped reason=singleFlightBusy
+I/flutter (16462): [ROOM_IMPORT_ENRICH_SKIP] reason=singleFlightBusy
+I/flutter (16462): [MANAGED_PRODUCT_SAVE]
+I/flutter (16462): action=refresh
+I/flutter (16462): productId=
+I/flutter (16462): itemCode=
+I/flutter (16462): beforePendingCount=0
+I/flutter (16462): afterPendingCount=0
+I/flutter (16462): beforeDoneCount=141
+I/flutter (16462): afterDoneCount=141
+I/flutter (16462): [MANAGED_PRODUCT_LOAD]
+I/flutter (16462): source=provider
+I/flutter (16462): pendingCount=0
+I/flutter (16462): doneCount=141
+I/flutter (16462): filter=
+I/flutter (16462): tab=
+I/flutter (16462): [ROOMコレ診断] refreshManagedProductList 完了 total=141 candidate=0 done=141 ui=ready
+I/flutter (16462): [MANAGED_PRODUCT_SAVE]
+I/flutter (16462): action=refresh
+I/flutter (16462): productId=
+I/flutter (16462): itemCode=
+I/flutter (16462): beforePendingCount=0
+I/flutter (16462): afterPendingCount=0
+I/flutter (16462): beforeDoneCount=141
+I/flutter (16462): afterDoneCount=141
+I/flutter (16462): [MANAGED_PRODUCT_LOAD]
+I/flutter (16462): source=provider
+I/flutter (16462): pendingCount=0
+I/flutter (16462): doneCount=141
+I/flutter (16462): filter=
+I/flutter (16462): tab=
+I/flutter (16462): [ROOMコレ診断] refreshManagedProductList 完了 total=141 candidate=0 done=141 ui=ready
+I/flutter (16462): [MANAGED_PRODUCT_SAVE]
+I/flutter (16462): action=refresh
+I/flutter (16462): productId=
+I/flutter (16462): itemCode=
+I/flutter (16462): beforePendingCount=0
+I/flutter (16462): afterPendingCount=0
+I/flutter (16462): beforeDoneCount=141
+I/flutter (16462): afterDoneCount=141
+I/flutter (16462): [MANAGED_PRODUCT_LOAD]
+I/flutter (16462): source=provider
+I/flutter (16462): pendingCount=0
+I/flutter (16462): doneCount=141
+I/flutter (16462): filter=
+I/flutter (16462): tab=
+I/flutter (16462): [ROOMコレ診断] refreshManagedProductList 完了 total=141 candidate=0 done=141 ui=ready
+I/flutter (16462): [ROOM_IMPORT_ENRICH_API] productId=21978 index=1 maxPerRun=1 delayMs=0 shopCode=soukaidrink itemCode=21978
+I/flutter (16462): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=21978 source=itemUrl apiShop=soukaidrink apiItem=21978 storedShop=soukaidrink storedProductId=21978
+I/flutter (16462): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (16462): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=soukaidrink itemCode=21978 keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (16462): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=soukaidrink itemCode=21978 shopName=未送信(APIはshopCodeのみ)
+I/flutter (16462): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (16462): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=soukaidrink%3A21978
+I/WebViewFactory(16462): Loading com.google.android.webview version 147.0.7727.137 (code 772713703)
+D/ApplicationLoaders(16462): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(16462): Loading /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(16462): Configuring clns-5 for other apk /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/lib/arm64:/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(16462): version=147.0.7727.137 (772713703) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(16462): Load /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+D/nativeloader(16462): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+I/chromium(16462): [INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(16462): Successfully loaded native library
+I/cr_CachingUmaRecorder(16462): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(16462): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(16462): #registerProvider() provider:WV.yk@19fb2a4 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(16462): #setManagerAndSource() 0
+I/cr_DisplayManager(16462): Is Display Topology available: false
+I/cr_CombinedPProvider(16462): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(16462): Compat change id reported: 183155436; UID 10458; state: ENABLED
+I/cr_AppResProvider(16462): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(16462): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(16462): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(16462): #flushPolicies()
+W/chromium(16462): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(16462): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 103712643
+D/CompatibilityChangeReporter(16462): Compat change id reported: 214741472; UID 10458; state: ENABLED
+I/flutter (16462): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (16462): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=141 afterFilterLen=141 surface=ok_list ui=ready
+I/flutter (16462): [ROOMコレ診断] 描画リスト先頭 productId=b1146-135399 title=＼対象商品2点以上で5％OFF／【365日即日発送】26%OFF スーツ インナー カットソー Tシャツ きれいめ ブラウス レディース 半袖 トップス 大きいサイズ オフィス カジュアル シワになりにくい イージーケア 洗える ビジネス おしゃれ [M便 1/2] 【メール便送料無料】 status=done len=141
+I/flutter (16462): [REACTION_STATUS] productId=b1146-135399
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=0
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (16462): [REACTION_STATUS] productId=j5004
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=1
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (16462): [REACTION_STATUS] productId=c562810
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=1
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (16462): [REACTION_STATUS] productId=c561530-c561531
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=0
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/CameraManagerGlobal(16462): Connecting to camera service
+D/CompatibilityChangeReporter(16462): Compat change id reported: 171228096; UID 10458; state: ENABLED
+I/Choreographer(16462): Skipped 132 frames!  The application may be doing too much work on its main thread.
+I/OpenGLRenderer(16462): Davey! duration=2226ms; Flags=1, FrameTimelineVsyncId=573513613, IntendedVsync=4085509803810659, Vsync=4085512003810571, InputEventId=0, HandleInputStart=4085512008619258, AnimationStart=4085512008620612, PerformTraversalsStart=4085512008621029, DrawStart=4085512014802748, FrameDeadline=4085509820477325, FrameInterval=4085512008309362, FrameStartTime=16666666, SyncQueued=4085512015647800, SyncStart=4085512015759362, IssueDrawCommandsStart=4085512016303164, SwapBuffers=4085512028331810, FrameCompleted=4085512030785508, DequeueBufferDuration=7813229, QueueBufferDuration=2046406, GpuCompleted=4085512029436029, SwapBuffersCompleted=4085512030785508, DisplayPresentTime=0, CommandSubmissionCompleted=4085512028331810, 
+I/PlatformViewsController(16462): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(16462): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(16462): Compat change id reported: 236825255; UID 10458; state: ENABLED
+W/libc    (16462): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(16462): type=1400 audit(0.0:499731): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(16462): Compat change id reported: 193247900; UID 10458; state: ENABLED
+W/libc    (16462): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(16462): type=1400 audit(0.0:499732): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(16462): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(16462): Build Date              : 08/23/22
+I/AdrenoVK-0(16462): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(16462): Local Branch            : 
+I/AdrenoVK-0(16462): Remote Branch           : 
+I/AdrenoVK-0(16462): Remote Branch           : 
+I/AdrenoVK-0(16462): Reconstruct Branch      : 
+I/AdrenoVK-0(16462): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(16462): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+I/flutter (16462): [Rakuten] response status=200 page=1 bytes=123
+I/flutter (16462): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (16462): [RECOMMEND_TRACE] rawCount=0
+I/flutter (16462): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=1084
+I/flutter (16462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (16462): [ROOM_IMPORT_ITEMCODE_API_DIAG] shopCode=soukaidrink itemCode=21978 proxyMode=proxy keywordOmitted=true shopCodeOmitted=false itemCodeOmitted=false httpStatus=200 responsePreview=(noItemAfterPick)
+I/flutter (16462): [ROOM_IMPORT_ENRICH_FAIL] productId=21978 method=shopItem reason=noItems
+I/flutter (16462): [ROOM_IMPORT_ENRICH_SUMMARY] attempted=1 updated=0 skipped=8 pausedByRateLimit=false remainingPending=133
+I/flutter (16462): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=1 updated=0
+I/flutter (16462): [MANAGED_PRODUCT_SAVE]
+I/flutter (16462): action=refresh
+I/flutter (16462): productId=
+I/flutter (16462): itemCode=
+I/flutter (16462): beforePendingCount=0
+I/flutter (16462): afterPendingCount=0
+I/flutter (16462): beforeDoneCount=141
+I/flutter (16462): afterDoneCount=141
+I/flutter (16462): [MANAGED_PRODUCT_LOAD]
+I/flutter (16462): source=provider
+I/flutter (16462): pendingCount=0
+I/flutter (16462): doneCount=141
+I/flutter (16462): filter=
+I/flutter (16462): tab=
+I/flutter (16462): [ROOMコレ診断] refreshManagedProductList 完了 total=141 candidate=0 done=141 ui=ready
+I/flutter (16462): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (16462): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=141 afterFilterLen=141 surface=ok_list ui=ready
+I/flutter (16462): [ROOMコレ診断] 描画リスト先頭 productId=b1146-135399 title=＼対象商品2点以上で5％OFF／【365日即日発送】26%OFF スーツ インナー カットソー Tシャツ きれいめ ブラウス レディース 半袖 トップス 大きいサイズ オフィス カジュアル シワになりにくい イージーケア 洗える ビジネス おしゃれ [M便 1/2] 【メール便送料無料】 status=done len=141
+I/flutter (16462): [REACTION_STATUS] productId=b1146-135399
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=0
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (16462): [REACTION_STATUS] productId=j5004
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=1
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (16462): [REACTION_STATUS] productId=c562810
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=1
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (16462): [REACTION_STATUS] productId=c561530-c561531
+I/flutter (16462): [REACTION_STATUS] roomLikeCount=0
+I/flutter (16462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (16462): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+D/ProfileInstaller(16462): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(16462): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(16462): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+E/FrameEvents(16462): updateAcquireFence: Did not find frame.
+W/o.room_manager2(16462): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/base.apk' with 1 weak references
+W/o.room_manager2(16462): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (16462): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter (16462): [ROOM_SYNC] ROOM投稿取り込み 開始（最大10件）
+I/flutter (16462): [ROOM_IMPORT_PERF] totalStart
+I/flutter (16462): [ROOM_IMPORT_PERF] prepareStart
+I/flutter (16462): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter (16462): [ROOM_IMPORT_PERF] fetchRoomListStart url=https://room.rakuten.co.jp/room_def277c8b5/items
+I/flutter (16462): [ROOM_IMPORT_LISTING] source=html page=1 url=https://room.rakuten.co.jp/room_def277c8b5/items
+I/flutter (16462): [ROOM_IMPORT_PERF] fetchRoomListEnd status=200 htmlBytes=34204 durationMs=10326
+I/flutter (16462): [ROOM_IMPORT_API] type=roomList status=200 durationMs=10327
+I/flutter (16462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (16462): [ROOM_SYNC][WARN] ROOM商品URLを1件も抽出できませんでした（href/絶対URL経路）
+I/flutter (16462): [ROOM_SYNC][WARN] 使用した正規表現（絶対URL）: https?://(?:www\.)?room\.rakuten\.co\.jp/[^\s"<>]+
+I/flutter (16462): [ROOM_SYNC][WARN] 使用した正規表現（href）: href\s*=\s*["']([^"']+)["']
+I/flutter (16462): [ROOM_SYNC][WARN] HTML内に room.rakuten.co.jp を含むか: true
+I/flutter (16462): [ROOM_SYNC][WARN] HTML内に 1700 形式の商品IDらしき文字列(13桁以上の連続数字)を含むか: true
+I/flutter (16462): [ROOM_IMPORT_PERF] extractRoomItemsStart
+I/flutter (16462): [ROOM_IMPORT_PERF] extractRoomItemsEnd found=6 durationMs=0
+I/flutter (16462): [ROOM_SYNC] 投稿一覧 6件 · 未取り込み推定 0件
+I/flutter (16462): [ROOM_IMPORT_LISTING] source=collects page=1 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=(start)
+I/flutter (16462): [ROOM_IMPORT_API] type=roomList status=200 durationMs=10465
+I/flutter (16462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (16462): [ROOM_IMPORT_LISTING] source=collects page=2 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371376907673
+I/flutter (16462): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9437
+I/flutter (16462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (16462): [ROOM_IMPORT_LISTING] source=collects page=3 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371376262136
+I/flutter (16462): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8357
+I/flutter (16462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (16462): [ROOM_IMPORT_LISTING] source=collects page=4 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371375484235
+I/flutter (16462): [ROOM_IMPORT_API] type=roomList status=200 durationMs=10432
+I/flutter (16462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (16462): [ROOM_IMPORT_LISTING] source=collects page=5 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371374707866
+I/flutter (16462): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8299
+I/flutter (16462): [ROOM_IMPORT_LISTING] source=collects page=6 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371373952116
+I/flutter (16462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (16462): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8385
+I/flutter (16462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (16462): [ROOM_IMPORT_LISTING] source=collects page=7 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371275664287
+I/flutter (16462): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8397
+I/flutter (16462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (16462): [ROOM_IMPORT_LISTING] source=collects page=8 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371274812134
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.

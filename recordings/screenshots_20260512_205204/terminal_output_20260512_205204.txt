@@ -1,0 +1,969 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-12 20:52:04
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260512_205204.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260512_205204.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260512_205204.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260512_205204.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260512_205204.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260512_205204
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260512_205204\terminal_output_20260512_205204.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 22064).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             11.7s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.8s
+D/FlutterJNI(15570): Beginning load of flutter...
+D/FlutterJNI(15570): flutter (null) was loaded normally!
+I/flutter (15570): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (15570): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                    76ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:59682/eMMOHT483K4=/
+I/flutter (15570): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15570): [ROOMコレ診断] loadAll 初回サマリー parsed=131 rawJsonList=131
+I/flutter (15570): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (15570): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15570): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (15570): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=131 afterFilterLen=131 surface=ok_list ui=ready
+I/flutter (15570): [ROOMコレ診断] 描画リスト先頭 productId=3set-u4-252261-262-271-272 title=＼対象商品2点以上で5％OFF／【365日即日発送】38%OFF スーツ レディース 3点セット セットアップ パンツ スカート ビジネススーツ リクルートスーツ 洗える 面接 オフィス 春 夏 秋 30代 40代 50代 体型カバー 大きいサイズ 楽天 市場 試着チケット対象 status=done len=131
+I/flutter (15570): [REACTION_STATUS] productId=3set-u4-252261-262-271-272
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=y5423-5425
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=j2037
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=2
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=1
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=i82397na
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [ROOM_IMPORT_ENRICH_QUEUE] pending=123 eligible=123 skippedCooldown=0 skippedFailed=0
+I/flutter (15570): [ROOM_IMPORT_ENRICH_PICK] productId=29022-2 failureReason= failureCount=0 selected=true
+I/flutter (15570): [ROOM_IMPORT_ENRICH_TARGET] productId=29022-2 needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/Choreographer(15570): Skipped 198 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:59682/eMMOHT483K4=/
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=refresh
+I/flutter (15570): productId=
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=0
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=131
+I/flutter (15570): afterDoneCount=131
+I/flutter (15570): [MANAGED_PRODUCT_LOAD]
+I/flutter (15570): source=provider
+I/flutter (15570): pendingCount=0
+I/flutter (15570): doneCount=131
+I/flutter (15570): filter=
+I/flutter (15570): tab=
+I/flutter (15570): [ROOMコレ診断] refreshManagedProductList 完了 total=131 candidate=0 done=131 ui=ready
+I/flutter (15570): [ROOM_IMPORT_PERF] enrichmentSkipped reason=singleFlightBusy
+I/flutter (15570): [ROOM_IMPORT_ENRICH_SKIP] reason=singleFlightBusy
+I/flutter (15570): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (15570): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter (15570): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (15570): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (15570): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (15570): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (15570): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (15570): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-12T00:34:39.945840
+I/flutter (15570): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (15570): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (15570): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (15570): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-12T00:34:39.945840
+I/flutter (15570): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (15570): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=refresh
+I/flutter (15570): productId=
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=0
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=131
+I/flutter (15570): afterDoneCount=131
+I/flutter (15570): [MANAGED_PRODUCT_LOAD]
+I/flutter (15570): source=screen
+I/flutter (15570): pendingCount=0
+I/flutter (15570): doneCount=131
+I/flutter (15570): filter=
+I/flutter (15570): tab=done
+I/flutter (15570): [ROOMコレ診断] refreshManagedProductList 完了 total=131 candidate=0 done=131 ui=ready
+I/flutter (15570): [ROOMコレ診断] ROOMコレ画面起動後 total=131 candidate=0 done=131 listUi=RakutenManagedProductListUiStatus.ready tabIdx=1
+I/flutter (15570): [ROOM_IMPORT_PERF] enrichmentSkipped reason=singleFlightBusy
+I/flutter (15570): [ROOM_IMPORT_ENRICH_SKIP] reason=singleFlightBusy
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=refresh
+I/flutter (15570): productId=
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=0
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=131
+I/flutter (15570): afterDoneCount=131
+I/flutter (15570): [MANAGED_PRODUCT_LOAD]
+I/flutter (15570): source=provider
+I/flutter (15570): pendingCount=0
+I/flutter (15570): doneCount=131
+I/flutter (15570): filter=
+I/flutter (15570): tab=
+I/flutter (15570): [ROOMコレ診断] refreshManagedProductList 完了 total=131 candidate=0 done=131 ui=ready
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=refresh
+I/flutter (15570): productId=
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=0
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=131
+I/flutter (15570): afterDoneCount=131
+I/flutter (15570): [MANAGED_PRODUCT_LOAD]
+I/flutter (15570): source=provider
+I/flutter (15570): pendingCount=0
+I/flutter (15570): doneCount=131
+I/flutter (15570): filter=
+I/flutter (15570): tab=
+I/flutter (15570): [ROOMコレ診断] refreshManagedProductList 完了 total=131 candidate=0 done=131 ui=ready
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=refresh
+I/flutter (15570): productId=
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=0
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=131
+I/flutter (15570): afterDoneCount=131
+I/flutter (15570): [MANAGED_PRODUCT_LOAD]
+I/flutter (15570): source=provider
+I/flutter (15570): pendingCount=0
+I/flutter (15570): doneCount=131
+I/flutter (15570): filter=
+I/flutter (15570): tab=
+I/flutter (15570): [ROOMコレ診断] refreshManagedProductList 完了 total=131 candidate=0 done=131 ui=ready
+I/flutter (15570): [ROOM_IMPORT_ENRICH_API] productId=29022-2 index=1 maxPerRun=1 delayMs=0 shopCode=drinkshop itemCode=29022-2
+I/flutter (15570): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=29022-2 source=itemUrl apiShop=drinkshop apiItem=29022-2 storedShop=drinkshop storedProductId=29022-2
+I/flutter (15570): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (15570): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=drinkshop itemCode=29022-2 keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (15570): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=drinkshop itemCode=29022-2 shopName=未送信(APIはshopCodeのみ)
+I/flutter (15570): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (15570): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=drinkshop%3A29022-2
+I/flutter (15570): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15570): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=131 afterFilterLen=131 surface=ok_list ui=ready
+I/flutter (15570): [ROOMコレ診断] 描画リスト先頭 productId=3set-u4-252261-262-271-272 title=＼対象商品2点以上で5％OFF／【365日即日発送】38%OFF スーツ レディース 3点セット セットアップ パンツ スカート ビジネススーツ リクルートスーツ 洗える 面接 オフィス 春 夏 秋 30代 40代 50代 体型カバー 大きいサイズ 楽天 市場 試着チケット対象 status=done len=131
+I/flutter (15570): [REACTION_STATUS] productId=3set-u4-252261-262-271-272
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=y5423-5425
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=j2037
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=2
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=1
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=i82397na
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/WebViewFactory(15570): Loading com.google.android.webview version 147.0.7727.137 (code 772713703)
+D/ApplicationLoaders(15570): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(15570): Loading /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(15570): Configuring clns-5 for other apk /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/lib/arm64:/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(15570): version=147.0.7727.137 (772713703) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(15570): Load /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+D/nativeloader(15570): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+I/cr_LibraryLoader(15570): Successfully loaded native library
+I/cr_CachingUmaRecorder(15570): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(15570): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(15570): #registerProvider() provider:WV.yk@19fb2a4 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(15570): #setManagerAndSource() 0
+I/cr_DisplayManager(15570): Is Display Topology available: false
+I/cr_CombinedPProvider(15570): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(15570): Compat change id reported: 183155436; UID 10458; state: ENABLED
+I/cr_AppResProvider(15570): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(15570): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(15570): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(15570): #flushPolicies()
+W/chromium(15570): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(15570): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 103712643
+D/CompatibilityChangeReporter(15570): Compat change id reported: 214741472; UID 10458; state: ENABLED
+I/CameraManagerGlobal(15570): Connecting to camera service
+D/CompatibilityChangeReporter(15570): Compat change id reported: 171228096; UID 10458; state: ENABLED
+I/PlatformViewsController(15570): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(15570): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(15570): Compat change id reported: 236825255; UID 10458; state: ENABLED
+W/libc    (15570): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(15570): type=1400 audit(0.0:499633): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(15570): Compat change id reported: 193247900; UID 10458; state: ENABLED
+I/Choreographer(15570): Skipped 68 frames!  The application may be doing too much work on its main thread.
+W/libc    (15570): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(15570): type=1400 audit(0.0:499634): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(15570): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(15570): Build Date              : 08/23/22
+I/AdrenoVK-0(15570): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(15570): Local Branch            : 
+I/AdrenoVK-0(15570): Remote Branch           : 
+I/AdrenoVK-0(15570): Remote Branch           : 
+I/AdrenoVK-0(15570): Reconstruct Branch      : 
+I/AdrenoVK-0(15570): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(15570): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(15570): Davey! duration=1217ms; Flags=1, FrameTimelineVsyncId=573473381, IntendedVsync=4085334366628695, Vsync=4085335499961983, InputEventId=0, HandleInputStart=4085335503111253, AnimationStart=4085335503112555, PerformTraversalsStart=4085335503135263, DrawStart=4085335513531409, FrameDeadline=4085334383295361, FrameInterval=4085335502805471, FrameStartTime=16666666, SyncQueued=4085335569961513, SyncStart=4085335570229846, IssueDrawCommandsStart=4085335570803857, SwapBuffers=4085335583570055, FrameCompleted=4085335584759169, DequeueBufferDuration=5580677, QueueBufferDuration=853177, GpuCompleted=4085335584569638, SwapBuffersCompleted=4085335584759169, DisplayPresentTime=0, CommandSubmissionCompleted=4085335583570055, 
+I/flutter (15570): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (15570): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (15570): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (15570): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (15570): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:778:19)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #3      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:600:21)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #5      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): 
+I/flutter (15570): #4      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:225:14)
+I/flutter (15570): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=1209
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (15570): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:778:19)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #3      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:600:21)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #4      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:225:14)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #5      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): 
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_ENRICH_FAIL] productId=29022-2 method=shopItem reason=400
+I/flutter (15570): [ROOM_IMPORT_ENRICH_SUMMARY] attempted=1 updated=0 skipped=8 pausedByRateLimit=false remainingPending=123
+I/flutter (15570): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=1 updated=0
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=refresh
+I/flutter (15570): productId=
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=0
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=131
+I/flutter (15570): afterDoneCount=131
+I/flutter (15570): [MANAGED_PRODUCT_LOAD]
+I/flutter (15570): source=provider
+I/flutter (15570): pendingCount=0
+I/flutter (15570): doneCount=131
+I/flutter (15570): filter=
+I/flutter (15570): tab=
+I/flutter (15570): [ROOMコレ診断] refreshManagedProductList 完了 total=131 candidate=0 done=131 ui=ready
+I/flutter (15570): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15570): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=131 afterFilterLen=131 surface=ok_list ui=ready
+I/flutter (15570): [ROOMコレ診断] 描画リスト先頭 productId=3set-u4-252261-262-271-272 title=＼対象商品2点以上で5％OFF／【365日即日発送】38%OFF スーツ レディース 3点セット セットアップ パンツ スカート ビジネススーツ リクルートスーツ 洗える 面接 オフィス 春 夏 秋 30代 40代 50代 体型カバー 大きいサイズ 楽天 市場 試着チケット対象 status=done len=131
+I/flutter (15570): [REACTION_STATUS] productId=3set-u4-252261-262-271-272
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=y5423-5425
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=j2037
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=2
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=1
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=i82397na
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+D/ProfileInstaller(15570): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(15570): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+E/FrameEvents(15570): updateAcquireFence: Did not find frame.
+W/o.room_manager2(15570): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/base.apk' with 1 weak references
+W/o.room_manager2(15570): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (15570): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter (15570): [ROOM_SYNC] ROOM投稿取り込み 開始（最大10件）
+I/flutter (15570): [ROOM_IMPORT_PERF] totalStart
+I/flutter (15570): [ROOM_IMPORT_PERF] prepareStart
+I/flutter (15570): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter (15570): [ROOM_IMPORT_PERF] fetchRoomListStart url=https://room.rakuten.co.jp/room_def277c8b5/items
+I/flutter (15570): [ROOM_IMPORT_LISTING] source=html page=1 url=https://room.rakuten.co.jp/room_def277c8b5/items
+I/flutter (15570): [ROOM_IMPORT_PERF] fetchRoomListEnd status=200 htmlBytes=34204 durationMs=9465
+I/flutter (15570): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9466
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_SYNC][WARN] ROOM商品URLを1件も抽出できませんでした（href/絶対URL経路）
+I/flutter (15570): [ROOM_SYNC][WARN] 使用した正規表現（絶対URL）: https?://(?:www\.)?room\.rakuten\.co\.jp/[^\s"<>]+
+I/flutter (15570): [ROOM_SYNC][WARN] 使用した正規表現（href）: href\s*=\s*["']([^"']+)["']
+I/flutter (15570): [ROOM_SYNC][WARN] HTML内に room.rakuten.co.jp を含むか: true
+I/flutter (15570): [ROOM_SYNC][WARN] HTML内に 1700 形式の商品IDらしき文字列(13桁以上の連続数字)を含むか: true
+I/flutter (15570): [ROOM_IMPORT_PERF] extractRoomItemsStart
+I/flutter (15570): [ROOM_IMPORT_PERF] extractRoomItemsEnd found=6 durationMs=0
+I/flutter (15570): [ROOM_SYNC] 投稿一覧 6件 · 未取り込み推定 0件
+I/flutter (15570): [ROOM_IMPORT_LISTING] source=collects page=1 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=(start)
+I/flutter (15570): [ROOM_IMPORT_API] type=roomList status=200 durationMs=10557
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_LISTING] source=collects page=2 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371376907673
+I/flutter (15570): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9527
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_LISTING] source=collects page=3 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371376262136
+I/flutter (15570): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9587
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_LISTING] source=collects page=4 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371375484235
+I/flutter (15570): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8486
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_LISTING] source=collects page=5 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371374707866
+I/flutter (15570): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8495
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_LISTING] source=collects page=6 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371373952116
+I/flutter (15570): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9540
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_LISTING] source=collects page=7 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371275664287
+I/flutter (15570): [ROOM_IMPORT_API] type=roomList status=200 durationMs=10516
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_LISTING] source=collects page=8 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371274812134
+I/flutter (15570): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9527
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_LISTING] stop reason=enoughItems count=10 source=collects page=8
+I/flutter (15570): [ROOM_IMPORT_PERF] prepareEnd durationMs=85837
+I/flutter (15570): [ROOM_IMPORT_PREPARE_DETAIL] roomListHtmlFetchMs=9518ms
+I/flutter (15570): [ROOM_IMPORT_PREPARE_DETAIL] collectsFetchMs=76297ms
+I/flutter (15570): [ROOM_IMPORT_PREPARE_DETAIL] existingProductsLoadMs=10ms
+I/flutter (15570): [ROOM_IMPORT_PREPARE_DETAIL] syncedKeyBuildMs=0ms
+I/flutter (15570): [ROOM_IMPORT_PREPARE_DETAIL] queueBuildMs=7ms
+I/flutter (15570): [ROOM_FASTPATH_SUMMARY] prepareQueueCanFastPath=10 prepareQueueSize=10 listingIndexedKeys=160
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=0 total=10
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=0 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] itemStart index=1 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371275165393
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=1 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchStart index=1
+I/flutter (15570): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=i292910-09-11 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371275165393
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchEnd index=1 status=fastPath durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=1
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=1 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesStart index=1
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesEnd index=1 shopCode=ashblond itemCode=i292910-09-11 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckStart index=1
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckEnd index=1 exists=false durationMs=0
+I/flutter (15570): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=i292910-09-11
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseStart index=1
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseEnd index=1 likes=1 comments=0 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] saveStart index=1
+I/flutter (15570): [ROOM_IMPORT_UI] phase=saving current=1
+I/flutter (15570): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=roomImport
+I/flutter (15570): productId=i292910-09-11
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=-1
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=-1
+I/flutter (15570): afterDoneCount=132
+I/flutter (15570): [ROOM_IMPORT_PERF] saveEnd index=1 durationMs=73
+I/flutter (15570): [ROOM_IMPORT_PERF] itemEnd index=1 result=added durationMs=81
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=1 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] itemStart index=2 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371275112125
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=2 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchStart index=2
+I/flutter (15570): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=j5011jk roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371275112125
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchEnd index=2 status=fastPath durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=2
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=2 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesStart index=2
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesEnd index=2 shopCode=ashblond itemCode=j5011jk durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckStart index=2
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckEnd index=2 exists=false durationMs=0
+I/flutter (15570): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=j5011jk
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseStart index=2
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseEnd index=2 likes=1 comments=0 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] saveStart index=2
+I/flutter (15570): [ROOM_IMPORT_UI] phase=saving current=2
+I/flutter (15570): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=roomImport
+I/flutter (15570): productId=j5011jk
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=-1
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=-1
+I/flutter (15570): afterDoneCount=133
+I/flutter (15570): [ROOM_IMPORT_PERF] saveEnd index=2 durationMs=58
+I/flutter (15570): [ROOM_IMPORT_PERF] itemEnd index=2 result=added durationMs=60
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=2 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] itemStart index=3 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371275066139
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=3 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchStart index=3
+I/flutter (15570): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=j5012 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371275066139
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchEnd index=3 status=fastPath durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=3
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=3 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesStart index=3
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesEnd index=3 shopCode=ashblond itemCode=j5012 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckStart index=3
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckEnd index=3 exists=false durationMs=0
+I/flutter (15570): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=j5012
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseStart index=3
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseEnd index=3 likes=2 comments=0 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] saveStart index=3
+I/flutter (15570): [ROOM_IMPORT_UI] phase=saving current=3
+I/flutter (15570): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=roomImport
+I/flutter (15570): productId=j5012
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=-1
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=-1
+I/flutter (15570): afterDoneCount=134
+I/flutter (15570): [ROOM_IMPORT_PERF] saveEnd index=3 durationMs=42
+I/flutter (15570): [ROOM_IMPORT_PERF] itemEnd index=3 result=added durationMs=44
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=3 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] itemStart index=4 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371275015319
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=4 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchStart index=4
+I/flutter (15570): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=tr11537 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371275015319
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchEnd index=4 status=fastPath durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=4
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=4 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesStart index=4
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesEnd index=4 shopCode=ashblond itemCode=tr11537 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckStart index=4
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckEnd index=4 exists=false durationMs=0
+I/flutter (15570): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=tr11537
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseStart index=4
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseEnd index=4 likes=0 comments=0 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] saveStart index=4
+I/flutter (15570): [ROOM_IMPORT_UI] phase=saving current=4
+I/flutter (15570): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=roomImport
+I/flutter (15570): productId=tr11537
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=-1
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=-1
+I/flutter (15570): afterDoneCount=135
+I/flutter (15570): [ROOM_IMPORT_PERF] saveEnd index=4 durationMs=33
+I/flutter (15570): [ROOM_IMPORT_PERF] itemEnd index=4 result=added durationMs=35
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=4 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] itemStart index=5 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371274970982
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=5 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchStart index=5
+I/flutter (15570): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=j5031 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371274970982
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchEnd index=5 status=fastPath durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=5
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=5 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesStart index=5
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesEnd index=5 shopCode=ashblond itemCode=j5031 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckStart index=5
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckEnd index=5 exists=false durationMs=0
+I/flutter (15570): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=j5031
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseStart index=5
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseEnd index=5 likes=2 comments=0 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] saveStart index=5
+I/flutter (15570): [ROOM_IMPORT_UI] phase=saving current=5
+I/flutter (15570): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=roomImport
+I/flutter (15570): productId=j5031
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=-1
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=-1
+I/flutter (15570): afterDoneCount=136
+I/flutter (15570): [ROOM_IMPORT_PERF] saveEnd index=5 durationMs=55
+I/flutter (15570): [ROOM_IMPORT_PERF] itemEnd index=5 result=added durationMs=58
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=5 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] itemStart index=6 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371274928418
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=6 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchStart index=6
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchEnd index=6 status=fastPath durationMs=0
+I/flutter (15570): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=b1146-135494 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371274928418
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=6
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=6 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesStart index=6
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesEnd index=6 shopCode=ashblond itemCode=b1146-135494 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckStart index=6
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckEnd index=6 exists=false durationMs=0
+I/flutter (15570): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=b1146-135494
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseStart index=6
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseEnd index=6 likes=0 comments=0 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] saveStart index=6
+I/flutter (15570): [ROOM_IMPORT_UI] phase=saving current=6
+I/flutter (15570): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=roomImport
+I/flutter (15570): productId=b1146-135494
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=-1
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=-1
+I/flutter (15570): afterDoneCount=137
+I/flutter (15570): [ROOM_IMPORT_PERF] saveEnd index=6 durationMs=74
+I/flutter (15570): [ROOM_IMPORT_PERF] itemEnd index=6 result=added durationMs=83
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=6 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] itemStart index=7 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371274891348
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=7 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchStart index=7
+I/flutter (15570): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=c561530-c561531 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371274891348
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchEnd index=7 status=fastPath durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=7
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=7 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesStart index=7
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesEnd index=7 shopCode=ashblond itemCode=c561530-c561531 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckStart index=7
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckEnd index=7 exists=false durationMs=0
+I/flutter (15570): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=c561530-c561531
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseStart index=7
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseEnd index=7 likes=0 comments=0 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] saveStart index=7
+I/flutter (15570): [ROOM_IMPORT_UI] phase=saving current=7
+I/flutter (15570): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=roomImport
+I/flutter (15570): productId=c561530-c561531
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=-1
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=-1
+I/flutter (15570): afterDoneCount=138
+I/flutter (15570): [ROOM_IMPORT_PERF] saveEnd index=7 durationMs=44
+I/flutter (15570): [ROOM_IMPORT_PERF] itemEnd index=7 result=added durationMs=47
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=7 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] itemStart index=8 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371274860209
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=8 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchStart index=8
+I/flutter (15570): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=c562810 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371274860209
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchEnd index=8 status=fastPath durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=8
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=8 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesStart index=8
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesEnd index=8 shopCode=ashblond itemCode=c562810 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckStart index=8
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckEnd index=8 exists=false durationMs=0
+I/flutter (15570): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=c562810
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseStart index=8
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseEnd index=8 likes=1 comments=0 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] saveStart index=8
+I/flutter (15570): [ROOM_IMPORT_UI] phase=saving current=8
+I/flutter (15570): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=roomImport
+I/flutter (15570): productId=c562810
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=-1
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=-1
+I/flutter (15570): afterDoneCount=139
+I/flutter (15570): [ROOM_IMPORT_PERF] saveEnd index=8 durationMs=78
+I/flutter (15570): [ROOM_IMPORT_PERF] itemEnd index=8 result=added durationMs=80
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=8 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] itemStart index=9 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371274812134
+W/WindowOnBackDispatcher(15570): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(15570): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=9 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchStart index=9
+I/flutter (15570): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=j5004 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371274812134
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchEnd index=9 status=fastPath durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=9
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=9 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesStart index=9
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesEnd index=9 shopCode=ashblond itemCode=j5004 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckStart index=9
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckEnd index=9 exists=false durationMs=0
+I/flutter (15570): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=j5004
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseStart index=9
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseEnd index=9 likes=1 comments=0 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] saveStart index=9
+I/flutter (15570): [ROOM_IMPORT_UI] phase=saving current=9
+I/flutter (15570): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=roomImport
+I/flutter (15570): productId=j5004
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=-1
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=-1
+I/flutter (15570): afterDoneCount=140
+I/flutter (15570): [ROOM_IMPORT_PERF] saveEnd index=9 durationMs=88
+I/flutter (15570): [ROOM_IMPORT_PERF] itemEnd index=9 result=added durationMs=89
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=9 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] itemStart index=10 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371274772255
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=10 total=10
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchStart index=10
+I/flutter (15570): [ROOM_FASTPATH] resolvedFromListing=true shopCode=ashblond itemCode=b1146-135399 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371274772255
+I/flutter (15570): [ROOM_IMPORT_PERF] roomPageFetchEnd index=10 status=fastPath durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=10
+I/flutter (15570): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=10 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesStart index=10
+I/flutter (15570): [ROOM_IMPORT_PERF] parseCodesEnd index=10 shopCode=ashblond itemCode=b1146-135399 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckStart index=10
+I/flutter (15570): [ROOM_IMPORT_PERF] existingCheckEnd index=10 exists=false durationMs=0
+I/flutter (15570): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=ashblond itemCode=b1146-135399
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseStart index=10
+I/flutter (15570): [ROOM_IMPORT_PERF] reactionParseEnd index=10 likes=0 comments=0 durationMs=0
+I/flutter (15570): [ROOM_IMPORT_PERF] saveStart index=10
+I/flutter (15570): [ROOM_IMPORT_UI] phase=saving current=10
+I/flutter (15570): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=roomImport
+I/flutter (15570): productId=b1146-135399
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=-1
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=-1
+I/flutter (15570): afterDoneCount=141
+I/flutter (15570): [ROOM_IMPORT_PERF] saveEnd index=10 durationMs=55
+I/flutter (15570): [ROOM_IMPORT_PERF] itemEnd index=10 result=added durationMs=58
+I/flutter (15570): [ROOM_IMPORT_UI] phase=processing current=10 total=10
+I/flutter (15570): [ROOM_IMPORT_API_SUMMARY] apiExecuted=0 apiSkipped=10 reason=deferredEnrichment fallbackRecovered=0 rateLimited=0 http400=0
+I/flutter (15570): [ROOM_FASTPATH_SUMMARY] fastPathCount=10 fallbackRoomPageCount=0 avgRoomPageMs=na estimatedSavedMs=0 listingIndexedKeys=160
+I/flutter (15570): [ROOM_SYNC] 完了 · 確認キュー 10件 · 新規コレ済10 · ROOMリンク追加0 · ページ側スキップ0 · 失敗0 · 一覧スキップ131
+I/flutter (15570): [ROOM_IMPORT_PERF] totalEnd durationMs=86488
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=refresh
+I/flutter (15570): productId=
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=0
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=131
+I/flutter (15570): afterDoneCount=141
+I/flutter (15570): [MANAGED_PRODUCT_LOAD]
+I/flutter (15570): source=provider
+I/flutter (15570): pendingCount=0
+I/flutter (15570): doneCount=141
+I/flutter (15570): filter=
+I/flutter (15570): tab=
+I/flutter (15570): [ROOMコレ診断] refreshManagedProductList 完了 total=141 candidate=0 done=141 ui=ready
+I/flutter (15570): [ROOM_IMPORT_UI] phase=finished added=10 updated=0 skipped=0 failed=0
+I/flutter (15570): [ROOM_IMPORT_SUMMARY] totalMs=86488 prepareMs=85837 itemCount=10 added=10 updated=0 skipped=0 failed=0 roomListCalls=9 roomPageCalls=0 rakutenItemCalls=0 enrichmentCalls=0 enrichmentBatchMs=0 enrichmentUpdated=0
+I/flutter (15570): [ROOM_IMPORT_PERF] enrichmentStart deferred
+I/flutter (15570): [ROOM_IMPORT_ENRICH_QUEUE] pending=133 eligible=132 skippedCooldown=1 skippedFailed=0
+I/flutter (15570): [ROOM_IMPORT_ENRICH_PICK] productId=4901085161999 failureReason= failureCount=0 selected=true
+I/flutter (15570): [ROOM_IMPORT_ENRICH_TARGET] productId=4901085161999 needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/flutter (15570): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15570): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=141 afterFilterLen=141 surface=ok_list ui=ready
+I/flutter (15570): [ROOMコレ診断] 描画リスト先頭 productId=b1146-135399 title=＼対象商品2点以上で5％OFF／【365日即日発送】26%OFF スーツ インナー カットソー Tシャツ きれいめ ブラウス レディース 半袖 トップス 大きいサイズ オフィス カジュアル シワになりにくい イージーケア 洗える ビジネス おしゃれ [M便 1/2] 【メール便送料無料】 status=done len=141
+I/flutter (15570): [REACTION_STATUS] productId=b1146-135399
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=j5004
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c562810
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c561530-c561531
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [ROOM_IMPORT_ENRICH_API] productId=4901085161999 index=1 maxPerRun=1 delayMs=0 shopCode=soukaidrink itemCode=4901085161999
+I/flutter (15570): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=4901085161999 source=itemUrl apiShop=soukaidrink apiItem=4901085161999 storedShop=soukaidrink storedProductId=4901085161999
+I/flutter (15570): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (15570): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=soukaidrink itemCode=4901085161999 keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (15570): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=soukaidrink itemCode=4901085161999 shopName=未送信(APIはshopCodeのみ)
+I/flutter (15570): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (15570): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=soukaidrink%3A4901085161999
+I/flutter (15570): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=141 afterFilterLen=141 surface=ok_list ui=ready
+I/flutter (15570): [ROOMコレ診断] 描画リスト先頭 productId=b1146-135399 title=＼対象商品2点以上で5％OFF／【365日即日発送】26%OFF スーツ インナー カットソー Tシャツ きれいめ ブラウス レディース 半袖 トップス 大きいサイズ オフィス カジュアル シワになりにくい イージーケア 洗える ビジネス おしゃれ [M便 1/2] 【メール便送料無料】 status=done len=141
+I/flutter (15570): [REACTION_STATUS] productId=b1146-135399
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=j5004
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c562810
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c561530-c561531
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (15570): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (15570): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (15570): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (15570): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:778:19)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #3      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:600:21)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #4      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:225:14)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #5      RoomImportController._enrichRoomImportMetadataDeferred (package:room_manager2/state/room_import_controller.dart:109:22)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): 
+I/flutter (15570): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=303
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (15570): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:778:19)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #3      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:600:21)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #4      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:225:14)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #5      RoomImportController._enrichRoomImportMetadataDeferred (package:room_manager2/state/room_import_controller.dart:109:22)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): 
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_ENRICH_FAIL] productId=4901085161999 method=shopItem reason=400
+I/flutter (15570): [ROOM_IMPORT_ENRICH_SUMMARY] attempted=1 updated=0 skipped=8 pausedByRateLimit=false remainingPending=133
+I/flutter (15570): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=1 updated=0
+I/flutter (15570): [ROOM_IMPORT_PERF] enrichmentEnd deferred updated=0 durationMs=939
+I/flutter (15570): [ROOM_IMPORT_DEFERRED_ENRICH] updated=0 durationMs=939
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=refresh
+I/flutter (15570): productId=
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=0
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=141
+I/flutter (15570): afterDoneCount=141
+I/flutter (15570): [MANAGED_PRODUCT_LOAD]
+I/flutter (15570): source=provider
+I/flutter (15570): pendingCount=0
+I/flutter (15570): doneCount=141
+I/flutter (15570): filter=
+I/flutter (15570): tab=
+I/flutter (15570): [ROOMコレ診断] refreshManagedProductList 完了 total=141 candidate=0 done=141 ui=ready
+I/flutter (15570): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15570): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=141 afterFilterLen=141 surface=ok_list ui=ready
+I/flutter (15570): [ROOMコレ診断] 描画リスト先頭 productId=b1146-135399 title=＼対象商品2点以上で5％OFF／【365日即日発送】26%OFF スーツ インナー カットソー Tシャツ きれいめ ブラウス レディース 半袖 トップス 大きいサイズ オフィス カジュアル シワになりにくい イージーケア 洗える ビジネス おしゃれ [M便 1/2] 【メール便送料無料】 status=done len=141
+I/flutter (15570): [REACTION_STATUS] productId=b1146-135399
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=j5004
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c562810
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c561530-c561531
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [ROOM_IMPORT_ENRICH_QUEUE] pending=133 eligible=131 skippedCooldown=2 skippedFailed=0
+I/flutter (15570): [ROOM_IMPORT_ENRICH_PICK] productId=1897c2 failureReason= failureCount=0 selected=true
+I/flutter (15570): [ROOM_IMPORT_ENRICH_TARGET] productId=1897c2 needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=refresh
+I/flutter (15570): productId=
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=0
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=141
+I/flutter (15570): afterDoneCount=141
+I/flutter (15570): [MANAGED_PRODUCT_LOAD]
+I/flutter (15570): source=screen
+I/flutter (15570): pendingCount=0
+I/flutter (15570): doneCount=141
+I/flutter (15570): filter=
+I/flutter (15570): tab=done
+I/flutter (15570): [ROOMコレ診断] refreshManagedProductList 完了 total=141 candidate=0 done=141 ui=ready
+I/flutter (15570): [ROOM_IMPORT_ENRICH_API] productId=1897c2 index=1 maxPerRun=1 delayMs=0 shopCode=liquor-boss itemCode=1897c2
+I/flutter (15570): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=1897c2 source=itemUrl apiShop=liquor-boss apiItem=1897c2 storedShop=liquor-boss storedProductId=1897c2
+I/flutter (15570): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (15570): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=liquor-boss itemCode=1897c2 keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (15570): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=liquor-boss itemCode=1897c2 shopName=未送信(APIはshopCodeのみ)
+I/flutter (15570): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (15570): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=liquor-boss%3A1897c2
+I/flutter (15570): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15570): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=141 afterFilterLen=141 surface=ok_list ui=ready
+I/flutter (15570): [ROOMコレ診断] 描画リスト先頭 productId=b1146-135399 title=＼対象商品2点以上で5％OFF／【365日即日発送】26%OFF スーツ インナー カットソー Tシャツ きれいめ ブラウス レディース 半袖 トップス 大きいサイズ オフィス カジュアル シワになりにくい イージーケア 洗える ビジネス おしゃれ [M便 1/2] 【メール便送料無料】 status=done len=141
+I/flutter (15570): [REACTION_STATUS] productId=b1146-135399
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=j5004
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c562810
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c561530-c561531
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=141 afterFilterLen=141 surface=ok_list ui=ready
+I/flutter (15570): [ROOMコレ診断] 描画リスト先頭 productId=b1146-135399 title=＼対象商品2点以上で5％OFF／【365日即日発送】26%OFF スーツ インナー カットソー Tシャツ きれいめ ブラウス レディース 半袖 トップス 大きいサイズ オフィス カジュアル シワになりにくい イージーケア 洗える ビジネス おしゃれ [M便 1/2] 【メール便送料無料】 status=done len=141
+I/flutter (15570): [REACTION_STATUS] productId=b1146-135399
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=j5004
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c562810
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c561530-c561531
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (15570): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (15570): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (15570): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (15570): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:778:19)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #3      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:600:21)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #4      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:225:14)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #5      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): 
+I/flutter (15570): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=551
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (15570): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:778:19)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #3      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:600:21)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #4      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:225:14)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): #5      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (15570): <asynchronous suspension>
+I/flutter (15570): 
+I/flutter (15570): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (15570): [ROOM_IMPORT_ENRICH_FAIL] productId=1897c2 method=shopItem reason=400
+I/flutter (15570): [ROOM_IMPORT_ENRICH_SUMMARY] attempted=1 updated=0 skipped=8 pausedByRateLimit=false remainingPending=133
+I/flutter (15570): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=1 updated=0
+I/flutter (15570): [MANAGED_PRODUCT_SAVE]
+I/flutter (15570): action=refresh
+I/flutter (15570): productId=
+I/flutter (15570): itemCode=
+I/flutter (15570): beforePendingCount=0
+I/flutter (15570): afterPendingCount=0
+I/flutter (15570): beforeDoneCount=141
+I/flutter (15570): afterDoneCount=141
+I/flutter (15570): [MANAGED_PRODUCT_LOAD]
+I/flutter (15570): source=provider
+I/flutter (15570): pendingCount=0
+I/flutter (15570): doneCount=141
+I/flutter (15570): filter=
+I/flutter (15570): tab=
+I/flutter (15570): [ROOMコレ診断] refreshManagedProductList 完了 total=141 candidate=0 done=141 ui=ready
+I/flutter (15570): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15570): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=141 afterFilterLen=141 surface=ok_list ui=ready
+I/flutter (15570): [ROOMコレ診断] 描画リスト先頭 productId=b1146-135399 title=＼対象商品2点以上で5％OFF／【365日即日発送】26%OFF スーツ インナー カットソー Tシャツ きれいめ ブラウス レディース 半袖 トップス 大きいサイズ オフィス カジュアル シワになりにくい イージーケア 洗える ビジネス おしゃれ [M便 1/2] 【メール便送料無料】 status=done len=141
+I/flutter (15570): [REACTION_STATUS] productId=b1146-135399
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (15570): [REACTION_STATUS] productId=j5004
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c562810
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=1
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (15570): [REACTION_STATUS] productId=c561530-c561531
+I/flutter (15570): [REACTION_STATUS] roomLikeCount=0
+I/flutter (15570): [REACTION_STATUS] roomCommentCount=0
+I/flutter (15570): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
