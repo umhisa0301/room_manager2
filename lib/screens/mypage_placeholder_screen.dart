@@ -1109,6 +1109,26 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       bulk.guardBlockingOperations(context);
       return;
     }
+    if (bulk.isMetadataEnriching) {
+      roomImportManualEnrichStartLog(
+        'maxPerRun=${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun} '
+        'manualPacing=true '
+        'autoEnrichRunning=${RoomImportMetadataEnrichmentService.isEnrichmentSingleFlightHeld} '
+        'action=blockedWithMessage',
+      );
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('別の補完処理が実行中です。完了後にお試しください。'),
+        ),
+      );
+      return;
+    }
+    roomImportManualEnrichStartLog(
+      'maxPerRun=${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun} '
+      'manualPacing=true '
+      'autoEnrichRunning=${RoomImportMetadataEnrichmentService.isEnrichmentSingleFlightHeld} '
+      'action=started',
+    );
     bulk.setMetadataEnriching(true);
     try {
       final searchRepo = context.read<RakutenSearchRepository>();

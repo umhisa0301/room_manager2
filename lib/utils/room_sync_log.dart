@@ -268,6 +268,33 @@ void roomImportPerfLog(String message) {
   }
 }
 
+/// 取り込み UX／責務分離の経路ログ（debug のみ）。
+void roomImportFlowLog(String message) {
+  final line = '[ROOM_IMPORT_FLOW] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+/// 取り込み後の自動補完を起動するかの判定ログ（debug のみ）。
+void roomImportDeferredEnrichDecisionLog(String message) {
+  final line = '[ROOM_IMPORT_DEFERRED_ENRICH_DECISION] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+/// マイページ手動「商品情報補完」の開始ログ（debug のみ）。
+void roomImportManualEnrichStartLog(String message) {
+  final line = '[ROOM_IMPORT_MANUAL_ENRICH_START] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void roomImportApiLog(String message) {
   final line = '[ROOM_IMPORT_API] $message';
   if (kDebugMode) {

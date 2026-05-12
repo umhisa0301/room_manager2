@@ -99,6 +99,9 @@ class RoomImportMetadataEnrichmentService {
 
   static bool _singleFlight = false;
 
+  /// いずれかの [enrichRoomImportedProducts] が実行中か（single-flight）。
+  static bool get isEnrichmentSingleFlightHeld => _singleFlight;
+
   /// [items] のうち ROOM 取り込みコレ済でメタ未補完の件数。
   static int countPendingEnrichment(Iterable<RakutenManagedProduct> items) {
     return items.where(_baseEligibleForEnrichmentQueue).where((e) {
