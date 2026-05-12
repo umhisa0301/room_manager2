@@ -375,11 +375,19 @@ class RakutenManagedProductRepository {
       final apiShop = api.shopName.trim();
       final mergedShopName =
           apiShop.isNotEmpty && apiShop != 'ショップ名不明' ? apiShop : e.shopName;
-      final mergedGenreName = _mergedGenreNameForRoomImportApi(
+      final mergedGenreNameRaw = _mergedGenreNameForRoomImportApi(
         api: api,
         resolvedLabel: resolvedLabel,
         existingGenreName: e.genreName,
       );
+      final exGenre = e.genreName.trim();
+      final exGenreOk = exGenre.isNotEmpty && exGenre != 'ジャンル未設定';
+      final mergedGenreName =
+          mergedGenreNameRaw.trim().isEmpty && exGenreOk
+          ? e.genreName
+          : (mergedGenreNameRaw.trim().isNotEmpty
+                ? mergedGenreNameRaw
+                : e.genreName);
       final mergedGenreId =
           api.genreId.trim().isNotEmpty ? api.genreId : e.genreId;
       return e.copyWith(
@@ -399,10 +407,18 @@ class RakutenManagedProductRepository {
         resolvedGenreName: resolvedLabel.isNotEmpty
             ? resolvedLabel
             : e.resolvedGenreName,
-        reviewAverage: api.reviewAverage,
-        reviewCount: api.reviewCount,
+        reviewAverage: api.reviewAverage > 0 ? api.reviewAverage : e.reviewAverage,
+        reviewCount: api.reviewCount > 0 ? api.reviewCount : e.reviewCount,
         updatedAt: now,
         roomImportMetadataEnriching: false,
+        roomImportEnrichFailureReason: '',
+        roomImportEnrichFailureCount: 0,
+        roomImportEnrichLastMethod: '',
+        clearRoomImportEnrichBackoffUntil: true,
+        clearRoomImportEnrichShopItemBlockedUntil: true,
+        clearRoomImportEnrichTitleKeywordBlockedUntil: true,
+        clearRoomImportEnrichProductIdKeywordBlockedUntil: true,
+        clearRoomImportEnrichLastAttemptAt: true,
       );
     });
     final after = getByProductId(id);

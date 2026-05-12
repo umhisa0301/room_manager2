@@ -11,6 +11,7 @@ import '../navigation/app_shell_controller.dart';
 import '../repository/easy_initial_setup_repository.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/app_action_service.dart';
+import '../services/room_import_enrichment_cooldown_store.dart';
 import '../services/room_import_limit_policy.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
@@ -1086,6 +1087,19 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
     if (kDemoModeEnabled) {
       messenger.showSnackBar(
         const SnackBar(content: Text('デモモードでは商品情報の補完は実行できません')),
+      );
+      return;
+    }
+    final inCooldown = await RoomImportEnrichmentCooldownStore.isInCooldown();
+    if (!context.mounted) return;
+    if (inCooldown) {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            '楽天APIの利用制限のため、'
+            '約${RoomImportLimitPolicy.enrichCooldownAfter429Minutes}分後に補完を再開します。',
+          ),
+        ),
       );
       return;
     }

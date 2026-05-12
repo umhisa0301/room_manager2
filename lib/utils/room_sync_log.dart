@@ -382,6 +382,54 @@ void roomImportEnrichSuccessLog(String message) {
   }
 }
 
+void roomImportEnrichPickLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_PICK] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichMethodLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_METHOD] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichFailLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_FAIL] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichQueueLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_QUEUE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichCooldownLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_COOLDOWN] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichRequestLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_REQUEST] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void roomImportEnrichSkipLog(String message) {
   final line = '[ROOM_IMPORT_ENRICH_SKIP] $message';
   if (kDebugMode) {

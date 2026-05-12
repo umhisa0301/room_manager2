@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 
 import '../models/rakuten_managed_product.dart';
+import '../models/rakuten_product_search_condition.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
+import '../services/rakuten_item_url_parser.dart';
 import '../utils/room_sync_log.dart';
 import 'room_import_enrichment_cooldown_store.dart';
 import 'room_import_limit_policy.dart';
@@ -46,12 +48,26 @@ class RoomImportEnrichmentBatchResult {
   final bool duplicateSessionSkipped;
 }
 
+/// 取り込み後メタ補完で試す検索経路（ログ名と一致）。
+enum _RoomImportEnrichMethod { shopItem, shopTitleKeyword, productIdKeyword }
+
+class _ResolvedImportCodes {
+  const _ResolvedImportCodes({
+    required this.apiShop,
+    required this.apiItem,
+    required this.storedProductId,
+    required this.source,
+  });
+
+  final String apiShop;
+  final String apiItem;
+  final String storedProductId;
+  final String source;
+}
+
 /// Phase 3 向けに ROOM 取り込みコレのメタデータをバッチで API 補完するサービス。
 ///
-/// 取り込み直後の補完は [RakutenSearchRepository.fetchFirstItemForRoomImportEnrichment] を
-/// [RoomSyncService] / [RoomCollectedRegisterService] から呼び出す。
-///
-/// 自動補完は **低速キュー**（件数上限・呼び出し間隔・429 後クールダウン）で 429 を避ける。
+/// 取り込み本体は楽天APIを呼ばず、本サービスが **低速キュー**（1件ずつ・間隔・429 後クールダウン）で補完する。
 class RoomImportMetadataEnrichmentService {
   RoomImportMetadataEnrichmentService({
     required RakutenSearchRepository searchRepository,
@@ -217,6 +233,245 @@ class RoomImportMetadataEnrichmentService {
     return pending;
   }
 
+  static String _methodLogName(_RoomImportEnrichMethod m) {
+    switch (m) {
+      case _RoomImportEnrichMethod.shopItem:
+        return 'shopItem';
+      case _RoomImportEnrichMethod.shopTitleKeyword:
+        return 'shopTitleKeyword';
+      case _RoomImportEnrichMethod.productIdKeyword:
+        return 'productIdKeyword';
+    }
+  }
+
+  _ResolvedImportCodes _resolveImportCodes(RakutenManagedProduct row) {
+    for (final u in [row.itemUrl, row.rakutenUrl ?? '', row.affiliateUrl ?? '']) {
+      final t = u.trim();
+      if (t.isEmpty) continue;
+      final p = RakutenItemUrlParser.tryParse(t);
+      if (p != null &&
+          p.shopCode.trim().isNotEmpty &&
+          p.itemPathSegment.trim().isNotEmpty) {
+        return _ResolvedImportCodes(
+          apiShop: p.shopCode.trim(),
+          apiItem: p.itemPathSegment.trim(),
+          storedProductId: row.productId.trim(),
+          source: 'itemUrl',
+        );
+      }
+    }
+    return _ResolvedImportCodes(
+      apiShop: row.shopCode.trim(),
+      apiItem: row.productId.trim(),
+      storedProductId: row.productId.trim(),
+      source: 'storedFields',
+    );
+  }
+
+  bool _inProductBackoff(RakutenManagedProduct e, DateTime now) {
+    final u = e.roomImportEnrichBackoffUntil;
+    return u != null && now.isBefore(u);
+  }
+
+  bool _shopItemAllowed(RakutenManagedProduct e, DateTime now) {
+    final u = e.roomImportEnrichShopItemBlockedUntil;
+    return u == null || !now.isBefore(u);
+  }
+
+  bool _titleKeywordAllowed(RakutenManagedProduct e, DateTime now) {
+    final u = e.roomImportEnrichTitleKeywordBlockedUntil;
+    return u == null || !now.isBefore(u);
+  }
+
+  bool _productIdKeywordAllowed(RakutenManagedProduct e, DateTime now) {
+    final u = e.roomImportEnrichProductIdKeywordBlockedUntil;
+    return u == null || !now.isBefore(u);
+  }
+
+  String? _titleKeywordRaw(String itemName) {
+    final t = itemName.trim();
+    if (t.isEmpty) return null;
+    if (t == '（ROOM投稿）') return null;
+    if (t.length < RoomImportLimitPolicy.enrichTitleKeywordMinChars) return null;
+    if (t.length > 120) return t.substring(0, 120);
+    return t;
+  }
+
+  _RoomImportEnrichMethod? _peekNextMethod(RakutenManagedProduct row, DateTime now) {
+    final codes = _resolveImportCodes(row);
+    if (_shopItemAllowed(row, now) &&
+        codes.apiShop.isNotEmpty &&
+        codes.apiItem.isNotEmpty) {
+      return _RoomImportEnrichMethod.shopItem;
+    }
+    final title = _titleKeywordRaw(row.itemName);
+    if (_titleKeywordAllowed(row, now) &&
+        title != null &&
+        codes.apiShop.isNotEmpty) {
+      return _RoomImportEnrichMethod.shopTitleKeyword;
+    }
+    if (!_productIdKeywordAllowed(row, now)) return null;
+    if (row.shopCode.trim().isEmpty || row.productId.trim().length < 5) {
+      return null;
+    }
+    final cannotUseShopItemNow =
+        codes.apiItem.isEmpty || !_shopItemAllowed(row, now);
+    if (!cannotUseShopItemNow) return null;
+    final cannotUseTitleNow = title == null || !_titleKeywordAllowed(row, now);
+    if (!cannotUseTitleNow) return null;
+    return _RoomImportEnrichMethod.productIdKeyword;
+  }
+
+  List<RakutenManagedProduct> _sortedEnrichmentCandidates(
+    List<RakutenManagedProduct> pending,
+    DateTime now,
+  ) {
+    final out = List<RakutenManagedProduct>.from(pending);
+    int score(RakutenManagedProduct e) {
+      var s = e.roomImportEnrichFailureCount * 500;
+      if (_inProductBackoff(e, now)) s += 100000;
+      return s;
+    }
+
+    out.sort((a, b) {
+      final c = score(a).compareTo(score(b));
+      if (c != 0) return c;
+      return a.updatedAt.compareTo(b.updatedAt);
+    });
+    return out;
+  }
+
+  Future<void> _applyNonShopItemHttp400(
+    RakutenManagedProduct row,
+    DateTime now,
+    _RoomImportEnrichMethod method,
+  ) async {
+    final pid = row.productId.trim();
+    await _productRepository.updateManagedProduct(pid, (e) {
+      return e.copyWith(
+        roomImportMetadataEnriching: false,
+        roomImportEnrichLastAttemptAt: now,
+        roomImportEnrichFailureReason: '400',
+        roomImportEnrichFailureCount: e.roomImportEnrichFailureCount + 1,
+        roomImportEnrichLastMethod: _methodLogName(method),
+        roomImportEnrichBackoffUntil: now.add(
+          Duration(
+            minutes: RoomImportLimitPolicy.enrichBackoffMinutesAfterAttemptFailure,
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<void> _applyShopItemHttp400(RakutenManagedProduct row, DateTime now) async {
+    final pid = row.productId.trim();
+    await _productRepository.updateManagedProduct(pid, (e) {
+      return e.copyWith(
+        roomImportMetadataEnriching: false,
+        roomImportEnrichLastAttemptAt: now,
+        roomImportEnrichFailureReason: '400',
+        roomImportEnrichFailureCount: e.roomImportEnrichFailureCount + 1,
+        roomImportEnrichLastMethod: 'shopItem',
+        roomImportEnrichShopItemBlockedUntil: now.add(
+          Duration(
+            hours: RoomImportLimitPolicy.enrichShopItemBlockHoursAfterHttp400,
+          ),
+        ),
+        roomImportEnrichBackoffUntil: now.add(
+          Duration(
+            minutes: RoomImportLimitPolicy.enrichBackoffMinutesAfterAttemptFailure,
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<void> _applyNoItems(
+    RakutenManagedProduct row,
+    DateTime now,
+    _RoomImportEnrichMethod method,
+  ) async {
+    final pid = row.productId.trim();
+    await _productRepository.updateManagedProduct(pid, (e) {
+      var next = e.copyWith(
+        roomImportMetadataEnriching: false,
+        roomImportEnrichLastAttemptAt: now,
+        roomImportEnrichFailureReason: 'noItems',
+        roomImportEnrichFailureCount: e.roomImportEnrichFailureCount + 1,
+        roomImportEnrichLastMethod: _methodLogName(method),
+        roomImportEnrichBackoffUntil: now.add(
+          Duration(
+            minutes: RoomImportLimitPolicy.enrichBackoffMinutesAfterAttemptFailure,
+          ),
+        ),
+      );
+      switch (method) {
+        case _RoomImportEnrichMethod.shopTitleKeyword:
+          next = next.copyWith(
+            roomImportEnrichTitleKeywordBlockedUntil: now.add(
+              Duration(
+                minutes: RoomImportLimitPolicy
+                    .enrichTitleKeywordBlockMinutesAfterNoItems,
+              ),
+            ),
+          );
+          break;
+        case _RoomImportEnrichMethod.productIdKeyword:
+          next = next.copyWith(
+            roomImportEnrichProductIdKeywordBlockedUntil: now.add(
+              Duration(
+                minutes: RoomImportLimitPolicy
+                    .enrichProductIdKeywordBlockMinutesAfterNoItems,
+              ),
+            ),
+          );
+          break;
+        case _RoomImportEnrichMethod.shopItem:
+          break;
+      }
+      return next;
+    });
+  }
+
+  Future<void> _applyEnrichException(
+    RakutenManagedProduct row,
+    DateTime now,
+    _RoomImportEnrichMethod method,
+  ) async {
+    final pid = row.productId.trim();
+    await _productRepository.updateManagedProduct(pid, (e) {
+      return e.copyWith(
+        roomImportMetadataEnriching: false,
+        roomImportEnrichLastAttemptAt: now,
+        roomImportEnrichFailureReason: 'exception',
+        roomImportEnrichFailureCount: e.roomImportEnrichFailureCount + 1,
+        roomImportEnrichLastMethod: _methodLogName(method),
+        roomImportEnrichBackoffUntil: now.add(
+          Duration(
+            minutes: RoomImportLimitPolicy.enrichBackoffMinutesAfterAttemptFailure,
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<void> _apply429Row(
+    RakutenManagedProduct row,
+    DateTime now,
+    _RoomImportEnrichMethod method,
+  ) async {
+    final pid = row.productId.trim();
+    await _productRepository.updateManagedProduct(pid, (e) {
+      return e.copyWith(
+        roomImportMetadataEnriching: false,
+        roomImportEnrichLastAttemptAt: now,
+        roomImportEnrichFailureReason: '429',
+        roomImportEnrichFailureCount: e.roomImportEnrichFailureCount + 1,
+        roomImportEnrichLastMethod: _methodLogName(method),
+      );
+    });
+  }
+
   Future<RoomImportEnrichmentBatchResult> _runEnrichmentLoop({
     required int maxApiCalls,
   }) async {
@@ -231,28 +486,56 @@ class RoomImportMetadataEnrichmentService {
     }
 
     final pendingAll = _pendingQueueRows();
+    final now = DateTime.now();
+    var inBackoff = 0;
+    var noMethod = 0;
+    var eligible = 0;
+    for (final e in pendingAll) {
+      if (_inProductBackoff(e, now)) {
+        inBackoff++;
+        continue;
+      }
+      if (_peekNextMethod(e, now) == null) {
+        noMethod++;
+        continue;
+      }
+      eligible++;
+    }
+    roomImportEnrichQueueLog(
+      'pending=${pendingAll.length} eligible=$eligible '
+      'skippedCooldown=$inBackoff skippedFailed=$noMethod',
+    );
+
     var okCount = 0;
     var apiAttempts = 0;
     var pausedByRateLimit = false;
-    final failedApiKeys = <String>{};
 
     try {
-      for (var i = 0; i < pendingAll.length && apiAttempts < maxApiCalls; i++) {
-        final row = pendingAll[i];
-        final shop = row.shopCode.trim();
-        final pid = row.productId.trim();
-        if (shop.isEmpty || pid.isEmpty) continue;
-
-        final flags = needFlagsForProduct(row);
-        roomImportEnrichTargetLog(
-          'productId=$pid needsPrice=${flags.needsPrice} needsImage=${flags.needsImage} '
-          'needsShopName=${flags.needsShopName} needsGenre=${flags.needsGenre} '
-          'willEnrich=${flags.willEnrich}',
-        );
-
-        final failKey = '$shop\x1f$pid';
-        if (failedApiKeys.contains(failKey)) {
-          continue;
+      while (apiAttempts < maxApiCalls) {
+        final sorted = _sortedEnrichmentCandidates(pendingAll, now);
+        _RoomImportEnrichMethod? chosenMethod;
+        RakutenManagedProduct? chosen;
+        var pickLogged = 0;
+        for (final row in sorted) {
+          final m = _peekNextMethod(row, now);
+          if (pickLogged < 24) {
+            roomImportEnrichPickLog(
+              'productId=${row.productId} '
+              'failureReason=${row.roomImportEnrichFailureReason} '
+              'failureCount=${row.roomImportEnrichFailureCount} '
+              'selected=${m != null}',
+            );
+            pickLogged++;
+          }
+          if (m != null) {
+            chosen = row;
+            chosenMethod = m;
+            break;
+          }
+        }
+        if (chosen == null || chosenMethod == null) {
+          roomImportEnrichMethodLog('method=skip');
+          break;
         }
 
         if (apiAttempts > 0) {
@@ -263,12 +546,23 @@ class RoomImportMetadataEnrichmentService {
           );
         }
 
+        final pid = chosen.productId.trim();
+        final shop = chosen.shopCode.trim();
+        if (shop.isEmpty || pid.isEmpty) break;
+
+        final flags = needFlagsForProduct(chosen);
+        roomImportEnrichTargetLog(
+          'productId=$pid needsPrice=${flags.needsPrice} needsImage=${flags.needsImage} '
+          'needsShopName=${flags.needsShopName} needsGenre=${flags.needsGenre} '
+          'willEnrich=${flags.willEnrich}',
+        );
+
         try {
           await _productRepository.updateManagedProduct(pid, (e) {
             return e.copyWith(roomImportMetadataEnriching: true);
           });
         } catch (_) {
-          continue;
+          break;
         }
 
         final delayMs = apiAttempts == 0
@@ -279,20 +573,71 @@ class RoomImportMetadataEnrichmentService {
           'delayMs=$delayMs shopCode=$shop itemCode=$pid',
         );
 
+        final codes = _resolveImportCodes(chosen);
+        roomImportEnrichRequestLog(
+          'codesDiag productId=$pid source=${codes.source} '
+          'apiShop=${codes.apiShop} apiItem=${codes.apiItem} '
+          'storedShop=${chosen.shopCode.trim()} storedProductId=${codes.storedProductId}',
+        );
+        roomImportEnrichMethodLog('method=${_methodLogName(chosenMethod)}');
+
         RoomImportEnrichmentFetchEnvelope env;
         try {
           RoomImportDebugLogBuffer.incEnrichment();
           apiAttempts++;
-          env = await _searchRepository
-              .fetchFirstItemForRoomImportEnrichmentEnvelope(
-                shopCode: shop,
-                itemCode: pid,
+          switch (chosenMethod) {
+            case _RoomImportEnrichMethod.shopItem:
+              env = await _searchRepository.fetchRoomImportEnrichmentSingleSearch(
+                condition: RakutenProductSearchCondition(
+                  keyword: '',
+                  shopCode: codes.apiShop,
+                  itemCode: codes.apiItem,
+                ),
+                phase: 'shopItem',
+                page: 1,
+                hits: 30,
+                matchPureItemForPick: codes.apiItem,
+                matchShopCodeForPick: codes.apiShop,
               );
+              break;
+            case _RoomImportEnrichMethod.shopTitleKeyword:
+              final kw = _titleKeywordRaw(chosen.itemName)!;
+              env = await _searchRepository.fetchRoomImportEnrichmentSingleSearch(
+                condition: RakutenProductSearchCondition(
+                  keyword: kw,
+                  shopCode: codes.apiShop,
+                  itemCode: null,
+                ),
+                phase: 'shopTitleKeyword',
+                page: 1,
+                hits: 30,
+                matchPureItemForPick: '',
+                matchShopCodeForPick: codes.apiShop,
+                preferShopFirstForKeyword: true,
+              );
+              break;
+            case _RoomImportEnrichMethod.productIdKeyword:
+              env = await _searchRepository.fetchRoomImportEnrichmentSingleSearch(
+                condition: RakutenProductSearchCondition(
+                  keyword: chosen.productId.trim(),
+                  shopCode: chosen.shopCode.trim(),
+                  itemCode: null,
+                ),
+                phase: 'productIdKeyword',
+                page: 1,
+                hits: 30,
+                matchPureItemForPick: '',
+                matchShopCodeForPick: chosen.shopCode.trim(),
+                preferShopFirstForKeyword: true,
+              );
+              break;
+          }
         } catch (e, st) {
           debugPrint('[ROOM_IMPORT_ENRICH] envelope exception $e\n$st');
-          await _productRepository.updateManagedProduct(pid, (e) {
-            return e.copyWith(roomImportMetadataEnriching: false);
-          });
+          await _applyEnrichException(chosen, now, chosenMethod);
+          roomImportEnrichFailLog(
+            'productId=$pid method=${_methodLogName(chosenMethod)} reason=exception',
+          );
           roomImportPerfLog('enrichmentStopped reason=exception');
           roomImportEnrichStopLog('exception');
           break;
@@ -301,36 +646,45 @@ class RoomImportMetadataEnrichmentService {
         if (env.rateLimited || env.httpStatus == 429) {
           roomImportApiLog('status=rateLimited http=429');
           await RoomImportEnrichmentCooldownStore.armAfterRateLimit429();
+          roomImportEnrichCooldownLog(
+            'reason=rateLimit '
+            'minutes=${RoomImportLimitPolicy.enrichCooldownAfter429Minutes}',
+          );
           final remaining = _pendingQueueRows().length;
           roomImportEnrichPausedLog(
             'reason=rateLimit '
             'cooldownMinutes=${RoomImportLimitPolicy.enrichCooldownAfter429Minutes} '
             'remainingPending=$remaining',
           );
-          await _productRepository.updateManagedProduct(pid, (e) {
-            return e.copyWith(roomImportMetadataEnriching: false);
-          });
+          await _apply429Row(chosen, now, chosenMethod);
+          roomImportEnrichFailLog(
+            'productId=$pid method=${_methodLogName(chosenMethod)} reason=429',
+          );
           pausedByRateLimit = true;
           break;
         }
 
         if (env.httpStatus == 400) {
-          failedApiKeys.add(failKey);
           roomImportApiLog('rateLimitDetected=false');
-          await _productRepository.updateManagedProduct(pid, (e) {
-            return e.copyWith(roomImportMetadataEnriching: false);
-          });
-          continue;
+          if (chosenMethod == _RoomImportEnrichMethod.shopItem) {
+            await _applyShopItemHttp400(chosen, now);
+          } else {
+            await _applyNonShopItemHttp400(chosen, now, chosenMethod);
+          }
+          roomImportEnrichFailLog(
+            'productId=$pid method=${_methodLogName(chosenMethod)} reason=400',
+          );
+          break;
         }
 
         if (env.item == null) {
-          await _productRepository.updateManagedProduct(pid, (e) {
-            return e.copyWith(roomImportMetadataEnriching: false);
-          });
-          continue;
+          await _applyNoItems(chosen, now, chosenMethod);
+          roomImportEnrichFailLog(
+            'productId=$pid method=${_methodLogName(chosenMethod)} reason=noItems',
+          );
+          break;
         }
 
-        final before = _productRepository.getByProductId(pid);
         try {
           await _productRepository.mergeRoomImportMetadataFromSearchItem(
             productId: pid,
@@ -341,41 +695,23 @@ class RoomImportMetadataEnrichmentService {
           await _productRepository.updateManagedProduct(pid, (e) {
             return e.copyWith(roomImportMetadataEnriching: false);
           });
-          continue;
+          break;
         }
 
-        final after = _productRepository.getByProductId(pid);
-        if (before != null && after != null) {
-          final api = env.item!;
-          final apiShopOk =
-              api.shopName.trim().isNotEmpty &&
-              api.shopName.trim() != 'ショップ名不明';
-          final priceSaved =
-              api.itemPrice > 0 &&
-              after.itemPrice == api.itemPrice &&
-              (before.itemPrice != after.itemPrice || before.itemPrice <= 0);
-          final imageSaved =
-              api.imageUrl.trim().isNotEmpty &&
-              after.imageUrl.trim() == api.imageUrl.trim() &&
-              (before.imageUrl.trim().isEmpty ||
-                  before.imageUrl.trim() != after.imageUrl.trim());
-          final shopNameSaved =
-              apiShopOk &&
-              after.shopName.trim() == api.shopName.trim() &&
-              before.shopName.trim() != after.shopName.trim();
-          final genreNameSaved =
-              after.genreName.trim() != before.genreName.trim() &&
-              (api.genreId.trim().isNotEmpty ||
-                  api.genreName.trim().isNotEmpty);
-          roomImportEnrichSuccessLog(
-            'productId=$pid priceSaved=$priceSaved imageSaved=$imageSaved '
-            'shopNameSaved=$shopNameSaved genreNameSaved=$genreNameSaved',
-          );
-        }
+        final api = env.item!;
+        final img = api.imageUrl.trim();
+        final imgLog = img.isEmpty
+            ? '-'
+            : (img.length > 80 ? '${img.substring(0, 80)}…' : img);
+        roomImportEnrichSuccessLog(
+          'productId=$pid price=${api.itemPrice} image=$imgLog '
+          'shopName=${api.shopName.trim()} genreName=${api.genreName.trim()}',
+        );
 
         await _productRepository.updateManagedProduct(pid, (e) {
           return e.copyWith(roomImportMetadataEnriching: false);
         });
+        break;
       }
     } finally {
       final remainingPending = _pendingQueueRows().length;

@@ -25,6 +25,21 @@ abstract final class RoomImportLimitPolicy {
   /// 429 検知後、自動・手動いずれの補完も控えるクールダウン（分）。
   static const int enrichCooldownAfter429Minutes = 15;
 
+  /// shopCode+itemCode 検索が 400 のとき、その方式を再試行しない期間（時間）。
+  static const int enrichShopItemBlockHoursAfterHttp400 = 48;
+
+  /// タイトルキーワード検索が noItems のときの再試行抑止（分）。
+  static const int enrichTitleKeywordBlockMinutesAfterNoItems = 360;
+
+  /// productId のみキーワード検索が noItems のときの再試行抑止（分）。
+  static const int enrichProductIdKeywordBlockMinutesAfterNoItems = 720;
+
+  /// 400 / noItems / 例外後に **同一商品** を先頭に戻さないための短い待ち（分）。
+  static const int enrichBackoffMinutesAfterAttemptFailure = 5;
+
+  /// タイトル由来キーワードに使う最小文字数（ノイズ除外）。
+  static const int enrichTitleKeywordMinChars = 8;
+
   /// 現状は無料のみ。将来 `hasPro` / `rewardedGranted` を参照して返す。
   static int effectiveBatchLimit({
     bool hasPro = false,

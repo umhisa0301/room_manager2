@@ -579,6 +579,20 @@ class RakutenSearchRepository {
     return items.isNotEmpty ? items.first : null;
   }
 
+  /// メタ補完の shopCode+itemCode 検索用: **一致が無ければ null**（先頭件の誤採用を防ぐ）。
+  RakutenSearchItem? _pickRoomImportEnrichmentItemStrict(
+    List<RakutenSearchItem> items,
+    String itemCodeGuess,
+    String shopCodeRaw,
+  ) {
+    final nic = itemCodeGuess.trim();
+    final sc = shopCodeRaw.trim();
+    for (final it in items) {
+      if (_roomImportEnrichmentItemMatches(it, nic, sc)) return it;
+    }
+    return null;
+  }
+
   RakutenSearchItem? _pickFirstRoomImportItemFromApiRaw(
     Map<String, dynamic> raw,
     String pureItemForPick,
@@ -613,6 +627,195 @@ class RakutenSearchRepository {
       return true;
     }
     return false;
+  }
+
+  void _roomImportEnrichmentFullRequestLog({
+    required String phase,
+    required RakutenProductSearchCondition condition,
+    required int page,
+    required int hits,
+  }) {
+    if (!kDebugMode) return;
+    final n = condition.normalized();
+    final proxy = RakutenApiConfig.useProxyForItemSearch;
+    final proxyUrl = proxy
+        ? '${RakutenApiConfig.proxyBaseUrl.trim()}/rakuten'
+        : 'direct-non-proxy';
+    final sortDisp = (n.sort ?? '').trim().isEmpty ? '(omit)' : n.sort!.trim();
+    final gid = (n.genreId ?? '').trim().isEmpty ? '(omit)' : n.genreId!.trim();
+    roomImportEnrichRequestLog(
+      'phase=$phase proxyUrl=$proxyUrl forceLegacy=${RakutenApiConfig.forceLegacy} '
+      'shopCode=${_roomImportOmitParam(n.shopCode)} '
+      'itemCode=${_roomImportOmitParam(n.itemCode)} '
+      'keyword=${_roomImportOmitParam(n.keyword)} genreId=$gid '
+      'page=$page hits=$hits sort=$sortDisp',
+    );
+  }
+
+  List<RakutenSearchItem> _roomImportParseItemsList(Map<String, dynamic> raw) {
+    final rawItems = raw['Items'];
+    if (rawItems is! List) return const [];
+    final parsed = <RakutenSearchItem>[];
+    for (final entry in rawItems) {
+      try {
+        final map = _unwrapItem(entry);
+        if (map == null) continue;
+        final item = _mapToModel(map);
+        if (item != null) parsed.add(item);
+      } catch (_) {}
+    }
+    return parsed;
+  }
+
+  RoomImportEnrichmentFetchEnvelope _roomImportEnvelopeAfterSingleFetch({
+    required Map<String, dynamic> raw,
+    required String matchPureItem,
+    required String matchShopCode,
+    required bool preferShopFirstForKeyword,
+  }) {
+    final parsed = _roomImportParseItemsList(raw);
+    if (parsed.isEmpty) {
+      return const RoomImportEnrichmentFetchEnvelope(httpStatus: 200);
+    }
+    final RakutenSearchItem? best;
+    if (preferShopFirstForKeyword) {
+      final sc = matchShopCode.trim();
+      RakutenSearchItem? hit;
+      for (final it in parsed) {
+        if (it.shopCode.trim() == sc) {
+          hit = it;
+          break;
+        }
+      }
+      best = hit ?? parsed.first;
+    } else {
+      best = _pickRoomImportEnrichmentItemStrict(parsed, matchPureItem, matchShopCode);
+    }
+    return RoomImportEnrichmentFetchEnvelope(
+      item: best,
+      httpStatus: 200,
+      rateLimited: false,
+    );
+  }
+
+  /// ROOM メタ補完専用: **1回の** [RakutenApiService.searchItems] のみ（400 後に同一処理内でフォールバックしない）。
+  Future<RoomImportEnrichmentFetchEnvelope> fetchRoomImportEnrichmentSingleSearch({
+    required RakutenProductSearchCondition condition,
+    required String phase,
+    int page = 1,
+    int hits = 30,
+    String matchPureItemForPick = '',
+    required String matchShopCodeForPick,
+    bool preferShopFirstForKeyword = false,
+  }) async {
+    final apiSw = Stopwatch()..start();
+    final normalized = condition.normalized();
+    _roomImportEnrichmentFullRequestLog(
+      phase: phase,
+      condition: condition,
+      page: page,
+      hits: hits,
+    );
+
+    if (kDemoModeEnabled) {
+      final items = await search(condition: normalized, maxPages: 1);
+      RakutenSearchItem? best;
+      if (preferShopFirstForKeyword) {
+        final sc = matchShopCodeForPick.trim();
+        best = null;
+        for (final it in items) {
+          if (it.shopCode.trim() == sc) {
+            best = it;
+            break;
+          }
+        }
+        best ??= items.isNotEmpty ? items.first : null;
+      } else {
+        best = _pickRoomImportEnrichmentItemStrict(
+          items,
+          matchPureItemForPick,
+          matchShopCodeForPick,
+        );
+      }
+      apiSw.stop();
+      final env = RoomImportEnrichmentFetchEnvelope(
+        item: best,
+        httpStatus: 200,
+        rateLimited: false,
+      );
+      _logRoomImportItemCodeApiDiag(
+        shopCodeForLog: matchShopCodeForPick,
+        itemCodeForLog: matchPureItemForPick,
+        condition: normalized,
+        env: env,
+      );
+      return env;
+    }
+
+    try {
+      final raw = await _apiService.searchItems(
+        condition: normalized,
+        page: page,
+        hits: hits,
+      );
+      apiSw.stop();
+      roomImportApiLog(
+        'type=rakutenItem status=ok durationMs=${apiSw.elapsedMilliseconds}',
+      );
+      roomImportApiLog('rateLimitDetected=false');
+      final env = _roomImportEnvelopeAfterSingleFetch(
+        raw: raw,
+        matchPureItem: matchPureItemForPick,
+        matchShopCode: matchShopCodeForPick,
+        preferShopFirstForKeyword: preferShopFirstForKeyword,
+      );
+      _logRoomImportItemCodeApiDiag(
+        shopCodeForLog: matchShopCodeForPick,
+        itemCodeForLog: matchPureItemForPick,
+        condition: normalized,
+        env: env,
+        previewOverride: env.item == null ? '(noItemAfterPick)' : null,
+      );
+      return env;
+    } on RakutenApiTransportException catch (e, st) {
+      apiSw.stop();
+      final rl = e.statusCode == 429;
+      roomImportApiLog(
+        'type=rakutenItem status=${rl ? 'rateLimited' : 'httpError'} '
+        'http=${e.statusCode} durationMs=${apiSw.elapsedMilliseconds}',
+      );
+      roomImportApiLog('rateLimitDetected=$rl');
+      if (kDebugMode) {
+        debugPrint('[ROOM_IMPORT_ENRICH] singleSearch transport http=${e.statusCode}');
+        debugPrint('$st');
+      }
+      return RoomImportEnrichmentFetchEnvelope(
+        item: null,
+        httpStatus: e.statusCode,
+        rateLimited: rl,
+        exceptionMessage: e.message,
+        responseBodyPreview: e.responseBodyPreview,
+      );
+    } catch (e, st) {
+      apiSw.stop();
+      final msg = e.toString();
+      final low = msg.toLowerCase();
+      final rl = low.contains('429') || low.contains('ratelimit');
+      roomImportApiLog(
+        'type=rakutenItem status=exception durationMs=${apiSw.elapsedMilliseconds}',
+      );
+      roomImportApiLog('rateLimitDetected=$rl');
+      if (kDebugMode) {
+        debugPrint('[ROOM_IMPORT_ENRICH] singleSearch exception $e');
+        debugPrint('$st');
+      }
+      return RoomImportEnrichmentFetchEnvelope(
+        item: null,
+        httpStatus: null,
+        rateLimited: rl,
+        exceptionMessage: msg,
+      );
+    }
   }
 
   /// キーワード検索タブ専用: [excludeRegisteredProductIds]（楽天 itemCode / [RakutenSearchItem.productId]）と

@@ -66,6 +66,14 @@ class RakutenManagedProduct {
     this.roomImportMetadataEnriching = false,
     this.reviewAverage = 0,
     this.reviewCount = 0,
+    this.roomImportEnrichLastAttemptAt,
+    this.roomImportEnrichFailureReason = '',
+    this.roomImportEnrichFailureCount = 0,
+    this.roomImportEnrichLastMethod = '',
+    this.roomImportEnrichBackoffUntil,
+    this.roomImportEnrichShopItemBlockedUntil,
+    this.roomImportEnrichTitleKeywordBlockedUntil,
+    this.roomImportEnrichProductIdKeywordBlockedUntil,
   });
 
   /// 楽天の itemCode（アプリ内の [RakutenSearchItem.productId] と同一）。
@@ -153,6 +161,30 @@ class RakutenManagedProduct {
   /// 楽天API由来のレビュー件数。
   final int reviewCount;
 
+  /// ROOM メタ補完の最終試行時刻（後段キュー用）。
+  final DateTime? roomImportEnrichLastAttemptAt;
+
+  /// 直近の補完失敗理由（`400` / `429` / `noItems` / `exception` など。空は未記録）。
+  final String roomImportEnrichFailureReason;
+
+  /// 補完の累積失敗回数（成功時にリセット）。
+  final int roomImportEnrichFailureCount;
+
+  /// 直近で使った補完方式（ログ用。例: `shopItem` / `shopTitleKeyword`）。
+  final String roomImportEnrichLastMethod;
+
+  /// この商品の補完を一時スキップする期限（他商品を先に進める）。
+  final DateTime? roomImportEnrichBackoffUntil;
+
+  /// `shopCode`+`itemCode` 方式を試さない期限（400 記録後）。
+  final DateTime? roomImportEnrichShopItemBlockedUntil;
+
+  /// ショップ絞りタイトルキーワード検索を試さない期限（noItems 後）。
+  final DateTime? roomImportEnrichTitleKeywordBlockedUntil;
+
+  /// productId キーワード検索を試さない期限（noItems 後・最終手段）。
+  final DateTime? roomImportEnrichProductIdKeywordBlockedUntil;
+
   /// アプリの「投稿として」カウントするコレ済か。
   bool get countsTowardPostedCollectMetrics {
     if (!RakutenManagedProduct.isMemberForStatusTab(
@@ -230,6 +262,19 @@ class RakutenManagedProduct {
     bool? roomImportMetadataEnriching,
     double? reviewAverage,
     int? reviewCount,
+    DateTime? roomImportEnrichLastAttemptAt,
+    bool clearRoomImportEnrichLastAttemptAt = false,
+    String? roomImportEnrichFailureReason,
+    int? roomImportEnrichFailureCount,
+    String? roomImportEnrichLastMethod,
+    DateTime? roomImportEnrichBackoffUntil,
+    bool clearRoomImportEnrichBackoffUntil = false,
+    DateTime? roomImportEnrichShopItemBlockedUntil,
+    bool clearRoomImportEnrichShopItemBlockedUntil = false,
+    DateTime? roomImportEnrichTitleKeywordBlockedUntil,
+    bool clearRoomImportEnrichTitleKeywordBlockedUntil = false,
+    DateTime? roomImportEnrichProductIdKeywordBlockedUntil,
+    bool clearRoomImportEnrichProductIdKeywordBlockedUntil = false,
   }) {
     return RakutenManagedProduct(
       productId: productId ?? this.productId,
@@ -289,6 +334,34 @@ class RakutenManagedProduct {
           roomImportMetadataEnriching ?? this.roomImportMetadataEnriching,
       reviewAverage: reviewAverage ?? this.reviewAverage,
       reviewCount: reviewCount ?? this.reviewCount,
+      roomImportEnrichLastAttemptAt: clearRoomImportEnrichLastAttemptAt
+          ? null
+          : (roomImportEnrichLastAttemptAt ??
+                this.roomImportEnrichLastAttemptAt),
+      roomImportEnrichFailureReason:
+          roomImportEnrichFailureReason ?? this.roomImportEnrichFailureReason,
+      roomImportEnrichFailureCount:
+          roomImportEnrichFailureCount ?? this.roomImportEnrichFailureCount,
+      roomImportEnrichLastMethod:
+          roomImportEnrichLastMethod ?? this.roomImportEnrichLastMethod,
+      roomImportEnrichBackoffUntil: clearRoomImportEnrichBackoffUntil
+          ? null
+          : (roomImportEnrichBackoffUntil ?? this.roomImportEnrichBackoffUntil),
+      roomImportEnrichShopItemBlockedUntil:
+          clearRoomImportEnrichShopItemBlockedUntil
+          ? null
+          : (roomImportEnrichShopItemBlockedUntil ??
+                this.roomImportEnrichShopItemBlockedUntil),
+      roomImportEnrichTitleKeywordBlockedUntil:
+          clearRoomImportEnrichTitleKeywordBlockedUntil
+          ? null
+          : (roomImportEnrichTitleKeywordBlockedUntil ??
+                this.roomImportEnrichTitleKeywordBlockedUntil),
+      roomImportEnrichProductIdKeywordBlockedUntil:
+          clearRoomImportEnrichProductIdKeywordBlockedUntil
+          ? null
+          : (roomImportEnrichProductIdKeywordBlockedUntil ??
+                this.roomImportEnrichProductIdKeywordBlockedUntil),
     );
   }
 
@@ -381,6 +454,19 @@ class RakutenManagedProduct {
       'roomImportMetadataEnriching': roomImportMetadataEnriching,
       'reviewAverage': reviewAverage,
       'reviewCount': reviewCount,
+      'roomImportEnrichLastAttemptAt':
+          roomImportEnrichLastAttemptAt?.toIso8601String(),
+      'roomImportEnrichFailureReason': roomImportEnrichFailureReason,
+      'roomImportEnrichFailureCount': roomImportEnrichFailureCount,
+      'roomImportEnrichLastMethod': roomImportEnrichLastMethod,
+      'roomImportEnrichBackoffUntil':
+          roomImportEnrichBackoffUntil?.toIso8601String(),
+      'roomImportEnrichShopItemBlockedUntil':
+          roomImportEnrichShopItemBlockedUntil?.toIso8601String(),
+      'roomImportEnrichTitleKeywordBlockedUntil':
+          roomImportEnrichTitleKeywordBlockedUntil?.toIso8601String(),
+      'roomImportEnrichProductIdKeywordBlockedUntil':
+          roomImportEnrichProductIdKeywordBlockedUntil?.toIso8601String(),
     };
   }
 
@@ -552,6 +638,40 @@ class RakutenManagedProduct {
     final roomImportMetadataEnriching =
         json['roomImportMetadataEnriching'] == true;
 
+    DateTime? roomImportEnrichLastAttemptAt;
+    final rieLa = json['roomImportEnrichLastAttemptAt']?.toString();
+    if (rieLa != null && rieLa.isNotEmpty) {
+      roomImportEnrichLastAttemptAt = parseDt(rieLa);
+    }
+    final roomImportEnrichFailureReason =
+        (json['roomImportEnrichFailureReason'] ?? '').toString();
+    var roomImportEnrichFailureCount = 0;
+    final rfc = json['roomImportEnrichFailureCount'];
+    if (rfc is int) {
+      roomImportEnrichFailureCount = rfc;
+    } else if (rfc is num) {
+      roomImportEnrichFailureCount = rfc.toInt();
+    } else if (rfc != null) {
+      roomImportEnrichFailureCount = int.tryParse(rfc.toString().trim()) ?? 0;
+    }
+    final roomImportEnrichLastMethod =
+        (json['roomImportEnrichLastMethod'] ?? '').toString();
+
+    DateTime? parseOptDt(String key) {
+      final s = json[key]?.toString();
+      if (s == null || s.isEmpty) return null;
+      return parseDt(s);
+    }
+
+    final roomImportEnrichBackoffUntil =
+        parseOptDt('roomImportEnrichBackoffUntil');
+    final roomImportEnrichShopItemBlockedUntil =
+        parseOptDt('roomImportEnrichShopItemBlockedUntil');
+    final roomImportEnrichTitleKeywordBlockedUntil =
+        parseOptDt('roomImportEnrichTitleKeywordBlockedUntil');
+    final roomImportEnrichProductIdKeywordBlockedUntil =
+        parseOptDt('roomImportEnrichProductIdKeywordBlockedUntil');
+
     final rav = json['reviewAverage'];
     var reviewAverage = 0.0;
     if (rav is num) {
@@ -623,6 +743,16 @@ class RakutenManagedProduct {
       roomImportMetadataEnriching: roomImportMetadataEnriching,
       reviewAverage: reviewAverage,
       reviewCount: reviewCount,
+      roomImportEnrichLastAttemptAt: roomImportEnrichLastAttemptAt,
+      roomImportEnrichFailureReason: roomImportEnrichFailureReason,
+      roomImportEnrichFailureCount: roomImportEnrichFailureCount,
+      roomImportEnrichLastMethod: roomImportEnrichLastMethod,
+      roomImportEnrichBackoffUntil: roomImportEnrichBackoffUntil,
+      roomImportEnrichShopItemBlockedUntil: roomImportEnrichShopItemBlockedUntil,
+      roomImportEnrichTitleKeywordBlockedUntil:
+          roomImportEnrichTitleKeywordBlockedUntil,
+      roomImportEnrichProductIdKeywordBlockedUntil:
+          roomImportEnrichProductIdKeywordBlockedUntil,
     );
   }
 }
