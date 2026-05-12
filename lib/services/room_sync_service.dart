@@ -9,6 +9,8 @@ import '../repository/rakuten_managed_product_repository.dart';
 import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_sync_log.dart';
 import 'rakuten_item_url_parser.dart';
+import 'room_import_collects_policy.dart';
+import 'room_import_collects_resume_store.dart';
 import 'room_import_limit_policy.dart';
 import 'room_profile_url_validation_service.dart';
 import 'room_url_resolver.dart';
@@ -36,7 +38,6 @@ class RoomSyncService {
 
   static const int defaultMaxBatch = RoomImportLimitPolicy.freeBatchLimit;
   static const int _collectsApiPageLimit = 20;
-  static const int _maxCollectsApiPages = 40;
 
   static bool _postedRoomImportInFlight = false;
 
@@ -46,6 +47,8 @@ class RoomSyncService {
     int maxItems = defaultMaxBatch,
     void Function(int currentIndex, int batchSize)? onCheckingProgress,
     void Function(String hint)? onProcessingHint,
+    RoomImportCollectsExploreMode collectsExploreMode =
+        RoomImportCollectsExploreMode.normal,
   }) async {
     if (_postedRoomImportInFlight) {
       roomSyncSummaryLog('ROOM投稿取り込み 実行中のためスキップ（二重起動防止）');
@@ -162,6 +165,11 @@ class RoomSyncService {
       roomSyncVerboseLog('初期HTML未取り込み候補数: $initialUnsynced');
 
       final swQueueBuild = Stopwatch()..start();
+      var collectsPreparePagesFetched = 0;
+      var collectsPrepareStopReason = 'notUsed';
+      var collectsPrepareIncompleteExplore = false;
+      String? collectsPrepareLastNextCursor;
+      final collectsPrepareModeLabel = collectsExploreMode.name;
       final userSeg = _roomUserSegment(profile);
       final listingFastPath = <String, RoomUrlResolveSuccess>{};
       if ((listingHtml ?? '').isNotEmpty && userSeg.isNotEmpty) {
@@ -178,6 +186,13 @@ class RoomSyncService {
       var listingSkip = 0;
       final toProcess = <String>[];
 
+      final consecutiveLimit =
+          collectsExploreMode == RoomImportCollectsExploreMode.deep
+          ? 1000000
+          : RoomImportCollectsPolicy.consecutiveKnownLimitForNormalStop;
+      var consecutiveKnownStreak = 0;
+      var stopDiscoveryForConsecutive = false;
+
       void advanceQueueFromDiscovery() {
         while (toProcess.length < maxItems &&
             discoveryIdx < orderedKeys.length) {
@@ -185,7 +200,14 @@ class RoomSyncService {
           listingChecked++;
           if (syncedRoomKeys.contains(k)) {
             listingSkip++;
+            consecutiveKnownStreak++;
+            if (consecutiveKnownStreak >= consecutiveLimit &&
+                toProcess.length < maxItems) {
+              stopDiscoveryForConsecutive = true;
+              break;
+            }
           } else {
+            consecutiveKnownStreak = 0;
             toProcess.add(k);
           }
         }
@@ -196,6 +218,11 @@ class RoomSyncService {
         roomImportListingLog(
           'stop reason=enoughItems count=${toProcess.length} source=html',
         );
+        collectsPrepareStopReason = 'enoughItems';
+      } else if (stopDiscoveryForConsecutive &&
+          collectsExploreMode == RoomImportCollectsExploreMode.normal) {
+        collectsPrepareStopReason = 'consecutiveKnownLimitReached';
+        collectsPrepareIncompleteExplore = true;
       }
       swQueueBuild.stop();
 
@@ -262,15 +289,46 @@ class RoomSyncService {
         if (numericUserId == null || numericUserId.isEmpty || userSeg.isEmpty) {
           additionalFetchStatus = '未対応（WebView fallback 候補）';
           roomSyncVerboseLog('追加取得方式: 未対応（API用 userData.id 未取得またはユーザーセグメント空）');
+        } else if (stopDiscoveryForConsecutive &&
+            collectsExploreMode == RoomImportCollectsExploreMode.normal) {
+          roomSyncVerboseLog(
+            '追加取得方式: スキップ（通常モード・連続既知打ち切り）',
+          );
+          additionalFetchStatus = 'スキップ(連続既知打切)';
         } else {
           roomSyncVerboseLog('追加取得方式: API');
           additionalFetchStatus = '実行済み(API)';
-          String? cursor;
+          final maxPages =
+              collectsExploreMode == RoomImportCollectsExploreMode.deep
+              ? RoomImportCollectsPolicy.deepMaxCollectPages
+              : RoomImportCollectsPolicy.normalMaxCollectPages;
+          roomImportCollectsPolicyLog(
+            'mode=${collectsExploreMode.name} maxPages=$maxPages '
+            'consecutiveKnownLimit=$consecutiveLimit targetNewItems=$maxItems',
+          );
+
+          String? cursor =
+              collectsExploreMode == RoomImportCollectsExploreMode.deep
+              ? await RoomImportCollectsResumeStore.readAfterId(profile)
+              : null;
+          if (cursor != null &&
+              cursor.isNotEmpty &&
+              collectsExploreMode == RoomImportCollectsExploreMode.deep) {
+            roomImportCollectsPolicyLog('mode=deep resumeAfterId=present');
+          }
+
+          var brokeOnCollectsFailure = false;
+          var exitedOnNoMoreData = false;
+
           for (
             var pageIdx = 0;
-            pageIdx < _maxCollectsApiPages && toProcess.length < maxItems;
+            pageIdx < maxPages && toProcess.length < maxItems;
             pageIdx++
           ) {
+            if (stopDiscoveryForConsecutive &&
+                collectsExploreMode == RoomImportCollectsExploreMode.normal) {
+              break;
+            }
             roomSyncVerboseLog('追加取得 page/cursor: ${cursor ?? '(先頭ページ)'}');
             roomImportListingLog(
               'source=collects page=${pageIdx + 1} '
@@ -286,7 +344,21 @@ class RoomSyncService {
             if (page == null) {
               additionalFetchStatus = '失敗(API)';
               roomSyncWarn('追加取得 collects API が失敗したため打ち切り');
+              brokeOnCollectsFailure = true;
+              collectsPrepareStopReason = 'collectsFailed';
               break;
+            }
+
+            collectsPreparePagesFetched++;
+            var knownOnPage = 0;
+            var newOnPage = 0;
+            for (final k in page.roomPageKeysOrdered) {
+              if (seenKeys.contains(k)) continue;
+              if (syncedRoomKeys.contains(k)) {
+                knownOnPage++;
+              } else {
+                newOnPage++;
+              }
             }
 
             roomSyncVerboseLog('追加取得候補数: ${page.roomPageKeysOrdered.length}');
@@ -306,6 +378,17 @@ class RoomSyncService {
             }
             advanceQueueFromDiscovery();
 
+            final nextRaw = page.nextAfterId?.trim();
+            if (nextRaw != null && nextRaw.isNotEmpty) {
+              collectsPrepareLastNextCursor = nextRaw;
+            }
+
+            roomImportCollectsProgressLog(
+              'page=${pageIdx + 1} foundNewOnPage=$newOnPage knownOnPage=$knownOnPage '
+              'totalNew=${toProcess.length} totalKnown=$listingSkip '
+              'nextCursor=${nextRaw ?? '(none)'}',
+            );
+
             final unsyncedAmongDiscovered = orderedKeys
                 .where((k) => !syncedRoomKeys.contains(k))
                 .length;
@@ -316,25 +399,78 @@ class RoomSyncService {
                 'stop reason=enoughItems count=${toProcess.length} '
                 'source=collects page=${pageIdx + 1}',
               );
+              collectsPrepareStopReason = 'enoughItems';
+              collectsPrepareIncompleteExplore = false;
+              break;
+            }
+            if (stopDiscoveryForConsecutive &&
+                collectsExploreMode == RoomImportCollectsExploreMode.normal) {
+              collectsPrepareStopReason = 'consecutiveKnownLimitReached';
+              collectsPrepareIncompleteExplore = true;
               break;
             }
 
-            cursor = page.nextAfterId;
-            if (cursor == null || cursor.isEmpty || page.rawItemCount == 0) {
+            final nextCursor = page.nextAfterId;
+            if (nextCursor == null ||
+                nextCursor.trim().isEmpty ||
+                page.rawItemCount == 0) {
               roomImportListingLog(
-                'stop reason=apiNoMore cursorEmpty=${cursor == null || cursor.isEmpty} '
+                'stop reason=apiNoMore cursorEmpty=${nextCursor == null || nextCursor.trim().isEmpty} '
                 'rawItemCount=${page.rawItemCount}',
               );
+              exitedOnNoMoreData = true;
+              collectsPrepareStopReason = 'noMoreCursor';
+              await RoomImportCollectsResumeStore.clearAfterId(profile);
               break;
             }
+
+            cursor = nextCursor;
             if (appended == 0 && toProcess.length < maxItems) {
               // 重複のみのページが返る場合もあるためカーソルで先へ進む。
               continue;
             }
           }
+
+          if (!brokeOnCollectsFailure && !exitedOnNoMoreData) {
+            if (toProcess.length >= maxItems) {
+              collectsPrepareStopReason = 'enoughItems';
+              collectsPrepareIncompleteExplore = false;
+            } else if (stopDiscoveryForConsecutive &&
+                collectsExploreMode == RoomImportCollectsExploreMode.normal) {
+              collectsPrepareStopReason = 'consecutiveKnownLimitReached';
+              collectsPrepareIncompleteExplore = true;
+            } else if (collectsPreparePagesFetched >= maxPages) {
+              collectsPrepareStopReason = 'maxPagesReached';
+              collectsPrepareIncompleteExplore = true;
+              roomImportListingLog(
+                'stop reason=maxPagesReached pages=$collectsPreparePagesFetched '
+                'queue=${toProcess.length}',
+              );
+            }
+          }
+
+          final resumeCursor = collectsPrepareLastNextCursor?.trim();
+          if (!brokeOnCollectsFailure &&
+              !exitedOnNoMoreData &&
+              resumeCursor != null &&
+              resumeCursor.isNotEmpty) {
+            await RoomImportCollectsResumeStore.saveAfterId(
+              profile,
+              resumeCursor,
+            );
+          }
+
+          roomImportCollectsStopLog(
+            'reason=$collectsPrepareStopReason pagesFetched=$collectsPreparePagesFetched '
+            'newItems=${toProcess.length} knownItems=$listingSkip '
+            'durationMs=${swCollects.elapsedMilliseconds}',
+          );
         }
       } else {
         roomSyncVerboseLog('追加取得方式: 不要（初期候補でキュー充足見込み）');
+        if (toProcess.length >= maxItems) {
+          collectsPrepareStopReason = 'enoughItems';
+        }
       }
 
       swCollects.stop();
@@ -402,6 +538,13 @@ class RoomSyncService {
           listingSyncedSkipCount: listingSkip,
           listingInitialCandidateCount: listingInitialCandidateCount,
           additionalFetchStatusLabel: additionalFetchStatus,
+          collectsExploreModeLabel: collectsPrepareModeLabel,
+          collectsPagesFetched: collectsPreparePagesFetched,
+          collectsStopReason: collectsPrepareStopReason == 'notUsed'
+              ? null
+              : collectsPrepareStopReason,
+          collectsIncompleteExplore: collectsPrepareIncompleteExplore,
+          collectsLastNextCursor: collectsPrepareLastNextCursor,
         );
       }
 
@@ -839,6 +982,13 @@ class RoomSyncService {
           reactionHighlightSamples,
         ),
         reactionsResyncedCount: reactionsResynced,
+        collectsExploreModeLabel: collectsPrepareModeLabel,
+        collectsPagesFetched: collectsPreparePagesFetched,
+        collectsStopReason: collectsPrepareStopReason == 'notUsed'
+            ? null
+            : collectsPrepareStopReason,
+        collectsIncompleteExplore: collectsPrepareIncompleteExplore,
+        collectsLastNextCursor: collectsPrepareLastNextCursor,
       );
     } finally {
       totalSw.stop();

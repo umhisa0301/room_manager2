@@ -11,6 +11,7 @@ import 'mypage_placeholder_screen.dart';
 import 'today_recommendations_screen.dart';
 import '../services/rakuten_room_home_stats.dart';
 import '../services/room_collect_post_limit.dart';
+import '../services/room_import_collects_policy.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_kpi_calculator.dart';
 import '../utils/today_recommendation_ui_tags.dart';
@@ -641,6 +642,43 @@ class _HomeRoomPostImportSection extends StatelessWidget {
       context,
       result,
       startBatch: () => ctl.runImport(context),
+      startDeepCollectsBatch: () => ctl.runImport(context, deepCollectsExplore: true),
+    );
+  }
+
+  Future<void> _handleDeepRoomImport(BuildContext context) async {
+    if (!hasRoomProfileUrl) return;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('さらに古い投稿を探す'),
+        content: Text(
+          'ROOMの collects API を最大'
+          '${RoomImportCollectsPolicy.deepMaxCollectPages}ページまで順に取得し、'
+          '未取り込みの投稿を探します。通信状況により数分〜10分以上かかることがあります。実行しますか？',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('キャンセル'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('実行'),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !context.mounted) return;
+    final ctl = context.read<RoomImportController>();
+    final result = await ctl.runImport(context, deepCollectsExplore: true);
+    if (!context.mounted) return;
+    if (result == null) return;
+    await RoomPostImportFlow.presentPostImportUi(
+      context,
+      result,
+      startBatch: () => ctl.runImport(context),
+      startDeepCollectsBatch: () => ctl.runImport(context, deepCollectsExplore: true),
     );
   }
 
@@ -767,9 +805,15 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      '投稿済みを${RoomImportLimitPolicy.freeBatchLimit}件取り込む',
+                      '投稿済みを${RoomImportLimitPolicy.freeBatchLimit}件取り込む（通常・高速）',
                     ),
                   ),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  onPressed: busy ? null : () => _handleDeepRoomImport(context),
+                  icon: const Icon(Icons.manage_search_outlined, size: 18),
+                  label: const Text('さらに古い投稿を探す（時間がかかります）'),
                 ),
                 const SizedBox(height: 8),
                 Text(

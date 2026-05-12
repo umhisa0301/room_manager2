@@ -611,6 +611,30 @@ void roomImportListingLog(String message) {
   }
 }
 
+void roomImportCollectsPolicyLog(String message) {
+  final line = '[ROOM_IMPORT_COLLECTS_POLICY] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportCollectsProgressLog(String message) {
+  final line = '[ROOM_IMPORT_COLLECTS_PROGRESS] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportCollectsStopLog(String message) {
+  final line = '[ROOM_IMPORT_COLLECTS_STOP] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 /// ROOM 取り込み後のメタ補完（enrichment）の打ち切り理由。
 void roomImportEnrichStopLog(String reason) {
   final line = '[ROOM_IMPORT_ENRICH] stop reason=$reason';

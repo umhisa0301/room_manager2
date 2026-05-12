@@ -17,6 +17,11 @@ class RoomSyncResult {
     this.newlyCollectedSamples = const [],
     this.reactionHighlightSamples = const [],
     this.reactionsResyncedCount = 0,
+    this.collectsExploreModeLabel = '',
+    this.collectsPagesFetched = 0,
+    this.collectsStopReason,
+    this.collectsIncompleteExplore = false,
+    this.collectsLastNextCursor,
   });
 
   /// 一覧段階で同期済み判定した件数（FINISH ログの processedChecked 相当）。
@@ -39,6 +44,21 @@ class RoomSyncResult {
 
   /// 同一 ROOM キーで反応数のみ再同期した件数。
   final int reactionsResyncedCount;
+
+  /// collects 探索モード（`normal` / `deep`）。未使用時は空文字。
+  final String collectsExploreModeLabel;
+
+  /// 今回の取り込み prepare で取得した collects API ページ数。
+  final int collectsPagesFetched;
+
+  /// collects 探索終了理由（`enoughItems` / `maxPagesReached` 等）。未使用時は null。
+  final String? collectsStopReason;
+
+  /// 通常モードでページ上限・連続既知打ち切りにより、未取り込みの掘り残しがある可能性がある。
+  final bool collectsIncompleteExplore;
+
+  /// 最後に得た collects の `nextAfterId`（ログ・再開用）。無ければ null。
+  final String? collectsLastNextCursor;
 
   /// 実際に1件ずつ確認した ROOM 商品ページ数（最大10など）。
   final int processedCount;

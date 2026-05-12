@@ -12,6 +12,7 @@ import '../navigation/app_shell_controller.dart';
 import '../repository/easy_initial_setup_repository.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/app_action_service.dart';
+import '../services/room_import_collects_policy.dart';
 import '../services/room_import_enrichment_cooldown_store.dart';
 import '../services/room_import_limit_policy.dart';
 import '../repository/rakuten_managed_product_repository.dart';
@@ -1080,6 +1081,44 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       context,
       result,
       startBatch: () => ctl.runImport(context),
+      startDeepCollectsBatch: () => ctl.runImport(context, deepCollectsExplore: true),
+    );
+  }
+
+  Future<void> _handleDeepRoomImport(BuildContext context) async {
+    final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
+    if (roomUrl.isEmpty) return;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('さらに古い投稿を探す'),
+        content: Text(
+          'ROOMの collects API を最大'
+          '${RoomImportCollectsPolicy.deepMaxCollectPages}ページまで順に取得し、'
+          '未取り込みの投稿を探します。通信状況により数分〜10分以上かかることがあります。実行しますか？',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('キャンセル'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('実行'),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !context.mounted) return;
+    final ctl = context.read<RoomImportController>();
+    final result = await ctl.runImport(context, deepCollectsExplore: true);
+    if (!context.mounted) return;
+    if (result == null) return;
+    await RoomPostImportFlow.presentPostImportUi(
+      context,
+      result,
+      startBatch: () => ctl.runImport(context),
+      startDeepCollectsBatch: () => ctl.runImport(context, deepCollectsExplore: true),
     );
   }
 
@@ -1255,7 +1294,8 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
               AppSectionHeader(
                 title: 'ROOM投稿取り込み',
                 subtitle:
-                    '未取り込みのROOM投稿を${RoomImportLimitPolicy.freeBatchLimit}件ずつ追加します。',
+                    '通常は先頭から高速に最大${RoomImportCollectsPolicy.normalMaxCollectPages}ページまで探索します。'
+                    '古い投稿の深掘りは別ボタンから実行してください。',
                 icon: Icons.downloading_rounded,
               ),
               const SizedBox(height: 8),
@@ -1299,8 +1339,16 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                 FilledButton(
                   onPressed: actionLocked ? null : () => _handleImport(context),
                   child: Text(
-                    '投稿済みを${RoomImportLimitPolicy.freeBatchLimit}件取り込む',
+                    '投稿済みを${RoomImportLimitPolicy.freeBatchLimit}件取り込む（通常・高速）',
                   ),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  onPressed: actionLocked
+                      ? null
+                      : () => _handleDeepRoomImport(context),
+                  icon: const Icon(Icons.manage_search_outlined, size: 18),
+                  label: const Text('さらに古い投稿を探す（時間がかかります）'),
                 ),
                 const SizedBox(height: 8),
                 OutlinedButton.icon(

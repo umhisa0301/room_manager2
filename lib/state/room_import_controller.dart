@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../config/demo_mode.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_sync_result.dart';
+import '../services/room_import_collects_policy.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../utils/room_sync_log.dart';
@@ -77,7 +78,10 @@ class RoomImportController extends ChangeNotifier {
   }
 
   /// 取り込みバッチを実行。実行中に再度呼ぶと null（UI はボタン disabled で抑止）。
-  Future<RoomSyncResult?> runImport(BuildContext context) async {
+  Future<RoomSyncResult?> runImport(
+    BuildContext context, {
+    bool deepCollectsExplore = false,
+  }) async {
     if (_phase == RoomImportPhase.running) return null;
     final profile = RoomProfileUrlValidationService.normalizeProfileUrl(
       context.read<UserProfileProvider>().profile.roomUrl,
@@ -100,6 +104,9 @@ class RoomImportController extends ChangeNotifier {
       try {
         result = await RoomPostImportFlow.executeBatch(
           context,
+          collectsExploreMode: deepCollectsExplore
+              ? RoomImportCollectsExploreMode.deep
+              : RoomImportCollectsExploreMode.normal,
           onProgress:
               ({
                 required bool busy,

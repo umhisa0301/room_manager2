@@ -7,6 +7,7 @@ import '../models/room_sync_result.dart';
 import '../navigation/app_shell_controller.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../services/app_action_service.dart';
+import '../services/room_import_collects_policy.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
@@ -69,6 +70,7 @@ abstract final class RoomPostImportFlow {
     BuildContext context,
     RoomSyncResult? result, {
     required Future<RoomSyncResult?> Function() startBatch,
+    Future<RoomSyncResult?> Function()? startDeepCollectsBatch,
   }) async {
     if (result == null) return;
     if (!context.mounted) return;
@@ -112,17 +114,25 @@ abstract final class RoomPostImportFlow {
     }
 
     if (!context.mounted) return;
-    final snackText = result.newlyCollectedCount > 0
+    var snackText = result.newlyCollectedCount > 0
         ? '${result.newlyCollectedCount}件を取り込みました'
         : (result.roomUrlAddedCount > 0
               ? 'ROOMページを${result.roomUrlAddedCount}件紐付けました'
               : 'ROOM投稿の確認が終わりました（追加なし）');
+    if (result.collectsIncompleteExplore) {
+      snackText += '。古い投稿に未取り込みが残っている可能性があります';
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(snackText)),
     );
 
     if (!context.mounted) return;
-    await showResultSheet(context, result: result, startBatch: startBatch);
+    await showResultSheet(
+      context,
+      result: result,
+      startBatch: startBatch,
+      startDeepCollectsBatch: startDeepCollectsBatch,
+    );
   }
 
   /// 1バッチ実行して結果を返す（ROOM URL 未登録時は null）。
@@ -130,6 +140,8 @@ abstract final class RoomPostImportFlow {
     BuildContext context, {
     required RoomPostImportProgressCallback onProgress,
     void Function(String hint)? onProcessingHint,
+    RoomImportCollectsExploreMode collectsExploreMode =
+        RoomImportCollectsExploreMode.normal,
   }) async {
     final profile = RoomProfileUrlValidationService.normalizeProfileUrl(
       context.read<UserProfileProvider>().profile.roomUrl,
@@ -151,6 +163,7 @@ abstract final class RoomPostImportFlow {
     final result = await service.syncPostedRoomProducts(
       userRoomProfileUrl: profile,
       maxItems: limit,
+      collectsExploreMode: collectsExploreMode,
       onCheckingProgress: (current, total) {
         lastCompleted = current;
         lastTotal = total;
@@ -169,6 +182,7 @@ abstract final class RoomPostImportFlow {
     BuildContext context, {
     required RoomSyncResult result,
     required Future<RoomSyncResult?> Function() startBatch,
+    Future<RoomSyncResult?> Function()? startDeepCollectsBatch,
   }) async {
     final navigatorContext = context;
     await showModalBottomSheet<void>(
@@ -278,6 +292,66 @@ abstract final class RoomPostImportFlow {
                     height: 1.35,
                   ),
                 ),
+                if (result.collectsPagesFetched > 0 ||
+                    result.collectsIncompleteExplore ||
+                    (result.collectsStopReason != null &&
+                        result.collectsStopReason!.trim().isNotEmpty)) ...[
+                  const SizedBox(height: 16),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: AppColors.divider.withValues(alpha: 0.55),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'ROOM投稿の探索（collects API）',
+                            style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            '探索ページ：${result.collectsPagesFetched}ページ · '
+                            'モード：${result.collectsExploreModeLabel == 'deep' ? '深掘り' : '通常'}',
+                            style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+                              height: 1.45,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                          if (result.collectsStopReason != null &&
+                              result.collectsStopReason!.trim().isNotEmpty) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              '終了理由：${result.collectsStopReason}',
+                              style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                                color: AppColors.textTertiary,
+                              ),
+                            ),
+                          ],
+                          if (result.collectsIncompleteExplore) ...[
+                            const SizedBox(height: 8),
+                            Text(
+                              '未取り込みの投稿がまだ残っている可能性があります。'
+                              '古い投稿をさらに探す場合は、マイページの'
+                              '「さらに古い投稿を探す」から実行できます。',
+                              style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+                                height: 1.45,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
                 if (pendingEnrich > 0) ...[
                   const SizedBox(height: 16),
                   DecoratedBox(
@@ -433,6 +507,29 @@ abstract final class RoomPostImportFlow {
                   ),
                 ),
                 const SizedBox(height: 12),
+                if (startDeepCollectsBatch != null &&
+                    result.collectsIncompleteExplore) ...[
+                  OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 48),
+                      foregroundColor: AppColors.accentPrimary,
+                    ),
+                    onPressed: () async {
+                      Navigator.pop(ctx);
+                      final next = await startDeepCollectsBatch();
+                      if (!navigatorContext.mounted || next == null) return;
+                      await presentPostImportUi(
+                        navigatorContext,
+                        next,
+                        startBatch: startBatch,
+                        startDeepCollectsBatch: startDeepCollectsBatch,
+                      );
+                    },
+                    icon: const Icon(Icons.manage_search_rounded, size: 20),
+                    label: const Text('さらに古い投稿を探す（時間がかかります）'),
+                  ),
+                  const SizedBox(height: 12),
+                ],
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
@@ -446,6 +543,7 @@ abstract final class RoomPostImportFlow {
                       navigatorContext,
                       next,
                       startBatch: startBatch,
+                      startDeepCollectsBatch: startDeepCollectsBatch,
                     );
                   },
                   icon: const Icon(Icons.playlist_add_rounded, size: 20),
