@@ -1,3 +1,5 @@
+import 'dart:async' show unawaited;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -251,6 +253,11 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
       final recommender = context.read<TodayRecommendationProvider>();
       await room.refreshManagedProductList(showLoadingIndicator: false);
       if (!mounted) return;
+      unawaited(
+        context
+            .read<RoomImportController>()
+            .tickSlowRoomMetadataEnrichmentIfNeeded(context),
+      );
       _trace('trigger=homeInit');
       _trigger('postFrame');
       _trace('action=ensureToday');
@@ -339,13 +346,15 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
       savedShops: context.read<SavedShopProvider>().shops,
       trigger: 'cta',
     );
-    if (recommender.pendingCount <= 0 && recommender.hasTodayBundleWithEntries) {
+    if (recommender.pendingCount <= 0 &&
+        recommender.hasTodayBundleWithEntries) {
       _guard('skipReason=pendingZeroButBundleExists');
     }
     if (!context.mounted) return;
     await Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => const TodayRecommendationsScreen(skipInitialEnsure: true),
+        builder: (_) =>
+            const TodayRecommendationsScreen(skipInitialEnsure: true),
       ),
     );
   }
@@ -723,9 +732,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     borderRadius: BorderRadius.circular(999),
                     child: LinearProgressIndicator(
                       minHeight: 8,
-                      value: ctl.isRunning &&
-                              total > 0 &&
-                              completed >= 0
+                      value: ctl.isRunning && total > 0 && completed >= 0
                           ? (completed / total).clamp(0.0, 1.0)
                           : null,
                       backgroundColor: HomeScreenColors.progressTrack,

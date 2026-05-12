@@ -350,6 +350,54 @@ void roomImportItemApiSuccessLog(String message) {
   }
 }
 
+void roomImportEnrichTargetLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_TARGET] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichApiLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_API] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichPausedLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_PAUSED] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichSuccessLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_SUCCESS] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichSkipLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_SKIP] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichSummaryLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_SUMMARY] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 /// 楽天 itemCode 補完APIの HTTP・プロキシ・レスポンス先頭の診断用。
 void roomImportItemCodeApiDiagLog(String message) {
   final line = '[ROOM_IMPORT_ITEMCODE_API_DIAG] $message';

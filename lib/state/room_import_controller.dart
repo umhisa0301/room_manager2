@@ -61,6 +61,39 @@ class RoomImportController extends ChangeNotifier {
   /// [RoomSyncService.onProcessingHint] から渡る短文（ホーム等の進捗表示用）。
   String get importProcessingHint => _importProcessingHint;
 
+  /// ROOMコレ表示・マイページ表示などで、低速キューのメタ補完を **控えめに** 1 回だけ試す。
+  /// 取り込み本体とは独立（メタ補完中バナーは立てない）。
+  Future<void> tickSlowRoomMetadataEnrichmentIfNeeded(
+    BuildContext context,
+  ) async {
+    if (kDemoModeEnabled || !context.mounted) return;
+    final bulk = context.read<BulkOperationStateController>();
+    if (bulk.isRoomImportRunning ||
+        bulk.isBulkCandidateRegistering ||
+        bulk.isMetadataEnriching) {
+      return;
+    }
+    try {
+      final svc = RoomImportMetadataEnrichmentService(
+        searchRepository: context.read<RakutenSearchRepository>(),
+        productRepository: context.read<RakutenManagedProductRepository>(),
+      );
+      await svc.enrichRoomImportedProducts(
+        limit: RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls,
+        applyPostImportAutoCap: true,
+      );
+    } catch (e, st) {
+      debugPrint('[RoomImportController] tickSlowEnrich: $e\n$st');
+    }
+    if (context.mounted) {
+      try {
+        await context
+            .read<RakutenManagedProductProvider>()
+            .refreshManagedProductList(showLoadingIndicator: false);
+      } catch (_) {}
+    }
+  }
+
   /// 取り込み本体完了後の軽量メタ補完（UI は待たない）。
   Future<void> _enrichRoomImportMetadataDeferred(BuildContext context) async {
     if (kDemoModeEnabled || !context.mounted) return;
@@ -73,10 +106,11 @@ class RoomImportController extends ChangeNotifier {
         searchRepository: context.read<RakutenSearchRepository>(),
         productRepository: context.read<RakutenManagedProductRepository>(),
       );
-      final updated = await svc.enrichRoomImportedProducts(
+      final result = await svc.enrichRoomImportedProducts(
         limit: RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls,
         applyPostImportAutoCap: true,
       );
+      final updated = result.updated;
       enrichSw.stop();
       roomImportPerfLog(
         'enrichmentEnd deferred updated=$updated durationMs=${enrichSw.elapsedMilliseconds}',

@@ -1,3 +1,5 @@
+import 'dart:async' show unawaited;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +15,7 @@ import '../services/room_import_limit_policy.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../services/room_import_metadata_enrichment.dart';
+import '../widgets/room_import_enrichment_pending_hint.dart';
 import '../widgets/room_post_import_flow.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../services/room_collect_post_limit.dart';
@@ -1050,6 +1053,19 @@ class MyPageRoomSyncSection extends StatefulWidget {
 }
 
 class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      unawaited(
+        context
+            .read<RoomImportController>()
+            .tickSlowRoomMetadataEnrichmentIfNeeded(context),
+      );
+    });
+  }
+
   Future<void> _handleImport(BuildContext context) async {
     final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
     if (roomUrl.isEmpty) return;
@@ -1087,13 +1103,52 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
         productRepository: productRepo,
       );
       messenger.showSnackBar(const SnackBar(content: Text('商品情報を補完しています…')));
-      final n = await svc.enrichRoomImportedProducts(limit: 20);
+      final result = await svc.enrichRoomImportedProducts(
+        limit: RoomImportLimitPolicy.manualEnrichMaxApiCallsPerRun,
+        applyPostImportAutoCap: false,
+      );
       if (!mounted) return;
       await managedProv.refreshManagedProductList();
       if (!mounted) return;
-      messenger.showSnackBar(
-        SnackBar(content: Text('ショップ名・ジャンル名を更新しました（成功 $n 件／上限20件まで）')),
-      );
+      if (result.skippedCooldown) {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              'しばらくしてから自動で補完を再開します'
+              '（未補完が${result.remainingPending}件残っています）。',
+            ),
+          ),
+        );
+      } else if (result.pausedByRateLimit) {
+        messenger.showSnackBar(
+          const SnackBar(
+            content: Text(
+              'アクセスが集中したため一度お休みします。'
+              'しばらく経ってからもう一度お試しください。',
+            ),
+          ),
+        );
+      } else if (result.remainingPending > 0) {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              '商品情報を${result.updated}件更新しました。'
+              '未補完が${result.remainingPending}件あります。'
+              '時間をおいて再度タップするか、自動で順番に反映されます。',
+            ),
+          ),
+        );
+      } else {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              result.updated > 0
+                  ? '商品情報を${result.updated}件更新しました。'
+                  : '更新対象はありませんでした。',
+            ),
+          ),
+        );
+      }
     } catch (e) {
       if (!mounted) return;
       messenger.showSnackBar(SnackBar(content: Text('商品情報の補完に失敗しました: $e')));
@@ -1111,8 +1166,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
     return Consumer2<RoomImportController, BulkOperationStateController>(
       builder: (context, ctl, bulk, _) {
         final busy = ctl.isRunning || bulk.isMetadataEnriching;
-        final enrichingOnly =
-            !ctl.isRunning && bulk.isMetadataEnriching;
+        final enrichingOnly = !ctl.isRunning && bulk.isMetadataEnriching;
         final completed = ctl.checkedCount;
         final total = ctl.targetCount;
         final actionLocked = bulk.isAnyBlockingOperationRunning;
@@ -1170,9 +1224,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                     ),
                   const SizedBox(height: 6),
                   LinearProgressIndicator(
-                    value: ctl.isRunning &&
-                            total > 0 &&
-                            completed >= 0
+                    value: ctl.isRunning && total > 0 && completed >= 0
                         ? (completed / total).clamp(0.0, 1.0)
                         : null,
                   ),
@@ -1192,9 +1244,10 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                   icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
                   label: const Text('取り込み商品の情報を補完'),
                 ),
+                const RoomImportEnrichmentPendingHint(),
                 const SizedBox(height: 6),
                 Text(
-                  'ショップ名・ジャンル名を更新します（最大20件）。',
+                  'ショップ名・価格・画像・ジャンルを少しずつ更新します（1回あたり${RoomImportLimitPolicy.manualEnrichMaxApiCallsPerRun}件程度）。',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.35,

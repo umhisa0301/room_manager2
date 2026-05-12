@@ -13,6 +13,7 @@ import '../services/rakuten_genre_master_service.dart';
 import '../services/room_collect_post_limit.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/room_activity_event_provider.dart';
+import '../state/room_import_controller.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../theme/app_theme.dart';
@@ -24,6 +25,7 @@ import '../widgets/app_button.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/rakuten_managed_product_card.dart';
+import '../widgets/room_import_enrichment_pending_hint.dart';
 
 /// ROOMコレ一覧の左右。ホームの 9 に対し **1dp だけ狭め**て一覧優先（違和感を抑える程度）。
 const double _kRoomListScreenPadH = 8;
@@ -854,23 +856,23 @@ class _RoomColleFilterEditorSheetState
       doneFeedbackSold: widget.isCandidateTab
           ? widget.initial.doneFeedbackSold
           : (_doneQuickFilterPreset == RoomColleDoneQuickFilterPreset.all
-              ? widget.initial.doneFeedbackSold
-              : false),
+                ? widget.initial.doneFeedbackSold
+                : false),
       doneFeedbackLiked: widget.isCandidateTab
           ? widget.initial.doneFeedbackLiked
           : (_doneQuickFilterPreset == RoomColleDoneQuickFilterPreset.all
-              ? widget.initial.doneFeedbackLiked
-              : false),
+                ? widget.initial.doneFeedbackLiked
+                : false),
       doneFeedbackWeak: widget.isCandidateTab
           ? widget.initial.doneFeedbackWeak
           : (_doneQuickFilterPreset == RoomColleDoneQuickFilterPreset.all
-              ? widget.initial.doneFeedbackWeak
-              : false),
+                ? widget.initial.doneFeedbackWeak
+                : false),
       doneFeedbackUnrated: widget.isCandidateTab
           ? widget.initial.doneFeedbackUnrated
           : (_doneQuickFilterPreset == RoomColleDoneQuickFilterPreset.all
-              ? widget.initial.doneFeedbackUnrated
-              : false),
+                ? widget.initial.doneFeedbackUnrated
+                : false),
       doneRoomConfirmedOnly: false,
     );
     Navigator.of(context).pop(
@@ -1690,8 +1692,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
   ) {
     if (_doneReactionQuickAutoAppliedOnce) return;
     if (!_doneListFilters.isDoneFilterDefaultForAutoReaction) return;
-    final doneItems =
-        managed.sortedItemsForStatus(RakutenManagedProductStatus.done);
+    final doneItems = managed.sortedItemsForStatus(
+      RakutenManagedProductStatus.done,
+    );
     final hasReaction = doneItems.any((e) {
       final lc = e.roomLikeCount;
       final cc = e.roomCommentCount;
@@ -1854,7 +1857,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
     _doneSearchController = TextEditingController();
     _roomColleUiRepo = context.read<RoomColleUiStateRepository>();
     final persisted = _roomColleUiRepo.loadSanitized();
-    _doneReactionQuickAutoAppliedOnce = persisted.doneReactionQuickAutoAppliedOnce;
+    _doneReactionQuickAutoAppliedOnce =
+        persisted.doneReactionQuickAutoAppliedOnce;
 
     if (_roomColleScreenHasExplicitRouteArgs(widget)) {
       _doneLocalDayFilter = _normalizeDoneDayFilter(
@@ -1921,6 +1925,12 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
           'done=$nDone listUi=${m.listUiStatus} tabIdx=${_tabController.index}',
         );
       }
+      if (!mounted) return;
+      unawaited(
+        context
+            .read<RoomImportController>()
+            .tickSlowRoomMetadataEnrichmentIfNeeded(context),
+      );
     });
   }
 
@@ -1940,6 +1950,11 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         showLoadingIndicator: false,
         loadSource: 'screen',
         tab: _tabController.index == 0 ? 'candidate' : 'done',
+      );
+      unawaited(
+        context
+            .read<RoomImportController>()
+            .tickSlowRoomMetadataEnrichmentIfNeeded(context),
       );
     } else {
       _tryConsumeRoomCollectIntent();
@@ -2306,6 +2321,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                 ),
               ),
               SizedBox(height: _RoomColleUi.gapSection),
+              const RoomImportEnrichmentPendingHint(),
+              const SizedBox(height: 6),
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
