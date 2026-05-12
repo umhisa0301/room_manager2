@@ -1,0 +1,614 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-13 00:21:45
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260513_002145.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260513_002145.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260513_002145.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260513_002145.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260513_002145.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260513_002145
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260513_002145\terminal_output_20260513_002145.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 20176).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             10.6s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.7s
+D/FlutterJNI( 8716): Beginning load of flutter...
+D/FlutterJNI( 8716): flutter (null) was loaded normally!
+I/flutter ( 8716): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+Syncing files to device SHG08...                                
+I/o.room_manager2( 8716): hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported,test-api) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+I/o.room_manager2( 8716): hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+I/o.room_manager2( 8716): hiddenapi: Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+I/o.room_manager2( 8716): hiddenapi: Accessing hidden method Landroid/util/LongArray;->get(I)J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+D/CompatibilityChangeReporter( 8716): Compat change id reported: 237531167; UID 10458; state: DISABLED
+W/OpenGLRenderer( 8716): Unknown dataspace 0
+Syncing files to device SHG08...                                    95ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:50131/TH18FV8Zgfc=/
+I/flutter ( 8716): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter ( 8716): verifyMode=false
+I/Choreographer( 8716): Skipped 182 frames!  The application may be doing too much work on its main thread.
+I/o.room_manager2( 8716): Compiler allocated 4412KB to compile void android.view.ViewRootImpl.performTraversals()
+W/libc    ( 8716): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 8716): type=1400 audit(0.0:503726): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0
+I/AdrenoGLES-0( 8716): QUALCOMM build                   : a3cdec2236, Ief33eea0db
+I/AdrenoGLES-0( 8716): Build Date                       : 08/23/22
+I/AdrenoGLES-0( 8716): OpenGL ES Shader Compiler Version: EV031.35.01.12
+I/AdrenoGLES-0( 8716): Local Branch                     : 
+I/AdrenoGLES-0( 8716): Remote Branch                    : 
+I/AdrenoGLES-0( 8716): Remote Branch                    : 
+I/AdrenoGLES-0( 8716): Reconstruct Branch               : 
+I/AdrenoGLES-0( 8716): Build Config                     : S P 10.0.7 AArch64
+I/AdrenoGLES-0( 8716): Driver Path                      : /vendor/lib64/egl/libGLESv2_adreno.so
+I/AdrenoGLES-0( 8716): PFP: 0x016ee201, ME: 0x00000000
+W/o.room_manager2( 8716): type=1400 audit(0.0:503727): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0
+W/libc    ( 8716): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/qdgralloc( 8716): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 8716): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 8716): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 8716): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 8716): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 8716): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 8716): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 8716): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 8716): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 8716): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 8716): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 8716): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 8716): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 8716): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 8716): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils( 8716): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 8716): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 8716): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 8716): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator( 8716): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer( 8716): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc( 8716): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils( 8716): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils( 8716): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc( 8716): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4( 8716): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator( 8716): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer( 8716): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/OpenGLRenderer( 8716): Unable to match the desired swap behavior.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:50131/TH18FV8Zgfc=/
+I/flutter ( 8716): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter ( 8716): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 8716): [ROOMコレ診断] loadAll 初回サマリー parsed=201 rawJsonList=201
+I/flutter ( 8716): [RECOMMEND_TRACE] savedBundle=true
+I/flutter ( 8716): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 8716): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter ( 8716): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=201 afterFilterLen=201 surface=ok_list ui=ready
+I/flutter ( 8716): [ROOMコレ診断] 描画リスト先頭 productId=j3020 title=＼対象商品2点以上で5％OFF／【365日即日発送】通勤 バッグ レディース a4 合皮素材 トートバッグ ビジネス リクルート ビジネスバッグ オフィス 通勤 OL ハンドバッグ ショルダー ショルダーバッグ 通勤バッグ カバン 鞄 かばん バック status=done len=201
+I/flutter ( 8716): [REACTION_STATUS] productId=j3020
+I/flutter ( 8716): [REACTION_STATUS] roomLikeCount=1
+I/flutter ( 8716): [REACTION_STATUS] roomCommentCount=0
+I/flutter ( 8716): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter ( 8716): [REACTION_STATUS] productId=c9023
+I/flutter ( 8716): [REACTION_STATUS] roomLikeCount=3
+I/flutter ( 8716): [REACTION_STATUS] roomCommentCount=0
+I/flutter ( 8716): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter ( 8716): [REACTION_STATUS] productId=t5317
+I/flutter ( 8716): [REACTION_STATUS] roomLikeCount=1
+I/flutter ( 8716): [REACTION_STATUS] roomCommentCount=0
+I/flutter ( 8716): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter ( 8716): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 8716): action=refresh
+I/flutter ( 8716): productId=
+I/flutter ( 8716): itemCode=
+I/flutter ( 8716): beforePendingCount=0
+I/flutter ( 8716): afterPendingCount=0
+I/flutter ( 8716): beforeDoneCount=201
+I/flutter ( 8716): afterDoneCount=201
+I/flutter ( 8716): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 8716): source=provider
+I/flutter ( 8716): pendingCount=0
+I/flutter ( 8716): doneCount=201
+I/flutter ( 8716): filter=
+I/flutter ( 8716): tab=
+I/flutter ( 8716): [ROOMコレ診断] refreshManagedProductList 完了 total=201 candidate=0 done=201 ui=ready
+I/flutter ( 8716): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 8716): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter ( 8716): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 8716): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter ( 8716): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 8716): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 8716): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 8716): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-12T00:34:39.945840
+I/flutter ( 8716): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=false
+I/flutter ( 8716): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter ( 8716): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 8716): [RECOMMEND_TRACE] action=regenerateToday
+I/flutter ( 8716): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 8716): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-12T00:34:39.945840
+I/flutter ( 8716): [RECOMMEND_TRACE] generate start
+I/flutter ( 8716): [RECOMMEND_TRACE] profile nickname=あいうえお
+I/flutter ( 8716): [RECOMMEND_STYLE] selected=balance
+I/flutter ( 8716): [SEARCH_STYLE_TRACE] selectedStyle=balance
+I/flutter ( 8716): [RECOMMEND_TRACE] favoriteGenreIds=101381
+I/flutter ( 8716): [RECOMMEND_TRACE] searchPreferences=balance
+I/flutter ( 8716): [RECOMMEND_TRACE] savedShopCount=2
+I/flutter ( 8716): [RECOMMEND_TRACE] doneProductCount=201
+I/flutter ( 8716): [RECOMMEND_TRACE] candidateProductCount=0
+I/flutter ( 8716): [RECOMMEND_START] genreCount=1 savedShopCount=2 doneCount=201 candidateCount=0 selectedStyle=balance
+I/flutter ( 8716): [RECOMMEND_PLAN] count=8
+I/flutter ( 8716): [RECOMMEND_GENERATE] start requestCount=0 planCount=8
+I/flutter ( 8716): [RECOMMEND_REACTION] commentGenres=3 likeGenres=8 commentShops=3 likeShops=8 priceBands=10000-19999,2000-4999,5000-9999
+I/flutter ( 8716): [RECOMMEND_POOL] raw=0 valid=0 scored=0
+I/flutter ( 8716): [RECOMMEND_SELECT] strictSelected=0
+I/flutter ( 8716): [RECOMMEND_PHASE] phase=personal
+I/flutter ( 8716): [RECOMMEND] search keyword=カタログギフト・チケット
+I/flutter ( 8716): [RECOMMEND] genreId=101381
+I/flutter ( 8716): [RECOMMEND] searchPreference=
+I/flutter ( 8716): [RECOMMEND] minPrice=null
+I/flutter ( 8716): [RECOMMEND] maxPrice=null
+I/flutter ( 8716): [RECOMMEND] sanitizedMinPrice=null
+I/flutter ( 8716): [RECOMMEND] sanitizedMaxPrice=null
+I/flutter ( 8716): [RECOMMEND_PLAN] phase=personal relax=0 source=genre index=1 keyword=カタログギフト・チケット genreId=101381 shopCode= style=balance minPrice= maxPrice= sort=
+I/flutter ( 8716): [RECOMMEND_API] planIndex=1 keyword=カタログギフト・チケット genreId=101381 shopCode= page=1
+I/flutter ( 8716): [RECOMMEND_API] phase=personal start index=1 page=1
+I/flutter ( 8716): [Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=カタログギフト・チケット genreId=101381 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 8716): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 8716): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=20&keyword=%E3%82%AB%E3%82%BF%E3%83%AD%E3%82%B0%E3%82%AE%E3%83%95%E3%83%88%E3%83%BB%E3%83%81%E3%82%B1%E3%83%83%E3%83%88&minReviewCount=10&minReviewAverage=3.6&genreId=101381
+I/flutter ( 8716): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 8716): action=refresh
+I/flutter ( 8716): productId=
+I/flutter ( 8716): itemCode=
+I/flutter ( 8716): beforePendingCount=0
+I/flutter ( 8716): afterPendingCount=0
+I/flutter ( 8716): beforeDoneCount=201
+I/flutter ( 8716): afterDoneCount=201
+I/flutter ( 8716): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 8716): source=screen
+I/flutter ( 8716): pendingCount=0
+I/flutter ( 8716): doneCount=201
+I/flutter ( 8716): filter=
+I/flutter ( 8716): tab=done
+I/flutter ( 8716): [ROOMコレ診断] refreshManagedProductList 完了 total=201 candidate=0 done=201 ui=ready
+I/flutter ( 8716): [ROOMコレ診断] ROOMコレ画面起動後 total=201 candidate=0 done=201 listUi=RakutenManagedProductListUiStatus.ready tabIdx=1
+I/flutter ( 8716): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 8716): action=refresh
+I/flutter ( 8716): productId=
+I/flutter ( 8716): itemCode=
+I/flutter ( 8716): beforePendingCount=0
+I/flutter ( 8716): afterPendingCount=0
+I/flutter ( 8716): beforeDoneCount=201
+I/flutter ( 8716): afterDoneCount=201
+I/flutter ( 8716): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 8716): source=provider
+I/flutter ( 8716): pendingCount=0
+I/flutter ( 8716): doneCount=201
+I/flutter ( 8716): filter=
+I/flutter ( 8716): tab=
+I/flutter ( 8716): [ROOMコレ診断] refreshManagedProductList 完了 total=201 candidate=0 done=201 ui=ready
+I/flutter ( 8716): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 8716): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=201 afterFilterLen=201 surface=ok_list ui=ready
+I/flutter ( 8716): [ROOMコレ診断] 描画リスト先頭 productId=j3020 title=＼対象商品2点以上で5％OFF／【365日即日発送】通勤 バッグ レディース a4 合皮素材 トートバッグ ビジネス リクルート ビジネスバッグ オフィス 通勤 OL ハンドバッグ ショルダー ショルダーバッグ 通勤バッグ カバン 鞄 かばん バック status=done len=201
+I/flutter ( 8716): [REACTION_STATUS] productId=j3020
+I/flutter ( 8716): [REACTION_STATUS] roomLikeCount=1
+I/flutter ( 8716): [REACTION_STATUS] roomCommentCount=0
+I/flutter ( 8716): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter ( 8716): [REACTION_STATUS] productId=c9023
+I/flutter ( 8716): [REACTION_STATUS] roomLikeCount=3
+I/flutter ( 8716): [REACTION_STATUS] roomCommentCount=0
+I/flutter ( 8716): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter ( 8716): [REACTION_STATUS] productId=t5317
+I/flutter ( 8716): [REACTION_STATUS] roomLikeCount=1
+I/flutter ( 8716): [REACTION_STATUS] roomCommentCount=0
+I/flutter ( 8716): [REACTION_STATUS] resolvedChip=反応あり
+I/Choreographer( 8716): Skipped 266 frames!  The application may be doing too much work on its main thread.
+I/OpenGLRenderer( 8716): Davey! duration=4478ms; Flags=1, FrameTimelineVsyncId=573999051, IntendedVsync=4097915826294199, Vsync=4097920271392801, InputEventId=0, HandleInputStart=4097920283119056, AnimationStart=4097920283120514, PerformTraversalsStart=4097920283120931, DrawStart=4097920289504264, FrameDeadline=4097915842960865, FrameInterval=4097920282766556, FrameStartTime=16710897, SyncQueued=4097920292411191, SyncStart=4097920292523900, IssueDrawCommandsStart=4097920293105566, SwapBuffers=4097920302694629, FrameCompleted=4097920304757494, DequeueBufferDuration=2518750, QueueBufferDuration=1420208, GpuCompleted=4097920304662441, SwapBuffersCompleted=4097920304757494, DisplayPresentTime=0, CommandSubmissionCompleted=4097920302694629, 
+I/WebViewFactory( 8716): Loading com.google.android.webview version 147.0.7727.137 (code 772713703)
+D/ApplicationLoaders( 8716): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2( 8716): Loading /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader( 8716): Configuring clns-5 for other apk /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/lib/arm64:/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider( 8716): version=147.0.7727.137 (772713703) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader( 8716): Load /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+D/nativeloader( 8716): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+I/chromium( 8716): [0513/002220.516702:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader( 8716): Successfully loaded native library
+I/cr_CachingUmaRecorder( 8716): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH( 8716): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider( 8716): #registerProvider() provider:WV.yk@9f9ad37 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider( 8716): #setManagerAndSource() 0
+I/cr_DisplayManager( 8716): Is Display Topology available: false
+I/cr_CombinedPProvider( 8716): #linkNativeInternal() 1
+D/CompatibilityChangeReporter( 8716): Compat change id reported: 183155436; UID 10458; state: ENABLED
+I/cr_AppResProvider( 8716): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 8716): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 8716): #onSettingsAvailable() 0
+I/cr_CombinedPProvider( 8716): #flushPolicies()
+W/chromium( 8716): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium( 8716): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 103712643
+D/CompatibilityChangeReporter( 8716): Compat change id reported: 214741472; UID 10458; state: ENABLED
+I/CameraManagerGlobal( 8716): Connecting to camera service
+D/CompatibilityChangeReporter( 8716): Compat change id reported: 171228096; UID 10458; state: ENABLED
+I/PlatformViewsController( 8716): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController( 8716): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter( 8716): Compat change id reported: 236825255; UID 10458; state: ENABLED
+W/libc    ( 8716): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 8716): type=1400 audit(0.0:503728): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0
+D/CompatibilityChangeReporter( 8716): Compat change id reported: 193247900; UID 10458; state: ENABLED
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+I/Choreographer( 8716): Skipped 55 frames!  The application may be doing too much work on its main thread.
+W/o.room_manager2( 8716): type=1400 audit(0.0:503729): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0
+W/libc    ( 8716): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+I/AdrenoVK-0( 8716): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0( 8716): Build Date              : 08/23/22
+I/AdrenoVK-0( 8716): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0( 8716): Local Branch            : 
+I/AdrenoVK-0( 8716): Remote Branch           : 
+I/AdrenoVK-0( 8716): Remote Branch           : 
+I/AdrenoVK-0( 8716): Reconstruct Branch      : 
+I/AdrenoVK-0( 8716): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0( 8716): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer( 8716): Davey! duration=986ms; Flags=0, FrameTimelineVsyncId=573999140, IntendedVsync=4097920303696022, Vsync=4097921222829897, InputEventId=0, HandleInputStart=4097921224214941, AnimationStart=4097921224216504, PerformTraversalsStart=4097921224239056, DrawStart=4097921230246920, FrameDeadline=4097920320362688, FrameInterval=4097921223904212, FrameStartTime=16710897, SyncQueued=4097921286824785, SyncStart=4097921286900358, IssueDrawCommandsStart=4097921287004681, SwapBuffers=4097921289002597, FrameCompleted=4097921290458170, DequeueBufferDuration=1240417, QueueBufferDuration=1039688, GpuCompleted=4097921290458170, SwapBuffersCompleted=4097921290384472, DisplayPresentTime=0, CommandSubmissionCompleted=4097921289002597, 
+I/flutter ( 8716): [Rakuten] response status=200 page=1 bytes=126810
+I/flutter ( 8716): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 8716): [RECOMMEND_TRACE] rawCount=20
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sl9nh.362kt1bd.g00sl9nh.362kubf4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff212172-hida%2Fcat5%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff212172-hida%2Fi%2F10002315%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sl9nh.362kt1bd.g00sl9nh.362kubf4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff212172-hida%2Fcat5%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff212172-hida%2Fi%2F10002315%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f212172-hida:10002315 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f212172-hida:10002315 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pzibh.362kt650.g00pzibh.362kuf29/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fjyoei%2Fr816-001%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fjyoei%2Fi%2F10259745%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pzibh.362kt650.g00pzibh.362kuf29/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fjyoei%2Fr816-001%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fjyoei%2Fi%2F10259745%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=jyoei:10259745 rawGenreId=566732 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=jyoei:10259745 model.genreId=566732 model.genreName= jsonRaw=カタログギフト jsonRolled=カタログギフト displayGenre=カタログギフト
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tzczh.362kt06d.g00tzczh.362ku4d7/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff114421-miyashiromachi%2F10000003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff114421-miyashiromachi%2Fi%2F10000003%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tzczh.362kt06d.g00tzczh.362ku4d7/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff114421-miyashiromachi%2F10000003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff114421-miyashiromachi%2Fi%2F10000003%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f114421-miyashiromachi:10000003 rawGenreId=553275 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f114421-miyashiromachi:10000003 model.genreId=553275 model.genreName= jsonRaw=遊園地・テーマパーク jsonRolled=遊園地・テーマパーク displayGenre=遊園地・テーマパーク
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tzczh.362kt06d.g00tzczh.362ku4d7/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff114421-miyashiromachi%2F10000039%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff114421-miyashiromachi%2Fi%2F10000091%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tzczh.362kt06d.g00tzczh.362ku4d7/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff114421-miyashiromachi%2F10000039%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff114421-miyashiromachi%2Fi%2F10000091%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f114421-miyashiromachi:10000091 rawGenreId=553275 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f114421-miyashiromachi:10000091 model.genreId=553275 model.genreName= jsonRaw=遊園地・テーマパーク jsonRolled=遊園地・テーマパーク displayGenre=遊園地・テーマパーク
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00ts8xh.362kt038.g00ts8xh.362ku2c3/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff013986-kimobetsu%2Ft001-r%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff013986-kimobetsu%2Fi%2F10000000%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00ts8xh.362kt038.g00ts8xh.362ku2c3/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff013986-kimobetsu%2Ft001-r%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff013986-kimobetsu%2Fi%2F10000000%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f013986-kimobetsu:10000000 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f013986-kimobetsu:10000000 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u2luh.362kt431.g00u2luh.362ku7d8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff262111-kyotanabe%2F53260079%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff262111-kyotanabe%2Fi%2F10000082%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u2luh.362kt431.g00u2luh.362ku7d8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff262111-kyotanabe%2F53260079%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff262111-kyotanabe%2Fi%2F10000082%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f262111-kyotanabe:10000082 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f262111-kyotanabe:10000082 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00te5rh.362ktd23.g00te5rh.362ku0d1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff343692-kitahiroshima%2Fha095_001%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff343692-kitahiroshima%2Fi%2F10000840%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00te5rh.362ktd23.g00te5rh.362ku0d1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff343692-kitahiroshima%2Fha095_001%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff343692-kitahiroshima%2Fi%2F10000840%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f343692-kitahiroshima:10000840 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f343692-kitahiroshima:10000840 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u2luh.362kt431.g00u2luh.362ku7d8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff262111-kyotanabe%2F53260081%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff262111-kyotanabe%2Fi%2F10000083%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u2luh.362kt431.g00u2luh.362ku7d8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff262111-kyotanabe%2F53260081%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff262111-kyotanabe%2Fi%2F10000083%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f262111-kyotanabe:10000083 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f262111-kyotanabe:10000083 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00td0lh.362ktbc1.g00td0lh.362ku209/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fhappy-dayss%2Fkoukan-henpin%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fhappy-dayss%2Fi%2F10001156%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00td0lh.362ktbc1.g00td0lh.362ku209/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fhappy-dayss%2Fkoukan-henpin%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fhappy-dayss%2Fi%2F10001156%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=happy-dayss:10001156 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=happy-dayss:10001156 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00ts8xh.362kt038.g00ts8xh.362ku2c3/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff013986-kimobetsu%2Ft002-r%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff013986-kimobetsu%2Fi%2F10000065%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00ts8xh.362kt038.g00ts8xh.362ku2c3/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff013986-kimobetsu%2Ft002-r%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff013986-kimobetsu%2Fi%2F10000065%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f013986-kimobetsu:10000065 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f013986-kimobetsu:10000065 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00thd0h.362kt644.g00thd0h.362ku68a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff112097-hanno%2F52210626%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff112097-hanno%2Fi%2F10000909%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00thd0h.362kt644.g00thd0h.362ku68a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff112097-hanno%2F52210626%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff112097-hanno%2Fi%2F10000909%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f112097-hanno:10000909 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f112097-hanno:10000909 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00te5rh.362ktd23.g00te5rh.362ku0d1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff343692-kitahiroshima%2Fha095_002%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff343692-kitahiroshima%2Fi%2F10000841%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00te5rh.362ktd23.g00te5rh.362ku0d1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff343692-kitahiroshima%2Fha095_002%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff343692-kitahiroshima%2Fi%2F10000841%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f343692-kitahiroshima:10000841 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f343692-kitahiroshima:10000841 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00thd0h.362kt644.g00thd0h.362ku68a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff112097-hanno%2F52210694%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff112097-hanno%2Fi%2F10000959%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00thd0h.362kt644.g00thd0h.362ku68a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff112097-hanno%2F52210694%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff112097-hanno%2Fi%2F10000959%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f112097-hanno:10000959 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f112097-hanno:10000959 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sv0hh.362kt206.g00sv0hh.362ku771/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff074080-inawashiro%2F57711216%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff074080-inawashiro%2Fi%2F10000330%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sv0hh.362kt206.g00sv0hh.362ku771/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff074080-inawashiro%2F57711216%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff074080-inawashiro%2Fi%2F10000330%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f074080-inawashiro:10000330 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f074080-inawashiro:10000330 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00thd0h.362kt644.g00thd0h.362ku68a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff112097-hanno%2F52210752%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff112097-hanno%2Fi%2F10001003%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00thd0h.362kt644.g00thd0h.362ku68a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff112097-hanno%2F52210752%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff112097-hanno%2Fi%2F10001003%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f112097-hanno:10001003 rawGenreId=101954 rawGenreName= rawKeys=genreId
+D/ProfileInstaller( 8716): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI( 8716): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f112097-hanno:10001003 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tddsh.362kt622.g00tddsh.362kuef6/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff182079-sabae%2Fb-06103%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff182079-sabae%2Fi%2F10000769%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tddsh.362kt622.g00tddsh.362kuef6/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff182079-sabae%2Fb-06103%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff182079-sabae%2Fi%2F10000769%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f182079-sabae:10000769 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f182079-sabae:10000769 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00td8ih.362kt582.g00td8ih.362kud9f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff052094-kazuno%2F114012%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff052094-kazuno%2Fi%2F10000371%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00td8ih.362kt582.g00td8ih.362kud9f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff052094-kazuno%2F114012%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff052094-kazuno%2Fi%2F10000371%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f052094-kazuno:10000371 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f052094-kazuno:10000371 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00t5wdh.362ktce0.g00t5wdh.362kuc97/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff472123-tomigusuku%2Fbr001%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff472123-tomigusuku%2Fi%2F10000795%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00t5wdh.362ktce0.g00t5wdh.362kuc97/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff472123-tomigusuku%2Fbr001%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff472123-tomigusuku%2Fi%2F10000795%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f472123-tomigusuku:10000795 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f472123-tomigusuku:10000795 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u4bzh.362kt3fe.g00u4bzh.362kub08/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff121002-chiba%2F53460204%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff121002-chiba%2Fi%2F10000168%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u4bzh.362kt3fe.g00u4bzh.362kub08/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff121002-chiba%2F53460204%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff121002-chiba%2Fi%2F10000168%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f121002-chiba:10000168 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f121002-chiba:10000168 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u2luh.362kt431.g00u2luh.362ku7d8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff262111-kyotanabe%2F53260080%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff262111-kyotanabe%2Fi%2F10000080%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u2luh.362kt431.g00u2luh.362ku7d8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff262111-kyotanabe%2F53260080%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff262111-kyotanabe%2Fi%2F10000080%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 8716): [RakutenGenre][API] itemCode=f262111-kyotanabe:10000080 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 8716): [RakutenGenre][MAP] itemCode=f262111-kyotanabe:10000080 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 8716): [Rakuten] page=1 parsedItems=20 / raw=20
+I/flutter ( 8716): [Rakuten] repository search total mapped=20
+I/flutter ( 8716): [Rakuten] genreSearch mapped item count=20
+I/flutter ( 8716): [Rakuten] genreSearch before filter count=20
+I/flutter ( 8716): [Rakuten] recommendation purpose skip app-side filter count=20
+I/flutter ( 8716): [RECOMMEND_API] phase=personal status=200 rawCount=20
+I/flutter ( 8716): [RECOMMEND_FILTER] raw=20 afterExclude=20 reasonCounts={}
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f212172-hida:10002315 title=【ふるさと納税】《有効期限なし！積立可能！》あとからゆっくり返礼品を選べる♪ ふるさと納税 カタログ WEB・紙 定期便 高評価 あとからセレクト ギフト 米 牛肉 飛騨牛 チーズ 果物 フルーツ 野菜 スイーツ 訳あり どやな飛騨市 1000円 5000円 5千円 1万円 5万円 10万円
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f212172-hida:10002315 title=【ふるさと納税】《有効期限なし！積立可能！》あとからゆっくり返礼品を選べる♪ ふるさと納税 カタログ WEB・紙 定期便 高評価 あとからセレクト ギフト 米 牛肉 飛騨牛 チーズ 果物 フルーツ 野菜 スイーツ 訳あり どやな飛騨市 1000円 5000円 5千円 1万円 5万円 10万円
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=jyoei:10259745 title=リンベル カタログギフト ディズニー×リンベル スマイル 〈816-111〉カタログギフト・チケット オリジナル ディズニー disney 内祝い 出産内祝い 結婚祝い 結婚内祝い お返し カタログ ギフトカタログ 快気祝い 退職祝い 引き出物 引出物 企業記念品 成約記念
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=jyoei:10259745 title=リンベル カタログギフト ディズニー×リンベル スマイル 〈816-111〉カタログギフト・チケット オリジナル ディズニー disney 内祝い 出産内祝い 結婚祝い 結婚内祝い お返し カタログ ギフトカタログ 快気祝い 退職祝い 引き出物 引出物 企業記念品 成約記念
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f114421-miyashiromachi:10000003 title=【ふるさと納税】東武動物公園「入場券＋のりもの券10枚綴り」（ペア） | カタログギフト・チケット 遊園地 動物園 チケット フリーパス 割引 のりもの 乗り放題 家族 お出かけ 子ども 子供 子連れ ファミリー おすすめ レジャー施設 プール 夏休み 関東 埼玉県 宮代町
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f114421-miyashiromachi:10000003 title=【ふるさと納税】東武動物公園「入場券＋のりもの券10枚綴り」（ペア） | カタログギフト・チケット 遊園地 動物園 チケット フリーパス 割引 のりもの 乗り放題 家族 お出かけ 子ども 子供 子連れ ファミリー おすすめ レジャー施設 プール 夏休み 関東 埼玉県 宮代町
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f114421-miyashiromachi:10000091 title=【ふるさと納税】東武動物公園「アトラクションパスセット」(1人分) | カタログギフト・チケット 遊園地 動物園 チケット フリーパス 割引 のりもの 乗り放題 家族 お出かけ 子ども 子供 子連れ ファミリー おすすめ レジャー施設 プール 夏休み 関東 埼玉県 宮代町
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f114421-miyashiromachi:10000091 title=【ふるさと納税】東武動物公園「アトラクションパスセット」(1人分) | カタログギフト・チケット 遊園地 動物園 チケット フリーパス 割引 のりもの 乗り放題 家族 お出かけ 子ども 子供 子連れ ファミリー おすすめ レジャー施設 プール 夏休み 関東 埼玉県 宮代町
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f013986-kimobetsu:10000000 title=【ふるさと納税】【選べるシーズン】簡易宿泊所きもべつ 1名様分 宿泊券 《喜茂別町》【喜茂別町商工会】 宿泊券 北海道 宿泊 旅行 旅 宿 観光 スキー スノーボード 北海道 [AJAL001]
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f013986-kimobetsu:10000000 title=【ふるさと納税】【選べるシーズン】簡易宿泊所きもべつ 1名様分 宿泊券 《喜茂別町》【喜茂別町商工会】 宿泊券 北海道 宿泊 旅行 旅 宿 観光 スキー スノーボード 北海道 [AJAL001]
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f262111-kyotanabe:10000082 title=【ふるさと納税】SPA&HOTEL水春松井山手　入浴招待券3枚セット チケット 温泉利用券
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f262111-kyotanabe:10000082 title=【ふるさと納税】SPA&HOTEL水春松井山手　入浴招待券3枚セット チケット 温泉利用券
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f343692-kitahiroshima:10000840 title=【ふるさと納税】《恩おくりの返礼品》北広島町のおいしいお米を子どもたちに（寄贈型）5kg分
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f343692-kitahiroshima:10000840 title=【ふるさと納税】《恩おくりの返礼品》北広島町のおいしいお米を子どもたちに（寄贈型）5kg分
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f262111-kyotanabe:10000083 title=【ふるさと納税】入浴岩盤招待券 3枚 SPA&HOTEL水春松井山手 入浴券 招待券 スパ 岩盤浴 リラクゼーション 温泉 旅行 観光 日帰り入浴 施設利用券 チケット クーポン ホテル 京都府 京田辺市
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f262111-kyotanabe:10000083 title=【ふるさと納税】入浴岩盤招待券 3枚 SPA&HOTEL水春松井山手 入浴券 招待券 スパ 岩盤浴 リラクゼーション 温泉 旅行 観光 日帰り入浴 施設利用券 チケット クーポン ホテル 京都府 京田辺市
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=happy-dayss:10001156 title=交換・返品手数料 リーチェ
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=happy-dayss:10001156 title=交換・返品手数料 リーチェ
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f013986-kimobetsu:10000065 title=【ふるさと納税】【選べるシーズン】簡易宿泊所きもべつ 2名様分 宿泊券 《喜茂別町》【喜茂別町商工会】 北海道 宿泊 旅行 旅 宿 観光 スキー スノーボード 北海道 [AJAL002]
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f013986-kimobetsu:10000065 title=【ふるさと納税】【選べるシーズン】簡易宿泊所きもべつ 2名様分 宿泊券 《喜茂別町》【喜茂別町商工会】 北海道 宿泊 旅行 旅 宿 観光 スキー スノーボード 北海道 [AJAL002]
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f112097-hanno:10000909 title=【ふるさと納税】かみかみya イタリアンコース 1名様 お食事券 チケット コース料理 　お届け：発注後、2週間程度 HNNU001
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f112097-hanno:10000909 title=【ふるさと納税】かみかみya イタリアンコース 1名様 お食事券 チケット コース料理 　お届け：発注後、2週間程度 HNNU001
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f343692-kitahiroshima:10000841 title=【ふるさと納税】《恩おくりの返礼品》北広島町のおいしいお米を子どもたちに（寄贈型）30kg分
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f343692-kitahiroshima:10000841 title=【ふるさと納税】《恩おくりの返礼品》北広島町のおいしいお米を子どもたちに（寄贈型）30kg分
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f112097-hanno:10000959 title=【ふるさと納税】【名栗温泉 大松閣】一棟貸切別邸「ハミング」 1泊素泊り6名宿泊券 旅行 カフェギャラリー 　お届け：発注後、2週間程度 HNNG005
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f112097-hanno:10000959 title=【ふるさと納税】【名栗温泉 大松閣】一棟貸切別邸「ハミング」 1泊素泊り6名宿泊券 旅行 カフェギャラリー 　お届け：発注後、2週間程度 HNNG005
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f074080-inawashiro:10000330 title=【ふるさと納税】スキーセット（スキー板・ストック・ブーツ）保管1年間＆メンテナンスサービス　チケット 倉庫保管 メンテナンス
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f074080-inawashiro:10000330 title=【ふるさと納税】スキーセット（スキー板・ストック・ブーツ）保管1年間＆メンテナンスサービス　チケット 倉庫保管 メンテナンス
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f112097-hanno:10001003 title=【ふるさと納税】【こくや】うどんお食事券(2枚)　チケット 江戸時代末期 創業 6代目 武蔵野うどん 肉つゆうどん コシ 細め 喉ごし 古民家 月見うどん きつねうどん 昼食 観光 お出かけ 　お届け：発注後、2週間程度 HNNW001
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f112097-hanno:10001003 title=【ふるさと納税】【こくや】うどんお食事券(2枚)　チケット 江戸時代末期 創業 6代目 武蔵野うどん 肉つゆうどん コシ 細め 喉ごし 古民家 月見うどん きつねうどん 昼食 観光 お出かけ 　お届け：発注後、2週間程度 HNNW001
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f182079-sabae:10000769 title=【ふるさと納税】Hacoa ダイレクトストアで使えるギフトチケット 1枚（6,000円相当）[B-06103] / おしゃれ 誕生日 結婚祝い 錫婚式 就職祝い 卒業祝い 新築祝い 母の日 父の日 クリスマス 退職祝い 送別会 男性 女性 メンズ レディース プレゼント ハコア ふるさと納税Hacoa
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f182079-sabae:10000769 title=【ふるさと納税】Hacoa ダイレクトストアで使えるギフトチケット 1枚（6,000円相当）[B-06103] / おしゃれ 誕生日 結婚祝い 錫婚式 就職祝い 卒業祝い 新築祝い 母の日 父の日 クリスマス 退職祝い 送別会 男性 女性 メンズ レディース プレゼント ハコア ふるさと納税Hacoa
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f052094-kazuno:10000371 title=【ふるさと納税】《 令和8年度 》秋田県 鹿角市 りんごの木 オーナー権 1本分（ 収穫量20kg保証 ） 収穫体験 りんご狩り オーナー制度 チケット 農林水産大臣賞 ふじ リンゴ 完熟 蜜入り 旬 県産りんご 秋田 あきた 鹿角 送料無料 【佐藤秀果園】
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f052094-kazuno:10000371 title=【ふるさと納税】《 令和8年度 》秋田県 鹿角市 りんごの木 オーナー権 1本分（ 収穫量20kg保証 ） 収穫体験 りんご狩り オーナー制度 チケット 農林水産大臣賞 ふじ リンゴ 完熟 蜜入り 旬 県産りんご 秋田 あきた 鹿角 送料無料 【佐藤秀果園】
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f472123-tomigusuku:10000795 title=【ふるさと納税】【ザ・クロークルーム】オーダーシャツお仕立券（9,000円分～90,000円分）
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f472123-tomigusuku:10000795 title=【ふるさと納税】【ザ・クロークルーム】オーダーシャツお仕立券（9,000円分～90,000円分）
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f121002-chiba:10000168 title=【ふるさと納税】ホテルニューオータニ幕張 ご利用券3万円【 チケット 日本料理 中国料理 鉄板焼 ラウンジ バー お食事 ホテル 宿泊 豪華 割引き レストラン 】
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f121002-chiba:10000168 title=【ふるさと納税】ホテルニューオータニ幕張 ご利用券3万円【 チケット 日本料理 中国料理 鉄板焼 ラウンジ バー お食事 ホテル 宿泊 豪華 割引き レストラン 】
+I/flutter ( 8716): [RECOMMEND_TRACE] raw item itemCode=f262111-kyotanabe:10000080 title=【ふるさと納税】入浴招待券 5枚 SPA&HOTEL水春松井山手 入浴券 招待券 スパ 岩盤浴 リラクゼーション 温泉 旅行 観光 日帰り入浴 施設利用券 チケット クーポン ホテル 京都府 京田辺市
+I/flutter ( 8716): [RECOMMEND_TRACE] accepted itemCode=f262111-kyotanabe:10000080 title=【ふるさと納税】入浴招待券 5枚 SPA&HOTEL水春松井山手 入浴券 招待券 スパ 岩盤浴 リラクゼーション 温泉 旅行 観光 日帰り入浴 施設利用券 チケット クーポン ホテル 京都府 京田辺市
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f212172-hida:10002315 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f212172-hida:10002315 score=8.0 reasons=ROOM向き
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f212172-hida:10002315 score=45.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f212172-hida:10002315 title=【ふるさと納税】《有効期限なし！積立可能！》あとからゆっくり返礼品を選べる♪ ふるさと納税 カタログ WEB・紙 定期便 高評価 あとからセレクト ギフト 米 牛肉 飛騨牛 チーズ 果物 フルーツ 野菜 スイーツ 訳あり どやな飛騨市 1000円 5000円 5千円 1万円 5万円 10万円 price=1000 reviewAverage=4.58 reviewCount=64 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=45.0 score=193.3 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=jyoei:10259745 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=jyoei:10259745 score=8.0 reasons=ROOM向き
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=jyoei:10259745 score=35.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=jyoei:10259745 title=リンベル カタログギフト ディズニー×リンベル スマイル 〈816-111〉カタログギフト・チケット オリジナル ディズニー disney 内祝い 出産内祝い 結婚祝い 結婚内祝い お返し カタログ ギフトカタログ 快気祝い 退職祝い 引き出物 引出物 企業記念品 成約記念 price=5272 reviewAverage=5.00 reviewCount=5 roomFit=8.0 reaction=15.0 reviewEvidence=22.0 postability=35.0 score=185.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f114421-miyashiromachi:10000003 score=30.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f114421-miyashiromachi:10000003 score=8.0 reasons=ROOM向き
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f114421-miyashiromachi:10000003 score=15.0 reasons=投稿しやすい
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI( 8716): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8716): updateAcquireFence: Did not find frame.
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f114421-miyashiromachi:10000091 score=30.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f114421-miyashiromachi:10000091 score=8.0 reasons=ROOM向き
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f114421-miyashiromachi:10000003 title=【ふるさと納税】東武動物公園「入場券＋のりもの券10枚綴り」（ペア） | カタログギフト・チケット 遊園地 動物園 チケット フリーパス 割引 のりもの 乗り放題 家族 お出かけ 子ども 子供 子連れ ファミリー おすすめ レジャー施設 プール 夏休み 関東 埼玉県 宮代町 price=19000 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=30.0 reviewEvidence=-55.0 postability=15.0 score=17.4 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f114421-miyashiromachi:10000091 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f114421-miyashiromachi:10000091 title=【ふるさと納税】東武動物公園「アトラクションパスセット」(1人分) | カタログギフト・チケット 遊園地 動物園 チケット フリーパス 割引 のりもの 乗り放題 家族 お出かけ 子ども 子供 子連れ ファミリー おすすめ レジャー施設 プール 夏休み 関東 埼玉県 宮代町 price=17000 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=30.0 reviewEvidence=-55.0 postability=15.0 score=17.4 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f013986-kimobetsu:10000000 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_UNFIT] itemCode=f013986-kimobetsu:10000000 title=【ふるさと納税】【選べるシーズン】簡易宿泊所きもべつ 1名様分 宿泊券 《喜茂別町》【喜茂別町商工会】 宿泊券 北海道 宿泊 旅行 旅 宿 観光 スキー スノーボード 北海道 [AJAL001]
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f013986-kimobetsu:10000000 score=-26.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f013986-kimobetsu:10000000 score=5.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f013986-kimobetsu:10000000 title=【ふるさと納税】【選べるシーズン】簡易宿泊所きもべつ 1名様分 宿泊券 《喜茂別町》【喜茂別町商工会】 宿泊券 北海道 宿泊 旅行 旅 宿 観光 スキー スノーボード 北海道 [AJAL001] price=22000 reviewAverage=0.00 reviewCount=0 roomFit=-26.0 reaction=15.0 reviewEvidence=-55.0 postability=5.0 score=-177.3 reasons=バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f262111-kyotanabe:10000082 score=30.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f262111-kyotanabe:10000082 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f262111-kyotanabe:10000082 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f262111-kyotanabe:10000082 title=【ふるさと納税】SPA&HOTEL水春松井山手　入浴招待券3枚セット チケット 温泉利用券 price=17000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=30.0 reviewEvidence=-55.0 postability=15.0 score=-5.0 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f343692-kitahiroshima:10000840 score=30.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f343692-kitahiroshima:10000840 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f343692-kitahiroshima:10000840 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f343692-kitahiroshima:10000840 title=【ふるさと納税】《恩おくりの返礼品》北広島町のおいしいお米を子どもたちに（寄贈型）5kg分 price=15000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=30.0 reviewEvidence=-55.0 postability=15.0 score=-65.0 reasons=バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f262111-kyotanabe:10000083 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f262111-kyotanabe:10000083 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f262111-kyotanabe:10000083 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f262111-kyotanabe:10000083 title=【ふるさと納税】入浴岩盤招待券 3枚 SPA&HOTEL水春松井山手 入浴券 招待券 スパ 岩盤浴 リラクゼーション 温泉 旅行 観光 日帰り入浴 施設利用券 チケット クーポン ホテル 京都府 京田辺市 price=28000 reviewAverage=4.00 reviewCount=1 roomFit=0.0 reaction=15.0 reviewEvidence=12.0 postability=15.0 score=130.7 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=happy-dayss:10001156 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=happy-dayss:10001156 score=35.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=happy-dayss:10001156 title=交換・返品手数料 リーチェ price=890 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=35.0 score=-112.0 reasons=バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f013986-kimobetsu:10000065 price=37000 reason=highPriceNoReview
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f112097-hanno:10000909 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f112097-hanno:10000909 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f112097-hanno:10000909 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f112097-hanno:10000909 title=【ふるさと納税】かみかみya イタリアンコース 1名様 お食事券 チケット コース料理 　お届け：発注後、2週間程度 HNNU001 price=20000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=15.0 reviewEvidence=-55.0 postability=15.0 score=-36.5 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f343692-kitahiroshima:10000841 price=80000 reason=tooExpensive
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f112097-hanno:10000959 price=441000 reason=tooExpensive
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f074080-inawashiro:10000330 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f074080-inawashiro:10000330 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f074080-inawashiro:10000330 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f074080-inawashiro:10000330 title=【ふるさと納税】スキーセット（スキー板・ストック・ブーツ）保管1年間＆メンテナンスサービス　チケット 倉庫保管 メンテナンス price=25000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=15.0 reviewEvidence=-55.0 postability=15.0 score=-36.5 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f112097-hanno:10001003 score=30.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f112097-hanno:10001003 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f112097-hanno:10001003 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f112097-hanno:10001003 title=【ふるさと納税】【こくや】うどんお食事券(2枚)　チケット 江戸時代末期 創業 6代目 武蔵野うどん 肉つゆうどん コシ 細め 喉ごし 古民家 月見うどん きつねうどん 昼食 観光 お出かけ 　お届け：発注後、2週間程度 HNNW001 price=7000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=30.0 reviewEvidence=-55.0 postability=15.0 score=-5.0 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f182079-sabae:10000769 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f182079-sabae:10000769 score=16.0 reasons=ROOM向き
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f182079-sabae:10000769 score=25.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f182079-sabae:10000769 title=【ふるさと納税】Hacoa ダイレクトストアで使えるギフトチケット 1枚（6,000円相当）[B-06103] / おしゃれ 誕生日 結婚祝い 錫婚式 就職祝い 卒業祝い 新築祝い 母の日 父の日 クリスマス 退職祝い 送別会 男性 女性 メンズ レディース プレゼント ハコア ふるさと納税Hacoa price=20000 reviewAverage=5.00 reviewCount=1 roomFit=16.0 reaction=15.0 reviewEvidence=12.0 postability=25.0 score=183.5 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f052094-kazuno:10000371 price=40000 reason=highPriceNoReview
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f472123-tomigusuku:10000795 price=30000 reason=highPriceNoReview
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f121002-chiba:10000168 price=101000 reason=tooExpensive
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f262111-kyotanabe:10000080 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f262111-kyotanabe:10000080 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f262111-kyotanabe:10000080 score=5.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f262111-kyotanabe:10000080 title=【ふるさと納税】入浴招待券 5枚 SPA&HOTEL水春松井山手 入浴券 招待券 スパ 岩盤浴 リラクゼーション 温泉 旅行 観光 日帰り入浴 施設利用券 チケット クーポン ホテル 京都府 京田辺市 price=28000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=15.0 reviewEvidence=-55.0 postability=5.0 score=-44.5 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_POOL] raw=20 valid=14 scored=14
+I/flutter ( 8716): [RECOMMEND_DIVERSITY] demotedBecause=sameMainTopic penalty=-40
+I/flutter ( 8716): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter ( 8716): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter ( 8716): [RECOMMEND_DIVERSITY] demotedBecause=sameMainTopic penalty=-40
+I/flutter ( 8716): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter ( 8716): [RECOMMEND_SELECT] strictSelected=10
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f212172-hida:10002315 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f212172-hida:10002315 score=8.0 reasons=ROOM向き
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f212172-hida:10002315 score=45.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f212172-hida:10002315 title=【ふるさと納税】《有効期限なし！積立可能！》あとからゆっくり返礼品を選べる♪ ふるさと納税 カタログ WEB・紙 定期便 高評価 あとからセレクト ギフト 米 牛肉 飛騨牛 チーズ 果物 フルーツ 野菜 スイーツ 訳あり どやな飛騨市 1000円 5000円 5千円 1万円 5万円 10万円 price=1000 reviewAverage=4.58 reviewCount=64 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=45.0 score=193.3 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=jyoei:10259745 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=jyoei:10259745 score=8.0 reasons=ROOM向き
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=jyoei:10259745 score=35.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=jyoei:10259745 title=リンベル カタログギフト ディズニー×リンベル スマイル 〈816-111〉カタログギフト・チケット オリジナル ディズニー disney 内祝い 出産内祝い 結婚祝い 結婚内祝い お返し カタログ ギフトカタログ 快気祝い 退職祝い 引き出物 引出物 企業記念品 成約記念 price=5272 reviewAverage=5.00 reviewCount=5 roomFit=8.0 reaction=15.0 reviewEvidence=22.0 postability=35.0 score=185.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f114421-miyashiromachi:10000003 score=30.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f114421-miyashiromachi:10000003 score=8.0 reasons=ROOM向き
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f114421-miyashiromachi:10000003 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f114421-miyashiromachi:10000003 title=【ふるさと納税】東武動物公園「入場券＋のりもの券10枚綴り」（ペア） | カタログギフト・チケット 遊園地 動物園 チケット フリーパス 割引 のりもの 乗り放題 家族 お出かけ 子ども 子供 子連れ ファミリー おすすめ レジャー施設 プール 夏休み 関東 埼玉県 宮代町 price=19000 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=30.0 reviewEvidence=-55.0 postability=15.0 score=17.4 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f114421-miyashiromachi:10000091 score=30.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f114421-miyashiromachi:10000091 score=8.0 reasons=ROOM向き
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f114421-miyashiromachi:10000091 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f114421-miyashiromachi:10000091 title=【ふるさと納税】東武動物公園「アトラクションパスセット」(1人分) | カタログギフト・チケット 遊園地 動物園 チケット フリーパス 割引 のりもの 乗り放題 家族 お出かけ 子ども 子供 子連れ ファミリー おすすめ レジャー施設 プール 夏休み 関東 埼玉県 宮代町 price=17000 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=30.0 reviewEvidence=-55.0 postability=15.0 score=17.4 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f013986-kimobetsu:10000000 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_UNFIT] itemCode=f013986-kimobetsu:10000000 title=【ふるさと納税】【選べるシーズン】簡易宿泊所きもべつ 1名様分 宿泊券 《喜茂別町》【喜茂別町商工会】 宿泊券 北海道 宿泊 旅行 旅 宿 観光 スキー スノーボード 北海道 [AJAL001]
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f013986-kimobetsu:10000000 score=-26.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f013986-kimobetsu:10000000 score=5.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f013986-kimobetsu:10000000 title=【ふるさと納税】【選べるシーズン】簡易宿泊所きもべつ 1名様分 宿泊券 《喜茂別町》【喜茂別町商工会】 宿泊券 北海道 宿泊 旅行 旅 宿 観光 スキー スノーボード 北海道 [AJAL001] price=22000 reviewAverage=0.00 reviewCount=0 roomFit=-26.0 reaction=15.0 reviewEvidence=-55.0 postability=5.0 score=-177.3 reasons=バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f262111-kyotanabe:10000082 score=30.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f262111-kyotanabe:10000082 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f262111-kyotanabe:10000082 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f262111-kyotanabe:10000082 title=【ふるさと納税】SPA&HOTEL水春松井山手　入浴招待券3枚セット チケット 温泉利用券 price=17000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=30.0 reviewEvidence=-55.0 postability=15.0 score=-5.0 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f343692-kitahiroshima:10000840 score=30.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f343692-kitahiroshima:10000840 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f343692-kitahiroshima:10000840 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f343692-kitahiroshima:10000840 title=【ふるさと納税】《恩おくりの返礼品》北広島町のおいしいお米を子どもたちに（寄贈型）5kg分 price=15000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=30.0 reviewEvidence=-55.0 postability=15.0 score=-65.0 reasons=バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f262111-kyotanabe:10000083 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f262111-kyotanabe:10000083 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f262111-kyotanabe:10000083 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f262111-kyotanabe:10000083 title=【ふるさと納税】入浴岩盤招待券 3枚 SPA&HOTEL水春松井山手 入浴券 招待券 スパ 岩盤浴 リラクゼーション 温泉 旅行 観光 日帰り入浴 施設利用券 チケット クーポン ホテル 京都府 京田辺市 price=28000 reviewAverage=4.00 reviewCount=1 roomFit=0.0 reaction=15.0 reviewEvidence=12.0 postability=15.0 score=130.7 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=happy-dayss:10001156 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=happy-dayss:10001156 score=35.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=happy-dayss:10001156 title=交換・返品手数料 リーチェ price=890 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=35.0 score=-112.0 reasons=バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f013986-kimobetsu:10000065 price=37000 reason=highPriceNoReview
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f112097-hanno:10000909 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f112097-hanno:10000909 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f112097-hanno:10000909 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f112097-hanno:10000909 title=【ふるさと納税】かみかみya イタリアンコース 1名様 お食事券 チケット コース料理 　お届け：発注後、2週間程度 HNNU001 price=20000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=15.0 reviewEvidence=-55.0 postability=15.0 score=-36.5 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f343692-kitahiroshima:10000841 price=80000 reason=tooExpensive
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f112097-hanno:10000959 price=441000 reason=tooExpensive
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f074080-inawashiro:10000330 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f074080-inawashiro:10000330 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f074080-inawashiro:10000330 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f074080-inawashiro:10000330 title=【ふるさと納税】スキーセット（スキー板・ストック・ブーツ）保管1年間＆メンテナンスサービス　チケット 倉庫保管 メンテナンス price=25000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=15.0 reviewEvidence=-55.0 postability=15.0 score=-36.5 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f112097-hanno:10001003 score=30.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f112097-hanno:10001003 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f112097-hanno:10001003 score=15.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f112097-hanno:10001003 title=【ふるさと納税】【こくや】うどんお食事券(2枚)　チケット 江戸時代末期 創業 6代目 武蔵野うどん 肉つゆうどん コシ 細め 喉ごし 古民家 月見うどん きつねうどん 昼食 観光 お出かけ 　お届け：発注後、2週間程度 HNNW001 price=7000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=30.0 reviewEvidence=-55.0 postability=15.0 score=-5.0 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f182079-sabae:10000769 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f182079-sabae:10000769 score=16.0 reasons=ROOM向き
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f182079-sabae:10000769 score=25.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f182079-sabae:10000769 title=【ふるさと納税】Hacoa ダイレクトストアで使えるギフトチケット 1枚（6,000円相当）[B-06103] / おしゃれ 誕生日 結婚祝い 錫婚式 就職祝い 卒業祝い 新築祝い 母の日 父の日 クリスマス 退職祝い 送別会 男性 女性 メンズ レディース プレゼント ハコア ふるさと納税Hacoa price=20000 reviewAverage=5.00 reviewCount=1 roomFit=16.0 reaction=15.0 reviewEvidence=12.0 postability=25.0 score=183.5 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f052094-kazuno:10000371 price=40000 reason=highPriceNoReview
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f472123-tomigusuku:10000795 price=30000 reason=highPriceNoReview
+I/flutter ( 8716): [RECOMMEND_EXCLUDE] itemCode=f121002-chiba:10000168 price=101000 reason=tooExpensive
+I/flutter ( 8716): [RECOMMEND_REACTION_SCORE] itemCode=f262111-kyotanabe:10000080 score=15.0 reasons=
+I/flutter ( 8716): [RECOMMEND_ROOM_FIT] itemCode=f262111-kyotanabe:10000080 score=0.0 reasons=
+I/flutter ( 8716): [RECOMMEND_POSTABILITY] itemCode=f262111-kyotanabe:10000080 score=5.0 reasons=投稿しやすい
+I/flutter ( 8716): [RECOMMEND_SCORE] itemCode=f262111-kyotanabe:10000080 title=【ふるさと納税】入浴招待券 5枚 SPA&HOTEL水春松井山手 入浴券 招待券 スパ 岩盤浴 リラクゼーション 温泉 旅行 観光 日帰り入浴 施設利用券 チケット クーポン ホテル 京都府 京田辺市 price=28000 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=15.0 reviewEvidence=-55.0 postability=5.0 score=-44.5 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter ( 8716): [RECOMMEND_POOL] raw=20 valid=14 scored=14
+I/flutter ( 8716): [RECOMMEND_DIVERSITY] demotedBecause=sameMainTopic penalty=-40
+I/flutter ( 8716): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter ( 8716): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter ( 8716): [RECOMMEND_DIVERSITY] demotedBecause=sameMainTopic penalty=-40
+I/flutter ( 8716): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter ( 8716): [RECOMMEND_SELECT] strictSelected=10
+I/flutter ( 8716): [RECOMMEND_API_GUARD] skipExtraSearch reason=poolHasEnoughBackfill
+I/flutter ( 8716): [RECOMMEND_API_GUARD] extraSearchAllowed=false
+I/flutter ( 8716): [RECOMMEND] apiCalls=1 poolSize=20
+I/flutter ( 8716): [RECOMMEND] final count: 10
+I/flutter ( 8716): [RECOMMEND_BUCKET] personal=10 relaxed=0 discovery=0 total=10
+I/flutter ( 8716): [RECOMMEND_RESULT] style=balance personalCount=10 discoveryCount=0 total=10
+I/flutter ( 8716): [RECOMMEND_TRACE] finalCandidateCount=10
+I/flutter ( 8716): [RECOMMEND_TRACE] failureType=none
+I/flutter ( 8716): [RECOMMEND_RESULT] status=success count=10
+I/flutter ( 8716): [RECOMMEND_GENERATE] end requestCount=1 planCount=8
+I/flutter ( 8716): [RECOMMEND_SUMMARY] totalApiRequests=1 totalPlans=8 selectedCount=10 excludedCount=0 durationMs=1959
+I/flutter ( 8716): [RECOMMEND_TRACE] savedBundle=true
+I/flutter ( 8716): [RECOMMEND_SAVE] savedBundle=true count=10
+I/flutter ( 8716): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 8716): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-13T00:22:21.758133
+I/flutter ( 8716): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 8716): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter ( 8716): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=201 afterFilterLen=201 surface=ok_list ui=ready
+I/flutter ( 8716): [ROOMコレ診断] 描画リスト先頭 productId=j3020 title=＼対象商品2点以上で5％OFF／【365日即日発送】通勤 バッグ レディース a4 合皮素材 トートバッグ ビジネス リクルート ビジネスバッグ オフィス 通勤 OL ハンドバッグ ショルダー ショルダーバッグ 通勤バッグ カバン 鞄 かばん バック status=done len=201
+I/flutter ( 8716): [REACTION_STATUS] productId=j3020
+I/flutter ( 8716): [REACTION_STATUS] roomLikeCount=1
+I/flutter ( 8716): [REACTION_STATUS] roomCommentCount=0
+I/flutter ( 8716): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter ( 8716): [REACTION_STATUS] productId=c9023
+I/flutter ( 8716): [REACTION_STATUS] roomLikeCount=3
+I/flutter ( 8716): [REACTION_STATUS] roomCommentCount=0
+I/flutter ( 8716): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter ( 8716): [REACTION_STATUS] productId=t5317
+I/flutter ( 8716): [REACTION_STATUS] roomLikeCount=1
+I/flutter ( 8716): [REACTION_STATUS] roomCommentCount=0
+I/flutter ( 8716): [REACTION_STATUS] resolvedChip=反応あり
