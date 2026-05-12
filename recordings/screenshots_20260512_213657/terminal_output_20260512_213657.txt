@@ -1,0 +1,1223 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-12 21:36:57
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260512_213657.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260512_213657.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260512_213657.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260512_213657.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260512_213657.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260512_213657
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260512_213657\terminal_output_20260512_213657.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 17632).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             11.5s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.4s
+D/FlutterJNI(20789): Beginning load of flutter...
+D/FlutterJNI(20789): flutter (null) was loaded normally!
+I/flutter (20789): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (20789): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter (20789): verifyMode=false
+Syncing files to device SHG08...                                
+I/flutter (20789): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                    92ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:61855/csrzJzSngpg=/
+I/flutter (20789): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ診断] loadAll 初回サマリー parsed=171 rawJsonList=171
+I/flutter (20789): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ROOM_IMPORT_ENRICH_QUEUE] pending=162 eligible=162 skippedCooldown=0 skippedFailed=0
+I/flutter (20789): [ROOM_IMPORT_ENRICH_PICK] productId=fu-602 failureReason= failureCount=0 selected=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH_TARGET] productId=fu-602 needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/Choreographer(20789): Skipped 208 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:61855/csrzJzSngpg=/
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=provider
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [ROOM_IMPORT_PERF] enrichmentSkipped reason=singleFlightBusy
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SKIP] reason=singleFlightBusy
+I/flutter (20789): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (20789): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter (20789): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (20789): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (20789): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (20789): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (20789): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (20789): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-12T00:34:39.945840
+I/flutter (20789): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (20789): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (20789): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (20789): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-12T00:34:39.945840
+I/flutter (20789): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (20789): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=screen
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=done
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [ROOMコレ診断] ROOMコレ画面起動後 total=171 candidate=0 done=171 listUi=RakutenManagedProductListUiStatus.ready tabIdx=1
+I/flutter (20789): [ROOM_IMPORT_PERF] enrichmentSkipped reason=singleFlightBusy
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SKIP] reason=singleFlightBusy
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=provider
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=provider
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=provider
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [ROOM_IMPORT_ENRICH_API] productId=fu-602 index=1 maxPerRun=1 delayMs=0 shopCode=girl-k itemCode=fu-602
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=fu-602 source=itemUrl apiShop=girl-k apiItem=fu-602 storedShop=girl-k storedProductId=fu-602
+I/flutter (20789): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_START]
+I/flutter (20789): productId=fu-602
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=fu-602
+I/flutter (20789): keyword=【26％OFF】パーティードレス 結婚式 ワンピース ドレス 大きいサイズ 袖あり レース フォーマル ロング丈 ロングドレス 長袖 七分袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 ボ
+I/flutter (20789): verifyMode=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=fu-602 keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=girl-k itemCode=fu-602 shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=girl-k%3Afu-602
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/WebViewFactory(20789): Loading com.google.android.webview version 147.0.7727.137 (code 772713703)
+D/ApplicationLoaders(20789): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(20789): Loading /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(20789): Configuring clns-5 for other apk /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/lib/arm64:/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(20789): version=147.0.7727.137 (772713703) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(20789): Load /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+D/nativeloader(20789): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+I/chromium(20789): [0512/213728.857720:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(20789): Successfully loaded native library
+I/cr_CachingUmaRecorder(20789): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(20789): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(20789): #registerProvider() provider:WV.yk@19fb2a4 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(20789): #setManagerAndSource() 0
+I/cr_DisplayManager(20789): Is Display Topology available: false
+I/cr_CombinedPProvider(20789): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(20789): Compat change id reported: 183155436; UID 10458; state: ENABLED
+I/cr_AppResProvider(20789): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(20789): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(20789): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(20789): #flushPolicies()
+W/chromium(20789): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(20789): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 103712643
+D/CompatibilityChangeReporter(20789): Compat change id reported: 214741472; UID 10458; state: ENABLED
+I/CameraManagerGlobal(20789): Connecting to camera service
+D/CompatibilityChangeReporter(20789): Compat change id reported: 171228096; UID 10458; state: ENABLED
+I/PlatformViewsController(20789): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(20789): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(20789): Compat change id reported: 236825255; UID 10458; state: ENABLED
+W/libc    (20789): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(20789): type=1400 audit(0.0:500326): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/CompatibilityChangeReporter(20789): Compat change id reported: 193247900; UID 10458; state: ENABLED
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+I/Choreographer(20789): Skipped 77 frames!  The application may be doing too much work on its main thread.
+W/libc    (20789): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(20789): type=1400 audit(0.0:500327): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(20789): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(20789): Build Date              : 08/23/22
+I/AdrenoVK-0(20789): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(20789): Local Branch            : 
+I/AdrenoVK-0(20789): Remote Branch           : 
+I/AdrenoVK-0(20789): Remote Branch           : 
+I/AdrenoVK-0(20789): Reconstruct Branch      : 
+I/AdrenoVK-0(20789): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(20789): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(20789): Installing profile for com.stepbytestudio.room_manager2
+I/OpenGLRenderer(20789): Davey! duration=1420ms; Flags=1, FrameTimelineVsyncId=573674701, IntendedVsync=4088028157558666, Vsync=4088029440891948, InputEventId=0, HandleInputStart=4088029450478662, AnimationStart=4088029450480902, PerformTraversalsStart=4088029450516162, DrawStart=4088029466454027, FrameDeadline=4088028174225332, FrameInterval=4088029449932204, FrameStartTime=16666666, SyncQueued=4088029550490642, SyncStart=4088029553392569, IssueDrawCommandsStart=4088029555586944, SwapBuffers=4088029578744131, FrameCompleted=4088029581077517, DequeueBufferDuration=6065833, QueueBufferDuration=1809011, GpuCompleted=4088029579966423, SwapBuffersCompleted=4088029581077517, DisplayPresentTime=0, CommandSubmissionCompleted=4088029578744131, 
+I/flutter (20789): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (20789): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (20789): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=1363
+I/flutter (20789): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_TRIGGERED]
+I/flutter (20789): reason=itemCodeInvalid
+I/flutter (20789): productId=fu-602
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=fu-602
+I/flutter (20789): keyword=【26％OFF】パーティードレス 結婚式 ワンピース ドレス 大きいサイズ 袖あり レース フォーマル ロング丈 ロングドレス 長袖 七分袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 ボ
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem_keywordShopFallback proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=(omit) keyword=【26％OFF】パーティードレス 結婚式 ワンピース ドレス 大きいサイズ 袖あり レース フォーマル ロング丈 ロングドレス 長袖 七分袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 ボ genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=【26％OFF】パーティードレス 結婚式 ワンピース ドレス 大きいサイズ 袖あり レース フォーマル ロング丈 ロングドレス 長袖 七分袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 ボ genreId=- shopCode=girl-k itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%80%9026%EF%BC%85OFF%E3%80%91%E3%83%91%E3%83%BC%E3%83%86%E3%82%A3%E3%83%BC%E3%83%89%E3%83%AC%E3%82%B9+%E7%B5%90%E5%A9%9A%E5%BC%8F+%E3%83%AF%E3%83%B3%E3%83%94%E3%83%BC%E3%82%B9+%E3%83%89%E3%83%AC%E3%82%B9+%E5%A4%A7%E3%81%8D%E3%81%84%E3%82%B5%E3%82%A4%E3%82%BA+%E8%A2%96%E3%81%82%E3%82%8A+%E3%83%AC%E3%83%BC%E3%82%B9+%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%AB+%E3%83%AD%E3%83%B3%E3%82%B0%E4%B8%88+%E3%83%AD%E3%83%B3%E3%82%B0%E3%83%89%E3%83%AC%E3%82%B9+%E9%95%B7%E8%A2%96+%E4%B8%83%E5%88%86%E8%A2%96+%E4%BA%8C%E6%AC%A1%E4%BC%9A+%E6%8A%AB%E9%9C%B2%E5%AE%B4+%E3%81%8A%E5%91%BC%E3%81%B0%E3%82%8C+%E4%B8%8A%E5%93%81+%E8%86%9D%E4%B8%8B+%E4%BB%96%E3%81%A8%E8%A2%AB%E3%82%89%E3%81%AA%E3%81%84+%E4%BD%93%E5%9E%8B%E3%82%AB%E3%83%90%E3%83%BC+40%E4%BB%A3+30%E4%BB%A3+20%E4%BB%A3+50%E4%BB%A3+%E3%83%9C&shopCode=girl-k
+I/flutter (20789): [Rakuten] response status=400 page=1 bytes=122
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (20789): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"keyword is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (20789): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:1050:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_ENRICH] keywordShop fallback failed: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:1050:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_RESULT]
+I/flutter (20789): status=notTriggered
+I/flutter (20789): reason=keywordFallbackException
+I/flutter (20789): productId=fu-602
+I/flutter (20789): detail=楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (20789): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FAIL] productId=fu-602 method=shopItem reason=400
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SUMMARY] attempted=1 updated=0 skipped=9 pausedByRateLimit=false remainingPending=162
+I/flutter (20789): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=1 updated=0
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=provider
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(20789): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+E/FrameEvents(20789): updateAcquireFence: Did not find frame.
+W/o.room_manager2(20789): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/base.apk' with 1 weak references
+W/o.room_manager2(20789): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (20789): [ROOM_IMPORT_ENRICH_QUEUE] pending=162 eligible=161 skippedCooldown=1 skippedFailed=0
+I/flutter (20789): [ROOM_IMPORT_ENRICH_PICK] productId=to-165-outlet failureReason= failureCount=0 selected=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH_TARGET] productId=to-165-outlet needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH_API] productId=to-165-outlet index=1 maxPerRun=1 delayMs=0 shopCode=girl-k itemCode=to-165-outlet
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=to-165-outlet source=itemUrl apiShop=girl-k apiItem=to-165-outlet storedShop=girl-k storedProductId=to-165-outlet
+I/flutter (20789): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_START]
+I/flutter (20789): productId=to-165-outlet
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=to-165-outlet
+I/flutter (20789): keyword=【アウトレット】パーティードレス 結婚式 ドレス ワンピース フォーマルドレス 大きいサイズ ミディアム丈 ミディアム ミディアムドレス 袖あり ワンピースドレス 他と被らない パーティドレス レディース 膝丈 春 夏
+I/flutter (20789): verifyMode=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=to-165-outlet keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=girl-k itemCode=to-165-outlet shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=girl-k%3Ato-165-outlet
+I/flutter (20789): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (20789): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (20789): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      _MyPageRoomSyncSectionState._handleEnrichRoomMetadata (package:room_manager2/screens/mypage_placeholder_screen.dart:1121:22)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=937
+I/flutter (20789): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      _MyPageRoomSyncSectionState._handleEnrichRoomMetadata (package:room_manager2/screens/mypage_placeholder_screen.dart:1121:22)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_TRIGGERED]
+I/flutter (20789): reason=itemCodeInvalid
+I/flutter (20789): productId=to-165-outlet
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=to-165-outlet
+I/flutter (20789): keyword=【アウトレット】パーティードレス 結婚式 ドレス ワンピース フォーマルドレス 大きいサイズ ミディアム丈 ミディアム ミディアムドレス 袖あり ワンピースドレス 他と被らない パーティドレス レディース 膝丈 春 夏
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem_keywordShopFallback proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=(omit) keyword=【アウトレット】パーティードレス 結婚式 ドレス ワンピース フォーマルドレス 大きいサイズ ミディアム丈 ミディアム ミディアムドレス 袖あり ワンピースドレス 他と被らない パーティドレス レディース 膝丈 春 夏 genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=【アウトレット】パーティードレス 結婚式 ドレス ワンピース フォーマルドレス 大きいサイズ ミディアム丈 ミディアム ミディアムドレス 袖あり ワンピースドレス 他と被らない パーティドレス レディース 膝丈 春 夏 genreId=- shopCode=girl-k itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%80%90%E3%82%A2%E3%82%A6%E3%83%88%E3%83%AC%E3%83%83%E3%83%88%E3%80%91%E3%83%91%E3%83%BC%E3%83%86%E3%82%A3%E3%83%BC%E3%83%89%E3%83%AC%E3%82%B9+%E7%B5%90%E5%A9%9A%E5%BC%8F+%E3%83%89%E3%83%AC%E3%82%B9+%E3%83%AF%E3%83%B3%E3%83%94%E3%83%BC%E3%82%B9+%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%AB%E3%83%89%E3%83%AC%E3%82%B9+%E5%A4%A7%E3%81%8D%E3%81%84%E3%82%B5%E3%82%A4%E3%82%BA+%E3%83%9F%E3%83%87%E3%82%A3%E3%82%A2%E3%83%A0%E4%B8%88+%E3%83%9F%E3%83%87%E3%82%A3%E3%82%A2%E3%83%A0+%E3%83%9F%E3%83%87%E3%82%A3%E3%82%A2%E3%83%A0%E3%83%89%E3%83%AC%E3%82%B9+%E8%A2%96%E3%81%82%E3%82%8A+%E3%83%AF%E3%83%B3%E3%83%94%E3%83%BC%E3%82%B9%E3%83%89%E3%83%AC%E3%82%B9+%E4%BB%96%E3%81%A8%E8%A2%AB%E3%82%89%E3%81%AA%E3%81%84+%E3%83%91%E3%83%BC%E3%83%86%E3%82%A3%E3%83%89%E3%83%AC%E3%82%B9+%E3%83%AC%E3%83%87%E3%82%A3%E3%83%BC%E3%82%B9+%E8%86%9D%E4%B8%88+%E6%98%A5+%E5%A4%8F&shopCode=girl-k
+I/flutter (20789): [Rakuten] response status=200 page=1 bytes=14790
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (20789): [RECOMMEND_TRACE] rawCount=1
+I/flutter (20789): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fto-165-outlet%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10013127%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fto-165-outlet%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10013127%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RakutenGenre][API] itemCode=girl-k:10013127 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (20789): [RakutenGenre][MAP] itemCode=girl-k:10013127 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (20789): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH] saved shopName=パーティードレス通販 GIRL
+I/flutter (20789): [ROOM_IMPORT_ENRICH] saved genreName=ドレス
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_RESULT]
+I/flutter (20789): status=success
+I/flutter (20789): method=keywordShopCodeUrlMatch
+I/flutter (20789): productId=to-165-outlet
+I/flutter (20789): matchedItemCode=girl-k:10013127
+I/flutter (20789): matchedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fto-165-outlet%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10013127%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): matchedAffiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fto-165-outlet%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10013127%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): price=2490
+I/flutter (20789): shopName=パーティードレス通販 GIRL
+I/flutter (20789): apiGenreName=(empty)
+I/flutter (20789): mappedGenreName=ドレス
+I/flutter (20789): savedGenreName=ドレス
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SUCCESS] productId=to-165-outlet price=2490 image=https://thumbnail.image.rakuten.co.jp/@0_mall/girl-k/cabinet/item_image/dress4/t… shopName=パーティードレス通販 GIRL genreName=
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SUMMARY] attempted=2 updated=1 skipped=9 pausedByRateLimit=false remainingPending=161
+I/flutter (20789): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=2 updated=1
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=provider
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ROOM_IMPORT_ENRICH_QUEUE] pending=161 eligible=160 skippedCooldown=1 skippedFailed=0
+I/flutter (20789): [ROOM_IMPORT_ENRICH_PICK] productId=fu-605 failureReason= failureCount=0 selected=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH_TARGET] productId=fu-605 needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=screen
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=done
+I/flutter (20789): pendingCount=0
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [ROOM_IMPORT_ENRICH_API] productId=fu-605 index=1 maxPerRun=1 delayMs=0 shopCode=girl-k itemCode=fu-605
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=fu-605 source=itemUrl apiShop=girl-k apiItem=fu-605 storedShop=girl-k storedProductId=fu-605
+I/flutter (20789): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_START]
+I/flutter (20789): productId=fu-605
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=fu-605
+I/flutter (20789): keyword=【21％OFF】パーティードレス 結婚式 ワンピース ドレス 袖あり 大きいサイズ フォーマル ロング丈 ロングドレス ミモレ丈 長袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 マーメイ
+I/flutter (20789): verifyMode=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=fu-605 keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=girl-k itemCode=fu-605 shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=girl-k%3Afu-605
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (20789): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (20789): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=405
+I/flutter (20789): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      RoomImportController.tickSlowRoomMetadataEnrichmentIfNeeded (package:room_manager2/state/room_import_controller.dart:81:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_TRIGGERED]
+I/flutter (20789): reason=itemCodeInvalid
+I/flutter (20789): productId=fu-605
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=fu-605
+I/flutter (20789): keyword=【21％OFF】パーティードレス 結婚式 ワンピース ドレス 袖あり 大きいサイズ フォーマル ロング丈 ロングドレス ミモレ丈 長袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 マーメイ
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem_keywordShopFallback proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=(omit) keyword=【21％OFF】パーティードレス 結婚式 ワンピース ドレス 袖あり 大きいサイズ フォーマル ロング丈 ロングドレス ミモレ丈 長袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 マーメイ genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=【21％OFF】パーティードレス 結婚式 ワンピース ドレス 袖あり 大きいサイズ フォーマル ロング丈 ロングドレス ミモレ丈 長袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 マーメイ genreId=- shopCode=girl-k itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%80%9021%EF%BC%85OFF%E3%80%91%E3%83%91%E3%83%BC%E3%83%86%E3%82%A3%E3%83%BC%E3%83%89%E3%83%AC%E3%82%B9+%E7%B5%90%E5%A9%9A%E5%BC%8F+%E3%83%AF%E3%83%B3%E3%83%94%E3%83%BC%E3%82%B9+%E3%83%89%E3%83%AC%E3%82%B9+%E8%A2%96%E3%81%82%E3%82%8A+%E5%A4%A7%E3%81%8D%E3%81%84%E3%82%B5%E3%82%A4%E3%82%BA+%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%AB+%E3%83%AD%E3%83%B3%E3%82%B0%E4%B8%88+%E3%83%AD%E3%83%B3%E3%82%B0%E3%83%89%E3%83%AC%E3%82%B9+%E3%83%9F%E3%83%A2%E3%83%AC%E4%B8%88+%E9%95%B7%E8%A2%96+%E4%BA%8C%E6%AC%A1%E4%BC%9A+%E6%8A%AB%E9%9C%B2%E5%AE%B4+%E3%81%8A%E5%91%BC%E3%81%B0%E3%82%8C+%E4%B8%8A%E5%93%81+%E8%86%9D%E4%B8%8B+%E4%BB%96%E3%81%A8%E8%A2%AB%E3%82%89%E3%81%AA%E3%81%84+%E4%BD%93%E5%9E%8B%E3%82%AB%E3%83%90%E3%83%BC+40%E4%BB%A3+30%E4%BB%A3+20%E4%BB%A3+50%E4%BB%A3+%E3%83%9E%E3%83%BC%E3%83%A1%E3%82%A4&shopCode=girl-k
+I/flutter (20789): [Rakuten] response status=200 page=1 bytes=13443
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (20789): [RECOMMEND_TRACE] rawCount=1
+I/flutter (20789): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-605%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015164%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-605%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015164%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RakutenGenre][API] itemCode=girl-k:10015164 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (20789): [RakutenGenre][MAP] itemCode=girl-k:10015164 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (20789): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH] saved shopName=パーティードレス通販 GIRL
+I/flutter (20789): [ROOM_IMPORT_ENRICH] saved genreName=ドレス
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_RESULT]
+I/flutter (20789): status=success
+I/flutter (20789): method=keywordShopCodeUrlMatch
+I/flutter (20789): productId=fu-605
+I/flutter (20789): matchedItemCode=girl-k:10015164
+I/flutter (20789): matchedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-605%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015164%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): matchedAffiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-605%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015164%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): price=12900
+I/flutter (20789): shopName=パーティードレス通販 GIRL
+I/flutter (20789): apiGenreName=(empty)
+I/flutter (20789): mappedGenreName=ドレス
+I/flutter (20789): savedGenreName=ドレス
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SUCCESS] productId=fu-605 price=12900 image=https://thumbnail.image.rakuten.co.jp/@0_mall/girl-k/cabinet/item_image/dress15/… shopName=パーティードレス通販 GIRL genreName=
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SUMMARY] attempted=2 updated=1 skipped=10 pausedByRateLimit=false remainingPending=160
+I/flutter (20789): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=2 updated=1
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=provider
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ][surface] tab=done surface=loading
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=loading ui=loading
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=provider
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ROOM_IMPORT_ENRICH_QUEUE] pending=160 eligible=159 skippedCooldown=1 skippedFailed=0
+I/flutter (20789): [ROOM_IMPORT_ENRICH_PICK] productId=ef-fu-814 failureReason= failureCount=0 selected=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH_TARGET] productId=ef-fu-814 needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH_API] productId=ef-fu-814 index=1 maxPerRun=1 delayMs=0 shopCode=girl-k itemCode=ef-fu-814
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=ef-fu-814 source=itemUrl apiShop=girl-k apiItem=ef-fu-814 storedShop=girl-k storedProductId=ef-fu-814
+I/flutter (20789): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_START]
+I/flutter (20789): productId=ef-fu-814
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=ef-fu-814
+I/flutter (20789): keyword=【18％OFF】セットアップ レディース カジュアル きれいめ 大きいサイズ トップス シャツ パンツ ゴム ワイドパンツ タックパンツ ストレート ボトムス シンプル 大人 ゆったり 体型カバー 着痩せ おしゃれ 可愛い かわいい 20代
+I/flutter (20789): verifyMode=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=ef-fu-814 keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=girl-k itemCode=ef-fu-814 shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=girl-k%3Aef-fu-814
+I/flutter (20789): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (20789): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (20789): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      _MyPageRoomSyncSectionState._handleEnrichRoomMetadata (package:room_manager2/screens/mypage_placeholder_screen.dart:1121:22)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=234
+I/flutter (20789): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      _MyPageRoomSyncSectionState._handleEnrichRoomMetadata (package:room_manager2/screens/mypage_placeholder_screen.dart:1121:22)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_TRIGGERED]
+I/flutter (20789): reason=itemCodeInvalid
+I/flutter (20789): productId=ef-fu-814
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=ef-fu-814
+I/flutter (20789): keyword=【18％OFF】セットアップ レディース カジュアル きれいめ 大きいサイズ トップス シャツ パンツ ゴム ワイドパンツ タックパンツ ストレート ボトムス シンプル 大人 ゆったり 体型カバー 着痩せ おしゃれ 可愛い かわいい 20代
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem_keywordShopFallback proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=(omit) keyword=【18％OFF】セットアップ レディース カジュアル きれいめ 大きいサイズ トップス シャツ パンツ ゴム ワイドパンツ タックパンツ ストレート ボトムス シンプル 大人 ゆったり 体型カバー 着痩せ おしゃれ 可愛い かわいい 20代 genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=【18％OFF】セットアップ レディース カジュアル きれいめ 大きいサイズ トップス シャツ パンツ ゴム ワイドパンツ タックパンツ ストレート ボトムス シンプル 大人 ゆったり 体型カバー 着痩せ おしゃれ 可愛い かわいい 20代 genreId=- shopCode=girl-k itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%80%9018%EF%BC%85OFF%E3%80%91%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97+%E3%83%AC%E3%83%87%E3%82%A3%E3%83%BC%E3%82%B9+%E3%82%AB%E3%82%B8%E3%83%A5%E3%82%A2%E3%83%AB+%E3%81%8D%E3%82%8C%E3%81%84%E3%82%81+%E5%A4%A7%E3%81%8D%E3%81%84%E3%82%B5%E3%82%A4%E3%82%BA+%E3%83%88%E3%83%83%E3%83%97%E3%82%B9+%E3%82%B7%E3%83%A3%E3%83%84+%E3%83%91%E3%83%B3%E3%83%84+%E3%82%B4%E3%83%A0+%E3%83%AF%E3%82%A4%E3%83%89%E3%83%91%E3%83%B3%E3%83%84+%E3%82%BF%E3%83%83%E3%82%AF%E3%83%91%E3%83%B3%E3%83%84+%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%83%88+%E3%83%9C%E3%83%88%E3%83%A0%E3%82%B9+%E3%82%B7%E3%83%B3%E3%83%97%E3%83%AB+%E5%A4%A7%E4%BA%BA+%E3%82%86%E3%81%A3%E3%81%9F%E3%82%8A+%E4%BD%93%E5%9E%8B%E3%82%AB%E3%83%90%E3%83%BC+%E7%9D%80%E7%97%A9%E3%81%9B+%E3%81%8A%E3%81%97%E3%82%83%E3%82%8C+%E5%8F%AF%E6%84%9B%E3%81%84+%E3%81%8B%E3%82%8F%E3%81%84%E3%81%84+20%E4%BB%A3&shopCode=girl-k
+I/flutter (20789): [Rakuten] response status=200 page=1 bytes=12314
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (20789): [RECOMMEND_TRACE] rawCount=1
+I/flutter (20789): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-814%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016507%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-814%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016507%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RakutenGenre][API] itemCode=girl-k:10016507 rawGenreId=110724 rawGenreName= rawKeys=genreId
+I/flutter (20789): [RakutenGenre][MAP] itemCode=girl-k:10016507 model.genreId=110724 model.genreName= jsonRaw=パンツスーツ jsonRolled=パンツスーツ displayGenre=パンツスーツ
+I/flutter (20789): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH] saved shopName=パーティードレス通販 GIRL
+I/flutter (20789): [ROOM_IMPORT_ENRICH] saved genreName=パンツスーツ
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_RESULT]
+I/flutter (20789): status=success
+I/flutter (20789): method=keywordShopCodeUrlMatch
+I/flutter (20789): productId=ef-fu-814
+I/flutter (20789): matchedItemCode=girl-k:10016507
+I/flutter (20789): matchedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-814%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016507%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): matchedAffiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fef-fu-814%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10016507%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): price=12900
+I/flutter (20789): shopName=パーティードレス通販 GIRL
+I/flutter (20789): apiGenreName=(empty)
+I/flutter (20789): mappedGenreName=パンツスーツ
+I/flutter (20789): savedGenreName=パンツスーツ
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SUCCESS] productId=ef-fu-814 price=12900 image=https://thumbnail.image.rakuten.co.jp/@0_mall/girl-k/cabinet/item_image/dress24/… shopName=パーティードレス通販 GIRL genreName=
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SUMMARY] attempted=2 updated=1 skipped=11 pausedByRateLimit=false remainingPending=159
+I/flutter (20789): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=2 updated=1
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=provider
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ROOM_IMPORT_ENRICH_QUEUE] pending=159 eligible=158 skippedCooldown=1 skippedFailed=0
+I/flutter (20789): [ROOM_IMPORT_ENRICH_PICK] productId=fu-607 failureReason= failureCount=0 selected=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH_TARGET] productId=fu-607 needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH_API] productId=fu-607 index=1 maxPerRun=1 delayMs=0 shopCode=girl-k itemCode=fu-607
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=fu-607 source=itemUrl apiShop=girl-k apiItem=fu-607 storedShop=girl-k storedProductId=fu-607
+I/flutter (20789): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_START]
+I/flutter (20789): productId=fu-607
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=fu-607
+I/flutter (20789): keyword=【12％OFF】パーティードレス 結婚式 ワンピース ドレス 大きいサイズ 袖あり フォーマル ロング丈 ロングドレス 長袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 ブラウス ボリュー
+I/flutter (20789): verifyMode=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=fu-607 keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=girl-k itemCode=fu-607 shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=girl-k%3Afu-607
+I/flutter (20789): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (20789): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (20789): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      _MyPageRoomSyncSectionState._handleEnrichRoomMetadata (package:room_manager2/screens/mypage_placeholder_screen.dart:1121:22)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=363
+I/flutter (20789): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      _MyPageRoomSyncSectionState._handleEnrichRoomMetadata (package:room_manager2/screens/mypage_placeholder_screen.dart:1121:22)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_TRIGGERED]
+I/flutter (20789): reason=itemCodeInvalid
+I/flutter (20789): productId=fu-607
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=fu-607
+I/flutter (20789): keyword=【12％OFF】パーティードレス 結婚式 ワンピース ドレス 大きいサイズ 袖あり フォーマル ロング丈 ロングドレス 長袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 ブラウス ボリュー
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem_keywordShopFallback proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=(omit) keyword=【12％OFF】パーティードレス 結婚式 ワンピース ドレス 大きいサイズ 袖あり フォーマル ロング丈 ロングドレス 長袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 ブラウス ボリュー genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=【12％OFF】パーティードレス 結婚式 ワンピース ドレス 大きいサイズ 袖あり フォーマル ロング丈 ロングドレス 長袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 ブラウス ボリュー genreId=- shopCode=girl-k itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%80%9012%EF%BC%85OFF%E3%80%91%E3%83%91%E3%83%BC%E3%83%86%E3%82%A3%E3%83%BC%E3%83%89%E3%83%AC%E3%82%B9+%E7%B5%90%E5%A9%9A%E5%BC%8F+%E3%83%AF%E3%83%B3%E3%83%94%E3%83%BC%E3%82%B9+%E3%83%89%E3%83%AC%E3%82%B9+%E5%A4%A7%E3%81%8D%E3%81%84%E3%82%B5%E3%82%A4%E3%82%BA+%E8%A2%96%E3%81%82%E3%82%8A+%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%AB+%E3%83%AD%E3%83%B3%E3%82%B0%E4%B8%88+%E3%83%AD%E3%83%B3%E3%82%B0%E3%83%89%E3%83%AC%E3%82%B9+%E9%95%B7%E8%A2%96+%E4%BA%8C%E6%AC%A1%E4%BC%9A+%E6%8A%AB%E9%9C%B2%E5%AE%B4+%E3%81%8A%E5%91%BC%E3%81%B0%E3%82%8C+%E4%B8%8A%E5%93%81+%E8%86%9D%E4%B8%8B+%E4%BB%96%E3%81%A8%E8%A2%AB%E3%82%89%E3%81%AA%E3%81%84+%E4%BD%93%E5%9E%8B%E3%82%AB%E3%83%90%E3%83%BC+40%E4%BB%A3+30%E4%BB%A3+20%E4%BB%A3+50%E4%BB%A3+%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B9+%E3%83%9C%E3%83%AA%E3%83%A5%E3%83%BC&shopCode=girl-k
+I/flutter (20789): [Rakuten] response status=200 page=1 bytes=13256
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (20789): [RECOMMEND_TRACE] rawCount=1
+I/flutter (20789): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-607%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015184%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-607%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015184%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RakutenGenre][API] itemCode=girl-k:10015184 rawGenreId=555084 rawGenreName= rawKeys=genreId
+I/flutter (20789): [RakutenGenre][MAP] itemCode=girl-k:10015184 model.genreId=555084 model.genreName= jsonRaw=ドレス jsonRolled=ドレス displayGenre=ドレス
+I/flutter (20789): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH] saved shopName=パーティードレス通販 GIRL
+I/flutter (20789): [ROOM_IMPORT_ENRICH] saved genreName=ドレス
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_RESULT]
+I/flutter (20789): status=success
+I/flutter (20789): method=keywordShopCodeUrlMatch
+I/flutter (20789): productId=fu-607
+I/flutter (20789): matchedItemCode=girl-k:10015184
+I/flutter (20789): matchedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-607%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015184%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): matchedAffiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Ffu-607%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10015184%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): price=13900
+I/flutter (20789): shopName=パーティードレス通販 GIRL
+I/flutter (20789): apiGenreName=(empty)
+I/flutter (20789): mappedGenreName=ドレス
+I/flutter (20789): savedGenreName=ドレス
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SUCCESS] productId=fu-607 price=13900 image=https://thumbnail.image.rakuten.co.jp/@0_mall/girl-k/cabinet/item_image/dress13/… shopName=パーティードレス通販 GIRL genreName=
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SUMMARY] attempted=2 updated=1 skipped=12 pausedByRateLimit=false remainingPending=158
+I/flutter (20789): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=2 updated=1
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ][surface] tab=done surface=loading
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=loading ui=loading
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=provider
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ROOM_IMPORT_ENRICH_QUEUE] pending=158 eligible=157 skippedCooldown=1 skippedFailed=0
+I/flutter (20789): [ROOM_IMPORT_ENRICH_PICK] productId=vn-295-outlet failureReason= failureCount=0 selected=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH_TARGET] productId=vn-295-outlet needsPrice=true needsImage=false needsShopName=true needsGenre=true willEnrich=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH_API] productId=vn-295-outlet index=1 maxPerRun=1 delayMs=0 shopCode=girl-k itemCode=vn-295-outlet
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=vn-295-outlet source=itemUrl apiShop=girl-k apiItem=vn-295-outlet storedShop=girl-k storedProductId=vn-295-outlet
+I/flutter (20789): [ROOM_IMPORT_ENRICH_METHOD] method=shopItem
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_START]
+I/flutter (20789): productId=vn-295-outlet
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=vn-295-outlet
+I/flutter (20789): keyword=【アウトレット】入学式 ママスーツ 卒業式 スーツ 母 レディース ワンピース セレモニースーツ 入園式 卒園式 服装 母親 セットアップ 七五三 お宮参り フォーマル 大きいサイズ ビジネススーツ 30代 40代 50代
+I/flutter (20789): verifyMode=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=vn-295-outlet keyword=(omit) genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=compositeItemCode(shop:item) keyword=(omit) genreId=- shopCode=girl-k itemCode=vn-295-outlet shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&itemCode=girl-k%3Avn-295-outlet
+I/flutter (20789): [Rakuten] response status=400 page=1 bytes=123
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=400
+I/flutter (20789): [Rakuten] error response body (full, status=400): {"error":"rakuten_proxy_failed","detail":"{\"error_description\":\"itemCode is not valid\",\"error\":\"wrong_parameter\"}"}
+I/flutter (20789): [Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): rakuten_proxy_failed
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      _MyPageRoomSyncSectionState._handleEnrichRoomMetadata (package:room_manager2/screens/mypage_placeholder_screen.dart:1121:22)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): 
+I/flutter (20789): [ROOM_IMPORT_API] type=rakutenItem status=httpError http=400 durationMs=306
+I/flutter (20789): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (20789): [ROOM_IMPORT_ENRICH] singleSearch transport http=400
+I/flutter (20789): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #2      RakutenSearchRepository.fetchRoomImportEnrichmentSingleSearch (package:room_manager2/repository/rakuten_search_repository.dart:811:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #3      RakutenSearchRepository.fetchRoomImportShopItemWithKeywordUrlFallback (package:room_manager2/repository/rakuten_search_repository.dart:945:21)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #4      RoomImportMetadataEnrichmentService._runEnrichmentLoop (package:room_manager2/services/room_import_metadata_enrichment.dart:647:19)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #5      RoomImportMetadataEnrichmentService.enrichRoomImportedProducts (package:room_manager2/services/room_import_metadata_enrichment.dart:234:14)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): #6      _MyPageRoomSyncSectionState._handleEnrichRoomMetadata (package:room_manager2/screens/mypage_placeholder_screen.dart:1121:22)
+I/flutter (20789): <asynchronous suspension>
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_TRIGGERED]
+I/flutter (20789): 
+I/flutter (20789): reason=itemCodeInvalid
+I/flutter (20789): productId=vn-295-outlet
+I/flutter (20789): shopCode=girl-k
+I/flutter (20789): itemCode=vn-295-outlet
+I/flutter (20789): keyword=【アウトレット】入学式 ママスーツ 卒業式 スーツ 母 レディース ワンピース セレモニースーツ 入園式 卒園式 服装 母親 セットアップ 七五三 お宮参り フォーマル 大きいサイズ ビジネススーツ 30代 40代 50代
+I/flutter (20789): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopItem_keywordShopFallback proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=girl-k itemCode=(omit) keyword=【アウトレット】入学式 ママスーツ 卒業式 スーツ 母 レディース ワンピース セレモニースーツ 入園式 卒園式 服装 母親 セットアップ 七五三 お宮参り フォーマル 大きいサイズ ビジネススーツ 30代 40代 50代 genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (20789): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=【アウトレット】入学式 ママスーツ 卒業式 スーツ 母 レディース ワンピース セレモニースーツ 入園式 卒園式 服装 母親 セットアップ 七五三 お宮参り フォーマル 大きいサイズ ビジネススーツ 30代 40代 50代 genreId=- shopCode=girl-k itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (20789): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (20789): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%80%90%E3%82%A2%E3%82%A6%E3%83%88%E3%83%AC%E3%83%83%E3%83%88%E3%80%91%E5%85%A5%E5%AD%A6%E5%BC%8F+%E3%83%9E%E3%83%9E%E3%82%B9%E3%83%BC%E3%83%84+%E5%8D%92%E6%A5%AD%E5%BC%8F+%E3%82%B9%E3%83%BC%E3%83%84+%E6%AF%8D+%E3%83%AC%E3%83%87%E3%82%A3%E3%83%BC%E3%82%B9+%E3%83%AF%E3%83%B3%E3%83%94%E3%83%BC%E3%82%B9+%E3%82%BB%E3%83%AC%E3%83%A2%E3%83%8B%E3%83%BC%E3%82%B9%E3%83%BC%E3%83%84+%E5%85%A5%E5%9C%92%E5%BC%8F+%E5%8D%92%E5%9C%92%E5%BC%8F+%E6%9C%8D%E8%A3%85+%E6%AF%8D%E8%A6%AA+%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97+%E4%B8%83%E4%BA%94%E4%B8%89+%E3%81%8A%E5%AE%AE%E5%8F%82%E3%82%8A+%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%AB+%E5%A4%A7%E3%81%8D%E3%81%84%E3%82%B5%E3%82%A4%E3%82%BA+%E3%83%93%E3%82%B8%E3%83%8D%E3%82%B9%E3%82%B9%E3%83%BC%E3%83%84+30%E4%BB%A3+40%E4%BB%A3+50%E4%BB%A3&shopCode=girl-k
+I/flutter (20789): [Rakuten] response status=200 page=1 bytes=27370
+I/flutter (20789): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (20789): [RECOMMEND_TRACE] rawCount=2
+I/flutter (20789): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fka-ca-160-outlet%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10012012%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fka-ca-160-outlet%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10012012%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RakutenGenre][API] itemCode=girl-k:10012012 rawGenreId=409120 rawGenreName= rawKeys=genreId
+I/flutter (20789): [RakutenGenre][MAP] itemCode=girl-k:10012012 model.genreId=409120 model.genreName= jsonRaw=ワンピーススーツ jsonRolled=ワンピーススーツ displayGenre=ワンピーススーツ
+I/flutter (20789): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fvn-295-outlet%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014820%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fvn-295-outlet%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014820%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): [RakutenGenre][API] itemCode=girl-k:10014820 rawGenreId=409120 rawGenreName= rawKeys=genreId
+I/flutter (20789): [RakutenGenre][MAP] itemCode=girl-k:10014820 model.genreId=409120 model.genreName= jsonRaw=ワンピーススーツ jsonRolled=ワンピーススーツ displayGenre=ワンピーススーツ
+I/flutter (20789): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter (20789): [ROOM_IMPORT_ENRICH] saved shopName=パーティードレス通販 GIRL
+I/flutter (20789): [ROOM_IMPORT_ENRICH] saved genreName=ワンピーススーツ
+I/flutter (20789): [ROOM_IMPORT_ENRICH_FALLBACK_RESULT]
+I/flutter (20789): status=success
+I/flutter (20789): method=keywordShopCodeUrlMatch
+I/flutter (20789): productId=vn-295-outlet
+I/flutter (20789): matchedItemCode=girl-k:10014820
+I/flutter (20789): matchedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fvn-295-outlet%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014820%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): matchedAffiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00py9mh.362kt70d.g00py9mh.362ku80b/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgirl-k%2Fvn-295-outlet%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgirl-k%2Fi%2F10014820%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (20789): price=5495
+I/flutter (20789): shopName=パーティードレス通販 GIRL
+I/flutter (20789): apiGenreName=(empty)
+I/flutter (20789): mappedGenreName=ワンピーススーツ
+I/flutter (20789): savedGenreName=ワンピーススーツ
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SUCCESS] productId=vn-295-outlet price=5495 image=https://thumbnail.image.rakuten.co.jp/@0_mall/girl-k/cabinet/item_image/dress5/v… shopName=パーティードレス通販 GIRL genreName=
+I/flutter (20789): [ROOM_IMPORT_ENRICH_SUMMARY] attempted=2 updated=1 skipped=13 pausedByRateLimit=false remainingPending=157
+I/flutter (20789): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=2 updated=1
+I/flutter (20789): [MANAGED_PRODUCT_SAVE]
+I/flutter (20789): action=refresh
+I/flutter (20789): productId=
+I/flutter (20789): itemCode=
+I/flutter (20789): beforePendingCount=0
+I/flutter (20789): afterPendingCount=0
+I/flutter (20789): beforeDoneCount=171
+I/flutter (20789): afterDoneCount=171
+I/flutter (20789): [MANAGED_PRODUCT_LOAD]
+I/flutter (20789): source=provider
+I/flutter (20789): pendingCount=0
+I/flutter (20789): doneCount=171
+I/flutter (20789): filter=
+I/flutter (20789): tab=
+I/flutter (20789): [ROOMコレ診断] refreshManagedProductList 完了 total=171 candidate=0 done=171 ui=ready
+I/flutter (20789): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=171 afterFilterLen=171 surface=ok_list ui=ready
+I/flutter (20789): [ROOMコレ診断] 描画リスト先頭 productId=t5280 title=【365日即日発送】〜46%OFF セレモニースーツ 入学式 ママスーツ 卒業式 スーツ 母親 3点セット パンツ セットアップ 入園式 卒園式 お宮参り レディース フォーマル 黒 ネイビー カジュアル おしゃれ コーデ かっこいい 試着チケット対象 status=done len=171
+I/flutter (20789): [REACTION_STATUS] productId=t5280
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=x1743525
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [REACTION_STATUS] productId=t5260
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=0
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (20789): [REACTION_STATUS] productId=c563898
+I/flutter (20789): [REACTION_STATUS] roomLikeCount=1
+I/flutter (20789): [REACTION_STATUS] roomCommentCount=0
+I/flutter (20789): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (20789): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter (20789): [ROOM_SYNC] ROOM投稿取り込み 開始（最大10件）
+I/flutter (20789): [ROOM_IMPORT_PERF] totalStart
+I/flutter (20789): [ROOM_IMPORT_PERF] prepareStart
+I/flutter (20789): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter (20789): [ROOM_IMPORT_PERF] fetchRoomListStart url=https://room.rakuten.co.jp/room_def277c8b5/items
+I/flutter (20789): [ROOM_IMPORT_LISTING] source=html page=1 url=https://room.rakuten.co.jp/room_def277c8b5/items
+I/flutter (20789): [ROOM_IMPORT_PERF] fetchRoomListEnd status=200 htmlBytes=34204 durationMs=9437
+I/flutter (20789): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9437
+I/flutter (20789): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (20789): [ROOM_SYNC][WARN] ROOM商品URLを1件も抽出できませんでした（href/絶対URL経路）
+I/flutter (20789): [ROOM_SYNC][WARN] 使用した正規表現（絶対URL）: https?://(?:www\.)?room\.rakuten\.co\.jp/[^\s"<>]+
+I/flutter (20789): [ROOM_SYNC][WARN] 使用した正規表現（href）: href\s*=\s*["']([^"']+)["']
+I/flutter (20789): [ROOM_SYNC][WARN] HTML内に room.rakuten.co.jp を含むか: true
+I/flutter (20789): [ROOM_SYNC][WARN] HTML内に 1700 形式の商品IDらしき文字列(13桁以上の連続数字)を含むか: true
+I/flutter (20789): [ROOM_IMPORT_PERF] extractRoomItemsStart
+I/flutter (20789): [ROOM_IMPORT_PERF] extractRoomItemsEnd found=6 durationMs=0
+I/flutter (20789): [ROOM_SYNC] 投稿一覧 6件 · 未取り込み推定 0件
+I/flutter (20789): [ROOM_IMPORT_LISTING] source=collects page=1 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=(start)
+I/flutter (20789): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9460
+I/flutter (20789): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (20789): [ROOM_IMPORT_LISTING] source=collects page=2 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371376907673
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
