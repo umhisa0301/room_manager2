@@ -9,6 +9,7 @@ import '../models/rakuten_search_item.dart';
 import '../services/genre_master_service.dart';
 import '../services/rakuten_api_service.dart';
 import '../utils/rakuten_product_genre_display.dart';
+import '../utils/room_import_product_url_match.dart';
 import '../utils/room_sync_log.dart';
 
 /// キーワード検索（管理除外パス）のページング終了理由。
@@ -101,6 +102,9 @@ class RoomImportVerifySequenceOutcome {
     this.envelope,
     this.winningPattern,
     this.pausedByRateLimit = false,
+    this.patternsTried = const [],
+    this.blockedPatterns = const [],
+    this.lastError = '',
   });
 
   final RoomImportEnrichmentFetchEnvelope? envelope;
@@ -109,6 +113,32 @@ class RoomImportVerifySequenceOutcome {
   final String? winningPattern;
   final int apiCallCount;
   final bool pausedByRateLimit;
+
+  /// 今回の実行で試したパターン（順序付き）。
+  final List<String> patternsTried;
+
+  /// 試行終了時点でブロック済みのパターン。
+  final List<String> blockedPatterns;
+
+  /// 診断用短文（例: `http_429`, `all_patterns_failed`）。
+  final String lastError;
+}
+
+/// [fetchRoomImportShopItemWithKeywordUrlFallback] の結果。
+class RoomImportShopItemKeywordFallbackOutcome {
+  const RoomImportShopItemKeywordFallbackOutcome({
+    required this.envelope,
+    this.additionalApiCalls = 0,
+    this.keywordFallbackAttempted = false,
+    this.keywordCandidateSummaries = const [],
+  });
+
+  final RoomImportEnrichmentFetchEnvelope envelope;
+
+  /// 追加で叩いた楽天API回数（フォールバック1回なら 1）。
+  final int additionalApiCalls;
+  final bool keywordFallbackAttempted;
+  final List<String> keywordCandidateSummaries;
 }
 
 void _logRoomImportItemCodeApiDiag({
@@ -198,6 +228,9 @@ class RakutenSearchRepository {
 
   /// 検証モード: 一度成功したパターンのみ次回以降ワンショットで叩く。
   static String? _verifyWinningPattern;
+
+  static List<String> _verifyBlockedSnapshot() =>
+      (_verifyBlockedPatterns.toList()..sort());
 
   /// キーワード検索（コレ候補・コレ済の itemCode 除外）で追いかける API ページ上限。
   /// 1ページあたり最大30件。無限ループ防止・API負荷の上限。
@@ -840,6 +873,171 @@ class RakutenSearchRepository {
     }
   }
 
+  static bool _shouldKeywordFallbackAfterShopItem400(
+    RoomImportEnrichmentFetchEnvelope env,
+  ) {
+    if (env.httpStatus != 400) return false;
+    final blob = [
+      env.exceptionMessage ?? '',
+      env.responseBodyPreview ?? '',
+    ].join(' ').toLowerCase();
+    return blob.contains('wrong_parameter') ||
+        blob.contains('wrong parameter') ||
+        blob.contains('not valid') ||
+        blob.contains('invalid') ||
+        blob.contains('itemcode') ||
+        blob.contains('item_code');
+  }
+
+  String _candidateLineForLog(RakutenSearchItem it) {
+    final u = it.itemUrl.trim();
+    final short = u.length > 72 ? '${u.substring(0, 72)}…' : u;
+    return 'itemCode=${it.productId} itemUrl=$short';
+  }
+
+  /// 通常補完: まず shop+item（複合 itemCode）検索し、**itemCode 系 400** のときだけ
+  /// `keyword + shopCode` で再検索し、**ROOM の productId が商品URLに含まれる件**だけ採用する。
+  Future<RoomImportShopItemKeywordFallbackOutcome>
+  fetchRoomImportShopItemWithKeywordUrlFallback({
+    required RakutenProductSearchCondition shopItemCondition,
+    required String matchPureItemForPick,
+    required String matchShopCodeForPick,
+    required String storedProductIdForUrlMatch,
+    required String fallbackKeyword,
+    String phaseShopItem = 'shopItem',
+  }) async {
+    final envShop = await fetchRoomImportEnrichmentSingleSearch(
+      condition: shopItemCondition,
+      phase: phaseShopItem,
+      page: 1,
+      hits: 30,
+      matchPureItemForPick: matchPureItemForPick,
+      matchShopCodeForPick: matchShopCodeForPick,
+    );
+
+    if (envShop.rateLimited || envShop.httpStatus == 429) {
+      return RoomImportShopItemKeywordFallbackOutcome(envelope: envShop);
+    }
+
+    if (envShop.item != null) {
+      return RoomImportShopItemKeywordFallbackOutcome(envelope: envShop);
+    }
+
+    if (!_shouldKeywordFallbackAfterShopItem400(envShop)) {
+      return RoomImportShopItemKeywordFallbackOutcome(envelope: envShop);
+    }
+
+    final fk = fallbackKeyword.trim();
+    if (fk.isEmpty) {
+      return RoomImportShopItemKeywordFallbackOutcome(envelope: envShop);
+    }
+
+    if (kDemoModeEnabled) {
+      final kwCond = RakutenProductSearchCondition(
+        keyword: fk,
+        shopCode: matchShopCodeForPick,
+        itemCode: null,
+      ).normalized();
+      final demoItems = await search(condition: kwCond, maxPages: 1);
+      final summaries = demoItems.map(_candidateLineForLog).take(12).toList();
+      for (final it in demoItems) {
+        if (roomImportSearchItemUrlsMatchStoredProduct(
+          item: it,
+          rawItemMap: null,
+          storedProductId: storedProductIdForUrlMatch,
+        )) {
+          return RoomImportShopItemKeywordFallbackOutcome(
+            envelope: RoomImportEnrichmentFetchEnvelope(
+              item: it,
+              httpStatus: 200,
+            ),
+            additionalApiCalls: 1,
+            keywordFallbackAttempted: true,
+            keywordCandidateSummaries: summaries,
+          );
+        }
+      }
+      return RoomImportShopItemKeywordFallbackOutcome(
+        envelope: const RoomImportEnrichmentFetchEnvelope(httpStatus: 200),
+        additionalApiCalls: 1,
+        keywordFallbackAttempted: true,
+        keywordCandidateSummaries: summaries,
+      );
+    }
+
+    try {
+      RoomImportDebugLogBuffer.incEnrichment();
+      final normalizedKw = RakutenProductSearchCondition(
+        keyword: fk,
+        shopCode: matchShopCodeForPick,
+        itemCode: null,
+      ).normalized();
+      _roomImportEnrichmentFullRequestLog(
+        phase: '${phaseShopItem}_keywordShopFallback',
+        condition: RakutenProductSearchCondition(
+          keyword: fk,
+          shopCode: matchShopCodeForPick,
+          itemCode: null,
+        ),
+        page: 1,
+        hits: 30,
+      );
+      final raw = await _apiService.searchItems(
+        condition: normalizedKw,
+        page: 1,
+        hits: 30,
+      );
+      final rawItems = raw['Items'];
+      if (rawItems is! List) {
+        return RoomImportShopItemKeywordFallbackOutcome(
+          envelope: const RoomImportEnrichmentFetchEnvelope(httpStatus: 200),
+          additionalApiCalls: 1,
+          keywordFallbackAttempted: true,
+          keywordCandidateSummaries: const [],
+        );
+      }
+      final paired = <({RakutenSearchItem item, Map<String, dynamic> map})>[];
+      for (final entry in rawItems) {
+        try {
+          final map = _unwrapItem(entry);
+          if (map == null) continue;
+          final item = _mapToModel(map);
+          if (item == null) continue;
+          paired.add((item: item, map: map));
+        } catch (_) {}
+      }
+      final summaries = paired.map((p) => _candidateLineForLog(p.item)).take(12).toList();
+      for (final p in paired) {
+        if (roomImportSearchItemUrlsMatchStoredProduct(
+          item: p.item,
+          rawItemMap: p.map,
+          storedProductId: storedProductIdForUrlMatch,
+        )) {
+          return RoomImportShopItemKeywordFallbackOutcome(
+            envelope: RoomImportEnrichmentFetchEnvelope(
+              item: p.item,
+              httpStatus: 200,
+            ),
+            additionalApiCalls: 1,
+            keywordFallbackAttempted: true,
+            keywordCandidateSummaries: summaries,
+          );
+        }
+      }
+      return RoomImportShopItemKeywordFallbackOutcome(
+        envelope: const RoomImportEnrichmentFetchEnvelope(httpStatus: 200),
+        additionalApiCalls: 1,
+        keywordFallbackAttempted: true,
+        keywordCandidateSummaries: summaries,
+      );
+    } catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[ROOM_IMPORT_ENRICH] keywordShop fallback failed: $e\n$st');
+      }
+      return RoomImportShopItemKeywordFallbackOutcome(envelope: envShop);
+    }
+  }
+
   /// キーワード検索タブ専用: [excludeRegisteredProductIds]（楽天 itemCode / [RakutenSearchItem.productId]）と
   /// [excludeSavedShopCodes]（保存ショップの shopCode）を除いたうえで、
   /// 表示候補が [targetVisibleCount] 件に達するか API が尽きるまで、ページを **1ページずつ** 順取得する。
@@ -1222,12 +1420,19 @@ class RakutenSearchRepository {
     final sc = shopCode.trim();
     final pic = pureItemCode.trim();
     final kw = patternCKeyword.trim();
+    final patternsTried = <String>[];
 
     Future<RoomImportVerifySequenceOutcome> repeatWinning() async {
       final w = _verifyWinningPattern;
       if (w == null) {
-        return RoomImportVerifySequenceOutcome(apiCallCount: 0);
+        return RoomImportVerifySequenceOutcome(
+          apiCallCount: 0,
+          patternsTried: List<String>.from(patternsTried),
+          blockedPatterns: _verifyBlockedSnapshot(),
+          lastError: '',
+        );
       }
+      patternsTried.add(w);
       RoomImportDebugLogBuffer.incEnrichment();
       RoomImportEnrichmentFetchEnvelope env;
       switch (w) {
@@ -1287,6 +1492,9 @@ class RakutenSearchRepository {
         winningPattern: w,
         apiCallCount: 1,
         pausedByRateLimit: paused,
+        patternsTried: List<String>.from(patternsTried),
+        blockedPatterns: _verifyBlockedSnapshot(),
+        lastError: paused ? 'http_429' : '',
       );
     }
 
@@ -1306,6 +1514,7 @@ class RakutenSearchRepository {
     }
 
     if (!_verifyBlockedPatterns.contains('A')) {
+      patternsTried.add('A');
       await gap();
       RoomImportDebugLogBuffer.incEnrichment();
       calls++;
@@ -1328,6 +1537,9 @@ class RakutenSearchRepository {
           envelope: envA,
           apiCallCount: calls,
           pausedByRateLimit: true,
+          patternsTried: List<String>.from(patternsTried),
+          blockedPatterns: _verifyBlockedSnapshot(),
+          lastError: 'http_429',
         );
       }
       if (_verifyHadSelectableItem(envA)) {
@@ -1337,6 +1549,9 @@ class RakutenSearchRepository {
           envelope: envA,
           winningPattern: 'A',
           apiCallCount: calls,
+          patternsTried: List<String>.from(patternsTried),
+          blockedPatterns: _verifyBlockedSnapshot(),
+          lastError: '',
         );
       }
       _verifyMarkBlocked(
@@ -1346,6 +1561,7 @@ class RakutenSearchRepository {
     }
 
     if (!_verifyBlockedPatterns.contains('B')) {
+      patternsTried.add('B');
       await gap();
       RoomImportDebugLogBuffer.incEnrichment();
       calls++;
@@ -1369,6 +1585,9 @@ class RakutenSearchRepository {
           envelope: envB,
           apiCallCount: calls,
           pausedByRateLimit: true,
+          patternsTried: List<String>.from(patternsTried),
+          blockedPatterns: _verifyBlockedSnapshot(),
+          lastError: 'http_429',
         );
       }
       if (_verifyHadSelectableItem(envB)) {
@@ -1378,6 +1597,9 @@ class RakutenSearchRepository {
           envelope: envB,
           winningPattern: 'B',
           apiCallCount: calls,
+          patternsTried: List<String>.from(patternsTried),
+          blockedPatterns: _verifyBlockedSnapshot(),
+          lastError: '',
         );
       }
       _verifyMarkBlocked(
@@ -1387,6 +1609,7 @@ class RakutenSearchRepository {
     }
 
     if (!_verifyBlockedPatterns.contains('C')) {
+      patternsTried.add('C');
       await gap();
       RoomImportDebugLogBuffer.incEnrichment();
       calls++;
@@ -1409,6 +1632,9 @@ class RakutenSearchRepository {
           envelope: envC,
           apiCallCount: calls,
           pausedByRateLimit: true,
+          patternsTried: List<String>.from(patternsTried),
+          blockedPatterns: _verifyBlockedSnapshot(),
+          lastError: 'http_429',
         );
       }
       if (_verifyHadSelectableItem(envC)) {
@@ -1418,6 +1644,9 @@ class RakutenSearchRepository {
           envelope: envC,
           winningPattern: 'C',
           apiCallCount: calls,
+          patternsTried: List<String>.from(patternsTried),
+          blockedPatterns: _verifyBlockedSnapshot(),
+          lastError: '',
         );
       }
       _verifyMarkBlocked(
@@ -1427,7 +1656,14 @@ class RakutenSearchRepository {
     }
 
     roomImportVerifyLog('allPatternsFailed apiCalls=$calls');
-    return RoomImportVerifySequenceOutcome(apiCallCount: calls);
+    return RoomImportVerifySequenceOutcome(
+      apiCallCount: calls,
+      patternsTried: List<String>.from(patternsTried),
+      blockedPatterns: _verifyBlockedSnapshot(),
+      lastError: patternsTried.isEmpty
+          ? 'no_pattern_attempted'
+          : 'all_patterns_failed',
+    );
   }
 
   List<RakutenSearchItem> _applyAppSideFilters(

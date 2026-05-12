@@ -277,12 +277,28 @@ void roomImportApiLog(String message) {
 }
 
 /// ROOM 取り込み永続化の整合性（価格・画像の preserve 等）。
+///
+/// `changedPrice` 等は **DB が実際に書き換わったか**ではなく、
+/// 「マージ結果として値が変わったか」のフラグ（誤って保存失敗と読まない）。
 void roomImportSaveLog(String message) {
   final line = '[ROOM_IMPORT_SAVE] $message';
   if (kDebugMode) {
     debugPrint(line);
     RoomImportDebugLogBuffer.add(line);
   }
+}
+
+/// 通常補完の keyword+shopCode フォールバック結果（URL照合の成功／失敗）。
+void roomImportEnrichFallbackResultLog(Map<String, String> fields) {
+  if (!kDebugMode) return;
+  final sb = StringBuffer('[ROOM_IMPORT_ENRICH_FALLBACK_RESULT]\n');
+  for (final e in fields.entries) {
+    final v = e.value.replaceAll('\n', ' ').trim();
+    sb.writeln('${e.key}=$v');
+  }
+  final text = sb.toString().trimRight();
+  debugPrint(text);
+  RoomImportDebugLogBuffer.add(text.replaceAll('\n', ' | '));
 }
 
 void roomImportSkipApiLog(String message) {
@@ -389,6 +405,21 @@ void roomImportVerifyLog(String message) {
     debugPrint(line);
     RoomImportDebugLogBuffer.add(line);
   }
+}
+
+/// 検証モード終了時の **1ブロック**サマリー（成功／失敗どちらでも必ず1回）。
+///
+/// [fields] のキー順がログ行順になる（挿入順を保持するため `LinkedHashMap` 推奨）。
+void roomImportEnrichVerifyResultLog(Map<String, String> fields) {
+  if (!kDebugMode) return;
+  final sb = StringBuffer('[ROOM_IMPORT_ENRICH_VERIFY_RESULT]\n');
+  for (final e in fields.entries) {
+    final v = e.value.replaceAll('\n', ' ').trim();
+    sb.writeln('${e.key}=$v');
+  }
+  final text = sb.toString().trimRight();
+  debugPrint(text);
+  RoomImportDebugLogBuffer.add(text.replaceAll('\n', ' | '));
 }
 
 void roomImportEnrichPickLog(String message) {

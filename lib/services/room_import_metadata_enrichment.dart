@@ -1,11 +1,15 @@
+import 'dart:collection';
+
 import 'package:flutter/foundation.dart';
 
 import '../config/room_import_enrichment_verify_config.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
+import '../models/rakuten_search_item.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../services/rakuten_item_url_parser.dart';
+import '../utils/rakuten_product_genre_display.dart';
 import '../utils/room_sync_log.dart';
 import 'room_import_enrichment_cooldown_store.dart';
 import 'room_import_limit_policy.dart';
@@ -38,6 +42,8 @@ class RoomImportEnrichmentBatchResult {
     required this.remainingPending,
     this.skippedCooldown = false,
     this.duplicateSessionSkipped = false,
+    /// 検証モード（`ROOM_IMPORT_ENRICH_VERIFY`）時のみ。マイページ SnackBar 用短文。
+    this.verifyUiMessage,
   });
 
   final int updated;
@@ -47,6 +53,9 @@ class RoomImportEnrichmentBatchResult {
   final int remainingPending;
   final bool skippedCooldown;
   final bool duplicateSessionSkipped;
+
+  /// 非検証モードでは常に null。
+  final String? verifyUiMessage;
 }
 
 /// 取り込み後メタ補完で試す検索経路（ログ名と一致）。
@@ -301,6 +310,38 @@ class RoomImportMetadataEnrichmentService {
     if (t.length < RoomImportLimitPolicy.enrichTitleKeywordMinChars) return null;
     if (t.length > 120) return t.substring(0, 120);
     return t;
+  }
+
+  /// shopItem → keyword+shopCode フォールバック時の検索語（商品タイトル優先、なければ検証モードと同じ既定）。
+  String _roomImportFallbackKeyword(RakutenManagedProduct row) {
+    final t = _titleKeywordRaw(row.itemName);
+    if (t != null && t.trim().isNotEmpty) return t.trim();
+    final k = RoomImportEnrichmentVerifyConfig.patternCKeyword.trim();
+    if (k.isNotEmpty) return k;
+    return 'タリーズコーヒー';
+  }
+
+  void _roomImportEnrichFallbackMergeSuccessLog({
+    required String productId,
+    required RakutenSearchItem api,
+    required RakutenManagedProduct saved,
+  }) {
+    final dg = _verifyGenreDiagnostics(api);
+    roomImportEnrichFallbackResultLog(
+      LinkedHashMap<String, String>.from({
+        'status': 'success',
+        'method': 'keywordShopCodeUrlMatch',
+        'productId': productId,
+        'matchedItemCode': api.productId.trim(),
+        'matchedItemUrl': api.itemUrl.trim(),
+        'price': '${api.itemPrice}',
+        'shopName': api.shopName.trim(),
+        'apiGenreName': dg.apiGenreName.isEmpty ? '(empty)' : dg.apiGenreName,
+        'mappedGenreName':
+            dg.mappedGenreName.isEmpty ? '(empty)' : dg.mappedGenreName,
+        'savedGenreName': saved.genreName.trim(),
+      }),
+    );
   }
 
   _RoomImportEnrichMethod? _peekNextMethod(RakutenManagedProduct row, DateTime now) {
@@ -591,24 +632,42 @@ class RoomImportMetadataEnrichmentService {
         );
         roomImportEnrichMethodLog('method=${_methodLogName(chosenMethod)}');
 
+        var usedKeywordShopUrlFallback = false;
         RoomImportEnrichmentFetchEnvelope env;
         try {
           RoomImportDebugLogBuffer.incEnrichment();
           apiAttempts++;
           switch (chosenMethod) {
             case _RoomImportEnrichMethod.shopItem:
-              env = await _searchRepository.fetchRoomImportEnrichmentSingleSearch(
-                condition: RakutenProductSearchCondition(
-                  keyword: '',
-                  shopCode: codes.apiShop,
-                  itemCode: codes.apiItem,
-                ),
-                phase: 'shopItem',
-                page: 1,
-                hits: 30,
-                matchPureItemForPick: codes.apiItem,
-                matchShopCodeForPick: codes.apiShop,
-              );
+              final fbKw = _roomImportFallbackKeyword(chosen);
+              final fbOut =
+                  await _searchRepository.fetchRoomImportShopItemWithKeywordUrlFallback(
+                    shopItemCondition: RakutenProductSearchCondition(
+                      keyword: '',
+                      shopCode: codes.apiShop,
+                      itemCode: codes.apiItem,
+                    ),
+                    matchPureItemForPick: codes.apiItem,
+                    matchShopCodeForPick: codes.apiShop,
+                    storedProductIdForUrlMatch: chosen.productId.trim(),
+                    fallbackKeyword: fbKw,
+                    phaseShopItem: 'shopItem',
+                  );
+              env = fbOut.envelope;
+              apiAttempts += fbOut.additionalApiCalls;
+              if (fbOut.keywordFallbackAttempted && env.item == null) {
+                roomImportEnrichFallbackResultLog(
+                  LinkedHashMap<String, String>.from({
+                    'status': 'noExactUrlMatch',
+                    'productId': pid,
+                    'shopCode': codes.apiShop,
+                    'keyword': fbKw,
+                    'candidates': fbOut.keywordCandidateSummaries.join(' | '),
+                  }),
+                );
+              }
+              usedKeywordShopUrlFallback =
+                  fbOut.keywordFallbackAttempted && env.item != null;
               break;
             case _RoomImportEnrichMethod.shopTitleKeyword:
               final kw = _titleKeywordRaw(chosen.itemName)!;
@@ -701,6 +760,16 @@ class RoomImportMetadataEnrichmentService {
             api: env.item!,
           );
           okCount++;
+          if (usedKeywordShopUrlFallback) {
+            final savedRow = _productRepository.getByProductId(pid);
+            if (savedRow != null) {
+              _roomImportEnrichFallbackMergeSuccessLog(
+                productId: pid,
+                api: env.item!,
+                saved: savedRow,
+              );
+            }
+          }
         } catch (_) {
           await _productRepository.updateManagedProduct(pid, (e) {
             return e.copyWith(roomImportMetadataEnriching: false);
@@ -792,6 +861,8 @@ class RoomImportMetadataEnrichmentService {
   Future<RoomImportEnrichmentBatchResult> _runVerifyOnlyEnrichment({
     required int skippedComplete,
   }) async {
+    const verifyFailSnack = '検証失敗: 詳細はログを確認してください';
+
     final fixedId = RoomImportEnrichmentVerifyConfig.fixedProductId.trim();
     roomImportVerifyLog('mode=on fixedProductId=$fixedId');
 
@@ -806,12 +877,19 @@ class RoomImportMetadataEnrichmentService {
 
     if (target == null) {
       roomImportVerifyLog('noRow matched productId=$fixedId');
+      _emitVerifyResultFailed(
+        productId: fixedId,
+        seq: null,
+        message: 'ROOM取り込み商品の補完検証に失敗しました',
+        extraError: 'no_eligible_row',
+      );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
         attempted: 0,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: false,
         remainingPending: _pendingQueueRows().length,
+        verifyUiMessage: verifyFailSnack,
       );
     }
 
@@ -820,12 +898,19 @@ class RoomImportMetadataEnrichmentService {
       roomImportVerifyLog(
         'resolveShopPure failed productId=${target.productId} shopCode=${target.shopCode}',
       );
+      _emitVerifyResultFailed(
+        productId: target.productId.trim(),
+        seq: null,
+        message: 'ROOM取り込み商品の補完検証に失敗しました',
+        extraError: 'resolve_shop_pure_failed',
+      );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
         attempted: 0,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: false,
         remainingPending: _pendingQueueRows().length,
+        verifyUiMessage: verifyFailSnack,
       );
     }
 
@@ -840,12 +925,19 @@ class RoomImportMetadataEnrichmentService {
         return e.copyWith(roomImportMetadataEnriching: true);
       });
     } catch (_) {
+      _emitVerifyResultFailed(
+        productId: pid,
+        seq: null,
+        message: 'ROOM取り込み商品の補完検証に失敗しました',
+        extraError: 'mark_enriching_failed',
+      );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
         attempted: 0,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: false,
         remainingPending: _pendingQueueRows().length,
+        verifyUiMessage: verifyFailSnack,
       );
     }
 
@@ -861,12 +953,19 @@ class RoomImportMetadataEnrichmentService {
       await _productRepository.updateManagedProduct(pid, (e) {
         return e.copyWith(roomImportMetadataEnriching: false);
       });
+      _emitVerifyResultFailed(
+        productId: pid,
+        seq: null,
+        message: 'ROOM取り込み商品の補完検証に失敗しました',
+        extraError: e.toString(),
+      );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
         attempted: 0,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: false,
         remainingPending: _pendingQueueRows().length,
+        verifyUiMessage: verifyFailSnack,
       );
     }
 
@@ -877,18 +976,33 @@ class RoomImportMetadataEnrichmentService {
         return e.copyWith(roomImportMetadataEnriching: false);
       });
       roomImportEnrichPausedLog('reason=rateLimit verifyMode=true');
+      _emitVerifyResultFailed(
+        productId: pid,
+        seq: outcome,
+        message: 'ROOM取り込み商品の補完検証に失敗しました',
+        extraError: 'rate_limited',
+      );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
         attempted: outcome.apiCallCount,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: true,
         remainingPending: _pendingQueueRows().length,
+        verifyUiMessage: verifyFailSnack,
       );
     }
 
     final env = outcome.envelope;
     final item = env?.item;
     if (item != null) {
+      final genreDiag = _verifyGenreDiagnostics(item);
+      if (kDebugMode) {
+        debugPrint(
+          '[ROOM_IMPORT_ENRICH_VERIFY] genreDiag apiRaw="${genreDiag.apiGenreName}" '
+          'genreId="${genreDiag.genreId}" mappedGenre="${genreDiag.mappedGenreName}" '
+          '(mapped は RakutenProductGenreDisplay / マージ処理と同系)',
+        );
+      }
       try {
         await _productRepository.mergeRoomImportMetadataFromSearchItem(
           productId: pid,
@@ -898,15 +1012,23 @@ class RoomImportMetadataEnrichmentService {
         await _productRepository.updateManagedProduct(pid, (e) {
           return e.copyWith(roomImportMetadataEnriching: false);
         });
+        _emitVerifyResultFailed(
+          productId: pid,
+          seq: outcome,
+          message: 'ROOM取り込み商品の補完検証に失敗しました',
+          extraError: 'merge_failed',
+        );
         return RoomImportEnrichmentBatchResult(
           updated: 0,
           attempted: outcome.apiCallCount,
           skippedAlreadyComplete: skippedComplete,
           pausedByRateLimit: false,
           remainingPending: _pendingQueueRows().length,
+          verifyUiMessage: verifyFailSnack,
         );
       }
 
+      final saved = _productRepository.getByProductId(pid);
       final img = item.imageUrl.trim();
       final imgLog = img.isEmpty
           ? '-'
@@ -914,24 +1036,55 @@ class RoomImportMetadataEnrichmentService {
       roomImportEnrichSuccessLog(
         'VERIFY pattern=${outcome.winningPattern} productId=$pid '
         'price=${item.itemPrice} image=$imgLog '
-        'shopName=${item.shopName.trim()} genreName=${item.genreName.trim()}',
+        'shopName(api)=${item.shopName.trim()} '
+        'apiGenreName="${genreDiag.apiGenreName}" '
+        'mappedGenreName="${genreDiag.mappedGenreName}" '
+        'genreId=${genreDiag.genreId.isEmpty ? '(empty)' : genreDiag.genreId}',
       );
 
       await _productRepository.updateManagedProduct(pid, (e) {
         return e.copyWith(roomImportMetadataEnriching: false);
       });
 
-      roomImportVerifyLog(
-        'saved pattern=${outcome.winningPattern} itemPrice=${item.itemPrice} '
-        'genreName=${item.genreName.trim()} shopName=${item.shopName.trim()}',
-      );
+      if (saved != null) {
+        roomImportVerifyLog(
+          'saved pattern=${outcome.winningPattern} itemPrice=${item.itemPrice} '
+          'savedGenreName=${saved.genreName.trim()} savedShopName=${saved.shopName.trim()} '
+          '(api.genreName は空でも genreId 経由でマージ後 genreName が埋まることがあります)',
+        );
+        _emitVerifyResultSuccess(
+          productId: pid,
+          winningPattern: outcome.winningPattern ?? 'unknown',
+          apiItem: item,
+          saved: saved,
+          apiCalls: outcome.apiCallCount,
+        );
+        final wp = outcome.winningPattern ?? '?';
+        final snack =
+            '検証成功: pattern $wp / ${saved.shopName.trim()} / ${saved.genreName.trim()}';
+        return RoomImportEnrichmentBatchResult(
+          updated: 1,
+          attempted: outcome.apiCallCount,
+          skippedAlreadyComplete: skippedComplete,
+          pausedByRateLimit: false,
+          remainingPending: _pendingQueueRows().length,
+          verifyUiMessage: snack,
+        );
+      }
 
+      _emitVerifyResultFailed(
+        productId: pid,
+        seq: outcome,
+        message: 'ROOM取り込み商品の補完検証に失敗しました',
+        extraError: 'saved_row_missing_after_merge',
+      );
       return RoomImportEnrichmentBatchResult(
-        updated: 1,
+        updated: 0,
         attempted: outcome.apiCallCount,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: false,
         remainingPending: _pendingQueueRows().length,
+        verifyUiMessage: verifyFailSnack,
       );
     }
 
@@ -939,12 +1092,96 @@ class RoomImportMetadataEnrichmentService {
       return e.copyWith(roomImportMetadataEnriching: false);
     });
     roomImportVerifyLog('noSelectableItem apiCalls=${outcome.apiCallCount}');
+    _emitVerifyResultFailed(
+      productId: pid,
+      seq: outcome,
+      message: 'ROOM取り込み商品の補完検証に失敗しました',
+      extraError: outcome.lastError,
+    );
     return RoomImportEnrichmentBatchResult(
       updated: 0,
       attempted: outcome.apiCallCount,
       skippedAlreadyComplete: skippedComplete,
       pausedByRateLimit: false,
       remainingPending: _pendingQueueRows().length,
+      verifyUiMessage: verifyFailSnack,
+    );
+  }
+
+  ({String apiGenreName, String mappedGenreName, String genreId})
+  _verifyGenreDiagnostics(RakutenSearchItem item) {
+    final gid = item.genreId.trim();
+    final apiGn = item.genreName.trim();
+    final mapped = RakutenProductGenreDisplay.resolve(
+      apiGenreName: item.genreName,
+      persistedGenreName: null,
+      prefetchedGenreName: null,
+      genreId: item.genreId,
+      traceItemCode: null,
+    ).trim();
+    return (
+      apiGenreName: apiGn,
+      mappedGenreName: mapped.isEmpty || mapped == RakutenProductGenreDisplay.unknownLabel
+          ? ''
+          : mapped,
+      genreId: gid,
+    );
+  }
+
+  void _emitVerifyResultSuccess({
+    required String productId,
+    required String winningPattern,
+    required RakutenSearchItem apiItem,
+    required RakutenManagedProduct saved,
+    required int apiCalls,
+  }) {
+    final dg = _verifyGenreDiagnostics(apiItem);
+    final imageSaved = apiItem.imageUrl.trim().isNotEmpty;
+    roomImportEnrichVerifyResultLog(
+      LinkedHashMap<String, String>.from({
+        'status': 'success',
+        'winningPattern': winningPattern,
+        'productId': productId,
+        'itemPrice': '${apiItem.itemPrice}',
+        'imageSaved': '$imageSaved',
+        'shopName(api)': apiItem.shopName.trim(),
+        'shopName(saved)': saved.shopName.trim(),
+        'genreName': saved.genreName.trim(),
+        'apiGenreName': dg.apiGenreName.isEmpty ? '(empty)' : dg.apiGenreName,
+        'mappedGenreName':
+            dg.mappedGenreName.isEmpty ? '(empty)' : dg.mappedGenreName,
+        'genreId': dg.genreId.isEmpty ? '(empty)' : dg.genreId,
+        'savedShopName': saved.shopName.trim(),
+        'savedGenreName': saved.genreName.trim(),
+        'apiCalls': '$apiCalls',
+        'message': 'ROOM取り込み商品の補完検証に成功しました',
+      }),
+    );
+  }
+
+  void _emitVerifyResultFailed({
+    required String productId,
+    required RoomImportVerifySequenceOutcome? seq,
+    required String message,
+    String extraError = '',
+  }) {
+    final tried = seq?.patternsTried ?? const [];
+    final blocked = seq?.blockedPatterns ?? const [];
+    final baseErr = seq?.lastError ?? '';
+    final last = [
+      if (baseErr.isNotEmpty) baseErr,
+      if (extraError.isNotEmpty) extraError,
+    ].join('; ');
+    roomImportEnrichVerifyResultLog(
+      LinkedHashMap<String, String>.from({
+        'status': 'failed',
+        'winningPattern': seq?.winningPattern ?? 'none',
+        'productId': productId,
+        'triedPatterns': tried.isEmpty ? 'none' : tried.join(','),
+        'blockedPatterns': blocked.isEmpty ? 'none' : blocked.join(','),
+        'lastError': last.isEmpty ? 'unknown' : last,
+        'message': message,
+      }),
     );
   }
 }

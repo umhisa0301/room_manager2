@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/demo_mode.dart';
+import '../config/room_import_enrichment_verify_config.dart';
 import '../constants/legal_urls.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/user_profile.dart';
@@ -1124,7 +1125,13 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       if (!mounted) return;
       await managedProv.refreshManagedProductList();
       if (!mounted) return;
-      if (result.skippedCooldown) {
+      if (RoomImportEnrichmentVerifyConfig.enabled &&
+          result.verifyUiMessage != null &&
+          result.verifyUiMessage!.trim().isNotEmpty) {
+        messenger.showSnackBar(
+          SnackBar(content: Text(result.verifyUiMessage!.trim())),
+        );
+      } else if (result.skippedCooldown) {
         messenger.showSnackBar(
           SnackBar(
             content: Text(

@@ -438,8 +438,8 @@ class RakutenManagedProductRepository {
       final genreNameSaved = after.genreName.trim() != before.genreName.trim() &&
           (api.genreId.trim().isNotEmpty || api.genreName.trim().isNotEmpty);
       roomImportSaveLog(
-        'priceSaved=$priceSaved imageSaved=$imageSaved '
-        'shopNameSaved=$shopNameSaved genreNameSaved=$genreNameSaved',
+        'changedPrice=$priceSaved changedImage=$imageSaved '
+        'changedShopName=$shopNameSaved changedGenreName=$genreNameSaved',
       );
     }
     final row = getByProductId(id);

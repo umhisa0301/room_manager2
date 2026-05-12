@@ -3,6 +3,10 @@
 /// 有効時は [RoomImportMetadataEnrichmentService] が **固定 productId 1件のみ** を処理し、
 /// パターン A→B→C を順に試します（セッション内のブロック・成功パターン記憶あり）。
 ///
+/// **iOS**: Android と同様、`flutter run` / `flutter build ios` に `--dart-define=...` を
+/// 付けないと `bool.fromEnvironment` / `String.fromEnvironment` は既定値のままです。
+/// Xcode scheme の Run → Arguments → Environment Variables でも同等の定義が必要です。
+///
 /// ビルド例:
 /// `--dart-define=ROOM_IMPORT_ENRICH_VERIFY=true`
 class RoomImportEnrichmentVerifyConfig {
