@@ -33,6 +33,65 @@ $CommandFile = Join-Path $LocalSaveDir "recording_command.txt"
 $LockFile = Join-Path $LocalSaveDir "recording_session.lock"
 $ControllerScriptPath = Join-Path $CurrentDir "recording_controller.ps1"
 
+# スクショ保存フォルダ内の統合ログ（terminal_output_*.txt）へ追記。未初期化時はコンソールのみ。
+$script:TerminalOutputLogPath = $null
+
+function Write-TerminalLog {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Message,
+        [Parameter()]
+        $ForegroundColor = $null
+    )
+
+    if ($null -ne $ForegroundColor) {
+        Write-Host $Message -ForegroundColor ([System.ConsoleColor]$ForegroundColor)
+    }
+    else {
+        Write-Host $Message
+    }
+
+    $logPath = $script:TerminalOutputLogPath
+    if ([string]::IsNullOrWhiteSpace($logPath)) {
+        return
+    }
+
+    try {
+        $parent = Split-Path -Parent $logPath
+        if (-not (Test-Path -LiteralPath $parent)) {
+            return
+        }
+
+        [System.IO.File]::AppendAllText(
+            $logPath,
+            $Message + [Environment]::NewLine,
+            [System.Text.UTF8Encoding]::new($false))
+    }
+    catch {
+        # ログ追記失敗で録画・スクショ後処理を止めない
+    }
+}
+
+Set-Alias -Name Write-SessionLog -Value Write-TerminalLog -Scope Script -ErrorAction SilentlyContinue
+
+# Write-Section と対になる見出しをログファイルだけへ書く（コンソールは二重表示にしない）
+function Write-TerminalLogSection {
+    param([Parameter(Mandatory = $true)][string]$Message)
+
+    $logPath = $script:TerminalOutputLogPath
+    if ([string]::IsNullOrWhiteSpace($logPath)) {
+        return
+    }
+
+    try {
+        $nl = [Environment]::NewLine
+        $block = "$nl====================================================$nl$Message$nl====================================================$nl"
+        [System.IO.File]::AppendAllText($logPath, $block, [System.Text.UTF8Encoding]::new($false))
+    }
+    catch {
+    }
+}
+
 function Write-Section {
     param([string]$Message)
     Write-Host ""
@@ -155,6 +214,7 @@ function Stop-AndroidScreenRecord {
     param([string]$DeviceId)
 
     Write-Section "Stopping screenrecord"
+    Write-TerminalLogSection "Stopping screenrecord"
 
     try {
         adb -s $DeviceId shell "pkill -INT screenrecord" | Out-Host
@@ -180,6 +240,8 @@ function Stop-AndroidScreenRecord {
             Start-Sleep -Seconds 2
         }
     } catch {}
+
+    Write-TerminalLog "[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details)."
 }
 
 function Test-RemoteFileExists {
@@ -331,13 +393,39 @@ Write-Section "Check adb devices"
 $selectedDevice = Select-AndroidDevice
 $deviceId = $selectedDevice.Id
 
-Write-Host "Device       : $deviceId [$($selectedDevice.Manufacturer) $($selectedDevice.Model)]" -ForegroundColor Green
-Write-Host "Project dir  : $CurrentDir" -ForegroundColor Green
-Write-Host "App name     : $SafeAppName" -ForegroundColor Green
+Write-TerminalLog "Device       : $deviceId [$($selectedDevice.Manufacturer) $($selectedDevice.Model)]" -ForegroundColor Green
+Write-TerminalLog "Project dir  : $CurrentDir" -ForegroundColor Green
+Write-TerminalLog "App name     : $SafeAppName" -ForegroundColor Green
 
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
 $ScreenshotDir = Join-Path $LocalSaveDir ("screenshots_" + $timestamp)
 Ensure-Directory -Path $ScreenshotDir
+
+# 統合ログ（ChatGPT 提出用）。スクショフォルダ直下。iOS では adb/screenrecord が無いため別フローが必要（移植監査メモは終了時報告にも記載）。
+$script:TerminalOutputLogPath = Join-Path $ScreenshotDir ("terminal_output_" + $timestamp + ".txt")
+try {
+    $demoNote = if ($DemoMode) { "yes" } else { "no" }
+    $sessionHeader = @(
+        "=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===",
+        "Started (local): $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')",
+        "Project directory: $CurrentDir",
+        "App name (safe folder token): $SafeAppName",
+        "DemoMode: $demoNote",
+        "RakutenAppId: $(if ($RakutenAppId) { '(set)' } else { '(empty)' })",
+        "RakutenAffiliateId: $(if ($RakutenAffiliateId) { '(set)' } else { '(empty)' })",
+        "Selected device ID: $deviceId",
+        "Device manufacturer: $($selectedDevice.Manufacturer)",
+        "Device model: $($selectedDevice.Model)",
+        "",
+        "--- Session events ---",
+        ""
+    ) -join [Environment]::NewLine
+    [System.IO.File]::WriteAllText($script:TerminalOutputLogPath, $sessionHeader, [System.Text.UTF8Encoding]::new($false))
+}
+catch {
+}
+
+Write-TerminalLogSection "Check adb devices"
 
 $localFileName = "{0}_{1}.mp4" -f $SafeAppName, $timestamp
 $flutterStdOutLogName = "{0}_flutter_stdout_{1}.log" -f $SafeAppName, $timestamp
@@ -352,21 +440,26 @@ $recorderStdOutLogFile = Join-Path $LocalSaveDir $recorderStdOutLogName
 $recorderStdErrLogFile = Join-Path $LocalSaveDir $recorderStdErrLogName
 
 Write-Section "Remove old remote video"
+Write-TerminalLogSection "Remove old remote video"
 try {
     adb -s $deviceId shell "rm -f '$RemoteVideoPath'" | Out-Host
-} catch {}
+}
+catch {
+}
 
 Write-Section "Start screen recording"
-Write-Host "Device ID              : $deviceId" -ForegroundColor Yellow
-Write-Host "Remote video path      : $RemoteVideoPath" -ForegroundColor Yellow
-Write-Host "Local video path       : $localVideoPath" -ForegroundColor Yellow
-Write-Host "Flutter stdout log     : $flutterStdOutLogFile" -ForegroundColor Yellow
-Write-Host "Flutter stderr log     : $flutterStdErrLogFile" -ForegroundColor Yellow
-Write-Host "Recorder stdout log    : $recorderStdOutLogFile" -ForegroundColor Yellow
-Write-Host "Recorder stderr log    : $recorderStdErrLogFile" -ForegroundColor Yellow
-Write-Host "Screenshot dir         : $ScreenshotDir" -ForegroundColor Yellow
-Write-Host "Command file           : $CommandFile" -ForegroundColor Yellow
-Write-Host ""
+Write-TerminalLogSection "Start screen recording"
+Write-TerminalLog "Device ID              : $deviceId" -ForegroundColor Yellow
+Write-TerminalLog "Remote video path      : $RemoteVideoPath" -ForegroundColor Yellow
+Write-TerminalLog "Local video path       : $localVideoPath" -ForegroundColor Yellow
+Write-TerminalLog "Flutter stdout log     : $flutterStdOutLogFile" -ForegroundColor Yellow
+Write-TerminalLog "Flutter stderr log     : $flutterStdErrLogFile" -ForegroundColor Yellow
+Write-TerminalLog "Recorder stdout log    : $recorderStdOutLogFile" -ForegroundColor Yellow
+Write-TerminalLog "Recorder stderr log    : $recorderStdErrLogFile" -ForegroundColor Yellow
+Write-TerminalLog "Screenshot dir         : $ScreenshotDir" -ForegroundColor Yellow
+Write-TerminalLog "Terminal output log    : $script:TerminalOutputLogPath" -ForegroundColor Yellow
+Write-TerminalLog "Command file           : $CommandFile" -ForegroundColor Yellow
+Write-TerminalLog ""
 
 Show-Help
 
@@ -381,14 +474,20 @@ $null = Start-Process `
 
 Start-Sleep -Seconds 2
 
+Write-TerminalLog "[SCREENRECORD] adb screenrecord started (remote: $RemoteVideoPath, bitrate: $VideoBitRate). Details: recorder logs under recordings\."
+
 Write-Section "Start controller window"
+Write-TerminalLogSection "Start controller window"
 $controllerProcess = Start-ControllerWindow `
     -ControllerScript $ControllerScriptPath `
     -CommandFilePath $CommandFile `
     -LockFilePath $LockFile `
     -AppName $SafeAppName
 
+Write-TerminalLog "[CONTROLLER] Secondary controller window started (PID: $($controllerProcess.Id))."
+
 Write-Section "Start flutter"
+Write-TerminalLogSection "Start flutter"
 
 $flutterArgs = @(
     "run",
@@ -427,11 +526,14 @@ $flutterProc = New-Object System.Diagnostics.Process
 $flutterProc.StartInfo = $flutterStartInfo
 $null = $flutterProc.Start()
 
+Write-TerminalLog "[FLUTTER] Launch command: $flutterStartFile $($flutterStartArgs -join ' ')"
+
 $stdoutWriter = [System.IO.StreamWriter]::new($flutterStdOutLogFile, $false, [System.Text.UTF8Encoding]::new($false))
 $stderrWriter = [System.IO.StreamWriter]::new($flutterStdErrLogFile, $false, [System.Text.UTF8Encoding]::new($false))
 $ioSync = [hashtable]::Synchronized(@{
-    StdOut = $stdoutWriter
-    StdErr = $stderrWriter
+    StdOut          = $stdoutWriter
+    StdErr          = $stderrWriter
+    TerminalLogPath = $script:TerminalOutputLogPath
 })
 
 $stdoutEvent = Register-ObjectEvent -InputObject $flutterProc -EventName OutputDataReceived -MessageData $ioSync -Action {
@@ -446,6 +548,14 @@ $stdoutEvent = Register-ObjectEvent -InputObject $flutterProc -EventName OutputD
             [System.Threading.Monitor]::Exit($state)
         }
         Write-Host $EventArgs.Data
+        $tp = $state.TerminalLogPath
+        if (-not [string]::IsNullOrWhiteSpace($tp)) {
+            try {
+                [System.IO.File]::AppendAllText($tp, $EventArgs.Data + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
+            }
+            catch {
+            }
+        }
     }
 }
 
@@ -461,16 +571,24 @@ $stderrEvent = Register-ObjectEvent -InputObject $flutterProc -EventName ErrorDa
             [System.Threading.Monitor]::Exit($state)
         }
         Write-Host $EventArgs.Data -ForegroundColor DarkYellow
+        $tp = $state.TerminalLogPath
+        if (-not [string]::IsNullOrWhiteSpace($tp)) {
+            try {
+                [System.IO.File]::AppendAllText($tp, $EventArgs.Data + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
+            }
+            catch {
+            }
+        }
     }
 }
 
 $flutterProc.BeginOutputReadLine()
 $flutterProc.BeginErrorReadLine()
 
-Write-Host ""
-Write-Host "Flutter started. Use the separate controller window." -ForegroundColor Green
-Write-Host "Streaming flutter logs below..." -ForegroundColor Green
-Write-Host ""
+Write-TerminalLog ""
+Write-TerminalLog "Flutter started. Use the separate controller window." -ForegroundColor Green
+Write-TerminalLog "Streaming flutter logs below..." -ForegroundColor Green
+Write-TerminalLog ""
 
 $stopRequestedByQ = $false
 
@@ -487,14 +605,15 @@ try {
         switch ($command) {
             "q" {
                 $stopRequestedByQ = $true
-                Write-Host ""
-                Write-Host "Stop command received. Stopping flutter..." -ForegroundColor Yellow
+                Write-TerminalLog ""
+                Write-TerminalLog "[QUIT] Q received; stopping Flutter and controller." -ForegroundColor Yellow
+                Write-TerminalLog "Stop command received. Stopping flutter..." -ForegroundColor Yellow
                 try {
                     if (-not $flutterProc.HasExited) {
                         Start-Sleep -Seconds 1
                         $flutterProc.Kill()
                         if (-not $flutterProc.WaitForExit(5000)) {
-                            Write-Host "Flutter process did not exit in time. Continue cleanup." -ForegroundColor Yellow
+                            Write-TerminalLog "Flutter process did not exit in time. Continue cleanup." -ForegroundColor Yellow
                         }
                     }
                 } catch {}
@@ -502,7 +621,7 @@ try {
                     if ($controllerProcess -and -not $controllerProcess.HasExited) {
                         $controllerProcess.Kill()
                         if (-not $controllerProcess.WaitForExit(3000)) {
-                            Write-Host "Controller window did not close in time." -ForegroundColor Yellow
+                            Write-TerminalLog "Controller window did not close in time." -ForegroundColor Yellow
                         }
                     }
                 } catch {}
@@ -513,8 +632,10 @@ try {
                 try {
                     $shotPath = Get-NextScreenshotPath -ScreenshotDirPath $ScreenshotDir -AppName $SafeAppName
                     Save-Screenshot -DeviceId $deviceId -ScreenshotPath $shotPath
+                    Write-TerminalLog "[SCREENSHOT] saved: $shotPath"
                 } catch {
                     Write-Host "Screenshot failed: $($_.Exception.Message)" -ForegroundColor Red
+                    Write-TerminalLog "[SCREENSHOT] Failed: $($_.Exception.Message)" -ForegroundColor Red
                 }
             }
 
@@ -523,10 +644,11 @@ try {
                     if (-not $flutterProc.HasExited) {
                         $flutterProc.StandardInput.WriteLine("r")
                         $flutterProc.StandardInput.Flush()
-                        Write-Host "Hot reload command sent." -ForegroundColor Green
+                        Write-TerminalLog "[HOT RELOAD] Sent 'r' to Flutter stdin. Hot reload command sent." -ForegroundColor Green
                     }
                 } catch {
                     Write-Host "Hot reload failed: $($_.Exception.Message)" -ForegroundColor Red
+                    Write-TerminalLog "[HOT RELOAD] Failed: $($_.Exception.Message)" -ForegroundColor Red
                 }
             }
 
@@ -537,8 +659,12 @@ try {
     }
 
     Write-Section "Flutter process ended"
+    Write-TerminalLogSection "Flutter process ended"
+    Write-TerminalLog "[FLUTTER] Process ended. stopRequestedByQ=$stopRequestedByQ"
 }
 finally {
+    Write-TerminalLogSection "Flutter cleanup (streams/controller)"
+    Write-TerminalLog "[SESSION] Closing Flutter output streams and stopping controller if still running."
     try { $flutterProc.CancelOutputRead() } catch {}
     try { $flutterProc.CancelErrorRead() } catch {}
     try { Unregister-Event -SourceIdentifier $stdoutEvent.Name -ErrorAction SilentlyContinue } catch {}
@@ -561,44 +687,85 @@ finally {
 
 Stop-AndroidScreenRecord -DeviceId $deviceId
 
-Write-Section "Pull recorded video"
-
 function Open-OutputFolder {
     param([string]$Path)
     try {
         explorer $Path
     }
     catch {
-        Write-Host "Could not open folder: $Path" -ForegroundColor Yellow
+        Write-TerminalLog "Could not open folder: $Path" -ForegroundColor Yellow
     }
 }
+
+Write-Section "Pull recorded video"
+Write-TerminalLogSection "Pull recorded video"
 
 if (Test-RemoteFileExists -DeviceId $deviceId -RemotePath $RemoteVideoPath) {
+    Write-TerminalLog "[VIDEO] adb pull (remote -> local): $RemoteVideoPath -> $localVideoPath"
     adb -s $deviceId pull $RemoteVideoPath $localVideoPath | Out-Host
 
+    if (Test-Path -LiteralPath $localVideoPath) {
+        try {
+            $videoLen = (Get-Item -LiteralPath $localVideoPath).Length
+            Write-TerminalLog "[VIDEO] Pulled OK. Local file: $localVideoPath ($videoLen bytes)"
+        }
+        catch {
+            Write-TerminalLog "[VIDEO] Pulled OK. Local file: $localVideoPath"
+        }
+    }
+    else {
+        Write-TerminalLog "[VIDEO] WARNING: Local file not found after adb pull."
+    }
+
     Write-Section "Delete remote video"
-    adb -s $deviceId shell "rm -f '$RemoteVideoPath'" | Out-Host
+    Write-TerminalLogSection "Delete remote video"
+    try {
+        adb -s $deviceId shell "rm -f '$RemoteVideoPath'" | Out-Host
+    }
+    catch {
+    }
 
     Write-Section "Open screenshot folder"
+    Write-TerminalLogSection "Open screenshot folder"
     Open-OutputFolder -Path $ScreenshotDir
 
-    Write-Host ""
-    Write-Host "Done." -ForegroundColor Green
+    Write-TerminalLog ""
+    Write-TerminalLog "--- Final artifact paths (ChatGPT bundle) ---" -ForegroundColor Green
+    Write-TerminalLog "Screenshot folder        : $ScreenshotDir"
+    Write-TerminalLog "Unified terminal log     : $script:TerminalOutputLogPath"
+    Write-TerminalLog "Video (recordings\)      : $localVideoPath"
+    Write-TerminalLog "Flutter stdout log       : $flutterStdOutLogFile"
+    Write-TerminalLog "Flutter stderr log       : $flutterStdErrLogFile"
+    Write-TerminalLog "Recorder stdout log      : $recorderStdOutLogFile"
+    Write-TerminalLog "Recorder stderr log      : $recorderStdErrLogFile"
+    Write-TerminalLog ""
+    Write-TerminalLog "Done." -ForegroundColor Green
     if ($stopRequestedByQ) {
-        Write-Host "Stopped by Q command." -ForegroundColor Green
+        Write-TerminalLog "Stopped by Q command." -ForegroundColor Green
     }
-    Write-Host "Video               : $localVideoPath" -ForegroundColor Green
-    Write-Host "Flutter stdout log  : $flutterStdOutLogFile" -ForegroundColor Green
-    Write-Host "Flutter stderr log  : $flutterStdErrLogFile" -ForegroundColor Green
-    Write-Host "Recorder stdout log : $recorderStdOutLogFile" -ForegroundColor Green
-    Write-Host "Recorder stderr log : $recorderStdErrLogFile" -ForegroundColor Green
-    Write-Host "Screenshot dir      : $ScreenshotDir" -ForegroundColor Green
+    Write-TerminalLog ""
+    Write-TerminalLog "ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach." -ForegroundColor Green
 }
 else {
-    Write-Host "Remote recorded video was not found." -ForegroundColor Red
+    Write-TerminalLog "[VIDEO] Remote recorded video was not found at $RemoteVideoPath (pull skipped)." -ForegroundColor Red
     if ($stopRequestedByQ) {
-        Write-Host "Stopped by Q command." -ForegroundColor Yellow
+        Write-TerminalLog "Stopped by Q command." -ForegroundColor Yellow
     }
     Write-Section "Open screenshot folder"
+    Write-TerminalLogSection "Open screenshot folder"
     Open-OutputFolder -Path $ScreenshotDir
+
+    Write-TerminalLog ""
+    Write-TerminalLog "--- Final artifact paths (ChatGPT bundle) ---" -ForegroundColor Green
+    Write-TerminalLog "Screenshot folder        : $ScreenshotDir"
+    Write-TerminalLog "Unified terminal log     : $script:TerminalOutputLogPath"
+    Write-TerminalLog "Video                    : (not pulled - remote file missing)"
+    Write-TerminalLog "Flutter stdout log       : $flutterStdOutLogFile"
+    Write-TerminalLog "Flutter stderr log       : $flutterStdErrLogFile"
+    Write-TerminalLog "Recorder stdout log      : $recorderStdOutLogFile"
+    Write-TerminalLog "Recorder stderr log      : $recorderStdErrLogFile"
+    Write-TerminalLog ""
+    Write-TerminalLog "Done (video not found on device)." -ForegroundColor Yellow
+    Write-TerminalLog ""
+    Write-TerminalLog "ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach." -ForegroundColor Green
 }

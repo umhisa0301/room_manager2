@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/room_import_enrichment_verify_config.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../repository/rakuten_managed_product_repository.dart';
@@ -162,6 +163,10 @@ class RoomImportMetadataEnrichmentService {
               : (limit > RoomImportLimitPolicy.manualEnrichMaxApiCallsPerRun
                     ? RoomImportLimitPolicy.manualEnrichMaxApiCallsPerRun
                     : limit));
+    if (RoomImportEnrichmentVerifyConfig.enabled && maxApiCalls < 1) {
+      maxApiCalls = 1;
+    }
+
     if (maxApiCalls <= 0) {
       if (applyPostImportAutoCap) {
         roomImportPerfLog('enrichmentSkipped reason=autoDisabled');
@@ -190,7 +195,8 @@ class RoomImportMetadataEnrichmentService {
       );
     }
 
-    if (await RoomImportEnrichmentCooldownStore.isInCooldown()) {
+    if (!RoomImportEnrichmentVerifyConfig.enabled &&
+        await RoomImportEnrichmentCooldownStore.isInCooldown()) {
       final pending = _pendingQueueRows().length;
       final until = await RoomImportEnrichmentCooldownStore.cooldownUntil();
       final mins = until != null
@@ -506,6 +512,10 @@ class RoomImportMetadataEnrichmentService {
       'skippedCooldown=$inBackoff skippedFailed=$noMethod',
     );
 
+    if (RoomImportEnrichmentVerifyConfig.enabled) {
+      return _runVerifyOnlyEnrichment(skippedComplete: skippedComplete);
+    }
+
     var okCount = 0;
     var apiAttempts = 0;
     var pausedByRateLimit = false;
@@ -732,6 +742,208 @@ class RoomImportMetadataEnrichmentService {
       attempted: apiAttempts,
       skippedAlreadyComplete: skippedComplete,
       pausedByRateLimit: pausedByRateLimit,
+      remainingPending: _pendingQueueRows().length,
+    );
+  }
+
+  bool _verifyEligibleForFixedProduct(RakutenManagedProduct e, String fixedId) {
+    if (e.coredActivitySource != RakutenCoredActivitySource.roomImport) {
+      return false;
+    }
+    if (!RakutenManagedProduct.isMemberForStatusTab(
+      e,
+      RakutenManagedProductStatus.done,
+    )) {
+      return false;
+    }
+    final pid = e.productId.trim();
+    final fid = fixedId.trim();
+    if (pid == fid) return true;
+    if (pid.endsWith(':$fid') && pid.contains(':')) return true;
+    return false;
+  }
+
+  /// 検証モード: `4901085161999` 単体と `soukaidrink:4901085161999` 形式の両方。
+  ({String shop, String pure})? _verifyResolveShopAndPure(
+    RakutenManagedProduct row,
+    String fixedId,
+  ) {
+    final fid = fixedId.trim();
+    final pid = row.productId.trim();
+    var shop = row.shopCode.trim();
+
+    if (pid == fid) {
+      if (shop.isEmpty) return null;
+      return (shop: shop, pure: fid);
+    }
+    if (pid.endsWith(':$fid') && pid.contains(':')) {
+      final i = pid.lastIndexOf(':');
+      final left = pid.substring(0, i).trim();
+      final right = pid.substring(i + 1).trim();
+      if (right != fid) return null;
+      if (shop.isEmpty) shop = left;
+      if (shop.isEmpty) return null;
+      return (shop: shop, pure: right);
+    }
+    return null;
+  }
+
+  /// `ROOM_IMPORT_ENRICH_VERIFY`: 固定1件のみ A→B→C 検証（通常キューには入らない）。
+  Future<RoomImportEnrichmentBatchResult> _runVerifyOnlyEnrichment({
+    required int skippedComplete,
+  }) async {
+    final fixedId = RoomImportEnrichmentVerifyConfig.fixedProductId.trim();
+    roomImportVerifyLog('mode=on fixedProductId=$fixedId');
+
+    final rows = _productRepository.loadAll();
+    RakutenManagedProduct? target;
+    for (final e in rows) {
+      if (_verifyEligibleForFixedProduct(e, fixedId)) {
+        target = e;
+        break;
+      }
+    }
+
+    if (target == null) {
+      roomImportVerifyLog('noRow matched productId=$fixedId');
+      return RoomImportEnrichmentBatchResult(
+        updated: 0,
+        attempted: 0,
+        skippedAlreadyComplete: skippedComplete,
+        pausedByRateLimit: false,
+        remainingPending: _pendingQueueRows().length,
+      );
+    }
+
+    final resolved = _verifyResolveShopAndPure(target, fixedId);
+    if (resolved == null) {
+      roomImportVerifyLog(
+        'resolveShopPure failed productId=${target.productId} shopCode=${target.shopCode}',
+      );
+      return RoomImportEnrichmentBatchResult(
+        updated: 0,
+        attempted: 0,
+        skippedAlreadyComplete: skippedComplete,
+        pausedByRateLimit: false,
+        remainingPending: _pendingQueueRows().length,
+      );
+    }
+
+    final pid = target.productId.trim();
+    roomImportVerifyLog(
+      'target productId=$pid shop=${resolved.shop} pureItem=${resolved.pure} '
+      'patternCKeyword=${RoomImportEnrichmentVerifyConfig.patternCKeyword}',
+    );
+
+    try {
+      await _productRepository.updateManagedProduct(pid, (e) {
+        return e.copyWith(roomImportMetadataEnriching: true);
+      });
+    } catch (_) {
+      return RoomImportEnrichmentBatchResult(
+        updated: 0,
+        attempted: 0,
+        skippedAlreadyComplete: skippedComplete,
+        pausedByRateLimit: false,
+        remainingPending: _pendingQueueRows().length,
+      );
+    }
+
+    RoomImportVerifySequenceOutcome outcome;
+    try {
+      outcome = await _searchRepository.runRoomImportVerifySequence(
+        shopCode: resolved.shop,
+        pureItemCode: resolved.pure,
+        patternCKeyword: RoomImportEnrichmentVerifyConfig.patternCKeyword,
+      );
+    } catch (e, st) {
+      debugPrint('[ROOM_IMPORT_ENRICH_VERIFY] exception $e\n$st');
+      await _productRepository.updateManagedProduct(pid, (e) {
+        return e.copyWith(roomImportMetadataEnriching: false);
+      });
+      return RoomImportEnrichmentBatchResult(
+        updated: 0,
+        attempted: 0,
+        skippedAlreadyComplete: skippedComplete,
+        pausedByRateLimit: false,
+        remainingPending: _pendingQueueRows().length,
+      );
+    }
+
+    if (outcome.pausedByRateLimit) {
+      roomImportApiLog('status=rateLimited http=429');
+      await RoomImportEnrichmentCooldownStore.armAfterRateLimit429();
+      await _productRepository.updateManagedProduct(pid, (e) {
+        return e.copyWith(roomImportMetadataEnriching: false);
+      });
+      roomImportEnrichPausedLog('reason=rateLimit verifyMode=true');
+      return RoomImportEnrichmentBatchResult(
+        updated: 0,
+        attempted: outcome.apiCallCount,
+        skippedAlreadyComplete: skippedComplete,
+        pausedByRateLimit: true,
+        remainingPending: _pendingQueueRows().length,
+      );
+    }
+
+    final env = outcome.envelope;
+    final item = env?.item;
+    if (item != null) {
+      try {
+        await _productRepository.mergeRoomImportMetadataFromSearchItem(
+          productId: pid,
+          api: item,
+        );
+      } catch (_) {
+        await _productRepository.updateManagedProduct(pid, (e) {
+          return e.copyWith(roomImportMetadataEnriching: false);
+        });
+        return RoomImportEnrichmentBatchResult(
+          updated: 0,
+          attempted: outcome.apiCallCount,
+          skippedAlreadyComplete: skippedComplete,
+          pausedByRateLimit: false,
+          remainingPending: _pendingQueueRows().length,
+        );
+      }
+
+      final img = item.imageUrl.trim();
+      final imgLog = img.isEmpty
+          ? '-'
+          : (img.length > 80 ? '${img.substring(0, 80)}…' : img);
+      roomImportEnrichSuccessLog(
+        'VERIFY pattern=${outcome.winningPattern} productId=$pid '
+        'price=${item.itemPrice} image=$imgLog '
+        'shopName=${item.shopName.trim()} genreName=${item.genreName.trim()}',
+      );
+
+      await _productRepository.updateManagedProduct(pid, (e) {
+        return e.copyWith(roomImportMetadataEnriching: false);
+      });
+
+      roomImportVerifyLog(
+        'saved pattern=${outcome.winningPattern} itemPrice=${item.itemPrice} '
+        'genreName=${item.genreName.trim()} shopName=${item.shopName.trim()}',
+      );
+
+      return RoomImportEnrichmentBatchResult(
+        updated: 1,
+        attempted: outcome.apiCallCount,
+        skippedAlreadyComplete: skippedComplete,
+        pausedByRateLimit: false,
+        remainingPending: _pendingQueueRows().length,
+      );
+    }
+
+    await _productRepository.updateManagedProduct(pid, (e) {
+      return e.copyWith(roomImportMetadataEnriching: false);
+    });
+    roomImportVerifyLog('noSelectableItem apiCalls=${outcome.apiCallCount}');
+    return RoomImportEnrichmentBatchResult(
+      updated: 0,
+      attempted: outcome.apiCallCount,
+      skippedAlreadyComplete: skippedComplete,
+      pausedByRateLimit: false,
       remainingPending: _pendingQueueRows().length,
     );
   }

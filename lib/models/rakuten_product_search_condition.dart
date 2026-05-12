@@ -1,3 +1,12 @@
+/// `shopCode` と純粋な `itemCode` を両方渡すときの HTTP クエリの組み方。
+enum RakutenShopItemQueryStyle {
+  /// 楽天公式どおり `itemCode` のみに `shop:pureItem` を載せ、`shopCode` は付けない。
+  compositeItemCodeParam,
+
+  /// 検証用: `shopCode` と純粋 `itemCode` を別パラメータで送る（パターンB）。
+  separateShopAndItemParams,
+}
+
 /// 商品検索モードの検索条件。
 /// UI入力値を集約し、API連携やアプリ内フィルタへ渡す。
 class RakutenProductSearchCondition {
@@ -13,6 +22,7 @@ class RakutenProductSearchCondition {
     this.itemCode,
     this.genreId,
     this.sort,
+    this.shopItemQueryStyle,
   });
 
   final String keyword;
@@ -28,6 +38,9 @@ class RakutenProductSearchCondition {
   final String? genreId;
   final String? sort;
 
+  /// [shopCode] と [itemCode] 両方があるときのクエリ組み立て（未指定時は [RakutenShopItemQueryStyle.compositeItemCodeParam]）。
+  final RakutenShopItemQueryStyle? shopItemQueryStyle;
+
   RakutenProductSearchCondition normalized() {
     return RakutenProductSearchCondition(
       keyword: _normalizeKeyword(keyword),
@@ -41,6 +54,7 @@ class RakutenProductSearchCondition {
       itemCode: _normalizeOptional(itemCode),
       genreId: _normalizeOptional(genreId),
       sort: _normalizeOptional(sort),
+      shopItemQueryStyle: shopItemQueryStyle,
     );
   }
 

@@ -7,6 +7,10 @@ import 'package:http/http.dart' as http;
 import '../config/rakuten_api_config.dart';
 import '../models/rakuten_product_search_condition.dart';
 
+/// 検証モード時のみ楽天レスポンス本文を成功時も全文ログする。
+const bool _kRoomImportEnrichVerify =
+    bool.fromEnvironment('ROOM_IMPORT_ENRICH_VERIFY', defaultValue: false);
+
 /// 商品検索の実行モード（このファイル内のみ）。
 enum _RakutenApiMode { openapi, legacy }
 
@@ -155,15 +159,26 @@ class RakutenApiService {
     if (normalized.minReviewAverage != null) {
       params['minReviewAverage'] = '${normalized.minReviewAverage}';
     }
-    // 楽天 IchibaItem/Search（20260401 等）: 入力 itemCode は **「ショップID:商品コード」** 形式。
-    // shopCode と itemCode を別パラメータで同時指定すると wrong_parameter で 400 になり得る。
+    // 楽天 IchibaItem/Search（20260401 等）: 入力 itemCode は通常 **「ショップID:商品コード」** 形式。
+    // 検証パターン B では shopCode + 純粋 itemCode を別パラメータで送る。
     final keywordEmpty = keywordTrimmed.isEmpty;
+    final itemStyle =
+        normalized.shopItemQueryStyle ??
+        RakutenShopItemQueryStyle.compositeItemCodeParam;
     if (keywordEmpty &&
         !hasGenre &&
         hasShop &&
         hasItem &&
         !itemTrimmed.contains(':')) {
-      params['itemCode'] = '$shopTrimmed:$itemTrimmed';
+      switch (itemStyle) {
+        case RakutenShopItemQueryStyle.compositeItemCodeParam:
+          params['itemCode'] = '$shopTrimmed:$itemTrimmed';
+          break;
+        case RakutenShopItemQueryStyle.separateShopAndItemParams:
+          params['shopCode'] = shopTrimmed;
+          params['itemCode'] = itemTrimmed;
+          break;
+      }
     } else if (keywordEmpty && !hasGenre && hasItem && itemTrimmed.contains(':')) {
       params['itemCode'] = itemTrimmed;
     } else {
@@ -207,6 +222,7 @@ class RakutenApiService {
     required String shopTrimmed,
     required bool hasItem,
     required String itemTrimmed,
+    RakutenShopItemQueryStyle? shopItemQueryStyle,
   }) {
     if (!kDebugMode) return;
     final proxy = RakutenApiConfig.useProxyForItemSearch;
@@ -219,7 +235,10 @@ class RakutenApiService {
     final compositeHint = (keywordTrimmed.isNotEmpty || hasGenre)
         ? 'queryMode=mixedOrKeyword'
         : (hasShop && hasItem && !itemTrimmed.contains(':'))
-        ? 'queryMode=compositeItemCode(shop:item)'
+        ? (shopItemQueryStyle ==
+                  RakutenShopItemQueryStyle.separateShopAndItemParams
+              ? 'queryMode=verifySeparateShopAndItem'
+              : 'queryMode=compositeItemCode(shop:item)')
         : (hasItem && itemTrimmed.contains(':'))
         ? 'queryMode=itemCodeOnly(composite)'
         : 'queryMode=separateOrShopOnly';
@@ -272,6 +291,7 @@ class RakutenApiService {
       shopTrimmed: shopTrimmed,
       hasItem: hasItem,
       itemTrimmed: itemTrimmed,
+      shopItemQueryStyle: normalized.shopItemQueryStyle,
     );
 
     var params = useProxy ? _paramsForProxy(common) : _paramsForSearchMode(mode, common);
@@ -402,6 +422,9 @@ class RakutenApiService {
       final items = bodyMap['Items'];
       final rawCount = items is List ? items.length : 0;
       debugPrint('[RECOMMEND_TRACE] rawCount=$rawCount');
+      if (_kRoomImportEnrichVerify) {
+        debugPrint('[Rakuten] success response body (full): ${response.body}');
+      }
     }
     return bodyMap;
   }
@@ -431,12 +454,9 @@ class RakutenApiService {
   }
 }
 
-/// 診断ログ用: 直叩き時は applicationId / accessKey をマスクする。
+/// 診断ログ用: `applicationId` / `accessKey` のみマスク（プロキシ URL に含まれる場合も同様）。
 String _redactSearchUriForLog(Uri uri, bool isProxy) {
   if (!uri.hasQuery) return uri.toString();
-  if (isProxy) {
-    return uri.toString();
-  }
   final m = Map<String, String>.from(uri.queryParameters);
   if (m.containsKey('applicationId')) {
     m['applicationId'] = '[redacted]';

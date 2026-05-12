@@ -382,6 +382,15 @@ void roomImportEnrichSuccessLog(String message) {
   }
 }
 
+/// ROOM 取り込みメタ補完の **検証モード**（`ROOM_IMPORT_ENRICH_VERIFY`）専用ログ。
+void roomImportVerifyLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_VERIFY] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void roomImportEnrichPickLog(String message) {
   final line = '[ROOM_IMPORT_ENRICH_PICK] $message';
   if (kDebugMode) {
