@@ -1069,7 +1069,7 @@ class RakutenManagedProductRepository {
       }
       if (rakutenApiPartialData) {
         roomImportSaveLog(
-          'partialSuccess=true newRow=true apiUnavailable=true',
+          'partialSuccess=true newRow=true apiUnavailable=true metadataPending=true',
         );
       }
     }

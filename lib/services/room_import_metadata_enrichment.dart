@@ -275,7 +275,8 @@ class RoomImportMetadataEnrichmentService {
             ? 0
             : RoomImportLimitPolicy.enrichMinDelayMsBetweenCalls;
         roomImportEnrichApiLog(
-          'productId=$pid index=$apiAttempts delayMs=$delayMs shopCode=$shop itemCode=$pid',
+          'productId=$pid index=${apiAttempts + 1} maxPerRun=$maxApiCalls '
+          'delayMs=$delayMs shopCode=$shop itemCode=$pid',
         );
 
         RoomImportEnrichmentFetchEnvelope env;
