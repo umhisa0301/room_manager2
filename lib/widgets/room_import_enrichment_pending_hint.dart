@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../services/room_import_enrichment_cooldown_store.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_import_metadata_enrichment.dart';
+import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
 
 /// ROOM 取り込みメタの未補完があるときの控えめな案内（ROOMコレ・マイページ共通）。
@@ -32,12 +33,12 @@ class _RoomImportEnrichmentPendingHintState
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<RakutenManagedProductProvider>(
-      builder: (context, managed, _) {
+    return Consumer2<BulkOperationStateController, RakutenManagedProductProvider>(
+      builder: (context, bulk, managed, _) {
         final n = RoomImportMetadataEnrichmentService.countPendingEnrichment(
           managed.items,
         );
-        if (n <= 0) {
+        if (n <= 0 && !bulk.hasManualEnrichSummary) {
           _cooldownCheckScheduled = false;
           return const SizedBox.shrink();
         }
@@ -54,6 +55,10 @@ class _RoomImportEnrichmentPendingHintState
           alpha: 0.92,
         );
         final cooldown = _rateLimitCooldown == true;
+        final sum = bulk.hasManualEnrichSummary;
+        final succ = bulk.lastManualEnrichSuccess;
+        final fail = bulk.lastManualEnrichFail;
+        final pausedRl = bulk.lastManualEnrichPausedRateLimit;
 
         return Padding(
           padding:
@@ -74,7 +79,7 @@ class _RoomImportEnrichmentPendingHintState
                   Text(
                     cooldown
                         ? '商品情報の補完を一時停止しています'
-                        : '商品情報を順番に補完中です',
+                        : '商品情報を補完中です',
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       height: 1.35,
@@ -82,12 +87,25 @@ class _RoomImportEnrichmentPendingHintState
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    '未補完：$n件',
+                    sum
+                        ? '未補完：$n件 / 今回成功：$succ件 / 今回失敗：$fail件'
+                        : '未補完：$n件',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: subtle,
                       height: 1.35,
                     ),
                   ),
+                  if (pausedRl && sum) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      '直近の実行はAPI制限で途中終了しました。',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: subtle,
+                        height: 1.35,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                   if (cooldown) ...[
                     const SizedBox(height: 2),
                     Text(
@@ -99,16 +117,16 @@ class _RoomImportEnrichmentPendingHintState
                         fontSize: 12,
                       ),
                     ),
-                  ] else ...[
-                    Text(
-                      '価格・画像は少しずつ反映されます',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: subtle,
-                        height: 1.35,
-                        fontSize: 12,
-                      ),
-                    ),
                   ],
+                  const SizedBox(height: 2),
+                  Text(
+                    '価格・画像・ショップ・ジャンルは補完できた商品から反映されます',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: subtle,
+                      height: 1.35,
+                      fontSize: 12,
+                    ),
+                  ),
                 ],
               ),
             ),

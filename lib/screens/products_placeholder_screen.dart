@@ -11,6 +11,8 @@ import '../repository/genre_master_repository.dart';
 import '../repository/room_colle_ui_state_repository.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../services/room_collect_post_limit.dart';
+import '../services/room_import_metadata_enrichment.dart';
+import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/room_activity_event_provider.dart';
 import '../state/room_import_controller.dart';
@@ -32,6 +34,9 @@ const double _kRoomListScreenPadH = 8;
 const double _kRoomListCardGap = 5;
 
 enum RoomColleListSortPreset { recentFirst, oldFirst, priceHigh, priceLow }
+
+/// ROOM取り込みメタの表示絞り込み（コレ済タブのみ）。
+enum _RoomImportMetaListFilter { all, incompleteOnly, completeOnly }
 
 String _roomColleSortLabel(RoomColleListSortPreset preset) {
   switch (preset) {
@@ -1308,6 +1313,33 @@ DateTime? _normalizeDoneDayFilter(DateTime? raw) {
   }
 }
 
+List<RakutenManagedProduct> _applyRoomImportMetaLineFilter(
+  List<RakutenManagedProduct> items,
+  _RoomImportMetaListFilter mode,
+) {
+  if (mode == _RoomImportMetaListFilter.all) return items;
+  final out = <RakutenManagedProduct>[];
+  for (final e in items) {
+    if (e.coredActivitySource != RakutenCoredActivitySource.roomImport) {
+      continue;
+    }
+    final incomplete =
+        RoomImportMetadataEnrichmentService.needFlagsForProduct(e).willEnrich;
+    switch (mode) {
+      case _RoomImportMetaListFilter.all:
+        out.add(e);
+        break;
+      case _RoomImportMetaListFilter.incompleteOnly:
+        if (incomplete) out.add(e);
+        break;
+      case _RoomImportMetaListFilter.completeOnly:
+        if (!incomplete) out.add(e);
+        break;
+    }
+  }
+  return out;
+}
+
 /// 一覧タブと同じ管線で表示リストを求める（URL未取得除外はコレ候補タブのみ適用）。
 List<RakutenManagedProduct> _roomListVisibleItems({
   required RakutenManagedProductProvider provider,
@@ -1318,6 +1350,7 @@ List<RakutenManagedProduct> _roomListVisibleItems({
   Set<String> todayRecommendationProductIds = const <String>{},
   String Function(RakutenManagedProduct product)? genreLabelForProduct,
   DateTime? doneAtLocalDayFilter,
+  _RoomImportMetaListFilter roomImportMetaFilter = _RoomImportMetaListFilter.all,
 }) {
   final baseList = provider.sortedItemsForStatus(status);
   final day = doneAtLocalDayFilter;
@@ -1338,7 +1371,12 @@ List<RakutenManagedProduct> _roomListVisibleItems({
     genreLabelForProduct: genreLabelForProduct,
   );
   final deduped = _dedupeManagedProductsPreserveOrder(queried);
-  if (deduped.isEmpty && baseList.isNotEmpty) {
+  final metaFiltered =
+      status == RakutenManagedProductStatus.done &&
+          roomImportMetaFilter != _RoomImportMetaListFilter.all
+      ? _applyRoomImportMetaLineFilter(deduped, roomImportMetaFilter)
+      : deduped;
+  if (metaFiltered.isEmpty && baseList.isNotEmpty) {
     final urlHidAll =
         status == RakutenManagedProductStatus.candidate &&
         excludeUrlNotReady &&
@@ -1346,7 +1384,12 @@ List<RakutenManagedProduct> _roomListVisibleItems({
         _filterExcludeUrlNotReady(scoped, true).isEmpty;
     final reducingActive = listFilters.hasAnyReducingFilter;
     final searchHidAll = reducingActive && scoped.isNotEmpty;
-    if (!urlHidAll && !searchHidAll) {
+    final metaHidAll =
+        status == RakutenManagedProductStatus.done &&
+        roomImportMetaFilter != _RoomImportMetaListFilter.all &&
+        deduped.isNotEmpty &&
+        _applyRoomImportMetaLineFilter(deduped, roomImportMetaFilter).isEmpty;
+    if (!urlHidAll && !searchHidAll && !metaHidAll) {
       final rawScoped =
           status == RakutenManagedProductStatus.done && day != null
           ? _filterDoneOnLocalCalendarDay(baseList, day)
@@ -1355,7 +1398,7 @@ List<RakutenManagedProduct> _roomListVisibleItems({
       if (fallback.isNotEmpty) return fallback;
     }
   }
-  return deduped;
+  return metaFiltered;
 }
 
 /// タブ表示件数を [_roomListVisibleItems] に揃える。
@@ -1368,6 +1411,7 @@ int _roomColleVisibleCount({
   Set<String> todayRecommendationProductIds = const <String>{},
   String Function(RakutenManagedProduct product)? genreLabelForProduct,
   DateTime? doneAtLocalDayFilter,
+  _RoomImportMetaListFilter roomImportMetaFilter = _RoomImportMetaListFilter.all,
 }) {
   return _roomListVisibleItems(
     provider: provider,
@@ -1378,6 +1422,7 @@ int _roomColleVisibleCount({
     todayRecommendationProductIds: todayRecommendationProductIds,
     genreLabelForProduct: genreLabelForProduct,
     doneAtLocalDayFilter: doneAtLocalDayFilter,
+    roomImportMetaFilter: roomImportMetaFilter,
   ).length;
 }
 
@@ -1596,6 +1641,9 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       RoomColleListSortPreset.recentFirst;
   RoomColleListSortPreset _doneSortPreset = RoomColleListSortPreset.recentFirst;
 
+  _RoomImportMetaListFilter _doneRoomImportMetaFilter =
+      _RoomImportMetaListFilter.all;
+
   /// [RoomColleUiStateSnapshot.staleCandidatePileBannerDismissed] と同期。
   bool _stalePileBannerDismissed = false;
 
@@ -1683,6 +1731,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
       _doneSearchController.clear();
       _doneLocalDayFilter = null;
       _stalePileBannerDismissed = false;
+      _doneRoomImportMetaFilter = _RoomImportMetaListFilter.all;
     });
     _persistRoomColleUiNow();
   }
@@ -2491,11 +2540,46 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                               _openRoomColleFilterEditor(isCandidate: false),
                           onClear: _resetRoomColleFilters,
                         ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            _kRoomListScreenPadH,
+                            0,
+                            _kRoomListScreenPadH,
+                            6,
+                          ),
+                          child: SegmentedButton<_RoomImportMetaListFilter>(
+                            segments: const [
+                              ButtonSegment(
+                                value: _RoomImportMetaListFilter.all,
+                                label: Text('すべて'),
+                              ),
+                              ButtonSegment(
+                                value:
+                                    _RoomImportMetaListFilter.incompleteOnly,
+                                label: Text('未補完'),
+                              ),
+                              ButtonSegment(
+                                value: _RoomImportMetaListFilter.completeOnly,
+                                label: Text('補完済'),
+                              ),
+                            ],
+                            selected: <_RoomImportMetaListFilter>{
+                              _doneRoomImportMetaFilter,
+                            },
+                            onSelectionChanged: (s) {
+                              if (s.isEmpty) return;
+                              setState(() {
+                                _doneRoomImportMetaFilter = s.first;
+                              });
+                            },
+                          ),
+                        ),
                         _RoomColleCountSummary(
                           status: RakutenManagedProductStatus.done,
                           listFilters: _doneListFilters,
                           excludeUrlNotReady: false,
                           doneAtLocalDayFilter: _doneLocalDayFilter,
+                          roomImportMetaFilter: _doneRoomImportMetaFilter,
                         ),
                         Expanded(
                           child: _RoomManagedProductListTab(
@@ -2503,6 +2587,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             variant: RakutenManagedProductCardVariant.done,
                             listFilters: _doneListFilters,
                             sortPreset: _doneSortPreset,
+                            roomImportMetaFilter: _doneRoomImportMetaFilter,
                             excludeUrlNotReady: false,
                             candidateFocusHandled: true,
                             onRecoverFromListError:
@@ -2542,12 +2627,14 @@ class _RoomColleCountSummary extends StatelessWidget {
     required this.listFilters,
     required this.excludeUrlNotReady,
     this.doneAtLocalDayFilter,
+    this.roomImportMetaFilter = _RoomImportMetaListFilter.all,
   });
 
   final RakutenManagedProductStatus status;
   final RoomColleListFilterCriteria listFilters;
   final bool excludeUrlNotReady;
   final DateTime? doneAtLocalDayFilter;
+  final _RoomImportMetaListFilter roomImportMetaFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -2563,11 +2650,16 @@ class _RoomColleCountSummary extends StatelessWidget {
           todayRecommendationProductIds: _todayRecommendationIdSet(context),
           genreLabelForProduct: _roomColleGenreLabelForProduct,
           doneAtLocalDayFilter: doneAtLocalDayFilter,
+          roomImportMetaFilter: roomImportMetaFilter,
         );
+        final metaActive =
+            status == RakutenManagedProductStatus.done &&
+            roomImportMetaFilter != _RoomImportMetaListFilter.all;
         final filtering =
             listFilters.hasAnyReducingFilter ||
             excludeUrlNotReady ||
-            doneAtLocalDayFilter != null;
+            doneAtLocalDayFilter != null ||
+            metaActive;
         final label = filtering
             ? '$baseCount件中 $visibleCount件を表示'
             : '$baseCount件';
@@ -2615,12 +2707,14 @@ class _RoomManagedProductListTab extends StatefulWidget {
     this.focusCandidateProductId,
     this.onCandidateFocusListReady,
     this.onCandidateFocusProductMissing,
+    this.roomImportMetaFilter = _RoomImportMetaListFilter.all,
   });
 
   final RakutenManagedProductStatus status;
   final RakutenManagedProductCardVariant variant;
   final RoomColleListFilterCriteria listFilters;
   final RoomColleListSortPreset sortPreset;
+  final _RoomImportMetaListFilter roomImportMetaFilter;
   final bool excludeUrlNotReady;
 
   /// 親が候補フォーカス意図を消化済みなら true（build 内での post-frame 連発を止める）。
@@ -2726,6 +2820,7 @@ class _RoomManagedProductListTabState
               <String>{},
           genreLabelForProduct: _roomColleGenreLabelForProduct,
           doneAtLocalDayFilter: null,
+          roomImportMetaFilter: widget.roomImportMetaFilter,
         );
         final baseCand = p.sortedItemsForStatus(
           RakutenManagedProductStatus.candidate,
@@ -2821,8 +2916,12 @@ class _RoomManagedProductListTabState
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<RakutenManagedProductProvider, RoomActivityEventProvider>(
-      builder: (context, provider, act, _) {
+    return Consumer3<
+      RakutenManagedProductProvider,
+      RoomActivityEventProvider,
+      BulkOperationStateController
+    >(
+      builder: (context, provider, act, bulk, _) {
         final ui = provider.listUiStatus;
         final collectSnap = RoomCollectPostLimitSnapshot.compute(
           items: provider.items,
@@ -2855,6 +2954,7 @@ class _RoomManagedProductListTabState
             prefetchedGenreLabels: _genrePrefetchLabels,
           ),
           doneAtLocalDayFilter: widget.doneAtLocalDayFilter,
+          roomImportMetaFilter: widget.roomImportMetaFilter,
         );
         final list = _sortRoomColleListItems(
           listRaw,
@@ -3050,6 +3150,9 @@ class _RoomManagedProductListTabState
                   collectPostingBlockedMessage: postingBlockedUserMessage,
                   rowKey: widget.rowKeyFor?.call(list[i].productId),
                   flash: widget.flashHighlightProductId == list[i].productId,
+                  roomImportEnrichHighlight: bulk.isRoomImportEnrichHighlighted(
+                    list[i].productId,
+                  ),
                 ),
                 if (i != list.length - 1)
                   const SizedBox(height: _kRoomListCardGap),
@@ -3073,6 +3176,7 @@ class _KeyedCandidateProductRow extends StatelessWidget {
     this.collectPostingBlockedMessage = '',
     this.rowKey,
     this.flash = false,
+    this.roomImportEnrichHighlight = false,
   });
 
   final RakutenManagedProduct product;
@@ -3084,6 +3188,7 @@ class _KeyedCandidateProductRow extends StatelessWidget {
   final String collectPostingBlockedMessage;
   final GlobalKey? rowKey;
   final bool flash;
+  final bool roomImportEnrichHighlight;
 
   @override
   Widget build(BuildContext context) {
@@ -3096,6 +3201,7 @@ class _KeyedCandidateProductRow extends StatelessWidget {
         isTodayRecommendationCandidate: isTodayRecommendationCandidate,
         collectPostingBlocked: collectPostingBlocked,
         collectPostingBlockedMessage: collectPostingBlockedMessage,
+        roomImportEnrichHighlight: roomImportEnrichHighlight,
       );
       if (flash) {
         card = AnimatedContainer(

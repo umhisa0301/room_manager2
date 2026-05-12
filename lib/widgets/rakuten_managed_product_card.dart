@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
+import '../services/room_import_metadata_enrichment.dart';
 import '../services/app_action_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
@@ -27,6 +28,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     this.isTodayRecommendationCandidate = false,
     this.collectPostingBlocked = false,
     this.collectPostingBlockedMessage = '',
+    this.roomImportEnrichHighlight = false,
   });
 
   final RakutenManagedProduct product;
@@ -47,6 +49,9 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   /// [collectPostingBlocked] 時にユーザーへ示す全文（ツールチップ等）。
   final String collectPostingBlockedMessage;
+
+  /// ROOM取り込みメタ補完の直後に一覧で強調するとき true。
+  final bool roomImportEnrichHighlight;
 
   bool get _canCollectRoom =>
       product.extractionStatus == RakutenUrlExtractionStatus.success &&
@@ -178,6 +183,8 @@ class RakutenManagedProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCandidate = variant == RakutenManagedProductCardVariant.candidate;
+    final enrichNeed =
+        RoomImportMetadataEnrichmentService.needFlagsForProduct(product);
     final theme = Theme.of(context);
     final titleStyle = RoomColleProductListCardLayout.titleTextStyle(theme);
     final priceStyle = RoomColleProductListCardLayout.priceTextStyle(theme);
@@ -213,6 +220,24 @@ class RakutenManagedProductCard extends StatelessWidget {
                           runSpacing: 4,
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
+                            if (product.coredActivitySource ==
+                                    RakutenCoredActivitySource.roomImport &&
+                                roomImportEnrichHighlight) ...[
+                              const _SmallBadge(
+                                label: '補完反映',
+                                color: Color(0xFF1565C0),
+                              ),
+                              if (!enrichNeed.needsPrice)
+                                const _SmallBadge(
+                                  label: '価格取得済み',
+                                  color: Color(0xFF37474F),
+                                ),
+                              if (!enrichNeed.needsImage)
+                                const _SmallBadge(
+                                  label: '画像取得済み',
+                                  color: Color(0xFF37474F),
+                                ),
+                            ],
                             if (_roomApiHasPositiveReaction())
                               _SmallBadge(
                                 label: '反応あり',

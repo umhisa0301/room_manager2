@@ -29,6 +29,7 @@ import '../state/user_profile_provider.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/room_import_controller.dart';
 import '../theme/app_theme.dart';
+import '../utils/room_sync_log.dart';
 import '../utils/user_profile_genre_migration.dart';
 import '../utils/onboarding_ui_log.dart';
 import '../widgets/favorite_genre_picker_sheet.dart';
@@ -1119,17 +1120,53 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       );
       messenger.showSnackBar(const SnackBar(content: Text('商品情報を補完しています…')));
       final result = await svc.enrichRoomImportedProducts(
-        limit: RoomImportLimitPolicy.manualEnrichMaxApiCallsPerRun,
+        limit: RoomImportLimitPolicy.manualEnrichMaxProductsPerRun,
         applyPostImportAutoCap: false,
+        manualSessionPacing: true,
       );
       if (!mounted) return;
       await managedProv.refreshManagedProductList();
       if (!mounted) return;
+
+      bulk.setManualEnrichSummary(
+        success: result.updated,
+        fail: result.failedInBatch,
+        remaining: result.remainingPending,
+        pausedByRateLimit: result.pausedByRateLimit,
+      );
+      if (result.successProductIds.isNotEmpty) {
+        bulk.flashRoomImportEnrichedIds(result.successProductIds);
+      }
+
+      final topRoomDone = managedProv.items
+          .where(
+            (e) =>
+                e.status == RakutenManagedProductStatus.done &&
+                e.coredActivitySource == RakutenCoredActivitySource.roomImport,
+          )
+          .toList()
+        ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+      final visibleTop = topRoomDone
+          .take(8)
+          .map((e) => e.productId.trim())
+          .join(',');
+      roomImportEnrichUiReflectLog(
+        'updatedProductIds=${result.successProductIds.join(',')} '
+        'visibleTopProductIds=$visibleTop '
+        'message=補完成功商品が現在の表示範囲にない場合、画面上では変化が見えないことがあります',
+      );
+
       if (RoomImportEnrichmentVerifyConfig.enabled &&
           result.verifyUiMessage != null &&
           result.verifyUiMessage!.trim().isNotEmpty) {
         messenger.showSnackBar(
           SnackBar(content: Text(result.verifyUiMessage!.trim())),
+        );
+      } else if (result.duplicateSessionSkipped) {
+        messenger.showSnackBar(
+          const SnackBar(
+            content: Text('別の補完処理が実行中です。完了後にお試しください。'),
+          ),
         );
       } else if (result.skippedCooldown) {
         messenger.showSnackBar(
@@ -1142,20 +1179,10 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
         );
       } else if (result.pausedByRateLimit) {
         messenger.showSnackBar(
-          const SnackBar(
-            content: Text(
-              'アクセスが集中したため一度お休みします。'
-              'しばらく経ってからもう一度お試しください。',
-            ),
-          ),
-        );
-      } else if (result.remainingPending > 0) {
-        messenger.showSnackBar(
           SnackBar(
             content: Text(
-              '商品情報を${result.updated}件更新しました。'
-              '未補完が${result.remainingPending}件あります。'
-              '時間をおいて再度タップするか、自動で順番に反映されます。',
+              'API制限のため一時停止しました。少し時間をおいて再実行してください。'
+              '成功 ${result.updated}件 / 残り ${result.remainingPending}件',
             ),
           ),
         );
@@ -1163,9 +1190,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
         messenger.showSnackBar(
           SnackBar(
             content: Text(
-              result.updated > 0
-                  ? '商品情報を${result.updated}件更新しました。'
-                  : '更新対象はありませんでした。',
+              '商品情報を補完しました：成功 ${result.updated}件 / 失敗 ${result.failedInBatch}件 / 残り ${result.remainingPending}件',
             ),
           ),
         );
@@ -1268,7 +1293,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                 const RoomImportEnrichmentPendingHint(),
                 const SizedBox(height: 6),
                 Text(
-                  'ショップ名・価格・画像・ジャンルを少しずつ更新します（1回あたり${RoomImportLimitPolicy.manualEnrichMaxApiCallsPerRun}件程度）。',
+                  'ショップ名・価格・画像・ジャンルを少しずつ更新します（1回あたり最大${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun}件）。',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.35,

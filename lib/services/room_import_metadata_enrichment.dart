@@ -10,6 +10,7 @@ import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../services/rakuten_item_url_parser.dart';
 import '../utils/rakuten_product_genre_display.dart';
+import '../utils/room_import_enrich_keyword_normalize.dart';
 import '../utils/room_sync_log.dart';
 import 'room_import_enrichment_cooldown_store.dart';
 import 'room_import_limit_policy.dart';
@@ -36,6 +37,7 @@ class RoomImportEnrichmentNeedFlags {
 class RoomImportEnrichmentBatchResult {
   const RoomImportEnrichmentBatchResult({
     required this.updated,
+    required this.failedInBatch,
     required this.attempted,
     required this.skippedAlreadyComplete,
     required this.pausedByRateLimit,
@@ -44,9 +46,13 @@ class RoomImportEnrichmentBatchResult {
     this.duplicateSessionSkipped = false,
     /// 検証モード（`ROOM_IMPORT_ENRICH_VERIFY`）時のみ。マイページ SnackBar 用短文。
     this.verifyUiMessage,
+    this.successProductIds = const <String>[],
   });
 
   final int updated;
+  /// 今回の実行でメタ更新に至らなかった商品数（429 で止まる直前の失敗も含む）。
+  final int failedInBatch;
+  /// 楽天API のHTTP試行回数（フォールバックで複数回あるときは 1 商品で増える）。
   final int attempted;
   final int skippedAlreadyComplete;
   final bool pausedByRateLimit;
@@ -56,6 +62,9 @@ class RoomImportEnrichmentBatchResult {
 
   /// 非検証モードでは常に null。
   final String? verifyUiMessage;
+
+  /// 今回の実行でメタマージに成功した productId（ログ・UI ハイライト用）。
+  final List<String> successProductIds;
 }
 
 /// 取り込み後メタ補完で試す検索経路（ログ名と一致）。
@@ -155,38 +164,43 @@ class RoomImportMetadataEnrichmentService {
     return true;
   }
 
-  /// ROOM 取り込みコレ済のメタを最大 [limit] 件まで API で補完する。
+  /// ROOM 取り込みコレ済のメタを最大 [limit] **商品**まで API で補完する。
   ///
   /// [applyPostImportAutoCap] が true のとき [RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls] を上限にする。
-  /// 手動でも [RoomImportLimitPolicy.manualEnrichMaxApiCallsPerRun] を超えないよう内部でキャップする。
+  /// 手動でも [RoomImportLimitPolicy.manualEnrichMaxProductsPerRun] を超えないよう内部でキャップする。
+  ///
+  /// [manualSessionPacing] が true のときは商品間ディレイを [RoomImportLimitPolicy.manualEnrichInterItemDelayMs] にする。
   Future<RoomImportEnrichmentBatchResult> enrichRoomImportedProducts({
     required int limit,
     bool applyPostImportAutoCap = false,
+    bool manualSessionPacing = false,
   }) async {
-    var maxApiCalls = limit <= 0
+    var maxProductsPerRun = limit <= 0
         ? 0
         : (applyPostImportAutoCap
               ? (limit > RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls
                     ? RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls
                     : limit)
-              : (limit > RoomImportLimitPolicy.manualEnrichMaxApiCallsPerRun
-                    ? RoomImportLimitPolicy.manualEnrichMaxApiCallsPerRun
+              : (limit > RoomImportLimitPolicy.manualEnrichMaxProductsPerRun
+                    ? RoomImportLimitPolicy.manualEnrichMaxProductsPerRun
                     : limit));
-    if (RoomImportEnrichmentVerifyConfig.enabled && maxApiCalls < 1) {
-      maxApiCalls = 1;
+    if (RoomImportEnrichmentVerifyConfig.enabled && maxProductsPerRun < 1) {
+      maxProductsPerRun = 1;
     }
 
-    if (maxApiCalls <= 0) {
+    if (maxProductsPerRun <= 0) {
       if (applyPostImportAutoCap) {
         roomImportPerfLog('enrichmentSkipped reason=autoDisabled');
       }
       final pending0 = _pendingQueueRows().length;
       return RoomImportEnrichmentBatchResult(
         updated: 0,
+        failedInBatch: 0,
         attempted: 0,
         skippedAlreadyComplete: 0,
         pausedByRateLimit: false,
         remainingPending: pending0,
+        successProductIds: const [],
       );
     }
 
@@ -196,11 +210,13 @@ class RoomImportMetadataEnrichmentService {
       final pending = _pendingQueueRows().length;
       return RoomImportEnrichmentBatchResult(
         updated: 0,
+        failedInBatch: 0,
         attempted: 0,
         skippedAlreadyComplete: 0,
         pausedByRateLimit: false,
         remainingPending: pending,
         duplicateSessionSkipped: true,
+        successProductIds: const [],
       );
     }
 
@@ -221,17 +237,22 @@ class RoomImportMetadataEnrichmentService {
       );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
+        failedInBatch: 0,
         attempted: 0,
         skippedAlreadyComplete: 0,
         pausedByRateLimit: false,
         remainingPending: pending,
         skippedCooldown: true,
+        successProductIds: const [],
       );
     }
 
     _singleFlight = true;
     try {
-      return await _runEnrichmentLoop(maxApiCalls: maxApiCalls);
+      return await _runEnrichmentLoop(
+        maxProductsPerRun: maxProductsPerRun,
+        manualSessionPacing: manualSessionPacing,
+      );
     } finally {
       _singleFlight = false;
     }
@@ -313,12 +334,42 @@ class RoomImportMetadataEnrichmentService {
   }
 
   /// shopItem → keyword+shopCode フォールバック時の検索語（商品タイトル優先、なければ検証モードと同じ既定）。
-  String _roomImportFallbackKeyword(RakutenManagedProduct row) {
+  String _roomImportFallbackKeyword(RakutenManagedProduct row, String productId) {
     final t = _titleKeywordRaw(row.itemName);
-    if (t != null && t.trim().isNotEmpty) return t.trim();
-    final k = RoomImportEnrichmentVerifyConfig.patternCKeyword.trim();
-    if (k.isNotEmpty) return k;
-    return 'タリーズコーヒー';
+    final rawCandidate = (t != null && t.trim().isNotEmpty)
+        ? t.trim()
+        : RoomImportEnrichmentVerifyConfig.patternCKeyword.trim();
+    final fallbackDefault =
+        rawCandidate.isNotEmpty ? rawCandidate : 'タリーズコーヒー';
+    final nk = RoomImportEnrichKeywordNormalize.normalize(fallbackDefault);
+    final use = nk.isNotEmpty ? nk : fallbackDefault;
+    roomImportEnrichFallbackKeywordLog({
+      'productId': productId,
+      'rawKeyword': fallbackDefault,
+      'normalizedKeyword': use,
+      'rawLength': '${fallbackDefault.length}',
+      'normalizedLength': '${use.length}',
+      'phase': 'shopItemFallback',
+    });
+    return use;
+  }
+
+  /// shopTitleKeyword 経路のキーワード（タイトル由来を正規化）。
+  String _keywordForShopTitleSearch(RakutenManagedProduct chosen, String pid) {
+    final rawKw = _titleKeywordRaw(chosen.itemName)!;
+    final nk = RoomImportEnrichKeywordNormalize.normalize(rawKw);
+    final kw = nk.length >= RoomImportLimitPolicy.enrichTitleKeywordMinChars
+        ? nk
+        : rawKw;
+    roomImportEnrichFallbackKeywordLog({
+      'productId': pid,
+      'rawKeyword': rawKw,
+      'normalizedKeyword': nk,
+      'rawLength': '${rawKw.length}',
+      'normalizedLength': '${nk.length}',
+      'phase': 'shopTitleKeyword',
+    });
+    return kw;
   }
 
   void _roomImportEnrichFallbackMergeSuccessLog({
@@ -523,7 +574,8 @@ class RoomImportMetadataEnrichmentService {
   }
 
   Future<RoomImportEnrichmentBatchResult> _runEnrichmentLoop({
-    required int maxApiCalls,
+    required int maxProductsPerRun,
+    required bool manualSessionPacing,
   }) async {
     final rows = _productRepository.loadAll();
     var skippedComplete = 0;
@@ -535,24 +587,24 @@ class RoomImportMetadataEnrichmentService {
       }
     }
 
-    final pendingAll = _pendingQueueRows();
-    final now = DateTime.now();
+    final pendingSnapshot = _pendingQueueRows();
+    final queueDiagNow = DateTime.now();
     var inBackoff = 0;
     var noMethod = 0;
     var eligible = 0;
-    for (final e in pendingAll) {
-      if (_inProductBackoff(e, now)) {
+    for (final e in pendingSnapshot) {
+      if (_inProductBackoff(e, queueDiagNow)) {
         inBackoff++;
         continue;
       }
-      if (_peekNextMethod(e, now) == null) {
+      if (_peekNextMethod(e, queueDiagNow) == null) {
         noMethod++;
         continue;
       }
       eligible++;
     }
     roomImportEnrichQueueLog(
-      'pending=${pendingAll.length} eligible=$eligible '
+      'pending=${pendingSnapshot.length} eligible=$eligible '
       'skippedCooldown=$inBackoff skippedFailed=$noMethod',
     );
 
@@ -560,12 +612,21 @@ class RoomImportMetadataEnrichmentService {
       return _runVerifyOnlyEnrichment(skippedComplete: skippedComplete);
     }
 
+    final interItemDelayMs = manualSessionPacing
+        ? RoomImportLimitPolicy.manualEnrichInterItemDelayMs
+        : RoomImportLimitPolicy.enrichMinDelayMsBetweenCalls;
+
     var okCount = 0;
+    var failCount = 0;
     var apiAttempts = 0;
     var pausedByRateLimit = false;
+    final successIds = <String>[];
+    var processedProducts = 0;
 
     try {
-      while (apiAttempts < maxApiCalls) {
+      while (processedProducts < maxProductsPerRun && !pausedByRateLimit) {
+        final pendingAll = _pendingQueueRows();
+        final now = DateTime.now();
         final sorted = _sortedEnrichmentCandidates(pendingAll, now);
         _RoomImportEnrichMethod? chosenMethod;
         RakutenManagedProduct? chosen;
@@ -592,17 +653,18 @@ class RoomImportMetadataEnrichmentService {
           break;
         }
 
-        if (apiAttempts > 0) {
+        if (processedProducts > 0) {
           await Future<void>.delayed(
-            const Duration(
-              milliseconds: RoomImportLimitPolicy.enrichMinDelayMsBetweenCalls,
-            ),
+            Duration(milliseconds: interItemDelayMs),
           );
         }
+        processedProducts++;
 
         final pid = chosen.productId.trim();
         final shop = chosen.shopCode.trim();
         if (shop.isEmpty || pid.isEmpty) break;
+
+        final attemptNow = DateTime.now();
 
         final flags = needFlagsForProduct(chosen);
         roomImportEnrichTargetLog(
@@ -619,12 +681,11 @@ class RoomImportMetadataEnrichmentService {
           break;
         }
 
-        final delayMs = apiAttempts == 0
-            ? 0
-            : RoomImportLimitPolicy.enrichMinDelayMsBetweenCalls;
+        final delayMs =
+            processedProducts <= 1 ? 0 : interItemDelayMs;
         roomImportEnrichApiLog(
-          'productId=$pid index=${apiAttempts + 1} maxPerRun=$maxApiCalls '
-          'delayMs=$delayMs shopCode=$shop itemCode=$pid',
+          'productId=$pid index=$processedProducts maxPerRun=$maxProductsPerRun '
+          'manualPacing=$manualSessionPacing delayMs=$delayMs shopCode=$shop itemCode=$pid',
         );
 
         final codes = _resolveImportCodes(chosen);
@@ -642,7 +703,7 @@ class RoomImportMetadataEnrichmentService {
           apiAttempts++;
           switch (chosenMethod) {
             case _RoomImportEnrichMethod.shopItem:
-              final fbKw = _roomImportFallbackKeyword(chosen);
+              final fbKw = _roomImportFallbackKeyword(chosen, pid);
               final fbOut =
                   await _searchRepository.fetchRoomImportShopItemWithKeywordUrlFallback(
                     shopItemCondition: RakutenProductSearchCondition(
@@ -663,7 +724,7 @@ class RoomImportMetadataEnrichmentService {
                   fbOut.keywordFallbackAttempted && env.item != null;
               break;
             case _RoomImportEnrichMethod.shopTitleKeyword:
-              final kw = _titleKeywordRaw(chosen.itemName)!;
+              final kw = _keywordForShopTitleSearch(chosen, pid);
               env = await _searchRepository.fetchRoomImportEnrichmentSingleSearch(
                 condition: RakutenProductSearchCondition(
                   keyword: kw,
@@ -696,13 +757,12 @@ class RoomImportMetadataEnrichmentService {
           }
         } catch (e, st) {
           debugPrint('[ROOM_IMPORT_ENRICH] envelope exception $e\n$st');
-          await _applyEnrichException(chosen, now, chosenMethod);
+          await _applyEnrichException(chosen, attemptNow, chosenMethod);
           roomImportEnrichFailLog(
             'productId=$pid method=${_methodLogName(chosenMethod)} reason=exception',
           );
-          roomImportPerfLog('enrichmentStopped reason=exception');
-          roomImportEnrichStopLog('exception');
-          break;
+          failCount++;
+          continue;
         }
 
         if (env.rateLimited || env.httpStatus == 429) {
@@ -718,10 +778,11 @@ class RoomImportMetadataEnrichmentService {
             'cooldownMinutes=${RoomImportLimitPolicy.enrichCooldownAfter429Minutes} '
             'remainingPending=$remaining',
           );
-          await _apply429Row(chosen, now, chosenMethod);
+          await _apply429Row(chosen, attemptNow, chosenMethod);
           roomImportEnrichFailLog(
             'productId=$pid method=${_methodLogName(chosenMethod)} reason=429',
           );
+          failCount++;
           pausedByRateLimit = true;
           break;
         }
@@ -729,22 +790,24 @@ class RoomImportMetadataEnrichmentService {
         if (env.httpStatus == 400) {
           roomImportApiLog('rateLimitDetected=false');
           if (chosenMethod == _RoomImportEnrichMethod.shopItem) {
-            await _applyShopItemHttp400(chosen, now);
+            await _applyShopItemHttp400(chosen, attemptNow);
           } else {
-            await _applyNonShopItemHttp400(chosen, now, chosenMethod);
+            await _applyNonShopItemHttp400(chosen, attemptNow, chosenMethod);
           }
           roomImportEnrichFailLog(
             'productId=$pid method=${_methodLogName(chosenMethod)} reason=400',
           );
-          break;
+          failCount++;
+          continue;
         }
 
         if (env.item == null) {
-          await _applyNoItems(chosen, now, chosenMethod);
+          await _applyNoItems(chosen, attemptNow, chosenMethod);
           roomImportEnrichFailLog(
             'productId=$pid method=${_methodLogName(chosenMethod)} reason=noItems',
           );
-          break;
+          failCount++;
+          continue;
         }
 
         try {
@@ -753,6 +816,7 @@ class RoomImportMetadataEnrichmentService {
             api: env.item!,
           );
           okCount++;
+          successIds.add(pid);
           if (usedKeywordShopUrlFallback) {
             final savedRow = _productRepository.getByProductId(pid);
             if (savedRow != null) {
@@ -767,7 +831,8 @@ class RoomImportMetadataEnrichmentService {
           await _productRepository.updateManagedProduct(pid, (e) {
             return e.copyWith(roomImportMetadataEnriching: false);
           });
-          break;
+          failCount++;
+          continue;
         }
 
         final api = env.item!;
@@ -783,28 +848,34 @@ class RoomImportMetadataEnrichmentService {
         await _productRepository.updateManagedProduct(pid, (e) {
           return e.copyWith(roomImportMetadataEnriching: false);
         });
-        break;
       }
     } finally {
       final remainingPending = _pendingQueueRows().length;
       roomImportEnrichSummaryLog(
-        'attempted=$apiAttempts updated=$okCount skipped=$skippedComplete '
-        'pausedByRateLimit=$pausedByRateLimit remainingPending=$remainingPending',
+        'apiAttempts=$apiAttempts updated=$okCount failedProducts=$failCount '
+        'skipped=$skippedComplete pausedByRateLimit=$pausedByRateLimit '
+        'remainingPending=$remainingPending successIds=${successIds.join(',')}',
       );
 
       if (kDebugMode && apiAttempts > 0) {
         roomImportPerfLog(
-          'enrichmentBatchSummary apiAttempts=$apiAttempts updated=$okCount',
+          'enrichmentBatchSummary apiAttempts=$apiAttempts updated=$okCount '
+          'failedProducts=$failCount',
         );
+      }
+      if (kDebugMode && successIds.isNotEmpty) {
+        debugPrint('[ROOM_IMPORT_ENRICH_SUCCESS_IDS] ${successIds.join(',')}');
       }
     }
 
     return RoomImportEnrichmentBatchResult(
       updated: okCount,
+      failedInBatch: failCount,
       attempted: apiAttempts,
       skippedAlreadyComplete: skippedComplete,
       pausedByRateLimit: pausedByRateLimit,
       remainingPending: _pendingQueueRows().length,
+      successProductIds: List<String>.unmodifiable(successIds),
     );
   }
 
@@ -878,11 +949,13 @@ class RoomImportMetadataEnrichmentService {
       );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
+        failedInBatch: 0,
         attempted: 0,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: false,
         remainingPending: _pendingQueueRows().length,
         verifyUiMessage: verifyFailSnack,
+        successProductIds: const [],
       );
     }
 
@@ -899,11 +972,13 @@ class RoomImportMetadataEnrichmentService {
       );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
+        failedInBatch: 0,
         attempted: 0,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: false,
         remainingPending: _pendingQueueRows().length,
         verifyUiMessage: verifyFailSnack,
+        successProductIds: const [],
       );
     }
 
@@ -926,11 +1001,13 @@ class RoomImportMetadataEnrichmentService {
       );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
+        failedInBatch: 0,
         attempted: 0,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: false,
         remainingPending: _pendingQueueRows().length,
         verifyUiMessage: verifyFailSnack,
+        successProductIds: const [],
       );
     }
 
@@ -954,11 +1031,13 @@ class RoomImportMetadataEnrichmentService {
       );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
+        failedInBatch: 0,
         attempted: 0,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: false,
         remainingPending: _pendingQueueRows().length,
         verifyUiMessage: verifyFailSnack,
+        successProductIds: const [],
       );
     }
 
@@ -977,11 +1056,13 @@ class RoomImportMetadataEnrichmentService {
       );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
+        failedInBatch: 1,
         attempted: outcome.apiCallCount,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: true,
         remainingPending: _pendingQueueRows().length,
         verifyUiMessage: verifyFailSnack,
+        successProductIds: const [],
       );
     }
 
@@ -1013,11 +1094,13 @@ class RoomImportMetadataEnrichmentService {
         );
         return RoomImportEnrichmentBatchResult(
           updated: 0,
+          failedInBatch: 1,
           attempted: outcome.apiCallCount,
           skippedAlreadyComplete: skippedComplete,
           pausedByRateLimit: false,
           remainingPending: _pendingQueueRows().length,
           verifyUiMessage: verifyFailSnack,
+          successProductIds: const [],
         );
       }
 
@@ -1057,11 +1140,13 @@ class RoomImportMetadataEnrichmentService {
             '検証成功: pattern $wp / ${saved.shopName.trim()} / ${saved.genreName.trim()}';
         return RoomImportEnrichmentBatchResult(
           updated: 1,
+          failedInBatch: 0,
           attempted: outcome.apiCallCount,
           skippedAlreadyComplete: skippedComplete,
           pausedByRateLimit: false,
           remainingPending: _pendingQueueRows().length,
           verifyUiMessage: snack,
+          successProductIds: <String>[pid],
         );
       }
 
@@ -1073,11 +1158,13 @@ class RoomImportMetadataEnrichmentService {
       );
       return RoomImportEnrichmentBatchResult(
         updated: 0,
+        failedInBatch: 1,
         attempted: outcome.apiCallCount,
         skippedAlreadyComplete: skippedComplete,
         pausedByRateLimit: false,
         remainingPending: _pendingQueueRows().length,
         verifyUiMessage: verifyFailSnack,
+        successProductIds: const [],
       );
     }
 
@@ -1093,11 +1180,13 @@ class RoomImportMetadataEnrichmentService {
     );
     return RoomImportEnrichmentBatchResult(
       updated: 0,
+      failedInBatch: 1,
       attempted: outcome.apiCallCount,
       skippedAlreadyComplete: skippedComplete,
       pausedByRateLimit: false,
       remainingPending: _pendingQueueRows().length,
       verifyUiMessage: verifyFailSnack,
+      successProductIds: const [],
     );
   }
 

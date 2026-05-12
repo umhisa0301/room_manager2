@@ -301,6 +301,23 @@ void roomImportEnrichFallbackResultLog(Map<String, String> fields) {
   RoomImportDebugLogBuffer.add(text.replaceAll('\n', ' | '));
 }
 
+/// keyword + shopCode フォールバック／タイトル検索向けキーワードの正規化結果。
+void roomImportEnrichFallbackKeywordLog(Map<String, String> fields) {
+  _roomImportEnrichFallbackTaggedBlockLog(
+    'ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD',
+    fields,
+  );
+}
+
+/// 補完反映と一覧の先頭表示が一致しないときの切り分け用。
+void roomImportEnrichUiReflectLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_UI_REFLECT] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void _roomImportEnrichFallbackTaggedBlockLog(
   String tag,
   Map<String, String> fields,

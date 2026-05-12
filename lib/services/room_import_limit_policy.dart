@@ -16,11 +16,14 @@ abstract final class RoomImportLimitPolicy {
   /// 0 で自動補完オフ。429 回避のため **1 件**に固定。
   static const int postBatchAutoEnrichMaxApiCalls = 1;
 
-  /// マイページ「情報を補完」1回あたりの API 試行上限。
-  static const int manualEnrichMaxApiCallsPerRun = 1;
+  /// マイページ「情報を補完」1回あたりに処理する **商品数** の上限。
+  static const int manualEnrichMaxProductsPerRun = 10;
 
-  /// 連続する楽天商品検索 API 呼び出しの最小間隔（ミリ秒）。
+  /// 連続する楽天商品検索 API 呼び出しの最小間隔（ミリ秒）（自動補完・取り込み直後など）。
   static const int enrichMinDelayMsBetweenCalls = 2000;
+
+  /// 手動補完で **商品と商品の間** に入れる待ち（ミリ秒）。429 回避と複数件処理の両立。
+  static const int manualEnrichInterItemDelayMs = 1200;
 
   /// 429 検知後、自動・手動いずれの補完も控えるクールダウン（分）。
   static const int enrichCooldownAfter429Minutes = 15;
