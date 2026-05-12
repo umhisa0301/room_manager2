@@ -155,11 +155,24 @@ class RakutenApiService {
     if (normalized.minReviewAverage != null) {
       params['minReviewAverage'] = '${normalized.minReviewAverage}';
     }
-    if (hasShop) {
-      params['shopCode'] = shopTrimmed;
-    }
-    if (hasItem) {
+    // 楽天 IchibaItem/Search（20260401 等）: 入力 itemCode は **「ショップID:商品コード」** 形式。
+    // shopCode と itemCode を別パラメータで同時指定すると wrong_parameter で 400 になり得る。
+    final keywordEmpty = keywordTrimmed.isEmpty;
+    if (keywordEmpty &&
+        !hasGenre &&
+        hasShop &&
+        hasItem &&
+        !itemTrimmed.contains(':')) {
+      params['itemCode'] = '$shopTrimmed:$itemTrimmed';
+    } else if (keywordEmpty && !hasGenre && hasItem && itemTrimmed.contains(':')) {
       params['itemCode'] = itemTrimmed;
+    } else {
+      if (hasShop) {
+        params['shopCode'] = shopTrimmed;
+      }
+      if (hasItem) {
+        params['itemCode'] = itemTrimmed;
+      }
     }
     if (hasGenre) {
       params['genreId'] = genreTrimmed;
@@ -203,6 +216,13 @@ class RakutenApiService {
         : _baseUrlForMode(mode);
     final uri = Uri.parse(base);
     final openapiHeaders = !proxy && mode == _RakutenApiMode.openapi;
+    final compositeHint = (keywordTrimmed.isNotEmpty || hasGenre)
+        ? 'queryMode=mixedOrKeyword'
+        : (hasShop && hasItem && !itemTrimmed.contains(':'))
+        ? 'queryMode=compositeItemCode(shop:item)'
+        : (hasItem && itemTrimmed.contains(':'))
+        ? 'queryMode=itemCodeOnly(composite)'
+        : 'queryMode=separateOrShopOnly';
     debugPrint(
       '[Rakuten] request start mode=${proxy ? 'proxy' : label} page=$page hits=$hits '
       'url=${uri.scheme}://${uri.host}${uri.path} '
@@ -210,6 +230,7 @@ class RakutenApiService {
       'forceLegacy=${RakutenApiConfig.forceLegacy} '
       'accessKeySent=${!proxy && mode == _RakutenApiMode.openapi} '
       'openapiHeaders=$openapiHeaders '
+      '$compositeHint '
       'keyword=${keywordTrimmed.isEmpty ? '(omit)' : keywordTrimmed} '
       'genreId=${hasGenre ? genreTrimmed : '-'} '
       'shopCode=${hasShop ? shopTrimmed : '-'} '
@@ -324,6 +345,12 @@ class RakutenApiService {
     }
 
     if (response.statusCode != 200) {
+      if (kDebugMode) {
+        debugPrint(
+          '[Rakuten] error response body (full, status=${response.statusCode}): '
+          '${response.body}',
+        );
+      }
       final detail =
           _rakutenErrorMessage(bodyMap) ?? _truncateBody(response.body);
       if (_isInvalidApplicationIdError(
@@ -337,7 +364,9 @@ class RakutenApiService {
         message:
             '楽天API呼び出しに失敗しました (${response.statusCode})'
             '${detail.isNotEmpty ? ': $detail' : ''}',
-        responseBodyPreview: _truncateBody(response.body, 480),
+        responseBodyPreview: kDebugMode
+            ? _truncateBody(response.body, 16000)
+            : _truncateBody(response.body, 480),
       );
     }
 
@@ -394,9 +423,28 @@ class RakutenApiService {
         'headers: User-Agent=set Origin=${hasOrigin ? 'set' : 'omit'} '
         'Referer=${hasReferer ? 'set' : 'omit'}',
       );
+      debugPrint(
+        '[Rakuten] fullRequestUri=${_redactSearchUriForLog(uri, usesProxy)}',
+      );
     }
     return http.get(uri, headers: headers).timeout(_requestTimeout);
   }
+}
+
+/// 診断ログ用: 直叩き時は applicationId / accessKey をマスクする。
+String _redactSearchUriForLog(Uri uri, bool isProxy) {
+  if (!uri.hasQuery) return uri.toString();
+  if (isProxy) {
+    return uri.toString();
+  }
+  final m = Map<String, String>.from(uri.queryParameters);
+  if (m.containsKey('applicationId')) {
+    m['applicationId'] = '[redacted]';
+  }
+  if (m.containsKey('accessKey')) {
+    m['accessKey'] = '[redacted]';
+  }
+  return uri.replace(queryParameters: m).toString();
 }
 
 bool _isLikelyDnsFailure(Object e) {

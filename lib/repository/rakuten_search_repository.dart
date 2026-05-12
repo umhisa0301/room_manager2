@@ -134,7 +134,8 @@ void _roomImportItemApiParamsLine(
     'keyword=${_roomImportOmitParam(n.keyword)} '
     'shopCode=${_roomImportOmitParam(n.shopCode)} '
     'itemCode=${_roomImportOmitParam(n.itemCode)} '
-    'apiItemCodeDeprecated=none usesColonItemCode=false',
+    'apiItemCodeForm=shopColonItem(RakutenIchibaItemSearch) '
+    'httpQueryUsesCompositeWhenShopAndPureItem=true',
   );
 }
 
@@ -277,7 +278,8 @@ class RakutenSearchRepository {
 
   /// ROOM取り込みコレ済のメタデータ補完用。
   ///
-  /// 楽天APIには **`shopCode` と純粋な `itemCode` を別パラメータ**で渡す（`shop:item` を itemCode に載せない）。
+  /// 楽天 IchibaItem/Search の入力 `itemCode` は **「shopCode:純粋itemCode」** 形式（公式）。
+  /// [RakutenApiService] が HTTP クエリへ合成する（`shopCode` 同時指定は 400 の原因になり得る）。
   /// 400 または空ヒット時は `keyword` + `shopCode`（itemCode 省略）へ1段フォールバックする。
   /// 取り込み直後の補完および [RoomImportMetadataEnrichmentService.enrichRoomImportedProducts] で利用。
   Future<RoomImportEnrichmentFetchEnvelope>
@@ -318,15 +320,6 @@ class RakutenSearchRepository {
       String phase,
     ) async {
       final n = c.normalized();
-      final qic = n.itemCode ?? '';
-      if (qic.contains(':')) {
-        roomImportItemApiBlockedLog('reason=colonItemCode itemCode=$qic');
-        throw RakutenApiTransportException(
-          statusCode: 400,
-          message: 'itemCode is not valid',
-          responseBodyPreview: 'blocked:colonInQueryItemCode',
-        );
-      }
       _roomImportItemApiParamsLine(c, phase: phase);
       return _apiService.searchItems(condition: n, page: 1, hits: 30);
     }

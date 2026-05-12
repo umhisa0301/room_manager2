@@ -23,7 +23,7 @@ class RakutenProductSearchCondition {
   final double? minReviewAverage;
   final int? minCommentCount;
   final String? shopCode;
-  /// 楽天商品検索 API の `itemCode`（URL から追加など）。
+  /// 楽天商品検索 API 用の商品コード（店舗内の識別子。HTTP では `shopCode` と併せて `shop:item` に合成され得る）。
   final String? itemCode;
   final String? genreId;
   final String? sort;
