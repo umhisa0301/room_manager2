@@ -38,6 +38,8 @@ import 'state/saved_shop_provider.dart';
 import 'state/today_recommendation_provider.dart';
 import 'navigation/app_shell_controller.dart';
 import 'models/genre_master.dart';
+import 'config/room_import_enrichment_verify_config.dart';
+import 'utils/room_sync_log.dart';
 
 Future<void> _bootstrapRakutenGenreNameCache(GenreMasterRepository repo) async {
   final List<GenreMaster> all;
@@ -53,6 +55,7 @@ Future<void> _bootstrapRakutenGenreNameCache(GenreMasterRepository repo) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  roomImportEnrichModeLog(RoomImportEnrichmentVerifyConfig.enabled);
   final prefs = await SharedPreferences.getInstance();
   final productRepository = ProductRepository(prefs);
   final commentRepository = CommentTemplateRepository(prefs);

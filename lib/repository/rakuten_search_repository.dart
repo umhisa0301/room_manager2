@@ -904,8 +904,44 @@ class RakutenSearchRepository {
     required String matchShopCodeForPick,
     required String storedProductIdForUrlMatch,
     required String fallbackKeyword,
+    required bool verifyMode,
     String phaseShopItem = 'shopItem',
   }) async {
+    final pid = storedProductIdForUrlMatch.trim();
+    final fkPrepared = fallbackKeyword.trim();
+    final condNorm = shopItemCondition.normalized();
+
+    roomImportEnrichFallbackStartLog({
+      'productId': pid,
+      'shopCode': (condNorm.shopCode ?? '').trim(),
+      'itemCode': (condNorm.itemCode ?? '').trim(),
+      'keyword': fkPrepared,
+      'verifyMode': '$verifyMode',
+    });
+
+    void logNotTriggered(String reason, [Map<String, String>? extra]) {
+      final m = <String, String>{
+        'status': 'notTriggered',
+        'reason': reason,
+        'productId': pid,
+      };
+      if (extra != null) {
+        for (final e in extra.entries) {
+          m[e.key] = e.value;
+        }
+      }
+      roomImportEnrichFallbackResultLog(m);
+    }
+
+    void logNotNeeded(String matchedItemCode) {
+      roomImportEnrichFallbackResultLog({
+        'status': 'notNeeded',
+        'reason': 'directShopItemSearchSucceeded',
+        'productId': pid,
+        'matchedItemCode': matchedItemCode,
+      });
+    }
+
     final envShop = await fetchRoomImportEnrichmentSingleSearch(
       condition: shopItemCondition,
       phase: phaseShopItem,
@@ -916,25 +952,47 @@ class RakutenSearchRepository {
     );
 
     if (envShop.rateLimited || envShop.httpStatus == 429) {
+      logNotTriggered('rateLimitedOr429', {
+        if (envShop.httpStatus != null) 'httpStatus': '${envShop.httpStatus}',
+      });
       return RoomImportShopItemKeywordFallbackOutcome(envelope: envShop);
     }
 
     if (envShop.item != null) {
+      logNotNeeded(envShop.item!.productId.trim());
       return RoomImportShopItemKeywordFallbackOutcome(envelope: envShop);
     }
 
     if (!_shouldKeywordFallbackAfterShopItem400(envShop)) {
+      final status = envShop.httpStatus;
+      if (status == null) {
+        logNotTriggered('shopItemNon400_NoHttpStatus');
+      } else if (status == 400) {
+        logNotTriggered('shopItem400BodyNotEligibleForKeywordFallback');
+      } else if (status == 200) {
+        logNotTriggered('shopItemNoItemAfterPick');
+      } else {
+        logNotTriggered('shopItemHttpError', {'httpStatus': '$status'});
+      }
       return RoomImportShopItemKeywordFallbackOutcome(envelope: envShop);
     }
 
-    final fk = fallbackKeyword.trim();
-    if (fk.isEmpty) {
+    if (fkPrepared.isEmpty) {
+      logNotTriggered('emptyFallbackKeyword');
       return RoomImportShopItemKeywordFallbackOutcome(envelope: envShop);
     }
+
+    roomImportEnrichFallbackTriggeredLog({
+      'reason': 'itemCodeInvalid',
+      'productId': pid,
+      'shopCode': matchShopCodeForPick.trim(),
+      'itemCode': matchPureItemForPick.trim(),
+      'keyword': fkPrepared,
+    });
 
     if (kDemoModeEnabled) {
       final kwCond = RakutenProductSearchCondition(
-        keyword: fk,
+        keyword: fkPrepared,
         shopCode: matchShopCodeForPick,
         itemCode: null,
       ).normalized();
@@ -957,6 +1015,13 @@ class RakutenSearchRepository {
           );
         }
       }
+      roomImportEnrichFallbackResultLog({
+        'status': 'noExactUrlMatch',
+        'productId': pid,
+        'shopCode': matchShopCodeForPick.trim(),
+        'keyword': fkPrepared,
+        'candidates': summaries.join(' | '),
+      });
       return RoomImportShopItemKeywordFallbackOutcome(
         envelope: const RoomImportEnrichmentFetchEnvelope(httpStatus: 200),
         additionalApiCalls: 1,
@@ -968,14 +1033,14 @@ class RakutenSearchRepository {
     try {
       RoomImportDebugLogBuffer.incEnrichment();
       final normalizedKw = RakutenProductSearchCondition(
-        keyword: fk,
+        keyword: fkPrepared,
         shopCode: matchShopCodeForPick,
         itemCode: null,
       ).normalized();
       _roomImportEnrichmentFullRequestLog(
         phase: '${phaseShopItem}_keywordShopFallback',
         condition: RakutenProductSearchCondition(
-          keyword: fk,
+          keyword: fkPrepared,
           shopCode: matchShopCodeForPick,
           itemCode: null,
         ),
@@ -989,6 +1054,7 @@ class RakutenSearchRepository {
       );
       final rawItems = raw['Items'];
       if (rawItems is! List) {
+        logNotTriggered('keywordSearchResponseMissingItemsList');
         return RoomImportShopItemKeywordFallbackOutcome(
           envelope: const RoomImportEnrichmentFetchEnvelope(httpStatus: 200),
           additionalApiCalls: 1,
@@ -1007,6 +1073,15 @@ class RakutenSearchRepository {
         } catch (_) {}
       }
       final summaries = paired.map((p) => _candidateLineForLog(p.item)).take(12).toList();
+      if (paired.isEmpty) {
+        logNotTriggered('keywordSearchNoParsedItems');
+        return RoomImportShopItemKeywordFallbackOutcome(
+          envelope: const RoomImportEnrichmentFetchEnvelope(httpStatus: 200),
+          additionalApiCalls: 1,
+          keywordFallbackAttempted: true,
+          keywordCandidateSummaries: summaries,
+        );
+      }
       for (final p in paired) {
         if (roomImportSearchItemUrlsMatchStoredProduct(
           item: p.item,
@@ -1024,6 +1099,13 @@ class RakutenSearchRepository {
           );
         }
       }
+      roomImportEnrichFallbackResultLog({
+        'status': 'noExactUrlMatch',
+        'productId': pid,
+        'shopCode': matchShopCodeForPick.trim(),
+        'keyword': fkPrepared,
+        'candidates': summaries.join(' | '),
+      });
       return RoomImportShopItemKeywordFallbackOutcome(
         envelope: const RoomImportEnrichmentFetchEnvelope(httpStatus: 200),
         additionalApiCalls: 1,
@@ -1034,6 +1116,9 @@ class RakutenSearchRepository {
       if (kDebugMode) {
         debugPrint('[ROOM_IMPORT_ENRICH] keywordShop fallback failed: $e\n$st');
       }
+      final detail = e.toString();
+      final short = detail.length > 160 ? '${detail.substring(0, 160)}…' : detail;
+      logNotTriggered('keywordFallbackException', {'detail': short});
       return RoomImportShopItemKeywordFallbackOutcome(envelope: envShop);
     }
   }

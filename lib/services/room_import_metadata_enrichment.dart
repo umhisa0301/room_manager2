@@ -334,6 +334,9 @@ class RoomImportMetadataEnrichmentService {
         'productId': productId,
         'matchedItemCode': api.productId.trim(),
         'matchedItemUrl': api.itemUrl.trim(),
+        'matchedAffiliateUrl': api.affiliateUrl.trim().isEmpty
+            ? '(empty)'
+            : api.affiliateUrl.trim(),
         'price': '${api.itemPrice}',
         'shopName': api.shopName.trim(),
         'apiGenreName': dg.apiGenreName.isEmpty ? '(empty)' : dg.apiGenreName,
@@ -651,21 +654,11 @@ class RoomImportMetadataEnrichmentService {
                     matchShopCodeForPick: codes.apiShop,
                     storedProductIdForUrlMatch: chosen.productId.trim(),
                     fallbackKeyword: fbKw,
+                    verifyMode: RoomImportEnrichmentVerifyConfig.enabled,
                     phaseShopItem: 'shopItem',
                   );
               env = fbOut.envelope;
               apiAttempts += fbOut.additionalApiCalls;
-              if (fbOut.keywordFallbackAttempted && env.item == null) {
-                roomImportEnrichFallbackResultLog(
-                  LinkedHashMap<String, String>.from({
-                    'status': 'noExactUrlMatch',
-                    'productId': pid,
-                    'shopCode': codes.apiShop,
-                    'keyword': fbKw,
-                    'candidates': fbOut.keywordCandidateSummaries.join(' | '),
-                  }),
-                );
-              }
               usedKeywordShopUrlFallback =
                   fbOut.keywordFallbackAttempted && env.item != null;
               break;

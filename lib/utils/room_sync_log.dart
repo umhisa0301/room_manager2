@@ -301,6 +301,44 @@ void roomImportEnrichFallbackResultLog(Map<String, String> fields) {
   RoomImportDebugLogBuffer.add(text.replaceAll('\n', ' | '));
 }
 
+void _roomImportEnrichFallbackTaggedBlockLog(
+  String tag,
+  Map<String, String> fields,
+) {
+  if (!kDebugMode) return;
+  final sb = StringBuffer('[$tag]\n');
+  for (final e in fields.entries) {
+    final v = e.value.replaceAll('\n', ' ').trim();
+    sb.writeln('${e.key}=$v');
+  }
+  final text = sb.toString().trimRight();
+  debugPrint(text);
+  RoomImportDebugLogBuffer.add(text.replaceAll('\n', ' | '));
+}
+
+/// 起動時: `ROOM_IMPORT_ENRICH_VERIFY` の有無（実機で検証モード混入を切り分け）。
+void roomImportEnrichModeLog(bool verifyMode) {
+  _roomImportEnrichFallbackTaggedBlockLog('ROOM_IMPORT_ENRICH_MODE', {
+    'verifyMode': '$verifyMode',
+  });
+}
+
+/// shopItem 経路のフォールバック系列ログ開始（通常補完・検証フラグの記録用）。
+void roomImportEnrichFallbackStartLog(Map<String, String> fields) {
+  _roomImportEnrichFallbackTaggedBlockLog(
+    'ROOM_IMPORT_ENRICH_FALLBACK_START',
+    fields,
+  );
+}
+
+/// itemCode 無効などで keyword+shopCode に進む直前。
+void roomImportEnrichFallbackTriggeredLog(Map<String, String> fields) {
+  _roomImportEnrichFallbackTaggedBlockLog(
+    'ROOM_IMPORT_ENRICH_FALLBACK_TRIGGERED',
+    fields,
+  );
+}
+
 void roomImportSkipApiLog(String message) {
   final line = '[ROOM_IMPORT_SKIP_API] $message';
   if (kDebugMode) {
