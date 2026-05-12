@@ -293,6 +293,23 @@ void roomImportSkipApiLog(String message) {
   }
 }
 
+/// ROOM同期の既存行照合結果（APIスキップ・再同期判定用）。
+void roomImportExistingMatchLog(String message) {
+  final line = '[ROOM_IMPORT_EXISTING_MATCH] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportSameItemDifferentRoomLog(String message) {
+  final line = '[ROOM_IMPORT_SAME_ITEM_DIFF_ROOM] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void roomImportFallbackLog(String message) {
   final line = '[ROOM_IMPORT_FALLBACK] $message';
   if (kDebugMode) {

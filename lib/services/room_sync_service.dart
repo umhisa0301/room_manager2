@@ -350,6 +350,12 @@ class RoomSyncService {
       }
 
       swCollects.stop();
+      _appendSyncedRoomUrlsForReactionResync(
+        orderedKeys: orderedKeys,
+        syncedRoomKeys: syncedRoomKeys,
+        toProcess: toProcess,
+        maxItems: maxItems,
+      );
       roomSyncVerboseLog('取り込み対象キュー件数: ${toProcess.length}');
       prepareSw.stop();
       roomImportPerfLog(
@@ -430,6 +436,8 @@ class RoomSyncService {
       var totalRoomPageMs = 0;
       var roomImportAutoRoomFallbackAttempts = 0;
 
+      var reactionsResynced = 0;
+
       for (var i = 0; i < toProcess.length; i++) {
         final itemSw = Stopwatch()..start();
         final roomPageUrl = toProcess[i];
@@ -443,20 +451,7 @@ class RoomSyncService {
         final normalizedKey =
             RoomRakutenUrlNormalize.normalizeRoomProductPageKey(roomPageUrl);
         final preSynced = syncedRoomKeys.contains(normalizedKey);
-        roomSyncVerboseLog('取り込み済み判定（再確認）: $preSynced');
-        if (preSynced) {
-          roomSyncVerboseLog('取り込み済みのためスキップ: $roomPageUrl');
-          roomImportPerfLog(
-            'existingCheckEnd index=$ordinal exists=true durationMs=0',
-          );
-          itemSw.stop();
-          roomImportPerfLog(
-            'itemEnd index=$ordinal result=skipped durationMs=${itemSw.elapsedMilliseconds}',
-          );
-          skipped++;
-          onCheckingProgress?.call(i + 1, batchSize);
-          continue;
-        }
+        roomSyncVerboseLog('取り込み済み判定（ROOMキー）: $preSynced');
 
         RoomUrlResolveOutcome resolved;
         roomImportPerfLog('roomPageFetchStart index=$ordinal');
@@ -562,8 +557,47 @@ class RoomSyncService {
           'parseCodesEnd index=$ordinal shopCode=${verified.shopCode} itemCode=${verified.itemPathSegment} durationMs=${parseCodesSw.elapsedMilliseconds}',
         );
         roomImportPerfLog('existingCheckStart index=$ordinal');
+        final existingMatch =
+            RakutenManagedProductRepository.findRoomImportExistingRowMatch(
+          list: workingManagedList,
+          roomPageUrl: roomPageUrl,
+          normalizedRoomUrlKey: normalizedKey,
+          parsedItem: parsed,
+          roomPageAffiliateUrl: rs.roomPageAffiliateUrl,
+        );
+        final firstImport = existingMatch == null;
+        if (existingMatch != null && kDebugMode) {
+          roomImportExistingMatchLog(
+            'matchType=${existingMatch.matchType} productId=${existingMatch.row.productId} '
+            'shopCode=${verified.shopCode} itemCode=${verified.itemPathSegment}',
+          );
+        }
+        if (existingMatch != null) {
+          final sr = existingMatch.row.roomUrl.trim();
+          if (sr.isNotEmpty) {
+            final rk =
+                RoomRakutenUrlNormalize.normalizeRoomProductPageKey(sr);
+            if (rk.isNotEmpty && rk != normalizedKey) {
+              roomImportSameItemDifferentRoomLog(
+                'productId=${existingMatch.row.productId} shopCode=${verified.shopCode} '
+                'itemCode=${verified.itemPathSegment} storedRoomKey=$rk currentKey=$normalizedKey',
+              );
+              roomImportSkipApiLog('reason=alreadyImported');
+              skipped++;
+              itemSw.stop();
+              roomImportPerfLog(
+                'existingCheckEnd index=$ordinal exists=true durationMs=0',
+              );
+              roomImportPerfLog(
+                'itemEnd index=$ordinal result=skipped durationMs=${itemSw.elapsedMilliseconds}',
+              );
+              onCheckingProgress?.call(i + 1, batchSize);
+              continue;
+            }
+          }
+        }
         roomImportPerfLog(
-          'existingCheckEnd index=$ordinal exists=false durationMs=0',
+          'existingCheckEnd index=$ordinal exists=${!firstImport} durationMs=0',
         );
         roomSyncVerboseLog('shopCode: ${verified.shopCode}');
         roomSyncVerboseLog('itemCode: ${verified.itemPathSegment}');
@@ -574,16 +608,60 @@ class RoomSyncService {
         var listingHintFromResolve = rs.listingHintPriceYen;
 
         final searchRepo = _searchRepository;
-        final existingForApiSkip =
-            RakutenManagedProductRepository.managedProductMatchingParsedRoomItem(
-              workingManagedList,
-              parsed,
+        final addRoomUrlToExistingNoApi = existingMatch != null &&
+            existingMatch.row.roomUrl.trim().isEmpty;
+
+        if (preSynced) {
+          RoomImportDebugLogBuffer.incApiSkipped();
+          roomImportSkipApiLog('reason=alreadyImported');
+          try {
+            roomImportPerfLog('saveStart index=$ordinal mode=reactionResync');
+            final saveSw = Stopwatch()..start();
+            final outcome = await _repository.persistRoomCollectedFromRoomPage(
+              roomUrlStoredCanonical: normalizedKey,
+              normalizedRoomUrlKey: normalizedKey,
+              parsedItem: parsed,
+              roomPageAffiliateUrl: rs.roomPageAffiliateUrl,
+              roomPageTitle: rs.roomPageTitle ?? '',
+              roomPageImageUrl: rs.roomPageImageUrl ?? '',
+              apiEnrichedItem: null,
+              traceRoomSync: traceDetailed,
+              workingMutableList: workingManagedList,
+              roomLikeCount: rs.roomLikeCount,
+              roomCommentCount: rs.roomCommentCount,
+              listingHintPriceYen: listingHintFromResolve,
+              rakutenApiPartialData: false,
+              roomImportFallbackRecovered: false,
+              roomImportResyncReactionsOnly: true,
+              roomImportAddRoomUrlToExistingNoApi: false,
             );
+            saveSw.stop();
+            roomImportPerfLog(
+              'saveEnd index=$ordinal durationMs=${saveSw.elapsedMilliseconds}',
+            );
+            if (outcome.kind == RoomCollectedPersistKind.roomReactionsUpdated) {
+              reactionsResynced++;
+            }
+            itemSw.stop();
+            roomImportPerfLog(
+              'itemEnd index=$ordinal result=reactionResync durationMs=${itemSw.elapsedMilliseconds}',
+            );
+          } catch (e, st) {
+            roomSyncError('ROOM反応のみ再同期で例外', e, st);
+            failed++;
+            failedUrls.add(roomPageUrl);
+            itemSw.stop();
+          }
+          onCheckingProgress?.call(i + 1, batchSize);
+          continue;
+        }
+
         var skipRakutenApi = false;
-        if (existingForApiSkip != null &&
-            existingForApiSkip.itemPrice > 0 &&
-            _roomImportImageUrlLooksValid(existingForApiSkip.imageUrl) &&
-            existingForApiSkip.itemName.trim().isNotEmpty) {
+        if (!firstImport) {
+          skipRakutenApi = true;
+          RoomImportDebugLogBuffer.incApiSkipped();
+          roomImportSkipApiLog('reason=alreadyImported');
+        } else if (!_firstImportNeedsRakutenApi(rs)) {
           skipRakutenApi = true;
           RoomImportDebugLogBuffer.incApiSkipped();
           roomImportSkipApiLog(
@@ -648,7 +726,8 @@ class RoomSyncService {
               rakutenApiPartialData: rakutenApiPartialData,
               enrichEnv: enrichEnv,
               usedListingFastPath: usedListingFastPath,
-              existingForApiSkip: existingForApiSkip,
+              firstImportForRoom: firstImport,
+              apiAfterAttempt: apiEnriched,
               rs: rs,
               roomPageUrl: roomPageUrl,
               traceDetailed: traceDetailed,
@@ -720,7 +799,7 @@ class RoomSyncService {
                 'proxyMode=exceptionPath '
                 'keywordOmitted=true shopCodeOmitted=true hits=30 '
                 'httpStatus=${synth.httpStatus ?? '-'} '
-                'responseBodyPreview=${prevShort.isEmpty ? '-' : prevShort}',
+                'responsePreview=${prevShort.isEmpty ? '-' : prevShort}',
               );
             }
 
@@ -728,7 +807,8 @@ class RoomSyncService {
               rakutenApiPartialData: true,
               enrichEnv: synth,
               usedListingFastPath: usedListingFastPath,
-              existingForApiSkip: existingForApiSkip,
+              firstImportForRoom: firstImport,
+              apiAfterAttempt: null,
               rs: rs,
               roomPageUrl: roomPageUrl,
               traceDetailed: traceDetailed,
@@ -769,6 +849,8 @@ class RoomSyncService {
             listingHintPriceYen: listingHintFromResolve,
             rakutenApiPartialData: rakutenApiPartialData,
             roomImportFallbackRecovered: roomImportFallbackRecovered,
+            roomImportResyncReactionsOnly: false,
+            roomImportAddRoomUrlToExistingNoApi: addRoomUrlToExistingNoApi,
           );
           saveSw.stop();
           roomImportPerfLog(
@@ -787,6 +869,9 @@ class RoomSyncService {
             roomSyncVerboseLog('保存種別: スキップ (${k.name})');
             skipped++;
             itemResult = 'skipped';
+          } else if (k == RoomCollectedPersistKind.roomReactionsUpdated) {
+            roomSyncVerboseLog('保存種別: ROOM反応のみ更新');
+            itemResult = 'reactionsUpdated';
           } else if (k == RoomCollectedPersistKind.updatedRoomUrlOnly) {
             roomSyncVerboseLog('保存種別: 既存商品へROOM URL追加 完了');
             roomAdd++;
@@ -918,6 +1003,7 @@ class RoomSyncService {
         reactionHighlightSamples: List<RakutenManagedProduct>.unmodifiable(
           reactionHighlightSamples,
         ),
+        reactionsResyncedCount: reactionsResynced,
       );
     } finally {
       totalSw.stop();
@@ -929,17 +1015,38 @@ class RoomSyncService {
     }
   }
 
+  static void _appendSyncedRoomUrlsForReactionResync({
+    required List<String> orderedKeys,
+    required Set<String> syncedRoomKeys,
+    required List<String> toProcess,
+    required int maxItems,
+  }) {
+    final inQ = toProcess.toSet();
+    for (final k in orderedKeys) {
+      if (toProcess.length >= maxItems) break;
+      if (!syncedRoomKeys.contains(k)) continue;
+      if (inQ.contains(k)) continue;
+      toProcess.add(k);
+      inQ.add(k);
+    }
+  }
+
   Future<_RoomImportAutoFallbackResult> _resolveRoomImportFallbackAfterApi({
     required bool rakutenApiPartialData,
     required RoomImportEnrichmentFetchEnvelope enrichEnv,
     required bool usedListingFastPath,
-    required RakutenManagedProduct? existingForApiSkip,
+    required bool firstImportForRoom,
+    required RakutenSearchItem? apiAfterAttempt,
     required RoomUrlResolveSuccess rs,
     required String roomPageUrl,
     required bool traceDetailed,
     required int autoFallbackAttemptsSoFar,
   }) async {
     if (!rakutenApiPartialData) {
+      return _RoomImportAutoFallbackResult(rs, false, false);
+    }
+    if (!firstImportForRoom) {
+      roomImportFallbackLog('skipped reason=alreadyImported');
       return _RoomImportAutoFallbackResult(rs, false, false);
     }
     if (_roomImportEnvelopeLooksLikeHttp400(enrichEnv)) {
@@ -950,6 +1057,10 @@ class RoomSyncService {
       roomImportFallbackLog('skipped reason=rateLimited');
       return _RoomImportAutoFallbackResult(rs, false, false);
     }
+    if (_roomImportEnvelopeIsProxyOrTimeoutLike(enrichEnv)) {
+      roomImportFallbackLog('skipped reason=transportAborted');
+      return _RoomImportAutoFallbackResult(rs, false, false);
+    }
     if (!_roomImportShouldTryAutoRoomPageAfterApiFailure(enrichEnv)) {
       roomImportFallbackLog('skipped reason=softApiPartial');
       return _RoomImportAutoFallbackResult(rs, false, false);
@@ -958,11 +1069,7 @@ class RoomSyncService {
       roomImportFallbackLog('skipped reason=slowPathAlreadyFetched');
       return _RoomImportAutoFallbackResult(rs, false, false);
     }
-    if (existingForApiSkip != null) {
-      roomImportFallbackLog('skipped reason=notNewRegistration');
-      return _RoomImportAutoFallbackResult(rs, false, false);
-    }
-    if (!_roomImportSevereListingMetaGap(rs)) {
+    if (!_roomImportFallbackAllowedMetaGap(rs, apiAfterAttempt)) {
       roomImportFallbackLog('skipped reason=listingMetaSufficient');
       return _RoomImportAutoFallbackResult(rs, false, false);
     }
@@ -1067,7 +1174,47 @@ bool _roomImportEnvelopeIsRateLimited(RoomImportEnrichmentFetchEnvelope env) {
       m.contains('too many requests');
 }
 
-/// 一覧高速パス時のみ ROOM 商品ページを追加取得する価値がある通信系失敗（400/429 は除外済み）。
+bool _roomImportEnvelopeIsProxyOrTimeoutLike(
+  RoomImportEnrichmentFetchEnvelope env,
+) {
+  final h = env.httpStatus;
+  if (h == 408 || h == 502 || h == 503 || h == 504) return true;
+  final m = env.exceptionMessage?.toLowerCase() ?? '';
+  return m.contains('timeout') ||
+      m.contains('timed out') ||
+      m.contains('socketexception') ||
+      m.contains('failed host lookup') ||
+      m.contains('network is unreachable') ||
+      m.contains('connection refused') ||
+      m.contains('connection reset');
+}
+
+/// 初回取り込みで楽天APIを試す必要があるか（一覧だけで十分ならスキップ可）。
+bool _firstImportNeedsRakutenApi(RoomUrlResolveSuccess rs) {
+  final h = rs.listingHintPriceYen;
+  if (h != null && h > 0 &&
+      _roomImportImageUrlLooksValid(rs.roomPageImageUrl) &&
+      !_roomImportWeakRoomPageTitle(rs.roomPageTitle)) {
+    return false;
+  }
+  return true;
+}
+
+bool _roomImportFallbackAllowedMetaGap(
+  RoomUrlResolveSuccess rs,
+  RakutenSearchItem? api,
+) {
+  if (_roomImportImageUrlLooksValid(rs.roomPageImageUrl)) return false;
+  final hint = rs.listingHintPriceYen;
+  if (hint != null && hint > 0) return false;
+  if (!_roomImportWeakRoomPageTitle(rs.roomPageTitle)) return false;
+  final apiShopEmpty = api == null ||
+      api.shopName.trim().isEmpty ||
+      api.shopName.trim() == 'ショップ名不明';
+  final apiGenreEmpty = api == null ||
+      (api.genreName.trim().isEmpty && api.genreId.trim().isEmpty);
+  return apiShopEmpty && apiGenreEmpty;
+}
 bool _roomImportShouldTryAutoRoomPageAfterApiFailure(
   RoomImportEnrichmentFetchEnvelope env,
 ) {
@@ -1084,13 +1231,6 @@ bool _roomImportWeakRoomPageTitle(String? t) {
   if (s == '（ROOM投稿）') return true;
   if (s.length < 2) return true;
   return false;
-}
-
-bool _roomImportSevereListingMetaGap(RoomUrlResolveSuccess rs) {
-  if (_roomImportImageUrlLooksValid(rs.roomPageImageUrl)) return false;
-  final h = rs.listingHintPriceYen;
-  if (h != null && h > 0) return false;
-  return _roomImportWeakRoomPageTitle(rs.roomPageTitle);
 }
 
 bool _roomImportMinimalRoomMeta(RoomUrlResolveSuccess rs) {

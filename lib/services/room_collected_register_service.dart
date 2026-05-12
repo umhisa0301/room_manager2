@@ -119,6 +119,14 @@ class RoomCollectedRegisterService {
           rakutenUrl: parsed.rakutenUrl,
           roomUrl: normalizedRoomKey,
         );
+      case RoomCollectedPersistKind.roomReactionsUpdated:
+        return RoomCollectedRegisterViewResult(
+          kind: RoomCollectedRegisterUiKind.roomPageAlreadySynced,
+          message: messageRoomPageAlreadySynced,
+          productId: persist.productId,
+          rakutenUrl: parsed.rakutenUrl,
+          roomUrl: normalizedRoomKey,
+        );
       case RoomCollectedPersistKind.alreadyCollectedSkip:
         return RoomCollectedRegisterViewResult(
           kind: RoomCollectedRegisterUiKind.alreadyCollected,

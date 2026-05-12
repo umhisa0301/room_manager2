@@ -114,7 +114,7 @@ void _logRoomImportItemCodeApiDiag({
     'shopCodeOmitted=true '
     'hits=30 '
     'httpStatus=${env.httpStatus ?? '-'} '
-    'responseBodyPreview=${prev.isEmpty ? '-' : prev}',
+    'responsePreview=${prev.isEmpty ? '-' : prev}',
   );
 }
 
