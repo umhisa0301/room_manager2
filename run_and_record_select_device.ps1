@@ -39,6 +39,7 @@ $script:TerminalOutputLogPath = $null
 function Write-TerminalLog {
     param(
         [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
         [string]$Message,
         [Parameter()]
         $ForegroundColor = $null
