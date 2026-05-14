@@ -1,0 +1,259 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-14 09:48:42
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260514_094842.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260514_094842.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260514_094842.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260514_094842.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260514_094842.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260514_094842
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260514_094842\terminal_output_20260514_094842.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 13788).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Resolving dependencies...
+Downloading packages...
+  async 2.13.0 (2.13.1 available)
+  characters 1.4.0 (1.4.1 available)
+  cli_util 0.4.2 (0.5.1 available)
+  cupertino_icons 1.0.8 (1.0.9 available)
+  flutter_lints 5.0.0 (6.0.0 available)
+  lints 5.1.1 (6.1.0 available)
+  matcher 0.12.17 (0.12.20 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.16.0 (1.18.2 available)
+  shared_preferences 2.5.4 (2.5.5 available)
+  shared_preferences_android 2.4.21 (2.4.23 available)
+  shared_preferences_platform_interface 2.4.1 (2.4.2 available)
+  test_api 0.7.6 (0.7.12 available)
+  url_launcher_ios 6.3.6 (6.4.1 available)
+  url_launcher_web 2.4.1 (2.4.3 available)
+  vector_math 2.2.0 (2.3.0 available)
+  vm_service 15.0.2 (15.2.0 available)
+  webview_flutter_android 4.10.15 (4.12.0 available)
+  webview_flutter_wkwebview 3.24.2 (3.25.1 available)
+  xml 6.6.1 (7.0.1 available)
+Got dependencies!
+20 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             13.1s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.8s
+D/FlutterJNI(23846): Beginning load of flutter...
+D/FlutterJNI(23846): flutter (null) was loaded normally!
+I/flutter (23846): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (23846): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter (23846): verifyMode=false
+I/flutter (23846): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                   105ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:50142/UdQk4bpsMts=/
+I/flutter (23846): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (23846): [ROOMコレ診断] loadAll 初回サマリー parsed=242 rawJsonList=242
+I/flutter (23846): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (23846): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (23846): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (23846): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=242 afterFilterLen=242 surface=ok_list ui=ready
+I/flutter (23846): [ROOMコレ診断] 描画リスト先頭 productId=okuizome400isi title=『お食い初めセット』 鯛400g(2人前サイズ) 料理 お食い初め膳 焼き鯛 はまぐり吸物2食 歯固め石 赤飯 コハダ甘酢漬け 黒豆煮 エビ 尾頭付き 敷き紙 お飾り 祝い箸 鯛の塩焼き status=done len=242
+I/flutter (23846): [REACTION_STATUS] productId=okuizome400isi
+I/flutter (23846): [REACTION_STATUS] roomLikeCount=3
+I/flutter (23846): [REACTION_STATUS] roomCommentCount=0
+I/flutter (23846): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (23846): [REACTION_STATUS] productId=iwaidai
+I/flutter (23846): [REACTION_STATUS] roomLikeCount=2
+I/flutter (23846): [REACTION_STATUS] roomCommentCount=0
+I/flutter (23846): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (23846): [REACTION_STATUS] productId=lite-500
+I/flutter (23846): [REACTION_STATUS] roomLikeCount=2
+I/flutter (23846): [REACTION_STATUS] roomCommentCount=0
+I/flutter (23846): [REACTION_STATUS] resolvedChip=反応あり
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9101?uri=http://127.0.0.1:50142/UdQk4bpsMts=/
+I/flutter (23846): [MANAGED_PRODUCT_SAVE]
+I/flutter (23846): action=refresh
+I/flutter (23846): productId=
+I/flutter (23846): itemCode=
+I/flutter (23846): beforePendingCount=0
+I/flutter (23846): afterPendingCount=0
+I/flutter (23846): beforeDoneCount=242
+I/flutter (23846): afterDoneCount=242
+I/flutter (23846): [MANAGED_PRODUCT_LOAD]
+I/flutter (23846): source=provider
+I/flutter (23846): pendingCount=0
+I/flutter (23846): doneCount=242
+I/flutter (23846): filter=
+I/flutter (23846): tab=
+I/flutter (23846): [ROOMコレ診断] refreshManagedProductList 完了 total=242 candidate=0 done=242 ui=ready
+I/flutter (23846): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (23846): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter (23846): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (23846): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (23846): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (23846): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (23846): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (23846): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-14T09:34:24.033398
+I/flutter (23846): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (23846): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (23846): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (23846): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-14T09:34:24.033398
+I/flutter (23846): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (23846): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter (23846): [MANAGED_PRODUCT_SAVE]
+I/flutter (23846): action=refresh
+I/flutter (23846): productId=
+I/flutter (23846): itemCode=
+I/flutter (23846): beforePendingCount=0
+I/flutter (23846): afterPendingCount=0
+I/flutter (23846): beforeDoneCount=242
+I/flutter (23846): afterDoneCount=242
+I/flutter (23846): [MANAGED_PRODUCT_LOAD]
+I/flutter (23846): source=screen
+I/flutter (23846): pendingCount=0
+I/flutter (23846): doneCount=242
+I/flutter (23846): filter=
+I/flutter (23846): tab=done
+I/flutter (23846): [ROOMコレ診断] refreshManagedProductList 完了 total=242 candidate=0 done=242 ui=ready
+I/flutter (23846): [ROOMコレ診断] ROOMコレ画面起動後 total=242 candidate=0 done=242 listUi=RakutenManagedProductListUiStatus.ready tabIdx=1
+I/flutter (23846): [MANAGED_PRODUCT_SAVE]
+I/flutter (23846): action=refresh
+I/flutter (23846): productId=
+I/flutter (23846): itemCode=
+I/flutter (23846): beforePendingCount=0
+I/flutter (23846): afterPendingCount=0
+I/flutter (23846): beforeDoneCount=242
+I/flutter (23846): afterDoneCount=242
+I/flutter (23846): [MANAGED_PRODUCT_LOAD]
+I/flutter (23846): source=provider
+I/flutter (23846): pendingCount=0
+I/flutter (23846): doneCount=242
+I/flutter (23846): filter=
+I/flutter (23846): tab=
+I/flutter (23846): [ROOMコレ診断] refreshManagedProductList 完了 total=242 candidate=0 done=242 ui=ready
+I/flutter (23846): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (23846): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=242 afterFilterLen=242 surface=ok_list ui=ready
+I/flutter (23846): [ROOMコレ診断] 描画リスト先頭 productId=okuizome400isi title=『お食い初めセット』 鯛400g(2人前サイズ) 料理 お食い初め膳 焼き鯛 はまぐり吸物2食 歯固め石 赤飯 コハダ甘酢漬け 黒豆煮 エビ 尾頭付き 敷き紙 お飾り 祝い箸 鯛の塩焼き status=done len=242
+I/flutter (23846): [REACTION_STATUS] productId=okuizome400isi
+I/flutter (23846): [REACTION_STATUS] roomLikeCount=3
+I/flutter (23846): [REACTION_STATUS] roomCommentCount=0
+I/flutter (23846): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (23846): [REACTION_STATUS] productId=iwaidai
+I/flutter (23846): [REACTION_STATUS] roomLikeCount=2
+I/flutter (23846): [REACTION_STATUS] roomCommentCount=0
+I/flutter (23846): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (23846): [REACTION_STATUS] productId=lite-500
+I/flutter (23846): [REACTION_STATUS] roomLikeCount=2
+I/flutter (23846): [REACTION_STATUS] roomCommentCount=0
+I/flutter (23846): [REACTION_STATUS] resolvedChip=反応あり
+I/Choreographer(23846): Skipped 259 frames!  The application may be doing too much work on its main thread.
+I/OpenGLRenderer(23846): Davey! duration=4353ms; Flags=1, FrameTimelineVsyncId=585657899, IntendedVsync=4218333593369291, Vsync=4218337920397857, InputEventId=0, HandleInputStart=4218337930857235, AnimationStart=4218337930858745, PerformTraversalsStart=4218337930859162, DrawStart=4218337932522704, FrameDeadline=4218333610035957, FrameInterval=4218337930524214, FrameStartTime=16706674, SyncQueued=4218337933396870, SyncStart=4218337933506297, IssueDrawCommandsStart=4218337933998745, SwapBuffers=4218337945427912, FrameCompleted=4218337946821297, DequeueBufferDuration=2314480, QueueBufferDuration=962240, GpuCompleted=4218337946558485, SwapBuffersCompleted=4218337946821297, DisplayPresentTime=0, CommandSubmissionCompleted=4218337945427912, 
+I/WebViewFactory(23846): Loading com.google.android.webview version 147.0.7727.137 (code 772713703)
+D/ApplicationLoaders(23846): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(23846): Loading /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(23846): Configuring clns-5 for other apk /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/lib/arm64:/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(23846): version=147.0.7727.137 (772713703) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(23846): Load /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+D/nativeloader(23846): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+I/cr_LibraryLoader(23846): Successfully loaded native library
+I/cr_CachingUmaRecorder(23846): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(23846): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(23846): #registerProvider() provider:WV.yk@845380d isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(23846): #setManagerAndSource() 0
+I/cr_DisplayManager(23846): Is Display Topology available: false
+I/cr_CombinedPProvider(23846): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(23846): Compat change id reported: 183155436; UID 10458; state: ENABLED
+I/cr_AppResProvider(23846): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(23846): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(23846): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(23846): #flushPolicies()
+W/chromium(23846): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(23846): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 103712643
+D/CompatibilityChangeReporter(23846): Compat change id reported: 214741472; UID 10458; state: ENABLED
+I/CameraManagerGlobal(23846): Connecting to camera service
+D/CompatibilityChangeReporter(23846): Compat change id reported: 171228096; UID 10458; state: ENABLED
+I/PlatformViewsController(23846): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(23846): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(23846): Compat change id reported: 236825255; UID 10458; state: ENABLED
+W/libc    (23846): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(23846): type=1400 audit(0.0:513527): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(23846): Compat change id reported: 193247900; UID 10458; state: ENABLED
+I/Choreographer(23846): Skipped 46 frames!  The application may be doing too much work on its main thread.
+W/libc    (23846): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(23846): type=1400 audit(0.0:513528): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(23846): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(23846): Build Date              : 08/23/22
+I/AdrenoVK-0(23846): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(23846): Local Branch            : 
+I/AdrenoVK-0(23846): Remote Branch           : 
+I/AdrenoVK-0(23846): Remote Branch           : 
+I/AdrenoVK-0(23846): Reconstruct Branch      : 
+I/AdrenoVK-0(23846): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(23846): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(23846): Davey! duration=893ms; Flags=0, FrameTimelineVsyncId=585657991, IntendedVsync=4218337937153979, Vsync=4218338705786241, InputEventId=0, HandleInputStart=4218338715488797, AnimationStart=4218338715490620, PerformTraversalsStart=4218338715513016, DrawStart=4218338720882130, FrameDeadline=4218337970477871, FrameInterval=4218338715188797, FrameStartTime=16706674, SyncQueued=4218338827145672, SyncStart=4218338827229787, IssueDrawCommandsStart=4218338827317912, SwapBuffers=4218338829071453, FrameCompleted=4218338830584318, DequeueBufferDuration=1165677, QueueBufferDuration=1231979, GpuCompleted=4218338830172964, SwapBuffersCompleted=4218338830584318, DisplayPresentTime=0, CommandSubmissionCompleted=4218338829071453, 
+D/ProfileInstaller(23846): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(23846): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+E/FrameEvents(23846): updateAcquireFence: Did not find frame.
+W/o.room_manager2(23846): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/base.apk' with 1 weak references
+W/o.room_manager2(23846): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/split_config.arm64_v8a.apk' with 1 weak references
