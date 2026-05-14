@@ -122,7 +122,7 @@ class RoomImportController extends ChangeNotifier {
       'action=acquire job=importingCollectedItems currentJob=none',
     );
     roomImportFlowLog(
-      'action=importStart message=新規取り込み商品のみ初回楽天API補完',
+      'action=importStart message=postImportInitialEnrich',
     );
 
     _phase = RoomImportPhase.running;
@@ -135,6 +135,7 @@ class RoomImportController extends ChangeNotifier {
     RoomSyncResult? result;
     var enrichmentBatchMs = 0;
     var enrichmentUpdated = 0;
+    var enrichmentProductAttempts = 0;
     try {
       try {
         result = await RoomPostImportFlow.executeBatch(
@@ -174,6 +175,10 @@ class RoomImportController extends ChangeNotifier {
           !result.hasFatalError &&
           result.newlyImportedProductIds.isNotEmpty &&
           context.mounted) {
+        final idsCsv = result.newlyImportedProductIds.join(',');
+        roomImportInitialEnrichStartLog(
+          'importedProductIds=$idsCsv limit=${RoomImportLimitPolicy.freeBatchLimit}',
+        );
         final sw = Stopwatch()..start();
         final searchRepo = context.read<RakutenSearchRepository>();
         final productRepo = context.read<RakutenManagedProductRepository>();
@@ -184,12 +189,18 @@ class RoomImportController extends ChangeNotifier {
         final er = await svc.enrichRoomImportedProducts(
           limit: RoomImportLimitPolicy.freeBatchLimit,
           applyPostImportAutoCap: true,
-          manualSessionPacing: false,
+          manualSessionPacing: true,
           restrictToProductIdsInOrder: result.newlyImportedProductIds,
         );
         sw.stop();
         enrichmentBatchMs = sw.elapsedMilliseconds;
         enrichmentUpdated = er.updated;
+        enrichmentProductAttempts = er.productEnrichmentSlots;
+        roomImportInitialEnrichResultLog(
+          'attempted=${er.productEnrichmentSlots} success=${er.updated} '
+          'failed=${er.failedInBatch} rateLimited=${er.pausedByRateLimit} '
+          'pendingAfter=${er.remainingPending}',
+        );
         if (context.mounted) {
           await context
               .read<RakutenManagedProductProvider>()
@@ -199,13 +210,14 @@ class RoomImportController extends ChangeNotifier {
           'imported=${result.newlyCollectedCount} '
           'enrichedSuccess=$enrichmentUpdated '
           'enrichedFailed=${er.failedInBatch} '
+          'enrichedSkipped=${er.skippedRestrictedAlreadyComplete} '
           'nextCursor=${result.collectsLastNextCursor ?? '-'} '
           'cursorAction=postEnrich',
         );
       } else if (result != null && !result.hasFatalError) {
         roomImportBatchResultLog(
           'imported=${result.newlyCollectedCount} '
-          'enrichedSuccess=0 enrichedFailed=0 '
+          'enrichedSuccess=0 enrichedFailed=0 enrichedSkipped=0 '
           'nextCursor=${result.collectsLastNextCursor ?? '-'} '
           'cursorAction=none',
         );
@@ -229,6 +241,7 @@ class RoomImportController extends ChangeNotifier {
           result: result,
           enrichmentBatchMs: enrichmentBatchMs,
           enrichmentUpdated: enrichmentUpdated,
+          enrichmentProductAttempts: enrichmentProductAttempts,
         );
       }
       _bulkOperationState?.setRoomImportRunning(false);

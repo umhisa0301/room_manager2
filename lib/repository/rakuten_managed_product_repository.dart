@@ -670,10 +670,10 @@ class RakutenManagedProductRepository {
     int? roomLikeCount,
     int? roomCommentCount,
 
-    /// 一覧HTML／collects 由来の参考価格（円）。API 失敗時も 0 円より優先。
+    /// 一覧HTML／collects 由来の参考価格（円）。ROOM 商品ページ由来の表示価格など。
     int? listingHintPriceYen,
 
-    /// ROOM バッチ取り込み時 true: 一覧ヒント価格を新規行に保存しない（楽天API補完に委ねる）。
+    /// true のとき [listingHintPriceYen] を新規行の [itemPrice] に反映しない（反応数のみ更新など）。
     bool suppressListingHintPrice = false,
 
     /// 楽天検索APIが完全には取れなかった（プロキシ400・Items空など）。

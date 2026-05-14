@@ -47,6 +47,8 @@ class RoomImportEnrichmentBatchResult {
     /// 検証モード（`ROOM_IMPORT_ENRICH_VERIFY`）時のみ。マイページ SnackBar 用短文。
     this.verifyUiMessage,
     this.successProductIds = const <String>[],
+    this.productEnrichmentSlots = 0,
+    this.skippedRestrictedAlreadyComplete = 0,
   });
 
   final int updated;
@@ -65,6 +67,12 @@ class RoomImportEnrichmentBatchResult {
 
   /// 今回の実行でメタマージに成功した productId（ログ・UI ハイライト用）。
   final List<String> successProductIds;
+
+  /// 今回のループで「補完対象としてスロット消費した」商品数（429 直前の失敗を含む）。
+  final int productEnrichmentSlots;
+
+  /// [restrictToProductIdsInOrder] 指定時、開始時点で API 不要だった制限内商品数。
+  final int skippedRestrictedAlreadyComplete;
 }
 
 /// 取り込み後メタ補完で試す検索経路（ログ名と一致）。
@@ -169,7 +177,8 @@ class RoomImportMetadataEnrichmentService {
 
   /// ROOM 取り込みコレ済のメタを最大 [limit] **商品**まで API で補完する。
   ///
-  /// [applyPostImportAutoCap] が true のとき [RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls] を上限にする。
+  /// [applyPostImportAutoCap] が true のとき
+  /// [RoomImportLimitPolicy.postBatchAutoEnrichMaxApiCalls]（＝無料バッチ件数）を上限にする。
   /// 手動でも [RoomImportLimitPolicy.manualEnrichMaxProductsPerRun] を超えないよう内部でキャップする。
   ///
   /// [manualSessionPacing] が true のときは商品間ディレイを [RoomImportLimitPolicy.manualEnrichInterItemDelayMs] にする。
@@ -593,6 +602,25 @@ class RoomImportMetadataEnrichmentService {
     List<String>? restrictToProductIdsInOrder,
   }) async {
     final rows = _productRepository.loadAll();
+    var skippedRestrictedAlreadyComplete = 0;
+    final restrictEarly = restrictToProductIdsInOrder;
+    if (restrictEarly != null && restrictEarly.isNotEmpty) {
+      final byId = <String, RakutenManagedProduct>{};
+      for (final r in rows) {
+        byId[r.productId.trim()] = r;
+      }
+      for (final rawId in restrictEarly) {
+        final idt = rawId.trim();
+        if (idt.isEmpty) continue;
+        final row = byId[idt];
+        if (row == null) continue;
+        if (!_baseEligibleForEnrichmentQueue(row)) continue;
+        if (!needFlagsForProduct(row).willEnrich) {
+          skippedRestrictedAlreadyComplete++;
+        }
+      }
+    }
+
     var skippedComplete = 0;
     for (final row in rows) {
       if (!_baseEligibleForEnrichmentQueue(row)) continue;
@@ -916,6 +944,8 @@ class RoomImportMetadataEnrichmentService {
       pausedByRateLimit: pausedByRateLimit,
       remainingPending: _pendingQueueRows().length,
       successProductIds: List<String>.unmodifiable(successIds),
+      productEnrichmentSlots: processedProducts,
+      skippedRestrictedAlreadyComplete: skippedRestrictedAlreadyComplete,
     );
   }
 

@@ -131,6 +131,7 @@ abstract final class RoomImportDebugLogBuffer {
     required RoomSyncResult? result,
     required int enrichmentBatchMs,
     required int enrichmentUpdated,
+    int enrichmentProductAttempts = 0,
   }) {
     if (!kDebugMode) return;
     if (!_sessionOpened) return;
@@ -139,6 +140,10 @@ abstract final class RoomImportDebugLogBuffer {
     final updated = result?.roomUrlAddedCount ?? 0;
     final skipped = result?.skippedCount ?? 0;
     final failed = result?.failedCount ?? 0;
+    final bufferEnrichmentCalls = enrichmentCalls;
+    final enrichCallsForSummary = enrichmentProductAttempts > 0
+        ? enrichmentProductAttempts
+        : bufferEnrichmentCalls;
     final line =
         '[ROOM_IMPORT_SUMMARY] '
         'totalMs=${_totalMs < 0 ? 'unknown' : _totalMs} '
@@ -151,7 +156,7 @@ abstract final class RoomImportDebugLogBuffer {
         'roomListCalls=$roomListCalls '
         'roomPageCalls=$roomPageCalls '
         'rakutenItemCalls=$rakutenItemCalls '
-        'enrichmentCalls=$enrichmentCalls '
+        'enrichmentCalls=$enrichCallsForSummary '
         'enrichmentBatchMs=$enrichmentBatchMs '
         'enrichmentUpdated=$enrichmentUpdated';
     debugPrint(line);
@@ -696,6 +701,31 @@ void roomImportBatchStartLog(String message) {
 
 void roomImportBatchResultLog(String message) {
   final line = '[ROOM_IMPORT_BATCH_RESULT] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+/// 新規取り込み1件ごとの ROOM 一覧／商品ページから拾えた画像・価格ヒント。
+void roomImportListingMetadataLog(String message) {
+  final line = '[ROOM_IMPORT_LISTING_METADATA] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportInitialEnrichStartLog(String message) {
+  final line = '[ROOM_IMPORT_INITIAL_ENRICH_START] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportInitialEnrichResultLog(String message) {
+  final line = '[ROOM_IMPORT_INITIAL_ENRICH_RESULT] $message';
   if (kDebugMode) {
     debugPrint(line);
     RoomImportDebugLogBuffer.add(line);

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/demo_mode.dart';
-import '../config/room_import_enrichment_verify_config.dart';
 import '../constants/legal_urls.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/user_profile.dart';
@@ -13,11 +12,7 @@ import '../repository/easy_initial_setup_repository.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/app_action_service.dart';
 import '../services/room_import_collects_policy.dart';
-import '../services/room_import_enrichment_cooldown_store.dart';
 import '../services/room_import_limit_policy.dart';
-import '../repository/rakuten_managed_product_repository.dart';
-import '../repository/rakuten_search_repository.dart';
-import '../services/room_import_metadata_enrichment.dart';
 import '../widgets/room_import_enrichment_pending_hint.dart';
 import '../widgets/room_post_import_flow.dart';
 import '../services/rakuten_genre_master_service.dart';
@@ -30,7 +25,6 @@ import '../state/user_profile_provider.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/room_import_controller.dart';
 import '../theme/app_theme.dart';
-import '../utils/room_sync_log.dart';
 import '../utils/user_profile_genre_migration.dart';
 import '../utils/onboarding_ui_log.dart';
 import '../widgets/favorite_genre_picker_sheet.dart';
@@ -1093,9 +1087,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       builder: (ctx) => AlertDialog(
         title: const Text('さらに古い投稿を探す'),
         content: Text(
-          'ROOMの collects API を最大'
-          '${RoomImportCollectsPolicy.deepMaxCollectPages}ページまで順に取得し、'
-          '未取り込みの投稿を探します。通信状況により数分〜10分以上かかることがあります。実行しますか？',
+          '通常取り込みで見つからない古いROOM投稿を探します。'
+          'ROOMの collects API を最大${RoomImportCollectsPolicy.deepMaxCollectPages}ページまで取得し、'
+          '数分〜10分以上かかる場合があります。実行しますか？',
         ),
         actions: [
           TextButton(
@@ -1132,7 +1126,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('反応数の同期'),
+          title: const Text('反応数を同期する'),
           content: Text(r.fatalErrorMessage!.trim()),
           actions: [
             TextButton(
@@ -1155,151 +1149,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
   }
 
   Future<void> _handleEnrichRoomMetadata(BuildContext context) async {
-    final messenger = ScaffoldMessenger.of(context);
-    final bulk = context.read<BulkOperationStateController>();
-    if (kDemoModeEnabled) {
-      messenger.showSnackBar(
-        const SnackBar(content: Text('デモモードでは商品情報の補完は実行できません')),
-      );
-      return;
-    }
-    final inCooldown = await RoomImportEnrichmentCooldownStore.isInCooldown();
-    if (!context.mounted) return;
-    if (inCooldown) {
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(
-            '楽天APIの利用制限のため、'
-            '約${RoomImportLimitPolicy.enrichCooldownAfter429Minutes}分後に補完を再開します。',
-          ),
-        ),
-      );
-      return;
-    }
-    if (bulk.isRoomImportRunning ||
-        bulk.isBulkCandidateRegistering ||
-        bulk.isRoomReactionSyncRunning) {
-      bulk.guardBlockingOperations(context);
-      return;
-    }
-    if (bulk.isMetadataEnriching) {
-      roomImportManualEnrichStartLog(
-        'maxPerRun=${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun} '
-        'manualPacing=true '
-        'autoEnrichRunning=${RoomImportMetadataEnrichmentService.isEnrichmentSingleFlightHeld} '
-        'action=blockedWithMessage',
-      );
-      messenger.showSnackBar(
-        const SnackBar(
-          content: Text('別の補完処理が実行中です。完了後にお試しください。'),
-        ),
-      );
-      return;
-    }
-    roomImportManualEnrichStartLog(
-      'maxPerRun=${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun} '
-      'manualPacing=true '
-      'autoEnrichRunning=${RoomImportMetadataEnrichmentService.isEnrichmentSingleFlightHeld} '
-      'action=started',
-    );
-    roomSyncJobLockLog(
-      'action=acquire job=enrichingMetadata currentJob=none',
-    );
-    bulk.setMetadataEnriching(true);
-    try {
-      final searchRepo = context.read<RakutenSearchRepository>();
-      final productRepo = context.read<RakutenManagedProductRepository>();
-      final managedProv = context.read<RakutenManagedProductProvider>();
-      final svc = RoomImportMetadataEnrichmentService(
-        searchRepository: searchRepo,
-        productRepository: productRepo,
-      );
-      messenger.showSnackBar(const SnackBar(content: Text('商品情報を補完しています…')));
-      final result = await svc.enrichRoomImportedProducts(
-        limit: RoomImportLimitPolicy.manualEnrichMaxProductsPerRun,
-        applyPostImportAutoCap: false,
-        manualSessionPacing: true,
-      );
-      if (!mounted) return;
-      await managedProv.refreshManagedProductList();
-      if (!mounted) return;
-
-      bulk.setManualEnrichSummary(
-        success: result.updated,
-        fail: result.failedInBatch,
-        remaining: result.remainingPending,
-        pausedByRateLimit: result.pausedByRateLimit,
-      );
-      if (result.successProductIds.isNotEmpty) {
-        bulk.flashRoomImportEnrichedIds(result.successProductIds);
-      }
-
-      final topRoomDone = managedProv.items
-          .where(
-            (e) =>
-                e.status == RakutenManagedProductStatus.done &&
-                e.coredActivitySource == RakutenCoredActivitySource.roomImport,
-          )
-          .toList()
-        ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
-      final visibleTop = topRoomDone
-          .take(8)
-          .map((e) => e.productId.trim())
-          .join(',');
-      roomImportEnrichUiReflectLog(
-        'updatedProductIds=${result.successProductIds.join(',')} '
-        'visibleTopProductIds=$visibleTop '
-        'message=補完成功商品が現在の表示範囲にない場合、画面上では変化が見えないことがあります',
-      );
-
-      if (RoomImportEnrichmentVerifyConfig.enabled &&
-          result.verifyUiMessage != null &&
-          result.verifyUiMessage!.trim().isNotEmpty) {
-        messenger.showSnackBar(
-          SnackBar(content: Text(result.verifyUiMessage!.trim())),
-        );
-      } else if (result.duplicateSessionSkipped) {
-        messenger.showSnackBar(
-          const SnackBar(
-            content: Text('別の補完処理が実行中です。完了後にお試しください。'),
-          ),
-        );
-      } else if (result.skippedCooldown) {
-        messenger.showSnackBar(
-          SnackBar(
-            content: Text(
-              'しばらくしてから自動で補完を再開します'
-              '（未補完が${result.remainingPending}件残っています）。',
-            ),
-          ),
-        );
-      } else if (result.pausedByRateLimit) {
-        messenger.showSnackBar(
-          SnackBar(
-            content: Text(
-              'API制限のため一時停止しました。少し時間をおいて再実行してください。'
-              '成功 ${result.updated}件 / 残り ${result.remainingPending}件',
-            ),
-          ),
-        );
-      } else {
-        messenger.showSnackBar(
-          SnackBar(
-            content: Text(
-              '商品情報を補完しました：成功 ${result.updated}件 / 失敗 ${result.failedInBatch}件 / 残り ${result.remainingPending}件',
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      if (!mounted) return;
-      messenger.showSnackBar(SnackBar(content: Text('商品情報の補完に失敗しました: $e')));
-    } finally {
-      bulk.setMetadataEnriching(false);
-      roomSyncJobLockLog(
-        'action=release job=enrichingMetadata currentJob=none',
-      );
-    }
+    await RoomPostImportFlow.runManualPendingRoomImportMetadataEnrich(context);
   }
 
   @override
@@ -1323,17 +1173,17 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
         final total = ctl.targetCount;
         final actionLocked = bulk.isAnyBlockingOperationRunning;
 
-        final busyTitle = enrichingOnly
-            ? '商品情報を整えています'
+        final busyTitle = ctl.isRunning
+            ? (total > 0
+                  ? '現在投稿済み商品を取り込み中です（$completed / $total件）'
+                  : (ctl.importProcessingHint.isNotEmpty
+                        ? ctl.importProcessingHint
+                        : '現在投稿済み商品を取り込み中です'))
             : (reactionOnly
-                  ? '反応数を同期しています'
-                  : (ctl.isRunning
-                        ? (total > 0
-                              ? '$completed / $total件を取り込み中'
-                              : (ctl.importProcessingHint.isNotEmpty
-                                    ? ctl.importProcessingHint
-                                    : 'ROOM投稿を確認しています'))
-                        : 'ROOM投稿を確認中'));
+                  ? '現在反応数を同期中です'
+                  : (enrichingOnly
+                        ? '現在未補完の商品情報を再取得中です'
+                        : ''));
 
         return AppCard(
           padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
@@ -1341,9 +1191,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               AppSectionHeader(
-                title: 'ROOMとコレ済の同期',
+                title: 'ROOM同期',
                 subtitle:
-                    '新規商品の取り込みと、いいね・コメント数の更新は別の操作です（いずれも1回最大${RoomImportLimitPolicy.freeBatchLimit}件）。',
+                    '「投稿済み商品を取り込む」で新規追加と初回の商品情報取得。「反応数を同期する」ではいいね・コメントのみ更新します（いずれも1回最大${RoomImportLimitPolicy.freeBatchLimit}件）。',
                 icon: Icons.downloading_rounded,
               ),
               const SizedBox(height: 8),
@@ -1361,7 +1211,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                   child: const Text('ROOM URLを登録'),
                 ),
               ] else ...[
-                if (busy) ...[
+                if (busy && busyTitle.isNotEmpty) ...[
                   Text(
                     busyTitle,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -1383,6 +1233,19 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                         : null,
                   ),
                   const SizedBox(height: 12),
+                ] else if (actionLocked &&
+                    !ctl.isRunning &&
+                    !bulk.isMetadataEnriching &&
+                    !bulk.isRoomReactionSyncRunning) ...[
+                  Text(
+                    bulk.blockingRoomTourUserMessage ??
+                        BulkOperationStateController.blockingSnackMessage,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                 ],
                 FilledButton(
                   onPressed: actionLocked ? null : () => _handleImport(context),
@@ -1390,8 +1253,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'ROOM投稿から新しい商品を最大${RoomImportLimitPolicy.freeBatchLimit}件追加し、'
-                  '商品情報（価格・画像・ショップ名・ジャンル）の初回取得を試みます。',
+                  'ROOM投稿から新しい商品を最大${RoomImportLimitPolicy.freeBatchLimit}件追加し、商品情報も初回取得します。',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.35,
@@ -1410,38 +1272,62 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '取り込み済み商品のいいね・コメントを最大${RoomImportLimitPolicy.freeBatchLimit}件更新します。'
-                  '最新の投稿一覧を毎回確認します。',
+                  '取り込み済み商品のいいね・コメントを最大${RoomImportLimitPolicy.freeBatchLimit}件更新します。',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.35,
                   ),
-                ),
-                const SizedBox(height: 12),
-                OutlinedButton.icon(
-                  onPressed: actionLocked
-                      ? null
-                      : () => _handleDeepRoomImport(context),
-                  icon: const Icon(Icons.manage_search_outlined, size: 18),
-                  label: const Text('さらに古い投稿を探す（時間がかかります）'),
                 ),
                 const SizedBox(height: 8),
-                OutlinedButton.icon(
-                  onPressed: actionLocked
-                      ? null
-                      : () => _handleEnrichRoomMetadata(context),
-                  icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
-                  label: const Text('未補完の商品情報を再取得'),
+                ExpansionTile(
+                  tilePadding: EdgeInsets.zero,
+                  title: Text(
+                    'メンテナンス',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  subtitle: Text(
+                    '古い投稿の探索や、取り込み失敗分の再試行',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  children: [
+                    OutlinedButton.icon(
+                      onPressed: actionLocked
+                          ? null
+                          : () => _handleDeepRoomImport(context),
+                      icon: const Icon(Icons.manage_search_outlined, size: 18),
+                      label: const Text('さらに古い投稿を探す'),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '通常取り込みで見つからない古いROOM投稿を探します。時間がかかる場合があります。',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        height: 1.35,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    OutlinedButton.icon(
+                      onPressed: actionLocked
+                          ? null
+                          : () => _handleEnrichRoomMetadata(context),
+                      icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
+                      label: const Text('未補完の商品情報を再取得'),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '取り込み時に商品情報を取得できなかった商品だけ再試行します（1回あたり最大${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun}件）。',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
                 ),
                 const RoomImportEnrichmentPendingHint(),
-                const SizedBox(height: 6),
-                Text(
-                  '取り込み時に商品情報を取得できなかった商品のみ、楽天APIで再試行します（1回あたり最大${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun}件）。',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.35,
-                  ),
-                ),
                 const SizedBox(height: 6),
                 Text(
                   '無料版は各操作${RoomImportLimitPolicy.freeBatchLimit}件ずつです',

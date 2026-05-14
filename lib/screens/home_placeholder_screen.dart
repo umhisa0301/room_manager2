@@ -614,7 +614,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   }
 }
 
-/// ホーム：ROOM投稿取り込みの優先導線。
+/// ホーム：ROOM同期（取り込み・反応数・メンテナンス）。
 class _HomeRoomPostImportSection extends StatelessWidget {
   const _HomeRoomPostImportSection({
     required this.hasRoomProfileUrl,
@@ -653,9 +653,9 @@ class _HomeRoomPostImportSection extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         title: const Text('さらに古い投稿を探す'),
         content: Text(
-          'ROOMの collects API を最大'
-          '${RoomImportCollectsPolicy.deepMaxCollectPages}ページまで順に取得し、'
-          '未取り込みの投稿を探します。通信状況により数分〜10分以上かかることがあります。実行しますか？',
+          '通常取り込みで見つからない古いROOM投稿を探します。'
+          'ROOMの collects API を最大${RoomImportCollectsPolicy.deepMaxCollectPages}ページまで取得し、'
+          '数分〜10分以上かかる場合があります。実行しますか？',
         ),
         actions: [
           TextButton(
@@ -682,35 +682,74 @@ class _HomeRoomPostImportSection extends StatelessWidget {
     );
   }
 
+  Future<void> _handleReactionSync(BuildContext context) async {
+    if (!hasRoomProfileUrl) return;
+    final ctl = context.read<RoomImportController>();
+    final r = await ctl.runReactionSync(context);
+    if (!context.mounted || r == null) return;
+    if (r.hasFatalError) {
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('反応数を同期する'),
+          content: Text(r.fatalErrorMessage!.trim()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('閉じる'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+    final n = r.updated;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          n > 0 ? '反応数を$n件更新しました' : '反応数の更新はありませんでした',
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<RoomImportController, BulkOperationStateController>(
       builder: (context, ctl, bulk, _) {
-        final busy =
-            ctl.isRunning ||
+        final busy = ctl.isRunning ||
             bulk.isMetadataEnriching ||
+            bulk.isRoomReactionSyncRunning ||
             bulk.isBulkCandidateRegistering;
 
-        final enrichingOnly =
-            !ctl.isRunning &&
+        final enrichingOnly = !ctl.isRunning &&
+            !bulk.isRoomReactionSyncRunning &&
             bulk.isMetadataEnriching &&
+            !bulk.isBulkCandidateRegistering;
+
+        final reactionOnly = !ctl.isRunning &&
+            !bulk.isMetadataEnriching &&
+            bulk.isRoomReactionSyncRunning &&
             !bulk.isBulkCandidateRegistering;
 
         final completed = ctl.checkedCount;
         final total = ctl.targetCount;
+        final actionLocked = bulk.isAnyBlockingOperationRunning;
 
-        final busyTitle = enrichingOnly
-            ? '商品情報を整えています'
-            : (ctl.isRunning
-                  ? (total > 0
-                        ? '$completed / $total件を取り込み中'
-                        : (ctl.importProcessingHint.isNotEmpty
-                              ? ctl.importProcessingHint
-                              : 'ROOM投稿を確認しています'))
-                  : 'ROOM投稿を確認中');
+        final busyTitle = ctl.isRunning
+            ? (total > 0
+                  ? '現在投稿済み商品を取り込み中です（$completed / $total件）'
+                  : (ctl.importProcessingHint.isNotEmpty
+                        ? ctl.importProcessingHint
+                        : '現在投稿済み商品を取り込み中です'))
+            : (reactionOnly
+                  ? '現在反応数を同期中です'
+                  : (enrichingOnly
+                        ? '現在未補完の商品情報を再取得中です'
+                        : ''));
 
         final statusLine = !hasRoomProfileUrl
-            ? 'ROOMプロフィールURLを登録すると自動取り込みが使えます'
+            ? 'ROOMプロフィールURLを登録すると同期機能が使えます'
             : importedDoneCount <= 0
             ? 'まだROOM投稿を取り込んでいません'
             : '取り込み済み：$importedDoneCount件';
@@ -723,7 +762,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'ROOM投稿取り込み',
+                'ROOM同期',
                 style: _HomeUi.sectionTitle(context).copyWith(
                   color: HomeScreenColors.accentSectionHeading,
                   fontSize: 17,
@@ -732,7 +771,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                '楽天ROOMの投稿をコレ済に追加。反応数も確認できます。',
+                '投稿の取り込みと反応数の更新は別ボタンです（いずれも1回最大${RoomImportLimitPolicy.freeBatchLimit}件）。',
                 style: _HomeUi.sectionBody(context),
               ),
               const SizedBox(height: 12),
@@ -750,7 +789,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                   label: const Text('ROOMプロフィールを登録'),
                 ),
               ] else ...[
-                if (busy) ...[
+                if (busy && busyTitle.isNotEmpty) ...[
                   Text(
                     busyTitle,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -778,6 +817,19 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 14),
+                ] else if (actionLocked &&
+                    !ctl.isRunning &&
+                    !bulk.isMetadataEnriching &&
+                    !bulk.isRoomReactionSyncRunning) ...[
+                  Text(
+                    bulk.blockingRoomTourUserMessage ??
+                        BulkOperationStateController.blockingSnackMessage,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                 ],
                 DecoratedBox(
                   decoration: BoxDecoration(
@@ -791,7 +843,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     ],
                   ),
                   child: FilledButton(
-                    onPressed: busy ? null : () => _handleImport(context),
+                    onPressed: actionLocked ? null : () => _handleImport(context),
                     style: FilledButton.styleFrom(
                       foregroundColor: AppColors.textOnAccent,
                       backgroundColor: AppColors.accentPrimary,
@@ -804,24 +856,84 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                    child: Text(
-                      '投稿済みを${RoomImportLimitPolicy.freeBatchLimit}件取り込む（通常・高速）',
+                    child: const Text('投稿済み商品を取り込む'),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'ROOM投稿から新しい商品を最大${RoomImportLimitPolicy.freeBatchLimit}件追加し、商品情報も初回取得します。',
+                  style: _HomeUi.tapHint(context),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton(
+                  onPressed: actionLocked ? null : () => _handleReactionSync(context),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 48),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: Text(
+                    '反応数を同期する',
+                    style: AppTextStyles.button.copyWith(
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 ),
+                const SizedBox(height: 6),
+                Text(
+                  '取り込み済み商品のいいね・コメントを最大${RoomImportLimitPolicy.freeBatchLimit}件更新します。',
+                  style: _HomeUi.tapHint(context),
+                ),
                 const SizedBox(height: 8),
-                OutlinedButton.icon(
-                  onPressed: busy ? null : () => _handleDeepRoomImport(context),
-                  icon: const Icon(Icons.manage_search_outlined, size: 18),
-                  label: const Text('さらに古い投稿を探す（時間がかかります）'),
+                ExpansionTile(
+                  tilePadding: EdgeInsets.zero,
+                  title: Text(
+                    'メンテナンス',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  subtitle: Text(
+                    '古い投稿の探索や、取り込み失敗分の再試行',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  children: [
+                    OutlinedButton.icon(
+                      onPressed: actionLocked
+                          ? null
+                          : () => _handleDeepRoomImport(context),
+                      icon: const Icon(Icons.manage_search_outlined, size: 18),
+                      label: const Text('さらに古い投稿を探す'),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '通常取り込みで見つからない古いROOM投稿を探します。時間がかかる場合があります。',
+                      style: _HomeUi.tapHint(context),
+                    ),
+                    const SizedBox(height: 12),
+                    OutlinedButton.icon(
+                      onPressed: actionLocked
+                          ? null
+                          : () => RoomPostImportFlow
+                              .runManualPendingRoomImportMetadataEnrich(context),
+                      icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
+                      label: const Text('未補完の商品情報を再取得'),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '取り込み時に商品情報を取得できなかった商品だけ再試行します（1回あたり最大${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun}件）。',
+                      style: _HomeUi.tapHint(context),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
                 Text(
                   '無料版は${RoomImportLimitPolicy.freeBatchLimit}件ずつ',
                   style: _HomeUi.tapHint(context),
                 ),
-                // TODO(RewardedAd): 「広告を見て追加で10件取り込む」をここに復帰。
-                // TODO(Subscription): 「Proならまとめて取り込み」をここに復帰。
               ],
             ],
           ),

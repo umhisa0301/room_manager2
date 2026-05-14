@@ -80,13 +80,13 @@ class BulkOperationStateController extends ChangeNotifier {
   /// ROOM 巡回系（取り込み・反応同期・補完）のどれが動いているか。null は該当なし。
   String? get blockingRoomTourUserMessage {
     if (_roomImport) {
-      return '投稿済み商品の取り込みが実行中です。完了後にお試しください。';
+      return '現在投稿済み商品を取り込み中です。完了後にお試しください。';
     }
     if (_roomReactionSync) {
-      return '反応数の同期が実行中です。完了後にお試しください。';
+      return '現在反応数を同期中です。完了後にお試しください。';
     }
     if (_metadataEnrich) {
-      return '商品情報の補完が実行中です。完了後にお試しください。';
+      return '現在未補完の商品情報を再取得中です。完了後にお試しください。';
     }
     return null;
   }

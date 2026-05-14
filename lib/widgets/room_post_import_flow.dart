@@ -2,18 +2,23 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config/demo_mode.dart';
+import '../config/room_import_enrichment_verify_config.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_reaction_sync_batch_result.dart';
 import '../models/room_sync_result.dart';
 import '../navigation/app_shell_controller.dart';
 import '../repository/rakuten_managed_product_repository.dart';
+import '../repository/rakuten_search_repository.dart';
 import '../repository/room_sync_cursor_repository.dart';
 import '../services/app_action_service.dart';
 import '../services/room_import_collects_policy.dart';
+import '../services/room_import_enrichment_cooldown_store.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/room_sync_service.dart';
+import '../state/bulk_operation_state_controller.dart';
 import '../utils/room_sync_log.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
@@ -67,6 +72,159 @@ abstract final class RoomPostImportFlow {
     );
   }
 
+  /// 未補完の ROOM 取り込み商品だけ楽天 API で再試行（ホーム・マイページの補助導線用）。
+  static Future<void> runManualPendingRoomImportMetadataEnrich(
+    BuildContext context,
+  ) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final bulk = context.read<BulkOperationStateController>();
+    if (kDemoModeEnabled) {
+      messenger.showSnackBar(
+        const SnackBar(content: Text('デモモードでは商品情報の補完は実行できません')),
+      );
+      return;
+    }
+    final inCooldown = await RoomImportEnrichmentCooldownStore.isInCooldown();
+    if (!context.mounted) return;
+    if (inCooldown) {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            '楽天APIの利用制限のため、'
+            '約${RoomImportLimitPolicy.enrichCooldownAfter429Minutes}分後に補完を再開します。',
+          ),
+        ),
+      );
+      return;
+    }
+    if (bulk.isRoomImportRunning ||
+        bulk.isBulkCandidateRegistering ||
+        bulk.isRoomReactionSyncRunning) {
+      bulk.guardBlockingOperations(context);
+      return;
+    }
+    if (bulk.isMetadataEnriching) {
+      roomImportManualEnrichStartLog(
+        'maxPerRun=${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun} '
+        'manualPacing=true '
+        'autoEnrichRunning=${RoomImportMetadataEnrichmentService.isEnrichmentSingleFlightHeld} '
+        'action=blockedWithMessage',
+      );
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('別の補完処理が実行中です。完了後にお試しください。'),
+        ),
+      );
+      return;
+    }
+    roomImportManualEnrichStartLog(
+      'maxPerRun=${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun} '
+      'manualPacing=true '
+      'autoEnrichRunning=${RoomImportMetadataEnrichmentService.isEnrichmentSingleFlightHeld} '
+      'action=started',
+    );
+    roomSyncJobLockLog(
+      'action=acquire job=enrichingMetadata currentJob=none',
+    );
+    bulk.setMetadataEnriching(true);
+    try {
+      final searchRepo = context.read<RakutenSearchRepository>();
+      final productRepo = context.read<RakutenManagedProductRepository>();
+      final managedProv = context.read<RakutenManagedProductProvider>();
+      final svc = RoomImportMetadataEnrichmentService(
+        searchRepository: searchRepo,
+        productRepository: productRepo,
+      );
+      messenger.showSnackBar(
+        const SnackBar(content: Text('未補完の商品情報を再取得しています…')),
+      );
+      final result = await svc.enrichRoomImportedProducts(
+        limit: RoomImportLimitPolicy.manualEnrichMaxProductsPerRun,
+        applyPostImportAutoCap: false,
+        manualSessionPacing: true,
+      );
+      if (!context.mounted) return;
+      await managedProv.refreshManagedProductList();
+      if (!context.mounted) return;
+
+      bulk.setManualEnrichSummary(
+        success: result.updated,
+        fail: result.failedInBatch,
+        remaining: result.remainingPending,
+        pausedByRateLimit: result.pausedByRateLimit,
+      );
+      if (result.successProductIds.isNotEmpty) {
+        bulk.flashRoomImportEnrichedIds(result.successProductIds);
+      }
+
+      final topRoomDone = managedProv.items
+          .where(
+            (e) =>
+                e.status == RakutenManagedProductStatus.done &&
+                e.coredActivitySource == RakutenCoredActivitySource.roomImport,
+          )
+          .toList()
+        ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+      final visibleTop = topRoomDone
+          .take(8)
+          .map((e) => e.productId.trim())
+          .join(',');
+      roomImportEnrichUiReflectLog(
+        'updatedProductIds=${result.successProductIds.join(',')} '
+        'visibleTopProductIds=$visibleTop '
+        'message=補完成功商品が現在の表示範囲にない場合、画面上では変化が見えないことがあります',
+      );
+
+      if (RoomImportEnrichmentVerifyConfig.enabled &&
+          result.verifyUiMessage != null &&
+          result.verifyUiMessage!.trim().isNotEmpty) {
+        messenger.showSnackBar(
+          SnackBar(content: Text(result.verifyUiMessage!.trim())),
+        );
+      } else if (result.duplicateSessionSkipped) {
+        messenger.showSnackBar(
+          const SnackBar(
+            content: Text('別の補完処理が実行中です。完了後にお試しください。'),
+          ),
+        );
+      } else if (result.skippedCooldown) {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              'しばらくしてから自動で補完を再開します'
+              '（未補完が${result.remainingPending}件残っています）。',
+            ),
+          ),
+        );
+      } else if (result.pausedByRateLimit) {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              'API制限のため一時停止しました。少し時間をおいて再実行してください。'
+              '成功 ${result.updated}件 / 残り ${result.remainingPending}件',
+            ),
+          ),
+        );
+      } else {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              '商品情報を補完しました：成功 ${result.updated}件 / 失敗 ${result.failedInBatch}件 / 残り ${result.remainingPending}件',
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+      messenger.showSnackBar(SnackBar(content: Text('商品情報の補完に失敗しました: $e')));
+    } finally {
+      bulk.setMetadataEnriching(false);
+      roomSyncJobLockLog(
+        'action=release job=enrichingMetadata currentJob=none',
+      );
+    }
+  }
+
   /// 取り込み後のダイアログ・SnackBar・結果シート。
   static Future<void> presentPostImportUi(
     BuildContext context,
@@ -81,7 +239,7 @@ abstract final class RoomPostImportFlow {
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('ROOM投稿取り込み'),
+          title: const Text('ROOM同期'),
           content: SingleChildScrollView(
             child: Text(result.fatalErrorMessage!.trim()),
           ),
@@ -208,11 +366,7 @@ abstract final class RoomPostImportFlow {
     var lastTotal = 0;
     onProgress(busy: true, completed: 0, total: 0);
 
-    final resume = await cursorRepo.loadReactionCursor(profile);
-    roomReactionSyncStartLog(
-      'limit=$limit latestPageChecked=true '
-      'resumeCursor=${resume?.nextReactionCursor ?? '-'}',
-    );
+    roomReactionSyncStartLog('limit=$limit');
 
     final result = await service.syncPostedRoomReactionsOnly(
       userRoomProfileUrl: profile,
@@ -232,7 +386,8 @@ abstract final class RoomPostImportFlow {
         'latestPageUpdated=${result.latestPageUpdated} '
         'resumedUpdated=${result.resumedUpdated} '
         'nextCursor=${result.nextCursor ?? '-'} '
-        'cursorAction=${result.cursorAction}',
+        'cursorAction=${result.cursorAction} '
+        'apiCallsToRakuten=0',
       );
     }
     return result;
@@ -283,7 +438,7 @@ abstract final class RoomPostImportFlow {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  'ROOM投稿済みの商品をコレ済に反映しました',
+                  '新しい商品をコレ済に追加しました。初回の商品情報取得はバッチ完了後に続けて行われます。',
                   textAlign: TextAlign.center,
                   style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
@@ -426,15 +581,15 @@ abstract final class RoomPostImportFlow {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            '商品情報の補完（楽天API）',
+                            '商品情報（楽天API）',
                             style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.w800,
                             ),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            '未補完が $pendingEnrich 件あります。マイページの'
-                            '「取り込み商品の情報を補完」ボタンから実行してください。',
+                            '未補完が $pendingEnrich 件あります。'
+                            'ホームまたはマイページの「未補完の商品情報を再取得」から実行できます。',
                             style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
                               height: 1.45,
                               color: AppColors.textSecondary,
@@ -707,7 +862,7 @@ class _ImportedProductPreviewTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final title = product.itemName.trim().isEmpty
-        ? 'ROOM投稿の商品'
+        ? '（タイトル未取得）'
         : product.itemName.trim();
     final provider = context.read<RakutenManagedProductProvider>();
 
@@ -804,7 +959,7 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                                   vertical: 3,
                                 ),
                                 child: Text(
-                                  'ROOM投稿済み',
+                                  '取り込み済み',
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     color: const Color(0xFF1B5E20),
                                     fontWeight: FontWeight.w800,

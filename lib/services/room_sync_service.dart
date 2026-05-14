@@ -510,7 +510,7 @@ class RoomSyncService {
                   )
                 : null;
             if (_cursorRepo != null) {
-              await _cursorRepo!.saveImportCursor(
+              await _cursorRepo.saveImportCursor(
                 RoomImportCursorState(
                   roomProfileKey: profile,
                   nextImportCursor: resumeCursor,
@@ -859,7 +859,7 @@ class RoomSyncService {
             roomLikeCount: rs.roomLikeCount,
             roomCommentCount: rs.roomCommentCount,
             listingHintPriceYen: listingHintFromResolve,
-            suppressListingHintPrice: true,
+            suppressListingHintPrice: false,
             rakutenApiPartialData: rakutenApiPartialData,
             roomImportFallbackRecovered: roomImportFallbackRecovered,
             roomImportResyncReactionsOnly: false,
@@ -896,6 +896,27 @@ class RoomSyncService {
             final newPid = outcome.productId?.trim() ?? '';
             if (newPid.isNotEmpty) {
               newlyImportedProductIds.add(newPid);
+              if (kDebugMode) {
+                final rawTitle = (rs.roomPageTitle ?? '').replaceAll(
+                  RegExp(r'[\r\n]+'),
+                  ' ',
+                );
+                final titleLog = rawTitle.trim();
+                final tOut = titleLog.length > 100
+                    ? '${titleLog.substring(0, 100)}…'
+                    : titleLog;
+                final imgRaw = (rs.roomPageImageUrl ?? '').trim();
+                final imgOut = imgRaw.length > 120
+                    ? '${imgRaw.substring(0, 120)}…'
+                    : imgRaw;
+                final imageFound = imgRaw.isNotEmpty;
+                final hint = listingHintFromResolve;
+                final priceFound = hint != null && hint > 0;
+                roomImportListingMetadataLog(
+                  'productId=$newPid title=$tOut imageFound=$imageFound '
+                  'priceFound=$priceFound imageUrl=$imgOut listingPrice=${hint ?? '-'}',
+                );
+              }
             }
             if (newlyCollectedSamples.length < 3) {
               final pid = outcome.productId?.trim() ?? '';
