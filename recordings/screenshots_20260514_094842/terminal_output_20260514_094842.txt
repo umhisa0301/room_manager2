@@ -257,3 +257,8 @@ E/FrameEvents(23846): updateAcquireFence: Did not find frame.
 E/FrameEvents(23846): updateAcquireFence: Did not find frame.
 W/o.room_manager2(23846): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/base.apk' with 1 weak references
 W/o.room_manager2(23846): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/split_config.arm64_v8a.apk' with 1 weak references
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
