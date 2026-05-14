@@ -10,6 +10,7 @@ import 'repository/comment_template_repository.dart';
 import 'repository/activity_log_repository.dart';
 import 'repository/rakuten_managed_product_repository.dart';
 import 'repository/room_activity_event_repository.dart';
+import 'repository/room_sync_cursor_repository.dart';
 import 'repository/genre_master_repository.dart';
 import 'services/genre_master_service.dart';
 import 'services/rakuten_genre_master_service.dart';
@@ -134,6 +135,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<RoomSyncCursorRepository>(
+          create: (_) => SharedPreferencesRoomSyncCursorRepository(prefs),
+        ),
         ChangeNotifierProvider(
           create: (_) => LegalConsentRepository(prefs),
         ),

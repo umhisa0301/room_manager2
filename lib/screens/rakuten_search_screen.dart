@@ -2469,7 +2469,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   ) async {
     if (_isBulkRegistering || _selectedProductIds.isEmpty) return;
     final bulk = context.read<BulkOperationStateController>();
-    if (bulk.isRoomImportRunning || bulk.isMetadataEnriching) {
+    if (bulk.isRoomImportRunning ||
+        bulk.isMetadataEnriching ||
+        bulk.isRoomReactionSyncRunning) {
       bulk.guardBlockingOperations(context);
       return;
     }

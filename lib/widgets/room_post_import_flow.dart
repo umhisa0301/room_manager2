@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
+import '../models/room_reaction_sync_batch_result.dart';
 import '../models/room_sync_result.dart';
 import '../navigation/app_shell_controller.dart';
 import '../repository/rakuten_managed_product_repository.dart';
+import '../repository/room_sync_cursor_repository.dart';
 import '../services/app_action_service.dart';
 import '../services/room_import_collects_policy.dart';
 import '../services/room_import_limit_policy.dart';
@@ -151,7 +153,11 @@ abstract final class RoomPostImportFlow {
     }
 
     final repo = context.read<RakutenManagedProductRepository>();
-    final service = RoomSyncService(repository: repo);
+    final cursorRepo = context.read<RoomSyncCursorRepository>();
+    final service = RoomSyncService(
+      repository: repo,
+      roomSyncCursorRepository: cursorRepo,
+    );
     final limit = RoomImportLimitPolicy.effectiveBatchLimit();
 
     var lastCompleted = 0;
@@ -174,6 +180,61 @@ abstract final class RoomPostImportFlow {
     );
 
     onProgress(busy: false, completed: lastCompleted, total: lastTotal);
+    return result;
+  }
+
+  /// 反応数のみ同期（楽天APIなし）。
+  static Future<RoomReactionSyncBatchResult?> executeReactionSyncBatch(
+    BuildContext context, {
+    required RoomPostImportProgressCallback onProgress,
+    void Function(String hint)? onProcessingHint,
+  }) async {
+    final profile = RoomProfileUrlValidationService.normalizeProfileUrl(
+      context.read<UserProfileProvider>().profile.roomUrl,
+    );
+    if (profile.isEmpty) {
+      return null;
+    }
+
+    final repo = context.read<RakutenManagedProductRepository>();
+    final cursorRepo = context.read<RoomSyncCursorRepository>();
+    final service = RoomSyncService(
+      repository: repo,
+      roomSyncCursorRepository: cursorRepo,
+    );
+    final limit = RoomImportLimitPolicy.effectiveBatchLimit();
+
+    var lastCompleted = 0;
+    var lastTotal = 0;
+    onProgress(busy: true, completed: 0, total: 0);
+
+    final resume = await cursorRepo.loadReactionCursor(profile);
+    roomReactionSyncStartLog(
+      'limit=$limit latestPageChecked=true '
+      'resumeCursor=${resume?.nextReactionCursor ?? '-'}',
+    );
+
+    final result = await service.syncPostedRoomReactionsOnly(
+      userRoomProfileUrl: profile,
+      maxItems: limit,
+      onCheckingProgress: (c, t) {
+        lastCompleted = c;
+        lastTotal = t;
+        onProgress(busy: true, completed: c, total: t);
+      },
+      onProcessingHint: onProcessingHint,
+    );
+
+    onProgress(busy: false, completed: lastCompleted, total: lastTotal);
+    if (result != null) {
+      roomReactionSyncResultLog(
+        'updated=${result.updated} '
+        'latestPageUpdated=${result.latestPageUpdated} '
+        'resumedUpdated=${result.resumedUpdated} '
+        'nextCursor=${result.nextCursor ?? '-'} '
+        'cursorAction=${result.cursorAction}',
+      );
+    }
     return result;
   }
 

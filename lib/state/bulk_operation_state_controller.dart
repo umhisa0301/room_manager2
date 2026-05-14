@@ -7,6 +7,7 @@ class BulkOperationStateController extends ChangeNotifier {
   static const String blockingSnackMessage =
       '処理中です。完了後に操作してください';
   bool _roomImport = false;
+  bool _roomReactionSync = false;
   bool _bulkCandidate = false;
   bool _metadataEnrich = false;
 
@@ -67,16 +68,38 @@ class BulkOperationStateController extends ChangeNotifier {
 
   bool get isRoomImportRunning => _roomImport;
 
+  bool get isRoomReactionSyncRunning => _roomReactionSync;
+
   bool get isBulkCandidateRegistering => _bulkCandidate;
 
   bool get isMetadataEnriching => _metadataEnrich;
 
   bool get isAnyBlockingOperationRunning =>
-      _roomImport || _bulkCandidate || _metadataEnrich;
+      _roomImport || _roomReactionSync || _bulkCandidate || _metadataEnrich;
+
+  /// ROOM 巡回系（取り込み・反応同期・補完）のどれが動いているか。null は該当なし。
+  String? get blockingRoomTourUserMessage {
+    if (_roomImport) {
+      return '投稿済み商品の取り込みが実行中です。完了後にお試しください。';
+    }
+    if (_roomReactionSync) {
+      return '反応数の同期が実行中です。完了後にお試しください。';
+    }
+    if (_metadataEnrich) {
+      return '商品情報の補完が実行中です。完了後にお試しください。';
+    }
+    return null;
+  }
 
   void setRoomImportRunning(bool value) {
     if (_roomImport == value) return;
     _roomImport = value;
+    notifyListeners();
+  }
+
+  void setRoomReactionSyncRunning(bool value) {
+    if (_roomReactionSync == value) return;
+    _roomReactionSync = value;
     notifyListeners();
   }
 
@@ -95,9 +118,12 @@ class BulkOperationStateController extends ChangeNotifier {
   /// いずれかのブロック対象処理が走っているとき SnackBar を出して true。
   bool guardBlockingOperations(BuildContext context) {
     if (!isAnyBlockingOperationRunning) return false;
+    final roomMsg = blockingRoomTourUserMessage;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(blockingSnackMessage),
+      SnackBar(
+        content: Text(
+          roomMsg ?? blockingSnackMessage,
+        ),
       ),
     );
     return true;

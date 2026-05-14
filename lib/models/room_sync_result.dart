@@ -22,6 +22,7 @@ class RoomSyncResult {
     this.collectsStopReason,
     this.collectsIncompleteExplore = false,
     this.collectsLastNextCursor,
+    this.newlyImportedProductIds = const [],
   });
 
   /// 一覧段階で同期済み判定した件数（FINISH ログの processedChecked 相当）。
@@ -59,6 +60,9 @@ class RoomSyncResult {
 
   /// 最後に得た collects の `nextAfterId`（ログ・再開用）。無ければ null。
   final String? collectsLastNextCursor;
+
+  /// 今バッチで新規行追加された商品の productId（初回楽天API補完の対象・順序保持）。
+  final List<String> newlyImportedProductIds;
 
   /// 実際に1件ずつ確認した ROOM 商品ページ数（最大10など）。
   final int processedCount;

@@ -661,3 +661,59 @@ void roomFastPathSummaryLog(String message) {
     RoomImportDebugLogBuffer.add(line);
   }
 }
+
+void roomImportCursorLog(String message) {
+  final line = '[ROOM_IMPORT_CURSOR] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomReactionSyncCursorLog(String message) {
+  final line = '[ROOM_REACTION_SYNC_CURSOR] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomSyncJobLockLog(String message) {
+  final line = '[ROOM_SYNC_JOB_LOCK] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportBatchStartLog(String message) {
+  final line = '[ROOM_IMPORT_BATCH_START] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportBatchResultLog(String message) {
+  final line = '[ROOM_IMPORT_BATCH_RESULT] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomReactionSyncStartLog(String message) {
+  final line = '[ROOM_REACTION_SYNC_START] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomReactionSyncResultLog(String message) {
+  final line = '[ROOM_REACTION_SYNC_RESULT] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}

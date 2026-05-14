@@ -177,6 +177,7 @@ class RoomImportMetadataEnrichmentService {
     required int limit,
     bool applyPostImportAutoCap = false,
     bool manualSessionPacing = false,
+    List<String>? restrictToProductIdsInOrder,
   }) async {
     var maxProductsPerRun = limit <= 0
         ? 0
@@ -187,6 +188,15 @@ class RoomImportMetadataEnrichmentService {
               : (limit > RoomImportLimitPolicy.manualEnrichMaxProductsPerRun
                     ? RoomImportLimitPolicy.manualEnrichMaxProductsPerRun
                     : limit));
+    final restrict = restrictToProductIdsInOrder
+        ?.map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList(growable: false);
+    if (restrict != null && restrict.isNotEmpty) {
+      maxProductsPerRun = maxProductsPerRun > restrict.length
+          ? restrict.length
+          : maxProductsPerRun;
+    }
     if (RoomImportEnrichmentVerifyConfig.enabled && maxProductsPerRun < 1) {
       maxProductsPerRun = 1;
     }
@@ -255,6 +265,7 @@ class RoomImportMetadataEnrichmentService {
       return await _runEnrichmentLoop(
         maxProductsPerRun: maxProductsPerRun,
         manualSessionPacing: manualSessionPacing,
+        restrictToProductIdsInOrder: restrict,
       );
     } finally {
       _singleFlight = false;
@@ -579,6 +590,7 @@ class RoomImportMetadataEnrichmentService {
   Future<RoomImportEnrichmentBatchResult> _runEnrichmentLoop({
     required int maxProductsPerRun,
     required bool manualSessionPacing,
+    List<String>? restrictToProductIdsInOrder,
   }) async {
     final rows = _productRepository.loadAll();
     var skippedComplete = 0;
@@ -634,21 +646,46 @@ class RoomImportMetadataEnrichmentService {
         _RoomImportEnrichMethod? chosenMethod;
         RakutenManagedProduct? chosen;
         var pickLogged = 0;
-        for (final row in sorted) {
-          final m = _peekNextMethod(row, now);
-          if (pickLogged < 24) {
-            roomImportEnrichPickLog(
-              'productId=${row.productId} '
-              'failureReason=${row.roomImportEnrichFailureReason} '
-              'failureCount=${row.roomImportEnrichFailureCount} '
-              'selected=${m != null}',
-            );
-            pickLogged++;
+        final restrict = restrictToProductIdsInOrder;
+        if (restrict != null && restrict.isNotEmpty) {
+          for (final wantId in restrict) {
+            for (final row in sorted) {
+              if (row.productId.trim() != wantId) continue;
+              final m = _peekNextMethod(row, now);
+              if (pickLogged < 24) {
+                roomImportEnrichPickLog(
+                  'productId=${row.productId} '
+                  'failureReason=${row.roomImportEnrichFailureReason} '
+                  'failureCount=${row.roomImportEnrichFailureCount} '
+                  'selected=${m != null}',
+                );
+                pickLogged++;
+              }
+              if (m != null) {
+                chosen = row;
+                chosenMethod = m;
+                break;
+              }
+            }
+            if (chosen != null) break;
           }
-          if (m != null) {
-            chosen = row;
-            chosenMethod = m;
-            break;
+        } else {
+          for (final row in sorted) {
+            final m = _peekNextMethod(row, now);
+            if (pickLogged < 24) {
+              roomImportEnrichPickLog(
+                'productId=${row.productId} '
+                'failureReason=${row.roomImportEnrichFailureReason} '
+                'failureCount=${row.roomImportEnrichFailureCount} '
+                'selected=${m != null}',
+              );
+              pickLogged++;
+            }
+            if (m != null) {
+              chosen = row;
+              chosenMethod = m;
+              break;
+            }
           }
         }
         if (chosen == null || chosenMethod == null) {

@@ -1122,6 +1122,38 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
     );
   }
 
+  Future<void> _handleReactionSync(BuildContext context) async {
+    final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
+    if (roomUrl.isEmpty) return;
+    final ctl = context.read<RoomImportController>();
+    final r = await ctl.runReactionSync(context);
+    if (!context.mounted || r == null) return;
+    if (r.hasFatalError) {
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('反応数の同期'),
+          content: Text(r.fatalErrorMessage!.trim()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('閉じる'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+    final n = r.updated;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          n > 0 ? '反応数を$n件更新しました' : '反応数の更新はありませんでした',
+        ),
+      ),
+    );
+  }
+
   Future<void> _handleEnrichRoomMetadata(BuildContext context) async {
     final messenger = ScaffoldMessenger.of(context);
     final bulk = context.read<BulkOperationStateController>();
@@ -1144,7 +1176,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       );
       return;
     }
-    if (bulk.isRoomImportRunning || bulk.isBulkCandidateRegistering) {
+    if (bulk.isRoomImportRunning ||
+        bulk.isBulkCandidateRegistering ||
+        bulk.isRoomReactionSyncRunning) {
       bulk.guardBlockingOperations(context);
       return;
     }
@@ -1167,6 +1201,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       'manualPacing=true '
       'autoEnrichRunning=${RoomImportMetadataEnrichmentService.isEnrichmentSingleFlightHeld} '
       'action=started',
+    );
+    roomSyncJobLockLog(
+      'action=acquire job=enrichingMetadata currentJob=none',
     );
     bulk.setMetadataEnriching(true);
     try {
@@ -1259,6 +1296,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       messenger.showSnackBar(SnackBar(content: Text('商品情報の補完に失敗しました: $e')));
     } finally {
       bulk.setMetadataEnriching(false);
+      roomSyncJobLockLog(
+        'action=release job=enrichingMetadata currentJob=none',
+      );
     }
   }
 
@@ -1270,21 +1310,30 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
 
     return Consumer2<RoomImportController, BulkOperationStateController>(
       builder: (context, ctl, bulk, _) {
-        final busy = ctl.isRunning || bulk.isMetadataEnriching;
-        final enrichingOnly = !ctl.isRunning && bulk.isMetadataEnriching;
+        final busy = ctl.isRunning ||
+            bulk.isMetadataEnriching ||
+            bulk.isRoomReactionSyncRunning;
+        final enrichingOnly = !ctl.isRunning &&
+            !bulk.isRoomReactionSyncRunning &&
+            bulk.isMetadataEnriching;
+        final reactionOnly = !ctl.isRunning &&
+            !bulk.isMetadataEnriching &&
+            bulk.isRoomReactionSyncRunning;
         final completed = ctl.checkedCount;
         final total = ctl.targetCount;
         final actionLocked = bulk.isAnyBlockingOperationRunning;
 
         final busyTitle = enrichingOnly
             ? '商品情報を整えています'
-            : (ctl.isRunning
-                  ? (total > 0
-                        ? '$completed / $total件を取り込み中'
-                        : (ctl.importProcessingHint.isNotEmpty
-                              ? ctl.importProcessingHint
-                              : 'ROOM投稿を確認しています'))
-                  : 'ROOM投稿を確認中');
+            : (reactionOnly
+                  ? '反応数を同期しています'
+                  : (ctl.isRunning
+                        ? (total > 0
+                              ? '$completed / $total件を取り込み中'
+                              : (ctl.importProcessingHint.isNotEmpty
+                                    ? ctl.importProcessingHint
+                                    : 'ROOM投稿を確認しています'))
+                        : 'ROOM投稿を確認中'));
 
         return AppCard(
           padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
@@ -1292,10 +1341,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               AppSectionHeader(
-                title: 'ROOM投稿取り込み',
+                title: 'ROOMとコレ済の同期',
                 subtitle:
-                    '通常は先頭から高速に最大${RoomImportCollectsPolicy.normalMaxCollectPages}ページまで探索します。'
-                    '古い投稿の深掘りは別ボタンから実行してください。',
+                    '新規商品の取り込みと、いいね・コメント数の更新は別の操作です（いずれも1回最大${RoomImportLimitPolicy.freeBatchLimit}件）。',
                 icon: Icons.downloading_rounded,
               ),
               const SizedBox(height: 8),
@@ -1338,11 +1386,38 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                 ],
                 FilledButton(
                   onPressed: actionLocked ? null : () => _handleImport(context),
-                  child: Text(
-                    '投稿済みを${RoomImportLimitPolicy.freeBatchLimit}件取り込む（通常・高速）',
+                  child: const Text('投稿済み商品を取り込む'),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'ROOM投稿から新しい商品を最大${RoomImportLimitPolicy.freeBatchLimit}件追加し、'
+                  '商品情報（価格・画像・ショップ名・ジャンル）の初回取得を試みます。',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.35,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
+                FilledButton(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.surfaceVariant,
+                    foregroundColor: AppColors.textPrimary,
+                  ),
+                  onPressed: actionLocked
+                      ? null
+                      : () => _handleReactionSync(context),
+                  child: const Text('反応数を同期する'),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  '取り込み済み商品のいいね・コメントを最大${RoomImportLimitPolicy.freeBatchLimit}件更新します。'
+                  '最新の投稿一覧を毎回確認します。',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.35,
+                  ),
+                ),
+                const SizedBox(height: 12),
                 OutlinedButton.icon(
                   onPressed: actionLocked
                       ? null
@@ -1356,12 +1431,12 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                       ? null
                       : () => _handleEnrichRoomMetadata(context),
                   icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
-                  label: const Text('取り込み商品の情報を補完'),
+                  label: const Text('未補完の商品情報を再取得'),
                 ),
                 const RoomImportEnrichmentPendingHint(),
                 const SizedBox(height: 6),
                 Text(
-                  'ショップ名・価格・画像・ジャンルを少しずつ更新します（1回あたり最大${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun}件）。',
+                  '取り込み時に商品情報を取得できなかった商品のみ、楽天APIで再試行します（1回あたり最大${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun}件）。',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.35,
@@ -1369,12 +1444,11 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '無料版は${RoomImportLimitPolicy.freeBatchLimit}件ずつ取り込めます',
+                  '無料版は各操作${RoomImportLimitPolicy.freeBatchLimit}件ずつです',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
                 ),
-                // TODO(RewardedAd|Subscription): 広告／Pro による追加バッチ導線をここに復帰。
               ],
             ],
           ),

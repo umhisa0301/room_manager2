@@ -4,8 +4,12 @@ import 'package:provider/provider.dart';
 
 import '../config/demo_mode.dart';
 import '../models/rakuten_managed_product.dart';
+import '../models/room_reaction_sync_batch_result.dart';
 import '../models/room_sync_result.dart';
+import '../repository/rakuten_search_repository.dart';
+import '../repository/rakuten_managed_product_repository.dart';
 import '../services/room_import_collects_policy.dart';
+import '../services/room_import_limit_policy.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../utils/room_sync_log.dart';
@@ -88,8 +92,37 @@ class RoomImportController extends ChangeNotifier {
     );
     if (profile.isEmpty) return null;
 
+    final bulk = _bulkOperationState;
+    if (bulk != null) {
+      if (bulk.isRoomReactionSyncRunning) {
+        roomSyncJobLockLog(
+          'action=blocked job=importingCollectedItems currentJob=syncingReactions',
+        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(bulk.blockingRoomTourUserMessage ?? '')),
+          );
+        }
+        return null;
+      }
+      if (bulk.isMetadataEnriching) {
+        roomSyncJobLockLog(
+          'action=blocked job=importingCollectedItems currentJob=enrichingMetadata',
+        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(bulk.blockingRoomTourUserMessage ?? '')),
+          );
+        }
+        return null;
+      }
+    }
+
+    roomSyncJobLockLog(
+      'action=acquire job=importingCollectedItems currentJob=none',
+    );
     roomImportFlowLog(
-      'action=importStart message=ROOM取り込みでは価格・画像・ショップ・ジャンルは更新しません',
+      'action=importStart message=新規取り込み商品のみ初回楽天API補完',
     );
 
     _phase = RoomImportPhase.running;
@@ -100,6 +133,8 @@ class RoomImportController extends ChangeNotifier {
     notifyListeners();
 
     RoomSyncResult? result;
+    var enrichmentBatchMs = 0;
+    var enrichmentUpdated = 0;
     try {
       try {
         result = await RoomPostImportFlow.executeBatch(
@@ -135,6 +170,47 @@ class RoomImportController extends ChangeNotifier {
             .refreshManagedProductList(showLoadingIndicator: false);
       }
 
+      if (result != null &&
+          !result.hasFatalError &&
+          result.newlyImportedProductIds.isNotEmpty &&
+          context.mounted) {
+        final sw = Stopwatch()..start();
+        final searchRepo = context.read<RakutenSearchRepository>();
+        final productRepo = context.read<RakutenManagedProductRepository>();
+        final svc = RoomImportMetadataEnrichmentService(
+          searchRepository: searchRepo,
+          productRepository: productRepo,
+        );
+        final er = await svc.enrichRoomImportedProducts(
+          limit: RoomImportLimitPolicy.freeBatchLimit,
+          applyPostImportAutoCap: true,
+          manualSessionPacing: false,
+          restrictToProductIdsInOrder: result.newlyImportedProductIds,
+        );
+        sw.stop();
+        enrichmentBatchMs = sw.elapsedMilliseconds;
+        enrichmentUpdated = er.updated;
+        if (context.mounted) {
+          await context
+              .read<RakutenManagedProductProvider>()
+              .refreshManagedProductList(showLoadingIndicator: false);
+        }
+        roomImportBatchResultLog(
+          'imported=${result.newlyCollectedCount} '
+          'enrichedSuccess=$enrichmentUpdated '
+          'enrichedFailed=${er.failedInBatch} '
+          'nextCursor=${result.collectsLastNextCursor ?? '-'} '
+          'cursorAction=postEnrich',
+        );
+      } else if (result != null && !result.hasFatalError) {
+        roomImportBatchResultLog(
+          'imported=${result.newlyCollectedCount} '
+          'enrichedSuccess=0 enrichedFailed=0 '
+          'nextCursor=${result.collectsLastNextCursor ?? '-'} '
+          'cursorAction=none',
+        );
+      }
+
       if (result == null) {
         _phase = RoomImportPhase.idle;
       } else if (result.hasFatalError) {
@@ -151,11 +227,14 @@ class RoomImportController extends ChangeNotifier {
       if (kDebugMode) {
         RoomImportDebugLogBuffer.emitImportSummary(
           result: result,
-          enrichmentBatchMs: 0,
-          enrichmentUpdated: 0,
+          enrichmentBatchMs: enrichmentBatchMs,
+          enrichmentUpdated: enrichmentUpdated,
         );
       }
       _bulkOperationState?.setRoomImportRunning(false);
+      roomSyncJobLockLog(
+        'action=release job=importingCollectedItems currentJob=none',
+      );
       if (_phase == RoomImportPhase.running) {
         _phase = RoomImportPhase.idle;
         notifyListeners();
@@ -174,17 +253,85 @@ class RoomImportController extends ChangeNotifier {
       'newItems=${result?.newlyCollectedCount ?? 0} '
       'updatedRoomReactions=${result?.reactionsResyncedCount ?? 0} '
       'roomUrlAdded=${result?.roomUrlAddedCount ?? 0} '
-      'pendingEnrich=$pendingEnrich '
-      'enrichmentAutoStarted=false '
-      'message=ROOM取り込みでは価格・画像・ショップ・ジャンルは更新しません',
+      'postImportEnrichUpdated=$enrichmentUpdated '
+      'pendingEnrich=$pendingEnrich',
     );
 
     roomImportDeferredEnrichDecisionLog(
-      'shouldStart=false reason=postImportDeferredEnrichRemoved '
+      'shouldStart=false reason=postImportInlineEnrich '
       'manualBusy=${_bulkOperationState?.isMetadataEnriching ?? false} '
       'autoBusy=${RoomImportMetadataEnrichmentService.isEnrichmentSingleFlightHeld}',
     );
 
     return result;
+  }
+
+  /// 反応数のみ同期（最大10件）。他ジョブ実行中は null。
+  Future<RoomReactionSyncBatchResult?> runReactionSync(
+    BuildContext context,
+  ) async {
+    final bulk = _bulkOperationState;
+    if (bulk != null) {
+      if (bulk.isRoomImportRunning) {
+        roomSyncJobLockLog(
+          'action=blocked job=syncingReactions currentJob=importingCollectedItems',
+        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(bulk.blockingRoomTourUserMessage ?? '')),
+          );
+        }
+        return null;
+      }
+      if (bulk.isMetadataEnriching) {
+        roomSyncJobLockLog(
+          'action=blocked job=syncingReactions currentJob=enrichingMetadata',
+        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(bulk.blockingRoomTourUserMessage ?? '')),
+          );
+        }
+        return null;
+      }
+    }
+    if (_phase == RoomImportPhase.running) return null;
+
+    final profile = RoomProfileUrlValidationService.normalizeProfileUrl(
+      context.read<UserProfileProvider>().profile.roomUrl,
+    );
+    if (profile.isEmpty) return null;
+
+    roomSyncJobLockLog(
+      'action=acquire job=syncingReactions currentJob=none',
+    );
+    _bulkOperationState?.setRoomReactionSyncRunning(true);
+    RoomReactionSyncBatchResult? out;
+    try {
+      out = await RoomPostImportFlow.executeReactionSyncBatch(
+        context,
+        onProgress:
+            ({
+              required bool busy,
+              required int completed,
+              required int total,
+            }) {},
+        onProcessingHint: (_) {},
+      );
+      if (context.mounted) {
+        await context
+            .read<RakutenManagedProductProvider>()
+            .refreshManagedProductList(showLoadingIndicator: false);
+      }
+    } catch (e, st) {
+      debugPrint('[RoomImportController] executeReactionSyncBatch failed: $e\n$st');
+      out = null;
+    } finally {
+      _bulkOperationState?.setRoomReactionSyncRunning(false);
+      roomSyncJobLockLog(
+        'action=release job=syncingReactions currentJob=none',
+      );
+    }
+    return out;
   }
 }
