@@ -74,6 +74,24 @@ class BulkOperationStateController extends ChangeNotifier {
 
   bool get isMetadataEnriching => _metadataEnrich;
 
+  /// 探すタブの新規商品検索・URL追加・検索結果からの候補/コレ済追加を抑止する。
+  bool get isRoomTourSearchBlocking =>
+      _roomImport || _roomReactionSync || _metadataEnrich;
+
+  /// [isRoomTourSearchBlocking] が true のときのジョブ名（ログ用）。
+  String get roomTourBlockingJobLabel {
+    if (_roomImport) return 'importingCollectedItems';
+    if (_roomReactionSync) return 'syncingReactions';
+    if (_metadataEnrich) return 'enrichingMetadata';
+    return 'none';
+  }
+
+  /// 探す系ブロック時にユーザーへ見せる説明（SnackBar / シート内）。
+  static const String roomTourSearchBlockedUserMessage =
+      'ROOM同期中です。\n'
+      '新しい商品検索は同期完了後に利用できます。\n'
+      'コレ済一覧の確認はそのまま行えます。';
+
   bool get isAnyBlockingOperationRunning =>
       _roomImport || _roomReactionSync || _bulkCandidate || _metadataEnrich;
 

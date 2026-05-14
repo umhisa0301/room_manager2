@@ -687,6 +687,9 @@ class RakutenManagedProductRepository {
 
     /// 既存商品に初めて ROOM URL を紐付けるが、商品メタは既存のまま（楽天APIなし）。
     bool roomImportAddRoomUrlToExistingNoApi = false,
+
+    /// false のとき共有 [workingMutableList] のみ更新し、ディスクへは書かない（ROOM同期バッチ終了時に flush）。
+    bool confirmDiskWrite = true,
   }) async {
     if (kDemoModeEnabled) {
       if (traceRoomSync) {
@@ -721,6 +724,17 @@ class RakutenManagedProductRepository {
         final e = list[i];
         final ek = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(e.roomUrl);
         if (ek.isNotEmpty && ek == key) {
+          final effLikes = roomLikeCount ?? e.roomLikeCount;
+          final effComments = roomCommentCount ?? e.roomCommentCount;
+          if (effLikes == e.roomLikeCount && effComments == e.roomCommentCount) {
+            if (traceRoomSync) {
+              roomSyncLog('反応数変更なしのため保存スキップ productId=${e.productId}');
+            }
+            return RoomCollectedPersistOutcome(
+              kind: RoomCollectedPersistKind.roomPageAlreadySynced,
+              productId: e.productId,
+            );
+          }
           var next = _mergeParsedRoomReactions(
             e,
             roomLikeCount,
@@ -735,10 +749,12 @@ class RakutenManagedProductRepository {
           );
           list[i] = next;
           try {
-            await _saveAllMaybeMerged(
-              list: list,
-              workingMutableList: workingMutableList,
-            );
+            if (confirmDiskWrite) {
+              await _saveAllMaybeMerged(
+                list: list,
+                workingMutableList: workingMutableList,
+              );
+            }
             _debugLogRoomImportSave(e.productId);
             if ((next.affiliateUrl ?? '').trim().isNotEmpty) {
               roomImportSaveLog('affiliateUrlSaved=true');
@@ -948,10 +964,12 @@ class RakutenManagedProductRepository {
 
       list[existingIndex] = next;
       try {
-        await _saveAllMaybeMerged(
-          list: list,
-          workingMutableList: workingMutableList,
-        );
+        if (confirmDiskWrite) {
+          await _saveAllMaybeMerged(
+            list: list,
+            workingMutableList: workingMutableList,
+          );
+        }
         _debugLogRoomImportSave(existing.productId);
         if ((next.affiliateUrl ?? '').trim().isNotEmpty) {
           roomImportSaveLog('affiliateUrlSaved=true');
@@ -1109,10 +1127,12 @@ class RakutenManagedProductRepository {
     );
     list.add(row);
     try {
-      await _saveAllMaybeMerged(
-        list: list,
-        workingMutableList: workingMutableList,
-      );
+      if (confirmDiskWrite) {
+        await _saveAllMaybeMerged(
+          list: list,
+          workingMutableList: workingMutableList,
+        );
+      }
       _debugLogRoomImportSave(newId);
       if ((row.affiliateUrl ?? '').trim().isNotEmpty) {
         roomImportSaveLog('affiliateUrlSaved=true');
@@ -1129,6 +1149,16 @@ class RakutenManagedProductRepository {
     return RoomCollectedPersistOutcome(
       kind: RoomCollectedPersistKind.insertedNewCollected,
       productId: newId,
+    );
+  }
+
+  /// [persistRoomCollectedFromRoomPage] で `confirmDiskWrite: false` だった更新をまとめて永続化。
+  Future<void> flushSharedWorkingMutableList(
+    List<RakutenManagedProduct> workingMutableList,
+  ) async {
+    await _saveAllMaybeMerged(
+      list: workingMutableList,
+      workingMutableList: workingMutableList,
     );
   }
 

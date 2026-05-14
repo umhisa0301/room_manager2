@@ -17,6 +17,7 @@ import '../services/room_url_extraction_coordinator.dart';
 import '../services/room_url_extraction_service.dart';
 import '../services/room_collected_register_service.dart';
 import '../utils/managed_product_diag_log.dart';
+import '../utils/room_sync_log.dart';
 import '../widgets/collect_post_success_overlay.dart';
 
 /// 楽天ROOM管理の一覧画面用ロード状態。
@@ -194,6 +195,19 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     _items = _repository.loadAll();
   }
 
+  /// ROOM 取り込み・反応同期・補完中は「探す」系の新規追加を抑止する。
+  String? _roomTourSearchBlockUserMessage(String blockedAction) {
+    final b = _bulkOperationState;
+    if (b == null || !b.isRoomTourSearchBlocking) {
+      return null;
+    }
+    roomSyncUiGuardLog(
+      'blockedAction=$blockedAction currentJob=${b.roomTourBlockingJobLabel} '
+      'message=searchPaused',
+    );
+    return BulkOperationStateController.roomTourSearchBlockedUserMessage;
+  }
+
   String? _bulkBlocksMutation(String blockedAction) {
     final b = _bulkOperationState;
     if (b == null || !b.isAnyBlockingOperationRunning) {
@@ -212,6 +226,10 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     final id = item.productId.trim();
     if (id.isEmpty) {
       return '商品IDが空のため登録できません';
+    }
+    final roomTour = _roomTourSearchBlockUserMessage('registerCandidate');
+    if (roomTour != null) {
+      return roomTour;
     }
     final blocked = _bulkBlocksMutation('addCandidate');
     if (blocked != null) {
@@ -349,6 +367,13 @@ class RakutenManagedProductProvider extends ChangeNotifier {
   Future<RoomCollectedRegisterViewResult> registerCollectedFromRoomProductPage(
     String rawRoomUrl,
   ) async {
+    final roomTour = _roomTourSearchBlockUserMessage('urlAdd');
+    if (roomTour != null) {
+      return RoomCollectedRegisterViewResult(
+        kind: RoomCollectedRegisterUiKind.failed,
+        message: roomTour,
+      );
+    }
     final blocked = _bulkBlocksMutation('registerCollectedFromRoomProductPage');
     if (blocked != null) {
       return RoomCollectedRegisterViewResult(
@@ -409,6 +434,22 @@ class RakutenManagedProductProvider extends ChangeNotifier {
       notifyOrDialog('商品IDが空です');
       return false;
     }
+    final p = _repository.getByProductId(id);
+    if (p == null) {
+      notifyOrDialog('商品が見つかりません');
+      return false;
+    }
+    if (p.status == RakutenManagedProductStatus.done) {
+      const msg = 'すでにコレ済です';
+      if (notifyInsteadOfDialogs != null) {
+        notifyInsteadOfDialogs(msg);
+      } else if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text(msg)),
+        );
+      }
+      return false;
+    }
     final bulkMsg = _bulkBlocksMutation('collectRoomAndLaunch');
     if (bulkMsg != null) {
       if (notifyInsteadOfDialogs != null) {
@@ -418,11 +459,6 @@ class RakutenManagedProductProvider extends ChangeNotifier {
           SnackBar(content: Text(bulkMsg)),
         );
       }
-      return false;
-    }
-    final p = _repository.getByProductId(id);
-    if (p == null) {
-      notifyOrDialog('商品が見つかりません');
       return false;
     }
     if (p.extractionStatus != RakutenUrlExtractionStatus.success ||

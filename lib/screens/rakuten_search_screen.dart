@@ -19,6 +19,7 @@ import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
 import '../utils/rakuten_keyword_search_sort.dart';
+import '../utils/room_sync_log.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
 import '../widgets/rakuten_search_condition_fields.dart';
 import '../widgets/rakuten_search_detail_condition_entry_chrome.dart';
@@ -808,7 +809,25 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     });
   }
 
+  bool _blockRoomTourSearchForSnack(String blockedAction) {
+    final bulk = context.read<BulkOperationStateController>();
+    if (!bulk.isRoomTourSearchBlocking) return false;
+    roomSyncUiGuardLog(
+      'blockedAction=$blockedAction currentJob=${bulk.roomTourBlockingJobLabel} '
+      'message=searchPaused',
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          BulkOperationStateController.roomTourSearchBlockedUserMessage,
+        ),
+      ),
+    );
+    return true;
+  }
+
   void _runSearch(BuildContext context) {
+    if (_blockRoomTourSearchForSnack('search')) return;
     _dismissKeywordSearchKeyboard();
     if (_savedShopKeywordEntryEffective) {
       final scopedShop = _effectiveShopCodeForApi(context);
@@ -2194,6 +2213,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   void _runShopDiscovery(BuildContext context) {
+    if (_blockRoomTourSearchForSnack('search')) return;
     final keyword = _shopDiscoveryKeywordController.text.trim();
     final genreId = _selectedDiscoveryGenreId;
     if (keyword.isEmpty && (genreId == null || genreId.isEmpty)) {
@@ -2327,6 +2347,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   Future<void> _runGenreSearch(BuildContext context) async {
+    if (_blockRoomTourSearchForSnack('search')) return;
     if (_selectedGenreId == null || _selectedGenreId!.isEmpty) {
       ScaffoldMessenger.of(
         context,
@@ -2468,7 +2489,24 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     List<RakutenSearchItem> source,
   ) async {
     if (_isBulkRegistering || _selectedProductIds.isEmpty) return;
-    final bulk = context.read<BulkOperationStateController>();
+    final bulkCtl = context.read<BulkOperationStateController>();
+    if (bulkCtl.isRoomTourSearchBlocking) {
+      roomSyncUiGuardLog(
+        'blockedAction=collectFromSearch currentJob=${bulkCtl.roomTourBlockingJobLabel} '
+        'message=searchPaused',
+      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              BulkOperationStateController.roomTourSearchBlockedUserMessage,
+            ),
+          ),
+        );
+      }
+      return;
+    }
+    final bulk = bulkCtl;
     if (bulk.isRoomImportRunning ||
         bulk.isMetadataEnriching ||
         bulk.isRoomReactionSyncRunning) {

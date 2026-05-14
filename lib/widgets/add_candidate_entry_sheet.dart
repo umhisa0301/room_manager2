@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../state/bulk_operation_state_controller.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../utils/room_sync_log.dart';
 
 /// シート内 [BuildContext]（通常は `showModalBottomSheet` の builder 引数）を渡すアクション。
 typedef AddCandidateEntrySheetAction =
@@ -40,13 +43,19 @@ Future<void> showAddCandidateEntryBottomSheet({
           top: false,
           child: SingleChildScrollView(
             padding: RakutenSearchScreenUi.addCandidateSheetContentPadding,
-            child: AddCandidateEntrySheetBody(
-              onTapRakutenProductSearch: () =>
-                  onTapRakutenProductSearch(sheetContext),
-              onTapGenreSearch: () => onTapGenreSearch(sheetContext),
-              onTapSavedShops: () => onTapSavedShops(sheetContext),
-              onTapAddFromUrl: () => onTapAddFromUrl(sheetContext),
-              onTapShopDiscovery: () => onTapShopDiscovery(sheetContext),
+            child: Consumer<BulkOperationStateController>(
+              builder: (context, bulk, _) {
+                final blocked = bulk.isRoomTourSearchBlocking;
+                return AddCandidateEntrySheetBody(
+                  roomTourSearchBlocked: blocked,
+                  onTapRakutenProductSearch: () =>
+                      onTapRakutenProductSearch(sheetContext),
+                  onTapGenreSearch: () => onTapGenreSearch(sheetContext),
+                  onTapSavedShops: () => onTapSavedShops(sheetContext),
+                  onTapAddFromUrl: () => onTapAddFromUrl(sheetContext),
+                  onTapShopDiscovery: () => onTapShopDiscovery(sheetContext),
+                );
+              },
             ),
           ),
         ),
@@ -59,6 +68,7 @@ Future<void> showAddCandidateEntryBottomSheet({
 class AddCandidateEntrySheetBody extends StatelessWidget {
   const AddCandidateEntrySheetBody({
     super.key,
+    required this.roomTourSearchBlocked,
     required this.onTapRakutenProductSearch,
     required this.onTapGenreSearch,
     required this.onTapSavedShops,
@@ -66,11 +76,29 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
     required this.onTapShopDiscovery,
   });
 
+  final bool roomTourSearchBlocked;
   final VoidCallback onTapRakutenProductSearch;
   final VoidCallback onTapGenreSearch;
   final VoidCallback onTapSavedShops;
   final VoidCallback onTapAddFromUrl;
   final VoidCallback onTapShopDiscovery;
+
+  bool _blockIfRoomTourBusy(BuildContext context, String blockedAction) {
+    if (!roomTourSearchBlocked) return false;
+    final bulk = context.read<BulkOperationStateController>();
+    roomSyncUiGuardLog(
+      'blockedAction=$blockedAction currentJob=${bulk.roomTourBlockingJobLabel} '
+      'message=searchPaused',
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          BulkOperationStateController.roomTourSearchBlockedUserMessage,
+        ),
+      ),
+    );
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +106,17 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (roomTourSearchBlocked) ...[
+          Text(
+            'ROOM同期中です。新しい商品検索は同期完了後に利用できます。',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: HomeScreenColors.titlePrimary,
+              fontWeight: FontWeight.w600,
+              height: 1.35,
+            ),
+          ),
+          const SizedBox(height: AppDimensions.spacingSm),
+        ],
         Text(
           '探すグループ',
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -96,39 +135,69 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
           style: RakutenSearchScreenUi.bodyCaption(context),
         ),
         const SizedBox(height: AppDimensions.spacingMd),
-        AddCandidateEntrySheetMenuItem(
-          icon: Icons.travel_explore_rounded,
-          title: '楽天で商品を探す',
-          description: 'キーワード検索から候補を追加します',
-          onTap: onTapRakutenProductSearch,
+        Opacity(
+          opacity: roomTourSearchBlocked ? 0.45 : 1,
+          child: AddCandidateEntrySheetMenuItem(
+            icon: Icons.travel_explore_rounded,
+            title: '楽天で商品を探す',
+            description: 'キーワード検索から候補を追加します',
+            onTap: () {
+              if (_blockIfRoomTourBusy(context, 'search')) return;
+              onTapRakutenProductSearch();
+            },
+          ),
         ),
         const SizedBox(height: AppDimensions.spacingSm),
-        AddCandidateEntrySheetMenuItem(
-          icon: Icons.category_rounded,
-          title: 'ジャンルから探す',
-          description: 'ジャンル指定の一覧から候補を追加します',
-          onTap: onTapGenreSearch,
+        Opacity(
+          opacity: roomTourSearchBlocked ? 0.45 : 1,
+          child: AddCandidateEntrySheetMenuItem(
+            icon: Icons.category_rounded,
+            title: 'ジャンルから探す',
+            description: 'ジャンル指定の一覧から候補を追加します',
+            onTap: () {
+              if (_blockIfRoomTourBusy(context, 'search')) return;
+              onTapGenreSearch();
+            },
+          ),
         ),
         const SizedBox(height: AppDimensions.spacingSm),
-        AddCandidateEntrySheetMenuItem(
-          icon: Icons.storefront_rounded,
-          title: '保存ショップで探す',
-          description: '保存したショップを選び、その店内だけをキーワード検索します',
-          onTap: onTapSavedShops,
+        Opacity(
+          opacity: roomTourSearchBlocked ? 0.45 : 1,
+          child: AddCandidateEntrySheetMenuItem(
+            icon: Icons.storefront_rounded,
+            title: '保存ショップで探す',
+            description: '保存したショップを選び、その店内だけをキーワード検索します',
+            onTap: () {
+              if (_blockIfRoomTourBusy(context, 'search')) return;
+              onTapSavedShops();
+            },
+          ),
         ),
         const SizedBox(height: AppDimensions.spacingSm),
-        AddCandidateEntrySheetMenuItem(
-          icon: Icons.link_rounded,
-          title: 'URLから追加',
-          description: '商品ページのURLから検索します',
-          onTap: onTapAddFromUrl,
+        Opacity(
+          opacity: roomTourSearchBlocked ? 0.45 : 1,
+          child: AddCandidateEntrySheetMenuItem(
+            icon: Icons.link_rounded,
+            title: 'URLから追加',
+            description: '商品ページのURLから検索します',
+            onTap: () {
+              if (_blockIfRoomTourBusy(context, 'urlAdd')) return;
+              onTapAddFromUrl();
+            },
+          ),
         ),
         const SizedBox(height: AppDimensions.spacingSm),
-        AddCandidateEntrySheetMenuItem(
-          icon: Icons.hiking_rounded,
-          title: 'ショップ発掘',
-          description: '新しいショップを見つけて保存します（店内検索の材料になります）',
-          onTap: onTapShopDiscovery,
+        Opacity(
+          opacity: roomTourSearchBlocked ? 0.45 : 1,
+          child: AddCandidateEntrySheetMenuItem(
+            icon: Icons.hiking_rounded,
+            title: 'ショップ発掘',
+            description: '新しいショップを見つけて保存します（店内検索の材料になります）',
+            onTap: () {
+              if (_blockIfRoomTourBusy(context, 'search')) return;
+              onTapShopDiscovery();
+            },
+          ),
         ),
       ],
     );

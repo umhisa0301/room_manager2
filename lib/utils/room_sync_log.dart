@@ -747,3 +747,43 @@ void roomReactionSyncResultLog(String message) {
     RoomImportDebugLogBuffer.add(line);
   }
 }
+
+void roomBatchFetchPlanLog(String message) {
+  final line = '[ROOM_BATCH_FETCH_PLAN] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomBatchFetchResultLog(String message) {
+  final line = '[ROOM_BATCH_FETCH_RESULT] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomBatchCompareResultLog(String message) {
+  final line = '[ROOM_BATCH_COMPARE_RESULT] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomBatchSaveResultLog(String message) {
+  final line = '[ROOM_BATCH_SAVE_RESULT] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomSyncUiGuardLog(String message) {
+  final line = '[ROOM_SYNC_UI_GUARD] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}

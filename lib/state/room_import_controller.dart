@@ -165,12 +165,6 @@ class RoomImportController extends ChangeNotifier {
         result = null;
       }
 
-      if (context.mounted) {
-        await context
-            .read<RakutenManagedProductProvider>()
-            .refreshManagedProductList(showLoadingIndicator: false);
-      }
-
       if (result != null &&
           !result.hasFatalError &&
           result.newlyImportedProductIds.isNotEmpty &&
@@ -201,11 +195,6 @@ class RoomImportController extends ChangeNotifier {
           'failed=${er.failedInBatch} rateLimited=${er.pausedByRateLimit} '
           'pendingAfter=${er.remainingPending}',
         );
-        if (context.mounted) {
-          await context
-              .read<RakutenManagedProductProvider>()
-              .refreshManagedProductList(showLoadingIndicator: false);
-        }
         roomImportBatchResultLog(
           'imported=${result.newlyCollectedCount} '
           'enrichedSuccess=$enrichmentUpdated '
@@ -221,6 +210,12 @@ class RoomImportController extends ChangeNotifier {
           'nextCursor=${result.collectsLastNextCursor ?? '-'} '
           'cursorAction=none',
         );
+      }
+
+      if (context.mounted) {
+        await context
+            .read<RakutenManagedProductProvider>()
+            .refreshManagedProductList(showLoadingIndicator: false);
       }
 
       if (result == null) {
