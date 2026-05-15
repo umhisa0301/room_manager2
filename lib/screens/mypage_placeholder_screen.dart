@@ -1182,7 +1182,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
             : (reactionOnly
                   ? '現在反応数を同期中です'
                   : (enrichingOnly
-                        ? '現在未補完の商品情報を再取得中です'
+                        ? 'ショップ名・ジャンルを再確認中です'
                         : ''));
 
         return AppCard(
@@ -1318,7 +1318,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                           ? null
                           : () => _handleEnrichRoomMetadata(context),
                       icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
-                      label: const Text('未補完の商品情報を再取得'),
+                      label: const Text('ショップ名・ジャンルを再確認'),
                     ),
                     const SizedBox(height: 6),
                     Text(

@@ -78,8 +78,8 @@ class _RoomImportEnrichmentPendingHintState
                 children: [
                   Text(
                     cooldown
-                        ? '商品情報の補完を一時停止しています'
-                        : '商品情報を補完中です',
+                        ? 'ショップ名・ジャンルの確認を一時停止しています'
+                        : 'ショップ名・ジャンルを確認中です',
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       height: 1.35,
@@ -88,8 +88,8 @@ class _RoomImportEnrichmentPendingHintState
                   const SizedBox(height: 2),
                   Text(
                     sum
-                        ? '未補完：$n件 / 今回成功：$succ件 / 今回失敗：$fail件'
-                        : '未補完：$n件',
+                        ? '未確認：$n件 / 今回成功：$succ件 / 今回失敗：$fail件'
+                        : '未確認：$n件',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: subtle,
                       height: 1.35,
@@ -120,7 +120,7 @@ class _RoomImportEnrichmentPendingHintState
                   ],
                   const SizedBox(height: 2),
                   Text(
-                    '価格・画像・ショップ・ジャンルは補完できた商品から反映されます',
+                    '商品名・価格・画像はROOMから取得し、ショップ名・ジャンルは確認できた商品から反映されます',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: subtle,
                       height: 1.35,

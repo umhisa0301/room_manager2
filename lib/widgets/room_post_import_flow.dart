@@ -130,7 +130,7 @@ abstract final class RoomPostImportFlow {
         productRepository: productRepo,
       );
       messenger.showSnackBar(
-        const SnackBar(content: Text('未補完の商品情報を再取得しています…')),
+        const SnackBar(content: Text('ショップ名・ジャンルを再確認しています…')),
       );
       final result = await svc.enrichRoomImportedProducts(
         limit: RoomImportLimitPolicy.manualEnrichMaxProductsPerRun,
@@ -186,7 +186,7 @@ abstract final class RoomPostImportFlow {
           SnackBar(
             content: Text(
               'しばらくしてから自動で補完を再開します'
-              '（未補完が${result.remainingPending}件残っています）。',
+              '（未確認が${result.remainingPending}件残っています）。',
             ),
           ),
         );
@@ -203,7 +203,7 @@ abstract final class RoomPostImportFlow {
         messenger.showSnackBar(
           SnackBar(
             content: Text(
-              '商品情報を補完しました：成功 ${result.updated}件 / 失敗 ${result.failedInBatch}件 / 残り ${result.remainingPending}件',
+              'ショップ名・ジャンルを確認しました：成功 ${result.updated}件 / 失敗 ${result.failedInBatch}件 / 残り ${result.remainingPending}件',
             ),
           ),
         );
@@ -298,7 +298,7 @@ abstract final class RoomPostImportFlow {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            '商品情報取得が完了しました：成功$suc件 / 失敗$fail件\n未補完：$pendingAll件',
+            '取り込みが完了しました：成功$suc件 / 失敗$fail件\nショップ名・ジャンル未確認：$pendingAll件',
           ),
         ),
       );
@@ -476,7 +476,7 @@ abstract final class RoomPostImportFlow {
                   if (result.postImportEnrichHitTimeLimit) ...[
                     const SizedBox(height: 8),
                     Text(
-                      '残りは「未補完の商品情報を再取得」から再試行できます',
+                      '残りは「ショップ名・ジャンルを再確認」から再試行できます',
                       textAlign: TextAlign.center,
                       style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
                         color: AppColors.textSecondary,
@@ -628,8 +628,8 @@ abstract final class RoomPostImportFlow {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            '未補完が $pendingEnrich 件あります。'
-                            'ホームまたはマイページの「未補完の商品情報を再取得」から実行できます。',
+                            'ショップ名・ジャンル未確認が $pendingEnrich 件あります。'
+                            'ホームまたはマイページの「ショップ名・ジャンルを再確認」から実行できます。',
                             style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
                               height: 1.45,
                               color: AppColors.textSecondary,

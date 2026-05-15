@@ -104,6 +104,7 @@ class RoomSyncService {
 
       final userSeg = _roomUserSegment(profile);
       final listingFastPath = <String, RoomUrlResolveSuccess>{};
+      final metadataSourceByRoomKey = <String, String>{};
       String? listingHtml;
       final listingUrl = RoomProfileUrlValidationService.buildItemsUrl(profile);
       if (listingUrl.isEmpty) {
@@ -590,6 +591,16 @@ class RoomSyncService {
                 userSeg,
                 listingFastPath,
               );
+              final rowId = raw['id'];
+              if (rowId is String && rowId.isNotEmpty) {
+                final built = 'https://room.rakuten.co.jp/$userSeg/$rowId';
+                final rk = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(
+                  built,
+                );
+                if (rk.isNotEmpty) {
+                  metadataSourceByRoomKey[rk] = 'collects';
+                }
+              }
             }
             var appended = 0;
             for (final k in page.roomPageKeysOrdered) {
@@ -863,11 +874,13 @@ class RoomSyncService {
         roomSyncVerboseLog('取り込み済み判定（ROOMキー）: $preSynced');
 
         RoomUrlResolveOutcome resolved;
+        var metadataSource = metadataSourceByRoomKey[normalizedKey] ?? 'roomDetailHtml';
         roomImportPerfLog('roomPageFetchStart index=$ordinal');
         final roomPageSw = Stopwatch()..start();
         final fast = listingFastPath[normalizedKey];
         if (fast != null) {
           resolved = fast;
+          metadataSource = metadataSourceByRoomKey[normalizedKey] ?? 'collects';
           roomPageSw.stop();
           fastPathCount++;
           roomFastPathLog(
@@ -927,6 +940,12 @@ class RoomSyncService {
         }
 
         var rs = resolved;
+        if (rs.roomRatRedirectUrl.trim().isNotEmpty ||
+            rs.roomRedirectShopCode.trim().isNotEmpty) {
+          metadataSource = 'ratRedirect';
+        } else if (metadataSource != 'collects') {
+          metadataSource = 'roomDetailHtml';
+        }
         final parsed = rs.rakutenItem;
         roomImportPerfLog('rakutenUrlResolveStart index=$ordinal');
         final rakutenResolveSw = Stopwatch()..start();
@@ -1132,15 +1151,20 @@ class RoomSyncService {
                     ? '${titleLog.substring(0, 100)}…'
                     : titleLog;
                 final imgRaw = (rs.roomPageImageUrl ?? '').trim();
-                final imgOut = imgRaw.length > 120
-                    ? '${imgRaw.substring(0, 120)}…'
-                    : imgRaw;
                 final imageFound = imgRaw.isNotEmpty;
                 final hint = listingHintFromResolve;
                 final priceFound = hint != null && hint > 0;
-                roomImportListingMetadataLog(
-                  'productId=$newPid title=$tOut imageFound=$imageFound '
-                  'priceFound=$priceFound imageUrl=$imgOut listingPrice=${hint ?? '-'}',
+                final shopCodeLog = verified.shopCode.trim();
+                final urlProductCodeLog = verified.itemPathSegment.trim();
+                final rakutenUrlLog = parsed.rakutenUrl.trim();
+                roomImportRoomMetadataLog(
+                  'productId=$newPid titleFound=${tOut.isNotEmpty} '
+                  'imageFound=$imageFound priceFound=$priceFound '
+                  'shopCode=$shopCodeLog urlProductCode=$urlProductCodeLog '
+                  'rakutenItemUrl=$rakutenUrlLog roomPostUrl=$normalizedKey '
+                  'roomLikeCount=${rs.roomLikeCount ?? '-'} '
+                  'roomCommentCount=${rs.roomCommentCount ?? '-'} '
+                  'source=$metadataSource',
                 );
               }
             }

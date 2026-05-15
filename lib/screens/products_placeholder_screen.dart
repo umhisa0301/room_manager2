@@ -2556,11 +2556,11 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                               ButtonSegment(
                                 value:
                                     _RoomImportMetaListFilter.incompleteOnly,
-                                label: Text('未補完'),
+                                label: Text('未確認'),
                               ),
                               ButtonSegment(
                                 value: _RoomImportMetaListFilter.completeOnly,
-                                label: Text('補完済'),
+                                label: Text('確認済'),
                               ),
                             ],
                             selected: <_RoomImportMetaListFilter>{

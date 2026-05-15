@@ -29,6 +29,15 @@ final class RoomImportExistingRowMatch {
   final int listIndex;
 }
 
+bool _hasHttpImageUrl(String raw) {
+  final t = raw.trim();
+  if (t.isEmpty) return false;
+  final u = Uri.tryParse(t);
+  if (u == null) return false;
+  final s = u.scheme.toLowerCase();
+  return s == 'http' || s == 'https';
+}
+
 /// 楽天検索由来の商品をローカル管理する（コレ候補・将来のコレ済・抽出結果などの拡張前提）。
 class RakutenManagedProductRepository {
   RakutenManagedProductRepository(this._prefs);
@@ -392,15 +401,19 @@ class RakutenManagedProductRepository {
       final mergedGenreId =
           api.genreId.trim().isNotEmpty ? api.genreId : e.genreId;
       final learnedComp = persistRoomApiCompositeItemCode.trim();
+      final roomHasPrice = e.itemPrice > 0;
+      final roomHasImage = _hasHttpImageUrl(e.imageUrl);
+      final apiPriceOk = api.itemPrice > 0;
+      final apiImageOk = api.imageUrl.trim().isNotEmpty;
       return e.copyWith(
         itemName: api.itemName.trim().isNotEmpty ? api.itemName : e.itemName,
-        itemPrice: api.itemPrice > 0 ? api.itemPrice : e.itemPrice,
+        itemPrice: !roomHasPrice && apiPriceOk ? api.itemPrice : e.itemPrice,
         itemUrl: api.itemUrl.trim().isNotEmpty ? api.itemUrl : e.itemUrl,
         rakutenUrl: api.itemUrl.trim().isNotEmpty ? api.itemUrl.trim() : e.rakutenUrl,
         affiliateUrl: api.affiliateUrl.trim().isNotEmpty
             ? api.affiliateUrl.trim()
             : e.affiliateUrl,
-        imageUrl: api.imageUrl.trim().isNotEmpty ? api.imageUrl : e.imageUrl,
+        imageUrl: !roomHasImage && apiImageOk ? api.imageUrl : e.imageUrl,
         shopName: mergedShopName,
         shopUrl: api.shopUrl.trim().isNotEmpty ? api.shopUrl : e.shopUrl,
         shopCode: api.shopCode.trim().isNotEmpty ? api.shopCode : e.shopCode,
@@ -430,13 +443,16 @@ class RakutenManagedProductRepository {
     if (before != null && after != null) {
       final apiShopOk =
           api.shopName.trim().isNotEmpty && api.shopName.trim() != 'ショップ名不明';
+      final roomHadPrice = before.itemPrice > 0;
+      final roomHadImage = before.imageUrl.trim().isNotEmpty;
       final priceSaved = api.itemPrice > 0 &&
+          !roomHadPrice &&
           after.itemPrice == api.itemPrice &&
-          (before.itemPrice != after.itemPrice || before.itemPrice <= 0);
+          before.itemPrice != after.itemPrice;
       final imageSaved = api.imageUrl.trim().isNotEmpty &&
+          !roomHadImage &&
           after.imageUrl.trim() == api.imageUrl.trim() &&
-          (before.imageUrl.trim().isEmpty ||
-              before.imageUrl.trim() != after.imageUrl.trim());
+          before.imageUrl.trim() != after.imageUrl.trim();
       final shopNameSaved = apiShopOk &&
           after.shopName.trim() == api.shopName.trim() &&
           before.shopName.trim() != after.shopName.trim();
@@ -445,6 +461,15 @@ class RakutenManagedProductRepository {
       roomImportSaveLog(
         'changedPrice=$priceSaved changedImage=$imageSaved '
         'changedShopName=$shopNameSaved changedGenreName=$genreNameSaved',
+      );
+      final comp = after.roomApiCompositeItemCode.trim().isNotEmpty
+          ? after.roomApiCompositeItemCode.trim()
+          : persistRoomApiCompositeItemCode.trim();
+      roomImportApiSupplementSuccessLog(
+        'productId=$id apiCompositeItemCode=${comp.isEmpty ? '-' : comp} '
+        'shopName=${after.shopName.trim()} genreId=${after.genreId.trim()} '
+        'genreName=${after.genreName.trim()} priceUpdated=$priceSaved '
+        'imageUpdated=$imageSaved shopNameUpdated=$shopNameSaved genreUpdated=$genreNameSaved',
       );
     }
     final row = getByProductId(id);

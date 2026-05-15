@@ -104,7 +104,7 @@ class BulkOperationStateController extends ChangeNotifier {
       return '現在反応数を同期中です。完了後にお試しください。';
     }
     if (_metadataEnrich) {
-      return '現在未補完の商品情報を再取得中です。完了後にお試しください。';
+      return 'ショップ名・ジャンルを再確認中です。完了後にお試しください。';
     }
     return null;
   }

@@ -34,8 +34,8 @@ class RoomImportEnrichmentNeedFlags {
   final bool needsShopName;
   final bool needsGenre;
 
-  bool get willEnrich =>
-      needsPrice || needsImage || needsShopName || needsGenre;
+  /// 楽天API補完キュー対象はショップ名・ジャンルの未確認のみ（価格・画像はROOM由来を優先）。
+  bool get willEnrich => needsShopName || needsGenre;
 }
 
 /// [enrichRoomImportedProducts] の実行結果。
@@ -307,9 +307,7 @@ class RoomImportMetadataEnrichmentService {
         restrictToProductIdsInOrder: restrict,
         maxRunDuration: maxRunDuration,
         onEnrichSlotProgress: onEnrichSlotProgress,
-        allowRoomDetailRedirectRecovery: restrict != null &&
-            restrict.isNotEmpty &&
-            applyPostImportAutoCap,
+        allowRoomDetailRedirectRecovery: false,
       );
     } finally {
       _singleFlight = false;
@@ -1076,18 +1074,17 @@ class RoomImportMetadataEnrichmentService {
               break;
             case _RoomImportEnrichMethod.shopTitleKeyword:
               final kw = _keywordForShopTitleSearch(chosen, pid);
-              env = await _searchRepository.fetchRoomImportEnrichmentSingleSearch(
-                condition: RakutenProductSearchCondition(
-                  keyword: kw,
-                  shopCode: codes.keywordShopCode,
-                  itemCode: null,
-                ),
-                phase: 'shopTitleKeyword',
-                page: 1,
-                hits: 30,
-                matchPureItemForPick: '',
-                matchShopCodeForPick: codes.keywordShopCode,
-                preferShopFirstForKeyword: true,
+              final slugForSearch = codes.urlPathMatchSegment.trim().isNotEmpty
+                  ? codes.urlPathMatchSegment.trim()
+                  : _urlProductCodeForLog(chosen);
+              final roomPrice = chosen.itemPrice > 0 ? chosen.itemPrice : null;
+              env = await _searchRepository.fetchRoomImportShopPriceKeywordEnrichment(
+                productId: pid,
+                shopCode: codes.keywordShopCode,
+                keyword: kw,
+                urlPathMatchSegment: slugForSearch,
+                roomPrice: roomPrice,
+                phase: 'shopPriceKeyword',
               );
               break;
             case _RoomImportEnrichMethod.productIdKeyword:
@@ -1194,13 +1191,13 @@ class RoomImportMetadataEnrichmentService {
 
         final slugCheck = codes.urlPathMatchSegment.trim();
         if (slugCheck.isNotEmpty &&
-            (chosenMethod == _RoomImportEnrichMethod.shopTitleKeyword ||
-                chosenMethod == _RoomImportEnrichMethod.productIdKeyword)) {
+            chosenMethod == _RoomImportEnrichMethod.productIdKeyword) {
           if (!roomImportSearchItemUrlsMatchStoredProduct(
             item: env.item!,
             rawItemMap: null,
             storedProductId: pid,
             urlPathMatchSegment: slugCheck,
+            roomShopCode: shopCodeLog,
           )) {
             var envWork = env;
             final rowForDetail = _productRepository.getByProductId(pid) ?? chosen;

@@ -752,7 +752,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                         : '現在投稿済み商品を取り込み中です'))
             : (reactionOnly
                   ? '現在反応数を同期中です'
-                  : (enrichingOnly ? '現在未補完の商品情報を再取得中です' : ''));
+                  : (enrichingOnly ? 'ショップ名・ジャンルを再確認中です' : ''));
 
         final statusLine = !hasRoomProfileUrl
             ? 'ROOMプロフィールURLを登録すると同期機能が使えます'
@@ -935,7 +935,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                                   context,
                                 ),
                       icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
-                      label: const Text('未補完の商品情報を再取得'),
+                      label: const Text('ショップ名・ジャンルを再確認'),
                     ),
                     const SizedBox(height: 6),
                     Text(

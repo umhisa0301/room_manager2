@@ -186,7 +186,7 @@ class RoomImportController extends ChangeNotifier {
           restrictToProductIdsInOrder: result.newlyImportedProductIds,
           maxRunDuration: const Duration(seconds: 20),
           onEnrichSlotProgress: (done, total) {
-            _importProcessingHint = '商品情報を初回取得中です $done / $total';
+            _importProcessingHint = 'ショップ名・ジャンルを確認中です $done / $total';
             notifyListeners();
           },
         );

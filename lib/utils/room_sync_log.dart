@@ -806,6 +806,42 @@ void roomImportListingMetadataLog(String message) {
   }
 }
 
+/// ROOM 取り込み時に ROOM 側から直接取得したメタ（collects / 詳細HTML / rat-redirect）。
+void roomImportRoomMetadataLog(String message) {
+  final line = '[ROOM_IMPORT_ROOM_METADATA] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+/// 楽天API補完: shopCode + 価格帯 + keyword 検索の条件ログ。
+void roomImportApiSearchByPriceLog(String message) {
+  final line = '[ROOM_IMPORT_API_SEARCH_BY_PRICE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+/// 楽天API補完: 候補1件の同一商品判定ログ。
+void roomImportApiCandidateMatchLog(String message) {
+  final line = '[ROOM_IMPORT_API_CANDIDATE_MATCH] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+/// 楽天API補完: マージ成功時の保存内容ログ。
+void roomImportApiSupplementSuccessLog(String message) {
+  final line = '[ROOM_IMPORT_API_SUPPLEMENT_SUCCESS] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void roomImportInitialEnrichStartLog(String message) {
   final line = '[ROOM_IMPORT_INITIAL_ENRICH_START] $message';
   if (kDebugMode) {
