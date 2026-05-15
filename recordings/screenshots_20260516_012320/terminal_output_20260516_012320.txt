@@ -1,0 +1,1514 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-16 01:23:20
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_012320.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260516_012320.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260516_012320.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260516_012320.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260516_012320.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\terminal_output_20260516_012320.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 20352).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Resolving dependencies...
+Downloading packages...
+  async 2.13.0 (2.13.1 available)
+  characters 1.4.0 (1.4.1 available)
+  cli_util 0.4.2 (0.5.1 available)
+  cupertino_icons 1.0.8 (1.0.9 available)
+  flutter_lints 5.0.0 (6.0.0 available)
+  lints 5.1.1 (6.1.0 available)
+  matcher 0.12.17 (0.12.20 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.16.0 (1.18.2 available)
+  shared_preferences 2.5.4 (2.5.5 available)
+  shared_preferences_android 2.4.21 (2.4.23 available)
+  shared_preferences_platform_interface 2.4.1 (2.4.2 available)
+  test_api 0.7.6 (0.7.12 available)
+  url_launcher_ios 6.3.6 (6.4.1 available)
+  url_launcher_web 2.4.1 (2.4.3 available)
+  vector_math 2.2.0 (2.3.0 available)
+  vm_service 15.0.2 (15.2.0 available)
+  webview_flutter_android 4.10.15 (4.12.0 available)
+  xml 6.6.1 (7.0.1 available)
+  webview_flutter_wkwebview 3.24.2 (3.25.1 available)
+Got dependencies!
+20 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             11.4s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           6.3s
+D/FlutterJNI( 1787): Beginning load of flutter...
+D/FlutterJNI( 1787): flutter (null) was loaded normally!
+I/flutter ( 1787): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter ( 1787): verifyMode=false
+Syncing files to device SHG08...                                    72ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:52887/aLbSH5xPP2Q=/
+I/flutter ( 1787): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter ( 1787): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 1787): [ROOMコレ診断] loadAll 初回サマリー parsed=332 rawJsonList=332
+I/flutter ( 1787): [RECOMMEND_TRACE] savedBundle=true
+I/flutter ( 1787): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 1787): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=332 afterFilterLen=332 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=okui_okasi_8800_reitou title=お食い初め　料理セット│食器レンタル付の【冷凍版】│百日祝い（100日祝い）に天然鯛（たい）や歯固め石の他、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。盛り付けイメージ付きで安心。蛤吸（はますい）やお赤飯の追加購入も勿論OK。 status=done len=332
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_15000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-12000-rei roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/Choreographer( 1787): Skipped 207 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9101?uri=http://127.0.0.1:52887/aLbSH5xPP2Q=/
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=refresh
+I/flutter ( 1787): productId=
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=0
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=332
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 1787): source=provider
+I/flutter ( 1787): pendingCount=0
+I/flutter ( 1787): doneCount=332
+I/flutter ( 1787): filter=
+I/flutter ( 1787): tab=
+I/flutter ( 1787): [ROOMコレ診断] refreshManagedProductList 完了 total=332 candidate=0 done=332 ui=ready
+I/flutter ( 1787): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 1787): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter ( 1787): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 1787): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter ( 1787): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 1787): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 1787): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 1787): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-16T00:25:30.219964
+I/flutter ( 1787): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 1787): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 1787): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 1787): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-16T00:25:30.219964
+I/flutter ( 1787): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 1787): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=refresh
+I/flutter ( 1787): productId=
+I/flutter ( 1787): beforePendingCount=0
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=332
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 1787): source=screen
+I/flutter ( 1787): pendingCount=0
+I/flutter ( 1787): doneCount=332
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): filter=
+I/flutter ( 1787): tab=done
+I/flutter ( 1787): [ROOMコレ診断] refreshManagedProductList 完了 total=332 candidate=0 done=332 ui=ready
+I/flutter ( 1787): [ROOMコレ診断] ROOMコレ画面起動後 total=332 candidate=0 done=332 listUi=RakutenManagedProductListUiStatus.ready tabIdx=1
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=refresh
+I/flutter ( 1787): productId=
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=0
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=332
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 1787): source=provider
+I/flutter ( 1787): pendingCount=0
+I/flutter ( 1787): doneCount=332
+I/flutter ( 1787): filter=
+I/flutter ( 1787): tab=
+I/flutter ( 1787): [ROOMコレ診断] refreshManagedProductList 完了 total=332 candidate=0 done=332 ui=ready
+I/flutter ( 1787): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=332 afterFilterLen=332 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=okui_okasi_8800_reitou title=お食い初め　料理セット│食器レンタル付の【冷凍版】│百日祝い（100日祝い）に天然鯛（たい）や歯固め石の他、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。盛り付けイメージ付きで安心。蛤吸（はますい）やお赤飯の追加購入も勿論OK。 status=done len=332
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_15000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-12000-rei roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/WebViewFactory( 1787): Loading com.google.android.webview version 147.0.7727.137 (code 772713703)
+D/ApplicationLoaders( 1787): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2( 1787): Loading /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader( 1787): Configuring clns-5 for other apk /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/lib/arm64:/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider( 1787): version=147.0.7727.137 (772713703) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader( 1787): Load /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+D/nativeloader( 1787): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+I/cr_LibraryLoader( 1787): Successfully loaded native library
+I/cr_CachingUmaRecorder( 1787): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH( 1787): ScopedServiceBindingBatch.tryActivate: false
+E/chromium( 1787): [ERROR:android_webview/browser/variations/variations_seed_loader.cc:39] Seed missing signature.
+I/cr_CombinedPProvider( 1787): #registerProvider() provider:WV.yk@cb97a36 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider( 1787): #setManagerAndSource() 0
+I/cr_DisplayManager( 1787): Is Display Topology available: false
+I/cr_CombinedPProvider( 1787): #linkNativeInternal() 1
+D/CompatibilityChangeReporter( 1787): Compat change id reported: 183155436; UID 10458; state: ENABLED
+I/cr_AppResProvider( 1787): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 1787): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 1787): #onSettingsAvailable() 0
+I/cr_CombinedPProvider( 1787): #flushPolicies()
+W/chromium( 1787): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium( 1787): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 106043730
+D/CompatibilityChangeReporter( 1787): Compat change id reported: 214741472; UID 10458; state: ENABLED
+I/CameraManagerGlobal( 1787): Connecting to camera service
+D/CompatibilityChangeReporter( 1787): Compat change id reported: 171228096; UID 10458; state: ENABLED
+I/PlatformViewsController( 1787): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController( 1787): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter( 1787): Compat change id reported: 236825255; UID 10458; state: ENABLED
+W/libc    ( 1787): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 1787): type=1400 audit(0.0:526196): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/CompatibilityChangeReporter( 1787): Compat change id reported: 193247900; UID 10458; state: ENABLED
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+I/Choreographer( 1787): Skipped 65 frames!  The application may be doing too much work on its main thread.
+W/libc    ( 1787): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 1787): type=1400 audit(0.0:526197): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0( 1787): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0( 1787): Build Date              : 08/23/22
+I/AdrenoVK-0( 1787): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0( 1787): Local Branch            : 
+I/AdrenoVK-0( 1787): Remote Branch           : 
+I/AdrenoVK-0( 1787): Remote Branch           : 
+I/AdrenoVK-0( 1787): Reconstruct Branch      : 
+I/AdrenoVK-0( 1787): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0( 1787): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer( 1787): Davey! duration=1281ms; Flags=1, FrameTimelineVsyncId=610737375, IntendedVsync=4360812050618187, Vsync=4360813139982892, InputEventId=0, HandleInputStart=4360813149834968, AnimationStart=4360813149836114, PerformTraversalsStart=4360813149859708, DrawStart=4360813184301479, FrameDeadline=4360812067284853, FrameInterval=4360813149421739, FrameStartTime=16666666, SyncQueued=4360813314410854, SyncStart=4360813317902885, IssueDrawCommandsStart=4360813319388041, SwapBuffers=4360813333223249, FrameCompleted=4360813335124187, DequeueBufferDuration=5449219, QueueBufferDuration=1421198, GpuCompleted=4360813334537520, SwapBuffersCompleted=4360813335124187, DisplayPresentTime=0, CommandSubmissionCompleted=4360813333223249, 
+D/ProfileInstaller( 1787): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI( 1787): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+E/FrameEvents( 1787): updateAcquireFence: Did not find frame.
+W/o.room_manager2( 1787): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/base.apk' with 1 weak references
+W/o.room_manager2( 1787): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter ( 1787): [RECOMMEND_TRACE] trigger=cta
+I/flutter ( 1787): [RECOMMEND_TRIGGER] source=cta
+I/flutter ( 1787): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 1787): [RECOMMEND_TRIGGER] source=cta
+I/flutter ( 1787): [RECOMMEND_TRACE] trigger=cta
+I/flutter ( 1787): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 1787): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 1787): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-16T00:25:30.219964
+I/flutter ( 1787): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 1787): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 1787): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher( 1787): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 1787): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=none button=reaction visible=true reason=idle
+I/flutter ( 1787): [ROOM_SYNC_JOB_LOCK] action=acquire job=syncingReactions currentJob=none
+I/flutter ( 1787): [ROOM_REACTION_SYNC_START] limit=10
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=syncingReactions button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=syncingReactions button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=syncingReactions button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=syncingReactions button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=syncingReactions button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=syncingReactions button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=332 afterFilterLen=332 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=okui_okasi_8800_reitou title=お食い初め　料理セット│食器レンタル付の【冷凍版】│百日祝い（100日祝い）に天然鯛（たい）や歯固め石の他、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。盛り付けイメージ付きで安心。蛤吸（はますい）やお赤飯の追加購入も勿論OK。 status=done len=332
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_15000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-12000-rei roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOM_IMPORT_API] type=roomList status=200 durationMs=8742
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [ROOM_BATCH_FETCH_PLAN] job=reactionSync maxPages=2 maxItems=10 cursorMode=latestPlusResumeOnePage reason=budgetedReactionSync
+I/flutter ( 1787): [ROOM_IMPORT_API] type=roomPage status=200 durationMs=9768
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [ROOM_REACTION_SYNC_CURSOR] action=clear cursor=- reason=batchDoneNoResumeCursor lastProcessedRoomKey=-
+I/flutter ( 1787): [ROOM_BATCH_FETCH_RESULT] job=reactionSync pagesFetched=1 itemsFetched=20 durationMs=8746
+I/flutter ( 1787): [ROOM_REACTION_SYNC_STOP] reason=maxDurationReached pagesFetched=1 itemsChecked=1 updated=0 durationMs=18753 nextCursor=-
+I/flutter ( 1787): [ROOM_BATCH_COMPARE_RESULT] job=reactionSync fetchedItems=1 existingMatches=0 newCandidates=0 reactionChanged=0 unchanged=1
+I/flutter ( 1787): [ROOM_REACTION_SYNC_UI_RESULT] checkedItems=1 updatedItems=0 hasReactionItems=1 commentedItems=0 unchangedItems=1 topReactedProductIds= stopReason=maxDurationReached hasNextCursor=false message=反応を確認しました：確認1件 / 反応あり1件
+I/flutter ( 1787): [ROOM_BATCH_SAVE_RESULT] job=reactionSync saveTargets=0 saved=0 skippedUnchanged=1 refreshListOnce=true durationMs=117
+I/flutter ( 1787): [ROOM_REACTION_SYNC_RESULT] updated=0 itemsChecked=1 latestPageUpdated=0 resumedUpdated=0 nextCursor=- cursorAction=clear stopReason=maxDurationReached pagesFetched=1 durationMs=18872 apiCallsToRakuten=0
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=refresh
+I/flutter ( 1787): productId=
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=0
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=332
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 1787): source=provider
+I/flutter ( 1787): pendingCount=0
+I/flutter ( 1787): doneCount=332
+I/flutter ( 1787): filter=
+I/flutter ( 1787): tab=
+I/flutter ( 1787): [ROOMコレ診断] refreshManagedProductList 完了 total=332 candidate=0 done=332 ui=ready
+I/flutter ( 1787): [ROOM_SYNC_JOB_LOCK] action=release job=syncingReactions currentJob=none
+I/flutter ( 1787): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=332 afterFilterLen=332 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=okui_okasi_8800_reitou title=お食い初め　料理セット│食器レンタル付の【冷凍版】│百日祝い（100日祝い）に天然鯛（たい）や歯固め石の他、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。盛り付けイメージ付きで安心。蛤吸（はますい）やお赤飯の追加購入も勿論OK。 status=done len=332
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_15000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-12000-rei roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=332 afterFilterLen=332 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=okui_okasi_8800_reitou title=お食い初め　料理セット│食器レンタル付の【冷凍版】│百日祝い（100日祝い）に天然鯛（たい）や歯固め石の他、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。盛り付けイメージ付きで安心。蛤吸（はますい）やお赤飯の追加購入も勿論OK。 status=done len=332
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_15000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-12000-rei roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\room_manager2_shot_001.png
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=none button=import visible=true reason=idle
+I/flutter ( 1787): [ROOM_SYNC_JOB_LOCK] action=acquire job=importingCollectedItems currentJob=none
+I/flutter ( 1787): [ROOM_IMPORT_FLOW] action=importStart message=postImportInitialEnrich
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter ( 1787): [ROOM_SYNC] ROOM投稿取り込み 開始（最大10件）
+I/flutter ( 1787): [ROOM_IMPORT_PERF] totalStart
+I/flutter ( 1787): [ROOM_IMPORT_PERF] prepareStart
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter ( 1787): [ROOM_IMPORT_PERF] fetchRoomListStart url=https://room.rakuten.co.jp/room_def277c8b5/items
+I/flutter ( 1787): [ROOM_IMPORT_SOURCE_DECISION] job=import primary=collects pcHtmlSkipped=true reason=normalImportUsesCollects
+I/flutter ( 1787): [ROOM_IMPORT_PERF] extractRoomItemsStart
+I/flutter ( 1787): [ROOM_IMPORT_PERF] extractRoomItemsEnd found=0 durationMs=0
+I/flutter ( 1787): [ROOM_SYNC] 投稿一覧 0件 · 未取り込み推定 0件
+I/flutter ( 1787): [ROOM_BATCH_FETCH_PLAN] job=import maxPages=3 maxItems=10 cursorMode=sequential reason=cursorDependsOnPreviousPage
+I/flutter ( 1787): [ROOM_IMPORT_COLLECTS_POLICY] mode=normal maxPages=3 consecutiveKnownLimit=30 targetNewItems=10
+I/flutter ( 1787): [ROOM_IMPORT_CURSOR] action=load cursor=1700370989280244 reason=json lastProcessedRoomKey=https://room.rakuten.co.jp/room_def277c8b5/1700370989507328
+I/flutter ( 1787): [ROOM_IMPORT_COLLECTS_POLICY] mode=normal resumeAfterId=present
+I/flutter ( 1787): [ROOM_IMPORT_LISTING] source=collects page=1 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700370989280244
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=332 afterFilterLen=332 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=okui_okasi_8800_reitou title=お食い初め　料理セット│食器レンタル付の【冷凍版】│百日祝い（100日祝い）に天然鯛（たい）や歯固め石の他、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。盛り付けイメージ付きで安心。蛤吸（はますい）やお赤飯の追加購入も勿論OK。 status=done len=332
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_15000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-12000-rei roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\room_manager2_shot_002.png
+I/flutter ( 1787): [RECOMMEND_TRACE] trigger=cta
+I/flutter ( 1787): [RECOMMEND_TRIGGER] source=cta
+I/flutter ( 1787): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 1787): [RECOMMEND_TRIGGER] source=cta
+I/flutter ( 1787): [RECOMMEND_TRACE] trigger=cta
+I/flutter ( 1787): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 1787): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 1787): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-16T00:25:30.219964
+I/flutter ( 1787): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 1787): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 1787): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher( 1787): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 1787): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 1787): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9077
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [ROOM_SYNC_UI_GUARD] blockedAction=recommendCandidateAdd currentJob=importingCollectedItems message=ROOM同期中です。
+I/flutter ( 1787): 新しい商品検索は同期完了後に利用できます。
+I/flutter ( 1787): コレ済一覧の確認はそのまま行えます。
+I/flutter ( 1787): [ROOM_IMPORT_CURSOR] action=clear cursor=- reason=collectsLatestPageHasUnregistered lastProcessedRoomKey=-
+I/flutter ( 1787): [ROOM_IMPORT_COLLECTS_PROGRESS] page=1 foundNewOnPage=20 knownOnPage=0 totalNew=10 totalKnown=0 nextCursor=1700368093441124
+I/flutter ( 1787): [ROOM_IMPORT_LISTING] stop reason=enoughItems count=10 source=collects page=1
+I/flutter ( 1787): [ROOM_IMPORT_CURSOR] action=save cursor=1700368093441124 reason=persist lastProcessedRoomKey=https://room.rakuten.co.jp/room_def277c8b5/1700368094213133
+I/flutter ( 1787): [ROOM_IMPORT_COLLECTS_STOP] reason=enoughItems pagesFetched=1 newItems=10 knownItems=0 durationMs=9331
+I/flutter ( 1787): [ROOM_BATCH_FETCH_RESULT] job=import pagesFetched=1 itemsFetched=20 durationMs=9359
+I/flutter ( 1787): [ROOM_IMPORT_PERF] prepareEnd durationMs=9359
+I/flutter ( 1787): [ROOM_IMPORT_PREPARE_DETAIL] roomListHtmlFetchMs=0ms
+I/flutter ( 1787): [ROOM_IMPORT_PREPARE_DETAIL] collectsFetchMs=9333ms
+I/flutter ( 1787): [ROOM_IMPORT_PREPARE_DETAIL] existingProductsLoadMs=23ms
+I/flutter ( 1787): [ROOM_IMPORT_PREPARE_DETAIL] syncedKeyBuildMs=0ms
+I/flutter ( 1787): [ROOM_IMPORT_PREPARE_DETAIL] queueBuildMs=0ms
+I/flutter ( 1787): [ROOM_FASTPATH_SUMMARY] prepareQueueCanFastPath=10 prepareQueueSize=10 listingIndexedKeys=20
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=0 total=10
+I/flutter ( 1787): [ROOM_IMPORT_BATCH_START] mode=importWithInitialEnrichment limit=10 startStrategy=resumeCursor cursor=1700370989280244
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=0 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemStart index=1 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989252146
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=1 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchStart index=1
+I/flutter ( 1787): [ROOM_FASTPATH] resolvedFromListing=true shopCode=tokizenmiwa itemCode=okui_wakeari2 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700370989252146
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchEnd index=1 status=fastPath durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=1
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=1 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesStart index=1
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesEnd index=1 shopCode=tokizenmiwa itemCode=okui_wakeari2 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckStart index=1
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckEnd index=1 exists=false durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=tokizenmiwa itemCode=okui_wakeari2
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseStart index=1
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseEnd index=1 likes=2 comments=0 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveStart index=1
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=saving current=1
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter ( 1787): [REACTION_STATUS_SAVE] productId=okui_wakeari2 roomLikeCount=2 roomCommentCount=0 reactionStatus=hasReaction chipLabel=反応あり
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=roomImport
+I/flutter ( 1787): productId=okui_wakeari2
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=-1
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=-1
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveEnd index=1 durationMs=32
+I/flutter ( 1787): [ROOM_IMPORT_ROOM_METADATA] productId=okui_wakeari2 titleFound=true imageFound=false priceFound=false shopCode=tokizenmiwa urlProductCode=okui_wakeari2 rakutenItemUrl=https://item.rakuten.co.jp/tokizenmiwa/okui_wakeari2/ roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989252146 roomLikeCount=2 roomCommentCount=0 source=collects
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemEnd index=1 result=added durationMs=42
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=1 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemStart index=2 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989225180
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=2 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchStart index=2
+I/flutter ( 1787): [ROOM_FASTPATH] resolvedFromListing=true shopCode=tokizenmiwa itemCode=okui-10500 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700370989225180
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchEnd index=2 status=fastPath durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=2
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=2 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesStart index=2
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesEnd index=2 shopCode=tokizenmiwa itemCode=okui-10500 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckStart index=2
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckEnd index=2 exists=false durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=tokizenmiwa itemCode=okui-10500
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseStart index=2
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseEnd index=2 likes=1 comments=0 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveStart index=2
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=saving current=2
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter ( 1787): [REACTION_STATUS_SAVE] productId=okui-10500 roomLikeCount=1 roomCommentCount=0 reactionStatus=hasReaction chipLabel=反応あり
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=roomImport
+I/flutter ( 1787): productId=okui-10500
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=-1
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=-1
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveEnd index=2 durationMs=29
+I/flutter ( 1787): [ROOM_IMPORT_ROOM_METADATA] productId=okui-10500 titleFound=true imageFound=false priceFound=false shopCode=tokizenmiwa urlProductCode=okui-10500 rakutenItemUrl=https://item.rakuten.co.jp/tokizenmiwa/okui-10500/ roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989225180 roomLikeCount=1 roomCommentCount=0 source=collects
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemEnd index=2 result=added durationMs=32
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=2 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemStart index=3 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989207320
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=3 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchStart index=3
+I/flutter ( 1787): [ROOM_FASTPATH] resolvedFromListing=true shopCode=tokizenmiwa itemCode=okui_8500 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700370989207320
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchEnd index=3 status=fastPath durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=3
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=3 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesStart index=3
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesEnd index=3 shopCode=tokizenmiwa itemCode=okui_8500 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckStart index=3
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckEnd index=3 exists=false durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=tokizenmiwa itemCode=okui_8500
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseStart index=3
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseEnd index=3 likes=1 comments=0 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveStart index=3
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=saving current=3
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\room_manager2_shot_003.png
+I/flutter ( 1787): [REACTION_STATUS_SAVE] productId=okui_8500 roomLikeCount=1 roomCommentCount=0 reactionStatus=hasReaction chipLabel=反応あり
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=roomImport
+I/flutter ( 1787): productId=okui_8500
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=-1
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=-1
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveEnd index=3 durationMs=22
+I/flutter ( 1787): [ROOM_IMPORT_ROOM_METADATA] productId=okui_8500 titleFound=true imageFound=false priceFound=false shopCode=tokizenmiwa urlProductCode=okui_8500 rakutenItemUrl=https://item.rakuten.co.jp/tokizenmiwa/okui_8500/ roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989207320 roomLikeCount=1 roomCommentCount=0 source=collects
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemEnd index=3 result=added durationMs=26
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=3 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemStart index=4 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989181398
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=4 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchStart index=4
+I/flutter ( 1787): [ROOM_FASTPATH] resolvedFromListing=true shopCode=tokizenmiwa itemCode=tai_5000_gentei roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700370989181398
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchEnd index=4 status=fastPath durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=4
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=4 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesStart index=4
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesEnd index=4 shopCode=tokizenmiwa itemCode=tai_5000_gentei durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckStart index=4
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckEnd index=4 exists=false durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=tokizenmiwa itemCode=tai_5000_gentei
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseStart index=4
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseEnd index=4 likes=1 comments=0 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveStart index=4
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=saving current=4
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter ( 1787): [REACTION_STATUS_SAVE] productId=tai_5000_gentei roomLikeCount=1 roomCommentCount=0 reactionStatus=hasReaction chipLabel=反応あり
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=roomImport
+I/flutter ( 1787): productId=tai_5000_gentei
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=-1
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=-1
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveEnd index=4 durationMs=22
+I/flutter ( 1787): [ROOM_IMPORT_ROOM_METADATA] productId=tai_5000_gentei titleFound=true imageFound=false priceFound=false shopCode=tokizenmiwa urlProductCode=tai_5000_gentei rakutenItemUrl=https://item.rakuten.co.jp/tokizenmiwa/tai_5000_gentei/ roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989181398 roomLikeCount=1 roomCommentCount=0 source=collects
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemEnd index=4 result=added durationMs=25
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=4 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemStart index=5 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989144257
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=5 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchStart index=5
+I/flutter ( 1787): [ROOM_FASTPATH] resolvedFromListing=true shopCode=tokizenmiwa itemCode=oshichiya_5000 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700370989144257
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchEnd index=5 status=fastPath durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=5
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=5 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesStart index=5
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesEnd index=5 shopCode=tokizenmiwa itemCode=oshichiya_5000 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckStart index=5
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckEnd index=5 exists=false durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=tokizenmiwa itemCode=oshichiya_5000
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseStart index=5
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseEnd index=5 likes=2 comments=0 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveStart index=5
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=saving current=5
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter ( 1787): [REACTION_STATUS_SAVE] productId=oshichiya_5000 roomLikeCount=2 roomCommentCount=0 reactionStatus=hasReaction chipLabel=反応あり
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=roomImport
+I/flutter ( 1787): productId=oshichiya_5000
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=-1
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=-1
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveEnd index=5 durationMs=25
+I/flutter ( 1787): [ROOM_IMPORT_ROOM_METADATA] productId=oshichiya_5000 titleFound=true imageFound=false priceFound=false shopCode=tokizenmiwa urlProductCode=oshichiya_5000 rakutenItemUrl=https://item.rakuten.co.jp/tokizenmiwa/oshichiya_5000/ roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989144257 roomLikeCount=2 roomCommentCount=0 source=collects
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemEnd index=5 result=added durationMs=27
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=5 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemStart index=6 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989101395
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=6 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchStart index=6
+I/flutter ( 1787): [ROOM_FASTPATH] resolvedFromListing=true shopCode=tokizenmiwa itemCode=tai_3600 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700370989101395
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchEnd index=6 status=fastPath durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=6
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=6 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesStart index=6
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesEnd index=6 shopCode=tokizenmiwa itemCode=tai_3600 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckStart index=6
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckEnd index=6 exists=false durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=tokizenmiwa itemCode=tai_3600
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseStart index=6
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseEnd index=6 likes=2 comments=0 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveStart index=6
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=saving current=6
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter ( 1787): [REACTION_STATUS_SAVE] productId=tai_3600 roomLikeCount=2 roomCommentCount=0 reactionStatus=hasReaction chipLabel=反応あり
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=roomImport
+I/flutter ( 1787): productId=tai_3600
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=-1
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=-1
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveEnd index=6 durationMs=22
+I/flutter ( 1787): [ROOM_IMPORT_ROOM_METADATA] productId=tai_3600 titleFound=true imageFound=false priceFound=false shopCode=tokizenmiwa urlProductCode=tai_3600 rakutenItemUrl=https://item.rakuten.co.jp/tokizenmiwa/tai_3600/ roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370989101395 roomLikeCount=2 roomCommentCount=0 source=collects
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemEnd index=6 result=added durationMs=25
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=6 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemStart index=7 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700368094413401
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=7 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchStart index=7
+I/flutter ( 1787): [ROOM_FASTPATH] resolvedFromListing=true shopCode=sun-shop-r itemCode=10000043 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700368094413401
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchEnd index=7 status=fastPath durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=7
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=7 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesStart index=7
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesEnd index=7 shopCode=sun-shop-r itemCode=10000043 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckEnd index=7 exists=false durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=sun-shop-r itemCode=10000043
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseStart index=7
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseEnd index=7 likes=286 comments=11 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveStart index=7
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=saving current=7
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckStart index=7
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter ( 1787): [REACTION_STATUS_SAVE] productId=10000043 roomLikeCount=286 roomCommentCount=11 reactionStatus=hasReaction chipLabel=反応あり
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=roomImport
+I/flutter ( 1787): productId=10000043
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=-1
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=-1
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveEnd index=7 durationMs=21
+I/flutter ( 1787): [ROOM_IMPORT_ROOM_METADATA] productId=10000043 titleFound=true imageFound=false priceFound=false shopCode=sun-shop-r urlProductCode=10000043 rakutenItemUrl=https://item.rakuten.co.jp/sun-shop-r/10000043/ roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700368094413401 roomLikeCount=286 roomCommentCount=11 source=collects
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemEnd index=7 result=added durationMs=22
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=7 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemStart index=8 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700368094337347
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=8 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchStart index=8
+I/flutter ( 1787): [ROOM_FASTPATH] resolvedFromListing=true shopCode=sun-shop-r itemCode=garbo-10033240 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700368094337347
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchEnd index=8 status=fastPath durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=8
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=8 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesStart index=8
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesEnd index=8 shopCode=sun-shop-r itemCode=garbo-10033240 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckStart index=8
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckEnd index=8 exists=false durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=sun-shop-r itemCode=garbo-10033240
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseStart index=8
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseEnd index=8 likes=77 comments=0 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveStart index=8
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=saving current=8
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter ( 1787): [REACTION_STATUS_SAVE] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 reactionStatus=hasReaction chipLabel=反応あり
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=roomImport
+I/flutter ( 1787): productId=garbo-10033240
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=-1
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=-1
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveEnd index=8 durationMs=20
+I/flutter ( 1787): [ROOM_IMPORT_ROOM_METADATA] productId=garbo-10033240 titleFound=true imageFound=false priceFound=false shopCode=sun-shop-r urlProductCode=garbo-10033240 rakutenItemUrl=https://item.rakuten.co.jp/sun-shop-r/garbo-10033240/ roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700368094337347 roomLikeCount=77 roomCommentCount=0 source=collects
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemEnd index=8 result=added durationMs=21
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=8 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemStart index=9 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700368094272162
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=9 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchStart index=9
+I/flutter ( 1787): [ROOM_FASTPATH] resolvedFromListing=true shopCode=sun-shop-r itemCode=x23164 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700368094272162
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchEnd index=9 status=fastPath durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=9
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=9 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesStart index=9
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesEnd index=9 shopCode=sun-shop-r itemCode=x23164 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckStart index=9
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckEnd index=9 exists=false durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=sun-shop-r itemCode=x23164
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseStart index=9
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseEnd index=9 likes=68 comments=2 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveStart index=9
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=saving current=9
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter ( 1787): [REACTION_STATUS_SAVE] productId=x23164 roomLikeCount=68 roomCommentCount=2 reactionStatus=hasReaction chipLabel=反応あり
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=roomImport
+I/flutter ( 1787): productId=x23164
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=-1
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=-1
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveEnd index=9 durationMs=21
+I/flutter ( 1787): [ROOM_IMPORT_ROOM_METADATA] productId=x23164 titleFound=true imageFound=false priceFound=false shopCode=sun-shop-r urlProductCode=x23164 rakutenItemUrl=https://item.rakuten.co.jp/sun-shop-r/x23164/ roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700368094272162 roomLikeCount=68 roomCommentCount=2 source=collects
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemEnd index=9 result=added durationMs=22
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=9 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemStart index=10 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700368094213133
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=10 total=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchStart index=10
+I/flutter ( 1787): [ROOM_FASTPATH] resolvedFromListing=true shopCode=sun-shop-r itemCode=10000143 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700368094213133
+I/flutter ( 1787): [ROOM_IMPORT_PERF] roomPageFetchEnd index=10 status=fastPath durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=10 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesStart index=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] parseCodesEnd index=10 shopCode=sun-shop-r itemCode=10000143 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckStart index=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] existingCheckEnd index=10 exists=false durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=sun-shop-r itemCode=10000143
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseStart index=10
+I/flutter ( 1787): [ROOM_IMPORT_PERF] reactionParseEnd index=10 likes=63 comments=4 durationMs=0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveStart index=10
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=saving current=10
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter ( 1787): [REACTION_STATUS_SAVE] productId=10000143 roomLikeCount=63 roomCommentCount=4 reactionStatus=hasReaction chipLabel=反応あり
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=roomImport
+I/flutter ( 1787): productId=10000143
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=-1
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=-1
+I/flutter ( 1787): afterDoneCount=332
+I/flutter ( 1787): [ROOM_IMPORT_PERF] saveEnd index=10 durationMs=20
+I/flutter ( 1787): [ROOM_IMPORT_ROOM_METADATA] productId=10000143 titleFound=true imageFound=false priceFound=false shopCode=sun-shop-r urlProductCode=10000143 rakutenItemUrl=https://item.rakuten.co.jp/sun-shop-r/10000143/ roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700368094213133 roomLikeCount=63 roomCommentCount=4 source=collects
+I/flutter ( 1787): [ROOM_IMPORT_PERF] itemEnd index=10 result=added durationMs=21
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=processing current=10 total=10
+I/flutter ( 1787): [ROOM_BATCH_COMPARE_RESULT] job=import fetchedItems=10 existingMatches=0 newCandidates=10 reactionChanged=0 unchanged=0
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_BATCH_SAVE_RESULT] job=import saveTargets=10 saved=10 skippedUnchanged=0 refreshListOnce=true durationMs=74
+I/flutter ( 1787): [ROOM_IMPORT_API_SUMMARY] apiExecuted=0 apiSkipped=10 reason=deferredEnrichment fallbackRecovered=0 rateLimited=0 http400=0
+I/flutter ( 1787): [ROOM_FASTPATH_SUMMARY] fastPathCount=10 fallbackRoomPageCount=0 avgRoomPageMs=na estimatedSavedMs=0 listingIndexedKeys=20
+I/flutter ( 1787): [ROOM_SYNC] 完了 · 確認キュー 10件 · 新規コレ済10 · ROOMリンク追加0 · ページ側スキップ0 · 失敗0 · 一覧スキップ0
+I/flutter ( 1787): [ROOM_IMPORT_PERF] totalEnd durationMs=9713
+I/flutter ( 1787): [ROOM_IMPORT_INITIAL_ENRICH_START] importedProductIds=okui_wakeari2,okui-10500,okui_8500,tai_5000_gentei,oshichiya_5000,tai_3600,10000043,garbo-10033240,x23164,10000143 limit=10
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_QUEUE] pending=222 eligible=222 skippedCooldown=0 skippedFailed=0
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_PICK] productId=okui_wakeari2 failureReason= failureCount=0 selected=true
+I/flutter ( 1787): [ROOM_REDIRECT_PARSE_SOURCE] productId=okui_wakeari2 source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter ( 1787): productId=okui_wakeari2
+I/flutter ( 1787): urlProductCode=okui_wakeari2
+I/flutter ( 1787): reason=urlProductCodeIsNotApiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter ( 1787): productId=okui_wakeari2
+I/flutter ( 1787): shopCode=tokizenmiwa
+I/flutter ( 1787): urlProductCode=okui_wakeari2
+I/flutter ( 1787): apiCompositeItemCode=(empty)
+I/flutter ( 1787): decision=keywordShopCode
+I/flutter ( 1787): reason=urlProductCodeOnly
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_TARGET] productId=okui_wakeari2 needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API] productId=okui_wakeari2 index=1 maxPerRun=10 manualPacing=true delayMs=0 shopCode=tokizenmiwa itemCode=okui_wakeari2
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=okui_wakeari2 source=urlSlugOnly shopItemParam= kwShop=tokizenmiwa urlSlug=okui_wakeari2
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_METHOD] method=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter ( 1787): productId=okui_wakeari2
+I/flutter ( 1787): rawKeyword=お食い初め 料理 セット【ももかブルー(訳あり鯛)】これがあればお食い初めは大丈夫│百日祝い（100日祝い）に天然鯛（たい）やはまぐり他、歯固め石、お祝い箸マニュアル等。はますいやお赤飯の追加OK
+I/flutter ( 1787): normalizedKeyword=お食い初め 料理 セット これがあればお食い初めは大丈夫│百日祝い
+I/flutter ( 1787): rawLength=98
+I/flutter ( 1787): normalizedLength=33
+I/flutter ( 1787): phase=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_API_SEARCH_BY_PRICE] productId=okui_wakeari2 shopCode=tokizenmiwa roomPrice=- minPrice=- maxPrice=- keyword=お食い初め 料理 セット これがあればお食い初めは大丈夫│百日祝い priceConditionUsed=false
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopPriceKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=tokizenmiwa itemCode=(omit) keyword=お食い初め 料理 セット これがあればお食い初めは大丈夫│百日祝い minPrice=- maxPrice=- genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter ( 1787): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=お食い初め 料理 セット これがあればお食い初めは大丈夫│百日祝い genreId=- shopCode=tokizenmiwa itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 1787): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 1787): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%81%8A%E9%A3%9F%E3%81%84%E5%88%9D%E3%82%81+%E6%96%99%E7%90%86+%E3%82%BB%E3%83%83%E3%83%88+%E3%81%93%E3%82%8C%E3%81%8C%E3%81%82%E3%82%8C%E3%81%B0%E3%81%8A%E9%A3%9F%E3%81%84%E5%88%9D%E3%82%81%E3%81%AF%E5%A4%A7%E4%B8%88%E5%A4%AB%E2%94%82%E7%99%BE%E6%97%A5%E7%A5%9D%E3%81%84&shopCode=tokizenmiwa
+I/flutter ( 1787): [Rakuten] response status=200 page=1 bytes=60969
+I/flutter ( 1787): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 1787): [RECOMMEND_TRACE] rawCount=5
+I/flutter ( 1787): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=703
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_4600%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000156%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_4600%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000156%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000156 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000156 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_5900_minizen_r%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000191%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_5900_minizen_r%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000191%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000191 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000191 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_4600_sk%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000168%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_4600_sk%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000168%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000168 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000168 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_wakeari2%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000182%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_wakeari2%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000182%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000182 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000182 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_wakeari%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000181%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_wakeari%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000181%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000181 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000181 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [ROOM_IMPORT_API_CANDIDATE_MATCH] productId=okui_wakeari2 roomShopCode=tokizenmiwa roomUrlProductCode=okui_wakeari2 roomPrice=- candidateItemCode=tokizenmiwa:10000156 candidateShopCode=tokizenmiwa candidatePrice=3456 decodedPcUrl=https://item.rakuten.co.jp/tokizenmiwa/okui_4600/ decodedMobileUrl=http://m.rakuten.co.jp/tokizenmiwa/i/10000156/ shopMatched=true priceMatched=false urlSlugMatched=false matched=true reason=shopAndMobileItemLearned
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API_CODE_LEARNED] productId=okui_wakeari2 roomProductSlug=okui_wakeari2 apiCompositeItemCode=tokizenmiwa:10000156 source=apiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter ( 1787): [ROOM_IMPORT_API_SUPPLEMENT_SUCCESS] productId=okui_wakeari2 apiCompositeItemCode=tokizenmiwa:10000156 shopName=季膳味和 楽天市場店 genreId=200832 genreName=授乳用品・ベビー用食事用品 priceUpdated=true imageUpdated=true shopNameUpdated=true genreUpdated=true
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved shopName=季膳味和 楽天市場店
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved genreName=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SUCCESS] productId=okui_wakeari2 price=3456 image=https://thumbnail.image.rakuten.co.jp/@0_mall/tokizenmiwa/cabinet/03520473/imgrc… shopName=季膳味和 楽天市場店 genreName=
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_PICK] productId=okui-10500 failureReason= failureCount=0 selected=true
+I/flutter ( 1787): [ROOM_REDIRECT_PARSE_SOURCE] productId=okui-10500 source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter ( 1787): productId=okui-10500
+I/flutter ( 1787): urlProductCode=okui-10500
+I/flutter ( 1787): reason=urlProductCodeIsNotApiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter ( 1787): productId=okui-10500
+I/flutter ( 1787): shopCode=tokizenmiwa
+I/flutter ( 1787): urlProductCode=okui-10500
+I/flutter ( 1787): apiCompositeItemCode=(empty)
+I/flutter ( 1787): decision=keywordShopCode
+I/flutter ( 1787): reason=urlProductCodeOnly
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_TARGET] productId=okui-10500 needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API] productId=okui-10500 index=2 maxPerRun=10 manualPacing=true delayMs=1200 shopCode=tokizenmiwa itemCode=okui-10500
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=okui-10500 source=urlSlugOnly shopItemParam= kwShop=tokizenmiwa urlSlug=okui-10500
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_METHOD] method=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter ( 1787): productId=okui-10500
+I/flutter ( 1787): rawKeyword=お食い初め　料理セット　鯛特大【レンタル食器付き】│百日祝い（100日祝い）に鯛（たい）や蛤（はまぐり）他、歯固め石、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。食器のレンタルや購入も可能。蛤吸（はますい）やお赤飯の追
+I/flutter ( 1787): normalizedKeyword=お食い初め 料理セット 鯛特大 │百日祝い に鯛 や蛤
+I/flutter ( 1787): rawLength=120
+I/flutter ( 1787): normalizedLength=27
+I/flutter ( 1787): phase=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_API_SEARCH_BY_PRICE] productId=okui-10500 shopCode=tokizenmiwa roomPrice=- minPrice=- maxPrice=- keyword=お食い初め 料理セット 鯛特大 │百日祝い に鯛 や蛤 priceConditionUsed=false
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopPriceKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=tokizenmiwa itemCode=(omit) keyword=お食い初め 料理セット 鯛特大 │百日祝い に鯛 や蛤 minPrice=- maxPrice=- genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter ( 1787): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=お食い初め 料理セット 鯛特大 │百日祝い に鯛 や蛤 genreId=- shopCode=tokizenmiwa itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 1787): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 1787): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%81%8A%E9%A3%9F%E3%81%84%E5%88%9D%E3%82%81+%E6%96%99%E7%90%86%E3%82%BB%E3%83%83%E3%83%88+%E9%AF%9B%E7%89%B9%E5%A4%A7+%E2%94%82%E7%99%BE%E6%97%A5%E7%A5%9D%E3%81%84+%E3%81%AB%E9%AF%9B+%E3%82%84%E8%9B%A4&shopCode=tokizenmiwa
+I/flutter ( 1787): [Rakuten] response status=200 page=1 bytes=46496
+I/flutter ( 1787): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 1787): [RECOMMEND_TRACE] rawCount=4
+I/flutter ( 1787): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=601
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui-10500%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000133%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui-10500%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000133%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000133 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000133 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui-12000%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000135%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui-12000%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000135%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000135 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000135 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui-10500-rei%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000134%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui-10500-rei%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000134%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000134 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000134 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui-8500-rei%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000132%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui-8500-rei%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000132%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000132 rawGenreId=551699 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000132 model.genreId=551699 model.genreName= jsonRaw=ベビーフード保存容器 jsonRolled=ベビーフード保存容器 displayGenre=ベビーフード保存容器
+I/flutter ( 1787): [ROOM_IMPORT_API_CANDIDATE_MATCH] productId=okui-10500 roomShopCode=tokizenmiwa roomUrlProductCode=okui-10500 roomPrice=- candidateItemCode=tokizenmiwa:10000133 candidateShopCode=tokizenmiwa candidatePrice=13716 decodedPcUrl=https://item.rakuten.co.jp/tokizenmiwa/okui-10500/ decodedMobileUrl=http://m.rakuten.co.jp/tokizenmiwa/i/10000133/ shopMatched=true priceMatched=false urlSlugMatched=true matched=true reason=shopAndPriceAndUrlSlugMatched
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API_CODE_LEARNED] productId=okui-10500 roomProductSlug=okui-10500 apiCompositeItemCode=tokizenmiwa:10000133 source=apiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter ( 1787): [ROOM_IMPORT_API_SUPPLEMENT_SUCCESS] productId=okui-10500 apiCompositeItemCode=tokizenmiwa:10000133 shopName=季膳味和 楽天市場店 genreId=200832 genreName=授乳用品・ベビー用食事用品 priceUpdated=true imageUpdated=true shopNameUpdated=true genreUpdated=true
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved shopName=季膳味和 楽天市場店
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved genreName=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SUCCESS] productId=okui-10500 price=13716 image=https://thumbnail.image.rakuten.co.jp/@0_mall/tokizenmiwa/cabinet/03520473/05977… shopName=季膳味和 楽天市場店 genreName=
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_PICK] productId=okui_8500 failureReason= failureCount=0 selected=true
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=refresh
+I/flutter ( 1787): productId=
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=0
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=332
+I/flutter ( 1787): afterDoneCount=342
+I/flutter ( 1787): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 1787): source=screen
+I/flutter ( 1787): pendingCount=0
+I/flutter ( 1787): doneCount=342
+I/flutter ( 1787): filter=
+I/flutter ( 1787): tab=done
+I/flutter ( 1787): [ROOMコレ診断] refreshManagedProductList 完了 total=342 candidate=0 done=342 ui=ready
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=341 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=341
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=341 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=341
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOM_REDIRECT_PARSE_SOURCE] productId=okui_8500 source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter ( 1787): productId=okui_8500
+I/flutter ( 1787): urlProductCode=okui_8500
+I/flutter ( 1787): reason=urlProductCodeIsNotApiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter ( 1787): productId=okui_8500
+I/flutter ( 1787): shopCode=tokizenmiwa
+I/flutter ( 1787): urlProductCode=okui_8500
+I/flutter ( 1787): apiCompositeItemCode=(empty)
+I/flutter ( 1787): decision=keywordShopCode
+I/flutter ( 1787): reason=urlProductCodeOnly
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_TARGET] productId=okui_8500 needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API] productId=okui_8500 index=3 maxPerRun=10 manualPacing=true delayMs=1200 shopCode=tokizenmiwa itemCode=okui_8500
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=okui_8500 source=urlSlugOnly shopItemParam= kwShop=tokizenmiwa urlSlug=okui_8500
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_METHOD] method=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter ( 1787): productId=okui_8500
+I/flutter ( 1787): rawKeyword=お食い初め　料理セット│大きい鯛が良い人向け│百日祝い（100日祝い）鯛や蛤（はまぐり）、歯固め石、お祝い箸マニュアル解説書等も付いたインスタ映え抜群のお祝い膳│食器のレンタルや購入も可│蛤吸-はますいやお赤飯の追加購入可│タイ飾り付属│鯛
+I/flutter ( 1787): normalizedKeyword=お食い初め 料理セット│大きい鯛が良い人向け│百日祝い 鯛や蛤
+I/flutter ( 1787): rawLength=120
+I/flutter ( 1787): normalizedLength=31
+I/flutter ( 1787): phase=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_API_SEARCH_BY_PRICE] productId=okui_8500 shopCode=tokizenmiwa roomPrice=- minPrice=- maxPrice=- keyword=お食い初め 料理セット│大きい鯛が良い人向け│百日祝い 鯛や蛤 priceConditionUsed=false
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopPriceKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=tokizenmiwa itemCode=(omit) keyword=お食い初め 料理セット│大きい鯛が良い人向け│百日祝い 鯛や蛤 minPrice=- maxPrice=- genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter ( 1787): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=お食い初め 料理セット│大きい鯛が良い人向け│百日祝い 鯛や蛤 genreId=- shopCode=tokizenmiwa itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 1787): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 1787): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%81%8A%E9%A3%9F%E3%81%84%E5%88%9D%E3%82%81+%E6%96%99%E7%90%86%E3%82%BB%E3%83%83%E3%83%88%E2%94%82%E5%A4%A7%E3%81%8D%E3%81%84%E9%AF%9B%E3%81%8C%E8%89%AF%E3%81%84%E4%BA%BA%E5%90%91%E3%81%91%E2%94%82%E7%99%BE%E6%97%A5%E7%A5%9D%E3%81%84+%E9%AF%9B%E3%82%84%E8%9B%A4&shopCode=tokizenmiwa
+I/flutter ( 1787): [Rakuten] response status=200 page=1 bytes=11465
+I/flutter ( 1787): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 1787): [RECOMMEND_TRACE] rawCount=1
+I/flutter ( 1787): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=310
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_8500%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000131%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Fokui_8500%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000131%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000131 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000131 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [ROOM_IMPORT_API_CANDIDATE_MATCH] productId=okui_8500 roomShopCode=tokizenmiwa roomUrlProductCode=okui_8500 roomPrice=- candidateItemCode=tokizenmiwa:10000131 candidateShopCode=tokizenmiwa candidatePrice=10260 decodedPcUrl=https://item.rakuten.co.jp/tokizenmiwa/okui_8500/ decodedMobileUrl=http://m.rakuten.co.jp/tokizenmiwa/i/10000131/ shopMatched=true priceMatched=false urlSlugMatched=true matched=true reason=shopAndPriceAndUrlSlugMatched
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API_CODE_LEARNED] productId=okui_8500 roomProductSlug=okui_8500 apiCompositeItemCode=tokizenmiwa:10000131 source=apiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter ( 1787): [ROOM_IMPORT_API_SUPPLEMENT_SUCCESS] productId=okui_8500 apiCompositeItemCode=tokizenmiwa:10000131 shopName=季膳味和 楽天市場店 genreId=200832 genreName=授乳用品・ベビー用食事用品 priceUpdated=true imageUpdated=true shopNameUpdated=true genreUpdated=true
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved shopName=季膳味和 楽天市場店
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved genreName=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SUCCESS] productId=okui_8500 price=10260 image=https://thumbnail.image.rakuten.co.jp/@0_mall/tokizenmiwa/cabinet/03520473/okuiz… shopName=季膳味和 楽天市場店 genreName=
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_PICK] productId=tai_5000_gentei failureReason= failureCount=0 selected=true
+I/flutter ( 1787): [ROOM_REDIRECT_PARSE_SOURCE] productId=tai_5000_gentei source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter ( 1787): productId=tai_5000_gentei
+I/flutter ( 1787): urlProductCode=tai_5000_gentei
+I/flutter ( 1787): reason=urlProductCodeIsNotApiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter ( 1787): productId=tai_5000_gentei
+I/flutter ( 1787): shopCode=tokizenmiwa
+I/flutter ( 1787): urlProductCode=tai_5000_gentei
+I/flutter ( 1787): apiCompositeItemCode=(empty)
+I/flutter ( 1787): decision=keywordShopCode
+I/flutter ( 1787): reason=urlProductCodeOnly
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_TARGET] productId=tai_5000_gentei needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API] productId=tai_5000_gentei index=4 maxPerRun=10 manualPacing=true delayMs=1200 shopCode=tokizenmiwa itemCode=tai_5000_gentei
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=tai_5000_gentei source=urlSlugOnly shopItemParam= kwShop=tokizenmiwa urlSlug=tai_5000_gentei
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_METHOD] method=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter ( 1787): productId=tai_5000_gentei
+I/flutter ( 1787): rawKeyword=祝い鯛│焼き鯛（鯛の姿焼き）お七夜やお食い初めなどにピッタリの特大の大鯛塩姿焼き1kg（1000g）が当店ご利用初回のお客様に限定で送料無料で販売させていただきます│5〜6名様でも召し上がれるので結納にも充分│上質なブランド鯛は贅沢なグルメ
+I/flutter ( 1787): normalizedKeyword=祝い鯛│焼き鯛
+I/flutter ( 1787): rawLength=120
+I/flutter ( 1787): normalizedLength=7
+I/flutter ( 1787): phase=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_API_SEARCH_BY_PRICE] productId=tai_5000_gentei shopCode=tokizenmiwa roomPrice=- minPrice=- maxPrice=- keyword=祝い鯛│焼き鯛（鯛の姿焼き）お七夜やお食い初めなどにピッタリの特大の大鯛塩姿焼き1kg（1000g）が当店ご利用初回のお客様に限定で送料無料で販売させていただきます│5〜6名様でも召し上がれるので結納にも充分│上質なブランド鯛は贅沢なグルメ priceConditionUsed=false
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopPriceKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=tokizenmiwa itemCode=(omit) keyword=祝い鯛│焼き鯛（鯛の姿焼き）お七夜やお食い初めなどにピッタリの特大の大鯛塩姿焼き1kg（1000g）が当店ご利用初回のお客様に限定で送料無料で販売させていただきます│5〜6名様でも召し上がれるので結納にも充分│上質なブランド鯛は贅沢なグルメ minPrice=- maxPrice=- genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter ( 1787): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=祝い鯛│焼き鯛（鯛の姿焼き）お七夜やお食い初めなどにピッタリの特大の大鯛塩姿焼き1kg（1000g）が当店ご利用初回のお客様に限定で送料無料で販売させていただきます│5〜6名様でも召し上がれるので結納にも充分│上質なブランド鯛は贅沢なグルメ genreId=- shopCode=tokizenmiwa itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 1787): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 1787): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E7%A5%9D%E3%81%84%E9%AF%9B%E2%94%82%E7%84%BC%E3%81%8D%E9%AF%9B%EF%BC%88%E9%AF%9B%E3%81%AE%E5%A7%BF%E7%84%BC%E3%81%8D%EF%BC%89%E3%81%8A%E4%B8%83%E5%A4%9C%E3%82%84%E3%81%8A%E9%A3%9F%E3%81%84%E5%88%9D%E3%82%81%E3%81%AA%E3%81%A9%E3%81%AB%E3%83%94%E3%83%83%E3%82%BF%E3%83%AA%E3%81%AE%E7%89%B9%E5%A4%A7%E3%81%AE%E5%A4%A7%E9%AF%9B%E5%A1%A9%E5%A7%BF%E7%84%BC%E3%81%8D1kg%EF%BC%881000g%EF%BC%89%E3%81%8C%E5%BD%93%E5%BA%97%E3%81%94%E5%88%A9%E7%94%A8%E5%88%9D%E5%9B%9E%E3%81%AE%E3%81%8A%E5%AE%A2%E6%A7%98%E3%81%AB%E9%99%90%E5%AE%9A%E3%81%A7%E9%80%81%E6%96%99%E7%84%A1%E6%96%99%E3%81%A7%E8%B2%A9%E5%A3%B2%E3%81%95%E3%81%9B%E3%81%A6%E3%81%84%E3%81%9F%E3%81%A0%E3%81%8D%E3%81%BE%E3%81%99%E2%94%825%E3%80%9C6%E5%90%8D%E6%A7%98%E3%81%A7%E3%82%82%E5%8F%AC%E3%81%97%E4%B8%8A%E3%81%8C%E3%82%8C%E3%82%8B%E3%81%AE%E3%81%A7%E7%B5%90%E7%B4%8D%E3%81%AB%E3%82%82%E5%85%85%E5%88%86%E2%94%82%E4%B8%8A%E8%B3%AA%E3%81%AA%E3%83%96%E3%83%A9%E3%83%B3%
+I/flutter ( 1787): [Rakuten] response status=200 page=1 bytes=5778
+I/flutter ( 1787): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 1787): [RECOMMEND_TRACE] rawCount=1
+I/flutter ( 1787): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=409
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Ftai_5000_gentei%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000145%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Ftai_5000_gentei%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000145%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000145 rawGenreId=304580 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000145 model.genreId=304580 model.genreName= jsonRaw=タイ jsonRolled=タイ displayGenre=タイ
+I/flutter ( 1787): [ROOM_IMPORT_API_CANDIDATE_MATCH] productId=tai_5000_gentei roomShopCode=tokizenmiwa roomUrlProductCode=tai_5000_gentei roomPrice=- candidateItemCode=tokizenmiwa:10000145 candidateShopCode=tokizenmiwa candidatePrice=6480 decodedPcUrl=https://item.rakuten.co.jp/tokizenmiwa/tai_5000_gentei/ decodedMobileUrl=http://m.rakuten.co.jp/tokizenmiwa/i/10000145/ shopMatched=true priceMatched=false urlSlugMatched=true matched=true reason=shopAndPriceAndUrlSlugMatched
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API_CODE_LEARNED] productId=tai_5000_gentei roomProductSlug=tai_5000_gentei apiCompositeItemCode=tokizenmiwa:10000145 source=apiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter ( 1787): [ROOM_IMPORT_API_SUPPLEMENT_SUCCESS] productId=tai_5000_gentei apiCompositeItemCode=tokizenmiwa:10000145 shopName=季膳味和 楽天市場店 genreId=304580 genreName=タイ priceUpdated=true imageUpdated=true shopNameUpdated=true genreUpdated=true
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved shopName=季膳味和 楽天市場店
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved genreName=タイ
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SUCCESS] productId=tai_5000_gentei price=6480 image=https://thumbnail.image.rakuten.co.jp/@0_mall/tokizenmiwa/cabinet/05993707/tai_b… shopName=季膳味和 楽天市場店 genreName=
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_PICK] productId=oshichiya_5000 failureReason= failureCount=0 selected=true
+I/flutter ( 1787): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=0 afterFilterLen=0 surface=ok_empty_no_data ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=0 afterFilterLen=0 surface=ok_empty_no_data ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=341 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=341
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOM_REDIRECT_PARSE_SOURCE] productId=oshichiya_5000 source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter ( 1787): productId=oshichiya_5000
+I/flutter ( 1787): urlProductCode=oshichiya_5000
+I/flutter ( 1787): reason=urlProductCodeIsNotApiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter ( 1787): productId=oshichiya_5000
+I/flutter ( 1787): shopCode=tokizenmiwa
+I/flutter ( 1787): urlProductCode=oshichiya_5000
+I/flutter ( 1787): apiCompositeItemCode=(empty)
+I/flutter ( 1787): decision=keywordShopCode
+I/flutter ( 1787): reason=urlProductCodeOnly
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_TARGET] productId=oshichiya_5000 needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API] productId=oshichiya_5000 index=5 maxPerRun=10 manualPacing=true delayMs=1200 shopCode=tokizenmiwa itemCode=oshichiya_5000
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=oshichiya_5000 source=urlSlugOnly shopItemParam= kwShop=tokizenmiwa urlSlug=oshichiya_5000
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_METHOD] method=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter ( 1787): productId=oshichiya_5000
+I/flutter ( 1787): rawKeyword=お七夜　宅配│鯛・命名書セット（これ一つで命名式ができます│タイの姿焼き、赤ちゃんの名前の書いた命名書、ベビーポスター、手形足形用紙付）お赤飯やお祝い膳の追加も可能。産まれて7日目の夜に赤ちゃんの命名をするお祝い。通信販売で手軽。ARフォト
+I/flutter ( 1787): normalizedKeyword=お七夜 宅配│鯛・命名書セット
+I/flutter ( 1787): rawLength=120
+I/flutter ( 1787): normalizedLength=15
+I/flutter ( 1787): phase=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_API_SEARCH_BY_PRICE] productId=oshichiya_5000 shopCode=tokizenmiwa roomPrice=- minPrice=- maxPrice=- keyword=お七夜 宅配│鯛・命名書セット priceConditionUsed=false
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopPriceKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=tokizenmiwa itemCode=(omit) keyword=お七夜 宅配│鯛・命名書セット minPrice=- maxPrice=- genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter ( 1787): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=お七夜 宅配│鯛・命名書セット genreId=- shopCode=tokizenmiwa itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 1787): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 1787): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%81%8A%E4%B8%83%E5%A4%9C+%E5%AE%85%E9%85%8D%E2%94%82%E9%AF%9B%E3%83%BB%E5%91%BD%E5%90%8D%E6%9B%B8%E3%82%BB%E3%83%83%E3%83%88&shopCode=tokizenmiwa
+I/flutter ( 1787): [Rakuten] response status=200 page=1 bytes=7416
+I/flutter ( 1787): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 1787): [RECOMMEND_TRACE] rawCount=1
+I/flutter ( 1787): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=233
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Foshichiya_5000%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000172%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Foshichiya_5000%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000172%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000172 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000172 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [ROOM_IMPORT_API_CANDIDATE_MATCH] productId=oshichiya_5000 roomShopCode=tokizenmiwa roomUrlProductCode=oshichiya_5000 roomPrice=- candidateItemCode=tokizenmiwa:10000172 candidateShopCode=tokizenmiwa candidatePrice=7560 decodedPcUrl=https://item.rakuten.co.jp/tokizenmiwa/oshichiya_5000/ decodedMobileUrl=http://m.rakuten.co.jp/tokizenmiwa/i/10000172/ shopMatched=true priceMatched=false urlSlugMatched=true matched=true reason=shopAndPriceAndUrlSlugMatched
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API_CODE_LEARNED] productId=oshichiya_5000 roomProductSlug=oshichiya_5000 apiCompositeItemCode=tokizenmiwa:10000172 source=apiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter ( 1787): [ROOM_IMPORT_API_SUPPLEMENT_SUCCESS] productId=oshichiya_5000 apiCompositeItemCode=tokizenmiwa:10000172 shopName=季膳味和 楽天市場店 genreId=200832 genreName=授乳用品・ベビー用食事用品 priceUpdated=true imageUpdated=true shopNameUpdated=true genreUpdated=true
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved shopName=季膳味和 楽天市場店
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved genreName=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SUCCESS] productId=oshichiya_5000 price=7560 image=https://thumbnail.image.rakuten.co.jp/@0_mall/tokizenmiwa/cabinet/07835951/okui-… shopName=季膳味和 楽天市場店 genreName=
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_PICK] productId=tai_3600 failureReason= failureCount=0 selected=true
+I/flutter ( 1787): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=341 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=341
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=341 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=341
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=0 afterFilterLen=0 surface=ok_empty_no_data ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=341 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=341
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOM_REDIRECT_PARSE_SOURCE] productId=tai_3600 source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter ( 1787): productId=tai_3600
+I/flutter ( 1787): urlProductCode=tai_3600
+I/flutter ( 1787): reason=urlProductCodeIsNotApiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter ( 1787): productId=tai_3600
+I/flutter ( 1787): shopCode=tokizenmiwa
+I/flutter ( 1787): urlProductCode=tai_3600
+I/flutter ( 1787): apiCompositeItemCode=(empty)
+I/flutter ( 1787): decision=keywordShopCode
+I/flutter ( 1787): reason=urlProductCodeOnly
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_TARGET] productId=tai_3600 needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API] productId=tai_3600 index=6 maxPerRun=10 manualPacing=true delayMs=1200 shopCode=tokizenmiwa itemCode=tai_3600
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=tai_3600 source=urlSlugOnly shopItemParam= kwShop=tokizenmiwa urlSlug=tai_3600
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_METHOD] method=shopTitleKeyword
+I/flutter ( 1787): productId=tai_3600
+I/flutter ( 1787): rawKeyword=【天然祝い鯛姿焼き（普通サイズ）　お食い初め　初節句　雛祭り】お食い初め鯛/雛祭り鯛/初節句鯛/お祝い鯛/鯛姿焼き/鯛塩焼き/こどもの日鯛/端午の節句鯛/お七夜
+I/flutter ( 1787): normalizedKeyword=お食い初め鯛/雛祭り鯛/初節句鯛/お祝い鯛/鯛姿焼き/鯛塩焼き/こどもの
+I/flutter ( 1787): rawLength=80
+I/flutter ( 1787): normalizedLength=36
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter ( 1787): phase=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_API_SEARCH_BY_PRICE] productId=tai_3600 shopCode=tokizenmiwa roomPrice=- minPrice=- maxPrice=- keyword=お食い初め鯛/雛祭り鯛/初節句鯛/お祝い鯛/鯛姿焼き/鯛塩焼き/こどもの priceConditionUsed=false
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopPriceKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=tokizenmiwa itemCode=(omit) keyword=お食い初め鯛/雛祭り鯛/初節句鯛/お祝い鯛/鯛姿焼き/鯛塩焼き/こどもの minPrice=- maxPrice=- genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter ( 1787): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=お食い初め鯛/雛祭り鯛/初節句鯛/お祝い鯛/鯛姿焼き/鯛塩焼き/こどもの genreId=- shopCode=tokizenmiwa itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 1787): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 1787): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%81%8A%E9%A3%9F%E3%81%84%E5%88%9D%E3%82%81%E9%AF%9B%2F%E9%9B%9B%E7%A5%AD%E3%82%8A%E9%AF%9B%2F%E5%88%9D%E7%AF%80%E5%8F%A5%E9%AF%9B%2F%E3%81%8A%E7%A5%9D%E3%81%84%E9%AF%9B%2F%E9%AF%9B%E5%A7%BF%E7%84%BC%E3%81%8D%2F%E9%AF%9B%E5%A1%A9%E7%84%BC%E3%81%8D%2F%E3%81%93%E3%81%A9%E3%82%82%E3%81%AE&shopCode=tokizenmiwa
+I/flutter ( 1787): [Rakuten] response status=200 page=1 bytes=4198
+I/flutter ( 1787): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 1787): [RECOMMEND_TRACE] rawCount=1
+I/flutter ( 1787): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=254
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Ftai_3600%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000039%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rtvbh.362kt4c6.g00rtvbh.362ku3a4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftokizenmiwa%2Ftai_3600%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftokizenmiwa%2Fi%2F10000039%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=tokizenmiwa:10000039 rawGenreId=410890 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=tokizenmiwa:10000039 model.genreId=410890 model.genreName= jsonRaw=和風おせちセット jsonRolled=和風おせちセット displayGenre=和風おせちセット
+I/flutter ( 1787): [ROOM_IMPORT_API_CANDIDATE_MATCH] productId=tai_3600 roomShopCode=tokizenmiwa roomUrlProductCode=tai_3600 roomPrice=- candidateItemCode=tokizenmiwa:10000039 candidateShopCode=tokizenmiwa candidatePrice=3888 decodedPcUrl=https://item.rakuten.co.jp/tokizenmiwa/tai_3600/ decodedMobileUrl=http://m.rakuten.co.jp/tokizenmiwa/i/10000039/ shopMatched=true priceMatched=false urlSlugMatched=true matched=true reason=shopAndPriceAndUrlSlugMatched
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API_CODE_LEARNED] productId=tai_3600 roomProductSlug=tai_3600 apiCompositeItemCode=tokizenmiwa:10000039 source=apiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter ( 1787): [ROOM_IMPORT_API_SUPPLEMENT_SUCCESS] productId=tai_3600 apiCompositeItemCode=tokizenmiwa:10000039 shopName=季膳味和 楽天市場店 genreId=410890 genreName=和風おせちセット priceUpdated=true imageUpdated=true shopNameUpdated=true genreUpdated=true
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved shopName=季膳味和 楽天市場店
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved genreName=和風おせちセット
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SUCCESS] productId=tai_3600 price=3888 image=https://thumbnail.image.rakuten.co.jp/@0_mall/tokizenmiwa/cabinet/03774679/okui_… shopName=季膳味和 楽天市場店 genreName=
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_PICK] productId=10000043 failureReason= failureCount=0 selected=true
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=220 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=220
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOM_REDIRECT_PARSE_SOURCE] productId=10000043 source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter ( 1787): productId=10000043
+I/flutter ( 1787): shopCode=sun-shop-r
+I/flutter ( 1787): urlProductCode=10000043
+I/flutter ( 1787): apiCompositeItemCode=(empty)
+I/flutter ( 1787): decision=keywordShopCode
+I/flutter ( 1787): reason=urlProductCodeOnly
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_TARGET] productId=10000043 needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=220 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=220
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API] productId=10000043 index=7 maxPerRun=10 manualPacing=true delayMs=1200 shopCode=sun-shop-r itemCode=10000043
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=10000043 source=urlSlugOnly shopItemParam= kwShop=sun-shop-r urlSlug=10000043
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_METHOD] method=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter ( 1787): productId=10000043
+I/flutter ( 1787): rawKeyword=【即納】ベビー服 うさぎ 裏起毛 ベビー ロンパース 秋 冬 赤ちゃん baby 男の子 女の子 長袖
+I/flutter ( 1787): normalizedKeyword=ベビー服 うさぎ 裏起毛 ベビー ロンパース 秋 冬 赤ちゃん baby
+I/flutter ( 1787): rawLength=51
+I/flutter ( 1787): normalizedLength=36
+I/flutter ( 1787): phase=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_API_SEARCH_BY_PRICE] productId=10000043 shopCode=sun-shop-r roomPrice=- minPrice=- maxPrice=- keyword=ベビー服 うさぎ 裏起毛 ベビー ロンパース 秋 冬 赤ちゃん baby priceConditionUsed=false
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopPriceKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=sun-shop-r itemCode=(omit) keyword=ベビー服 うさぎ 裏起毛 ベビー ロンパース 秋 冬 赤ちゃん baby minPrice=- maxPrice=- genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter ( 1787): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=ベビー服 うさぎ 裏起毛 ベビー ロンパース 秋 冬 赤ちゃん baby genreId=- shopCode=sun-shop-r itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 1787): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 1787): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%83%99%E3%83%93%E3%83%BC%E6%9C%8D+%E3%81%86%E3%81%95%E3%81%8E+%E8%A3%8F%E8%B5%B7%E6%AF%9B+%E3%83%99%E3%83%93%E3%83%BC+%E3%83%AD%E3%83%B3%E3%83%91%E3%83%BC%E3%82%B9+%E7%A7%8B+%E5%86%AC+%E8%B5%A4%E3%81%A1%E3%82%83%E3%82%93+baby&shopCode=sun-shop-r
+I/flutter ( 1787): [Rakuten] response status=200 page=1 bytes=5054
+I/flutter ( 1787): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 1787): [RECOMMEND_TRACE] rawCount=1
+I/flutter ( 1787): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=889
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00ts1jh.362kt185.g00ts1jh.362kub11/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fsun-shop-r%2F10000043%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fsun-shop-r%2Fi%2F10000043%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00ts1jh.362kt185.g00ts1jh.362kub11/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fsun-shop-r%2F10000043%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fsun-shop-r%2Fi%2F10000043%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=sun-shop-r:10000043 rawGenreId=401131 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=sun-shop-r:10000043 model.genreId=401131 model.genreName= jsonRaw=カバーオール・ロンパース jsonRolled=カバーオール・ロンパース displayGenre=カバーオール・ロンパース
+I/flutter ( 1787): [ROOM_IMPORT_API_CANDIDATE_MATCH] productId=10000043 roomShopCode=sun-shop-r roomUrlProductCode=10000043 roomPrice=- candidateItemCode=sun-shop-r:10000043 candidateShopCode=sun-shop-r candidatePrice=2980 decodedPcUrl=https://item.rakuten.co.jp/sun-shop-r/10000043/ decodedMobileUrl=http://m.rakuten.co.jp/sun-shop-r/i/10000043/ shopMatched=true priceMatched=false urlSlugMatched=true matched=true reason=shopAndPriceAndUrlSlugMatched
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API_CODE_LEARNED] productId=10000043 roomProductSlug=10000043 apiCompositeItemCode=sun-shop-r:10000043 source=apiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter ( 1787): [ROOM_IMPORT_API_SUPPLEMENT_SUCCESS] productId=10000043 apiCompositeItemCode=sun-shop-r:10000043 shopName=キッズ服&雑貨のお店 Sun genreId=401131 genreName=カバーオール・ロンパース priceUpdated=true imageUpdated=true shopNameUpdated=true genreUpdated=true
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved shopName=キッズ服&雑貨のお店 Sun
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved genreName=カバーオール・ロンパース
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SUCCESS] productId=10000043 price=2980 image=https://thumbnail.image.rakuten.co.jp/@0_gold/sun-shop-r/bn/item/main-image/1000… shopName=キッズ服&雑貨のお店 Sun genreName=
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=120 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=okui-10500 title=お食い初め　料理セット　鯛特大【レンタル食器付き】│百日祝い（100日祝い）に鯛（たい）や蛤（はまぐり）他、歯固め石、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。食器のレンタルや購入も可能。蛤吸（はますい）やお赤飯の追加購入もOK。 status=done len=120
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-10500 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_wakeari2 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_PICK] productId=garbo-10033240 failureReason= failureCount=0 selected=true
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=120 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=okui-10500 title=お食い初め　料理セット　鯛特大【レンタル食器付き】│百日祝い（100日祝い）に鯛（たい）や蛤（はまぐり）他、歯固め石、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。食器のレンタルや購入も可能。蛤吸（はますい）やお赤飯の追加購入もOK。 status=done len=120
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-10500 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_wakeari2 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=220 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=220
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=220 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=220
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOM_REDIRECT_PARSE_SOURCE] productId=garbo-10033240 source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter ( 1787): productId=garbo-10033240
+I/flutter ( 1787): urlProductCode=garbo-10033240
+I/flutter ( 1787): reason=urlProductCodeIsNotApiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter ( 1787): productId=garbo-10033240
+I/flutter ( 1787): shopCode=sun-shop-r
+I/flutter ( 1787): urlProductCode=garbo-10033240
+I/flutter ( 1787): apiCompositeItemCode=(empty)
+I/flutter ( 1787): decision=keywordShopCode
+I/flutter ( 1787): reason=urlProductCodeOnly
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_TARGET] productId=garbo-10033240 needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API] productId=garbo-10033240 index=8 maxPerRun=10 manualPacing=true delayMs=1200 shopCode=sun-shop-r itemCode=garbo-10033240
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=garbo-10033240 source=urlSlugOnly shopItemParam= kwShop=sun-shop-r urlSlug=garbo-10033240
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_METHOD] method=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter ( 1787): productId=garbo-10033240
+I/flutter ( 1787): rawKeyword=【P15倍！】 garbo&friends ガルボアンドフレンズ 110×110 おくるみ Swaddle Blanket 赤ちゃん ガーゼ ブランケット 春 夏 秋 冬 タオル スワドル 子供 キッズ 出産祝い コットン 花柄 プレゼント
+I/flutter ( 1787): normalizedKeyword=garbo&friends ガルボアンドフレンズ 110×110
+I/flutter ( 1787): rawLength=120
+I/flutter ( 1787): normalizedLength=32
+I/flutter ( 1787): phase=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_API_SEARCH_BY_PRICE] productId=garbo-10033240 shopCode=sun-shop-r roomPrice=- minPrice=- maxPrice=- keyword=garbo&friends ガルボアンドフレンズ 110×110 priceConditionUsed=false
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopPriceKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=sun-shop-r itemCode=(omit) keyword=garbo&friends ガルボアンドフレンズ 110×110 minPrice=- maxPrice=- genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter ( 1787): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=garbo&friends ガルボアンドフレンズ 110×110 genreId=- shopCode=sun-shop-r itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 1787): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 1787): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=garbo%26friends+%E3%82%AC%E3%83%AB%E3%83%9C%E3%82%A2%E3%83%B3%E3%83%89%E3%83%95%E3%83%AC%E3%83%B3%E3%82%BA+110%C3%97110&shopCode=sun-shop-r
+I/flutter ( 1787): [Rakuten] response status=200 page=1 bytes=123
+I/flutter ( 1787): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 1787): [RECOMMEND_TRACE] rawCount=0
+I/flutter ( 1787): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=731
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_FAIL] productId=garbo-10033240 method=shopTitleKeyword reason=noItems
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\room_manager2_shot_004.png
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_PICK] productId=garbo-10033240 failureReason=noItems failureCount=1 selected=true
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=120 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=okui-10500 title=お食い初め　料理セット　鯛特大【レンタル食器付き】│百日祝い（100日祝い）に鯛（たい）や蛤（はまぐり）他、歯固め石、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。食器のレンタルや購入も可能。蛤吸（はますい）やお赤飯の追加購入もOK。 status=done len=120
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-10500 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_wakeari2 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=120 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=okui-10500 title=お食い初め　料理セット　鯛特大【レンタル食器付き】│百日祝い（100日祝い）に鯛（たい）や蛤（はまぐり）他、歯固め石、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。食器のレンタルや購入も可能。蛤吸（はますい）やお赤飯の追加購入もOK。 status=done len=120
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-10500 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_wakeari2 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOM_REDIRECT_PARSE_SOURCE] productId=garbo-10033240 source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter ( 1787): productId=garbo-10033240
+I/flutter ( 1787): urlProductCode=garbo-10033240
+I/flutter ( 1787): reason=urlProductCodeIsNotApiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter ( 1787): productId=garbo-10033240
+I/flutter ( 1787): shopCode=sun-shop-r
+I/flutter ( 1787): urlProductCode=garbo-10033240
+I/flutter ( 1787): apiCompositeItemCode=(empty)
+I/flutter ( 1787): decision=keywordShopCode
+I/flutter ( 1787): reason=urlProductCodeOnly
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_TARGET] productId=garbo-10033240 needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API] productId=garbo-10033240 index=9 maxPerRun=10 manualPacing=true delayMs=1200 shopCode=sun-shop-r itemCode=garbo-10033240
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=garbo-10033240 source=urlSlugOnly shopItemParam= kwShop=sun-shop-r urlSlug=garbo-10033240
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_METHOD] method=productIdKeyword
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] phase=productIdKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=sun-shop-r itemCode=(omit) keyword=garbo-10033240 minPrice=- maxPrice=- genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter ( 1787): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=garbo-10033240 genreId=- shopCode=sun-shop-r itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 1787): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 1787): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=garbo-10033240&shopCode=sun-shop-r
+I/flutter ( 1787): [Rakuten] response status=200 page=1 bytes=123
+I/flutter ( 1787): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 1787): [RECOMMEND_TRACE] rawCount=0
+I/flutter ( 1787): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=214
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [ROOM_IMPORT_ITEMCODE_API_DIAG] shopCode=sun-shop-r itemCode= proxyMode=proxy keywordOmitted=false shopCodeOmitted=false itemCodeOmitted=true httpStatus=200 responsePreview=(noItemAfterPick)
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_FAIL] productId=garbo-10033240 method=productIdKeyword reason=noItems
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_PICK] productId=garbo-10033240 failureReason=noItems failureCount=2 selected=false
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_PICK] productId=x23164 failureReason= failureCount=0 selected=true
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=220 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=220
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=220 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=220
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000043 roomLikeCount=286 roomCommentCount=11 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOM_REDIRECT_PARSE_SOURCE] productId=x23164 source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter ( 1787): productId=x23164
+I/flutter ( 1787): urlProductCode=x23164
+I/flutter ( 1787): reason=urlProductCodeIsNotApiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter ( 1787): productId=x23164
+I/flutter ( 1787): shopCode=sun-shop-r
+I/flutter ( 1787): urlProductCode=x23164
+I/flutter ( 1787): apiCompositeItemCode=(empty)
+I/flutter ( 1787): decision=keywordShopCode
+I/flutter ( 1787): reason=urlProductCodeOnly
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_TARGET] productId=x23164 needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=importingCollectedItems button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API] productId=x23164 index=10 maxPerRun=10 manualPacing=true delayMs=1200 shopCode=sun-shop-r itemCode=x23164
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=x23164 source=urlSlugOnly shopItemParam= kwShop=sun-shop-r urlSlug=x23164
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_METHOD] method=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter ( 1787): productId=x23164
+I/flutter ( 1787): rawKeyword=子供　帽子 バケットハット 子ども 女の子 男の子 かわいい おしゃれ 春 夏 春夏 ゼブラ柄 豹柄 レオパード レオパ 写真撮影 日よけ帽 プール 海 海水浴 BBQ
+I/flutter ( 1787): normalizedKeyword=子供 帽子 バケットハット 子ども 女の子 男の子 かわいい おしゃれ
+I/flutter ( 1787): rawLength=84
+I/flutter ( 1787): normalizedLength=35
+I/flutter ( 1787): phase=shopTitleKeyword
+I/flutter ( 1787): [ROOM_IMPORT_API_SEARCH_BY_PRICE] productId=x23164 shopCode=sun-shop-r roomPrice=- minPrice=- maxPrice=- keyword=子供 帽子 バケットハット 子ども 女の子 男の子 かわいい おしゃれ priceConditionUsed=false
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopPriceKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=sun-shop-r itemCode=(omit) keyword=子供 帽子 バケットハット 子ども 女の子 男の子 かわいい おしゃれ minPrice=- maxPrice=- genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter ( 1787): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=子供 帽子 バケットハット 子ども 女の子 男の子 かわいい おしゃれ genreId=- shopCode=sun-shop-r itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 1787): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 1787): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E5%AD%90%E4%BE%9B+%E5%B8%BD%E5%AD%90+%E3%83%90%E3%82%B1%E3%83%83%E3%83%88%E3%83%8F%E3%83%83%E3%83%88+%E5%AD%90%E3%81%A9%E3%82%82+%E5%A5%B3%E3%81%AE%E5%AD%90+%E7%94%B7%E3%81%AE%E5%AD%90+%E3%81%8B%E3%82%8F%E3%81%84%E3%81%84+%E3%81%8A%E3%81%97%E3%82%83%E3%82%8C&shopCode=sun-shop-r
+I/flutter ( 1787): [Rakuten] response status=200 page=1 bytes=9383
+I/flutter ( 1787): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 1787): [RECOMMEND_TRACE] rawCount=2
+I/flutter ( 1787): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=326
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00ts1jh.362kt185.g00ts1jh.362kub11/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fsun-shop-r%2Fl22031i000614%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fsun-shop-r%2Fi%2F10000390%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00ts1jh.362kt185.g00ts1jh.362kub11/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fsun-shop-r%2Fl22031i000614%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fsun-shop-r%2Fi%2F10000390%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=sun-shop-r:10000390 rawGenreId=301064 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=sun-shop-r:10000390 model.genreId=301064 model.genreName= jsonRaw=ハット jsonRolled=ハット displayGenre=ハット
+I/flutter ( 1787): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00ts1jh.362kt185.g00ts1jh.362kub11/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fsun-shop-r%2Fx23164%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fsun-shop-r%2Fi%2F10000294%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00ts1jh.362kt185.g00ts1jh.362kub11/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fsun-shop-r%2Fx23164%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fsun-shop-r%2Fi%2F10000294%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 1787): [RakutenGenre][API] itemCode=sun-shop-r:10000294 rawGenreId=213873 rawGenreName= rawKeys=genreId
+I/flutter ( 1787): [RakutenGenre][MAP] itemCode=sun-shop-r:10000294 model.genreId=213873 model.genreName= jsonRaw=ハット jsonRolled=ハット displayGenre=ハット
+I/flutter ( 1787): [ROOM_IMPORT_API_CANDIDATE_MATCH] productId=x23164 roomShopCode=sun-shop-r roomUrlProductCode=x23164 roomPrice=- candidateItemCode=sun-shop-r:10000390 candidateShopCode=sun-shop-r candidatePrice=2680 decodedPcUrl=https://item.rakuten.co.jp/sun-shop-r/l22031i000614/ decodedMobileUrl=http://m.rakuten.co.jp/sun-shop-r/i/10000390/ shopMatched=true priceMatched=false urlSlugMatched=false matched=true reason=shopAndMobileItemLearned
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_API_CODE_LEARNED] productId=x23164 roomProductSlug=x23164 apiCompositeItemCode=sun-shop-r:10000390 source=apiItemCode
+I/flutter ( 1787): [ROOM_IMPORT_SAVE] changedPrice=true changedImage=true changedShopName=true changedGenreName=true
+I/flutter ( 1787): [ROOM_IMPORT_API_SUPPLEMENT_SUCCESS] productId=x23164 apiCompositeItemCode=sun-shop-r:10000390 shopName=キッズ服&雑貨のお店 Sun genreId=301064 genreName=ハット priceUpdated=true imageUpdated=true shopNameUpdated=true genreUpdated=true
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\room_manager2_shot_005.png
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved shopName=キッズ服&雑貨のお店 Sun
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH] saved genreName=ハット
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SUCCESS] productId=x23164 price=2680 image=https://thumbnail.image.rakuten.co.jp/@0_mall/sun-shop-r/cabinet/09189537/imgrc0… shopName=キッズ服&雑貨のお店 Sun genreName=
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SUMMARY] apiAttempts=10 updated=8 failedProducts=2 skipped=119 pausedByRateLimit=false remainingPending=214 successIds=okui_wakeari2,okui-10500,okui_8500,tai_5000_gentei,oshichiya_5000,tai_3600,10000043,x23164
+I/flutter ( 1787): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=10 updated=8 failedProducts=2
+I/flutter ( 1787): [ROOM_IMPORT_ENRICH_SUCCESS_IDS] okui_wakeari2,okui-10500,okui_8500,tai_5000_gentei,oshichiya_5000,tai_3600,10000043,x23164
+I/flutter ( 1787): [ROOM_IMPORT_INITIAL_ENRICH_RESULT] attempted=10 success=8 failed=2 rateLimited=false pendingAfter=214
+I/flutter ( 1787): [ROOM_IMPORT_INITIAL_ENRICH_STOP] reason=completed attempted=10 success=8 failed=2 remainingImportedPending=1 durationMs=19425
+I/flutter ( 1787): [ROOM_IMPORT_BATCH_RESULT] imported=10 enrichedSuccess=8 enrichedFailed=2 enrichedSkipped=0 nextCursor=1700368093441124 cursorAction=postEnrich
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=refresh
+I/flutter ( 1787): productId=
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=0
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=342
+I/flutter ( 1787): afterDoneCount=342
+I/flutter ( 1787): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 1787): source=provider
+I/flutter ( 1787): pendingCount=0
+I/flutter ( 1787): doneCount=342
+I/flutter ( 1787): filter=
+I/flutter ( 1787): tab=
+I/flutter ( 1787): [ROOMコレ診断] refreshManagedProductList 完了 total=342 candidate=0 done=342 ui=ready
+I/flutter ( 1787): [ROOM_IMPORT_UI] phase=finished added=10 updated=0 skipped=0 failed=0
+I/flutter ( 1787): [ROOM_IMPORT_SUMMARY] totalMs=9713 prepareMs=9359 itemCount=10 added=10 updated=0 skipped=0 failed=0 roomListCalls=1 roomPageCalls=0 rakutenItemCalls=0 enrichmentCalls=10 enrichmentBatchMs=19425 enrichmentUpdated=8
+I/flutter ( 1787): [ROOM_SYNC_JOB_LOCK] action=release job=importingCollectedItems currentJob=none
+I/flutter ( 1787): [ROOM_IMPORT_FLOW] action=importEnd newItems=10 updatedRoomReactions=0 roomUrlAdded=0 postImportEnrichUpdated=8 pendingEnrich=214
+I/flutter ( 1787): [ROOM_IMPORT_DEFERRED_ENRICH_DECISION] shouldStart=false reason=postImportInlineEnrich manualBusy=false autoBusy=false
+I/flutter ( 1787): [ROOM_IMPORT_RESULT_SHEET_REFRESH] newlyImportedProductIds=okui_wakeari2,okui-10500,okui_8500,tai_5000_gentei,oshichiya_5000,tai_3600,10000043,garbo-10033240,x23164,10000143 refetchedCount=10 withImageCount=9 withPriceCount=9 displayProductIds=okui_wakeari2,okui-10500,okui_8500
+I/flutter ( 1787): [ROOM_IMPORT_RESULT_SHEET_ITEM] productId=okui_wakeari2 title=《楽天1位3冠達成》お食い初め 料理 セット【ももかブルー】これがあればお食い初めは大丈夫│百日祝い（100日祝い）に天然鯛（たい）やはまぐり他、歯固め石、お祝い箸マニュアル等。はますいやお赤飯の追加OK hasImage=true price=3456 shopName=季膳味和 楽天市場店 genreName=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [ROOM_IMPORT_RESULT_SHEET_ITEM] productId=okui-10500 title=お食い初め　料理セット　鯛特大【レンタル食器付き】│百日祝い（100日祝い）に鯛（たい）や蛤（はまぐり）他、歯固め石、お祝い箸マニュアル解説書なども付いたインスタ映えも抜群のお祝い膳。食器のレンタルや購入も可能。蛤吸（はますい）やお赤飯の追加購入もOK。 hasImage=true price=13716 shopName=季膳味和 楽天市場店 genreName=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [ROOM_IMPORT_RESULT_SHEET_ITEM] productId=okui_8500 title=お食い初め　料理セット│大きい鯛が良い人向け│百日祝い（100日祝い）鯛や蛤（はまぐり）、歯固め石、お祝い箸マニュアル解説書等も付いたインスタ映え抜群のお祝い膳│食器のレンタルや購入も可│蛤吸-はますいやお赤飯の追加購入可│タイ飾り付属│鯛特大 hasImage=true price=10260 shopName=季膳味和 楽天市場店 genreName=授乳用品・ベビー用食事用品
+I/flutter ( 1787): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=214 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=214
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=tai_6000 roomLikeCount=10 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=sanrio-001-tai1kg roomLikeCount=10 roomCommentCount=0 chipLabel=反応あり source=computed
+W/WindowOnBackDispatcher( 1787): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 1787): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=214 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=214
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=tai_6000 roomLikeCount=10 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=sanrio-001-tai1kg roomLikeCount=10 roomCommentCount=0 chipLabel=反応あり source=computed
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\room_manager2_shot_006.png
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=refresh
+I/flutter ( 1787): productId=
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=0
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=342
+I/flutter ( 1787): afterDoneCount=342
+I/flutter ( 1787): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 1787): source=screen
+I/flutter ( 1787): pendingCount=0
+I/flutter ( 1787): doneCount=342
+I/flutter ( 1787): filter=
+I/flutter ( 1787): tab=done
+I/flutter ( 1787): [ROOMコレ診断] refreshManagedProductList 完了 total=342 candidate=0 done=342 ui=ready
+I/flutter ( 1787): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=214 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=214
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=tai_6000 roomLikeCount=10 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=sanrio-001-tai1kg roomLikeCount=10 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=214 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=10000143 title=おままごとセット おままごと キッチン　木のおもちゃ 玩具 ベビー 子供 女の子 男の子 木製 おしゃれ インテリア 調理器具 出産祝い プレゼント 誕生日 かわいい お祝い status=done len=214
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000143 roomLikeCount=63 roomCommentCount=4 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=garbo-10033240 roomLikeCount=77 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=tai_6000 roomLikeCount=10 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=sanrio-001-tai1kg roomLikeCount=10 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=126 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=x23164 title=THE LALA ララ ベビー 赤ちゃん 帽子 ハット バケットハット 子供 子供服 キッズ服 秋 春 夏 冬 子供 ベビー服 韓国子供服 韓国ブランド 女の子 男の子 キッズ キッズ服 子供服 くすみ チェック 可愛い おしゃれ SNS status=done len=126
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000043 roomLikeCount=286 roomCommentCount=11 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=tai_3600 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=126 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=x23164 title=THE LALA ララ ベビー 赤ちゃん 帽子 ハット バケットハット 子供 子供服 キッズ服 秋 春 夏 冬 子供 ベビー服 韓国子供服 韓国ブランド 女の子 男の子 キッズ キッズ服 子供服 くすみ チェック 可愛い おしゃれ SNS status=done len=126
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=x23164 roomLikeCount=68 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=10000043 roomLikeCount=286 roomCommentCount=11 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=tai_3600 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=oshichiya_5000 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\room_manager2_shot_007.png
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=oshichiya_5000 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=tai_5000_gentei roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\room_manager2_shot_008.png
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_8500 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-10500 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_wakeari2 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_15000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-12000-rei roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_5200 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\room_manager2_shot_009.png
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=none button=reaction visible=true reason=idle
+I/flutter ( 1787): [ROOM_SYNC_JOB_LOCK] action=acquire job=syncingReactions currentJob=none
+I/flutter ( 1787): [ROOM_REACTION_SYNC_START] limit=10
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=syncingReactions button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=syncingReactions button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=home job=syncingReactions button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=syncingReactions button=import visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=syncingReactions button=reaction visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOM_SYNC_BUTTON_VISIBILITY] screen=myPage job=syncingReactions button=maintenance visible=false reason=hiddenWhileBusy
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=126 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=x23164 title=THE LALA ララ ベビー 赤ちゃん 帽子 ハット バケットハット 子供 子供服 キッズ服 秋 春 夏 冬 子供 ベビー服 韓国子供服 韓国ブランド 女の子 男の子 キッズ キッズ服 子供服 くすみ チェック 可愛い おしゃれ SNS status=done len=126
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_wakeari2 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_15000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-12000-rei roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_5200 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\room_manager2_shot_010.png
+I/flutter ( 1787): [ROOM_IMPORT_API] type=roomList status=200 durationMs=9595
+I/flutter ( 1787): [ROOM_BATCH_FETCH_PLAN] job=reactionSync maxPages=2 maxItems=10 cursorMode=latestPlusResumeOnePage reason=budgetedReactionSync
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [ROOM_IMPORT_API] type=roomPage status=200 durationMs=9894
+I/flutter ( 1787): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter ( 1787): [ROOM_REACTION_SYNC_CURSOR] action=clear cursor=- reason=batchDoneNoResumeCursor lastProcessedRoomKey=-
+I/flutter ( 1787): [ROOM_BATCH_FETCH_RESULT] job=reactionSync pagesFetched=1 itemsFetched=20 durationMs=9595
+I/flutter ( 1787): [ROOM_REACTION_SYNC_STOP] reason=maxDurationReached pagesFetched=1 itemsChecked=1 updated=0 durationMs=19594 nextCursor=-
+I/flutter ( 1787): [ROOM_BATCH_COMPARE_RESULT] job=reactionSync fetchedItems=1 existingMatches=0 newCandidates=0 reactionChanged=0 unchanged=1
+I/flutter ( 1787): [ROOM_REACTION_SYNC_UI_RESULT] checkedItems=1 updatedItems=0 hasReactionItems=1 commentedItems=0 unchangedItems=1 topReactedProductIds= stopReason=maxDurationReached hasNextCursor=false message=反応を確認しました：確認1件 / 反応あり1件
+I/flutter ( 1787): [ROOM_BATCH_SAVE_RESULT] job=reactionSync saveTargets=0 saved=0 skippedUnchanged=1 refreshListOnce=true durationMs=59
+I/flutter ( 1787): [ROOM_REACTION_SYNC_RESULT] updated=0 itemsChecked=1 latestPageUpdated=0 resumedUpdated=0 nextCursor=- cursorAction=clear stopReason=maxDurationReached pagesFetched=1 durationMs=19655 apiCallsToRakuten=0
+I/flutter ( 1787): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 1787): action=refresh
+I/flutter ( 1787): productId=
+I/flutter ( 1787): itemCode=
+I/flutter ( 1787): beforePendingCount=0
+I/flutter ( 1787): afterPendingCount=0
+I/flutter ( 1787): beforeDoneCount=342
+I/flutter ( 1787): afterDoneCount=342
+I/flutter ( 1787): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 1787): source=provider
+I/flutter ( 1787): pendingCount=0
+I/flutter ( 1787): doneCount=342
+I/flutter ( 1787): filter=
+I/flutter ( 1787): tab=
+I/flutter ( 1787): [ROOMコレ診断] refreshManagedProductList 完了 total=342 candidate=0 done=342 ui=ready
+I/flutter ( 1787): [ROOM_SYNC_JOB_LOCK] action=release job=syncingReactions currentJob=none
+I/flutter ( 1787): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=126 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=x23164 title=THE LALA ララ ベビー 赤ちゃん 帽子 ハット バケットハット 子供 子供服 キッズ服 秋 春 夏 冬 子供 ベビー服 韓国子供服 韓国ブランド 女の子 男の子 キッズ キッズ服 子供服 くすみ チェック 可愛い おしゃれ SNS status=done len=126
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_wakeari2 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_15000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-12000-rei roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_5200 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=342 afterFilterLen=126 surface=ok_list ui=ready
+I/flutter ( 1787): [ROOMコレ診断] 描画リスト先頭 productId=x23164 title=THE LALA ララ ベビー 赤ちゃん 帽子 ハット バケットハット 子供 子供服 キッズ服 秋 春 夏 冬 子供 ベビー服 韓国子供服 韓国ブランド 女の子 男の子 キッズ キッズ服 子供服 くすみ チェック 可愛い おしゃれ SNS status=done len=126
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_wakeari2 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_okasi_8800_reitou roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_15000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui-12000-rei roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 1787): [REACTION_STATUS_RENDER] productId=okui_5200 roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\room_manager2_shot_011.png
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_012320.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_012320.mp4 (33259505 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_012320\terminal_output_20260516_012320.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_012320.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260516_012320.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260516_012320.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260516_012320.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260516_012320.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
