@@ -113,6 +113,7 @@ class RoomKpiCalculator {
         case RoomActivityEventType.movedToCored:
         case RoomActivityEventType.openedRakuten:
         case RoomActivityEventType.deleted:
+        case RoomActivityEventType.importedFromRoom:
           return score;
       }
     });

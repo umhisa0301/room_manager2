@@ -9,6 +9,8 @@ enum RoomActivityEventType {
   feedbackSold,
   feedbackWeak,
   deleted,
+  /// ROOM「投稿済み商品を取り込む」で新規行が追加されたとき（候補追加とは別集計）。
+  importedFromRoom,
 }
 
 /// 永続化可能な活動イベント1件。

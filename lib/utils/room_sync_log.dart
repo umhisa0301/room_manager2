@@ -874,6 +874,36 @@ void roomSyncButtonVisibilityLog(String message) {
   }
 }
 
+void roomSyncButtonRenderDecisionLog(String message) {
+  final line = '[ROOM_SYNC_BUTTON_RENDER_DECISION] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportResultSheetCopyLog(String message) {
+  final line = '[ROOM_IMPORT_RESULT_SHEET_COPY] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void analyticsCountSourceLog(String message) {
+  final line = '[ANALYTICS_COUNT_SOURCE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+  }
+}
+
+void analyticsDailyBarLog(String message) {
+  final line = '[ANALYTICS_DAILY_BAR] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+  }
+}
+
 void reactionStatusSaveLog(String message) {
   final line = '[REACTION_STATUS_SAVE] $message';
   if (kDebugMode) {

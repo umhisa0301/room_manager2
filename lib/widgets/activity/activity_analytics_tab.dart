@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,9 +12,11 @@ import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
 import '../../state/saved_shop_provider.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/room_sync_log.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_card.dart';
 import '../../widgets/room_colle_product_list_card_layout.dart';
+import 'activity_navigation_helpers.dart';
 import 'activity_screen_layout.dart';
 
 /// 活動画面「分析」タブ。
@@ -61,6 +64,54 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
       builder: (context, managed, act, saved, _) {
         final items = managed.items;
         final shell = context.read<AppShellController>();
+        if (kDebugMode) {
+          final now = DateTime.now();
+          final todayStart = DateTime(now.year, now.month, now.day);
+          final candidateCount = items
+              .where(
+                (e) => RakutenManagedProduct.isMemberForStatusTab(
+                  e,
+                  RakutenManagedProductStatus.candidate,
+                ),
+              )
+              .length;
+          final allDoneCount = items
+              .where(
+                (e) => RakutenManagedProduct.isMemberForStatusTab(
+                  e,
+                  RakutenManagedProductStatus.done,
+                ),
+              )
+              .length;
+          final roomImportedDoneCount = items
+              .where(
+                (e) =>
+                    RakutenManagedProduct.isMemberForStatusTab(
+                      e,
+                      RakutenManagedProductStatus.done,
+                    ) &&
+                    e.coredActivitySource ==
+                        RakutenCoredActivitySource.roomImport,
+              )
+              .length;
+          final todayCollectedByApp = activityCountEventsOnLocalDay(
+            act.events,
+            todayStart,
+            {RoomActivityEventType.movedToCored},
+          );
+          final todayImportedFromRoom = activityCountEventsOnLocalDay(
+            act.events,
+            todayStart,
+            {RoomActivityEventType.importedFromRoom},
+          );
+          analyticsCountSourceLog(
+            'screen=analysis candidateCount=$candidateCount '
+            'doneCount=$allDoneCount roomImportedDoneCount=$roomImportedDoneCount '
+            'todayCollectedByApp=$todayCollectedByApp '
+            'todayImportedFromRoom=$todayImportedFromRoom '
+            'reason=excludeRoomImportFromCandidate',
+          );
+        }
         final done = items
             .where(
               (e) =>

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
 import '../../state/today_recommendation_provider.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/room_sync_log.dart';
 import '../../widgets/app_card.dart';
 import 'activity_navigation_helpers.dart';
 import 'activity_screen_layout.dart';
@@ -81,6 +83,12 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
         final todayCandidates = todayCandidatesEvents > 0
             ? todayCandidatesEvents
             : todayCandidatesFallback;
+        _emitAchievementAnalyticsSourceLog(
+          items: items,
+          events: events,
+          now: now,
+          todayCandidates: todayCandidates,
+        );
         final streak = kpi.consecutiveActiveDays;
 
         final bottomPad = widget.bottomInset;
@@ -163,6 +171,62 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
       if (d == target) count++;
     }
     return count;
+  }
+
+  static void _emitAchievementAnalyticsSourceLog({
+    required List<RakutenManagedProduct> items,
+    required List<RoomActivityEvent> events,
+    required DateTime now,
+    required int todayCandidates,
+  }) {
+    if (!kDebugMode) return;
+    final todayStart = DateTime(now.year, now.month, now.day);
+    final candidateCount = items
+        .where(
+          (e) => RakutenManagedProduct.isMemberForStatusTab(
+            e,
+            RakutenManagedProductStatus.candidate,
+          ),
+        )
+        .length;
+    final doneCount = items
+        .where(
+          (e) => RakutenManagedProduct.isMemberForStatusTab(
+            e,
+            RakutenManagedProductStatus.done,
+          ),
+        )
+        .length;
+    final roomImportedDoneCount = items
+        .where(
+          (e) =>
+              RakutenManagedProduct.isMemberForStatusTab(
+                e,
+                RakutenManagedProductStatus.done,
+              ) &&
+              e.coredActivitySource == RakutenCoredActivitySource.roomImport,
+        )
+        .length;
+    final todayCollectedByApp = activityCountEventsOnLocalDay(
+      events,
+      todayStart,
+      {RoomActivityEventType.movedToCored},
+    );
+    final todayImportedFromRoom = activityCountEventsOnLocalDay(
+      events,
+      todayStart,
+      {RoomActivityEventType.importedFromRoom},
+    );
+    analyticsCountSourceLog(
+      'screen=achievement '
+      'candidateCount=$candidateCount '
+      'doneCount=$doneCount '
+      'roomImportedDoneCount=$roomImportedDoneCount '
+      'todayCollectedByApp=$todayCollectedByApp '
+      'todayImportedFromRoom=$todayImportedFromRoom '
+      'todayCandidatesMetric=$todayCandidates '
+      'reason=excludeRoomImportFromCandidate',
+    );
   }
 }
 
@@ -745,12 +809,13 @@ class _ActivityLogTile extends StatelessWidget {
   String _caption(RoomActivityEventType t) {
     return switch (t) {
       RoomActivityEventType.candidateAdded => '候補に追加',
-      RoomActivityEventType.movedToCored => 'ROOM投稿（コレ済）',
+      RoomActivityEventType.movedToCored => 'アプリでコレ済にした',
       RoomActivityEventType.openedRakuten => '楽天ページを開く',
       RoomActivityEventType.feedbackLiked => '評価を変更：反応あり',
       RoomActivityEventType.feedbackSold => '評価を変更：売れた',
       RoomActivityEventType.feedbackWeak => '評価を変更：その他',
       RoomActivityEventType.deleted => '候補から削除',
+      RoomActivityEventType.importedFromRoom => 'ROOMから取り込み',
     };
   }
 
@@ -819,7 +884,8 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final today = DateTime(widget.anchor.year, widget.anchor.month, widget.anchor.day);
-    final series = <({DateTime day, int posts, int cand})>[];
+    final series =
+        <({DateTime day, int posts, int cand, int roomImport})>[];
 
     for (var i = 6; i >= 0; i--) {
       final day = today.subtract(Duration(days: i));
@@ -837,14 +903,30 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
         day,
       );
       if (candFallback > cand) cand = candFallback;
-      series.add((day: day, posts: posts, cand: cand));
+      final roomImport = activityCountEventsOnLocalDay(
+        widget.events,
+        day,
+        {RoomActivityEventType.importedFromRoom},
+      );
+      series.add((day: day, posts: posts, cand: cand, roomImport: roomImport));
+      if (kDebugMode) {
+        final mm = day.month.toString().padLeft(2, '0');
+        final dd = day.day.toString().padLeft(2, '0');
+        analyticsDailyBarLog(
+          'date=${day.year}-$mm-$dd '
+          'postCount=$posts candidateCount=$cand roomImportCount=$roomImport '
+          'candidateSource=statusCandidateOnly',
+        );
+      }
     }
 
     var weekPosts = 0;
     var weekCand = 0;
+    var weekRoomImport = 0;
     for (final e in series) {
       weekPosts += e.posts;
       weekCand += e.cand;
+      weekRoomImport += e.roomImport;
     }
 
     var maxVal = 0;
@@ -892,7 +974,8 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '投稿：$weekPosts件　候補：$weekCand件',
+                  '投稿：$weekPosts件　候補：$weekCand件'
+                  '${weekRoomImport > 0 ? '　ROOM取り込み：$weekRoomImport件' : ''}',
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w900,
                     fontSize: 16,
@@ -903,7 +986,7 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
           ),
           const SizedBox(height: 12),
           Text(
-            '棒の高さは投稿＋候補の合計。真ん中の一行がその日内訳です。',
+            '棒の高さはアプリからの「投稿」と「候補追加」の合計です。ROOM取り込み件数は上の合計・各日の「取込」に表示します。',
             style: theme.textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
               height: 1.35,
@@ -1029,7 +1112,8 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                           fontWeight: FontWeight.w800,
                                           fontSize: 9.5,
                                           height: 1.15,
-                                          color: e.posts + e.cand == 0
+                                          color: e.posts + e.cand == 0 &&
+                                                  e.roomImport == 0
                                               ? AppColors.textTertiary
                                               : AppColors.textSecondary,
                                         ),
@@ -1042,11 +1126,24 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                           fontWeight: FontWeight.w800,
                                           fontSize: 9.5,
                                           height: 1.15,
-                                          color: e.posts + e.cand == 0
+                                          color: e.posts + e.cand == 0 &&
+                                                  e.roomImport == 0
                                               ? AppColors.textTertiary
                                               : AppColors.textSecondary,
                                         ),
                                       ),
+                                      if (e.roomImport > 0)
+                                        Text(
+                                          '取込 ${e.roomImport}',
+                                          textAlign: TextAlign.center,
+                                          style: theme.textTheme.labelSmall
+                                              ?.copyWith(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 9.5,
+                                            height: 1.15,
+                                            color: AppColors.textSecondary,
+                                          ),
+                                        ),
                                     ],
                                   ),
                                   const SizedBox(height: 6),

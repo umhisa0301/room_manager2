@@ -75,6 +75,9 @@ int activityCountEventsOnLocalDay(
 }
 
 /// ローカル暦日ごとの「候補へ追加」（`addedAt` ベース）。イベント欠損時のフォールバック用。
+///
+/// **ROOM 取り込み**でコレ済に入った商品（`status == done` かつ `addedAt` が今日）は
+/// カウントしない。[RakutenManagedProductStatus.candidate] のみ。
 int activityCountCandidatesAddedOnLocalCalendarDay(
   List<RakutenManagedProduct> items,
   DateTime localDay,
@@ -83,6 +86,12 @@ int activityCountCandidatesAddedOnLocalCalendarDay(
   final end = start.add(const Duration(days: 1));
   var n = 0;
   for (final e in items) {
+    if (!RakutenManagedProduct.isMemberForStatusTab(
+      e,
+      RakutenManagedProductStatus.candidate,
+    )) {
+      continue;
+    }
     final a = e.addedAt;
     if (a.isBefore(start) || !a.isBefore(end)) continue;
     n++;

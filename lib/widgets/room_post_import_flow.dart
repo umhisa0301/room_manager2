@@ -24,6 +24,7 @@ import '../utils/room_sync_log.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import 'room_colle_product_list_card_layout.dart';
 
 /// [RoomPostImportFlow.executeBatch] から通知される進捗。
 typedef RoomPostImportProgressCallback =
@@ -475,6 +476,7 @@ abstract final class RoomPostImportFlow {
       isScrollControlled: true,
       showDragHandle: true,
       builder: (ctx) {
+        roomImportResultSheetCopyLog(_importResultSheetCopyLogLine(result));
         final pendingEnrich =
             RoomImportMetadataEnrichmentService.countPendingEnrichment(
               ctx.read<RakutenManagedProductProvider>().items,
@@ -487,17 +489,17 @@ abstract final class RoomPostImportFlow {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  result.newlyCollectedCount > 0
-                      ? '${result.newlyCollectedCount}件を取り込みました'
-                      : '取り込み完了',
+                  '取り込み結果',
                   textAlign: TextAlign.center,
                   style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: 14),
                 Text(
-                  _heroOutcomeLine(result),
+                  result.newlyCollectedCount > 0
+                      ? '${result.newlyCollectedCount}件追加しました'
+                      : _heroOutcomeLine(result),
                   textAlign: TextAlign.center,
                   style: Theme.of(ctx).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w900,
@@ -516,33 +518,15 @@ abstract final class RoomPostImportFlow {
                     height: 1.45,
                   ),
                 ),
-                if (result.postImportEnrichSuccessCount != null) ...[
+                if (result.postImportEnrichSuccessCount != null &&
+                    result.newlyCollectedCount > 0) ...[
                   const SizedBox(height: 12),
-                  Text(
-                    '商品情報取得：成功${result.postImportEnrichSuccessCount}件 / '
-                    '失敗${result.postImportEnrichFailCount ?? 0}件 / '
-                    '残り${result.postImportEnrichRemainingImportedPending ?? 0}件',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      height: 1.45,
-                    ),
-                  ),
-                  if (result.postImportEnrichHitTimeLimit) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      '残りは「ショップ名・ジャンルを再確認」から再試行できます',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.4,
-                      ),
-                    ),
-                  ],
+                  ..._importSheetEnrichUserLines(ctx, result),
                 ],
                 const SizedBox(height: 22),
-                LayoutBuilder(
-                  builder: (context, constraints) {
+                if (kDebugMode)
+                  LayoutBuilder(
+                    builder: (context, constraints) {
                     const spacing = 12.0;
                     final w = constraints.maxWidth;
                     final half = w > spacing ? (w - spacing) / 2 : w;
@@ -870,6 +854,92 @@ abstract final class RoomPostImportFlow {
     );
   }
 
+  static String _importResultSheetCopyLogLine(RoomSyncResult r) {
+    final imported = r.newlyCollectedCount;
+    final succ = r.postImportEnrichSuccessCount;
+    final fail = r.postImportEnrichFailCount ?? 0;
+    final rem = r.postImportEnrichRemainingImportedPending ?? 0;
+    final unclear = fail + rem;
+    if (succ == null || imported <= 0) {
+      return 'imported=$imported enrichSuccess=${succ ?? '-'} enrichFailed=$fail '
+          'remaining=$rem userMessage=skippedEnrichCopy';
+    }
+    final userMessage = unclear == 0
+        ? 'allEnriched'
+        : (succ <= 0 ? 'noneEnriched' : 'partial_$succ');
+    return 'imported=$imported enrichSuccess=$succ enrichFailed=$fail '
+        'remaining=$rem userMessage=$userMessage';
+  }
+
+  static List<Widget> _importSheetEnrichUserLines(
+    BuildContext ctx,
+    RoomSyncResult r,
+  ) {
+    final succ = r.postImportEnrichSuccessCount!;
+    final fail = r.postImportEnrichFailCount ?? 0;
+    final rem = r.postImportEnrichRemainingImportedPending ?? 0;
+    final unclear = fail + rem;
+    final secondary = Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+          color: AppColors.textSecondary,
+          height: 1.45,
+        );
+    if (unclear == 0) {
+      return [
+        Text(
+          'すべての商品情報を確認できました',
+          textAlign: TextAlign.center,
+          style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                height: 1.45,
+              ),
+        ),
+      ];
+    }
+    if (succ <= 0) {
+      return [
+        Text(
+          '$unclear件は商品情報をこの場では確認できませんでした',
+          textAlign: TextAlign.center,
+          style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                height: 1.45,
+              ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          '未確認の商品は「ショップ名・ジャンルを再確認」から再確認できます',
+          textAlign: TextAlign.center,
+          style: secondary,
+        ),
+      ];
+    }
+    return [
+      Text(
+        '$succ件は商品情報まで確認できました',
+        textAlign: TextAlign.center,
+        style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              height: 1.45,
+            ),
+      ),
+      const SizedBox(height: 6),
+      Text(
+        '$unclear件はあとで再確認できます',
+        textAlign: TextAlign.center,
+        style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              height: 1.45,
+            ),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        '未確認の商品は「ショップ名・ジャンルを再確認」から再確認できます',
+        textAlign: TextAlign.center,
+        style: secondary,
+      ),
+    ];
+  }
+
   static String _heroOutcomeLine(RoomSyncResult r) {
     final n = r.newlyCollectedCount;
     final add = r.roomUrlAddedCount;
@@ -999,7 +1069,9 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                       if (product.itemPrice > 0) ...[
                         const SizedBox(height: 4),
                         Text(
-                          '¥${product.itemPrice}',
+                          RoomColleProductListCardLayout.formatPriceYen(
+                            product.itemPrice,
+                          ),
                           style: theme.textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.w800,
                             color: AppColors.accentPrimary,

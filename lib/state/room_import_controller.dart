@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../config/demo_mode.dart';
 import '../models/rakuten_managed_product.dart';
+import '../models/room_activity_event.dart';
 import '../models/room_reaction_sync_batch_result.dart';
 import '../models/room_sync_result.dart';
 import '../repository/rakuten_search_repository.dart';
@@ -18,6 +19,7 @@ import 'rakuten_managed_product_provider.dart';
 import 'user_profile_provider.dart';
 import '../widgets/room_post_import_flow.dart';
 import 'bulk_operation_state_controller.dart';
+import 'room_activity_event_provider.dart';
 
 /// ROOM 取り込みのフェーズ（ホーム／マイページ共通）。
 enum RoomImportPhase { idle, running, completed, failed }
@@ -240,6 +242,28 @@ class RoomImportController extends ChangeNotifier {
         await context
             .read<RakutenManagedProductProvider>()
             .refreshManagedProductList(showLoadingIndicator: false);
+      }
+
+      if (context.mounted &&
+          result != null &&
+          !result.hasFatalError &&
+          result.newlyImportedProductIds.isNotEmpty) {
+        final act = context.read<RoomActivityEventProvider>();
+        final stamp = DateTime.now().millisecondsSinceEpoch;
+        var i = 0;
+        for (final rawId in result.newlyImportedProductIds) {
+          final id = rawId.trim();
+          if (id.isEmpty) continue;
+          await act.append(
+            RoomActivityEvent(
+              id: '${id}_importedFromRoom_${stamp}_$i',
+              productId: id,
+              type: RoomActivityEventType.importedFromRoom,
+              createdAt: DateTime.now(),
+            ),
+          );
+          i++;
+        }
       }
 
       if (result == null) {

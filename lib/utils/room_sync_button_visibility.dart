@@ -31,4 +31,17 @@ abstract final class RoomSyncButtonVisibility {
       'screen=$screen job=none button=$button visible=true reason=idle',
     );
   }
+
+  /// 実行可否・表示可否の最終判断（通常状態／ロック時など）。
+  static void logRenderDecision({
+    required String screen,
+    required String button,
+    required bool canRun,
+    required bool visible,
+    required String reason,
+  }) {
+    roomSyncButtonRenderDecisionLog(
+      'screen=$screen button=$button canRun=$canRun visible=$visible reason=$reason',
+    );
+  }
 }

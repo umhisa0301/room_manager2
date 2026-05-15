@@ -27,6 +27,7 @@ import '../theme/home_screen_colors.dart';
 import '../widgets/app_button.dart';
 import '../widgets/room_colle_product_list_card_layout.dart';
 import '../utils/room_sync_button_visibility.dart';
+import '../utils/room_sync_card_copy.dart';
 import '../widgets/room_post_import_flow.dart';
 import '../widgets/room_sync_last_reaction_summary.dart';
 
@@ -748,6 +749,13 @@ class _HomeRoomPostImportSection extends StatelessWidget {
               job: syncJob,
               button: b,
             );
+            RoomSyncButtonVisibility.logRenderDecision(
+              screen: 'home',
+              button: b,
+              canRun: false,
+              visible: false,
+              reason: 'busy',
+            );
           }
         }
 
@@ -771,6 +779,35 @@ class _HomeRoomPostImportSection extends StatelessWidget {
             ? 'まだROOM投稿を取り込んでいません'
             : '取り込み済み：$importedDoneCount件';
 
+        final canRunPrimary = hasRoomProfileUrl && !actionLocked;
+        final showPrimaryButtons = canRunPrimary && !syncBusy;
+        if (!syncBusy) {
+          final reason = !hasRoomProfileUrl
+              ? 'missingRoomUrl'
+              : (actionLocked ? 'guarded' : 'ready');
+          RoomSyncButtonVisibility.logRenderDecision(
+            screen: 'home',
+            button: 'import',
+            canRun: canRunPrimary,
+            visible: showPrimaryButtons,
+            reason: reason,
+          );
+          RoomSyncButtonVisibility.logRenderDecision(
+            screen: 'home',
+            button: 'reaction',
+            canRun: canRunPrimary,
+            visible: showPrimaryButtons,
+            reason: reason,
+          );
+          RoomSyncButtonVisibility.logRenderDecision(
+            screen: 'home',
+            button: 'maintenance',
+            canRun: canRunPrimary,
+            visible: showPrimaryButtons,
+            reason: reason,
+          );
+        }
+
         return Container(
           width: double.infinity,
           decoration: _HomeUi.searchEntrySectionDecoration(),
@@ -779,26 +816,26 @@ class _HomeRoomPostImportSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'ROOM同期',
+                RoomSyncCardCopy.title,
                 style: _HomeUi.sectionTitle(context).copyWith(
                   color: HomeScreenColors.accentSectionHeading,
                   fontSize: 17,
                   fontWeight: FontWeight.w900,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Text(
-                '投稿の取り込みと反応の確認は別ボタンです（いずれも1回最大${RoomImportLimitPolicy.freeBatchLimit}件）。',
+                RoomSyncCardCopy.subtitle,
                 style: _HomeUi.sectionBody(context),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               Text(
                 statusLine,
                 style: _HomeUi.bodyEmphasis(
                   context,
                 ).copyWith(fontSize: 14, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 10),
               if (!hasRoomProfileUrl) ...[
                 OutlinedButton.icon(
                   onPressed: onOpenRoomUrl,
@@ -848,139 +885,142 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     const SizedBox(height: 10),
                   ],
                   const RoomSyncLastReactionSummaryPanel(),
-                  const SizedBox(height: 12),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.accentPrimary.withValues(alpha: 0.18),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
+                  const SizedBox(height: 14),
+                  if (showPrimaryButtons) ...[
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.accentPrimary.withValues(alpha: 0.18),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: FilledButton(
+                        onPressed: () {
+                          RoomSyncButtonVisibility.logIdleVisible(
+                            screen: 'home',
+                            button: 'import',
+                          );
+                          _handleImport(context);
+                        },
+                        style: FilledButton.styleFrom(
+                          foregroundColor: AppColors.textOnAccent,
+                          backgroundColor: AppColors.accentPrimary,
+                          elevation: 0,
+                          minimumSize: const Size(double.infinity, 52),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          textStyle: AppTextStyles.button.copyWith(
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
-                      ],
+                        child: const Text('投稿済み商品を取り込む'),
+                      ),
                     ),
-                    child: FilledButton(
-                      onPressed: actionLocked
-                          ? null
-                          : () {
-                              RoomSyncButtonVisibility.logIdleVisible(
-                                screen: 'home',
-                                button: 'import',
-                              );
-                              _handleImport(context);
-                            },
-                      style: FilledButton.styleFrom(
-                        foregroundColor: AppColors.textOnAccent,
-                        backgroundColor: AppColors.accentPrimary,
-                        elevation: 0,
-                        minimumSize: const Size(double.infinity, 52),
+                    const SizedBox(height: 10),
+                    OutlinedButton(
+                      onPressed: () {
+                        RoomSyncButtonVisibility.logIdleVisible(
+                          screen: 'home',
+                          button: 'reaction',
+                        );
+                        _handleReactionSync(context);
+                      },
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.textPrimary,
+                        minimumSize: const Size(double.infinity, 48),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        textStyle: AppTextStyles.button.copyWith(
-                          fontWeight: FontWeight.w900,
+                      ),
+                      child: Text(
+                        '反応を確認する',
+                        style: AppTextStyles.button.copyWith(
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
-                      child: const Text('投稿済み商品を取り込む'),
                     ),
-                  ),
-                  const SizedBox(height: 6),
+                  ],
                   Text(
-                    'ROOM投稿から新しい商品を最大${RoomImportLimitPolicy.freeBatchLimit}件追加し、商品情報も初回取得します。',
+                    RoomSyncCardCopy.combinedFooterHint,
                     style: _HomeUi.tapHint(context),
                   ),
-                  const SizedBox(height: 12),
-                  OutlinedButton(
-                    onPressed: actionLocked
-                        ? null
-                        : () {
-                            RoomSyncButtonVisibility.logIdleVisible(
-                              screen: 'home',
-                              button: 'reaction',
-                            );
-                            _handleReactionSync(context);
-                          },
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.textPrimary,
-                      minimumSize: const Size(double.infinity, 48),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    child: Text(
-                      '反応を確認する',
-                      style: AppTextStyles.button.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    '取り込み済み商品のいいね・コメントを確認し、反応がある商品を見つけます。',
-                    style: _HomeUi.tapHint(context),
-                  ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 14),
                   ExpansionTile(
+                    initiallyExpanded: false,
                     tilePadding: EdgeInsets.zero,
                     title: Text(
-                      'メンテナンス',
+                      RoomSyncCardCopy.maintenanceTileTitle,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     subtitle: Text(
-                      '古い投稿の探索や、取り込み失敗分の再試行',
+                      RoomSyncCardCopy.maintenanceTileSubtitle,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.textSecondary,
                       ),
                     ),
                     children: [
-                      OutlinedButton.icon(
-                        onPressed: actionLocked
-                            ? null
-                            : () {
-                                RoomSyncButtonVisibility.logIdleVisible(
-                                  screen: 'home',
-                                  button: 'maintenance',
-                                );
-                                _handleDeepRoomImport(context);
-                              },
-                        icon: const Icon(Icons.manage_search_outlined, size: 18),
-                        label: const Text('さらに古い投稿を探す'),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        '通常取り込みで見つからない古いROOM投稿を探します。時間がかかる場合があります。',
-                        style: _HomeUi.tapHint(context),
-                      ),
-                      const SizedBox(height: 12),
-                      OutlinedButton.icon(
-                        onPressed: actionLocked
-                            ? null
-                            : () {
-                                RoomSyncButtonVisibility.logIdleVisible(
-                                  screen: 'home',
-                                  button: 'maintenance',
-                                );
-                                RoomPostImportFlow
-                                    .runManualPendingRoomImportMetadataEnrich(
-                                  context,
-                                );
-                              },
-                        icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
-                        label: const Text('ショップ名・ジャンルを再確認'),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        '取り込み時に商品情報を取得できなかった商品だけ再試行します（1回あたり最大${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun}件）。',
-                        style: _HomeUi.tapHint(context),
-                      ),
+                      if (showPrimaryButtons) ...[
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            RoomSyncButtonVisibility.logIdleVisible(
+                              screen: 'home',
+                              button: 'maintenance',
+                            );
+                            _handleDeepRoomImport(context);
+                          },
+                          icon:
+                              const Icon(Icons.manage_search_outlined, size: 18),
+                          label: const Text('さらに古い投稿を探す'),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          '通常取り込みで見つからない古いROOM投稿を探します。時間がかかる場合があります。',
+                          style: _HomeUi.tapHint(context),
+                        ),
+                        const SizedBox(height: 12),
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            RoomSyncButtonVisibility.logIdleVisible(
+                              screen: 'home',
+                              button: 'maintenance',
+                            );
+                            RoomPostImportFlow
+                                .runManualPendingRoomImportMetadataEnrich(
+                              context,
+                            );
+                          },
+                          icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
+                          label: const Text('ショップ名・ジャンルを再確認'),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          '取り込み時に商品情報を取得できなかった商品だけ再試行します（1回あたり最大${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun}件）。',
+                          style: _HomeUi.tapHint(context),
+                        ),
+                      ] else if (hasRoomProfileUrl) ...[
+                        Text(
+                          bulk.blockingRoomTourUserMessage ??
+                              BulkOperationStateController.blockingSnackMessage,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: AppColors.textSecondary,
+                                height: 1.35,
+                              ),
+                        ),
+                      ],
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   Text(
-                    '無料版は${RoomImportLimitPolicy.freeBatchLimit}件ずつ',
+                    RoomSyncCardCopy.freeTierLine(
+                      limit: RoomImportLimitPolicy.freeBatchLimit,
+                    ),
                     style: _HomeUi.tapHint(context),
                   ),
                 ],
