@@ -11,6 +11,7 @@ import '../repository/rakuten_managed_product_repository.dart';
 import '../services/room_import_collects_policy.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_import_metadata_enrichment.dart';
+import '../services/room_reaction_sync_history_store.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../utils/room_sync_log.dart';
 import 'rakuten_managed_product_provider.dart';
@@ -77,8 +78,8 @@ class RoomImportController extends ChangeNotifier {
     _latestAddedItems = List<RakutenManagedProduct>.from(
       r.newlyCollectedSamples,
     );
-    _checkedCount = r.listingCheckedCount;
-    _targetCount = r.listingCheckedCount;
+    _checkedCount = r.processedCount;
+    _targetCount = r.processedCount > 0 ? r.processedCount : r.listingCheckedCount;
   }
 
   /// 取り込みバッチを実行。実行中に再度呼ぶと null（UI はボタン disabled で抑止）。
@@ -121,9 +122,7 @@ class RoomImportController extends ChangeNotifier {
     roomSyncJobLockLog(
       'action=acquire job=importingCollectedItems currentJob=none',
     );
-    roomImportFlowLog(
-      'action=importStart message=postImportInitialEnrich',
-    );
+    roomImportFlowLog('action=importStart message=postImportInitialEnrich');
 
     _phase = RoomImportPhase.running;
     _checkedCount = 0;
@@ -185,11 +184,30 @@ class RoomImportController extends ChangeNotifier {
           applyPostImportAutoCap: true,
           manualSessionPacing: true,
           restrictToProductIdsInOrder: result.newlyImportedProductIds,
+          maxRunDuration: const Duration(seconds: 20),
+          onEnrichSlotProgress: (done, total) {
+            _importProcessingHint = '商品情報を初回取得中です $done / $total';
+            notifyListeners();
+          },
         );
         sw.stop();
         enrichmentBatchMs = sw.elapsedMilliseconds;
         enrichmentUpdated = er.updated;
         enrichmentProductAttempts = er.productEnrichmentSlots;
+        var pendingAfterRestrict = 0;
+        for (final id in result.newlyImportedProductIds) {
+          final row = productRepo.getByProductId(id);
+          if (row != null &&
+              RoomImportMetadataEnrichmentService.needFlagsForProduct(row)
+                  .willEnrich) {
+            pendingAfterRestrict++;
+          }
+        }
+        roomImportInitialEnrichStopLog(
+          'reason=${er.initialEnrichStopReason} attempted=${er.productEnrichmentSlots} '
+          'success=${er.updated} failed=${er.failedInBatch} '
+          'remainingImportedPending=$pendingAfterRestrict durationMs=${sw.elapsedMilliseconds}',
+        );
         roomImportInitialEnrichResultLog(
           'attempted=${er.productEnrichmentSlots} success=${er.updated} '
           'failed=${er.failedInBatch} rateLimited=${er.pausedByRateLimit} '
@@ -202,6 +220,12 @@ class RoomImportController extends ChangeNotifier {
           'enrichedSkipped=${er.skippedRestrictedAlreadyComplete} '
           'nextCursor=${result.collectsLastNextCursor ?? '-'} '
           'cursorAction=postEnrich',
+        );
+        result = result.withPostImportEnrichSummary(
+          success: er.updated,
+          fail: er.failedInBatch,
+          remainingImportedPending: pendingAfterRestrict,
+          hitTimeLimit: er.initialEnrichStopReason == 'maxDurationReached',
         );
       } else if (result != null && !result.hasFatalError) {
         roomImportBatchResultLog(
@@ -251,9 +275,10 @@ class RoomImportController extends ChangeNotifier {
 
     var pendingEnrich = 0;
     if (context.mounted) {
-      pendingEnrich = RoomImportMetadataEnrichmentService.countPendingEnrichment(
-        context.read<RakutenManagedProductProvider>().items,
-      );
+      pendingEnrich =
+          RoomImportMetadataEnrichmentService.countPendingEnrichment(
+            context.read<RakutenManagedProductProvider>().items,
+          );
     }
 
     roomImportFlowLog(
@@ -310,9 +335,7 @@ class RoomImportController extends ChangeNotifier {
     );
     if (profile.isEmpty) return null;
 
-    roomSyncJobLockLog(
-      'action=acquire job=syncingReactions currentJob=none',
-    );
+    roomSyncJobLockLog('action=acquire job=syncingReactions currentJob=none');
     _bulkOperationState?.setRoomReactionSyncRunning(true);
     RoomReactionSyncBatchResult? out;
     try {
@@ -332,13 +355,16 @@ class RoomImportController extends ChangeNotifier {
             .refreshManagedProductList(showLoadingIndicator: false);
       }
     } catch (e, st) {
-      debugPrint('[RoomImportController] executeReactionSyncBatch failed: $e\n$st');
+      debugPrint(
+        '[RoomImportController] executeReactionSyncBatch failed: $e\n$st',
+      );
       out = null;
     } finally {
       _bulkOperationState?.setRoomReactionSyncRunning(false);
-      roomSyncJobLockLog(
-        'action=release job=syncingReactions currentJob=none',
-      );
+      roomSyncJobLockLog('action=release job=syncingReactions currentJob=none');
+    }
+    if (out != null && !out.hasFatalError) {
+      await RoomReactionSyncHistoryStore.appendFromBatchResult(out);
     }
     return out;
   }

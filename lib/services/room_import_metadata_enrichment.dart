@@ -9,8 +9,13 @@ import '../models/rakuten_search_item.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../services/rakuten_item_url_parser.dart';
+import '../services/room_url_resolver.dart';
 import '../utils/rakuten_product_genre_display.dart';
+import '../utils/rakuten_ichiba_url_parse.dart';
 import '../utils/room_import_enrich_keyword_normalize.dart';
+import '../utils/room_import_learned_api_code.dart';
+import '../utils/room_import_product_url_match.dart';
+import '../utils/room_rat_redirect_parse.dart';
 import '../utils/room_sync_log.dart';
 import 'room_import_enrichment_cooldown_store.dart';
 import 'room_import_limit_policy.dart';
@@ -49,6 +54,7 @@ class RoomImportEnrichmentBatchResult {
     this.successProductIds = const <String>[],
     this.productEnrichmentSlots = 0,
     this.skippedRestrictedAlreadyComplete = 0,
+    this.initialEnrichStopReason = 'completed',
   });
 
   final int updated;
@@ -73,6 +79,9 @@ class RoomImportEnrichmentBatchResult {
 
   /// [restrictToProductIdsInOrder] 指定時、開始時点で API 不要だった制限内商品数。
   final int skippedRestrictedAlreadyComplete;
+
+  /// `completed` / `maxDurationReached` / `rateLimited`。
+  final String initialEnrichStopReason;
 }
 
 /// 取り込み後メタ補完で試す検索経路（ログ名と一致）。
@@ -80,15 +89,27 @@ enum _RoomImportEnrichMethod { shopItem, shopTitleKeyword, productIdKeyword }
 
 class _ResolvedImportCodes {
   const _ResolvedImportCodes({
-    required this.apiShop,
-    required this.apiItem,
-    required this.storedProductId,
+    required this.shopItemSearchItemCodeParam,
+    required this.matchPureItemForPick,
+    required this.matchShopCodeForPick,
+    required this.keywordShopCode,
+    required this.logProductId,
+    required this.urlPathMatchSegment,
     required this.source,
   });
 
-  final String apiShop;
-  final String apiItem;
-  final String storedProductId;
+  /// `shop:pure` 形式のときのみ Item Search direct に使う。空なら shopItem 経路は使わない。
+  final String shopItemSearchItemCodeParam;
+
+  final String matchPureItemForPick;
+  final String matchShopCodeForPick;
+  final String keywordShopCode;
+
+  /// ログ用（永続化 productId）。
+  final String logProductId;
+
+  /// keyword 系で URL 照合するときの `item.rakuten` パスセグメント。
+  final String urlPathMatchSegment;
   final String source;
 }
 
@@ -169,7 +190,12 @@ class RoomImportMetadataEnrichmentService {
     )) {
       return false;
     }
-    if (e.shopCode.trim().isEmpty || e.productId.trim().isEmpty) {
+    if (e.shopCode.trim().isEmpty &&
+        e.roomRedirectShopCode.trim().isEmpty &&
+        _keywordShopCode(e).trim().isEmpty) {
+      return false;
+    }
+    if (e.productId.trim().isEmpty) {
       return false;
     }
     return true;
@@ -182,11 +208,15 @@ class RoomImportMetadataEnrichmentService {
   /// 手動でも [RoomImportLimitPolicy.manualEnrichMaxProductsPerRun] を超えないよう内部でキャップする。
   ///
   /// [manualSessionPacing] が true のときは商品間ディレイを [RoomImportLimitPolicy.manualEnrichInterItemDelayMs] にする。
+  ///
+  /// [maxRunDuration] 経過後は未補完のまま打ち切る（初回取り込み直後の体感向け）。
   Future<RoomImportEnrichmentBatchResult> enrichRoomImportedProducts({
     required int limit,
     bool applyPostImportAutoCap = false,
     bool manualSessionPacing = false,
     List<String>? restrictToProductIdsInOrder,
+    Duration? maxRunDuration,
+    void Function(int completedSlots, int maxSlots)? onEnrichSlotProgress,
   }) async {
     var maxProductsPerRun = limit <= 0
         ? 0
@@ -275,6 +305,11 @@ class RoomImportMetadataEnrichmentService {
         maxProductsPerRun: maxProductsPerRun,
         manualSessionPacing: manualSessionPacing,
         restrictToProductIdsInOrder: restrict,
+        maxRunDuration: maxRunDuration,
+        onEnrichSlotProgress: onEnrichSlotProgress,
+        allowRoomDetailRedirectRecovery: restrict != null &&
+            restrict.isNotEmpty &&
+            applyPostImportAutoCap,
       );
     } finally {
       _singleFlight = false;
@@ -303,27 +338,70 @@ class RoomImportMetadataEnrichmentService {
     }
   }
 
-  _ResolvedImportCodes _resolveImportCodes(RakutenManagedProduct row) {
+  static String _storedSlugForUrlMatch(RakutenManagedProduct row) {
+    final s = row.roomProductSlug.trim();
+    if (s.isNotEmpty) return s;
+    return roomImportUrlPathMatchSegment(row.productId);
+  }
+
+  static String _keywordShopCode(RakutenManagedProduct row) {
+    for (final s in [row.shopCode.trim(), row.roomRedirectShopCode.trim()]) {
+      if (s.isNotEmpty) return s;
+    }
     for (final u in [row.itemUrl, row.rakutenUrl ?? '', row.affiliateUrl ?? '']) {
       final t = u.trim();
       if (t.isEmpty) continue;
       final p = RakutenItemUrlParser.tryParse(t);
-      if (p != null &&
-          p.shopCode.trim().isNotEmpty &&
-          p.itemPathSegment.trim().isNotEmpty) {
-        return _ResolvedImportCodes(
-          apiShop: p.shopCode.trim(),
-          apiItem: p.itemPathSegment.trim(),
-          storedProductId: row.productId.trim(),
-          source: 'itemUrl',
-        );
-      }
+      if (p != null && p.shopCode.trim().isNotEmpty) return p.shopCode.trim();
     }
+    return '';
+  }
+
+  _ResolvedImportCodes _resolveImportCodes(RakutenManagedProduct row) {
+    final logPid = row.productId.trim();
+    final slug = _storedSlugForUrlMatch(row);
+
+    final compStored = row.roomApiCompositeItemCode.trim();
+    if (compStored.isNotEmpty && rakutenIchibaUrlLooksLikeApiItemCode(compStored)) {
+      final idx = compStored.indexOf(':');
+      final shop = compStored.substring(0, idx).trim();
+      final pure = compStored.substring(idx + 1).trim();
+      return _ResolvedImportCodes(
+        shopItemSearchItemCodeParam: compStored,
+        matchPureItemForPick: pure,
+        matchShopCodeForPick: shop,
+        keywordShopCode: shop.isNotEmpty ? shop : _keywordShopCode(row),
+        logProductId: logPid,
+        urlPathMatchSegment: slug,
+        source: 'savedApiCompositeAvailable',
+      );
+    }
+
+    final legacyPid = row.productId.trim();
+    if (rakutenIchibaUrlLooksLikeApiItemCode(legacyPid)) {
+      final idx = legacyPid.indexOf(':');
+      final shop = legacyPid.substring(0, idx).trim();
+      final pure = legacyPid.substring(idx + 1).trim();
+      return _ResolvedImportCodes(
+        shopItemSearchItemCodeParam: legacyPid,
+        matchPureItemForPick: pure,
+        matchShopCodeForPick: shop,
+        keywordShopCode: shop.isNotEmpty ? shop : _keywordShopCode(row),
+        logProductId: logPid,
+        urlPathMatchSegment: slug,
+        source: 'storedProductIdComposite',
+      );
+    }
+
+    final kwShop = _keywordShopCode(row);
     return _ResolvedImportCodes(
-      apiShop: row.shopCode.trim(),
-      apiItem: row.productId.trim(),
-      storedProductId: row.productId.trim(),
-      source: 'storedFields',
+      shopItemSearchItemCodeParam: '',
+      matchPureItemForPick: '',
+      matchShopCodeForPick: '',
+      keywordShopCode: kwShop,
+      logProductId: logPid,
+      urlPathMatchSegment: slug,
+      source: 'urlSlugOnly',
     );
   }
 
@@ -424,22 +502,22 @@ class RoomImportMetadataEnrichmentService {
   _RoomImportEnrichMethod? _peekNextMethod(RakutenManagedProduct row, DateTime now) {
     final codes = _resolveImportCodes(row);
     if (_shopItemAllowed(row, now) &&
-        codes.apiShop.isNotEmpty &&
-        codes.apiItem.isNotEmpty) {
+        codes.shopItemSearchItemCodeParam.trim().isNotEmpty) {
       return _RoomImportEnrichMethod.shopItem;
     }
     final title = _titleKeywordRaw(row.itemName);
     if (_titleKeywordAllowed(row, now) &&
         title != null &&
-        codes.apiShop.isNotEmpty) {
+        codes.keywordShopCode.isNotEmpty) {
       return _RoomImportEnrichMethod.shopTitleKeyword;
     }
     if (!_productIdKeywordAllowed(row, now)) return null;
-    if (row.shopCode.trim().isEmpty || row.productId.trim().length < 5) {
+    if (codes.keywordShopCode.isEmpty || row.productId.trim().length < 5) {
       return null;
     }
     final cannotUseShopItemNow =
-        codes.apiItem.isEmpty || !_shopItemAllowed(row, now);
+        codes.shopItemSearchItemCodeParam.trim().isEmpty ||
+        !_shopItemAllowed(row, now);
     if (!cannotUseShopItemNow) return null;
     final cannotUseTitleNow = title == null || !_titleKeywordAllowed(row, now);
     if (!cannotUseTitleNow) return null;
@@ -596,10 +674,132 @@ class RoomImportMetadataEnrichmentService {
     });
   }
 
+  static String _marketShopCodeForLog(RakutenManagedProduct row) {
+    for (final u in [row.itemUrl, row.rakutenUrl ?? '', row.affiliateUrl ?? '']) {
+      final p = RakutenItemUrlParser.tryParse(u.trim());
+      if (p != null && p.shopCode.trim().isNotEmpty) return p.shopCode.trim();
+    }
+    return row.shopCode.trim();
+  }
+
+  static String _urlProductCodeForLog(RakutenManagedProduct row) {
+    final s = row.roomProductSlug.trim();
+    if (s.isNotEmpty) return s;
+    for (final u in [row.itemUrl, row.rakutenUrl ?? '']) {
+      final p = RakutenItemUrlParser.tryParse(u.trim());
+      if (p != null && p.itemPathSegment.trim().isNotEmpty) {
+        return p.itemPathSegment.trim();
+      }
+    }
+    return '';
+  }
+
+  Future<RoomImportEnrichmentFetchEnvelope?> _tryRecoverViaRoomDetailThenShopItem({
+    required RakutenManagedProduct row,
+    required String pid,
+    required String urlPathMatchSegment,
+  }) async {
+    final roomUrl = row.roomUrl.trim();
+    roomImportEnrichDetailFetchForRedirectLog(
+      'productId=$pid roomPostUrl=$roomUrl reason=keywordFailedAndNoApiComposite',
+    );
+    if (roomUrl.isEmpty) {
+      roomImportEnrichDetailFetchResultLog(
+        'productId=$pid status=noRedirect apiCompositeItemCode= rakutenItemUrl=',
+      );
+      return null;
+    }
+    await _productRepository.updateManagedProduct(pid, (e) {
+      return e.copyWith(roomEnrichDetailRedirectAttempted: true);
+    });
+    final resolver = RoomUrlResolver();
+    final outcome = await resolver.resolveRakutenItemUrlFromRoomPage(roomUrl);
+    if (outcome is! RoomUrlResolveSuccess) {
+      roomImportEnrichDetailFetchResultLog(
+        'productId=$pid status=httpError apiCompositeItemCode= rakutenItemUrl=',
+      );
+      return null;
+    }
+    final ok = outcome;
+    final composite = ok.roomApiCompositeItemCode.trim();
+    if (composite.isEmpty) {
+      roomImportEnrichDetailFetchResultLog(
+        'productId=$pid status=noRedirect apiCompositeItemCode= '
+        'rakutenItemUrl=${ok.rakutenItem.rakutenUrl.trim()}',
+      );
+      return null;
+    }
+    await _productRepository.updateManagedProduct(pid, (e) {
+      return e.copyWith(
+        roomRatRedirectUrl: ok.roomRatRedirectUrl.trim().isNotEmpty
+            ? ok.roomRatRedirectUrl.trim()
+            : e.roomRatRedirectUrl,
+        roomRedirectShopCode: ok.roomRedirectShopCode.trim().isNotEmpty
+            ? ok.roomRedirectShopCode.trim()
+            : e.roomRedirectShopCode,
+        roomRedirectItemCode: ok.roomRedirectItemCode.trim().isNotEmpty
+            ? ok.roomRedirectItemCode.trim()
+            : e.roomRedirectItemCode,
+        roomApiCompositeItemCode: composite,
+        roomProductSlug: ok.roomProductSlug.trim().isNotEmpty
+            ? ok.roomProductSlug.trim()
+            : e.roomProductSlug,
+        genreId: e.genreId.trim().isEmpty && ok.roomEventGenreId.trim().isNotEmpty
+            ? ok.roomEventGenreId.trim()
+            : e.genreId,
+        itemUrl: ok.rakutenItem.rakutenUrl.trim().isNotEmpty
+            ? ok.rakutenItem.rakutenUrl.trim()
+            : e.itemUrl,
+        rakutenUrl: ok.rakutenItem.rakutenUrl.trim().isNotEmpty
+            ? ok.rakutenItem.rakutenUrl.trim()
+            : e.rakutenUrl,
+      );
+    });
+    roomImportEnrichDetailFetchResultLog(
+      'productId=$pid status=foundRedirect apiCompositeItemCode=$composite '
+      'rakutenItemUrl=${ok.rakutenItem.rakutenUrl.trim()}',
+    );
+    final fresh = _productRepository.getByProductId(pid);
+    if (fresh == null) return null;
+    final now = DateTime.now();
+    final codes = _resolveImportCodes(fresh);
+    if (!_shopItemAllowed(fresh, now) || codes.shopItemSearchItemCodeParam.trim().isEmpty) {
+      return null;
+    }
+    final sic = codes.shopItemSearchItemCodeParam.trim();
+    final shopItemCondition = sic.contains(':')
+        ? RakutenProductSearchCondition(
+            keyword: '',
+            shopCode: null,
+            itemCode: sic,
+          )
+        : RakutenProductSearchCondition(
+            keyword: '',
+            shopCode: codes.matchShopCodeForPick,
+            itemCode: codes.matchPureItemForPick,
+          );
+    final fbKw = _roomImportFallbackKeyword(fresh, pid);
+    final fbOut =
+        await _searchRepository.fetchRoomImportShopItemWithKeywordUrlFallback(
+      shopItemCondition: shopItemCondition,
+      matchPureItemForPick: codes.matchPureItemForPick,
+      matchShopCodeForPick: codes.matchShopCodeForPick,
+      storedProductIdForUrlMatch: pid,
+      urlPathMatchSegment: urlPathMatchSegment,
+      fallbackKeyword: fbKw,
+      verifyMode: RoomImportEnrichmentVerifyConfig.enabled,
+      phaseShopItem: 'shopItemAfterRedirect',
+    );
+    return fbOut.envelope;
+  }
+
   Future<RoomImportEnrichmentBatchResult> _runEnrichmentLoop({
     required int maxProductsPerRun,
     required bool manualSessionPacing,
     List<String>? restrictToProductIdsInOrder,
+    Duration? maxRunDuration,
+    void Function(int completedSlots, int maxSlots)? onEnrichSlotProgress,
+    bool allowRoomDetailRedirectRecovery = false,
   }) async {
     final rows = _productRepository.loadAll();
     var skippedRestrictedAlreadyComplete = 0;
@@ -659,6 +859,13 @@ class RoomImportMetadataEnrichmentService {
         ? RoomImportLimitPolicy.manualEnrichInterItemDelayMs
         : RoomImportLimitPolicy.enrichMinDelayMsBetweenCalls;
 
+    DateTime? runDeadline;
+    final md = maxRunDuration;
+    if (md != null) {
+      runDeadline = DateTime.now().add(md);
+    }
+    var stopReasonTag = 'completed';
+
     var okCount = 0;
     var failCount = 0;
     var apiAttempts = 0;
@@ -668,6 +875,10 @@ class RoomImportMetadataEnrichmentService {
 
     try {
       while (processedProducts < maxProductsPerRun && !pausedByRateLimit) {
+        if (runDeadline != null && !DateTime.now().isBefore(runDeadline)) {
+          stopReasonTag = 'maxDurationReached';
+          break;
+        }
         final pendingAll = _pendingQueueRows();
         final now = DateTime.now();
         final sorted = _sortedEnrichmentCandidates(pendingAll, now);
@@ -727,10 +938,71 @@ class RoomImportMetadataEnrichmentService {
           );
         }
         processedProducts++;
+        onEnrichSlotProgress?.call(processedProducts, maxProductsPerRun);
 
         final pid = chosen.productId.trim();
-        final shop = chosen.shopCode.trim();
+        final codes = _resolveImportCodes(chosen);
+        final shop = codes.keywordShopCode.trim().isNotEmpty
+            ? codes.keywordShopCode.trim()
+            : chosen.shopCode.trim();
         if (shop.isEmpty || pid.isEmpty) break;
+
+        final slugDisp = chosen.roomProductSlug.trim();
+        final compositeDisp = chosen.roomApiCompositeItemCode.trim();
+        final shopCodeLog = _marketShopCodeForLog(chosen);
+        final urlProductCodeLog = _urlProductCodeForLog(chosen);
+        final hasRatRedirect = chosen.roomRatRedirectUrl.trim().isNotEmpty ||
+            chosen.roomRedirectShopCode.trim().isNotEmpty ||
+            chosen.roomRedirectItemCode.trim().isNotEmpty;
+        late final String redirectParseSource;
+        late final String redirectParseReason;
+        if (hasRatRedirect) {
+          redirectParseSource = 'ratRedirect';
+          redirectParseReason = 'parsedFromRedirect';
+        } else if (compositeDisp.isNotEmpty) {
+          redirectParseSource = 'roomPage';
+          redirectParseReason = 'parsedFromRoomPage';
+        } else {
+          redirectParseSource = 'collects';
+          redirectParseReason = 'collectsDoesNotContainRatRedirect';
+        }
+        roomRedirectParseSourceLog(
+          'productId=$pid source=$redirectParseSource hasRatRedirect=$hasRatRedirect '
+          'apiCompositeItemCode=${compositeDisp.isEmpty ? '(empty)' : compositeDisp} '
+          'reason=$redirectParseReason',
+        );
+        if (chosenMethod == _RoomImportEnrichMethod.shopItem) {
+          roomImportEnrichSourceDecisionLog({
+            'productId': pid,
+            'shopCode': shopCodeLog.isEmpty ? '(empty)' : shopCodeLog,
+            'urlProductCode': urlProductCodeLog.isEmpty ? '(empty)' : urlProductCodeLog,
+            'apiCompositeItemCode':
+                compositeDisp.isEmpty ? '(empty)' : compositeDisp,
+            'decision': 'directApiItemCode',
+            'reason': codes.source,
+          });
+        } else {
+          if (compositeDisp.isEmpty &&
+              slugDisp.isNotEmpty &&
+              roomImportEnrichSlugShouldSkipDirectItemCode(slugDisp)) {
+            roomImportEnrichDirectSkipLog({
+              'productId': pid,
+              'urlProductCode': urlProductCodeLog.isEmpty ? slugDisp : urlProductCodeLog,
+              'reason': 'urlProductCodeIsNotApiItemCode',
+            });
+          }
+          roomImportEnrichSourceDecisionLog({
+            'productId': pid,
+            'shopCode': shopCodeLog.isEmpty ? '(empty)' : shopCodeLog,
+            'urlProductCode': urlProductCodeLog.isEmpty ? '(empty)' : urlProductCodeLog,
+            'apiCompositeItemCode':
+                compositeDisp.isEmpty ? '(empty)' : compositeDisp,
+            'decision': 'keywordShopCode',
+            'reason': compositeDisp.isEmpty
+                ? 'urlProductCodeOnly'
+                : 'savedApiCompositeAvailable',
+          });
+        }
 
         final attemptNow = DateTime.now();
 
@@ -756,11 +1028,10 @@ class RoomImportMetadataEnrichmentService {
           'manualPacing=$manualSessionPacing delayMs=$delayMs shopCode=$shop itemCode=$pid',
         );
 
-        final codes = _resolveImportCodes(chosen);
         roomImportEnrichRequestLog(
           'codesDiag productId=$pid source=${codes.source} '
-          'apiShop=${codes.apiShop} apiItem=${codes.apiItem} '
-          'storedShop=${chosen.shopCode.trim()} storedProductId=${codes.storedProductId}',
+          'shopItemParam=${codes.shopItemSearchItemCodeParam} kwShop=${codes.keywordShopCode} '
+          'urlSlug=${codes.urlPathMatchSegment}',
         );
         roomImportEnrichMethodLog('method=${_methodLogName(chosenMethod)}');
 
@@ -771,17 +1042,29 @@ class RoomImportMetadataEnrichmentService {
           apiAttempts++;
           switch (chosenMethod) {
             case _RoomImportEnrichMethod.shopItem:
+              final sic = codes.shopItemSearchItemCodeParam.trim();
+              final RakutenProductSearchCondition shopItemCondition;
+              if (sic.contains(':')) {
+                shopItemCondition = RakutenProductSearchCondition(
+                  keyword: '',
+                  shopCode: null,
+                  itemCode: sic,
+                );
+              } else {
+                shopItemCondition = RakutenProductSearchCondition(
+                  keyword: '',
+                  shopCode: codes.matchShopCodeForPick,
+                  itemCode: codes.matchPureItemForPick,
+                );
+              }
               final fbKw = _roomImportFallbackKeyword(chosen, pid);
               final fbOut =
                   await _searchRepository.fetchRoomImportShopItemWithKeywordUrlFallback(
-                    shopItemCondition: RakutenProductSearchCondition(
-                      keyword: '',
-                      shopCode: codes.apiShop,
-                      itemCode: codes.apiItem,
-                    ),
-                    matchPureItemForPick: codes.apiItem,
-                    matchShopCodeForPick: codes.apiShop,
-                    storedProductIdForUrlMatch: chosen.productId.trim(),
+                    shopItemCondition: shopItemCondition,
+                    matchPureItemForPick: codes.matchPureItemForPick,
+                    matchShopCodeForPick: codes.matchShopCodeForPick,
+                    storedProductIdForUrlMatch: pid,
+                    urlPathMatchSegment: codes.urlPathMatchSegment,
                     fallbackKeyword: fbKw,
                     verifyMode: RoomImportEnrichmentVerifyConfig.enabled,
                     phaseShopItem: 'shopItem',
@@ -796,14 +1079,14 @@ class RoomImportMetadataEnrichmentService {
               env = await _searchRepository.fetchRoomImportEnrichmentSingleSearch(
                 condition: RakutenProductSearchCondition(
                   keyword: kw,
-                  shopCode: codes.apiShop,
+                  shopCode: codes.keywordShopCode,
                   itemCode: null,
                 ),
                 phase: 'shopTitleKeyword',
                 page: 1,
                 hits: 30,
                 matchPureItemForPick: '',
-                matchShopCodeForPick: codes.apiShop,
+                matchShopCodeForPick: codes.keywordShopCode,
                 preferShopFirstForKeyword: true,
               );
               break;
@@ -811,14 +1094,14 @@ class RoomImportMetadataEnrichmentService {
               env = await _searchRepository.fetchRoomImportEnrichmentSingleSearch(
                 condition: RakutenProductSearchCondition(
                   keyword: chosen.productId.trim(),
-                  shopCode: chosen.shopCode.trim(),
+                  shopCode: codes.keywordShopCode,
                   itemCode: null,
                 ),
                 phase: 'productIdKeyword',
                 page: 1,
                 hits: 30,
                 matchPureItemForPick: '',
-                matchShopCodeForPick: chosen.shopCode.trim(),
+                matchShopCodeForPick: codes.keywordShopCode,
                 preferShopFirstForKeyword: true,
               );
               break;
@@ -852,6 +1135,7 @@ class RoomImportMetadataEnrichmentService {
           );
           failCount++;
           pausedByRateLimit = true;
+          stopReasonTag = 'rateLimited';
           break;
         }
 
@@ -870,18 +1154,118 @@ class RoomImportMetadataEnrichmentService {
         }
 
         if (env.item == null) {
-          await _applyNoItems(chosen, attemptNow, chosenMethod);
-          roomImportEnrichFailLog(
-            'productId=$pid method=${_methodLogName(chosenMethod)} reason=noItems',
-          );
-          failCount++;
-          continue;
+          var envWork = env;
+          final rowForDetail = _productRepository.getByProductId(pid) ?? chosen;
+          final canDetail = allowRoomDetailRedirectRecovery &&
+              (chosenMethod == _RoomImportEnrichMethod.shopTitleKeyword ||
+                  chosenMethod == _RoomImportEnrichMethod.productIdKeyword) &&
+              rowForDetail.roomApiCompositeItemCode.trim().isEmpty &&
+              !rowForDetail.roomEnrichDetailRedirectAttempted &&
+              rowForDetail.roomUrl.trim().isNotEmpty;
+          if (canDetail) {
+            roomImportEnrichSourceDecisionLog({
+              'productId': pid,
+              'shopCode': shopCodeLog.isEmpty ? '(empty)' : shopCodeLog,
+              'urlProductCode': urlProductCodeLog.isEmpty ? '(empty)' : urlProductCodeLog,
+              'apiCompositeItemCode': '(empty)',
+              'decision': 'fetchRoomDetailForRedirect',
+              'reason': 'keywordFailed',
+            });
+            final recovered = await _tryRecoverViaRoomDetailThenShopItem(
+              row: rowForDetail,
+              pid: pid,
+              urlPathMatchSegment: codes.urlPathMatchSegment.trim(),
+            );
+            if (recovered?.item != null) {
+              envWork = recovered!;
+              apiAttempts++;
+            }
+          }
+          if (envWork.item == null) {
+            await _applyNoItems(chosen, attemptNow, chosenMethod);
+            roomImportEnrichFailLog(
+              'productId=$pid method=${_methodLogName(chosenMethod)} reason=noItems',
+            );
+            failCount++;
+            continue;
+          }
+          env = envWork;
+        }
+
+        final slugCheck = codes.urlPathMatchSegment.trim();
+        if (slugCheck.isNotEmpty &&
+            (chosenMethod == _RoomImportEnrichMethod.shopTitleKeyword ||
+                chosenMethod == _RoomImportEnrichMethod.productIdKeyword)) {
+          if (!roomImportSearchItemUrlsMatchStoredProduct(
+            item: env.item!,
+            rawItemMap: null,
+            storedProductId: pid,
+            urlPathMatchSegment: slugCheck,
+          )) {
+            var envWork = env;
+            final rowForDetail = _productRepository.getByProductId(pid) ?? chosen;
+            final canDetail = allowRoomDetailRedirectRecovery &&
+                (chosenMethod == _RoomImportEnrichMethod.shopTitleKeyword ||
+                    chosenMethod == _RoomImportEnrichMethod.productIdKeyword) &&
+                rowForDetail.roomApiCompositeItemCode.trim().isEmpty &&
+                !rowForDetail.roomEnrichDetailRedirectAttempted &&
+                rowForDetail.roomUrl.trim().isNotEmpty;
+            if (canDetail) {
+              roomImportEnrichSourceDecisionLog({
+                'productId': pid,
+                'shopCode': shopCodeLog.isEmpty ? '(empty)' : shopCodeLog,
+                'urlProductCode':
+                    urlProductCodeLog.isEmpty ? '(empty)' : urlProductCodeLog,
+                'apiCompositeItemCode': '(empty)',
+                'decision': 'fetchRoomDetailForRedirect',
+                'reason': 'keywordFailed',
+              });
+              final recovered = await _tryRecoverViaRoomDetailThenShopItem(
+                row: rowForDetail,
+                pid: pid,
+                urlPathMatchSegment: codes.urlPathMatchSegment.trim(),
+              );
+              if (recovered?.item != null) {
+                envWork = recovered!;
+                apiAttempts++;
+              }
+            }
+            final okMatch = envWork.item != null &&
+                roomImportSearchItemUrlsMatchStoredProduct(
+                  item: envWork.item!,
+                  rawItemMap: null,
+                  storedProductId: pid,
+                  urlPathMatchSegment: slugCheck,
+                );
+            if (!okMatch) {
+              await _applyNoItems(chosen, attemptNow, chosenMethod);
+              roomImportEnrichFailLog(
+                'productId=$pid method=${_methodLogName(chosenMethod)} reason=noUrlSlugMatch',
+              );
+              failCount++;
+              continue;
+            }
+            env = envWork;
+          }
         }
 
         try {
+          final learned = RoomImportLearnedApiCode.tryParseFromSearchItem(
+            env.item!,
+          );
+          final persistComposite = learned != null ? learned.$1 : '';
+          final learnedSource = learned != null ? learned.$2 : '';
+          if (persistComposite.isNotEmpty &&
+              chosen.roomApiCompositeItemCode.trim().isEmpty) {
+            roomImportEnrichApiCodeLearnedLog(
+              'productId=$pid roomProductSlug=$slugDisp '
+              'apiCompositeItemCode=$persistComposite source=$learnedSource',
+            );
+          }
           await _productRepository.mergeRoomImportMetadataFromSearchItem(
             productId: pid,
             api: env.item!,
+            persistRoomApiCompositeItemCode: persistComposite,
           );
           okCount++;
           successIds.add(pid);
@@ -946,6 +1330,7 @@ class RoomImportMetadataEnrichmentService {
       successProductIds: List<String>.unmodifiable(successIds),
       productEnrichmentSlots: processedProducts,
       skippedRestrictedAlreadyComplete: skippedRestrictedAlreadyComplete,
+      initialEnrichStopReason: stopReasonTag,
     );
   }
 

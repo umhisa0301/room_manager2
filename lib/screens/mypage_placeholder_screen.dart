@@ -1138,13 +1138,13 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
       );
       return;
     }
-    final n = r.updated;
+    final text = r.uiSummaryMessage.trim().isNotEmpty
+        ? r.uiSummaryMessage
+        : (r.updated > 0
+              ? '反応数を${r.updated}件更新しました'
+              : '反応数の更新はありませんでした');
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          n > 0 ? '反応数を$n件更新しました' : '反応数の更新はありませんでした',
-        ),
-      ),
+      SnackBar(content: Text(text)),
     );
   }
 
@@ -1261,9 +1261,12 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                 ),
                 const SizedBox(height: 12),
                 FilledButton(
+                  // マイページ ROOM 同期カード：反応数同期（無効時もラベル可読）
                   style: FilledButton.styleFrom(
                     backgroundColor: AppColors.surfaceVariant,
                     foregroundColor: AppColors.textPrimary,
+                    disabledForegroundColor: AppColors.textSecondary,
+                    disabledBackgroundColor: AppColors.surfaceVariant,
                   ),
                   onPressed: actionLocked
                       ? null

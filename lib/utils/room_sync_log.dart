@@ -616,6 +616,96 @@ void roomImportListingLog(String message) {
   }
 }
 
+/// rat-redirect 1件分の詳細抽出（dest 多段デコード・URLパス・event 分解）。
+void roomRatRedirectExtractLog(String message) {
+  final line = '[ROOM_RAT_REDIRECT_EXTRACT] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+/// rat-redirect `event` / `dest` 解析結果（採用1件分）。
+void roomRedirectParseLog(String message) {
+  final line = '[ROOM_REDIRECT_PARSE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomRedirectParseSourceLog(String message) {
+  final line = '[ROOM_REDIRECT_PARSE_SOURCE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportSourceDecisionLog(String message) {
+  final line = '[ROOM_IMPORT_SOURCE_DECISION] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomReactionSyncStopLog(String message) {
+  final line = '[ROOM_REACTION_SYNC_STOP] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichApiCodeLearnedLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_API_CODE_LEARNED] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichDetailFetchForRedirectLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_DETAIL_FETCH_FOR_REDIRECT] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEnrichDetailFetchResultLog(String message) {
+  final line = '[ROOM_IMPORT_ENRICH_DETAIL_FETCH_RESULT] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportInitialEnrichStopLog(String message) {
+  final line = '[ROOM_IMPORT_INITIAL_ENRICH_STOP] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+/// 初回補完で direct itemCode か keyword かの分岐。
+void roomImportEnrichSourceDecisionLog(Map<String, String> fields) {
+  _roomImportEnrichFallbackTaggedBlockLog(
+    'ROOM_IMPORT_ENRICH_SOURCE_DECISION',
+    fields,
+  );
+}
+
+/// URL スラッグ型のため direct itemCode を送らないとき。
+void roomImportEnrichDirectSkipLog(Map<String, String> fields) {
+  _roomImportEnrichFallbackTaggedBlockLog(
+    'ROOM_IMPORT_ENRICH_DIRECT_SKIP',
+    fields,
+  );
+}
+
 void roomImportCollectsPolicyLog(String message) {
   final line = '[ROOM_IMPORT_COLLECTS_POLICY] $message';
   if (kDebugMode) {
@@ -734,6 +824,14 @@ void roomImportInitialEnrichResultLog(String message) {
 
 void roomReactionSyncStartLog(String message) {
   final line = '[ROOM_REACTION_SYNC_START] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomReactionSyncUiSummaryLog(String message) {
+  final line = '[ROOM_REACTION_SYNC_UI_SUMMARY] $message';
   if (kDebugMode) {
     debugPrint(line);
     RoomImportDebugLogBuffer.add(line);

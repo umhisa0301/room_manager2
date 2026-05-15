@@ -103,6 +103,12 @@ class RoomCollectedRegisterService {
       roomCommentCount: resolved.roomCommentCount,
       listingHintPriceYen: resolved.listingHintPriceYen,
       rakutenApiPartialData: rakutenApiPartialData,
+      roomProductSlugHint: resolved.roomProductSlug,
+      roomRatRedirectUrlHint: resolved.roomRatRedirectUrl,
+      roomRedirectShopCodeHint: resolved.roomRedirectShopCode,
+      roomRedirectItemCodeHint: resolved.roomRedirectItemCode,
+      roomApiCompositeItemCodeHint: resolved.roomApiCompositeItemCode,
+      roomEventGenreIdHint: resolved.roomEventGenreId,
     );
 
     switch (persist.kind) {

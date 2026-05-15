@@ -3,21 +3,20 @@ import 'package:provider/provider.dart';
 
 import '../models/today_recommendation.dart';
 import '../services/app_action_service.dart';
+import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/today_recommendation_ui_tags.dart';
+import '../utils/room_sync_log.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
 
 class TodayRecommendationsScreen extends StatefulWidget {
-  const TodayRecommendationsScreen({
-    super.key,
-    this.skipInitialEnsure = false,
-  });
+  const TodayRecommendationsScreen({super.key, this.skipInitialEnsure = false});
 
   final bool skipInitialEnsure;
 
@@ -73,9 +72,9 @@ class _TodayRecommendationsScreenState
     if (guard.contains('manualCooldown') ||
         guard.contains('rateLimitCooldown') ||
         guard.contains('recentlyGenerated')) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('少し時間をおいてから再生成してください')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('少し時間をおいてから再生成してください')));
     }
   }
 
@@ -432,76 +431,90 @@ class _ActionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final enabled = entry.decision == TodayRecommendationDecision.pending;
-    return Row(
-      children: [
-        Expanded(
-          flex: 6,
-          child: _CompactActionButton(
-            label: '楽天で見る',
-            style: _CompactActionStyle.primary,
-            onPressed: () {
-              AppActionService.openUrl(
-                context,
-                url: entry.item.browserLaunchUrl,
-              );
-            },
-          ),
-        ),
-        const SizedBox(width: 5),
-        Expanded(
-          flex: 4,
-          child: _CompactActionButton(
-            label: '候補',
-            icon: Icons.bookmark_add_rounded,
-            style: _CompactActionStyle.medium,
-            onPressed: enabled
-                ? () async {
-                    final rec = context.read<TodayRecommendationProvider>();
-                    final managed = context
-                        .read<RakutenManagedProductProvider>();
-                    final err = await rec.markAddedCandidate(
-                      managedProvider: managed,
-                      item: entry.item,
-                    );
-                    if (!context.mounted) return;
-                    if (err != null) {
-                      await showDialog<void>(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                          title: const Text('候補に追加できませんでした'),
-                          content: Text(err),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(ctx).pop(),
-                              child: const Text('閉じる'),
+    return Consumer<BulkOperationStateController>(
+      builder: (context, bulk, _) {
+        final syncLocked = bulk.isRoomTourSearchBlocking;
+        return Row(
+          children: [
+            Expanded(
+              flex: 6,
+              child: _CompactActionButton(
+                label: '楽天で見る',
+                style: _CompactActionStyle.primary,
+                onPressed: () {
+                  AppActionService.openUrl(
+                    context,
+                    url: entry.item.browserLaunchUrl,
+                  );
+                },
+              ),
+            ),
+            const SizedBox(width: 5),
+            Expanded(
+              flex: 4,
+              child: _CompactActionButton(
+                label: '候補',
+                icon: Icons.bookmark_add_rounded,
+                style: _CompactActionStyle.medium,
+                onPressed: !enabled
+                    ? null
+                    : syncLocked
+                    ? () {
+                        roomSyncUiGuardLog(
+                          'blockedAction=recommendCandidateAdd '
+                          'currentJob=${bulk.roomTourBlockingJobLabel} '
+                          'message=${BulkOperationStateController.roomTourSearchBlockedUserMessage}',
+                        );
+                        bulk.guardBlockingOperations(context);
+                      }
+                    : () async {
+                        final rec = context.read<TodayRecommendationProvider>();
+                        final managed = context
+                            .read<RakutenManagedProductProvider>();
+                        final err = await rec.markAddedCandidate(
+                          managedProvider: managed,
+                          item: entry.item,
+                        );
+                        if (!context.mounted) return;
+                        if (err != null) {
+                          await showDialog<void>(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text('候補に追加できませんでした'),
+                              content: Text(err),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(ctx).pop(),
+                                  child: const Text('閉じる'),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                      return;
-                    }
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(const SnackBar(content: Text('候補に追加しました')));
-                  }
-                : null,
-          ),
-        ),
-        const SizedBox(width: 5),
-        Expanded(
-          flex: 4,
-          child: _CompactActionButton(
-            label: '見送る',
-            style: _CompactActionStyle.weak,
-            onPressed: enabled
-                ? () async {
-                    final rec = context.read<TodayRecommendationProvider>();
-                    await rec.markSkipped(entry.item.productId);
-                  }
-                : null,
-          ),
-        ),
-      ],
+                          );
+                          return;
+                        }
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(const SnackBar(content: Text('候補に追加しました')));
+                      },
+              ),
+            ),
+            const SizedBox(width: 5),
+            Expanded(
+              flex: 4,
+              child: _CompactActionButton(
+                label: '見送る',
+                style: _CompactActionStyle.weak,
+                onPressed: enabled
+                    ? () async {
+                        final rec = context.read<TodayRecommendationProvider>();
+                        await rec.markSkipped(entry.item.productId);
+                      }
+                    : null,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -547,7 +560,9 @@ class _CompactActionButton extends StatelessWidget {
         onPressed: onPressed,
         style: TextButton.styleFrom(
           foregroundColor: foreground,
-          disabledForegroundColor: AppColors.textTertiary,
+          disabledForegroundColor: _isPrimary
+              ? AppColors.textOnAccent.withValues(alpha: 0.55)
+              : AppColors.textSecondary,
           backgroundColor: background,
           disabledBackgroundColor: AppColors.surfaceVariant,
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),

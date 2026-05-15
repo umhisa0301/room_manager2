@@ -363,6 +363,7 @@ class RakutenManagedProductRepository {
   Future<void> mergeRoomImportMetadataFromSearchItem({
     required String productId,
     required RakutenSearchItem api,
+    String persistRoomApiCompositeItemCode = '',
   }) async {
     if (kDemoModeEnabled) {
       return;
@@ -390,6 +391,7 @@ class RakutenManagedProductRepository {
                 : e.genreName);
       final mergedGenreId =
           api.genreId.trim().isNotEmpty ? api.genreId : e.genreId;
+      final learnedComp = persistRoomApiCompositeItemCode.trim();
       return e.copyWith(
         itemName: api.itemName.trim().isNotEmpty ? api.itemName : e.itemName,
         itemPrice: api.itemPrice > 0 ? api.itemPrice : e.itemPrice,
@@ -410,6 +412,9 @@ class RakutenManagedProductRepository {
         reviewAverage: api.reviewAverage > 0 ? api.reviewAverage : e.reviewAverage,
         reviewCount: api.reviewCount > 0 ? api.reviewCount : e.reviewCount,
         updatedAt: now,
+        roomApiCompositeItemCode: learnedComp.isNotEmpty
+            ? learnedComp
+            : e.roomApiCompositeItemCode,
         roomImportMetadataEnriching: false,
         roomImportEnrichFailureReason: '',
         roomImportEnrichFailureCount: 0,
@@ -688,6 +693,13 @@ class RakutenManagedProductRepository {
     /// 既存商品に初めて ROOM URL を紐付けるが、商品メタは既存のまま（楽天APIなし）。
     bool roomImportAddRoomUrlToExistingNoApi = false,
 
+    String roomProductSlugHint = '',
+    String roomRatRedirectUrlHint = '',
+    String roomRedirectShopCodeHint = '',
+    String roomRedirectItemCodeHint = '',
+    String roomApiCompositeItemCodeHint = '',
+    String roomEventGenreIdHint = '',
+
     /// false のとき共有 [workingMutableList] のみ更新し、ディスクへは書かない（ROOM同期バッチ終了時に flush）。
     bool confirmDiskWrite = true,
   }) async {
@@ -883,6 +895,32 @@ class RakutenManagedProductRepository {
         roomSyncedAt: now,
         importedAt: now,
       );
+      if (roomRatRedirectUrlHint.trim().isNotEmpty ||
+          roomApiCompositeItemCodeHint.trim().isNotEmpty ||
+          roomProductSlugHint.trim().isNotEmpty) {
+        final slugEx = roomProductSlugHint.trim().isNotEmpty
+            ? roomProductSlugHint.trim()
+            : next.roomProductSlug;
+        next = next.copyWith(
+          roomProductSlug: slugEx,
+          roomRatRedirectUrl: roomRatRedirectUrlHint.trim().isNotEmpty
+              ? roomRatRedirectUrlHint.trim()
+              : next.roomRatRedirectUrl,
+          roomRedirectShopCode: roomRedirectShopCodeHint.trim().isNotEmpty
+              ? roomRedirectShopCodeHint.trim()
+              : next.roomRedirectShopCode,
+          roomRedirectItemCode: roomRedirectItemCodeHint.trim().isNotEmpty
+              ? roomRedirectItemCodeHint.trim()
+              : next.roomRedirectItemCode,
+          roomApiCompositeItemCode: roomApiCompositeItemCodeHint.trim().isNotEmpty
+              ? roomApiCompositeItemCodeHint.trim()
+              : next.roomApiCompositeItemCode,
+          genreId: roomEventGenreIdHint.trim().isNotEmpty &&
+                  next.genreId.trim().isEmpty
+              ? roomEventGenreIdHint.trim()
+              : next.genreId,
+        );
+      }
 
       final api = apiEnrichedItem;
       if (api != null) {
@@ -936,7 +974,7 @@ class RakutenManagedProductRepository {
           reviewAverage: api.reviewAverage > 0
               ? api.reviewAverage
               : next.reviewAverage,
-          reviewCount: api.reviewCount,
+          reviewCount: api.reviewCount > 0 ? api.reviewCount : next.reviewCount,
           roomImportMetadataEnriching: false,
         );
         if (rakutenApiPartialData) {
@@ -1044,6 +1082,20 @@ class RakutenManagedProductRepository {
       importedAt: now,
     );
 
+    final slugPersist = roomProductSlugHint.trim().isNotEmpty
+        ? roomProductSlugHint.trim()
+        : newId;
+    row = row.copyWith(
+      roomProductSlug: slugPersist,
+      roomRatRedirectUrl: roomRatRedirectUrlHint.trim(),
+      roomRedirectShopCode: roomRedirectShopCodeHint.trim(),
+      roomRedirectItemCode: roomRedirectItemCodeHint.trim(),
+      roomApiCompositeItemCode: roomApiCompositeItemCodeHint.trim(),
+      genreId: roomEventGenreIdHint.trim().isNotEmpty
+          ? roomEventGenreIdHint.trim()
+          : row.genreId,
+    );
+
     final apiNew = apiEnrichedItem;
     if (apiNew != null) {
       if (traceRoomSync) {
@@ -1096,7 +1148,7 @@ class RakutenManagedProductRepository {
         reviewAverage: apiNew.reviewAverage > 0
             ? apiNew.reviewAverage
             : row.reviewAverage,
-        reviewCount: apiNew.reviewCount,
+        reviewCount: apiNew.reviewCount > 0 ? apiNew.reviewCount : row.reviewCount,
       );
       if (rakutenApiPartialData) {
         roomImportSaveLog('partialSuccess=true newRow=true mergedWeakApi=true');

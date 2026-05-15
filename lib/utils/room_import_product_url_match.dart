@@ -26,8 +26,12 @@ bool roomImportSearchItemUrlsMatchStoredProduct({
   required RakutenSearchItem item,
   Map<String, dynamic>? rawItemMap,
   required String storedProductId,
+  String? urlPathMatchSegment,
 }) {
-  final seg = roomImportUrlPathMatchSegment(storedProductId);
+  final overrideSeg = (urlPathMatchSegment ?? '').trim();
+  final seg = overrideSeg.isNotEmpty
+      ? overrideSeg
+      : roomImportUrlPathMatchSegment(storedProductId);
   if (seg.isEmpty) return false;
   final sl = seg.toLowerCase();
 

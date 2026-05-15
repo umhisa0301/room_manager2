@@ -642,7 +642,8 @@ class _HomeRoomPostImportSection extends StatelessWidget {
       context,
       result,
       startBatch: () => ctl.runImport(context),
-      startDeepCollectsBatch: () => ctl.runImport(context, deepCollectsExplore: true),
+      startDeepCollectsBatch: () =>
+          ctl.runImport(context, deepCollectsExplore: true),
     );
   }
 
@@ -678,7 +679,8 @@ class _HomeRoomPostImportSection extends StatelessWidget {
       context,
       result,
       startBatch: () => ctl.runImport(context),
-      startDeepCollectsBatch: () => ctl.runImport(context, deepCollectsExplore: true),
+      startDeepCollectsBatch: () =>
+          ctl.runImport(context, deepCollectsExplore: true),
     );
   }
 
@@ -703,11 +705,14 @@ class _HomeRoomPostImportSection extends StatelessWidget {
       );
       return;
     }
-    final n = r.updated;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          n > 0 ? '反応数を$n件更新しました' : '反応数の更新はありませんでした',
+          r.uiSummaryMessage.trim().isNotEmpty
+              ? r.uiSummaryMessage
+              : (r.updated > 0
+                    ? '反応数を${r.updated}件更新しました'
+                    : '反応数の更新はありませんでした'),
         ),
       ),
     );
@@ -717,17 +722,20 @@ class _HomeRoomPostImportSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<RoomImportController, BulkOperationStateController>(
       builder: (context, ctl, bulk, _) {
-        final busy = ctl.isRunning ||
+        final busy =
+            ctl.isRunning ||
             bulk.isMetadataEnriching ||
             bulk.isRoomReactionSyncRunning ||
             bulk.isBulkCandidateRegistering;
 
-        final enrichingOnly = !ctl.isRunning &&
+        final enrichingOnly =
+            !ctl.isRunning &&
             !bulk.isRoomReactionSyncRunning &&
             bulk.isMetadataEnriching &&
             !bulk.isBulkCandidateRegistering;
 
-        final reactionOnly = !ctl.isRunning &&
+        final reactionOnly =
+            !ctl.isRunning &&
             !bulk.isMetadataEnriching &&
             bulk.isRoomReactionSyncRunning &&
             !bulk.isBulkCandidateRegistering;
@@ -744,9 +752,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                         : '現在投稿済み商品を取り込み中です'))
             : (reactionOnly
                   ? '現在反応数を同期中です'
-                  : (enrichingOnly
-                        ? '現在未補完の商品情報を再取得中です'
-                        : ''));
+                  : (enrichingOnly ? '現在未補完の商品情報を再取得中です' : ''));
 
         final statusLine = !hasRoomProfileUrl
             ? 'ROOMプロフィールURLを登録すると同期機能が使えます'
@@ -843,7 +849,9 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     ],
                   ),
                   child: FilledButton(
-                    onPressed: actionLocked ? null : () => _handleImport(context),
+                    onPressed: actionLocked
+                        ? null
+                        : () => _handleImport(context),
                     style: FilledButton.styleFrom(
                       foregroundColor: AppColors.textOnAccent,
                       backgroundColor: AppColors.accentPrimary,
@@ -865,9 +873,14 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                   style: _HomeUi.tapHint(context),
                 ),
                 const SizedBox(height: 12),
+                // _HomeRoomSyncCard: 反応数同期（無効時もラベルが読めるよう foreground を指定）
                 OutlinedButton(
-                  onPressed: actionLocked ? null : () => _handleReactionSync(context),
+                  onPressed: actionLocked
+                      ? null
+                      : () => _handleReactionSync(context),
                   style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.textPrimary,
+                    disabledForegroundColor: AppColors.textSecondary,
                     minimumSize: const Size(double.infinity, 48),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -917,8 +930,10 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     OutlinedButton.icon(
                       onPressed: actionLocked
                           ? null
-                          : () => RoomPostImportFlow
-                              .runManualPendingRoomImportMetadataEnrich(context),
+                          : () =>
+                                RoomPostImportFlow.runManualPendingRoomImportMetadataEnrich(
+                                  context,
+                                ),
                       icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
                       label: const Text('未補完の商品情報を再取得'),
                     ),
@@ -1574,14 +1589,15 @@ class _HomeActionWrap extends StatelessWidget {
       runSpacing: 8,
       children: [
         for (final action in actions)
-          _HomeOutlinedHomeButton(
-            icon: action.icon,
-            label: action.label,
-            onPressed: action.onPressed,
-            minHeight: 44,
-            verticalPadding: 8,
-            expandLabel: false,
-          ),
+          if (action.label.trim().isNotEmpty)
+            _HomeOutlinedHomeButton(
+              icon: action.icon,
+              label: action.label,
+              onPressed: action.onPressed,
+              minHeight: 44,
+              verticalPadding: 8,
+              expandLabel: false,
+            ),
       ],
     );
   }

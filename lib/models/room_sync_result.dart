@@ -23,6 +23,10 @@ class RoomSyncResult {
     this.collectsIncompleteExplore = false,
     this.collectsLastNextCursor,
     this.newlyImportedProductIds = const [],
+    this.postImportEnrichSuccessCount,
+    this.postImportEnrichFailCount,
+    this.postImportEnrichRemainingImportedPending,
+    this.postImportEnrichHitTimeLimit = false,
   });
 
   /// 一覧段階で同期済み判定した件数（FINISH ログの processedChecked 相当）。
@@ -64,6 +68,11 @@ class RoomSyncResult {
   /// 今バッチで新規行追加された商品の productId（初回楽天API補完の対象・順序保持）。
   final List<String> newlyImportedProductIds;
 
+  final int? postImportEnrichSuccessCount;
+  final int? postImportEnrichFailCount;
+  final int? postImportEnrichRemainingImportedPending;
+  final bool postImportEnrichHitTimeLimit;
+
   /// 実際に1件ずつ確認した ROOM 商品ページ数（最大10など）。
   final int processedCount;
 
@@ -86,4 +95,38 @@ class RoomSyncResult {
 
   bool get hasFatalError =>
       fatalErrorMessage != null && fatalErrorMessage!.trim().isNotEmpty;
+
+  RoomSyncResult withPostImportEnrichSummary({
+    required int success,
+    required int fail,
+    required int remainingImportedPending,
+    required bool hitTimeLimit,
+  }) {
+    return RoomSyncResult(
+      processedCount: processedCount,
+      newlyCollectedCount: newlyCollectedCount,
+      roomUrlAddedCount: roomUrlAddedCount,
+      skippedCount: skippedCount,
+      failedCount: failedCount,
+      failedRoomUrls: failedRoomUrls,
+      fatalErrorMessage: fatalErrorMessage,
+      listingCheckedCount: listingCheckedCount,
+      listingSyncedSkipCount: listingSyncedSkipCount,
+      listingInitialCandidateCount: listingInitialCandidateCount,
+      additionalFetchStatusLabel: additionalFetchStatusLabel,
+      newlyCollectedSamples: newlyCollectedSamples,
+      reactionHighlightSamples: reactionHighlightSamples,
+      reactionsResyncedCount: reactionsResyncedCount,
+      collectsExploreModeLabel: collectsExploreModeLabel,
+      collectsPagesFetched: collectsPagesFetched,
+      collectsStopReason: collectsStopReason,
+      collectsIncompleteExplore: collectsIncompleteExplore,
+      collectsLastNextCursor: collectsLastNextCursor,
+      newlyImportedProductIds: newlyImportedProductIds,
+      postImportEnrichSuccessCount: success,
+      postImportEnrichFailCount: fail,
+      postImportEnrichRemainingImportedPending: remainingImportedPending,
+      postImportEnrichHitTimeLimit: hitTimeLimit,
+    );
+  }
 }

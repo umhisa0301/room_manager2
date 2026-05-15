@@ -74,6 +74,12 @@ class RakutenManagedProduct {
     this.roomImportEnrichShopItemBlockedUntil,
     this.roomImportEnrichTitleKeywordBlockedUntil,
     this.roomImportEnrichProductIdKeywordBlockedUntil,
+    this.roomProductSlug = '',
+    this.roomRatRedirectUrl = '',
+    this.roomRedirectShopCode = '',
+    this.roomRedirectItemCode = '',
+    this.roomApiCompositeItemCode = '',
+    this.roomEnrichDetailRedirectAttempted = false,
   });
 
   /// 楽天の itemCode（アプリ内の [RakutenSearchItem.productId] と同一）。
@@ -185,6 +191,24 @@ class RakutenManagedProduct {
   /// productId キーワード検索を試さない期限（noItems 後・最終手段）。
   final DateTime? roomImportEnrichProductIdKeywordBlockedUntil;
 
+  /// `item.rakuten.co.jp/{shop}/{roomProductSlug}/` の2段目（楽天API itemCode としては使わないことが多い）。
+  final String roomProductSlug;
+
+  /// ROOM `rat` / `relay` 系リダイレクトの元 URL（解析に使った代表リンク）。
+  final String roomRatRedirectUrl;
+
+  /// rat-redirect `event.shopurl`（楽天API向けショップコード候補）。
+  final String roomRedirectShopCode;
+
+  /// rat-redirect `event.itemid` 由来の純粋商品コード（例 `10002596`）。
+  final String roomRedirectItemCode;
+
+  /// `shopurl:apiItemCode` 形式。Item Search の direct itemCode にそのまま使えるときのみ非空。
+  final String roomApiCompositeItemCode;
+
+  /// 初回補完で ROOM 詳細ページから rat-redirect を引きに行ったか（1商品1回まで）。
+  final bool roomEnrichDetailRedirectAttempted;
+
   /// アプリの「投稿として」カウントするコレ済か。
   bool get countsTowardPostedCollectMetrics {
     if (!RakutenManagedProduct.isMemberForStatusTab(
@@ -275,6 +299,12 @@ class RakutenManagedProduct {
     bool clearRoomImportEnrichTitleKeywordBlockedUntil = false,
     DateTime? roomImportEnrichProductIdKeywordBlockedUntil,
     bool clearRoomImportEnrichProductIdKeywordBlockedUntil = false,
+    String? roomProductSlug,
+    String? roomRatRedirectUrl,
+    String? roomRedirectShopCode,
+    String? roomRedirectItemCode,
+    String? roomApiCompositeItemCode,
+    bool? roomEnrichDetailRedirectAttempted,
   }) {
     return RakutenManagedProduct(
       productId: productId ?? this.productId,
@@ -362,6 +392,14 @@ class RakutenManagedProduct {
           ? null
           : (roomImportEnrichProductIdKeywordBlockedUntil ??
                 this.roomImportEnrichProductIdKeywordBlockedUntil),
+      roomProductSlug: roomProductSlug ?? this.roomProductSlug,
+      roomRatRedirectUrl: roomRatRedirectUrl ?? this.roomRatRedirectUrl,
+      roomRedirectShopCode: roomRedirectShopCode ?? this.roomRedirectShopCode,
+      roomRedirectItemCode: roomRedirectItemCode ?? this.roomRedirectItemCode,
+      roomApiCompositeItemCode:
+          roomApiCompositeItemCode ?? this.roomApiCompositeItemCode,
+      roomEnrichDetailRedirectAttempted: roomEnrichDetailRedirectAttempted ??
+          this.roomEnrichDetailRedirectAttempted,
     );
   }
 
@@ -467,6 +505,12 @@ class RakutenManagedProduct {
           roomImportEnrichTitleKeywordBlockedUntil?.toIso8601String(),
       'roomImportEnrichProductIdKeywordBlockedUntil':
           roomImportEnrichProductIdKeywordBlockedUntil?.toIso8601String(),
+      'roomProductSlug': roomProductSlug,
+      'roomRatRedirectUrl': roomRatRedirectUrl,
+      'roomRedirectShopCode': roomRedirectShopCode,
+      'roomRedirectItemCode': roomRedirectItemCode,
+      'roomApiCompositeItemCode': roomApiCompositeItemCode,
+      'roomEnrichDetailRedirectAttempted': roomEnrichDetailRedirectAttempted,
     };
   }
 
@@ -753,6 +797,13 @@ class RakutenManagedProduct {
           roomImportEnrichTitleKeywordBlockedUntil,
       roomImportEnrichProductIdKeywordBlockedUntil:
           roomImportEnrichProductIdKeywordBlockedUntil,
+      roomProductSlug: (json['roomProductSlug'] ?? '').toString(),
+      roomRatRedirectUrl: (json['roomRatRedirectUrl'] ?? '').toString(),
+      roomRedirectShopCode: (json['roomRedirectShopCode'] ?? '').toString(),
+      roomRedirectItemCode: (json['roomRedirectItemCode'] ?? '').toString(),
+      roomApiCompositeItemCode: (json['roomApiCompositeItemCode'] ?? '').toString(),
+      roomEnrichDetailRedirectAttempted:
+          json['roomEnrichDetailRedirectAttempted'] == true,
     );
   }
 }

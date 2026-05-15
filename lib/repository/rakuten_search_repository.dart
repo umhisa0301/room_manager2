@@ -903,11 +903,13 @@ class RakutenSearchRepository {
     required String matchPureItemForPick,
     required String matchShopCodeForPick,
     required String storedProductIdForUrlMatch,
+    String urlPathMatchSegment = '',
     required String fallbackKeyword,
     required bool verifyMode,
     String phaseShopItem = 'shopItem',
   }) async {
     final pid = storedProductIdForUrlMatch.trim();
+    final urlSeg = urlPathMatchSegment.trim();
     final fkPrepared = fallbackKeyword.trim();
     final condNorm = shopItemCondition.normalized();
 
@@ -1003,6 +1005,7 @@ class RakutenSearchRepository {
           item: it,
           rawItemMap: null,
           storedProductId: storedProductIdForUrlMatch,
+          urlPathMatchSegment: urlSeg.isNotEmpty ? urlSeg : null,
         )) {
           return RoomImportShopItemKeywordFallbackOutcome(
             envelope: RoomImportEnrichmentFetchEnvelope(
@@ -1087,6 +1090,7 @@ class RakutenSearchRepository {
           item: p.item,
           rawItemMap: p.map,
           storedProductId: storedProductIdForUrlMatch,
+          urlPathMatchSegment: urlSeg.isNotEmpty ? urlSeg : null,
         )) {
           return RoomImportShopItemKeywordFallbackOutcome(
             envelope: RoomImportEnrichmentFetchEnvelope(

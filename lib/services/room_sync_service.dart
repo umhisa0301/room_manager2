@@ -5,11 +5,13 @@ import '../models/rakuten_managed_product.dart';
 import '../models/room_collected_persist_kind.dart';
 import '../models/room_import_cursor_state.dart';
 import '../models/room_reaction_sync_batch_result.dart';
+import '../models/room_reaction_sync_top_product.dart';
 import '../models/room_sync_result.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/room_sync_cursor_repository.dart';
 import '../utils/room_rakuten_url_normalize.dart';
+import '../utils/room_reaction_sync_user_message.dart';
 import '../utils/room_sync_log.dart';
 import 'rakuten_item_url_parser.dart';
 import 'room_import_collects_policy.dart';
@@ -100,6 +102,8 @@ class RoomSyncService {
         );
       }
 
+      final userSeg = _roomUserSegment(profile);
+      final listingFastPath = <String, RoomUrlResolveSuccess>{};
       String? listingHtml;
       final listingUrl = RoomProfileUrlValidationService.buildItemsUrl(profile);
       if (listingUrl.isEmpty) {
@@ -118,24 +122,140 @@ class RoomSyncService {
       roomImportPerfLog('fetchRoomListStart url=$listingUrl');
       final prepareSw = Stopwatch()..start();
       final swRoomListHtml = Stopwatch()..start();
-      roomImportListingLog('source=html page=1 url=$listingUrl');
-      final initialOrdered = await _listingFetcher
-          .fetchPostedRoomProductPageUrls(
-            listingUrl,
-            onListingHtml: (h) => listingHtml = h,
+      List<String> initialOrdered = const [];
+      var importSourcePrimary = 'collects';
+      var pcHtmlSkipped = false;
+      var sourceDecisionReason = 'normalImportUsesCollects';
+      var usedFullListingHtmlForPrepare = false;
+      var postedUrlListFetchCount = 0;
+
+      if (debugVerboseRoomImport) {
+        importSourcePrimary = 'pcHtml';
+        pcHtmlSkipped = false;
+        sourceDecisionReason = 'debugFallback';
+        usedFullListingHtmlForPrepare = true;
+        roomImportListingLog('source=html page=1 url=$listingUrl reason=debugVerboseRoomImport');
+        initialOrdered = await _listingFetcher.fetchPostedRoomProductPageUrls(
+          listingUrl,
+          onListingHtml: (h) => listingHtml = h,
+        );
+        postedUrlListFetchCount = 1;
+        swRoomListHtml.stop();
+        if (listingHtml != null) {
+          final nid =
+              RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
+                listingHtml!,
+              );
+          if (nid != null && nid.isNotEmpty) {
+            await RoomImportCollectsResumeStore.saveNumericUserId(profile, nid);
+          }
+        }
+      } else {
+        final cached = await RoomImportCollectsResumeStore.readNumericUserId(profile);
+        if (cached != null && cached.isNotEmpty && userSeg.isNotEmpty) {
+          swRoomListHtml.stop();
+          importSourcePrimary = 'collects';
+          pcHtmlSkipped = true;
+          sourceDecisionReason = 'normalImportUsesCollects';
+          initialOrdered = [];
+        } else {
+          roomImportListingLog(
+            'source=html_minimal page=1 url=$listingUrl reason=numericUserIdBootstrap',
           );
-      swRoomListHtml.stop();
+          var h = await _listingFetcher.fetchListingHtmlBody(listingUrl);
+          listingHtml = h;
+          String? nid = h == null
+              ? null
+              : RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(h);
+          if (nid == null || nid.isEmpty) {
+            final itemsUri = _itemsListingUri(profile);
+            if (itemsUri != null) {
+              final listingNorm = _canonicalRoomListingUrl(listingUrl);
+              final itemsNorm = _canonicalRoomListingUrl(itemsUri.toString());
+              final sameListingUrl = listingNorm == itemsNorm;
+              if (sameListingUrl && (h ?? '').isNotEmpty) {
+                nid =
+                    RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
+                      h!,
+                    );
+              } else if (!sameListingUrl) {
+                roomImportListingLog(
+                  'source=html_minimal page=2 url=$itemsUri reason=userIdBootstrap',
+                );
+                final h2 = await _listingFetcher.fetchListingHtmlBody(
+                  itemsUri.toString(),
+                );
+                if (h2 != null) {
+                  listingHtml = h2;
+                  nid =
+                      RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
+                        h2,
+                      );
+                  if (userSeg.isNotEmpty) {
+                    RoomUrlResolver.mergeListingFastPathHintsFromHtml(
+                      h2,
+                      userSeg,
+                      listingFastPath,
+                    );
+                  }
+                }
+              }
+            }
+          }
+          swRoomListHtml.stop();
+          if (nid != null && nid.isNotEmpty) {
+            await RoomImportCollectsResumeStore.saveNumericUserId(profile, nid);
+          }
+          if (nid != null && nid.isNotEmpty && userSeg.isNotEmpty) {
+            importSourcePrimary = 'collects';
+            pcHtmlSkipped = true;
+            sourceDecisionReason = 'normalImportUsesCollects';
+            initialOrdered = [];
+          } else {
+            usedFullListingHtmlForPrepare = true;
+            pcHtmlSkipped = false;
+            importSourcePrimary = 'pcHtml';
+            sourceDecisionReason = 'numericIdUnavailableFallbackToPcHtml';
+            roomImportListingLog(
+              'source=html page=1 url=$listingUrl reason=numericIdFallbackFullListing',
+            );
+            swRoomListHtml.reset();
+            swRoomListHtml.start();
+            initialOrdered = await _listingFetcher.fetchPostedRoomProductPageUrls(
+              listingUrl,
+              onListingHtml: (html) => listingHtml = html,
+            );
+            postedUrlListFetchCount = 1;
+            swRoomListHtml.stop();
+            if (listingHtml != null) {
+              final nid2 =
+                  RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
+                    listingHtml!,
+                  );
+              if (nid2 != null && nid2.isNotEmpty) {
+                await RoomImportCollectsResumeStore.saveNumericUserId(profile, nid2);
+              }
+            }
+          }
+        }
+      }
+
+      roomImportSourceDecisionLog(
+        'job=import primary=$importSourcePrimary pcHtmlSkipped=$pcHtmlSkipped '
+        'reason=$sourceDecisionReason',
+      );
+
       roomSyncVerboseLog(
         '一覧HTMLから得られたROOM商品URL総数（未取り込みフィルタ前）: ${initialOrdered.length}',
       );
 
-      final listingInitialCandidateCount = initialOrdered.length;
+      var listingInitialCandidateCount = initialOrdered.length;
       roomImportPerfLog('extractRoomItemsStart');
       roomImportPerfLog(
         'extractRoomItemsEnd found=$listingInitialCandidateCount durationMs=0',
       );
 
-      if (initialOrdered.isEmpty) {
+      if (debugVerboseRoomImport && initialOrdered.isEmpty) {
         roomSyncError('ROOMの投稿一覧を取得できませんでした（抽出0件または接続失敗）。');
         return const RoomSyncResult(
           processedCount: 0,
@@ -161,9 +281,10 @@ class RoomSyncService {
           );
       swSyncedKeys.stop();
 
-      final initialUnsynced = initialOrdered
-          .where((k) => !syncedRoomKeys.contains(k))
-          .length;
+      final initialUnsynced = initialOrdered.where((k) {
+        final nk = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(k);
+        return nk.isNotEmpty && !syncedRoomKeys.contains(nk);
+      }).length;
       roomSyncSummaryLog(
         '投稿一覧 ${initialOrdered.length}件 · 未取り込み推定 $initialUnsynced件',
       );
@@ -185,8 +306,6 @@ class RoomSyncService {
         'job=import maxPages=$importCollectsMaxPages maxItems=$maxItems '
         'cursorMode=sequential reason=cursorDependsOnPreviousPage',
       );
-      final userSeg = _roomUserSegment(profile);
-      final listingFastPath = <String, RoomUrlResolveSuccess>{};
       if ((listingHtml ?? '').isNotEmpty && userSeg.isNotEmpty) {
         RoomUrlResolver.mergeListingFastPathHintsFromHtml(
           listingHtml!,
@@ -195,9 +314,10 @@ class RoomSyncService {
         );
       }
 
-      final page1HasUnsynced = initialOrdered.any(
-        (k) => !syncedRoomKeys.contains(k),
-      );
+      final page1HasUnsynced = initialOrdered.any((k) {
+        final nk = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(k);
+        return nk.isNotEmpty && !syncedRoomKeys.contains(nk);
+      });
       if (page1HasUnsynced) {
         await _cursorRepo?.clearImportCursor(
           profile,
@@ -211,7 +331,7 @@ class RoomSyncService {
       var listingChecked = 0;
       var listingSkip = 0;
       final toProcess = <String>[];
-      final skipCollectsThisBatch = page1HasUnsynced;
+      var skipFurtherCollectsPages = page1HasUnsynced;
       String? importCursorUsedPreview;
 
       final consecutiveLimit =
@@ -280,7 +400,7 @@ class RoomSyncService {
 
       final swCollects = Stopwatch()..start();
       var additionalFetchStatus = '不要';
-      if (!skipCollectsThisBatch && toProcess.length < maxItems) {
+      if (!skipFurtherCollectsPages && toProcess.length < maxItems) {
         final allInitialSynced =
             initialOrdered.isNotEmpty &&
             initialOrdered.every(syncedRoomKeys.contains);
@@ -288,11 +408,15 @@ class RoomSyncService {
           roomSyncVerboseLog('初期HTML候補がすべて取り込み済みのため追加取得を試行します');
         }
 
-        var numericUserId = listingHtml == null
-            ? null
-            : RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
-                listingHtml!,
-              );
+        var numericUserId =
+            await RoomImportCollectsResumeStore.readNumericUserId(profile);
+        if (numericUserId == null || numericUserId.isEmpty) {
+          numericUserId = listingHtml == null
+              ? null
+              : RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
+                  listingHtml!,
+                );
+        }
         if (numericUserId == null || numericUserId.isEmpty) {
           final itemsUri = _itemsListingUri(profile);
           if (itemsUri != null) {
@@ -338,6 +462,13 @@ class RoomSyncService {
           }
         }
 
+        if (numericUserId != null && numericUserId.trim().isNotEmpty) {
+          await RoomImportCollectsResumeStore.saveNumericUserId(
+            profile,
+            numericUserId.trim(),
+          );
+        }
+
         if (numericUserId == null || numericUserId.isEmpty || userSeg.isEmpty) {
           additionalFetchStatus = '未対応（WebView fallback 候補）';
           roomSyncVerboseLog('追加取得方式: 未対応（API用 userData.id 未取得またはユーザーセグメント空）');
@@ -370,7 +501,9 @@ class RoomSyncService {
 
           for (
             var pageIdx = 0;
-            pageIdx < importCollectsMaxPages && toProcess.length < maxItems;
+            pageIdx < importCollectsMaxPages &&
+                toProcess.length < maxItems &&
+                !skipFurtherCollectsPages;
             pageIdx++
           ) {
             if (stopDiscoveryForConsecutive &&
@@ -394,6 +527,47 @@ class RoomSyncService {
               roomSyncWarn('追加取得 collects API が失敗したため打ち切り');
               brokeOnCollectsFailure = true;
               collectsPrepareStopReason = 'collectsFailed';
+              if (!debugVerboseRoomImport &&
+                  !usedFullListingHtmlForPrepare &&
+                  orderedKeys.isEmpty &&
+                  toProcess.isEmpty) {
+                usedFullListingHtmlForPrepare = true;
+                pcHtmlSkipped = false;
+                importSourcePrimary = 'pcHtml';
+                sourceDecisionReason = 'collectsFailedFallbackToPcHtml';
+                roomImportSourceDecisionLog(
+                  'job=import primary=pcHtml pcHtmlSkipped=false '
+                  'reason=collectsFailedFallbackToPcHtml',
+                );
+                roomImportListingLog(
+                  'source=html page=1 url=$listingUrl reason=collectsFailedFallbackToPcHtml',
+                );
+                final swFb = Stopwatch()..start();
+                final fallback = await _listingFetcher.fetchPostedRoomProductPageUrls(
+                  listingUrl,
+                  onListingHtml: (html) => listingHtml = html,
+                );
+                swFb.stop();
+                if (kDebugMode) {
+                  roomImportPrepareDetailLog(
+                    'roomListHtmlFallbackFetchMs',
+                    swFb.elapsedMilliseconds,
+                  );
+                }
+                postedUrlListFetchCount++;
+                for (final k in fallback) {
+                  if (!seenKeys.contains(k)) {
+                    seenKeys.add(k);
+                    orderedKeys.add(k);
+                  }
+                }
+                advanceQueueFromDiscovery();
+                if (toProcess.isNotEmpty) {
+                  additionalFetchStatus = '失敗後HTML救済';
+                  brokeOnCollectsFailure = false;
+                  collectsPrepareStopReason = 'collectsFailedHtmlFallback';
+                }
+              }
               break;
             }
 
@@ -425,6 +599,20 @@ class RoomSyncService {
               appended++;
             }
             advanceQueueFromDiscovery();
+
+            if (pageIdx == 0) {
+              final anyUnsyncedOnCollectsLatest = page.roomPageKeysOrdered.any((k) {
+                final nk = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(k);
+                return nk.isNotEmpty && !syncedRoomKeys.contains(nk);
+              });
+              if (anyUnsyncedOnCollectsLatest) {
+                await _cursorRepo?.clearImportCursor(
+                  profile,
+                  reason: 'collectsLatestPageHasUnregistered',
+                );
+                skipFurtherCollectsPages = true;
+              }
+            }
 
             final nextRaw = page.nextAfterId?.trim();
             if (nextRaw != null && nextRaw.isNotEmpty) {
@@ -546,9 +734,11 @@ class RoomSyncService {
       }
 
       swCollects.stop();
+      listingInitialCandidateCount = orderedKeys.length;
       roomSyncVerboseLog('取り込み対象キュー件数: ${toProcess.length}');
       prepareSw.stop();
-      final importPagesFetchedTotal = 1 + collectsPreparePagesFetched;
+      final importPagesFetchedTotal =
+          postedUrlListFetchCount + collectsPreparePagesFetched;
       roomBatchFetchResultLog(
         'job=import pagesFetched=$importPagesFetchedTotal '
         'itemsFetched=${orderedKeys.length} '
@@ -589,11 +779,12 @@ class RoomSyncService {
           'listingIndexedKeys=${listingFastPath.length}',
         );
       }
-      onProcessingHint?.call(
-        toProcess.isEmpty
-            ? 'ROOM投稿を確認しています'
-            : '0/${toProcess.length}件を取り込み中',
-      );
+      onProcessingHint?.call('ROOM投稿を確認しています');
+      if (toProcess.isNotEmpty) {
+        onProcessingHint?.call('新規候補を${toProcess.length}件見つけました');
+        onProcessingHint?.call('商品を保存しています');
+        onProcessingHint?.call('0/${toProcess.length}件を取り込み中');
+      }
       roomImportUiLog('phase=processing current=0 total=${toProcess.length}');
 
       roomImportBatchStartLog(
@@ -662,7 +853,7 @@ class RoomSyncService {
         final ordinal = i + 1;
         roomImportPerfLog('itemStart index=$ordinal roomUrl=$roomPageUrl');
         roomImportUiLog('phase=processing current=$ordinal total=$batchSize');
-        onProcessingHint?.call('$ordinal/$batchSize件を取り込み中');
+        onProcessingHint?.call('商品を保存しています $ordinal/$batchSize');
         roomSyncVerboseLog('$ordinal件目の商品を確認');
         roomSyncVerboseLog('roomUrl: $roomPageUrl');
 
@@ -885,6 +1076,12 @@ class RoomSyncService {
             roomImportResyncReactionsOnly: false,
             roomImportAddRoomUrlToExistingNoApi: addRoomUrlToExistingNoApi,
             confirmDiskWrite: false,
+            roomProductSlugHint: rs.roomProductSlug,
+            roomRatRedirectUrlHint: rs.roomRatRedirectUrl,
+            roomRedirectShopCodeHint: rs.roomRedirectShopCode,
+            roomRedirectItemCodeHint: rs.roomRedirectItemCode,
+            roomApiCompositeItemCodeHint: rs.roomApiCompositeItemCode,
+            roomEventGenreIdHint: rs.roomEventGenreId,
           );
           saveSw.stop();
           roomImportPerfLog(
@@ -1048,6 +1245,8 @@ class RoomSyncService {
         );
       }
 
+      onProcessingHint?.call('取り込みが完了しました');
+
       roomSyncSummaryLog(
         '完了 · 確認キュー $batchSize件 · 新規コレ済$newly · ROOMリンク追加$roomAdd · '
         'ページ側スキップ$skipped · 失敗$failed · 一覧スキップ$listingSkip',
@@ -1161,24 +1360,7 @@ class RoomSyncService {
         );
       }
 
-      String? listingHtml;
-      final swListing = Stopwatch()..start();
-      final initialOrdered = await _listingFetcher.fetchPostedRoomProductPageUrls(
-        listingUrl,
-        onListingHtml: (h) => listingHtml = h,
-      );
-      swListing.stop();
-      final reactionListingMs = swListing.elapsedMilliseconds;
-      if (initialOrdered.isEmpty) {
-        return const RoomReactionSyncBatchResult(
-          updated: 0,
-          latestPageUpdated: 0,
-          resumedUpdated: 0,
-          cursorAction: 'clear',
-          fatalErrorMessage:
-              'ROOMの投稿一覧を取得できませんでした。URLを確認するか、しばらくしてからもう一度お試しください',
-        );
-      }
+      final swAll = Stopwatch()..start();
 
       final workingManagedList = List<RakutenManagedProduct>.from(
         _repository.loadAll(),
@@ -1188,11 +1370,109 @@ class RoomSyncService {
             workingManagedList,
           );
 
-      final reactionMaxCollectPages =
-          RoomImportCollectsPolicy.normalMaxCollectPages;
+      final userSeg = _roomUserSegment(profile);
+      String? listingHtml;
+      final latestPageUrls = <String>[];
+      var reactionListingHtmlMs = 0;
+      var reactionLatestSourceRowCount = 0;
+      var reactionCollectsApiMsPre = 0;
+      var reactionCollectsPagesFetchedPre = 0;
+
+      var numericUserId =
+          await RoomImportCollectsResumeStore.readNumericUserId(profile);
+      if (numericUserId == null || numericUserId.isEmpty) {
+        final h = await _listingFetcher.fetchListingHtmlBody(listingUrl);
+        listingHtml = h;
+        numericUserId = h == null
+            ? null
+            : RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(h);
+      }
+      if (numericUserId == null || numericUserId.isEmpty) {
+        final itemsUri = _itemsListingUri(profile);
+        if (itemsUri != null) {
+          final listingNorm = _canonicalRoomListingUrl(listingUrl);
+          final itemsNorm = _canonicalRoomListingUrl(itemsUri.toString());
+          final sameListingUrl = listingNorm == itemsNorm;
+          if (sameListingUrl && (listingHtml ?? '').isNotEmpty) {
+            numericUserId =
+                RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
+                  listingHtml!,
+                );
+          } else if (!sameListingUrl) {
+            final h2 = await _listingFetcher.fetchListingHtmlBody(
+              itemsUri.toString(),
+            );
+            if (h2 != null) {
+              listingHtml = h2;
+              numericUserId =
+                  RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
+                    h2,
+                  );
+            }
+          }
+        }
+      }
+      if (numericUserId != null && numericUserId.trim().isNotEmpty) {
+        await RoomImportCollectsResumeStore.saveNumericUserId(
+          profile,
+          numericUserId.trim(),
+        );
+      }
+
+      if (numericUserId != null &&
+          numericUserId.isNotEmpty &&
+          userSeg.isNotEmpty) {
+        final swCollect = Stopwatch()..start();
+        final page = await _listingFetcher.fetchCollectsApiPage(
+          numericUserId: numericUserId,
+          roomUserSegment: userSeg,
+          afterId: null,
+          limit: _collectsApiPageLimit,
+        );
+        swCollect.stop();
+        reactionCollectsApiMsPre += swCollect.elapsedMilliseconds;
+        if (page != null) {
+          reactionCollectsPagesFetchedPre = 1;
+          reactionLatestSourceRowCount = page.roomPageKeysOrdered.length;
+          for (final k in page.roomPageKeysOrdered) {
+            final nk = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(k);
+            if (nk.isNotEmpty && syncedRoomKeys.contains(nk)) {
+              latestPageUrls.add(k);
+            }
+          }
+        }
+      }
+
+      if (latestPageUrls.isEmpty) {
+        final swListing = Stopwatch()..start();
+        final initialOrdered = await _listingFetcher.fetchPostedRoomProductPageUrls(
+          listingUrl,
+          onListingHtml: (h) => listingHtml = h,
+        );
+        swListing.stop();
+        reactionListingHtmlMs = swListing.elapsedMilliseconds;
+        reactionLatestSourceRowCount = initialOrdered.length;
+        if (initialOrdered.isEmpty) {
+          return const RoomReactionSyncBatchResult(
+            updated: 0,
+            latestPageUpdated: 0,
+            resumedUpdated: 0,
+            cursorAction: 'clear',
+            fatalErrorMessage:
+                'ROOMの投稿一覧を取得できませんでした。URLを確認するか、しばらくしてからもう一度お試しください',
+          );
+        }
+        for (final k in initialOrdered) {
+          final nk = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(k);
+          if (nk.isNotEmpty && syncedRoomKeys.contains(nk)) {
+            latestPageUrls.add(k);
+          }
+        }
+      }
+
       roomBatchFetchPlanLog(
-        'job=reactionSync maxPages=$reactionMaxCollectPages maxItems=$maxItems '
-        'cursorMode=sequential reason=cursorDependsOnPreviousPage',
+        'job=reactionSync maxPages=2 maxItems=$maxItems '
+        'cursorMode=latestPlusResumeOnePage reason=budgetedReactionSync',
       );
 
       var updated = 0;
@@ -1201,12 +1481,19 @@ class RoomSyncService {
       final seenNorm = <String>{};
       String? lastNormProcessed;
       final traceDetailed = debugVerboseRoomImport;
+      var itemsChecked = 0;
+      const maxReactionMs = 15000;
+      const maxReactionChecks = 40;
+      String? stopReason;
 
-      var reactionCollectsApiMs = 0;
-      var reactionCollectsPagesFetched = 0;
-      var reactionCollectsRowsListed = 0;
+      var reactionCollectsApiMs = reactionCollectsApiMsPre;
+      var reactionCollectsPagesFetched = reactionCollectsPagesFetchedPre;
+      var reactionCollectsRowsListed = reactionLatestSourceRowCount;
       var reactionPersistAttempts = 0;
-      var reactionUnchangedOutcomes = 0;
+      var unchangedItemsCount = 0;
+      var likeIncreasedItems = 0;
+      var commentIncreasedItems = 0;
+      final reactionTopCandidates = <RoomReactionSyncTopProduct>[];
 
       Future<int> tryUpdateReactions(String roomPageUrl) async {
         final normalizedKey =
@@ -1215,6 +1502,26 @@ class RoomSyncService {
           return 0;
         }
         if (!seenNorm.add(normalizedKey)) return 0;
+        if (updated >= maxItems ||
+            itemsChecked >= maxReactionChecks ||
+            swAll.elapsedMilliseconds >= maxReactionMs) {
+          return 0;
+        }
+        itemsChecked++;
+
+        RakutenManagedProduct? prevRow;
+        for (final e in workingManagedList) {
+          final ek = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(
+            e.roomUrl,
+          );
+          if (ek.isNotEmpty && ek == normalizedKey) {
+            prevRow = e;
+            break;
+          }
+        }
+        final prevL = prevRow?.roomLikeCount ?? 0;
+        final prevC = prevRow?.roomCommentCount ?? 0;
+        final title = prevRow?.itemName ?? '';
 
         RoomUrlResolveOutcome resolved;
         try {
@@ -1255,11 +1562,39 @@ class RoomSyncService {
           );
           if (outcome.kind == RoomCollectedPersistKind.roomReactionsUpdated) {
             lastNormProcessed = normalizedKey;
+            final pid = outcome.productId?.trim() ?? '';
+            if (pid.isNotEmpty) {
+              RakutenManagedProduct? row;
+              for (final e in workingManagedList) {
+                if (e.productId.trim() == pid) {
+                  row = e;
+                  break;
+                }
+              }
+              if (row != null) {
+                final nl = row.roomLikeCount ?? 0;
+                final nc = row.roomCommentCount ?? 0;
+                if (nl > prevL) likeIncreasedItems++;
+                if (nc > prevC) commentIncreasedItems++;
+                reactionTopCandidates.add(
+                  RoomReactionSyncTopProduct(
+                    productId: pid,
+                    title: title,
+                    roomLikeCount: nl,
+                    roomCommentCount: nc,
+                    previousLikeCount: prevL,
+                    previousCommentCount: prevC,
+                    deltaLike: nl - prevL,
+                    deltaComment: nc - prevC,
+                  ),
+                );
+              }
+            }
             return 1;
           }
           if (outcome.kind == RoomCollectedPersistKind.roomPageAlreadySynced ||
               outcome.kind == RoomCollectedPersistKind.alreadyCollectedSkip) {
-            reactionUnchangedOutcomes++;
+            unchangedItemsCount++;
             return 2;
           }
           return 0;
@@ -1270,18 +1605,29 @@ class RoomSyncService {
 
       onProcessingHint?.call('ROOMの反応数を確認しています');
       var batchIdx = 0;
-      final latestPageSynced = <String>[];
-      for (final k in initialOrdered) {
-        final nk = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(k);
-        if (nk.isNotEmpty && syncedRoomKeys.contains(nk)) {
-          latestPageSynced.add(k);
+
+      bool shouldAbort() {
+        if (updated >= maxItems) {
+          stopReason ??= 'updatedLimitReached';
+          return true;
         }
+        if (itemsChecked >= maxReactionChecks) {
+          stopReason ??= 'maxCheckedItemsReached';
+          return true;
+        }
+        if (swAll.elapsedMilliseconds >= maxReactionMs) {
+          stopReason ??= 'maxDurationReached';
+          return true;
+        }
+        return false;
       }
 
-      for (final url in latestPageSynced) {
-        if (updated >= maxItems) break;
+      for (final url in latestPageUrls) {
+        if (shouldAbort()) break;
         batchIdx++;
-        onProcessingHint?.call('$updated/$maxItems件を更新中');
+        onProcessingHint?.call(
+          '反応数を確認中 $updated / $maxItems（確認 $itemsChecked / $maxReactionChecks）',
+        );
         onCheckingProgress?.call(batchIdx, maxItems);
         if (await tryUpdateReactions(url) == 1) {
           updated++;
@@ -1293,61 +1639,26 @@ class RoomSyncService {
       String? collectsPrepareLastNextCursor;
       var exitedOnNoMoreData = false;
 
-      if (updated < maxItems) {
-        final userSeg = _roomUserSegment(profile);
-        var numericUserId = listingHtml == null
-            ? null
-            : RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
-                listingHtml!,
-              );
-        if (numericUserId == null || numericUserId.isEmpty) {
-          final itemsUri = _itemsListingUri(profile);
-          if (itemsUri != null) {
-            final listingNorm = _canonicalRoomListingUrl(listingUrl);
-            final itemsNorm = _canonicalRoomListingUrl(itemsUri.toString());
-            final sameListingUrl = listingNorm == itemsNorm;
-            if (sameListingUrl && (listingHtml ?? '').isNotEmpty) {
-              numericUserId =
-                  RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
-                    listingHtml!,
-                  );
-            } else {
-              final h = await _listingFetcher.fetchListingHtmlBody(
-                itemsUri.toString(),
-              );
-              if (h != null) {
-                numericUserId =
-                    RoomUserPostedListingFetcher.tryParseNumericUserIdFromInitialState(
-                      h,
-                    );
-              }
-            }
-          }
-        }
-
-        if (numericUserId != null &&
-            numericUserId.isNotEmpty &&
-            userSeg.isNotEmpty) {
-          final reactionResume =
-              await _cursorRepo?.loadReactionCursor(profile);
-          var cursor = reactionResume?.nextReactionCursor?.trim();
-          if (cursor != null && cursor.isNotEmpty) {
-            resumeCursorUsed = true;
-          }
-          final maxPages = reactionMaxCollectPages;
-          for (var pageIdx = 0; pageIdx < maxPages && updated < maxItems; pageIdx++) {
-            final swCollect = Stopwatch()..start();
-            final page = await _listingFetcher.fetchCollectsApiPage(
-              numericUserId: numericUserId,
-              roomUserSegment: userSeg,
-              afterId: cursor,
-              limit: _collectsApiPageLimit,
-            );
-            swCollect.stop();
-            reactionCollectsApiMs += swCollect.elapsedMilliseconds;
-            if (page == null) {
-              break;
-            }
+      if (!shouldAbort() &&
+          numericUserId != null &&
+          numericUserId.isNotEmpty &&
+          userSeg.isNotEmpty) {
+        final reactionResume = await _cursorRepo?.loadReactionCursor(profile);
+        final resumeCurRaw = reactionResume?.nextReactionCursor?.trim();
+        if (resumeCurRaw != null && resumeCurRaw.isNotEmpty) {
+          resumeCursorUsed = true;
+          final swCollect = Stopwatch()..start();
+          final page = await _listingFetcher.fetchCollectsApiPage(
+            numericUserId: numericUserId,
+            roomUserSegment: userSeg,
+            afterId: resumeCurRaw,
+            limit: _collectsApiPageLimit,
+          );
+          swCollect.stop();
+          reactionCollectsApiMs += swCollect.elapsedMilliseconds;
+          if (page == null) {
+            stopReason ??= 'error';
+          } else {
             reactionCollectsPagesFetched++;
             reactionCollectsRowsListed += page.roomPageKeysOrdered.length;
             final nextRaw = page.nextAfterId?.trim();
@@ -1355,18 +1666,19 @@ class RoomSyncService {
               collectsPrepareLastNextCursor = nextRaw;
             }
             for (final k in page.roomPageKeysOrdered) {
-              if (updated >= maxItems) break;
+              if (shouldAbort()) break;
               final nk = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(k);
               if (nk.isEmpty || !syncedRoomKeys.contains(nk)) continue;
               batchIdx++;
-              onProcessingHint?.call('$updated/$maxItems件を更新中');
+              onProcessingHint?.call(
+                '反応数を確認中 $updated / $maxItems（確認 $itemsChecked / $maxReactionChecks）',
+              );
               onCheckingProgress?.call(batchIdx, maxItems);
               if (await tryUpdateReactions(k) == 1) {
                 updated++;
                 resumedUpdated++;
               }
             }
-            if (updated >= maxItems) break;
             final nextCursor = page.nextAfterId;
             if (nextCursor == null ||
                 nextCursor.trim().isEmpty ||
@@ -1376,12 +1688,12 @@ class RoomSyncService {
                 profile,
                 reason: 'collectsNoMoreData',
               );
-              break;
             }
-            cursor = nextCursor;
           }
         }
       }
+
+      stopReason ??= exitedOnNoMoreData ? 'noMoreCursor' : 'completed';
 
       String cursorAction = 'clear';
       String? nextOut;
@@ -1408,20 +1720,50 @@ class RoomSyncService {
       }
 
       roomBatchFetchResultLog(
-        'job=reactionSync pagesFetched=${1 + reactionCollectsPagesFetched} '
-        'itemsFetched=${initialOrdered.length + reactionCollectsRowsListed} '
-        'durationMs=${reactionListingMs + reactionCollectsApiMs}',
+        'job=reactionSync pagesFetched=${reactionCollectsPagesFetched + (reactionListingHtmlMs > 0 ? 1 : 0)} '
+        'itemsFetched=$reactionCollectsRowsListed '
+        'durationMs=${reactionListingHtmlMs + reactionCollectsApiMs}',
+      );
+      roomReactionSyncStopLog(
+        'reason=$stopReason pagesFetched=${reactionCollectsPagesFetched + (reactionListingHtmlMs > 0 ? 1 : 0)} '
+        'itemsChecked=$itemsChecked updated=$updated durationMs=${swAll.elapsedMilliseconds} '
+        'nextCursor=${collectsPrepareLastNextCursor ?? '-'}',
       );
       roomBatchCompareResultLog(
         'job=reactionSync fetchedItems=$reactionPersistAttempts '
         'existingMatches=0 newCandidates=0 '
-        'reactionChanged=$updated unchanged=$reactionUnchangedOutcomes',
+        'reactionChanged=$updated unchanged=$unchangedItemsCount',
       );
       final reactionFlushSw = Stopwatch()..start();
       await _repository.flushSharedWorkingMutableList(workingManagedList);
       reactionFlushSw.stop();
       final reactionSkippedUnchanged =
           reactionPersistAttempts - updated;
+      final topSorted = List<RoomReactionSyncTopProduct>.from(
+        reactionTopCandidates,
+      )..sort((a, b) {
+          final sb = b.deltaLike + b.deltaComment;
+          final sa = a.deltaLike + a.deltaComment;
+          if (sb != sa) return sb.compareTo(sa);
+          return b.deltaLike.compareTo(a.deltaLike);
+        });
+      final top3 = topSorted.take(3).toList(growable: false);
+      final uiSummary = roomReactionSyncSnackBarSummary(
+        checkedItems: itemsChecked,
+        updatedItems: updated,
+        unchangedItems: unchangedItemsCount,
+        likeIncreasedItems: likeIncreasedItems,
+        commentIncreasedItems: commentIncreasedItems,
+        stopReason: stopReason ?? '',
+        hasNextCursor: nextOut != null && nextOut.trim().isNotEmpty,
+      );
+      roomReactionSyncUiSummaryLog(
+        'checkedItems=$itemsChecked updatedItems=$updated unchangedItems=$unchangedItemsCount '
+        'likeIncreasedItems=$likeIncreasedItems commentIncreasedItems=$commentIncreasedItems '
+        'topReactedProductIds=${top3.map((e) => e.productId).join(',')} '
+        'stopReason=${stopReason ?? '-'} hasNextCursor=${nextOut != null && nextOut.trim().isNotEmpty} '
+        'message=${uiSummary.replaceAll('\n', ' ')}',
+      );
       roomBatchSaveResultLog(
         'job=reactionSync saveTargets=$updated saved=$updated '
         'skippedUnchanged=$reactionSkippedUnchanged refreshListOnce=true '
@@ -1436,6 +1778,15 @@ class RoomSyncService {
         cursorAction: cursorAction,
         latestPageChecked: true,
         resumeCursorUsed: resumeCursorUsed,
+        itemsChecked: itemsChecked,
+        pagesFetched: reactionCollectsPagesFetched + (reactionListingHtmlMs > 0 ? 1 : 0),
+        durationMs: swAll.elapsedMilliseconds,
+        stopReason: stopReason,
+        likeIncreasedItems: likeIncreasedItems,
+        commentIncreasedItems: commentIncreasedItems,
+        unchangedItems: unchangedItemsCount,
+        topReactedProducts: top3,
+        uiSummaryMessage: uiSummary,
       );
     } finally {
       _postedRoomReactionSyncInFlight = false;

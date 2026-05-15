@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/rakuten_ichiba_url_parse.dart';
 import '../utils/room_rakuten_url_normalize.dart';
+import '../utils/room_rat_redirect_parse.dart';
 import '../utils/room_sync_log.dart';
 import 'rakuten_item_url_parser.dart';
 import 'room_room_page_reaction_parse.dart';
@@ -131,7 +133,11 @@ class RoomUrlResolver {
       return const RoomUrlResolveFailure(RoomUrlResolveFailureKind.emptyBody);
     }
 
-    return parseFetchedRoomPageHtml(body, traceRoomSync: traceRoomSync);
+    return parseFetchedRoomPageHtml(
+      body,
+      traceRoomSync: traceRoomSync,
+      roomPageUrlForLog: trimmed,
+    );
   }
 
   /// ROOM 商品ページの HTML 本文から楽天URL・OG・反応数を解決する（HTTP 層は呼び出し側）。
@@ -140,6 +146,7 @@ class RoomUrlResolver {
   static RoomUrlResolveOutcome parseFetchedRoomPageHtml(
     String body, {
     bool traceRoomSync = false,
+    String roomPageUrlForLog = '',
   }) {
     final decoded = _unescapeBasicXmlEntities(body);
     final aflUrlsOrdered = _collectAflUrlsUniqueOrdered(decoded, body);
@@ -211,6 +218,29 @@ class RoomUrlResolver {
       roomSyncLog('採用楽天URL: ${parsed.rakutenUrl}');
     }
 
+    final logU = roomPageUrlForLog.trim();
+    final rat = RoomRatRedirectParse.mergeBestFromHtml(
+      decoded.isNotEmpty ? decoded : body,
+      body,
+      roomPageUrl: logU.isNotEmpty ? logU : '(unknown-room-page)',
+    );
+    var roomProductSlug = parsed.itemPathSegment.trim();
+    var roomRatRedirectUrl = '';
+    var roomRedirectShopCode = '';
+    var roomRedirectItemCode = '';
+    var roomApiCompositeItemCode = '';
+    var roomEventGenreId = '';
+    if (rat != null) {
+      if (rat.roomProductSlug.trim().isNotEmpty) {
+        roomProductSlug = rat.roomProductSlug.trim();
+      }
+      roomRatRedirectUrl = rat.roomRedirectUrl;
+      roomRedirectShopCode = rat.shopurl;
+      roomRedirectItemCode = rat.apiItemCode;
+      roomApiCompositeItemCode = rat.apiCompositeItemCode;
+      roomEventGenreId = rat.genreId;
+    }
+
     final meta = _readOpenGraphTitleAndImage(
       decoded.isNotEmpty ? decoded : body,
     );
@@ -226,6 +256,12 @@ class RoomUrlResolver {
       roomLikeCount: reaction.roomLikeCount,
       roomCommentCount: reaction.roomCommentCount,
       listingHintPriceYen: priceHint,
+      roomProductSlug: roomProductSlug,
+      roomRatRedirectUrl: roomRatRedirectUrl,
+      roomRedirectShopCode: roomRedirectShopCode,
+      roomRedirectItemCode: roomRedirectItemCode,
+      roomApiCompositeItemCode: roomApiCompositeItemCode,
+      roomEventGenreId: roomEventGenreId,
     );
   }
 
@@ -254,6 +290,18 @@ class RoomUrlResolver {
       return b ?? a;
     }
 
+    String pickStr(String a, String b) {
+      final tb = b.trim();
+      if (tb.isNotEmpty) return b;
+      return a.trim();
+    }
+
+    String pickComposite(String a, String b) {
+      final tb = b.trim();
+      if (tb.isNotEmpty && rakutenIchibaUrlLooksLikeApiItemCode(tb)) return b;
+      return a.trim();
+    }
+
     final affFetched = fetchedFullPage.roomPageAffiliateUrl?.trim() ?? '';
     return RoomUrlResolveSuccess(
       rakutenItem: listingOrFast.rakutenItem,
@@ -273,6 +321,30 @@ class RoomUrlResolver {
       listingHintPriceYen: pickHint(
         listingOrFast.listingHintPriceYen,
         fetchedFullPage.listingHintPriceYen,
+      ),
+      roomProductSlug: pickStr(
+        listingOrFast.roomProductSlug,
+        fetchedFullPage.roomProductSlug,
+      ),
+      roomRatRedirectUrl: pickStr(
+        listingOrFast.roomRatRedirectUrl,
+        fetchedFullPage.roomRatRedirectUrl,
+      ),
+      roomRedirectShopCode: pickStr(
+        listingOrFast.roomRedirectShopCode,
+        fetchedFullPage.roomRedirectShopCode,
+      ),
+      roomRedirectItemCode: pickStr(
+        listingOrFast.roomRedirectItemCode,
+        fetchedFullPage.roomRedirectItemCode,
+      ),
+      roomApiCompositeItemCode: pickComposite(
+        listingOrFast.roomApiCompositeItemCode,
+        fetchedFullPage.roomApiCompositeItemCode,
+      ),
+      roomEventGenreId: pickStr(
+        listingOrFast.roomEventGenreId,
+        fetchedFullPage.roomEventGenreId,
       ),
     );
   }
@@ -303,9 +375,14 @@ class RoomUrlResolver {
   static RoomUrlResolveSuccess? tryParseRoomPageFromHtmlSnippet(
     String htmlFragment, {
     bool traceRoomSync = false,
+    String roomPageUrlForLog = '',
   }) {
     if (htmlFragment.trim().isEmpty) return null;
-    final o = parseFetchedRoomPageHtml(htmlFragment, traceRoomSync: traceRoomSync);
+    final o = parseFetchedRoomPageHtml(
+      htmlFragment,
+      traceRoomSync: traceRoomSync,
+      roomPageUrlForLog: roomPageUrlForLog,
+    );
     return o is RoomUrlResolveSuccess ? o : null;
   }
 
@@ -335,7 +412,11 @@ class RoomUrlResolver {
       final end = start + after;
       final hi = end > html.length ? html.length : end;
       final snippet = html.substring(lo, hi);
-      var ok = tryParseRoomPageFromHtmlSnippet(snippet, traceRoomSync: false);
+      var ok = tryParseRoomPageFromHtmlSnippet(
+        snippet,
+        traceRoomSync: false,
+        roomPageUrlForLog: fullUrl,
+      );
       final hint = _extractListingHintPriceYenFromText(snippet);
       if (ok != null && hint != null) {
         ok = RoomUrlResolveSuccess(
@@ -346,6 +427,12 @@ class RoomUrlResolver {
           roomLikeCount: ok.roomLikeCount,
           roomCommentCount: ok.roomCommentCount,
           listingHintPriceYen: hint,
+          roomProductSlug: ok.roomProductSlug,
+          roomRatRedirectUrl: ok.roomRatRedirectUrl,
+          roomRedirectShopCode: ok.roomRedirectShopCode,
+          roomRedirectItemCode: ok.roomRedirectItemCode,
+          roomApiCompositeItemCode: ok.roomApiCompositeItemCode,
+          roomEventGenreId: ok.roomEventGenreId,
         );
       }
       if (ok != null) {
@@ -675,6 +762,12 @@ final class RoomUrlResolveSuccess extends RoomUrlResolveOutcome {
     this.roomLikeCount,
     this.roomCommentCount,
     this.listingHintPriceYen,
+    this.roomProductSlug = '',
+    this.roomRatRedirectUrl = '',
+    this.roomRedirectShopCode = '',
+    this.roomRedirectItemCode = '',
+    this.roomApiCompositeItemCode = '',
+    this.roomEventGenreId = '',
   });
 
   final RakutenItemUrlParseResult rakutenItem;
@@ -692,6 +785,24 @@ final class RoomUrlResolveSuccess extends RoomUrlResolveOutcome {
 
   /// 一覧HTML／collects から拾った参考価格（円）。楽天APIが無い・失敗時の補助。
   final int? listingHintPriceYen;
+
+  /// `item.rakuten.co.jp/{shop}/{roomProductSlug}/` の2段目（API itemCode ではないことが多い）。
+  final String roomProductSlug;
+
+  /// ROOM rat/relay リダイレクトの元 URL（解析に使った代表）。
+  final String roomRatRedirectUrl;
+
+  /// rat-redirect event の shopurl。
+  final String roomRedirectShopCode;
+
+  /// rat-redirect event の itemid 由来の純粋コード。
+  final String roomRedirectItemCode;
+
+  /// `shopurl:apiItemCode`（楽天 Item Search の direct 向け）。
+  final String roomApiCompositeItemCode;
+
+  /// rat-redirect event の igenre 等（genreId 候補）。
+  final String roomEventGenreId;
 }
 
 final class RoomUrlResolveFailure extends RoomUrlResolveOutcome {

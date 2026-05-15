@@ -97,9 +97,7 @@ abstract final class RoomPostImportFlow {
       );
       return;
     }
-    if (bulk.isRoomImportRunning ||
-        bulk.isBulkCandidateRegistering ||
-        bulk.isRoomReactionSyncRunning) {
+    if (bulk.isRoomTourSearchBlocking || bulk.isBulkCandidateRegistering) {
       bulk.guardBlockingOperations(context);
       return;
     }
@@ -111,9 +109,7 @@ abstract final class RoomPostImportFlow {
         'action=blockedWithMessage',
       );
       messenger.showSnackBar(
-        const SnackBar(
-          content: Text('別の補完処理が実行中です。完了後にお試しください。'),
-        ),
+        const SnackBar(content: Text('別の補完処理が実行中です。完了後にお試しください。')),
       );
       return;
     }
@@ -123,9 +119,7 @@ abstract final class RoomPostImportFlow {
       'autoEnrichRunning=${RoomImportMetadataEnrichmentService.isEnrichmentSingleFlightHeld} '
       'action=started',
     );
-    roomSyncJobLockLog(
-      'action=acquire job=enrichingMetadata currentJob=none',
-    );
+    roomSyncJobLockLog('action=acquire job=enrichingMetadata currentJob=none');
     bulk.setMetadataEnriching(true);
     try {
       final searchRepo = context.read<RakutenSearchRepository>();
@@ -157,14 +151,16 @@ abstract final class RoomPostImportFlow {
         bulk.flashRoomImportEnrichedIds(result.successProductIds);
       }
 
-      final topRoomDone = managedProv.items
-          .where(
-            (e) =>
-                e.status == RakutenManagedProductStatus.done &&
-                e.coredActivitySource == RakutenCoredActivitySource.roomImport,
-          )
-          .toList()
-        ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+      final topRoomDone =
+          managedProv.items
+              .where(
+                (e) =>
+                    e.status == RakutenManagedProductStatus.done &&
+                    e.coredActivitySource ==
+                        RakutenCoredActivitySource.roomImport,
+              )
+              .toList()
+            ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
       final visibleTop = topRoomDone
           .take(8)
           .map((e) => e.productId.trim())
@@ -183,9 +179,7 @@ abstract final class RoomPostImportFlow {
         );
       } else if (result.duplicateSessionSkipped) {
         messenger.showSnackBar(
-          const SnackBar(
-            content: Text('別の補完処理が実行中です。完了後にお試しください。'),
-          ),
+          const SnackBar(content: Text('別の補完処理が実行中です。完了後にお試しください。')),
         );
       } else if (result.skippedCooldown) {
         messenger.showSnackBar(
@@ -282,9 +276,9 @@ abstract final class RoomPostImportFlow {
     if (result.collectsIncompleteExplore) {
       snackText += '。古い投稿に未取り込みが残っている可能性があります';
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(snackText)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(snackText)));
 
     if (!context.mounted) return;
     await showResultSheet(
@@ -293,6 +287,22 @@ abstract final class RoomPostImportFlow {
       startBatch: startBatch,
       startDeepCollectsBatch: startDeepCollectsBatch,
     );
+    if (!context.mounted) return;
+    if (result.postImportEnrichSuccessCount != null) {
+      final suc = result.postImportEnrichSuccessCount ?? 0;
+      final fail = result.postImportEnrichFailCount ?? 0;
+      final pendingAll =
+          RoomImportMetadataEnrichmentService.countPendingEnrichment(
+            context.read<RakutenManagedProductProvider>().items,
+          );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '商品情報取得が完了しました：成功$suc件 / 失敗$fail件\n未補完：$pendingAll件',
+          ),
+        ),
+      );
+    }
   }
 
   /// 1バッチ実行して結果を返す（ROOM URL 未登録時は null）。
@@ -383,10 +393,14 @@ abstract final class RoomPostImportFlow {
     if (result != null) {
       roomReactionSyncResultLog(
         'updated=${result.updated} '
+        'itemsChecked=${result.itemsChecked} '
         'latestPageUpdated=${result.latestPageUpdated} '
         'resumedUpdated=${result.resumedUpdated} '
         'nextCursor=${result.nextCursor ?? '-'} '
         'cursorAction=${result.cursorAction} '
+        'stopReason=${result.stopReason ?? '-'} '
+        'pagesFetched=${result.pagesFetched} '
+        'durationMs=${result.durationMs} '
         'apiCallsToRakuten=0',
       );
     }
@@ -438,13 +452,39 @@ abstract final class RoomPostImportFlow {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  '新しい商品をコレ済に追加しました。初回の商品情報取得はバッチ完了後に続けて行われます。',
+                  result.postImportEnrichSuccessCount != null
+                      ? '新しい商品をコレ済に追加し、商品情報の初回取得を行いました。'
+                      : '新しい商品をコレ済に追加しました。初回の商品情報取得はバッチ完了後に続けて行われます。',
                   textAlign: TextAlign.center,
                   style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.45,
                   ),
                 ),
+                if (result.postImportEnrichSuccessCount != null) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    '商品情報取得：成功${result.postImportEnrichSuccessCount}件 / '
+                    '失敗${result.postImportEnrichFailCount ?? 0}件 / '
+                    '残り${result.postImportEnrichRemainingImportedPending ?? 0}件',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      height: 1.45,
+                    ),
+                  ),
+                  if (result.postImportEnrichHitTimeLimit) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      '残りは「未補完の商品情報を再取得」から再試行できます',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ],
                 const SizedBox(height: 22),
                 LayoutBuilder(
                   builder: (context, constraints) {
@@ -546,9 +586,8 @@ abstract final class RoomPostImportFlow {
                             const SizedBox(height: 4),
                             Text(
                               '終了理由：${result.collectsStopReason}',
-                              style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                                color: AppColors.textTertiary,
-                              ),
+                              style: Theme.of(ctx).textTheme.bodySmall
+                                  ?.copyWith(color: AppColors.textTertiary),
                             ),
                           ],
                           if (result.collectsIncompleteExplore) ...[
@@ -557,10 +596,11 @@ abstract final class RoomPostImportFlow {
                               '未取り込みの投稿がまだ残っている可能性があります。'
                               '古い投稿をさらに探す場合は、マイページの'
                               '「さらに古い投稿を探す」から実行できます。',
-                              style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
-                                height: 1.45,
-                                color: AppColors.textSecondary,
-                              ),
+                              style: Theme.of(ctx).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    height: 1.45,
+                                    color: AppColors.textSecondary,
+                                  ),
                             ),
                           ],
                         ],
