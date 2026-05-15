@@ -74,3 +74,908 @@ Got dependencies!
 20 packages have newer versions incompatible with dependency constraints.
 Try `flutter pub outdated` for more information.
 Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             16.1s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.7s
+D/FlutterJNI(13462): Beginning load of flutter...
+D/FlutterJNI(13462): flutter (null) was loaded normally!
+I/flutter (13462): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter (13462): verifyMode=false
+I/flutter (13462): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (13462): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                    81ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:49242/nCQQPygiZtc=/
+I/flutter (13462): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (13462): [ROOMコレ診断] loadAll 初回サマリー parsed=312 rawJsonList=312
+I/flutter (13462): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (13462): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (13462): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (13462): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=312 afterFilterLen=312 surface=ok_list ui=ready
+I/flutter (13462): [ROOMコレ診断] 描画リスト先頭 productId=12020 title=ベビークラウン お食い初め ハーフバースデー ファーストバースデー 赤ちゃん 誕生日 1歳 ふわふわやわらか 王冠 HARERU（ハレル） status=done len=312
+I/flutter (13462): [REACTION_STATUS] productId=12020
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=1
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=sanrio-001-cake5
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=2
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=chu-0635
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=7
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=3
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/Choreographer(13462): Skipped 221 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9101?uri=http://127.0.0.1:49242/nCQQPygiZtc=/
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=refresh
+I/flutter (13462): productId=
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=0
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=312
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [MANAGED_PRODUCT_LOAD]
+I/flutter (13462): source=provider
+I/flutter (13462): pendingCount=0
+I/flutter (13462): doneCount=312
+I/flutter (13462): filter=
+I/flutter (13462): tab=
+I/flutter (13462): [ROOMコレ診断] refreshManagedProductList 完了 total=312 candidate=0 done=312 ui=ready
+I/flutter (13462): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (13462): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter (13462): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (13462): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (13462): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (13462): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (13462): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (13462): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-15T09:27:05.387697
+I/flutter (13462): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (13462): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (13462): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (13462): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-15T09:27:05.387697
+I/flutter (13462): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (13462): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=refresh
+I/flutter (13462): productId=
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=0
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=312
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [MANAGED_PRODUCT_LOAD]
+I/flutter (13462): source=screen
+I/flutter (13462): pendingCount=0
+I/flutter (13462): doneCount=312
+I/flutter (13462): filter=
+I/flutter (13462): tab=done
+I/flutter (13462): [ROOMコレ診断] refreshManagedProductList 完了 total=312 candidate=0 done=312 ui=ready
+I/flutter (13462): [ROOMコレ診断] ROOMコレ画面起動後 total=312 candidate=0 done=312 listUi=RakutenManagedProductListUiStatus.ready tabIdx=1
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=refresh
+I/flutter (13462): productId=
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=0
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=312
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [MANAGED_PRODUCT_LOAD]
+I/flutter (13462): source=provider
+I/flutter (13462): pendingCount=0
+I/flutter (13462): doneCount=312
+I/flutter (13462): filter=
+I/flutter (13462): tab=
+I/flutter (13462): [ROOMコレ診断] refreshManagedProductList 完了 total=312 candidate=0 done=312 ui=ready
+I/WebViewFactory(13462): Loading com.google.android.webview version 147.0.7727.137 (code 772713703)
+D/ApplicationLoaders(13462): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(13462): Loading /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(13462): Configuring clns-5 for other apk /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/lib/arm64:/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(13462): version=147.0.7727.137 (772713703) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(13462): Load /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+D/nativeloader(13462): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+I/cr_LibraryLoader(13462): Successfully loaded native library
+I/cr_CachingUmaRecorder(13462): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(13462): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(13462): #registerProvider() provider:WV.yk@9f9ad37 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(13462): #setManagerAndSource() 0
+I/cr_DisplayManager(13462): Is Display Topology available: false
+I/cr_CombinedPProvider(13462): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(13462): Compat change id reported: 183155436; UID 10458; state: ENABLED
+I/cr_AppResProvider(13462): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(13462): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(13462): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(13462): #flushPolicies()
+W/chromium(13462): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(13462): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 106043730
+D/CompatibilityChangeReporter(13462): Compat change id reported: 214741472; UID 10458; state: ENABLED
+I/flutter (13462): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (13462): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=312 afterFilterLen=312 surface=ok_list ui=ready
+I/flutter (13462): [ROOMコレ診断] 描画リスト先頭 productId=12020 title=ベビークラウン お食い初め ハーフバースデー ファーストバースデー 赤ちゃん 誕生日 1歳 ふわふわやわらか 王冠 HARERU（ハレル） status=done len=312
+I/flutter (13462): [REACTION_STATUS] productId=12020
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=1
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=sanrio-001-cake5
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=2
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=chu-0635
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=7
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=3
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/CameraManagerGlobal(13462): Connecting to camera service
+D/CompatibilityChangeReporter(13462): Compat change id reported: 171228096; UID 10458; state: ENABLED
+I/PlatformViewsController(13462): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(13462): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(13462): Compat change id reported: 236825255; UID 10458; state: ENABLED
+W/libc    (13462): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(13462): type=1400 audit(0.0:523848): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/CompatibilityChangeReporter(13462): Compat change id reported: 193247900; UID 10458; state: ENABLED
+I/Choreographer(13462): Skipped 53 frames!  The application may be doing too much work on its main thread.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+W/libc    (13462): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(13462): type=1400 audit(0.0:523849): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c202,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(13462): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(13462): Build Date              : 08/23/22
+I/AdrenoVK-0(13462): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(13462): Local Branch            : 
+I/AdrenoVK-0(13462): Remote Branch           : 
+I/AdrenoVK-0(13462): Remote Branch           : 
+I/AdrenoVK-0(13462): Reconstruct Branch      : 
+I/AdrenoVK-0(13462): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(13462): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(13462): Davey! duration=1048ms; Flags=1, FrameTimelineVsyncId=610653141, IntendedVsync=4323868671335610, Vsync=4323869554668908, InputEventId=0, HandleInputStart=4323869559076457, AnimationStart=4323869559078124, PerformTraversalsStart=4323869559099582, DrawStart=4323869570643124, FrameDeadline=4323868688002276, FrameInterval=4323869558745415, FrameStartTime=16666666, SyncQueued=4323869695002499, SyncStart=4323869698643488, IssueDrawCommandsStart=4323869700504530, SwapBuffers=4323869720884686, FrameCompleted=4323869723339946, DequeueBufferDuration=5887552, QueueBufferDuration=1886198, GpuCompleted=4323869722126301, SwapBuffersCompleted=4323869723339946, DisplayPresentTime=0, CommandSubmissionCompleted=4323869720884686, 
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(13462): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(13462): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+E/FrameEvents(13462): updateAcquireFence: Did not find frame.
+W/o.room_manager2(13462): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/base.apk' with 1 weak references
+W/o.room_manager2(13462): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (13462): [ROOM_SYNC_JOB_LOCK] action=acquire job=importingCollectedItems currentJob=none
+I/flutter (13462): [ROOM_IMPORT_FLOW] action=importStart message=postImportInitialEnrich
+I/flutter (13462): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter (13462): [ROOM_SYNC] ROOM投稿取り込み 開始（最大10件）
+I/flutter (13462): [ROOM_IMPORT_PERF] totalStart
+I/flutter (13462): [ROOM_IMPORT_PERF] prepareStart
+I/flutter (13462): [ROOM_IMPORT_UI] phase=preparing message=ROOM投稿を確認しています
+I/flutter (13462): [ROOM_IMPORT_PERF] fetchRoomListStart url=https://room.rakuten.co.jp/room_def277c8b5/items
+I/flutter (13462): [ROOM_IMPORT_SOURCE_DECISION] job=import primary=collects pcHtmlSkipped=true reason=normalImportUsesCollects
+I/flutter (13462): [ROOM_IMPORT_PERF] extractRoomItemsStart
+I/flutter (13462): [ROOM_IMPORT_PERF] extractRoomItemsEnd found=0 durationMs=0
+I/flutter (13462): [ROOM_SYNC] 投稿一覧 0件 · 未取り込み推定 0件
+I/flutter (13462): [ROOM_BATCH_FETCH_PLAN] job=import maxPages=3 maxItems=10 cursorMode=sequential reason=cursorDependsOnPreviousPage
+I/flutter (13462): [ROOM_IMPORT_COLLECTS_POLICY] mode=normal maxPages=3 consecutiveKnownLimit=30 targetNewItems=10
+I/flutter (13462): [ROOM_IMPORT_CURSOR] action=load cursor=1700371108479266 reason=json lastProcessedRoomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371109101350
+I/flutter (13462): [ROOM_IMPORT_COLLECTS_POLICY] mode=normal resumeAfterId=present
+I/flutter (13462): [ROOM_IMPORT_LISTING] source=collects page=1 url=https://room.rakuten.co.jp/api/1000005511673233/collects cursor=1700371108479266
+I/flutter (13462): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=312 afterFilterLen=312 surface=ok_list ui=ready
+I/flutter (13462): [ROOMコレ診断] 描画リスト先頭 productId=12020 title=ベビークラウン お食い初め ハーフバースデー ファーストバースデー 赤ちゃん 誕生日 1歳 ふわふわやわらか 王冠 HARERU（ハレル） status=done len=312
+I/flutter (13462): [REACTION_STATUS] productId=12020
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=1
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=sanrio-001-cake5
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=2
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=chu-0635
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=7
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=3
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [ROOM_IMPORT_API] type=roomList status=200 durationMs=11368
+I/flutter (13462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (13462): [ROOM_IMPORT_CURSOR] action=clear cursor=- reason=collectsLatestPageHasUnregistered lastProcessedRoomKey=-
+I/flutter (13462): [ROOM_IMPORT_COLLECTS_PROGRESS] page=1 foundNewOnPage=20 knownOnPage=0 totalNew=10 totalKnown=0 nextCursor=1700370989764357
+I/flutter (13462): [ROOM_IMPORT_LISTING] stop reason=enoughItems count=10 source=collects page=1
+I/flutter (13462): [ROOM_IMPORT_CURSOR] action=save cursor=1700370989764357 reason=persist lastProcessedRoomKey=https://room.rakuten.co.jp/room_def277c8b5/1700370990042314
+I/flutter (13462): [ROOM_IMPORT_COLLECTS_STOP] reason=enoughItems pagesFetched=1 newItems=10 knownItems=0 durationMs=11594
+I/flutter (13462): [ROOM_BATCH_FETCH_RESULT] job=import pagesFetched=1 itemsFetched=20 durationMs=11627
+I/flutter (13462): [ROOM_IMPORT_PERF] prepareEnd durationMs=11627
+I/flutter (13462): [ROOM_IMPORT_PREPARE_DETAIL] roomListHtmlFetchMs=4ms
+I/flutter (13462): [ROOM_IMPORT_PREPARE_DETAIL] collectsFetchMs=11594ms
+I/flutter (13462): [ROOM_IMPORT_PREPARE_DETAIL] existingProductsLoadMs=23ms
+I/flutter (13462): [ROOM_IMPORT_PREPARE_DETAIL] syncedKeyBuildMs=2ms
+I/flutter (13462): [ROOM_IMPORT_PREPARE_DETAIL] queueBuildMs=1ms
+I/flutter (13462): [ROOM_FASTPATH_SUMMARY] prepareQueueCanFastPath=10 prepareQueueSize=10 listingIndexedKeys=20
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=0 total=10
+I/flutter (13462): [ROOM_IMPORT_BATCH_START] mode=importWithInitialEnrichment limit=10 startStrategy=resumeCursor cursor=1700371108479266
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=0 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] itemStart index=1 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371108439264
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=1 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchStart index=1
+I/flutter (13462): [ROOM_FASTPATH] resolvedFromListing=true shopCode=oiwaizen itemCode=sanrio-001-s roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371108439264
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchEnd index=1 status=fastPath durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=1
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=1 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesStart index=1
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesEnd index=1 shopCode=oiwaizen itemCode=sanrio-001-s durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckStart index=1
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckEnd index=1 exists=false durationMs=0
+I/flutter (13462): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=oiwaizen itemCode=sanrio-001-s
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseStart index=1
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseEnd index=1 likes=0 comments=0 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] saveStart index=1
+I/flutter (13462): [ROOM_IMPORT_UI] phase=saving current=1
+I/flutter (13462): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=roomImport
+I/flutter (13462): productId=sanrio-001-s
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=-1
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=-1
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [ROOM_IMPORT_PERF] saveEnd index=1 durationMs=44
+I/flutter (13462): [ROOM_IMPORT_LISTING_METADATA] productId=sanrio-001-s title=お食い初め セット 料理 【サンリオキャラクターズベイビーズ お食い初め膳 -スイートベイビーズ-】 鯛 歯固めの石 ARフォトフレーム imageFound=false priceFound=false imageUrl= listingPrice=-
+I/flutter (13462): [ROOM_IMPORT_PERF] itemEnd index=1 result=added durationMs=60
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=1 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] itemStart index=2 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371108408734
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=2 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchStart index=2
+I/flutter (13462): [ROOM_FASTPATH] resolvedFromListing=true shopCode=oiwaizen itemCode=sanrio-002-s roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371108408734
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchEnd index=2 status=fastPath durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=2
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=2 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesStart index=2
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesEnd index=2 shopCode=oiwaizen itemCode=sanrio-002-s durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckStart index=2
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckEnd index=2 exists=false durationMs=0
+I/flutter (13462): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=oiwaizen itemCode=sanrio-002-s
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseStart index=2
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseEnd index=2 likes=0 comments=0 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] saveStart index=2
+I/flutter (13462): [ROOM_IMPORT_UI] phase=saving current=2
+I/flutter (13462): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=roomImport
+I/flutter (13462): productId=sanrio-002-s
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=-1
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=-1
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [ROOM_IMPORT_PERF] saveEnd index=2 durationMs=26
+I/flutter (13462): [ROOM_IMPORT_LISTING_METADATA] productId=sanrio-002-s title=お食い初め セット 料理 【サンリオキャラクターズベイビーズ お食い初め膳 -ハッピーベイビーズ-】 アイシングクッキー 鯛 歯固めの石 ARフォトフレーム imageFound=false priceFound=false imageUrl= listingPrice=-
+I/flutter (13462): [ROOM_IMPORT_PERF] itemEnd index=2 result=added durationMs=30
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=2 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] itemStart index=3 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371108370256
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=3 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchStart index=3
+I/flutter (13462): [ROOM_FASTPATH] resolvedFromListing=true shopCode=oiwaizen itemCode=cake-009 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371108370256
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchEnd index=3 status=fastPath durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=3
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=3 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesStart index=3
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesEnd index=3 shopCode=oiwaizen itemCode=cake-009 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckStart index=3
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckEnd index=3 exists=false durationMs=0
+I/flutter (13462): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=oiwaizen itemCode=cake-009
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseStart index=3
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseEnd index=3 likes=0 comments=0 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] saveStart index=3
+I/flutter (13462): [ROOM_IMPORT_UI] phase=saving current=3
+I/flutter (13462): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=roomImport
+I/flutter (13462): productId=cake-009
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=-1
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=-1
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [ROOM_IMPORT_PERF] saveEnd index=3 durationMs=21
+I/flutter (13462): [ROOM_IMPORT_LISTING_METADATA] productId=cake-009 title=アイシングクッキー お食い初め クッキー キティちゃん 【サンリオキャラクターズベイビーズアイシングクッキー 4枚セット】 キティ マイメロディ ポチャッコ お祝い ギフト imageFound=false priceFound=false imageUrl= listingPrice=-
+I/flutter (13462): [ROOM_IMPORT_PERF] itemEnd index=3 result=added durationMs=25
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=3 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] itemStart index=4 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371108334724
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=4 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchStart index=4
+I/flutter (13462): [ROOM_FASTPATH] resolvedFromListing=true shopCode=oiwaizen itemCode=hare-003-a roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371108334724
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchEnd index=4 status=fastPath durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=4
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=4 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesStart index=4
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesEnd index=4 shopCode=oiwaizen itemCode=hare-003-a durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckStart index=4
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckEnd index=4 exists=false durationMs=0
+I/flutter (13462): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=oiwaizen itemCode=hare-003-a
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseStart index=4
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseEnd index=4 likes=4 comments=0 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] saveStart index=4
+I/flutter (13462): [ROOM_IMPORT_UI] phase=saving current=4
+I/flutter (13462): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=roomImport
+I/flutter (13462): productId=hare-003-a
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=-1
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=-1
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [ROOM_IMPORT_PERF] saveEnd index=4 durationMs=26
+I/flutter (13462): [ROOM_IMPORT_LISTING_METADATA] productId=hare-003-a title=お食い初め セット 料理【ハレの日パイでお食い初め そよかぜ】鯛パイ お食い初め手引書【人数分の蛤吸・赤飯・祝箸を追加購入可能】 鯛 アップルパイ お食い初めセット imageFound=false priceFound=false imageUrl= listingPrice=-
+I/flutter (13462): [ROOM_IMPORT_PERF] itemEnd index=4 result=added durationMs=32
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=4 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] itemStart index=5 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371108296115
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=5 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchStart index=5
+I/flutter (13462): [ROOM_FASTPATH] resolvedFromListing=true shopCode=oiwaizen itemCode=01090-006 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371108296115
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchEnd index=5 status=fastPath durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=5
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=5 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesStart index=5
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesEnd index=5 shopCode=oiwaizen itemCode=01090-006 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckStart index=5
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckEnd index=5 exists=false durationMs=0
+I/flutter (13462): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=oiwaizen itemCode=01090-006
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseStart index=5
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseEnd index=5 likes=2 comments=0 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] saveStart index=5
+I/flutter (13462): [ROOM_IMPORT_UI] phase=saving current=5
+I/flutter (13462): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=roomImport
+I/flutter (13462): productId=01090-006
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=-1
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=-1
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [ROOM_IMPORT_PERF] saveEnd index=5 durationMs=23
+I/flutter (13462): [ROOM_IMPORT_LISTING_METADATA] productId=01090-006 title=【期間限定ステッカー付き】お食い初めセット 料理 【サンリオキャラクターズベイビーズ お食い初め膳 -スイートベイビーズ-（鯛1.5kg） サンリオ×agney食器付き】 鯛 歯固めの石 手引書 鯛め… imageFound=false priceFound=false imageUrl= listingPrice=-
+I/flutter (13462): [ROOM_IMPORT_PERF] itemEnd index=5 result=added durationMs=26
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=5 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] itemStart index=6 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371108269277
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=6 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchStart index=6
+I/flutter (13462): [ROOM_FASTPATH] resolvedFromListing=true shopCode=oiwaizen itemCode=sanrio-003-s roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371108269277
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchEnd index=6 status=fastPath durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=6
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=6 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesStart index=6
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesEnd index=6 shopCode=oiwaizen itemCode=sanrio-003-s durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckStart index=6
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckEnd index=6 exists=false durationMs=0
+I/flutter (13462): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=oiwaizen itemCode=sanrio-003-s
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseStart index=6
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseEnd index=6 likes=2 comments=0 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] saveStart index=6
+I/flutter (13462): [ROOM_IMPORT_UI] phase=saving current=6
+I/flutter (13462): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=roomImport
+I/flutter (13462): productId=sanrio-003-s
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=-1
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=-1
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [ROOM_IMPORT_PERF] saveEnd index=6 durationMs=20
+I/flutter (13462): [ROOM_IMPORT_LISTING_METADATA] productId=sanrio-003-s title=お食い初め セット 料理 【サンリオキャラクターズベイビーズ お食い初め膳 -ピュアベイビーズ-】 鯛 歯固め石 手引書 鯛めしレシピ ギフト インスタ映え 出産祝い ARフォトフレーム imageFound=false priceFound=false imageUrl= listingPrice=-
+I/flutter (13462): [ROOM_IMPORT_PERF] itemEnd index=6 result=added durationMs=23
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=6 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] itemStart index=7 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371108229279
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=7 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchStart index=7
+I/flutter (13462): [ROOM_FASTPATH] resolvedFromListing=true shopCode=oiwaizen itemCode=cake-007 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700371108229279
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchEnd index=7 status=fastPath durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=7
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=7 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesStart index=7
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesEnd index=7 shopCode=oiwaizen itemCode=cake-007 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckStart index=7
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckEnd index=7 exists=false durationMs=0
+I/flutter (13462): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=oiwaizen itemCode=cake-007
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseStart index=7
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseEnd index=7 likes=3 comments=0 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] saveStart index=7
+I/flutter (13462): [ROOM_IMPORT_UI] phase=saving current=7
+I/flutter (13462): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=roomImport
+I/flutter (13462): productId=cake-007
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=-1
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=-1
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [ROOM_IMPORT_PERF] saveEnd index=7 durationMs=20
+I/flutter (13462): [ROOM_IMPORT_LISTING_METADATA] productId=cake-007 title=サンリオキャラクターズベイビーズお食い初めケーキ4号 2〜4人分 100日祝い お食い初め ケーキ アイシングクッキー付キティちゃん マイメロディ ポチャッコ サンリオ imageFound=false priceFound=false imageUrl= listingPrice=-
+I/flutter (13462): [ROOM_IMPORT_PERF] itemEnd index=7 result=added durationMs=23
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=7 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] itemStart index=8 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370990104237
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=8 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchStart index=8
+I/flutter (13462): [ROOM_FASTPATH] resolvedFromListing=true shopCode=oiwaizen itemCode=ise-013_s roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700370990104237
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchEnd index=8 status=fastPath durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=8
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=8 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesStart index=8
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesEnd index=8 shopCode=oiwaizen itemCode=ise-013_s durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckStart index=8
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckEnd index=8 exists=false durationMs=0
+I/flutter (13462): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=oiwaizen itemCode=ise-013_s
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseStart index=8
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseEnd index=8 likes=18 comments=1 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] saveStart index=8
+I/flutter (13462): [ROOM_IMPORT_UI] phase=saving current=8
+I/flutter (13462): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=roomImport
+I/flutter (13462): productId=ise-013_s
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=-1
+I/flutter (13462): beforeDoneCount=-1
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [ROOM_IMPORT_PERF] saveEnd index=8 durationMs=19
+I/flutter (13462): [ROOM_IMPORT_LISTING_METADATA] productId=ise-013_s title=【リニューアル】お食い初め膳（単品）【縁起物お料理22品】お正月 オードブル メニュー パーティー ギフト 慶事 祭事 御祝い 宅配 元旦 御正月 お食い初め 初節句 お取り寄せ 母の日 imageFound=false priceFound=false imageUrl= listingPrice=-
+I/flutter (13462): [ROOM_IMPORT_PERF] itemEnd index=8 result=added durationMs=20
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=8 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] itemStart index=9 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370990080386
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=9 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchStart index=9
+I/flutter (13462): [ROOM_FASTPATH] resolvedFromListing=true shopCode=oiwaizen itemCode=sanrio-001-tai1kg roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700370990080386
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchEnd index=9 status=fastPath durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=9
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=9 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesStart index=9
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesEnd index=9 shopCode=oiwaizen itemCode=sanrio-001-tai1kg durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckStart index=9
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckEnd index=9 exists=false durationMs=0
+I/flutter (13462): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=oiwaizen itemCode=sanrio-001-tai1kg
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseStart index=9
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseEnd index=9 likes=10 comments=0 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] saveStart index=9
+I/flutter (13462): [ROOM_IMPORT_UI] phase=saving current=9
+I/flutter (13462): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=roomImport
+I/flutter (13462): productId=sanrio-001-tai1kg
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=-1
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=-1
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [ROOM_IMPORT_PERF] saveEnd index=9 durationMs=23
+I/flutter (13462): [ROOM_IMPORT_LISTING_METADATA] productId=sanrio-001-tai1kg title=お食い初めセット 料理 【サンリオキャラクターズベイビーズ お食い初め膳 -スイートベイビーズ-（鯛1.5kg）】 鯛 歯固めの石 手引書 鯛めしレシピ ARフォトフレーム imageFound=false priceFound=false imageUrl= listingPrice=-
+I/flutter (13462): [ROOM_IMPORT_PERF] itemEnd index=9 result=added durationMs=24
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=9 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] itemStart index=10 roomUrl=https://room.rakuten.co.jp/room_def277c8b5/1700370990042314
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=10 total=10
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchStart index=10
+I/flutter (13462): [ROOM_FASTPATH] resolvedFromListing=true shopCode=tokizenmiwa itemCode=tai_6000 roomKey=https://room.rakuten.co.jp/room_def277c8b5/1700370990042314
+I/flutter (13462): [ROOM_IMPORT_PERF] roomPageFetchEnd index=10 status=fastPath durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveStart index=10
+I/flutter (13462): [ROOM_IMPORT_PERF] rakutenUrlResolveEnd index=10 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesStart index=10
+I/flutter (13462): [ROOM_IMPORT_PERF] parseCodesEnd index=10 shopCode=tokizenmiwa itemCode=tai_6000 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckStart index=10
+I/flutter (13462): [ROOM_IMPORT_PERF] existingCheckEnd index=10 exists=false durationMs=0
+I/flutter (13462): [ROOM_IMPORT_SKIP_API] reason=deferredEnrichment shopCode=tokizenmiwa itemCode=tai_6000
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseStart index=10
+I/flutter (13462): [ROOM_IMPORT_PERF] reactionParseEnd index=10 likes=10 comments=0 durationMs=0
+I/flutter (13462): [ROOM_IMPORT_PERF] saveStart index=10
+I/flutter (13462): [ROOM_IMPORT_UI] phase=saving current=10
+I/flutter (13462): [ROOM_IMPORT_SAVE] partialSuccess=true newRow=true apiUnavailable=true metadataPending=true
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=roomImport
+I/flutter (13462): productId=tai_6000
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=-1
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=-1
+I/flutter (13462): afterDoneCount=312
+I/flutter (13462): [ROOM_IMPORT_PERF] saveEnd index=10 durationMs=22
+I/flutter (13462): [ROOM_IMPORT_LISTING_METADATA] productId=tai_6000 title=祝い鯛姿焼き（1kg│約40cm）【お祝い飾り付き　焼き鯛】お正月・お七夜・お食い初め（おくいぞめ）・初節句・雛祭り（桃の節句）・子供の日（端午の節句）敬老のお祝い様々なお祝いに特大サイズの祝鯛の姿焼… imageFound=false priceFound=false imageUrl= listingPrice=-
+I/flutter (13462): [ROOM_IMPORT_PERF] itemEnd index=10 result=added durationMs=23
+I/flutter (13462): [ROOM_IMPORT_UI] phase=processing current=10 total=10
+I/flutter (13462): [ROOM_BATCH_COMPARE_RESULT] job=import fetchedItems=10 existingMatches=0 newCandidates=10 reactionChanged=0 unchanged=0
+I/flutter (13462): [ROOM_BATCH_SAVE_RESULT] job=import saveTargets=10 saved=10 skippedUnchanged=0 refreshListOnce=true durationMs=86
+I/flutter (13462): [ROOM_IMPORT_API_SUMMARY] apiExecuted=0 apiSkipped=10 reason=deferredEnrichment fallbackRecovered=0 rateLimited=0 http400=0
+I/flutter (13462): [ROOM_FASTPATH_SUMMARY] fastPathCount=10 fallbackRoomPageCount=0 avgRoomPageMs=na estimatedSavedMs=0 listingIndexedKeys=20
+I/flutter (13462): [ROOM_SYNC] 完了 · 確認キュー 10件 · 新規コレ済10 · ROOMリンク追加0 · ページ側スキップ0 · 失敗0 · 一覧スキップ0
+I/flutter (13462): [ROOM_IMPORT_PERF] totalEnd durationMs=12022
+I/flutter (13462): [ROOM_IMPORT_INITIAL_ENRICH_START] importedProductIds=sanrio-001-s,sanrio-002-s,cake-009,hare-003-a,01090-006,sanrio-003-s,cake-007,ise-013_s,sanrio-001-tai1kg,tai_6000 limit=10
+I/flutter (13462): [ROOM_IMPORT_ENRICH_QUEUE] pending=212 eligible=206 skippedCooldown=2 skippedFailed=4
+I/flutter (13462): [ROOM_IMPORT_ENRICH_PICK] productId=sanrio-001-s failureReason= failureCount=0 selected=true
+I/flutter (13462): [ROOM_REDIRECT_PARSE_SOURCE] productId=sanrio-001-s source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter (13462): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter (13462): productId=sanrio-001-s
+I/flutter (13462): urlProductCode=sanrio-001-s
+I/flutter (13462): reason=urlProductCodeIsNotApiItemCode
+I/flutter (13462): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter (13462): productId=sanrio-001-s
+I/flutter (13462): shopCode=oiwaizen
+I/flutter (13462): urlProductCode=sanrio-001-s
+I/flutter (13462): apiCompositeItemCode=(empty)
+I/flutter (13462): decision=keywordShopCode
+I/flutter (13462): reason=urlProductCodeOnly
+I/flutter (13462): [ROOM_IMPORT_ENRICH_TARGET] productId=sanrio-001-s needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter (13462): [ROOM_IMPORT_ENRICH_API] productId=sanrio-001-s index=1 maxPerRun=10 manualPacing=true delayMs=0 shopCode=oiwaizen itemCode=sanrio-001-s
+I/flutter (13462): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=sanrio-001-s source=urlSlugOnly shopItemParam= kwShop=oiwaizen urlSlug=sanrio-001-s
+I/flutter (13462): [ROOM_IMPORT_ENRICH_METHOD] method=shopTitleKeyword
+I/flutter (13462): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter (13462): productId=sanrio-001-s
+I/flutter (13462): rawKeyword=お食い初め セット 料理 【サンリオキャラクターズベイビーズ お食い初め膳 -スイートベイビーズ-】 鯛 歯固めの石 ARフォトフレーム
+I/flutter (13462): normalizedKeyword=お食い初め セット 料理 鯛 歯固めの石 ARフォトフレーム
+I/flutter (13462): rawLength=68
+I/flutter (13462): normalizedLength=30
+I/flutter (13462): phase=shopTitleKeyword
+I/flutter (13462): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopTitleKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=oiwaizen itemCode=(omit) keyword=お食い初め セット 料理 鯛 歯固めの石 ARフォトフレーム genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (13462): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=お食い初め セット 料理 鯛 歯固めの石 ARフォトフレーム genreId=- shopCode=oiwaizen itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13462): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13462): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%81%8A%E9%A3%9F%E3%81%84%E5%88%9D%E3%82%81+%E3%82%BB%E3%83%83%E3%83%88+%E6%96%99%E7%90%86+%E9%AF%9B+%E6%AD%AF%E5%9B%BA%E3%82%81%E3%81%AE%E7%9F%B3+AR%E3%83%95%E3%82%A9%E3%83%88%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0&shopCode=oiwaizen
+I/flutter (13462): [Rakuten] response status=200 page=1 bytes=156082
+I/flutter (13462): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13462): [RECOMMEND_TRACE] rawCount=25
+I/flutter (13462): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=564
+I/flutter (13462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000261%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000261%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000261 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000261 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000259%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000259%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000259 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000259 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-a%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000376%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-a%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000376%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000376 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000376 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01091-004%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001358%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01091-004%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001358%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10001358 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10001358 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000435%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000435%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000435 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000435 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000431%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000431%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000431 rawGenreId=205222 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000431 model.genreId=205222 model.genreName= jsonRaw=ギフトセット jsonRolled=ギフトセット displayGenre=ギフトセット
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01090-007%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001361%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01090-007%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001361%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10001361 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10001361 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000260%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000260%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000260 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000260 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-taicake5%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000257%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-taicake5%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000257%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000257 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000257 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-tai1kg%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000256%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-tai1kg%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000256%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000256 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000256 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01091-003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001357%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01091-003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001357%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10001357 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10001357 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-cake5%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000258%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-cake5%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000258%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000258 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000258 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01092-003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001355%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01092-003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001355%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10001355 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10001355 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01090-006%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001360%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01090-006%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001360%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10001360 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10001360 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000428%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000428%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000428 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000428 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-taicake5-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000450%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-taicake5-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000450%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000450 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000450 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-003-tai1kg-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000447%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-003-tai1kg-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000447%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000447 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000447 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000429%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000429%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000429 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000429 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000440%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000440%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000440 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000440 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-003-tai1kg-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000445%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-003-tai1kg-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000445%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000445 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000445 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-taicake5-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000436%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-taicake5-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000436%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000436 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000436 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01090-008%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001362%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01090-008%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001362%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10001362 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10001362 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000452%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000452%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000452 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000452 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-tai1kg-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000432%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-tai1kg-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000432%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000432 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000432 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-tai1kg-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000439%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-001-tai1kg-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000439%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000439 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000439 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [ROOM_IMPORT_ITEMCODE_API_DIAG] shopCode=oiwaizen itemCode= proxyMode=proxy keywordOmitted=false shopCodeOmitted=false itemCodeOmitted=true httpStatus=200 responsePreview=-
+I/flutter (13462): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter (13462): productId=sanrio-001-s
+I/flutter (13462): shopCode=oiwaizen
+I/flutter (13462): urlProductCode=sanrio-001-s
+I/flutter (13462): apiCompositeItemCode=(empty)
+I/flutter (13462): decision=fetchRoomDetailForRedirect
+I/flutter (13462): reason=keywordFailed
+I/flutter (13462): [ROOM_IMPORT_ENRICH_DETAIL_FETCH_FOR_REDIRECT] productId=sanrio-001-s roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371108439264 reason=keywordFailedAndNoApiComposite
+I/flutter (13462): [ROOM_IMPORT_API] type=roomPage status=200 durationMs=10484
+I/flutter (13462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (13462): [ROOM_IMPORT_ENRICH_DETAIL_FETCH_RESULT] productId=sanrio-001-s status=noRedirect apiCompositeItemCode= rakutenItemUrl=https://item.rakuten.co.jp/oiwaizen/sanrio-001-s/
+I/flutter (13462): [ROOM_IMPORT_ENRICH_FAIL] productId=sanrio-001-s method=shopTitleKeyword reason=noUrlSlugMatch
+I/flutter (13462): [ROOM_IMPORT_ENRICH_PICK] productId=sanrio-001-s failureReason=noItems failureCount=1 selected=true
+I/flutter (13462): [ROOM_REDIRECT_PARSE_SOURCE] productId=sanrio-001-s source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter (13462): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter (13462): productId=sanrio-001-s
+I/flutter (13462): urlProductCode=sanrio-001-s
+I/flutter (13462): reason=urlProductCodeIsNotApiItemCode
+I/flutter (13462): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter (13462): productId=sanrio-001-s
+I/flutter (13462): shopCode=oiwaizen
+I/flutter (13462): urlProductCode=sanrio-001-s
+I/flutter (13462): apiCompositeItemCode=(empty)
+I/flutter (13462): decision=keywordShopCode
+I/flutter (13462): reason=urlProductCodeOnly
+I/flutter (13462): [ROOM_IMPORT_ENRICH_TARGET] productId=sanrio-001-s needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter (13462): [ROOM_IMPORT_ENRICH_API] productId=sanrio-001-s index=2 maxPerRun=10 manualPacing=true delayMs=1200 shopCode=oiwaizen itemCode=sanrio-001-s
+I/flutter (13462): [ROOM_IMPORT_ENRICH_METHOD] method=productIdKeyword
+I/flutter (13462): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=sanrio-001-s source=urlSlugOnly shopItemParam= kwShop=oiwaizen urlSlug=sanrio-001-s
+I/flutter (13462): [ROOM_IMPORT_ENRICH_REQUEST] phase=productIdKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=oiwaizen itemCode=(omit) keyword=sanrio-001-s genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (13462): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=sanrio-001-s genreId=- shopCode=oiwaizen itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13462): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13462): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=sanrio-001-s&shopCode=oiwaizen
+I/flutter (13462): [Rakuten] response status=200 page=1 bytes=123
+I/flutter (13462): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13462): [RECOMMEND_TRACE] rawCount=0
+I/flutter (13462): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=513
+I/flutter (13462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (13462): [ROOM_IMPORT_ITEMCODE_API_DIAG] shopCode=oiwaizen itemCode= proxyMode=proxy keywordOmitted=false shopCodeOmitted=false itemCodeOmitted=true httpStatus=200 responsePreview=(noItemAfterPick)
+I/flutter (13462): [ROOM_IMPORT_ENRICH_FAIL] productId=sanrio-001-s method=productIdKeyword reason=noItems
+I/flutter (13462): [ROOM_IMPORT_ENRICH_PICK] productId=sanrio-001-s failureReason=noItems failureCount=2 selected=false
+I/flutter (13462): [ROOM_IMPORT_ENRICH_PICK] productId=sanrio-002-s failureReason= failureCount=0 selected=true
+I/flutter (13462): [ROOM_REDIRECT_PARSE_SOURCE] productId=sanrio-002-s source=collects hasRatRedirect=false apiCompositeItemCode=(empty) reason=collectsDoesNotContainRatRedirect
+I/flutter (13462): [ROOM_IMPORT_ENRICH_DIRECT_SKIP]
+I/flutter (13462): productId=sanrio-002-s
+I/flutter (13462): urlProductCode=sanrio-002-s
+I/flutter (13462): reason=urlProductCodeIsNotApiItemCode
+I/flutter (13462): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter (13462): productId=sanrio-002-s
+I/flutter (13462): shopCode=oiwaizen
+I/flutter (13462): urlProductCode=sanrio-002-s
+I/flutter (13462): apiCompositeItemCode=(empty)
+I/flutter (13462): decision=keywordShopCode
+I/flutter (13462): reason=urlProductCodeOnly
+I/flutter (13462): [ROOM_IMPORT_ENRICH_TARGET] productId=sanrio-002-s needsPrice=true needsImage=true needsShopName=true needsGenre=true willEnrich=true
+I/flutter (13462): [ROOM_IMPORT_ENRICH_API] productId=sanrio-002-s index=3 maxPerRun=10 manualPacing=true delayMs=1200 shopCode=oiwaizen itemCode=sanrio-002-s
+I/flutter (13462): [ROOM_IMPORT_ENRICH_REQUEST] codesDiag productId=sanrio-002-s source=urlSlugOnly shopItemParam= kwShop=oiwaizen urlSlug=sanrio-002-s
+I/flutter (13462): [ROOM_IMPORT_ENRICH_METHOD] method=shopTitleKeyword
+I/flutter (13462): [ROOM_IMPORT_ENRICH_FALLBACK_KEYWORD]
+I/flutter (13462): productId=sanrio-002-s
+I/flutter (13462): rawKeyword=お食い初め セット 料理 【サンリオキャラクターズベイビーズ お食い初め膳 -ハッピーベイビーズ-】 アイシングクッキー 鯛 歯固めの石 ARフォトフレーム
+I/flutter (13462): normalizedKeyword=お食い初め セット 料理 アイシングクッキー 鯛 歯固めの石
+I/flutter (13462): rawLength=78
+I/flutter (13462): normalizedLength=30
+I/flutter (13462): phase=shopTitleKeyword
+I/flutter (13462): [ROOM_IMPORT_ENRICH_REQUEST] phase=shopTitleKeyword proxyUrl=https://api.stepbytestudio.com/api/rakuten forceLegacy=true shopCode=oiwaizen itemCode=(omit) keyword=お食い初め セット 料理 アイシングクッキー 鯛 歯固めの石 genreId=(omit) page=1 hits=30 sort=(omit)
+I/flutter (13462): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=お食い初め セット 料理 アイシングクッキー 鯛 歯固めの石 genreId=- shopCode=oiwaizen itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13462): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13462): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%81%8A%E9%A3%9F%E3%81%84%E5%88%9D%E3%82%81+%E3%82%BB%E3%83%83%E3%83%88+%E6%96%99%E7%90%86+%E3%82%A2%E3%82%A4%E3%82%B7%E3%83%B3%E3%82%B0%E3%82%AF%E3%83%83%E3%82%AD%E3%83%BC+%E9%AF%9B+%E6%AD%AF%E5%9B%BA%E3%82%81%E3%81%AE%E7%9F%B3&shopCode=oiwaizen
+I/flutter (13462): [Rakuten] response status=200 page=1 bytes=36829
+I/flutter (13462): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13462): [RECOMMEND_TRACE] rawCount=6
+I/flutter (13462): [ROOM_IMPORT_API] type=rakutenItem status=ok durationMs=420
+I/flutter (13462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01091-004%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001358%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2F01091-004%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10001358%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10001358 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10001358 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000428%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000428%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000428 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000428 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000260%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000260%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000260 rawGenreId=200832 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000260 model.genreId=200832 model.genreName= jsonRaw=その他 jsonRolled=授乳用品・ベビー用食事用品 displayGenre=授乳用品・ベビー用食事用品
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000429%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg-ss%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000429%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000429 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000429 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000440%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000440%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000440 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000440 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000452%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sx1ih.362kt2d8.g00sx1ih.362ku88d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foiwaizen%2Fsanrio-002-tai1kg-s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foiwaizen%2Fi%2F10000452%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (13462): [RakutenGenre][API] itemCode=oiwaizen:10000452 rawGenreId=401170 rawGenreName= rawKeys=genreId
+I/flutter (13462): [RakutenGenre][MAP] itemCode=oiwaizen:10000452 model.genreId=401170 model.genreName= jsonRaw=お食い初め膳用食器 jsonRolled=お食い初め膳用食器 displayGenre=お食い初め膳用食器
+I/flutter (13462): [ROOM_IMPORT_ITEMCODE_API_DIAG] shopCode=oiwaizen itemCode= proxyMode=proxy keywordOmitted=false shopCodeOmitted=false itemCodeOmitted=true httpStatus=200 responsePreview=-
+I/flutter (13462): [ROOM_IMPORT_ENRICH_SOURCE_DECISION]
+I/flutter (13462): productId=sanrio-002-s
+I/flutter (13462): shopCode=oiwaizen
+I/flutter (13462): urlProductCode=sanrio-002-s
+I/flutter (13462): apiCompositeItemCode=(empty)
+I/flutter (13462): decision=fetchRoomDetailForRedirect
+I/flutter (13462): reason=keywordFailed
+I/flutter (13462): [ROOM_IMPORT_ENRICH_DETAIL_FETCH_FOR_REDIRECT] productId=sanrio-002-s roomPostUrl=https://room.rakuten.co.jp/room_def277c8b5/1700371108408734 reason=keywordFailedAndNoApiComposite
+I/flutter (13462): [ROOM_IMPORT_API] type=roomPage status=200 durationMs=9537
+I/flutter (13462): [ROOM_IMPORT_API] rateLimitDetected=false
+I/flutter (13462): [ROOM_IMPORT_ENRICH_DETAIL_FETCH_RESULT] productId=sanrio-002-s status=noRedirect apiCompositeItemCode= rakutenItemUrl=https://item.rakuten.co.jp/oiwaizen/sanrio-002-s/
+I/flutter (13462): [ROOM_IMPORT_ENRICH_FAIL] productId=sanrio-002-s method=shopTitleKeyword reason=noUrlSlugMatch
+I/flutter (13462): [ROOM_IMPORT_ENRICH_SUMMARY] apiAttempts=3 updated=0 failedProducts=3 skipped=109 pausedByRateLimit=false remainingPending=212 successIds=
+I/flutter (13462): [ROOM_IMPORT_PERF] enrichmentBatchSummary apiAttempts=3 updated=0 failedProducts=3
+I/flutter (13462): [ROOM_IMPORT_INITIAL_ENRICH_STOP] reason=maxDurationReached attempted=3 success=0 failed=3 remainingImportedPending=10 durationMs=25145
+I/flutter (13462): [ROOM_IMPORT_INITIAL_ENRICH_RESULT] attempted=3 success=0 failed=3 rateLimited=false pendingAfter=212
+I/flutter (13462): [ROOM_IMPORT_BATCH_RESULT] imported=10 enrichedSuccess=0 enrichedFailed=3 enrichedSkipped=0 nextCursor=1700370989764357 cursorAction=postEnrich
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=refresh
+I/flutter (13462): productId=
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=0
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=312
+I/flutter (13462): afterDoneCount=322
+I/flutter (13462): [MANAGED_PRODUCT_LOAD]
+I/flutter (13462): source=provider
+I/flutter (13462): pendingCount=0
+I/flutter (13462): doneCount=322
+I/flutter (13462): filter=
+I/flutter (13462): tab=
+I/flutter (13462): [ROOMコレ診断] refreshManagedProductList 完了 total=322 candidate=0 done=322 ui=ready
+I/flutter (13462): [ROOM_IMPORT_UI] phase=finished added=10 updated=0 skipped=0 failed=0
+I/flutter (13462): [ROOM_IMPORT_SUMMARY] totalMs=12022 prepareMs=11627 itemCount=10 added=10 updated=0 skipped=0 failed=0 roomListCalls=1 roomPageCalls=2 rakutenItemCalls=0 enrichmentCalls=3 enrichmentBatchMs=25145 enrichmentUpdated=0
+I/flutter (13462): [ROOM_SYNC_JOB_LOCK] action=release job=importingCollectedItems currentJob=none
+I/flutter (13462): [ROOM_IMPORT_FLOW] action=importEnd newItems=10 updatedRoomReactions=0 roomUrlAdded=0 postImportEnrichUpdated=0 pendingEnrich=212
+I/flutter (13462): [ROOM_IMPORT_DEFERRED_ENRICH_DECISION] shouldStart=false reason=postImportInlineEnrich manualBusy=false autoBusy=false
+I/flutter (13462): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (13462): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=322 afterFilterLen=322 surface=ok_list ui=ready
+I/flutter (13462): [ROOMコレ診断] 描画リスト先頭 productId=tai_6000 title=祝い鯛姿焼き（1kg│約40cm）【お祝い飾り付き　焼き鯛】お正月・お七夜・お食い初め（おくいぞめ）・初節句・雛祭り（桃の節句）・子供の日（端午の節句）敬老のお祝い様々なお祝いに特大サイズの祝鯛の姿焼き【鯛　塩焼き】【焼鯛】 status=done len=322
+I/flutter (13462): [REACTION_STATUS] productId=tai_6000
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=10
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=sanrio-001-tai1kg
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=10
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=ise-013_s
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=18
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=1
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+W/WindowOnBackDispatcher(13462): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(13462): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (13462): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=322 afterFilterLen=322 surface=ok_list ui=ready
+I/flutter (13462): [ROOMコレ診断] 描画リスト先頭 productId=tai_6000 title=祝い鯛姿焼き（1kg│約40cm）【お祝い飾り付き　焼き鯛】お正月・お七夜・お食い初め（おくいぞめ）・初節句・雛祭り（桃の節句）・子供の日（端午の節句）敬老のお祝い様々なお祝いに特大サイズの祝鯛の姿焼き【鯛　塩焼き】【焼鯛】 status=done len=322
+I/flutter (13462): [REACTION_STATUS] productId=tai_6000
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=10
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=sanrio-001-tai1kg
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=10
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=ise-013_s
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=18
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=1
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260515_150729\room_manager2_shot_001.png
+I/flutter (13462): [MANAGED_PRODUCT_SAVE]
+I/flutter (13462): action=refresh
+I/flutter (13462): productId=
+I/flutter (13462): itemCode=
+I/flutter (13462): beforePendingCount=0
+I/flutter (13462): afterPendingCount=0
+I/flutter (13462): beforeDoneCount=322
+I/flutter (13462): afterDoneCount=322
+I/flutter (13462): [MANAGED_PRODUCT_LOAD]
+I/flutter (13462): source=screen
+I/flutter (13462): pendingCount=0
+I/flutter (13462): doneCount=322
+I/flutter (13462): filter=
+I/flutter (13462): tab=done
+I/flutter (13462): [ROOMコレ診断] refreshManagedProductList 完了 total=322 candidate=0 done=322 ui=ready
+I/flutter (13462): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (13462): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=322 afterFilterLen=322 surface=ok_list ui=ready
+I/flutter (13462): [ROOMコレ診断] 描画リスト先頭 productId=tai_6000 title=祝い鯛姿焼き（1kg│約40cm）【お祝い飾り付き　焼き鯛】お正月・お七夜・お食い初め（おくいぞめ）・初節句・雛祭り（桃の節句）・子供の日（端午の節句）敬老のお祝い様々なお祝いに特大サイズの祝鯛の姿焼き【鯛　塩焼き】【焼鯛】 status=done len=322
+I/flutter (13462): [REACTION_STATUS] productId=tai_6000
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=10
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=sanrio-001-tai1kg
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=10
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=ise-013_s
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=18
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=1
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=322 afterFilterLen=322 surface=ok_list ui=ready
+I/flutter (13462): [ROOMコレ診断] 描画リスト先頭 productId=tai_6000 title=祝い鯛姿焼き（1kg│約40cm）【お祝い飾り付き　焼き鯛】お正月・お七夜・お食い初め（おくいぞめ）・初節句・雛祭り（桃の節句）・子供の日（端午の節句）敬老のお祝い様々なお祝いに特大サイズの祝鯛の姿焼き【鯛　塩焼き】【焼鯛】 status=done len=322
+I/flutter (13462): [REACTION_STATUS] productId=tai_6000
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=10
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=sanrio-001-tai1kg
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=10
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=ise-013_s
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=18
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=1
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=cake-007
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=3
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=sanrio-003-s
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=2
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=01090-006
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=2
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=hare-003-a
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=4
+I/flutter (13462): [REACTION_STATUS] resolvedChip=反応あり
+I/flutter (13462): [REACTION_STATUS] productId=cake-009
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=0
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+I/flutter (13462): [REACTION_STATUS] productId=sanrio-002-s
+I/flutter (13462): [REACTION_STATUS] roomLikeCount=0
+I/flutter (13462): [REACTION_STATUS] roomCommentCount=0
+I/flutter (13462): [REACTION_STATUS] resolvedChip=ROOM投稿済み
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
