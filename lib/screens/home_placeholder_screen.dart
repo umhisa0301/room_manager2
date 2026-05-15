@@ -26,6 +26,7 @@ import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../widgets/app_button.dart';
 import '../widgets/room_colle_product_list_card_layout.dart';
+import '../utils/room_reaction_analytics.dart';
 import '../utils/room_sync_button_visibility.dart';
 import '../utils/room_sync_card_copy.dart';
 import '../widgets/room_post_import_flow.dart';
@@ -567,6 +568,17 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 importedDoneCount: roomImportedDoneCount,
                                 onOpenRoomUrl: () =>
                                     _openRoomUrlEditSheet(context),
+                                onOpenReactionAnalytics: () {
+                                  logRoomReactionAnalyticsNavigation(
+                                    from: 'homeRoomSyncCard',
+                                    to: 'analysis',
+                                    reason: 'showReactionAnalytics',
+                                  );
+                                  context.read<AppShellController>().openActivityTab(
+                                        subTabIndex: 1,
+                                        scrollToRoomReactionSection: true,
+                                      );
+                                },
                               ),
                               _HomeLimitAlertCard(
                                 collectLimit: collectLimit,
@@ -623,11 +635,13 @@ class _HomeRoomPostImportSection extends StatelessWidget {
     required this.hasRoomProfileUrl,
     required this.importedDoneCount,
     required this.onOpenRoomUrl,
+    required this.onOpenReactionAnalytics,
   });
 
   final bool hasRoomProfileUrl;
   final int importedDoneCount;
   final VoidCallback onOpenRoomUrl;
+  final VoidCallback onOpenReactionAnalytics;
 
   Future<void> _handleImport(BuildContext context) async {
     if (!hasRoomProfileUrl) return;
@@ -887,6 +901,58 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     const SizedBox(height: 10),
                   ],
                   const RoomSyncLastReactionSummaryPanel(),
+                  Consumer<RakutenManagedProductProvider>(
+                    builder: (context, managed, _) {
+                      if (!roomReactionAnalyticsHomeShowCta(managed.items)) {
+                        return const SizedBox.shrink();
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: AppColors.accentLight.withValues(alpha: 0.35),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: AppColors.divider.withValues(alpha: 0.55),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  '反応ありの商品があります',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  'いいね・コメントが付いた商品を分析で確認できます。',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: AppColors.textSecondary,
+                                        height: 1.35,
+                                      ),
+                                ),
+                                const SizedBox(height: 10),
+                                FilledButton.tonal(
+                                  onPressed: onOpenReactionAnalytics,
+                                  child: const Text('反応を分析する'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                   const SizedBox(height: 14),
                   if (showPrimaryButtons) ...[
                     DecoratedBox(

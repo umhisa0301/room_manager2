@@ -24,6 +24,20 @@ class RoomCollectNavigationIntent {
   final RoomColleStaleCandidatePreset? candidateStalePreset;
 }
 
+/// 分析タブ（活動）を開くときのサブタブ・スクロールなど一次情報。
+class ActivityNavigationIntent {
+  const ActivityNavigationIntent({
+    required this.subTabIndex,
+    required this.scrollToRoomReactionSection,
+  });
+
+  /// 0: 実績、1: 分析（活動内タブ）
+  final int subTabIndex;
+
+  /// [ActivityAnalyticsTab] 内の反応分析カードへスクロールする。
+  final bool scrollToRoomReactionSection;
+}
+
 /// アプリシェル（下部ナビ: ホーム・探す・ROOMコレ・分析・マイページ）の選択インデックスと、
 /// タブ間の導線用インテントを集約する。
 ///
@@ -33,6 +47,7 @@ class AppShellController extends ChangeNotifier {
 
   int _currentIndex;
   RoomCollectNavigationIntent? _pendingRoomCollect;
+  ActivityNavigationIntent? _pendingActivity;
 
   int get currentIndex => _currentIndex;
 
@@ -84,10 +99,31 @@ class AppShellController extends ChangeNotifier {
   }
 
   /// 分析タブ（インデックス3）へ。フッターを維持。
-  void openActivityTab() {
-    if (_currentIndex == 3) return;
-    _currentIndex = 3;
+  ///
+  /// [subTabIndex] / [scrollToRoomReactionSection] は
+  /// [ActivityPlaceholderScreen] が [takePendingActivityIntent] で一度だけ取り込む。
+  void openActivityTab({
+    int subTabIndex = 0,
+    bool scrollToRoomReactionSection = false,
+  }) {
+    final si = subTabIndex.clamp(0, 1);
+    if (si != 0 || scrollToRoomReactionSection) {
+      _pendingActivity = ActivityNavigationIntent(
+        subTabIndex: si,
+        scrollToRoomReactionSection: scrollToRoomReactionSection,
+      );
+    }
+    if (_currentIndex != 3) {
+      _currentIndex = 3;
+    }
     notifyListeners();
+  }
+
+  /// 活動（分析）画面用の保留インテントを取り出して消費する（未設定なら `null`）。
+  ActivityNavigationIntent? takePendingActivityIntent() {
+    final p = _pendingActivity;
+    _pendingActivity = null;
+    return p;
   }
 
   /// ROOMコレ用の保留インテントを取り出して消費する（未設定なら `null`）。

@@ -1,6 +1,9 @@
+import 'dart:async' show unawaited;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../navigation/app_shell_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/activity/activity_achievement_tab.dart';
@@ -33,6 +36,9 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
   late final TabController _tabController;
   late final ScrollController _achievementScroll;
   late final ScrollController _analyticsScroll;
+  final GlobalKey _roomReactionSectionKey = GlobalKey();
+  late final AppShellController _shellCtrl;
+  bool _suppressNextAnalyticsScrollReset = false;
 
   @override
   void initState() {
@@ -41,16 +47,20 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
     _analyticsScroll = ScrollController();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabController);
+    _shellCtrl = context.read<AppShellController>();
+    _shellCtrl.addListener(_onShellCtrlChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<RakutenManagedProductProvider>().refreshManagedProductList(
             showLoadingIndicator: false,
           );
+      _tryConsumeActivityNavigationIntent();
     });
   }
 
   @override
   void dispose() {
+    _shellCtrl.removeListener(_onShellCtrlChanged);
     _tabController.removeListener(_handleTabController);
     _tabController.dispose();
     _achievementScroll.dispose();
@@ -58,10 +68,58 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
     super.dispose();
   }
 
+  void _onShellCtrlChanged() {
+    if (!mounted) return;
+    _tryConsumeActivityNavigationIntent();
+  }
+
+  void _tryConsumeActivityNavigationIntent() {
+    if (!mounted) return;
+    if (_shellCtrl.currentIndex != 3) return;
+    final intent = _shellCtrl.takePendingActivityIntent();
+    if (intent == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      unawaited(_applyActivityNavigationIntent(intent));
+    });
+  }
+
+  Future<void> _applyActivityNavigationIntent(
+    ActivityNavigationIntent intent,
+  ) async {
+    if (!mounted) return;
+    final switched = intent.subTabIndex == 1 && _tabController.index != 1;
+    if (switched) {
+      if (intent.scrollToRoomReactionSection) {
+        _suppressNextAnalyticsScrollReset = true;
+      }
+      _tabController.animateTo(1);
+      await Future<void>.delayed(const Duration(milliseconds: 400));
+    } else if (intent.scrollToRoomReactionSection) {
+      await Future<void>.delayed(const Duration(milliseconds: 80));
+    }
+    if (!mounted) return;
+    if (intent.scrollToRoomReactionSection) {
+      final ctx = _roomReactionSectionKey.currentContext;
+      if (ctx != null && ctx.mounted) {
+        await Scrollable.ensureVisible(
+          ctx,
+          duration: const Duration(milliseconds: 320),
+          curve: Curves.easeOutCubic,
+          alignment: 0.06,
+        );
+      }
+    }
+  }
+
   void _handleTabController() {
     if (_tabController.indexIsChanging) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+      if (_suppressNextAnalyticsScrollReset && _tabController.index == 1) {
+        _suppressNextAnalyticsScrollReset = false;
+        return;
+      }
       final active =
           _tabController.index == 0 ? _achievementScroll : _analyticsScroll;
       if (active.hasClients) {
@@ -126,6 +184,7 @@ class _ActivityPlaceholderScreenState extends State<ActivityPlaceholderScreen>
                     onRefresh: _refresh,
                     bottomInset: scrollBottomInset,
                     scrollController: _analyticsScroll,
+                    roomReactionSectionKey: _roomReactionSectionKey,
                   ),
                 ],
               ),

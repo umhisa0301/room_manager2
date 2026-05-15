@@ -2574,6 +2574,46 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             },
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            _kRoomListScreenPadH,
+                            0,
+                            _kRoomListScreenPadH,
+                            8,
+                          ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: FilterChip(
+                              label: const Text('反応あり'),
+                              selected: _doneListFilters.doneQuickFilter ==
+                                  RoomColleDoneQuickFilterPreset.roomReaction,
+                              showCheckmark: true,
+                              onSelected: (v) {
+                                setState(() {
+                                  if (v) {
+                                    _doneListFilters =
+                                        _doneListFilters.copyWith(
+                                      doneQuickFilter:
+                                          RoomColleDoneQuickFilterPreset
+                                              .roomReaction,
+                                      doneFeedbackSold: false,
+                                      doneFeedbackLiked: false,
+                                      doneFeedbackWeak: false,
+                                      doneFeedbackUnrated: false,
+                                    );
+                                  } else {
+                                    _doneListFilters =
+                                        _doneListFilters.copyWith(
+                                      doneQuickFilter:
+                                          RoomColleDoneQuickFilterPreset.all,
+                                    );
+                                  }
+                                });
+                                _persistRoomColleUiNow();
+                              },
+                            ),
+                          ),
+                        ),
                         _RoomColleCountSummary(
                           status: RakutenManagedProductStatus.done,
                           listFilters: _doneListFilters,
