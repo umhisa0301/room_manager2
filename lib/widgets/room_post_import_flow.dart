@@ -427,12 +427,20 @@ abstract final class RoomPostImportFlow {
       if (row != null) rows.add(row);
     }
     int priority(RakutenManagedProduct p) {
+      final complete =
+          !RoomImportMetadataEnrichmentService.needFlagsForProduct(p).willEnrich;
       final hasImg = p.imageUrl.trim().isNotEmpty;
       final hasPrice = p.itemPrice > 0;
-      if (hasImg && hasPrice) return 4;
-      if (hasImg) return 3;
-      if (hasPrice) return 2;
-      return 1;
+      var score = 0;
+      if (complete) score += 100;
+      if (hasImg && hasPrice) {
+        score += 40;
+      } else if (hasImg) {
+        score += 25;
+      } else if (hasPrice) {
+        score += 15;
+      }
+      return score;
     }
 
     rows.sort((a, b) => priority(b).compareTo(priority(a)));
@@ -452,6 +460,7 @@ abstract final class RoomPostImportFlow {
       roomImportResultSheetItemLog(
         'productId=${p.productId} title=${p.itemName.trim().isEmpty ? '(empty)' : p.itemName.trim()} '
         'hasImage=${p.imageUrl.trim().isNotEmpty} price=${p.itemPrice} '
+        'formattedPrice=${p.itemPrice > 0 ? RoomColleProductListCardLayout.formatPriceYen(p.itemPrice) : '-'} '
         'shopName=${p.shopName.trim()} genreName=${p.genreName.trim()}',
       );
     }

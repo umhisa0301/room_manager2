@@ -249,11 +249,38 @@ class RoomImportController extends ChangeNotifier {
           !result.hasFatalError &&
           result.newlyImportedProductIds.isNotEmpty) {
         final act = context.read<RoomActivityEventProvider>();
+        final existing = act.events;
+        final now = DateTime.now();
+        final dayStart = DateTime(now.year, now.month, now.day);
+        final dayEnd = dayStart.add(const Duration(days: 1));
+        final rawIds = result.newlyImportedProductIds
+            .map((e) => e.trim())
+            .where((e) => e.isNotEmpty)
+            .toList();
+        final orderedUnique = <String>[];
+        final seen = <String>{};
+        for (final id in rawIds) {
+          if (seen.add(id)) orderedUnique.add(id);
+        }
+        final duplicateBatch = rawIds.length - orderedUnique.length;
+        var created = 0;
+        var duplicateDay = 0;
         final stamp = DateTime.now().millisecondsSinceEpoch;
         var i = 0;
-        for (final rawId in result.newlyImportedProductIds) {
-          final id = rawId.trim();
-          if (id.isEmpty) continue;
+        for (final id in orderedUnique) {
+          if (existing.any(
+            (e) =>
+                e.productId.trim() == id &&
+                e.type == RoomActivityEventType.importedFromRoom &&
+                !e.createdAt.isBefore(dayStart) &&
+                e.createdAt.isBefore(dayEnd),
+          )) {
+            duplicateDay++;
+            roomImportEventCreateLog(
+              'productId=$id eventType=importedFromRoom created=false reason=alreadyExists',
+            );
+            continue;
+          }
           await act.append(
             RoomActivityEvent(
               id: '${id}_importedFromRoom_${stamp}_$i',
@@ -262,8 +289,16 @@ class RoomImportController extends ChangeNotifier {
               createdAt: DateTime.now(),
             ),
           );
+          created++;
           i++;
+          roomImportEventCreateLog(
+            'productId=$id eventType=importedFromRoom created=true reason=newlyImported',
+          );
         }
+        roomImportEventSummaryLog(
+          'newlyImported=${orderedUnique.length} eventsCreated=$created '
+          'eventsSkipped=$duplicateDay duplicatePrevented=$duplicateBatch',
+        );
       }
 
       if (result == null) {

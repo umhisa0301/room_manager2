@@ -904,6 +904,29 @@ void analyticsDailyBarLog(String message) {
   }
 }
 
+void roomImportEventCreateLog(String message) {
+  final line = '[ROOM_IMPORT_EVENT_CREATE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportEventSummaryLog(String message) {
+  final line = '[ROOM_IMPORT_EVENT_SUMMARY] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportAnalyticsSeparationLog(String message) {
+  final line = '[ROOM_IMPORT_ANALYTICS_SEPARATION] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+  }
+}
+
 void reactionStatusSaveLog(String message) {
   final line = '[REACTION_STATUS_SAVE] $message';
   if (kDebugMode) {

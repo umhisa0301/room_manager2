@@ -743,7 +743,13 @@ class _HomeRoomPostImportSection extends StatelessWidget {
           enrichingMetadata: enrichingOnly,
         );
         if (syncBusy) {
-          for (final b in const ['import', 'reaction', 'maintenance']) {
+          for (final b in const [
+            'import',
+            'reaction',
+            'maintenance',
+            'deepSearch',
+            'metadataRetry',
+          ]) {
             RoomSyncButtonVisibility.logHiddenWhileBusy(
               screen: 'home',
               job: syncJob,
@@ -785,27 +791,23 @@ class _HomeRoomPostImportSection extends StatelessWidget {
           final reason = !hasRoomProfileUrl
               ? 'missingRoomUrl'
               : (actionLocked ? 'guarded' : 'ready');
-          RoomSyncButtonVisibility.logRenderDecision(
-            screen: 'home',
-            button: 'import',
-            canRun: canRunPrimary,
-            visible: showPrimaryButtons,
-            reason: reason,
-          );
-          RoomSyncButtonVisibility.logRenderDecision(
-            screen: 'home',
-            button: 'reaction',
-            canRun: canRunPrimary,
-            visible: showPrimaryButtons,
-            reason: reason,
-          );
-          RoomSyncButtonVisibility.logRenderDecision(
-            screen: 'home',
-            button: 'maintenance',
-            canRun: canRunPrimary,
-            visible: showPrimaryButtons,
-            reason: reason,
-          );
+          final v = showPrimaryButtons;
+          final c = canRunPrimary;
+          for (final b in const [
+            'import',
+            'reaction',
+            'maintenance',
+            'deepSearch',
+            'metadataRetry',
+          ]) {
+            RoomSyncButtonVisibility.logRenderDecision(
+              screen: 'home',
+              button: b,
+              canRun: c,
+              visible: v,
+              reason: reason,
+            );
+          }
         }
 
         return Container(
@@ -971,7 +973,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                           onPressed: () {
                             RoomSyncButtonVisibility.logIdleVisible(
                               screen: 'home',
-                              button: 'maintenance',
+                              button: 'deepSearch',
                             );
                             _handleDeepRoomImport(context);
                           },
@@ -989,7 +991,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                           onPressed: () {
                             RoomSyncButtonVisibility.logIdleVisible(
                               screen: 'home',
-                              button: 'maintenance',
+                              button: 'metadataRetry',
                             );
                             RoomPostImportFlow
                                 .runManualPendingRoomImportMetadataEnrich(

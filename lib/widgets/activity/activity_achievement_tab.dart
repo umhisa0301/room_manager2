@@ -74,15 +74,7 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
           items,
           todayStart,
         );
-        final todayCandidatesEvents = activityCountEventsOnLocalDay(
-          events,
-          todayStart,
-          {RoomActivityEventType.candidateAdded},
-        );
-        final todayCandidatesFallback = _countTodayNewCandidates(items, now);
-        final todayCandidates = todayCandidatesEvents > 0
-            ? todayCandidatesEvents
-            : todayCandidatesFallback;
+        final todayCandidates = _countTodayNewCandidates(items, now);
         _emitAchievementAnalyticsSourceLog(
           items: items,
           events: events,
@@ -226,6 +218,17 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
       'todayImportedFromRoom=$todayImportedFromRoom '
       'todayCandidatesMetric=$todayCandidates '
       'reason=excludeRoomImportFromCandidate',
+    );
+    final importedFromRoomCount =
+        events.where((e) => e.type == RoomActivityEventType.importedFromRoom).length;
+    final appCollectedCount =
+        events.where((e) => e.type == RoomActivityEventType.movedToCored).length;
+    roomImportAnalyticsSeparationLog(
+      'importedFromRoomCount=$importedFromRoomCount '
+      'appCollectedCount=$appCollectedCount '
+      'todayRoomImportCount=$todayImportedFromRoom '
+      'todayAppCollectCount=$todayCollectedByApp '
+      'excludedFromTodayCollect=true',
     );
   }
 }
@@ -893,16 +896,10 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
         widget.items,
         day,
       );
-      var cand = activityCountEventsOnLocalDay(
-        widget.events,
-        day,
-        {RoomActivityEventType.candidateAdded},
-      );
-      final candFallback = activityCountCandidatesAddedOnLocalCalendarDay(
+      final cand = activityCountCandidatesAddedOnLocalCalendarDay(
         widget.items,
         day,
       );
-      if (candFallback > cand) cand = candFallback;
       final roomImport = activityCountEventsOnLocalDay(
         widget.events,
         day,

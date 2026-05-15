@@ -1185,7 +1185,13 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
           enrichingMetadata: enrichingOnly,
         );
         if (syncBusy) {
-          for (final b in const ['import', 'reaction', 'maintenance']) {
+          for (final b in const [
+            'import',
+            'reaction',
+            'maintenance',
+            'deepSearch',
+            'metadataRetry',
+          ]) {
             RoomSyncButtonVisibility.logHiddenWhileBusy(
               screen: 'myPage',
               job: syncJob,
@@ -1221,27 +1227,23 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
         if (!syncBusy) {
           final reason =
               !hasUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready');
-          RoomSyncButtonVisibility.logRenderDecision(
-            screen: 'myPage',
-            button: 'import',
-            canRun: canRunPrimary,
-            visible: showPrimaryButtons,
-            reason: reason,
-          );
-          RoomSyncButtonVisibility.logRenderDecision(
-            screen: 'myPage',
-            button: 'reaction',
-            canRun: canRunPrimary,
-            visible: showPrimaryButtons,
-            reason: reason,
-          );
-          RoomSyncButtonVisibility.logRenderDecision(
-            screen: 'myPage',
-            button: 'maintenance',
-            canRun: canRunPrimary,
-            visible: showPrimaryButtons,
-            reason: reason,
-          );
+          final v = showPrimaryButtons;
+          final c = canRunPrimary;
+          for (final b in const [
+            'import',
+            'reaction',
+            'maintenance',
+            'deepSearch',
+            'metadataRetry',
+          ]) {
+            RoomSyncButtonVisibility.logRenderDecision(
+              screen: 'myPage',
+              button: b,
+              canRun: c,
+              visible: v,
+              reason: reason,
+            );
+          }
         }
 
         return AppCard(
@@ -1378,7 +1380,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                           onPressed: () {
                             RoomSyncButtonVisibility.logIdleVisible(
                               screen: 'myPage',
-                              button: 'maintenance',
+                              button: 'deepSearch',
                             );
                             _handleDeepRoomImport(context);
                           },
@@ -1398,7 +1400,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                           onPressed: () {
                             RoomSyncButtonVisibility.logIdleVisible(
                               screen: 'myPage',
-                              button: 'maintenance',
+                              button: 'metadataRetry',
                             );
                             _handleEnrichRoomMetadata(context);
                           },

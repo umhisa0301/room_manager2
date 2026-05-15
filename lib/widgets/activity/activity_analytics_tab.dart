@@ -111,6 +111,19 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
             'todayImportedFromRoom=$todayImportedFromRoom '
             'reason=excludeRoomImportFromCandidate',
           );
+          final importedFromRoomCount = act.events
+              .where((e) => e.type == RoomActivityEventType.importedFromRoom)
+              .length;
+          final appCollectedCount = act.events
+              .where((e) => e.type == RoomActivityEventType.movedToCored)
+              .length;
+          roomImportAnalyticsSeparationLog(
+            'importedFromRoomCount=$importedFromRoomCount '
+            'appCollectedCount=$appCollectedCount '
+            'todayRoomImportCount=$todayImportedFromRoom '
+            'todayAppCollectCount=$todayCollectedByApp '
+            'excludedFromTodayCollect=true',
+          );
         }
         final done = items
             .where(
