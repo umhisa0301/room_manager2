@@ -19,6 +19,7 @@ import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/room_sync_service.dart';
 import '../state/bulk_operation_state_controller.dart';
+import '../utils/room_reaction_status_display.dart';
 import '../utils/room_sync_log.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
@@ -407,6 +408,55 @@ abstract final class RoomPostImportFlow {
     return result;
   }
 
+  /// 取り込み完了シート用に最新商品行を再取得し、表示優先度で並べ替える。
+  static List<RakutenManagedProduct> refetchNewlyImportedForResultSheet({
+    required RakutenManagedProductRepository repository,
+    required RoomSyncResult result,
+  }) {
+    final ids = result.newlyImportedProductIds
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList();
+    if (ids.isEmpty) {
+      return List<RakutenManagedProduct>.from(result.newlyCollectedSamples);
+    }
+    final rows = <RakutenManagedProduct>[];
+    for (final id in ids) {
+      final row = repository.getByProductId(id);
+      if (row != null) rows.add(row);
+    }
+    int priority(RakutenManagedProduct p) {
+      final hasImg = p.imageUrl.trim().isNotEmpty;
+      final hasPrice = p.itemPrice > 0;
+      if (hasImg && hasPrice) return 4;
+      if (hasImg) return 3;
+      if (hasPrice) return 2;
+      return 1;
+    }
+
+    rows.sort((a, b) => priority(b).compareTo(priority(a)));
+    final display = rows.take(3).toList(growable: false);
+    var withImage = 0;
+    var withPrice = 0;
+    for (final p in rows) {
+      if (p.imageUrl.trim().isNotEmpty) withImage++;
+      if (p.itemPrice > 0) withPrice++;
+    }
+    roomImportResultSheetRefreshLog(
+      'newlyImportedProductIds=${ids.join(',')} refetchedCount=${rows.length} '
+      'withImageCount=$withImage withPriceCount=$withPrice '
+      'displayProductIds=${display.map((e) => e.productId).join(',')}',
+    );
+    for (final p in display) {
+      roomImportResultSheetItemLog(
+        'productId=${p.productId} title=${p.itemName.trim().isEmpty ? '(empty)' : p.itemName.trim()} '
+        'hasImage=${p.imageUrl.trim().isNotEmpty} price=${p.itemPrice} '
+        'shopName=${p.shopName.trim()} genreName=${p.genreName.trim()}',
+      );
+    }
+    return display;
+  }
+
   /// 取り込み結果を BottomSheet で表示。「もう10件」で続行コールバック。
   static Future<void> showResultSheet(
     BuildContext context, {
@@ -415,6 +465,11 @@ abstract final class RoomPostImportFlow {
     Future<RoomSyncResult?> Function()? startDeepCollectsBatch,
   }) async {
     final navigatorContext = context;
+    final productRepo = context.read<RakutenManagedProductRepository>();
+    final displayImported = refetchNewlyImportedForResultSheet(
+      repository: productRepo,
+      result: result,
+    );
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -640,7 +695,7 @@ abstract final class RoomPostImportFlow {
                     ),
                   ),
                 ],
-                if (result.newlyCollectedSamples.isNotEmpty) ...[
+                if (displayImported.isNotEmpty) ...[
                   const SizedBox(height: 22),
                   Text(
                     '今回追加した商品（一部）',
@@ -657,14 +712,12 @@ abstract final class RoomPostImportFlow {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  ...result.newlyCollectedSamples
-                      .take(3)
-                      .map(
-                        (p) => Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: _ImportedProductPreviewTile(product: p),
-                        ),
-                      ),
+                  ...displayImported.map(
+                    (p) => Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: _ImportedProductPreviewTile(product: p),
+                    ),
+                  ),
                 ],
                 if (result.reactionHighlightSamples.isNotEmpty) ...[
                   const SizedBox(height: 22),
@@ -892,12 +945,6 @@ class _ImportedProductPreviewTile extends StatelessWidget {
 
   final RakutenManagedProduct product;
 
-  bool _hasPositiveRoomReaction() {
-    final lc = product.roomLikeCount;
-    final cc = product.roomCommentCount;
-    return (lc != null && lc > 0) || (cc != null && cc > 0);
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -949,64 +996,57 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                           height: 1.25,
                         ),
                       ),
+                      if (product.itemPrice > 0) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          '¥${product.itemPrice}',
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.accentPrimary,
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 6),
                       Wrap(
                         spacing: 8,
                         runSpacing: 6,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          if (_hasPositiveRoomReaction())
-                            DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: _roomReactionPink.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(999),
-                                border: Border.all(
-                                  color: _roomReactionPink.withValues(
-                                    alpha: 0.35,
+                          Builder(
+                            builder: (context) {
+                              final chip = RoomReactionStatusDisplay.chipLabelForProduct(
+                                product,
+                              );
+                              final isReaction = chip == '反応あり';
+                              final color = isReaction
+                                  ? _roomReactionPink
+                                  : (chip == '未確認'
+                                        ? AppColors.textTertiary
+                                        : const Color(0xFF1B5E20));
+                              return DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: color.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(999),
+                                  border: Border.all(
+                                    color: color.withValues(alpha: 0.35),
                                   ),
                                 ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 3,
-                                ),
-                                child: Text(
-                                  '反応あり',
-                                  style: theme.textTheme.labelSmall?.copyWith(
-                                    color: _roomReactionPink,
-                                    fontWeight: FontWeight.w800,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  child: Text(
+                                    chip,
+                                    style: theme.textTheme.labelSmall?.copyWith(
+                                      color: color,
+                                      fontWeight: FontWeight.w800,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                          else if (product.roomUrl.trim().isNotEmpty)
-                            DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: const Color(
-                                  0xFF1B5E20,
-                                ).withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(999),
-                                border: Border.all(
-                                  color: const Color(
-                                    0xFF1B5E20,
-                                  ).withValues(alpha: 0.35),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 3,
-                                ),
-                                child: Text(
-                                  '取り込み済み',
-                                  style: theme.textTheme.labelSmall?.copyWith(
-                                    color: const Color(0xFF1B5E20),
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ),
-                            ),
+                              );
+                            },
+                          ),
                           if (product.roomLikeCount != null)
                             Text(
                               '♡${product.roomLikeCount}',

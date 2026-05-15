@@ -9,6 +9,8 @@ class RoomReactionSyncHistoryEntry {
     required this.likeIncreasedItems,
     required this.commentIncreasedItems,
     required this.unchangedItems,
+    required this.hasReactionItems,
+    required this.commentedItems,
     required this.stopReason,
     required this.hasNextCursor,
     required this.topReactedProducts,
@@ -20,6 +22,8 @@ class RoomReactionSyncHistoryEntry {
   final int likeIncreasedItems;
   final int commentIncreasedItems;
   final int unchangedItems;
+  final int hasReactionItems;
+  final int commentedItems;
   final String stopReason;
   final bool hasNextCursor;
   final List<RoomReactionSyncTopProduct> topReactedProducts;
@@ -31,6 +35,8 @@ class RoomReactionSyncHistoryEntry {
         'likeIncreasedItems': likeIncreasedItems,
         'commentIncreasedItems': commentIncreasedItems,
         'unchangedItems': unchangedItems,
+        'hasReactionItems': hasReactionItems,
+        'commentedItems': commentedItems,
         'stopReason': stopReason,
         'hasNextCursor': hasNextCursor,
         'topReactedProducts':
@@ -59,6 +65,12 @@ class RoomReactionSyncHistoryEntry {
           int.tryParse(j['commentIncreasedItems']?.toString() ?? '') ?? 0,
       unchangedItems:
           int.tryParse(j['unchangedItems']?.toString() ?? '') ?? 0,
+      hasReactionItems: j.containsKey('hasReactionItems')
+          ? (int.tryParse(j['hasReactionItems']?.toString() ?? '') ?? 0)
+          : 0,
+      commentedItems: j.containsKey('commentedItems')
+          ? (int.tryParse(j['commentedItems']?.toString() ?? '') ?? 0)
+          : 0,
       stopReason: (j['stopReason'] ?? '').toString(),
       hasNextCursor: j['hasNextCursor'] == true,
       topReactedProducts: tops,

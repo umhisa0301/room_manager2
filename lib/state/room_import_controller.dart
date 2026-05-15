@@ -364,7 +364,8 @@ class RoomImportController extends ChangeNotifier {
       roomSyncJobLockLog('action=release job=syncingReactions currentJob=none');
     }
     if (out != null && !out.hasFatalError) {
-      await RoomReactionSyncHistoryStore.appendFromBatchResult(out);
+      final entry = await RoomReactionSyncHistoryStore.appendFromBatchResult(out);
+      _bulkOperationState?.setLastReactionSyncSummary(entry);
     }
     return out;
   }

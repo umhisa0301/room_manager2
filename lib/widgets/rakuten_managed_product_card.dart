@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../services/room_import_metadata_enrichment.dart';
+import '../utils/room_reaction_status_display.dart';
 import '../services/app_action_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
@@ -154,26 +155,16 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   static const Color _roomReactionPink = Color(0xFFE91E63);
 
-  /// ROOM API 由来のいいね／コメント（null は未取得）に基づく「反応あり」。
-  bool _roomApiHasPositiveReaction() {
-    final lc = product.roomLikeCount;
-    final cc = product.roomCommentCount;
-    return (lc != null && lc > 0) || (cc != null && cc > 0);
-  }
-
   void _debugLogReactionStatusChip() {
     if (!kDebugMode) return;
     if (product.status != RakutenManagedProductStatus.done) return;
-    final lc = product.roomLikeCount;
-    final cc = product.roomCommentCount;
-    final hasPos = (lc != null && lc > 0) || (cc != null && cc > 0);
-    final chip = hasPos
-        ? '反応あり'
-        : (product.roomUrl.trim().isNotEmpty ? 'ROOM投稿済み' : '未取り込み');
-    debugPrint('[REACTION_STATUS] productId=${product.productId}');
-    debugPrint('[REACTION_STATUS] roomLikeCount=$lc');
-    debugPrint('[REACTION_STATUS] roomCommentCount=$cc');
-    debugPrint('[REACTION_STATUS] resolvedChip=$chip');
+    final chip = RoomReactionStatusDisplay.chipLabelForProduct(product);
+    RoomReactionStatusDisplay.logRender(
+      productId: product.productId.trim(),
+      roomLikeCount: product.roomLikeCount,
+      roomCommentCount: product.roomCommentCount,
+      chipLabel: chip,
+    );
   }
 
   Color _heartCommentAccent(int? count) {
@@ -238,21 +229,31 @@ class RakutenManagedProductCard extends StatelessWidget {
                                   color: Color(0xFF37474F),
                                 ),
                             ],
-                            if (_roomApiHasPositiveReaction())
-                              _SmallBadge(
-                                label: '反応あり',
-                                color: _roomReactionPink,
-                              )
-                            else if (product.roomUrl.trim().isNotEmpty)
-                              const _SmallBadge(
-                                label: 'ROOM投稿済み',
-                                color: Color(0xFF1B5E20),
-                              )
-                            else
-                              const _SmallBadge(
-                                label: '未取り込み',
-                                color: Color(0xFF6D4C41),
-                              ),
+                            Builder(
+                              builder: (context) {
+                                final chip = RoomReactionStatusDisplay.chipLabelForProduct(
+                                  product,
+                                );
+                                final Color chipColor;
+                                switch (chip) {
+                                  case '反応あり':
+                                    chipColor = _roomReactionPink;
+                                    break;
+                                  case '未確認':
+                                    chipColor = AppColors.textTertiary;
+                                    break;
+                                  case '未取り込み':
+                                    chipColor = const Color(0xFF6D4C41);
+                                    break;
+                                  default:
+                                    chipColor = const Color(0xFF1B5E20);
+                                }
+                                return _SmallBadge(
+                                  label: chip,
+                                  color: chipColor,
+                                );
+                              },
+                            ),
                             if (product.roomLikeCount != null)
                               Text(
                                 '♡${product.roomLikeCount}',

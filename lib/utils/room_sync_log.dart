@@ -866,8 +866,48 @@ void roomReactionSyncStartLog(String message) {
   }
 }
 
+void roomSyncButtonVisibilityLog(String message) {
+  final line = '[ROOM_SYNC_BUTTON_VISIBILITY] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void reactionStatusSaveLog(String message) {
+  final line = '[REACTION_STATUS_SAVE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void reactionStatusRenderLog(String message) {
+  final line = '[REACTION_STATUS_RENDER] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportResultSheetRefreshLog(String message) {
+  final line = '[ROOM_IMPORT_RESULT_SHEET_REFRESH] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportResultSheetItemLog(String message) {
+  final line = '[ROOM_IMPORT_RESULT_SHEET_ITEM] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void roomReactionSyncUiSummaryLog(String message) {
-  final line = '[ROOM_REACTION_SYNC_UI_SUMMARY] $message';
+  final line = '[ROOM_REACTION_SYNC_UI_RESULT] $message';
   if (kDebugMode) {
     debugPrint(line);
     RoomImportDebugLogBuffer.add(line);

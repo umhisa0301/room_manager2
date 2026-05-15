@@ -2,6 +2,8 @@ import 'dart:async' show Timer;
 
 import 'package:flutter/material.dart';
 
+import '../models/room_reaction_sync_history_entry.dart';
+
 /// DB 更新を伴う一括処理の競合防止用（ROOM取り込み・一括候補登録・メタデータ補完など）。
 class BulkOperationStateController extends ChangeNotifier {
   static const String blockingSnackMessage =
@@ -18,6 +20,8 @@ class BulkOperationStateController extends ChangeNotifier {
   var _lastManualRemaining = 0;
   var _lastManualPausedRateLimit = false;
 
+  RoomReactionSyncHistoryEntry? _lastReactionSyncSummary;
+
   final Set<String> _roomImportEnrichHighlightIds = {};
   Timer? _roomImportEnrichHighlightTimer;
 
@@ -30,6 +34,14 @@ class BulkOperationStateController extends ChangeNotifier {
   int get lastManualEnrichRemaining => _lastManualRemaining;
 
   bool get lastManualEnrichPausedRateLimit => _lastManualPausedRateLimit;
+
+  RoomReactionSyncHistoryEntry? get lastReactionSyncSummary =>
+      _lastReactionSyncSummary;
+
+  void setLastReactionSyncSummary(RoomReactionSyncHistoryEntry? entry) {
+    _lastReactionSyncSummary = entry;
+    notifyListeners();
+  }
 
   bool isRoomImportEnrichHighlighted(String productId) =>
       _roomImportEnrichHighlightIds.contains(productId.trim());
@@ -101,7 +113,7 @@ class BulkOperationStateController extends ChangeNotifier {
       return '現在投稿済み商品を取り込み中です。完了後にお試しください。';
     }
     if (_roomReactionSync) {
-      return '現在反応数を同期中です。完了後にお試しください。';
+      return '現在反応を確認中です。完了後にお試しください。';
     }
     if (_metadataEnrich) {
       return 'ショップ名・ジャンルを再確認中です。完了後にお試しください。';

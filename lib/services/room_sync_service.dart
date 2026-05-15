@@ -1517,6 +1517,8 @@ class RoomSyncService {
       var unchangedItemsCount = 0;
       var likeIncreasedItems = 0;
       var commentIncreasedItems = 0;
+      var hasReactionItemsCount = 0;
+      var commentedItemsCount = 0;
       final reactionTopCandidates = <RoomReactionSyncTopProduct>[];
 
       Future<int> tryUpdateReactions(String roomPageUrl) async {
@@ -1600,10 +1602,15 @@ class RoomSyncService {
                 final nc = row.roomCommentCount ?? 0;
                 if (nl > prevL) likeIncreasedItems++;
                 if (nc > prevC) commentIncreasedItems++;
+                if (nl > 0 || nc > 0) {
+                  hasReactionItemsCount++;
+                  if (nc > 0) commentedItemsCount++;
+                }
                 reactionTopCandidates.add(
                   RoomReactionSyncTopProduct(
                     productId: pid,
-                    title: title,
+                    title: title.isNotEmpty ? title : row.itemName.trim(),
+                    imageUrl: row.imageUrl.trim(),
                     roomLikeCount: nl,
                     roomCommentCount: nc,
                     previousLikeCount: prevL,
@@ -1619,6 +1626,33 @@ class RoomSyncService {
           if (outcome.kind == RoomCollectedPersistKind.roomPageAlreadySynced ||
               outcome.kind == RoomCollectedPersistKind.alreadyCollectedSkip) {
             unchangedItemsCount++;
+            RakutenManagedProduct? row;
+            final pid = outcome.productId?.trim() ?? '';
+            if (pid.isNotEmpty) {
+              for (final e in workingManagedList) {
+                if (e.productId.trim() == pid) {
+                  row = e;
+                  break;
+                }
+              }
+            }
+            if (row == null) {
+              for (final e in workingManagedList) {
+                final ek = RoomRakutenUrlNormalize.normalizeRoomProductPageKey(
+                  e.roomUrl,
+                );
+                if (ek.isNotEmpty && ek == normalizedKey) {
+                  row = e;
+                  break;
+                }
+              }
+            }
+            final nl = rs.roomLikeCount ?? row?.roomLikeCount ?? 0;
+            final nc = rs.roomCommentCount ?? row?.roomCommentCount ?? 0;
+            if (nl > 0 || nc > 0) {
+              hasReactionItemsCount++;
+              if (nc > 0) commentedItemsCount++;
+            }
             return 2;
           }
           return 0;
@@ -1774,16 +1808,16 @@ class RoomSyncService {
       final top3 = topSorted.take(3).toList(growable: false);
       final uiSummary = roomReactionSyncSnackBarSummary(
         checkedItems: itemsChecked,
-        updatedItems: updated,
+        hasReactionItems: hasReactionItemsCount,
+        commentedItems: commentedItemsCount,
         unchangedItems: unchangedItemsCount,
-        likeIncreasedItems: likeIncreasedItems,
-        commentIncreasedItems: commentIncreasedItems,
         stopReason: stopReason ?? '',
         hasNextCursor: nextOut != null && nextOut.trim().isNotEmpty,
       );
       roomReactionSyncUiSummaryLog(
-        'checkedItems=$itemsChecked updatedItems=$updated unchangedItems=$unchangedItemsCount '
-        'likeIncreasedItems=$likeIncreasedItems commentIncreasedItems=$commentIncreasedItems '
+        'checkedItems=$itemsChecked updatedItems=$updated '
+        'hasReactionItems=$hasReactionItemsCount commentedItems=$commentedItemsCount '
+        'unchangedItems=$unchangedItemsCount '
         'topReactedProductIds=${top3.map((e) => e.productId).join(',')} '
         'stopReason=${stopReason ?? '-'} hasNextCursor=${nextOut != null && nextOut.trim().isNotEmpty} '
         'message=${uiSummary.replaceAll('\n', ' ')}',
@@ -1809,6 +1843,8 @@ class RoomSyncService {
         likeIncreasedItems: likeIncreasedItems,
         commentIncreasedItems: commentIncreasedItems,
         unchangedItems: unchangedItemsCount,
+        hasReactionItems: hasReactionItemsCount,
+        commentedItems: commentedItemsCount,
         topReactedProducts: top3,
         uiSummaryMessage: uiSummary,
       );

@@ -3,6 +3,7 @@ class RoomReactionSyncTopProduct {
   const RoomReactionSyncTopProduct({
     required this.productId,
     required this.title,
+    this.imageUrl = '',
     required this.roomLikeCount,
     required this.roomCommentCount,
     required this.previousLikeCount,
@@ -13,6 +14,7 @@ class RoomReactionSyncTopProduct {
 
   final String productId;
   final String title;
+  final String imageUrl;
   final int roomLikeCount;
   final int roomCommentCount;
   final int previousLikeCount;
@@ -23,6 +25,7 @@ class RoomReactionSyncTopProduct {
   Map<String, dynamic> toJson() => {
         'productId': productId,
         'title': title,
+        'imageUrl': imageUrl,
         'roomLikeCount': roomLikeCount,
         'roomCommentCount': roomCommentCount,
         'previousLikeCount': previousLikeCount,
@@ -39,6 +42,7 @@ class RoomReactionSyncTopProduct {
     return RoomReactionSyncTopProduct(
       productId: pid,
       title: (j['title'] ?? '').toString(),
+      imageUrl: (j['imageUrl'] ?? '').toString(),
       roomLikeCount: n('roomLikeCount'),
       roomCommentCount: n('roomCommentCount'),
       previousLikeCount: n('previousLikeCount'),

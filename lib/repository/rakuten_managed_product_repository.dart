@@ -13,6 +13,7 @@ import '../services/rakuten_item_url_parser.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../utils/managed_product_diag_log.dart';
 import '../utils/room_rakuten_url_normalize.dart';
+import '../utils/room_reaction_status_display.dart';
 import '../utils/room_sync_log.dart';
 
 /// ROOM 同期で既存コレ済行にヒットした照合結果（照合順は [RakutenManagedProductRepository.findRoomImportExistingRowMatch]）。
@@ -655,7 +656,13 @@ class RakutenManagedProductRepository {
     if (roomCommentCount != null) {
       next = next.copyWith(roomCommentCount: roomCommentCount);
     }
-    return next.copyWith(roomReactionUpdatedAt: now);
+    final merged = next.copyWith(roomReactionUpdatedAt: now);
+    RoomReactionStatusDisplay.logSave(
+      productId: merged.productId.trim(),
+      roomLikeCount: merged.roomLikeCount,
+      roomCommentCount: merged.roomCommentCount,
+    );
+    return merged;
   }
 
   /// ROOMページ由来のアフィリエイトとAPIの `affiliateUrl` をマージ（**ROOM ページのアフィリエイトを最優先**）。

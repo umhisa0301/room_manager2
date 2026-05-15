@@ -18,6 +18,8 @@ class RoomReactionSyncBatchResult {
     this.likeIncreasedItems = 0,
     this.commentIncreasedItems = 0,
     this.unchangedItems = 0,
+    this.hasReactionItems = 0,
+    this.commentedItems = 0,
     this.topReactedProducts = const [],
     this.uiSummaryMessage = '',
   });
@@ -46,6 +48,12 @@ class RoomReactionSyncBatchResult {
 
   /// 確認したが反応に変更がなかった件数。
   final int unchangedItems;
+
+  /// 確認時点でいいねまたはコメントが1以上あった商品数。
+  final int hasReactionItems;
+
+  /// 確認時点でコメントが1以上あった商品数。
+  final int commentedItems;
 
   /// 反応の増分が大きい順（最大3件）。
   final List<RoomReactionSyncTopProduct> topReactedProducts;
