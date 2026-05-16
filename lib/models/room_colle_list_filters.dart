@@ -505,9 +505,7 @@ bool _matchesDoneQuickFilter(
     case RoomColleDoneQuickFilterPreset.sold:
       return e.feedbackSoldAt != null;
     case RoomColleDoneQuickFilterPreset.roomReaction:
-      final lc = e.roomLikeCount;
-      final cc = e.roomCommentCount;
-      return (lc != null && lc > 0) || (cc != null && cc > 0);
+      return (e.roomLikeCount ?? 0) > 0 || (e.roomCommentCount ?? 0) > 0;
     case RoomColleDoneQuickFilterPreset.roomCommentOnly:
       final cc = e.roomCommentCount;
       return cc != null && cc > 0;

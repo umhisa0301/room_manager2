@@ -573,6 +573,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                     from: 'homeRoomSyncCard',
                                     to: 'analysis',
                                     reason: 'showReactionAnalytics',
+                                    scrollToRoomReactionSection: true,
                                   );
                                   context.read<AppShellController>().openActivityTab(
                                         subTabIndex: 1,
@@ -903,6 +904,13 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                   const RoomSyncLastReactionSummaryPanel(),
                   Consumer<RakutenManagedProductProvider>(
                     builder: (context, managed, _) {
+                      final loading =
+                          managed.listUiStatus ==
+                          RakutenManagedProductListUiStatus.loading;
+                      logRoomReactionAnalyticsHomeCtaIfChanged(
+                        listLoading: loading,
+                        items: managed.items,
+                      );
                       if (!roomReactionAnalyticsHomeShowCta(managed.items)) {
                         return const SizedBox.shrink();
                       }

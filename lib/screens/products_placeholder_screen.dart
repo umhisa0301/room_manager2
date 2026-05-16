@@ -23,6 +23,7 @@ import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../utils/room_colle_candidate_stale.dart';
+import '../utils/room_reaction_analytics.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_screen_status.dart';
 import '../widgets/app_text_field.dart';
@@ -2610,6 +2611,17 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                   }
                                 });
                                 _persistRoomColleUiNow();
+                                WidgetsBinding.instance.addPostFrameCallback((
+                                  _,
+                                ) {
+                                  if (!mounted) return;
+                                  logRoomColleReactionFilterFromItemsIfChanged(
+                                    enabled: v,
+                                    items: context
+                                        .read<RakutenManagedProductProvider>()
+                                        .items,
+                                  );
+                                });
                               },
                             ),
                           ),

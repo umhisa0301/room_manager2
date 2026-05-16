@@ -71,5 +71,13 @@ void main() {
       expect(b.label, 'sc1');
       expect(b.key, 'code:sc1');
     });
+
+    test('shopName も shopCode も空なら ショップ未確認', () {
+      final b = roomReactionAnalyticsShopBucket(
+        p(shopName: '', shopCode: ''),
+      );
+      expect(b.label, 'ショップ未確認');
+      expect(b.key, roomReactionAnalyticsUnknownShopKey);
+    });
   });
 }

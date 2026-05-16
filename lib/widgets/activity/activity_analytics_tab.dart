@@ -135,6 +135,13 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
             'todayAppCollectCount=$todayCollectedByApp '
             'excludedFromTodayCollect=true',
           );
+          logRoomReactionAnalyticsNoSideEffectIfChanged(
+            candidateCount: candidateCount,
+            doneCount: allDoneCount,
+            todayAppCollectCount: todayCollectedByApp,
+            todayRoomImportCount: todayImportedFromRoom,
+            importedFromRoomCount: importedFromRoomCount,
+          );
         }
         final done = items
             .where(
@@ -1604,6 +1611,7 @@ class _RoomReactionAnalyticsSection extends StatefulWidget {
 class _RoomReactionAnalyticsSectionState
     extends State<_RoomReactionAnalyticsSection> {
   RoomReactionSyncHistoryEntry? _history;
+  bool _historyLoadDone = false;
   int? _lastLogSignature;
 
   @override
@@ -1622,7 +1630,28 @@ class _RoomReactionAnalyticsSectionState
   Future<void> _loadHistory() async {
     final e = await RoomReactionSyncHistoryStore.loadLatest();
     if (!mounted) return;
-    setState(() => _history = e);
+    setState(() {
+      _history = e;
+      _historyLoadDone = true;
+    });
+    _emitHistoryDebugLog();
+  }
+
+  void _emitHistoryDebugLog() {
+    if (!kDebugMode || !_historyLoadDone) return;
+    final tops = _history?.topReactedProducts ?? const <RoomReactionSyncTopProduct>[];
+    var dLike = 0;
+    var dCom = 0;
+    for (final p in tops) {
+      if (p.deltaLike > 0) dLike++;
+      if (p.deltaComment > 0) dCom++;
+    }
+    logRoomReactionAnalyticsHistoryIfChanged(
+      loaded: true,
+      topReactedProducts: tops.length,
+      deltaLikeItems: dLike,
+      deltaCommentItems: dCom,
+    );
   }
 
   void _maybeEmitLogs() {
@@ -1655,10 +1684,8 @@ class _RoomReactionAnalyticsSectionState
       genreMap[gk] =
           (genreMap[gk] ?? 0) + roomReactionAnalyticsReactionSum(e);
       final sk = roomReactionAnalyticsShopBucket(e);
-      if (sk.key.isNotEmpty) {
-        shopMap[sk.key] =
-            (shopMap[sk.key] ?? 0) + roomReactionAnalyticsReactionSum(e);
-      }
+      shopMap[sk.key] =
+          (shopMap[sk.key] ?? 0) + roomReactionAnalyticsReactionSum(e);
     }
     logRoomReactionAnalyticsSource(
       totalDoneRoomItems: elig.length,
@@ -1698,12 +1725,8 @@ class _RoomReactionAnalyticsSectionState
 
   int _commentOf(RakutenManagedProduct e) => e.roomCommentCount ?? 0;
 
-  String _shopLine(RakutenManagedProduct e) {
-    final n = e.shopName.trim();
-    if (n.isNotEmpty) return n;
-    final c = e.shopCode.trim();
-    return c.isEmpty ? '' : c;
-  }
+  String _shopLine(RakutenManagedProduct e) =>
+      roomReactionAnalyticsShopDisplayLine(e);
 
   String _genreLine(RakutenManagedProduct e) {
     final a = e.persistedGenreDisplayName?.trim();
@@ -1780,6 +1803,20 @@ class _RoomReactionAnalyticsSectionState
             .take(5)
             .toList(growable: false);
 
+    final topGenreLabels =
+        top5Genre.map((e) => e.key).join(',');
+    final topShopLabels = top5Shop
+        .map((e) => shopLabelByKey[e.key] ?? e.key)
+        .join(',');
+
+    logRoomReactionAnalyticsSectionRenderIfChanged(
+      itemsWithReaction: withReaction.length,
+      itemsWithComment: withComment.length,
+      topGenres: topGenreLabels,
+      topShops: topShopLabels,
+      historyLoaded: _historyLoadDone,
+    );
+
     return AppCard(
       padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
       elevated: true,
@@ -1806,10 +1843,20 @@ class _RoomReactionAnalyticsSectionState
           if (elig.isEmpty) ...[
             const SizedBox(height: 14),
             Text(
-              'ROOMの投稿URLがあり、いいね・コメント数が取り込まれているコレ済商品がまだありません。',
+              'まだ反応データがありません。',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                     fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'ROOM同期の「反応を確認する」から、いいね・コメントを確認できます。',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontSize: 15,
+                    height: 1.35,
                   ),
             ),
           ] else ...[
@@ -2155,11 +2202,8 @@ class _RoomReactionProductBlock extends StatelessWidget {
     final genre = product.persistedGenreDisplayName?.trim();
     final genreLine =
         (genre != null && genre.isNotEmpty) ? genre : product.genreName.trim();
-    final genreOut =
-        genreLine.isEmpty ? 'ジャンル未確認' : genreLine;
-    final shopLine = product.shopName.trim().isNotEmpty
-        ? product.shopName.trim()
-        : product.shopCode.trim();
+    final genreOut = genreLine.isEmpty ? 'ジャンル未確認' : genreLine;
+    final shopOut = roomReactionAnalyticsShopDisplayLine(product);
 
     final deltaParts = <String>[];
     if (delta != null) {
@@ -2214,7 +2258,7 @@ class _RoomReactionProductBlock extends StatelessWidget {
                   ),
                 ],
                 Text(
-                  shopLine.isEmpty ? 'ショップ —' : shopLine,
+                  shopOut,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
