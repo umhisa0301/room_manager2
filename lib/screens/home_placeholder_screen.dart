@@ -31,7 +31,8 @@ import '../utils/room_sync_button_visibility.dart';
 import '../utils/room_sync_card_copy.dart';
 import '../utils/room_sync_log.dart';
 import '../widgets/room_post_import_flow.dart';
-import '../widgets/room_sync_last_reaction_summary.dart';
+import '../models/room_reaction_sync_history_entry.dart';
+import '../services/room_reaction_sync_history_store.dart';
 
 // --- ホーム画面：レイアウト・タイポ・装飾の統一（画面ロジックとは分離）---
 
@@ -641,6 +642,19 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   }
 }
 
+String _formatSyncHistoryTime(String iso) {
+  try {
+    final dt = DateTime.parse(iso).toLocal();
+    final m = dt.month.toString().padLeft(2, '0');
+    final d = dt.day.toString().padLeft(2, '0');
+    final h = dt.hour.toString().padLeft(2, '0');
+    final min = dt.minute.toString().padLeft(2, '0');
+    return '${dt.year}/$m/$d $h:$min';
+  } catch (_) {
+    return '未確認';
+  }
+}
+
 /// ホーム：ROOM同期（取り込み・反応数・メンテナンス）。
 class _HomeRoomPostImportSection extends StatelessWidget {
   const _HomeRoomPostImportSection({
@@ -821,14 +835,32 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                           )
                         : null));
 
-        final statusLine = !hasRoomProfileUrl
-            ? 'ROOMプロフィールURLを登録すると同期機能が使えます'
+        final syncCardState = !hasRoomProfileUrl
+            ? 'noRoomUrl'
+            : syncBusy
+            ? 'busy'
             : importedDoneCount <= 0
-            ? 'まだROOM投稿を取り込んでいません'
-            : '取り込み済み：$importedDoneCount件';
+            ? 'empty'
+            : 'ready';
 
         final canRunPrimary = hasRoomProfileUrl && !actionLocked;
-        final showPrimaryButtons = canRunPrimary && !syncBusy;
+        final showImportButton = canRunPrimary && !syncBusy;
+        final showReactionButton = showImportButton;
+        roomSyncCardUxRenderLog(
+          state: syncCardState,
+          showImportButton: showImportButton,
+          showReactionButton: showReactionButton,
+          showAnalysisCta: false,
+          hiddenDisabledButtons: syncBusy ? 'allHiddenWhileBusy' : 'none',
+        );
+        roomSyncEmptyButtonAuditLog(
+          screen: 'home',
+          widget: 'none',
+          visible: false,
+          reason: 'noDisabledPlaceholderButtons',
+        );
+
+        final showPrimaryButtons = showImportButton;
         if (!syncBusy) {
           final baseReason = !hasRoomProfileUrl
               ? 'missingRoomUrl'
@@ -899,14 +931,15 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                 style: _HomeUi.sectionBody(context),
               ),
               const SizedBox(height: 14),
-              Text(
-                statusLine,
-                style: _HomeUi.bodyEmphasis(
-                  context,
-                ).copyWith(fontSize: 14, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 10),
               if (!hasRoomProfileUrl) ...[
+                Text(
+                  'ROOMプロフィールURLを登録すると同期できます',
+                  style: _HomeUi.bodyEmphasis(context).copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 10),
                 OutlinedButton.icon(
                   onPressed: onOpenRoomUrl,
                   icon: const Icon(Icons.auto_awesome_rounded, size: 20),
@@ -944,84 +977,97 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                   ],
-                  const RoomSyncLastReactionSummaryPanel(),
-                  Consumer<RakutenManagedProductProvider>(
-                    builder: (context, managed, _) {
-                      final loading =
-                          managed.listUiStatus ==
-                          RakutenManagedProductListUiStatus.loading;
-                      logRoomReactionAnalyticsHomeCtaIfChanged(
-                        listLoading: loading,
-                        items: managed.items,
-                      );
-                      if (!roomReactionAnalyticsHomeShowCta(managed.items)) {
-                        return const SizedBox.shrink();
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 12),
-                        child: DecoratedBox(
+                  if (importedDoneCount > 0) ...[
+                    FutureBuilder<RoomReactionSyncHistoryEntry?>(
+                      future: RoomReactionSyncHistoryStore.loadLatest(),
+                      builder: (context, snap) {
+                        final last = snap.data;
+                        final lastLabel = last == null
+                            ? '前回確認：未確認'
+                            : '前回確認：${_formatSyncHistoryTime(last.syncedAtIso)}';
+                        return Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: AppColors.accentLight.withValues(alpha: 0.35),
+                            color: HomeScreenColors.deckFill,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: AppColors.divider.withValues(alpha: 0.55),
+                              color: HomeScreenColors.deckOutline,
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  '反応ありの商品があります',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  'いいね・コメントが付いた商品を分析で確認できます。',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color: AppColors.textSecondary,
-                                        height: 1.35,
-                                      ),
-                                ),
-                                const SizedBox(height: 10),
-                                FilledButton(
-                                  onPressed: onOpenReactionAnalytics,
-                                  style: FilledButton.styleFrom(
-                                    foregroundColor: AppColors.textOnAccent,
-                                    backgroundColor: AppColors.accentPrimary,
-                                    elevation: 0,
-                                    minimumSize: const Size(double.infinity, 44),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 12,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '取り込み済み：$importedDoneCount件',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(fontWeight: FontWeight.w800),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                lastLabel,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: AppColors.textSecondary,
                                     ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    textStyle: AppTextStyles.button.copyWith(
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 14,
-                                    ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ] else ...[
+                    Text(
+                      'まだROOM投稿を取り込んでいません',
+                      style: _HomeUi.bodyEmphasis(context).copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      RoomSyncCardCopy.emptyImportHint,
+                      style: _HomeUi.tapHint(context),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  Consumer<RakutenManagedProductProvider>(
+                    builder: (context, managed, _) {
+                      final showLink = roomReactionAnalyticsHomeShowCta(
+                        managed.items,
+                      );
+                      if (!showLink) return const SizedBox.shrink();
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextButton(
+                            onPressed: onOpenReactionAnalytics,
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              '${RoomSyncCardCopy.analysisTabHint} ＞',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: AppColors.accentPrimary,
+                                    fontWeight: FontWeight.w700,
                                   ),
-                                  child: const Text('反応を分析する'),
-                                ),
-                              ],
                             ),
                           ),
                         ),
                       );
                     },
                   ),
-                  const SizedBox(height: 14),
                   if (showPrimaryButtons) ...[
                     DecoratedBox(
                       decoration: BoxDecoration(
@@ -1054,7 +1100,11 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                             fontWeight: FontWeight.w900,
                           ),
                         ),
-                        child: const Text('投稿済み商品を取り込む'),
+                        child: Text(
+                          importedDoneCount > 0
+                              ? '投稿済み商品を取り込む'
+                              : 'ROOM投稿を取り込む',
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10),

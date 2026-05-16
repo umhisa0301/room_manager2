@@ -18,9 +18,11 @@ import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../utils/app_input_limits.dart';
 import '../utils/product_safety_filter.dart';
 import '../utils/rakuten_keyword_search_sort.dart';
 import '../utils/room_sync_log.dart';
+import '../widgets/genre_drilldown_picker_sheet.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
 import '../widgets/rakuten_search_condition_fields.dart';
 import '../widgets/rakuten_search_detail_condition_entry_chrome.dart';
@@ -111,6 +113,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   /// 結果リストを十分スクロールしたときに検索デッキをコンパクト表示へ。
   bool _searchHeaderCollapsed = false;
   RakutenSearchStatus _lastCompletionToastStatus = RakutenSearchStatus.idle;
+  String? _detailSheetFormError;
   final FocusNode _productDetailSheetKeywordFocus = FocusNode(
     debugLabel: 'productDetailSheetKeyword',
   );
@@ -767,15 +770,21 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   /// 詳細条件シートの「この条件で検索」から。検証→閉じる→メインで検索。
   void _submitKeywordSearchFromDetailSheet(
     BuildContext screenContext,
-    BuildContext sheetContext,
-  ) {
+    BuildContext sheetContext, {
+    VoidCallback? refreshSheet,
+  }) {
     final err = _validateKeywordSearchInputs();
     if (err != null) {
-      ScaffoldMessenger.of(
-        sheetContext,
-      ).showSnackBar(SnackBar(content: Text(err)));
+      setState(() => _detailSheetFormError = err);
+      searchValidationErrorLog(
+        screen: 'rakutenSearch',
+        field: 'keyword',
+        message: err,
+      );
+      refreshSheet?.call();
       return;
     }
+    setState(() => _detailSheetFormError = null);
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(sheetContext).pop();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -787,21 +796,32 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   /// 詳細条件シート（ジャンルタブ）から。検証→閉じる→メインで検索。
   void _submitGenreSearchFromDetailSheet(
     BuildContext screenContext,
-    BuildContext sheetContext,
-  ) {
+    BuildContext sheetContext, {
+    VoidCallback? refreshSheet,
+  }) {
     if (_selectedGenreId == null || _selectedGenreId!.trim().isEmpty) {
-      ScaffoldMessenger.of(
-        sheetContext,
-      ).showSnackBar(const SnackBar(content: Text('ジャンルを選択してください')));
+      const msg = 'ジャンルを選択してください';
+      setState(() => _detailSheetFormError = msg);
+      searchValidationErrorLog(
+        screen: 'rakutenSearch',
+        field: 'genre',
+        message: msg,
+      );
+      refreshSheet?.call();
       return;
     }
     final err = _validateGenreDetailInputs();
     if (err != null) {
-      ScaffoldMessenger.of(
-        sheetContext,
-      ).showSnackBar(SnackBar(content: Text(err)));
+      setState(() => _detailSheetFormError = err);
+      searchValidationErrorLog(
+        screen: 'rakutenSearch',
+        field: 'price',
+        message: err,
+      );
+      refreshSheet?.call();
       return;
     }
+    setState(() => _detailSheetFormError = null);
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(sheetContext).pop();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -1129,6 +1149,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     labelText: 'このショップ内で探す',
                     hintText: '例：イヤホン、ベビー、スーツ',
                     prefixIcon: const Icon(Icons.search_rounded),
+                    maxLength: AppInputLimits.searchKeywordMax,
+                    inputFormatters:
+                        AppInputLimits.singleLineKeywordFormatters(),
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -1528,41 +1551,98 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       _dismissKeywordSearchKeyboard();
     }
     _syncSelectedShopWithSaved(screenContext);
+    _detailSheetFormError = null;
     await showModalBottomSheet<void>(
       context: screenContext,
       isScrollControlled: true,
       showDragHandle: true,
       builder: (sheetContext) {
+        searchFilterSheetLayoutLog();
         return StatefulBuilder(
           builder: (modalContext, setModalState) {
             final sheetInset = MediaQuery.of(sheetContext).viewInsets.bottom;
+            final sheetHeight = MediaQuery.sizeOf(sheetContext).height * 0.9;
             return Material(
               color: HomeScreenColors.canvas,
               child: SafeArea(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    RakutenSearchScreenUi.sheetPadH,
-                    10,
-                    RakutenSearchScreenUi.sheetPadH,
-                    16,
-                  ),
-                  child: SingleChildScrollView(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    padding: EdgeInsets.only(bottom: sheetInset + 20),
+                  padding: EdgeInsets.only(bottom: sheetInset),
+                  child: SizedBox(
+                    height: sheetHeight,
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(
-                          _mode == _RakutenSearchMode.product
-                              ? 'キーワード検索'
-                              : 'ジャンル探索',
-                          style: RakutenSearchScreenUi.sectionHeadingAccent(
-                            context,
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                onPressed: () => Navigator.pop(sheetContext),
+                                icon: const Icon(Icons.arrow_back_rounded),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  _mode == _RakutenSearchMode.product
+                                      ? '条件検索'
+                                      : 'ジャンル探索',
+                                  textAlign: TextAlign.center,
+                                  style: RakutenSearchScreenUi
+                                      .sectionHeadingAccent(context),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  if (_mode == _RakutenSearchMode.product) {
+                                    _clearKeywordDetailConditionsOnly();
+                                  } else {
+                                    _clearGenreDetailConditionsOnly();
+                                  }
+                                  setState(() => _detailSheetFormError = null);
+                                  setModalState(() {});
+                                },
+                                child: const Text('クリア'),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 6),
+                        if (_detailSheetFormError != null &&
+                            _detailSheetFormError!.trim().isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: AppColors.error.withValues(alpha: 0.08),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: AppColors.error.withValues(alpha: 0.35),
+                                ),
+                              ),
+                              child: Text(
+                                _detailSheetFormError!,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: AppColors.error,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
+                            ),
+                          ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            keyboardDismissBehavior:
+                                ScrollViewKeyboardDismissBehavior.onDrag,
+                            padding: const EdgeInsets.fromLTRB(
+                              RakutenSearchScreenUi.sheetPadH,
+                              0,
+                              RakutenSearchScreenUi.sheetPadH,
+                              12,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
                         Text(
                           _mode == _RakutenSearchMode.product
                               ? 'キーワードと条件を編集します。'
@@ -1620,6 +1700,26 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                       setModalState(() {});
                                     },
                                   ),
+                                  const SizedBox(height: 8),
+                                  OutlinedButton.icon(
+                                    onPressed: () async {
+                                      final picked =
+                                          await GenreDrilldownPickerSheet.show(
+                                        sheetContext,
+                                        initialGenreId: _selectedGenreId,
+                                        source: 'search',
+                                      );
+                                      if (picked != null && picked.isNotEmpty) {
+                                        _setSelectedGenreId(picked);
+                                        setModalState(() {});
+                                      }
+                                    },
+                                    icon: const Icon(
+                                      Icons.account_tree_outlined,
+                                      size: 18,
+                                    ),
+                                    label: const Text('親ジャンルから選ぶ'),
+                                  ),
                                 ],
                               ),
                             ),
@@ -1666,6 +1766,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                 labelText: 'キーワード（必須）',
                                 hintText: '例: ステンレス ボトル',
                                 prefixIcon: const Icon(Icons.search_rounded),
+                                maxLength: AppInputLimits.searchKeywordMax,
+                                inputFormatters:
+                                    AppInputLimits.singleLineKeywordFormatters(),
                               ),
                             ),
                           ),
@@ -1779,153 +1882,66 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             },
                           ),
                         ],
-                        const SizedBox(
-                          height: RakutenSearchScreenUi.sheetBlockGap,
+                      ],
+                    ),
+                  ),
+                ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            RakutenSearchScreenUi.sheetPadH,
+                            8,
+                            RakutenSearchScreenUi.sheetPadH,
+                            12,
+                          ),
+                          child: Consumer<RakutenSearchProvider>(
+                            builder: (context, search, _) {
+                              final loading =
+                                  search.status == RakutenSearchStatus.loading;
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  if (loading)
+                                    const Padding(
+                                      padding: EdgeInsets.only(bottom: 8),
+                                      child: LinearProgressIndicator(
+                                        minHeight: 3,
+                                      ),
+                                    ),
+                                  AppPrimaryButton(
+                                    label: '検索する',
+                                    icon: const Icon(
+                                      Icons.search_rounded,
+                                      size: 22,
+                                    ),
+                                    onPressed: () {
+                                      if (_mode == _RakutenSearchMode.product) {
+                                        _submitKeywordSearchFromDetailSheet(
+                                          screenContext,
+                                          sheetContext,
+                                          refreshSheet: () =>
+                                              setModalState(() {}),
+                                        );
+                                      } else {
+                                        _submitGenreSearchFromDetailSheet(
+                                          screenContext,
+                                          sheetContext,
+                                          refreshSheet: () =>
+                                              setModalState(() {}),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(height: 8),
+                                  OutlinedButton(
+                                    onPressed: () =>
+                                        Navigator.of(sheetContext).pop(),
+                                    child: const Text('閉じる'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         ),
-                        if (_mode == _RakutenSearchMode.product) ...[
-                          Consumer<RakutenSearchProvider>(
-                            builder: (context, search, _) {
-                              final loading =
-                                  search.status == RakutenSearchStatus.loading;
-                              final kwOk = _keywordController.text
-                                  .trim()
-                                  .isNotEmpty;
-                              final canSearch = !loading && kwOk;
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  AppPrimaryButton(
-                                    // 共通AppPrimaryButtonへ置換: 条件保存検索CTA。
-                                    label: '条件を保存して検索',
-                                    icon: const Icon(
-                                      Icons.search_rounded,
-                                      size: 22,
-                                    ),
-                                    onPressed: !canSearch
-                                        ? null
-                                        : () =>
-                                              _submitKeywordSearchFromDetailSheet(
-                                                screenContext,
-                                                sheetContext,
-                                              ),
-                                  ),
-                                  const SizedBox(
-                                    height: RakutenSearchScreenUi.sheetBlockGap,
-                                  ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: AppSecondaryButton(
-                                          // 共通AppSecondaryButtonへ置換: 閉じる補助操作。
-                                          label: '閉じる（検索しない）',
-                                          icon: const Icon(Icons.close_rounded),
-                                          onPressed: () {
-                                            FocusManager.instance.primaryFocus
-                                                ?.unfocus();
-                                            Navigator.of(sheetContext).pop();
-                                          },
-                                          expand: true,
-                                          height: 46,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: AppSecondaryButton(
-                                          // 共通AppSecondaryButtonへ置換: 絞り込みリセット補助操作。
-                                          label: '絞り込みだけリセット',
-                                          icon: const Icon(
-                                            Icons.filter_alt_off_outlined,
-                                          ),
-                                          onPressed: () {
-                                            FocusManager.instance.primaryFocus
-                                                ?.unfocus();
-                                            _clearKeywordDetailConditionsOnly();
-                                            setModalState(() {});
-                                          },
-                                          expand: true,
-                                          height: 46,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ] else
-                          Consumer<RakutenSearchProvider>(
-                            builder: (context, search, _) {
-                              final loading =
-                                  search.status == RakutenSearchStatus.loading;
-                              final genreOk =
-                                  _selectedGenreId != null &&
-                                  _selectedGenreId!.trim().isNotEmpty;
-                              final canSearch = !loading && genreOk;
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  AppPrimaryButton(
-                                    // 共通AppPrimaryButtonへ置換: ジャンル条件保存検索CTA。
-                                    label: '条件を保存して検索',
-                                    icon: const Icon(
-                                      Icons.search_rounded,
-                                      size: 22,
-                                    ),
-                                    onPressed: !canSearch
-                                        ? null
-                                        : () =>
-                                              _submitGenreSearchFromDetailSheet(
-                                                screenContext,
-                                                sheetContext,
-                                              ),
-                                  ),
-                                  const SizedBox(
-                                    height: RakutenSearchScreenUi.sheetBlockGap,
-                                  ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: AppSecondaryButton(
-                                          // 共通AppSecondaryButtonへ置換: 閉じる補助操作。
-                                          label: '閉じる（検索しない）',
-                                          icon: const Icon(Icons.close_rounded),
-                                          onPressed: () {
-                                            FocusManager.instance.primaryFocus
-                                                ?.unfocus();
-                                            Navigator.of(sheetContext).pop();
-                                          },
-                                          expand: true,
-                                          height: 46,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: AppSecondaryButton(
-                                          // 共通AppSecondaryButtonへ置換: 絞り込みリセット補助操作。
-                                          label: '絞り込みだけリセット',
-                                          icon: const Icon(
-                                            Icons.filter_alt_off_outlined,
-                                          ),
-                                          onPressed: () {
-                                            FocusManager.instance.primaryFocus
-                                                ?.unfocus();
-                                            _clearGenreDetailConditionsOnly();
-                                            setModalState(() {});
-                                          },
-                                          expand: true,
-                                          height: 46,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
                       ],
                     ),
                   ),

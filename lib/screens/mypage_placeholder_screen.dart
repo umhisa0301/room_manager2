@@ -14,12 +14,15 @@ import '../services/app_action_service.dart';
 import '../services/room_import_collects_policy.dart';
 import '../services/room_import_limit_policy.dart';
 import '../widgets/room_import_enrichment_pending_hint.dart';
+import '../utils/app_input_limits.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/room_sync_button_visibility.dart';
 import '../utils/room_sync_card_copy.dart';
 import '../utils/room_sync_log.dart';
 import '../widgets/room_post_import_flow.dart';
-import '../widgets/room_sync_last_reaction_summary.dart';
+import '../models/room_reaction_sync_history_entry.dart';
+import '../services/room_reaction_sync_history_store.dart';
+import '../utils/room_reaction_analytics.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../services/room_collect_post_limit.dart';
 import '../state/activity_log_provider.dart';
@@ -1053,6 +1056,18 @@ class MyPageRoomLinkCard extends StatelessWidget {
   }
 }
 
+String _myPageFormatSyncHistoryTime(String iso) {
+  final dt = DateTime.tryParse(iso);
+  if (dt == null) return iso;
+  final local = dt.toLocal();
+  final y = local.year;
+  final m = local.month.toString().padLeft(2, '0');
+  final d = local.day.toString().padLeft(2, '0');
+  final h = local.hour.toString().padLeft(2, '0');
+  final min = local.minute.toString().padLeft(2, '0');
+  return '$y/$m/$d $h:$min';
+}
+
 class MyPageRoomSyncSection extends StatefulWidget {
   const MyPageRoomSyncSection({super.key, required this.onEditRoomUrl});
 
@@ -1234,8 +1249,32 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
           busyLead = '現在同期処理を実行しています';
         }
 
+        final syncCardState = !hasUrl
+            ? 'noRoomUrl'
+            : syncBusy
+            ? 'busy'
+            : importedDoneCount <= 0
+            ? 'empty'
+            : 'ready';
+
         final canRunPrimary = hasUrl && !actionLocked;
-        final showPrimaryButtons = canRunPrimary && !syncBusy;
+        final showImportButton = canRunPrimary && !syncBusy;
+        final showReactionButton = showImportButton;
+        roomSyncCardUxRenderLog(
+          state: syncCardState,
+          showImportButton: showImportButton,
+          showReactionButton: showReactionButton,
+          showAnalysisCta: false,
+          hiddenDisabledButtons: syncBusy ? 'allHiddenWhileBusy' : 'none',
+        );
+        roomSyncEmptyButtonAuditLog(
+          screen: 'myPage',
+          widget: 'none',
+          visible: false,
+          reason: 'noDisabledPlaceholderButtons',
+        );
+
+        final showPrimaryButtons = showImportButton;
         if (!syncBusy) {
           final baseReason =
               !hasUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready');
@@ -1294,32 +1333,19 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                 subtitle: RoomSyncCardCopy.subtitle,
                 icon: Icons.downloading_rounded,
               ),
-              if (hasUrl) ...[
-                const SizedBox(height: 10),
-                Text(
-                  importedDoneCount <= 0
-                      ? 'まだROOM投稿を取り込んでいません'
-                      : '取り込み済み：$importedDoneCount件',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                        height: 1.35,
-                      ),
-                ),
-              ],
               const SizedBox(height: 8),
               if (!hasUrl) ...[
                 Text(
-                  'ROOMのプロフィールURLを登録してください',
+                  'ROOMプロフィールURLを登録すると同期できます',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.35,
                   ),
                 ),
                 const SizedBox(height: 8),
-                TextButton(
+                OutlinedButton(
                   onPressed: widget.onEditRoomUrl,
-                  child: const Text('ROOM URLを登録'),
+                  child: const Text('ROOMプロフィールを登録'),
                 ),
               ] else ...[
                 if (syncBusy) ...[
@@ -1356,8 +1382,102 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                     ),
                     const SizedBox(height: 10),
                   ],
-                  const RoomSyncLastReactionSummaryPanel(),
-                  const SizedBox(height: 12),
+                  if (importedDoneCount > 0) ...[
+                    FutureBuilder<RoomReactionSyncHistoryEntry?>(
+                      future: RoomReactionSyncHistoryStore.loadLatest(),
+                      builder: (context, snap) {
+                        final last = snap.data;
+                        final lastLabel = last == null
+                            ? '前回確認：未確認'
+                            : '前回確認：${_myPageFormatSyncHistoryTime(last.syncedAtIso)}';
+                        return Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppColors.surfaceVariant,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: AppColors.divider),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '取り込み済み：$importedDoneCount件',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(fontWeight: FontWeight.w800),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                lastLabel,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(color: AppColors.textSecondary),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ] else ...[
+                    Text(
+                      'まだROOM投稿を取り込んでいません',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                            height: 1.35,
+                          ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      RoomSyncCardCopy.emptyImportHint,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.35,
+                          ),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  Consumer<RakutenManagedProductProvider>(
+                    builder: (context, managed, _) {
+                      final showLink = roomReactionAnalyticsHomeShowCta(
+                        managed.items,
+                      );
+                      if (!showLink) return const SizedBox.shrink();
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextButton(
+                            onPressed: () {
+                              context.read<AppShellController>().openActivityTab(
+                                    subTabIndex: 1,
+                                    scrollToRoomReactionSection: true,
+                                  );
+                            },
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              '${RoomSyncCardCopy.analysisTabHint} ＞',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: AppColors.accentPrimary,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                   if (showPrimaryButtons) ...[
                     FilledButton(
                       onPressed: () {
@@ -1367,7 +1487,11 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                         );
                         _handleImport(context);
                       },
-                      child: const Text('投稿済み商品を取り込む'),
+                      child: Text(
+                        importedDoneCount > 0
+                            ? '投稿済み商品を取り込む'
+                            : 'ROOM投稿を取り込む',
+                      ),
                     ),
                     const SizedBox(height: 10),
                     OutlinedButton(
@@ -1769,6 +1893,13 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
     _roomUrlController = TextEditingController(
       text: context.read<UserProfileProvider>().profile.roomUrl,
     );
+    AppInputLimits.logApplied(
+      screen: 'myPage',
+      field: 'roomUrl',
+      maxLength: AppInputLimits.roomUrlMax,
+      keyboardType: 'url',
+      formatter: 'url',
+    );
   }
 
   @override
@@ -1850,6 +1981,11 @@ class _RoomUrlEditSheetState extends State<RoomUrlEditSheet> {
           keyboardType: TextInputType.url,
           labelText: 'ROOMプロフィールURL（任意）',
           hintText: '例: https://room.rakuten.co.jp/xxxx',
+          maxLength: AppInputLimits.roomUrlMax,
+          inputFormatters: AppInputLimits.urlFormatters(
+            maxLength: AppInputLimits.roomUrlMax,
+          ),
+          errorText: _roomUrlErrorText,
           onChanged: (_) => setState(() {
             _roomUrlErrorText = null;
           }),

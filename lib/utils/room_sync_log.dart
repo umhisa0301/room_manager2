@@ -1111,3 +1111,67 @@ void homeSectionOrderLog(String order) {
   if (!kDebugMode) return;
   debugPrint('[HOME_SECTION_ORDER] order=$order');
 }
+
+void roomSyncCardUxRenderLog({
+  required String state,
+  required bool showImportButton,
+  required bool showReactionButton,
+  required bool showAnalysisCta,
+  String hiddenDisabledButtons = 'none',
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[ROOM_SYNC_CARD_UX_RENDER] state=$state '
+    'showImportButton=$showImportButton showReactionButton=$showReactionButton '
+    'showAnalysisCta=$showAnalysisCta hiddenDisabledButtons=$hiddenDisabledButtons',
+  );
+}
+
+void roomSyncEmptyButtonAuditLog({
+  required String screen,
+  required String widget,
+  required bool visible,
+  required String reason,
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=$screen widget=$widget '
+    'visible=$visible reason=$reason',
+  );
+}
+
+void roomImportActivityVisibilityLog({
+  required String screen,
+  required bool visible,
+  required String reason,
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=$screen visible=$visible reason=$reason',
+  );
+}
+
+void searchValidationErrorLog({
+  required String screen,
+  required String field,
+  required String message,
+  bool shownInSheet = true,
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[SEARCH_VALIDATION_ERROR] screen=$screen field=$field '
+    'message=$message shownInSheet=$shownInSheet',
+  );
+}
+
+void searchFilterSheetLayoutLog({
+  bool hasFixedHeader = true,
+  bool hasFixedFooter = true,
+  bool keyboardAware = true,
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[SEARCH_FILTER_SHEET_LAYOUT] hasFixedHeader=$hasFixedHeader '
+    'hasFixedFooter=$hasFixedFooter keyboardAware=$keyboardAware',
+  );
+}

@@ -13,7 +13,14 @@ enum RoomImportUiPhase {
 
 /// ホーム / マイページの ROOM 同期カードで共有する文言。
 abstract final class RoomSyncCardCopy {
-  static const title = 'ROOM同期';
+  static const title = 'ROOMデータ更新';
+
+  static const subtitle =
+      'ROOM投稿を取り込み、いいね・コメントを確認します。';
+
+  static const emptyImportHint = '過去のROOM投稿をコレ済に追加します';
+
+  static const analysisTabHint = '反応があった商品は分析タブで確認できます';
 
   static String importPhaseLabel(RoomImportUiPhase phase) {
     switch (phase) {
@@ -45,12 +52,9 @@ abstract final class RoomSyncCardCopy {
     }
   }
 
-  static const subtitle =
-      '投稿を取り込み、反応を確認して次の運用に活かします。';
-
   /// 主・副ボタンの下に置く補足（候補・反応の両方を示す一文）。
   static const combinedFooterHint =
-      '新しいROOM投稿を取り込み、いいね・コメントの反応を確認できます。';
+      '取り込みと反応確認は、それぞれボタンから実行できます。';
 
   static const maintenanceTileTitle = 'メンテナンス';
 

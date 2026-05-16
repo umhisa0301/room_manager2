@@ -12,6 +12,7 @@ import '../services/shop_discovery_aggregator.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../utils/app_input_limits.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/onboarding_ui_log.dart';
 import '../utils/product_safety_filter.dart';
@@ -990,6 +991,12 @@ class _StepRoomUrl extends StatelessWidget {
               controller: controller,
               labelText: 'ROOMプロフィールURL（任意）',
               hintText: '例：https://room.rakuten.co.jp/…',
+              keyboardType: TextInputType.url,
+              maxLength: AppInputLimits.roomUrlMax,
+              inputFormatters: AppInputLimits.urlFormatters(
+                maxLength: AppInputLimits.roomUrlMax,
+              ),
+              errorText: errorText,
               onChanged: (_) => onChanged(),
             ),
             if (isChecking || errorText != null) ...[

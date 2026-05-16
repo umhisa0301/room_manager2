@@ -622,6 +622,7 @@ class _TodayActivityLogSectionState extends State<_TodayActivityLogSection> {
     final list = widget.events
         .where(
           (e) =>
+              e.type != RoomActivityEventType.importedFromRoom &&
               !e.createdAt.isBefore(todayStart) &&
               e.createdAt.isBefore(tomorrowStart),
         )
@@ -887,8 +888,7 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final today = DateTime(widget.anchor.year, widget.anchor.month, widget.anchor.day);
-    final series =
-        <({DateTime day, int posts, int cand, int roomImport})>[];
+    final series = <({DateTime day, int posts, int cand})>[];
 
     for (var i = 6; i >= 0; i--) {
       final day = today.subtract(Duration(days: i));
@@ -900,30 +900,28 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
         widget.items,
         day,
       );
-      final roomImport = activityCountEventsOnLocalDay(
-        widget.events,
-        day,
-        {RoomActivityEventType.importedFromRoom},
-      );
-      series.add((day: day, posts: posts, cand: cand, roomImport: roomImport));
+      series.add((day: day, posts: posts, cand: cand));
       if (kDebugMode) {
         final mm = day.month.toString().padLeft(2, '0');
         final dd = day.day.toString().padLeft(2, '0');
         analyticsDailyBarLog(
           'date=${day.year}-$mm-$dd '
-          'postCount=$posts candidateCount=$cand roomImportCount=$roomImport '
+          'postCount=$posts candidateCount=$cand '
           'candidateSource=statusCandidateOnly',
+        );
+        roomImportActivityVisibilityLog(
+          screen: 'achievement',
+          visible: false,
+          reason: 'notUserActivity',
         );
       }
     }
 
     var weekPosts = 0;
     var weekCand = 0;
-    var weekRoomImport = 0;
     for (final e in series) {
       weekPosts += e.posts;
       weekCand += e.cand;
-      weekRoomImport += e.roomImport;
     }
 
     var maxVal = 0;
@@ -971,8 +969,7 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '投稿：$weekPosts件　候補：$weekCand件'
-                  '${weekRoomImport > 0 ? '　ROOM取り込み：$weekRoomImport件' : ''}',
+                  '投稿：$weekPosts件　候補：$weekCand件',
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w900,
                     fontSize: 16,
@@ -983,7 +980,7 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
           ),
           const SizedBox(height: 12),
           Text(
-            '棒の高さはアプリからの「投稿」と「候補追加」の合計です。ROOM取り込み件数は上の合計・各日の「取込」に表示します。',
+            '棒の高さはアプリからの「投稿」と「候補追加」の合計です。',
             style: theme.textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
               height: 1.35,
@@ -1109,8 +1106,7 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                           fontWeight: FontWeight.w800,
                                           fontSize: 9.5,
                                           height: 1.15,
-                                          color: e.posts + e.cand == 0 &&
-                                                  e.roomImport == 0
+                                          color: e.posts + e.cand == 0
                                               ? AppColors.textTertiary
                                               : AppColors.textSecondary,
                                         ),
@@ -1123,24 +1119,11 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
                                           fontWeight: FontWeight.w800,
                                           fontSize: 9.5,
                                           height: 1.15,
-                                          color: e.posts + e.cand == 0 &&
-                                                  e.roomImport == 0
+                                          color: e.posts + e.cand == 0
                                               ? AppColors.textTertiary
                                               : AppColors.textSecondary,
                                         ),
                                       ),
-                                      if (e.roomImport > 0)
-                                        Text(
-                                          '取込 ${e.roomImport}',
-                                          textAlign: TextAlign.center,
-                                          style: theme.textTheme.labelSmall
-                                              ?.copyWith(
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: 9.5,
-                                            height: 1.15,
-                                            color: AppColors.textSecondary,
-                                          ),
-                                        ),
                                     ],
                                   ),
                                   const SizedBox(height: 6),

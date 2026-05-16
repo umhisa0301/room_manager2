@@ -26,10 +26,12 @@ class AppTextField extends StatelessWidget {
     this.autofocus = false,
     this.obscureText = false,
     this.maxLines = 1,
+    this.maxLength,
     this.minHeight = 46,
     this.semanticLabel,
     this.validator,
     this.autovalidateMode,
+    this.errorText,
   });
 
   final TextEditingController? controller;
@@ -49,10 +51,12 @@ class AppTextField extends StatelessWidget {
   final bool autofocus;
   final bool obscureText;
   final int maxLines;
+  final int? maxLength;
   final double minHeight;
   final String? semanticLabel;
   final FormFieldValidator<String>? validator;
   final AutovalidateMode? autovalidateMode;
+  final String? errorText;
 
   static const Color _fieldFill = Color(0xFFFAFAFB);
   static const Color _fieldBorder = Color(0xFFD4D4DA);
@@ -81,6 +85,11 @@ class AppTextField extends StatelessWidget {
         autofocus: autofocus,
         obscureText: obscureText,
         maxLines: maxLines,
+        maxLength: maxLength,
+        buildCounter: maxLength != null
+            ? (_, {required currentLength, required isFocused, maxLength}) =>
+                null
+            : null,
         validator: validator,
         autovalidateMode: autovalidateMode,
         style: AppTextStyles.bodyMedium.copyWith(
@@ -120,6 +129,11 @@ class AppTextField extends StatelessWidget {
           hintStyle: AppTextStyles.bodyMedium.copyWith(
             color: AppColors.textTertiary,
             height: 1.25,
+          ),
+          errorText: errorText,
+          errorStyle: AppTextStyles.caption.copyWith(
+            color: AppColors.error,
+            fontWeight: FontWeight.w600,
           ),
           border: normalBorder,
           enabledBorder: normalBorder,

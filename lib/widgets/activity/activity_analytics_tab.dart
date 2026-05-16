@@ -25,6 +25,7 @@ import '../../widgets/app_card.dart';
 import '../../widgets/room_colle_product_list_card_layout.dart';
 import 'activity_navigation_helpers.dart';
 import 'activity_screen_layout.dart';
+import 'room_next_actions_card.dart';
 
 /// 活動画面「分析」タブ。
 class ActivityAnalyticsTab extends StatefulWidget {
@@ -173,6 +174,8 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
               bottomPad,
             ),
             children: [
+              const RoomNextActionsCard(),
+              const SizedBox(height: ActivityScreenLayout.sectionGap),
               _DecisionInsightCard(brief: insight),
               const SizedBox(height: ActivityScreenLayout.sectionGap),
               KeyedSubtree(
