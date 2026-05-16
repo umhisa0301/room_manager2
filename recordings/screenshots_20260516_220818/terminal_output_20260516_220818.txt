@@ -1,0 +1,1132 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-16 22:08:18
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: emulator-5554
+Device manufacturer: Google
+Device model: sdk_gphone64_x86_64
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : emulator-5554
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_220818.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260516_220818.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260516_220818.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260516_220818.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260516_220818.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_220818
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_220818\terminal_output_20260516_220818.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 22548).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d emulator-5554 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Resolving dependencies...
+Downloading packages...
+  async 2.13.0 (2.13.1 available)
+  characters 1.4.0 (1.4.1 available)
+  cli_util 0.4.2 (0.5.1 available)
+  cupertino_icons 1.0.8 (1.0.9 available)
+  flutter_lints 5.0.0 (6.0.0 available)
+  json_annotation 4.11.0 (4.12.0 available)
+  lints 5.1.1 (6.1.0 available)
+  matcher 0.12.17 (0.12.20 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.16.0 (1.18.2 available)
+  shared_preferences 2.5.4 (2.5.5 available)
+  shared_preferences_android 2.4.21 (2.4.23 available)
+  shared_preferences_platform_interface 2.4.1 (2.4.2 available)
+  test_api 0.7.6 (0.7.12 available)
+  url_launcher_ios 6.3.6 (6.4.1 available)
+  url_launcher_web 2.4.1 (2.4.3 available)
+  vector_math 2.2.0 (2.3.0 available)
+  vm_service 15.0.2 (15.2.0 available)
+  webview_flutter_android 4.10.15 (4.12.0 available)
+  webview_flutter_wkwebview 3.24.2 (3.25.1 available)
+  xml 6.6.1 (7.0.1 available)
+Got dependencies!
+21 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Launching lib\main.dart on sdk gphone64 x86 64 in debug mode...
+Running Gradle task 'assembleDebug'...                             66.4s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.3s
+Error: ADB exited with exit code 1
+Performing Streamed Install
+
+adb.exe: failed to install C:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-debug.apk: Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.stepbytestudio.room_manager2 signatures do not match newer version; ignoring!]
+Uninstalling old version...
+Installing build\app\outputs\flutter-apk\app-debug.apk...           7.3s
+D/FlutterJNI( 6042): Beginning load of flutter...
+D/FlutterJNI( 6042): flutter (null) was loaded normally!
+I/flutter ( 6042): [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).
+Syncing files to device sdk gphone64 x86 64...                  
+W/o.room_manager2( 6042): Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (unsupported,test-api, reflection, allowed)
+W/o.room_manager2( 6042): Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (unsupported, reflection, allowed)
+W/o.room_manager2( 6042): Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (unsupported, reflection, allowed)
+W/o.room_manager2( 6042): Accessing hidden method Landroid/util/LongArray;->get(I)J (unsupported, reflection, allowed)
+Syncing files to device sdk gphone64 x86 64...                     124ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on sdk gphone64 x86 64 is available at: http://127.0.0.1:61292/jUtKEVReqc4=/
+W/HWUI    ( 6042): Unknown dataspace 0
+I/flutter ( 6042): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter ( 6042): verifyMode=false
+The Flutter DevTools debugger and profiler on sdk gphone64 x86 64 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:61292/jUtKEVReqc4=/
+D/ProfileInstaller( 6042): Installing profile for com.stepbytestudio.room_manager2
+I/flutter ( 6042): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter ( 6042): [ONBOARDING_UI] route=legal termsAccepted=false initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/Choreographer( 6042): Skipped 708 frames!  The application may be doing too much work on its main thread.
+I/WindowExtensionsImpl( 6042): Initializing Window Extensions, vendor API level=6, activity embedding enabled=true
+W/HWUI    ( 6042): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    ( 6042): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4( 6042): mapper 4.x is not supported
+I/o.room_manager2( 6042): Background concurrent mark compact GC freed 2094KB AllocSpace bytes, 3(60KB) LOS objects, 49% free, 2652KB/5304KB, paused 2.610ms,7.714ms total 162.778ms
+I/WebViewFactory( 6042): Loading com.google.android.webview version 124.0.6367.219 (code 636771938)
+W/ResourcesManager( 6042): Found a null ResourcesImpl, skipped.
+V/ResourcesManager( 6042): The following library key has been added: ResourcesKey{ mHash=d712a32b mResDir=null mSplitDirs=[] mOverlayDirs=[/product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk,/data/resource-cache/com.android.systemui-neutral-xfRj.frro,/data/resource-cache/com.android.systemui-accent-4GLZ.frro,/data/resource-cache/com.android.systemui-dynamic-17DN.frro] mLibDirs=[/data/app/~~vQ14T4bqzDMuKaFeef5ykg==/com.google.android.webview-yiQP-YOkjS5yA30g0q8aCQ==/WebViewGoogle.apk,/data/app/~~6PEefRbkmZ_C73haMbcLWA==/com.google.android.trichromelibrary_636771938-uFtGorc7YheIQ3Iv-mbxbA==/TrichromeLibrary.apk,/system_ext/framework/androidx.window.extensions.jar] mDisplayId=0 mOverrideConfig=v35 mCompatInfo={320dpi always-compat} mLoaders=[]}
+W/ziparchive( 6042): Unable to open '/data/app/~~6PEefRbkmZ_C73haMbcLWA==/com.google.android.trichromelibrary_636771938-uFtGorc7YheIQ3Iv-mbxbA==/TrichromeLibrary.dm': No such file or directory
+W/ziparchive( 6042): Unable to open '/data/app/~~6PEefRbkmZ_C73haMbcLWA==/com.google.android.trichromelibrary_636771938-uFtGorc7YheIQ3Iv-mbxbA==/TrichromeLibrary.dm': No such file or directory
+W/o.room_manager2( 6042): Entry not found
+D/nativeloader( 6042): Configuring clns-8 for other apk /data/app/~~6PEefRbkmZ_C73haMbcLWA==/com.google.android.trichromelibrary_636771938-uFtGorc7YheIQ3Iv-mbxbA==/TrichromeLibrary.apk. target_sdk_version=34, uses_libraries=ALL, library_path=/data/app/~~vQ14T4bqzDMuKaFeef5ykg==/com.google.android.webview-yiQP-YOkjS5yA30g0q8aCQ==/lib/x86_64:/data/app/~~vQ14T4bqzDMuKaFeef5ykg==/com.google.android.webview-yiQP-YOkjS5yA30g0q8aCQ==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~6PEefRbkmZ_C73haMbcLWA==/com.google.android.trichromelibrary_636771938-uFtGorc7YheIQ3Iv-mbxbA==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+D/ApplicationLoaders( 6042): Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+D/nativeloader( 6042): Configuring clns-9 for other apk /data/app/~~vQ14T4bqzDMuKaFeef5ykg==/com.google.android.webview-yiQP-YOkjS5yA30g0q8aCQ==/WebViewGoogle.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~vQ14T4bqzDMuKaFeef5ykg==/com.google.android.webview-yiQP-YOkjS5yA30g0q8aCQ==/lib/x86_64:/data/app/~~vQ14T4bqzDMuKaFeef5ykg==/com.google.android.webview-yiQP-YOkjS5yA30g0q8aCQ==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~6PEefRbkmZ_C73haMbcLWA==/com.google.android.trichromelibrary_636771938-uFtGorc7YheIQ3Iv-mbxbA==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+I/o.room_manager2( 6042): Compiler allocated 5174KB to compile void android.view.ViewRootImpl.performTraversals()
+I/cr_WVCFactoryProvider( 6042): Loaded version=124.0.6367.219 minSdkVersion=29 isBundle=false multiprocess=true packageId=2
+D/nativeloader( 6042): Load /data/app/~~6PEefRbkmZ_C73haMbcLWA==/com.google.android.trichromelibrary_636771938-uFtGorc7YheIQ3Iv-mbxbA==/TrichromeLibrary.apk!/lib/x86_64/libmonochrome_64.so using ns clns-9 from class loader (caller=/data/app/~~vQ14T4bqzDMuKaFeef5ykg==/com.google.android.webview-yiQP-YOkjS5yA30g0q8aCQ==/WebViewGoogle.apk): ok
+D/nativeloader( 6042): Load /system/lib64/libwebviewchromium_plat_support.so using ns clns-9 from class loader (caller=/data/app/~~vQ14T4bqzDMuKaFeef5ykg==/com.google.android.webview-yiQP-YOkjS5yA30g0q8aCQ==/WebViewGoogle.apk): ok
+I/chromium( 6042): [0516/131026.937421:INFO:variations_seed_loader.cc(66)] Failed to open file for reading.: No such file or directory (2)
+I/chromium( 6042): [INFO:variations_seed_loader.cc(66)] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader( 6042): Successfully loaded native library
+I/cr_CachingUmaRecorder( 6042): Flushed 6 samples from 6 histograms, 0 samples were dropped.
+I/cr_CombinedPProvider( 6042): #registerProvider() provider:WV.V7@dd16c51 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider( 6042): #setManagerAndSource() 0
+I/cr_CombinedPProvider( 6042): #linkNativeInternal() 1
+I/cr_AppResProvider( 6042): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 6042): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 6042): #onSettingsAvailable() 0
+I/cr_CombinedPProvider( 6042): #flushPolicies()
+W/chromium( 6042): [WARNING:dns_config_service_android.cc(81)] Failed to read DnsConfig.
+I/PlatformViewsController( 6042): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController( 6042): PlatformView is using SurfaceProducer backend
+I/Choreographer( 6042): Skipped 466 frames!  The application may be doing too much work on its main thread.
+I/HWUI    ( 6042): Davey! duration=8070ms; Flags=1, FrameTimelineVsyncId=17745, IntendedVsync=339292687626, Vsync=347059353982, InputEventId=0, HandleInputStart=347077897100, AnimationStart=347078217800, PerformTraversalsStart=347078410200, DrawStart=347170659600, FrameDeadline=339309354292, FrameInterval=347075171700, FrameStartTime=16666666, SyncQueued=347300342200, SyncStart=347322181300, IssueDrawCommandsStart=347327037500, SwapBuffers=347348207800, FrameCompleted=347384652100, DequeueBufferDuration=22863800, QueueBufferDuration=1095600, GpuCompleted=347377607700, SwapBuffersCompleted=347384652100, DisplayPresentTime=130236564840975, CommandSubmissionCompleted=347348207800, 
+D/ActivityThread( 6042): Package [com.google.android.partnersetup] reported as REPLACED, but missing application info. Assuming REMOVED.
+D/ActivityThread( 6042): Package [com.google.android.partnersetup] reported as REPLACED, but missing application info. Assuming REMOVED.
+I/Choreographer( 6042): Skipped 38 frames!  The application may be doing too much work on its main thread.
+I/HWUI    ( 6042): Davey! duration=754ms; Flags=0, FrameTimelineVsyncId=17807, IntendedVsync=347159353978, Vsync=347792687286, InputEventId=0, HandleInputStart=347816472100, AnimationStart=347816506200, PerformTraversalsStart=347816554500, DrawStart=347822435300, FrameDeadline=347409353968, FrameInterval=347804077700, FrameStartTime=16666666, SyncQueued=347827471700, SyncStart=347848881900, IssueDrawCommandsStart=347849046900, SwapBuffers=347870899200, FrameCompleted=347935059900, DequeueBufferDuration=30224300, QueueBufferDuration=5421200, GpuCompleted=347904524200, SwapBuffersCompleted=347935059900, DisplayPresentTime=130236564841111, CommandSubmissionCompleted=347870899200, 
+D/EGL_emulation( 6042): app_time_stats: avg=1321.98ms min=74.00ms max=3986.36ms count=4
+D/EGL_emulation( 6042): app_time_stats: avg=547.89ms min=34.70ms max=2018.78ms count=4
+D/EGL_emulation( 6042): app_time_stats: avg=1705.24ms min=92.72ms max=3317.76ms count=2
+D/EGL_emulation( 6042): app_time_stats: avg=309.89ms min=8.93ms max=4334.93ms count=16
+D/EGL_emulation( 6042): app_time_stats: avg=643.26ms min=43.25ms max=1243.26ms count=2
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+D/EGL_emulation( 6042): app_time_stats: avg=906.12ms min=115.30ms max=1696.94ms count=2
+D/EGL_emulation( 6042): app_time_stats: avg=1332.30ms min=13.47ms max=2651.13ms count=2
+I/ImeTracker( 6042): com.stepbytestudio.room_manager2:8a8911dd: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+D/InputMethodManager( 6042): showSoftInput() view=io.flutter.embedding.android.FlutterView{b658ee5 VFE...... .F....ID 0,0-720,1280 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 6042): The input method toggled cursor monitoring on
+D/EGL_emulation( 6042): app_time_stats: avg=4581.51ms min=59.70ms max=17260.71ms count=4
+D/EGL_emulation( 6042): app_time_stats: avg=350.65ms min=188.26ms max=620.79ms count=3
+I/o.room_manager2( 6042): Background concurrent mark compact GC freed 1584KB AllocSpace bytes, 11(368KB) LOS objects, 49% free, 3269KB/6539KB, paused 28.441ms,3.246ms total 300.758ms
+W/o.room_manager2( 6042): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~vQ14T4bqzDMuKaFeef5ykg==/com.google.android.webview-yiQP-YOkjS5yA30g0q8aCQ==/WebViewGoogle.apk' with 2 weak references
+W/o.room_manager2( 6042): ApkAssets: Deleting an ApkAssets object '<empty> and /product/app/talkback/talkback.apk' with 1 weak references
+W/o.room_manager2( 6042): ApkAssets: Deleting an ApkAssets object '/vendor/overlay/EmulatorTalkBackOverlay/EmulatorTalkBackOverlay.apk' with 1 weak references
+D/EGL_emulation( 6042): app_time_stats: avg=415.79ms min=181.99ms max=568.34ms count=3
+D/EGL_emulation( 6042): app_time_stats: avg=909.81ms min=425.59ms max=1394.03ms count=2
+D/InsetsController( 6042): show(ime(), fromIme=true)
+W/InteractionJankMonitor( 6042): Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.stepbytestudio.room_manager2
+D/EGL_emulation( 6042): app_time_stats: avg=3835.49ms min=3835.49ms max=3835.49ms count=1
+I/ImeTracker( 6042): com.stepbytestudio.room_manager2:8a8911dd: onShown
+D/EGL_emulation( 6042): app_time_stats: avg=262.65ms min=106.34ms max=497.79ms count=4
+D/EGL_emulation( 6042): app_time_stats: avg=421.93ms min=258.33ms max=553.22ms count=3
+D/EGL_emulation( 6042): app_time_stats: avg=408.61ms min=242.72ms max=510.96ms count=3
+I/ImeTracker( 6042): com.stepbytestudio.room_manager2:b726071d: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT fromUser false
+D/InsetsController( 6042): hide(ime(), fromIme=true)
+W/WindowOnBackDispatcher( 6042): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6042): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+D/EGL_emulation( 6042): app_time_stats: avg=546.73ms min=287.94ms max=805.53ms count=2
+D/EGL_emulation( 6042): app_time_stats: avg=705.06ms min=36.60ms max=3776.16ms count=6
+I/ImeTracker( 6042): com.stepbytestudio.room_manager2:bd8f6e30: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+I/ImeTracker( 6042): com.stepbytestudio.room_manager2:b726071d: onHidden
+D/EGL_emulation( 6042): app_time_stats: avg=589.36ms min=56.46ms max=1617.70ms count=4
+D/EGL_emulation( 6042): app_time_stats: avg=199.49ms min=40.74ms max=1331.38ms count=9
+I/flutter ( 6042): [SEARCH_STYLE_SAVE] selected=social
+I/Choreographer( 6042): Skipped 41 frames!  The application may be doing too much work on its main thread.
+D/EGL_emulation( 6042): app_time_stats: avg=786.58ms min=38.25ms max=2283.35ms count=4
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+D/EGL_emulation( 6042): app_time_stats: avg=341.31ms min=176.51ms max=536.62ms count=3
+W/WindowOnBackDispatcher( 6042): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6042): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+D/ActivityThread( 6042): Package [com.google.android.as.oss] reported as REPLACED, but missing application info. Assuming REMOVED.
+D/ActivityThread( 6042): Package [com.google.android.as.oss] reported as REPLACED, but missing application info. Assuming REMOVED.
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+D/EGL_emulation( 6042): app_time_stats: avg=1424.74ms min=218.50ms max=2630.98ms count=2
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+D/EGL_emulation( 6042): app_time_stats: avg=956.04ms min=90.68ms max=2223.57ms count=3
+D/EGL_emulation( 6042): app_time_stats: avg=735.37ms min=181.03ms max=1289.70ms count=2
+D/EGL_emulation( 6042): app_time_stats: avg=182.24ms min=10.97ms max=1254.10ms count=10
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+D/EGL_emulation( 6042): app_time_stats: avg=88.05ms min=8.96ms max=734.74ms count=14
+D/EGL_emulation( 6042): app_time_stats: avg=444.70ms min=9.05ms max=1549.43ms count=4
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+D/EGL_emulation( 6042): app_time_stats: avg=409.65ms min=30.58ms max=1770.11ms count=6
+D/EGL_emulation( 6042): app_time_stats: avg=322.56ms min=47.60ms max=1499.97ms count=6
+D/EGL_emulation( 6042): app_time_stats: avg=97.25ms min=14.34ms max=734.17ms count=16
+D/EGL_emulation( 6042): app_time_stats: avg=113.68ms min=13.60ms max=879.27ms count=14
+D/EGL_emulation( 6042): app_time_stats: avg=338.95ms min=19.86ms max=1595.83ms count=6
+D/EGL_emulation( 6042): app_time_stats: avg=245.33ms min=19.13ms max=3944.50ms count=20
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+D/EGL_emulation( 6042): app_time_stats: avg=456.41ms min=8.95ms max=1799.68ms count=5
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_220818\room_manager2_shot_001.png
+D/EGL_emulation( 6042): app_time_stats: avg=6010.63ms min=106.24ms max=17327.97ms count=3
+D/EGL_emulation( 6042): app_time_stats: avg=540.63ms min=45.96ms max=2333.83ms count=5
+D/EGL_emulation( 6042): app_time_stats: avg=478.48ms min=65.89ms max=1984.18ms count=5
+D/EGL_emulation( 6042): app_time_stats: avg=2688.45ms min=2688.45ms max=2688.45ms count=1
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+D/EGL_emulation( 6042): app_time_stats: avg=151.20ms min=24.92ms max=1118.09ms count=12
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_220818\room_manager2_shot_002.png
+D/EGL_emulation( 6042): app_time_stats: avg=301.04ms min=22.03ms max=4741.62ms count=18
+D/EGL_emulation( 6042): app_time_stats: avg=61.60ms min=16.93ms max=119.82ms count=16
+I/flutter ( 6042): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=101240,100804 postStyles=social recommendationStarted=true recommendationCount=0 savedShopCount=0 shopSaved=false failedReason=
+I/flutter ( 6042): [Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=101240 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6042): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6042): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=20&genreId=101240
+D/EGL_emulation( 6042): app_time_stats: avg=1063.73ms min=1063.73ms max=1063.73ms count=1
+D/EGL_emulation( 6042): app_time_stats: avg=89.60ms min=20.34ms max=265.52ms count=11
+I/flutter ( 6042): [Rakuten] response status=200 page=1 bytes=86102
+I/flutter ( 6042): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 6042): [RECOMMEND_TRACE] rawCount=20
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tk7ah.362kt79a.g00tk7ah.362ku735/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmujica-felice%2Fb004n9te9c%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmujica-felice%2Fi%2F10814840%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tk7ah.362kt79a.g00tk7ah.362ku735/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmujica-felice%2Fb004n9te9c%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmujica-felice%2Fi%2F10814840%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=mujica-felice:10814840 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=mujica-felice:10814840 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fbcba-2618%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F10277065%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fbcba-2618%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F10277065%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru2:10277065 rawGenreId=500171 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru2:10277065 model.genreId=500171 model.genreName= jsonRaw=キッズアニメ jsonRolled=キッズアニメ displayGenre=キッズアニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00ulh2h.362kt4d4.g00ulh2h.362ku419/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Famn-onlineshop%2Fazneyxa-14920%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Famn-onlineshop%2Fi%2F10053854%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00ulh2h.362kt4d4.g00ulh2h.362ku419/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Famn-onlineshop%2Fazneyxa-14920%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Famn-onlineshop%2Fi%2F10053854%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=amn-onlineshop:10053854 rawGenreId=400041 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=amn-onlineshop:10053854 model.genreId=400041 model.genreName= jsonRaw=TVアニメ jsonRolled=TVアニメ displayGenre=TVアニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tb68h.362kt203.g00tb68h.362kuf4f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmifsoft%2Fpccn-17%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmifsoft%2Fi%2F10201242%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tb68h.362kt203.g00tb68h.362kuf4f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmifsoft%2Fpccn-17%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmifsoft%2Fi%2F10201242%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=mifsoft:10201242 rawGenreId=300011 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=mifsoft:10201242 model.genreId=300011 model.genreName= jsonRaw=ロック・ポップス jsonRolled=ロック・ポップス displayGenre=ロック・ポップス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00t5mdh.362kte59.g00t5mdh.362ku064/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fyouing-gaba-02%2Fpd1lcwmz9e8h-it8l6wflkkrwq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fyouing-gaba-02%2Fi%2F10609880%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00t5mdh.362kte59.g00t5mdh.362ku064/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fyouing-gaba-02%2Fpd1lcwmz9e8h-it8l6wflkkrwq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fyouing-gaba-02%2Fi%2F10609880%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=youing-gaba-02:10609880 rawGenreId=101952 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=youing-gaba-02:10609880 model.genreId=101952 model.genreName= jsonRaw=その他 jsonRolled=邦画 displayGenre=邦画
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rg4mh.362kt578.g00rg4mh.362ku0c7/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fvivito-shop%2Fitem-022361-1618%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fvivito-shop%2Fi%2F13978421%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rg4mh.362kt578.g00rg4mh.362ku0c7/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fvivito-shop%2Fitem-022361-1618%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fvivito-shop%2Fi%2F13978421%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=vivito-shop:13978421 rawGenreId=200553 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=vivito-shop:13978421 model.genreId=200553 model.genreName= jsonRaw=その他 jsonRolled=レコード displayGenre=レコード
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u0zth.362kt69a.g00u0zth.362ku82d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fskymarketplus%2Fb015chw15c%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fskymarketplus%2Fi%2F12459763%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u0zth.362kt69a.g00u0zth.362ku82d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fskymarketplus%2Fb015chw15c%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fskymarketplus%2Fi%2F12459763%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=skymarketplus:12459763 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=skymarketplus:12459763 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc3nh.362kt9be.g00rc3nh.362kufba/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fsurprise-2%2Faznkiga-20%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fsurprise-2%2Fi%2F12956733%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc3nh.362kt9be.g00rc3nh.362kufba/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fsurprise-2%2Faznkiga-20%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fsurprise-2%2Fi%2F12956733%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=surprise-2:12956733 rawGenreId=508090 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=surprise-2:12956733 model.genreId=508090 model.genreName= jsonRaw=アニメ jsonRolled=アニメ displayGenre=アニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pjybh.362kt350.g00pjybh.362kua01/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajewelry%2Fsicp-3374%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajewelry%2Fi%2F10047781%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pjybh.362kt350.g00pjybh.362kua01/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajewelry%2Fsicp-3374%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajewelry%2Fi%2F10047781%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=ajewelry:10047781 rawGenreId=300160 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=ajewelry:10047781 model.genreId=300160 model.genreName= jsonRaw=ロック・ポップス jsonRolled=ロック・ポップス displayGenre=ロック・ポップス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhkb07tfn9vt8%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10784680%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhkb07tfn9vt8%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10784680%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:10784680 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:10784680 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00s285h.362kt1b5.g00s285h.362ku06e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbooksupply%2Fj107-2505-004177%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbooksupply%2Fi%2F15151887%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00s285h.362kt1b5.g00s285h.362ku06e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbooksupply%2Fj107-2505-004177%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbooksupply%2Fi%2F15151887%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=booksupply:15151887 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=booksupply:15151887 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qtazh.362kt3c1.g00qtazh.362kue2f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fhmvjapan%2F16727863%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fhmvjapan%2Fi%2F28207507%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00qtazh.362kt3c1.g00qtazh.362kue2f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fhmvjapan%2F16727863%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fhmvjapan%2Fi%2F28207507%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=hmvjapan:28207507 rawGenreId=200542 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=hmvjapan:28207507 model.genreId=200542 model.genreName= jsonRaw=その他 jsonRolled=邦楽 displayGenre=邦楽
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sd04h.362kte2f.g00sd04h.362ku460/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fnewforest%2Fzc05066%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fnewforest%2Fi%2F10245781%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sd04h.362kte2f.g00sd04h.362ku460/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fnewforest%2Fzc05066%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fnewforest%2Fi%2F10245781%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=newforest:10245781 rawGenreId=200545 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=newforest:10245781 model.genreId=200545 model.genreName= jsonRaw=オムニバス jsonRolled=オムニバス displayGenre=オムニバス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00ujwnh.362ktf41.g00ujwnh.362ku376/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fscarlet2021%2Fb0085hg2s4%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fscarlet2021%2Fi%2F10468879%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00ujwnh.362ktf41.g00ujwnh.362ku376/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fscarlet2021%2Fb0085hg2s4%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fscarlet2021%2Fi%2F10468879%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=scarlet2021:10468879 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=scarlet2021:10468879 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fyb0795yfdq6%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F12547184%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fyb0795yfdq6%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F12547184%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:12547184 rawGenreId=400041 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:12547184 model.genreId=400041 model.genreName= jsonRaw=TVアニメ jsonRolled=TVアニメ displayGenre=TVアニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00ufvth.362kt78f.g00ufvth.362kue89/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fiinex%2Fab00c34zimq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fiinex%2Fi%2F11198519%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00ufvth.362kt78f.g00ufvth.362kue89/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fiinex%2Fab00c34zimq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fiinex%2Fi%2F11198519%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+D/EGL_emulation( 6042): app_time_stats: avg=106.31ms min=31.17ms max=586.64ms count=11
+I/flutter ( 6042): [RakutenGenre][API] itemCode=iinex:11198519 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=iinex:11198519 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fmhb00fns18v4%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F12002251%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fmhb00fns18v4%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F12002251%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:12002251 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:12002251 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00spo3h.362ktebc.g00spo3h.362ku2e4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fdoriem%2Fhb00eeozr9c%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fdoriem%2Fi%2F10913087%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00spo3h.362ktebc.g00spo3h.362ku2e4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fdoriem%2Fhb00eeozr9c%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fdoriem%2Fi%2F10913087%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=doriem:10913087 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=doriem:10913087 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u8prh.362ktcf9.g00u8prh.362ku9c6/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fyouing-jouei%2Fpdzu0g0cqx5d-it7nfvqicd0ksq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fyouing-jouei%2Fi%2F10368055%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u8prh.362ktcf9.g00u8prh.362ku9c6/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fyouing-jouei%2Fpdzu0g0cqx5d-it7nfvqicd0ksq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fyouing-jouei%2Fi%2F10368055%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=youing-jouei:10368055 rawGenreId=101951 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=youing-jouei:10368055 model.genreId=101951 model.genreName= jsonRaw=その他 jsonRolled=洋画 displayGenre=洋画
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fvpbx-11341%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F13418059%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fvpbx-11341%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F13418059%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru2:13418059 rawGenreId=400024 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru2:13418059 model.genreId=400024 model.genreName= jsonRaw=ヒューマン jsonRolled=ヒューマン displayGenre=ヒューマン
+I/flutter ( 6042): [Rakuten] page=1 parsedItems=20 / raw=20
+I/flutter ( 6042): [Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=101240 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6042): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6042): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=20&genreId=101240
+I/flutter ( 6042): [Rakuten] response status=200 page=2 bytes=93921
+I/flutter ( 6042): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 6042): [RECOMMEND_TRACE] rawCount=20
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjvsh.362kta89.g00tjvsh.362kucaf/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Frenet20%2Fr0011297616%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Frenet20%2Fi%2F10242668%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjvsh.362kta89.g00tjvsh.362kucaf/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Frenet20%2Fr0011297616%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Frenet20%2Fi%2F10242668%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=renet20:10242668 rawGenreId=200542 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=renet20:10242668 model.genreId=200542 model.genreName= jsonRaw=その他 jsonRolled=邦楽 displayGenre=邦楽
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjy8h.362ktbb9.g00tjy8h.362kucd8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkobaco-003%2Fsb00005uc02%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkobaco-003%2Fi%2F10776874%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjy8h.362ktbb9.g00tjy8h.362kucd8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkobaco-003%2Fsb00005uc02%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkobaco-003%2Fi%2F10776874%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=kobaco-003:10776874 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=kobaco-003:10776874 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00uov4h.362kt037.g00uov4h.362kucd1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Frecordcity%2F2952239%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Frecordcity%2Fi%2F10720749%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00uov4h.362kt037.g00uov4h.362kucd1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Frecordcity%2F2952239%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Frecordcity%2Fi%2F10720749%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=recordcity:10720749 rawGenreId=406254 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=recordcity:10720749 model.genreId=406254 model.genreName= jsonRaw=洋楽 jsonRolled=洋楽 displayGenre=洋楽
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tp86h.362kt8a6.g00tp86h.362ku786/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgoodlifestore%2Fhb008gsopg8%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgoodlifestore%2Fi%2F10378828%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tp86h.362kt8a6.g00tp86h.362ku786/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgoodlifestore%2Fhb008gsopg8%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgoodlifestore%2Fi%2F10378828%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=goodlifestore:10378828 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=goodlifestore:10378828 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fb01lthkvva%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10090086%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fb01lthkvva%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10090086%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=cometostore:10090086 rawGenreId=101373 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=cometostore:10090086 model.genreId=101373 model.genreName= jsonRaw=その他 jsonRolled=日本 displayGenre=日本
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00uov4h.362kt037.g00uov4h.362kucd1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Frecordcity%2F1572227%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Frecordcity%2Fi%2F10187082%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00uov4h.362kt037.g00uov4h.362kucd1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Frecordcity%2F1572227%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Frecordcity%2Fi%2F10187082%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=recordcity:10187082 rawGenreId=200562 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=recordcity:10187082 model.genreId=200562 model.genreName= jsonRaw=その他 jsonRolled=LD displayGenre=LD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00uqonh.362kt84c.g00uqonh.362ku32d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fumibose%2Fb07cclpmrt%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fumibose%2Fi%2F10178824%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00uqonh.362kt84c.g00uqonh.362ku32d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fumibose%2Fb07cclpmrt%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fumibose%2Fi%2F10178824%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=umibose:10178824 rawGenreId=500002 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=umibose:10178824 model.genreId=500002 model.genreName= jsonRaw=フリージャズ jsonRolled=フリージャズ displayGenre=フリージャズ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tk7ah.362kt79a.g00tk7ah.362ku735/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmujica-felice%2Fhb00fzfxrjg%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmujica-felice%2Fi%2F11498905%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tk7ah.362kt79a.g00tk7ah.362ku735/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmujica-felice%2Fhb00fzfxrjg%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmujica-felice%2Fi%2F11498905%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=mujica-felice:11498905 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=mujica-felice:11498905 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhkb008palgza%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10814014%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhkb008palgza%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10814014%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:10814014 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:10814014 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00ufvth.362kt78f.g00ufvth.362kue89/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fiinex%2Fab06xw96yt8%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fiinex%2Fi%2F10981673%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00ufvth.362kt78f.g00ufvth.362kue89/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fiinex%2Fab06xw96yt8%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fiinex%2Fi%2F10981673%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=iinex:10981673 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=iinex:10981673 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tkpxh.362kt249.g00tkpxh.362ku534/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fatorieerina%2Fb00jnn01rc%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fatorieerina%2Fi%2F11638060%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tkpxh.362kt249.g00tkpxh.362ku534/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fatorieerina%2Fb00jnn01rc%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fatorieerina%2Fi%2F11638060%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=atorieerina:11638060 rawGenreId=112960 rawGenreName= rawKeys=genreId
+D/EGL_emulation( 6042): app_time_stats: avg=49.77ms min=24.19ms max=95.51ms count=20
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=atorieerina:11638060 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0015835996%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F10751490%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0015835996%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F10751490%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=bookoffonline:10751490 rawGenreId=300011 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=bookoffonline:10751490 model.genreId=300011 model.genreName= jsonRaw=ロック・ポップス jsonRolled=ロック・ポップス displayGenre=ロック・ポップス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u578h.362kt3f6.g00u578h.362kuf6d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftrmt-1%2Fb002ui8due%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftrmt-1%2Fi%2F10164064%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u578h.362kt3f6.g00u578h.362kuf6d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftrmt-1%2Fb002ui8due%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ftrmt-1%2Fi%2F10164064%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=trmt-1:10164064 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=trmt-1:10164064 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fsb00dutt2rk%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10909601%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fsb00dutt2rk%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10909601%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=cometostore:10909601 rawGenreId=553575 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=cometostore:10909601 model.genreId=553575 model.genreName= jsonRaw=TVアニメ jsonRolled=TVアニメ displayGenre=TVアニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qco5h.362ktcd2.g00qco5h.362ku273/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fjoshin-cddvd%2F4985914768245%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fjoshin-cddvd%2Fi%2F10992852%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00qco5h.362ktcd2.g00qco5h.362ku273/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fjoshin-cddvd%2F4985914768245%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fjoshin-cddvd%2Fi%2F10992852%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=joshin-cddvd:10992852 rawGenreId=101951 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=joshin-cddvd:10992852 model.genreId=101951 model.genreName= jsonRaw=その他 jsonRolled=洋画 displayGenre=洋画
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tk7ah.362kt79a.g00tk7ah.362ku735/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmujica-felice%2Fhb0007iojvq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmujica-felice%2Fi%2F11643634%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tk7ah.362kt79a.g00tk7ah.362ku735/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmujica-felice%2Fhb0007iojvq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmujica-felice%2Fi%2F11643634%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=mujica-felice:11643634 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=mujica-felice:11643634 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjy8h.362ktbb9.g00tjy8h.362kucd8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkobaco-003%2Fb005ccjs1i%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkobaco-003%2Fi%2F11131190%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjy8h.362ktbb9.g00tjy8h.362kucd8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkobaco-003%2Fb005ccjs1i%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkobaco-003%2Fi%2F11131190%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=kobaco-003:11131190 rawGenreId=200191 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=kobaco-003:11131190 model.genreId=200191 model.genreName= jsonRaw=その他 jsonRolled=CD displayGenre=CD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tywqh.362kt1ce.g00tywqh.362kuf18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajimura4861%2Fb00020hbby%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajimura4861%2Fi%2F11590012%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tywqh.362kt1ce.g00tywqh.362kuf18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajimura4861%2Fb00020hbby%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajimura4861%2Fi%2F11590012%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=ajimura4861:11590012 rawGenreId=101950 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=ajimura4861:11590012 model.genreId=101950 model.genreName= jsonRaw=その他 jsonRolled=DVD displayGenre=DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Flcca-5627%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F13657356%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Flcca-5627%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F13657356%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru2:13657356 rawGenreId=300011 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru2:13657356 model.genreId=300011 model.genreName= jsonRaw=ロック・ポップス jsonRolled=ロック・ポップス displayGenre=ロック・ポップス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fdstd-20128%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F12720665%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fdstd-20128%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F12720665%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru2:12720665 rawGenreId=505030 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru2:12720665 model.genreId=505030 model.genreName= jsonRaw=特撮ヒーロー jsonRolled=特撮ヒーロー displayGenre=特撮ヒーロー
+I/flutter ( 6042): [Rakuten] page=2 parsedItems=20 / raw=20
+I/flutter ( 6042): [Rakuten] request start mode=proxy page=3 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=101240 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6042): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6042): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=20&genreId=101240
+D/EGL_emulation( 6042): app_time_stats: avg=64.30ms min=23.40ms max=140.49ms count=16
+I/flutter ( 6042): [Rakuten] response status=200 page=3 bytes=87164
+I/flutter ( 6042): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 6042): [RECOMMEND_TRACE] rawCount=20
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qpduh.362kt32a.g00qpduh.362kud98/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ffelista%2Faznavxd-92546%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ffelista%2Fi%2F21337227%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00qpduh.362kt32a.g00qpduh.362kud98/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ffelista%2Faznavxd-92546%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ffelista%2Fi%2F21337227%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=felista:21337227 rawGenreId=400034 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=felista:21337227 model.genreId=400034 model.genreName= jsonRaw=TV番組 jsonRolled=TV番組 displayGenre=TV番組
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjy8h.362ktbb9.g00tjy8h.362kucd8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkobaco-003%2Fb00005ge22%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkobaco-003%2Fi%2F10068144%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjy8h.362ktbb9.g00tjy8h.362kucd8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkobaco-003%2Fb00005ge22%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkobaco-003%2Fi%2F10068144%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=kobaco-003:10068144 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=kobaco-003:10068144 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tywqh.362kt1ce.g00tywqh.362kuf18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajimura4861%2Fb002fofxp6%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajimura4861%2Fi%2F11633403%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tywqh.362kt1ce.g00tywqh.362kuf18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajimura4861%2Fb002fofxp6%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajimura4861%2Fi%2F11633403%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=ajimura4861:11633403 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=ajimura4861:11633403 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tp86h.362kt8a6.g00tp86h.362ku786/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgoodlifestore%2Fb0bs3lbpwc%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgoodlifestore%2Fi%2F10529757%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tp86h.362kt8a6.g00tp86h.362ku786/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgoodlifestore%2Fb0bs3lbpwc%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgoodlifestore%2Fi%2F10529757%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=goodlifestore:10529757 rawGenreId=553620 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=goodlifestore:10529757 model.genreId=553620 model.genreName= jsonRaw=その他 jsonRolled=邦楽 displayGenre=邦楽
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fotlcd-7803%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F12722664%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fotlcd-7803%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F12722664%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru2:12722664 rawGenreId=500061 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru2:12722664 model.genreId=500061 model.genreName= jsonRaw=その他 jsonRolled=ジャズ displayGenre=ジャズ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhb0006b2c2m%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10278925%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:10278925 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhb0006b2c2m%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10278925%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+D/EGL_emulation( 6042): app_time_stats: avg=57.08ms min=17.66ms max=213.23ms count=18
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:10278925 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00r2dih.362kt1de.g00r2dih.362ku639/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru-ds%2Fsecj-109%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru-ds%2Fi%2F13256171%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00r2dih.362kt1de.g00r2dih.362ku639/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru-ds%2Fsecj-109%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru-ds%2Fi%2F13256171%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru-ds:13256171 rawGenreId=300011 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru-ds:13256171 model.genreId=300011 model.genreName= jsonRaw=ロック・ポップス jsonRolled=ロック・ポップス displayGenre=ロック・ポップス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pj7ih.362kt1a0.g00pj7ih.362ku867/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Famericanpie%2F4216100894%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Famericanpie%2Fi%2F10911858%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pj7ih.362kt1a0.g00pj7ih.362ku867/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Famericanpie%2F4216100894%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Famericanpie%2Fi%2F10911858%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=americanpie:10911858 rawGenreId=553620 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=americanpie:10911858 model.genreId=553620 model.genreName= jsonRaw=その他 jsonRolled=邦楽 displayGenre=邦楽
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00spo3h.362ktebc.g00spo3h.362ku2e4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fdoriem%2Fb00lrtafa8%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fdoriem%2Fi%2F11421766%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00spo3h.362ktebc.g00spo3h.362ku2e4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fdoriem%2Fb00lrtafa8%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fdoriem%2Fi%2F11421766%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=doriem:11421766 rawGenreId=400041 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=doriem:11421766 model.genreId=400041 model.genreName= jsonRaw=TVアニメ jsonRolled=TVアニメ displayGenre=TVアニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00t5mdh.362kte59.g00t5mdh.362ku064/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fyouing-gaba-02%2Fpdeujh78azv6-itq4ydut7n4yq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fyouing-gaba-02%2Fi%2F10663201%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00t5mdh.362kte59.g00t5mdh.362ku064/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fyouing-gaba-02%2Fpdeujh78azv6-itq4ydut7n4yq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fyouing-gaba-02%2Fi%2F10663201%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=youing-gaba-02:10663201 rawGenreId=101952 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=youing-gaba-02:10663201 model.genreId=101952 model.genreName= jsonRaw=その他 jsonRolled=邦画 displayGenre=邦画
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u0zth.362kt69a.g00u0zth.362ku82d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fskymarketplus%2Fb000lprk0c%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fskymarketplus%2Fi%2F11475840%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=skymarketplus:11475840 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=skymarketplus:11475840 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u0zth.362kt69a.g00u0zth.362ku82d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fskymarketplus%2Fb000lprk0c%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fskymarketplus%2Fi%2F11475840%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00q63ah.362kte4b.g00q63ah.362ku5b1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fneowing-r%2Fdakism-10%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fneowing-r%2Fi%2F12004622%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00q63ah.362kte4b.g00q63ah.362ku5b1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fneowing-r%2Fdakism-10%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fneowing-r%2Fi%2F12004622%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=neowing-r:12004622 rawGenreId=300034 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=neowing-r:12004622 model.genreId=300034 model.genreName= jsonRaw=インディーズ jsonRolled=インディーズ displayGenre=インディーズ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjy8h.362ktbb9.g00tjy8h.362kucd8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkobaco-003%2Fhb01em3vem8%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkobaco-003%2Fi%2F10724221%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjy8h.362ktbb9.g00tjy8h.362kucd8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkobaco-003%2Fhb01em3vem8%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkobaco-003%2Fi%2F10724221%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=kobaco-003:10724221 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=kobaco-003:10724221 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pj7ih.362kt1a0.g00pj7ih.362ku867/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Famericanpie%2Fnote1720348vinyl%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Famericanpie%2Fi%2F11577287%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pj7ih.362kt1a0.g00pj7ih.362ku867/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Famericanpie%2Fnote1720348vinyl%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Famericanpie%2Fi%2F11577287%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=americanpie:11577287 rawGenreId=300160 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=americanpie:11577287 model.genreId=300160 model.genreName= jsonRaw=ロック・ポップス jsonRolled=ロック・ポップス displayGenre=ロック・ポップス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tk7ah.362kt79a.g00tk7ah.362ku735/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmujica-felice%2Fhb01jfsq99i%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmujica-felice%2Fi%2F11304799%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tk7ah.362kt79a.g00tk7ah.362ku735/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmujica-felice%2Fhb01jfsq99i%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmujica-felice%2Fi%2F11304799%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=mujica-felice:11304799 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=mujica-felice:11304799 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00q63ah.362kte4b.g00q63ah.362ku5b1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fneowing-r%2Ftced-7548%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fneowing-r%2Fi%2F15201572%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00q63ah.362kte4b.g00q63ah.362ku5b1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fneowing-r%2Ftced-7548%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fneowing-r%2Fi%2F15201572%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=neowing-r:15201572 rawGenreId=101368 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=neowing-r:15201572 model.genreId=101368 model.genreName= jsonRaw=ヒューマン jsonRolled=ヒューマン displayGenre=ヒューマン
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00ulzih.362kt8c2.g00ulzih.362kuc68/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fsofapotato%2F7fju6mmoozgrmclpd5mhqs6bam%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fsofapotato%2Fi%2F10159324%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00ulzih.362kt8c2.g00ulzih.362kuc68/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fsofapotato%2F7fju6mmoozgrmclpd5mhqs6bam%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fsofapotato%2Fi%2F10159324%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=sofapotato:10159324 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=sofapotato:10159324 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u0zth.362kt69a.g00u0zth.362ku82d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fskymarketplus%2Fb00ajw01bm%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fskymarketplus%2Fi%2F12503813%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u0zth.362kt69a.g00u0zth.362ku82d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fskymarketplus%2Fb00ajw01bm%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fskymarketplus%2Fi%2F12503813%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=skymarketplus:12503813 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=skymarketplus:12503813 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tywqh.362kt1ce.g00tywqh.362kuf18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajimura4861%2Fsb0026a5t80%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajimura4861%2Fi%2F13534043%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tywqh.362kt1ce.g00tywqh.362kuf18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajimura4861%2Fsb0026a5t80%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajimura4861%2Fi%2F13534043%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=ajimura4861:13534043 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=ajimura4861:13534043 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fb00w6t9l0s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10118844%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fb00w6t9l0s%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10118844%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=cometostore:10118844 rawGenreId=400041 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=cometostore:10118844 model.genreId=400041 model.genreName= jsonRaw=TVアニメ jsonRolled=TVアニメ displayGenre=TVアニメ
+I/flutter ( 6042): [Rakuten] page=3 parsedItems=20 / raw=20
+I/flutter ( 6042): [Rakuten] request start mode=proxy page=4 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=101240 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6042): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6042): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=20&genreId=101240
+I/flutter ( 6042): [Rakuten] response status=200 page=4 bytes=82728
+I/flutter ( 6042): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 6042): [RECOMMEND_TRACE] rawCount=20
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhkb00fp1c66u%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10807711%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhkb00fp1c66u%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10807711%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+D/EGL_emulation( 6042): app_time_stats: avg=55.43ms min=18.79ms max=119.16ms count=19
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:10807711 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:10807711 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tohph.362kt48c.g00tohph.362ku46d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fyouing-gaba-hama%2Fpdxree1anow4-it7h2xtnayyvhq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fyouing-gaba-hama%2Fi%2F10536160%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tohph.362kt48c.g00tohph.362ku46d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fyouing-gaba-hama%2Fpdxree1anow4-it7h2xtnayyvhq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fyouing-gaba-hama%2Fi%2F10536160%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=youing-gaba-hama:10536160 rawGenreId=101951 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=youing-gaba-hama:10536160 model.genreId=101951 model.genreName= jsonRaw=その他 jsonRolled=洋画 displayGenre=洋画
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2F0848064018797%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F13772101%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2F0848064018797%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F13772101%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru2:13772101 rawGenreId=406151 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru2:13772101 model.genreId=406151 model.genreName= jsonRaw=フォーク・カントリー jsonRolled=フォーク・カントリー displayGenre=フォーク・カントリー
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00uov4h.362kt037.g00uov4h.362kucd1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Frecordcity%2F2642505%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Frecordcity%2Fi%2F10264212%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=recordcity:10264212 rawGenreId=406254 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=recordcity:10264212 model.genreId=406254 model.genreName= jsonRaw=洋楽 jsonRolled=洋楽 displayGenre=洋楽
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fdhb000063c0j%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F11553082%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00uov4h.362kt037.g00uov4h.362kucd1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Frecordcity%2F2642505%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Frecordcity%2Fi%2F10264212%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fdhb000063c0j%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F11553082%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:11553082 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:11553082 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tywqh.362kt1ce.g00tywqh.362kuf18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajimura4861%2Fb015pai3qm%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajimura4861%2Fi%2F13419770%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tywqh.362kt1ce.g00tywqh.362kuf18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajimura4861%2Fb015pai3qm%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajimura4861%2Fi%2F13419770%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=ajimura4861:13419770 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=ajimura4861:13419770 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qco5h.362ktcd2.g00qco5h.362ku273/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fjoshin-cddvd%2F4589921418430%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fjoshin-cddvd%2Fi%2F11163051%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00qco5h.362ktcd2.g00qco5h.362ku273/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fjoshin-cddvd%2F4589921418430%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fjoshin-cddvd%2Fi%2F11163051%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=joshin-cddvd:11163051 rawGenreId=505041 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=joshin-cddvd:11163051 model.genreId=505041 model.genreName= jsonRaw=その他 jsonRolled=アニメ displayGenre=アニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rg4mh.362kt578.g00rg4mh.362ku0c7/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fvivito-shop%2Fitem-022224-7478%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fvivito-shop%2Fi%2F13992607%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rg4mh.362kt578.g00rg4mh.362ku0c7/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fvivito-shop%2Fitem-022224-7478%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fvivito-shop%2Fi%2F13992607%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=vivito-shop:13992607 rawGenreId=200553 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=vivito-shop:13992607 model.genreId=200553 model.genreName= jsonRaw=その他 jsonRolled=レコード displayGenre=レコード
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00uqonh.362kt84c.g00uqonh.362ku32d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fumibose%2Fb07nq2cx5g%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fumibose%2Fi%2F10229877%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00uqonh.362kt84c.g00uqonh.362ku32d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fumibose%2Fb07nq2cx5g%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fumibose%2Fi%2F10229877%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=umibose:10229877 rawGenreId=500183 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=umibose:10229877 model.genreId=500183 model.genreName= jsonRaw=語学 jsonRolled=語学 displayGenre=語学
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0001243794%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F10284111%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0001243794%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F10284111%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=bookoffonline:10284111 rawGenreId=101359 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=bookoffonline:10284111 model.genreId=101359 model.genreName= jsonRaw=戦争 jsonRolled=戦争 displayGenre=戦争
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fdb000k0yoxy%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F11893639%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fdb000k0yoxy%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F11893639%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:11893639 rawGenreId=505030 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:11893639 model.genreId=505030 model.genreName= jsonRaw=特撮ヒーロー jsonRolled=特撮ヒーロー displayGenre=特撮ヒーロー
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00spo3h.362ktebc.g00spo3h.362ku2e4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fdoriem%2Fhb019o0p1ri%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fdoriem%2Fi%2F11620048%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00spo3h.362ktebc.g00spo3h.362ku2e4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fdoriem%2Fhb019o0p1ri%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fdoriem%2Fi%2F11620048%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=doriem:11620048 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=doriem:11620048 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00r2dih.362kt1de.g00r2dih.362ku639/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru-ds%2Fvpbx-13951%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru-ds%2Fi%2F10179954%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00r2dih.362kt1de.g00r2dih.362ku639/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru-ds%2Fvpbx-13951%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru-ds%2Fi%2F10179954%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru-ds:10179954 rawGenreId=508017 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru-ds:10179954 model.genreId=508017 model.genreName= jsonRaw=コメディー jsonRolled=コメディー displayGenre=コメディー
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhkb008o80rte%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10393636%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhkb008o80rte%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10393636%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:10393636 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:10393636 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tgleh.362kt611.g00tgleh.362kuad8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fyouing-gaba-siro%2Fpdq9pra80vg2-it1cby1yld9wq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fyouing-gaba-siro%2Fi%2F10559119%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tgleh.362kt611.g00tgleh.362kuad8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fyouing-gaba-siro%2Fpdq9pra80vg2-it1cby1yld9wq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fyouing-gaba-siro%2Fi%2F10559119%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=youing-gaba-siro:10559119 rawGenreId=101373 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=youing-gaba-siro:10559119 model.genreId=101373 model.genreName= jsonRaw=その他 jsonRolled=日本 displayGenre=日本
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fsb00p8ur73u%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10943256%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fsb00p8ur73u%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10943256%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=cometostore:10943256 rawGenreId=553575 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=cometostore:10943256 model.genreId=553575 model.genreName= jsonRaw=TVアニメ jsonRolled=TVアニメ displayGenre=TVアニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u0zth.362kt69a.g00u0zth.362ku82d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fskymarketplus%2Fhb00kyk9t1m%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fskymarketplus%2Fi%2F12273360%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u0zth.362kt69a.g00u0zth.362ku82d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fskymarketplus%2Fhb00kyk9t1m%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fskymarketplus%2Fi%2F12273360%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+D/EGL_emulation( 6042): app_time_stats: avg=83.53ms min=14.99ms max=712.62ms count=18
+I/flutter ( 6042): [RakutenGenre][API] itemCode=skymarketplus:12273360 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=skymarketplus:12273360 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhb01mz6gzt6%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10554004%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fhb01mz6gzt6%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10554004%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:10554004 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:10554004 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00q63ah.362kte4b.g00q63ah.362ku5b1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fneowing-r%2Fcyp-4655%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fneowing-r%2Fi%2F13066881%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00q63ah.362kte4b.g00q63ah.362ku5b1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fneowing-r%2Fcyp-4655%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fneowing-r%2Fi%2F13066881%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=neowing-r:13066881 rawGenreId=101312 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=neowing-r:13066881 model.genreId=101312 model.genreName= jsonRaw=その他 jsonRolled=クラシック displayGenre=クラシック
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0018989796%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F15157873%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0018989796%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F15157873%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=bookoffonline:15157873 rawGenreId=508108 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=bookoffonline:15157873 model.genreId=508108 model.genreName= jsonRaw=洋画 jsonRolled=洋画 displayGenre=洋画
+I/flutter ( 6042): [Rakuten] page=4 parsedItems=20 / raw=20
+I/flutter ( 6042): [Rakuten] request start mode=proxy page=5 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=101240 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6042): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6042): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=5&hits=20&genreId=101240
+I/flutter ( 6042): [Rakuten] response status=200 page=5 bytes=81044
+I/flutter ( 6042): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 6042): [RECOMMEND_TRACE] rawCount=20
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00uso5h.362kta51.g00uso5h.362kueb2/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ffuruhonhaitatsuhonpo%2Fdvacjkzicpoixihi%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ffuruhonhaitatsuhonpo%2Fi%2F11060496%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00uso5h.362kta51.g00uso5h.362kueb2/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ffuruhonhaitatsuhonpo%2Fdvacjkzicpoixihi%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ffuruhonhaitatsuhonpo%2Fi%2F11060496%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=furuhonhaitatsuhonpo:11060496 rawGenreId=101952 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=furuhonhaitatsuhonpo:11060496 model.genreId=101952 model.genreName= jsonRaw=その他 jsonRolled=邦画 displayGenre=邦画
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fb00005fmzy%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10406633%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fb00005fmzy%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10406633%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=cometostore:10406633 rawGenreId=400041 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=cometostore:10406633 model.genreId=400041 model.genreName= jsonRaw=TVアニメ jsonRolled=TVアニメ displayGenre=TVアニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pj7ih.362kt1a0.g00pj7ih.362ku867/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Famericanpie%2Fiscb001754902%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Famericanpie%2Fi%2F10374325%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pj7ih.362kt1a0.g00pj7ih.362ku867/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Famericanpie%2Fiscb001754902%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Famericanpie%2Fi%2F10374325%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=americanpie:10374325 rawGenreId=406042 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=americanpie:10374325 model.genreId=406042 model.genreName= jsonRaw=ラップ・ヒップホップ jsonRolled=ラップ・ヒップホップ displayGenre=ラップ・ヒップホップ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fkyp-1%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F12163445%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fkyp-1%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F12163445%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru2:12163445 rawGenreId=300011 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru2:12163445 model.genreId=300011 model.genreName= jsonRaw=ロック・ポップス jsonRolled=ロック・ポップス displayGenre=ロック・ポップス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sk0yh.362ktb79.g00sk0yh.362kud2d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgeoonline1%2F119360702%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgeoonline1%2Fi%2F11969023%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sk0yh.362ktb79.g00sk0yh.362kud2d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgeoonline1%2F119360702%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgeoonline1%2Fi%2F11969023%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=geoonline1:11969023 model.genreId=300345 model.genreName= jsonRaw=その他 jsonRolled=邦楽 displayGenre=邦楽
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tk7ah.362kt79a.g00tk7ah.362ku735/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmujica-felice%2Fb003bv8hx2%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmujica-felice%2Fi%2F10075722%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=geoonline1:11969023 rawGenreId=300345 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tk7ah.362kt79a.g00tk7ah.362ku735/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmujica-felice%2Fb003bv8hx2%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmujica-felice%2Fi%2F10075722%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=mujica-felice:10075722 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=mujica-felice:10075722 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjy8h.362ktbb9.g00tjy8h.362kucd8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkobaco-003%2Fhb0010sl77g%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkobaco-003%2Fi%2F10666630%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tjy8h.362ktbb9.g00tjy8h.362kucd8/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkobaco-003%2Fhb0010sl77g%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkobaco-003%2Fi%2F10666630%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=kobaco-003:10666630 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=kobaco-003:10666630 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fyhb0001fyq2m%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F12591445%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fyhb0001fyq2m%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F12591445%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:12591445 rawGenreId=400041 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:12591445 model.genreId=400041 model.genreName= jsonRaw=TVアニメ jsonRolled=TVアニメ displayGenre=TVアニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fdhb004gn9aqm%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F11558376%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fdhb004gn9aqm%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F11558376%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:11558376 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:11558376 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fb00fsdvoa4%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10296864%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fb00fsdvoa4%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10296864%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=cometostore:10296864 rawGenreId=400041 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=cometostore:10296864 model.genreId=400041 model.genreName= jsonRaw=TVアニメ jsonRolled=TVアニメ displayGenre=TVアニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u0zth.362kt69a.g00u0zth.362ku82d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fskymarketplus%2Fhb00luj4bpk%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fskymarketplus%2Fi%2F12125345%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u0zth.362kt69a.g00u0zth.362ku82d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fskymarketplus%2Fhb00luj4bpk%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fskymarketplus%2Fi%2F12125345%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=skymarketplus:12125345 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=skymarketplus:12125345 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fhb000147z9e%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10596171%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fhb000147z9e%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10596171%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=cometostore:10596171 rawGenreId=400041 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=cometostore:10596171 model.genreId=400041 model.genreName= jsonRaw=TVアニメ jsonRolled=TVアニメ displayGenre=TVアニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fb004reumiu%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10075488%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00upswh.362kt6a2.g00upswh.362ku033/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2F2doriem%2Fb004reumiu%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2F2doriem%2Fi%2F10075488%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=2doriem:10075488 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=2doriem:10075488 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00s285h.362kt1b5.g00s285h.362ku06e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbooksupply%2Fg78-2412-008483%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbooksupply%2Fi%2F14693152%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00s285h.362kt1b5.g00s285h.362ku06e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbooksupply%2Fg78-2412-008483%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbooksupply%2Fi%2F14693152%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=booksupply:14693152 rawGenreId=112960 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=booksupply:14693152 model.genreId=112960 model.genreName= jsonRaw=その他 jsonRolled=CD・DVD displayGenre=CD・DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pjybh.362kt350.g00pjybh.362kua01/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajewelry%2Fupch-80236%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajewelry%2Fi%2F10043826%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pjybh.362kt350.g00pjybh.362kua01/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fajewelry%2Fupch-80236%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fajewelry%2Fi%2F10043826%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=ajewelry:10043826 rawGenreId=300011 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=ajewelry:10043826 model.genreId=300011 model.genreName= jsonRaw=ロック・ポップス jsonRolled=ロック・ポップス displayGenre=ロック・ポップス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00uso5h.362kta51.g00uso5h.362kueb2/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ffuruhonhaitatsuhonpo%2Fcd3cyrhbmt9gpys6%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ffuruhonhaitatsuhonpo%2Fi%2F11048658%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00uso5h.362kta51.g00uso5h.362kueb2/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ffuruhonhaitatsuhonpo%2Fcd3cyrhbmt9gpys6%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ffuruhonhaitatsuhonpo%2Fi%2F11048658%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=furuhonhaitatsuhonpo:11048658 rawGenreId=406151 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=furuhonhaitatsuhonpo:11048658 model.genreId=406151 model.genreName= jsonRaw=フォーク・カントリー jsonRolled=フォーク・カントリー displayGenre=フォーク・カントリー
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00q072h.362ktdc1.g00q072h.362kue56/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F12733010%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F16895958%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00q072h.362ktdc1.g00q072h.362kue56/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F12733010%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F16895958%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=book:16895958 rawGenreId=101953 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=book:16895958 model.genreId=101953 model.genreName= jsonRaw=その他 jsonRolled=アニメ displayGenre=アニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tnhwh.362kt1ea.g00tnhwh.362ku21d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fomatsuri-life2%2Fb00l3npxsm%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fomatsuri-life2%2Fi%2F10225770%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tnhwh.362kt1ea.g00tnhwh.362ku21d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fomatsuri-life2%2Fb00l3npxsm%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fomatsuri-life2%2Fi%2F10225770%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=omatsuri-life2:10225770 rawGenreId=101950 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=omatsuri-life2:10225770 model.genreId=101950 model.genreName= jsonRaw=その他 jsonRolled=DVD displayGenre=DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fakb-d2378%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F12618952%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fakb-d2378%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F12618952%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru2:12618952 rawGenreId=553604 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru2:12618952 model.genreId=553604 model.genreName= jsonRaw=ロック・ポップス jsonRolled=ロック・ポップス displayGenre=ロック・ポップス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rkbrh.362kte29.g00rkbrh.362ku28f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fauc-hafen%2Ffa42141464%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fauc-hafen%2Fi%2F10000166%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rkbrh.362kte29.g00rkbrh.362ku28f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fauc-hafen%2Ffa42141464%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fauc-hafen%2Fi%2F10000166%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=auc-hafen:10000166 rawGenreId=406254 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=auc-hafen:10000166 model.genreId=406254 model.genreName= jsonRaw=洋楽 jsonRolled=洋楽 displayGenre=洋楽
+I/flutter ( 6042): [Rakuten] page=5 parsedItems=20 / raw=20
+I/flutter ( 6042): [Rakuten] repository search total mapped=100
+I/flutter ( 6042): [Rakuten] genreSearch mapped item count=100
+I/flutter ( 6042): [Rakuten] genreSearch before filter count=100
+I/flutter ( 6042): [Rakuten] genreSearch after filter count=100
+I/flutter ( 6042): [ONBOARDING_SHOP_RECOMMEND] shopName=ドリエム楽天市場店 imageCount=3 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/2doriem/cabinet/25050701-2/kb07tfn9vt8.jpg?_ex=128x128 reason=social
+I/flutter ( 6042): [ONBOARDING_SHOP_RECOMMEND] shopName=ぐるぐる王国 楽天市場店 imageCount=3 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/guruguru2/cabinet/189/bcba-2618.jpg?_ex=128x128 reason=social
+I/flutter ( 6042): [ONBOARDING_SHOP_RECOMMEND] shopName=Come to Store imageCount=3 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/cometostore/cabinet/20260411-1/b01lthkvva.jpg?_ex=128x128 reason=social
+I/flutter ( 6042): [ONBOARDING_SHOP_RECOMMEND] shopName=スカイマーケットプラス imageCount=3 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/skymarketplus/cabinet/sm18/sm18-b015chw15c.jpg?_ex=128x128 reason=social
+I/flutter ( 6042): [ONBOARDING_SHOP_RECOMMEND] shopName=ムジカ&フェリーチェ楽天市場店 imageCount=3 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/mujica-felice/cabinet/aya112-/aya112-b004n9te9c.jpg?_ex=128x128 reason=social
+I/flutter ( 6042): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=101240,100804 postStyles=social recommendationStarted=true recommendationCount=5 savedShopCount=0 shopSaved=false failedReason=
+D/EGL_emulation( 6042): app_time_stats: avg=1150.75ms min=105.33ms max=2196.17ms count=2
+D/EGL_emulation( 6042): app_time_stats: avg=687.87ms min=22.05ms max=1353.69ms count=2
+D/EGL_emulation( 6042): app_time_stats: avg=140.75ms min=25.68ms max=933.99ms count=10
+D/EGL_emulation( 6042): app_time_stats: avg=158.98ms min=34.07ms max=1243.40ms count=12
+D/EGL_emulation( 6042): app_time_stats: avg=309.00ms min=41.22ms max=1448.96ms count=6
+D/EGL_emulation( 6042): app_time_stats: avg=107.75ms min=24.99ms max=858.89ms count=15
+D/EGL_emulation( 6042): app_time_stats: avg=373.46ms min=76.99ms max=1095.28ms count=4
+D/EGL_emulation( 6042): app_time_stats: avg=143.51ms min=11.06ms max=904.52ms count=9
+D/EGL_emulation( 6042): app_time_stats: avg=260.88ms min=57.12ms max=1161.92ms count=6
+D/EGL_emulation( 6042): app_time_stats: avg=178.37ms min=54.91ms max=742.63ms count=8
+D/EGL_emulation( 6042): app_time_stats: avg=199.72ms min=28.93ms max=815.11ms count=6
+D/EGL_emulation( 6042): app_time_stats: avg=47.15ms min=18.12ms max=113.38ms count=21
+D/EGL_emulation( 6042): app_time_stats: avg=171.90ms min=29.23ms max=511.54ms count=8
+D/EGL_emulation( 6042): app_time_stats: avg=127.02ms min=35.33ms max=384.71ms count=10
+D/EGL_emulation( 6042): app_time_stats: avg=151.77ms min=24.13ms max=554.50ms count=10
+D/EGL_emulation( 6042): app_time_stats: avg=53.92ms min=17.30ms max=188.95ms count=19
+D/EGL_emulation( 6042): app_time_stats: avg=107.44ms min=31.42ms max=506.36ms count=12
+D/EGL_emulation( 6042): app_time_stats: avg=152.45ms min=32.02ms max=633.53ms count=7
+D/EGL_emulation( 6042): app_time_stats: avg=192.97ms min=13.73ms max=2732.36ms count=18
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+D/EGL_emulation( 6042): app_time_stats: avg=457.92ms min=20.59ms max=4855.09ms count=12
+I/flutter ( 6042): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+D/EGL_emulation( 6042): app_time_stats: avg=365.55ms min=7.30ms max=3306.55ms count=11
+D/EGL_emulation( 6042): app_time_stats: avg=366.62ms min=27.18ms max=2169.75ms count=7
+D/EGL_emulation( 6042): app_time_stats: avg=169.86ms min=24.22ms max=966.34ms count=8
+D/EGL_emulation( 6042): app_time_stats: avg=176.53ms min=20.28ms max=1076.56ms count=8
+D/EGL_emulation( 6042): app_time_stats: avg=321.74ms min=87.98ms max=951.54ms count=4
+D/EGL_emulation( 6042): app_time_stats: avg=230.27ms min=43.83ms max=840.15ms count=5
+D/EGL_emulation( 6042): app_time_stats: avg=502.17ms min=12.40ms max=2323.99ms count=5
+I/flutter ( 6042): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6042): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 6042): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6042): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter ( 6042): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=0 afterFilterLen=0 surface=ok_empty_no_data ui=ready
+I/flutter ( 6042): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=0 roomImportedDoneCount=0 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter ( 6042): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=0 appCollectedCount=0 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 6042): action=refresh
+I/flutter ( 6042): productId=
+I/flutter ( 6042): itemCode=
+I/flutter ( 6042): beforePendingCount=0
+I/flutter ( 6042): afterPendingCount=0
+I/flutter ( 6042): beforeDoneCount=0
+I/flutter ( 6042): afterDoneCount=0
+I/flutter ( 6042): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 6042): source=provider
+I/flutter ( 6042): pendingCount=0
+I/flutter ( 6042): doneCount=0
+I/flutter ( 6042): filter=
+I/flutter ( 6042): tab=
+I/flutter ( 6042): [ROOMコレ診断] refreshManagedProductList 完了 total=0 candidate=0 done=0 ui=ready
+I/flutter ( 6042): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 6042): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter ( 6042): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 6042): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter ( 6042): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 6042): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 6042): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 6042): [RECOMMEND_TRACE] lastGeneratedAt=null
+D/EGL_emulation( 6042): app_time_stats: avg=771.24ms min=25.76ms max=2254.48ms count=3
+I/flutter ( 6042): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=false
+I/flutter ( 6042): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter ( 6042): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 6042): [RECOMMEND_TRACE] action=regenerateToday
+I/flutter ( 6042): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 6042): [RECOMMEND_TRACE] lastGeneratedAt=null
+I/flutter ( 6042): [RECOMMEND_TRACE] generate start
+I/flutter ( 6042): [RECOMMEND_TRACE] profile nickname=aui
+I/flutter ( 6042): [RECOMMEND_STYLE] selected=social
+I/flutter ( 6042): [SEARCH_STYLE_TRACE] selectedStyle=social
+I/flutter ( 6042): [RECOMMEND_TRACE] favoriteGenreIds=101240,100804
+I/flutter ( 6042): [RECOMMEND_TRACE] searchPreferences=social
+I/flutter ( 6042): [RECOMMEND_TRACE] savedShopCount=0
+I/flutter ( 6042): [RECOMMEND_TRACE] doneProductCount=0
+I/flutter ( 6042): [RECOMMEND_TRACE] candidateProductCount=0
+I/flutter ( 6042): [RECOMMEND_START] genreCount=2 savedShopCount=0 doneCount=0 candidateCount=0 selectedStyle=social
+I/flutter ( 6042): [RECOMMEND_PLAN] count=7
+I/flutter ( 6042): [RECOMMEND_GENERATE] start requestCount=0 planCount=7
+I/flutter ( 6042): [RECOMMEND_REACTION] commentGenres=0 likeGenres=0 commentShops=0 likeShops=0 priceBands=
+I/flutter ( 6042): [RECOMMEND_POOL] raw=0 valid=0 scored=0
+I/flutter ( 6042): [RECOMMEND_SELECT] strictSelected=0
+I/flutter ( 6042): [RECOMMEND_PHASE] phase=personal
+I/flutter ( 6042): [RECOMMEND] search keyword=おもちゃ
+I/flutter ( 6042): [RECOMMEND] genreId=101240
+I/flutter ( 6042): [RECOMMEND] searchPreference=
+I/flutter ( 6042): [RECOMMEND] minPrice=null
+I/flutter ( 6042): [RECOMMEND] maxPrice=null
+I/flutter ( 6042): [RECOMMEND] sanitizedMinPrice=null
+I/flutter ( 6042): [RECOMMEND] sanitizedMaxPrice=null
+I/flutter ( 6042): [RECOMMEND_PLAN] phase=personal relax=0 source=genre index=1 keyword=おもちゃ genreId=101240 shopCode= style=social minPrice= maxPrice= sort=
+I/flutter ( 6042): [RECOMMEND_API] planIndex=1 keyword=おもちゃ genreId=101240 shopCode= page=1
+I/flutter ( 6042): [RECOMMEND_API] phase=personal start index=1 page=1
+I/flutter ( 6042): [Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=おもちゃ genreId=101240 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6042): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6042): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=20&keyword=%E3%81%8A%E3%82%82%E3%81%A1%E3%82%83&minReviewCount=10&minReviewAverage=3.6&genreId=101240
+I/flutter ( 6042): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 6042): action=refresh
+I/flutter ( 6042): productId=
+I/flutter ( 6042): itemCode=
+I/flutter ( 6042): beforePendingCount=0
+I/flutter ( 6042): afterPendingCount=0
+I/flutter ( 6042): beforeDoneCount=0
+I/flutter ( 6042): afterDoneCount=0
+I/flutter ( 6042): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 6042): source=screen
+I/flutter ( 6042): pendingCount=0
+I/flutter ( 6042): doneCount=0
+I/flutter ( 6042): filter=
+I/flutter ( 6042): tab=candidate
+I/flutter ( 6042): [ROOMコレ診断] refreshManagedProductList 完了 total=0 candidate=0 done=0 ui=ready
+I/flutter ( 6042): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 6042): action=refresh
+I/flutter ( 6042): productId=
+I/flutter ( 6042): [ROOMコレ診断] ROOMコレ画面起動後 total=0 candidate=0 done=0 listUi=RakutenManagedProductListUiStatus.ready tabIdx=0
+I/flutter ( 6042): itemCode=
+I/flutter ( 6042): beforePendingCount=0
+I/flutter ( 6042): afterPendingCount=0
+I/flutter ( 6042): beforeDoneCount=0
+I/flutter ( 6042): afterDoneCount=0
+I/flutter ( 6042): source=provider
+I/flutter ( 6042): pendingCount=0
+I/flutter ( 6042): doneCount=0
+I/flutter ( 6042): filter=
+I/flutter ( 6042): tab=
+I/flutter ( 6042): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 6042): [ROOMコレ診断] refreshManagedProductList 完了 total=0 candidate=0 done=0 ui=ready
+I/flutter ( 6042): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=0 afterFilterLen=0 surface=ok_empty_no_data ui=ready
+I/flutter ( 6042): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 6042): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 6042): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=0 roomImportedDoneCount=0 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter ( 6042): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=0 appCollectedCount=0 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+D/EGL_emulation( 6042): app_time_stats: avg=1052.17ms min=1052.17ms max=1052.17ms count=1
+I/flutter ( 6042): [Rakuten] response status=200 page=1 bytes=62020
+I/flutter ( 6042): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 6042): [RECOMMEND_TRACE] rawCount=20
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qco5h.362ktcd2.g00qco5h.362ku273/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fjoshin-cddvd%2F4988101190935%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fjoshin-cddvd%2Fi%2F10590000%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00qco5h.362ktcd2.g00qco5h.362ku273/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fjoshin-cddvd%2F4988101190935%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fjoshin-cddvd%2Fi%2F10590000%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=joshin-cddvd:10590000 rawGenreId=101952 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=joshin-cddvd:10590000 model.genreId=101952 model.genreName= jsonRaw=その他 jsonRolled=邦画 displayGenre=邦画
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00r5qhh.362ktef0.g00r5qhh.362ku6e6/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbamp%2F97108%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbamp%2Fi%2F11998154%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00r5qhh.362ktef0.g00r5qhh.362ku6e6/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbamp%2F97108%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbamp%2Fi%2F11998154%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=bamp:11998154 rawGenreId=300334 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=bamp:11998154 model.genreId=300334 model.genreName= jsonRaw=コメディー jsonRolled=コメディー displayGenre=コメディー
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0000811493%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F11649616%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0000811493%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F11649616%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=bookoffonline:11649616 rawGenreId=300011 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=bookoffonline:11649616 model.genreId=300011 model.genreName= jsonRaw=ロック・ポップス jsonRolled=ロック・ポップス displayGenre=ロック・ポップス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tb68h.362kt203.g00tb68h.362kuf4f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmifsoft%2Fmobl-1043%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmifsoft%2Fi%2F12034183%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tb68h.362kt203.g00tb68h.362kuf4f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmifsoft%2Fmobl-1043%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmifsoft%2Fi%2F12034183%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=mifsoft:12034183 rawGenreId=508090 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=mifsoft:12034183 model.genreId=508090 model.genreName= jsonRaw=アニメ jsonRolled=アニメ displayGenre=アニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0016253565%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F12252050%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0016253565%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F12252050%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=bookoffonline:12252050 rawGenreId=400053 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=bookoffonline:12252050 model.genreId=400053 model.genreName= jsonRaw=劇場版 jsonRolled=劇場版 displayGenre=劇場版
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0019592927%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F15642274%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0019592927%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F15642274%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=bookoffonline:15642274 rawGenreId=508090 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=bookoffonline:15642274 model.genreId=508090 model.genreName= jsonRaw=アニメ jsonRolled=アニメ displayGenre=アニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0015194348%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F10640864%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0015194348%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F10640864%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=bookoffonline:10640864 rawGenreId=300011 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=bookoffonline:10640864 model.genreId=300011 model.genreName= jsonRaw=ロック・ポップス jsonRolled=ロック・ポップス displayGenre=ロック・ポップス
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00q63ah.362kte4b.g00q63ah.362ku5b1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fneowing-r%2Fgo-193%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fneowing-r%2Fi%2F15153255%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00q63ah.362kte4b.g00q63ah.362ku5b1/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fneowing-r%2Fgo-193%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fneowing-r%2Fi%2F15153255%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=neowing-r:15153255 rawGenreId=508090 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=neowing-r:15153255 model.genreId=508090 model.genreName= jsonRaw=アニメ jsonRolled=アニメ displayGenre=アニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00q072h.362ktdc1.g00q072h.362kue56/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F16635693%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F20278698%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00q072h.362ktdc1.g00q072h.362kue56/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F16635693%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F20278698%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=book:20278698 rawGenreId=508090 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=book:20278698 model.genreId=508090 model.genreName= jsonRaw=アニメ jsonRolled=アニメ displayGenre=アニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00q072h.362ktdc1.g00q072h.362kue56/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F17460051%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F20921157%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00q072h.362ktdc1.g00q072h.362kue56/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F17460051%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F20921157%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=book:20921157 rawGenreId=101950 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=book:20921157 model.genreId=101950 model.genreName= jsonRaw=その他 jsonRolled=DVD displayGenre=DVD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00q072h.362ktdc1.g00q072h.362kue56/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F16635692%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F20278687%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00q072h.362ktdc1.g00q072h.362kue56/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F16635692%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F20278687%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=book:20278687 rawGenreId=508090 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=book:20278687 model.genreId=508090 model.genreName= jsonRaw=アニメ jsonRolled=アニメ displayGenre=アニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fmobl-1043%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F13135860%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fmobl-1043%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F13135860%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru2:13135860 rawGenreId=508090 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru2:13135860 model.genreId=508090 model.genreName= jsonRaw=アニメ jsonRolled=アニメ displayGenre=アニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00q072h.362ktdc1.g00q072h.362kue56/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F18312644%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F21679277%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00q072h.362ktdc1.g00q072h.362kue56/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F18312644%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F21679277%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=book:21679277 rawGenreId=200191 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=book:21679277 model.genreId=200191 model.genreName= jsonRaw=その他 jsonRolled=CD displayGenre=CD
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qa9mh.362ktaa2.g00qa9mh.362kud0a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fauc-sora%2F4933672244761%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fauc-sora%2Fi%2F10333040%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00qa9mh.362ktaa2.g00qa9mh.362kud0a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fauc-sora%2F4933672244761%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fauc-sora%2Fi%2F10333040%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=auc-sora:10333040 rawGenreId=101360 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=auc-sora:10333040 model.genreId=101360 model.genreName= jsonRaw=ホラー jsonRolled=ホラー displayGenre=ホラー
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fmobl-1042%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F13135859%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00pvcah.362ktf77.g00pvcah.362ku80a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fguruguru2%2Fmobl-1042%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fguruguru2%2Fi%2F13135859%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=guruguru2:13135859 rawGenreId=508090 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=guruguru2:13135859 model.genreId=508090 model.genreName= jsonRaw=アニメ jsonRolled=アニメ displayGenre=アニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qs41h.362kt428.g00qs41h.362kueb4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcomicset%2Fdvplqtjc8t3lga8b%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcomicset%2Fi%2F11828189%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00qs41h.362kt428.g00qs41h.362kueb4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcomicset%2Fdvplqtjc8t3lga8b%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcomicset%2Fi%2F11828189%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=comicset:11828189 rawGenreId=500171 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=comicset:11828189 model.genreId=500171 model.genreName= jsonRaw=キッズアニメ jsonRolled=キッズアニメ displayGenre=キッズアニメ
+D/EGL_emulation( 6042): app_time_stats: avg=782.63ms min=278.22ms max=1287.03ms count=2
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00r5qhh.362ktef0.g00r5qhh.362ku6e6/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbamp%2F328945%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbamp%2Fi%2F11747352%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00r5qhh.362ktef0.g00r5qhh.362ku6e6/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbamp%2F328945%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbamp%2Fi%2F11747352%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=bamp:11747352 rawGenreId=101360 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=bamp:11747352 model.genreId=101360 model.genreName= jsonRaw=ホラー jsonRolled=ホラー displayGenre=ホラー
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fb002qfae2q%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10156409%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00szofh.362kta69.g00szofh.362ku422/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fcometostore%2Fb002qfae2q%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fcometostore%2Fi%2F10156409%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=cometostore:10156409 rawGenreId=400041 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=cometostore:10156409 model.genreId=400041 model.genreName= jsonRaw=TVアニメ jsonRolled=TVアニメ displayGenre=TVアニメ
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0017273777%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F13710272%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00rc68h.362kte5e.g00rc68h.362kuf06/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbookoffonline%2F0017273777%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbookoffonline%2Fi%2F13710272%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=bookoffonline:13710272 rawGenreId=101360 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=bookoffonline:13710272 model.genreId=101360 model.genreName= jsonRaw=ホラー jsonRolled=ホラー displayGenre=ホラー
+I/flutter ( 6042): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tb68h.362kt203.g00tb68h.362kuf4f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmifsoft%2Fmobl-1042%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmifsoft%2Fi%2F12034182%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tb68h.362kt203.g00tb68h.362kuf4f/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmifsoft%2Fmobl-1042%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmifsoft%2Fi%2F12034182%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter ( 6042): [RakutenGenre][API] itemCode=mifsoft:12034182 rawGenreId=508090 rawGenreName= rawKeys=genreId
+I/flutter ( 6042): [RakutenGenre][MAP] itemCode=mifsoft:12034182 model.genreId=508090 model.genreName= jsonRaw=アニメ jsonRolled=アニメ displayGenre=アニメ
+I/flutter ( 6042): [Rakuten] page=1 parsedItems=20 / raw=20
+I/flutter ( 6042): [Rakuten] repository search total mapped=20
+I/flutter ( 6042): [Rakuten] genreSearch mapped item count=20
+I/flutter ( 6042): [Rakuten] genreSearch before filter count=20
+I/flutter ( 6042): [Rakuten] recommendation purpose skip app-side filter count=20
+I/flutter ( 6042): [RECOMMEND_API] phase=personal status=200 rawCount=20
+I/flutter ( 6042): [RECOMMEND_FILTER] raw=20 afterExclude=20 reasonCounts={}
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=joshin-cddvd:10590000 title=おもちゃ/宮本真希[DVD]【返品種別A】
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=joshin-cddvd:10590000 title=おもちゃ/宮本真希[DVD]【返品種別A】
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=bamp:11998154 title=OMOCHA オモチャ【邦画 中古 DVD】メール便可 レンタル落ち
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=bamp:11998154 title=OMOCHA オモチャ【邦画 中古 DVD】メール便可 レンタル落ち
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=bookoffonline:11649616 title=【中古】 Imitation　lonely〜都会は淋しがりやのオモチャ／亜蘭知子
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=bookoffonline:11649616 title=【中古】 Imitation　lonely〜都会は淋しがりやのオモチャ／亜蘭知子
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=mifsoft:12034183 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [CD]
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=mifsoft:12034183 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [CD]
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=bookoffonline:12252050 title=【中古】 劇場版ヤッターマン　新ヤッターメカ大集合！　オモチャの国で大決戦だコロン！／竜の子プロダクション（原作）,吉野裕行（ヤッターマン1号、ガンちゃん）,伊藤静（ヤッターマン2号、アイちゃん）,笹川ひろし（総監督）,上北ふたご（キャラクタ
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=bookoffonline:12252050 title=【中古】 劇場版ヤッターマン　新ヤッターメカ大集合！　オモチャの国で大決戦だコロン！／竜の子プロダクション（原作）,吉野裕行（ヤッターマン1号、ガンちゃん）,伊藤静（ヤッターマン2号、アイちゃん）,笹川ひろし（総監督）,上北ふたご（キャラクタ
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=bookoffonline:15642274 title=【中古】 BLCDコレクション「濡れトロ3P　大人のオモチャモニター　上巻」／（ドラマCD）,榊原優希（朝比奈睦）,田所陽向（神代泉里）,興津和幸（高瀬夏己）
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=bookoffonline:15642274 title=【中古】 BLCDコレクション「濡れトロ3P　大人のオモチャモニター　上巻」／（ドラマCD）,榊原優希（朝比奈睦）,田所陽向（神代泉里）,興津和幸（高瀬夏己）
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=bookoffonline:10640864 title=【中古】 僕は君のオモチャ（初回生産限定盤）（DVD付）／中島卓偉
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=bookoffonline:10640864 title=【中古】 僕は君のオモチャ（初回生産限定盤）（DVD付）／中島卓偉
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=neowing-r:15153255 title=おとなのあそびば 〜オモチャ大好き! Hな漫画家と〜[CD] / ドラマCD (湯町駆)
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=neowing-r:15153255 title=おとなのあそびば 〜オモチャ大好き! Hな漫画家と〜[CD] / ドラマCD (湯町駆)
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=book:20278698 title=BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [ (ドラマCD) ]
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=book:20278698 title=BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [ (ドラマCD) ]
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=book:20921157 title=大人のオモチャ ダッチワイフ・レポート [ 曽根中生 ]
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=book:20921157 title=大人のオモチャ ダッチワイフ・レポート [ 曽根中生 ]
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=book:20278687 title=BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [ (ドラマCD) ]
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=book:20278687 title=BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [ (ドラマCD) ]
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=guruguru2:13135860 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [CD]
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=guruguru2:13135860 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [CD]
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=book:21679277 title=ドラマCD「素人ヤンキー♂危機一発！！　REPLAY」どきどきオモチャ箱セット
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=book:21679277 title=ドラマCD「素人ヤンキー♂危機一発！！　REPLAY」どきどきオモチャ箱セット
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=auc-sora:10333040 title=キラー ホビー/オモチャが殺しにやって来る [DVD]
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=auc-sora:10333040 title=キラー ホビー/オモチャが殺しにやって来る [DVD]
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=guruguru2:13135859 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [CD]
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=guruguru2:13135859 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [CD]
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=comicset:11828189 title=【中古】 世界名作アニメ　チップとデール　リスのオモチャ合戦　他8話収録 / [DVD]【メール便送料無料】【最短翌日配達対応】
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=comicset:11828189 title=【中古】 世界名作アニメ　チップとデール　リスのオモチャ合戦　他8話収録 / [DVD]【メール便送料無料】【最短翌日配達対応】
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=bamp:11747352 title=キラー・ホビー オモチャが殺しにやって来る 字幕のみ【洋画 中古 DVD】メール便可 ケース無:: レンタル落ち 「売り尽くし」
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=bamp:11747352 title=キラー・ホビー オモチャが殺しにやって来る 字幕のみ【洋画 中古 DVD】メール便可 ケース無:: レンタル落ち 「売り尽くし」
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=cometostore:10156409 title=【中古】劇場版ヤッターマン 新ヤッターメカ大集合! オモチャの国で大決戦だコロン! [DVD]
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=cometostore:10156409 title=【中古】劇場版ヤッターマン 新ヤッターメカ大集合! オモチャの国で大決戦だコロン! [DVD]
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=bookoffonline:13710272 title=【中古】 キラー・ホビー／オモチャが殺しにやって来る／ジェーン・ヒギンソン,トレイシー・フレイム,ブライアン・ブレマー,マーティン・キトローザー（監督、脚本）,マシュー・ムース（音楽）
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=bookoffonline:13710272 title=【中古】 キラー・ホビー／オモチャが殺しにやって来る／ジェーン・ヒギンソン,トレイシー・フレイム,ブライアン・ブレマー,マーティン・キトローザー（監督、脚本）,マシュー・ムース（音楽）
+I/flutter ( 6042): [RECOMMEND_TRACE] raw item itemCode=mifsoft:12034182 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [CD]
+I/flutter ( 6042): [RECOMMEND_TRACE] accepted itemCode=mifsoft:12034182 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [CD]
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=joshin-cddvd:10590000 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=joshin-cddvd:10590000 score=35.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=joshin-cddvd:10590000 title=おもちゃ/宮本真希[DVD]【返品種別A】 price=2710 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=35.0 score=-40.0 reasons=好きなジャンルに近い|見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bamp:11998154 price=752 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bookoffonline:11649616 price=2299 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=mifsoft:12034183 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=mifsoft:12034183 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=mifsoft:12034183 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [CD] price=3148 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bookoffonline:12252050 price=2299 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bookoffonline:15642274 price=2541 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bookoffonline:10640864 price=1089 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=neowing-r:15153255 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=neowing-r:15153255 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=neowing-r:15153255 title=おとなのあそびば 〜オモチャ大好き! Hな漫画家と〜[CD] / ドラマCD (湯町駆) price=2822 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=book:20278698 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=book:20278698 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=book:20278698 title=BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [ (ドラマCD) ] price=2673 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=book:20921157 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=book:20921157 score=35.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=book:20921157 title=大人のオモチャ ダッチワイフ・レポート [ 曽根中生 ] price=2690 reviewAverage=3.00 reviewCount=1 roomFit=0.0 reaction=0.0 reviewEvidence=-30.0 postability=35.0 score=-45.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=book:20278687 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=book:20278687 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=book:20278687 title=BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [ (ドラマCD) ] price=2758 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=guruguru2:13135860 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=guruguru2:13135860 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=guruguru2:13135860 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [CD] price=2604 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=book:21679277 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=book:21679277 score=35.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=book:21679277 title=ドラマCD「素人ヤンキー♂危機一発！！　REPLAY」どきどきオモチャ箱セット price=5505 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=35.0 score=-100.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=auc-sora:10333040 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=auc-sora:10333040 score=35.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=auc-sora:10333040 title=キラー ホビー/オモチャが殺しにやって来る [DVD] price=1770 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=35.0 score=-100.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=guruguru2:13135859 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=guruguru2:13135859 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=guruguru2:13135859 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [CD] price=2604 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=comicset:11828189 price=636 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bamp:11747352 price=349 reason=tooCheap
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=cometostore:10156409 price=6480 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bookoffonline:13710272 price=871 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=mifsoft:12034182 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=mifsoft:12034182 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=mifsoft:12034182 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [CD] price=3148 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_POOL] raw=20 valid=11 scored=11
+I/flutter ( 6042): [RECOMMEND_SELECT] strictSelected=10
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=joshin-cddvd:10590000 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=joshin-cddvd:10590000 score=35.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=joshin-cddvd:10590000 title=おもちゃ/宮本真希[DVD]【返品種別A】 price=2710 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=35.0 score=-40.0 reasons=好きなジャンルに近い|見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bamp:11998154 price=752 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bookoffonline:11649616 price=2299 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=mifsoft:12034183 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=mifsoft:12034183 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=mifsoft:12034183 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [CD] price=3148 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bookoffonline:12252050 price=2299 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bookoffonline:15642274 price=2541 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bookoffonline:10640864 price=1089 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=neowing-r:15153255 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=neowing-r:15153255 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=neowing-r:15153255 title=おとなのあそびば 〜オモチャ大好き! Hな漫画家と〜[CD] / ドラマCD (湯町駆) price=2822 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=book:20278698 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=book:20278698 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=book:20278698 title=BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [ (ドラマCD) ] price=2673 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=book:20921157 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=book:20921157 score=35.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=book:20921157 title=大人のオモチャ ダッチワイフ・レポート [ 曽根中生 ] price=2690 reviewAverage=3.00 reviewCount=1 roomFit=0.0 reaction=0.0 reviewEvidence=-30.0 postability=35.0 score=-45.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=book:20278687 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=book:20278687 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=book:20278687 title=BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [ (ドラマCD) ] price=2758 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=guruguru2:13135860 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=guruguru2:13135860 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=guruguru2:13135860 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 下巻 [CD] price=2604 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=book:21679277 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=book:21679277 score=35.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=book:21679277 title=ドラマCD「素人ヤンキー♂危機一発！！　REPLAY」どきどきオモチャ箱セット price=5505 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=35.0 score=-100.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=auc-sora:10333040 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=auc-sora:10333040 score=35.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=auc-sora:10333040 title=キラー ホビー/オモチャが殺しにやって来る [DVD] price=1770 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=35.0 score=-100.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=guruguru2:13135859 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=guruguru2:13135859 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=guruguru2:13135859 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [CD] price=2604 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=comicset:11828189 price=636 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bamp:11747352 price=349 reason=tooCheap
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=cometostore:10156409 price=6480 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_EXCLUDE] itemCode=bookoffonline:13710272 price=871 reason=businessItem
+I/flutter ( 6042): [RECOMMEND_ROOM_FIT] itemCode=mifsoft:12034182 score=0.0 reasons=
+I/flutter ( 6042): [RECOMMEND_POSTABILITY] itemCode=mifsoft:12034182 score=25.0 reasons=投稿しやすい
+I/flutter ( 6042): [RECOMMEND_SCORE] itemCode=mifsoft:12034182 title=(ドラマCD) BLCDコレクション 濡れトロ3P 大人のオモチャモニター 上巻 [CD] price=3148 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=25.0 score=-108.0 reasons=見た目で選ぶ|投稿しやすい
+I/flutter ( 6042): [RECOMMEND_POOL] raw=20 valid=11 scored=11
+I/flutter ( 6042): [RECOMMEND_SELECT] strictSelected=10
+I/flutter ( 6042): [RECOMMEND_API_GUARD] skipExtraSearch reason=poolHasEnoughBackfill
+I/flutter ( 6042): [RECOMMEND_API_GUARD] extraSearchAllowed=false
+I/flutter ( 6042): [RECOMMEND] apiCalls=1 poolSize=20
+I/flutter ( 6042): [RECOMMEND] final count: 10
+I/flutter ( 6042): [RECOMMEND_BUCKET] personal=10 relaxed=0 discovery=0 total=10
+I/flutter ( 6042): [RECOMMEND_RESULT] style=social personalCount=10 discoveryCount=0 total=10
+I/flutter ( 6042): [RECOMMEND_TRACE] finalCandidateCount=10
+I/flutter ( 6042): [RECOMMEND_TRACE] failureType=none
+I/flutter ( 6042): [RECOMMEND_RESULT] status=success count=10
+I/flutter ( 6042): [RECOMMEND_GENERATE] end requestCount=1 planCount=7
+I/flutter ( 6042): [RECOMMEND_SUMMARY] totalApiRequests=1 totalPlans=7 selectedCount=10 excludedCount=0 durationMs=2143
+I/flutter ( 6042): [RECOMMEND_TRACE] savedBundle=true
+I/flutter ( 6042): [RECOMMEND_SAVE] savedBundle=true count=10
+I/flutter ( 6042): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 6042): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-16T13:13:11.269367
+I/flutter ( 6042): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 6042): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter ( 6042): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 6042): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 6042): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=0 roomImportedDoneCount=0 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter ( 6042): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=0 appCollectedCount=0 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 6042): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=0 afterFilterLen=0 surface=ok_empty_no_data ui=ready
+D/EGL_emulation( 6042): app_time_stats: avg=1290.71ms min=43.79ms max=2537.64ms count=2
+Lost connection to device.
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=False
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_220818.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_220818.mp4 (131072 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_220818
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_220818\terminal_output_20260516_220818.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_220818.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260516_220818.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260516_220818.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260516_220818.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260516_220818.log
+
+Done.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
