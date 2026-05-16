@@ -1,0 +1,1058 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-16 22:51:37
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: emulator-5554
+Device manufacturer: Google
+Device model: sdk_gphone64_x86_64
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : emulator-5554
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_225137.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260516_225137.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260516_225137.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260516_225137.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260516_225137.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\terminal_output_20260516_225137.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 12608).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d emulator-5554 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Resolving dependencies...
+Downloading packages...
+  async 2.13.0 (2.13.1 available)
+  characters 1.4.0 (1.4.1 available)
+  cli_util 0.4.2 (0.5.1 available)
+  cupertino_icons 1.0.8 (1.0.9 available)
+  flutter_lints 5.0.0 (6.0.0 available)
+  json_annotation 4.11.0 (4.12.0 available)
+  lints 5.1.1 (6.1.0 available)
+  matcher 0.12.17 (0.12.20 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.16.0 (1.18.2 available)
+  shared_preferences 2.5.4 (2.5.5 available)
+  shared_preferences_android 2.4.21 (2.4.23 available)
+  shared_preferences_platform_interface 2.4.1 (2.4.2 available)
+  test_api 0.7.6 (0.7.12 available)
+  url_launcher_ios 6.3.6 (6.4.1 available)
+  url_launcher_web 2.4.1 (2.4.3 available)
+  vector_math 2.2.0 (2.3.0 available)
+  vm_service 15.0.2 (15.2.0 available)
+  webview_flutter_android 4.10.15 (4.12.0 available)
+  webview_flutter_wkwebview 3.24.2 (3.25.1 available)
+  xml 6.6.1 (7.0.1 available)
+Got dependencies!
+21 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Launching lib\main.dart on sdk gphone64 x86 64 in debug mode...
+Running Gradle task 'assembleDebug'...                             13.7s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.2s
+D/FlutterJNI(14516): Beginning load of flutter...
+D/FlutterJNI(14516): flutter (null) was loaded normally!
+I/flutter (14516): [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).
+I/flutter (14516): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter (14516): verifyMode=false
+I/Choreographer(14516): Skipped 31 frames!  The application may be doing too much work on its main thread.
+Syncing files to device sdk gphone64 x86 64...                  
+I/WindowExtensionsImpl(14516): Initializing Window Extensions, vendor API level=6, activity embedding enabled=true
+Syncing files to device sdk gphone64 x86 64...                     100ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on sdk gphone64 x86 64 is available at: http://127.0.0.1:56235/xIUxwkLRbcA=/
+W/HWUI    (14516): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    (14516): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4(14516): mapper 4.x is not supported
+The Flutter DevTools debugger and profiler on sdk gphone64 x86 64 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:56235/xIUxwkLRbcA=/
+I/flutter (14516): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/o.room_manager2(14516): Compiler allocated 5174KB to compile void android.view.ViewRootImpl.performTraversals()
+I/flutter (14516): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=false missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (14516): [ROOMコレ診断] loadAll 初回サマリー parsed=10 rawJsonList=10
+I/flutter (14516): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (14516): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_HOME_CTA] visible=true itemsWithReaction=10 reason=hasReaction
+I/flutter (14516): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=false missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (14516): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=CommonDraggableEdgeFab file=lib/widgets/common_draggable_edge_fab.dart visible=true reason=commentEdgeFabRightSideNotMenu
+I/flutter (14516): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (14516): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=10 afterFilterLen=10 surface=ok_list ui=ready
+I/flutter (14516): [ROOMコレ診断] 描画リスト先頭 productId=golden-15-8g title=庭園用 こいのぼり 鯉のぼり フジサン鯉 ゴールデン鯉 1.5m 8点セット(吹流し+鯉5匹+矢車+ロープ) 庭園 ポール付属 ガーデンセット status=done len=10
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=golden-15-8g roomLikeCount=4 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=nm-kshrn roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=10 candidateSource=statusCandidateOnly
+I/flutter (14516): [MANAGED_PRODUCT_SAVE]
+I/flutter (14516): action=refresh
+I/flutter (14516): productId=
+I/flutter (14516): itemCode=
+I/flutter (14516): beforePendingCount=0
+I/flutter (14516): afterPendingCount=0
+I/flutter (14516): beforeDoneCount=10
+I/flutter (14516): afterDoneCount=10
+I/flutter (14516): [MANAGED_PRODUCT_LOAD]
+I/flutter (14516): source=provider
+I/flutter (14516): pendingCount=0
+I/flutter (14516): doneCount=10
+I/flutter (14516): filter=
+I/flutter (14516): tab=
+I/flutter (14516): [ROOMコレ診断] refreshManagedProductList 完了 total=10 candidate=0 done=10 ui=ready
+I/flutter (14516): [HOME_SECTION_ORDER] order=todayRoomOperation,roomColleManagement,roomSync,recentCandidates
+I/flutter (14516): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=none file=lib/screens/home_placeholder_screen.dart visible=false reason=noDrawerNoMenuFabOnHomeBody
+I/flutter (14516): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (14516): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter (14516): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (14516): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (14516): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (14516): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (14516): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (14516): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-16T13:13:11.269367
+I/flutter (14516): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (14516): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (14516): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (14516): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-16T13:13:11.269367
+I/flutter (14516): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (14516): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter (14516): [MANAGED_PRODUCT_SAVE]
+I/flutter (14516): action=refresh
+I/flutter (14516): productId=
+I/flutter (14516): itemCode=
+I/flutter (14516): beforePendingCount=0
+I/flutter (14516): beforeDoneCount=10
+I/flutter (14516): afterDoneCount=10
+I/flutter (14516): [MANAGED_PRODUCT_LOAD]
+I/flutter (14516): source=screen
+I/flutter (14516): pendingCount=0
+I/flutter (14516): doneCount=10
+I/flutter (14516): afterPendingCount=0
+I/flutter (14516): filter=
+I/flutter (14516): tab=done
+I/flutter (14516): [ROOMコレ診断] refreshManagedProductList 完了 total=10 candidate=0 done=10 ui=ready
+I/flutter (14516): [ROOMコレ診断] ROOMコレ画面起動後 total=10 candidate=0 done=10 listUi=RakutenManagedProductListUiStatus.ready tabIdx=1
+I/Choreographer(14516): Skipped 370 frames!  The application may be doing too much work on its main thread.
+I/flutter (14516): [MANAGED_PRODUCT_SAVE]
+I/flutter (14516): action=refresh
+I/flutter (14516): productId=
+I/flutter (14516): itemCode=
+I/flutter (14516): beforePendingCount=0
+I/flutter (14516): afterPendingCount=0
+I/flutter (14516): beforeDoneCount=10
+I/flutter (14516): afterDoneCount=10
+I/flutter (14516): [MANAGED_PRODUCT_LOAD]
+I/flutter (14516): source=provider
+I/flutter (14516): pendingCount=0
+I/flutter (14516): doneCount=10
+I/flutter (14516): filter=
+I/flutter (14516): tab=
+I/flutter (14516): [ROOMコレ診断] refreshManagedProductList 完了 total=10 candidate=0 done=10 ui=ready
+I/flutter (14516): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=false missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=10 candidateSource=statusCandidateOnly
+I/flutter (14516): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=10 afterFilterLen=10 surface=ok_list ui=ready
+I/flutter (14516): [ROOMコレ診断] 描画リスト先頭 productId=golden-15-8g title=庭園用 こいのぼり 鯉のぼり フジサン鯉 ゴールデン鯉 1.5m 8点セット(吹流し+鯉5匹+矢車+ロープ) 庭園 ポール付属 ガーデンセット status=done len=10
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=golden-15-8g roomLikeCount=4 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=nm-kshrn roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+D/ProfileInstaller(14516): Installing profile for com.stepbytestudio.room_manager2
+I/WebViewFactory(14516): Loading com.google.android.webview version 147.0.7727.137 (code 772713708)
+V/ResourcesManager(14516): The following library key has been added: ResourcesKey{ mHash=20368e21 mResDir=null mSplitDirs=[] mOverlayDirs=[/product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk,/data/resource-cache/com.android.systemui-neutral-xfRj.frro,/data/resource-cache/com.android.systemui-accent-4GLZ.frro,/data/resource-cache/com.android.systemui-dynamic-17DN.frro] mLibDirs=[/data/app/~~2GtEIikda8QXLjjWkjyjYA==/com.google.android.webview-_HfWHdjU57biPfBHrbZYhQ==/base.apk,/system/framework/android.test.base.jar,/system_ext/framework/androidx.window.extensions.jar] mDisplayId=0 mOverrideConfig=v35 mCompatInfo={320dpi always-compat} mLoaders=[]}
+D/ApplicationLoaders(14516): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+D/ApplicationLoaders(14516): Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+W/o.room_manager2(14516): Loading /data/app/~~2GtEIikda8QXLjjWkjyjYA==/com.google.android.webview-_HfWHdjU57biPfBHrbZYhQ==/oat/x86_64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(14516): Configuring clns-8 for other apk /data/app/~~2GtEIikda8QXLjjWkjyjYA==/com.google.android.webview-_HfWHdjU57biPfBHrbZYhQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~2GtEIikda8QXLjjWkjyjYA==/com.google.android.webview-_HfWHdjU57biPfBHrbZYhQ==/lib/x86_64:/data/app/~~2GtEIikda8QXLjjWkjyjYA==/com.google.android.webview-_HfWHdjU57biPfBHrbZYhQ==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(14516): version=147.0.7727.137 (772713708) minSdkVersion=29 multiprocess=true packageId=2 splits=<none>
+D/nativeloader(14516): Load /data/app/~~2GtEIikda8QXLjjWkjyjYA==/com.google.android.webview-_HfWHdjU57biPfBHrbZYhQ==/base.apk!/lib/x86_64/libwebviewchromium.so using ns clns-8 from class loader (caller=/data/app/~~2GtEIikda8QXLjjWkjyjYA==/com.google.android.webview-_HfWHdjU57biPfBHrbZYhQ==/base.apk): ok
+D/nativeloader(14516): Load /system/lib64/libwebviewchromium_plat_support.so using ns clns-8 from class loader (caller=/data/app/~~2GtEIikda8QXLjjWkjyjYA==/com.google.android.webview-_HfWHdjU57biPfBHrbZYhQ==/base.apk): ok
+E/chromium(14516): [0516/135220.247947:ERROR:android_webview/browser/variations/variations_seed_loader.cc:39] Seed missing signature.
+I/chromium(14516): [0516/135220.252553:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(14516): Successfully loaded native library
+I/cr_CachingUmaRecorder(14516): Flushed 20 samples from 20 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(14516): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(14516): #registerProvider() provider:WV.yk@3645489 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(14516): #setManagerAndSource() 0
+I/cr_DisplayManager(14516): Is Display Topology available: false
+I/cr_CombinedPProvider(14516): #linkNativeInternal() 1
+I/cr_AppResProvider(14516): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(14516): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(14516): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(14516): #flushPolicies()
+W/chromium(14516): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(14516): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 20971520
+I/o.room_manager2(14516): Background concurrent mark compact GC freed 3616KB AllocSpace bytes, 26(832KB) LOS objects, 49% free, 3418KB/6837KB, paused 3.700ms,11.813ms total 80.210ms
+W/o.room_manager2(14516): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~2GtEIikda8QXLjjWkjyjYA==/com.google.android.webview-_HfWHdjU57biPfBHrbZYhQ==/base.apk' with 2 weak references
+D/EGL_emulation(14516): app_time_stats: avg=736.45ms min=475.19ms max=997.72ms count=2
+I/CameraManagerGlobal(14516): Connecting to camera service
+I/PlatformViewsController(14516): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(14516): PlatformView is using SurfaceProducer backend
+I/Choreographer(14516): Skipped 144 frames!  The application may be doing too much work on its main thread.
+E/platform(14516): Failed to open rendernode: No such file or directory
+D/vulkan  (14516): searching for layers in '/data/app/~~jOujEjmKN99NqTJgJAV_-Q==/com.stepbytestudio.room_manager2-0C_3LKvdTbSeZYqRB3BOpA==/lib/x86_64'
+D/vulkan  (14516): searching for layers in '/data/app/~~jOujEjmKN99NqTJgJAV_-Q==/com.stepbytestudio.room_manager2-0C_3LKvdTbSeZYqRB3BOpA==/base.apk!/lib/x86_64'
+I/HWUI    (14516): Davey! duration=2637ms; Flags=1, FrameTimelineVsyncId=138074, IntendedVsync=2855942586960, Vsync=2858342586864, InputEventId=0, HandleInputStart=2858355655400, AnimationStart=2858355687100, PerformTraversalsStart=2858356023900, DrawStart=2858375446200, FrameDeadline=2855959253626, FrameInterval=2858354893300, FrameStartTime=16666666, SyncQueued=2858509934500, SyncStart=2858531626600, IssueDrawCommandsStart=2858533503300, SwapBuffers=2858579159700, FrameCompleted=2858601502200, DequeueBufferDuration=13459100, QueueBufferDuration=2177800, GpuCompleted=2858587878700, SwapBuffersCompleted=2858601502200, DisplayPresentTime=0, CommandSubmissionCompleted=2858579159700, 
+I/Choreographer(14516): Skipped 31 frames!  The application may be doing too much work on its main thread.
+D/EGL_emulation(14516): app_time_stats: avg=259.02ms min=62.31ms max=614.79ms count=4
+D/EGL_emulation(14516): app_time_stats: avg=3959.96ms min=8.96ms max=38615.23ms count=10
+D/EGL_emulation(14516): app_time_stats: avg=537.82ms min=166.17ms max=909.46ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=319.97ms min=33.83ms max=1583.59ms count=6
+D/EGL_emulation(14516): app_time_stats: avg=576.56ms min=12.57ms max=6036.67ms count=11
+D/EGL_emulation(14516): app_time_stats: avg=86.52ms min=16.48ms max=759.81ms count=14
+D/EGL_emulation(14516): app_time_stats: avg=68.14ms min=12.27ms max=673.80ms count=19
+D/EGL_emulation(14516): app_time_stats: avg=30.83ms min=8.64ms max=83.30ms count=26
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_001.png
+D/EGL_emulation(14516): app_time_stats: avg=2691.84ms min=12.30ms max=5371.39ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=45.83ms min=12.15ms max=120.46ms count=21
+D/EGL_emulation(14516): app_time_stats: avg=182.99ms min=17.26ms max=1094.21ms count=7
+D/EGL_emulation(14516): app_time_stats: avg=145.97ms min=11.07ms max=1863.32ms count=15
+D/EGL_emulation(14516): app_time_stats: avg=46.31ms min=11.86ms max=167.57ms count=20
+D/EGL_emulation(14516): app_time_stats: avg=69.39ms min=22.37ms max=399.98ms count=14
+D/EGL_emulation(14516): app_time_stats: avg=539.05ms min=22.85ms max=2081.94ms count=4
+D/EGL_emulation(14516): app_time_stats: avg=38.71ms min=10.60ms max=296.40ms count=26
+D/EGL_emulation(14516): app_time_stats: avg=54.46ms min=12.98ms max=512.26ms count=17
+D/EGL_emulation(14516): app_time_stats: avg=60.97ms min=14.06ms max=506.41ms count=16
+I/flutter (14516): [RECOMMEND_TRACE] trigger=cta
+I/flutter (14516): [RECOMMEND_TRIGGER] source=cta
+I/flutter (14516): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (14516): [RECOMMEND_TRIGGER] source=cta
+I/flutter (14516): [RECOMMEND_TRACE] trigger=cta
+I/flutter (14516): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (14516): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (14516): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-16T13:13:11.269367
+I/flutter (14516): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (14516): [RECOMMEND_GUARD] skipReason=sameDay
+D/EGL_emulation(14516): app_time_stats: avg=91.18ms min=17.04ms max=1361.47ms count=20
+I/flutter (14516): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher(14516): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(14516): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_002.png
+D/EGL_emulation(14516): app_time_stats: avg=8364.92ms min=8.29ms max=41350.16ms count=5
+D/EGL_emulation(14516): app_time_stats: avg=24.14ms min=7.67ms max=52.25ms count=33
+D/EGL_emulation(14516): app_time_stats: avg=62.56ms min=9.36ms max=666.73ms count=16
+D/EGL_emulation(14516): app_time_stats: avg=142.32ms min=10.09ms max=795.77ms count=7
+D/EGL_emulation(14516): app_time_stats: avg=105.03ms min=11.03ms max=1146.87ms count=15
+D/EGL_emulation(14516): app_time_stats: avg=81.28ms min=11.01ms max=1236.11ms count=25
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_003.png
+D/EGL_emulation(14516): app_time_stats: avg=696.05ms min=14.66ms max=10054.44ms count=15
+D/EGL_emulation(14516): app_time_stats: avg=225.11ms min=16.56ms max=1173.84ms count=7
+D/EGL_emulation(14516): app_time_stats: avg=112.77ms min=16.52ms max=1174.06ms count=15
+D/EGL_emulation(14516): app_time_stats: avg=168.38ms min=11.68ms max=1711.83ms count=12
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_004.png
+D/EGL_emulation(14516): app_time_stats: avg=476.50ms min=10.40ms max=4566.69ms count=10
+D/EGL_emulation(14516): app_time_stats: avg=43.88ms min=6.64ms max=729.34ms count=27
+I/flutter (14516): [RECOMMEND_TRIGGER] source=manual
+I/flutter (14516): [RECOMMEND_TRACE] action=regenerateToday
+I/flutter (14516): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (14516): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-16T13:13:11.269367
+I/flutter (14516): [RECOMMEND_TRACE] trigger=manual
+I/flutter (14516): [RECOMMEND_TRACE] generate start
+I/flutter (14516): [RECOMMEND_TRACE] profile nickname=aui
+I/flutter (14516): [RECOMMEND_STYLE] selected=social
+I/flutter (14516): [SEARCH_STYLE_TRACE] selectedStyle=social
+I/flutter (14516): [RECOMMEND_TRACE] favoriteGenreIds=566382,100804
+I/flutter (14516): [GENRE_PREF_LOAD] favoriteGenreIds=566382,100804 favoriteGenreNames=おもちゃ,キッチン用品・食器 source=recommend
+I/flutter (14516): [RECOMMEND_TRACE] searchPreferences=social
+I/flutter (14516): [RECOMMEND_TRACE] savedShopCount=0
+I/flutter (14516): [RECOMMEND_TRACE] doneProductCount=10
+I/flutter (14516): [RECOMMEND_TRACE] candidateProductCount=0
+I/flutter (14516): [RECOMMEND_START] genreCount=2 savedShopCount=0 doneCount=10 candidateCount=0 selectedStyle=social
+I/flutter (14516): [GENRE_PREF_MISMATCH] savedGenreId=566382 usedGenreId=408254 savedName=おもちゃ usedName=コーヒー飲料 reason=historyGenreNotInFavorites source=recommend
+I/flutter (14516): [GENRE_PREF_MISMATCH] savedGenreId=566382 usedGenreId=210163 savedName=おもちゃ usedName=盆提灯 reason=historyGenreNotInFavorites source=recommend
+I/flutter (14516): [RECOMMEND_PLAN] count=8
+I/flutter (14516): [RECOMMEND_GENERATE] start requestCount=0 planCount=8
+I/flutter (14516): [RECOMMEND_REACTION] commentGenres=2 likeGenres=4 commentShops=2 likeShops=3 priceBands=2000-4999,5000-9999,10000-19999,20000-49999
+I/flutter (14516): [RECOMMEND_POOL] raw=0 valid=0 scored=0
+I/flutter (14516): [RECOMMEND_SELECT] strictSelected=0
+I/flutter (14516): [RECOMMEND_PHASE] phase=personal
+I/flutter (14516): [RECOMMEND] search keyword=おもちゃ
+I/flutter (14516): [RECOMMEND] genreId=566382
+I/flutter (14516): [RECOMMEND] searchPreference=
+I/flutter (14516): [RECOMMEND] minPrice=null
+I/flutter (14516): [RECOMMEND] maxPrice=null
+I/flutter (14516): [RECOMMEND] sanitizedMinPrice=null
+I/flutter (14516): [RECOMMEND] sanitizedMaxPrice=null
+I/flutter (14516): [RECOMMEND_PLAN] phase=personal relax=0 source=genre index=1 keyword=おもちゃ genreId=566382 shopCode= style=social minPrice= maxPrice= sort=
+I/flutter (14516): [RECOMMEND_API] planIndex=1 keyword=おもちゃ genreId=566382 shopCode= page=1
+I/flutter (14516): [RECOMMEND_API] phase=personal start index=1 page=1
+I/flutter (14516): [Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=おもちゃ genreId=566382 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (14516): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (14516): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=20&keyword=%E3%81%8A%E3%82%82%E3%81%A1%E3%82%83&minReviewCount=10&minReviewAverage=3.6&genreId=566382
+I/flutter (14516): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=10 candidateSource=statusCandidateOnly
+I/flutter (14516): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=10 afterFilterLen=10 surface=ok_list ui=ready
+I/flutter (14516): [ROOMコレ診断] 描画リスト先頭 productId=golden-15-8g title=庭園用 こいのぼり 鯉のぼり フジサン鯉 ゴールデン鯉 1.5m 8点セット(吹流し+鯉5匹+矢車+ロープ) 庭園 ポール付属 ガーデンセット status=done len=10
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=golden-15-8g roomLikeCount=4 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=nm-kshrn roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+D/EGL_emulation(14516): app_time_stats: avg=38.05ms min=5.20ms max=403.61ms count=25
+I/flutter (14516): [Rakuten] response status=200 page=1 bytes=187256
+I/flutter (14516): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (14516): [RECOMMEND_TRACE] rawCount=20
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00t7yhh.362kt537.g00t7yhh.362ku34e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff372081-mitoyo%2Fm05-0008%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff372081-mitoyo%2Fi%2F10000990%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00t7yhh.362kt537.g00t7yhh.362ku34e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff372081-mitoyo%2Fm05-0008%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff372081-mitoyo%2Fi%2F10000990%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=f372081-mitoyo:10000990 rawGenreId=566436 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=f372081-mitoyo:10000990 model.genreId=566436 model.genreName= jsonRaw=セット jsonRolled=セット displayGenre=セット
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tqlgh.362kt0cc.g00tqlgh.362kuceb/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkitwell-official%2Fx000n6s13j%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkitwell-official%2Fi%2F10000000%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tqlgh.362kt0cc.g00tqlgh.362kuceb/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkitwell-official%2Fx000n6s13j%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fkitwell-official%2Fi%2F10000000%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=kitwell-official:10000000 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=kitwell-official:10000000 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00t17mh.362ktafb.g00t17mh.362kud18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Flotuslife2018%2Fb073w9v2wb%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Flotuslife2018%2Fi%2F10000002%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00t17mh.362ktafb.g00t17mh.362kud18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Flotuslife2018%2Fb073w9v2wb%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Flotuslife2018%2Fi%2F10000002%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=lotuslife2018:10000002 rawGenreId=406704 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=lotuslife2018:10000002 model.genreId=406704 model.genreName= jsonRaw=セット jsonRolled=セット displayGenre=セット
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00t7yhh.362kt537.g00t7yhh.362ku34e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff372081-mitoyo%2Fm05-0013%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff372081-mitoyo%2Fi%2F10000993%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00t7yhh.362kt537.g00t7yhh.362ku34e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff372081-mitoyo%2Fm05-0013%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff372081-mitoyo%2Fi%2F10000993%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=f372081-mitoyo:10000993 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=f372081-mitoyo:10000993 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00t17mh.362ktafb.g00t17mh.362kud18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Flotuslife2018%2Fb0875fv2bq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Flotuslife2018%2Fi%2F10000042%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00t17mh.362ktafb.g00t17mh.362kud18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Flotuslife2018%2Fb0875fv2bq%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Flotuslife2018%2Fi%2F10000042%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=lotuslife2018:10000042 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=lotuslife2018:10000042 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00q63xh.362ktb24.g00q63xh.362kufa2/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fwoodypuddy%2Fg03-1171%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fwoodypuddy%2Fi%2F10001340%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00q63xh.362ktb24.g00q63xh.362kufa2/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fwoodypuddy%2Fg03-1171%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fwoodypuddy%2Fi%2F10001340%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=woodypuddy:10001340 rawGenreId=201605 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=woodypuddy:10001340 model.genreId=201605 model.genreName= jsonRaw=かず・計算 jsonRolled=かず・計算 displayGenre=かず・計算
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00t7yhh.362kt537.g00t7yhh.362ku34e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff372081-mitoyo%2Fm05-0003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff372081-mitoyo%2Fi%2F10000849%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00t7yhh.362kt537.g00t7yhh.362ku34e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff372081-mitoyo%2Fm05-0003%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff372081-mitoyo%2Fi%2F10000849%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=f372081-mitoyo:10000849 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=f372081-mitoyo:10000849 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00t3auh.362ktf6b.g00t3auh.362kuc59/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgoodgoodsshop%2Fkc%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgoodgoodsshop%2Fi%2F10000281%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00t3auh.362ktf6b.g00t3auh.362kuc59/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fgoodgoodsshop%2Fkc%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fgoodgoodsshop%2Fi%2F10000281%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=goodgoodsshop:10000281 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=goodgoodsshop:10000281 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00sqkih.362kt4e6.g00sqkih.362ku530/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Feclink%2F100793%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Feclink%2Fi%2F10001643%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00sqkih.362kt4e6.g00sqkih.362ku530/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Feclink%2F100793%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Feclink%2Fi%2F10001643%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=eclink:10001643 rawGenreId=205270 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=eclink:10001643 model.genreId=205270 model.genreName= jsonRaw=お絵かき jsonRolled=お絵かき displayGenre=お絵かき
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00q0uih.362kt107.g00q0uih.362ku7b5/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fes-toys%2F10867428%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fes-toys%2Fi%2F11885230%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00q0uih.362kt107.g00q0uih.362ku7b5/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fes-toys%2F10867428%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fes-toys%2Fi%2F11885230%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=es-toys:11885230 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=es-toys:11885230 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00t17mh.362ktafb.g00t17mh.362kud18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Flotuslife2018%2Fb07rw6nnzv%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Flotuslife2018%2Fi%2F10000039%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00t17mh.362ktafb.g00t17mh.362kud18/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Flotuslife2018%2Fb07rw6nnzv%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Flotuslife2018%2Fi%2F10000039%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=lotuslife2018:10000039 rawGenreId=566397 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=lotuslife2018:10000039 model.genreId=566397 model.genreName= jsonRaw=ミニドール jsonRolled=ミニドール displayGenre=ミニドール
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00r9svh.362kt596.g00r9svh.362ku45d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fedion%2F4975201181291%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fedion%2Fi%2F10462824%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00r9svh.362kt596.g00r9svh.362ku45d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fedion%2F4975201181291%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fedion%2Fi%2F10462824%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=edion:10462824 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=edion:10462824 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00tqt0h.362kt638.g00tqt0h.362ku904/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmamago%2Fmt004%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmamago%2Fi%2F10000837%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00tqt0h.362kt638.g00tqt0h.362ku904/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fmamago%2Fmt004%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fmamago%2Fi%2F10000837%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=mamago:10000837 rawGenreId=101196 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=mamago:10000837 model.genreId=101196 model.genreName= jsonRaw=その他 jsonRolled=スポーツトイ displayGenre=スポーツトイ
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qcnfh.362kt050.g00qcnfh.362ku018/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fnatural-living%2Fbornelund_aquaplay_harbourmarina%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fnatural-living%2Fi%2F10006181%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00qcnfh.362kt050.g00qcnfh.362ku018/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fnatural-living%2Fbornelund_aquaplay_harbourmarina%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fnatural-living%2Fi%2F10006181%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=natural-living:10006181 rawGenreId=553761 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=natural-living:10006181 model.genreId=553761 model.genreName= jsonRaw=その他 jsonRolled=プール・水遊び displayGenre=プール・水遊び
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qb8fh.362ktd49.g00qb8fh.362ku10a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fedute%2Fla-008%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fedute%2Fi%2F10001205%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00qb8fh.362ktd49.g00qb8fh.362ku10a/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fedute%2Fla-008%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fedute%2Fi%2F10001205%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=edute:10001205 rawGenreId=205272 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=edute:10001205 model.genreId=205272 model.genreName= jsonRaw=積み木 jsonRolled=積み木 displayGenre=積み木
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00t7yhh.362kt537.g00t7yhh.362ku34e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff372081-mitoyo%2Fm05-0004%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff372081-mitoyo%2Fi%2F10000850%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00t7yhh.362kt537.g00t7yhh.362ku34e/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ff372081-mitoyo%2Fm05-0004%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ff372081-mitoyo%2Fi%2F10000850%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+D/EGL_emulation(14516): app_time_stats: avg=51.74ms min=5.50ms max=413.74ms count=21
+I/flutter (14516): [RakutenGenre][API] itemCode=f372081-mitoyo:10000850 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=f372081-mitoyo:10000850 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u5p5h.362kt805.g00u5p5h.362kuf9c/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Farcraiz%2Farc3102%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Farcraiz%2Fi%2F10000033%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u5p5h.362kt805.g00u5p5h.362kuf9c/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Farcraiz%2Farc3102%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Farcraiz%2Fi%2F10000033%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=arcraiz:10000033 rawGenreId=566392 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u9qzh.362kt16d.g00u9qzh.362kuccd/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ffukukawashop%2Ffukukawa-023%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ffukukawashop%2Fi%2F10000029%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][MAP] itemCode=arcraiz:10000033 model.genreId=566392 model.genreName= jsonRaw=バランスゲーム jsonRolled=バランスゲーム displayGenre=バランスゲーム
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u9qzh.362kt16d.g00u9qzh.362kuccd/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ffukukawashop%2Ffukukawa-023%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Ffukukawashop%2Fi%2F10000029%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=fukukawashop:10000029 rawGenreId=566392 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=fukukawashop:10000029 model.genreId=566392 model.genreName= jsonRaw=バランスゲーム jsonRolled=バランスゲーム displayGenre=バランスゲーム
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u45rh.362kt7bb.g00u45rh.362kue99/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Frinstore%2F10000000%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Frinstore%2Fi%2F10000000%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u45rh.362kt7bb.g00u45rh.362kue99/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Frinstore%2F10000000%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Frinstore%2Fi%2F10000000%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=rinstore:10000000 rawGenreId=205270 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=rinstore:10000000 model.genreId=205270 model.genreName= jsonRaw=お絵かき jsonRolled=お絵かき displayGenre=お絵かき
+I/flutter (14516): [RAKUTEN_URL] itemUrl=https://hb.afl.rakuten.co.jp/hgc/g00u5dnh.362kt975.g00u5dnh.362kuf86/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fharezoratbp%2Fpf29-4%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fharezoratbp%2Fi%2F10000402%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RAKUTEN_URL] affiliateUrl=https://hb.afl.rakuten.co.jp/hgc/g00u5dnh.362kt975.g00u5dnh.362kuf86/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fharezoratbp%2Fpf29-4%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fharezoratbp%2Fi%2F10000402%2F&rafcid=wsc_i_is_e974cb78-35fb-4673-b14a-bd8054d09f49
+I/flutter (14516): [RakutenGenre][API] itemCode=harezoratbp:10000402 rawGenreId=566461 rawGenreName= rawKeys=genreId
+I/flutter (14516): [RakutenGenre][MAP] itemCode=harezoratbp:10000402 model.genreId=566461 model.genreName= jsonRaw=ハンドスピナー jsonRolled=ハンドスピナー displayGenre=ハンドスピナー
+I/flutter (14516): [Rakuten] page=1 parsedItems=20 / raw=20
+I/flutter (14516): [Rakuten] repository search total mapped=20
+I/flutter (14516): [Rakuten] genreSearch mapped item count=20
+I/flutter (14516): [Rakuten] genreSearch before filter count=20
+I/flutter (14516): [Rakuten] recommendation purpose skip app-side filter count=20
+I/flutter (14516): [RECOMMEND_API] phase=personal status=200 rawCount=20
+I/flutter (14516): [PRODUCT_SAFETY_FILTER] source=recommend itemCode=eclink:10001643 title=【楽天1位】文字練習 子供 誕生日 入学式 大人気 プレゼント 繰り返し電子メモ お絵かきボード 知育玩具 12インチ 汚れない 伝言板 遊び 利用 大人用 薄型 ワンボタン カラフル 芸術 スタンド お絵描きボード 女の子 男の子 2歳 3歳 4歳 5歳 6歳 7歳 軽量 おもちゃ shopName=eclink genreName= blocked=true reasons=adultContext
+I/flutter (14516): [PRODUCT_SAFETY_FILTER] source=recommend itemCode=arcraiz:10000033 title=＼CICINELL【正規品】／ バランスボード 木製 子供 大人 体幹 トレーニング アスレチック 軽量 大人 室内遊び おすすめ こども バランス ボード 小学生 遊具 フィットネス ヨガ ボード子供用　バランス フィットヨガボード おもちゃ 木育 プレゼント shopName=arcraizオンライン楽天市場店 genreName= blocked=true reasons=adultContext
+I/flutter (14516): [RECOMMEND_FILTER] raw=20 afterExclude=18 reasonCounts={safetyBlocked: 2}
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=f372081-mitoyo:10000990 title=【ふるさと納税】 木製ミニカー 木のおもちゃ 2018年グッド・トイ賞受賞 くるまセット&道セット [ 木のくるま 木の乗り物 木製知育玩具 グッドトイ賞受賞 日本製 国産 積み木 玩具 安心 安全 男の子 女の子 ギフト 出産祝い 100000 100,000円 台 なかよしライブラリー ]
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=f372081-mitoyo:10000990 title=【ふるさと納税】 木製ミニカー 木のおもちゃ 2018年グッド・トイ賞受賞 くるまセット&道セット [ 木のくるま 木の乗り物 木製知育玩具 グッドトイ賞受賞 日本製 国産 積み木 玩具 安心 安全 男の子 女の子 ギフト 出産祝い 100000 100,000円 台 なかよしライブラリー ]
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=kitwell-official:10000000 title=【グッド・トイ受賞】 KitWell 公式ストア キットウェル 正規品 マグビルド スロープセット 72ピース マグネット ブロック 知育玩具 カラフル パズル お祝い 男の子 女の子 プレゼント 3歳 4歳 5歳 6歳 図形学習 小学生 追加 入園 入学 追加 出産祝い 大容量
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=kitwell-official:10000000 title=【グッド・トイ受賞】 KitWell 公式ストア キットウェル 正規品 マグビルド スロープセット 72ピース マグネット ブロック 知育玩具 カラフル パズル お祝い 男の子 女の子 プレゼント 3歳 4歳 5歳 6歳 図形学習 小学生 追加 入園 入学 追加 出産祝い 大容量
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=lotuslife2018:10000002 title=グッドトイ受賞 【特別クーポン】 ジスター 天才のはじまり | 知育玩具 ブロック おもちゃ 知育 紐通し 3歳 4歳 5歳 6歳 7歳 8歳 男の子 女の子 モンテッソーリ プレゼント 子供 パズル 玩具 立体パズル フラワーブロック 遊び 保育 幼児 3才 4才 5才 6才
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=lotuslife2018:10000002 title=グッドトイ受賞 【特別クーポン】 ジスター 天才のはじまり | 知育玩具 ブロック おもちゃ 知育 紐通し 3歳 4歳 5歳 6歳 7歳 8歳 男の子 女の子 モンテッソーリ プレゼント 子供 パズル 玩具 立体パズル フラワーブロック 遊び 保育 幼児 3才 4才 5才 6才
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=f372081-mitoyo:10000993 title=【ふるさと納税】 木製知育玩具 木のおもちゃ 2017年グッド・トイ 林野庁長官賞受賞 赤ちゃんセット [ 赤ちゃんおもちゃ ギフト 出産祝い 歯固め はがため 収納箱 日本製 国産木材 玩具 安心 安全 男の子 女の子 グッドトイ賞受賞 70000 70,000円 台 なかよしライブラリー ]
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=f372081-mitoyo:10000993 title=【ふるさと納税】 木製知育玩具 木のおもちゃ 2017年グッド・トイ 林野庁長官賞受賞 赤ちゃんセット [ 赤ちゃんおもちゃ ギフト 出産祝い 歯固め はがため 収納箱 日本製 国産木材 玩具 安心 安全 男の子 女の子 グッドトイ賞受賞 70000 70,000円 台 なかよしライブラリー ]
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=lotuslife2018:10000042 title=トイオブザイヤー2025受賞【特別クーポン】 ロンビー 新感覚 チューブ式 ブロック 7色 560 ピース | 知育玩具 知育 おもちゃ 男の子 女の子 モンテッソーリ 3歳 4歳 5歳 6歳 子供 誕生日 プレゼント 玩具 子ども玩具 室内遊び 遊び 保育 幼児 小学生 物作り アクティビティ
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=lotuslife2018:10000042 title=トイオブザイヤー2025受賞【特別クーポン】 ロンビー 新感覚 チューブ式 ブロック 7色 560 ピース | 知育玩具 知育 おもちゃ 男の子 女の子 モンテッソーリ 3歳 4歳 5歳 6歳 子供 誕生日 プレゼント 玩具 子ども玩具 室内遊び 遊び 保育 幼児 小学生 物作り アクティビティ
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=woodypuddy:10001340 title=知育玩具 1歳 木のおもちゃ 積み木 はじめてのつみきリング10 RING10(リングテン)【 ウッディプッディ WOODYPUDDY 1歳半 2歳 3歳 紐通し 木製 ベビー 赤ちゃん つみき 紐とおし 知育 子供 幼児 クリスマス プレゼント 】
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=woodypuddy:10001340 title=知育玩具 1歳 木のおもちゃ 積み木 はじめてのつみきリング10 RING10(リングテン)【 ウッディプッディ WOODYPUDDY 1歳半 2歳 3歳 紐通し 木製 ベビー 赤ちゃん つみき 紐とおし 知育 子供 幼児 クリスマス プレゼント 】
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=f372081-mitoyo:10000849 title=【ふるさと納税】【皇室御愛用品】木のおもちゃ ころころ動物 子供 玩具 安心 安全 幼児 キッズ 知育玩具 雑貨 ベビー向け おもちゃ 送料無料 プレゼント インテリア 皇室 日本製 自然素材 ご当地 香川県 三豊市 みとよ 60,000円 台 返礼品 木のおもちゃと子ども家具
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=f372081-mitoyo:10000849 title=【ふるさと納税】【皇室御愛用品】木のおもちゃ ころころ動物 子供 玩具 安心 安全 幼児 キッズ 知育玩具 雑貨 ベビー向け おもちゃ 送料無料 プレゼント インテリア 皇室 日本製 自然素材 ご当地 香川県 三豊市 みとよ 60,000円 台 返礼品 木のおもちゃと子ども家具
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=goodgoodsshop:10000281 title=＼年間ランキング受賞！4800万画素★1年保証／ 子供用 カメラ デジタルカメラ 1080p録画 スマホ転送可 32GBカード&OTG付き キッズカメラ トイカメラ おもちゃ 男の子 女の子 プレゼント 2歳 3歳 4歳 5歳 キッズ 知育玩具 子供 誕生日プレゼント クリスマス プレゼント ギフト
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=goodgoodsshop:10000281 title=＼年間ランキング受賞！4800万画素★1年保証／ 子供用 カメラ デジタルカメラ 1080p録画 スマホ転送可 32GBカード&OTG付き キッズカメラ トイカメラ おもちゃ 男の子 女の子 プレゼント 2歳 3歳 4歳 5歳 キッズ 知育玩具 子供 誕生日プレゼント クリスマス プレゼント ギフト
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=eclink:10001643 title=【楽天1位】文字練習 子供 誕生日 入学式 大人気 プレゼント 繰り返し電子メモ お絵かきボード 知育玩具 12インチ 汚れない 伝言板 遊び 利用 大人用 薄型 ワンボタン カラフル 芸術 スタンド お絵描きボード 女の子 男の子 2歳 3歳 4歳 5歳 6歳 7歳 軽量 おもちゃ
+I/flutter (14516): [PRODUCT_SAFETY_FILTER] source=recommend itemCode=eclink:10001643 title=【楽天1位】文字練習 子供 誕生日 入学式 大人気 プレゼント 繰り返し電子メモ お絵かきボード 知育玩具 12インチ 汚れない 伝言板 遊び 利用 大人用 薄型 ワンボタン カラフル 芸術 スタンド お絵描きボード 女の子 男の子 2歳 3歳 4歳 5歳 6歳 7歳 軽量 おもちゃ shopName=eclink genreName= blocked=true reasons=adultContext
+I/flutter (14516): [RECOMMEND_TRACE] exclude reason=safetyBlocked
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=es-toys:11885230 title=ピタゴラス 知育いっぱい！ボールコースターDX ブロック パズル 大きい 勉強 知育 教育 思考 学習 未就学児 セット コースター 作る 成長 ひらめき おもちゃ こども 子供 知育 勉強 1歳6ヶ月
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=es-toys:11885230 title=ピタゴラス 知育いっぱい！ボールコースターDX ブロック パズル 大きい 勉強 知育 教育 思考 学習 未就学児 セット コースター 作る 成長 ひらめき おもちゃ こども 子供 知育 勉強 1歳6ヶ月
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=lotuslife2018:10000039 title=グッドトイ&トイオブザイヤー W受賞 お風呂でも大好評♪ 公式 ピタリコ 壁も使える 新感覚ブロック | 知育玩具 ブロック 吸盤 男の子 女の子 お風呂 おもちゃ 誕生日 プレゼント 知育 玩具 子供 1歳 2歳 3歳 4歳 5歳 型はめ 型はめパズル 入園祝い 幼児 お風呂おもちゃ
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=lotuslife2018:10000039 title=グッドトイ&トイオブザイヤー W受賞 お風呂でも大好評♪ 公式 ピタリコ 壁も使える 新感覚ブロック | 知育玩具 ブロック 吸盤 男の子 女の子 お風呂 おもちゃ 誕生日 プレゼント 知育 玩具 子供 1歳 2歳 3歳 4歳 5歳 型はめ 型はめパズル 入園祝い 幼児 お風呂おもちゃ
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=edion:10462824 title=ジョイパレット アンパンマン おふろでピッピ!アンパンマンの10までかぞえるえほん アンパンマンノ10マデカゾエルエホン [アンパンマンノ10マデカゾエルエホン]【MAYP】
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=edion:10462824 title=ジョイパレット アンパンマン おふろでピッピ!アンパンマンの10までかぞえるえほん アンパンマンノ10マデカゾエルエホン [アンパンマンノ10マデカゾエルエホン]【MAYP】
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=mamago:10000837 title=【海星型で楽しく体幹トレーニング】バランスストーン 11点セット 子供用 飛び石 バランスブロック 室内遊び 体幹強化 滑り止め付き 知育玩具 屋内 運動 おもちゃ 幼児 キッズ プレゼント 収納簡単
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=mamago:10000837 title=【海星型で楽しく体幹トレーニング】バランスストーン 11点セット 子供用 飛び石 バランスブロック 室内遊び 体幹強化 滑り止め付き 知育玩具 屋内 運動 おもちゃ 幼児 キッズ プレゼント 収納簡単
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=natural-living:10006181 title=水遊び おもちゃ ラッピング無料 ボーネルンド アクアプレイ ロックボックス メガブリッジ マウンテンレイク BorneLund AquaPlay 水遊び プール おもちゃ 知育玩具 外遊び おもちゃ 誕生日 プレゼント ギフト プレゼント 送料無料 正規品
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=natural-living:10006181 title=水遊び おもちゃ ラッピング無料 ボーネルンド アクアプレイ ロックボックス メガブリッジ マウンテンレイク BorneLund AquaPlay 水遊び プール おもちゃ 知育玩具 外遊び おもちゃ 誕生日 プレゼント ギフト プレゼント 送料無料 正規品
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=edute:10001205 title=【名入れ無料＆ 1年保証】積み木 つみき 木のおもちゃ SOUNDブロックス Large エデュテ 知育玩具 1歳誕生日プレゼント 1歳 赤ちゃん 0歳 一歳 1歳半 2歳 出産祝い ギフト 女の子 男の子 音のなる積み木
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=edute:10001205 title=【名入れ無料＆ 1年保証】積み木 つみき 木のおもちゃ SOUNDブロックス Large エデュテ 知育玩具 1歳誕生日プレゼント 1歳 赤ちゃん 0歳 一歳 1歳半 2歳 出産祝い ギフト 女の子 男の子 音のなる積み木
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=f372081-mitoyo:10000850 title=【ふるさと納税】 木製知育玩具 木のおもちゃ ままごと遊び みんなの木のおうち [ 玩具 積み木 木のおうち ごっこ遊び 知育玩具 国産木材 木製おもちゃ 日本製おもちゃ 手作り 安心 安全 子ども 知育 国産 ギフト プレゼント 50000 50,000円 台 なかよしライブラリー ]
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=f372081-mitoyo:10000850 title=【ふるさと納税】 木製知育玩具 木のおもちゃ ままごと遊び みんなの木のおうち [ 玩具 積み木 木のおうち ごっこ遊び 知育玩具 国産木材 木製おもちゃ 日本製おもちゃ 手作り 安心 安全 子ども 知育 国産 ギフト プレゼント 50000 50,000円 台 なかよしライブラリー ]
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=arcraiz:10000033 title=＼CICINELL【正規品】／ バランスボード 木製 子供 大人 体幹 トレーニング アスレチック 軽量 大人 室内遊び おすすめ こども バランス ボード 小学生 遊具 フィットネス ヨガ ボード子供用　バランス フィットヨガボード おもちゃ 木育 プレゼント
+I/flutter (14516): [PRODUCT_SAFETY_FILTER] source=recommend itemCode=arcraiz:10000033 title=＼CICINELL【正規品】／ バランスボード 木製 子供 大人 体幹 トレーニング アスレチック 軽量 大人 室内遊び おすすめ こども バランス ボード 小学生 遊具 フィットネス ヨガ ボード子供用　バランス フィットヨガボード おもちゃ 木育 プレゼント shopName=arcraizオンライン楽天市場店 genreName= blocked=true reasons=adultContext
+I/flutter (14516): [RECOMMEND_TRACE] exclude reason=safetyBlocked
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=fukukawashop:10000029 title=★楽天50冠達成！★バランスボード×ロッキングポニー　クリスマス　ギフト　プレゼント　 ロッキングホース 馬 乗り物　子供 おもちゃ　男の子　女の子　滑り台　体幹 トレーニング 子供用 室内遊び おうち遊び 室内遊具
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=fukukawashop:10000029 title=★楽天50冠達成！★バランスボード×ロッキングポニー　クリスマス　ギフト　プレゼント　 ロッキングホース 馬 乗り物　子供 おもちゃ　男の子　女の子　滑り台　体幹 トレーニング 子供用 室内遊び おうち遊び 室内遊具
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=rinstore:10000000 title=＼詰まり解消の新構造／【公式 低温設計】3Dペン【世界600万販売】3Doodler Start+ アートペン キッズ 女の子 男の子 誕生日 プレゼント 子供 おもちゃ 小学生 5歳 6歳 7歳 8歳 9歳 10歳 知育 玩具 セット 立体 ペン お絵かき 夏休み 工作 キット メイキングトイ おすすめ
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=rinstore:10000000 title=＼詰まり解消の新構造／【公式 低温設計】3Dペン【世界600万販売】3Doodler Start+ アートペン キッズ 女の子 男の子 誕生日 プレゼント 子供 おもちゃ 小学生 5歳 6歳 7歳 8歳 9歳 10歳 知育 玩具 セット 立体 ペン お絵かき 夏休み 工作 キット メイキングトイ おすすめ
+I/flutter (14516): [RECOMMEND_TRACE] raw item itemCode=harezoratbp:10000402 title=★＼ベビーが夢中になる瞬間／★ ハンドスピナー 赤ちゃん ベビー お風呂 ★楽天1位受賞★【ハレゾラTBP公式店】 赤ちゃん おもちゃ 6ヶ月 0 知育 0歳 1歳 2歳 3歳 4歳 長く遊べる 指先の知育 男の子 女の子 かわいい 誕生日 クリスマス プレゼント ギフト
+I/flutter (14516): [RECOMMEND_TRACE] accepted itemCode=harezoratbp:10000402 title=★＼ベビーが夢中になる瞬間／★ ハンドスピナー 赤ちゃん ベビー お風呂 ★楽天1位受賞★【ハレゾラTBP公式店】 赤ちゃん おもちゃ 6ヶ月 0 知育 0歳 1歳 2歳 3歳 4歳 長く遊べる 指先の知育 男の子 女の子 かわいい 誕生日 クリスマス プレゼント ギフト
+I/flutter (14516): [RECOMMEND_EXCLUDE] itemCode=f372081-mitoyo:10000990 price=105000 reason=tooExpensive
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=kitwell-official:10000000 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=kitwell-official:10000000 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=kitwell-official:10000000 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=kitwell-official:10000000 title=【グッド・トイ受賞】 KitWell 公式ストア キットウェル 正規品 マグビルド スロープセット 72ピース マグネット ブロック 知育玩具 カラフル パズル お祝い 男の子 女の子 プレゼント 3歳 4歳 5歳 6歳 図形学習 小学生 追加 入園 入学 追加 出産祝い 大容量 price=8499 reviewAverage=4.55 reviewCount=1147 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=45.0 score=182.9 reasons=見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=lotuslife2018:10000002 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=lotuslife2018:10000002 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=lotuslife2018:10000002 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=lotuslife2018:10000002 title=グッドトイ受賞 【特別クーポン】 ジスター 天才のはじまり | 知育玩具 ブロック おもちゃ 知育 紐通し 3歳 4歳 5歳 6歳 7歳 8歳 男の子 女の子 モンテッソーリ プレゼント 子供 パズル 玩具 立体パズル フラワーブロック 遊び 保育 幼児 3才 4才 5才 6才 price=3499 reviewAverage=4.54 reviewCount=4234 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=45.0 score=242.9 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_EXCLUDE] itemCode=f372081-mitoyo:10000993 price=79000 reason=tooExpensive
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=lotuslife2018:10000042 score=30.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=lotuslife2018:10000042 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=lotuslife2018:10000042 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=lotuslife2018:10000042 title=トイオブザイヤー2025受賞【特別クーポン】 ロンビー 新感覚 チューブ式 ブロック 7色 560 ピース | 知育玩具 知育 おもちゃ 男の子 女の子 モンテッソーリ 3歳 4歳 5歳 6歳 子供 誕生日 プレゼント 玩具 子ども玩具 室内遊び 遊び 保育 幼児 小学生 物作り アクティビティ price=3150 reviewAverage=4.49 reviewCount=697 roomFit=0.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=274.4 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=woodypuddy:10001340 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=woodypuddy:10001340 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=woodypuddy:10001340 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=woodypuddy:10001340 title=知育玩具 1歳 木のおもちゃ 積み木 はじめてのつみきリング10 RING10(リングテン)【 ウッディプッディ WOODYPUDDY 1歳半 2歳 3歳 紐通し 木製 ベビー 赤ちゃん つみき 紐とおし 知育 子供 幼児 クリスマス プレゼント 】 price=5280 reviewAverage=4.53 reviewCount=2110 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=254.9 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_EXCLUDE] itemCode=f372081-mitoyo:10000849 price=61000 reason=tooExpensive
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=goodgoodsshop:10000281 score=30.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=goodgoodsshop:10000281 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=goodgoodsshop:10000281 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=goodgoodsshop:10000281 title=＼年間ランキング受賞！4800万画素★1年保証／ 子供用 カメラ デジタルカメラ 1080p録画 スマホ転送可 32GBカード&OTG付き キッズカメラ トイカメラ おもちゃ 男の子 女の子 プレゼント 2歳 3歳 4歳 5歳 キッズ 知育玩具 子供 誕生日プレゼント クリスマス プレゼント ギフト price=3980 reviewAverage=4.32 reviewCount=3064 roomFit=8.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=296.8 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=es-toys:11885230 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=es-toys:11885230 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=es-toys:11885230 score=25.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=es-toys:11885230 title=ピタゴラス 知育いっぱい！ボールコースターDX ブロック パズル 大きい 勉強 知育 教育 思考 学習 未就学児 セット コースター 作る 成長 ひらめき おもちゃ こども 子供 知育 勉強 1歳6ヶ月 price=12149 reviewAverage=4.67 reviewCount=46 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=25.0 score=226.9 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=lotuslife2018:10000039 score=30.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=lotuslife2018:10000039 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=lotuslife2018:10000039 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=lotuslife2018:10000039 title=グッドトイ&トイオブザイヤー W受賞 お風呂でも大好評♪ 公式 ピタリコ 壁も使える 新感覚ブロック | 知育玩具 ブロック 吸盤 男の子 女の子 お風呂 おもちゃ 誕生日 プレゼント 知育 玩具 子供 1歳 2歳 3歳 4歳 5歳 型はめ 型はめパズル 入園祝い 幼児 お風呂おもちゃ price=3099 reviewAverage=4.53 reviewCount=1861 roomFit=0.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=274.4 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=edion:10462824 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=edion:10462824 score=25.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=edion:10462824 title=ジョイパレット アンパンマン おふろでピッピ!アンパンマンの10までかぞえるえほん アンパンマンノ10マデカゾエルエホン [アンパンマンノ10マデカゾエルエホン]【MAYP】 price=1120 reviewAverage=4.67 reviewCount=3 roomFit=0.0 reaction=0.0 reviewEvidence=22.0 postability=25.0 score=75.2 reasons=見た目で選ぶ|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=mamago:10000837 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=mamago:10000837 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=mamago:10000837 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=mamago:10000837 title=【海星型で楽しく体幹トレーニング】バランスストーン 11点セット 子供用 飛び石 バランスブロック 室内遊び 体幹強化 滑り止め付き 知育玩具 屋内 運動 おもちゃ 幼児 キッズ プレゼント 収納簡単 price=5980 reviewAverage=4.43 reviewCount=49 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=277.3 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=natural-living:10006181 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=natural-living:10006181 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=natural-living:10006181 score=35.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=natural-living:10006181 title=水遊び おもちゃ ラッピング無料 ボーネルンド アクアプレイ ロックボックス メガブリッジ マウンテンレイク BorneLund AquaPlay 水遊び プール おもちゃ 知育玩具 外遊び おもちゃ 誕生日 プレゼント ギフト プレゼント 送料無料 正規品 price=13200 reviewAverage=4.59 reviewCount=145 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=35.0 score=257.3 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=edute:10001205 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=edute:10001205 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=edute:10001205 score=35.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=edute:10001205 title=【名入れ無料＆ 1年保証】積み木 つみき 木のおもちゃ SOUNDブロックス Large エデュテ 知育玩具 1歳誕生日プレゼント 1歳 赤ちゃん 0歳 一歳 1歳半 2歳 出産祝い ギフト 女の子 男の子 音のなる積み木 price=11000 reviewAverage=4.63 reviewCount=1534 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=35.0 score=257.3 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (14516): [RECOMMEND_EXCLUDE] itemCode=f372081-mitoyo:10000850 price=55000 reason=tooExpensive
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=fukukawashop:10000029 score=30.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=fukukawashop:10000029 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=fukukawashop:10000029 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=fukukawashop:10000029 title=★楽天50冠達成！★バランスボード×ロッキングポニー　クリスマス　ギフト　プレゼント　 ロッキングホース 馬 乗り物　子供 おもちゃ　男の子　女の子　滑り台　体幹 トレーニング 子供用 室内遊び おうち遊び 室内遊具 price=3480 reviewAverage=4.36 reviewCount=650 roomFit=8.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=296.8 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=rinstore:10000000 score=30.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=rinstore:10000000 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=rinstore:10000000 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=rinstore:10000000 title=＼詰まり解消の新構造／【公式 低温設計】3Dペン【世界600万販売】3Doodler Start+ アートペン キッズ 女の子 男の子 誕生日 プレゼント 子供 おもちゃ 小学生 5歳 6歳 7歳 8歳 9歳 10歳 知育 玩具 セット 立体 ペン お絵かき 夏休み 工作 キット メイキングトイ おすすめ price=8800 reviewAverage=4.58 reviewCount=755 roomFit=0.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=274.4 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=harezoratbp:10000402 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=harezoratbp:10000402 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=harezoratbp:10000402 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=harezoratbp:10000402 title=★＼ベビーが夢中になる瞬間／★ ハンドスピナー 赤ちゃん ベビー お風呂 ★楽天1位受賞★【ハレゾラTBP公式店】 赤ちゃん おもちゃ 6ヶ月 0 知育 0歳 1歳 2歳 3歳 4歳 長く遊べる 指先の知育 男の子 女の子 かわいい 誕生日 クリスマス プレゼント ギフト price=2390 reviewAverage=4.61 reviewCount=1159 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=277.3 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_POOL] raw=18 valid=14 scored=14
+I/flutter (14516): [RECOMMEND_SELECT] strictSelected=10
+I/flutter (14516): [RECOMMEND_EXCLUDE] itemCode=f372081-mitoyo:10000990 price=105000 reason=tooExpensive
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=kitwell-official:10000000 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=kitwell-official:10000000 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=kitwell-official:10000000 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=kitwell-official:10000000 title=【グッド・トイ受賞】 KitWell 公式ストア キットウェル 正規品 マグビルド スロープセット 72ピース マグネット ブロック 知育玩具 カラフル パズル お祝い 男の子 女の子 プレゼント 3歳 4歳 5歳 6歳 図形学習 小学生 追加 入園 入学 追加 出産祝い 大容量 price=8499 reviewAverage=4.55 reviewCount=1147 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=45.0 score=182.9 reasons=見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=lotuslife2018:10000002 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=lotuslife2018:10000002 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=lotuslife2018:10000002 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=lotuslife2018:10000002 title=グッドトイ受賞 【特別クーポン】 ジスター 天才のはじまり | 知育玩具 ブロック おもちゃ 知育 紐通し 3歳 4歳 5歳 6歳 7歳 8歳 男の子 女の子 モンテッソーリ プレゼント 子供 パズル 玩具 立体パズル フラワーブロック 遊び 保育 幼児 3才 4才 5才 6才 price=3499 reviewAverage=4.54 reviewCount=4234 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=45.0 score=242.9 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_EXCLUDE] itemCode=f372081-mitoyo:10000993 price=79000 reason=tooExpensive
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=lotuslife2018:10000042 score=30.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=lotuslife2018:10000042 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=lotuslife2018:10000042 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=lotuslife2018:10000042 title=トイオブザイヤー2025受賞【特別クーポン】 ロンビー 新感覚 チューブ式 ブロック 7色 560 ピース | 知育玩具 知育 おもちゃ 男の子 女の子 モンテッソーリ 3歳 4歳 5歳 6歳 子供 誕生日 プレゼント 玩具 子ども玩具 室内遊び 遊び 保育 幼児 小学生 物作り アクティビティ price=3150 reviewAverage=4.49 reviewCount=697 roomFit=0.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=274.4 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=woodypuddy:10001340 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=woodypuddy:10001340 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=woodypuddy:10001340 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=woodypuddy:10001340 title=知育玩具 1歳 木のおもちゃ 積み木 はじめてのつみきリング10 RING10(リングテン)【 ウッディプッディ WOODYPUDDY 1歳半 2歳 3歳 紐通し 木製 ベビー 赤ちゃん つみき 紐とおし 知育 子供 幼児 クリスマス プレゼント 】 price=5280 reviewAverage=4.53 reviewCount=2110 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=254.9 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_EXCLUDE] itemCode=f372081-mitoyo:10000849 price=61000 reason=tooExpensive
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=goodgoodsshop:10000281 score=30.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=goodgoodsshop:10000281 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=goodgoodsshop:10000281 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=goodgoodsshop:10000281 title=＼年間ランキング受賞！4800万画素★1年保証／ 子供用 カメラ デジタルカメラ 1080p録画 スマホ転送可 32GBカード&OTG付き キッズカメラ トイカメラ おもちゃ 男の子 女の子 プレゼント 2歳 3歳 4歳 5歳 キッズ 知育玩具 子供 誕生日プレゼント クリスマス プレゼント ギフト price=3980 reviewAverage=4.32 reviewCount=3064 roomFit=8.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=296.8 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=es-toys:11885230 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=es-toys:11885230 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=es-toys:11885230 score=25.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=es-toys:11885230 title=ピタゴラス 知育いっぱい！ボールコースターDX ブロック パズル 大きい 勉強 知育 教育 思考 学習 未就学児 セット コースター 作る 成長 ひらめき おもちゃ こども 子供 知育 勉強 1歳6ヶ月 price=12149 reviewAverage=4.67 reviewCount=46 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=25.0 score=226.9 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=lotuslife2018:10000039 score=30.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=lotuslife2018:10000039 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=lotuslife2018:10000039 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=lotuslife2018:10000039 title=グッドトイ&トイオブザイヤー W受賞 お風呂でも大好評♪ 公式 ピタリコ 壁も使える 新感覚ブロック | 知育玩具 ブロック 吸盤 男の子 女の子 お風呂 おもちゃ 誕生日 プレゼント 知育 玩具 子供 1歳 2歳 3歳 4歳 5歳 型はめ 型はめパズル 入園祝い 幼児 お風呂おもちゃ price=3099 reviewAverage=4.53 reviewCount=1861 roomFit=0.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=274.4 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=edion:10462824 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=edion:10462824 score=25.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=edion:10462824 title=ジョイパレット アンパンマン おふろでピッピ!アンパンマンの10までかぞえるえほん アンパンマンノ10マデカゾエルエホン [アンパンマンノ10マデカゾエルエホン]【MAYP】 price=1120 reviewAverage=4.67 reviewCount=3 roomFit=0.0 reaction=0.0 reviewEvidence=22.0 postability=25.0 score=75.2 reasons=見た目で選ぶ|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=mamago:10000837 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=mamago:10000837 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=mamago:10000837 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=mamago:10000837 title=【海星型で楽しく体幹トレーニング】バランスストーン 11点セット 子供用 飛び石 バランスブロック 室内遊び 体幹強化 滑り止め付き 知育玩具 屋内 運動 おもちゃ 幼児 キッズ プレゼント 収納簡単 price=5980 reviewAverage=4.43 reviewCount=49 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=277.3 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=natural-living:10006181 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=natural-living:10006181 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=natural-living:10006181 score=35.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=natural-living:10006181 title=水遊び おもちゃ ラッピング無料 ボーネルンド アクアプレイ ロックボックス メガブリッジ マウンテンレイク BorneLund AquaPlay 水遊び プール おもちゃ 知育玩具 外遊び おもちゃ 誕生日 プレゼント ギフト プレゼント 送料無料 正規品 price=13200 reviewAverage=4.59 reviewCount=145 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=35.0 score=257.3 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=edute:10001205 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=edute:10001205 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=edute:10001205 score=35.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=edute:10001205 title=【名入れ無料＆ 1年保証】積み木 つみき 木のおもちゃ SOUNDブロックス Large エデュテ 知育玩具 1歳誕生日プレゼント 1歳 赤ちゃん 0歳 一歳 1歳半 2歳 出産祝い ギフト 女の子 男の子 音のなる積み木 price=11000 reviewAverage=4.63 reviewCount=1534 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=35.0 score=257.3 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (14516): [RECOMMEND_EXCLUDE] itemCode=f372081-mitoyo:10000850 price=55000 reason=tooExpensive
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=fukukawashop:10000029 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=fukukawashop:10000029 score=30.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=fukukawashop:10000029 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=fukukawashop:10000029 title=★楽天50冠達成！★バランスボード×ロッキングポニー　クリスマス　ギフト　プレゼント　 ロッキングホース 馬 乗り物　子供 おもちゃ　男の子　女の子　滑り台　体幹 トレーニング 子供用 室内遊び おうち遊び 室内遊具 price=3480 reviewAverage=4.36 reviewCount=650 roomFit=8.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=296.8 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=rinstore:10000000 score=30.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=rinstore:10000000 score=0.0 reasons=
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=rinstore:10000000 score=45.0 reasons=投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=rinstore:10000000 title=＼詰まり解消の新構造／【公式 低温設計】3Dペン【世界600万販売】3Doodler Start+ アートペン キッズ 女の子 男の子 誕生日 プレゼント 子供 おもちゃ 小学生 5歳 6歳 7歳 8歳 9歳 10歳 知育 玩具 セット 立体 ペン お絵かき 夏休み 工作 キット メイキングトイ おすすめ price=8800 reviewAverage=4.58 reviewCount=755 roomFit=0.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=274.4 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|投稿しやすい
+I/flutter (14516): [RECOMMEND_REACTION_SCORE] itemCode=harezoratbp:10000402 score=15.0 reasons=
+I/flutter (14516): [RECOMMEND_ROOM_FIT] itemCode=harezoratbp:10000402 score=8.0 reasons=ROOM向き
+I/flutter (14516): [RECOMMEND_POSTABILITY] itemCode=harezoratbp:10000402 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_SCORE] itemCode=harezoratbp:10000402 title=★＼ベビーが夢中になる瞬間／★ ハンドスピナー 赤ちゃん ベビー お風呂 ★楽天1位受賞★【ハレゾラTBP公式店】 赤ちゃん おもちゃ 6ヶ月 0 知育 0歳 1歳 2歳 3歳 4歳 長く遊べる 指先の知育 男の子 女の子 かわいい 誕生日 クリスマス プレゼント ギフト price=2390 reviewAverage=4.61 reviewCount=1159 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=277.3 reasons=好きなジャンルに近い|見た目で選ぶ|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (14516): [RECOMMEND_POOL] raw=18 valid=14 scored=14
+I/flutter (14516): [RECOMMEND_SELECT] strictSelected=10
+I/flutter (14516): [RECOMMEND_API_GUARD] skipExtraSearch reason=poolHasEnoughBackfill
+I/flutter (14516): [RECOMMEND_API_GUARD] extraSearchAllowed=false
+I/flutter (14516): [RECOMMEND] apiCalls=1 poolSize=18
+I/flutter (14516): [RECOMMEND] final count: 10
+I/flutter (14516): [RECOMMEND_BUCKET] personal=10 relaxed=0 discovery=0 total=10
+I/flutter (14516): [RECOMMEND_RESULT] style=social personalCount=10 discoveryCount=0 total=10
+I/flutter (14516): [RECOMMEND_TRACE] finalCandidateCount=10
+I/flutter (14516): [RECOMMEND_TRACE] failureType=none
+I/flutter (14516): [RECOMMEND_RESULT] status=success count=10
+I/flutter (14516): [RECOMMEND_GENERATE] end requestCount=1 planCount=8
+I/flutter (14516): [RECOMMEND_SUMMARY] totalApiRequests=1 totalPlans=8 selectedCount=10 excludedCount=2 durationMs=1590
+I/flutter (14516): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (14516): [RECOMMEND_SAVE] savedBundle=true count=10
+I/flutter (14516): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=10 candidateSource=statusCandidateOnly
+I/flutter (14516): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=10 afterFilterLen=10 surface=ok_list ui=ready
+I/flutter (14516): [ROOMコレ診断] 描画リスト先頭 productId=golden-15-8g title=庭園用 こいのぼり 鯉のぼり フジサン鯉 ゴールデン鯉 1.5m 8点セット(吹流し+鯉5匹+矢車+ロープ) 庭園 ポール付属 ガーデンセット status=done len=10
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=golden-15-8g roomLikeCount=4 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=nm-kshrn roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+D/EGL_emulation(14516): app_time_stats: avg=408.33ms min=11.33ms max=3474.43ms count=9
+D/EGL_emulation(14516): app_time_stats: avg=124.20ms min=5.73ms max=2301.43ms count=22
+D/EGL_emulation(14516): app_time_stats: avg=96.27ms min=7.61ms max=1864.74ms count=24
+D/EGL_emulation(14516): app_time_stats: avg=407.39ms min=7.56ms max=6911.72ms count=18
+D/EGL_emulation(14516): app_time_stats: avg=96.24ms min=3.43ms max=1068.75ms count=13
+D/EGL_emulation(14516): app_time_stats: avg=147.47ms min=11.17ms max=1809.98ms count=15
+D/EGL_emulation(14516): app_time_stats: avg=76.07ms min=7.80ms max=1024.13ms count=18
+D/EGL_emulation(14516): app_time_stats: avg=124.72ms min=11.61ms max=1575.85ms count=16
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_005.png
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_NAVIGATION] from=homeRoomSyncCard to=analysis scrollToRoomReactionSection=true reason=showReactionAnalytics
+I/flutter (14516): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=tab3 widget=CommonDraggableEdgeFab file=lib/widgets/common_draggable_edge_fab.dart visible=true reason=commentEdgeFabRightSideNotMenu
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=10 candidateSource=statusCandidateOnly
+D/EGL_emulation(14516): app_time_stats: avg=3556.39ms min=7.06ms max=109762.60ms count=31
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=analysis candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_NO_SIDE_EFFECT] candidateCount=0 doneCount=10 todayAppCollectCount=0 todayRoomImportCount=10 importedFromRoomCount=10 message=noMutation
+I/flutter (14516): [ROOM_REACTION_TREND_RENDER] target=reactionOnly itemsWithReaction=10 genreRows=5 shopRows=5 unknownGenreCount=1 unknownShopCount=0
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=10 itemsWithComment=2 topGenres=盆提灯,コーヒー飲料,こいのぼり,コンパクト飾り,ジャンル未確認 topShops=節句&ギフト専門店 ぷりふあ人形,楽天24 ドリンク館,ドリンク屋【水・ソフトドリンク】,楽天24,komari historyLoaded=false
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_SOURCE] totalDoneRoomItems=10 itemsWithReaction=10 itemsWithComment=2 genresAggregated=7 shopsAggregated=6'
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_TOP_PRODUCT] rank=1 productId=6551 title=盆提灯 一対 新盆 お盆 提灯 霊前灯 7号 バブル灯 ブルー 盆ちょうちん 初盆 like=29 comment=0 reactionScore=29 shopName=節句&ギフト専門店 ぷりふあ人形 genreName=盆提灯
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_TOP_PRODUCT] rank=2 productId=4901085161999 title=タリーズコーヒー バリスタズ ブラックボトル缶(390ml*24本入)【TULLY'S COFFEE(タリーズコーヒー)】 like=14 comment=1 reactionScore=17 shopName=楽天24 ドリンク館 genreName=コーヒー飲料
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_TOP_PRODUCT] rank=3 productId=10002422 title=武者絵のぼり 節句のぼり 節句幟 男の子 初節句 こどもの日 端午の節句 武者幟 ベランダ用 武者絵幟セット A型受金具 金太郎 like=9 comment=0 reactionScore=9 shopName=節句&ギフト専門店 ぷりふあ人形 genreName=こいのぼり
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_TOP_PRODUCT] rank=4 productId=umak-02 title=五月人形 飾り馬 小物 おしゃれ コンパクト [馬甲飾り 若葉の馬 6号] 男の子 初節句 子供の日 端午の節句 like=5 comment=1 reactionScore=8 shopName=節句&ギフト専門店 ぷりふあ人形 genreName=コンパクト飾り
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_TOP_PRODUCT] rank=5 productId=29022-2 title=[送料無料] 伊藤園 タリーズコーヒー BARISTA’S バリスタズ ブラック 無糖 390mlボトル缶×48本［24本×2箱］【3〜4営業日以内に出荷】タリーズブラック コーヒー 缶コーヒー like=5 comment=0 reactionScore=5 shopName=ドリンク屋【水・ソフトドリンク】 genreName=コーヒー飲料
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_HISTORY] loaded=true topReactedProducts=0 deltaLikeItems=0 deltaCommentItems=0
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=10 itemsWithComment=2 topGenres=盆提灯,コーヒー飲料,こいのぼり,コンパクト飾り,ジャンル未確認 topShops=節句&ギフト専門店 ぷりふあ人形,楽天24 ドリンク館,ドリンク屋【水・ソフトドリンク】,楽天24,komari historyLoaded=true
+D/EGL_emulation(14516): app_time_stats: avg=189.46ms min=7.86ms max=2176.93ms count=16
+D/EGL_emulation(14516): app_time_stats: avg=95.91ms min=7.27ms max=1594.65ms count=21
+D/EGL_emulation(14516): app_time_stats: avg=51.61ms min=7.38ms max=913.02ms count=34
+D/EGL_emulation(14516): app_time_stats: avg=39.40ms min=6.31ms max=532.92ms count=22
+D/EGL_emulation(14516): app_time_stats: avg=67.02ms min=4.95ms max=1644.84ms count=30
+D/EGL_emulation(14516): app_time_stats: avg=41.15ms min=5.81ms max=346.92ms count=23
+D/EGL_emulation(14516): app_time_stats: avg=1550.73ms min=1550.73ms max=1550.73ms count=1
+D/EGL_emulation(14516): app_time_stats: avg=73.65ms min=7.01ms max=687.81ms count=13
+D/EGL_emulation(14516): app_time_stats: avg=29.15ms min=5.18ms max=301.82ms count=31
+D/EGL_emulation(14516): app_time_stats: avg=333.54ms min=32.04ms max=927.86ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=64.37ms min=11.57ms max=718.65ms count=17
+D/EGL_emulation(14516): app_time_stats: avg=42.23ms min=5.92ms max=621.29ms count=21
+D/EGL_emulation(14516): app_time_stats: avg=83.63ms min=6.83ms max=1127.22ms count=24
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_006.png
+D/EGL_emulation(14516): app_time_stats: avg=139.95ms min=5.37ms max=4879.97ms count=38
+D/EGL_emulation(14516): app_time_stats: avg=15.88ms min=5.08ms max=33.61ms count=48
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_007.png
+D/EGL_emulation(14516): app_time_stats: avg=429.17ms min=6.59ms max=3368.19ms count=8
+I/o.room_manager2(14516): Background concurrent mark compact GC freed 2968KB AllocSpace bytes, 7(272KB) LOS objects, 49% free, 3516KB/7032KB, paused 761us,8.765ms total 51.417ms
+W/o.room_manager2(14516): ApkAssets: Deleting an ApkAssets object '<empty> and /product/app/talkback/talkback.apk' with 1 weak references
+W/o.room_manager2(14516): ApkAssets: Deleting an ApkAssets object '/vendor/overlay/EmulatorTalkBackOverlay/EmulatorTalkBackOverlay.apk' with 1 weak references
+D/EGL_emulation(14516): app_time_stats: avg=89.17ms min=10.04ms max=759.08ms count=11
+D/EGL_emulation(14516): app_time_stats: avg=21.49ms min=6.05ms max=132.49ms count=40
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_008.png
+D/EGL_emulation(14516): app_time_stats: avg=417.08ms min=9.76ms max=2767.12ms count=7
+D/EGL_emulation(14516): app_time_stats: avg=17.96ms min=6.27ms max=74.98ms count=48
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_009.png
+D/EGL_emulation(14516): app_time_stats: avg=138.26ms min=8.72ms max=2399.20ms count=22
+D/EGL_emulation(14516): app_time_stats: avg=15.24ms min=6.31ms max=36.14ms count=47
+D/EGL_emulation(14516): app_time_stats: avg=201.64ms min=19.99ms max=891.25ms count=5
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_010.png
+D/EGL_emulation(14516): app_time_stats: avg=137.46ms min=8.85ms max=2453.04ms count=21
+D/EGL_emulation(14516): app_time_stats: avg=59.75ms min=8.99ms max=863.96ms count=20
+D/EGL_emulation(14516): app_time_stats: avg=46.59ms min=5.82ms max=750.18ms count=27
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_011.png
+D/EGL_emulation(14516): app_time_stats: avg=166.94ms min=7.45ms max=2070.48ms count=14
+D/EGL_emulation(14516): app_time_stats: avg=1359.31ms min=5.86ms max=59246.75ms count=44
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=10 candidateSource=statusCandidateOnly
+D/EGL_emulation(14516): app_time_stats: avg=112.08ms min=9.76ms max=2038.96ms count=26
+I/flutter (14516): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=CommonDraggableEdgeFab file=lib/widgets/common_draggable_edge_fab.dart visible=true reason=commentEdgeFabRightSideNotMenu
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=10 candidateSource=statusCandidateOnly
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_NAVIGATION] from=homeRoomSyncCard to=analysis scrollToRoomReactionSection=true reason=showReactionAnalytics
+D/EGL_emulation(14516): app_time_stats: avg=52.40ms min=5.97ms max=1204.21ms count=31
+I/flutter (14516): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=tab3 widget=CommonDraggableEdgeFab file=lib/widgets/common_draggable_edge_fab.dart visible=true reason=commentEdgeFabRightSideNotMenu
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=10 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=analysis candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=10 itemsWithComment=2 topGenres=盆提灯,コーヒー飲料,こいのぼり,コンパクト飾り,ジャンル未確認 topShops=節句&ギフト専門店 ぷりふあ人形,楽天24 ドリンク館,ドリンク屋【水・ソフトドリンク】,楽天24,komari historyLoaded=false
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_SOURCE] totalDoneRoomItems=10 itemsWithReaction=10 itemsWithComment=2 genresAggregated=7 shopsAggregated=6'
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_TOP_PRODUCT] rank=1 productId=6551 title=盆提灯 一対 新盆 お盆 提灯 霊前灯 7号 バブル灯 ブルー 盆ちょうちん 初盆 like=29 comment=0 reactionScore=29 shopName=節句&ギフト専門店 ぷりふあ人形 genreName=盆提灯
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_TOP_PRODUCT] rank=2 productId=4901085161999 title=タリーズコーヒー バリスタズ ブラックボトル缶(390ml*24本入)【TULLY'S COFFEE(タリーズコーヒー)】 like=14 comment=1 reactionScore=17 shopName=楽天24 ドリンク館 genreName=コーヒー飲料
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_TOP_PRODUCT] rank=3 productId=10002422 title=武者絵のぼり 節句のぼり 節句幟 男の子 初節句 こどもの日 端午の節句 武者幟 ベランダ用 武者絵幟セット A型受金具 金太郎 like=9 comment=0 reactionScore=9 shopName=節句&ギフト専門店 ぷりふあ人形 genreName=こいのぼり
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_TOP_PRODUCT] rank=4 productId=umak-02 title=五月人形 飾り馬 小物 おしゃれ コンパクト [馬甲飾り 若葉の馬 6号] 男の子 初節句 子供の日 端午の節句 like=5 comment=1 reactionScore=8 shopName=節句&ギフト専門店 ぷりふあ人形 genreName=コンパクト飾り
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_TOP_PRODUCT] rank=5 productId=29022-2 title=[送料無料] 伊藤園 タリーズコーヒー BARISTA’S バリスタズ ブラック 無糖 390mlボトル缶×48本［24本×2箱］【3〜4営業日以内に出荷】タリーズブラック コーヒー 缶コーヒー like=5 comment=0 reactionScore=5 shopName=ドリンク屋【水・ソフトドリンク】 genreName=コーヒー飲料
+I/flutter (14516): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=10 itemsWithComment=2 topGenres=盆提灯,コーヒー飲料,こいのぼり,コンパクト飾り,ジャンル未確認 topShops=節句&ギフト専門店 ぷりふあ人形,楽天24 ドリンク館,ドリンク屋【水・ソフトドリンク】,楽天24,komari historyLoaded=true
+D/EGL_emulation(14516): app_time_stats: avg=68.90ms min=6.34ms max=1438.98ms count=31
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=10 candidateSource=statusCandidateOnly
+D/EGL_emulation(14516): app_time_stats: avg=51.53ms min=6.67ms max=789.71ms count=31
+D/EGL_emulation(14516): app_time_stats: avg=77.20ms min=8.16ms max=1512.64ms count=26
+D/EGL_emulation(14516): app_time_stats: avg=66.14ms min=8.43ms max=947.88ms count=19
+D/EGL_emulation(14516): app_time_stats: avg=112.52ms min=6.55ms max=1321.75ms count=14
+D/EGL_emulation(14516): app_time_stats: avg=57.15ms min=8.80ms max=748.89ms count=18
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_012.png
+D/EGL_emulation(14516): app_time_stats: avg=4670.49ms min=7.41ms max=65223.53ms count=14
+D/EGL_emulation(14516): app_time_stats: avg=41.79ms min=10.04ms max=521.62ms count=22
+D/EGL_emulation(14516): app_time_stats: avg=192.33ms min=9.04ms max=1089.70ms count=6
+D/EGL_emulation(14516): app_time_stats: avg=29.21ms min=5.99ms max=431.90ms count=32
+D/EGL_emulation(14516): app_time_stats: avg=84.34ms min=6.25ms max=3108.89ms count=44
+I/flutter (14516): [MANAGED_PRODUCT_SAVE]
+I/flutter (14516): action=refresh
+I/flutter (14516): productId=
+I/flutter (14516): itemCode=
+I/flutter (14516): beforePendingCount=0
+I/flutter (14516): afterPendingCount=0
+I/flutter (14516): beforeDoneCount=10
+I/flutter (14516): afterDoneCount=10
+I/flutter (14516): [MANAGED_PRODUCT_LOAD]
+I/flutter (14516): source=screen
+I/flutter (14516): pendingCount=0
+I/flutter (14516): doneCount=10
+I/flutter (14516): filter=
+I/flutter (14516): tab=done
+I/flutter (14516): [ROOMコレ診断] refreshManagedProductList 完了 total=10 candidate=0 done=10 ui=ready
+I/flutter (14516): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=tab1 widget=CommonDraggableEdgeFab file=lib/widgets/common_draggable_edge_fab.dart visible=true reason=commentEdgeFabRightSideNotMenu
+I/flutter (14516): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (14516): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=false missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (14516): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=10 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (14516): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=10 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-10 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-11 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-12 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 roomImportCount=0 candidateSource=statusCandidateOnly
+I/flutter (14516): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 roomImportCount=10 candidateSource=statusCandidateOnly
+I/flutter (14516): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=10 afterFilterLen=10 surface=ok_list ui=ready
+I/flutter (14516): [ROOMコレ診断] 描画リスト先頭 productId=golden-15-8g title=庭園用 こいのぼり 鯉のぼり フジサン鯉 ゴールデン鯉 1.5m 8点セット(吹流し+鯉5匹+矢車+ロープ) 庭園 ポール付属 ガーデンセット status=done len=10
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=golden-15-8g roomLikeCount=4 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=nm-kshrn roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter (14516): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=10 afterFilterLen=9 surface=ok_list ui=ready
+I/flutter (14516): [ROOMコレ診断] 描画リスト先頭 productId=nm-kshrn title=雛人形 名前旗 女の子 かわいい 刺繍 雛祭り 節句 刺繍名前旗 特小金襴昇華 -春音 harune- はるね 初節句 正月 ひな祭り status=done len=9
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=nm-kshrn roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=gy-8990-81-000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+D/EGL_emulation(14516): app_time_stats: avg=154.58ms min=14.80ms max=1688.47ms count=15
+I/flutter (14516): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=10 afterFilterLen=9 surface=ok_list ui=ready
+I/flutter (14516): [ROOMコレ診断] 描画リスト先頭 productId=nm-kshrn title=雛人形 名前旗 女の子 かわいい 刺繍 雛祭り 節句 刺繍名前旗 特小金襴昇華 -春音 harune- はるね 初節句 正月 ひな祭り status=done len=9
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=nm-kshrn roomLikeCount=2 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=gy-8990-81-000 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+D/EGL_emulation(14516): app_time_stats: avg=364.19ms min=86.05ms max=890.40ms count=3
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=umak-02 roomLikeCount=5 roomCommentCount=1 chipLabel=反応あり source=computed
+D/EGL_emulation(14516): app_time_stats: avg=111.89ms min=10.13ms max=1227.17ms count=14
+I/flutter (14516): [REACTION_STATUS_RENDER] productId=10002422 roomLikeCount=9 roomCommentCount=0 chipLabel=反応あり source=computed
+D/EGL_emulation(14516): app_time_stats: avg=45.42ms min=7.10ms max=526.43ms count=20
+W/WindowOnBackDispatcher(14516): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(14516): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+D/EGL_emulation(14516): app_time_stats: avg=741.94ms min=14.81ms max=1469.08ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=66.80ms min=9.88ms max=1032.59ms count=23
+D/EGL_emulation(14516): app_time_stats: avg=224.14ms min=7.22ms max=1734.24ms count=9
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:f3f2e09e: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+D/InputMethodManager(14516): showSoftInput() view=io.flutter.embedding.android.FlutterView{2cc467d VFE...... .F...... 0,0-720,1280 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(14516): The input method toggled cursor monitoring on
+D/EGL_emulation(14516): app_time_stats: avg=118.25ms min=14.90ms max=377.44ms count=11
+D/InsetsController(14516): show(ime(), fromIme=true)
+W/InteractionJankMonitor(14516): Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.stepbytestudio.room_manager2
+D/EGL_emulation(14516): app_time_stats: avg=48918.96ms min=29.87ms max=487915.28ms count=10
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:f3f2e09e: onShown
+D/EGL_emulation(14516): app_time_stats: avg=146.65ms min=16.77ms max=385.12ms count=8
+D/EGL_emulation(14516): app_time_stats: avg=500.60ms min=500.19ms max=501.00ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=498.99ms min=498.38ms max=499.82ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.54ms min=498.60ms max=502.48ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=501.01ms min=498.77ms max=505.16ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=498.24ms min=496.38ms max=500.74ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.46ms min=470.35ms max=526.64ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=501.88ms min=500.67ms max=503.09ms count=2
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_013.png
+D/EGL_emulation(14516): app_time_stats: avg=498.80ms min=498.05ms max=499.21ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.68ms min=499.62ms max=501.75ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=500.36ms min=497.85ms max=503.81ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.22ms min=498.02ms max=500.21ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=501.68ms min=496.56ms max=506.80ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.44ms min=493.85ms max=503.46ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=498.43ms min=496.52ms max=499.52ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.54ms min=498.25ms max=501.12ms count=3
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:8cb24bd7: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+D/InputMethodManager(14516): showSoftInput() view=io.flutter.embedding.android.FlutterView{2cc467d VFE...... .F...... 0,0-720,1280 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController(14516): show(ime(), fromIme=true)
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:8cb24bd7: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+D/EGL_emulation(14516): app_time_stats: avg=500.01ms min=468.78ms max=531.23ms count=2
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:5fdf68cd: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+D/InputMethodManager(14516): showSoftInput() view=io.flutter.embedding.android.FlutterView{2cc467d VFE...... .F...... 0,0-720,1280 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController(14516): show(ime(), fromIme=true)
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:5fdf68cd: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+D/EGL_emulation(14516): app_time_stats: avg=567.69ms min=511.91ms max=623.46ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=135.71ms min=61.00ms max=269.26ms count=8
+D/EGL_emulation(14516): app_time_stats: avg=104.06ms min=78.37ms max=169.04ms count=10
+D/EGL_emulation(14516): app_time_stats: avg=106.51ms min=76.56ms max=136.81ms count=10
+D/EGL_emulation(14516): app_time_stats: avg=93.89ms min=33.62ms max=141.93ms count=11
+I/o.room_manager2(14516): Background concurrent mark compact GC freed 3427KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 3535KB/7070KB, paused 11.448ms,7.394ms total 108.892ms
+W/o.room_manager2(14516): ApkAssets: Deleting an ApkAssets object '<empty> and /product/app/talkback/talkback.apk' with 1 weak references
+W/o.room_manager2(14516): ApkAssets: Deleting an ApkAssets object '/vendor/overlay/EmulatorTalkBackOverlay/EmulatorTalkBackOverlay.apk' with 1 weak references
+D/EGL_emulation(14516): app_time_stats: avg=112.18ms min=77.73ms max=218.21ms count=9
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:85ace101: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+D/InputMethodManager(14516): showSoftInput() view=io.flutter.embedding.android.FlutterView{2cc467d VFE...... .F...... 0,0-720,1280 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(14516): The input method toggled cursor monitoring on
+D/InsetsController(14516): show(ime(), fromIme=true)
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:85ace101: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+D/EGL_emulation(14516): app_time_stats: avg=108.93ms min=31.13ms max=346.52ms count=12
+D/EGL_emulation(14516): app_time_stats: avg=487.34ms min=461.04ms max=501.97ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=209.17ms min=32.91ms max=485.10ms count=5
+D/EGL_emulation(14516): app_time_stats: avg=46.49ms min=21.90ms max=75.09ms count=22
+D/EGL_emulation(14516): app_time_stats: avg=46.23ms min=7.84ms max=354.11ms count=21
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:8f962531: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+D/InputMethodManager(14516): showSoftInput() view=io.flutter.embedding.android.FlutterView{2cc467d VFE...... .F...... 0,0-720,1280 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(14516): The input method toggled cursor monitoring on
+D/InsetsController(14516): show(ime(), fromIme=true)
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:8f962531: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+D/EGL_emulation(14516): app_time_stats: avg=135.75ms min=22.31ms max=498.49ms count=9
+D/EGL_emulation(14516): app_time_stats: avg=280.40ms min=20.72ms max=495.85ms count=5
+D/EGL_emulation(14516): app_time_stats: avg=51.08ms min=15.14ms max=110.63ms count=21
+D/EGL_emulation(14516): app_time_stats: avg=39.15ms min=10.43ms max=89.31ms count=25
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:4889020d: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+D/InputMethodManager(14516): showSoftInput() view=io.flutter.embedding.android.FlutterView{2cc467d VFE...... .F...... 0,0-720,1280 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(14516): The input method toggled cursor monitoring on
+D/InsetsController(14516): show(ime(), fromIme=true)
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:4889020d: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+D/EGL_emulation(14516): app_time_stats: avg=60.91ms min=8.26ms max=294.63ms count=19
+D/EGL_emulation(14516): app_time_stats: avg=259.39ms min=42.51ms max=437.04ms count=4
+I/o.room_manager2(14516): Background concurrent mark compact GC freed 3435KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 3587KB/7175KB, paused 1.408ms,5.413ms total 36.062ms
+D/EGL_emulation(14516): app_time_stats: avg=86.94ms min=71.05ms max=101.15ms count=12
+D/EGL_emulation(14516): app_time_stats: avg=84.07ms min=70.92ms max=147.35ms count=12
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:cb20dcc9: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+D/InputMethodManager(14516): showSoftInput() view=io.flutter.embedding.android.FlutterView{2cc467d VFE...... .F...... 0,0-720,1280 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(14516): The input method toggled cursor monitoring on
+D/EGL_emulation(14516): app_time_stats: avg=54.28ms min=7.61ms max=136.61ms count=18
+D/InsetsController(14516): show(ime(), fromIme=true)
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:cb20dcc9: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+D/EGL_emulation(14516): app_time_stats: avg=113.01ms min=24.49ms max=300.70ms count=9
+D/EGL_emulation(14516): app_time_stats: avg=175.90ms min=57.76ms max=459.66ms count=6
+D/EGL_emulation(14516): app_time_stats: avg=103.98ms min=77.63ms max=172.08ms count=10
+D/EGL_emulation(14516): app_time_stats: avg=76.79ms min=24.06ms max=139.51ms count=13
+D/EGL_emulation(14516): app_time_stats: avg=69.26ms min=42.83ms max=89.73ms count=15
+D/EGL_emulation(14516): app_time_stats: avg=99.02ms min=7.95ms max=500.51ms count=10
+D/EGL_emulation(14516): app_time_stats: avg=500.06ms min=498.67ms max=501.45ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=500.91ms min=500.02ms max=501.79ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=498.61ms min=496.56ms max=499.65ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=501.20ms min=500.11ms max=502.29ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=498.37ms min=497.66ms max=499.37ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=502.55ms min=499.85ms max=505.25ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=498.75ms min=497.59ms max=499.45ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.16ms min=496.58ms max=503.24ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.63ms min=496.97ms max=504.76ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.01ms min=495.74ms max=501.10ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.44ms min=496.93ms max=504.23ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.97ms min=496.64ms max=503.31ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=498.75ms min=495.05ms max=501.30ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.38ms min=482.47ms max=518.29ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=505.95ms min=497.15ms max=514.76ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=496.10ms min=487.32ms max=500.59ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.58ms min=496.43ms max=502.29ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.36ms min=499.11ms max=499.77ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.21ms min=499.50ms max=500.92ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.25ms min=497.54ms max=500.52ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.44ms min=499.19ms max=501.70ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.90ms min=493.87ms max=505.94ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.03ms min=438.15ms max=559.31ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.40ms min=498.46ms max=502.35ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.47ms min=498.96ms max=500.48ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.16ms min=497.53ms max=502.80ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=500.44ms min=499.40ms max=501.48ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=501.10ms min=496.17ms max=506.04ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=497.95ms min=495.38ms max=499.43ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=505.58ms min=501.39ms max=509.76ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=502.00ms min=492.17ms max=512.19ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=494.18ms min=482.80ms max=504.12ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.89ms min=497.60ms max=502.02ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.69ms min=497.83ms max=502.06ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.97ms min=496.49ms max=502.34ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.93ms min=496.97ms max=502.89ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=502.66ms min=497.57ms max=509.26ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=496.77ms min=490.14ms max=501.12ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.41ms min=499.14ms max=501.67ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.31ms min=496.84ms max=502.49ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.86ms min=499.42ms max=500.30ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.58ms min=497.47ms max=501.93ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.55ms min=500.20ms max=500.90ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=498.72ms min=497.17ms max=500.80ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=504.29ms min=502.33ms max=506.26ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=497.31ms min=493.98ms max=499.40ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.42ms min=499.94ms max=500.91ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=502.71ms min=499.30ms max=506.13ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=497.63ms min=493.02ms max=502.07ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=501.14ms min=499.01ms max=503.27ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=500.21ms min=496.82ms max=503.60ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.10ms min=497.86ms max=500.43ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=502.06ms min=498.40ms max=507.00ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=497.27ms min=494.05ms max=499.55ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.62ms min=499.32ms max=501.92ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=500.58ms min=499.28ms max=501.88ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.99ms min=498.56ms max=502.64ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=529.62ms min=495.78ms max=589.49ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=469.35ms min=409.96ms max=500.86ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.07ms min=497.72ms max=502.45ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.93ms min=495.33ms max=504.52ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.40ms min=498.07ms max=500.98ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.48ms min=498.25ms max=502.84ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=498.57ms min=497.69ms max=499.29ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=501.73ms min=501.68ms max=501.78ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.50ms min=495.42ms max=503.82ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=498.81ms min=498.03ms max=499.60ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=505.97ms min=503.01ms max=508.92ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=496.87ms min=490.32ms max=502.04ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.11ms min=496.57ms max=501.94ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=498.75ms min=497.45ms max=501.07ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=501.31ms min=501.12ms max=501.50ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.13ms min=496.23ms max=501.39ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.02ms min=498.57ms max=501.47ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=500.99ms min=498.17ms max=504.44ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.23ms min=493.83ms max=503.27ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.89ms min=495.57ms max=504.22ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=537.84ms min=494.69ms max=580.99ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=473.58ms min=422.28ms max=499.55ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=501.10ms min=499.28ms max=502.93ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.29ms min=497.06ms max=503.15ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.86ms min=500.67ms max=501.04ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=498.54ms min=497.16ms max=500.64ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=501.48ms min=495.34ms max=507.61ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=498.44ms min=497.31ms max=500.22ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=505.64ms min=501.18ms max=510.09ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=496.38ms min=489.88ms max=503.77ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=498.72ms min=496.32ms max=500.94ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=501.00ms min=498.69ms max=503.31ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=500.29ms min=498.01ms max=502.57ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.78ms min=496.58ms max=502.08ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.91ms min=491.21ms max=507.34ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.71ms min=498.65ms max=500.30ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.69ms min=497.47ms max=502.31ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.69ms min=497.29ms max=502.35ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.92ms min=499.39ms max=500.45ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=500.01ms min=496.32ms max=503.70ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=501.89ms min=497.63ms max=506.14ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=506.04ms min=493.37ms max=524.90ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=492.55ms min=476.33ms max=500.78ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.79ms min=497.17ms max=502.40ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.47ms min=497.95ms max=500.88ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.94ms min=499.77ms max=502.10ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=498.32ms min=494.41ms max=502.31ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.54ms min=499.69ms max=501.38ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=499.11ms min=497.92ms max=501.39ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=511.88ms min=501.45ms max=522.31ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=492.32ms min=476.77ms max=500.69ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=499.51ms min=498.26ms max=501.53ms count=3
+D/EGL_emulation(14516): app_time_stats: avg=500.19ms min=498.79ms max=501.59ms count=2
+D/EGL_emulation(14516): app_time_stats: avg=500.26ms min=498.92ms max=501.60ms count=2
+D/InsetsController(14516): hide(ime(), fromIme=true)
+D/EGL_emulation(14516): app_time_stats: avg=14937.35ms min=3.88ms max=193901.27ms count=13
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:d18888fd: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT fromUser false
+D/EGL_emulation(14516): app_time_stats: avg=501.69ms min=498.51ms max=507.32ms count=3
+I/ImeTracker(14516): com.stepbytestudio.room_manager2:5248e016: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+I/ImeTracker(14516): com.google.android.inputmethod.latin:69cc6a70: onHidden
+D/EGL_emulation(14516): app_time_stats: avg=571.20ms min=21.26ms max=4789.10ms count=9
+D/EGL_emulation(14516): app_time_stats: avg=47.31ms min=6.56ms max=972.82ms count=31
+D/EGL_emulation(14516): app_time_stats: avg=65.89ms min=6.13ms max=1473.37ms count=29
+D/EGL_emulation(14516): app_time_stats: avg=82.83ms min=7.03ms max=2080.16ms count=31
+D/EGL_emulation(14516): app_time_stats: avg=305.00ms min=7.00ms max=3891.18ms count=15
+D/EGL_emulation(14516): app_time_stats: avg=48.55ms min=9.29ms max=1191.41ms count=39
+D/EGL_emulation(14516): app_time_stats: avg=126.43ms min=6.97ms max=1250.13ms count=12
+D/EGL_emulation(14516): app_time_stats: avg=77.60ms min=7.34ms max=1459.00ms count=26
+D/EGL_emulation(14516): app_time_stats: avg=76.71ms min=8.61ms max=813.57ms count=18
+D/EGL_emulation(14516): app_time_stats: avg=49.24ms min=9.37ms max=520.37ms count=20
+D/EGL_emulation(14516): app_time_stats: avg=40.17ms min=11.17ms max=553.24ms count=27
+D/EGL_emulation(14516): app_time_stats: avg=60.00ms min=11.06ms max=588.73ms count=16
+D/EGL_emulation(14516): app_time_stats: avg=48.02ms min=6.69ms max=594.58ms count=19
+D/EGL_emulation(14516): app_time_stats: avg=495.10ms min=14.15ms max=2405.40ms count=5
+D/EGL_emulation(14516): app_time_stats: avg=1536.20ms min=7.91ms max=24323.79ms count=16
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_014.png
+D/EGL_emulation(14516): app_time_stats: avg=2965.30ms min=7.77ms max=88450.07ms count=30
+D/EGL_emulation(14516): app_time_stats: avg=107.69ms min=8.74ms max=1573.06ms count=17
+D/EGL_emulation(14516): app_time_stats: avg=42.86ms min=10.55ms max=773.76ms count=31
+D/EGL_emulation(14516): app_time_stats: avg=18.96ms min=9.37ms max=63.60ms count=43
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_015.png
+D/EGL_emulation(14516): app_time_stats: avg=957.11ms min=9.80ms max=27294.26ms count=29
+D/EGL_emulation(14516): app_time_stats: avg=63.40ms min=8.94ms max=658.73ms count=15
