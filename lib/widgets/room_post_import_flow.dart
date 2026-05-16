@@ -19,6 +19,7 @@ import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/room_sync_service.dart';
 import '../state/bulk_operation_state_controller.dart';
+import '../utils/product_image_resolve.dart';
 import '../utils/room_reaction_status_display.dart';
 import '../utils/room_sync_log.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -289,22 +290,6 @@ abstract final class RoomPostImportFlow {
       startBatch: startBatch,
       startDeepCollectsBatch: startDeepCollectsBatch,
     );
-    if (!context.mounted) return;
-    if (result.postImportEnrichSuccessCount != null) {
-      final suc = result.postImportEnrichSuccessCount ?? 0;
-      final fail = result.postImportEnrichFailCount ?? 0;
-      final pendingAll =
-          RoomImportMetadataEnrichmentService.countPendingEnrichment(
-            context.read<RakutenManagedProductProvider>().items,
-          );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '取り込みが完了しました：成功$suc件 / 失敗$fail件\nショップ名・ジャンル未確認：$pendingAll件',
-          ),
-        ),
-      );
-    }
   }
 
   /// 1バッチ実行して結果を返す（ROOM URL 未登録時は null）。
@@ -457,14 +442,44 @@ abstract final class RoomPostImportFlow {
       'displayProductIds=${display.map((e) => e.productId).join(',')}',
     );
     for (final p in display) {
+      ProductImageResolve.logForScreen(
+        product: p,
+        screen: 'importResult',
+      );
       roomImportResultSheetItemLog(
         'productId=${p.productId} title=${p.itemName.trim().isEmpty ? '(empty)' : p.itemName.trim()} '
-        'hasImage=${p.imageUrl.trim().isNotEmpty} price=${p.itemPrice} '
+        'hasImage=${ProductImageResolve.displayImageUrlForManaged(p).isNotEmpty} '
+        'price=${p.itemPrice} '
         'formattedPrice=${p.itemPrice > 0 ? RoomColleProductListCardLayout.formatPriceYen(p.itemPrice) : '-'} '
         'shopName=${p.shopName.trim()} genreName=${p.genreName.trim()}',
       );
     }
     return display;
+  }
+
+  static List<RakutenManagedProduct> refetchReactionHighlightsForResultSheet({
+    required RakutenManagedProductRepository repository,
+    required RoomSyncResult result,
+  }) {
+    final ids = result.reactionHighlightSamples
+        .map((e) => e.productId.trim())
+        .where((e) => e.isNotEmpty)
+        .toList();
+    if (ids.isEmpty) {
+      return List<RakutenManagedProduct>.from(result.reactionHighlightSamples);
+    }
+    final rows = <RakutenManagedProduct>[];
+    for (final id in ids) {
+      final row = repository.getByProductId(id);
+      if (row != null) {
+        rows.add(row);
+        ProductImageResolve.logForScreen(
+          product: row,
+          screen: 'importResult',
+        );
+      }
+    }
+    return rows.take(3).toList(growable: false);
   }
 
   /// 取り込み結果を BottomSheet で表示。「もう10件」で続行コールバック。
@@ -486,9 +501,27 @@ abstract final class RoomPostImportFlow {
       showDragHandle: true,
       builder: (ctx) {
         roomImportResultSheetCopyLog(_importResultSheetCopyLogLine(result));
-        final pendingEnrich =
-            RoomImportMetadataEnrichmentService.countPendingEnrichment(
-              ctx.read<RakutenManagedProductProvider>().items,
+        final displayReactions = refetchReactionHighlightsForResultSheet(
+          repository: productRepo,
+          result: result,
+        );
+        final added = result.newlyCollectedCount;
+        final pendingImported =
+            result.postImportEnrichRemainingImportedPending ?? 0;
+        final confirmed = (added - pendingImported).clamp(0, added);
+        final pending = pendingImported;
+        final reactionCount = displayReactions.isNotEmpty
+            ? displayReactions.length
+            : result.reactionHighlightSamples.length;
+        roomImportResultSheetSimplifiedLog(
+          added: added,
+          productInfoConfirmed: confirmed,
+          productInfoPending: pending,
+          reactionItems: reactionCount,
+        );
+        final bodySecondary = Theme.of(ctx).textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.45,
             );
         return SafeArea(
           child: SingleChildScrollView(
@@ -498,7 +531,7 @@ abstract final class RoomPostImportFlow {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '取り込み結果',
+                  '取り込み完了',
                   textAlign: TextAlign.center,
                   style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
@@ -506,8 +539,8 @@ abstract final class RoomPostImportFlow {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  result.newlyCollectedCount > 0
-                      ? '${result.newlyCollectedCount}件追加しました'
+                  added > 0
+                      ? '$added件追加しました'
                       : _heroOutcomeLine(result),
                   textAlign: TextAlign.center,
                   style: Theme.of(ctx).textTheme.headlineSmall?.copyWith(
@@ -516,192 +549,47 @@ abstract final class RoomPostImportFlow {
                     height: 1.15,
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
                 Text(
-                  result.postImportEnrichSuccessCount != null
-                      ? '新しい商品をコレ済に追加し、商品情報の初回取得を行いました。'
-                      : '新しい商品をコレ済に追加しました。初回の商品情報取得はバッチ完了後に続けて行われます。',
+                  '新しいROOM投稿をコレ済に追加しました。',
                   textAlign: TextAlign.center,
-                  style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.45,
-                  ),
+                  style: bodySecondary,
                 ),
-                if (result.postImportEnrichSuccessCount != null &&
-                    result.newlyCollectedCount > 0) ...[
-                  const SizedBox(height: 12),
-                  ..._importSheetEnrichUserLines(ctx, result),
-                ],
-                const SizedBox(height: 22),
-                if (kDebugMode)
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                    const spacing = 12.0;
-                    final w = constraints.maxWidth;
-                    final half = w > spacing ? (w - spacing) / 2 : w;
-                    Widget cell(_SummaryMiniCard c) =>
-                        SizedBox(width: half, child: c);
-                    return Wrap(
-                      spacing: spacing,
-                      runSpacing: spacing,
-                      children: [
-                        cell(
-                          _SummaryMiniCard(
-                            label: '新しく追加',
-                            value: result.newlyCollectedCount,
-                            emphasize: result.newlyCollectedCount > 0,
-                          ),
-                        ),
-                        cell(
-                          _SummaryMiniCard(
-                            label: '確認済み',
-                            value: result.listingCheckedCount,
-                          ),
-                        ),
-                        cell(
-                          _SummaryMiniCard(
-                            label: 'すでに登録済み',
-                            value: result.listingSyncedSkipCount,
-                          ),
-                        ),
-                        cell(
-                          _SummaryMiniCard(
-                            label: '失敗',
-                            value: result.failedCount,
-                            emphasize: result.failedCount > 0,
-                            emphasizeColor: AppColors.error,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                if (result.roomUrlAddedCount > 0) ...[
-                  const SizedBox(height: 12),
+                if (added > 0) ...[
+                  const SizedBox(height: 16),
                   Text(
-                    'ROOMページ紐付け：${result.roomUrlAddedCount}件',
+                    pending > 0
+                        ? '商品情報：$confirmed件確認済み / $pending件はあとで確認できます'
+                        : '商品情報：$confirmed件確認済み',
                     textAlign: TextAlign.center,
-                    style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.35,
-                    ),
+                    style: bodySecondary,
                   ),
+                  if (pending > 0) ...[
+                    const SizedBox(height: 6),
+                    Text(
+                      'ショップ名・ジャンルはあとで自動確認されます',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textTertiary,
+                            height: 1.35,
+                          ),
+                    ),
+                  ],
                 ],
-                const SizedBox(height: 14),
-                Text(
-                  '※ROOM本体の投稿数には加算しません',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textTertiary,
-                    height: 1.35,
-                  ),
-                ),
-                if (result.collectsPagesFetched > 0 ||
-                    result.collectsIncompleteExplore ||
-                    (result.collectsStopReason != null &&
-                        result.collectsStopReason!.trim().isNotEmpty)) ...[
-                  const SizedBox(height: 16),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: AppColors.divider.withValues(alpha: 0.55),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            'ROOM投稿の探索（collects API）',
-                            style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            '探索ページ：${result.collectsPagesFetched}ページ · '
-                            'モード：${result.collectsExploreModeLabel == 'deep' ? '深掘り' : '通常'}',
-                            style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
-                              height: 1.45,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                          if (result.collectsStopReason != null &&
-                              result.collectsStopReason!.trim().isNotEmpty) ...[
-                            const SizedBox(height: 4),
-                            Text(
-                              '終了理由：${result.collectsStopReason}',
-                              style: Theme.of(ctx).textTheme.bodySmall
-                                  ?.copyWith(color: AppColors.textTertiary),
-                            ),
-                          ],
-                          if (result.collectsIncompleteExplore) ...[
-                            const SizedBox(height: 8),
-                            Text(
-                              '未取り込みの投稿がまだ残っている可能性があります。'
-                              '古い投稿をさらに探す場合は、マイページの'
-                              '「さらに古い投稿を探す」から実行できます。',
-                              style: Theme.of(ctx).textTheme.bodyMedium
-                                  ?.copyWith(
-                                    height: 1.45,
-                                    color: AppColors.textSecondary,
-                                  ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-                if (pendingEnrich > 0) ...[
-                  const SizedBox(height: 16),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.accentPrimary.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            '商品情報（楽天API）',
-                            style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'ショップ名・ジャンル未確認が $pendingEnrich 件あります。'
-                            'ホームまたはマイページの「ショップ名・ジャンルを再確認」から実行できます。',
-                            style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
-                              height: 1.45,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                if (reactionCount > 0) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    '反応あり：$reactionCount件',
+                    textAlign: TextAlign.center,
+                    style: bodySecondary,
                   ),
                 ],
                 if (displayImported.isNotEmpty) ...[
                   const SizedBox(height: 22),
                   Text(
-                    '今回追加した商品（一部）',
+                    '今回追加した商品',
                     style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    '最新3件のみ表示しています。すべて見る場合はコレ済一覧へ。',
-                    style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.35,
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -712,78 +600,57 @@ abstract final class RoomPostImportFlow {
                     ),
                   ),
                 ],
-                if (result.reactionHighlightSamples.isNotEmpty) ...[
-                  const SizedBox(height: 22),
-                  Text(
-                    '反応があった商品',
-                    style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                if (displayReactions.isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  ...displayReactions.map(
+                    (p) => Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: _ImportedProductPreviewTile(product: p),
                     ),
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'いいね・コメントが付いていた商品です（最大3件）',
-                    style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.35,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  ...result.reactionHighlightSamples
-                      .take(3)
-                      .map(
-                        (p) => Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: _ImportedProductPreviewTile(product: p),
-                        ),
-                      ),
-                ],
-                if (result.failedCount > 0 &&
-                    result.failedRoomUrls.isNotEmpty) ...[
-                  const SizedBox(height: 10),
-                  Text(
-                    '取り込めなかったROOMページ（先頭3件）',
-                    style: Theme.of(ctx).textTheme.labelMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.error,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  ...result.failedRoomUrls
-                      .take(3)
-                      .map(
-                        (u) => Padding(
-                          padding: const EdgeInsets.only(bottom: 6),
-                          child: Text(
-                            u,
-                            style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textSecondary,
-                              height: 1.35,
-                            ),
-                          ),
-                        ),
-                      ),
                 ],
                 if (kDebugMode) ...[
                   const SizedBox(height: 20),
                   const Divider(height: 1),
-                  const SizedBox(height: 12),
-                  Text(
-                    '開発用（debug のみ）',
-                    style: Theme.of(ctx).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textTertiary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
                   const SizedBox(height: 8),
                   OutlinedButton(
                     onPressed: () => _copyRoomImportDebugLog(navigatorContext),
                     child: const Text('デバッグログをコピー'),
                   ),
+                  if (startDeepCollectsBatch != null &&
+                      result.collectsIncompleteExplore) ...[
+                    const SizedBox(height: 8),
+                    OutlinedButton(
+                      onPressed: () async {
+                        Navigator.pop(ctx);
+                        final next = await startDeepCollectsBatch();
+                        if (!navigatorContext.mounted || next == null) return;
+                        await presentPostImportUi(
+                          navigatorContext,
+                          next,
+                          startBatch: startBatch,
+                          startDeepCollectsBatch: startDeepCollectsBatch,
+                        );
+                      },
+                      child: const Text('さらに古い投稿を探す（debug）'),
+                    ),
+                  ],
                   const SizedBox(height: 8),
                   OutlinedButton(
-                    onPressed: () => _showRoomImportDebugLogDialog(ctx),
-                    child: const Text('デバッグログを表示'),
+                    onPressed: () async {
+                      Navigator.pop(ctx);
+                      final next = await startBatch();
+                      if (!navigatorContext.mounted || next == null) return;
+                      await presentPostImportUi(
+                        navigatorContext,
+                        next,
+                        startBatch: startBatch,
+                        startDeepCollectsBatch: startDeepCollectsBatch,
+                      );
+                    },
+                    child: Text(
+                      'もう${RoomImportLimitPolicy.freeBatchLimit}件取り込む（debug）',
+                    ),
                   ),
                 ],
                 const SizedBox(height: 26),
@@ -804,53 +671,11 @@ abstract final class RoomPostImportFlow {
                   },
                   icon: const Icon(Icons.task_alt_rounded, size: 22),
                   label: const Text(
-                    'コレ済をすべて見る',
+                    'コレ済一覧を見る',
                     style: TextStyle(fontWeight: FontWeight.w900),
                   ),
                 ),
                 const SizedBox(height: 12),
-                if (startDeepCollectsBatch != null &&
-                    result.collectsIncompleteExplore) ...[
-                  OutlinedButton.icon(
-                    style: OutlinedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 48),
-                      foregroundColor: AppColors.accentPrimary,
-                    ),
-                    onPressed: () async {
-                      Navigator.pop(ctx);
-                      final next = await startDeepCollectsBatch();
-                      if (!navigatorContext.mounted || next == null) return;
-                      await presentPostImportUi(
-                        navigatorContext,
-                        next,
-                        startBatch: startBatch,
-                        startDeepCollectsBatch: startDeepCollectsBatch,
-                      );
-                    },
-                    icon: const Icon(Icons.manage_search_rounded, size: 20),
-                    label: const Text('さらに古い投稿を探す（時間がかかります）'),
-                  ),
-                  const SizedBox(height: 12),
-                ],
-                OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 48),
-                    foregroundColor: AppColors.accentPrimary,
-                  ),
-                  onPressed: () async {
-                    Navigator.pop(ctx);
-                    final next = await startBatch();
-                    if (!navigatorContext.mounted || next == null) return;
-                    await presentPostImportUi(
-                      navigatorContext,
-                      next,
-                      startBatch: startBatch,
-                      startDeepCollectsBatch: startDeepCollectsBatch,
-                    );
-                  },
-                  icon: const Icon(Icons.playlist_add_rounded, size: 20),
-                  label: Text('もう${RoomImportLimitPolicy.freeBatchLimit}件取り込む'),
-                ),
                 TextButton(
                   onPressed: () => Navigator.pop(ctx),
                   child: const Text('閉じる'),
@@ -880,75 +705,6 @@ abstract final class RoomPostImportFlow {
         'remaining=$rem userMessage=$userMessage';
   }
 
-  static List<Widget> _importSheetEnrichUserLines(
-    BuildContext ctx,
-    RoomSyncResult r,
-  ) {
-    final succ = r.postImportEnrichSuccessCount!;
-    final fail = r.postImportEnrichFailCount ?? 0;
-    final rem = r.postImportEnrichRemainingImportedPending ?? 0;
-    final unclear = fail + rem;
-    final secondary = Theme.of(ctx).textTheme.bodyMedium?.copyWith(
-          color: AppColors.textSecondary,
-          height: 1.45,
-        );
-    if (unclear == 0) {
-      return [
-        Text(
-          'すべての商品情報を確認できました',
-          textAlign: TextAlign.center,
-          style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                height: 1.45,
-              ),
-        ),
-      ];
-    }
-    if (succ <= 0) {
-      return [
-        Text(
-          '$unclear件は商品情報をこの場では確認できませんでした',
-          textAlign: TextAlign.center,
-          style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                height: 1.45,
-              ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          '未確認の商品は「ショップ名・ジャンルを再確認」から再確認できます',
-          textAlign: TextAlign.center,
-          style: secondary,
-        ),
-      ];
-    }
-    return [
-      Text(
-        '$succ件は商品情報まで確認できました',
-        textAlign: TextAlign.center,
-        style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-              height: 1.45,
-            ),
-      ),
-      const SizedBox(height: 6),
-      Text(
-        '$unclear件はあとで再確認できます',
-        textAlign: TextAlign.center,
-        style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-              height: 1.45,
-            ),
-      ),
-      const SizedBox(height: 8),
-      Text(
-        '未確認の商品は「ショップ名・ジャンルを再確認」から再確認できます',
-        textAlign: TextAlign.center,
-        style: secondary,
-      ),
-    ];
-  }
-
   static String _heroOutcomeLine(RoomSyncResult r) {
     final n = r.newlyCollectedCount;
     final add = r.roomUrlAddedCount;
@@ -961,59 +717,6 @@ abstract final class RoomPostImportFlow {
       return '新しい投稿は見つかりませんでした';
     }
     return '追加はありませんでした';
-  }
-}
-
-class _SummaryMiniCard extends StatelessWidget {
-  const _SummaryMiniCard({
-    required this.label,
-    required this.value,
-    this.emphasize = false,
-    this.emphasizeColor,
-  });
-
-  final String label;
-  final int value;
-  final bool emphasize;
-  final Color? emphasizeColor;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final valueStyle = theme.textTheme.titleMedium?.copyWith(
-      fontWeight: FontWeight.w900,
-      color: emphasize
-          ? (emphasizeColor ?? AppColors.accentPrimary)
-          : AppColors.textPrimary,
-    );
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.divider.withValues(alpha: 0.55)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              label,
-              maxLines: 2,
-              softWrap: true,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w600,
-                height: 1.2,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text('$value', style: valueStyle),
-          ],
-        ),
-      ),
-    );
   }
 }
 
@@ -1051,9 +754,13 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                   child: SizedBox(
                     width: 52,
                     height: 52,
-                    child: product.imageUrl.trim().isNotEmpty
+                    child: ProductImageResolve.displayImageUrlForManaged(
+                              product,
+                            ).isNotEmpty
                         ? Image.network(
-                            product.imageUrl.trim(),
+                            ProductImageResolve.displayImageUrlForManaged(
+                              product,
+                            ),
                             fit: BoxFit.cover,
                             errorBuilder: (_, __, ___) =>
                                 _thumbPlaceholder(theme),

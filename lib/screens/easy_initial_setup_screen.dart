@@ -12,7 +12,9 @@ import '../services/shop_discovery_aggregator.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../utils/genre_pref_log.dart';
 import '../utils/onboarding_ui_log.dart';
+import '../utils/product_safety_filter.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
@@ -212,6 +214,13 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       roomUrl: base.roomUrl,
     );
     await profileProv.saveProfile(next);
+    for (var i = 0; i < idList.length; i++) {
+      GenrePrefLog.logSave(
+        selectedGenreId: idList[i],
+        selectedGenreName: i < names.length ? names[i] : '',
+        source: 'initialSetup',
+      );
+    }
     if (!mounted) return;
     setState(() {
       _shopRecommendationStarted = false;
@@ -288,11 +297,41 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     final searchRepository = context.read<RakutenSearchRepository>();
     try {
       final profile = profileProvider.profile;
+      GenrePrefLog.logLoad(
+        favoriteGenreIds: profile.favoriteGenreIdList,
+        favoriteGenreNames: profile.favoriteGenres.split(RegExp(r'[、,]+')),
+        source: 'shopRecommend',
+      );
       final condition = _shopRecommendationCondition(
         profile.favoriteGenreIdList,
         profile.effectivePostStyleList,
       );
-      final items = await searchRepository.search(condition: condition);
+      final rawItems = await searchRepository.search(condition: condition);
+      final items = rawItems.where((item) {
+        final blocked = ProductSafetyFilter.isBlockedProduct(
+          itemName: item.itemName,
+          shopName: item.shopName,
+          genreName: item.genreName,
+          itemUrl: item.itemUrl,
+          affiliateUrl: item.affiliateUrl,
+        );
+        if (blocked) {
+          ProductSafetyFilter.logFilter(
+            source: 'shopRecommend',
+            itemCode: item.productId,
+            title: item.itemName,
+            shopName: item.shopName,
+            genreName: item.genreName,
+            blocked: true,
+            reasons: ProductSafetyFilter.blockedReasons(
+              itemName: item.itemName,
+              shopName: item.shopName,
+              genreName: item.genreName,
+            ),
+          );
+        }
+        return !blocked;
+      }).toList(growable: false);
       if (!mounted) return;
       final recs = _rankShopRecommendations(
         ShopDiscoveryAggregator.aggregate(items, shopLimit: 5, itemsPerShop: 3),

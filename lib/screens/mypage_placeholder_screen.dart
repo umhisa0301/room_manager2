@@ -14,6 +14,7 @@ import '../services/app_action_service.dart';
 import '../services/room_import_collects_policy.dart';
 import '../services/room_import_limit_policy.dart';
 import '../widgets/room_import_enrichment_pending_hint.dart';
+import '../utils/genre_pref_log.dart';
 import '../utils/room_sync_button_visibility.dart';
 import '../utils/room_sync_card_copy.dart';
 import '../utils/room_sync_log.dart';
@@ -155,6 +156,13 @@ class MypagePlaceholderScreen extends StatelessWidget {
       roomUrl: base.roomUrl,
     );
     await context.read<UserProfileProvider>().saveProfile(next);
+    for (var i = 0; i < idList.length; i++) {
+      GenrePrefLog.logSave(
+        selectedGenreId: idList[i],
+        selectedGenreName: i < names.length ? names[i] : '',
+        source: 'mypage',
+      );
+    }
     if (!context.mounted) return;
     ScaffoldMessenger.of(
       context,

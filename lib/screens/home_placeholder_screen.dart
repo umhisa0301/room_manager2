@@ -264,6 +264,16 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
             .read<RoomImportController>()
             .tickSlowRoomMetadataEnrichmentIfNeeded(context),
       );
+      homeSectionOrderLog(
+        'todayRoomOperation,roomColleManagement,roomSync,recentCandidates',
+      );
+      unknownFloatingButtonAuditLog(
+        screen: 'home',
+        widget: 'none',
+        file: 'lib/screens/home_placeholder_screen.dart',
+        visible: false,
+        reason: 'noDrawerNoMenuFabOnHomeBody',
+      );
       _trace('trigger=homeInit');
       _trigger('postFrame');
       _trace('action=ensureToday');
@@ -564,6 +574,23 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                     _openTodayRecommendations(context),
                               ),
                               SizedBox(height: _HomeUi.gapSection),
+                              _RoomManagementSection(
+                                candidateTotal: nCandidate,
+                                doneTotal: nDone,
+                                todayDoneCount: nTodayDone,
+                                lastDoneAt: lastDone,
+                                onCandidateTap: () =>
+                                    _openRoomList(context, initialTabIndex: 0),
+                                onDoneTap: () =>
+                                    _openRoomList(context, initialTabIndex: 1),
+                                onTodayTap: () => _openRoomList(
+                                  context,
+                                  initialTabIndex: 1,
+                                  doneFilterLocalDay: todayLocalDay,
+                                ),
+                                onLastCollectTap: () => _openActivity(context),
+                              ),
+                              SizedBox(height: _HomeUi.gapSection),
                               _HomeRoomPostImportSection(
                                 hasRoomProfileUrl: profileRoomUrl.isNotEmpty,
                                 importedDoneCount: roomImportedDoneCount,
@@ -601,23 +628,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                       focusCandidateProductId: productId,
                                     ),
                                 onOpenFullList: () => _openRoomList(context),
-                              ),
-                              SizedBox(height: _HomeUi.gapSection),
-                              _RoomManagementSection(
-                                candidateTotal: nCandidate,
-                                doneTotal: nDone,
-                                todayDoneCount: nTodayDone,
-                                lastDoneAt: lastDone,
-                                onCandidateTap: () =>
-                                    _openRoomList(context, initialTabIndex: 0),
-                                onDoneTap: () =>
-                                    _openRoomList(context, initialTabIndex: 1),
-                                onTodayTap: () => _openRoomList(
-                                  context,
-                                  initialTabIndex: 1,
-                                  doneFilterLocalDay: todayLocalDay,
-                                ),
-                                onLastCollectTap: () => _openActivity(context),
                               ),
                             ],
                           ),
@@ -781,24 +791,35 @@ class _HomeRoomPostImportSection extends StatelessWidget {
           }
         }
 
-        final completed = ctl.checkedCount;
-        final total = ctl.targetCount;
         final actionLocked = bulk.isAnyBlockingOperationRunning;
 
         var busyLead = ctl.isRunning
-            ? (total > 0
-                  ? '現在ROOM投稿を取り込んでいます（$completed / $total件）'
-                  : (ctl.importProcessingHint.isNotEmpty
-                        ? ctl.importProcessingHint
-                        : '現在ROOM投稿を取り込んでいます'))
+            ? ctl.uiPhaseLabel
             : (reactionOnly
-                  ? '現在反応を確認中です'
+                  ? RoomSyncCardCopy.importPhaseLabel(
+                      RoomImportUiPhase.checkingReactions,
+                    )
                   : (enrichingOnly
-                        ? '現在ショップ名・ジャンルを確認しています'
+                        ? RoomSyncCardCopy.importPhaseLabel(
+                            RoomImportUiPhase.checkingProductInfo,
+                          )
                         : ''));
         if (syncBusy && busyLead.trim().isEmpty) {
-          busyLead = '現在同期処理を実行しています';
+          busyLead = RoomSyncCardCopy.importPhaseLabel(
+            RoomImportUiPhase.checkingTargets,
+          );
         }
+        final busyProgress = ctl.isRunning
+            ? ctl.uiPhaseProgress
+            : (reactionOnly
+                  ? RoomSyncCardCopy.importPhaseProgress(
+                      RoomImportUiPhase.checkingReactions,
+                    )
+                  : (enrichingOnly
+                        ? RoomSyncCardCopy.importPhaseProgress(
+                            RoomImportUiPhase.checkingProductInfo,
+                          )
+                        : null));
 
         final statusLine = !hasRoomProfileUrl
             ? 'ROOMプロフィールURLを登録すると同期機能が使えます'
@@ -900,21 +921,11 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  if (ctl.isRunning && total > 0)
-                    Text(
-                      '$completed / $total件',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  const SizedBox(height: 6),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(999),
                     child: LinearProgressIndicator(
                       minHeight: 8,
-                      value: ctl.isRunning && total > 0 && completed >= 0
-                          ? (completed / total).clamp(0.0, 1.0)
-                          : null,
+                      value: busyProgress,
                       backgroundColor: HomeScreenColors.progressTrack,
                       color: AppColors.accentPrimary,
                     ),

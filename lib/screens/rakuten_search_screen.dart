@@ -18,6 +18,7 @@ import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../utils/product_safety_filter.dart';
 import '../utils/rakuten_keyword_search_sort.dart';
 import '../utils/room_sync_log.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
@@ -2408,6 +2409,45 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   ///
   /// [searchScopeShopCode] に API 検索で絞り込んだ shopCode があるとき、当該ショップは
   /// 「保存済み」であっても一覧から落とさない（ショップ指定検索の結果が 0 件にならないようにする）。
+  String _safetyFilterSourceForMode() {
+    switch (_mode) {
+      case _RakutenSearchMode.genre:
+        return 'genreSearch';
+      case _RakutenSearchMode.shopDiscovery:
+        return 'shopDiscovery';
+      case _RakutenSearchMode.product:
+        return _savedShopKeywordEntryEffective
+            ? 'savedShopSearch'
+            : 'productSearch';
+    }
+  }
+
+  bool _isSafetyBlockedForSearch(RakutenSearchItem item) {
+    final blocked = ProductSafetyFilter.isBlockedProduct(
+      itemName: item.itemName,
+      shopName: item.shopName,
+      genreName: item.genreName,
+      itemUrl: item.itemUrl,
+      affiliateUrl: item.affiliateUrl,
+    );
+    if (blocked) {
+      ProductSafetyFilter.logFilter(
+        source: _safetyFilterSourceForMode(),
+        itemCode: item.productId,
+        title: item.itemName,
+        shopName: item.shopName,
+        genreName: item.genreName,
+        blocked: true,
+        reasons: ProductSafetyFilter.blockedReasons(
+          itemName: item.itemName,
+          shopName: item.shopName,
+          genreName: item.genreName,
+        ),
+      );
+    }
+    return blocked;
+  }
+
   List<RakutenSearchItem> _applyPreferredExcludes(
     List<RakutenSearchItem> source,
     RakutenManagedProductProvider managed,
@@ -2438,6 +2478,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           continue;
         }
         exclSavedShop++;
+        continue;
+      }
+      if (_isSafetyBlockedForSearch(item)) {
         continue;
       }
       out.add(item);
@@ -3423,8 +3466,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             _parseInt(_shopDiscoveryShopLimitController.text) ?? 10;
         final itemsPerShop =
             _parseInt(_shopDiscoveryItemsPerShopController.text) ?? 5;
+        final safeResults = search.results
+            .where((e) => !_isSafetyBlockedForSearch(e))
+            .toList(growable: false);
         final summaries = ShopDiscoveryAggregator.aggregate(
-          search.results,
+          safeResults,
           shopLimit: shopLimit,
           itemsPerShop: itemsPerShop,
         );

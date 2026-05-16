@@ -1022,3 +1022,92 @@ void roomSyncUiGuardLog(String message) {
     RoomImportDebugLogBuffer.add(line);
   }
 }
+
+void roomImportPhaseUiLog({
+  required String phase,
+  required String label,
+  required double progress,
+}) {
+  final line =
+      '[ROOM_IMPORT_PHASE_UI] phase=$phase label=$label progress=$progress';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportProductInfoPendingReasonLog({
+  required String productId,
+  required String title,
+  required String shopCode,
+  required String urlProductCode,
+  required bool hasRoomTitle,
+  required bool hasRoomImage,
+  required bool hasRoomPrice,
+  required bool hasRoomUrl,
+  required bool apiSearchTried,
+  required String apiSearchReason,
+  required String pendingFields,
+  required String reason,
+}) {
+  final line =
+      '[ROOM_IMPORT_PRODUCT_INFO_PENDING_REASON] productId=$productId '
+      'title=${title.trim().isEmpty ? '(empty)' : title.trim()} '
+      'shopCode=${shopCode.trim()} urlProductCode=${urlProductCode.trim()} '
+      'hasRoomTitle=$hasRoomTitle hasRoomImage=$hasRoomImage '
+      'hasRoomPrice=$hasRoomPrice hasRoomUrl=$hasRoomUrl '
+      'apiSearchTried=$apiSearchTried apiSearchReason=${apiSearchReason.trim()} '
+      'pendingFields=$pendingFields reason=$reason';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportResultSheetSimplifiedLog({
+  required int added,
+  required int productInfoConfirmed,
+  required int productInfoPending,
+  required int reactionItems,
+  bool debugDetailsHidden = true,
+}) {
+  final line =
+      '[ROOM_IMPORT_RESULT_SHEET_SIMPLIFIED] added=$added '
+      'productInfoConfirmed=$productInfoConfirmed '
+      'productInfoPending=$productInfoPending reactionItems=$reactionItems '
+      'debugDetailsHidden=$debugDetailsHidden';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void unknownFloatingButtonAuditLog({
+  required String screen,
+  required String widget,
+  required String file,
+  required bool visible,
+  required String reason,
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[UNKNOWN_FLOATING_BUTTON_AUDIT] screen=$screen widget=$widget '
+    'file=$file visible=$visible reason=$reason',
+  );
+}
+
+void unknownFloatingButtonHideLog({
+  required String screen,
+  required String widget,
+  required String reason,
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[UNKNOWN_FLOATING_BUTTON_HIDE] screen=$screen widget=$widget reason=$reason',
+  );
+}
+
+void homeSectionOrderLog(String order) {
+  if (!kDebugMode) return;
+  debugPrint('[HOME_SECTION_ORDER] order=$order');
+}

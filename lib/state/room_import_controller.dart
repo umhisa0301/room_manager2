@@ -14,6 +14,7 @@ import '../services/room_import_limit_policy.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../services/room_reaction_sync_history_store.dart';
 import '../services/room_profile_url_validation_service.dart';
+import '../utils/room_sync_card_copy.dart';
 import '../utils/room_sync_log.dart';
 import 'rakuten_managed_product_provider.dart';
 import 'user_profile_provider.dart';
@@ -60,9 +61,43 @@ class RoomImportController extends ChangeNotifier {
       List<RakutenManagedProduct>.unmodifiable(_latestAddedItems);
 
   String _importProcessingHint = '';
+  RoomImportUiPhase _uiPhase = RoomImportUiPhase.checkingTargets;
 
   /// [RoomSyncService.onProcessingHint] から渡る短文（ホーム等の進捗表示用）。
   String get importProcessingHint => _importProcessingHint;
+
+  RoomImportUiPhase get uiPhase => _uiPhase;
+
+  String get uiPhaseLabel => RoomSyncCardCopy.importPhaseLabel(_uiPhase);
+
+  double get uiPhaseProgress => RoomSyncCardCopy.importPhaseProgress(_uiPhase);
+
+  void _setUiPhase(RoomImportUiPhase phase) {
+    if (_uiPhase == phase) return;
+    _uiPhase = phase;
+    roomImportPhaseUiLog(
+      phase: phase.name,
+      label: RoomSyncCardCopy.importPhaseLabel(phase),
+      progress: RoomSyncCardCopy.importPhaseProgress(phase),
+    );
+    notifyListeners();
+  }
+
+  void _mapHintToUiPhase(String hint) {
+    final h = hint.trim();
+    if (h.isEmpty) return;
+    if (h.contains('ショップ名') || h.contains('ジャンル')) {
+      _setUiPhase(RoomImportUiPhase.checkingProductInfo);
+    } else if (h.contains('反応') || h.contains('いいね') || h.contains('コメント')) {
+      _setUiPhase(RoomImportUiPhase.checkingReactions);
+    } else if (h.contains('取り込み') ||
+        h.contains('保存') ||
+        RegExp(r'\d+\s*/\s*\d+').hasMatch(h)) {
+      _setUiPhase(RoomImportUiPhase.importingPosts);
+    } else if (h.contains('確認')) {
+      _setUiPhase(RoomImportUiPhase.checkingTargets);
+    }
+  }
 
   /// ROOMコレ表示・マイページ表示などで呼ばれていた低速補完フック。
   ///
@@ -130,6 +165,16 @@ class RoomImportController extends ChangeNotifier {
     _checkedCount = 0;
     _targetCount = 0;
     _importProcessingHint = '';
+    _uiPhase = RoomImportUiPhase.checkingTargets;
+    roomImportPhaseUiLog(
+      phase: RoomImportUiPhase.checkingTargets.name,
+      label: RoomSyncCardCopy.importPhaseLabel(
+        RoomImportUiPhase.checkingTargets,
+      ),
+      progress: RoomSyncCardCopy.importPhaseProgress(
+        RoomImportUiPhase.checkingTargets,
+      ),
+    );
     _bulkOperationState?.setRoomImportRunning(true);
     notifyListeners();
 
@@ -153,11 +198,15 @@ class RoomImportController extends ChangeNotifier {
                 if (busy) {
                   _checkedCount = completed;
                   _targetCount = total;
+                  if (total > 0) {
+                    _setUiPhase(RoomImportUiPhase.importingPosts);
+                  }
                   notifyListeners();
                 }
               },
           onProcessingHint: (hint) {
             _importProcessingHint = hint;
+            _mapHintToUiPhase(hint);
             notifyListeners();
           },
         );
@@ -181,6 +230,7 @@ class RoomImportController extends ChangeNotifier {
           searchRepository: searchRepo,
           productRepository: productRepo,
         );
+        _setUiPhase(RoomImportUiPhase.checkingProductInfo);
         final er = await svc.enrichRoomImportedProducts(
           limit: RoomImportLimitPolicy.freeBatchLimit,
           applyPostImportAutoCap: true,
@@ -188,10 +238,33 @@ class RoomImportController extends ChangeNotifier {
           restrictToProductIdsInOrder: result.newlyImportedProductIds,
           maxRunDuration: const Duration(seconds: 20),
           onEnrichSlotProgress: (done, total) {
-            _importProcessingHint = 'ショップ名・ジャンルを確認中です $done / $total';
+            _importProcessingHint = '商品情報を確認しています';
+            _setUiPhase(RoomImportUiPhase.checkingProductInfo);
             notifyListeners();
           },
         );
+        for (final id in result.newlyImportedProductIds) {
+          final row = productRepo.getByProductId(id);
+          if (row == null) continue;
+          final flags = RoomImportMetadataEnrichmentService.needFlagsForProduct(
+            row,
+          );
+          if (!flags.willEnrich) continue;
+          roomImportProductInfoPendingReasonLog(
+            productId: row.productId,
+            title: row.itemName,
+            shopCode: row.shopCode,
+            urlProductCode: row.roomApiCompositeItemCode,
+            hasRoomTitle: row.itemName.trim().isNotEmpty,
+            hasRoomImage: row.imageUrl.trim().isNotEmpty,
+            hasRoomPrice: row.itemPrice > 0,
+            hasRoomUrl: row.roomUrl.trim().isNotEmpty,
+            apiSearchTried: row.roomImportEnrichLastAttemptAt != null,
+            apiSearchReason: row.roomImportEnrichFailureReason,
+            pendingFields: _pendingFieldLabels(flags),
+            reason: _pendingReasonLabel(row),
+          );
+        }
         sw.stop();
         enrichmentBatchMs = sw.elapsedMilliseconds;
         enrichmentUpdated = er.updated;
@@ -307,6 +380,7 @@ class RoomImportController extends ChangeNotifier {
         _phase = RoomImportPhase.failed;
       } else {
         _phase = RoomImportPhase.completed;
+        _setUiPhase(RoomImportUiPhase.finished);
         _applyResultSnapshot(result);
         roomImportUiLog(
           'phase=finished added=${result.newlyCollectedCount} updated=${result.roomUrlAddedCount} skipped=${result.skippedCount} failed=${result.failedCount}',
@@ -428,4 +502,25 @@ class RoomImportController extends ChangeNotifier {
     }
     return out;
   }
+}
+
+String _pendingFieldLabels(RoomImportEnrichmentNeedFlags flags) {
+  final parts = <String>[];
+  if (flags.needsShopName) parts.add('shopName');
+  if (flags.needsGenre) parts.add('genreName');
+  if (flags.needsImage) parts.add('image');
+  if (flags.needsPrice) parts.add('price');
+  return parts.isEmpty ? 'none' : parts.join(',');
+}
+
+String _pendingReasonLabel(RakutenManagedProduct row) {
+  final reason = row.roomImportEnrichFailureReason.trim();
+  if (reason == '429' || reason.contains('rate')) return 'rateLimit';
+  if (reason.contains('timeout')) return 'timeout';
+  if (reason == 'noItems' || reason.contains('noMatch')) return 'noApiMatch';
+  if (row.shopCode.trim().isEmpty) return 'shopCodeMissing';
+  if (row.imageUrl.trim().isEmpty) return 'noImageInRoom';
+  if (row.itemPrice <= 0) return 'priceMissing';
+  if (reason.isNotEmpty) return reason;
+  return 'unknown';
 }

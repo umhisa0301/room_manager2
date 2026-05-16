@@ -12,6 +12,9 @@ import 'screens/add_candidate_from_url_screen.dart';
 import 'screens/mypage_placeholder_screen.dart';
 import 'screens/comment_template_edit_screen.dart';
 import 'widgets/add_candidate_entry_sheet.dart';
+import 'state/bulk_operation_state_controller.dart';
+import 'state/room_import_controller.dart';
+import 'utils/room_sync_log.dart';
 import 'widgets/common_draggable_edge_fab.dart';
 
 /// 下部ナビ表示は ホーム・探す・ROOMコレ・分析・マイページ。
@@ -103,10 +106,32 @@ class _AppShellState extends State<AppShell> {
         children: [
           IndexedStack(index: idx, children: _screens),
           if (idx != 2)
-            CommonDraggableEdgeFab(
-              shellTabIndex: idx,
-              onCommentTap: () =>
-                  context.read<AppShellController>().selectTab(2),
+            Consumer2<RoomImportController, BulkOperationStateController>(
+              builder: (context, importCtl, bulk, _) {
+                final syncBusy = importCtl.isRunning ||
+                    bulk.isMetadataEnriching ||
+                    bulk.isRoomReactionSyncRunning;
+                if (idx == 0 && syncBusy) {
+                  unknownFloatingButtonHideLog(
+                    screen: 'home',
+                    widget: 'CommonDraggableEdgeFab',
+                    reason: 'hiddenDuringRoomSync',
+                  );
+                  return const SizedBox.shrink();
+                }
+                unknownFloatingButtonAuditLog(
+                  screen: idx == 0 ? 'home' : 'tab$idx',
+                  widget: 'CommonDraggableEdgeFab',
+                  file: 'lib/widgets/common_draggable_edge_fab.dart',
+                  visible: true,
+                  reason: 'commentEdgeFabRightSideNotMenu',
+                );
+                return CommonDraggableEdgeFab(
+                  shellTabIndex: idx,
+                  onCommentTap: () =>
+                      context.read<AppShellController>().selectTab(2),
+                );
+              },
             ),
           if (idx == 2)
             CommentTabPlusFab(

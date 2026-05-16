@@ -8,6 +8,8 @@ import '../models/today_recommendation.dart';
 import '../models/user_profile.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../repository/today_recommendation_repository.dart';
+import '../utils/genre_pref_log.dart';
+import '../utils/product_safety_filter.dart';
 import '../utils/user_profile_preferred_genre_words.dart';
 import 'rakuten_managed_product_provider.dart';
 
@@ -329,6 +331,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
       debugPrint('[SEARCH_STYLE_TRACE] selectedStyle=$selectedStyle');
     }
     _trace('favoriteGenreIds=${favoriteGenreIds.join(',')}');
+    GenrePrefLog.logLoad(
+      favoriteGenreIds: profile.favoriteGenreIdList,
+      favoriteGenreNames: profile.favoriteGenres.split(RegExp(r'[、,]+')),
+      source: 'recommend',
+    );
     _trace('searchPreferences=${postStyles.join(',')}');
     _trace('savedShopCount=${savedShops.length}');
     final keywords = _buildKeywords(profile, managedItems);
@@ -682,10 +689,15 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final keywordAlt = keywords.length >= 2
         ? keywords[1]
         : (keywords.isEmpty ? 'ランキング' : '売れ筋');
-    final historyGenres = _topGenresFromHistory(
+    final rawHistoryGenres = _topGenresFromHistory(
       doneItems,
       candidateItems,
       limit: 4,
+    );
+    final historyGenres = GenrePrefLog.filterHistoryGenresForSearch(
+      historyGenreIds: rawHistoryGenres,
+      favoriteGenreIds: favList,
+      source: 'recommend',
     );
     final plans = <_RecommendSearchPlan>[];
 
@@ -780,7 +792,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
         relaxLevel: 2,
         source: 'style',
         keyword: keywordPrimary,
-        genreId: historyGenres.length >= 2 ? historyGenres[1] : null,
+        genreId: favList.length >= 2
+            ? favList[1]
+            : (favList.isNotEmpty ? favList.first : null),
         shopCode: null,
         sortOverride: postStyles.contains(UserProfile.postStyleTrend)
             ? '-updateTimestamp'
@@ -1162,6 +1176,29 @@ class TodayRecommendationProvider extends ChangeNotifier {
       return 'other';
     }
     if (checkDedup && dedup.containsKey(id)) return 'duplicate';
+    if (ProductSafetyFilter.isBlockedProduct(
+      itemName: item.itemName,
+      shopName: item.shopName,
+      genreName: item.genreName,
+      itemUrl: item.itemUrl,
+      affiliateUrl: item.affiliateUrl,
+    )) {
+      final reasons = ProductSafetyFilter.blockedReasons(
+        itemName: item.itemName,
+        shopName: item.shopName,
+        genreName: item.genreName,
+      );
+      ProductSafetyFilter.logFilter(
+        source: 'recommend',
+        itemCode: id,
+        title: item.itemName,
+        shopName: item.shopName,
+        genreName: item.genreName,
+        blocked: true,
+        reasons: reasons,
+      );
+      return 'safetyBlocked';
+    }
     return null;
   }
 
@@ -1749,6 +1786,15 @@ class TodayRecommendationProvider extends ChangeNotifier {
           !RegExp(r'^https?://', caseSensitive: false).hasMatch(imageUrl)) {
         return 'invalidImageUrl';
       }
+    }
+    if (ProductSafetyFilter.isBlockedProduct(
+      itemName: item.itemName,
+      shopName: item.shopName,
+      genreName: item.genreName,
+      itemUrl: item.itemUrl,
+      affiliateUrl: item.affiliateUrl,
+    )) {
+      return 'safetyBlocked';
     }
     return null;
   }
