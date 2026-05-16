@@ -2585,10 +2585,56 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: FilterChip(
-                              label: const Text('反応あり'),
-                              selected: _doneListFilters.doneQuickFilter ==
+                              avatar: Icon(
+                                Icons.favorite_outline_rounded,
+                                size: 16,
+                                color:
+                                    _doneListFilters.doneQuickFilter ==
+                                        RoomColleDoneQuickFilterPreset
+                                            .roomReaction
+                                        ? AppColors.textOnAccent
+                                        : AppColors.accentPrimary,
+                              ),
+                              label: Text(
+                                '反応あり',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13,
+                                  color:
+                                      _doneListFilters.doneQuickFilter ==
+                                              RoomColleDoneQuickFilterPreset
+                                                  .roomReaction
+                                          ? AppColors.textOnAccent
+                                          : AppColors.textPrimary,
+                                ),
+                              ),
+                              selected:
+                                  _doneListFilters.doneQuickFilter ==
                                   RoomColleDoneQuickFilterPreset.roomReaction,
-                              showCheckmark: true,
+                              showCheckmark: false,
+                              selectedColor: AppColors.accentPrimary,
+                              backgroundColor: AppColors.accentLight.withValues(
+                                alpha: 0.35,
+                              ),
+                              disabledColor:
+                                  AppColors.surfaceVariant.withValues(alpha: 0.5),
+                              side: BorderSide(
+                                color:
+                                    _doneListFilters.doneQuickFilter ==
+                                            RoomColleDoneQuickFilterPreset
+                                                .roomReaction
+                                        ? AppColors.accentPrimary
+                                        : AppColors.divider.withValues(
+                                            alpha: 0.7,
+                                          ),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 6,
+                              ),
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              visualDensity: VisualDensity.compact,
                               onSelected: (v) {
                                 setState(() {
                                   if (v) {

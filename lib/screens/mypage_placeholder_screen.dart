@@ -1,5 +1,6 @@
 import 'dart:async' show unawaited;
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ import '../services/room_import_limit_policy.dart';
 import '../widgets/room_import_enrichment_pending_hint.dart';
 import '../utils/room_sync_button_visibility.dart';
 import '../utils/room_sync_card_copy.dart';
+import '../utils/room_sync_log.dart';
 import '../widgets/room_post_import_flow.dart';
 import '../widgets/room_sync_last_reaction_summary.dart';
 import '../services/rakuten_genre_master_service.dart';
@@ -1210,40 +1212,69 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
         final total = ctl.targetCount;
         final actionLocked = bulk.isAnyBlockingOperationRunning;
 
-        final busyTitle = ctl.isRunning
+        var busyLead = ctl.isRunning
             ? (total > 0
-                  ? '現在投稿済み商品を取り込み中です（$completed / $total件）'
+                  ? '現在ROOM投稿を取り込んでいます（$completed / $total件）'
                   : (ctl.importProcessingHint.isNotEmpty
                         ? ctl.importProcessingHint
-                        : '現在投稿済み商品を取り込み中です'))
+                        : '現在ROOM投稿を取り込んでいます'))
             : (reactionOnly
                   ? '現在反応を確認中です'
                   : (enrichingOnly
-                        ? '現在ショップ名・ジャンルを確認中です'
+                        ? '現在ショップ名・ジャンルを確認しています'
                         : ''));
+        if (syncBusy && busyLead.trim().isEmpty) {
+          busyLead = '現在同期処理を実行しています';
+        }
 
         final canRunPrimary = hasUrl && !actionLocked;
         final showPrimaryButtons = canRunPrimary && !syncBusy;
         if (!syncBusy) {
-          final reason =
+          final baseReason =
               !hasUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready');
-          final v = showPrimaryButtons;
-          final c = canRunPrimary;
-          for (final b in const [
-            'import',
-            'reaction',
-            'maintenance',
-            'deepSearch',
-            'metadataRetry',
-          ]) {
-            RoomSyncButtonVisibility.logRenderDecision(
-              screen: 'myPage',
-              button: b,
-              canRun: c,
-              visible: v,
-              reason: reason,
-            );
-          }
+          final showMaintenanceUi = kDebugMode;
+          roomSyncMaintenanceVisibilityLog(
+            'screen=myPage '
+            'visible=$showMaintenanceUi '
+            'reason=${showMaintenanceUi ? 'debugOnly' : 'hiddenForNormalUx'}',
+          );
+          RoomSyncButtonVisibility.logRenderDecision(
+            screen: 'myPage',
+            button: 'import',
+            canRun: canRunPrimary,
+            visible: showPrimaryButtons,
+            reason: baseReason,
+          );
+          RoomSyncButtonVisibility.logRenderDecision(
+            screen: 'myPage',
+            button: 'reaction',
+            canRun: canRunPrimary,
+            visible: showPrimaryButtons,
+            reason: baseReason,
+          );
+          RoomSyncButtonVisibility.logRenderDecision(
+            screen: 'myPage',
+            button: 'maintenance',
+            canRun: false,
+            visible: showMaintenanceUi,
+            reason: showMaintenanceUi ? 'debugOnly' : 'hiddenByUxPolicy',
+          );
+          final maintChildReason =
+              showMaintenanceUi ? baseReason : 'hiddenByUxPolicy';
+          RoomSyncButtonVisibility.logRenderDecision(
+            screen: 'myPage',
+            button: 'deepSearch',
+            canRun: canRunPrimary,
+            visible: showPrimaryButtons && showMaintenanceUi,
+            reason: maintChildReason,
+          );
+          RoomSyncButtonVisibility.logRenderDecision(
+            screen: 'myPage',
+            button: 'metadataRetry',
+            canRun: canRunPrimary,
+            visible: showPrimaryButtons && showMaintenanceUi,
+            reason: maintChildReason,
+          );
         }
 
         return AppCard(
@@ -1284,9 +1315,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                   child: const Text('ROOM URLを登録'),
                 ),
               ] else ...[
-                if (syncBusy && busyTitle.isNotEmpty) ...[
+                if (syncBusy) ...[
                   Text(
-                    busyTitle,
+                    busyLead,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
@@ -1358,85 +1389,99 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                           height: 1.35,
                         ),
                   ),
-                  const SizedBox(height: 14),
-                  ExpansionTile(
-                    initiallyExpanded: false,
-                    tilePadding: EdgeInsets.zero,
-                    title: Text(
-                      RoomSyncCardCopy.maintenanceTileTitle,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
+                  if (kDebugMode) ...[
+                    const SizedBox(height: 14),
+                    ExpansionTile(
+                      initiallyExpanded: false,
+                      tilePadding: EdgeInsets.zero,
+                      title: Text(
+                        RoomSyncCardCopy.maintenanceTileTitle,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                       ),
-                    ),
-                    subtitle: Text(
-                      RoomSyncCardCopy.maintenanceTileSubtitle,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.textSecondary,
+                      subtitle: Text(
+                        RoomSyncCardCopy.maintenanceTileSubtitle,
+                        style:
+                            Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  color: AppColors.textSecondary,
+                                ),
                       ),
-                    ),
-                    children: [
-                      if (showPrimaryButtons) ...[
-                        OutlinedButton.icon(
-                          onPressed: () {
-                            RoomSyncButtonVisibility.logIdleVisible(
-                              screen: 'myPage',
-                              button: 'deepSearch',
-                            );
-                            _handleDeepRoomImport(context);
-                          },
-                          icon: const Icon(Icons.manage_search_outlined, size: 18),
-                          label: const Text('さらに古い投稿を探す'),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          '通常取り込みで見つからない古いROOM投稿を探します。時間がかかる場合があります。',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                color: AppColors.textSecondary,
-                                height: 1.35,
-                              ),
-                        ),
-                        const SizedBox(height: 12),
-                        OutlinedButton.icon(
-                          onPressed: () {
-                            RoomSyncButtonVisibility.logIdleVisible(
-                              screen: 'myPage',
-                              button: 'metadataRetry',
-                            );
-                            _handleEnrichRoomMetadata(context);
-                          },
-                          icon: const Icon(Icons.auto_fix_high_outlined, size: 18),
-                          label: const Text('ショップ名・ジャンルを再確認'),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          '取り込み時に商品情報を取得できなかった商品だけ再試行します（1回あたり最大${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun}件）。',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                color: AppColors.textSecondary,
-                                height: 1.35,
-                              ),
-                        ),
-                      ] else if (hasUrl) ...[
-                        Text(
-                          bulk.blockingRoomTourUserMessage ??
-                              BulkOperationStateController.blockingSnackMessage,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: AppColors.textSecondary,
-                                height: 1.35,
-                              ),
-                        ),
+                      children: [
+                        if (showPrimaryButtons) ...[
+                          OutlinedButton.icon(
+                            onPressed: () {
+                              RoomSyncButtonVisibility.logIdleVisible(
+                                screen: 'myPage',
+                                button: 'deepSearch',
+                              );
+                              _handleDeepRoomImport(context);
+                            },
+                            icon: const Icon(
+                              Icons.manage_search_outlined,
+                              size: 18,
+                            ),
+                            label: const Text('さらに古い投稿を探す'),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            '通常取り込みで見つからない古いROOM投稿を探します。時間がかかる場合があります。',
+                            style:
+                                Theme.of(context).textTheme.labelSmall?.copyWith(
+                                      color: AppColors.textSecondary,
+                                      height: 1.35,
+                                    ),
+                          ),
+                          const SizedBox(height: 12),
+                          OutlinedButton.icon(
+                            onPressed: () {
+                              RoomSyncButtonVisibility.logIdleVisible(
+                                screen: 'myPage',
+                                button: 'metadataRetry',
+                              );
+                              _handleEnrichRoomMetadata(context);
+                            },
+                            icon: const Icon(
+                              Icons.auto_fix_high_outlined,
+                              size: 18,
+                            ),
+                            label: const Text('ショップ名・ジャンルを再確認'),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            '取り込み時に商品情報を取得できなかった商品だけ再試行します（1回あたり最大${RoomImportLimitPolicy.manualEnrichMaxProductsPerRun}件）。',
+                            style:
+                                Theme.of(context).textTheme.labelSmall?.copyWith(
+                                      color: AppColors.textSecondary,
+                                      height: 1.35,
+                                    ),
+                          ),
+                        ] else if (hasUrl) ...[
+                          Text(
+                            bulk.blockingRoomTourUserMessage ??
+                                BulkOperationStateController.blockingSnackMessage,
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: AppColors.textSecondary,
+                                      height: 1.35,
+                                    ),
+                          ),
+                        ],
                       ],
-                    ],
-                  ),
-                  const RoomImportEnrichmentPendingHint(),
-                  const SizedBox(height: 6),
-                  Text(
-                    RoomSyncCardCopy.freeTierLine(
-                      limit: RoomImportLimitPolicy.freeBatchLimit,
                     ),
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                  ),
+                  ],
+                  if (kDebugMode) const RoomImportEnrichmentPendingHint(),
+                  const SizedBox(height: 6),
+                  if (kDebugMode)
+                    Text(
+                      RoomSyncCardCopy.freeTierLine(
+                        limit: RoomImportLimitPolicy.freeBatchLimit,
+                      ),
+                      style:
+                          Theme.of(context).textTheme.labelSmall?.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
+                    ),
                 ],
               ],
             ],

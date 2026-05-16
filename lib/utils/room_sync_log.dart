@@ -882,6 +882,14 @@ void roomSyncButtonRenderDecisionLog(String message) {
   }
 }
 
+void roomSyncMaintenanceVisibilityLog(String message) {
+  final line = '[ROOM_SYNC_MAINTENANCE_VISIBILITY] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void roomImportResultSheetCopyLog(String message) {
   final line = '[ROOM_IMPORT_RESULT_SHEET_COPY] $message';
   if (kDebugMode) {

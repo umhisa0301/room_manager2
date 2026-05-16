@@ -342,6 +342,32 @@ void logRoomColleReactionFilterFromItemsIfChanged({
   );
 }
 
+int? _lastReactionTrendSig;
+
+/// 反応傾向（ジャンル・ショップ）の描画根拠。反応のみターゲットの確認用ログ。
+void logRoomReactionTrendRenderIfChanged({
+  required int itemsWithReaction,
+  required int genreRows,
+  required int shopRows,
+  required int unknownGenreCount,
+  required int unknownShopCount,
+}) {
+  if (!kDebugMode) return;
+  final sig =
+      Object.hash(itemsWithReaction, genreRows, shopRows, unknownGenreCount, unknownShopCount);
+  if (_lastReactionTrendSig == sig) return;
+  _lastReactionTrendSig = sig;
+  debugPrint(
+    '[ROOM_REACTION_TREND_RENDER] '
+    'target=reactionOnly '
+    'itemsWithReaction=$itemsWithReaction '
+    'genreRows=$genreRows '
+    'shopRows=$shopRows '
+    'unknownGenreCount=$unknownGenreCount '
+    'unknownShopCount=$unknownShopCount',
+  );
+}
+
 String _oneLine(String s) {
   return s.trim().replaceAll(RegExp(r'\s+'), ' ');
 }

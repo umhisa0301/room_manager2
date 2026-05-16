@@ -12,7 +12,7 @@ import '../../navigation/app_shell_controller.dart';
 import '../../navigation/rakuten_search_navigator.dart';
 import '../../screens/today_recommendations_screen.dart';
 import '../../services/app_action_service.dart';
-import '../../services/room_kpi_calculator.dart';
+
 import '../../services/room_reaction_sync_history_store.dart';
 import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
@@ -47,23 +47,9 @@ class ActivityAnalyticsTab extends StatefulWidget {
   State<ActivityAnalyticsTab> createState() => _ActivityAnalyticsTabState();
 }
 
-enum _ReactionFilter {
-  all,
-  sold,
-  liked,
-  weak,
-  none,
-}
-
 enum _OutcomeLens { combined, sold, likedOnly }
 
-enum _TrendSubTab { genre, shop, time }
-
 class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
-  _ReactionFilter _filter = _ReactionFilter.all;
-  bool _rankingExpanded = false;
-  _OutcomeLens _outcomeLens = _OutcomeLens.combined;
-
   @override
   Widget build(BuildContext context) {
     final bottomPad = widget.bottomInset;
@@ -153,29 +139,8 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
             )
             .toList(growable: false);
 
-        final doneCount = done.length;
-
-        final ranked = List<RakutenManagedProduct>.from(done);
-        ranked.sort((a, b) {
-          final ra = RoomKpiProductRecord.fromManagedProduct(a);
-          final rb = RoomKpiProductRecord.fromManagedProduct(b);
-          final s = rb.reactionRankScore.compareTo(ra.reactionRankScore);
-          if (s != 0) return s;
-          return b.updatedAt.compareTo(a.updatedAt);
-        });
-
-        final filtered = ranked.where((p) {
-          final r = RoomKpiProductRecord.fromManagedProduct(p);
-          return switch (_filter) {
-            _ReactionFilter.all => true,
-            _ReactionFilter.sold => r.isSold,
-            _ReactionFilter.liked => r.isLiked,
-            _ReactionFilter.weak => !r.isSold && !r.isLiked,
-            _ReactionFilter.none => !r.isSold && !r.isLiked && !r.isWeak,
-          };
-        }).toList();
-
-        final outcomeSubset = _outcomeSubset(done, _outcomeLens);
+        final outcomeLens = _OutcomeLens.combined;
+        final outcomeSubset = _outcomeSubset(done, outcomeLens);
         final genreRows = _genreOutcomeAggregation(outcomeSubset);
         final shopRows = _shopOutcomeAggregation(outcomeSubset);
         final timeBuckets = _postedHourBuckets8(outcomeSubset, act.events);
@@ -185,7 +150,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
           shell: shell,
           done: done,
           outcomeSubset: outcomeSubset,
-          outcomeLens: _outcomeLens,
+          outcomeLens: outcomeLens,
           genreRows: genreRows,
           shopRows: shopRows,
           timeBuckets: timeBuckets,
@@ -215,26 +180,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
                 child: _RoomReactionAnalyticsSection(
                   allItems: items,
                 ),
-              ),
-              const SizedBox(height: ActivityScreenLayout.sectionGap),
-              _RankingSection(
-                doneCount: doneCount,
-                filter: _filter,
-                onFilterChanged: (f) => setState(() => _filter = f),
-                products: filtered,
-                shell: shell,
-                expanded: _rankingExpanded,
-                onToggleExpanded: () =>
-                    setState(() => _rankingExpanded = !_rankingExpanded),
-              ),
-              const SizedBox(height: ActivityScreenLayout.sectionGap),
-              _TrendSummaryCard(
-                outcomeLens: _outcomeLens,
-                onOutcomeLensChanged: (o) => setState(() => _outcomeLens = o),
-                outcomeSubsetCount: outcomeSubset.length,
-                genreRows: genreRows,
-                shopRows: shopRows,
-                timeBuckets: timeBuckets,
               ),
             ],
           ),
@@ -542,48 +487,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     if (t.length <= 18) return t;
     return '${t.substring(0, 16)}…';
   }
-
-  /// 傾向サマリー（ジャンル）— 成果サブセットのみを対象にする。
-  static String _outcomeGenreSectionCopy(List<_AggRow> rows, int n) {
-    if (n < 4 || rows.isEmpty) {
-      return '成果（売れた／反応あり）がまだ少ないです。あと数件で傾向が読みやすくなります。';
-    }
-    final top = rows.first;
-    if (top.count < 2) {
-      return 'ジャンル間の差はまだ小さいです。同系統を増やすと差が出やすいです。';
-    }
-    return '「${top.label}」が${top.count}件で最多です（分析対象：$n件）。';
-  }
-
-  /// 傾向サマリー（ショップ）— 成果サブセットのみ。
-  static String _outcomeShopSectionCopy(List<_AggRow> rows, int n) {
-    if (n < 4 || rows.isEmpty) {
-      return '成果データがまだ少ないです。あと数件でショップ差が見えます。';
-    }
-    final top = rows.first;
-    return '「${_shortShopLabel(top.label)}」が${top.count}件で最多です（分析対象：$n件）。';
-  }
-
-  /// 傾向サマリー（時間帯）— 3時間単位・成果のみ。
-  static String _outcomeTimeSectionCopy(
-    List<({String label, int count})> buckets,
-    int n,
-  ) {
-    final sum = buckets.fold<int>(0, (a, b) => a + b.count);
-    if (n < 4 || sum == 0) {
-      return '記録された投稿時刻がまだ少ないため、時間帯の結論は出しません。';
-    }
-    var bestI = 0;
-    var bestC = -1;
-    for (var i = 0; i < buckets.length; i++) {
-      if (buckets[i].count > bestC) {
-        bestC = buckets[i].count;
-        bestI = i;
-      }
-    }
-    final pct = ((bestC / sum) * 100).round();
-    return '「${buckets[bestI].label}」に$bestC件集中（$pct%）。';
-  }
 }
 
 class _AggRow {
@@ -651,7 +554,7 @@ class _DecisionInsightCard extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  '今日の気づき',
+                  '運用のサマリー',
                   style: theme.textTheme.labelLarge?.copyWith(
                     color: AppColors.textSecondary,
                     fontWeight: FontWeight.w800,
@@ -757,336 +660,7 @@ class _DecisionInsightCard extends StatelessWidget {
   }
 }
 
-/// 反応ランキング本体。将来「似た商品を探す」「同じショップを見る」は [_RankingTile] 行の下に足しやすい。
-class _RankingSection extends StatelessWidget {
-  const _RankingSection({
-    required this.doneCount,
-    required this.filter,
-    required this.onFilterChanged,
-    required this.products,
-    required this.shell,
-    required this.expanded,
-    required this.onToggleExpanded,
-  });
 
-  final int doneCount;
-  final _ReactionFilter filter;
-  final ValueChanged<_ReactionFilter> onFilterChanged;
-  final List<RakutenManagedProduct> products;
-  final AppShellController shell;
-  final bool expanded;
-  final VoidCallback onToggleExpanded;
-
-  @override
-  Widget build(BuildContext context) {
-    final visibleCount =
-        expanded ? products.length.clamp(0, 5) : products.length.clamp(0, 3);
-    final hasMore = products.length > 3;
-    final emptyBecauseNoDone = doneCount == 0;
-
-    return AppCard(
-      padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
-      elevated: true,
-      radius: ActivityScreenLayout.cardRadius,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '反応が良かった商品',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 20,
-                ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'コレ済の中強い反応順です。次に似た商品を足す材料にしてください。',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.4,
-                  fontSize: 15,
-                ),
-          ),
-          if (!emptyBecauseNoDone) ...[
-            const SizedBox(height: 14),
-            LayoutBuilder(
-              builder: (context, _) {
-                final fabReserve =
-                    MediaQuery.viewPaddingOf(context).right + 56;
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  clipBehavior: Clip.none,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: 2,
-                      right: fabReserve.clamp(16.0, 72.0),
-                    ),
-                    child: Row(
-                      children: [
-                        _chip(context, 'すべて', _ReactionFilter.all),
-                        _chip(context, '売れた', _ReactionFilter.sold),
-                        _chip(context, '反応あり', _ReactionFilter.liked),
-                        _chip(context, 'その他', _ReactionFilter.weak),
-                        const SizedBox(width: 8),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 12),
-          ],
-          if (emptyBecauseNoDone)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'まだ判断材料が少ないです',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                        ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'まずは数件コレして、反応を集めましょう',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
-                          fontSize: 15,
-                          height: 1.35,
-                        ),
-                  ),
-                ],
-              ),
-            )
-          else if (products.isEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Text(
-                'この条件に合うコレ済商品がありません',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontSize: 15,
-                    ),
-              ),
-            )
-          else ...[
-            for (var i = 0; i < visibleCount; i++) ...[
-              if (i > 0)
-                Divider(
-                  height: 1,
-                  color: AppColors.divider.withValues(alpha: 0.45),
-                ),
-              _RankingTile(
-                rank: i + 1,
-                product: products[i],
-                onTap: () => shell.openRoomCollect(initialTabIndex: 1),
-              ),
-            ],
-            if (hasMore)
-              Align(
-                alignment: Alignment.center,
-                child: TextButton.icon(
-                  onPressed: onToggleExpanded,
-                  icon: Icon(
-                    expanded ? Icons.expand_less : Icons.expand_more,
-                    color: AppColors.accentPrimary,
-                  ),
-                  label: Text(
-                    expanded ? '閉じる' : 'もっと見る（最大5件）',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.accentPrimary,
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _chip(BuildContext context, String label, _ReactionFilter f) {
-    final sel = filter == f;
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: FilterChip(
-        label: Text(
-          label,
-          style: TextStyle(
-            fontWeight: sel ? FontWeight.w800 : FontWeight.w600,
-            fontSize: 13,
-            color: sel ? AppColors.textOnAccent : AppColors.textSecondary,
-          ),
-        ),
-        selected: sel,
-        onSelected: (_) => onFilterChanged(f),
-        selectedColor: AppColors.accentPrimary,
-        checkmarkColor: AppColors.textOnAccent,
-        backgroundColor: AppColors.surface,
-        side: BorderSide(
-          color: sel ? AppColors.accentPrimary : AppColors.divider,
-          width: 1,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        labelPadding: const EdgeInsets.symmetric(horizontal: 4),
-        materialTapTargetSize: MaterialTapTargetSize.padded,
-      ),
-    );
-  }
-}
-
-/// 1件分の行。現状は [onTap] のみ。将来、アイコン行や副CTAを [child] 直下に足せる構造。
-class _RankingTile extends StatelessWidget {
-  const _RankingTile({
-    required this.rank,
-    required this.product,
-    required this.onTap,
-  });
-
-  final int rank;
-  final RakutenManagedProduct product;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final r = RoomKpiProductRecord.fromManagedProduct(product);
-    final badge = _feedbackBadge(r);
-    final price =
-        RoomColleProductListCardLayout.formatPriceYen(product.itemPrice);
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 28,
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 18),
-                      child: Text(
-                        '$rank',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w900,
-                              color: AppColors.accentPrimary,
-                              fontSize: 17,
-                            ),
-                      ),
-                    ),
-                  ),
-                ),
-                _Thumb(url: product.imageUrl),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        product.itemName.trim().isEmpty
-                            ? '商品名なし'
-                            : product.itemName.trim(),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 15,
-                                  height: 1.25,
-                                ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        price,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        product.shopName.trim().isEmpty
-                            ? 'ショップ名なし'
-                            : product.shopName.trim(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textTertiary,
-                                  fontSize: 12,
-                                ),
-                      ),
-                      const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.accentLight,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            badge,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium
-                                ?.copyWith(
-                                  color: AppColors.accentPrimary,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 12,
-                                ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Center(
-                    child: Icon(
-                      Icons.chevron_right_rounded,
-                      color: AppColors.textTertiary,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  String _feedbackBadge(RoomKpiProductRecord r) {
-    if (r.isSold) return '売れた';
-    if (r.isLiked) return '反応あり';
-    if (r.isWeak) return 'その他';
-    return '未評価';
-  }
-}
 
 class _Thumb extends StatelessWidget {
   const _Thumb({required this.url});
@@ -1118,483 +692,6 @@ class _Thumb extends StatelessWidget {
   }
 }
 
-class _TrendSummaryCard extends StatefulWidget {
-  const _TrendSummaryCard({
-    required this.outcomeLens,
-    required this.onOutcomeLensChanged,
-    required this.outcomeSubsetCount,
-    required this.genreRows,
-    required this.shopRows,
-    required this.timeBuckets,
-  });
-
-  final _OutcomeLens outcomeLens;
-  final ValueChanged<_OutcomeLens> onOutcomeLensChanged;
-  final int outcomeSubsetCount;
-  final List<_AggRow> genreRows;
-  final List<_AggRow> shopRows;
-  final List<({String label, int count})> timeBuckets;
-
-  @override
-  State<_TrendSummaryCard> createState() => _TrendSummaryCardState();
-}
-
-class _TrendSummaryCardState extends State<_TrendSummaryCard> {
-  /// 分析タブを開いたときは常にジャンルから（タブ間の期待を揃える）。
-  late _TrendSubTab _tab = _TrendSubTab.genre;
-  bool _rowsExpanded = false;
-
-  /// 見出し＋件数の2行（口語に近いトーンで揃える）。
-  Widget _lensContextHeader(BuildContext context) {
-    final theme = Theme.of(context);
-    final n = widget.outcomeSubsetCount;
-    final (line1, line2) = switch (widget.outcomeLens) {
-      _OutcomeLens.combined => (
-        '売れた商品と「反応あり」の傾向',
-        '$n件をもとに分析しています',
-      ),
-      _OutcomeLens.sold => (
-        '売れた商品の傾向',
-        '$n件をもとに分析しています',
-      ),
-      _OutcomeLens.likedOnly => (
-        '反応あり・売れたものは含めない傾向',
-        '$n件をもとに分析しています',
-      ),
-    };
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          line1,
-          style: theme.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w800,
-            height: 1.35,
-            fontSize: 14,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          line2,
-          style: theme.textTheme.labelSmall?.copyWith(
-            color: AppColors.textTertiary,
-            fontWeight: FontWeight.w600,
-            height: 1.35,
-            fontSize: 12,
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final reference = widget.outcomeSubsetCount < 6;
-
-    return AppCard(
-      padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
-      elevated: true,
-      radius: ActivityScreenLayout.cardRadius,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            '傾向サマリー',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w900,
-              fontSize: 18,
-            ),
-          ),
-          const SizedBox(height: 6),
-          _lensContextHeader(context),
-          const SizedBox(height: 12),
-          SegmentedButton<_OutcomeLens>(
-            showSelectedIcon: false,
-            style: ButtonStyle(
-              visualDensity: VisualDensity.compact,
-              padding: WidgetStateProperty.all(
-                const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-              ),
-            ),
-            segments: const [
-              ButtonSegment(
-                value: _OutcomeLens.combined,
-                label: Text('総合'),
-              ),
-              ButtonSegment(
-                value: _OutcomeLens.sold,
-                label: Text('売れた'),
-              ),
-              ButtonSegment(
-                value: _OutcomeLens.likedOnly,
-                label: Text('反応あり'),
-              ),
-            ],
-            selected: {widget.outcomeLens},
-            onSelectionChanged: (s) {
-              if (s.isEmpty) return;
-              widget.onOutcomeLensChanged(s.first);
-              setState(() => _rowsExpanded = false);
-            },
-          ),
-          const SizedBox(height: 12),
-          Text(
-            _tabIntro(),
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.42,
-              fontSize: 14,
-            ),
-          ),
-          if (reference) ...[
-            const SizedBox(height: 6),
-            Text(
-              '※ 成果件数が少ないため参考値として見てください',
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: AppColors.textTertiary,
-                fontWeight: FontWeight.w600,
-                height: 1.35,
-              ),
-            ),
-          ],
-          const SizedBox(height: 14),
-          SegmentedButton<_TrendSubTab>(
-            showSelectedIcon: false,
-            style: ButtonStyle(
-              visualDensity: VisualDensity.compact,
-              padding: WidgetStateProperty.all(
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              ),
-            ),
-            segments: const [
-              ButtonSegment(
-                value: _TrendSubTab.genre,
-                label: Text('ジャンル'),
-              ),
-              ButtonSegment(
-                value: _TrendSubTab.shop,
-                label: Text('ショップ'),
-              ),
-              ButtonSegment(
-                value: _TrendSubTab.time,
-                label: Text('時間帯'),
-              ),
-            ],
-            selected: {_tab},
-            onSelectionChanged: (s) {
-              setState(() {
-                _tab = s.first;
-                _rowsExpanded = false;
-              });
-            },
-          ),
-          const SizedBox(height: 16),
-          switch (_tab) {
-            _TrendSubTab.genre => _genreShopBody(context, widget.genreRows),
-            _TrendSubTab.shop => _genreShopBody(context, widget.shopRows),
-            _TrendSubTab.time => _timeBody(context),
-          },
-        ],
-      ),
-    );
-  }
-
-  String _tabIntro() {
-    final n = widget.outcomeSubsetCount;
-    return switch (_tab) {
-      _TrendSubTab.genre =>
-        _ActivityAnalyticsTabState._outcomeGenreSectionCopy(
-          widget.genreRows,
-          n,
-        ),
-      _TrendSubTab.shop =>
-        _ActivityAnalyticsTabState._outcomeShopSectionCopy(
-          widget.shopRows,
-          n,
-        ),
-      _TrendSubTab.time =>
-        _ActivityAnalyticsTabState._outcomeTimeSectionCopy(
-          widget.timeBuckets,
-          n,
-        ),
-    };
-  }
-
-  Widget _genreShopBody(BuildContext context, List<_AggRow> rows) {
-    final theme = Theme.of(context);
-    if (rows.isEmpty) {
-      return Text(
-        'この条件の成果データがありません',
-        style: theme.textTheme.bodyMedium?.copyWith(
-          color: AppColors.textSecondary,
-        ),
-      );
-    }
-
-    final denomTotal =
-        widget.outcomeSubsetCount > 0 ? widget.outcomeSubsetCount : 1;
-    final cap = _rowsExpanded ? 5 : 3;
-    final visible = rows.take(cap).toList();
-    final maxShare = visible.fold<double>(
-      0,
-      (m, r) => (r.count / denomTotal) > m ? (r.count / denomTotal) : m,
-    );
-    final barDenom = maxShare > 0 ? maxShare : 1.0;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          'ランキング（分析対象内の件数シェア）',
-          style: theme.textTheme.labelMedium?.copyWith(
-            color: AppColors.textTertiary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 12),
-        for (var rank = 0; rank < visible.length; rank++) ...[
-          _trendDistRow(
-            context,
-            visible[rank],
-            barDenom,
-            denomTotal,
-            rank + 1,
-          ),
-          const SizedBox(height: 14),
-        ],
-        if (rows.length > 3)
-          Center(
-            child: TextButton(
-              onPressed: () => setState(() => _rowsExpanded = !_rowsExpanded),
-              child: Text(
-                _rowsExpanded ? '閉じる' : 'もっと見る（上位5件まで）',
-                style: const TextStyle(fontWeight: FontWeight.w800),
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-
-  Widget _trendDistRow(
-    BuildContext context,
-    _AggRow r,
-    double barDenom,
-    int denomTotal,
-    int rank,
-  ) {
-    final theme = Theme.of(context);
-    final share = (r.count / denomTotal).clamp(0.0, 1.0);
-    final progress = (share / barDenom).clamp(0.0, 1.0);
-    final pctOfAll = (share * 100).round();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 26,
-              child: Text(
-                '$rank',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.accentPrimary,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Text(
-                r.label,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            const SizedBox(width: 6),
-            Text(
-              '${r.count}件（$pctOfAll%）',
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w700,
-                fontSize: 12,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(999),
-          child: LinearProgressIndicator(
-            minHeight: 9,
-            value: r.count <= 0 ? 0.0 : progress.clamp(0.06, 1.0),
-            backgroundColor: AppColors.surfaceVariant,
-            color: AppColors.accentPrimary.withValues(alpha: 0.95),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _timeBody(BuildContext context) {
-    final theme = Theme.of(context);
-    final buckets = widget.timeBuckets;
-    final sum = buckets.fold<int>(0, (a, b) => a + b.count);
-    final sparse = sum < 3 || widget.outcomeSubsetCount < 4;
-    final maxC = buckets.fold<int>(0, (a, b) => a > b.count ? a : b.count);
-    final denom = maxC > 0 ? maxC : 1;
-    var bestI = 0;
-    var bestC = -1;
-    for (var i = 0; i < buckets.length; i++) {
-      if (buckets[i].count > bestC) {
-        bestC = buckets[i].count;
-        bestI = i;
-      }
-    }
-    final hasBest = sum > 0 && bestC > 0;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          '3時間単位・記録された投稿時刻を使用します',
-          style: theme.textTheme.labelMedium?.copyWith(
-            color: AppColors.textTertiary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        if (sparse) ...[
-          const SizedBox(height: 6),
-          Text(
-            '※ まだ参考値です（成果${widget.outcomeSubsetCount}件）',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.textTertiary,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-        if (hasBest) ...[
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: BoxDecoration(
-              color: AppColors.accentLight,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: AppColors.accentPrimary.withValues(alpha: 0.35),
-              ),
-            ),
-            child: Row(
-              children: [
-                Text(
-                  '🔥 ゴールデンタイム',
-                  style: theme.textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    color: AppColors.accentPrimary,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    '${buckets[bestI].label}・$bestC件',
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-        const SizedBox(height: 12),
-        for (var i = 0; i < buckets.length; i++) ...[
-          _timeBucketRow(
-            context,
-            buckets[i],
-            buckets[i].count / denom,
-            i == bestI && buckets[i].count == bestC && buckets[i].count > 0,
-          ),
-          if (i < buckets.length - 1) const SizedBox(height: 8),
-        ],
-      ],
-    );
-  }
-
-  Widget _timeBucketRow(
-    BuildContext context,
-    ({String label, int count}) b,
-    double fill01,
-    bool showStrongest,
-  ) {
-    final theme = Theme.of(context);
-    final bar = b.count <= 0
-        ? 0.02
-        : fill01.clamp(0.08, 1.0).toDouble();
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: 56,
-          child: Text(
-            b.label,
-            maxLines: 2,
-            softWrap: true,
-            style: theme.textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-              fontSize: 11,
-              height: 1.15,
-            ),
-          ),
-        ),
-        Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: LinearProgressIndicator(
-              minHeight: 10,
-              value: bar,
-              backgroundColor: AppColors.surfaceVariant,
-              color: AppColors.accentPrimary.withValues(
-                alpha: showStrongest ? 1.0 : 0.55,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        SizedBox(
-          width: 38,
-          child: Text(
-            '${b.count}件',
-            textAlign: TextAlign.right,
-            style: theme.textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-              fontSize: 12,
-            ),
-          ),
-        ),
-        if (showStrongest) ...[
-          const SizedBox(width: 4),
-          Text(
-            '←最強',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.accentPrimary,
-              fontWeight: FontWeight.w900,
-              fontSize: 11,
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-}
 
 class _RoomReactionAnalyticsSection extends StatefulWidget {
   const _RoomReactionAnalyticsSection({
@@ -1613,6 +710,7 @@ class _RoomReactionAnalyticsSectionState
   RoomReactionSyncHistoryEntry? _history;
   bool _historyLoadDone = false;
   int? _lastLogSignature;
+  bool _topProductsExpanded = false;
 
   @override
   void initState() {
@@ -1673,13 +771,14 @@ class _RoomReactionAnalyticsSectionState
 
     var withReaction = 0;
     var withComment = 0;
+    final reacted = elig.where(roomReactionAnalyticsHasReaction).toList();
     for (final e in elig) {
       if (roomReactionAnalyticsHasReaction(e)) withReaction++;
       if (_commentOf(e) > 0) withComment++;
     }
     final genreMap = <String, int>{};
     final shopMap = <String, int>{};
-    for (final e in elig) {
+    for (final e in reacted) {
       final gk = roomReactionAnalyticsGenreBucket(e);
       genreMap[gk] =
           (genreMap[gk] ?? 0) + roomReactionAnalyticsReactionSum(e);
@@ -1735,112 +834,152 @@ class _RoomReactionAnalyticsSectionState
     return g.isEmpty ? 'ジャンル未確認' : g;
   }
 
+  List<String> _buildTodayInsightTexts({
+    required int reactionCount,
+    required int commentedCount,
+    required List<MapEntry<String, int>> genreBySumSorted,
+    required List<MapEntry<String, ({String label, int sum})>> shopAggSorted,
+  }) {
+    if (reactionCount < 1) return [];
+
+    final out = <String>[];
+    if (reactionCount < 4) {
+      out.add('まだ傾向は参考値です');
+      out.add(
+        '反応がある商品は見つかっています。もう少し件数が増えると、伸びやすい傾向が見えやすくなります。',
+      );
+    } else {
+      if (genreBySumSorted.isNotEmpty &&
+          genreBySumSorted.first.value > 0 &&
+          genreBySumSorted.first.key != 'ジャンル未確認') {
+        out.add(
+          '「${genreBySumSorted.first.key}」ジャンルの商品にいいね・コメントが集まっています',
+        );
+      }
+      if (shopAggSorted.isNotEmpty && shopAggSorted.first.value.sum > 0) {
+        final lab = shopAggSorted.first.value.label;
+        if (lab.trim().isNotEmpty && lab != 'ショップ未確認') {
+          out.add('「${lab.trim()}」の商品にいいね・コメントが集まっています');
+        }
+      }
+      if (out.isEmpty) {
+        out.add(
+          '反応がある商品について、ジャンルやショップごとの様子もあわせて確認できます。',
+        );
+      }
+    }
+    if (commentedCount > 0) {
+      out.add('コメントが付いた商品は$commentedCount件あります');
+    }
+    return out;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final elig = roomReactionAnalyticsEligibleItems(widget.allItems);
     final deltas = roomReactionAnalyticsDeltaMap(_history);
+    final elig = roomReactionAnalyticsEligibleItems(widget.allItems);
     final withReaction =
         elig.where(roomReactionAnalyticsHasReaction).toList(growable: false);
 
-    final topByScore = List<RakutenManagedProduct>.from(withReaction)
+    final unknownGenreCount = withReaction
+        .where((e) => roomReactionAnalyticsGenreBucket(e) == 'ジャンル未確認')
+        .length;
+    final unknownShopCount = withReaction
+        .where(
+          (e) => roomReactionAnalyticsShopBucket(e).label == 'ショップ未確認',
+        )
+        .length;
+
+    final reactedSorted = List<RakutenManagedProduct>.from(withReaction)
       ..sort((a, b) {
-        final d = roomReactionAnalyticsReactionScore(b)
-            .compareTo(roomReactionAnalyticsReactionScore(a));
+        final sa = roomReactionAnalyticsReactionSum(a);
+        final sb = roomReactionAnalyticsReactionSum(b);
+        final d = sb.compareTo(sa);
         if (d != 0) return d;
-        return b.updatedAt.compareTo(a.updatedAt);
+        return roomReactionAnalyticsReactionScore(b)
+            .compareTo(roomReactionAnalyticsReactionScore(a));
       });
-    final top5Score = topByScore.take(5).toList(growable: false);
 
-    final withComment =
-        elig.where((e) => _commentOf(e) > 0).toList(growable: false);
-    withComment.sort((a, b) {
-      final d = _commentOf(b).compareTo(_commentOf(a));
-      if (d != 0) return d;
-      return roomReactionAnalyticsReactionScore(b)
-          .compareTo(roomReactionAnalyticsReactionScore(a));
-    });
-    final top5Comment = withComment.take(5).toList(growable: false);
-
-    final genreMap = <String, int>{};
-    for (final e in elig) {
-      final k = roomReactionAnalyticsGenreBucket(e);
-      genreMap[k] =
-          (genreMap[k] ?? 0) + roomReactionAnalyticsReactionSum(e);
-    }
-    final genreTop = genreMap.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-    final top5Genre = genreTop.take(5).toList(growable: false);
-    final maxGenreSum =
-        top5Genre.isEmpty ? 0 : top5Genre.map((e) => e.value).reduce((a, b) => a > b ? a : b);
-
+    final genreTrend = <String, int>{};
     final shopLabelByKey = <String, String>{};
-    final shopMap = <String, int>{};
-    for (final e in elig) {
+    final shopTrend = <String, int>{};
+    for (final e in withReaction) {
+      final gk = roomReactionAnalyticsGenreBucket(e);
+      final sum = roomReactionAnalyticsReactionSum(e);
+      genreTrend[gk] = (genreTrend[gk] ?? 0) + sum;
       final b = roomReactionAnalyticsShopBucket(e);
-      if (b.key.isEmpty) continue;
       shopLabelByKey[b.key] = b.label;
-      shopMap[b.key] =
-          (shopMap[b.key] ?? 0) + roomReactionAnalyticsReactionSum(e);
+      shopTrend[b.key] = (shopTrend[b.key] ?? 0) + sum;
     }
-    final shopTop = shopMap.entries.toList()
+    List<MapEntry<String, int>> genreRows = genreTrend.entries
+        .where((e) => e.value > 0)
+        .toList()
       ..sort((a, b) => b.value.compareTo(a.value));
-    final top5Shop = shopTop.take(5).toList(growable: false);
-    final maxShopSum =
-        top5Shop.isEmpty ? 0 : top5Shop.map((e) => e.value).reduce((a, b) => a > b ? a : b);
+    genreRows = genreRows.take(5).toList();
 
-    final historyIncreased = _history == null
-        ? const <RoomReactionSyncTopProduct>[]
-        : (List<RoomReactionSyncTopProduct>.from(
-                _history!.topReactedProducts,
-              )..sort((a, b) {
-                final sa = a.deltaLike + a.deltaComment * 3;
-                final sb = b.deltaLike + b.deltaComment * 3;
-                final d = sb.compareTo(sa);
-                if (d != 0) return d;
-                return b.roomLikeCount.compareTo(a.roomLikeCount);
-              }))
-            .where((p) => p.deltaLike > 0 || p.deltaComment > 0)
-            .take(5)
-            .toList(growable: false);
+    List<MapEntry<String, ({String label, int sum})>> shopRows =
+        shopTrend.entries
+            .map(
+              (e) => MapEntry(
+                e.key,
+                (
+                  label: shopLabelByKey[e.key] ?? e.key,
+                  sum: e.value,
+                ),
+              ),
+            )
+            .where((e) => e.value.sum > 0)
+            .toList()
+          ..sort((a, b) => b.value.sum.compareTo(a.value.sum));
+    shopRows = shopRows.take(5).toList();
+
+    final commentedInReaction = withReaction
+        .where((e) => _commentOf(e) > 0)
+        .length;
+
+    final insightTexts = _buildTodayInsightTexts(
+      reactionCount: withReaction.length,
+      commentedCount: commentedInReaction,
+      genreBySumSorted: genreRows,
+      shopAggSorted: shopRows,
+    );
+
+    logRoomReactionTrendRenderIfChanged(
+      itemsWithReaction: withReaction.length,
+      genreRows: genreRows.length,
+      shopRows: shopRows.length,
+      unknownGenreCount: unknownGenreCount,
+      unknownShopCount: unknownShopCount,
+    );
 
     final topGenreLabels =
-        top5Genre.map((e) => e.key).join(',');
-    final topShopLabels = top5Shop
-        .map((e) => shopLabelByKey[e.key] ?? e.key)
-        .join(',');
+        genreRows.map((e) => e.key).join(',');
+    final topShopLabels =
+        shopRows.map((e) => e.value.label).join(',');
 
     logRoomReactionAnalyticsSectionRenderIfChanged(
       itemsWithReaction: withReaction.length,
-      itemsWithComment: withComment.length,
+      itemsWithComment: commentedInReaction,
       topGenres: topGenreLabels,
       topShops: topShopLabels,
       historyLoaded: _historyLoadDone,
     );
 
-    return AppCard(
-      padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
-      elevated: true,
-      radius: ActivityScreenLayout.cardRadius,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '反応があった商品',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 20,
-                ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'いいね・コメントが付いた商品から、次に伸ばしやすい傾向を確認できます。',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.4,
-                  fontSize: 15,
-                ),
-          ),
-          if (elig.isEmpty) ...[
+    if (elig.isEmpty) {
+      return AppCard(
+        padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
+        elevated: true,
+        radius: ActivityScreenLayout.cardRadius,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '反応分析',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 20,
+                  ),
+            ),
             const SizedBox(height: 14),
             Text(
               'まだ反応データがありません。',
@@ -1859,278 +998,490 @@ class _RoomReactionAnalyticsSectionState
                     height: 1.35,
                   ),
             ),
-          ] else ...[
-            if (_history != null) ...[
-              const SizedBox(height: 14),
-              _RoomReactionLastSyncSummaryCard(entry: _history!),
-            ],
-            if (historyIncreased.isNotEmpty) ...[
-              const SizedBox(height: 12),
-              Text(
-                '直近で反応が増えた商品',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-              ),
-              const SizedBox(height: 6),
-              ...historyIncreased.map((p) {
-                final managed =
-                    activityFindProduct(widget.allItems, p.productId);
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: _RoomReactionIncreasedRow(
-                    snapshot: p,
-                    managed: managed,
-                  ),
-                );
-              }),
-            ],
-            const SizedBox(height: 14),
-            _RoomReactionSubheading(title: '反応が多いROOM投稿（最大5件）'),
-            const SizedBox(height: 6),
-            if (withReaction.isEmpty)
-              _RoomReactionEmptyLine(
-                'まだいいね・コメントが付いた商品がありません。',
-              )
-            else
-              ..._productBlocks(context, top5Score, deltas),
-            const SizedBox(height: 12),
-            _RoomReactionSubheading(title: 'コメントが付いた商品（最大5件）'),
-            const SizedBox(height: 6),
-            if (withComment.isEmpty)
-              _RoomReactionEmptyLine(
-                'コメントが付いた商品はまだありません。',
-              )
-            else
-              ..._productBlocks(context, top5Comment, deltas),
-            const SizedBox(height: 12),
-            _RoomReactionSubheading(title: '反応が多いジャンル（いいね+コメント合計・上位5件）'),
-            const SizedBox(height: 6),
-            if (top5Genre.isEmpty ||
-                top5Genre.every((e) => e.value <= 0))
-              _RoomReactionEmptyLine(
-                '反応が集まり次第、ここに表示されます。',
-              )
-            else
-              ...top5Genre.map((e) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: _RoomReactionAggRow(
-                    label: e.key,
-                    value: e.value,
-                    max: maxGenreSum <= 0 ? 1 : maxGenreSum,
-                  ),
-                );
-              }),
-            const SizedBox(height: 12),
-            _RoomReactionSubheading(title: '反応が多いショップ（いいね+コメント合計・上位5件）'),
-            const SizedBox(height: 6),
-            if (top5Shop.isEmpty ||
-                top5Shop.every((e) => e.value <= 0))
-              _RoomReactionEmptyLine(
-                '反応が集まり次第、ここに表示されます。',
-              )
-            else
-              ...top5Shop.map((e) {
-                final label = shopLabelByKey[e.key] ?? e.key;
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: _RoomReactionAggRow(
-                    label: label,
-                    value: e.value,
-                    max: maxShopSum <= 0 ? 1 : maxShopSum,
-                  ),
-                );
-              }),
           ],
-        ],
-      ),
-    );
-  }
-
-  List<Widget> _productBlocks(
-    BuildContext context,
-    List<RakutenManagedProduct> rows,
-    Map<String, RoomReactionSyncTopProduct> deltas,
-  ) {
-    if (rows.isEmpty) return const [];
-    final out = <Widget>[];
-    for (var i = 0; i < rows.length; i++) {
-      if (i > 0) {
-        out.add(
-          Divider(
-            height: 1,
-            color: AppColors.divider.withValues(alpha: 0.45),
-          ),
-        );
-      }
-      out.add(
-        _RoomReactionProductBlock(
-          product: rows[i],
-          delta: deltas[rows[i].productId.trim()],
         ),
       );
     }
-    return out;
-  }
-}
 
-class _RoomReactionLastSyncSummaryCard extends StatelessWidget {
-  const _RoomReactionLastSyncSummaryCard({
-    required this.entry,
-  });
-
-  final RoomReactionSyncHistoryEntry entry;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.divider.withValues(alpha: 0.5)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
+    if (withReaction.isEmpty) {
+      return AppCard(
+        padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
+        elevated: true,
+        radius: ActivityScreenLayout.cardRadius,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '前回の反応確認（分析）',
-              style: theme.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+              '反応分析',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 20,
+                  ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 10),
             Text(
-              '確認${entry.checkedItems}件 / 反応あり${entry.hasReactionItems}件 / '
-              'コメントあり${entry.commentedItems}件',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.35,
-              ),
+              'いいねやコメントの取得が進むと、このカードから傾向を確認できます。',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.4,
+                    fontSize: 15,
+                  ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'まずはROOM同期カードから「反応を確認する」を実行してください。',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.35,
+                    fontSize: 14,
+                  ),
             ),
           ],
         ),
+      );
+    }
+
+    final maxGenre =
+        genreRows.isEmpty ? 1 : genreRows.map((e) => e.value).reduce((a, b) => a > b ? a : b);
+    final maxShop = shopRows.isEmpty
+        ? 1
+        : shopRows.map((e) => e.value.sum).reduce((a, b) => a > b ? a : b);
+
+    final topLimit =
+        _topProductsExpanded ? reactedSorted.length.clamp(0, 5) : reactedSorted.length.clamp(0, 3);
+    final canExpandProducts = reactedSorted.length > 3;
+
+    final children = <Widget>[
+      AppCard(
+        padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
+        elevated: true,
+        radius: ActivityScreenLayout.cardRadius,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '今日の気づき',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                  ),
+            ),
+            const SizedBox(height: 10),
+            for (final line in insightTexts)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  line,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        height: 1.45,
+                        fontSize: 14,
+                        color: AppColors.textPrimary,
+                      ),
+                ),
+              ),
+          ],
+        ),
       ),
+      const SizedBox(height: ActivityScreenLayout.sectionGap),
+      AppCard(
+        padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
+        elevated: true,
+        radius: ActivityScreenLayout.cardRadius,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '反応が良かった商品',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 20,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'いいね・コメントが多い順に表示しています。次に似た商品を探す参考にできます。',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.4,
+                    fontSize: 15,
+                  ),
+            ),
+            const SizedBox(height: 14),
+            for (var i = 0; i < topLimit; i++) ...[
+              if (i > 0)
+                Divider(
+                  height: 1,
+                  color: AppColors.divider.withValues(alpha: 0.45),
+                ),
+              _RoomReactionCompactProductRow(
+                rank: i + 1,
+                product: reactedSorted[i],
+                delta:
+                    deltas[reactedSorted[i].productId.trim()],
+              ),
+            ],
+            if (canExpandProducts)
+              Align(
+                alignment: Alignment.center,
+                child: TextButton.icon(
+                  onPressed: () => setState(
+                    () =>
+                        _topProductsExpanded = !_topProductsExpanded,
+                  ),
+                  icon: Icon(
+                    _topProductsExpanded
+                        ? Icons.expand_less_rounded
+                        : Icons.expand_more_rounded,
+                    color: AppColors.accentPrimary,
+                  ),
+                  label: Text(
+                    _topProductsExpanded
+                        ? '閉じる'
+                        : 'もっと見る（最大5件）',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.accentPrimary,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+      const SizedBox(height: ActivityScreenLayout.sectionGap),
+      AppCard(
+        padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
+        elevated: true,
+        radius: ActivityScreenLayout.cardRadius,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              '反応の傾向',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                  ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '反応が多いジャンル',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'いいね・コメントの合計です',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+            ),
+            const SizedBox(height: 10),
+            if (genreRows.isEmpty)
+              Text(
+                '表示できるジャンルの集計がありません',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+              )
+            else
+              for (var i = 0; i < genreRows.length; i++) ...[
+                if (i > 0) const SizedBox(height: 8),
+                _RoomReactionAggRow(
+                  label: genreRows[i].key,
+                  value: genreRows[i].value,
+                  max: maxGenre <= 0 ? 1 : maxGenre,
+                ),
+              ],
+            if (genreRows.isNotEmpty &&
+                genreRows.first.key == 'ジャンル未確認') ...[
+              const SizedBox(height: 10),
+              Text(
+                'ジャンル未確認が目立つ場合は、ROOMコレ画面上部の案内に沿ってショップ名・ジャンルを確認すると、分析の精度が上がります。',
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.textTertiary,
+                      height: 1.35,
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            ],
+            const SizedBox(height: 20),
+            Text(
+              '反応が多いショップ',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'いいね・コメントの合計です',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+            ),
+            const SizedBox(height: 10),
+            if (shopRows.isEmpty)
+              Text(
+                '表示できるショップの集計がありません',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+              )
+            else
+              for (var i = 0; i < shopRows.length; i++) ...[
+                if (i > 0) const SizedBox(height: 8),
+                _RoomReactionAggRow(
+                  label: shopRows[i].value.label,
+                  value: shopRows[i].value.sum,
+                  max: maxShop <= 0 ? 1 : maxShop,
+                ),
+              ],
+          ],
+        ),
+      ),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: children,
     );
   }
 }
 
-class _RoomReactionIncreasedRow extends StatelessWidget {
-  const _RoomReactionIncreasedRow({
-    required this.snapshot,
-    required this.managed,
+class _RoomReactionCompactProductRow extends StatelessWidget {
+  const _RoomReactionCompactProductRow({
+    required this.rank,
+    required this.product,
+    this.delta,
   });
 
-  final RoomReactionSyncTopProduct snapshot;
-  final RakutenManagedProduct? managed;
+  final int rank;
+  final RakutenManagedProduct product;
+  final RoomReactionSyncTopProduct? delta;
 
   @override
   Widget build(BuildContext context) {
-    final title = snapshot.title.trim().isEmpty
-        ? '（商品名なし）'
-        : snapshot.title.trim();
-    final managedTitle = managed?.itemName.trim();
-    final lineParts = <String>[];
-    if (snapshot.deltaLike > 0) {
-      lineParts.add('前回よりいいね +${snapshot.deltaLike}');
+    final like = product.roomLikeCount ?? 0;
+    final comment = product.roomCommentCount ?? 0;
+    final genre = product.persistedGenreDisplayName?.trim();
+    final genreLine =
+        (genre != null && genre.isNotEmpty) ? genre : product.genreName.trim();
+    final genreOut = genreLine.isEmpty ? 'ジャンル未確認' : genreLine;
+    final shopOut = roomReactionAnalyticsShopDisplayLine(product);
+    final price =
+        RoomColleProductListCardLayout.formatPriceYen(product.itemPrice);
+    final roomUrl = product.roomUrl.trim();
+
+    final deltaParts = <String>[];
+    if (delta != null) {
+      if (delta!.deltaLike > 0) {
+        deltaParts.add('前回よりいいね +${delta!.deltaLike}');
+      }
+      if (delta!.deltaComment > 0) {
+        deltaParts.add('コメント +${delta!.deltaComment}');
+      }
     }
-    if (snapshot.deltaComment > 0) {
-      lineParts.add('コメント +${snapshot.deltaComment}');
-    }
-    final deltaLine = lineParts.join(' / ');
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Icon(Icons.trending_up_rounded, size: 18, color: AppColors.accentPrimary),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Column(
+    final deltaLine = deltaParts.join(' / ');
+
+    final soldNote = product.feedbackSoldAt != null;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => activityNavigateForProductId(
+          context,
+          productId: product.productId,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                managedTitle != null && managedTitle.isNotEmpty
-                    ? managedTitle
-                    : title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 14,
+              SizedBox(
+                width: 28,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 14),
+                    child: Text(
+                      '$rank',
+                      textAlign: TextAlign.center,
+                      style:
+                          Theme.of(context).textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.accentPrimary,
+                                fontSize: 17,
+                              ),
                     ),
-              ),
-              if (deltaLine.isNotEmpty) ...[
-                const SizedBox(height: 4),
-                Text(
-                  deltaLine,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.accentPrimary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                  ),
                 ),
-              ],
-              Text(
-                '現在 いいね ${managed != null ? (managed!.roomLikeCount ?? snapshot.roomLikeCount) : snapshot.roomLikeCount} / '
-                'コメント ${managed != null ? (managed!.roomCommentCount ?? snapshot.roomCommentCount) : snapshot.roomCommentCount}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
+              ),
+              _Thumb(url: product.imageUrl),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.itemName.trim().isEmpty
+                          ? '商品名なし'
+                          : product.itemName.trim(),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          Theme.of(context).textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 15,
+                                height: 1.25,
+                              ),
                     ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'いいね $like ・ コメント $comment',
+                      style:
+                          Theme.of(context).textTheme.bodySmall?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textSecondary,
+                              ),
+                    ),
+                    if (deltaLine.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        deltaLine,
+                        style:
+                            Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: AppColors.accentPrimary,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                ),
+                      ),
+                    ],
+                    Text(
+                      price,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: AppColors.textSecondary,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                              ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      shopOut,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          Theme.of(context).textTheme.bodySmall?.copyWith(
+                                fontSize: 12,
+                                color: AppColors.textTertiary,
+                              ),
+                    ),
+                    Text(
+                      genreOut,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          Theme.of(context).textTheme.bodySmall?.copyWith(
+                                fontSize: 12,
+                                color: AppColors.textTertiary,
+                              ),
+                    ),
+                    if (soldNote) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        'コレ済の評価：売れた',
+                        style:
+                            Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  color: AppColors.textTertiary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                      ),
+                    ],
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            foregroundColor: AppColors.accentPrimary,
+                            minimumSize: Size.zero,
+                          ),
+                          onPressed: roomUrl.isEmpty
+                              ? null
+                              : () => unawaited(
+                                    AppActionService.openUrl(
+                                      context,
+                                      url: roomUrl,
+                                    ),
+                                  ),
+                          child: const Text(
+                            'ROOMで見る',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            foregroundColor: AppColors.accentPrimary,
+                            minimumSize: Size.zero,
+                          ),
+                          onPressed:
+                              product.rakutenOpenUrl.trim().isEmpty
+                                  ? null
+                                  : () => unawaited(
+                                        AppActionService.openUrl(
+                                          context,
+                                          url: product.rakutenOpenUrl,
+                                        ),
+                                      ),
+                          child: const Text(
+                            '楽天で見る',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 4, top: 8),
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  color: AppColors.textTertiary,
+                  size: 24,
+                ),
               ),
             ],
           ),
         ),
-        IconButton(
-          tooltip: 'ROOMコレで開く',
-          onPressed: managed == null
-              ? null
-              : () => activityNavigateForProductId(
-                    context,
-                    productId: managed!.productId,
-                  ),
-          icon: const Icon(Icons.collections_bookmark_outlined, size: 20),
-        ),
-      ],
-    );
-  }
-}
-
-class _RoomReactionSubheading extends StatelessWidget {
-  const _RoomReactionSubheading({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w800,
-          ),
-    );
-  }
-}
-
-class _RoomReactionEmptyLine extends StatelessWidget {
-  const _RoomReactionEmptyLine(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-              fontSize: 14,
-            ),
       ),
     );
   }
 }
+
+
+
 
 class _RoomReactionAggRow extends StatelessWidget {
   const _RoomReactionAggRow({
@@ -2186,138 +1537,5 @@ class _RoomReactionAggRow extends StatelessWidget {
   }
 }
 
-class _RoomReactionProductBlock extends StatelessWidget {
-  const _RoomReactionProductBlock({
-    required this.product,
-    required this.delta,
-  });
 
-  final RakutenManagedProduct product;
-  final RoomReactionSyncTopProduct? delta;
 
-  @override
-  Widget build(BuildContext context) {
-    final like = product.roomLikeCount ?? 0;
-    final comment = product.roomCommentCount ?? 0;
-    final genre = product.persistedGenreDisplayName?.trim();
-    final genreLine =
-        (genre != null && genre.isNotEmpty) ? genre : product.genreName.trim();
-    final genreOut = genreLine.isEmpty ? 'ジャンル未確認' : genreLine;
-    final shopOut = roomReactionAnalyticsShopDisplayLine(product);
-
-    final deltaParts = <String>[];
-    if (delta != null) {
-      if (delta!.deltaLike > 0) {
-        deltaParts.add('前回よりいいね +${delta!.deltaLike}');
-      }
-      if (delta!.deltaComment > 0) {
-        deltaParts.add('コメント +${delta!.deltaComment}');
-      }
-    }
-    final roomUrl = product.roomUrl.trim();
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _Thumb(url: product.imageUrl),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product.itemName.trim().isEmpty
-                      ? '商品名なし'
-                      : product.itemName.trim(),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 15,
-                        height: 1.25,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'いいね $like ・ コメント $comment',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textSecondary,
-                      ),
-                ),
-                if (deltaParts.isNotEmpty) ...[
-                  const SizedBox(height: 2),
-                  Text(
-                    deltaParts.join(' / '),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.accentPrimary,
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
-                ],
-                Text(
-                  shopOut,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: 12,
-                        color: AppColors.textTertiary,
-                      ),
-                ),
-                Text(
-                  genreOut,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: 12,
-                        color: AppColors.textTertiary,
-                      ),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 6,
-                  children: [
-                    TextButton(
-                      onPressed: roomUrl.isEmpty
-                          ? null
-                          : () => unawaited(
-                                AppActionService.openUrl(
-                                  context,
-                                  url: roomUrl,
-                                ),
-                              ),
-                      child: const Text('ROOMで見る'),
-                    ),
-                    TextButton(
-                      onPressed: product.rakutenOpenUrl.trim().isEmpty
-                          ? null
-                          : () => unawaited(
-                                AppActionService.openUrl(
-                                  context,
-                                  url: product.rakutenOpenUrl,
-                                ),
-                              ),
-                      child: const Text('楽天で見る'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        activityNavigateForProductId(
-                          context,
-                          productId: product.productId,
-                        );
-                      },
-                      child: const Text('ROOMコレ'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
