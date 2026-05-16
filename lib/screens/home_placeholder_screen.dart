@@ -1,6 +1,5 @@
 import 'dart:async' show unawaited;
 
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -813,7 +812,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
           final baseReason = !hasRoomProfileUrl
               ? 'missingRoomUrl'
               : (actionLocked ? 'guarded' : 'ready');
-          final showMaintenanceUi = kDebugMode;
+          final showMaintenanceUi = showRoomSyncMaintenanceDebugUi;
           roomSyncMaintenanceVisibilityLog(
             'screen=home '
             'visible=$showMaintenanceUi '
@@ -1075,7 +1074,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     RoomSyncCardCopy.combinedFooterHint,
                     style: _HomeUi.tapHint(context),
                   ),
-                  if (kDebugMode) ...[
+                  if (showRoomSyncMaintenanceDebugUi) ...[
                     const SizedBox(height: 14),
                     ExpansionTile(
                       initiallyExpanded: false,

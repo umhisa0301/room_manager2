@@ -1,6 +1,5 @@
 import 'dart:async' show unawaited;
 
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -1232,7 +1231,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
         if (!syncBusy) {
           final baseReason =
               !hasUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready');
-          final showMaintenanceUi = kDebugMode;
+          final showMaintenanceUi = showRoomSyncMaintenanceDebugUi;
           roomSyncMaintenanceVisibilityLog(
             'screen=myPage '
             'visible=$showMaintenanceUi '
@@ -1389,7 +1388,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                           height: 1.35,
                         ),
                   ),
-                  if (kDebugMode) ...[
+                  if (showRoomSyncMaintenanceDebugUi) ...[
                     const SizedBox(height: 14),
                     ExpansionTile(
                       initiallyExpanded: false,
@@ -1470,9 +1469,10 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                       ],
                     ),
                   ],
-                  if (kDebugMode) const RoomImportEnrichmentPendingHint(),
+                  if (showRoomSyncMaintenanceDebugUi)
+                    const RoomImportEnrichmentPendingHint(),
                   const SizedBox(height: 6),
-                  if (kDebugMode)
+                  if (showRoomSyncMaintenanceDebugUi)
                     Text(
                       RoomSyncCardCopy.freeTierLine(
                         limit: RoomImportLimitPolicy.freeBatchLimit,

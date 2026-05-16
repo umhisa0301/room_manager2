@@ -1,3 +1,7 @@
+/// Home / MyPage のメンテナンス系 UI（高度な操作・無料枠注記など）は、
+/// **この定数が true のときだけ**表示する。通常の debug 実行でもユーザー画面としては非表示のまま。
+const bool showRoomSyncMaintenanceDebugUi = false;
+
 /// ホーム / マイページの ROOM 同期カードで共有する文言。
 abstract final class RoomSyncCardCopy {
   static const title = 'ROOM同期';
