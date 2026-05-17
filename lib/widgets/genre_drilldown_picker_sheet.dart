@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../services/genre_master_service.dart';
@@ -70,10 +71,20 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
 
   bool get _isMulti => widget.multiSelect;
 
+  void _logPickerMode() {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[GENRE_PICKER_MODE] screen=${widget.source} '
+      'selectionMode=${_isMulti ? 'multi' : 'single'} '
+      'usesCheckbox=${_isMulti ? 'true' : 'false'} usesRadio=false',
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     GenreMasterService.instance.load();
+    _logPickerMode();
     if (_isMulti) {
       for (final id in widget.initialSelectedIds) {
         final t = id.trim();
@@ -263,6 +274,17 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                   ],
                 ),
               ),
+              if (_isMulti)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    '最大${widget.maxSelectable}件まで選べます',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
@@ -300,8 +322,8 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                             return ListTile(
                               leading: Icon(
                                 selected
-                                    ? Icons.check_circle_rounded
-                                    : Icons.circle_outlined,
+                                    ? Icons.check_box_rounded
+                                    : Icons.check_box_outline_blank_rounded,
                                 color: selected
                                     ? AppColors.accentPrimary
                                     : AppColors.textTertiary,
@@ -319,6 +341,7 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                                       icon: const Icon(
                                         Icons.chevron_right_rounded,
                                       ),
+                                      tooltip: 'さらに細かく見る',
                                       onPressed: () => _enterChild(node.genreId),
                                     )
                                   : null,
@@ -327,14 +350,12 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                           }
                           final selected = _selectedId == node.genreId;
                           return ListTile(
-                            leading: Icon(
-                              selected
-                                  ? Icons.check_circle_rounded
-                                  : Icons.circle_outlined,
-                              color: selected
-                                  ? AppColors.accentPrimary
-                                  : AppColors.textTertiary,
-                            ),
+                            leading: selected
+                                ? Icon(
+                                    Icons.check_rounded,
+                                    color: AppColors.accentPrimary,
+                                  )
+                                : const SizedBox(width: 24),
                             title: Text(
                               node.genreName,
                               style: TextStyle(
@@ -346,7 +367,14 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                             trailing: node.hasChildren
                                 ? IconButton(
                                     icon: const Icon(Icons.chevron_right_rounded),
+                                    tooltip: 'さらに細かく見る',
                                     onPressed: () => _enterChild(node.genreId),
+                                  )
+                                : selected
+                                ? Icon(
+                                    Icons.check_rounded,
+                                    color: AppColors.accentPrimary,
+                                    size: 22,
                                   )
                                 : null,
                             onTap: () {
@@ -394,7 +422,7 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
                               backgroundColor: AppColors.accentPrimary,
                               foregroundColor: AppColors.textOnAccent,
                             ),
-                            child: const Text('このジャンルで検索'),
+                            child: const Text('このカテゴリで検索'),
                           )
                         : Text(
                             'リストからジャンルを選んでください',

@@ -570,7 +570,7 @@ abstract final class RoomPostImportFlow {
                   const SizedBox(height: 16),
                   Text(
                     pending > 0
-                        ? '商品情報：$confirmed件確認済み / $pending件はあとで確認できます'
+                        ? '商品情報：$confirmed件確認済み / $pending件は未確認です'
                         : '商品情報：$confirmed件確認済み',
                     textAlign: TextAlign.center,
                     style: bodySecondary,
@@ -578,7 +578,7 @@ abstract final class RoomPostImportFlow {
                   if (pending > 0) ...[
                     const SizedBox(height: 6),
                     Text(
-                      'ショップ名・ジャンルはあとで自動確認されます',
+                      '未確認の商品は、売り切れ・販売停止・一時的な取得失敗の可能性があります',
                       textAlign: TextAlign.center,
                       style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
                             color: AppColors.textTertiary,
@@ -731,6 +731,13 @@ abstract final class RoomPostImportFlow {
   }
 }
 
+String _importPreviewPriceLabel(RakutenManagedProduct product) {
+  if (product.itemPrice > 0) {
+    return RoomColleProductListCardLayout.formatPriceYen(product.itemPrice);
+  }
+  return '価格：売り切れ／販売停止の可能性';
+}
+
 class _ImportedProductPreviewTile extends StatelessWidget {
   const _ImportedProductPreviewTile({required this.product});
 
@@ -793,18 +800,17 @@ class _ImportedProductPreviewTile extends StatelessWidget {
                           height: 1.25,
                         ),
                       ),
-                      if (product.itemPrice > 0) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          RoomColleProductListCardLayout.formatPriceYen(
-                            product.itemPrice,
-                          ),
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.accentPrimary,
-                          ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _importPreviewPriceLabel(product),
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: product.itemPrice > 0
+                              ? AppColors.accentPrimary
+                              : AppColors.textSecondary,
+                          fontSize: product.itemPrice > 0 ? null : 12.5,
                         ),
-                      ],
+                      ),
                       const SizedBox(height: 6),
                       Wrap(
                         spacing: 8,

@@ -17,6 +17,48 @@ abstract final class GenrePrefLog {
     );
   }
 
+  static void logSaveNormalized({
+    required String genreId,
+    required String inputGenreName,
+    required String resolvedGenreName,
+    required bool nameCorrected,
+    required String source,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[GENRE_PREF_SAVE_NORMALIZED] source=$source genreId=$genreId '
+      'inputGenreName=$inputGenreName resolvedGenreName=$resolvedGenreName '
+      'nameCorrected=$nameCorrected',
+    );
+  }
+
+  static void logLoadNormalized({
+    required Iterable<String> favoriteGenreIds,
+    required Iterable<String> resolvedGenreNames,
+    required Iterable<String> invalidGenreIds,
+    required bool corrected,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=${favoriteGenreIds.join(',')} '
+      'resolvedGenreNames=${resolvedGenreNames.join(',')} '
+      'invalidGenreIds=${invalidGenreIds.join(',')} corrected=$corrected',
+    );
+  }
+
+  static void logIdNameMismatchFixed({
+    required String genreId,
+    required String oldName,
+    required String newName,
+    required String source,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[GENRE_ID_NAME_MISMATCH_FIXED] genreId=$genreId oldName=$oldName '
+      'newName=$newName source=$source',
+    );
+  }
+
   static void logLoad({
     required Iterable<String> favoriteGenreIds,
     required Iterable<String> favoriteGenreNames,

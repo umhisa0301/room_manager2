@@ -47,6 +47,82 @@ abstract final class AppInputLimits {
     return null;
   }
 
+  /// 保存ショップ内検索用（記号のみ・空白のみを拒否）。
+  static String? validateSavedShopSearchKeyword(String? raw) {
+    final t = raw?.trim() ?? '';
+    if (t.isEmpty) return '商品名やキーワードを入力してください';
+    if (t.length > searchKeywordMax) {
+      return 'キーワードは$searchKeywordMax文字以内で入力してください';
+    }
+    if (RegExp(r'\n').hasMatch(raw ?? '')) {
+      return '改行は入力できません';
+    }
+    if (_isSymbolOnlyKeyword(t)) {
+      return '記号だけでは検索できません';
+    }
+    return null;
+  }
+
+  static bool _isSymbolOnlyKeyword(String trimmed) {
+    if (trimmed.isEmpty) return true;
+    final hasAlnumOrJa = RegExp(
+      r'[\u3040-\u30ff\u3400-\u9fff\uff66-\uff9fa-zA-Z0-9]',
+    ).hasMatch(trimmed);
+    return !hasAlnumOrJa;
+  }
+
+  static SavedShopSearchValidationResult validateSavedShopSearch({
+    required bool shopSelected,
+    required String keyword,
+  }) {
+    if (!shopSelected) {
+      return const SavedShopSearchValidationResult(
+        valid: false,
+        reason: 'missingShop',
+        message: 'ショップを選んでください',
+        normalizedKeyword: '',
+      );
+    }
+    final normalized = keyword.trim();
+    final kwErr = validateSavedShopSearchKeyword(keyword);
+    if (kwErr != null) {
+      final reason = normalized.isEmpty ? 'empty' : 'symbolOnly';
+      return SavedShopSearchValidationResult(
+        valid: false,
+        reason: reason,
+        message: kwErr,
+        normalizedKeyword: normalized,
+      );
+    }
+    return SavedShopSearchValidationResult(
+      valid: true,
+      reason: 'ok',
+      message: null,
+      normalizedKeyword: normalized,
+    );
+  }
+
+  static void logSavedShopSearchValidation({
+    required bool shopSelected,
+    required String keyword,
+    required SavedShopSearchValidationResult result,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[SAVED_SHOP_SEARCH_VALIDATION] shopSelected=$shopSelected '
+      'keyword=${keyword.trim().isEmpty ? '(empty)' : keyword.trim()} '
+      'normalizedKeyword=${result.normalizedKeyword} '
+      'valid=${result.valid} reason=${result.reason}',
+    );
+  }
+
+  static void logSavedShopSearchBlocked({required String reason}) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[SAVED_SHOP_SEARCH_BLOCKED] reason=$reason apiCalled=false',
+    );
+  }
+
   static String? validatePriceText(String? raw, {String label = '価格'}) {
     final t = raw?.trim() ?? '';
     if (t.isEmpty) return null;
@@ -229,4 +305,19 @@ abstract final class AppInputLimits {
       validator: 'validateOptionalCountField',
     );
   }
+}
+
+/// 保存ショップ検索の入力チェック結果。
+class SavedShopSearchValidationResult {
+  const SavedShopSearchValidationResult({
+    required this.valid,
+    required this.reason,
+    required this.normalizedKeyword,
+    this.message,
+  });
+
+  final bool valid;
+  final String reason;
+  final String? message;
+  final String normalizedKeyword;
 }

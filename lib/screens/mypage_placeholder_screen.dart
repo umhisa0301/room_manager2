@@ -15,6 +15,7 @@ import '../services/room_import_collects_policy.dart';
 import '../services/room_import_limit_policy.dart';
 import '../widgets/room_import_enrichment_pending_hint.dart';
 import '../utils/app_input_limits.dart';
+import '../utils/favorite_genre_pref.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/room_sync_button_visibility.dart';
 import '../utils/room_sync_card_copy.dart';
@@ -24,7 +25,6 @@ import '../widgets/room_sync_reaction_button.dart';
 import '../models/room_reaction_sync_history_entry.dart';
 import '../services/room_reaction_sync_history_store.dart';
 import '../utils/room_reaction_analytics.dart';
-import '../services/rakuten_genre_master_service.dart';
 import '../services/room_collect_post_limit.dart';
 import '../state/activity_log_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -138,32 +138,22 @@ class MypagePlaceholderScreen extends StatelessWidget {
     List<String> picked,
     UserProfile base,
   ) async {
-    final svc = RakutenGenreMasterService.instance;
-    final ids = picked.map((e) => e.trim()).where((e) => e.isNotEmpty).take(5);
-    final idList = ids.toList(growable: false);
-    final names = <String>[];
-    for (final id in idList) {
-      final n = svc.getGenreNameById(id);
-      if (n.isNotEmpty &&
-          n != RakutenGenreMasterService.unknownGenreDisplayLabel) {
-        names.add(n);
-      }
-    }
-    final next = UserProfile(
-      displayName: base.displayName,
-      age: base.age,
-      genderKey: base.genderKey,
-      occupation: base.occupation,
-      favoriteGenres: names.join('、'),
-      favoriteGenreIds: idList.join('、'),
-      postStyles: base.postStyles,
-      roomUrl: base.roomUrl,
+    final idList = picked
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .take(5)
+        .toList(growable: false);
+    final next = FavoriteGenrePref.profileWithFavoriteGenres(
+      base: base,
+      genreIds: idList,
+      source: 'mypage',
     );
     await context.read<UserProfileProvider>().saveProfile(next);
+    final savedNames = next.favoriteGenreList;
     for (var i = 0; i < idList.length; i++) {
       GenrePrefLog.logSave(
         selectedGenreId: idList[i],
-        selectedGenreName: i < names.length ? names[i] : '',
+        selectedGenreName: i < savedNames.length ? savedNames[i] : '',
         source: 'mypage',
       );
     }

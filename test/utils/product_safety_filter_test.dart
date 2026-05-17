@@ -61,5 +61,73 @@ void main() {
         isFalse,
       );
     });
+
+    test('ビール10本セットは除外', () {
+      expect(
+        ProductSafetyFilter.isBlockedProduct(itemName: 'ビール10本セット'),
+        isTrue,
+      );
+      expect(
+        ProductSafetyFilter.primaryLogReason(
+          ProductSafetyFilter.blockedReasons(itemName: 'ビール10本セット'),
+        ),
+        'alcohol',
+      );
+    });
+
+    test('名入れワインは除外', () {
+      expect(
+        ProductSafetyFilter.isBlockedProduct(itemName: '名入れワイン ギフト'),
+        isTrue,
+      );
+    });
+
+    test('シャンパングラスは通す', () {
+      expect(
+        ProductSafetyFilter.isBlockedProduct(itemName: 'シャンパングラス 2個セット'),
+        isFalse,
+      );
+    });
+
+    test('ワイングラスは通す', () {
+      expect(
+        ProductSafetyFilter.isBlockedProduct(itemName: 'ワイングラス ペア'),
+        isFalse,
+      );
+    });
+
+    test('子供服は通す', () {
+      expect(
+        ProductSafetyFilter.isBlockedProduct(
+          itemName: '子供服 トレーナー',
+          genreName: 'キッズファッション',
+        ),
+        isFalse,
+      );
+    });
+
+    test('アダルトグッズは除外', () {
+      expect(
+        ProductSafetyFilter.isBlockedProduct(itemName: 'アダルトグッズ'),
+        isTrue,
+      );
+    });
+
+    test('グラビア写真集は除外', () {
+      expect(
+        ProductSafetyFilter.isBlockedProduct(itemName: 'グラビア写真集'),
+        isTrue,
+      );
+    });
+
+    test('ジャンル名がビール・洋酒なら除外', () {
+      expect(
+        ProductSafetyFilter.isBlockedProduct(
+          itemName: 'おすすめセット',
+          genreName: 'ビール・洋酒',
+        ),
+        isTrue,
+      );
+    });
   });
 }

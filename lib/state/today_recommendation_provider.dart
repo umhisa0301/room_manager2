@@ -9,6 +9,7 @@ import '../models/user_profile.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../repository/today_recommendation_repository.dart';
 import '../utils/genre_pref_log.dart';
+import '../utils/recommend_cooldown_policy.dart';
 import '../utils/product_safety_filter.dart';
 import '../utils/user_profile_preferred_genre_words.dart';
 import 'rakuten_managed_product_provider.dart';
@@ -47,9 +48,12 @@ class TodayRecommendationProvider extends ChangeNotifier {
   bool _lastRateLimitFailure = false;
   String? _lastGuardReason;
   static const Duration _recentEnsureWindow = Duration(seconds: 3);
-  static const Duration _manualRegenerateCooldown = Duration(minutes: 5);
-  static const Duration _recentGenerateCooldown = Duration(minutes: 15);
-  static const Duration _rateLimitCooldown = Duration(minutes: 12);
+  static const Duration _manualRegenerateCooldown =
+      RecommendCooldownPolicy.manualRegenerateCooldown;
+  static const Duration _recentGenerateCooldown =
+      RecommendCooldownPolicy.recentGenerateCooldown;
+  static const Duration _rateLimitCooldown =
+      RecommendCooldownPolicy.rateLimitCooldown;
   static const String _logTagTrigger = '[RECOMMEND_TRIGGER]';
   static const String _logTagGuard = '[RECOMMEND_GUARD]';
   static const String _logTagGenerate = '[RECOMMEND_GENERATE]';
@@ -66,6 +70,47 @@ class TodayRecommendationProvider extends ChangeNotifier {
   String? get lastEnsureSource => _lastEnsureSource;
   DateTime? get lastRegenerateAt => _lastRegenerateAt;
   String? get lastGuardReason => _lastGuardReason;
+
+  /// 手動再生成のクールダウン残り（null なら再生成可能）。
+  RecommendRegenerateCooldownStatus manualRegenerateCooldownStatus({
+    DateTime? now,
+  }) {
+    final clock = now ?? DateTime.now();
+    if (_lastRateLimitFailure && isInCooldown && _cooldownUntil != null) {
+      final remaining = _cooldownUntil!.difference(clock);
+      if (remaining > Duration.zero) {
+        return RecommendRegenerateCooldownStatus(
+          canRegenerate: false,
+          cooldownMinutes: _rateLimitCooldown.inMinutes,
+          remainingSeconds: remaining.inSeconds,
+          remainingLabel:
+              RecommendCooldownPolicy.remainingMinutesLabel(remaining),
+          guardReason: 'rateLimitCooldown',
+        );
+      }
+    }
+    if (_lastRegenerateAt != null) {
+      final elapsed = clock.difference(_lastRegenerateAt!);
+      final remaining = _manualRegenerateCooldown - elapsed;
+      if (remaining > Duration.zero) {
+        return RecommendRegenerateCooldownStatus(
+          canRegenerate: false,
+          cooldownMinutes: _manualRegenerateCooldown.inMinutes,
+          remainingSeconds: remaining.inSeconds,
+          remainingLabel:
+              RecommendCooldownPolicy.remainingMinutesLabel(remaining),
+          guardReason: 'manualCooldown',
+        );
+      }
+    }
+    return RecommendRegenerateCooldownStatus(
+      canRegenerate: true,
+      cooldownMinutes: _manualRegenerateCooldown.inMinutes,
+      remainingSeconds: 0,
+      remainingLabel: '',
+      guardReason: '',
+    );
+  }
 
   int get totalCount => _bundle?.entries.length ?? 0;
   int get pendingCount => _bundle?.pendingCount ?? 0;
@@ -180,6 +225,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         _lastRegenerateAt != null &&
         now.difference(_lastRegenerateAt!) < _manualRegenerateCooldown) {
       _guard('skipReason=manualCooldown');
+      _logCooldownStatus(manual: true);
       return;
     }
     if (!manual &&
@@ -667,6 +713,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
       selectedCount: entries.length,
       excludedCount: excludedCount,
       durationMs: durationMs,
+    );
+    _logApiCallSummary(
+      trigger: 'regenerate',
+      plannedCalls: plans.length,
+      actualCalls: apiCalls,
+      rawItems: pool.length,
+      acceptedItems: entries.length,
     );
     return TodayRecommendationBundle(
       localDateKey: _localDateKey(DateTime.now()),
@@ -1321,6 +1374,31 @@ class TodayRecommendationProvider extends ChangeNotifier {
     _lastGuardReason = message.trim();
     if (!kDebugMode) return;
     debugPrint('$_logTagGuard $message');
+  }
+
+  void _logCooldownStatus({required bool manual}) {
+    if (!kDebugMode || !manual) return;
+    final status = manualRegenerateCooldownStatus();
+    debugPrint(
+      '[RECOMMEND_COOLDOWN_STATUS] canRegenerate=${status.canRegenerate} '
+      'cooldownMinutes=${status.cooldownMinutes} '
+      'remainingSeconds=${status.remainingSeconds} '
+      'remainingLabel=${status.remainingLabel}',
+    );
+  }
+
+  void _logApiCallSummary({
+    required String trigger,
+    required int plannedCalls,
+    required int actualCalls,
+    required int rawItems,
+    required int acceptedItems,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[RECOMMEND_API_CALL_SUMMARY] trigger=$trigger plannedCalls=$plannedCalls '
+      'actualCalls=$actualCalls rawItems=$rawItems acceptedItems=$acceptedItems',
+    );
   }
 
   void _trigger({required String source}) {

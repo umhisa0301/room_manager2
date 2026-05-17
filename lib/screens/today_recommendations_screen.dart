@@ -72,9 +72,11 @@ class _TodayRecommendationsScreenState
     if (guard.contains('manualCooldown') ||
         guard.contains('rateLimitCooldown') ||
         guard.contains('recentlyGenerated')) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('少し時間をおいてから再生成してください')));
+      final status = recommender.manualRegenerateCooldownStatus();
+      final msg = status.canRegenerate
+          ? '少し時間をおいてから再生成してください'
+          : 'あと${status.remainingLabel}後に再生成できます';
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
     }
   }
 

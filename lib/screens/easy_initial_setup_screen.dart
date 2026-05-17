@@ -13,6 +13,7 @@ import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/app_input_limits.dart';
+import '../utils/favorite_genre_pref.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/onboarding_ui_log.dart';
 import '../utils/product_safety_filter.dart';
@@ -196,36 +197,23 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
       source: 'initialSetup',
     );
     if (picked == null || !mounted) return;
-    final svc = RakutenGenreMasterService.instance;
     final idList = picked
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
         .take(5)
         .toList();
-    final names = <String>[];
-    for (final id in idList) {
-      final n = svc.getGenreNameById(id);
-      if (n.isNotEmpty &&
-          n != RakutenGenreMasterService.unknownGenreDisplayLabel) {
-        names.add(n);
-      }
-    }
     final lastId = idList.isNotEmpty ? idList.last : null;
-    final next = UserProfile(
-      displayName: base.displayName,
-      age: base.age,
-      genderKey: base.genderKey,
-      occupation: base.occupation,
-      favoriteGenres: names.join('、'),
-      favoriteGenreIds: idList.join('、'),
-      postStyles: base.postStyles,
-      roomUrl: base.roomUrl,
+    final next = FavoriteGenrePref.profileWithFavoriteGenres(
+      base: base,
+      genreIds: idList,
+      source: 'initialSetup',
     );
     await profileProv.saveProfile(next);
+    final savedNames = next.favoriteGenreList;
     for (var i = 0; i < idList.length; i++) {
       GenrePrefLog.logSave(
         selectedGenreId: idList[i],
-        selectedGenreName: i < names.length ? names[i] : '',
+        selectedGenreName: i < savedNames.length ? savedNames[i] : '',
         source: 'initialSetup',
       );
     }

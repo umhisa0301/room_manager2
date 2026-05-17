@@ -25,7 +25,6 @@ import '../../widgets/app_card.dart';
 import '../../widgets/room_colle_product_list_card_layout.dart';
 import 'activity_navigation_helpers.dart';
 import 'activity_screen_layout.dart';
-import 'room_next_actions_card.dart';
 
 /// 活動画面「分析」タブ。
 class ActivityAnalyticsTab extends StatefulWidget {
@@ -174,8 +173,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
               bottomPad,
             ),
             children: [
-              const RoomNextActionsCard(),
-              const SizedBox(height: ActivityScreenLayout.sectionGap),
               _DecisionInsightCard(brief: insight),
               const SizedBox(height: ActivityScreenLayout.sectionGap),
               KeyedSubtree(
@@ -332,11 +329,10 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
 
     if (outcomeSubset.isEmpty) {
       return _DecisionBrief(
-        conclusion:
-            'まだ「売れた／反応あり」の商品が${done.isEmpty ? 'コレ済にありません' : '足りません'}。',
+        conclusion: 'まだ分析材料が少ないです。',
         rationale:
-            '分析は成果が付いたコレ済だけを使います。まずコレして評価を付けましょう。',
-        footnote: 'コレ済：${done.length}件　成果対象：0件',
+            'まずはおすすめコレから候補を2件追加し、コレ済に移して結果を記録しましょう。',
+        footnote: 'コレ済：${done.length}件',
         nextSteps: [
           _NextStepAction(
             title: 'おすすめコレから候補を2件追加する',
@@ -557,43 +553,28 @@ class _DecisionInsightCard extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  '運用のサマリー',
-                  style: theme.textTheme.labelLarge?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 13,
+                  '次にやること',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          Text(
-            '① 結論',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.textTertiary,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 0.2,
+          if (brief.conclusion.trim().isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              brief.conclusion,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.4,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            brief.conclusion,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w900,
-              height: 1.3,
-              fontSize: 20,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            '次の一手（最大3件）',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.textTertiary,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 10),
+          ],
+          const SizedBox(height: 14),
           for (var i = 0; i < brief.nextSteps.length; i++) ...[
             if (i > 0) const SizedBox(height: 14),
             Text(
@@ -621,39 +602,14 @@ class _DecisionInsightCard extends StatelessWidget {
               icon: const Icon(Icons.arrow_forward_rounded, size: 17),
             ),
           ],
-          const SizedBox(height: 8),
-          Text(
-            '② 根拠',
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.textTertiary,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            brief.rationale,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.45,
-              fontSize: 14,
-            ),
-          ),
-          if (brief.footnote.trim().isNotEmpty) ...[
+          if (brief.rationale.trim().isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(
-              '③ 補足',
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: AppColors.textTertiary,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              brief.footnote,
+              brief.rationale,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: AppColors.textTertiary,
-                height: 1.4,
-                fontSize: 12,
+                height: 1.35,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],

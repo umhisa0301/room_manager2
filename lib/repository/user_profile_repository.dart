@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user_profile.dart';
+import '../utils/favorite_genre_pref.dart';
 
 class UserProfileRepository {
   UserProfileRepository(this._prefs);
@@ -18,7 +19,15 @@ class UserProfileRepository {
     }
     try {
       final map = jsonDecode(raw) as Map<String, dynamic>?;
-      return UserProfile.fromJson(map);
+      final loaded = UserProfile.fromJson(map);
+      final normalized = FavoriteGenrePref.normalizeLoadedProfile(
+        loaded,
+        source: 'repositoryLoad',
+      );
+      if (normalized.corrected) {
+        _prefs.setString(_key, jsonEncode(normalized.profile.toJson()));
+      }
+      return normalized.profile;
     } catch (_) {
       return const UserProfile();
     }

@@ -19,6 +19,7 @@ import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
 import '../utils/app_input_limits.dart';
+import '../utils/genre_display_resolve.dart';
 import '../utils/product_safety_filter.dart';
 import '../utils/rakuten_keyword_search_sort.dart';
 import '../utils/room_sync_log.dart';
@@ -115,6 +116,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   bool _searchHeaderCollapsed = false;
   RakutenSearchStatus _lastCompletionToastStatus = RakutenSearchStatus.idle;
   String? _detailSheetFormError;
+  String? _savedShopSearchFieldError;
   final GlobalKey<FormState> _detailSearchFormKey = GlobalKey<FormState>();
   bool _detailSearchAutovalidate = false;
   final FocusNode _productDetailSheetKeywordFocus = FocusNode(
@@ -313,8 +315,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         final k = _keywordController.text.trim();
         return k.isEmpty ? 'キーワード未入力' : k;
       case _RakutenSearchMode.genre:
-        final g = _genreUiLabelForId(_selectedGenreId);
-        return g;
+        return GenreDisplayResolve.collapsedTitleForGenreId(
+          _selectedGenreId,
+          screen: 'genreSearch',
+        );
       case _RakutenSearchMode.shopDiscovery:
         final k = _shopDiscoveryKeywordController.text.trim();
         final gid = _selectedDiscoveryGenreId;
@@ -819,9 +823,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   String? _validateKeywordSearchInputs() {
     if (_savedShopKeywordEntryEffective) {
-      if (_keywordController.text.trim().isEmpty) {
-        return '商品名を入力してください';
-      }
+      return AppInputLimits.validateSavedShopSearchKeyword(
+        _keywordController.text,
+      );
     } else {
       final kwErr =
           RakutenKeywordDetailConditionsValidation.validateKeywordTabSearchKeyword(
@@ -959,15 +963,29 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _dismissKeywordSearchKeyboard();
     if (_savedShopKeywordEntryEffective) {
       final scopedShop = _effectiveShopCodeForApi(context);
-      if (scopedShop == null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('ショップを選んでください')));
+      final keyword = _keywordController.text;
+      final validation = AppInputLimits.validateSavedShopSearch(
+        shopSelected: scopedShop != null,
+        keyword: keyword,
+      );
+      AppInputLimits.logSavedShopSearchValidation(
+        shopSelected: scopedShop != null,
+        keyword: keyword,
+        result: validation,
+      );
+      if (!validation.valid) {
+        AppInputLimits.logSavedShopSearchBlocked(reason: validation.reason);
+        setState(() => _savedShopSearchFieldError = validation.message);
         return;
       }
+      setState(() => _savedShopSearchFieldError = null);
     }
     final detailError = _validateKeywordSearchInputs();
     if (detailError != null) {
+      if (_savedShopKeywordEntryEffective) {
+        setState(() => _savedShopSearchFieldError = detailError);
+        return;
+      }
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(detailError)));
@@ -1257,13 +1275,18 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   SizedBox(height: RakutenSearchScreenUi.gapFieldStack + 2),
                   AppTextField(
                     controller: _keywordController,
-                    onChanged: (_) => setState(() {}),
+                    onChanged: (_) => setState(() {
+                      if (_savedShopSearchFieldError != null) {
+                        _savedShopSearchFieldError = null;
+                      }
+                    }),
                     labelText: 'このショップ内で探す',
                     hintText: '例：イヤホン、ベビー、スーツ',
                     prefixIcon: const Icon(Icons.search_rounded),
                     maxLength: AppInputLimits.searchKeywordMax,
                     inputFormatters:
                         AppInputLimits.singleLineKeywordFormatters(),
+                    errorText: _savedShopSearchFieldError,
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -2345,11 +2368,26 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   String _genreUiLabelForId(String? id) {
-    if (id == null || id.trim().isEmpty) return '指定なし';
+    if (id == null || id.trim().isEmpty) return 'ジャンルを選択してください';
     for (final o in _mockGenres) {
       if (o.id == id) return o.label;
     }
-    return id;
+    return GenreDisplayResolve.labelForGenreId(
+      id,
+      screen: _genreDisplayScreenKey(),
+    );
+  }
+
+  String _genreDisplayScreenKey() {
+    if (_savedShopKeywordEntryEffective) return 'savedShopSearch';
+    switch (_mode) {
+      case _RakutenSearchMode.genre:
+        return 'genreSearch';
+      case _RakutenSearchMode.shopDiscovery:
+        return 'shopDiscovery';
+      case _RakutenSearchMode.product:
+        return 'productSearch';
+    }
   }
 
   void _setSelectedGenreId(String? value) {
@@ -3538,7 +3576,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         }
         final showingCount = filteredResults.length;
         final orderedResults = filteredResults;
-        final genreLabel = _labelForGenre(_selectedGenreId) ?? '選択中のジャンル';
+        final genreLabel = GenreDisplayResolve.labelForGenreId(
+          _selectedGenreId,
+          screen: 'genreSearch',
+        );
         final totalCount = search.results.length;
         final primaryMeta = totalCount == showingCount
             ? '一覧 $showingCount件です。'

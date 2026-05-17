@@ -332,13 +332,26 @@ class _AchievementHeroCard extends StatelessWidget {
         .length;
     final lowCandidates = todayCandidates < 3;
 
+    final postDisplay = postGoal <= 0
+        ? todayCalendarPosts
+        : todayCalendarPosts.clamp(0, postGoal);
+    final candDisplay = candGoal <= 0
+        ? todayCandidates
+        : todayCandidates.clamp(0, candGoal);
     final postPct = postGoal <= 0
         ? 0.0
-        : (todayCalendarPosts / postGoal * 100).clamp(0.0, 100.0);
+        : (postDisplay / postGoal).clamp(0.0, 1.0);
     final candPct = candGoal <= 0
         ? 0.0
-        : (todayCandidates / candGoal * 100).clamp(0.0, 100.0);
-    final todayProgressPct = ((postPct + candPct) / 2).round().clamp(0, 100);
+        : (candDisplay / candGoal).clamp(0.0, 1.0);
+    final todayProgressPct = ((postPct + candPct) / 2 * 100).round().clamp(0, 100);
+    final candGoalReached = candGoal > 0 && todayCandidates >= candGoal;
+    if (kDebugMode && candGoal > 0 && todayCandidates != candDisplay) {
+      debugPrint(
+        '[ACHIEVEMENT_PROGRESS_CLAMP] metric=candidate rawValue=$todayCandidates '
+        'goal=$candGoal displayValue=$candDisplay progress=${candPct.toStringAsFixed(1)}',
+      );
+    }
 
     return AppCard(
       padding: const EdgeInsets.all(ActivityScreenLayout.cardPadding),
@@ -409,9 +422,11 @@ class _AchievementHeroCard extends StatelessWidget {
                 child: _compactTodayMetricTile(
                   context,
                   label: '投稿',
-                  valueTop: '$todayCalendarPosts',
+                  valueTop: '$postDisplay',
                   valueBottom: '/ $postGoal',
-                  caption: '${postPct.round()}%',
+                  caption: todayCalendarPosts >= postGoal && postGoal > 0
+                      ? '達成済み'
+                      : '${(postPct * 100).round()}%',
                 ),
               ),
               const SizedBox(width: 8),
@@ -419,9 +434,11 @@ class _AchievementHeroCard extends StatelessWidget {
                 child: _compactTodayMetricTile(
                   context,
                   label: '候補',
-                  valueTop: '$todayCandidates',
+                  valueTop: '$candDisplay',
                   valueBottom: '/ $candGoal',
-                  caption: '${candPct.round()}%',
+                  caption: candGoalReached
+                      ? '達成済み'
+                      : '${(candPct * 100).round()}%',
                 ),
               ),
               const SizedBox(width: 8),

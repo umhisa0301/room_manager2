@@ -8,6 +8,9 @@ enum ProductSafetyBlockReason {
   gravureKeyword,
   underwearKeyword,
   otherAdult,
+  alcoholKeyword,
+  tobaccoKeyword,
+  gamblingKeyword,
 }
 
 /// 家族向け ROOM 運用向けの商品安全フィルタ。
@@ -52,6 +55,85 @@ abstract final class ProductSafetyFilter {
     'アナル',
     'ペニス',
     'ヴァギナ',
+  ];
+
+  static const _alcoholGenreMarkers = <String>[
+    'ビール',
+    '洋酒',
+    '日本酒',
+    '焼酎',
+    'ワイン',
+    'シャンパン',
+    'ウイスキー',
+    'ブランデー',
+    'リキュール',
+    'チューハイ',
+    'カクテル',
+    'アルコール',
+    'お酒',
+    '酒類',
+  ];
+
+  static const _alcoholTitleKeywords = <String>[
+    'ビール',
+    '発泡酒',
+    'ワイン',
+    'シャンパン',
+    '日本酒',
+    '焼酎',
+    'ウイスキー',
+    'ブランデー',
+    'リキュール',
+    'チューハイ',
+    'カクテル',
+    'ノンアルコールビール',
+    '純米',
+    '大吟醸',
+    '辛口',
+    'ドリンク缶',
+  ];
+
+  static const _alcoholAccessoryMarkers = <String>[
+    'グラス',
+    '酒器',
+    'デキャンタ',
+    '栓抜き',
+    'クーラー',
+    'コルク',
+  ];
+
+  static const _tobaccoKeywords = <String>[
+    'タバコ',
+    'たばこ',
+    '煙草',
+    '電子タバコ',
+    'vape',
+    'ベイプ',
+    '加熱式',
+    'iqos',
+    'アイコス',
+    'glo',
+    'グロー',
+    'ploom',
+    'プルーム',
+    'シガー',
+    '葉巻',
+    '喫煙',
+  ];
+
+  static const _gamblingKeywords = <String>[
+    'パチンコ',
+    'パチスロ',
+    'スロット',
+    '競馬',
+    '競艇',
+    '競輪',
+    '宝くじ',
+    'ロト',
+    'toto',
+    'カジノ',
+    '麻雀賭',
+    '賭博',
   ];
 
   static const _adultContextMarkers = <String>[
@@ -146,6 +228,8 @@ abstract final class ProductSafetyFilter {
     if (blob.isEmpty) return const [];
 
     final reasons = <ProductSafetyBlockReason>{};
+    final normalizedTitle = normalizeText(itemName ?? title ?? '');
+    final genreNorm = normalizeText(genreName);
 
     for (final kw in _adultKeywords) {
       if (blob.contains(normalizeText(kw))) {
@@ -154,12 +238,10 @@ abstract final class ProductSafetyFilter {
       }
     }
 
-    final normalizedTitle = normalizeText(itemName ?? title ?? '');
     if (normalizedTitle.isNotEmpty && _hasAdultToyContext(normalizedTitle)) {
       reasons.add(ProductSafetyBlockReason.adultContext);
     }
 
-    final genreNorm = normalizeText(genreName);
     final inCdDvd = genreNorm.isNotEmpty && _cdDvdGenrePattern.hasMatch(genreNorm);
     if (inCdDvd || _looksLikeCdDvdTitle(blob)) {
       for (final kw in _blcdKeywords) {
@@ -191,7 +273,68 @@ abstract final class ProductSafetyFilter {
       reasons.add(ProductSafetyBlockReason.otherAdult);
     }
 
+    if (_isAlcoholProduct(
+      blob: blob,
+      genreNorm: genreNorm,
+      titleNorm: normalizedTitle,
+    )) {
+      reasons.add(ProductSafetyBlockReason.alcoholKeyword);
+    }
+
+    for (final kw in _tobaccoKeywords) {
+      if (blob.contains(normalizeText(kw))) {
+        reasons.add(ProductSafetyBlockReason.tobaccoKeyword);
+        break;
+      }
+    }
+
+    for (final kw in _gamblingKeywords) {
+      if (blob.contains(normalizeText(kw))) {
+        reasons.add(ProductSafetyBlockReason.gamblingKeyword);
+        break;
+      }
+    }
+
     return reasons.toList(growable: false);
+  }
+
+  static bool _isAlcoholProduct({
+    required String blob,
+    required String genreNorm,
+    required String titleNorm,
+  }) {
+    for (final m in _alcoholGenreMarkers) {
+      if (genreNorm.contains(normalizeText(m))) return true;
+    }
+    if (_isAlcoholAccessoryTitle(titleNorm)) return false;
+    for (final kw in _alcoholTitleKeywords) {
+      if (titleNorm.contains(normalizeText(kw)) ||
+          blob.contains(normalizeText(kw))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static bool _isAlcoholAccessoryTitle(String titleNorm) {
+    if (titleNorm.isEmpty) return false;
+    final hasAccessory = _alcoholAccessoryMarkers.any(titleNorm.contains);
+    if (!hasAccessory) return false;
+    const productIndicators = [
+      '本セット',
+      '缶',
+      '瓶',
+      'ml',
+      '度数',
+      '純米',
+      '大吟醸',
+      '辛口',
+      'ケース',
+      '飲み切り',
+      '飲料',
+    ];
+    if (productIndicators.any(titleNorm.contains)) return false;
+    return true;
   }
 
   static bool _hasAdultToyContext(String normalizedBlob) {
@@ -217,6 +360,29 @@ abstract final class ProductSafetyFilter {
     return true;
   }
 
+  static String primaryLogReason(Iterable<ProductSafetyBlockReason> reasons) {
+    if (reasons.isEmpty) return 'none';
+    if (reasons.contains(ProductSafetyBlockReason.alcoholKeyword)) {
+      return 'alcohol';
+    }
+    if (reasons.any((r) =>
+        r == ProductSafetyBlockReason.adultKeyword ||
+        r == ProductSafetyBlockReason.adultContext ||
+        r == ProductSafetyBlockReason.blcdKeyword ||
+        r == ProductSafetyBlockReason.gravureKeyword ||
+        r == ProductSafetyBlockReason.underwearKeyword ||
+        r == ProductSafetyBlockReason.otherAdult)) {
+      return 'adult';
+    }
+    if (reasons.contains(ProductSafetyBlockReason.tobaccoKeyword)) {
+      return 'tobacco';
+    }
+    if (reasons.contains(ProductSafetyBlockReason.gamblingKeyword)) {
+      return 'gambling';
+    }
+    return 'adult';
+  }
+
   static String reasonsToLogCsv(Iterable<ProductSafetyBlockReason> reasons) {
     return reasons.map((e) => e.name).join(',');
   }
@@ -232,16 +398,17 @@ abstract final class ProductSafetyFilter {
     Iterable<String> matchedKeywords = const [],
   }) {
     if (!kDebugMode) return;
+    final reasonTag = primaryLogReason(reasons);
     debugPrint(
       '[PRODUCT_SAFETY_FILTER] source=$source itemCode=$itemCode '
       'title=${title.trim().isEmpty ? '(empty)' : title.trim()} '
-      'shopName=${shopName.trim()} genreName=${genreName.trim()} '
-      'blocked=$blocked reasons=${reasonsToLogCsv(reasons)}',
+      'genreName=${genreName.trim()} shopName=${shopName.trim()} '
+      'blocked=$blocked reason=$reasonTag',
     );
-    if (blocked && matchedKeywords.isNotEmpty) {
+    if (blocked) {
       debugPrint(
-        '[RECOMMEND_EXCLUDE] itemCode=$itemCode reason=safetyBlocked '
-        'matchedKeywords=${matchedKeywords.join(',')}',
+        '[RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=$reasonTag '
+        'itemCode=$itemCode matchedKeywords=${matchedKeywords.join(',')}',
       );
     }
   }
