@@ -1056,3 +1056,49 @@ D/EGL_emulation(14516): app_time_stats: avg=18.96ms min=9.37ms max=63.60ms count
 [SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\room_manager2_shot_015.png
 D/EGL_emulation(14516): app_time_stats: avg=957.11ms min=9.80ms max=27294.26ms count=29
 D/EGL_emulation(14516): app_time_stats: avg=63.40ms min=8.94ms max=658.73ms count=15
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_225137.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_225137.mp4 (7631038 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260516_225137\terminal_output_20260516_225137.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260516_225137.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260516_225137.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260516_225137.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260516_225137.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260516_225137.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
