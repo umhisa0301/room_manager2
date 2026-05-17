@@ -213,6 +213,10 @@ class RakutenManagedProductProvider extends ChangeNotifier {
     if (b == null || !b.isAnyBlockingOperationRunning) {
       return null;
     }
+    // 一括候補登録の逐次処理中は、自分自身の addCandidate をブロックしない。
+    if (blockedAction == 'addCandidate' && b.isBulkCandidateRegistering) {
+      return null;
+    }
     ManagedProductDiagLog.logMutationLock(
       isBulkRunning: true,
       blockedAction: blockedAction,

@@ -22,7 +22,6 @@ import '../utils/app_input_limits.dart';
 import '../utils/product_safety_filter.dart';
 import '../utils/rakuten_keyword_search_sort.dart';
 import '../utils/room_sync_log.dart';
-import '../widgets/genre_drilldown_picker_sheet.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
 import '../widgets/rakuten_search_condition_fields.dart';
 import '../widgets/rakuten_search_detail_condition_entry_chrome.dart';
@@ -1666,6 +1665,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       showDragHandle: true,
       builder: (sheetContext) {
         searchFilterSheetLayoutLog();
+        final sheetKeyboardInset = MediaQuery.of(screenContext).viewInsets.bottom;
+        searchFilterSheetOverflowGuardLog(keyboardInset: sheetKeyboardInset);
         return StatefulBuilder(
           builder: (modalContext, setModalState) {
             final sheetInset = MediaQuery.of(sheetContext).viewInsets.bottom;
@@ -1764,76 +1765,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           const SizedBox(
                             height: RakutenSearchScreenUi.sheetBlockGap,
                           ),
-                          _PostFrameFocusRequester(
-                            focusNode: _genreDetailSheetDropdownFocus,
-                            child: _sheetPrimaryAttentionShell(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 1),
-                                        child: Icon(
-                                          Icons.flag_circle_rounded,
-                                          size: 20,
-                                          color: HomeScreenColors
-                                              .accentSectionHeading,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: Text(
-                                          'まず検索ジャンル（必須）を選びます',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelLarge
-                                              ?.copyWith(
-                                                fontWeight: FontWeight.w800,
-                                                color: HomeScreenColors
-                                                    .accentSectionHeading,
-                                                height: 1.25,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  RakutenSearchGenreDropdownField(
-                                    labelText: '検索ジャンル（必須）',
-                                    value: _selectedGenreId,
-                                    options: _mockGenres,
-                                    focusNode: _genreDetailSheetDropdownFocus,
-                                    onChanged: (value) {
-                                      _setSelectedGenreId(value);
-                                      setModalState(() {});
-                                    },
-                                  ),
-                                  const SizedBox(height: 8),
-                                  OutlinedButton.icon(
-                                    onPressed: () async {
-                                      final picked =
-                                          await GenreDrilldownPickerSheet.show(
-                                        sheetContext,
-                                        initialGenreId: _selectedGenreId,
-                                        source: 'search',
-                                      );
-                                      if (picked != null && picked.isNotEmpty) {
-                                        _setSelectedGenreId(picked);
-                                        setModalState(() {});
-                                      }
-                                    },
-                                    icon: const Icon(
-                                      Icons.account_tree_outlined,
-                                      size: 18,
-                                    ),
-                                    label: const Text('親ジャンルから選ぶ'),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          RakutenSearchGenreDrilldownRow(
+                            selectedGenreId: _selectedGenreId,
+                            requiredSelection: true,
+                            introText: 'ジャンル（必須）を選んでから検索します。',
+                            onGenreChanged: (value) {
+                              _setSelectedGenreId(value);
+                              setModalState(() {});
+                            },
                           ),
                           SizedBox(
                             height: RakutenSearchScreenUi.gapFieldStack + 3,
@@ -1999,11 +1938,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           const SizedBox(
                             height: RakutenSearchScreenUi.sheetBlockGap,
                           ),
-                          RakutenSearchGenreDropdownField(
-                            labelText: 'ジャンル（任意）',
-                            value: _selectedGenreId,
-                            options: _mockGenres,
-                            onChanged: (value) {
+                          RakutenSearchGenreDrilldownRow(
+                            selectedGenreId: _selectedGenreId,
+                            onGenreChanged: (value) {
                               _setSelectedGenreId(value);
                               setModalState(() {});
                             },
@@ -2676,6 +2613,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     List<RakutenSearchItem> source,
   ) async {
     if (_isBulkRegistering || _selectedProductIds.isEmpty) return;
+    bulkRegisterStartLog(
+      mode: 'candidate',
+      selectedCount: _selectedProductIds.length,
+      sourceScreen: 'rakutenSearch',
+    );
     final bulkCtl = context.read<BulkOperationStateController>();
     if (bulkCtl.isRoomTourSearchBlocking) {
       roomSyncUiGuardLog(
@@ -2704,16 +2646,68 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     setState(() => _isBulkRegistering = true);
     var success = 0;
     var failed = 0;
+    var skipped = 0;
+    var alreadyExists = 0;
+    var syncBusyBlocked = 0;
     final selectedItems = source
         .where((e) => _selectedProductIds.contains(e.productId))
-        .toList();
+        .toList(growable: false);
+    final selectedSnapshot = List<RakutenSearchItem>.from(selectedItems);
     try {
-      for (final item in selectedItems) {
+      for (var i = 0; i < selectedSnapshot.length; i++) {
+        final item = selectedSnapshot[i];
+        final before = managed.statusForProduct(item.productId);
+        if (before != RakutenManagedProductStatus.none) {
+          alreadyExists++;
+          skipped++;
+          bulkRegisterItemResultLog(
+            index: i,
+            productId: item.productId,
+            title: item.itemName,
+            success: false,
+            skipped: true,
+            reason: 'alreadyExists',
+          );
+          continue;
+        }
         final err = await managed.registerCandidate(item);
         if (err == null) {
-          success++;
+          final after = managed.statusForProduct(item.productId);
+          if (after == RakutenManagedProductStatus.candidate) {
+            success++;
+            bulkRegisterItemResultLog(
+              index: i,
+              productId: item.productId,
+              title: item.itemName,
+              success: true,
+              skipped: false,
+              reason: 'success',
+            );
+          } else {
+            alreadyExists++;
+            skipped++;
+            bulkRegisterItemResultLog(
+              index: i,
+              productId: item.productId,
+              title: item.itemName,
+              success: false,
+              skipped: true,
+              reason: 'alreadyExists',
+            );
+          }
         } else {
           failed++;
+          if (err.contains('ROOM同期中') || err.contains('処理中')) {
+            syncBusyBlocked++;
+          }
+          bulkRegisterItemResultLog(
+            index: i,
+            productId: item.productId,
+            title: item.itemName,
+            success: false,
+            skipped: false,
+            reason: syncBusyBlocked > 0 ? 'syncBusy' : 'unknownError',
+          );
         }
       }
     } finally {
@@ -2726,14 +2720,24 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         });
       }
     }
+    bulkRegisterResultLog(
+      selected: selectedSnapshot.length,
+      success: success,
+      skipped: skipped,
+      failed: failed,
+      alreadyExists: alreadyExists,
+      safetyBlocked: 0,
+      limitReached: syncBusyBlocked,
+    );
     if (!mounted) return;
-    final failureLine = failed > 0 ? '\n一部 $failed件は追加できませんでした。' : '';
+    final failureLine = failed > 0 ? '\n失敗 $failed件' : '';
+    final skipLine = skipped > 0 ? '\n登録済み $alreadyExists件' : '';
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 3),
+        duration: const Duration(seconds: 4),
         content: Text(
-          'コレ候補に追加しました（$success件）。下部の「ROOMコレ」→ 候補一覧で確認できます。$failureLine',
+          '候補に追加：成功 $success件$skipLine$failureLine\n下部の「ROOMコレ」→ 候補一覧で確認できます。',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: AppColors.textOnAccent,
             fontWeight: FontWeight.w600,

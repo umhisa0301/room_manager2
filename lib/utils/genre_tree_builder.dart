@@ -106,10 +106,11 @@ abstract final class GenreTreeBuilder {
     required String genreName,
     required int depth,
     required bool hasChildren,
+    String screen = 'searchCondition',
   }) {
     if (!kDebugMode) return;
     debugPrint(
-      '[GENRE_TREE_SELECT] genreId=$genreId genreName=$genreName '
+      '[GENRE_TREE_SELECT] screen=$screen genreId=$genreId genreName=$genreName '
       'depth=$depth hasChildren=$hasChildren',
     );
   }

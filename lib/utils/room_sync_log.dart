@@ -1129,14 +1129,18 @@ void roomSyncCardUxRenderLog({
 
 void roomSyncEmptyButtonAuditLog({
   required String screen,
-  required String widget,
+  String widget = 'none',
+  String button = 'unknown',
   required bool visible,
+  bool enabled = false,
+  String label = '',
   required String reason,
 }) {
   if (!kDebugMode) return;
   debugPrint(
     '[ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=$screen widget=$widget '
-    'visible=$visible reason=$reason',
+    'button=$button visible=$visible enabled=$enabled label=$label '
+    'reason=$reason',
   );
 }
 
@@ -1175,5 +1179,76 @@ void searchFilterSheetLayoutLog({
   debugPrint(
     '[SEARCH_FILTER_SHEET_LAYOUT] hasFixedHeader=$hasFixedHeader '
     'hasFixedFooter=$hasFixedFooter keyboardAware=$keyboardAware',
+  );
+}
+
+void searchFilterSheetOverflowGuardLog({
+  bool hasFixedHeader = true,
+  bool hasScrollableBody = true,
+  bool hasFixedFooter = true,
+  double keyboardInset = 0,
+  String reason = 'preventRenderFlexOverflow',
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[SEARCH_FILTER_SHEET_OVERFLOW_GUARD] hasFixedHeader=$hasFixedHeader '
+    'hasScrollableBody=$hasScrollableBody hasFixedFooter=$hasFixedFooter '
+    'keyboardInset=$keyboardInset reason=$reason',
+  );
+}
+
+void urlAddEntryVisibilityLog({
+  required bool visible,
+  required String reason,
+  bool codeKept = true,
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[URL_ADD_ENTRY_VISIBILITY] visible=$visible reason=$reason '
+    'codeKept=$codeKept',
+  );
+}
+
+void bulkRegisterStartLog({
+  required String mode,
+  required int selectedCount,
+  required String sourceScreen,
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[BULK_REGISTER_START] mode=$mode selectedCount=$selectedCount '
+    'sourceScreen=$sourceScreen',
+  );
+}
+
+void bulkRegisterItemResultLog({
+  required int index,
+  required String productId,
+  required String title,
+  required bool success,
+  required bool skipped,
+  required String reason,
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[BULK_REGISTER_ITEM_RESULT] index=$index productId=$productId '
+    'title=$title success=$success skipped=$skipped reason=$reason',
+  );
+}
+
+void bulkRegisterResultLog({
+  required int selected,
+  required int success,
+  required int skipped,
+  required int failed,
+  required int alreadyExists,
+  required int safetyBlocked,
+  required int limitReached,
+}) {
+  if (!kDebugMode) return;
+  debugPrint(
+    '[BULK_REGISTER_RESULT] selected=$selected success=$success '
+    'skipped=$skipped failed=$failed alreadyExists=$alreadyExists '
+    'safetyBlocked=$safetyBlocked limitReached=$limitReached',
   );
 }

@@ -19,7 +19,7 @@ import '../utils/product_safety_filter.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
-import '../widgets/favorite_genre_picker_sheet.dart';
+import '../widgets/genre_drilldown_picker_sheet.dart';
 import '../widgets/post_style_picker_sheet.dart';
 import '../widgets/shop_discovery_card.dart';
 
@@ -50,6 +50,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
   bool _isLoadingShopRecommendations = false;
   String? _shopRecommendationFailedReason;
   List<ShopDiscoverySummary> _shopRecommendations = const [];
+  String? _lastPickedGenreIdInSession;
 
   void _dismissKeyboard() {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -183,11 +184,16 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     final base = context.read<UserProfileProvider>().profile;
     final profileProv = context.read<UserProfileProvider>();
     final initial = base.favoriteGenreIdList;
-    final picked = await showModalBottomSheet<List<String>>(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      builder: (_) => FavoriteGenrePickerSheet(initialSelectedIds: initial),
+    GenrePrefLog.logInitialSetupGenreUiUnified(
+      oldPickerVisible: false,
+      treePickerVisible: true,
+      reason: 'avoidDuplicateGenreSelectionArea',
+    );
+    final picked = await GenreDrilldownPickerSheet.showMulti(
+      context,
+      initialSelectedIds: initial,
+      maxSelectable: 5,
+      source: 'initialSetup',
     );
     if (picked == null || !mounted) return;
     final svc = RakutenGenreMasterService.instance;
@@ -204,6 +210,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
         names.add(n);
       }
     }
+    final lastId = idList.isNotEmpty ? idList.last : null;
     final next = UserProfile(
       displayName: base.displayName,
       age: base.age,
@@ -224,6 +231,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     }
     if (!mounted) return;
     setState(() {
+      _lastPickedGenreIdInSession = lastId;
       _shopRecommendationStarted = false;
       _shopRecommendationFailedReason = null;
       _shopRecommendations = const [];
@@ -303,9 +311,23 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
         favoriteGenreNames: profile.favoriteGenres.split(RegExp(r'[、,]+')),
         source: 'shopRecommend',
       );
-      final condition = _shopRecommendationCondition(
+      final shopGenre = _resolveInitialSetupShopRecommendGenre(
         profile.favoriteGenreIdList,
+        lastPickedGenreId: _lastPickedGenreIdInSession,
+      );
+      GenrePrefLog.logInitialSetupGenreBinding(
+        selectedGenreIds: profile.favoriteGenreIdList,
+        selectedGenreNames: profile.favoriteGenreList,
+        shopRecommendGenreId: shopGenre.genreId,
+        shopRecommendGenreName: shopGenre.genreName,
+        matched: shopGenre.matched,
+        reason: shopGenre.reason,
+      );
+      final condition = _shopRecommendationCondition(
+        shopGenre.genreId,
         profile.effectivePostStyleList,
+        fallbackUsed: shopGenre.fallbackUsed,
+        fallbackReason: shopGenre.fallbackReason,
       );
       final rawItems = await searchRepository.search(condition: condition);
       final items = rawItems.where((item) {
@@ -1445,18 +1467,79 @@ List<String> _genreLabelsForShopSummary(UserProfile profile) {
       .toList(growable: false);
 }
 
+({String genreId, String genreName, bool matched, String reason, bool fallbackUsed, String fallbackReason})
+    _resolveInitialSetupShopRecommendGenre(
+  List<String> genreIds, {
+  String? lastPickedGenreId,
+}) {
+  final svc = RakutenGenreMasterService.instance;
+  final cleaned = genreIds
+      .map((e) => e.trim())
+      .where((e) => e.isNotEmpty)
+      .toList(growable: false);
+  if (cleaned.isEmpty) {
+    GenrePrefLog.logInitialSetupShopRecommendGenre(
+      genreId: '',
+      genreName: '',
+      fallbackUsed: true,
+      fallbackReason: 'noGenreSelected',
+    );
+    return (
+      genreId: '',
+      genreName: '',
+      matched: true,
+      reason: 'noGenreSelected',
+      fallbackUsed: true,
+      fallbackReason: 'noGenreSelected',
+    );
+  }
+  final preferred = lastPickedGenreId?.trim() ?? '';
+  final chosen = preferred.isNotEmpty && cleaned.contains(preferred)
+      ? preferred
+      : cleaned.last;
+  final name = svc.getGenreNameById(chosen);
+  final displayName = name.isNotEmpty &&
+          name != RakutenGenreMasterService.unknownGenreDisplayLabel
+      ? name
+      : chosen;
+  GenrePrefLog.logInitialSetupShopRecommendGenre(
+    genreId: chosen,
+    genreName: displayName,
+    fallbackUsed: false,
+    fallbackReason: preferred.isNotEmpty ? 'lastPickedInSession' : 'lastInSavedList',
+  );
+  return (
+    genreId: chosen,
+    genreName: displayName,
+    matched: true,
+    reason: preferred.isNotEmpty ? 'lastPickedInSession' : 'lastInSavedList',
+    fallbackUsed: false,
+    fallbackReason: '',
+  );
+}
+
 RakutenProductSearchCondition _shopRecommendationCondition(
-  List<String> genreIds,
-  List<String> postStyleKeys,
-) {
-  final genreId = genreIds.isNotEmpty ? genreIds.first.trim() : '';
+  String genreId,
+  List<String> postStyleKeys, {
+  required bool fallbackUsed,
+  required String fallbackReason,
+}) {
+  final gid = genreId.trim();
   final styles = postStyleKeys.isEmpty
       ? const [UserProfile.postStyleBalance]
       : postStyleKeys;
-  final keyword = genreId.isEmpty ? _fallbackKeywordForStyles(styles) : '';
+  final keyword = gid.isEmpty ? _fallbackKeywordForStyles(styles) : '';
+  if (gid.isEmpty) {
+    GenrePrefLog.logInitialSetupShopRecommendGenre(
+      genreId: '',
+      genreName: '',
+      fallbackUsed: true,
+      fallbackReason: fallbackReason.isNotEmpty ? fallbackReason : 'keywordFallback',
+    );
+  }
   return RakutenProductSearchCondition(
     keyword: keyword,
-    genreId: genreId.isNotEmpty ? genreId : null,
+    genreId: gid.isNotEmpty ? gid : null,
     maxPrice: styles.contains(UserProfile.postStyleAffordable) ? 3500 : null,
     minPrice: styles.contains(UserProfile.postStylePremium) ? 5000 : null,
     minReviewCount:

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../models/saved_shop.dart';
+import '../services/rakuten_genre_master_service.dart';
+import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
 import '../utils/app_input_limits.dart';
+import '../utils/genre_pref_log.dart';
+import '../widgets/genre_drilldown_picker_sheet.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
 import 'app_button.dart';
 import 'app_text_field.dart';
@@ -69,6 +73,89 @@ class RakutenSearchPriceRangeRow extends StatelessWidget {
             prefixIcon: const Icon(Icons.currency_yen),
           ),
         ),
+      ],
+    );
+  }
+}
+
+/// 階層ジャンル選択（ドロップダウン併用なし）。
+class RakutenSearchGenreDrilldownRow extends StatelessWidget {
+  const RakutenSearchGenreDrilldownRow({
+    super.key,
+    required this.selectedGenreId,
+    required this.onGenreChanged,
+    this.requiredSelection = false,
+    this.introText,
+  });
+
+  final String? selectedGenreId;
+  final ValueChanged<String?> onGenreChanged;
+  final bool requiredSelection;
+  final String? introText;
+
+  @override
+  Widget build(BuildContext context) {
+    final gid = selectedGenreId?.trim() ?? '';
+    final genreName = gid.isEmpty
+        ? ''
+        : RakutenGenreMasterService.instance.getGenreNameById(gid);
+    final label = genreName.isNotEmpty &&
+            genreName != RakutenGenreMasterService.unknownGenreDisplayLabel
+        ? genreName
+        : (gid.isNotEmpty ? gid : '');
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (introText != null && introText!.trim().isNotEmpty) ...[
+          Text(
+            introText!,
+            style: RakutenSearchScreenUi.sheetIntroBody(context),
+          ),
+          const SizedBox(height: RakutenSearchScreenUi.sheetBlockGap),
+        ],
+        if (label.isNotEmpty) ...[
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              InputChip(
+                label: Text(label),
+                onDeleted: () => onGenreChanged(null),
+                deleteIcon: const Icon(Icons.close_rounded, size: 18),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+        ],
+        OutlinedButton.icon(
+          onPressed: () async {
+            GenrePrefLog.logGenreSearchUiUnified(
+              oldGenreAreaVisible: false,
+              drilldownGenreAreaVisible: true,
+              label: 'ジャンルを選ぶ',
+            );
+            final picked = await GenreDrilldownPickerSheet.show(
+              context,
+              initialGenreId: gid.isEmpty ? null : gid,
+              source: 'searchCondition',
+            );
+            if (picked == null) return;
+            onGenreChanged(picked.trim().isEmpty ? null : picked.trim());
+          },
+          icon: const Icon(Icons.category_outlined, size: 18),
+          label: Text(label.isEmpty ? 'ジャンルを選ぶ' : 'ジャンルを変更'),
+        ),
+        if (requiredSelection && label.isEmpty) ...[
+          const SizedBox(height: 8),
+          Text(
+            'ジャンルを選んでから検索してください',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.error,
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+        ],
       ],
     );
   }

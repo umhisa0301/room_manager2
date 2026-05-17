@@ -97,6 +97,88 @@ abstract final class GenrePrefLog {
     return null;
   }
 
+  static void logInitialSetupGenreBinding({
+    required List<String> selectedGenreIds,
+    required List<String> selectedGenreNames,
+    required String shopRecommendGenreId,
+    required String shopRecommendGenreName,
+    required bool matched,
+    required String reason,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[INITIAL_SETUP_GENRE_BINDING] '
+      'selectedGenreIds=${selectedGenreIds.join(',')} '
+      'selectedGenreNames=${selectedGenreNames.join(',')} '
+      'shopRecommendGenreId=$shopRecommendGenreId '
+      'shopRecommendGenreName=$shopRecommendGenreName '
+      'source=initialSetup matched=$matched reason=$reason',
+    );
+  }
+
+  static void logInitialSetupShopRecommendGenre({
+    required String genreId,
+    required String genreName,
+    required bool fallbackUsed,
+    required String fallbackReason,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[INITIAL_SETUP_SHOP_RECOMMEND_GENRE] '
+      'genreId=$genreId genreName=$genreName '
+      'fallbackUsed=$fallbackUsed fallbackReason=$fallbackReason',
+    );
+  }
+
+  static void logInitialSetupGenreTreeOpen({
+    required int selectedCount,
+    required int maxSelectable,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[INITIAL_SETUP_GENRE_TREE_OPEN] selectedCount=$selectedCount '
+      'maxSelectable=$maxSelectable',
+    );
+  }
+
+  static void logInitialSetupGenreTreeSelect({
+    required String genreId,
+    required String genreName,
+    required int depth,
+    required bool selected,
+    required int selectedCount,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[INITIAL_SETUP_GENRE_TREE_SELECT] genreId=$genreId genreName=$genreName '
+      'depth=$depth selected=$selected selectedCount=$selectedCount',
+    );
+  }
+
+  static void logInitialSetupGenreUiUnified({
+    required bool oldPickerVisible,
+    required bool treePickerVisible,
+    required String reason,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[INITIAL_SETUP_GENRE_UI_UNIFIED] oldPickerVisible=$oldPickerVisible '
+      'treePickerVisible=$treePickerVisible reason=$reason',
+    );
+  }
+
+  static void logGenreSearchUiUnified({
+    required bool oldGenreAreaVisible,
+    required bool drilldownGenreAreaVisible,
+    required String label,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[GENRE_SEARCH_UI_UNIFIED] oldGenreAreaVisible=$oldGenreAreaVisible '
+      'drilldownGenreAreaVisible=$drilldownGenreAreaVisible label=$label',
+    );
+  }
+
   static List<String> filterHistoryGenresForSearch({
     required List<String> historyGenreIds,
     required Iterable<String> favoriteGenreIds,

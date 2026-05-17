@@ -16,6 +16,9 @@ const bool kDemoModeEnabled = bool.fromEnvironment(
 /// - クローズドテストビルド: true（`--dart-define=DEMO_MODE=true` の時のみ）
 const bool kClosedTestDemoAvailable = kDemoModeEnabled;
 
+/// URLから追加のユーザー向け入口を表示するか（処理コードは残す）。
+const bool showUrlAddEntryPoint = false;
+
 /// デモ専用画面・処理の入口で呼び出す保護関数。
 /// 本番で誤って到達した場合は例外で即座に停止させる。
 void ensureClosedTestDemoAvailable() {

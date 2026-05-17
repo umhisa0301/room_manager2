@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config/demo_mode.dart';
 import '../state/bulk_operation_state_controller.dart';
+import '../utils/room_sync_log.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
-import '../utils/room_sync_log.dart';
 
 /// シート内 [BuildContext]（通常は `showModalBottomSheet` の builder 引数）を渡すアクション。
 typedef AddCandidateEntrySheetAction =
@@ -22,6 +23,12 @@ Future<void> showAddCandidateEntryBottomSheet({
   required AddCandidateEntrySheetAction onTapAddFromUrl,
   required AddCandidateEntrySheetAction onTapShopDiscovery,
 }) {
+  if (!showUrlAddEntryPoint) {
+    urlAddEntryVisibilityLog(
+      visible: false,
+      reason: 'temporarilyHiddenByUxPolicy',
+    );
+  }
   return showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
@@ -173,19 +180,21 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(height: AppDimensions.spacingSm),
-        Opacity(
-          opacity: roomTourSearchBlocked ? 0.45 : 1,
-          child: AddCandidateEntrySheetMenuItem(
-            icon: Icons.link_rounded,
-            title: 'URLから追加',
-            description: '商品ページのURLから検索します',
-            onTap: () {
-              if (_blockIfRoomTourBusy(context, 'urlAdd')) return;
-              onTapAddFromUrl();
-            },
+        if (showUrlAddEntryPoint) ...[
+          const SizedBox(height: AppDimensions.spacingSm),
+          Opacity(
+            opacity: roomTourSearchBlocked ? 0.45 : 1,
+            child: AddCandidateEntrySheetMenuItem(
+              icon: Icons.link_rounded,
+              title: 'URLから追加',
+              description: '商品ページのURLから検索します',
+              onTap: () {
+                if (_blockIfRoomTourBusy(context, 'urlAdd')) return;
+                onTapAddFromUrl();
+              },
+            ),
           ),
-        ),
+        ],
         const SizedBox(height: AppDimensions.spacingSm),
         Opacity(
           opacity: roomTourSearchBlocked ? 0.45 : 1,

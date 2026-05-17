@@ -1259,7 +1259,9 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
 
         final canRunPrimary = hasUrl && !actionLocked;
         final showImportButton = canRunPrimary && !syncBusy;
-        final showReactionButton = showImportButton;
+        final showReactionButton =
+            showImportButton && importedDoneCount > 0;
+        final showAnalysisLink = !syncBusy && hasUrl;
         roomSyncCardUxRenderLog(
           state: syncCardState,
           showImportButton: showImportButton,
@@ -1267,11 +1269,26 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
           showAnalysisCta: false,
           hiddenDisabledButtons: syncBusy ? 'allHiddenWhileBusy' : 'none',
         );
+        roomSyncButtonRenderDecisionLog(
+          'screen=myPage button=import visible=$showImportButton '
+          'enabled=$showImportButton '
+          'label=${importedDoneCount > 0 ? '投稿済み商品を取り込む' : 'ROOM投稿を取り込む'} '
+          'reason=${syncBusy ? 'busy' : (!hasUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready'))}',
+        );
+        roomSyncButtonRenderDecisionLog(
+          'screen=myPage button=reaction visible=$showReactionButton '
+          'enabled=$showReactionButton label=反応を確認する '
+          'reason=${syncBusy ? 'busy' : (importedDoneCount <= 0 ? 'notImportedYet' : (!hasUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready')))}',
+        );
         roomSyncEmptyButtonAuditLog(
           screen: 'myPage',
-          widget: 'none',
+          button: 'reaction',
           visible: false,
-          reason: 'noDisabledPlaceholderButtons',
+          enabled: false,
+          label: '反応を確認する',
+          reason: importedDoneCount <= 0 && !syncBusy
+              ? 'notImportedYet'
+              : 'hiddenByUxPolicy',
         );
 
         final showPrimaryButtons = showImportButton;
@@ -1295,8 +1312,8 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
             screen: 'myPage',
             button: 'reaction',
             canRun: canRunPrimary,
-            visible: showPrimaryButtons,
-            reason: baseReason,
+            visible: showReactionButton,
+            reason: importedDoneCount <= 0 ? 'notImportedYet' : baseReason,
           );
           RoomSyncButtonVisibility.logRenderDecision(
             screen: 'myPage',
@@ -1443,9 +1460,8 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                   ],
                   Consumer<RakutenManagedProductProvider>(
                     builder: (context, managed, _) {
-                      final showLink = roomReactionAnalyticsHomeShowCta(
-                        managed.items,
-                      );
+                      final showLink = showAnalysisLink &&
+                          roomReactionAnalyticsHomeShowCta(managed.items);
                       if (!showLink) return const SizedBox.shrink();
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10),
@@ -1478,7 +1494,7 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                       );
                     },
                   ),
-                  if (showPrimaryButtons) ...[
+                  if (showImportButton) ...[
                     FilledButton(
                       onPressed: () {
                         RoomSyncButtonVisibility.logIdleVisible(
@@ -1493,6 +1509,8 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
                             : 'ROOM投稿を取り込む',
                       ),
                     ),
+                  ],
+                  if (showReactionButton) ...[
                     const SizedBox(height: 10),
                     OutlinedButton(
                       onPressed: () {

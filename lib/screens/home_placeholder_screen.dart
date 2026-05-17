@@ -845,7 +845,9 @@ class _HomeRoomPostImportSection extends StatelessWidget {
 
         final canRunPrimary = hasRoomProfileUrl && !actionLocked;
         final showImportButton = canRunPrimary && !syncBusy;
-        final showReactionButton = showImportButton;
+        final showReactionButton =
+            showImportButton && importedDoneCount > 0;
+        final showAnalysisLink = !syncBusy && hasRoomProfileUrl;
         roomSyncCardUxRenderLog(
           state: syncCardState,
           showImportButton: showImportButton,
@@ -853,11 +855,34 @@ class _HomeRoomPostImportSection extends StatelessWidget {
           showAnalysisCta: false,
           hiddenDisabledButtons: syncBusy ? 'allHiddenWhileBusy' : 'none',
         );
+        roomSyncButtonRenderDecisionLog(
+          'screen=home button=import visible=$showImportButton '
+          'enabled=$showImportButton '
+          'label=${importedDoneCount > 0 ? '投稿済み商品を取り込む' : 'ROOM投稿を取り込む'} '
+          'reason=${syncBusy ? 'busy' : (!hasRoomProfileUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready'))}',
+        );
+        roomSyncButtonRenderDecisionLog(
+          'screen=home button=reaction visible=$showReactionButton '
+          'enabled=$showReactionButton label=反応を確認する '
+          'reason=${syncBusy ? 'busy' : (importedDoneCount <= 0 ? 'notImportedYet' : (!hasRoomProfileUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready')))}',
+        );
         roomSyncEmptyButtonAuditLog(
           screen: 'home',
-          widget: 'none',
-          visible: false,
-          reason: 'noDisabledPlaceholderButtons',
+          button: 'import',
+          visible: showImportButton,
+          enabled: showImportButton,
+          label: importedDoneCount > 0
+              ? '投稿済み商品を取り込む'
+              : 'ROOM投稿を取り込む',
+          reason: showImportButton ? 'rendered' : 'hiddenByUxPolicy',
+        );
+        roomSyncEmptyButtonAuditLog(
+          screen: 'home',
+          button: 'reaction',
+          visible: showReactionButton,
+          enabled: showReactionButton,
+          label: '反応を確認する',
+          reason: showReactionButton ? 'rendered' : 'notImportedYetOrBusy',
         );
 
         final showPrimaryButtons = showImportButton;
@@ -1038,10 +1063,13 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                   ],
                   Consumer<RakutenManagedProductProvider>(
                     builder: (context, managed, _) {
-                      final showLink = roomReactionAnalyticsHomeShowCta(
-                        managed.items,
-                      );
+                      final showLink = showAnalysisLink &&
+                          roomReactionAnalyticsHomeShowCta(managed.items);
                       if (!showLink) return const SizedBox.shrink();
+                      roomSyncButtonRenderDecisionLog(
+                        'screen=home button=analysis visible=true enabled=true '
+                        'label=${RoomSyncCardCopy.analysisTabHint} reason=textLinkOnly',
+                      );
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Align(
@@ -1068,7 +1096,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                       );
                     },
                   ),
-                  if (showPrimaryButtons) ...[
+                  if (showImportButton) ...[
                     DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -1107,6 +1135,8 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                         ),
                       ),
                     ),
+                  ],
+                  if (showReactionButton) ...[
                     const SizedBox(height: 10),
                     OutlinedButton(
                       onPressed: () {
