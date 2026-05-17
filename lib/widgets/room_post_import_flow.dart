@@ -20,6 +20,7 @@ import '../services/room_profile_url_validation_service.dart';
 import '../services/room_sync_service.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../utils/product_image_resolve.dart';
+import '../utils/room_import_pending_user_copy.dart';
 import '../utils/room_reaction_status_display.dart';
 import '../utils/room_sync_log.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -521,6 +522,37 @@ abstract final class RoomPostImportFlow {
             result.postImportEnrichRemainingImportedPending ?? 0;
         final confirmed = (added - pendingImported).clamp(0, added);
         final pending = pendingImported;
+        final pendingProducts = displayImported
+            .where(
+              (p) =>
+                  p.itemPrice <= 0 ||
+                  p.imageUrl.trim().isEmpty ||
+                  p.shopName.trim().isEmpty ||
+                  RoomImportPendingUserCopy.classify(p) !=
+                      RoomImportPendingReason.unknown,
+            )
+            .take(pending)
+            .toList();
+        for (final p in pendingProducts) {
+          final reason = RoomImportPendingUserCopy.classify(p);
+          RoomImportPendingUserCopy.logPendingProduct(
+            product: p,
+            reason: reason,
+            pendingFields: [
+              if (p.itemPrice <= 0) 'price',
+              if (p.shopName.trim().isEmpty) 'shopName',
+              if (p.genreName.trim().isEmpty) 'genreName',
+              if (p.imageUrl.trim().isEmpty) 'image',
+            ],
+          );
+        }
+        final productInfoLine = added > 0
+            ? RoomImportPendingUserCopy.buildResultSummary(
+                added: added,
+                confirmed: confirmed,
+                pendingProducts: pendingProducts,
+              )
+            : '';
         final reactionCount = displayReactions.isNotEmpty
             ? displayReactions.length
             : result.reactionHighlightSamples.length;
@@ -566,26 +598,13 @@ abstract final class RoomPostImportFlow {
                   textAlign: TextAlign.center,
                   style: bodySecondary,
                 ),
-                if (added > 0) ...[
+                if (added > 0 && productInfoLine.isNotEmpty) ...[
                   const SizedBox(height: 16),
                   Text(
-                    pending > 0
-                        ? '商品情報：$confirmed件確認済み / $pending件は未確認です'
-                        : '商品情報：$confirmed件確認済み',
+                    productInfoLine,
                     textAlign: TextAlign.center,
                     style: bodySecondary,
                   ),
-                  if (pending > 0) ...[
-                    const SizedBox(height: 6),
-                    Text(
-                      '未確認の商品は、売り切れ・販売停止・一時的な取得失敗の可能性があります',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textTertiary,
-                            height: 1.35,
-                          ),
-                    ),
-                  ],
                 ],
                 if (reactionCount > 0) ...[
                   const SizedBox(height: 10),

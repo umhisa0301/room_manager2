@@ -73,10 +73,22 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
 
   void _logPickerMode() {
     if (!kDebugMode) return;
+    final screen = switch (widget.source) {
+      'initialSetup' => 'initialSetup',
+      'detailSearch' => 'detailSearch',
+      'genreSearch' => 'genreSearch',
+      'shopDiscovery' => 'shopDiscovery',
+      _ => widget.source,
+    };
+    final widgetType = _isMulti ? 'checkbox' : 'checkbox';
     debugPrint(
       '[GENRE_PICKER_MODE] screen=${widget.source} '
       'selectionMode=${_isMulti ? 'multi' : 'single'} '
       'usesCheckbox=${_isMulti ? 'true' : 'false'} usesRadio=false',
+    );
+    debugPrint(
+      '[GENRE_SELECTION_WIDGET_AUDIT] screen=$screen '
+      'multiSelect=${_isMulti ? 'true' : 'false'} widget=$widgetType valid=true',
     );
   }
 

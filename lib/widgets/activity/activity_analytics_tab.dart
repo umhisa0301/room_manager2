@@ -1006,9 +1006,21 @@ class _RoomReactionAnalyticsSectionState
         ? 1
         : shopRows.map((e) => e.value.sum).reduce((a, b) => a > b ? a : b);
 
-    final topLimit =
-        _topProductsExpanded ? reactedSorted.length.clamp(0, 5) : reactedSorted.length.clamp(0, 3);
-    final canExpandProducts = reactedSorted.length > 3;
+    const compactProductCap = 3;
+    const compactAggCap = 3;
+    final topLimit = _topProductsExpanded
+        ? reactedSorted.length.clamp(0, 5)
+        : reactedSorted.length.clamp(0, compactProductCap);
+    final canExpandProducts = reactedSorted.length > compactProductCap;
+    final genreRowsShown = genreRows.take(compactAggCap).toList();
+    final shopRowsShown = shopRows.take(compactAggCap).toList();
+    if (kDebugMode) {
+      debugPrint(
+        '[ANALYTICS_UI_COMPACT] nextActions=decisionCard '
+        'topProductsShown=$topLimit genresShown=${genreRowsShown.length} '
+        'shopsShown=${shopRowsShown.length} expanded=$_topProductsExpanded',
+      );
+    }
 
     final children = <Widget>[
       AppCard(
@@ -1058,11 +1070,11 @@ class _RoomReactionAnalyticsSectionState
             ),
             const SizedBox(height: 8),
             Text(
-              'いいね・コメントが多い順に表示しています。次に似た商品を探す参考にできます。',
+              'いいね・コメントが多い順（最大3件）',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.4,
-                    fontSize: 15,
+                    fontSize: 14,
                   ),
             ),
             const SizedBox(height: 14),
@@ -1137,7 +1149,7 @@ class _RoomReactionAnalyticsSectionState
                   ),
             ),
             const SizedBox(height: 10),
-            if (genreRows.isEmpty)
+            if (genreRowsShown.isEmpty)
               Text(
                 '表示できるジャンルの集計がありません',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -1145,11 +1157,11 @@ class _RoomReactionAnalyticsSectionState
                     ),
               )
             else
-              for (var i = 0; i < genreRows.length; i++) ...[
+              for (var i = 0; i < genreRowsShown.length; i++) ...[
                 if (i > 0) const SizedBox(height: 8),
                 _RoomReactionAggRow(
-                  label: genreRows[i].key,
-                  value: genreRows[i].value,
+                  label: genreRowsShown[i].key,
+                  value: genreRowsShown[i].value,
                   max: maxGenre <= 0 ? 1 : maxGenre,
                 ),
               ],
@@ -1188,11 +1200,11 @@ class _RoomReactionAnalyticsSectionState
                     ),
               )
             else
-              for (var i = 0; i < shopRows.length; i++) ...[
+              for (var i = 0; i < shopRowsShown.length; i++) ...[
                 if (i > 0) const SizedBox(height: 8),
                 _RoomReactionAggRow(
-                  label: shopRows[i].value.label,
-                  value: shopRows[i].value.sum,
+                  label: shopRowsShown[i].value.label,
+                  value: shopRowsShown[i].value.sum,
                   max: maxShop <= 0 ? 1 : maxShop,
                 ),
               ],

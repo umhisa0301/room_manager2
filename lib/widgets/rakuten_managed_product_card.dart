@@ -10,6 +10,7 @@ import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/room_colle_list_accent.dart';
+import '../utils/display_text_utils.dart';
 import '../utils/room_colle_card_time_format.dart';
 import 'app_button.dart';
 import 'room_colle_product_list_card_layout.dart';
@@ -554,7 +555,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     BuildContext context,
     RakutenManagedProductProvider provider,
   ) async {
-    final name = _safeItemName(product);
+    final name = DisplayTextUtils.truncateProductName(_safeItemName(product));
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(

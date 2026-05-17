@@ -86,6 +86,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
           remainingLabel:
               RecommendCooldownPolicy.remainingMinutesLabel(remaining),
           guardReason: 'rateLimitCooldown',
+          nextAvailableAt: _cooldownUntil,
         );
       }
     }
@@ -100,6 +101,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
           remainingLabel:
               RecommendCooldownPolicy.remainingMinutesLabel(remaining),
           guardReason: 'manualCooldown',
+          nextAvailableAt: _lastRegenerateAt!.add(_manualRegenerateCooldown),
         );
       }
     }
@@ -225,7 +227,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         _lastRegenerateAt != null &&
         now.difference(_lastRegenerateAt!) < _manualRegenerateCooldown) {
       _guard('skipReason=manualCooldown');
-      _logCooldownStatus(manual: true);
+      logTodayRecommendCooldown(trigger: 'manual');
       return;
     }
     if (!manual &&
@@ -452,10 +454,16 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final pool = <String, RakutenSearchItem>{};
     final metaById = <String, _ItemPoolMeta>{};
     var apiCalls = 0;
+    var genreSearchCalls = 0;
+    var shopSearchCalls = 0;
+    var keywordSearchCalls = 0;
     var excludedCount = 0;
+    var excludedBySafety = 0;
+    var excludedByDuplicate = 0;
     var allPlansNoItems = true;
     var rateLimited = false;
     const maxApiHard = 10;
+    final sessionId = DateTime.now().millisecondsSinceEpoch;
 
     bool canCallMoreApi(int entryCount) {
       if (entryCount >= 10) return false;
@@ -536,6 +544,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
         rethrow;
       }
       apiCalls += 1;
+      if (p.genreId != null && p.genreId!.trim().isNotEmpty) {
+        genreSearchCalls += 1;
+      } else if (p.shopCode != null && p.shopCode!.trim().isNotEmpty) {
+        shopSearchCalls += 1;
+      } else {
+        keywordSearchCalls += 1;
+      }
       if (list.isNotEmpty) allPlansNoItems = false;
       for (final item in list) {
         _trace('raw item itemCode=${item.productId} title=${item.itemName}');
@@ -548,6 +563,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
         );
         if (exclusion != null) {
           excludedCount += 1;
+          if (exclusion == 'safetyBlocked') {
+            excludedBySafety += 1;
+          } else if (exclusion == 'duplicate' ||
+              exclusion == 'alreadyCandidate' ||
+              exclusion == 'alreadyDone') {
+            excludedByDuplicate += 1;
+          }
           _trace('exclude reason=$exclusion');
           continue;
         }
@@ -613,6 +635,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
             excludeIds: excludeIds,
           );
           apiCalls += 1;
+          if (p.genreId != null && p.genreId!.trim().isNotEmpty) {
+            genreSearchCalls += 1;
+          } else if (p.shopCode != null && p.shopCode!.trim().isNotEmpty) {
+            shopSearchCalls += 1;
+          } else {
+            keywordSearchCalls += 1;
+          }
           if (list.isNotEmpty) allPlansNoItems = false;
           for (final item in list) {
             final exclusion = _excludeReason(
@@ -624,6 +653,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
             );
             if (exclusion != null) {
               excludedCount += 1;
+              if (exclusion == 'safetyBlocked') {
+                excludedBySafety += 1;
+              } else if (exclusion == 'duplicate' ||
+                  exclusion == 'alreadyCandidate' ||
+                  exclusion == 'alreadyDone') {
+                excludedByDuplicate += 1;
+              }
               continue;
             }
             final id = item.productId.trim();
@@ -714,12 +750,16 @@ class TodayRecommendationProvider extends ChangeNotifier {
       excludedCount: excludedCount,
       durationMs: durationMs,
     );
-    _logApiCallSummary(
-      trigger: 'regenerate',
-      plannedCalls: plans.length,
-      actualCalls: apiCalls,
-      rawItems: pool.length,
-      acceptedItems: entries.length,
+    logTodayRecommendApiUsage(
+      sessionId: sessionId,
+      phase: 'finalize',
+      apiCalls: apiCalls,
+      genreSearchCalls: genreSearchCalls,
+      shopSearchCalls: shopSearchCalls,
+      keywordSearchCalls: keywordSearchCalls,
+      excludedBySafety: excludedBySafety,
+      excludedByDuplicate: excludedByDuplicate,
+      finalItems: entries.length,
     );
     return TodayRecommendationBundle(
       localDateKey: _localDateKey(DateTime.now()),
@@ -1376,28 +1416,36 @@ class TodayRecommendationProvider extends ChangeNotifier {
     debugPrint('$_logTagGuard $message');
   }
 
-  void _logCooldownStatus({required bool manual}) {
-    if (!kDebugMode || !manual) return;
+  void logTodayRecommendCooldown({required String trigger}) {
+    if (!kDebugMode) return;
     final status = manualRegenerateCooldownStatus();
     debugPrint(
-      '[RECOMMEND_COOLDOWN_STATUS] canRegenerate=${status.canRegenerate} '
-      'cooldownMinutes=${status.cooldownMinutes} '
+      '[TODAY_RECOMMEND_COOLDOWN] canRegenerate=${status.canRegenerate} '
       'remainingSeconds=${status.remainingSeconds} '
-      'remainingLabel=${status.remainingLabel}',
+      'remainingMinutes=${status.remainingMinutes} '
+      'nextAvailableAt=${status.nextAvailableAt?.toIso8601String() ?? '-'} '
+      'reason=${status.reason.isEmpty ? trigger : status.reason}',
     );
   }
 
-  void _logApiCallSummary({
-    required String trigger,
-    required int plannedCalls,
-    required int actualCalls,
-    required int rawItems,
-    required int acceptedItems,
+  void logTodayRecommendApiUsage({
+    required int sessionId,
+    required String phase,
+    required int apiCalls,
+    required int genreSearchCalls,
+    required int shopSearchCalls,
+    required int keywordSearchCalls,
+    required int excludedBySafety,
+    required int excludedByDuplicate,
+    required int finalItems,
   }) {
     if (!kDebugMode) return;
     debugPrint(
-      '[RECOMMEND_API_CALL_SUMMARY] trigger=$trigger plannedCalls=$plannedCalls '
-      'actualCalls=$actualCalls rawItems=$rawItems acceptedItems=$acceptedItems',
+      '[TODAY_RECOMMEND_API_USAGE] sessionId=$sessionId phase=$phase '
+      'apiCalls=$apiCalls genreSearchCalls=$genreSearchCalls '
+      'shopSearchCalls=$shopSearchCalls keywordSearchCalls=$keywordSearchCalls '
+      'excludedBySafety=$excludedBySafety excludedByDuplicate=$excludedByDuplicate '
+      'finalItems=$finalItems',
     );
   }
 

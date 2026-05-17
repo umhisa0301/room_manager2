@@ -270,4 +270,21 @@ class RakutenSearchProvider extends ChangeNotifier {
     _resolvedGenreLabels = const {};
     notifyListeners();
   }
+
+  /// [RakutenSearchSessionCache] から探し方別の結果を復元する。
+  void restoreFromSnapshot({
+    required RakutenSearchStatus status,
+    required List<RakutenSearchItem> results,
+    required String errorMessage,
+    required String lastKeyword,
+    required bool keywordSearchHadApiHitsButNoVisibleResults,
+  }) {
+    _status = status;
+    _results = List<RakutenSearchItem>.from(results);
+    _errorMessage = errorMessage;
+    _lastKeyword = lastKeyword;
+    _keywordSearchHadApiHitsButNoVisibleResults =
+        keywordSearchHadApiHitsButNoVisibleResults;
+    notifyListeners();
+  }
 }

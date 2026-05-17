@@ -20,6 +20,7 @@ class RecommendRegenerateCooldownStatus {
     required this.remainingSeconds,
     required this.remainingLabel,
     required this.guardReason,
+    this.nextAvailableAt,
   });
 
   final bool canRegenerate;
@@ -27,4 +28,15 @@ class RecommendRegenerateCooldownStatus {
   final int remainingSeconds;
   final String remainingLabel;
   final String guardReason;
+  final DateTime? nextAvailableAt;
+
+  int get remainingMinutes => (remainingSeconds / 60).ceil();
+
+  String get reason => guardReason;
+
+  String get userFacingWaitLabel {
+    if (canRegenerate) return '';
+    if (remainingLabel == 'まもなく') return 'まもなく再生成できます';
+    return 'あと約$remainingLabel後に再生成できます';
+  }
 }

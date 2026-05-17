@@ -1,5 +1,6 @@
 import 'dart:async' show unawaited;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -1085,6 +1086,31 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
   Future<void> _handleImport(BuildContext context) async {
     final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
     if (roomUrl.isEmpty) return;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('ROOM投稿を取り込む'),
+        content: const Text(
+          'ROOM投稿を取り込みます。\n処理中は検索や登録操作を一時停止します。\nよろしいですか？',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('キャンセル'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('開始する'),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !context.mounted) return;
+    if (kDebugMode) {
+      debugPrint(
+        '[OPERATION_CONFIRM_DIALOG] operation=roomImport shown=true accepted=true',
+      );
+    }
     final ctl = context.read<RoomImportController>();
     final result = await ctl.runImport(context);
     if (!context.mounted) return;

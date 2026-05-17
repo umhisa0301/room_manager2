@@ -14,8 +14,7 @@ import '../services/rakuten_genre_master_service.dart';
 class RakutenProductGenreDisplay {
   RakutenProductGenreDisplay._();
 
-  static const String unknownLabel =
-      RakutenGenreMasterService.unknownGenreDisplayLabel;
+  static const String unknownLabel = 'ジャンル未確認';
 
   /// ログ過多防止（1セッションあたりの [RakutenGenre][UI]/[MASTER] 出力上限）。
   static int _rakutenGenreTraceBudget = 80;
@@ -57,16 +56,53 @@ class RakutenProductGenreDisplay {
       }
     }
 
+    final shown = _sanitizeUserLabel(result, id);
+    _traceGenreLabelResolve(
+      screen: 'productCard',
+      productId: traceItemCode ?? '',
+      genreId: id,
+      rawGenreName: apiTrim.isNotEmpty ? apiTrim : (persistedGenreName ?? ''),
+      resolvedGenreName: shown,
+      source: apiTrim.isNotEmpty
+          ? 'apiGenreName'
+          : (masterLookupForTrace != null ? 'genreMaster' : 'fallbackUnknown'),
+    );
     _traceRakutenGenreIfNeeded(
       traceItemCode: traceItemCode,
       genreId: genreId,
       apiGenreName: apiGenreName,
       persistedGenreName: persistedGenreName,
       prefetchedGenreName: prefetchedGenreName,
-      finalLabel: result,
+      finalLabel: shown,
       masterLookupForTrace: masterLookupForTrace,
     );
-    return result;
+    return shown;
+  }
+
+  static String _sanitizeUserLabel(String label, String genreId) {
+    final t = label.trim();
+    if (t.isEmpty) return unknownLabel;
+    if (RegExp(r'^\d+$').hasMatch(t)) return unknownLabel;
+    if (genreId.isNotEmpty && t == genreId) return unknownLabel;
+    if (t == RakutenGenreMasterService.unknownGenreDisplayLabel) {
+      return unknownLabel;
+    }
+    return t;
+  }
+
+  static void _traceGenreLabelResolve({
+    required String screen,
+    required String productId,
+    required String genreId,
+    required String rawGenreName,
+    required String resolvedGenreName,
+    required String source,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[GENRE_LABEL_RESOLVE] screen=$screen productId=$productId genreId=$genreId '
+      'rawGenreName=$rawGenreName resolvedGenreName=$resolvedGenreName source=$source',
+    );
   }
 
   static void _traceRakutenGenreIfNeeded({

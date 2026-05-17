@@ -9,6 +9,7 @@ import '../state/saved_shop_provider.dart';
 import '../state/today_recommendation_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
+import '../utils/recommend_cooldown_policy.dart';
 import '../utils/today_recommendation_ui_tags.dart';
 import '../utils/room_sync_log.dart';
 import '../widgets/app_button.dart';
@@ -73,9 +74,9 @@ class _TodayRecommendationsScreenState
         guard.contains('rateLimitCooldown') ||
         guard.contains('recentlyGenerated')) {
       final status = recommender.manualRegenerateCooldownStatus();
-      final msg = status.canRegenerate
-          ? '少し時間をおいてから再生成してください'
-          : 'あと${status.remainingLabel}後に再生成できます';
+      final msg = status.userFacingWaitLabel.isEmpty
+          ? 'あと約5分後に再生成できます'
+          : status.userFacingWaitLabel;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
     }
   }
@@ -134,6 +135,7 @@ class _TodayRecommendationsScreenState
                   total: bundle.entries.length,
                   pending: rec.pendingCount,
                   completed: rec.isCompleted,
+                  cooldown: rec.manualRegenerateCooldownStatus(),
                   onRegenerate: _regenerate,
                 ),
                 Expanded(
@@ -251,16 +253,19 @@ class _SummaryCard extends StatelessWidget {
     required this.total,
     required this.pending,
     required this.completed,
+    required this.cooldown,
     required this.onRegenerate,
   });
 
   final int total;
   final int pending;
   final bool completed;
+  final RecommendRegenerateCooldownStatus cooldown;
   final VoidCallback onRegenerate;
 
   @override
   Widget build(BuildContext context) {
+    final canRegenerate = cooldown.canRegenerate && !completed;
     return AppCard(
       margin: const EdgeInsets.fromLTRB(20, 10, 20, 6),
       padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
@@ -286,12 +291,22 @@ class _SummaryCard extends StatelessWidget {
               height: 1.25,
             ),
           ),
+          if (!cooldown.canRegenerate && cooldown.userFacingWaitLabel.isNotEmpty) ...[
+            const SizedBox(height: 6),
+            Text(
+              cooldown.userFacingWaitLabel,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+          ],
           const SizedBox(height: 4),
           Align(
             alignment: Alignment.centerRight,
             child: AppSecondaryButton(
               label: '今日の候補を再生成',
-              onPressed: onRegenerate,
+              onPressed: canRegenerate ? onRegenerate : null,
               icon: const Icon(Icons.refresh_rounded),
             ),
           ),
