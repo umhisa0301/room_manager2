@@ -951,6 +951,22 @@ void reactionStatusRenderLog(String message) {
   }
 }
 
+void roomImportImageSourceLog(String message) {
+  final line = '[ROOM_IMPORT_IMAGE_SOURCE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomImportResultImageRefreshLog(String message) {
+  final line = '[ROOM_IMPORT_RESULT_IMAGE_REFRESH] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void roomImportResultSheetRefreshLog(String message) {
   final line = '[ROOM_IMPORT_RESULT_SHEET_REFRESH] $message';
   if (kDebugMode) {
@@ -1125,6 +1141,14 @@ void roomSyncCardUxRenderLog({
     'showImportButton=$showImportButton showReactionButton=$showReactionButton '
     'showAnalysisCta=$showAnalysisCta hiddenDisabledButtons=$hiddenDisabledButtons',
   );
+}
+
+void roomSyncReactionButtonStyleLog(String message) {
+  final line = '[ROOM_SYNC_REACTION_BUTTON_STYLE] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
 }
 
 void roomSyncEmptyButtonAuditLog({

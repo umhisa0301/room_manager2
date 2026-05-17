@@ -37,6 +37,8 @@ import '../widgets/app_text_field.dart';
 import '../widgets/common_draggable_edge_fab.dart';
 import '../widgets/search_group_screen_shell.dart';
 import '../widgets/shop_discovery_card.dart';
+import '../widgets/search_bulk_selection_header.dart';
+import '../utils/search_tab_ui_audit_log.dart';
 import 'add_candidate_from_url_screen.dart';
 import 'saved_shops_screen.dart';
 import 'shop_discovery_detail_screen.dart';
@@ -1009,6 +1011,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         );
       }
     }
+    searchTabUiAuditLog(
+      'screen=${_savedShopKeywordEntryEffective ? 'savedShopSearch' : 'productSearch'} '
+      'hasGenreDrilldown=true hasSelectAllCheckbox=true hasInputLimits=true '
+      'hasSafetyFilter=true hasFixedFooter=true',
+    );
     context.read<RakutenSearchProvider>().searchWithCondition(
       condition,
       excludeRegisteredProductIds: excludeIds,
@@ -2081,38 +2088,18 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         const SizedBox(
                           height: RakutenSearchScreenUi.sheetBlockGap,
                         ),
-                        InputDecorator(
-                          decoration: RakutenSearchScreenUi.searchField(
-                            labelText: 'ジャンル',
-                            prefixIcon: Icon(
-                              Icons.category_outlined,
-                              color: HomeScreenColors.leadOnSection,
-                            ),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String?>(
-                              isExpanded: true,
-                              value: _selectedDiscoveryGenreId,
-                              style:
-                                  RakutenSearchScreenUi.searchFieldValueStyle(
-                                    context,
-                                  ),
-                              items: _mockGenres
-                                  .map(
-                                    (e) => DropdownMenuItem<String?>(
-                                      value: e.id,
-                                      child: Text(e.label),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) {
-                                setState(
-                                  () => _selectedDiscoveryGenreId = value,
-                                );
-                                setModalState(() {});
-                              },
-                            ),
-                          ),
+                        RakutenSearchGenreDrilldownRow(
+                          selectedGenreId: _selectedDiscoveryGenreId,
+                          onGenreChanged: (value) {
+                            genreUiAuditLog(
+                              'screen=shopDiscovery oldDropdownVisible=false '
+                              'drilldownVisible=true genreId=${value ?? '-'} '
+                              'genreName=${_labelForGenre(value) ?? '-'}',
+                            );
+                            setState(() => _selectedDiscoveryGenreId = value);
+                            setModalState(() {});
+                          },
+                          introText: 'カテゴリを絞り込む',
                         ),
                         const SizedBox(
                           height: RakutenSearchScreenUi.sheetBlockGap,
@@ -2318,7 +2305,38 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       ),
       genreId: genreId,
     ).normalized();
-    context.read<RakutenSearchProvider>().searchWithCondition(condition);
+    final excludeIds = context
+        .read<RakutenManagedProductProvider>()
+        .productIdsExcludedFromKeywordSearch();
+    shopDiscoverySearchParamsLog(
+      'genreId=${genreId ?? '-'} genreName=${_labelForGenre(genreId) ?? '-'} '
+      'keyword=$keyword page=1 hits=30',
+    );
+    genreUiAuditLog(
+      'screen=shopDiscovery oldDropdownVisible=false drilldownVisible=true '
+      'genreId=${genreId ?? '-'} genreName=${_labelForGenre(genreId) ?? '-'}',
+    );
+    searchTabUiAuditLog(
+      'screen=shopDiscovery hasGenreDrilldown=true hasSelectAllCheckbox=true '
+      'hasInputLimits=true hasSafetyFilter=true hasFixedFooter=false',
+    );
+    context.read<RakutenSearchProvider>().searchWithCondition(
+      condition,
+      excludeRegisteredProductIds: excludeIds,
+    );
+  }
+
+  String _selectionScreenTag() {
+    switch (_mode) {
+      case _RakutenSearchMode.product:
+        return _savedShopKeywordEntryEffective
+            ? 'savedShopSearch'
+            : 'productSearch';
+      case _RakutenSearchMode.genre:
+        return 'genreSearch';
+      case _RakutenSearchMode.shopDiscovery:
+        return 'shopDiscovery';
+    }
   }
 
   String? _labelForGenre(String? id) {
@@ -2478,6 +2496,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         .map((e) => e.shopId.trim())
         .where((e) => e.isNotEmpty)
         .toSet();
+    searchTabUiAuditLog(
+      'screen=genreSearch hasGenreDrilldown=true hasSelectAllCheckbox=true '
+      'hasInputLimits=true hasSafetyFilter=true hasFixedFooter=true',
+    );
     await context.read<RakutenSearchProvider>().searchWithCondition(
       condition,
       excludeRegisteredProductIds: excludeIds,
@@ -3025,36 +3047,20 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     onPressed: _isBulkRegistering ? null : _toggleSelectionMode,
                     height: 34,
                   ),
-                  if (_selectionMode) ...[
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 180),
-                      child: Text(
-                        '選択中 ${_selectedProductIds.length}件 / 候補 $selectableCount件',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: HomeScreenColors.groupedSectionBody,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 11,
-                        ),
-                      ),
+                  if (_selectionMode)
+                    SearchBulkSelectionHeader(
+                      screen: _selectionScreenTag(),
+                      selectedCount: _selectedProductIds.length,
+                      totalSelectable: selectableCount,
+                      enabled: !_isBulkRegistering && selectableCount > 0,
+                      onToggleAll: (selectAll) {
+                        if (selectAll) {
+                          _selectAllForBulk(orderedResults, managed);
+                        } else {
+                          _clearBulkSelection();
+                        }
+                      },
                     ),
-                    AppSecondaryButton(
-                      label: '全部選択',
-                      onPressed: orderedResults.isEmpty || _isBulkRegistering
-                          ? null
-                          : () => _selectAllForBulk(orderedResults, managed),
-                      height: 32,
-                    ),
-                    AppSecondaryButton(
-                      label: '全部解除',
-                      onPressed:
-                          _selectedProductIds.isEmpty || _isBulkRegistering
-                          ? null
-                          : _clearBulkSelection,
-                      height: 32,
-                    ),
-                  ],
                 ],
               ),
             ],

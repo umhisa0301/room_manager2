@@ -31,6 +31,7 @@ import '../utils/room_sync_button_visibility.dart';
 import '../utils/room_sync_card_copy.dart';
 import '../utils/room_sync_log.dart';
 import '../widgets/room_post_import_flow.dart';
+import '../widgets/room_sync_reaction_button.dart';
 import '../models/room_reaction_sync_history_entry.dart';
 import '../services/room_reaction_sync_history_store.dart';
 
@@ -1138,7 +1139,8 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                   ],
                   if (showReactionButton) ...[
                     const SizedBox(height: 10),
-                    OutlinedButton(
+                    RoomSyncReactionButton(
+                      screen: 'home',
                       onPressed: () {
                         RoomSyncButtonVisibility.logIdleVisible(
                           screen: 'home',
@@ -1146,19 +1148,6 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                         );
                         _handleReactionSync(context);
                       },
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.textPrimary,
-                        minimumSize: const Size(double.infinity, 48),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      child: Text(
-                        '反応を確認する',
-                        style: AppTextStyles.button.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
                     ),
                   ],
                   Text(

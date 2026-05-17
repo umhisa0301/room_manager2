@@ -278,10 +278,12 @@ class RoomUrlResolver {
       return a?.trim() ?? '';
     }
 
-    String pickImg(String? a, String? b) {
-      final tb = b?.trim() ?? '';
-      if (tb.isNotEmpty) return tb;
-      return a?.trim() ?? '';
+    String pickImg(String? listingOrCollects, String? fetchedDetail) {
+      final listing = listingOrCollects?.trim() ?? '';
+      if (listing.isNotEmpty) return listing;
+      final detail = fetchedDetail?.trim() ?? '';
+      if (detail.isNotEmpty) return detail;
+      return '';
     }
 
     int? pickHint(int? a, int? b) {
@@ -501,9 +503,18 @@ class RoomUrlResolver {
       'imageUrl',
       'thumbnail_url',
       'thumbnailUrl',
+      'thumbnail',
       'image',
       'item_image_url',
       'itemImageUrl',
+      'mediumImageUrl',
+      'medium_image_url',
+      'smallImageUrl',
+      'small_image_url',
+      'mainImageUrl',
+      'main_image_url',
+      'img_url',
+      'imgUrl',
     ]) {
       final v = row[k];
       if (v is String && v.trim().startsWith('http')) {
@@ -511,6 +522,7 @@ class RoomUrlResolver {
         break;
       }
     }
+    pageImg ??= _firstHttpImageUrlInJson(row);
 
     final collectPrice = _readOptionalIntFromMap(row, const [
       'price',
@@ -577,6 +589,34 @@ class RoomUrlResolver {
       if (v is int) return v;
       if (v is double) return v.round();
       if (v is String) return int.tryParse(v.trim());
+    }
+    return null;
+  }
+
+  /// collects 行のネスト JSON から最初の http(s) 画像 URL を探す。
+  static String? _firstHttpImageUrlInJson(dynamic value) {
+    if (value is String) {
+      final s = value.trim();
+      if (s.startsWith('http://') || s.startsWith('https://')) {
+        if (RegExp(r'\.(jpg|jpeg|png|gif|webp)(\?|$)', caseSensitive: false)
+                .hasMatch(s) ||
+            s.contains('image') ||
+            s.contains('thumbnail')) {
+          return s;
+        }
+      }
+      return null;
+    }
+    if (value is Map) {
+      for (final entry in value.entries) {
+        final hit = _firstHttpImageUrlInJson(entry.value);
+        if (hit != null) return hit;
+      }
+    } else if (value is List) {
+      for (final e in value) {
+        final hit = _firstHttpImageUrlInJson(e);
+        if (hit != null) return hit;
+      }
     }
     return null;
   }

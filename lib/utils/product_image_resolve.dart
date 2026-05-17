@@ -3,29 +3,13 @@ import 'package:flutter/foundation.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 
-/// 商品画像 URL の表示用解決（ROOM / API / 空）。
+/// 商品画像 URL の表示用解決（保存済み imageUrl を正とする）。
 abstract final class ProductImageResolve {
   static String displayImageUrlForManaged(RakutenManagedProduct product) {
-    final api = product.imageUrl.trim();
-    if (_isHttpUrl(api)) {
-      _log(
-        productId: product.productId,
-        screen: 'managed',
-        hasRoomImage: false,
-        hasApiImage: true,
-        selected: api,
-        reason: 'api',
-      );
-      return api;
+    final url = product.imageUrl.trim();
+    if (_isHttpUrl(url)) {
+      return url;
     }
-    _log(
-      productId: product.productId,
-      screen: 'managed',
-      hasRoomImage: false,
-      hasApiImage: false,
-      selected: '',
-      reason: 'empty',
-    );
     return '';
   }
 
@@ -40,14 +24,14 @@ abstract final class ProductImageResolve {
     required String screen,
   }) {
     final selected = displayImageUrlForManaged(product);
-    final hasApi = product.imageUrl.trim().isNotEmpty;
+    final hasValid = _isHttpUrl(selected);
+    final source = hasValid ? 'stored' : 'placeholder';
     _log(
       productId: product.productId,
       screen: screen,
-      hasRoomImage: false,
-      hasApiImage: hasApi,
+      selectedSource: source,
+      hasValidUrl: hasValid,
       selected: selected,
-      reason: selected.isEmpty ? 'empty' : 'api',
     );
   }
 
@@ -59,16 +43,15 @@ abstract final class ProductImageResolve {
   static void _log({
     required String productId,
     required String screen,
-    required bool hasRoomImage,
-    required bool hasApiImage,
+    required String selectedSource,
+    required bool hasValidUrl,
     required String selected,
-    required String reason,
   }) {
     if (!kDebugMode) return;
     debugPrint(
-      '[PRODUCT_IMAGE_RESOLVE] productId=$productId screen=$screen '
-      'hasRoomImage=$hasRoomImage hasApiImage=$hasApiImage '
-      'selectedImageUrl=${selected.isEmpty ? '(empty)' : selected} reason=$reason',
+      '[PRODUCT_IMAGE_RESOLVE] screen=$screen productId=$productId '
+      'selectedSource=$selectedSource hasValidUrl=$hasValidUrl '
+      'selectedUrl=${selected.isEmpty ? '(empty)' : selected}',
     );
   }
 }

@@ -39,6 +39,48 @@ bool _hasHttpImageUrl(String raw) {
   return s == 'http' || s == 'https';
 }
 
+/// ROOM取り込み保存時の画像URL（ROOM由来をAPIより優先）。
+String _pickRoomImportPersistImageUrl({
+  required String roomPageImageUrl,
+  String apiImageUrl = '',
+  String existingImageUrl = '',
+  bool preserveExistingOnly = false,
+}) {
+  if (preserveExistingOnly) {
+    final ex = existingImageUrl.trim();
+    if (_hasHttpImageUrl(ex)) return ex;
+  }
+  final room = roomPageImageUrl.trim();
+  if (_hasHttpImageUrl(room)) return room;
+  final api = apiImageUrl.trim();
+  if (_hasHttpImageUrl(api)) return api;
+  final ex = existingImageUrl.trim();
+  if (_hasHttpImageUrl(ex)) return ex;
+  return '';
+}
+
+void _logRoomImportImageSource({
+  required String productId,
+  required String title,
+  required String roomPageImageUrl,
+  required String apiImageUrl,
+  required String selectedUrl,
+  required String selectedSource,
+  String collectsImageUrl = '',
+  String roomDetailImageUrl = '',
+}) {
+  roomImportImageSourceLog(
+    'productId=$productId '
+    'title=${title.trim().isEmpty ? '(empty)' : title.trim()} '
+    'hasRoomImage=${_hasHttpImageUrl(roomPageImageUrl)} '
+    'hasCollectsImage=${_hasHttpImageUrl(collectsImageUrl)} '
+    'hasRoomDetailImage=${_hasHttpImageUrl(roomDetailImageUrl)} '
+    'hasApiImage=${_hasHttpImageUrl(apiImageUrl)} '
+    'selectedSource=$selectedSource '
+    'selectedUrl=${selectedUrl.trim().isEmpty ? '(empty)' : selectedUrl.trim()}',
+  );
+}
+
 /// 楽天検索由来の商品をローカル管理する（コレ候補・将来のコレ済・抽出結果などの拡張前提）。
 class RakutenManagedProductRepository {
   RakutenManagedProductRepository(this._prefs);
@@ -902,7 +944,10 @@ class RakutenManagedProductRepository {
           : (t0.isNotEmpty ? t0 : existing.itemName);
       final img = preserveMetaOnly
           ? existing.imageUrl
-          : (img0.isNotEmpty ? img0 : existing.imageUrl);
+          : _pickRoomImportPersistImageUrl(
+              roomPageImageUrl: img0,
+              existingImageUrl: existing.imageUrl,
+            );
       final urls = preserveMetaOnly
           ? (existing.itemUrl.trim(), existing.rakutenUrl)
           : _normalUrlsForRoomPersist(
@@ -1000,9 +1045,11 @@ class RakutenManagedProductRepository {
           resolvedGenreName: resolvedLabel.isNotEmpty
               ? resolvedLabel
               : next.resolvedGenreName,
-          imageUrl: api.imageUrl.trim().isNotEmpty
-              ? api.imageUrl
-              : next.imageUrl,
+          imageUrl: _pickRoomImportPersistImageUrl(
+            roomPageImageUrl: img0,
+            apiImageUrl: api.imageUrl,
+            existingImageUrl: next.imageUrl,
+          ),
           reviewAverage: api.reviewAverage > 0
               ? api.reviewAverage
               : next.reviewAverage,
@@ -1033,6 +1080,16 @@ class RakutenManagedProductRepository {
       );
 
       list[existingIndex] = next;
+      _logRoomImportImageSource(
+        productId: next.productId,
+        title: next.itemName,
+        roomPageImageUrl: img0,
+        apiImageUrl: api?.imageUrl ?? '',
+        selectedUrl: next.imageUrl,
+        selectedSource: _hasHttpImageUrl(img0)
+            ? 'room'
+            : (_hasHttpImageUrl(api?.imageUrl ?? '') ? 'api' : 'placeholder'),
+      );
       try {
         if (confirmDiskWrite) {
           await _saveAllMaybeMerged(
@@ -1062,7 +1119,7 @@ class RakutenManagedProductRepository {
     final title = roomPageTitle.trim().isNotEmpty
         ? roomPageTitle.trim()
         : '（ROOM投稿）';
-    final image = roomPageImageUrl.trim();
+    final image = _pickRoomImportPersistImageUrl(roomPageImageUrl: roomPageImageUrl);
     final newId = parsedItem.itemPathSegment.trim().isNotEmpty
         ? parsedItem.itemPathSegment.trim()
         : parsedItem.compositeProductId;
@@ -1175,8 +1232,11 @@ class RakutenManagedProductRepository {
         resolvedGenreName: resolvedLabel.isNotEmpty
             ? resolvedLabel
             : row.resolvedGenreName,
-        imageUrl:
-            apiNew.imageUrl.trim().isNotEmpty ? apiNew.imageUrl : row.imageUrl,
+        imageUrl: _pickRoomImportPersistImageUrl(
+          roomPageImageUrl: roomPageImageUrl,
+          apiImageUrl: apiNew.imageUrl,
+          existingImageUrl: row.imageUrl,
+        ),
         reviewAverage: apiNew.reviewAverage > 0
             ? apiNew.reviewAverage
             : row.reviewAverage,
@@ -1208,6 +1268,18 @@ class RakutenManagedProductRepository {
       roomLikeCount,
       roomCommentCount,
       now,
+    );
+    _logRoomImportImageSource(
+      productId: row.productId,
+      title: row.itemName,
+      roomPageImageUrl: roomPageImageUrl,
+      apiImageUrl: apiEnrichedItem?.imageUrl ?? '',
+      selectedUrl: row.imageUrl,
+      selectedSource: _hasHttpImageUrl(roomPageImageUrl)
+          ? 'room'
+          : (_hasHttpImageUrl(apiEnrichedItem?.imageUrl ?? '')
+                ? 'api'
+                : 'placeholder'),
     );
     list.add(row);
     try {

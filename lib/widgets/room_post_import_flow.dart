@@ -436,6 +436,17 @@ abstract final class RoomPostImportFlow {
       if (p.imageUrl.trim().isNotEmpty) withImage++;
       if (p.itemPrice > 0) withPrice++;
     }
+    final withoutImageIds = <String>[];
+    for (final p in rows) {
+      if (ProductImageResolve.displayImageUrlForManaged(p).isEmpty) {
+        withoutImageIds.add(p.productId);
+      }
+    }
+    roomImportResultImageRefreshLog(
+      'newlyImportedCount=${ids.length} refetchedCount=${rows.length} '
+      'withImageCount=$withImage withoutImageCount=${withoutImageIds.length} '
+      'withoutImageProductIds=${withoutImageIds.join(',')}',
+    );
     roomImportResultSheetRefreshLog(
       'newlyImportedProductIds=${ids.join(',')} refetchedCount=${rows.length} '
       'withImageCount=$withImage withPriceCount=$withPrice '

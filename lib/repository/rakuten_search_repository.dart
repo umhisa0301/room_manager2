@@ -11,6 +11,7 @@ import '../services/rakuten_api_service.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../utils/room_import_product_url_match.dart';
 import '../utils/room_sync_log.dart';
+import '../utils/shop_search_fetch_log.dart';
 
 /// キーワード検索（管理除外パス）のページング終了理由。
 enum RakutenKeywordSearchStopReason {
@@ -241,31 +242,51 @@ class RakutenSearchRepository {
 
   Future<List<RakutenSearchItem>> search({
     required RakutenProductSearchCondition condition,
-    int maxPages = 5,
+    int maxPages = 4,
     RakutenSearchPurpose searchPurpose = RakutenSearchPurpose.normal,
+    String fetchScreen = 'productSearch',
   }) async {
     if (kDemoModeEnabled) {
       return DemoModeData.querySearchItems(condition);
     }
     final normalized = condition.normalized();
-    final results = <RakutenSearchItem>[];
+    const hitsPerRequest = 30;
     final boundedMaxPages = maxPages < 1 ? 1 : maxPages;
-    // 既定は最大5ページ分（約100件）。呼び出し側で maxPages=1 を渡せば1ページだけ取得。
+    shopSearchFetchPlanLog(
+      'screen=$fetchScreen keyword=${normalized.keyword} '
+      'genreId=${normalized.genreId ?? '-'} '
+      'shopCode=${normalized.shopCode ?? '-'} '
+      'targetDisplayCount=100 hitsPerRequest=$hitsPerRequest '
+      'maxPages=$boundedMaxPages expectedApiCalls=$boundedMaxPages',
+    );
+    final results = <RakutenSearchItem>[];
+    var apiCalls = 0;
+    var failedPages = 0;
+    String stopReason = 'completed';
+    // 1ページ最大30件 × 最大4ページで約120件（楽天API上限内）。
     for (var page = 1; page <= boundedMaxPages; page++) {
       try {
         if (page > 1) {
           await Future<void>.delayed(const Duration(milliseconds: 180));
         }
+        final sw = Stopwatch()..start();
         final raw = await _apiService.searchItems(
           condition: normalized,
           page: page,
-          hits: 20,
+          hits: hitsPerRequest,
+        );
+        sw.stop();
+        apiCalls++;
+        shopSearchApiCallLog(
+          'page=$page hits=$hitsPerRequest success=true '
+          'durationMs=${sw.elapsedMilliseconds} statusCode=200',
         );
         final items = raw['Items'];
         if (items is! List || items.isEmpty) {
           if (kDebugMode) {
             debugPrint('[Rakuten] page=$page empty Items — stop pagination');
           }
+          stopReason = 'apiNoMoreResults';
           break;
         }
         var parsedOnPage = 0;
@@ -289,7 +310,16 @@ class RakutenSearchRepository {
             '[Rakuten] page=$page parsedItems=$parsedOnPage / raw=${items.length}',
           );
         }
+        if (items.length < hitsPerRequest) {
+          stopReason = 'apiNoMoreResults';
+          break;
+        }
       } catch (e, st) {
+        apiCalls++;
+        failedPages++;
+        shopSearchApiCallLog(
+          'page=$page hits=$hitsPerRequest success=false error=$e',
+        );
         if (kDebugMode) {
           debugPrint('[Rakuten] page fetch failed page=$page: $e');
           debugPrint('$st');
@@ -297,9 +327,14 @@ class RakutenSearchRepository {
         if (page == 1) {
           rethrow;
         }
+        stopReason = 'partialFailure';
+        shopSearchPartialFailureLog(
+          'page=$page keptItems=${results.length} messageForUser=一部のページ取得に失敗しました',
+        );
         break;
       }
     }
+    final beforeFilter = results.length;
     if (kDebugMode) {
       debugPrint('[Rakuten] repository search total mapped=${results.length}');
       final gsTag =
@@ -335,6 +370,13 @@ class RakutenSearchRepository {
           : 'search';
       debugPrint('[Rakuten] $gsTag after filter count=${afterFilter.length}');
     }
+    final safetyExcluded = beforeFilter - afterFilter.length;
+    shopSearchFetchResultLog(
+      'screen=$fetchScreen apiCalls=$apiCalls rawItems=$beforeFilter '
+      'dedupedItems=$beforeFilter safetyExcluded=$safetyExcluded '
+      'duplicateExcluded=0 displayItems=${afterFilter.length} '
+      'failedPages=$failedPages reason=$stopReason',
+    );
     return afterFilter;
   }
 
@@ -1346,19 +1388,36 @@ class RakutenSearchRepository {
     var receivedAnyFromApi = false;
     var page = startPage;
     var apiPagesFetched = 0;
+    var failedPages = 0;
+    var safetyExcluded = 0;
+    var duplicateExcluded = 0;
+    var registeredExcluded = 0;
+    var savedShopExcluded = 0;
     RakutenKeywordSearchStopReason? explicitStop;
+    shopSearchFetchPlanLog(
+      'screen=productSearch keyword=${normalized.keyword} '
+      'genreId=${normalized.genreId ?? '-'} shopCode=${normalized.shopCode ?? '-'} '
+      'targetDisplayCount=$targetVisibleCount hitsPerRequest=$hitsPerPage '
+      'maxPages=$maxFetchPages expectedApiCalls=$maxFetchPages',
+    );
 
     while (visible.length < targetVisibleCount && page <= maxFetchPages) {
       try {
         if (page > startPage) {
           await Future<void>.delayed(interPageDelay);
         }
+        final sw = Stopwatch()..start();
         final raw = await _apiService.searchItems(
           condition: normalized,
           page: page,
           hits: hitsPerPage,
         );
+        sw.stop();
         apiPagesFetched++;
+        shopSearchApiCallLog(
+          'page=$page hits=$hitsPerPage success=true '
+          'durationMs=${sw.elapsedMilliseconds} statusCode=200',
+        );
         final items = raw['Items'];
         if (items is! List || items.isEmpty) {
           if (kDebugMode) {
@@ -1388,15 +1447,18 @@ class RakutenSearchRepository {
             if (id.isEmpty) continue;
             if (exclude.contains(id)) {
               pageDroppedRegistered++;
+              registeredExcluded++;
               continue;
             }
             if (seenIds.contains(id)) {
               pageDroppedDup++;
+              duplicateExcluded++;
               continue;
             }
             final passed = _applyAppSideFilters([item], normalized);
             if (passed.isEmpty) {
               pageDroppedAppFilter++;
+              safetyExcluded++;
               continue;
             }
             final shopCode = item.shopCode.trim();
@@ -1406,6 +1468,7 @@ class RakutenSearchRepository {
               // 明示指定しているときは結果は当該ショップの商品に限られるため除外しない。
               if (scopedShop.isEmpty || shopCode != scopedShop) {
                 pageDroppedSavedShop++;
+                savedShopExcluded++;
                 continue;
               }
             }
@@ -1441,6 +1504,10 @@ class RakutenSearchRepository {
         }
         page++;
       } catch (e, st) {
+        failedPages++;
+        shopSearchApiCallLog(
+          'page=$page hits=$hitsPerPage success=false error=$e',
+        );
         if (kDebugMode) {
           debugPrint('[Rakuten] keywordManagedExclusion page=$page failed: $e');
           debugPrint('$st');
@@ -1449,6 +1516,9 @@ class RakutenSearchRepository {
           rethrow;
         }
         explicitStop = RakutenKeywordSearchStopReason.partialFetchFailure;
+        shopSearchPartialFailureLog(
+          'page=$page keptItems=${visible.length} messageForUser=一部のページ取得に失敗しました',
+        );
         break;
       }
     }
@@ -1467,6 +1537,13 @@ class RakutenSearchRepository {
         'hadRaw=$receivedAnyFromApi pages=$apiPagesFetched stop=$stopReason',
       );
     }
+    shopSearchFetchResultLog(
+      'screen=productSearch apiCalls=$apiPagesFetched rawItems=$receivedAnyFromApi '
+      'dedupedItems=${visible.length} safetyExcluded=$safetyExcluded '
+      'duplicateExcluded=$duplicateExcluded registeredExcluded=$registeredExcluded '
+      'savedShopExcluded=$savedShopExcluded displayItems=${visible.length} '
+      'failedPages=$failedPages reason=${stopReason.name}',
+    );
 
     return RakutenKeywordSearchRepositoryResult(
       items: visible.length > targetVisibleCount
