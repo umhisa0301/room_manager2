@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../models/saved_shop.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../utils/app_input_limits.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
 import 'app_button.dart';
 import 'app_text_field.dart';
@@ -22,12 +22,14 @@ class RakutenSearchPriceRangeRow extends StatelessWidget {
     super.key,
     required this.minPriceController,
     required this.maxPriceController,
-    required this.digitsOnlyFormatters,
+    this.autovalidateMode,
+    this.onFieldChanged,
   });
 
   final TextEditingController minPriceController;
   final TextEditingController maxPriceController;
-  final List<TextInputFormatter> digitsOnlyFormatters;
+  final AutovalidateMode? autovalidateMode;
+  final VoidCallback? onFieldChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +39,12 @@ class RakutenSearchPriceRangeRow extends StatelessWidget {
           child: AppTextField(
             // 共通AppTextFieldへ置換: 最低価格入力。
             controller: minPriceController,
-            keyboardType: const TextInputType.numberWithOptions(
-              decimal: false,
-              signed: false,
-            ),
-            inputFormatters: digitsOnlyFormatters,
+            keyboardType: TextInputType.number,
+            inputFormatters: AppInputLimits.priceDigitsOnlyFormatters(),
+            maxLength: AppInputLimits.priceMaxDigits,
+            autovalidateMode: autovalidateMode,
+            validator: AppInputLimits.validateMinPriceField,
+            onChanged: (_) => onFieldChanged?.call(),
             labelText: '最低価格（任意）',
             hintText: '1000',
             prefixIcon: const Icon(Icons.currency_yen),
@@ -52,11 +55,15 @@ class RakutenSearchPriceRangeRow extends StatelessWidget {
           child: AppTextField(
             // 共通AppTextFieldへ置換: 最高価格入力。
             controller: maxPriceController,
-            keyboardType: const TextInputType.numberWithOptions(
-              decimal: false,
-              signed: false,
+            keyboardType: TextInputType.number,
+            inputFormatters: AppInputLimits.priceDigitsOnlyFormatters(),
+            maxLength: AppInputLimits.priceMaxDigits,
+            autovalidateMode: autovalidateMode,
+            validator: (raw) => AppInputLimits.validateMaxPriceField(
+              raw,
+              minPriceText: minPriceController.text,
             ),
-            inputFormatters: digitsOnlyFormatters,
+            onChanged: (_) => onFieldChanged?.call(),
             labelText: '最高価格（任意）',
             hintText: '5000',
             prefixIcon: const Icon(Icons.currency_yen),

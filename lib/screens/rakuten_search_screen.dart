@@ -114,6 +114,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   bool _searchHeaderCollapsed = false;
   RakutenSearchStatus _lastCompletionToastStatus = RakutenSearchStatus.idle;
   String? _detailSheetFormError;
+  final GlobalKey<FormState> _detailSearchFormKey = GlobalKey<FormState>();
+  bool _detailSearchAutovalidate = false;
   final FocusNode _productDetailSheetKeywordFocus = FocusNode(
     debugLabel: 'productDetailSheetKeyword',
   );
@@ -735,6 +737,85 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
+  AutovalidateMode get _detailSearchAutovalidateMode => _detailSearchAutovalidate
+      ? AutovalidateMode.onUserInteraction
+      : AutovalidateMode.disabled;
+
+  String? _detailSearchKeywordValidator(String? raw) {
+    if (_savedShopKeywordEntryEffective) {
+      if ((raw ?? '').trim().isEmpty) {
+        const msg = '商品名を入力してください';
+        AppInputLimits.detailSearchFieldValidationLog(
+          field: 'keyword',
+          valid: false,
+          reason: msg,
+        );
+        return msg;
+      }
+      return AppInputLimits.validateOptionalSearchKeyword(raw);
+    }
+    final err = AppInputLimits.validateSearchKeyword(raw);
+    if (err != null) {
+      AppInputLimits.detailSearchFieldValidationLog(
+        field: 'keyword',
+        valid: false,
+        reason: err,
+      );
+    } else {
+      AppInputLimits.detailSearchFieldValidationLog(
+        field: 'keyword',
+        valid: true,
+      );
+    }
+    return err;
+  }
+
+  String? _detailSearchExcludeKeywordValidator(String? raw) {
+    final err = AppInputLimits.validateExcludeKeyword(raw);
+    if (err != null) {
+      AppInputLimits.detailSearchFieldValidationLog(
+        field: 'excludeKeyword',
+        valid: false,
+        reason: err,
+      );
+    }
+    return err;
+  }
+
+  String? _detailSearchGenreAuxKeywordValidator(String? raw) {
+    final err = AppInputLimits.validateOptionalSearchKeyword(raw);
+    if (err != null) {
+      AppInputLimits.detailSearchFieldValidationLog(
+        field: 'genreAuxKeyword',
+        valid: false,
+        reason: err,
+      );
+    }
+    return err;
+  }
+
+  String? _detailSearchMinCommentValidator(String? raw) {
+    final err = AppInputLimits.validateOptionalCountField(
+      raw,
+      label: '最低コメント数',
+    );
+    if (err != null) {
+      AppInputLimits.detailSearchFieldValidationLog(
+        field: 'minCommentCount',
+        valid: false,
+        reason: err,
+      );
+    }
+    return err;
+  }
+
+  bool _validateDetailSearchForm({VoidCallback? refreshSheet}) {
+    setState(() => _detailSearchAutovalidate = true);
+    final ok = _detailSearchFormKey.currentState?.validate() ?? true;
+    refreshSheet?.call();
+    return ok;
+  }
+
   String? _validateKeywordSearchInputs() {
     if (_savedShopKeywordEntryEffective) {
       if (_keywordController.text.trim().isEmpty) {
@@ -773,13 +854,25 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext sheetContext, {
     VoidCallback? refreshSheet,
   }) {
+    if (!_validateDetailSearchForm(refreshSheet: refreshSheet)) {
+      final err = _validateKeywordSearchInputs() ?? '入力内容を確認してください';
+      setState(() => _detailSheetFormError = err);
+      searchValidationErrorLog(
+        screen: 'detailSearch',
+        field: 'keyword',
+        message: err,
+        shownNearField: true,
+      );
+      return;
+    }
     final err = _validateKeywordSearchInputs();
     if (err != null) {
       setState(() => _detailSheetFormError = err);
       searchValidationErrorLog(
-        screen: 'rakutenSearch',
+        screen: 'detailSearch',
         field: 'keyword',
         message: err,
+        shownNearField: true,
       );
       refreshSheet?.call();
       return;
@@ -799,13 +892,25 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext sheetContext, {
     VoidCallback? refreshSheet,
   }) {
+    if (!_validateDetailSearchForm(refreshSheet: refreshSheet)) {
+      final err = _validateGenreDetailInputs() ?? '入力内容を確認してください';
+      setState(() => _detailSheetFormError = err);
+      searchValidationErrorLog(
+        screen: 'detailSearch',
+        field: 'form',
+        message: err,
+        shownNearField: true,
+      );
+      return;
+    }
     if (_selectedGenreId == null || _selectedGenreId!.trim().isEmpty) {
       const msg = 'ジャンルを選択してください';
       setState(() => _detailSheetFormError = msg);
       searchValidationErrorLog(
-        screen: 'rakutenSearch',
+        screen: 'detailSearch',
         field: 'genre',
         message: msg,
+        shownNearField: false,
       );
       refreshSheet?.call();
       return;
@@ -814,9 +919,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (err != null) {
       setState(() => _detailSheetFormError = err);
       searchValidationErrorLog(
-        screen: 'rakutenSearch',
+        screen: 'detailSearch',
         field: 'price',
         message: err,
+        shownNearField: true,
       );
       refreshSheet?.call();
       return;
@@ -1552,6 +1658,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }
     _syncSelectedShopWithSaved(screenContext);
     _detailSheetFormError = null;
+    _detailSearchAutovalidate = false;
+    AppInputLimits.logDetailSearchSheetLimitsApplied();
     await showModalBottomSheet<void>(
       context: screenContext,
       isScrollControlled: true,
@@ -1640,9 +1748,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               RakutenSearchScreenUi.sheetPadH,
                               12,
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
+                            child: Form(
+                              key: _detailSearchFormKey,
+                              autovalidateMode: _detailSearchAutovalidateMode,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
                         Text(
                           _mode == _RakutenSearchMode.product
                               ? 'キーワードと条件を編集します。'
@@ -1735,11 +1846,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                 _submitGenreSearchFromDetailSheet(
                                   screenContext,
                                   sheetContext,
+                                  refreshSheet: () => setModalState(() {}),
                                 ),
                             onChanged: (_) => setModalState(() {}),
                             labelText: '補助キーワード（任意）',
                             hintText: '例: 収納 ボックス',
                             prefixIcon: const Icon(Icons.search_rounded),
+                            maxLength: AppInputLimits.searchKeywordMax,
+                            inputFormatters:
+                                AppInputLimits.singleLineKeywordFormatters(),
+                            autovalidateMode: _detailSearchAutovalidateMode,
+                            validator: _detailSearchGenreAuxKeywordValidator,
                           ),
                           const SizedBox(
                             height: RakutenSearchScreenUi.sheetBlockGap,
@@ -1761,6 +1878,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                     _submitKeywordSearchFromDetailSheet(
                                       screenContext,
                                       sheetContext,
+                                      refreshSheet: () => setModalState(() {}),
                                     ),
                                 onChanged: (_) => setModalState(() {}),
                                 labelText: 'キーワード（必須）',
@@ -1769,6 +1887,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                 maxLength: AppInputLimits.searchKeywordMax,
                                 inputFormatters:
                                     AppInputLimits.singleLineKeywordFormatters(),
+                                autovalidateMode: _detailSearchAutovalidateMode,
+                                validator: _detailSearchKeywordValidator,
                               ),
                             ),
                           ),
@@ -1779,9 +1899,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         RakutenSearchPriceRangeRow(
                           minPriceController: _minPriceController,
                           maxPriceController: _maxPriceController,
-                          digitsOnlyFormatters:
-                              RakutenKeywordDetailConditionsInput
-                                  .digitsOnlyField,
+                          autovalidateMode: _detailSearchAutovalidateMode,
+                          onFieldChanged: () {
+                            setModalState(() {});
+                            _detailSearchFormKey.currentState?.validate();
+                          },
                         ),
                         const SizedBox(
                           height: RakutenSearchScreenUi.sheetBlockGap,
@@ -1793,6 +1915,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           labelText: '除外ワード（任意）',
                           hintText: '中古 訳あり',
                           prefixIcon: const Icon(Icons.block_outlined),
+                          maxLength: AppInputLimits.searchKeywordMax,
+                          inputFormatters:
+                              AppInputLimits.singleLineKeywordFormatters(),
+                          autovalidateMode: _detailSearchAutovalidateMode,
+                          validator: _detailSearchExcludeKeywordValidator,
                         ),
                         const SizedBox(
                           height: RakutenSearchScreenUi.sheetBlockGap,
@@ -1825,12 +1952,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         AppTextField(
                           // 共通AppTextFieldへ置換: 最低コメント数入力。
                           controller: _minCommentCountController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: false,
-                            signed: false,
-                          ),
-                          inputFormatters: RakutenKeywordDetailConditionsInput
-                              .digitsOnlyField,
+                          keyboardType: TextInputType.number,
+                          maxLength: AppInputLimits.countFieldMaxDigits,
+                          inputFormatters:
+                              AppInputLimits.countDigitsFormatters(),
+                          autovalidateMode: _detailSearchAutovalidateMode,
+                          validator: _detailSearchMinCommentValidator,
                           onChanged: (_) => setModalState(() {}),
                           labelText: '最低コメント数（任意）',
                           hintText: '30',
@@ -1886,6 +2013,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     ),
                   ),
                 ),
+              ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(
                             RakutenSearchScreenUi.sheetPadH,

@@ -1156,11 +1156,13 @@ void searchValidationErrorLog({
   required String field,
   required String message,
   bool shownInSheet = true,
+  bool shownNearField = false,
 }) {
   if (!kDebugMode) return;
   debugPrint(
     '[SEARCH_VALIDATION_ERROR] screen=$screen field=$field '
-    'message=$message shownInSheet=$shownInSheet',
+    'message=$message shownInSheet=$shownInSheet '
+    'shownNearField=$shownNearField',
   );
 }
 
