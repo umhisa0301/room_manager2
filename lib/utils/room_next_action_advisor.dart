@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../models/rakuten_managed_product.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import 'room_reaction_analytics.dart';
+import 'shop_display_resolve.dart';
 
 enum RoomNextActionType {
   exploreSimilarProducts,
@@ -158,14 +159,21 @@ abstract final class RoomNextActionAdvisor {
     if (topShopCode != null &&
         topShopCode.isNotEmpty &&
         actions.length < 3) {
-      final label = topShopName != null && topShopName.isNotEmpty
-          ? topShopName
-          : '反応の多いショップ';
+      final label = ShopDisplayResolve.resolveDisplayShopName(
+        shopName: topShopName,
+        shopCode: topShopCode,
+        screen: 'roomNextActionAdvisor',
+      );
+      final safeLabel = label == ShopDisplayResolve.unknownShopLabel
+          ? '反応の多いショップ'
+          : label;
       actions.add(
         RoomNextAction(
           type: RoomNextActionType.exploreShopProducts,
           title: '反応が多いショップの商品を増やしましょう',
-          reason: '「$label」の商品に反応が集まっています',
+          reason: label == ShopDisplayResolve.unknownShopLabel
+              ? '反応が集まっている商品があります'
+              : '「$safeLabel」の商品に反応が集まっています',
           ctaLabel: 'このショップで探す',
           shopCode: topShopCode,
           shopName: topShopName,

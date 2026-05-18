@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../utils/rakuten_ichiba_url_parse.dart';
 import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_rat_redirect_parse.dart';
+import '../utils/room_import_product_image.dart';
 import '../utils/room_sync_log.dart';
 import 'rakuten_item_url_parser.dart';
 import 'room_room_page_reaction_parse.dart';
@@ -784,6 +785,16 @@ class RoomUrlResolver {
     if (im != null) {
       image = im.group(1)?.trim();
       if (image != null && image.isEmpty) image = null;
+    }
+    if (image != null &&
+        RoomImportProductImage.isRejectedProductImageUrl(image)) {
+      if (kDebugMode) {
+        debugPrint(
+          '[ROOM_IMPORT_IMAGE_CANDIDATE] productId=- url=$image '
+          'rejected=true reason=ogImageNotProduct',
+        );
+      }
+      image = null;
     }
     return (title, image);
   }

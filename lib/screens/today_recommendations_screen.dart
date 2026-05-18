@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,8 @@ import '../utils/room_sync_log.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_screen_status.dart';
+import '../widgets/search_bulk_selection_header.dart';
+import '../utils/product_card_rakuten_open.dart';
 
 class TodayRecommendationsScreen extends StatefulWidget {
   const TodayRecommendationsScreen({super.key, this.skipInitialEnsure = false});
@@ -28,6 +31,11 @@ class TodayRecommendationsScreen extends StatefulWidget {
 
 class _TodayRecommendationsScreenState
     extends State<TodayRecommendationsScreen> {
+  final Set<String> _selectedProductIds = <String>{};
+  bool _isBulkAdding = false;
+  int _bulkProcessed = 0;
+  int _bulkTotal = 0;
+
   @override
   void initState() {
     super.initState();
@@ -52,6 +60,100 @@ class _TodayRecommendationsScreenState
       managedItems: managed,
       savedShops: saved,
       trigger: 'screenOpen',
+    );
+  }
+
+  Future<void> _bulkAddCandidates(
+    BuildContext context,
+    List<TodayRecommendationEntry> selectable,
+  ) async {
+    if (_isBulkAdding || _selectedProductIds.isEmpty) return;
+    final bulkCtl = context.read<BulkOperationStateController>();
+    if (bulkCtl.isRoomTourSearchBlocking) {
+      bulkCtl.guardBlockingOperations(context);
+      return;
+    }
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('候補にまとめて追加'),
+        content: const Text(
+          '選択した商品を候補に追加します。登録中は他の商品登録を一時停止します。よろしいですか？',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('キャンセル'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('開始する'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+    final targets = selectable
+        .where((e) => _selectedProductIds.contains(e.item.productId))
+        .toList(growable: false);
+    if (kDebugMode) {
+      debugPrint(
+        '[TODAY_RECOMMEND_BULK_ADD_START] selected=${targets.length}',
+      );
+    }
+    bulkCtl.setBulkCandidateRegistering(true);
+    setState(() {
+      _isBulkAdding = true;
+      _bulkProcessed = 0;
+      _bulkTotal = targets.length;
+    });
+    var success = 0;
+    var alreadyAdded = 0;
+    var failed = 0;
+    final rec = context.read<TodayRecommendationProvider>();
+    final managed = context.read<RakutenManagedProductProvider>();
+    try {
+      for (var i = 0; i < targets.length; i++) {
+        if (!mounted) break;
+        setState(() => _bulkProcessed = i);
+        final entry = targets[i];
+        final err = await rec.markAddedCandidate(
+          managedProvider: managed,
+          item: entry.item,
+        );
+        if (err == null) {
+          success++;
+        } else if (err.contains('登録済') || err.contains('候補')) {
+          alreadyAdded++;
+        } else {
+          failed++;
+        }
+      }
+    } finally {
+      bulkCtl.setBulkCandidateRegistering(false);
+      if (mounted) {
+        setState(() {
+          _isBulkAdding = false;
+          _bulkProcessed = _bulkTotal;
+          _selectedProductIds.clear();
+        });
+      }
+    }
+    if (kDebugMode) {
+      debugPrint(
+        '[TODAY_RECOMMEND_BULK_ADD_RESULT] success=$success '
+        'alreadyAdded=$alreadyAdded failed=$failed',
+      );
+    }
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '候補に追加しました（$success件）'
+          '${alreadyAdded > 0 ? '・登録済み $alreadyAdded件' : ''}'
+          '${failed > 0 ? '・失敗 $failed件' : ''}',
+        ),
+      ),
     );
   }
 
@@ -129,6 +231,27 @@ class _TodayRecommendationsScreenState
             }
 
             final rows = _RecommendationListRow.fromEntries(bundle.entries);
+            final selectable = bundle.entries
+                .where(
+                  (e) => e.decision == TodayRecommendationDecision.pending,
+                )
+                .toList(growable: false);
+            final alreadyAdded = bundle.entries
+                .where(
+                  (e) =>
+                      e.decision == TodayRecommendationDecision.addedCandidate,
+                )
+                .length;
+            final skipped = bundle.entries
+                .where((e) => e.decision == TodayRecommendationDecision.skipped)
+                .length;
+            if (kDebugMode) {
+              debugPrint(
+                '[TODAY_RECOMMEND_SELECTION_RENDER] total=${bundle.entries.length} '
+                'selectable=${selectable.length} selected=${_selectedProductIds.length} '
+                'alreadyAdded=$alreadyAdded skipped=$skipped',
+              );
+            }
             return Column(
               children: [
                 _SummaryCard(
@@ -138,9 +261,43 @@ class _TodayRecommendationsScreenState
                   cooldown: rec.manualRegenerateCooldownStatus(),
                   onRegenerate: _regenerate,
                 ),
+                if (selectable.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
+                    child: SearchBulkSelectionHeader(
+                      screen: 'todayRecommendations',
+                      selectedCount: _selectedProductIds.length,
+                      totalSelectable: selectable.length,
+                      enabled: !_isBulkAdding,
+                      onToggleAll: (selectAll) {
+                        setState(() {
+                          if (selectAll) {
+                            _selectedProductIds
+                              ..clear()
+                              ..addAll(
+                                selectable.map((e) => e.item.productId),
+                              );
+                          } else {
+                            _selectedProductIds.clear();
+                          }
+                        });
+                        if (kDebugMode) {
+                          debugPrint(
+                            '[TODAY_RECOMMEND_SELECT_ALL] checked=$selectAll '
+                            'selected=${_selectedProductIds.length}',
+                          );
+                        }
+                      },
+                    ),
+                  ),
                 Expanded(
                   child: ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                    padding: EdgeInsets.fromLTRB(
+                      20,
+                      0,
+                      20,
+                      _selectedProductIds.isNotEmpty ? 88 : 24,
+                    ),
                     itemCount: rows.length,
                     itemBuilder: (context, index) {
                       final row = rows[index];
@@ -152,11 +309,44 @@ class _TodayRecommendationsScreenState
                       }
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8),
-                        child: _RecommendationCard(entry: row.entry!),
+                        child: _RecommendationCard(
+                          entry: row.entry!,
+                          bulkSelectEnabled: row.entry!.decision ==
+                              TodayRecommendationDecision.pending,
+                          isSelected: _selectedProductIds
+                              .contains(row.entry!.item.productId),
+                          onToggleSelected: () {
+                            final id = row.entry!.item.productId;
+                            setState(() {
+                              if (_selectedProductIds.contains(id)) {
+                                _selectedProductIds.remove(id);
+                              } else {
+                                _selectedProductIds.add(id);
+                              }
+                            });
+                          },
+                        ),
                       );
                     },
                   ),
                 ),
+                if (_selectedProductIds.isNotEmpty)
+                  SafeArea(
+                    top: false,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+                      child: AppPrimaryButton(
+                        label: _isBulkAdding
+                            ? '追加中…（$_bulkProcessed/$_bulkTotal）'
+                            : 'まとめて候補に追加（${_selectedProductIds.length}件）',
+                        icon: const Icon(Icons.playlist_add_check_rounded),
+                        isLoading: _isBulkAdding,
+                        onPressed: _isBulkAdding
+                            ? null
+                            : () => _bulkAddCandidates(context, selectable),
+                      ),
+                    ),
+                  ),
               ],
             );
           },
@@ -284,11 +474,9 @@ class _SummaryCard extends StatelessWidget {
             completed
                 ? '10件見終わりました。次回は翌日に新しい候補が生成されます。'
                 : '候補 or 見送りで今日の投稿を整理できます',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
-              height: 1.25,
+              height: 1.35,
             ),
           ),
           if (!cooldown.canRegenerate && cooldown.userFacingWaitLabel.isNotEmpty) ...[
@@ -317,9 +505,17 @@ class _SummaryCard extends StatelessWidget {
 }
 
 class _RecommendationCard extends StatelessWidget {
-  const _RecommendationCard({required this.entry});
+  const _RecommendationCard({
+    required this.entry,
+    this.bulkSelectEnabled = false,
+    this.isSelected = false,
+    this.onToggleSelected,
+  });
 
   final TodayRecommendationEntry entry;
+  final bool bulkSelectEnabled;
+  final bool isSelected;
+  final VoidCallback? onToggleSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -331,20 +527,45 @@ class _RecommendationCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (bulkSelectEnabled)
+            Padding(
+              padding: const EdgeInsets.only(right: 2, top: 4),
+              child: Checkbox(
+                value: isSelected,
+                onChanged: (_) => onToggleSelected?.call(),
+                activeColor: AppColors.accentPrimary,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+            ),
           _ProductImageWithStatus(entry: entry),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  item.itemName,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w800,
-                    height: 1.24,
+                InkWell(
+                  onTap: () => ProductCardRakutenOpen.open(
+                    context: context,
+                    affiliateUrl: item.affiliateUrl,
+                    itemUrl: item.itemUrl,
+                    screen: 'todayRecommendations',
+                    productId: item.productId,
+                    source: 'title',
+                  ),
+                  borderRadius: BorderRadius.circular(6),
+                  child: Text(
+                    item.itemName,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w800,
+                      height: 1.24,
+                      decoration: TextDecoration.underline,
+                      decorationColor: AppColors.textPrimary.withValues(
+                        alpha: 0.3,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -623,7 +844,7 @@ class _ProductImageWithStatus extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        _Thumb(imageUrl: entry.item.imageUrl),
+        _Thumb(imageUrl: entry.item.imageUrl, entry: entry),
         Positioned(
           top: 4,
           right: 4,
@@ -677,28 +898,41 @@ class _DecisionBadge extends StatelessWidget {
 }
 
 class _Thumb extends StatelessWidget {
-  const _Thumb({required this.imageUrl});
+  const _Thumb({required this.imageUrl, required this.entry});
 
   final String imageUrl;
+  final TodayRecommendationEntry entry;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: Container(
-        width: 92,
-        height: 108,
+      child: Material(
         color: AppColors.surfaceVariant,
-        child: imageUrl.trim().isEmpty
-            ? const Icon(Icons.image_outlined, color: AppColors.textTertiary)
-            : Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const Icon(
-                  Icons.broken_image_outlined,
-                  color: AppColors.textTertiary,
-                ),
-              ),
+        child: InkWell(
+          onTap: () => ProductCardRakutenOpen.open(
+            context: context,
+            affiliateUrl: entry.item.affiliateUrl,
+            itemUrl: entry.item.itemUrl,
+            screen: 'todayRecommendations',
+            productId: entry.item.productId,
+            source: 'image',
+          ),
+          child: SizedBox(
+            width: 92,
+            height: 108,
+            child: imageUrl.trim().isEmpty
+                ? const Icon(Icons.image_outlined, color: AppColors.textTertiary)
+                : Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const Icon(
+                      Icons.broken_image_outlined,
+                      color: AppColors.textTertiary,
+                    ),
+                  ),
+          ),
+        ),
       ),
     );
   }

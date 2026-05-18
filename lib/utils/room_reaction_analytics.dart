@@ -76,7 +76,10 @@ const String roomReactionAnalyticsUnknownShopKey = '!unknownShop';
     return (key: name, label: name);
   }
   if (code.isNotEmpty) {
-    return (key: 'code:$code', label: code);
+    return (
+      key: 'code:$code',
+      label: 'ショップ未確認',
+    );
   }
   return (key: roomReactionAnalyticsUnknownShopKey, label: 'ショップ未確認');
 }

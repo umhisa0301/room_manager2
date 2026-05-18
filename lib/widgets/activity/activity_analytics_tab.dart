@@ -19,6 +19,7 @@ import '../../state/room_activity_event_provider.dart';
 import '../../state/saved_shop_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/room_reaction_analytics.dart';
+import '../../utils/shop_display_resolve.dart';
 import '../../utils/room_sync_log.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_card.dart';
@@ -816,9 +817,13 @@ class _RoomReactionAnalyticsSectionState
         );
       }
       if (shopAggSorted.isNotEmpty && shopAggSorted.first.value.sum > 0) {
-        final lab = shopAggSorted.first.value.label;
-        if (lab.trim().isNotEmpty && lab != 'ショップ未確認') {
-          out.add('「${lab.trim()}」の商品にいいね・コメントが集まっています');
+        final lab = shopAggSorted.first.value.label.trim();
+        if (lab.isNotEmpty &&
+            lab != 'ショップ未確認' &&
+            !ShopDisplayResolve.looksLikeShopCode(lab)) {
+          out.add('「$lab」の商品にいいね・コメントが集まっています');
+        } else {
+          out.add('反応が集まっている商品があります');
         }
       }
       if (out.isEmpty) {

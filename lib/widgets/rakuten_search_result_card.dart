@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
-import '../services/app_action_service.dart';
+import '../utils/product_card_rakuten_open.dart';
 import '../utils/rakuten_product_genre_display.dart';
+import '../utils/shop_display_resolve.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
-import '../theme/room_colle_list_accent.dart';
 import 'app_button.dart';
 import 'room_colle_product_list_card_layout.dart';
 
@@ -77,15 +77,33 @@ class RakutenSearchResultCard extends StatelessWidget {
 
   static String _safeShopName(RakutenSearchItem item) {
     try {
-      final t = item.shopName.trim();
-      return t.isEmpty ? 'ショップ名なし' : t;
+      return ShopDisplayResolve.resolveDisplayShopName(
+        shopName: item.shopName,
+        shopCode: item.shopCode,
+        screen: 'rakutenSearchResult',
+      );
     } catch (_) {
-      return 'ショップ名なし';
+      return ShopDisplayResolve.unknownShopLabel;
     }
+  }
+
+  void _openRakuten(BuildContext context, String source) {
+    ProductCardRakutenOpen.open(
+      context: context,
+      affiliateUrl: item.affiliateUrl,
+      itemUrl: item.itemUrl,
+      screen: 'rakutenSearchResult',
+      productId: item.productId,
+      source: source,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    ProductCardRakutenOpen.auditCard(
+      screen: 'rakutenSearchResult',
+      cardType: 'RakutenSearchResultCard',
+    );
     final compact = compactListLayout && !selectionMode;
     final contentGap = compact ? 4.0 : _contentGap;
     final metaGap = compact ? 2.0 : _metaGap;
@@ -132,12 +150,12 @@ class RakutenSearchResultCard extends StatelessWidget {
         children: [
           if (selectionMode)
             Padding(
-              padding: const EdgeInsets.only(left: 6, right: 2),
-              child: Center(child: _buildSelectionControl(context)),
+              padding: const EdgeInsets.only(left: 4, right: 0, top: 8),
+              child: _buildSelectionCheckbox(context),
             ),
           RoomColleProductListCardThumbSlot(
             slotWidth: thumbW,
-            child: _heroImage(compact: compact),
+            child: _heroImage(context, compact: compact),
           ),
           Expanded(
             child: Padding(
@@ -156,11 +174,20 @@ class RakutenSearchResultCard extends StatelessWidget {
                         _SourceContextChip(label: sourceContextLabel!.trim()),
                         SizedBox(height: metaGap + 1),
                       ],
-                      Text(
-                        _safeItemName(item),
-                        maxLines: titleMaxLines,
-                        overflow: TextOverflow.ellipsis,
-                        style: titleStyle,
+                      InkWell(
+                        onTap: () => _openRakuten(context, 'title'),
+                        borderRadius: BorderRadius.circular(6),
+                        child: Text(
+                          _safeItemName(item),
+                          maxLines: titleMaxLines,
+                          overflow: TextOverflow.ellipsis,
+                          style: (titleStyle ?? const TextStyle()).copyWith(
+                            decoration: TextDecoration.underline,
+                            decorationColor: (titleStyle ?? const TextStyle())
+                                .color
+                                ?.withValues(alpha: 0.35),
+                          ),
+                        ),
                       ),
                       SizedBox(height: contentGap),
                       Text(
@@ -275,8 +302,7 @@ class RakutenSearchResultCard extends StatelessWidget {
       icon: Icon(Icons.open_in_new, size: compact ? 16.0 : 18.0),
       height: h,
       expand: true,
-      onPressed: () =>
-          AppActionService.openUrl(context, url: item.browserLaunchUrl),
+      onPressed: () => _openRakuten(context, 'button'),
     );
     final register = _buildRegisterAction(context, compact: compact, height: h);
     if (compact) {
@@ -346,35 +372,17 @@ class RakutenSearchResultCard extends StatelessWidget {
     );
   }
 
-  Widget _buildSelectionControl(BuildContext context) {
-    if (!isSelectionEnabled) {
-      final isCandidate = localStatus == RakutenManagedProductStatus.candidate;
-      final isDone = localStatus == RakutenManagedProductStatus.done;
-      final accent = isDone
-          ? RoomColleListAccent.done
-          : isCandidate
-          ? RoomColleListAccent.candidate
-          : AppColors.textTertiary;
-      return Icon(
-        Icons.block_rounded,
-        size: 22,
-        color: accent.withValues(alpha: 0.85),
-      );
-    }
-    return InkWell(
-      borderRadius: BorderRadius.circular(99),
-      onTap: onToggleSelected,
-      child: Icon(
-        isSelected
-            ? Icons.check_circle_rounded
-            : Icons.radio_button_unchecked_rounded,
-        size: 24,
-        color: isSelected ? AppColors.accentPrimary : AppColors.textSecondary,
-      ),
+  Widget _buildSelectionCheckbox(BuildContext context) {
+    return Checkbox(
+      value: isSelected,
+      onChanged: !isSelectionEnabled ? null : (_) => onToggleSelected?.call(),
+      activeColor: AppColors.accentPrimary,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.compact,
     );
   }
 
-  Widget _heroImage({bool compact = false}) {
+  Widget _heroImage(BuildContext context, {bool compact = false}) {
     Widget child;
     try {
       final url = item.imageUrl.trim();
@@ -391,7 +399,13 @@ class RakutenSearchResultCard extends StatelessWidget {
     } catch (_) {
       child = Center(child: _thumbPlaceholder(compact: compact));
     }
-    return ColoredBox(color: AppColors.surfaceVariant, child: child);
+    return Material(
+      color: AppColors.surfaceVariant,
+      child: InkWell(
+        onTap: () => _openRakuten(context, 'image'),
+        child: child,
+      ),
+    );
   }
 
   Widget _thumbPlaceholder({bool compact = false}) {

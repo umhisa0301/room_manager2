@@ -64,11 +64,11 @@ void main() {
       );
     });
 
-    test('shopName 空なら shopCode をラベルに', () {
+    test('shopName 空なら shopCode をUIに出さずショップ未確認', () {
       final b = roomReactionAnalyticsShopBucket(
         p(shopName: '', shopCode: 'sc1'),
       );
-      expect(b.label, 'sc1');
+      expect(b.label, 'ショップ未確認');
       expect(b.key, 'code:sc1');
     });
 

@@ -11,6 +11,8 @@ import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/room_colle_list_accent.dart';
 import '../utils/display_text_utils.dart';
+import '../utils/product_card_rakuten_open.dart';
+import '../utils/shop_display_resolve.dart';
 import '../utils/room_colle_card_time_format.dart';
 import 'app_button.dart';
 import 'room_colle_product_list_card_layout.dart';
@@ -83,15 +85,11 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   String _shopDisplayLine() {
     if (product.roomImportMetadataEnriching) return 'ショップ確認中';
-    final sn = product.shopName.trim();
-    if (sn.isNotEmpty &&
-        sn != 'ショップ名不明' &&
-        sn != 'ショップ未設定') {
-      return sn;
-    }
-    final sc = product.shopCode.trim();
-    if (sc.isNotEmpty) return 'ショップ：$sc';
-    return 'ショップ未設定';
+    return ShopDisplayResolve.resolveDisplayShopName(
+      shopName: product.shopName,
+      shopCode: product.shopCode,
+      screen: 'rakutenManagedProductCard',
+    );
   }
 
   String _genreDisplayLine() {
@@ -172,8 +170,23 @@ class RakutenManagedProductCard extends StatelessWidget {
     return count != null && count > 0 ? _roomReactionPink : AppColors.textTertiary;
   }
 
+  void _openRakuten(BuildContext context, String source) {
+    ProductCardRakutenOpen.open(
+      context: context,
+      affiliateUrl: product.affiliateUrl,
+      itemUrl: product.itemUrl.isNotEmpty ? product.itemUrl : product.rakutenUrl,
+      screen: 'rakutenManagedProductCard',
+      productId: product.productId,
+      source: source,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    ProductCardRakutenOpen.auditCard(
+      screen: 'rakutenManagedProductCard',
+      cardType: 'RakutenManagedProductCard',
+    );
     final isCandidate = variant == RakutenManagedProductCardVariant.candidate;
     final enrichNeed =
         RoomImportMetadataEnrichmentService.needFlagsForProduct(product);
@@ -199,7 +212,7 @@ class RakutenManagedProductCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RoomColleProductListCardThumbSlot(child: _heroImage()),
+                RoomColleProductListCardThumbSlot(child: _heroImage(context)),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -280,11 +293,20 @@ class RakutenManagedProductCard extends StatelessWidget {
                         _candidateBadges(context),
                         const SizedBox(height: 6),
                       ],
-                      Text(
-                        _safeItemName(product),
-                        maxLines: RoomColleProductListCardLayout.titleMaxLines,
-                        overflow: TextOverflow.ellipsis,
-                        style: titleStyle,
+                      InkWell(
+                        onTap: () => _openRakuten(context, 'title'),
+                        borderRadius: BorderRadius.circular(6),
+                        child: Text(
+                          _safeItemName(product),
+                          maxLines: RoomColleProductListCardLayout.titleMaxLines,
+                          overflow: TextOverflow.ellipsis,
+                          style: (titleStyle ?? const TextStyle()).copyWith(
+                            decoration: TextDecoration.underline,
+                            decorationColor: (titleStyle ?? const TextStyle())
+                                .color
+                                ?.withValues(alpha: 0.3),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 6),
                       Text(
@@ -700,7 +722,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     );
   }
 
-  Widget _heroImage() {
+  Widget _heroImage(BuildContext context) {
     Widget child;
     try {
       final url = product.imageUrl.trim();
@@ -716,7 +738,13 @@ class RakutenManagedProductCard extends StatelessWidget {
     } catch (_) {
       child = Center(child: _thumbPlaceholder());
     }
-    return ColoredBox(color: AppColors.surfaceVariant, child: child);
+    return Material(
+      color: AppColors.surfaceVariant,
+      child: InkWell(
+        onTap: () => _openRakuten(context, 'image'),
+        child: child,
+      ),
+    );
   }
 
   Widget _thumbPlaceholder() {

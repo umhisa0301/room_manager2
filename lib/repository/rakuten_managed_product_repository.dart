@@ -14,6 +14,7 @@ import '../utils/rakuten_product_genre_display.dart';
 import '../utils/managed_product_diag_log.dart';
 import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_reaction_status_display.dart';
+import '../utils/room_import_product_image.dart';
 import '../utils/room_sync_log.dart';
 
 /// ROOM 同期で既存コレ済行にヒットした照合結果（照合順は [RakutenManagedProductRepository.findRoomImportExistingRowMatch]）。
@@ -39,24 +40,26 @@ bool _hasHttpImageUrl(String raw) {
   return s == 'http' || s == 'https';
 }
 
-/// ROOM取り込み保存時の画像URL（ROOM由来をAPIより優先）。
+/// ROOM取り込み保存時の画像URL（楽天API > 確定できるROOM商品画像 > 既存）。
 String _pickRoomImportPersistImageUrl({
   required String roomPageImageUrl,
   String apiImageUrl = '',
   String existingImageUrl = '',
   bool preserveExistingOnly = false,
+  String productId = '',
 }) {
-  if (preserveExistingOnly) {
-    final ex = existingImageUrl.trim();
-    if (_hasHttpImageUrl(ex)) return ex;
-  }
-  final room = roomPageImageUrl.trim();
-  if (_hasHttpImageUrl(room)) return room;
-  final api = apiImageUrl.trim();
-  if (_hasHttpImageUrl(api)) return api;
-  final ex = existingImageUrl.trim();
-  if (_hasHttpImageUrl(ex)) return ex;
-  return '';
+  final filteredRoom = RoomImportProductImage.isRejectedProductImageUrl(
+        roomPageImageUrl.trim(),
+      )
+      ? ''
+      : roomPageImageUrl.trim();
+  return RoomImportProductImage.pickPersistImageUrl(
+    productId: productId.isEmpty ? 'unknown' : productId,
+    roomPageImageUrl: filteredRoom,
+    apiImageUrl: apiImageUrl,
+    existingImageUrl: existingImageUrl,
+    preserveExistingOnly: preserveExistingOnly,
+  );
 }
 
 void _logRoomImportImageSource({
