@@ -40,22 +40,21 @@ bool _hasHttpImageUrl(String raw) {
   return s == 'http' || s == 'https';
 }
 
-/// ROOM取り込み保存時の画像URL（楽天API > 確定できるROOM商品画像 > 既存）。
+/// ROOM取り込み保存時の画像URL（楽天API > ROOM HTML > collects > 既存）。
 String _pickRoomImportPersistImageUrl({
   required String roomPageImageUrl,
+  String roomHtmlImageUrl = '',
+  String collectsImageUrl = '',
   String apiImageUrl = '',
   String existingImageUrl = '',
   bool preserveExistingOnly = false,
   String productId = '',
 }) {
-  final filteredRoom = RoomImportProductImage.isRejectedProductImageUrl(
-        roomPageImageUrl.trim(),
-      )
-      ? ''
-      : roomPageImageUrl.trim();
   return RoomImportProductImage.pickPersistImageUrl(
     productId: productId.isEmpty ? 'unknown' : productId,
-    roomPageImageUrl: filteredRoom,
+    roomPageImageUrl: roomPageImageUrl,
+    roomHtmlImageUrl: roomHtmlImageUrl,
+    collectsImageUrl: collectsImageUrl,
     apiImageUrl: apiImageUrl,
     existingImageUrl: existingImageUrl,
     preserveExistingOnly: preserveExistingOnly,
@@ -448,9 +447,13 @@ class RakutenManagedProductRepository {
           api.genreId.trim().isNotEmpty ? api.genreId : e.genreId;
       final learnedComp = persistRoomApiCompositeItemCode.trim();
       final roomHasPrice = e.itemPrice > 0;
-      final roomHasImage = _hasHttpImageUrl(e.imageUrl);
       final apiPriceOk = api.itemPrice > 0;
-      final apiImageOk = api.imageUrl.trim().isNotEmpty;
+      final mergedImage = _pickRoomImportPersistImageUrl(
+        productId: e.productId,
+        roomPageImageUrl: '',
+        apiImageUrl: api.imageUrl,
+        existingImageUrl: e.imageUrl,
+      );
       return e.copyWith(
         itemName: api.itemName.trim().isNotEmpty ? api.itemName : e.itemName,
         itemPrice: !roomHasPrice && apiPriceOk ? api.itemPrice : e.itemPrice,
@@ -459,7 +462,7 @@ class RakutenManagedProductRepository {
         affiliateUrl: api.affiliateUrl.trim().isNotEmpty
             ? api.affiliateUrl.trim()
             : e.affiliateUrl,
-        imageUrl: !roomHasImage && apiImageOk ? api.imageUrl : e.imageUrl,
+        imageUrl: mergedImage,
         shopName: mergedShopName,
         shopUrl: api.shopUrl.trim().isNotEmpty ? api.shopUrl : e.shopUrl,
         shopCode: api.shopCode.trim().isNotEmpty ? api.shopCode : e.shopCode,
@@ -744,6 +747,8 @@ class RakutenManagedProductRepository {
     String? roomPageAffiliateUrl,
     String roomPageTitle = '',
     String roomPageImageUrl = '',
+    String collectsImageUrl = '',
+    String roomHtmlImageUrl = '',
     RakutenSearchItem? apiEnrichedItem,
     bool traceRoomSync = false,
 
@@ -942,13 +947,18 @@ class RakutenManagedProductRepository {
           roomImportAddRoomUrlToExistingNoApi && apiEnrichedItem == null;
       final t0 = roomPageTitle.trim();
       final img0 = roomPageImageUrl.trim();
+      final collects0 = collectsImageUrl.trim();
+      final html0 = roomHtmlImageUrl.trim();
       final t = preserveMetaOnly
           ? existing.itemName
           : (t0.isNotEmpty ? t0 : existing.itemName);
       final img = preserveMetaOnly
           ? existing.imageUrl
           : _pickRoomImportPersistImageUrl(
+              productId: existing.productId,
               roomPageImageUrl: img0,
+              collectsImageUrl: collects0,
+              roomHtmlImageUrl: html0,
               existingImageUrl: existing.imageUrl,
             );
       final urls = preserveMetaOnly
@@ -1049,7 +1059,10 @@ class RakutenManagedProductRepository {
               ? resolvedLabel
               : next.resolvedGenreName,
           imageUrl: _pickRoomImportPersistImageUrl(
+            productId: next.productId,
             roomPageImageUrl: img0,
+            collectsImageUrl: collects0,
+            roomHtmlImageUrl: html0,
             apiImageUrl: api.imageUrl,
             existingImageUrl: next.imageUrl,
           ),
@@ -1122,7 +1135,14 @@ class RakutenManagedProductRepository {
     final title = roomPageTitle.trim().isNotEmpty
         ? roomPageTitle.trim()
         : '（ROOM投稿）';
-    final image = _pickRoomImportPersistImageUrl(roomPageImageUrl: roomPageImageUrl);
+    final image = _pickRoomImportPersistImageUrl(
+      productId: parsedItem.itemPathSegment.trim().isNotEmpty
+          ? parsedItem.itemPathSegment.trim()
+          : parsedItem.compositeProductId,
+      roomPageImageUrl: roomPageImageUrl,
+      collectsImageUrl: collectsImageUrl,
+      roomHtmlImageUrl: roomHtmlImageUrl,
+    );
     final newId = parsedItem.itemPathSegment.trim().isNotEmpty
         ? parsedItem.itemPathSegment.trim()
         : parsedItem.compositeProductId;
@@ -1236,7 +1256,10 @@ class RakutenManagedProductRepository {
             ? resolvedLabel
             : row.resolvedGenreName,
         imageUrl: _pickRoomImportPersistImageUrl(
+          productId: row.productId,
           roomPageImageUrl: roomPageImageUrl,
+          collectsImageUrl: collectsImageUrl,
+          roomHtmlImageUrl: roomHtmlImageUrl,
           apiImageUrl: apiNew.imageUrl,
           existingImageUrl: row.imageUrl,
         ),
@@ -1309,6 +1332,52 @@ class RakutenManagedProductRepository {
       kind: RoomCollectedPersistKind.insertedNewCollected,
       productId: newId,
     );
+  }
+
+  /// 取り込み直後など、疑わしい保存画像だけ API で再取得する。
+  Future<int> recoverSuspiciousImagesForProductIds({
+    required List<String> productIds,
+    required Future<RakutenSearchItem?> Function(RakutenManagedProduct row)
+    fetchApi,
+  }) async {
+    if (kDemoModeEnabled || productIds.isEmpty) return 0;
+    var suspicious = 0;
+    var recovered = 0;
+    var cleared = 0;
+    var failed = 0;
+    for (final pid in productIds) {
+      final row = getByProductId(pid.trim());
+      if (row == null) continue;
+      if (!RoomImportProductImage.isSuspiciousStoredProductImage(
+        row.imageUrl,
+        shopCode: row.shopCode,
+        itemCode: row.productId,
+      )) {
+        continue;
+      }
+      suspicious++;
+      try {
+        final api = await fetchApi(row);
+        if (api != null &&
+            RoomImportProductImage.isSafeProductImageUrl(api.imageUrl)) {
+          await updateManagedProduct(pid, (e) => e.copyWith(imageUrl: api.imageUrl));
+          recovered++;
+        } else {
+          await updateManagedProduct(pid, (e) => e.copyWith(imageUrl: ''));
+          cleared++;
+        }
+      } catch (_) {
+        failed++;
+      }
+    }
+    RoomImportProductImage.logImageRecovery(
+      checked: productIds.length,
+      suspicious: suspicious,
+      recovered: recovered,
+      cleared: cleared,
+      failed: failed,
+    );
+    return recovered;
   }
 
   /// [persistRoomCollectedFromRoomPage] で `confirmDiskWrite: false` だった更新をまとめて永続化。

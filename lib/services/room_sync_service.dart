@@ -9,7 +9,9 @@ import '../models/room_reaction_sync_top_product.dart';
 import '../models/room_sync_result.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/rakuten_managed_product_repository.dart';
+import '../repository/rakuten_search_repository.dart';
 import '../repository/room_sync_cursor_repository.dart';
+import '../utils/room_import_product_image.dart';
 import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_reaction_sync_user_message.dart';
 import '../utils/room_sync_log.dart';
@@ -26,20 +28,23 @@ import 'room_user_posted_listing_fetcher.dart';
 /// - 一覧取得・roomUrl 事前照合・ROOM 商品ページ解析・楽天URL抽出・DB更新をまとめる。
 /// - 単品登録は既存 [RoomCollectedRegisterService] 経由の [persistRoomCollectedFromRoomPage] を再利用。
 ///
-/// **楽天商品検索 API は呼ばない**（価格・画像・ジャンル等の API 補完は
-/// [RoomImportMetadataEnrichmentService] の後段キューのみ）。
+/// 取り込み時は **商品画像のみ** 楽天APIで即時確認する（shopCode+itemCode がある場合）。
+/// 価格・ジャンル等のその他メタは [RoomImportMetadataEnrichmentService] の後段キュー。
 class RoomSyncService {
   RoomSyncService({
     required RakutenManagedProductRepository repository,
+    RakutenSearchRepository? searchRepository,
     RoomUrlResolver? roomUrlResolver,
     RoomUserPostedListingFetcher? listingFetcher,
     RoomSyncCursorRepository? roomSyncCursorRepository,
   }) : _repository = repository,
+       _searchRepository = searchRepository,
        _resolver = roomUrlResolver ?? RoomUrlResolver(),
        _listingFetcher = listingFetcher ?? RoomUserPostedListingFetcher(),
        _cursorRepo = roomSyncCursorRepository;
 
   final RakutenManagedProductRepository _repository;
+  final RakutenSearchRepository? _searchRepository;
   final RoomUrlResolver _resolver;
   final RoomUserPostedListingFetcher _listingFetcher;
   final RoomSyncCursorRepository? _cursorRepo;
@@ -244,6 +249,10 @@ class RoomSyncService {
       roomImportSourceDecisionLog(
         'job=import primary=$importSourcePrimary pcHtmlSkipped=$pcHtmlSkipped '
         'reason=$sourceDecisionReason',
+      );
+      roomImportSourceDecisionDetailLog(
+        'job=import primary=$importSourcePrimary pcHtmlSkipped=$pcHtmlSkipped '
+        'reason=$sourceDecisionReason imageNeedsFallback=${pcHtmlSkipped ? 'true' : 'false'}',
       );
 
       roomSyncVerboseLog(
@@ -1053,19 +1062,97 @@ class RoomSyncService {
           continue;
         }
 
-        // 取り込み本体では楽天商品検索 API を呼ばない（メタ補完は後段キューのみ）。
+        final usedFastPath = fast != null;
+        final collectsRaw = rs.roomPageImageUrl?.trim() ?? '';
+        var collectsImageUrl = collectsRaw;
+        var roomHtmlImageUrl = '';
         apiEnriched = null;
+        rakutenApiPartialData = false;
         if (!firstImport) {
           RoomImportDebugLogBuffer.incApiSkipped();
           roomImportSkipApiLog('reason=alreadyImported');
-          rakutenApiPartialData = false;
         } else {
-          RoomImportDebugLogBuffer.incApiSkipped();
-          roomImportSkipApiLog(
-            'reason=deferredEnrichment shopCode=${verified.shopCode} '
-            'itemCode=${verified.itemPathSegment}',
-          );
-          rakutenApiPartialData = true;
+          final shop = verified.shopCode.trim();
+          final item = verified.itemPathSegment.trim();
+          final searchRepo = _searchRepository;
+          if (searchRepo != null && shop.isNotEmpty && item.isNotEmpty) {
+            try {
+              RoomImportDebugLogBuffer.incApiExecuted();
+              final env = await searchRepo.fetchFirstItemForRoomImportEnrichmentEnvelope(
+                shopCode: shop,
+                itemCode: item,
+              );
+              apiEnriched = env.item;
+              if (apiEnriched != null) {
+                roomImportSkipApiLog(
+                  'reason=immediateImageFetch shopCode=$shop itemCode=$item',
+                );
+              } else {
+                rakutenApiPartialData = true;
+                RoomImportDebugLogBuffer.incApiSkipped();
+                roomImportSkipApiLog(
+                  'reason=immediateApiEmpty shopCode=$shop itemCode=$item',
+                );
+              }
+            } catch (_) {
+              rakutenApiPartialData = true;
+              RoomImportDebugLogBuffer.incApiSkipped();
+              roomImportSkipApiLog(
+                'reason=immediateApiFailed shopCode=$shop itemCode=$item',
+              );
+            }
+          } else {
+            rakutenApiPartialData = true;
+            RoomImportDebugLogBuffer.incApiSkipped();
+            roomImportSkipApiLog(
+              'reason=deferredEnrichment shopCode=$shop itemCode=$item',
+            );
+          }
+
+          final apiItemForImage = apiEnriched;
+          final apiImgOk = apiItemForImage != null &&
+              RoomImportProductImage.isSafeProductImageUrl(
+                apiItemForImage.imageUrl,
+              );
+          final collectsSafe =
+              RoomImportProductImage.isSafeProductImageUrl(collectsRaw);
+          if (!apiImgOk &&
+              (!collectsSafe || usedFastPath)) {
+            var fallbackReason = 'apiImageMissing';
+            if (!collectsSafe && collectsRaw.isNotEmpty) {
+              fallbackReason = 'unsafeCollectsImage';
+            } else if (collectsRaw.isEmpty) {
+              fallbackReason = 'missingCollectsImage';
+            }
+            try {
+              final full = await _resolver.resolveRakutenItemUrlFromRoomPage(
+                roomPageUrl,
+                traceRoomSync: traceDetailed,
+              );
+              if (full is RoomUrlResolveSuccess) {
+                final htmlImg = full.roomPageImageUrl?.trim() ?? '';
+                if (RoomImportProductImage.isSafeProductImageUrl(htmlImg)) {
+                  roomHtmlImageUrl = htmlImg;
+                  roomImportFallbackRecovered = true;
+                  RoomImportDebugLogBuffer.incFallbackRecovered();
+                  roomHtmlImageFallbackLog(
+                    'productId=${verified.itemPathSegment} triggered=true '
+                    'reason=$fallbackReason found=true',
+                  );
+                } else {
+                  roomHtmlImageFallbackLog(
+                    'productId=${verified.itemPathSegment} triggered=true '
+                    'reason=$fallbackReason found=false',
+                  );
+                }
+              }
+            } catch (_) {
+              roomHtmlImageFallbackLog(
+                'productId=${verified.itemPathSegment} triggered=true '
+                'reason=$fallbackReason found=false',
+              );
+            }
+          }
         }
 
         try {
@@ -1082,7 +1169,9 @@ class RoomSyncService {
             parsedItem: parsed,
             roomPageAffiliateUrl: rs.roomPageAffiliateUrl,
             roomPageTitle: rs.roomPageTitle ?? '',
-            roomPageImageUrl: rs.roomPageImageUrl ?? '',
+            roomPageImageUrl: collectsRaw,
+            collectsImageUrl: collectsImageUrl,
+            roomHtmlImageUrl: roomHtmlImageUrl,
             apiEnrichedItem: apiEnriched,
             traceRoomSync: traceDetailed,
             workingMutableList: workingManagedList,
@@ -1233,6 +1322,23 @@ class RoomSyncService {
           );
           final flushSw = Stopwatch()..start();
           await _repository.flushSharedWorkingMutableList(workingManagedList);
+          final searchRepoForRecovery = _searchRepository;
+          if (newlyImportedProductIds.isNotEmpty && searchRepoForRecovery != null) {
+            await _repository.recoverSuspiciousImagesForProductIds(
+              productIds: newlyImportedProductIds,
+              fetchApi: (row) async {
+                final shop = row.shopCode.trim();
+                final item = row.productId.trim();
+                if (shop.isEmpty || item.isEmpty) return null;
+                final env =
+                    await searchRepoForRecovery.fetchFirstItemForRoomImportEnrichmentEnvelope(
+                  shopCode: shop,
+                  itemCode: item,
+                );
+                return env.item;
+              },
+            );
+          }
           flushSw.stop();
           final skippedUnchangedSave = batchSize - batchSaveMutations - failed;
           roomBatchSaveResultLog(

@@ -13,6 +13,7 @@ import '../services/room_url_resolver.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../utils/rakuten_ichiba_url_parse.dart';
 import '../utils/room_import_enrich_keyword_normalize.dart';
+import '../utils/room_import_product_image.dart';
 import '../utils/room_import_learned_api_code.dart';
 import '../utils/room_import_product_url_match.dart';
 import '../utils/room_rat_redirect_parse.dart';
@@ -155,6 +156,7 @@ class RoomImportMetadataEnrichmentService {
   static bool _needsImageEnrichment(String raw) {
     final t = raw.trim();
     if (t.isEmpty) return true;
+    if (RoomImportProductImage.isSuspiciousStoredProductImage(t)) return true;
     final u = Uri.tryParse(t);
     if (u == null) return true;
     final s = u.scheme.toLowerCase();

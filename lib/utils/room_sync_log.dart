@@ -650,6 +650,22 @@ void roomImportSourceDecisionLog(String message) {
   }
 }
 
+void roomImportSourceDecisionDetailLog(String message) {
+  final line = '[ROOM_IMPORT_SOURCE_DECISION_DETAIL] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
+void roomHtmlImageFallbackLog(String message) {
+  final line = '[ROOM_HTML_IMAGE_FALLBACK] $message';
+  if (kDebugMode) {
+    debugPrint(line);
+    RoomImportDebugLogBuffer.add(line);
+  }
+}
+
 void roomReactionSyncStopLog(String message) {
   final line = '[ROOM_REACTION_SYNC_STOP] $message';
   if (kDebugMode) {

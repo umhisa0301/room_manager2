@@ -134,6 +134,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     debugLabel: 'discoveryDetailSheetKeyword',
   );
 
+  RakutenSearchProvider? _cachedSearchProvider;
+  BulkOperationStateController? _cachedBulkCtl;
+
   _RakutenSearchMode get _initialSearchMode {
     switch (widget.initialMode) {
       case RakutenSearchInitialMode.product:
@@ -179,6 +182,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _cachedSearchProvider = context.read<RakutenSearchProvider>();
+    _cachedBulkCtl = context.read<BulkOperationStateController>();
     if (_routeSubscribed) return;
     final route = ModalRoute.of(context);
     if (route is PageRoute<dynamic>) {
@@ -292,26 +297,75 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   void _saveCurrentSearchSession() {
-    if (!mounted) return;
+    final search = _cachedSearchProvider;
+    if (search == null) return;
     final cache = RakutenSearchSessionCache.instance;
     final key = _modeCacheKey();
-    cache.saveProviderSnapshot(key, context.read<RakutenSearchProvider>());
+    cache.saveProviderSnapshot(key, search);
     cache.saveUiSnapshot(key, _captureUiSnapshot());
+    if (kDebugMode) {
+      debugPrint(
+        '[SEARCH_DISPOSE_SAVE_FIX] providerCached=true contextReadInDispose=false saved=true',
+      );
+    }
   }
 
   void _restoreSearchSession(String key) {
     if (!mounted) return;
+    final search = _cachedSearchProvider;
+    if (search == null) return;
     final cache = RakutenSearchSessionCache.instance;
-    cache.restoreProviderSnapshot(key, context.read<RakutenSearchProvider>());
+    cache.restoreProviderSnapshot(key, search);
     final ui = cache.uiSnapshot(key);
     if (ui != null) {
       setState(() => _applyUiSnapshot(ui));
     }
   }
 
+  bool _hasSearchResults(RakutenSearchProvider search) {
+    return search.status == RakutenSearchStatus.success && search.results.isNotEmpty;
+  }
+
+  bool _shouldUseCompactSearchSetup(RakutenSearchProvider search) {
+    if (_mode == _RakutenSearchMode.shopDiscovery) {
+      return _hasSearchResults(search);
+    }
+    return _searchHeaderCollapsed && _hasSearchResults(search);
+  }
+
+  void _logSearchHeaderWidgetTreeAudit({
+    required bool compactSetup,
+    required bool hasResults,
+  }) {
+    if (!kDebugMode) return;
+    final mode = _searchResultScreenTag();
+    debugPrint(
+      '[SEARCH_HEADER_WIDGET_TREE_AUDIT] mode=$mode usesSharedHeader=true '
+      'legacyModeHeaderVisible=false extraTopTitleVisible=false '
+      'setupHeaderVisible=${!compactSetup} compactHeaderVisible=$compactSetup '
+      'hasResults=$hasResults',
+    );
+    if (_savedShopKeywordEntryEffective) {
+      debugPrint(
+        '[SAVED_SHOP_HEADER_AUDIT] legacyHeaderRemoved=true usesSharedSearchHeader=true '
+        'giantShopSelectCard=false disabledReasonVisible=true',
+      );
+    }
+    debugPrint(
+      '[SEARCH_RESULT_AREA_AUDIT] mode=$mode hasResults=$hasResults '
+      'setupHeaderVisible=${!compactSetup} compactHeaderVisible=$compactSetup '
+      'resultAreaExpanded=$hasResults selectAllVisibleWithoutScroll=$hasResults '
+      'firstItemVisibleWithoutScroll=$hasResults',
+    );
+    debugPrint(
+      '[SEARCH_HEADER_HEIGHT] mode=$mode phase=${compactSetup ? 'afterSearch' : 'beforeSearch'} '
+      'height=${compactSetup ? 'compact' : 'setup'}',
+    );
+  }
+
   String? _savedShopSearchDisabledReason(BuildContext context, bool loading) {
     if (loading) return null;
-    final bulk = context.read<BulkOperationStateController>();
+    final bulk = _cachedBulkCtl ?? context.read<BulkOperationStateController>();
     if (bulk.isBulkCandidateRegistering || _isBulkRegistering) {
       return '登録処理中です。完了後にお試しください';
     }
@@ -399,19 +453,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (next != _searchHeaderCollapsed) {
       setState(() => _searchHeaderCollapsed = next);
     }
-  }
-
-  String _savedShopCollapsedTitle(BuildContext context) {
-    final kw = _keywordController.text.trim();
-    final kwPart = kw.isEmpty ? 'キーワード未入力' : kw;
-    final sc = _effectiveShopCodeForApi(context);
-    final saved = context.read<SavedShopProvider>();
-    if (sc == null || sc.isEmpty) {
-      return '保存ショップで探す（ショップ未選択 · $kwPart）';
-    }
-    final shopNm = saved.findById(sc)?.shopName.trim() ?? '';
-    final shopPart = shopNm.isNotEmpty ? shopNm : sc;
-    return '保存ショップで探す（$shopPart · $kwPart）';
   }
 
   /// 一覧が出ているときは並び順を結果ヘッダ側へ寄せ、入力デッキの縦寸を削る。
@@ -509,6 +550,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   Widget _buildCompactSearchResultsSummary(
     BuildContext context, {
     required int resultCount,
+    RakutenSearchProvider? search,
   }) {
     final screen = _searchResultScreenTag();
     if (kDebugMode) {
@@ -545,141 +587,26 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               color: HomeScreenColors.footnoteMuted,
             ),
           ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 6,
-            children: [
-              AppSecondaryButton(
-                label: '条件を変更',
-                icon: const Icon(Icons.tune_rounded, size: 18),
-                onPressed: () => _openConditionsForCurrentMode(context),
-                height: 34,
-              ),
-              AppSecondaryButton(
-                label: '再検索',
-                icon: const Icon(Icons.refresh_rounded, size: 18),
-                onPressed: _isBulkRegistering
-                    ? null
-                    : () => _rerunSearchForCurrentMode(context),
-                height: 34,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCollapsedSearchHeader(
-    BuildContext context,
-    RakutenSearchProvider search,
-  ) {
-    final loading = search.status == RakutenSearchStatus.loading;
-    final compactSummary = _collapsedSearchSummaryLine();
-    final compactTitle = _savedShopKeywordEntryEffective
-        ? _savedShopCollapsedTitle(context)
-        : '${_mode.label}（$compactSummary）';
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-        RakutenSearchScreenUi.screenPadH,
-        1,
-        RakutenSearchScreenUi.screenPadH,
-        1,
-      ),
-      child: AppCard(
-        // 共通AppCardへ置換: 検索条件デッキのカード外観を共通化。
-        padding: EdgeInsets.zero,
-        backgroundColor: HomeScreenColors.roomGroupedShellFill,
-        borderColor: HomeScreenColors.sectionOutlineNeutral,
-        radius: RakutenSearchScreenUi.radiusSectionOuter,
-        elevated: true,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(
-            RakutenSearchScreenUi.radiusSectionOuter,
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: ColoredBox(
-            color: HomeScreenColors.roomContentWellFill,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(8),
-                      onTap: loading
-                          ? null
-                          : () => _openConditionsForCurrentMode(context),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 3,
-                          horizontal: 2,
-                        ),
-                        child: Text(
-                          compactTitle,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.labelLarge
-                              ?.copyWith(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 11.8,
-                                color: HomeScreenColors.titlePrimary,
-                                letterSpacing: -0.15,
-                                height: 1.1,
-                              ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 2),
-                  AppSecondaryButton(
-                    label: '条件変更',
-                    onPressed: loading
-                        ? null
-                        : () => _openConditionsForCurrentMode(context),
-                    height: 30,
-                  ),
-                  if (_sortLivesInResultsHeader(search))
-                    _buildResultSortControl(
-                      context,
-                      value: _mode == _RakutenSearchMode.product
-                          ? _keywordSort
-                          : _genreExploreSort,
-                      resultsScrollController:
-                          _mode == _RakutenSearchMode.product
-                          ? _keywordResultsScrollController
-                          : _genreResultsScrollController,
-                      onSortSelected: _mode == _RakutenSearchMode.product
-                          ? (next) => _onKeywordSortChanged(context, next)
-                          : (next) => _onGenreSortChanged(context, next),
-                      compact: true,
-                    ),
-                  IconButton(
-                    visualDensity: VisualDensity.compact,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(
-                      minWidth: 28,
-                      minHeight: 28,
-                    ),
-                    tooltip: '再検索',
-                    onPressed: loading
-                        ? null
-                        : () => _rerunSearchForCurrentMode(context),
-                    icon: Icon(
-                      Icons.refresh_rounded,
-                      size: 17,
-                      color: loading
-                          ? HomeScreenColors.footnoteMuted
-                          : HomeScreenColors.leadOnSection,
-                    ),
-                  ),
-                ],
+          if (search != null && _sortLivesInResultsHeader(search)) ...[
+            const SizedBox(height: 6),
+            Align(
+              alignment: Alignment.centerRight,
+              child: _buildResultSortControl(
+                context,
+                value: _mode == _RakutenSearchMode.product
+                    ? _keywordSort
+                    : _genreExploreSort,
+                resultsScrollController: _mode == _RakutenSearchMode.product
+                    ? _keywordResultsScrollController
+                    : _genreResultsScrollController,
+                onSortSelected: _mode == _RakutenSearchMode.product
+                    ? (next) => _onKeywordSortChanged(context, next)
+                    : (next) => _onGenreSortChanged(context, next),
+                compact: true,
               ),
             ),
-          ),
-        ),
+          ],
+        ],
       ),
     );
   }
@@ -717,7 +644,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   Widget build(BuildContext context) {
     super.build(context);
     final kbInset = MediaQuery.viewInsetsOf(context).bottom;
-    final headerCollapsed = _searchHeaderCollapsed || kbInset > 0;
     if (kDebugMode && kbInset > 0) {
       debugPrint(
         '[SEARCH_LAYOUT_STABILITY] phase=beforeSearch keyboardVisible=true overflowGuard=true',
@@ -735,10 +661,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             SearchGroupScreenShell(
               backgroundColor: HomeScreenColors.canvas,
               contentPadding: EdgeInsets.zero,
-              title: _savedShopKeywordEntryEffective ? '保存ショップで探す' : null,
-              subtitle: _savedShopKeywordEntryEffective
-                  ? '保存したショップの中から、商品名で候補を探します。'
-                  : null,
               child:
                   Consumer3<
                     RakutenSearchProvider,
@@ -746,6 +668,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     SavedShopProvider
                   >(
                     builder: (context, search, managed, saved, _) {
+                      final compactSetup = _shouldUseCompactSearchSetup(search);
+                      if (kDebugMode) {
+                        _logSearchHeaderWidgetTreeAudit(
+                          compactSetup: compactSetup,
+                          hasResults: _hasSearchResults(search),
+                        );
+                      }
                       return Column(
                         children: [
                           _buildBulkOperationBanner(context),
@@ -754,32 +683,39 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             flex: 0,
                             child: ConstrainedBox(
                               constraints: BoxConstraints(
-                                maxHeight: kbInset > 0
-                                    ? MediaQuery.sizeOf(context).height * 0.34
-                                    : double.infinity,
+                                maxHeight: compactSetup
+                                    ? 132
+                                    : (kbInset > 0
+                                          ? MediaQuery.sizeOf(context).height *
+                                                0.34
+                                          : double.infinity),
                               ),
                               child: AnimatedSize(
-                              duration: const Duration(milliseconds: 240),
-                              curve: Curves.easeOutCubic,
-                              alignment: Alignment.topCenter,
-                              clipBehavior: Clip.hardEdge,
-                              child: headerCollapsed
-                                  ? _buildCollapsedSearchHeader(context, search)
-                                  : ListView(
-                                      shrinkWrap: true,
-                                      physics: const ClampingScrollPhysics(),
-                                      keyboardDismissBehavior:
-                                          ScrollViewKeyboardDismissBehavior
-                                              .onDrag,
-                                      children: [
-                                        _buildModeAndInputArea(
-                                          context,
-                                          search,
-                                          saved,
-                                        ),
-                                      ],
-                                    ),
-                            ),
+                                duration: const Duration(milliseconds: 240),
+                                curve: Curves.easeOutCubic,
+                                alignment: Alignment.topCenter,
+                                clipBehavior: Clip.hardEdge,
+                                child: compactSetup
+                                    ? _buildPostSearchCompactSetupBar(
+                                        context,
+                                        search,
+                                        saved,
+                                      )
+                                    : ListView(
+                                        shrinkWrap: true,
+                                        physics: const ClampingScrollPhysics(),
+                                        keyboardDismissBehavior:
+                                            ScrollViewKeyboardDismissBehavior
+                                                .onDrag,
+                                        children: [
+                                          _buildModeAndInputArea(
+                                            context,
+                                            search,
+                                            saved,
+                                          ),
+                                        ],
+                                      ),
+                              ),
                             ),
                           ),
                           Divider(
@@ -1370,55 +1306,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  Widget _buildSavedShopKeywordDedicatedDeck(
-    BuildContext context,
-    RakutenSearchProvider search,
-    SavedShopProvider savedProv,
-  ) {
-    final loading = search.status == RakutenSearchStatus.loading;
-    final shops = _sanitizedSavedShopsForSearch(savedProv.shops);
-    if (shops.isEmpty) {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(
-          RakutenSearchScreenUi.screenPadH,
-          RakutenSearchScreenUi.gapDeckOuterTop,
-          RakutenSearchScreenUi.screenPadH,
-          RakutenSearchScreenUi.gapDeckOuterBottom,
-        ),
-        child: AppScreenEmptyCenter(
-          icon: Icons.bookmarks_outlined,
-          title: '保存ショップはまだありません',
-          body: 'ショップ発掘などでショップを保存すると、ここから店内検索に使えます。',
-          actions: [
-            AppPrimaryButton(
-              label: 'ショップ発掘を開く',
-              onPressed: () {
-                Navigator.of(context).push<void>(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const RakutenSearchScreen(
-                      initialMode: RakutenSearchInitialMode.shopDiscovery,
-                    ),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.travel_explore_rounded),
-            ),
-          ],
-        ),
-      );
-    }
-
-    final scoped = _effectiveShopCodeForApi(context);
-    final picked = scoped != null ? savedProv.findById(scoped) : null;
-    final disabledReason = _savedShopSearchDisabledReason(context, loading);
-    final canSearch = disabledReason == null && !loading;
-    if (kDebugMode) {
-      debugPrint(
-        '[SAVED_SHOP_SEARCH_STATE] selectedShopCode=${scoped ?? '-'} '
-        'selectedShopName=${picked?.shopName ?? '-'} keyword=${_keywordController.text.trim()} '
-        'canSearch=$canSearch disabledReason=${disabledReason ?? '-'}',
-      );
-    }
+  Widget _buildSavedShopEmptyState(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
         RakutenSearchScreenUi.screenPadH,
@@ -1426,98 +1314,164 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         RakutenSearchScreenUi.screenPadH,
         RakutenSearchScreenUi.gapDeckOuterBottom,
       ),
-      child: AppCard(
-        padding: EdgeInsets.zero,
-        backgroundColor: HomeScreenColors.roomGroupedShellFill,
-        borderColor: HomeScreenColors.sectionOutlineNeutral,
-        radius: RakutenSearchScreenUi.radiusSectionOuter,
-        elevated: true,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(
-            RakutenSearchScreenUi.radiusSectionOuter,
+      child: AppScreenEmptyCenter(
+        icon: Icons.bookmarks_outlined,
+        title: '保存ショップはまだありません',
+        body: 'ショップ発掘などでショップを保存すると、ここから店内検索に使えます。',
+        actions: [
+          AppPrimaryButton(
+            label: 'ショップ発掘を開く',
+            onPressed: () {
+              Navigator.of(context).push<void>(
+                MaterialPageRoute<void>(
+                  builder: (_) => const RakutenSearchScreen(
+                    initialMode: RakutenSearchInitialMode.shopDiscovery,
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(Icons.travel_explore_rounded),
           ),
-          clipBehavior: Clip.antiAlias,
-          child: ColoredBox(
-            color: HomeScreenColors.roomContentWellFill,
-            child: Padding(
-              padding: const EdgeInsets.all(
-                RakutenSearchScreenUi.inputDeckPadding,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SearchModeSegmentBar(
-                    selected: SearchModeSegment.savedShop,
-                    savedShopMode: true,
-                    onChanged: (seg) => _onSegmentChanged(seg),
-                  ),
-                  SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
-                  SavedShopCompactSelector(
-                    shops: shops,
-                    selectedShopCode: scoped,
-                    onChangeShop: () => _openSavedShopKeywordShopPicker(
-                      context,
-                      savedProv,
-                    ),
-                    onDiscoverShops: shops.isEmpty
-                        ? () {
-                            Navigator.of(context).push<void>(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const RakutenSearchScreen(
-                                  initialMode:
-                                      RakutenSearchInitialMode.shopDiscovery,
-                                ),
-                              ),
-                            );
-                          }
-                        : null,
-                  ),
-                  SizedBox(height: RakutenSearchScreenUi.gapFieldStack + 2),
-                  RakutenSearchPseudoSearchFieldEntry(
-                    controller: _keywordController,
-                    onTap: () => _openProductConditionsSheet(context),
-                    labelText: 'このショップ内で探す',
-                    hintText: '例：イヤホン、ベビー、スーツ',
-                    prefixIcon: Icons.search_rounded,
-                  ),
-                  if (_savedShopSearchFieldError != null) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      _savedShopSearchFieldError!,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.error,
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                  ] else if (disabledReason != null) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      disabledReason,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                  ],
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton(
-                      onPressed: () => _openProductConditionsSheet(context),
-                      child: const Text('価格・除外などの詳細条件'),
-                    ),
-                  ),
-                  SizedBox(height: RakutenSearchScreenUi.gapBeforePrimaryCta),
-                  AppPrimaryButton(
-                    label: 'このショップで探す',
-                    icon: const Icon(Icons.search_rounded, size: 22),
-                    onPressed: canSearch ? () => _runSearch(context) : null,
-                  ),
-                ],
-              ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSavedShopInput(
+    BuildContext context,
+    RakutenSearchProvider search,
+    SavedShopProvider savedProv,
+  ) {
+    final loading = search.status == RakutenSearchStatus.loading;
+    final shops = _sanitizedSavedShopsForSearch(savedProv.shops);
+    final scoped = _effectiveShopCodeForApi(context);
+    final disabledReason = _savedShopSearchDisabledReason(context, loading);
+    final canSearch = disabledReason == null && !loading;
+    if (kDebugMode) {
+      final picked = scoped != null ? savedProv.findById(scoped) : null;
+      debugPrint(
+        '[SAVED_SHOP_SEARCH_STATE] selectedShopCode=${scoped ?? '-'} '
+        'selectedShopName=${picked?.shopName ?? '-'} keyword=${_keywordController.text.trim()} '
+        'canSearch=$canSearch disabledReason=${disabledReason ?? '-'}',
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SavedShopCompactSelector(
+          shops: shops,
+          selectedShopCode: scoped,
+          onChangeShop: () => _openSavedShopKeywordShopPicker(context, savedProv),
+        ),
+        if (scoped == null) ...[
+          const SizedBox(height: 4),
+          Text(
+            '保存済みショップから選んでください',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w600,
             ),
           ),
+        ],
+        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+        RakutenSearchPseudoSearchFieldEntry(
+          controller: _keywordController,
+          onTap: () => _openProductConditionsSheet(context),
+          labelText: 'このショップ内で探す',
+          hintText: '例：イヤホン、ベビー、スーツ',
+          prefixIcon: Icons.search_rounded,
         ),
+        if (_savedShopSearchFieldError != null) ...[
+          const SizedBox(height: 4),
+          Text(
+            _savedShopSearchFieldError!,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.error,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ] else if (disabledReason != null) ...[
+          const SizedBox(height: 4),
+          Text(
+            disabledReason,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton(
+            onPressed: () => _openProductConditionsSheet(context),
+            child: const Text('価格・除外などの詳細条件'),
+          ),
+        ),
+        SizedBox(height: RakutenSearchScreenUi.gapBeforePrimaryCta),
+        AppPrimaryButton(
+          label: 'このショップで探す',
+          icon: const Icon(Icons.search_rounded, size: 22),
+          onPressed: canSearch ? () => _runSearch(context) : null,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPostSearchCompactSetupBar(
+    BuildContext context,
+    RakutenSearchProvider search,
+    SavedShopProvider savedProv,
+  ) {
+    final label = _collapsedSearchSummaryLine();
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        RakutenSearchScreenUi.screenPadH,
+        4,
+        RakutenSearchScreenUi.screenPadH,
+        4,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildInlineBackButton(context),
+          const SizedBox(height: 4),
+          SearchModeSegmentBar(
+            selected: _currentSearchModeSegment(),
+            onChanged: _onSegmentChanged,
+          ),
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: HomeScreenColors.metricTileTitleColor,
+                  ),
+                ),
+              ),
+              AppSecondaryButton(
+                label: '条件変更',
+                icon: const Icon(Icons.tune_rounded, size: 16),
+                onPressed: () => _openConditionsForCurrentMode(context),
+                height: 32,
+              ),
+              const SizedBox(width: 6),
+              IconButton(
+                tooltip: '再検索',
+                visualDensity: VisualDensity.compact,
+                onPressed: _isBulkRegistering
+                    ? null
+                    : () => _rerunSearchForCurrentMode(context),
+                icon: const Icon(Icons.refresh_rounded, size: 20),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -1527,8 +1481,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     RakutenSearchProvider search,
     SavedShopProvider savedProv,
   ) {
-    if (_savedShopKeywordEntryEffective) {
-      return _buildSavedShopKeywordDedicatedDeck(context, search, savedProv);
+    final shops = _sanitizedSavedShopsForSearch(savedProv.shops);
+    if (_savedShopKeywordEntryEffective && shops.isEmpty) {
+      return _buildSavedShopEmptyState(context);
     }
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -1572,10 +1527,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     height: RakutenSearchScreenUi.gapKeywordToControls - 1,
                   ),
                   switch (_mode) {
-                    _RakutenSearchMode.product => _buildProductInput(
-                      context,
-                      search,
-                    ),
+                    _RakutenSearchMode.product =>
+                      _savedShopKeywordEntryEffective
+                          ? _buildSavedShopInput(context, search, savedProv)
+                          : _buildProductInput(context, search),
                     _RakutenSearchMode.genre => _buildGenreInput(
                       context,
                       search,
@@ -2676,56 +2631,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         '(unknown)';
   }
 
-  Widget _buildSavedShopResultsContextHeader(
-    BuildContext context,
-    RakutenSearchProvider search,
-    SavedShopProvider saved,
-  ) {
-    final scoped = _effectiveShopCodeForApi(context)?.trim() ?? '';
-    final shopNm = scoped.isNotEmpty
-        ? saved.findById(scoped)?.shopName.trim() ?? ''
-        : '';
-    final title = scoped.isEmpty
-        ? '検索結果'
-        : (shopNm.isNotEmpty ? '$shopNm店内の検索結果' : '$scoped店内の検索結果');
-    final kw = search.lastKeyword.trim();
-    final chipStyle = Theme.of(
-      context,
-    ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-              color: HomeScreenColors.titlePrimary,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 6,
-            children: [
-              Chip(
-                label: Text('ショップ指定中', style: chipStyle),
-                visualDensity: VisualDensity.compact,
-              ),
-              if (kw.isNotEmpty)
-                Chip(
-                  label: Text('キーワード：$kw', style: chipStyle),
-                  visualDensity: VisualDensity.compact,
-                ),
-            ],
-          ),
-          const SizedBox(height: 8),
-        ],
-      ),
-    );
-  }
-
   Future<void> _runGenreSearch(BuildContext context) async {
     if (_blockRoomTourSearchForSnack('search')) return;
     if (_selectedGenreId == null || _selectedGenreId!.isEmpty) {
@@ -3279,74 +3184,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  /// 結果一覧の先頭操作ヘッダー（件数・並び順）。
-  Widget _buildResultsToolbarRow(
-    BuildContext context,
-    RakutenSearchProvider search,
-    RakutenManagedProductProvider managed,
-    List<RakutenSearchItem> orderedResults, {
-    required int showingCount,
-  }) {
-    if (!_sortLivesInResultsHeader(search)) {
-      return const SizedBox.shrink();
-    }
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-        RakutenSearchScreenUi.screenPadH,
-        0,
-        RakutenSearchScreenUi.screenPadH,
-        4,
-      ),
-      child: AppCard(
-        // 共通AppCardへ置換: 結果一覧ヘッダーのカードブロック。
-        padding: EdgeInsets.zero,
-        backgroundColor: HomeScreenColors.deckFill,
-        borderColor: HomeScreenColors.deckOutline,
-        radius: 12,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 8, 10, 7),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Text(
-                      '一覧 $showingCount件',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: HomeScreenColors.metricTileTitleColor,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 12.5,
-                        letterSpacing: -0.15,
-                      ),
-                    ),
-                  ),
-                  _buildResultSortControl(
-                    context,
-                    value: _mode == _RakutenSearchMode.product
-                        ? _keywordSort
-                        : _genreExploreSort,
-                    resultsScrollController: _mode == _RakutenSearchMode.product
-                        ? _keywordResultsScrollController
-                        : _genreResultsScrollController,
-                    onSortSelected: _mode == _RakutenSearchMode.product
-                        ? (next) => _onKeywordSortChanged(context, next)
-                        : (next) => _onGenreSortChanged(context, next),
-                    compact: true,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   void _showCompletionFeedbackIfNeeded(
     BuildContext context,
     RakutenSearchProvider search,
@@ -3372,7 +3209,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   Widget _buildSearchResultsHeaderAndListColumn({
     required List<Widget> headerChildren,
     required Widget listPane,
+    bool compactHeader = false,
   }) {
+    if (compactHeader) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ...headerChildren,
+          Expanded(child: listPane),
+        ],
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -3632,19 +3479,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           success: true,
         );
         return _buildSearchResultsHeaderAndListColumn(
+          compactHeader: true,
           headerChildren: [
-            if (_savedShopKeywordEntryEffective)
-              _buildSavedShopResultsContextHeader(context, search, saved),
             _buildCompactSearchResultsSummary(
               context,
               resultCount: showingCount,
-            ),
-            _buildResultsToolbarRow(
-              context,
-              search,
-              managed,
-              orderedResults,
-              showingCount: showingCount,
+              search: search,
             ),
             _buildBulkSelectionHeaderRow(
               context,
@@ -3764,17 +3604,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           );
         }
         return _buildSearchResultsHeaderAndListColumn(
+          compactHeader: true,
           headerChildren: [
             _buildCompactSearchResultsSummary(
               context,
               resultCount: showingCount,
-            ),
-            _buildResultsToolbarRow(
-              context,
-              search,
-              managed,
-              orderedResults,
-              showingCount: showingCount,
+              search: search,
             ),
             _buildBulkSelectionHeaderRow(
               context,
