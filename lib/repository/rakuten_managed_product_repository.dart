@@ -710,7 +710,54 @@ class RakutenManagedProductRepository {
       roomLikeCount: merged.roomLikeCount,
       roomCommentCount: merged.roomCommentCount,
     );
-    return merged;
+    return _applyRoomReactionFeedbackFromSync(merged, now);
+  }
+
+  /// ROOM 反応同期後、手動「売れた」「微妙」が無ければ「反応あり」を自動 ON。
+  RakutenManagedProduct _applyRoomReactionFeedbackFromSync(
+    RakutenManagedProduct row,
+    DateTime now,
+  ) {
+    if (row.feedbackSoldAt != null) {
+      if (kDebugMode) {
+        debugPrint(
+          '[REACTION_STATUS_AUTO_APPLY] productId=${row.productId.trim()} '
+          'roomLikeCount=${row.roomLikeCount ?? '-'} '
+          'roomCommentCount=${row.roomCommentCount ?? '-'} '
+          'oldStatus=sold newStatus=sold manualStatusPreserved=true reason=manualSold',
+        );
+      }
+      return row;
+    }
+    if (row.feedbackWeakAt != null) {
+      if (kDebugMode) {
+        debugPrint(
+          '[REACTION_STATUS_AUTO_APPLY] productId=${row.productId.trim()} '
+          'roomLikeCount=${row.roomLikeCount ?? '-'} '
+          'roomCommentCount=${row.roomCommentCount ?? '-'} '
+          'oldStatus=notGood newStatus=notGood manualStatusPreserved=true reason=manualWeak',
+        );
+      }
+      return row;
+    }
+    if (!RoomReactionStatusDisplay.hasPositiveReaction(
+      roomLikeCount: row.roomLikeCount,
+      roomCommentCount: row.roomCommentCount,
+    )) {
+      return row;
+    }
+    if (row.feedbackLikedAt != null) return row;
+    final next = row.copyWith(feedbackLikedAt: now, updatedAt: now);
+    if (kDebugMode) {
+      debugPrint(
+        '[REACTION_STATUS_AUTO_APPLY] productId=${row.productId.trim()} '
+        'roomLikeCount=${row.roomLikeCount ?? '-'} '
+        'roomCommentCount=${row.roomCommentCount ?? '-'} '
+        'oldStatus=unset newStatus=hasReaction manualStatusPreserved=false '
+        'reason=roomReactionDetected',
+      );
+    }
+    return next;
   }
 
   /// ROOMページ由来のアフィリエイトとAPIの `affiliateUrl` をマージ（**ROOM ページのアフィリエイトを最優先**）。

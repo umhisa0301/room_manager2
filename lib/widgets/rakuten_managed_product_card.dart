@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/rakuten_managed_product.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../utils/room_reaction_status_display.dart';
+import '../utils/room_unconfirmed_display_copy.dart';
 import '../services/app_action_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/user_profile_provider.dart';
@@ -268,6 +269,16 @@ class RakutenManagedProductCard extends StatelessWidget {
                                 );
                               },
                             ),
+                            if (RoomUnconfirmedDisplayCopy.chipLabelFor(
+                                  product,
+                                ) !=
+                                null)
+                              _SmallBadge(
+                                label: RoomUnconfirmedDisplayCopy.chipLabelFor(
+                                  product,
+                                )!,
+                                color: const Color(0xFF6D4C41),
+                              ),
                             if (product.roomLikeCount != null)
                               Text(
                                 '♡${product.roomLikeCount}',
@@ -315,6 +326,20 @@ class RakutenManagedProductCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: priceStyle,
                       ),
+                      if (RoomUnconfirmedDisplayCopy.priceSublineFor(product) !=
+                          null) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          RoomUnconfirmedDisplayCopy.priceSublineFor(product)!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: (priceStyle ?? const TextStyle()).copyWith(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
                       if (isCandidate) ...[
                         const SizedBox(height: 6),
                         _ratingRow(context),
@@ -422,9 +447,23 @@ class RakutenManagedProductCard extends StatelessWidget {
 
   Widget _feedbackToolbar(BuildContext context) {
     final prov = context.read<RakutenManagedProductProvider>();
-    final liked = product.feedbackLikedAt != null;
     final sold = product.feedbackSoldAt != null;
     final weak = product.feedbackWeakAt != null;
+    final roomReaction = RoomReactionStatusDisplay.hasPositiveReaction(
+      roomLikeCount: product.roomLikeCount,
+      roomCommentCount: product.roomCommentCount,
+    );
+    final liked = product.feedbackLikedAt != null ||
+        (!sold && !weak && roomReaction);
+    if (kDebugMode) {
+      final source = product.feedbackLikedAt != null
+          ? 'manual'
+          : (roomReaction ? 'roomReaction' : 'computed');
+      debugPrint(
+        '[REACTION_BUTTON_STATE_RENDER] productId=${product.productId.trim()} '
+        'soldSelected=$sold reactionSelected=$liked weakSelected=$weak source=$source',
+      );
+    }
     return Row(
       children: [
         Expanded(
