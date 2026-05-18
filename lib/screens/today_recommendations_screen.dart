@@ -252,6 +252,13 @@ class _TodayRecommendationsScreenState
                 'alreadyAdded=$alreadyAdded skipped=$skipped',
               );
             }
+            if (kDebugMode) {
+              debugPrint(
+                '[TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=${selectable.isNotEmpty} '
+                'checkboxShape=square selectedCount=${_selectedProductIds.length} '
+                'bulkButtonVisible=${_selectedProductIds.isNotEmpty}',
+              );
+            }
             return Column(
               children: [
                 _SummaryCard(

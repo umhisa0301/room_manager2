@@ -310,8 +310,10 @@ abstract final class RoomPostImportFlow {
 
     final repo = context.read<RakutenManagedProductRepository>();
     final cursorRepo = context.read<RoomSyncCursorRepository>();
+    final searchRepo = context.read<RakutenSearchRepository>();
     final service = RoomSyncService(
       repository: repo,
+      searchRepository: searchRepo,
       roomSyncCursorRepository: cursorRepo,
     );
     final limit = RoomImportLimitPolicy.effectiveBatchLimit();
@@ -354,8 +356,10 @@ abstract final class RoomPostImportFlow {
 
     final repo = context.read<RakutenManagedProductRepository>();
     final cursorRepo = context.read<RoomSyncCursorRepository>();
+    final searchRepo = context.read<RakutenSearchRepository>();
     final service = RoomSyncService(
       repository: repo,
+      searchRepository: searchRepo,
       roomSyncCursorRepository: cursorRepo,
     );
     final limit = RoomImportLimitPolicy.effectiveBatchLimit();
