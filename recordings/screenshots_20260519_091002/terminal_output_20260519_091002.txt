@@ -1,0 +1,312 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-19 09:10:02
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260519_091002.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260519_091002.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260519_091002.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260519_091002.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260519_091002.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260519_091002
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260519_091002\terminal_output_20260519_091002.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 15752).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             14.3s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.3s
+D/FlutterJNI( 9775): Beginning load of flutter...
+D/FlutterJNI( 9775): flutter (null) was loaded normally!
+I/flutter ( 9775): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter ( 9775): [DEBUG_LOG_VOLUME_AUDIT] nativeLogsObserved=true appVerboseLogsReduced=true rakutenUrlVerbose=false genreResolveVerbose=false productCardVerbose=false
+I/flutter ( 9775): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter ( 9775): verifyMode=false
+I/flutter ( 9775): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                    95ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:62691/B01_HDFpW7I=/
+I/flutter ( 9775): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100227 resolvedGenreNames=食品 invalidGenreIds= corrected=false
+I/flutter ( 9775): [GENRE_PREF_LOAD] favoriteGenreIds=100227 favoriteGenreNames=食品 source=repositoryLoad
+I/flutter ( 9775): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 9775): [ROOMコレ診断] loadAll 初回サマリー parsed=216 rawJsonList=216
+I/flutter ( 9775): [RECOMMEND_TRACE] savedBundle=true
+I/flutter ( 9775): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter ( 9775): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=true enabled=true label=投稿済み商品を取り込む reason=rendered
+I/flutter ( 9775): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=true enabled=true label=反応を確認する reason=rendered
+I/flutter ( 9775): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=analysis visible=true enabled=true label=反応があった商品は分析タブで確認できます reason=textLinkOnly
+I/flutter ( 9775): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=home visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/flutter ( 9775): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 9775): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=CommonDraggableEdgeFab file=lib/widgets/common_draggable_edge_fab.dart visible=true reason=commentEdgeFabRightSideNotMenu
+I/flutter ( 9775): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter ( 9775): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=10 afterFilterLen=10 surface=ok_list ui=ready
+I/flutter ( 9775): [ROOMコレ診断] 描画リスト先頭 productId=fu-602 title=【26％OFF】パーティードレス 結婚式 ワンピース ドレス 大きいサイズ 袖あり レース フォーマル ロング丈 ロングドレス 長袖 七分袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 ボリューム袖 フレア 春 夏 status=done len=10
+I/flutter ( 9775): [REACTION_STATUS_RENDER] productId=fu-602 roomLikeCount=65 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 9775): [REACTION_STATUS_RENDER] productId=10842150 roomLikeCount=9 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 9775): [ROOM_UNCONFIRMED_REASON_RENDER] productId=10842150 pendingReason=priceMissing price=-1 label=商品情報を確認できません shown=true
+I/flutter ( 9775): [ROOM_UNCONFIRMED_REASON_RENDER] productId=10842150 pendingReason=priceMissing price=-1 label=商品情報を確認できません shown=true
+I/flutter ( 9775): [REACTION_STATUS_RENDER] productId=21978 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 9775): [ROOM_UNCONFIRMED_REASON_RENDER] productId=21978 pendingReason=priceMissing price=-1 label=商品情報を確認できません shown=true
+I/flutter ( 9775): [ROOM_UNCONFIRMED_REASON_RENDER] productId=21978 pendingReason=priceMissing price=-1 label=商品情報を確認できません shown=true
+I/flutter ( 9775): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=206 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=206 reason=excludeRoomImportFromCandidate
+I/flutter ( 9775): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter ( 9775): [ACHIEVEMENT_PROGRESS_CLAMP] metric=candidate rawValue=206 goal=50 displayValue=50 progress=1.0
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=206 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter ( 9775): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=true visible=true reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=true visible=true reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=myPage visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/Choreographer( 9775): Skipped 211 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9106?uri=http://127.0.0.1:62691/B01_HDFpW7I=/
+I/flutter ( 9775): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 9775): action=refresh
+I/flutter ( 9775): productId=
+I/flutter ( 9775): itemCode=
+I/flutter ( 9775): beforePendingCount=206
+I/flutter ( 9775): afterPendingCount=206
+I/flutter ( 9775): beforeDoneCount=10
+I/flutter ( 9775): afterDoneCount=10
+I/flutter ( 9775): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 9775): source=provider
+I/flutter ( 9775): pendingCount=206
+I/flutter ( 9775): doneCount=10
+I/flutter ( 9775): filter=
+I/flutter ( 9775): tab=
+I/flutter ( 9775): [ROOMコレ診断] refreshManagedProductList 完了 total=216 candidate=206 done=10 ui=ready
+I/flutter ( 9775): [HOME_SECTION_ORDER] order=todayRoomOperation,roomColleManagement,roomSync,recentCandidates
+I/flutter ( 9775): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=none file=lib/screens/home_placeholder_screen.dart visible=false reason=noDrawerNoMenuFabOnHomeBody
+I/flutter ( 9775): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 9775): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter ( 9775): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 9775): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter ( 9775): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 9775): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 9775): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 9775): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-19T00:25:04.002971
+I/flutter ( 9775): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 9775): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 9775): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 9775): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-19T00:25:04.002971
+I/flutter ( 9775): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 9775): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter ( 9775): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 9775): action=refresh
+I/flutter ( 9775): productId=
+I/flutter ( 9775): itemCode=
+I/flutter ( 9775): beforePendingCount=206
+I/flutter ( 9775): afterPendingCount=206
+I/flutter ( 9775): beforeDoneCount=10
+I/flutter ( 9775): afterDoneCount=10
+I/flutter ( 9775): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 9775): source=screen
+I/flutter ( 9775): pendingCount=206
+I/flutter ( 9775): doneCount=10
+I/flutter ( 9775): filter=
+I/flutter ( 9775): tab=done
+I/flutter ( 9775): [ROOMコレ診断] refreshManagedProductList 完了 total=216 candidate=206 done=10 ui=ready
+I/flutter ( 9775): [ROOMコレ診断] ROOMコレ画面起動後 total=216 candidate=206 done=10 listUi=RakutenManagedProductListUiStatus.ready tabIdx=1
+I/flutter ( 9775): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 9775): action=refresh
+I/flutter ( 9775): productId=
+I/flutter ( 9775): itemCode=
+I/flutter ( 9775): beforePendingCount=206
+I/flutter ( 9775): afterPendingCount=206
+I/flutter ( 9775): beforeDoneCount=10
+I/flutter ( 9775): afterDoneCount=10
+I/flutter ( 9775): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 9775): source=provider
+I/flutter ( 9775): pendingCount=206
+I/flutter ( 9775): doneCount=10
+I/flutter ( 9775): filter=
+I/flutter ( 9775): tab=
+I/flutter ( 9775): [ROOMコレ診断] refreshManagedProductList 完了 total=216 candidate=206 done=10 ui=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter ( 9775): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=true enabled=true label=投稿済み商品を取り込む reason=rendered
+I/flutter ( 9775): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=true enabled=true label=反応を確認する reason=rendered
+I/flutter ( 9775): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=analysis visible=true enabled=true label=反応があった商品は分析タブで確認できます reason=textLinkOnly
+I/flutter ( 9775): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=home visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/flutter ( 9775): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9775): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 9775): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter ( 9775): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=true visible=true reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=true visible=true reason=ready
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter ( 9775): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=myPage visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/flutter ( 9775): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=206 doneCount=10 roomImportedDoneCount=10 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=206 reason=excludeRoomImportFromCandidate
+I/flutter ( 9775): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=10 appCollectedCount=0 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter ( 9775): [ACHIEVEMENT_PROGRESS_CLAMP] metric=candidate rawValue=206 goal=50 displayValue=50 progress=1.0
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-13 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-14 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=206 candidateSource=statusCandidateOnly
+I/flutter ( 9775): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9775): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=10 afterFilterLen=10 surface=ok_list ui=ready
+I/flutter ( 9775): [ROOMコレ診断] 描画リスト先頭 productId=fu-602 title=【26％OFF】パーティードレス 結婚式 ワンピース ドレス 大きいサイズ 袖あり レース フォーマル ロング丈 ロングドレス 長袖 七分袖 二次会 披露宴 お呼ばれ 上品 膝下 他と被らない 体型カバー 40代 30代 20代 50代 ボリューム袖 フレア 春 夏 status=done len=10
+I/flutter ( 9775): [REACTION_STATUS_RENDER] productId=fu-602 roomLikeCount=65 roomCommentCount=2 chipLabel=反応あり source=computed
+I/flutter ( 9775): [REACTION_STATUS_RENDER] productId=10842150 roomLikeCount=9 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 9775): [ROOM_UNCONFIRMED_REASON_RENDER] productId=10842150 pendingReason=priceMissing price=-1 label=商品情報を確認できません shown=true
+I/flutter ( 9775): [ROOM_UNCONFIRMED_REASON_RENDER] productId=10842150 pendingReason=priceMissing price=-1 label=商品情報を確認できません shown=true
+I/flutter ( 9775): [REACTION_STATUS_RENDER] productId=21978 roomLikeCount=1 roomCommentCount=0 chipLabel=反応あり source=computed
+I/flutter ( 9775): [ROOM_UNCONFIRMED_REASON_RENDER] productId=21978 pendingReason=priceMissing price=-1 label=商品情報を確認できません shown=true
+I/flutter ( 9775): [ROOM_UNCONFIRMED_REASON_RENDER] productId=21978 pendingReason=priceMissing price=-1 label=商品情報を確認できません shown=true
+I/WebViewFactory( 9775): Loading com.google.android.webview version 147.0.7727.137 (code 772713703)
+D/ApplicationLoaders( 9775): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2( 9775): Loading /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader( 9775): Configuring clns-5 for other apk /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/lib/arm64:/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider( 9775): version=147.0.7727.137 (772713703) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader( 9775): Load /data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+D/nativeloader( 9775): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~ci_ujsUfr8uhWz3T9K4MjA==/com.google.android.webview-n7Dcyj6w-heBatNLQ1zQMQ==/base.apk): ok
+I/chromium( 9775): [0519/091038.938029:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader( 9775): Successfully loaded native library
+I/cr_CachingUmaRecorder( 9775): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH( 9775): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider( 9775): #registerProvider() provider:WV.yk@9f9ad37 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider( 9775): #setManagerAndSource() 0
+I/cr_DisplayManager( 9775): Is Display Topology available: false
+I/cr_CombinedPProvider( 9775): #linkNativeInternal() 1
+D/CompatibilityChangeReporter( 9775): Compat change id reported: 183155436; UID 10465; state: ENABLED
+I/cr_AppResProvider( 9775): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 9775): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 9775): #onSettingsAvailable() 0
+I/cr_CombinedPProvider( 9775): #flushPolicies()
+W/chromium( 9775): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium( 9775): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 111966890
+D/CompatibilityChangeReporter( 9775): Compat change id reported: 214741472; UID 10465; state: ENABLED
+I/CameraManagerGlobal( 9775): Connecting to camera service
+D/CompatibilityChangeReporter( 9775): Compat change id reported: 171228096; UID 10465; state: ENABLED
+I/PlatformViewsController( 9775): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController( 9775): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter( 9775): Compat change id reported: 236825255; UID 10465; state: ENABLED
+W/libc    ( 9775): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 9775): type=1400 audit(0.0:562707): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c209,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/CompatibilityChangeReporter( 9775): Compat change id reported: 193247900; UID 10465; state: ENABLED
+I/Choreographer( 9775): Skipped 85 frames!  The application may be doing too much work on its main thread.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+W/libc    ( 9775): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 9775): type=1400 audit(0.0:562708): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c209,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0( 9775): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0( 9775): Build Date              : 08/23/22
+I/AdrenoVK-0( 9775): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0( 9775): Local Branch            : 
+I/AdrenoVK-0( 9775): Remote Branch           : 
+I/AdrenoVK-0( 9775): Reconstruct Branch      : 
+I/AdrenoVK-0( 9775): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0( 9775): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+I/AdrenoVK-0( 9775): Remote Branch           : 
+I/OpenGLRenderer( 9775): Davey! duration=1511ms; Flags=1, FrameTimelineVsyncId=647321856, IntendedVsync=4648016112857098, Vsync=4648017529523708, InputEventId=0, HandleInputStart=4648017543553325, AnimationStart=4648017543554783, PerformTraversalsStart=4648017543597596, DrawStart=4648017559788637, FrameDeadline=4648016129523764, FrameInterval=4648017543244991, FrameStartTime=16666666, SyncQueued=4648017612443429, SyncStart=4648017612526606, IssueDrawCommandsStart=4648017613319783, SwapBuffers=4648017623421554, FrameCompleted=4648017624559418, DequeueBufferDuration=2981719, QueueBufferDuration=702084, GpuCompleted=4648017624559418, SwapBuffersCompleted=4648017624480720, DisplayPresentTime=0, CommandSubmissionCompleted=4648017623421554, 
+D/ProfileInstaller( 9775): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI( 9775): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9775): updateAcquireFence: Did not find frame.
+W/o.room_manager2( 9775): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/base.apk' with 1 weak references
+W/o.room_manager2( 9775): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~tvUUoyM5cpd-y2u9GnSVLQ==/com.google.android.marvin.talkback-16GC8rC0ub-7zd0WLir5MA==/split_config.arm64_v8a.apk' with 1 weak references
