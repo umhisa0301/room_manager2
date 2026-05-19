@@ -7,6 +7,7 @@ import '../models/saved_shop.dart';
 import '../models/today_recommendation.dart';
 import '../models/user_profile.dart';
 import '../repository/rakuten_search_repository.dart';
+import '../utils/api_request_coordinator.dart';
 import '../repository/today_recommendation_repository.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/recommend_cooldown_policy.dart';
@@ -191,6 +192,17 @@ class TodayRecommendationProvider extends ChangeNotifier {
       return;
     }
     _trace('shouldSkipBecauseRecentlyTried=false');
+    if (ApiRequestCoordinator.manualSearchRunning) {
+      _guard('skipReason=manualSearchActive');
+      if (kDebugMode) {
+        debugPrint(
+          '[SEARCH_BACKGROUND_CONFLICT_AUDIT] manualSearchRunning=true '
+          'todayRecommendRunning=false roomImportRunning=false '
+          'metadataEnrichRunning=false priority=manualSearch',
+        );
+      }
+      return;
+    }
     await regenerateToday(
       profile: profile,
       managedItems: managedItems,
@@ -1194,6 +1206,20 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required Set<String> excludeIds,
   }) async {
     _apiLogStart(index: planIndex, page: 1, phase: phase);
+    if (ApiRequestCoordinator.manualSearchRunning) {
+      final ready = await ApiRequestCoordinator.waitForManualSearchIdle();
+      if (!ready) {
+        if (kDebugMode) {
+          debugPrint(
+            '[SEARCH_BACKGROUND_CONFLICT_AUDIT] manualSearchRunning=true '
+            'todayRecommendRunning=true roomImportRunning=false '
+            'metadataEnrichRunning=false priority=manualSearch '
+            'recommendPlanDeferred=true',
+          );
+        }
+        return const <RakutenSearchItem>[];
+      }
+    }
     try {
       final list = await _searchRepository.search(
         condition: condition,

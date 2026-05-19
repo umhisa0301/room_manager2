@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
+import '../config/debug_log_flags.dart';
 import '../config/rakuten_api_config.dart';
+import '../utils/api_request_coordinator.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/genre_master_repository.dart';
@@ -37,7 +39,13 @@ class RakutenSearchProvider extends ChangeNotifier {
   /// 直近の [searchWithCondition] で `excludeRegisteredProductIds` を使った場合のフェッチメタ（それ以外は null）。
   RakutenKeywordManagedFetchSummary? _keywordManagedFetchSummary;
 
+  int _searchSessionSeq = 0;
+  int _activeSearchSessionId = 0;
+  String? _activeSearchModeTag;
+
   RakutenSearchStatus get status => _status;
+  int get activeSearchSessionId => _activeSearchSessionId;
+  String? get activeSearchModeTag => _activeSearchModeTag;
   List<RakutenSearchItem> get results => _results;
   String get errorMessage => _errorMessage;
   String get lastKeyword => _lastKeyword;
@@ -102,12 +110,29 @@ class RakutenSearchProvider extends ChangeNotifier {
     await searchWithCondition(condition);
   }
 
+  /// 検索開始時に呼び、[searchWithCondition] の結果反映と照合する。
+  int beginSearchSession({required String modeTag}) {
+    final sessionId = ++_searchSessionSeq;
+    _activeSearchSessionId = sessionId;
+    _activeSearchModeTag = modeTag;
+    if (kDebugMode && DebugLogFlags.enableVerboseSearchStateLog) {
+      debugPrint(
+        '[SEARCH_EXECUTE_TRACE] sessionId=$sessionId mode=$modeTag '
+        'startedAt=${DateTime.now().toIso8601String()}',
+      );
+    }
+    return sessionId;
+  }
+
   Future<void> searchWithCondition(
     RakutenProductSearchCondition condition, {
     Set<String>? excludeRegisteredProductIds,
     Set<String>? excludeSavedShopCodes,
+    int? sessionId,
+    String modeTag = 'product',
   }) async {
     final normalized = condition.normalized();
+    final sid = sessionId ?? beginSearchSession(modeTag: modeTag);
     // キーワード検索だけでなく、genreId 指定のみの検索（ジャンル検索・ショップ発掘）も許可する。
     final hasKeyword = normalized.keyword.isNotEmpty;
     final hasGenre =
@@ -133,9 +158,13 @@ class RakutenSearchProvider extends ChangeNotifier {
     _keywordSearchHadApiHitsButNoVisibleResults = false;
     _keywordManagedFetchSummary = null;
     notifyListeners();
+    ApiRequestCoordinator.onManualSearchStarted();
 
+    var apiCalled = false;
+    int? responseStatus;
     try {
       final List<RakutenSearchItem> fetched;
+      apiCalled = true;
       if (excludeRegisteredProductIds != null) {
         final result = await _repository.searchKeywordWithManagedExclusion(
           condition: normalized,
@@ -143,6 +172,7 @@ class RakutenSearchProvider extends ChangeNotifier {
           excludeSavedShopCodes: excludeSavedShopCodes ?? const {},
         );
         fetched = result.items;
+        responseStatus = 200;
         _keywordSearchHadApiHitsButNoVisibleResults =
             result.receivedAnyItemFromApi && result.items.isEmpty;
         _keywordManagedFetchSummary = RakutenKeywordManagedFetchSummary.from(
@@ -150,22 +180,34 @@ class RakutenSearchProvider extends ChangeNotifier {
         );
       } else {
         fetched = await _repository.search(condition: normalized);
+        responseStatus = 200;
         _keywordManagedFetchSummary = null;
       }
-      if (kDebugMode) {
-        final g = normalized.genreId?.trim();
-        final tag = g != null && g.isNotEmpty
-            ? 'genreSearch'
-            : 'searchWithCondition';
-        debugPrint(
-          '[Rakuten] $tag provider after repository rawItemsCount=${fetched.length} '
-          'parsedItemsCount=${fetched.length} genreId=${normalized.genreId ?? '-'} '
-          'keywordLen=${normalized.keyword.length}',
-        );
+      if (!_applySearchResultIfCurrent(
+        sessionId: sid,
+        modeTag: modeTag,
+        onApply: () {
+          if (kDebugMode) {
+            final g = normalized.genreId?.trim();
+            final tag = g != null && g.isNotEmpty
+                ? 'genreSearch'
+                : 'searchWithCondition';
+            debugPrint(
+              '[Rakuten] $tag provider after repository rawItemsCount=${fetched.length} '
+              'parsedItemsCount=${fetched.length} genreId=${normalized.genreId ?? '-'} '
+              'keywordLen=${normalized.keyword.length}',
+            );
+          }
+          _results = fetched;
+          _status = RakutenSearchStatus.success;
+          _resolvedGenreLabels = const {};
+        },
+        statusCode: responseStatus,
+        rawCount: fetched.length,
+        displayCount: fetched.length,
+      )) {
+        return;
       }
-      _results = fetched;
-      _status = RakutenSearchStatus.success;
-      _resolvedGenreLabels = const {};
       final withAff = fetched.where((e) => e.hasAffiliateUrlInResponse).length;
       debugPrint(
         '[Rakuten] affiliateIdをリクエストに付与: '
@@ -173,19 +215,82 @@ class RakutenSearchProvider extends ChangeNotifier {
         'affiliateUrlあり: $withAff / ${fetched.length} 件',
       );
       unawaited(_prefetchGenreLabels(fetched));
+      if (kDebugMode) {
+        debugPrint(
+          '[SEARCH_FIRST_ATTEMPT_AUDIT] mode=$modeTag attempt=1 apiCalled=true '
+          'responseStatus=$responseStatus uiApplied=true failureReason=-',
+        );
+      }
     } catch (e, st) {
       if (kDebugMode) {
         debugPrint('[Rakuten] searchWithCondition failed: $e');
         debugPrint('$st');
       }
-      _results = const [];
-      _status = RakutenSearchStatus.error;
-      _errorMessage = _userFacingError(e);
-      _keywordSearchHadApiHitsButNoVisibleResults = false;
-      _keywordManagedFetchSummary = null;
-      _resolvedGenreLabels = const {};
+      final statusMatch = RegExp(r'\((\d{3})\)').firstMatch(e.toString());
+      responseStatus = int.tryParse(statusMatch?.group(1) ?? '');
+      if (!_applySearchResultIfCurrent(
+        sessionId: sid,
+        modeTag: modeTag,
+        onApply: () {
+          _results = const [];
+          _status = RakutenSearchStatus.error;
+          _errorMessage = _userFacingError(e);
+          _keywordSearchHadApiHitsButNoVisibleResults = false;
+          _keywordManagedFetchSummary = null;
+          _resolvedGenreLabels = const {};
+        },
+        statusCode: responseStatus,
+        rawCount: 0,
+        displayCount: 0,
+        skipReason: 'error',
+      )) {
+        return;
+      }
+      if (kDebugMode) {
+        debugPrint(
+          '[SEARCH_FIRST_ATTEMPT_AUDIT] mode=$modeTag attempt=1 '
+          'apiCalled=$apiCalled responseStatus=${responseStatus ?? '-'} '
+          'uiApplied=true failureReason=${e.runtimeType}',
+        );
+      }
+    } finally {
+      ApiRequestCoordinator.onManualSearchEnded();
     }
     notifyListeners();
+  }
+
+  bool _applySearchResultIfCurrent({
+    required int sessionId,
+    required String modeTag,
+    required VoidCallback onApply,
+    int? statusCode,
+    required int rawCount,
+    required int displayCount,
+    String? skipReason,
+  }) {
+    final matched = sessionId == _activeSearchSessionId;
+    if (!matched) {
+      if (kDebugMode) {
+        debugPrint(
+          '[SEARCH_API_RESULT_APPLY] sessionId=$sessionId '
+          'activeSessionId=$_activeSearchSessionId matched=false '
+          'statusCode=${statusCode ?? '-'} rawCount=$rawCount '
+          'displayCount=$displayCount appliedToUi=false '
+          'skipReason=${skipReason ?? 'staleSession'}',
+        );
+      }
+      return false;
+    }
+    onApply();
+    if (kDebugMode) {
+      debugPrint(
+        '[SEARCH_API_RESULT_APPLY] sessionId=$sessionId '
+        'activeSessionId=$_activeSearchSessionId matched=true '
+        'statusCode=${statusCode ?? '-'} rawCount=$rawCount '
+        'displayCount=$displayCount appliedToUi=true skipReason=-',
+      );
+    }
+    return true;
   }
 
   Future<void> _prefetchGenreLabels(List<RakutenSearchItem> items) async {
@@ -279,6 +384,16 @@ class RakutenSearchProvider extends ChangeNotifier {
     required String lastKeyword,
     required bool keywordSearchHadApiHitsButNoVisibleResults,
   }) {
+    if (_status == RakutenSearchStatus.loading) {
+      if (kDebugMode && DebugLogFlags.enableVerboseSearchStateLog) {
+        debugPrint(
+          '[SEARCH_API_RESULT_APPLY] sessionId=$_activeSearchSessionId '
+          'activeSessionId=$_activeSearchSessionId matched=false '
+          'appliedToUi=false skipReason=loadingInProgress',
+        );
+      }
+      return;
+    }
     _status = status;
     _results = List<RakutenSearchItem>.from(results);
     _errorMessage = errorMessage;

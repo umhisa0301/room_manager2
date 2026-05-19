@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/debug_log_flags.dart';
+
 /// ユーザー向けショップ名の解決（shopCode を UI に出さない）。
 abstract final class ShopDisplayResolve {
   static const String unknownShopLabel = 'ショップ未確認';
@@ -50,7 +52,7 @@ abstract final class ShopDisplayResolve {
     required String uiText,
     String fallback = 'resolvedShopName',
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.enableVerboseShopCodeUiAuditLog) return;
     final sc = shopCode?.trim() ?? '';
     final sn = shopName?.trim() ?? '';
     final exposed = sc.isNotEmpty && uiText == sc;

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/debug_log_flags.dart';
 import '../config/demo_mode.dart';
 import '../config/rakuten_api_config.dart';
 import '../services/room_import_limit_policy.dart';
@@ -1630,8 +1631,10 @@ class RakutenSearchRepository {
       genreName: genreName,
     );
     if (kDebugMode) {
-      debugPrint('[RAKUTEN_URL] itemUrl=${item.itemUrl}');
-      debugPrint('[RAKUTEN_URL] affiliateUrl=${item.affiliateUrl}');
+      if (DebugLogFlags.enableVerboseRakutenUrlLog) {
+        debugPrint('[RAKUTEN_URL] itemUrl=${item.itemUrl}');
+        debugPrint('[RAKUTEN_URL] affiliateUrl=${item.affiliateUrl}');
+      }
       _rakutenGenreLogApi(json, productId);
       _rakutenGenreLogMap(item);
     }

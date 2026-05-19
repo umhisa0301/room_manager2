@@ -21,6 +21,7 @@ import '../utils/genre_pref_log.dart';
 import '../utils/room_sync_button_visibility.dart';
 import '../utils/room_sync_card_copy.dart';
 import '../utils/room_sync_log.dart';
+import '../widgets/operation_confirm_dialog.dart';
 import '../widgets/room_post_import_flow.dart';
 import '../widgets/room_sync_reaction_button.dart';
 import '../models/room_reaction_sync_history_entry.dart';
@@ -1164,6 +1165,30 @@ class _MyPageRoomSyncSectionState extends State<MyPageRoomSyncSection> {
     final roomUrl = context.read<UserProfileProvider>().profile.roomUrl.trim();
     if (roomUrl.isEmpty) return;
     final ctl = context.read<RoomImportController>();
+    final bulk = context.read<BulkOperationStateController>();
+    final syncBusy = ctl.isRunning ||
+        bulk.isMetadataEnriching ||
+        bulk.isRoomReactionSyncRunning;
+    if (syncBusy || bulk.isAnyBlockingOperationRunning) {
+      if (kDebugMode) {
+        debugPrint(
+          '[ROOM_REACTION_SYNC_START_GUARD] screen=myPage blockedByBusy=true '
+          'confirmed=false',
+        );
+      }
+      return;
+    }
+    final confirmed = await showRoomReactionSyncConfirmDialog(
+      context,
+      screen: 'myPage',
+    );
+    if (kDebugMode) {
+      debugPrint(
+        '[ROOM_REACTION_SYNC_START_GUARD] screen=myPage blockedByBusy=false '
+        'confirmed=$confirmed',
+      );
+    }
+    if (!confirmed || !context.mounted) return;
     final r = await ctl.runReactionSync(context);
     if (!context.mounted || r == null) return;
     if (r.hasFatalError) {

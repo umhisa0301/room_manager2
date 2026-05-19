@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/debug_log_flags.dart';
 import '../services/rakuten_genre_master_service.dart';
 
 /// 画面表示用のジャンル名解決（genreId をユーザーに出さない）。
@@ -70,7 +71,8 @@ abstract final class GenreDisplayResolve {
     required String shownLabel,
     required bool fallbackUsed,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.enableVerboseGenreResolveLog) return;
+    if (!fallbackUsed) return;
     debugPrint(
       '[GENRE_DISPLAY_RESOLVE] screen=$screen genreId=$genreId '
       'resolvedGenreName=$resolvedGenreName shownLabel=$shownLabel '

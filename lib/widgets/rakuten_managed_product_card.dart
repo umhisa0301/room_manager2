@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config/debug_log_flags.dart';
 import '../models/rakuten_managed_product.dart';
 import '../services/room_import_metadata_enrichment.dart';
 import '../utils/room_reaction_status_display.dart';
@@ -455,7 +456,7 @@ class RakutenManagedProductCard extends StatelessWidget {
     );
     final liked = product.feedbackLikedAt != null ||
         (!sold && !weak && roomReaction);
-    if (kDebugMode) {
+    if (kDebugMode && DebugLogFlags.enableVerboseReactionButtonRenderLog) {
       final source = product.feedbackLikedAt != null
           ? 'manual'
           : (roomReaction ? 'roomReaction' : 'computed');

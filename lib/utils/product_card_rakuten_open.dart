@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../config/debug_log_flags.dart';
 import '../services/app_action_service.dart';
 
 /// 商品カードから楽天（アフィリエイト優先）を開く共通処理。
@@ -9,7 +10,7 @@ abstract final class ProductCardRakutenOpen {
     required String screen,
     required String cardType,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.enableVerboseProductCardAuditLog) return;
     debugPrint(
       '[PRODUCT_CARD_TAP_TARGET_AUDIT] screen=$screen cardType=$cardType '
       'imageTapOpensRakuten=true titleTapOpensRakuten=true usesAffiliateUrl=true '

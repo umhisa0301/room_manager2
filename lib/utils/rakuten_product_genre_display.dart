@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/debug_log_flags.dart';
 import '../services/rakuten_genre_master_service.dart';
 
 /// 商品一覧・検索結果向けのジャンル表示名（UI とロジックの境界）。
@@ -98,11 +99,15 @@ class RakutenProductGenreDisplay {
     required String resolvedGenreName,
     required String source,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
-      '[GENRE_LABEL_RESOLVE] screen=$screen productId=$productId genreId=$genreId '
-      'rawGenreName=$rawGenreName resolvedGenreName=$resolvedGenreName source=$source',
-    );
+    if (!kDebugMode || !DebugLogFlags.enableVerboseGenreResolveLog) return;
+    if (resolvedGenreName == unknownLabel ||
+        RegExp(r'^\d+$').hasMatch(rawGenreName) ||
+        rawGenreName.isEmpty) {
+      debugPrint(
+        '[GENRE_LABEL_RESOLVE] screen=$screen productId=$productId genreId=$genreId '
+        'rawGenreName=$rawGenreName resolvedGenreName=$resolvedGenreName source=$source',
+      );
+    }
   }
 
   static void _traceRakutenGenreIfNeeded({

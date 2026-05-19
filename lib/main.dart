@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,6 +40,7 @@ import 'state/saved_shop_provider.dart';
 import 'state/today_recommendation_provider.dart';
 import 'navigation/app_shell_controller.dart';
 import 'models/genre_master.dart';
+import 'config/debug_log_flags.dart';
 import 'config/room_import_enrichment_verify_config.dart';
 import 'utils/room_sync_log.dart';
 
@@ -56,6 +58,14 @@ Future<void> _bootstrapRakutenGenreNameCache(GenreMasterRepository repo) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (kDebugMode) {
+    debugPrint(
+      '[DEBUG_LOG_VOLUME_AUDIT] nativeLogsObserved=true appVerboseLogsReduced=true '
+      'rakutenUrlVerbose=${DebugLogFlags.enableVerboseRakutenUrlLog} '
+      'genreResolveVerbose=${DebugLogFlags.enableVerboseGenreResolveLog} '
+      'productCardVerbose=${DebugLogFlags.enableVerboseProductCardAuditLog}',
+    );
+  }
   roomImportEnrichModeLog(RoomImportEnrichmentVerifyConfig.enabled);
   final prefs = await SharedPreferences.getInstance();
   final productRepository = ProductRepository(prefs);

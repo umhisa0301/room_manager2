@@ -6,10 +6,12 @@ import '../../models/rakuten_managed_product.dart';
 import '../../navigation/rakuten_search_navigator.dart';
 import '../../screens/today_recommendations_screen.dart';
 import '../../state/rakuten_managed_product_provider.dart';
+import '../../state/bulk_operation_state_controller.dart';
 import '../../state/room_import_controller.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/room_next_action_advisor.dart';
 import '../../widgets/app_card.dart';
+import '../../widgets/operation_confirm_dialog.dart';
 import '../../widgets/room_post_import_flow.dart';
 import 'activity_screen_layout.dart';
 
@@ -170,6 +172,30 @@ class _ActionRow extends StatelessWidget {
         );
       case RoomNextActionType.checkReactions:
         final ctl = context.read<RoomImportController>();
+        final bulk = context.read<BulkOperationStateController>();
+        final syncBusy = ctl.isRunning ||
+            bulk.isMetadataEnriching ||
+            bulk.isRoomReactionSyncRunning;
+        if (syncBusy || bulk.isAnyBlockingOperationRunning) {
+          if (kDebugMode) {
+            debugPrint(
+              '[ROOM_REACTION_SYNC_START_GUARD] screen=analytics '
+              'blockedByBusy=true confirmed=false',
+            );
+          }
+          return;
+        }
+        final confirmed = await showRoomReactionSyncConfirmDialog(
+          context,
+          screen: 'analytics',
+        );
+        if (kDebugMode) {
+          debugPrint(
+            '[ROOM_REACTION_SYNC_START_GUARD] screen=analytics '
+            'blockedByBusy=false confirmed=$confirmed',
+          );
+        }
+        if (!confirmed || !context.mounted) return;
         await ctl.runReactionSync(context);
     }
   }

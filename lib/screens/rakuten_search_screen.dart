@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config/debug_log_flags.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
@@ -132,6 +135,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   final FocusNode _discoveryDetailSheetKeywordFocus = FocusNode(
     debugLabel: 'discoveryDetailSheetKeyword',
   );
+  final FocusNode _savedShopKeywordFocusNode = FocusNode(
+    debugLabel: 'savedShopKeyword',
+  );
+  bool _savedShopSearchCanSubmit = false;
 
   RakutenSearchProvider? _cachedSearchProvider;
   BulkOperationStateController? _cachedBulkCtl;
@@ -171,6 +178,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (widget.savedShopKeywordEntry) {
       _savedShopKeywordFlow = true;
     }
+    _savedShopKeywordFocusNode.addListener(_onSavedShopKeywordFocusChanged);
+    _keywordController.addListener(_onSavedShopKeywordTextChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _restoreSearchSession(_modeCacheKey());
@@ -227,8 +236,50 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _productDetailSheetKeywordFocus.dispose();
     _genreDetailSheetDropdownFocus.dispose();
     _discoveryDetailSheetKeywordFocus.dispose();
+    _savedShopKeywordFocusNode.removeListener(_onSavedShopKeywordFocusChanged);
+    _keywordController.removeListener(_onSavedShopKeywordTextChanged);
+    _savedShopKeywordFocusNode.dispose();
     _saveCurrentSearchSession();
     super.dispose();
+  }
+
+  void _onSavedShopKeywordFocusChanged() {
+    if (!_savedShopKeywordEntryEffective) return;
+    _logSavedShopKeywordFocusAudit(
+      event: _savedShopKeywordFocusNode.hasFocus ? 'focusGained' : 'focusLost',
+    );
+  }
+
+  void _onSavedShopKeywordTextChanged() {
+    if (!_savedShopKeywordEntryEffective) return;
+    _logSavedShopKeywordFocusAudit(event: 'onChanged');
+    final nextCan = _keywordController.text.trim().isNotEmpty;
+    if (nextCan != _savedShopSearchCanSubmit) {
+      setState(() => _savedShopSearchCanSubmit = nextCan);
+    }
+  }
+
+  void _logSavedShopKeywordFocusAudit({
+    required String event,
+    String reason = '-',
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[SAVED_SHOP_KEYWORD_FOCUS_AUDIT] event=$event '
+      'hasFocus=${_savedShopKeywordFocusNode.hasFocus} '
+      'keywordLength=${_keywordController.text.length} '
+      'controllerHash=${_keywordController.hashCode} '
+      'focusNodeHash=${_savedShopKeywordFocusNode.hashCode} reason=$reason',
+    );
+  }
+
+  void _logSavedShopKeywordRebuildAudit() {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[SAVED_SHOP_KEYWORD_REBUILD_AUDIT] selectedShopCode=${_selectedShopCode ?? '-'} '
+      'keyword=${_keywordController.text.trim()} controllerPreserved=true '
+      'focusNodePreserved=true',
+    );
   }
 
   @override
@@ -323,7 +374,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     cache.restoreProviderSnapshot(key, search);
     final ui = cache.uiSnapshot(key);
     if (ui != null) {
-      setState(() => _applyUiSnapshot(ui));
+      setState(() {
+        _applyUiSnapshot(ui);
+        _savedShopSearchCanSubmit = _keywordController.text.trim().isNotEmpty;
+      });
     }
   }
 
@@ -340,7 +394,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required double keyboardInset,
     required bool compactSetup,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.enableVerboseSearchStateLog) return;
     final bottomSafe = MediaQuery.paddingOf(context).bottom;
     debugPrint(
       '[SEARCH_LAYOUT_GUARD] mode=${_searchResultScreenTag()} '
@@ -377,7 +431,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required bool compactSetup,
     required bool hasResults,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.enableVerboseSearchStateLog) return;
     final mode = _searchResultScreenTag();
     debugPrint(
       '[SEARCH_HEADER_WIDGET_TREE_AUDIT] mode=$mode usesSharedHeader=true '
@@ -694,33 +748,19 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                             0.5
                                       : double.infinity,
                                 ),
-                                child: keyboardOpen
-                                    ? SingleChildScrollView(
-                                        physics: const ClampingScrollPhysics(),
-                                        keyboardDismissBehavior:
-                                            ScrollViewKeyboardDismissBehavior
-                                                .onDrag,
-                                        child: _buildModeAndInputArea(
-                                          context,
-                                          search,
-                                          saved,
-                                        ),
-                                      )
-                                    : ListView(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const ClampingScrollPhysics(),
-                                        keyboardDismissBehavior:
-                                            ScrollViewKeyboardDismissBehavior
-                                                .onDrag,
-                                        children: [
-                                          _buildModeAndInputArea(
-                                            context,
-                                            search,
-                                            saved,
-                                          ),
-                                        ],
-                                      ),
+                                child: SingleChildScrollView(
+                                  key: const ValueKey<String>(
+                                    'search_mode_input_scroll',
+                                  ),
+                                  physics: const ClampingScrollPhysics(),
+                                  keyboardDismissBehavior:
+                                      ScrollViewKeyboardDismissBehavior.onDrag,
+                                  child: _buildModeAndInputArea(
+                                    context,
+                                    search,
+                                    saved,
+                                  ),
+                                ),
                               ),
                             ),
                           Divider(
@@ -1115,7 +1155,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   void _runSearch(BuildContext context) {
     if (_blockRoomTourSearchForSnack('search')) return;
-    _dismissKeywordSearchKeyboard();
+    if (!_savedShopKeywordEntryEffective) {
+      _dismissKeywordSearchKeyboard();
+    }
     if (_savedShopKeywordEntryEffective) {
       final scopedShop = _effectiveShopCodeForApi(context);
       final keyword = _keywordController.text;
@@ -1193,10 +1235,24 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       'hasGenreDrilldown=true hasSelectAllCheckbox=true hasInputLimits=true '
       'hasSafetyFilter=true hasFixedFooter=true',
     );
-    context.read<RakutenSearchProvider>().searchWithCondition(
-      condition,
-      excludeRegisteredProductIds: excludeIds,
-      excludeSavedShopCodes: excludeSavedForKeywordPass,
+    final modeTag = _savedShopKeywordEntryEffective ? 'savedShop' : 'product';
+    final searchProv = context.read<RakutenSearchProvider>();
+    final sessionId = searchProv.beginSearchSession(modeTag: modeTag);
+    if (kDebugMode) {
+      debugPrint(
+        '[SEARCH_EXECUTE_TRACE] sessionId=$sessionId mode=$modeTag '
+        'keyword="${condition.keyword}" selectedShopCode=${condition.shopCode ?? '-'} '
+        'genreId=${condition.genreId ?? '-'} startedAt=${DateTime.now().toIso8601String()}',
+      );
+    }
+    unawaited(
+      searchProv.searchWithCondition(
+        condition,
+        excludeRegisteredProductIds: excludeIds,
+        excludeSavedShopCodes: excludeSavedForKeywordPass,
+        sessionId: sessionId,
+        modeTag: modeTag,
+      ),
     );
   }
 
@@ -1347,11 +1403,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     RakutenSearchProvider search,
     SavedShopProvider savedProv,
   ) {
+    _logSavedShopKeywordRebuildAudit();
     final loading = search.status == RakutenSearchStatus.loading;
     final shops = _sanitizedSavedShopsForSearch(savedProv.shops);
     final scoped = _effectiveShopCodeForApi(context);
     final disabledReason = _savedShopSearchDisabledReason(context, loading);
-    final canSearch = disabledReason == null && !loading;
+    final canSearch =
+        _savedShopSearchCanSubmit && disabledReason == null && !loading;
     final keywordEmpty = _keywordController.text.trim().isEmpty;
     _logSavedShopSearchUxAudit(
       selectedShop: scoped != null,
@@ -1468,9 +1526,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         ),
         const SizedBox(height: 4),
         AppTextField(
+          key: const ValueKey<String>('saved_shop_keyword_field'),
           controller: _keywordController,
+          focusNode: _savedShopKeywordFocusNode,
           hintText: '例：さかな、干物、ギフト',
           textInputAction: TextInputAction.search,
+          onTap: () => _logSavedShopKeywordFocusAudit(event: 'tap'),
           onSubmitted: canSearch ? (_) => _runSearch(context) : null,
         ),
         if (_savedShopSearchFieldError != null) ...[
@@ -1833,7 +1894,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   void _onSearchWayPicked(_SearchWayPicker way) {
-    if (_mode == _RakutenSearchMode.product) {
+    if (_mode == _RakutenSearchMode.product &&
+        way != _SearchWayPicker.savedShop &&
+        !_savedShopKeywordEntryEffective) {
       _dismissKeywordSearchKeyboard();
     }
     final fromMode = _mode.name;
@@ -2811,10 +2874,21 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       'screen=genreSearch hasGenreDrilldown=true hasSelectAllCheckbox=true '
       'hasInputLimits=true hasSafetyFilter=true hasFixedFooter=true',
     );
-    await context.read<RakutenSearchProvider>().searchWithCondition(
+    final searchProv = context.read<RakutenSearchProvider>();
+    final sessionId = searchProv.beginSearchSession(modeTag: 'genre');
+    if (kDebugMode) {
+      debugPrint(
+        '[SEARCH_EXECUTE_TRACE] sessionId=$sessionId mode=genre '
+        'keyword="${condition.keyword}" selectedShopCode=${condition.shopCode ?? '-'} '
+        'genreId=${condition.genreId ?? '-'} startedAt=${DateTime.now().toIso8601String()}',
+      );
+    }
+    await searchProv.searchWithCondition(
       condition,
       excludeRegisteredProductIds: excludeIds,
       excludeSavedShopCodes: savedShopCodes,
+      sessionId: sessionId,
+      modeTag: 'genre',
     );
   }
 
@@ -3652,8 +3726,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             emptyGenericFilteredOut: RakutenSearchEmptyView(
               icon: Icons.filter_alt_off_outlined,
               title: '表示できる商品がありません',
-              body: '取得はできていますが、表示用のフィルタ後は0件です。',
-              hints: const ['条件を緩める', 'ジャンル探索に切り替える'],
+              body: search.keywordManagedVisibleShortfallNote() ??
+                  '取得はできていますが、候補済・安全性フィルタ等の適用後は0件です。',
+              hints: const ['条件を緩める', 'キーワードを変えて再検索', 'ジャンル探索に切り替える'],
               onRefine: () => _openProductConditionsSheet(context),
               refineLabel: '条件を開く',
               stateFootnote: '取得は完了しています。',
