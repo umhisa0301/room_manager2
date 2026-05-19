@@ -1198,9 +1198,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       );
     }
     final condition = _buildProductCondition(context);
-    final excludeIds = context
-        .read<RakutenManagedProductProvider>()
-        .productIdsExcludedFromKeywordSearch();
+    final managedProv = context.read<RakutenManagedProductProvider>();
+    final excludeIds = managedProv.productIdsExcludedFromKeywordSearch();
+    final excludeCandidateIds =
+        managedProv.candidateProductIdsExcludedFromKeywordSearch();
+    final excludeDoneIds = managedProv.doneProductIdsExcludedFromKeywordSearch();
     final savedShopCodes = context
         .read<SavedShopProvider>()
         .shops
@@ -1249,6 +1251,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       searchProv.searchWithCondition(
         condition,
         excludeRegisteredProductIds: excludeIds,
+        excludeCandidateProductIds: excludeCandidateIds,
+        excludeDoneProductIds: excludeDoneIds,
         excludeSavedShopCodes: excludeSavedForKeywordPass,
         sessionId: sessionId,
         modeTag: modeTag,
@@ -2861,9 +2865,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       _genreResultsScrollController.jumpTo(0);
     }
     setState(() => _searchHeaderCollapsed = false);
-    final excludeIds = context
-        .read<RakutenManagedProductProvider>()
-        .productIdsExcludedFromKeywordSearch();
+    final managedProv = context.read<RakutenManagedProductProvider>();
+    final excludeIds = managedProv.productIdsExcludedFromKeywordSearch();
+    final excludeCandidateIds =
+        managedProv.candidateProductIdsExcludedFromKeywordSearch();
+    final excludeDoneIds = managedProv.doneProductIdsExcludedFromKeywordSearch();
     final savedShopCodes = context
         .read<SavedShopProvider>()
         .shops
@@ -2886,6 +2892,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     await searchProv.searchWithCondition(
       condition,
       excludeRegisteredProductIds: excludeIds,
+      excludeCandidateProductIds: excludeCandidateIds,
+      excludeDoneProductIds: excludeDoneIds,
       excludeSavedShopCodes: savedShopCodes,
       sessionId: sessionId,
       modeTag: 'genre',
@@ -3696,9 +3704,27 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           resultCount: showingCount,
           success: true,
         );
+        final shortfallNote = search.keywordManagedVisibleShortfallNote();
         return _buildSearchResultsHeaderAndListColumn(
           compactHeader: true,
           headerChildren: [
+            if (shortfallNote != null)
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  RakutenSearchScreenUi.screenPadH,
+                  0,
+                  RakutenSearchScreenUi.screenPadH,
+                  6,
+                ),
+                child: Text(
+                  shortfallNote,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w600,
+                        height: 1.35,
+                      ),
+                ),
+              ),
             _buildBulkSelectionHeaderRow(
               context,
               search,
@@ -3819,9 +3845,27 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             'showingCount=${orderedResults.length}',
           );
         }
+        final shortfallNote = search.keywordManagedVisibleShortfallNote();
         return _buildSearchResultsHeaderAndListColumn(
           compactHeader: true,
           headerChildren: [
+            if (shortfallNote != null)
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  RakutenSearchScreenUi.screenPadH,
+                  0,
+                  RakutenSearchScreenUi.screenPadH,
+                  6,
+                ),
+                child: Text(
+                  shortfallNote,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w600,
+                        height: 1.35,
+                      ),
+                ),
+              ),
             _buildBulkSelectionHeaderRow(
               context,
               search,

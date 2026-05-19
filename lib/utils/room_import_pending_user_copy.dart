@@ -69,6 +69,8 @@ abstract final class RoomImportPendingUserCopy {
     required RakutenManagedProduct product,
     required RoomImportPendingReason reason,
     Iterable<String> pendingFields = const [],
+    bool apiMatched = false,
+    String apiStatus = '',
   }) {
     if (!kDebugMode) return;
     debugPrint(
@@ -76,6 +78,42 @@ abstract final class RoomImportPendingUserCopy {
       'title=${product.itemName.trim()} shopCode=${product.shopCode.trim()} '
       'pendingFields=${pendingFields.join(',')} '
       'reason=${logReasonLabel(reason)} userMessage=${userMessageFor(reason)}',
+    );
+    logUnconfirmedCause(
+      product: product,
+      reason: reason,
+      apiMatched: apiMatched,
+      apiStatus: apiStatus,
+    );
+  }
+
+  static void logUnconfirmedCause({
+    required RakutenManagedProduct product,
+    required RoomImportPendingReason reason,
+    bool apiMatched = false,
+    String apiStatus = '',
+  }) {
+    if (!kDebugMode) return;
+    final cause = switch (reason) {
+      RoomImportPendingReason.soldOutOrUnavailable => 'soldOutOrUnavailable',
+      RoomImportPendingReason.priceMissing => 'priceOnlyMissing',
+      RoomImportPendingReason.metadataMissing => 'metadataOnlyMissing',
+      RoomImportPendingReason.noExactMatch => 'apiNoMatch',
+      RoomImportPendingReason.temporarilyUnavailable => 'unknown',
+      RoomImportPendingReason.unknown => 'unknown',
+    };
+    debugPrint(
+      '[ROOM_IMPORT_UNCONFIRMED_CAUSE] productId=${product.productId} '
+      'hasRoomTitle=${product.itemName.trim().isNotEmpty} '
+      'hasRoomImage=${product.imageUrl.trim().isNotEmpty} '
+      'hasRoomItemUrl=${product.itemUrl.trim().isNotEmpty} '
+      'hasItemCode=${product.roomApiCompositeItemCode.trim().isNotEmpty} '
+      'hasShopCode=${product.shopCode.trim().isNotEmpty} '
+      'hasPrice=${product.itemPrice > 0} '
+      'hasShopName=${product.shopName.trim().isNotEmpty} '
+      'hasGenreName=${product.genreName.trim().isNotEmpty} '
+      'apiMatched=$apiMatched apiStatus=${apiStatus.isEmpty ? '-' : apiStatus} '
+      'cause=$cause',
     );
   }
 

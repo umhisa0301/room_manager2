@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_reaction_sync_history_entry.dart';
 import '../models/room_reaction_sync_top_product.dart';
+import 'analytics_unknown_label.dart';
 
 /// ROOM 反応分析の対象・スコア・ログの単一情報源。
 
@@ -60,7 +61,24 @@ List<RakutenManagedProduct> roomReactionAnalyticsEligibleItems(
 
 String roomReactionAnalyticsGenreBucket(RakutenManagedProduct e) {
   final g = e.genreName.trim();
-  return g.isEmpty ? 'ジャンル未確認' : g;
+  if (g.isEmpty) return 'ジャンル未確認';
+  return g;
+}
+
+/// 傾向分析の集計対象ジャンルか（未分類・未確認は除外）。
+bool roomReactionAnalyticsGenreTrendEligible(RakutenManagedProduct e) {
+  return AnalyticsUnknownLabel.isAnalyticsEligibleGenre(
+    e.genreName,
+    genreId: e.genreId,
+  );
+}
+
+/// 傾向分析の集計対象ショップか。
+bool roomReactionAnalyticsShopTrendEligible(RakutenManagedProduct e) {
+  return AnalyticsUnknownLabel.isAnalyticsEligibleShop(
+    shopName: e.shopName,
+    shopCode: e.shopCode,
+  );
 }
 
 /// ショップ名・コードとも空のときの集計キー（他名称と衝突しないプレフィクス）。

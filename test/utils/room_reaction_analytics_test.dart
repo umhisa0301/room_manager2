@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:room_manager2/models/rakuten_managed_product.dart';
+import 'package:room_manager2/utils/analytics_unknown_label.dart';
 import 'package:room_manager2/utils/room_reaction_analytics.dart';
 
 void main() {
@@ -78,6 +79,27 @@ void main() {
       );
       expect(b.label, 'ショップ未確認');
       expect(b.key, roomReactionAnalyticsUnknownShopKey);
+    });
+
+    test('未分類ジャンルは傾向集計対象外', () {
+      expect(roomReactionAnalyticsGenreTrendEligible(p(genreName: '未分類')), false);
+      expect(
+        roomReactionAnalyticsGenreTrendEligible(p(genreName: 'コーヒー')),
+        true,
+      );
+    });
+
+    test('shopCodeのみのショップは傾向集計対象外', () {
+      expect(
+        roomReactionAnalyticsShopTrendEligible(
+          p(shopName: '', shopCode: 'girl-k'),
+        ),
+        false,
+      );
+      expect(
+        AnalyticsUnknownLabel.isUnknownShopLabel('', shopCode: 'girl-k'),
+        true,
+      );
     });
   });
 }

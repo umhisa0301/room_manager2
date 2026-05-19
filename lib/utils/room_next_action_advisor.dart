@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../services/room_import_metadata_enrichment.dart';
+import 'analytics_unknown_label.dart';
 import 'room_reaction_analytics.dart';
 import 'shop_display_resolve.dart';
 
@@ -63,10 +64,12 @@ abstract final class RoomNextActionAdvisor {
       final genreCounts = <String, int>{};
       final shopCounts = <String, int>{};
       for (final p in withReaction) {
+        if (!roomReactionAnalyticsGenreTrendEligible(p)) continue;
         final gid = p.genreId.trim();
         if (gid.isNotEmpty) {
           genreCounts[gid] = (genreCounts[gid] ?? 0) + 1;
         }
+        if (!roomReactionAnalyticsShopTrendEligible(p)) continue;
         final sc = p.shopCode.trim();
         if (sc.isNotEmpty) {
           shopCounts[sc] = (shopCounts[sc] ?? 0) + 1;
@@ -145,15 +148,23 @@ abstract final class RoomNextActionAdvisor {
       final label = topGenreName != null && topGenreName.isNotEmpty
           ? topGenreName
           : '人気ジャンル';
-      actions.add(
-        RoomNextAction(
-          type: RoomNextActionType.exploreSimilarProducts,
-          title: '反応が多い商品に近いものを探しましょう',
-          reason: '「$label」に反応が集まっています',
-          ctaLabel: '似た商品を探す',
-          genreId: topGenreId,
-        ),
-      );
+      if (AnalyticsUnknownLabel.isUnknownGenreLabel(label)) {
+        AnalyticsUnknownLabel.logNextActionGuard(
+          candidateAction: 'exploreSimilarProducts',
+          removed: true,
+          reason: 'unknownGenre',
+        );
+      } else {
+        actions.add(
+          RoomNextAction(
+            type: RoomNextActionType.exploreSimilarProducts,
+            title: '反応が多い商品に近いものを探しましょう',
+            reason: '「$label」に反応が集まっています',
+            ctaLabel: '似た商品を探す',
+            genreId: topGenreId,
+          ),
+        );
+      }
     }
 
     if (topShopCode != null &&
@@ -164,21 +175,28 @@ abstract final class RoomNextActionAdvisor {
         shopCode: topShopCode,
         screen: 'roomNextActionAdvisor',
       );
-      final safeLabel = label == ShopDisplayResolve.unknownShopLabel
-          ? '反応の多いショップ'
-          : label;
-      actions.add(
-        RoomNextAction(
-          type: RoomNextActionType.exploreShopProducts,
-          title: '反応が多いショップの商品を増やしましょう',
-          reason: label == ShopDisplayResolve.unknownShopLabel
-              ? '反応が集まっている商品があります'
-              : '「$safeLabel」の商品に反応が集まっています',
-          ctaLabel: 'このショップで探す',
-          shopCode: topShopCode,
-          shopName: topShopName,
-        ),
-      );
+      if (label == ShopDisplayResolve.unknownShopLabel ||
+          AnalyticsUnknownLabel.isUnknownShopLabel(
+            topShopName,
+            shopCode: topShopCode,
+          )) {
+        AnalyticsUnknownLabel.logNextActionGuard(
+          candidateAction: 'exploreShopProducts',
+          removed: true,
+          reason: 'unknownShop',
+        );
+      } else {
+        actions.add(
+          RoomNextAction(
+            type: RoomNextActionType.exploreShopProducts,
+            title: '反応が多いショップの商品を増やしましょう',
+            reason: '「$label」の商品に反応が集まっています',
+            ctaLabel: 'このショップで探す',
+            shopCode: topShopCode,
+            shopName: topShopName,
+          ),
+        );
+      }
     }
 
     if (candidateCount < 3 &&

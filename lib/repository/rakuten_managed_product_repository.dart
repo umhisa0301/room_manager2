@@ -15,6 +15,7 @@ import '../utils/managed_product_diag_log.dart';
 import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_reaction_status_display.dart';
 import '../utils/room_import_product_image.dart';
+import '../utils/room_import_safe_merge.dart';
 import '../utils/room_sync_log.dart';
 
 /// ROOM 同期で既存コレ済行にヒットした照合結果（照合順は [RakutenManagedProductRepository.findRoomImportExistingRowMatch]）。
@@ -428,8 +429,12 @@ class RakutenManagedProductRepository {
       final resolvedLabel = _resolvedGenreLabelForSearchItem(api);
       final now = DateTime.now();
       final apiShop = api.shopName.trim();
-      final mergedShopName =
-          apiShop.isNotEmpty && apiShop != 'ショップ名不明' ? apiShop : e.shopName;
+      final mergedShopName = RoomImportSafeMerge.mergeString(
+        field: 'shopName',
+        existing: e.shopName,
+        incoming: apiShop.isNotEmpty && apiShop != 'ショップ名不明' ? apiShop : '',
+        productId: id,
+      );
       final mergedGenreNameRaw = _mergedGenreNameForRoomImportApi(
         api: api,
         resolvedLabel: resolvedLabel,
@@ -446,26 +451,56 @@ class RakutenManagedProductRepository {
       final mergedGenreId =
           api.genreId.trim().isNotEmpty ? api.genreId : e.genreId;
       final learnedComp = persistRoomApiCompositeItemCode.trim();
-      final roomHasPrice = e.itemPrice > 0;
-      final apiPriceOk = api.itemPrice > 0;
       final mergedImage = _pickRoomImportPersistImageUrl(
         productId: e.productId,
         roomPageImageUrl: '',
         apiImageUrl: api.imageUrl,
         existingImageUrl: e.imageUrl,
       );
+      final mergedPrice = RoomImportSafeMerge.mergePrice(
+        field: 'price',
+        existing: e.itemPrice,
+        incoming: api.itemPrice,
+        productId: id,
+      );
+      final mergedItemUrl = RoomImportSafeMerge.mergeString(
+        field: 'itemUrl',
+        existing: e.itemUrl,
+        incoming: api.itemUrl,
+        productId: id,
+      );
+      final mergedAffiliate = RoomImportSafeMerge.mergeString(
+        field: 'affiliateUrl',
+        existing: e.affiliateUrl ?? '',
+        incoming: api.affiliateUrl,
+        productId: id,
+      );
+      final mergedShopCode = RoomImportSafeMerge.mergeString(
+        field: 'shopCode',
+        existing: e.shopCode,
+        incoming: api.shopCode,
+        productId: id,
+      );
       return e.copyWith(
-        itemName: api.itemName.trim().isNotEmpty ? api.itemName : e.itemName,
-        itemPrice: !roomHasPrice && apiPriceOk ? api.itemPrice : e.itemPrice,
-        itemUrl: api.itemUrl.trim().isNotEmpty ? api.itemUrl : e.itemUrl,
-        rakutenUrl: api.itemUrl.trim().isNotEmpty ? api.itemUrl.trim() : e.rakutenUrl,
-        affiliateUrl: api.affiliateUrl.trim().isNotEmpty
-            ? api.affiliateUrl.trim()
-            : e.affiliateUrl,
+        itemName: RoomImportSafeMerge.mergeString(
+          field: 'title',
+          existing: e.itemName,
+          incoming: api.itemName,
+          productId: id,
+        ),
+        itemPrice: mergedPrice,
+        itemUrl: mergedItemUrl,
+        rakutenUrl: mergedItemUrl.trim().isNotEmpty ? mergedItemUrl.trim() : e.rakutenUrl,
+        affiliateUrl: mergedAffiliate.trim().isNotEmpty ? mergedAffiliate.trim() : e.affiliateUrl,
         imageUrl: mergedImage,
         shopName: mergedShopName,
-        shopUrl: api.shopUrl.trim().isNotEmpty ? api.shopUrl : e.shopUrl,
-        shopCode: api.shopCode.trim().isNotEmpty ? api.shopCode : e.shopCode,
+        shopUrl: RoomImportSafeMerge.mergeString(
+          field: 'shopUrl',
+          existing: e.shopUrl,
+          incoming: api.shopUrl,
+          productId: id,
+        ),
+        shopCode: mergedShopCode,
         genreId: mergedGenreId,
         genreName: mergedGenreName,
         resolvedGenreName: resolvedLabel.isNotEmpty
@@ -1088,20 +1123,53 @@ class RakutenManagedProductRepository {
             existing.shopName.trim().isNotEmpty) {
           roomImportSaveLog('preservedExistingShopName=true');
         }
-        next = next.copyWith(
-          itemName: api.itemName.trim().isNotEmpty
-              ? api.itemName
-              : next.itemName,
-          itemPrice: api.itemPrice > 0 ? api.itemPrice : next.itemPrice,
-          shopName: () {
+        final beforePrice = next.itemPrice;
+        final beforeImage = next.imageUrl;
+        final beforeShop = next.shopName;
+        final mergedPrice = RoomImportSafeMerge.mergePrice(
+          field: 'price',
+          existing: next.itemPrice,
+          incoming: api.itemPrice,
+          productId: next.productId,
+        );
+        final mergedShopName = RoomImportSafeMerge.mergeString(
+          field: 'shopName',
+          existing: next.shopName,
+          incoming: () {
             final s = api.shopName.trim();
-            return (s.isNotEmpty && s != 'ショップ名不明')
-                ? api.shopName
-                : next.shopName;
+            return (s.isNotEmpty && s != 'ショップ名不明') ? api.shopName : '';
           }(),
-          shopUrl: api.shopUrl.trim().isNotEmpty ? api.shopUrl : next.shopUrl,
+          productId: next.productId,
+        );
+        final mergedGenre = RoomImportSafeMerge.mergeString(
+          field: 'genreName',
+          existing: next.genreName,
+          incoming: mergedGn,
+          productId: next.productId,
+        );
+        next = next.copyWith(
+          itemName: RoomImportSafeMerge.mergeString(
+            field: 'title',
+            existing: next.itemName,
+            incoming: api.itemName,
+            productId: next.productId,
+          ),
+          itemPrice: mergedPrice,
+          shopName: mergedShopName,
+          shopCode: RoomImportSafeMerge.mergeString(
+            field: 'shopCode',
+            existing: next.shopCode,
+            incoming: api.shopCode,
+            productId: next.productId,
+          ),
+          shopUrl: RoomImportSafeMerge.mergeString(
+            field: 'shopUrl',
+            existing: next.shopUrl,
+            incoming: api.shopUrl,
+            productId: next.productId,
+          ),
           genreId: api.genreId.trim().isNotEmpty ? api.genreId : next.genreId,
-          genreName: mergedGn.trim().isNotEmpty ? mergedGn : next.genreName,
+          genreName: mergedGenre,
           resolvedGenreName: resolvedLabel.isNotEmpty
               ? resolvedLabel
               : next.resolvedGenreName,
@@ -1118,6 +1186,42 @@ class RakutenManagedProductRepository {
               : next.reviewAverage,
           reviewCount: api.reviewCount > 0 ? api.reviewCount : next.reviewCount,
           roomImportMetadataEnriching: false,
+        );
+        RoomImportSafeMerge.logMergeDecision(
+          productId: next.productId,
+          field: 'price',
+          beforePresent: beforePrice > 0,
+          incomingPresent: api.itemPrice > 0,
+          afterPresent: next.itemPrice > 0,
+          keptExisting: beforePrice > 0 && next.itemPrice == beforePrice,
+          reason: api.itemPrice > 0
+              ? 'apiPresentOverwrite'
+              : 'apiEmptyKeepExisting',
+        );
+        RoomImportSafeMerge.logMergeDecision(
+          productId: next.productId,
+          field: 'shopName',
+          beforePresent: beforeShop.trim().isNotEmpty,
+          incomingPresent: api.shopName.trim().isNotEmpty &&
+              api.shopName.trim() != 'ショップ名不明',
+          afterPresent: next.shopName.trim().isNotEmpty,
+          keptExisting:
+              beforeShop.trim().isNotEmpty && next.shopName == beforeShop,
+          reason: api.shopName.trim().isEmpty
+              ? 'apiEmptyKeepExisting'
+              : 'apiPresentOverwrite',
+        );
+        RoomImportSafeMerge.logMergeDecision(
+          productId: next.productId,
+          field: 'imageUrl',
+          beforePresent: beforeImage.trim().isNotEmpty,
+          incomingPresent: api.imageUrl.trim().isNotEmpty,
+          afterPresent: next.imageUrl.trim().isNotEmpty,
+          keptExisting:
+              beforeImage.trim().isNotEmpty && next.imageUrl == beforeImage,
+          reason: api.imageUrl.trim().isEmpty
+              ? 'apiEmptyKeepExisting'
+              : 'apiPresentOverwrite',
         );
         if (rakutenApiPartialData) {
           roomImportSaveLog('partialSuccess=true existingRowMerge=true');
@@ -1199,9 +1303,7 @@ class RakutenManagedProductRepository {
     if (suppressListingHintPrice) {
       hintYen = 0;
     } else {
-      hintYen = (hintRaw != null && hintRaw > 0)
-          ? hintRaw
-          : (rakutenApiPartialData ? -1 : 0);
+      hintYen = (hintRaw != null && hintRaw > 0) ? hintRaw : 0;
     }
 
     var row = RakutenManagedProduct(
@@ -1277,7 +1379,12 @@ class RakutenManagedProductRepository {
       );
       row = row.copyWith(
         itemName: apiNew.itemName.trim().isNotEmpty ? apiNew.itemName : row.itemName,
-        itemPrice: apiNew.itemPrice > 0 ? apiNew.itemPrice : row.itemPrice,
+        itemPrice: RoomImportSafeMerge.mergePrice(
+          field: 'price',
+          existing: row.itemPrice,
+          incoming: apiNew.itemPrice,
+          productId: row.productId,
+        ),
         itemUrl: urlsNew.$1.isNotEmpty ? urlsNew.$1 : row.itemUrl,
         rakutenUrl: urlsNew.$2 ?? row.rakutenUrl,
         affiliateUrl: _mergeAffiliateForRoomPersist(

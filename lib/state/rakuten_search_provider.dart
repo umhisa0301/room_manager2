@@ -74,17 +74,27 @@ class RakutenSearchProvider extends ChangeNotifier {
   String? keywordManagedVisibleShortfallNote() {
     final s = _keywordManagedFetchSummary;
     if (s == null) return null;
-    final n = _results.length;
+    final n = s.displayCount > 0 ? s.displayCount : _results.length;
     if (n >= s.targetVisibleCap) return null;
+    final excluded = s.excludedCandidate + s.excludedDone;
+    if (s.stopReason == RakutenKeywordSearchStopReason.partialFetchFailure) {
+      return '一部の商品を取得できませんでした。条件を変えるか、もう一度検索してください。';
+    }
+    if (excluded > 0 && n > 0) {
+      return '条件に合う商品を$n件表示しています。候補・コレ済の商品は除外しています。';
+    }
+    if (excluded > 0) {
+      return '候補・コレ済の商品は除外しています。';
+    }
     switch (s.stopReason) {
       case RakutenKeywordSearchStopReason.reachedTarget:
         return null;
       case RakutenKeywordSearchStopReason.partialFetchFailure:
-        return '途中の取得に失敗したため、表示は$n件です。しばらくして再検索してください。';
+        return '一部の商品を取得できませんでした。条件を変えるか、もう一度検索してください。';
       case RakutenKeywordSearchStopReason.maxPagesReached:
-        return '取得ページ上限に達しました。除外後の表示は$n件です。';
+        return '条件に合う商品を$n件表示しています。';
       case RakutenKeywordSearchStopReason.apiNoMoreResults:
-        return '登録済・保存ショップを除くと、この条件で表示できる新しい候補は$n件でした。';
+        return '条件に合う商品を$n件表示しています。';
     }
   }
 
@@ -127,6 +137,8 @@ class RakutenSearchProvider extends ChangeNotifier {
   Future<void> searchWithCondition(
     RakutenProductSearchCondition condition, {
     Set<String>? excludeRegisteredProductIds,
+    Set<String>? excludeCandidateProductIds,
+    Set<String>? excludeDoneProductIds,
     Set<String>? excludeSavedShopCodes,
     int? sessionId,
     String modeTag = 'product',
@@ -169,7 +181,13 @@ class RakutenSearchProvider extends ChangeNotifier {
         final result = await _repository.searchKeywordWithManagedExclusion(
           condition: normalized,
           excludeRegisteredProductIds: excludeRegisteredProductIds,
+          excludeCandidateProductIds:
+              excludeCandidateProductIds ?? const {},
+          excludeDoneProductIds: excludeDoneProductIds ?? const {},
           excludeSavedShopCodes: excludeSavedShopCodes ?? const {},
+          fetchMode: modeTag == 'genre'
+              ? 'genre'
+              : (modeTag == 'savedShop' ? 'savedShop' : 'product'),
         );
         fetched = result.items;
         responseStatus = 200;

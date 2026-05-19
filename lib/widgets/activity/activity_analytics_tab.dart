@@ -19,7 +19,6 @@ import '../../state/room_activity_event_provider.dart';
 import '../../state/saved_shop_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/room_reaction_analytics.dart';
-import '../../utils/shop_display_resolve.dart';
 import '../../utils/room_sync_log.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_card.dart';
@@ -809,27 +808,18 @@ class _RoomReactionAnalyticsSectionState
         '反応がある商品は見つかっています。もう少し件数が増えると、伸びやすい傾向が見えやすくなります。',
       );
     } else {
-      if (genreBySumSorted.isNotEmpty &&
-          genreBySumSorted.first.value > 0 &&
-          genreBySumSorted.first.key != 'ジャンル未確認') {
+      if (genreBySumSorted.isNotEmpty && genreBySumSorted.first.value > 0) {
         out.add(
           '「${genreBySumSorted.first.key}」ジャンルの商品にいいね・コメントが集まっています',
         );
       }
       if (shopAggSorted.isNotEmpty && shopAggSorted.first.value.sum > 0) {
         final lab = shopAggSorted.first.value.label.trim();
-        if (lab.isNotEmpty &&
-            lab != 'ショップ未確認' &&
-            !ShopDisplayResolve.looksLikeShopCode(lab)) {
-          out.add('「$lab」の商品にいいね・コメントが集まっています');
-        } else {
-          out.add('反応が集まっている商品があります');
-        }
+        out.add('「$lab」の商品にいいね・コメントが集まっています');
       }
       if (out.isEmpty) {
-        out.add(
-          '反応がある商品について、ジャンルやショップごとの様子もあわせて確認できます。',
-        );
+        out.add('十分なジャンル傾向はまだありません');
+        out.add('まずは反応があった商品の商品情報を確認しましょう');
       }
     }
     if (commentedCount > 0) {
@@ -868,12 +858,16 @@ class _RoomReactionAnalyticsSectionState
     final shopLabelByKey = <String, String>{};
     final shopTrend = <String, int>{};
     for (final e in withReaction) {
-      final gk = roomReactionAnalyticsGenreBucket(e);
       final sum = roomReactionAnalyticsReactionSum(e);
-      genreTrend[gk] = (genreTrend[gk] ?? 0) + sum;
-      final b = roomReactionAnalyticsShopBucket(e);
-      shopLabelByKey[b.key] = b.label;
-      shopTrend[b.key] = (shopTrend[b.key] ?? 0) + sum;
+      if (roomReactionAnalyticsGenreTrendEligible(e)) {
+        final gk = roomReactionAnalyticsGenreBucket(e);
+        genreTrend[gk] = (genreTrend[gk] ?? 0) + sum;
+      }
+      if (roomReactionAnalyticsShopTrendEligible(e)) {
+        final b = roomReactionAnalyticsShopBucket(e);
+        shopLabelByKey[b.key] = b.label;
+        shopTrend[b.key] = (shopTrend[b.key] ?? 0) + sum;
+      }
     }
     List<MapEntry<String, int>> genreRows = genreTrend.entries
         .where((e) => e.value > 0)
