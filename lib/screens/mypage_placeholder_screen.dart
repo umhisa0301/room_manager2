@@ -38,7 +38,7 @@ import '../state/room_import_controller.dart';
 import '../theme/app_theme.dart';
 import '../utils/user_profile_genre_migration.dart';
 import '../utils/onboarding_ui_log.dart';
-import '../widgets/favorite_genre_picker_sheet.dart';
+import '../widgets/genre_drilldown_picker_sheet.dart';
 import '../widgets/post_style_picker_sheet.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
@@ -114,20 +114,23 @@ class MypagePlaceholderScreen extends StatelessWidget {
   Future<void> _openFavoriteGenrePickerSheet(BuildContext context) async {
     final profile = context.read<UserProfileProvider>().profile;
     final initialIds = _profileFavoriteGenreIds(profile);
-    final picked = await showModalBottomSheet<List<String>>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      showDragHandle: true,
-      builder: (sheetContext) {
-        final h = MediaQuery.sizeOf(sheetContext).height * 0.88;
-        return SizedBox(
-          height: h,
-          child: FavoriteGenrePickerSheet(initialSelectedIds: initialIds),
-        );
-      },
+    if (kDebugMode) {
+      debugPrint(
+        '[MYPAGE_GENRE_TREE_OPEN] source=mypage initialCount=${initialIds.length}',
+      );
+    }
+    final picked = await GenreDrilldownPickerSheet.showMulti(
+      context,
+      initialSelectedIds: initialIds,
+      maxSelectable: 5,
+      source: 'mypage',
     );
     if (picked == null || !context.mounted) return;
+    if (kDebugMode) {
+      debugPrint(
+        '[MYPAGE_GENRE_TREE_SELECT] count=${picked.length} ids=${picked.join(',')}',
+      );
+    }
     await _saveFavoriteGenres(
       context,
       picked,
@@ -152,6 +155,12 @@ class MypagePlaceholderScreen extends StatelessWidget {
     );
     await context.read<UserProfileProvider>().saveProfile(next);
     final savedNames = next.favoriteGenreList;
+    if (kDebugMode) {
+      debugPrint(
+        '[MYPAGE_GENRE_SAVE] count=${idList.length} ids=${idList.join(',')} '
+        'names=${savedNames.join(',')}',
+      );
+    }
     for (var i = 0; i < idList.length; i++) {
       GenrePrefLog.logSave(
         selectedGenreId: idList[i],

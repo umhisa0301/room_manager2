@@ -9,6 +9,7 @@ import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/bulk_operation_state_controller.dart';
 import '../../state/room_import_controller.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/analytics_shop_search_launcher.dart';
 import '../../utils/room_next_action_advisor.dart';
 import '../../widgets/app_card.dart';
 import '../../widgets/operation_confirm_dialog.dart';
@@ -117,15 +118,28 @@ class _ActionRow extends StatelessWidget {
   Future<void> _onCta(BuildContext context) async {
     switch (action.type) {
       case RoomNextActionType.exploreSimilarProducts:
+        final gid = action.genreId?.trim() ?? '';
         await openRakutenSearchScreen(
           context,
           initialMode: RakutenSearchInitialMode.genre,
+          initialGenreId: gid.isNotEmpty ? gid : null,
         );
       case RoomNextActionType.exploreShopProducts:
-        await openRakutenSearchScreen(
-          context,
-          savedShopKeywordEntry: true,
-        );
+        final sc = action.shopCode?.trim() ?? '';
+        if (sc.isNotEmpty) {
+          await AnalyticsShopSearchLauncher.launchShopSearch(
+            context,
+            shopCode: sc,
+            shopName: action.shopName ?? '',
+            screen: 'roomNextActionsCard',
+          );
+        } else {
+          await AnalyticsShopSearchLauncher.launchTopShopSearch(
+            context,
+            items: context.read<RakutenManagedProductProvider>().items,
+            screen: 'roomNextActionsCard',
+          );
+        }
       case RoomNextActionType.confirmProductMetadata:
         await RoomPostImportFlow.runManualPendingRoomImportMetadataEnrich(
           context,

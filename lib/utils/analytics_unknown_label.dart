@@ -11,6 +11,7 @@ abstract final class AnalyticsUnknownLabel {
     'ジャンル未確認',
     'ジャンル未設定',
     '不明',
+    'unknown',
   };
 
   static const Set<String> unknownShopLabels = {
@@ -68,6 +69,20 @@ abstract final class AnalyticsUnknownLabel {
       return false;
     }
     return true;
+  }
+
+  static void logExistingDataGuard({
+    required String productId,
+    required String genreName,
+    required String genreId,
+    required bool excludedFromTrend,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[UNKNOWN_GENRE_EXISTING_DATA_GUARD] productId=$productId '
+      'genreName=${genreName.isEmpty ? '-' : genreName} genreId=${genreId.isEmpty ? '-' : genreId} '
+      'excludedFromTrend=$excludedFromTrend keptInStorage=true',
+    );
   }
 
   static void logNextActionGuard({

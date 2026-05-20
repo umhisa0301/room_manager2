@@ -57,6 +57,8 @@ class RakutenSearchScreen extends StatefulWidget {
     this.initialMode = RakutenSearchInitialMode.product,
     this.savedShopKeywordEntry = false,
     this.initialSavedShopCode,
+    this.initialScopedShopCode,
+    this.initialGenreId,
   });
 
   final RakutenSearchInitialMode initialMode;
@@ -66,6 +68,12 @@ class RakutenSearchScreen extends StatefulWidget {
 
   /// [savedShopKeywordEntry] で開いたときの初期選択ショップ（`SavedShop.shopId`）。
   final String? initialSavedShopCode;
+
+  /// 商品名検索で API shopCode を事前指定（保存ショップ未登録でも可）。
+  final String? initialScopedShopCode;
+
+  /// ジャンル探索で事前選択する genreId。
+  final String? initialGenreId;
 
   @override
   State<RakutenSearchScreen> createState() => _RakutenSearchScreenState();
@@ -101,6 +109,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   final TextEditingController _shopDiscoveryItemsPerShopController =
       TextEditingController(text: '5');
   String? _selectedShopCode;
+  String? _analyticsScopedShopCode;
   String? _selectedGenreId;
   String? _selectedDiscoveryGenreId;
   bool _isBulkRegistering = false;
@@ -166,6 +175,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     setState(() => _selectedShopCode = preset);
   }
 
+  void _applyInitialScopedPresetsOnce() {
+    final scoped = widget.initialScopedShopCode?.trim();
+    if (scoped != null && scoped.isNotEmpty) {
+      _analyticsScopedShopCode = scoped;
+    }
+    final gid = widget.initialGenreId?.trim();
+    if (gid != null && gid.isNotEmpty && _selectedGenreId == null) {
+      _selectedGenreId = gid;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -175,6 +195,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _shopDiscoveryResultsScrollController.addListener(
       _handleResultsScrollForHeader,
     );
+    _applyInitialScopedPresetsOnce();
     if (widget.savedShopKeywordEntry) {
       _savedShopKeywordFlow = true;
     }
@@ -1277,6 +1298,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   /// 保存済ショップに存在する [shopId] だけを API の shopCode として渡す。
   String? _effectiveShopCodeForApi(BuildContext context) {
+    final scoped = _analyticsScopedShopCode?.trim();
+    if (scoped != null && scoped.isNotEmpty) return scoped;
     final code = _selectedShopCode?.trim();
     if (code == null || code.isEmpty) return null;
     if (!context.mounted) return null;

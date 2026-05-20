@@ -191,7 +191,7 @@ abstract final class RoomNextActionAdvisor {
             type: RoomNextActionType.exploreShopProducts,
             title: '反応が多いショップの商品を増やしましょう',
             reason: '「$label」の商品に反応が集まっています',
-            ctaLabel: 'このショップで探す',
+            ctaLabel: '反応が良かったショップで検索する',
             shopCode: topShopCode,
             shopName: topShopName,
           ),
@@ -208,6 +208,17 @@ abstract final class RoomNextActionAdvisor {
           title: '今日は候補を3件追加しましょう',
           reason: '候補が少ないと運用しづらいため、おすすめから追加できます',
           ctaLabel: 'おすすめコレを見る',
+        ),
+      );
+    }
+
+    if (actions.isEmpty && withReaction.isNotEmpty) {
+      actions.add(
+        const RoomNextAction(
+          type: RoomNextActionType.checkReactions,
+          title: 'まだ十分な傾向はありません',
+          reason: 'まずは反応がある商品を増やしましょう',
+          ctaLabel: '反応を確認する',
         ),
       );
     }

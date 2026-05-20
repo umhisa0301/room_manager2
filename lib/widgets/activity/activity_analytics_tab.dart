@@ -11,17 +11,19 @@ import '../../models/room_reaction_sync_top_product.dart';
 import '../../navigation/app_shell_controller.dart';
 import '../../navigation/rakuten_search_navigator.dart';
 import '../../screens/today_recommendations_screen.dart';
-import '../../services/app_action_service.dart';
-
 import '../../services/room_reaction_sync_history_store.dart';
 import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
 import '../../state/saved_shop_provider.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/analytics_shop_search_launcher.dart';
+import '../../utils/analytics_unknown_label.dart';
 import '../../utils/room_reaction_analytics.dart';
 import '../../utils/room_sync_log.dart';
+import '../../utils/shop_display_resolve.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_card.dart';
+import '../../widgets/product_open_action_buttons.dart';
 import '../../widgets/room_colle_product_list_card_layout.dart';
 import 'activity_navigation_helpers.dart';
 import 'activity_screen_layout.dart';
@@ -225,16 +227,35 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     List<RakutenManagedProduct> subset,
   ) {
     final map = <String, int>{};
+    final labels = <String, String>{};
+    final genreIds = <String, String>{};
     for (final p in subset) {
-      final k = _genreLabel(p);
-      map[k] = (map[k] ?? 0) + 1;
+      if (!roomReactionAnalyticsGenreTrendEligible(p)) {
+        if (kDebugMode) {
+          AnalyticsUnknownLabel.logExistingDataGuard(
+            productId: p.productId,
+            genreName: p.genreName,
+            genreId: p.genreId,
+            excludedFromTrend: true,
+          );
+        }
+        continue;
+      }
+      final label = _resolvedGenreLabelForOutcome(p);
+      if (label == null) continue;
+      final gid = p.genreId.trim();
+      final key = gid.isNotEmpty ? gid : label;
+      map[key] = (map[key] ?? 0) + 1;
+      labels[key] = label;
+      if (gid.isNotEmpty) genreIds[key] = gid;
     }
     final list = map.entries
         .map(
           (e) => _AggRow(
-            label: e.key,
+            label: labels[e.key] ?? e.key,
             count: e.value,
             reactCount: e.value,
+            genreId: genreIds[e.key],
           ),
         )
         .toList();
@@ -246,22 +267,47 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     List<RakutenManagedProduct> subset,
   ) {
     final map = <String, int>{};
+    final labels = <String, String>{};
     for (final p in subset) {
-      var k = p.shopName.trim();
-      if (k.isEmpty) k = '（ショップ名なし）';
-      map[k] = (map[k] ?? 0) + 1;
+      if (!roomReactionAnalyticsShopTrendEligible(p)) continue;
+      final code = p.shopCode.trim();
+      if (code.isEmpty) continue;
+      final label = ShopDisplayResolve.resolveDisplayShopName(
+        shopName: p.shopName,
+        shopCode: code,
+        screen: 'activityOutcomeShop',
+      );
+      if (AnalyticsUnknownLabel.isUnknownShopLabel(label, shopCode: code)) {
+        continue;
+      }
+      map[code] = (map[code] ?? 0) + 1;
+      labels[code] = label;
     }
     final list = map.entries
         .map(
           (e) => _AggRow(
-            label: e.key,
+            label: labels[e.key] ?? e.key,
             count: e.value,
             reactCount: e.value,
+            shopCode: e.key,
           ),
         )
         .toList();
     list.sort((a, b) => b.count.compareTo(a.count));
     return list;
+  }
+
+  static String? _resolvedGenreLabelForOutcome(RakutenManagedProduct p) {
+    final persisted = p.persistedGenreDisplayName?.trim() ?? '';
+    final gn = p.genreName.trim();
+    final label = persisted.isNotEmpty ? persisted : gn;
+    if (!AnalyticsUnknownLabel.isAnalyticsEligibleGenre(
+      label,
+      genreId: p.genreId,
+    )) {
+      return null;
+    }
+    return label;
   }
 
   static List<({String label, int count})> _postedHourBuckets8(
@@ -381,8 +427,18 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
         ? '最多ショップは「${_shortShopLabel(topShop.label)}」の${topShop.count}件です。'
         : '';
 
+    final doneTotal = done.length;
+    final sampleHeadline = doneTotal == n
+        ? '評価が付いた$n件から読み取れること'
+        : '評価が付いた$n件から読み取れること（コレ済$doneTotal件）';
+    if (kDebugMode) {
+      debugPrint(
+        '[ANALYTICS_SAMPLE_COUNT_COPY] outcomeCount=$n doneTotal=$doneTotal '
+        'headline=$sampleHeadline lens=$lensJa',
+      );
+    }
     final rationale = StringBuffer()
-      ..write('$n件のコレ済から読み取れること（$lensJa）：')
+      ..write('$sampleHeadline（$lensJa）：')
       ..write('\n');
     if (sumT > 0 && bestCount > 0) {
       rationale.write(
@@ -419,40 +475,83 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
         ),
       );
     }
-    if (topGenre != null && topGenre.count >= 2) {
+    if (topGenre != null &&
+        topGenre.count >= 2 &&
+        !AnalyticsUnknownLabel.isUnknownGenreLabel(topGenre.label)) {
       final genreCta = switch (outcomeLens) {
         _OutcomeLens.sold => '売れたジャンルの商品を探す',
         _OutcomeLens.likedOnly => '「${topGenre.label}」の商品を探す',
         _OutcomeLens.combined => '成果の出たジャンルの商品を探す',
       };
+      final gid = topGenre.genreId?.trim() ?? '';
       nextSteps.add(
         _NextStepAction(
           title: '「${topGenre.label}」系をあと3件候補に追加する',
           basis: '最多ジャンルは「${topGenre.label}」の${topGenre.count}件です',
           buttonLabel: genreCta,
-          onPressed: navRec,
+          onPressed: () {
+            if (gid.isNotEmpty) {
+              unawaited(
+                openRakutenSearchScreen(
+                  navCtx,
+                  initialMode: RakutenSearchInitialMode.genre,
+                  initialGenreId: gid,
+                ),
+              );
+            } else {
+              navRec();
+            }
+          },
         ),
       );
+    } else if (topGenre != null && topGenre.count >= 2) {
+      AnalyticsUnknownLabel.logNextActionGuard(
+        candidateAction: 'outcomeGenreExplore',
+        removed: true,
+        reason: 'unknownGenre',
+      );
     }
-    if (topShop != null && topShop.count >= 2) {
+    if (topShop != null &&
+        topShop.count >= 2 &&
+        topShop.shopCode != null &&
+        topShop.shopCode!.trim().isNotEmpty) {
+      final shopLabel = _shortShopLabel(topShop.label);
       nextSteps.add(
         _NextStepAction(
-          title: '「${_shortShopLabel(topShop.label)}」から類似商品を探す',
-          basis: '最多ショップは「${_shortShopLabel(topShop.label)}」の${topShop.count}件です',
-          buttonLabel: '反応が良かったショップを見る',
-          onPressed: () => openRakutenSearchScreen(navCtx),
+          title: '「$shopLabel」で商品を探す',
+          basis: '最多ショップは「$shopLabel」の${topShop.count}件です',
+          buttonLabel: '反応が良かったショップで検索する',
+          onPressed: () => AnalyticsShopSearchLauncher.launchShopSearch(
+            navCtx,
+            shopCode: topShop.shopCode!,
+            shopName: topShop.label,
+            screen: 'activityOutcomeBrief',
+          ),
         ),
       );
     }
     if (nextSteps.isEmpty) {
-      nextSteps.add(
-        _NextStepAction(
-          title: '候補を増やして成果のサンプルを厚くする',
-          basis: '成果は$n件ありますが、時間帯・ジャンル・ショップの偏りがまだはっきりしません',
-          buttonLabel: 'おすすめコレを開く',
-          onPressed: navRec,
-        ),
-      );
+      final hasEligibleGenre = genreRows.isNotEmpty;
+      final hasEligibleShop = shopRows.isNotEmpty;
+      if (!hasEligibleGenre && !hasEligibleShop) {
+        nextSteps.add(
+          _NextStepAction(
+            title: 'まだ十分な傾向はありません',
+            basis: 'まずは反応がある商品を増やしましょう',
+            buttonLabel: 'おすすめコレを開く',
+            onPressed: navRec,
+          ),
+        );
+      } else {
+        nextSteps.add(
+          _NextStepAction(
+            title: '候補を増やして成果のサンプルを厚くする',
+            basis: '成果は$n件ありますが、時間帯・ジャンル・ショップの偏りがまだはっきりしません',
+            buttonLabel: 'おすすめコレを開く',
+            onPressed: navRec,
+          ),
+        );
+      }
       nextSteps.add(
         _NextStepAction(
           title: 'コレ済の評価を最新に保つ',
@@ -475,12 +574,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     );
   }
 
-  static String _genreLabel(RakutenManagedProduct p) {
-    final n = p.persistedGenreDisplayName?.trim();
-    if (n != null && n.isNotEmpty) return n;
-    return '未分類';
-  }
-
   static String _shortShopLabel(String raw) {
     final t = raw.trim();
     if (t.length <= 18) return t;
@@ -493,11 +586,15 @@ class _AggRow {
     required this.label,
     required this.count,
     required this.reactCount,
+    this.genreId,
+    this.shopCode,
   });
 
   final String label;
   final int count;
   final int reactCount;
+  final String? genreId;
+  final String? shopCode;
 
   double get rate => count <= 0 ? 0 : reactCount / count;
 }
@@ -818,8 +915,8 @@ class _RoomReactionAnalyticsSectionState
         out.add('「$lab」の商品にいいね・コメントが集まっています');
       }
       if (out.isEmpty) {
-        out.add('十分なジャンル傾向はまだありません');
-        out.add('まずは反応があった商品の商品情報を確認しましょう');
+        out.add('まだ十分な傾向はありません');
+        out.add('まずは反応がある商品を増やしましょう');
       }
     }
     if (commentedCount > 0) {
@@ -1069,7 +1166,9 @@ class _RoomReactionAnalyticsSectionState
             ),
             const SizedBox(height: 8),
             Text(
-              'いいね・コメントが多い順（最大3件）',
+              withReaction.isEmpty
+                  ? 'いいね・コメントが多い順'
+                  : '反応が確認できた${withReaction.length}件から（いいね・コメントが多い順）',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                     height: 1.4,
@@ -1164,11 +1263,10 @@ class _RoomReactionAnalyticsSectionState
                   max: maxGenre <= 0 ? 1 : maxGenre,
                 ),
               ],
-            if (genreRows.isNotEmpty &&
-                genreRows.first.key == 'ジャンル未確認') ...[
+            if (unknownGenreCount > 0) ...[
               const SizedBox(height: 10),
               Text(
-                'ジャンル未確認が目立つ場合は、ROOMコレ画面上部の案内に沿ってショップ名・ジャンルを確認すると、分析の精度が上がります。',
+                'ジャンル未確認の商品は傾向から除外しています。ROOMコレで商品情報を確認すると、分析の精度が上がります。',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: AppColors.textTertiary,
                       height: 1.35,
@@ -1207,6 +1305,18 @@ class _RoomReactionAnalyticsSectionState
                   max: maxShop <= 0 ? 1 : maxShop,
                 ),
               ],
+            if (shopRows.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              AppSecondaryButton(
+                label: '反応が良かったショップで検索する',
+                icon: const Icon(Icons.storefront_outlined, size: 18),
+                onPressed: () => AnalyticsShopSearchLauncher.launchTopShopSearch(
+                  context,
+                  items: widget.allItems,
+                  screen: 'activityReactionTrend',
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -1237,12 +1347,13 @@ class _RoomReactionCompactProductRow extends StatelessWidget {
     final genre = product.persistedGenreDisplayName?.trim();
     final genreLine =
         (genre != null && genre.isNotEmpty) ? genre : product.genreName.trim();
-    final genreOut = genreLine.isEmpty ? 'ジャンル未確認' : genreLine;
+    final genreOut = roomReactionAnalyticsGenreTrendEligible(product) &&
+            genreLine.isNotEmpty
+        ? genreLine
+        : 'ジャンル未確認';
     final shopOut = roomReactionAnalyticsShopDisplayLine(product);
     final price =
         RoomColleProductListCardLayout.formatPriceYen(product.itemPrice);
-    final roomUrl = product.roomUrl.trim();
-
     final deltaParts = <String>[];
     if (delta != null) {
       if (delta!.deltaLike > 0) {
@@ -1256,45 +1367,66 @@ class _RoomReactionCompactProductRow extends StatelessWidget {
 
     final soldNote = product.feedbackSoldAt != null;
 
+    Future<void> openRakutenFromCard() async {
+      if (kDebugMode) {
+        debugPrint(
+          '[PRODUCT_CARD_AFFILIATE_TAP_TARGET] screen=activityReactionProduct '
+          'productId=${product.productId.trim()} target=titleOrImage',
+        );
+      }
+      final err = await context
+          .read<RakutenManagedProductProvider>()
+          .openRakutenItemPage(context, product.productId);
+      if (!context.mounted) return;
+      if (err != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(err)),
+        );
+      }
+    }
+
     return Material(
       color: Colors.transparent,
-      child: InkWell(
-        onTap: () => activityNavigateForProductId(
-          context,
-          productId: product.productId,
-        ),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 28,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 14),
-                    child: Text(
-                      '$rank',
-                      textAlign: TextAlign.center,
-                      style:
-                          Theme.of(context).textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.w900,
-                                color: AppColors.accentPrimary,
-                                fontSize: 17,
-                              ),
-                    ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 28,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: Text(
+                    '$rank',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w900,
+                          color: AppColors.accentPrimary,
+                          fontSize: 17,
+                        ),
                   ),
                 ),
               ),
-              _Thumb(url: product.imageUrl),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+            ),
+            InkWell(
+              onTap: product.rakutenOpenUrl.trim().isEmpty
+                  ? null
+                  : () => unawaited(openRakutenFromCard()),
+              borderRadius: BorderRadius.circular(10),
+              child: _Thumb(url: product.imageUrl),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: product.rakutenOpenUrl.trim().isEmpty
+                        ? null
+                        : () => unawaited(openRakutenFromCard()),
+                    child: Text(
                       product.itemName.trim().isEmpty
                           ? '商品名なし'
                           : product.itemName.trim(),
@@ -1305,8 +1437,16 @@ class _RoomReactionCompactProductRow extends StatelessWidget {
                                 fontWeight: FontWeight.w800,
                                 fontSize: 15,
                                 height: 1.25,
+                                decoration: product.rakutenOpenUrl
+                                        .trim()
+                                        .isNotEmpty
+                                    ? TextDecoration.underline
+                                    : null,
+                                decorationColor: AppColors.textPrimary
+                                    .withValues(alpha: 0.25),
                               ),
                     ),
+                  ),
                     const SizedBox(height: 4),
                     Text(
                       'いいね $like ・ コメント $comment',
@@ -1372,80 +1512,33 @@ class _RoomReactionCompactProductRow extends StatelessWidget {
                       ),
                     ],
                     const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            visualDensity: VisualDensity.compact,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 2,
-                            ),
-                            foregroundColor: AppColors.accentPrimary,
-                            minimumSize: Size.zero,
-                          ),
-                          onPressed: roomUrl.isEmpty
-                              ? null
-                              : () => unawaited(
-                                    AppActionService.openUrl(
-                                      context,
-                                      url: roomUrl,
-                                    ),
-                                  ),
-                          child: const Text(
-                            'ROOMで見る',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            visualDensity: VisualDensity.compact,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 2,
-                            ),
-                            foregroundColor: AppColors.accentPrimary,
-                            minimumSize: Size.zero,
-                          ),
-                          onPressed:
-                              product.rakutenOpenUrl.trim().isEmpty
-                                  ? null
-                                  : () => unawaited(
-                                        AppActionService.openUrl(
-                                          context,
-                                          url: product.rakutenOpenUrl,
-                                        ),
-                                      ),
-                          child: const Text(
-                            '楽天で見る',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ],
+                    ProductOpenActionButtons(
+                      product: product,
+                      compact: true,
+                      screen: 'activityReactionProduct',
+                      logStyleAudit: true,
                     ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 4, top: 8),
-                child: Icon(
-                  Icons.chevron_right_rounded,
-                  color: AppColors.textTertiary,
-                  size: 24,
+              InkWell(
+                onTap: () => activityNavigateForProductId(
+                  context,
+                  productId: product.productId,
+                ),
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 4, top: 8),
+                  child: Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.textTertiary,
+                    size: 24,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-      ),
     );
   }
 }
