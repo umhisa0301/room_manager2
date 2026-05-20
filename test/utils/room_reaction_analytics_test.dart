@@ -13,6 +13,7 @@ void main() {
       int? like,
       int? comment,
       String genreName = '',
+      String genreId = '',
       String shopName = '',
       String shopCode = '',
     }) {
@@ -25,7 +26,7 @@ void main() {
         shopName: shopName,
         shopCode: shopCode,
         shopUrl: '',
-        genreId: '',
+        genreId: genreId,
         genreName: genreName,
         status: status,
         createdAt: t,
@@ -86,6 +87,24 @@ void main() {
       expect(
         roomReactionAnalyticsGenreTrendEligible(p(genreName: 'コーヒー')),
         true,
+      );
+    });
+
+    test('genreName空でもgenreIdからマスタ解決できれば集計対象', () {
+      expect(
+        roomReactionAnalyticsGenreTrendEligible(
+          p(
+            genreName: '',
+            genreId: '100227',
+          ),
+        ),
+        true,
+      );
+      expect(
+        roomReactionAnalyticsGenreBucket(
+          p(genreName: '', genreId: '100227'),
+        ),
+        '食品',
       );
     });
 

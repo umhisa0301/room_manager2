@@ -1629,12 +1629,15 @@ class RakutenSearchRepository {
     final displayItems = visible.length > targetVisibleCount
         ? visible.sublist(0, targetVisibleCount)
         : visible;
-    final stopReasonLog = switch (stopReason) {
-      RakutenKeywordSearchStopReason.reachedTarget => 'reachedTarget',
-      RakutenKeywordSearchStopReason.apiNoMoreResults => 'noMoreResults',
-      RakutenKeywordSearchStopReason.maxPagesReached => 'pageLimit',
-      RakutenKeywordSearchStopReason.partialFetchFailure => 'apiFailure',
-    };
+    final under100Reason = classifyKeywordSearchUnder100Reason(
+      displayCount: displayItems.length,
+      targetVisibleCount: targetVisibleCount,
+      stopReason: stopReason,
+      excludedCandidate: candidateExcluded,
+      excludedDone: doneExcluded,
+      excludedDuplicate: duplicateExcluded,
+      excludedSafety: safetyExcluded,
+    );
     if (kDebugMode) {
       debugPrint(
         '[SEARCH_FETCH_100_AUDIT] mode=$fetchMode keyword=${normalized.keyword} '
@@ -1646,8 +1649,15 @@ class RakutenSearchRepository {
         'excludedSafety=$safetyExcluded excludedDuplicate=$duplicateExcluded '
         'excludedNoImage=0 excludedOther=0 '
         'excludedSavedShop=$savedShopExcluded displayCount=${displayItems.length} '
-        'stopReason=$stopReasonLog',
+        'stopReason=$under100Reason',
       );
+      if (displayItems.length < targetVisibleCount) {
+        debugPrint(
+          '[SEARCH_RESULT_UNDER_100_REASON] mode=$fetchMode displayCount=${displayItems.length} '
+          'target=$targetVisibleCount reason=$under100Reason '
+          'pagesSucceeded=$apiPagesFetched pagesFailed=$failedPages',
+        );
+      }
     }
     shopSearchFetchResultLog(
       'screen=$fetchMode apiCalls=$apiPagesFetched rawItems=$receivedAnyFromApi '
@@ -1673,6 +1683,37 @@ class RakutenSearchRepository {
       pagesFailed: failedPages,
       pagesRequested: pagesRequested,
     );
+  }
+
+  /// 表示100件未満の終了理由（ログ・UI説明用の分類）。
+  static String classifyKeywordSearchUnder100Reason({
+    required int displayCount,
+    required int targetVisibleCount,
+    required RakutenKeywordSearchStopReason stopReason,
+    required int excludedCandidate,
+    required int excludedDone,
+    required int excludedDuplicate,
+    required int excludedSafety,
+  }) {
+    if (displayCount >= targetVisibleCount) return 'reachedTarget';
+    final excluded = excludedCandidate + excludedDone;
+    if (excludedCandidate > excludedDone && excluded > displayCount) {
+      return 'tooManyExcludedCandidate';
+    }
+    if (excludedDone > excludedCandidate && excluded > displayCount) {
+      return 'tooManyExcludedDone';
+    }
+    if (excluded > displayCount && excludedCandidate + excludedDone >= excludedDuplicate) {
+      return 'tooManyExcludedCandidate';
+    }
+    if (excludedDuplicate > displayCount) return 'tooManyDuplicates';
+    if (excludedSafety > displayCount) return 'safetyFiltered';
+    return switch (stopReason) {
+      RakutenKeywordSearchStopReason.reachedTarget => 'reachedTarget',
+      RakutenKeywordSearchStopReason.apiNoMoreResults => 'reachedEnd',
+      RakutenKeywordSearchStopReason.maxPagesReached => 'maxPagesReached',
+      RakutenKeywordSearchStopReason.partialFetchFailure => 'apiPartialFailure',
+    };
   }
 
   Map<String, dynamic>? _unwrapItem(dynamic entry) {

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../services/rakuten_genre_master_service.dart';
 import 'shop_display_resolve.dart';
 
 /// 反応分析・次にやることから除外する「未分類／未確認」ラベル判定。
@@ -42,17 +43,41 @@ abstract final class AnalyticsUnknownLabel {
     return false;
   }
 
+  /// 傾向分析用の表示ジャンル名（genreName 空でもマスタ解決を試す）。
+  static String? resolveAnalyticsGenreLabel({
+    required String genreName,
+    String? genreId,
+  }) {
+    final gn = genreName.trim();
+    if (gn.isNotEmpty && !isUnknownGenreLabel(gn)) {
+      return gn;
+    }
+    final gid = (genreId ?? '').trim();
+    if (gid.isEmpty) return null;
+    final resolved = RakutenGenreMasterService.instance.genreNameIfKnown(gid);
+    if (resolved == null || resolved.isEmpty) return null;
+    if (isUnknownGenreLabel(resolved)) return null;
+    return resolved;
+  }
+
   static bool isAnalyticsEligibleGenre(String genreName, {String? genreId}) {
-    if (isUnknownGenreLabel(genreName)) {
-      _logExclude(field: 'genre', rawLabel: genreName, reason: 'unknownLabel');
+    final resolved = resolveAnalyticsGenreLabel(
+      genreName: genreName,
+      genreId: genreId,
+    );
+    if (resolved != null) return true;
+    final gn = genreName.trim();
+    if (gn.isNotEmpty && isUnknownGenreLabel(gn)) {
+      _logExclude(field: 'genre', rawLabel: gn, reason: 'unknownLabel');
       return false;
     }
     final gid = (genreId ?? '').trim();
-    if (gid.isNotEmpty && isUnknownGenreLabel(gid)) {
-      _logExclude(field: 'genre', rawLabel: gid, reason: 'codeOnly');
+    if (gid.isNotEmpty) {
+      _logExclude(field: 'genre', rawLabel: gid, reason: 'unresolvedId');
       return false;
     }
-    return true;
+    _logExclude(field: 'genre', rawLabel: gn.isEmpty ? '(empty)' : gn, reason: 'empty');
+    return false;
   }
 
   static bool isAnalyticsEligibleShop({

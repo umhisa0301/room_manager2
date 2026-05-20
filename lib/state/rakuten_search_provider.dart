@@ -80,6 +80,9 @@ class RakutenSearchProvider extends ChangeNotifier {
     if (s.stopReason == RakutenKeywordSearchStopReason.partialFetchFailure) {
       return '一部の商品を取得できませんでした。条件を変えるか、もう一度検索してください。';
     }
+    if (n > 0 && n < s.targetVisibleCap) {
+      return '条件に合う商品を$n件表示しています。候補・コレ済の商品は除外しています。';
+    }
     if (excluded > 0 && n > 0) {
       return '条件に合う商品を$n件表示しています。候補・コレ済の商品は除外しています。';
     }
@@ -196,6 +199,31 @@ class RakutenSearchProvider extends ChangeNotifier {
         _keywordManagedFetchSummary = RakutenKeywordManagedFetchSummary.from(
           result,
         );
+        if (kDebugMode) {
+          final under = RakutenSearchRepository.classifyKeywordSearchUnder100Reason(
+            displayCount: result.items.length,
+            targetVisibleCount: result.targetVisibleCount,
+            stopReason: result.stopReason,
+            excludedCandidate: result.excludedCandidate,
+            excludedDone: result.excludedDone,
+            excludedDuplicate: result.excludedDuplicate,
+            excludedSafety: result.excludedSafety,
+          );
+          if (result.items.length < result.targetVisibleCount) {
+            debugPrint(
+              '[SEARCH_RESULT_UNDER_100_REASON] mode=$modeTag displayCount=${result.items.length} '
+              'target=${result.targetVisibleCount} reason=$under',
+            );
+          }
+          if (modeTag == 'savedShop') {
+            debugPrint(
+              '[SAVED_SHOP_SEARCH_API_RESPONSE] shopCode=${normalized.shopCode ?? '-'} '
+              'keyword="${normalized.keyword}" genreId=${normalized.genreId ?? '-'} '
+              'displayCount=${result.items.length} stopReason=$under '
+              'pagesFailed=${result.pagesFailed}',
+            );
+          }
+        }
       } else {
         fetched = await _repository.search(condition: normalized);
         responseStatus = 200;
@@ -243,6 +271,14 @@ class RakutenSearchProvider extends ChangeNotifier {
       if (kDebugMode) {
         debugPrint('[Rakuten] searchWithCondition failed: $e');
         debugPrint('$st');
+        if (modeTag == 'savedShop') {
+          final statusMatch = RegExp(r'\((\d{3})\)').firstMatch(e.toString());
+          debugPrint(
+            '[SAVED_SHOP_SEARCH_FAILURE_REASON] shopCode=${normalized.shopCode ?? '-'} '
+            'keyword="${normalized.keyword}" genreId=${normalized.genreId ?? '-'} '
+            'httpStatus=${statusMatch?.group(1) ?? '-'} detail=${e.runtimeType}',
+          );
+        }
       }
       final statusMatch = RegExp(r'\((\d{3})\)').firstMatch(e.toString());
       responseStatus = int.tryParse(statusMatch?.group(1) ?? '');
@@ -372,6 +408,14 @@ class RakutenSearchProvider extends ChangeNotifier {
     }
     if (body.contains('楽天のアプリIDが無効です')) {
       return body;
+    }
+    final statusMatch = RegExp(r'\((\d{3})\)').firstMatch(body);
+    final httpStatus = statusMatch?.group(1);
+    if (httpStatus == '400') {
+      return '検索条件の組み合わせが通りませんでした。キーワードを変えるか、ジャンルなどの絞り込みを外してお試しください。';
+    }
+    if (httpStatus == '429') {
+      return 'しばらく時間をおいてから、もう一度お試しください。';
     }
     if (body.startsWith('楽天API:')) {
       if (kDebugMode) {

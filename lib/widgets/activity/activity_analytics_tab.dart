@@ -299,15 +299,17 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
 
   static String? _resolvedGenreLabelForOutcome(RakutenManagedProduct p) {
     final persisted = p.persistedGenreDisplayName?.trim() ?? '';
-    final gn = p.genreName.trim();
-    final label = persisted.isNotEmpty ? persisted : gn;
-    if (!AnalyticsUnknownLabel.isAnalyticsEligibleGenre(
-      label,
-      genreId: p.genreId,
-    )) {
-      return null;
+    if (persisted.isNotEmpty &&
+        AnalyticsUnknownLabel.isAnalyticsEligibleGenre(
+          persisted,
+          genreId: p.genreId,
+        )) {
+      return persisted;
     }
-    return label;
+    return AnalyticsUnknownLabel.resolveAnalyticsGenreLabel(
+      genreName: p.genreName,
+      genreId: p.genreId,
+    );
   }
 
   static List<({String label, int count})> _postedHourBuckets8(
@@ -972,6 +974,14 @@ class _RoomReactionAnalyticsSectionState
       ..sort((a, b) => b.value.compareTo(a.value));
     genreRows = genreRows.take(5).toList();
 
+    if (kDebugMode) {
+      logAnalyticsGenreEligibilityAudit(
+        items: widget.allItems,
+        reactionItems: withReaction,
+        genreRows: genreRows.length,
+      );
+    }
+
     List<MapEntry<String, ({String label, int sum})>> shopRows =
         shopTrend.entries
             .map(
@@ -1249,9 +1259,12 @@ class _RoomReactionAnalyticsSectionState
             const SizedBox(height: 10),
             if (genreRowsShown.isEmpty)
               Text(
-                '表示できるジャンルの集計がありません',
+                unknownGenreCount >= withReaction.length
+                    ? 'ジャンル未確認の商品は傾向から除外しています。ROOMコレで商品情報を確認すると表示されます。'
+                    : 'ジャンル傾向はまだ十分にありません。商品情報の確認後に表示されます。',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.textSecondary,
+                      height: 1.4,
                     ),
               )
             else

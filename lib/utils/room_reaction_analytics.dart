@@ -60,6 +60,11 @@ List<RakutenManagedProduct> roomReactionAnalyticsEligibleItems(
 }
 
 String roomReactionAnalyticsGenreBucket(RakutenManagedProduct e) {
+  final resolved = AnalyticsUnknownLabel.resolveAnalyticsGenreLabel(
+    genreName: e.genreName,
+    genreId: e.genreId,
+  );
+  if (resolved != null) return resolved;
   final g = e.genreName.trim();
   if (g.isEmpty) return 'ジャンル未確認';
   return g;
@@ -323,6 +328,53 @@ void logRoomColleReactionFilterIfChanged({
 
 String roomReactionAnalyticsShopDisplayLine(RakutenManagedProduct e) {
   return roomReactionAnalyticsShopBucket(e).label;
+}
+
+void logAnalyticsGenreEligibilityAudit({
+  required List<RakutenManagedProduct> items,
+  required List<RakutenManagedProduct> reactionItems,
+  required int genreRows,
+}) {
+  if (!kDebugMode) return;
+  var totalDone = 0;
+  var genreNamePresent = 0;
+  var genreIdPresent = 0;
+  var genreResolvedFromId = 0;
+  var excludedUnknown = 0;
+  var eligibleGenreItems = 0;
+  for (final e in items) {
+    if (!RakutenManagedProduct.isMemberForStatusTab(
+          e,
+          RakutenManagedProductStatus.done,
+        )) {
+      continue;
+    }
+    totalDone++;
+    if (e.genreName.trim().isNotEmpty) genreNamePresent++;
+    if (e.genreId.trim().isNotEmpty) genreIdPresent++;
+    final resolved = AnalyticsUnknownLabel.resolveAnalyticsGenreLabel(
+      genreName: e.genreName,
+      genreId: e.genreId,
+    );
+    if (resolved != null &&
+        e.genreName.trim().isEmpty &&
+        e.genreId.trim().isNotEmpty) {
+      genreResolvedFromId++;
+    }
+    if (roomReactionAnalyticsGenreTrendEligible(e)) {
+      eligibleGenreItems++;
+    } else if (roomReactionAnalyticsIsEligible(e) &&
+        roomReactionAnalyticsHasReaction(e)) {
+      excludedUnknown++;
+    }
+  }
+  debugPrint(
+    '[ANALYTICS_GENRE_ELIGIBILITY_AUDIT] totalDone=$totalDone '
+    'reactionItems=${reactionItems.length} genreNamePresent=$genreNamePresent '
+    'genreIdPresent=$genreIdPresent genreResolvedFromId=$genreResolvedFromId '
+    'excludedUnknown=$excludedUnknown eligibleGenreItems=$eligibleGenreItems '
+    'genreRows=$genreRows',
+  );
 }
 
 void logRoomColleReactionFilterFromItemsIfChanged({

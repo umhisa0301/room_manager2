@@ -128,8 +128,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   final ScrollController _shopDiscoveryResultsScrollController =
       ScrollController();
 
-  /// 結果リストを十分スクロールしたときに検索デッキをコンパクト表示へ。
-  bool _searchHeaderCollapsed = false;
+  /// 結果ありでは常にコンパクトヘッダー固定（リスト内デッキ再表示は廃止）。
+  bool _searchHeaderCollapsed = true;
   RakutenSearchStatus _lastCompletionToastStatus = RakutenSearchStatus.idle;
   String? _detailSheetFormError;
   String? _savedShopSearchFieldError;
@@ -190,11 +190,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   void initState() {
     super.initState();
     _mode = _initialSearchMode;
-    _keywordResultsScrollController.addListener(_handleResultsScrollForHeader);
-    _genreResultsScrollController.addListener(_handleResultsScrollForHeader);
-    _shopDiscoveryResultsScrollController.addListener(
-      _handleResultsScrollForHeader,
-    );
     _applyInitialScopedPresetsOnce();
     if (widget.savedShopKeywordEntry) {
       _savedShopKeywordFlow = true;
@@ -244,13 +239,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _shopDiscoveryMinReviewAverageController.dispose();
     _shopDiscoveryShopLimitController.dispose();
     _shopDiscoveryItemsPerShopController.dispose();
-    _keywordResultsScrollController.removeListener(
-      _handleResultsScrollForHeader,
-    );
-    _genreResultsScrollController.removeListener(_handleResultsScrollForHeader);
-    _shopDiscoveryResultsScrollController.removeListener(
-      _handleResultsScrollForHeader,
-    );
     _keywordResultsScrollController.dispose();
     _genreResultsScrollController.dispose();
     _shopDiscoveryResultsScrollController.dispose();
@@ -439,12 +427,23 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  void _logSearchScrollHeaderAudit() {
+  void _logSearchHeaderDuplicateAudit({
+    required bool hasResults,
+  }) {
     if (!kDebugMode) return;
+    final compactHeaderVisible = hasResults;
+    final expandedInputDeckVisible = !hasResults;
+    final inputDeckRenderedInList = false;
+    final modeSelectorCount = hasResults ? 1 : 1;
+    final searchInputCount = hasResults ? 0 : 1;
     debugPrint(
-      '[SEARCH_SCROLL_HEADER_AUDIT] mode=${_searchResultScreenTag()} '
-      'usesSliverHeader=true compactHeaderPinned=true '
-      'canRevealByPullDown=true overflowDuringScroll=false',
+      '[SEARCH_HEADER_DUPLICATE_AUDIT] mode=${_searchResultScreenTag()} '
+      'hasResult=$hasResults compactHeaderVisible=$compactHeaderVisible '
+      'expandedInputDeckVisible=$expandedInputDeckVisible '
+      'inputDeckRenderedInList=$inputDeckRenderedInList '
+      'renderCountOfModeSelector=$modeSelectorCount '
+      'renderCountOfSearchInput=$searchInputCount '
+      'reason=${hasResults ? 'resultsUseCompactHeaderOnly' : 'preSearchInputDeck'}',
     );
   }
 
@@ -537,43 +536,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   /// キーワード検索タブ: フォーカスを外してキーボードを閉じる。
   void _dismissKeywordSearchKeyboard() {
     FocusManager.instance.primaryFocus?.unfocus();
-  }
-
-  ScrollController? _activeResultsScrollControllerForMode() {
-    switch (_mode) {
-      case _RakutenSearchMode.product:
-        return _keywordResultsScrollController;
-      case _RakutenSearchMode.genre:
-        return _genreResultsScrollController;
-      case _RakutenSearchMode.shopDiscovery:
-        return _shopDiscoveryResultsScrollController;
-    }
-  }
-
-  void _handleResultsScrollForHeader() {
-    if (!mounted) return;
-    final c = _activeResultsScrollControllerForMode();
-    if (c == null || !c.hasClients) return;
-    final position = c.position;
-    if (!position.hasPixels) return;
-    if (position.maxScrollExtent < 48) {
-      if (_searchHeaderCollapsed) {
-        setState(() => _searchHeaderCollapsed = false);
-      }
-      return;
-    }
-    const collapseAfter = 56.0;
-    const expandBefore = 18.0;
-    var next = _searchHeaderCollapsed;
-    if (position.pixels > collapseAfter) {
-      next = true;
-    } else if (position.pixels < expandBefore || position.pixels <= 0) {
-      next = false;
-    }
-    if (next != _searchHeaderCollapsed) {
-      setState(() => _searchHeaderCollapsed = next);
-      _logSearchScrollHeaderAudit();
-    }
   }
 
   /// 一覧が出ているときは並び順を結果ヘッダ側へ寄せ、入力デッキの縦寸を削る。
@@ -729,6 +691,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       final compactSetup = _shouldUseCompactSearchSetup(search);
                       final keyboardOpen = kbInset > 0;
                       if (kDebugMode) {
+                        _logSearchHeaderDuplicateAudit(hasResults: hasResults);
                         _logSearchHeaderWidgetTreeAudit(
                           compactSetup: compactSetup,
                           hasResults: hasResults,
@@ -743,20 +706,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         children: [
                           _buildBulkOperationBanner(context),
                           if (hasResults)
-                            GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onVerticalDragUpdate: (details) {
-                                if (details.delta.dy > 6 &&
-                                    _searchHeaderCollapsed) {
-                                  setState(() => _searchHeaderCollapsed = false);
-                                  _logSearchScrollHeaderAudit();
-                                }
-                              },
-                              child: _buildPostSearchCompactSetupBar(
-                                context,
-                                search,
-                                saved,
-                              ),
+                            _buildPostSearchCompactSetupBar(
+                              context,
+                              search,
+                              saved,
                             )
                           else
                             Flexible(
@@ -1237,6 +1190,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         : savedShopCodes;
     if (kDebugMode) {
       final c = condition;
+      if (_savedShopKeywordEntryEffective) {
+        debugPrint(
+          '[SAVED_SHOP_SEARCH_PARAMS] shopCode=${c.shopCode ?? '-'} '
+          'keyword="${c.keyword}" genreId=${c.genreId ?? '-'} '
+          'minPrice=${c.minPrice ?? '-'} maxPrice=${c.maxPrice ?? '-'}',
+        );
+      }
       debugPrint(
         '[Rakuten] keyword search execute keyword="${c.keyword}" '
         'genreId=${c.genreId ?? '-'} '
@@ -1291,7 +1251,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       minReviewAverage: _parseDouble(_minReviewAverageController.text),
       minCommentCount: _parseInt(_minCommentCountController.text),
       shopCode: _effectiveShopCodeForApi(context),
-      genreId: _selectedGenreId,
+      genreId: _savedShopKeywordEntryEffective ? null : _selectedGenreId,
       sort: _apiSortParamForMode(_keywordSort),
     ).normalized();
   }
@@ -1938,7 +1898,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         _SearchWayPicker.shopDiscovery => _RakutenSearchMode.shopDiscovery,
       };
       _selectedProductIds.clear();
-      _searchHeaderCollapsed = false;
+      if (way == _SearchWayPicker.savedShop) {
+        _selectedGenreId = null;
+      }
+      _searchHeaderCollapsed = true;
     });
     _restoreSearchSession(_modeCacheKey());
     if (kDebugMode) {
@@ -2742,7 +2705,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (_shopDiscoveryResultsScrollController.hasClients) {
       _shopDiscoveryResultsScrollController.jumpTo(0);
     }
-    setState(() => _searchHeaderCollapsed = false);
+    setState(() => _searchHeaderCollapsed = true);
     final fallbackKeyword = _labelForGenre(genreId) ?? '楽天';
     final condition = RakutenProductSearchCondition(
       keyword: keyword.isNotEmpty ? keyword : fallbackKeyword,
@@ -2887,7 +2850,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (_genreResultsScrollController.hasClients) {
       _genreResultsScrollController.jumpTo(0);
     }
-    setState(() => _searchHeaderCollapsed = false);
+    setState(() => _searchHeaderCollapsed = true);
     final managedProv = context.read<RakutenManagedProductProvider>();
     final excludeIds = managedProv.productIdsExcludedFromKeywordSearch();
     final excludeCandidateIds =
@@ -2979,6 +2942,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     var exclCandidate = 0;
     var exclDone = 0;
     var exclSavedShop = 0;
+    var exclSafety = 0;
     for (final item in source) {
       final status = managed.statusForProduct(item.productId);
       final itemShop = item.shopCode.trim();
@@ -3000,6 +2964,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         continue;
       }
       if (_isSafetyBlockedForSearch(item)) {
+        exclSafety++;
         continue;
       }
       out.add(item);
@@ -3008,8 +2973,20 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       debugPrint(
         '[Rakuten] UI preferred excludes before=${source.length} after=${out.length} '
         'candidateExclude=$exclCandidate doneExclude=$exclDone savedShopExclude=$exclSavedShop '
-        'searchScopeShopCode=${scoped.isEmpty ? '-' : scoped}',
+        'safetyExclude=$exclSafety searchScopeShopCode=${scoped.isEmpty ? '-' : scoped}',
       );
+      if (source.length >= 100 && out.length < 100) {
+        final reason = exclSafety > 0
+            ? 'safetyFiltered'
+            : (exclSavedShop > 0
+                  ? 'savedShopUiExclude'
+                  : 'uiPostFilter');
+        debugPrint(
+          '[SEARCH_RESULT_UNDER_100_REASON] mode=${_searchResultScreenTag()} '
+          'displayCount=${out.length} target=100 reason=$reason '
+          'uiSafetyExcluded=$exclSafety apiDisplayBeforeUi=${source.length}',
+        );
+      }
     }
     // 除外後が極端に少ないときは、呼び出し側で元リストにフォールバックさせる。
     return out;
@@ -3494,8 +3471,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       RakutenSearchScreenUi.screenPadH,
       bottomPad,
     );
-    final showExpandedSetup = !_searchHeaderCollapsed;
-
     Widget resultCardAt(int index) {
       final item = orderedResults[index];
       final isSelectable = _isSelectableForBulk(item, managed);
@@ -3539,26 +3514,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
     Widget listOrEmpty() {
       if (orderedResults.isNotEmpty) {
-        if (showExpandedSetup) {
-          return CustomScrollView(
-            controller: scrollController,
-            slivers: [
-              SliverToBoxAdapter(
-                child: _buildModeAndInputArea(context, search, saved),
-              ),
-              SliverPadding(
-                padding: listPadding.copyWith(top: 0),
-                sliver: SliverList.separated(
-                  itemCount: orderedResults.length,
-                  separatorBuilder: (_, __) => SizedBox(
-                    height: RakutenSearchScreenUi.listCardGap,
-                  ),
-                  itemBuilder: (context, index) => resultCardAt(index),
-                ),
-              ),
-            ],
-          );
-        }
         return ListView.separated(
           controller: scrollController,
           padding: listPadding,
@@ -3675,13 +3630,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       case RakutenSearchStatus.error:
         return RakutenSearchErrorView(
           title: '検索結果を表示できませんでした',
-          stateLine: '状態: 通信または楽天APIの応答に失敗しました',
+          stateLine: _savedShopKeywordEntryEffective
+              ? '状態: 保存ショップ検索に失敗しました'
+              : '状態: 検索に失敗しました',
           message: search.errorMessage.isNotEmpty
               ? search.errorMessage
               : '時間をおいて「もう一度検索する」を押すか、条件を緩めて試してください。',
           onRetry: () => _runSearch(context),
           onAdjustConditions: () => _openProductConditionsSheet(context),
-          adjustLabel: 'キーワードを開く',
+          adjustLabel: _savedShopKeywordEntryEffective
+              ? '条件を開く'
+              : 'キーワードを開く',
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
