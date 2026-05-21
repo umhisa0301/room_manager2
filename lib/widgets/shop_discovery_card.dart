@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../models/shop_discovery_summary.dart';
@@ -30,6 +31,14 @@ class ShopDiscoveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const addLabel = 'ショップ商品を候補に追加';
+    const saveLabel = 'ショップを保存';
+    if (kDebugMode) {
+      debugPrint(
+        '[SHOP_DISCOVERY_BUTTON_COPY_AUDIT] addCandidateLabel=$addLabel '
+        'saveShopLabel=${isSaved ? '保存済み' : saveLabel} actionType=shopDiscoveryCard',
+      );
+    }
     return AppCard(
       padding: const EdgeInsets.all(14),
       child: Column(
@@ -121,7 +130,7 @@ class ShopDiscoveryCard extends StatelessWidget {
               if (showOpenShopAction) ...[
                 Expanded(
                   child: AppPrimaryButton(
-                    label: '候補に追加',
+                    label: addLabel,
                     onPressed: onOpenShop,
                     icon: const Icon(Icons.storefront_outlined),
                     height: 52,
@@ -131,7 +140,7 @@ class ShopDiscoveryCard extends StatelessWidget {
               ],
               Expanded(
                 child: AppSecondaryButton(
-                  label: isSaved ? '保存済み' : '保存する',
+                  label: isSaved ? '保存済み' : saveLabel,
                   onPressed: isSaved && disableSavedAction ? null : onSave,
                   icon: Icon(
                     isSaved

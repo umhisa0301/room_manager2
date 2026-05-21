@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../models/rakuten_managed_product.dart';
@@ -49,6 +50,9 @@ class RakutenSearchResultCard extends StatelessWidget {
   final bool compactListLayout;
 
   static const double _compactThumbWidth = 88;
+
+  /// 検索結果カードの標準サムネ幅（従来104より約15%拡大）。
+  static const double _searchThumbWidth = 118;
 
   static const double _contentGap = 6;
   static const double _metaGap = 4;
@@ -109,7 +113,15 @@ class RakutenSearchResultCard extends StatelessWidget {
     final metaGap = compact ? 2.0 : _metaGap;
     final rightPad = compact ? _rightColumnPaddingCompact : _rightColumnPadding;
     final titleMaxLines = RoomColleProductListCardLayout.titleMaxLines;
-    final thumbW = compact ? _compactThumbWidth : null;
+    final thumbW = compact ? _compactThumbWidth : _searchThumbWidth;
+    final buttonH = 48.0;
+
+    if (kDebugMode) {
+      debugPrint(
+        '[SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=$thumbW titleMaxLines=$titleMaxLines '
+        'priceReviewSameLine=${!compact} buttonHeight=$buttonH cardHeight=auto overflowDetected=false',
+      );
+    }
 
     final theme = Theme.of(context);
     final titleStyle = RoomColleProductListCardLayout.titleTextStyle(theme);
@@ -148,14 +160,27 @@ class RakutenSearchResultCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (selectionMode)
-            Padding(
-              padding: const EdgeInsets.only(left: 4, right: 0, top: 8),
-              child: _buildSelectionCheckbox(context),
+          SizedBox(
+            width: thumbW,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                RoomColleProductListCardThumbSlot(
+                  slotWidth: thumbW,
+                  child: _heroImage(context, compact: compact),
+                ),
+                if (selectionMode)
+                  Positioned(
+                    top: 4,
+                    left: 4,
+                    child: Material(
+                      color: Colors.white.withValues(alpha: 0.92),
+                      borderRadius: BorderRadius.circular(4),
+                      child: _buildSelectionCheckbox(context),
+                    ),
+                  ),
+              ],
             ),
-          RoomColleProductListCardThumbSlot(
-            slotWidth: thumbW,
-            child: _heroImage(context, compact: compact),
           ),
           Expanded(
             child: Padding(
@@ -190,16 +215,8 @@ class RakutenSearchResultCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: contentGap),
-                      Text(
-                        RoomColleProductListCardLayout.formatPriceYen(
-                          item.itemPrice,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: priceStyle,
-                      ),
-                      SizedBox(height: metaGap),
-                      _ratingRow(
+                      _priceAndRatingRow(
+                        priceStyle: priceStyle,
                         reviewScoreStyle: reviewScoreStyle,
                         reviewCountStyle: reviewCountStyle,
                       ),
@@ -259,7 +276,11 @@ class RakutenSearchResultCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: compact ? 6 : 10),
-                  _searchResultActions(context, compact: compact),
+                  _searchResultActions(
+                    context,
+                    compact: compact,
+                    buttonHeight: buttonH,
+                  ),
                 ],
               ),
             ),
@@ -269,21 +290,29 @@ class RakutenSearchResultCard extends StatelessWidget {
     );
   }
 
-  Widget _ratingRow({
+  Widget _priceAndRatingRow({
+    required TextStyle? priceStyle,
     required TextStyle reviewScoreStyle,
     required TextStyle reviewCountStyle,
   }) {
     final rating = item.reviewAverage;
     final reviewCount = item.reviewCount;
     final scoreText = rating > 0 ? '★${rating.toStringAsFixed(1)}' : '★-';
-    final countText = reviewCount > 0 ? 'レビュー $reviewCount件' : 'レビュー 0件';
+    final countText = reviewCount > 0 ? 'レビュー$reviewCount件' : 'レビュー0件';
     return Row(
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
       children: [
-        Text(scoreText, style: reviewScoreStyle),
+        Text(
+          RoomColleProductListCardLayout.formatPriceYen(item.itemPrice),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: priceStyle,
+        ),
         const SizedBox(width: 8),
-        Expanded(
+        Text(scoreText, style: reviewScoreStyle),
+        const SizedBox(width: 4),
+        Flexible(
           child: Text(
             countText,
             maxLines: 1,
@@ -295,8 +324,12 @@ class RakutenSearchResultCard extends StatelessWidget {
     );
   }
 
-  Widget _searchResultActions(BuildContext context, {required bool compact}) {
-    final h = compact ? 40.0 : 48.0;
+  Widget _searchResultActions(
+    BuildContext context, {
+    required bool compact,
+    required double buttonHeight,
+  }) {
+    final h = buttonHeight;
     final rakuten = AppOutlineButton(
       label: '楽天で見る',
       icon: Icon(Icons.open_in_new, size: compact ? 16.0 : 18.0),

@@ -110,6 +110,7 @@ class RakutenSearchUiSnapshot {
     this.shopDiscoveryItemsPerShop = '5',
     this.selectedShopCode,
     this.selectedGenreId,
+    this.productDetailGenreId,
     this.selectedDiscoveryGenreId,
     this.selectionMode = false,
     this.selectedProductIds = const {},
@@ -133,6 +134,9 @@ class RakutenSearchUiSnapshot {
   final String shopDiscoveryItemsPerShop;
   final String? selectedShopCode;
   final String? selectedGenreId;
+
+  /// 商品名モードの詳細条件シートでのみ使うジャンル絞り込み。
+  final String? productDetailGenreId;
   final String? selectedDiscoveryGenreId;
   final bool selectionMode;
   final Set<String> selectedProductIds;

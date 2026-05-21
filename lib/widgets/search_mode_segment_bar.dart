@@ -52,20 +52,33 @@ class SearchModeSegmentBar extends StatelessWidget {
             behavior: ScrollConfiguration.of(context).copyWith(
               scrollbars: false,
             ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  for (var i = 0; i < modes.length; i++) ...[
-                    if (i > 0) const SizedBox(width: 4),
-                    _SegmentTile(
-                      label: _labels[modes[i]]!,
-                      selected: modes[i] == selected,
-                      onTap: () => onChanged(modes[i]),
-                    ),
-                  ],
-                ],
-              ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (kDebugMode) {
+                  final sw = MediaQuery.sizeOf(context).width;
+                  debugPrint(
+                    '[SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=$sw '
+                    'totalTabWidth=${constraints.maxWidth} selectedMode=${selected.name} '
+                    'clipped=${constraints.maxWidth < 360} horizontalScrollable=true',
+                  );
+                }
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Row(
+                    children: [
+                      for (var i = 0; i < modes.length; i++) ...[
+                        if (i > 0) const SizedBox(width: 4),
+                        _SegmentTile(
+                          label: _labels[modes[i]]!,
+                          selected: modes[i] == selected,
+                          onTap: () => onChanged(modes[i]),
+                        ),
+                      ],
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         ),
@@ -96,8 +109,8 @@ class _SegmentTile extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(10),
         child: Container(
-          constraints: const BoxConstraints(minWidth: 72, minHeight: 46),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          constraints: const BoxConstraints(minWidth: 68, minHeight: 46),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -115,7 +128,7 @@ class _SegmentTile extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   fontWeight: FontWeight.w800,
-                  fontSize: 13,
+                  fontSize: 12.5,
                   color: selected
                       ? AppColors.accentPrimary
                       : HomeScreenColors.leadOnSection,
