@@ -14,6 +14,18 @@ import '../utils/rakuten_product_genre_display.dart';
 
 enum RakutenSearchStatus { idle, loading, success, error }
 
+/// 保存ショップ検索失敗の内部分類（ログ・UI文言の根拠）。
+enum SavedShopSearchFailureReason {
+  api400WrongParameter,
+  api429RateLimit,
+  networkTimeout,
+  emptyResult,
+  invalidKeyword,
+  missingShopCode,
+  staleResponseIgnored,
+  unknown,
+}
+
 /// 楽天検索画面の状態管理。
 class RakutenSearchProvider extends ChangeNotifier {
   RakutenSearchProvider({
@@ -31,6 +43,8 @@ class RakutenSearchProvider extends ChangeNotifier {
   RakutenSearchStatus _status = RakutenSearchStatus.idle;
   List<RakutenSearchItem> _results = const [];
   String _errorMessage = '';
+  String? _errorModeTag;
+  String? _retryFailureBannerMessage;
   String _lastKeyword = '';
 
   /// キーワード検索で API から商品は取れたが、登録済み除外・アプリ側条件の結果リストが空。
@@ -48,7 +62,15 @@ class RakutenSearchProvider extends ChangeNotifier {
   String? get activeSearchModeTag => _activeSearchModeTag;
   List<RakutenSearchItem> get results => _results;
   String get errorMessage => _errorMessage;
+  String? get errorModeTag => _errorModeTag;
+  String? get retryFailureBannerMessage => _retryFailureBannerMessage;
   String get lastKeyword => _lastKeyword;
+
+  bool get hasPreviousResult => _results.isNotEmpty;
+
+  /// 現在の [modeTag] に紐づくエラー表示が有効か。
+  bool isErrorVisibleForMode(String modeTag) =>
+      _status == RakutenSearchStatus.error && _errorModeTag == modeTag;
 
   bool get keywordSearchHadApiHitsButNoVisibleResults =>
       _keywordSearchHadApiHitsButNoVisibleResults;
@@ -137,6 +159,38 @@ class RakutenSearchProvider extends ChangeNotifier {
     return sessionId;
   }
 
+  /// 新規検索開始時にエラー・再検索バナーをクリアする。
+  void clearErrorForNewSearch({
+    required String modeTag,
+    required int requestId,
+  }) {
+    _errorModeTag = modeTag;
+    _errorMessage = '';
+    _retryFailureBannerMessage = null;
+    if (kDebugMode && modeTag == 'savedShop') {
+      debugPrint(
+        '[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=$requestId event=clearError '
+        'shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-',
+      );
+    }
+  }
+
+  /// 別モードへ切り替えたとき、他モードのエラー表示を残さない。
+  void clearErrorIfModeMismatch(String modeTag) {
+    if (_status != RakutenSearchStatus.error) return;
+    if (_errorModeTag == null || _errorModeTag == modeTag) return;
+    _status = RakutenSearchStatus.idle;
+    _errorMessage = '';
+    _errorModeTag = null;
+    notifyListeners();
+  }
+
+  void clearRetryFailureBanner() {
+    if (_retryFailureBannerMessage == null) return;
+    _retryFailureBannerMessage = null;
+    notifyListeners();
+  }
+
   Future<void> searchWithCondition(
     RakutenProductSearchCondition condition, {
     Set<String>? excludeRegisteredProductIds,
@@ -160,6 +214,8 @@ class RakutenSearchProvider extends ChangeNotifier {
       _status = RakutenSearchStatus.idle;
       _results = const [];
       _errorMessage = '';
+      _errorModeTag = null;
+      _retryFailureBannerMessage = null;
       _lastKeyword = '';
       _keywordSearchHadApiHitsButNoVisibleResults = false;
       _keywordManagedFetchSummary = null;
@@ -167,8 +223,15 @@ class RakutenSearchProvider extends ChangeNotifier {
       notifyListeners();
       return;
     }
+    clearErrorForNewSearch(modeTag: modeTag, requestId: sid);
+    if (kDebugMode && modeTag == 'savedShop') {
+      debugPrint(
+        '[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=$sid event=start '
+        'shopCode=${normalized.shopCode ?? '-'} keyword="${normalized.keyword}" '
+        'genreId=${normalized.genreId ?? '-'} resultCount=- errorType=- errorMessage=-',
+      );
+    }
     _status = RakutenSearchStatus.loading;
-    _errorMessage = '';
     _lastKeyword = normalized.keyword;
     _keywordSearchHadApiHitsButNoVisibleResults = false;
     _keywordManagedFetchSummary = null;
@@ -246,6 +309,9 @@ class RakutenSearchProvider extends ChangeNotifier {
           }
           _results = fetched;
           _status = RakutenSearchStatus.success;
+          _errorMessage = '';
+          _errorModeTag = null;
+          _retryFailureBannerMessage = null;
           _resolvedGenreLabels = const {};
         },
         statusCode: responseStatus,
@@ -253,6 +319,14 @@ class RakutenSearchProvider extends ChangeNotifier {
         displayCount: fetched.length,
       )) {
         return;
+      }
+      if (kDebugMode && modeTag == 'savedShop') {
+        debugPrint(
+          '[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=$sid event=success '
+          'shopCode=${normalized.shopCode ?? '-'} keyword="${normalized.keyword}" '
+          'genreId=${normalized.genreId ?? '-'} resultCount=${fetched.length} '
+          'errorType=- errorMessage=-',
+        );
       }
       final withAff = fetched.where((e) => e.hasAffiliateUrlInResponse).length;
       debugPrint(
@@ -282,23 +356,65 @@ class RakutenSearchProvider extends ChangeNotifier {
       }
       final statusMatch = RegExp(r'\((\d{3})\)').firstMatch(e.toString());
       responseStatus = int.tryParse(statusMatch?.group(1) ?? '');
+      final classified = _classifySearchFailure(
+        e,
+        modeTag: modeTag,
+        httpStatus: responseStatus,
+        shopCode: normalized.shopCode,
+        keyword: normalized.keyword,
+      );
+      if (kDebugMode && modeTag == 'savedShop') {
+        debugPrint(
+          '[SAVED_SHOP_SEARCH_FAILURE_CLASSIFY] requestId=$sid '
+          'shopCode=${normalized.shopCode ?? '-'} keyword="${normalized.keyword}" '
+          'httpStatus=${responseStatus ?? '-'} apiError=${e.runtimeType} '
+          'classifiedReason=${classified.reason.name} userMessage=${classified.userMessage}',
+        );
+      }
+      final retainResults = _results.isNotEmpty;
       if (!_applySearchResultIfCurrent(
         sessionId: sid,
         modeTag: modeTag,
         onApply: () {
-          _results = const [];
-          _status = RakutenSearchStatus.error;
-          _errorMessage = _userFacingError(e);
           _keywordSearchHadApiHitsButNoVisibleResults = false;
           _keywordManagedFetchSummary = null;
           _resolvedGenreLabels = const {};
+          if (retainResults) {
+            _status = RakutenSearchStatus.success;
+            _retryFailureBannerMessage = classified.userMessage;
+            _errorMessage = '';
+            _errorModeTag = null;
+          } else {
+            _results = const [];
+            _status = RakutenSearchStatus.error;
+            _errorMessage = classified.userMessage;
+            _errorModeTag = modeTag;
+            _retryFailureBannerMessage = null;
+          }
         },
         statusCode: responseStatus,
         rawCount: 0,
-        displayCount: 0,
+        displayCount: retainResults ? _results.length : 0,
         skipReason: 'error',
       )) {
+        if (kDebugMode && modeTag == 'savedShop') {
+          debugPrint(
+            '[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=$sid event=ignoredStaleResponse '
+            'shopCode=${normalized.shopCode ?? '-'} keyword="${normalized.keyword}" '
+            'genreId=${normalized.genreId ?? '-'} resultCount=- '
+            'errorType=${classified.reason.name} errorMessage=-',
+          );
+        }
         return;
+      }
+      if (kDebugMode && modeTag == 'savedShop') {
+        debugPrint(
+          '[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=$sid event=error '
+          'shopCode=${normalized.shopCode ?? '-'} keyword="${normalized.keyword}" '
+          'genreId=${normalized.genreId ?? '-'} '
+          'resultCount=${retainResults ? _results.length : 0} '
+          'errorType=${classified.reason.name} errorMessage=${classified.userMessage}',
+        );
       }
       if (kDebugMode) {
         debugPrint(
@@ -323,6 +439,13 @@ class RakutenSearchProvider extends ChangeNotifier {
     String? skipReason,
   }) {
     final matched = sessionId == _activeSearchSessionId;
+    if (kDebugMode) {
+      debugPrint(
+        '[SEARCH_REQUEST_RACE_GUARD] mode=$modeTag requestId=$sessionId '
+        'activeRequestId=$_activeSearchSessionId accepted=$matched '
+        'reason=${matched ? 'currentSession' : (skipReason ?? 'staleSession')}',
+      );
+    }
     if (!matched) {
       if (kDebugMode) {
         debugPrint(
@@ -398,23 +521,78 @@ class RakutenSearchProvider extends ChangeNotifier {
     }
   }
 
-  String _userFacingError(Object e) {
+  ({SavedShopSearchFailureReason reason, String userMessage}) _classifySearchFailure(
+    Object e, {
+    required String modeTag,
+    int? httpStatus,
+    String? shopCode,
+    String? keyword,
+  }) {
     final raw = e.toString();
     final body = raw.startsWith('Exception: ')
         ? raw.substring('Exception: '.length).trim()
         : raw.trim();
+    final statusFromBody =
+        httpStatus ?? int.tryParse(RegExp(r'\((\d{3})\)').firstMatch(body)?.group(1) ?? '');
+    SavedShopSearchFailureReason reason = SavedShopSearchFailureReason.unknown;
+    if (shopCode == null || shopCode.trim().isEmpty) {
+      reason = SavedShopSearchFailureReason.missingShopCode;
+    } else if (statusFromBody == 400) {
+      reason = SavedShopSearchFailureReason.api400WrongParameter;
+    } else if (statusFromBody == 429) {
+      reason = SavedShopSearchFailureReason.api429RateLimit;
+    } else if (_looksLikeNetworkError(body, e)) {
+      reason = SavedShopSearchFailureReason.networkTimeout;
+    }
+    final userMessage = modeTag == 'savedShop'
+        ? _savedShopUserMessage(reason)
+        : _genericUserFacingError(body, statusFromBody);
+    return (reason: reason, userMessage: userMessage);
+  }
+
+  bool _looksLikeNetworkError(String body, Object e) {
+    final type = e.runtimeType.toString().toLowerCase();
+    if (type.contains('socket') ||
+        type.contains('timeout') ||
+        type.contains('connection')) {
+      return true;
+    }
+    return body.contains('SocketException') ||
+        body.contains('TimeoutException') ||
+        body.contains('Connection') ||
+        body.contains('Network');
+  }
+
+  String _savedShopUserMessage(SavedShopSearchFailureReason reason) {
+    switch (reason) {
+      case SavedShopSearchFailureReason.api400WrongParameter:
+      case SavedShopSearchFailureReason.invalidKeyword:
+        return 'キーワードを少し変えて再検索してください';
+      case SavedShopSearchFailureReason.api429RateLimit:
+        return '少し時間をおいて再検索してください';
+      case SavedShopSearchFailureReason.networkTimeout:
+        return '通信状況を確認してください';
+      case SavedShopSearchFailureReason.emptyResult:
+        return 'このショップでは該当商品が見つかりませんでした';
+      case SavedShopSearchFailureReason.missingShopCode:
+        return 'ショップを選択してから検索してください';
+      case SavedShopSearchFailureReason.staleResponseIgnored:
+      case SavedShopSearchFailureReason.unknown:
+        return '通信状況を確認してください';
+    }
+  }
+
+  String _genericUserFacingError(String body, int? httpStatus) {
     if (body.contains('楽天APIのアプリIDが未設定')) {
       return '楽天APIの設定（アプリID）がまだありません。ビルド設定をご確認ください。';
     }
     if (body.contains('楽天のアプリIDが無効です')) {
       return body;
     }
-    final statusMatch = RegExp(r'\((\d{3})\)').firstMatch(body);
-    final httpStatus = statusMatch?.group(1);
-    if (httpStatus == '400') {
+    if (httpStatus == 400) {
       return '検索条件の組み合わせが通りませんでした。キーワードを変えるか、ジャンルなどの絞り込みを外してお試しください。';
     }
-    if (httpStatus == '429') {
+    if (httpStatus == 429) {
       return 'しばらく時間をおいてから、もう一度お試しください。';
     }
     if (body.startsWith('楽天API:')) {
@@ -431,6 +609,8 @@ class RakutenSearchProvider extends ChangeNotifier {
     _status = RakutenSearchStatus.idle;
     _results = const [];
     _errorMessage = '';
+    _errorModeTag = null;
+    _retryFailureBannerMessage = null;
     _lastKeyword = '';
     _keywordSearchHadApiHitsButNoVisibleResults = false;
     _keywordManagedFetchSummary = null;
@@ -445,6 +625,8 @@ class RakutenSearchProvider extends ChangeNotifier {
     required String errorMessage,
     required String lastKeyword,
     required bool keywordSearchHadApiHitsButNoVisibleResults,
+    String? errorModeTag,
+    String? retryFailureBannerMessage,
   }) {
     if (_status == RakutenSearchStatus.loading) {
       if (kDebugMode && DebugLogFlags.enableVerboseSearchStateLog) {
@@ -459,6 +641,9 @@ class RakutenSearchProvider extends ChangeNotifier {
     _status = status;
     _results = List<RakutenSearchItem>.from(results);
     _errorMessage = errorMessage;
+    _errorModeTag =
+        status == RakutenSearchStatus.error ? errorModeTag : null;
+    _retryFailureBannerMessage = retryFailureBannerMessage;
     _lastKeyword = lastKeyword;
     _keywordSearchHadApiHitsButNoVisibleResults =
         keywordSearchHadApiHitsButNoVisibleResults;

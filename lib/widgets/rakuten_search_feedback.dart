@@ -220,6 +220,7 @@ class RakutenSearchErrorView extends StatelessWidget {
     this.retryLabel = 'もう一度検索する',
     this.adjustLabel = '条件を調整',
     this.stateLine = '状態: 通信または楽天APIの応答に失敗しました',
+    this.compactLayout = false,
   });
 
   final String title;
@@ -232,9 +233,99 @@ class RakutenSearchErrorView extends StatelessWidget {
   /// ROOM コレ [_RoomCollectionErrorState] の「状態: …」行に相当。
   final String stateLine;
 
+  /// キーボード表示中など縦スペースが狭いとき、大カードではなくコンパクトバナー表示。
+  final bool compactLayout;
+
   @override
   Widget build(BuildContext context) {
+    if (compactLayout) {
+      return Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            RakutenSearchScreenUi.screenPadH,
+            RakutenSearchScreenUi.gapSection * 0.5,
+            RakutenSearchScreenUi.screenPadH,
+            RakutenSearchScreenUi.gapSection * 0.5,
+          ),
+          child: Material(
+            color: AppColors.error.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(10),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.error_outline_rounded,
+                        size: 20,
+                        color: AppColors.error,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: HomeScreenColors.accentSectionHeading,
+                                height: 1.25,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    message,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: HomeScreenColors.groupedSectionBody,
+                          height: 1.35,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: onRetry,
+                          icon: const Icon(Icons.refresh_rounded, size: 16),
+                          label: Text(retryLabel),
+                          style: OutlinedButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                            foregroundColor: AppColors.accentPrimary,
+                          ),
+                        ),
+                      ),
+                      if (onAdjustConditions != null) ...[
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: onAdjustConditions,
+                            icon: const Icon(Icons.tune_rounded, size: 16),
+                            label: Text(adjustLabel),
+                            style: OutlinedButton.styleFrom(
+                              visualDensity: VisualDensity.compact,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return _RakutenSearchFeedbackShell(
+      stretchToFillViewport: true,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -51,6 +51,9 @@ import 'shop_discovery_detail_screen.dart';
 /// 楽天API商品検索画面（最小構成）。
 enum RakutenSearchInitialMode { product, genre, shopDiscovery }
 
+/// 探す画面の表示フェーズ（build 内の boolean 分岐を一本化）。
+enum SearchSurfacePhase { input, loading, result, empty, error }
+
 class RakutenSearchScreen extends StatefulWidget {
   const RakutenSearchScreen({
     super.key,
@@ -149,6 +152,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     debugLabel: 'savedShopKeyword',
   );
   bool _savedShopSearchCanSubmit = false;
+  SearchSurfacePhase _previousSearchPhase = SearchSurfacePhase.input;
 
   RakutenSearchProvider? _cachedSearchProvider;
   BulkOperationStateController? _cachedBulkCtl;
@@ -204,8 +208,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     });
     if (kDebugMode) {
       debugPrint(
-        '[SEARCH_RENDER_ERROR_AUDIT] checkedTerminal=true overflowFound=true '
-        'overflowFixed=true target=searchHeader|savedShop',
+        '[SEARCH_RENDER_ERROR_AUDIT] checkedTerminal=true overflowFound=pending '
+        'overflowFixed=pending target=searchHeader|savedShop',
       );
     }
   }
@@ -513,12 +517,142 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }
   }
 
-  bool _hasSearchResults(RakutenSearchProvider search) {
-    return search.status == RakutenSearchStatus.success && search.results.isNotEmpty;
+  String _providerModeTag() {
+    if (_savedShopKeywordEntryEffective) return 'savedShop';
+    return switch (_mode) {
+      _RakutenSearchMode.product => 'product',
+      _RakutenSearchMode.genre => 'genre',
+      _RakutenSearchMode.shopDiscovery => 'shopDiscovery',
+    };
   }
 
-  bool _shouldUseCompactSearchSetup(RakutenSearchProvider search) {
-    return _hasSearchResults(search);
+  SearchSurfacePhase _resolveSearchSurfacePhase(RakutenSearchProvider search) {
+    if (search.status == RakutenSearchStatus.loading) {
+      return SearchSurfacePhase.loading;
+    }
+    final modeTag = _providerModeTag();
+    if (search.isErrorVisibleForMode(modeTag)) {
+      return SearchSurfacePhase.error;
+    }
+    if (search.status == RakutenSearchStatus.success) {
+      if (search.results.isEmpty) return SearchSurfacePhase.empty;
+      return SearchSurfacePhase.result;
+    }
+    return SearchSurfacePhase.input;
+  }
+
+  bool _showInputDeckForPhase(SearchSurfacePhase phase) =>
+      phase == SearchSurfacePhase.input;
+
+  bool _showCompactHeaderForPhase(SearchSurfacePhase phase) =>
+      phase == SearchSurfacePhase.result || phase == SearchSurfacePhase.empty;
+
+  void _logSearchSurfacePhaseAudit({
+    required SearchSurfacePhase phase,
+    required RakutenSearchProvider search,
+    required bool keyboardVisible,
+  }) {
+    if (!kDebugMode) return;
+    final mode = _searchResultScreenTag();
+    final hasResult = search.results.isNotEmpty;
+    final hasError = search.isErrorVisibleForMode(_providerModeTag());
+    debugPrint(
+      '[SEARCH_SURFACE_PHASE_AUDIT] mode=$mode phase=${phase.name} '
+      'isLoading=${search.status == RakutenSearchStatus.loading} '
+      'hasResult=$hasResult hasError=$hasError '
+      'inputDeckVisible=${_showInputDeckForPhase(phase)} '
+      'compactHeaderVisible=${_showCompactHeaderForPhase(phase)} '
+      'emptyCardVisible=${phase == SearchSurfacePhase.empty} '
+      'errorCardVisible=${phase == SearchSurfacePhase.error} '
+      'listVisible=${phase == SearchSurfacePhase.result}',
+    );
+  }
+
+  void _logSearchLayoutPhaseTransition({
+    required SearchSurfacePhase nextPhase,
+    required String reason,
+  }) {
+    if (!kDebugMode) return;
+    if (_previousSearchPhase == nextPhase) return;
+    debugPrint(
+      '[SEARCH_LAYOUT_PHASE_AUDIT] previousPhase=${_previousSearchPhase.name} '
+      'nextPhase=${nextPhase.name} mode=${_searchResultScreenTag()} reason=$reason',
+    );
+    _previousSearchPhase = nextPhase;
+  }
+
+  void _logSearchOverflowGuardAudit({
+    required BuildContext context,
+    required SearchSurfacePhase phase,
+    required RakutenSearchProvider search,
+    required bool keyboardVisible,
+  }) {
+    if (!kDebugMode) return;
+    final mq = MediaQuery.of(context);
+    final availableHeight = mq.size.height - mq.padding.top - mq.padding.bottom;
+    final phaseName = switch (phase) {
+      SearchSurfacePhase.input => 'beforeSearch',
+      SearchSurfacePhase.loading => 'loading',
+      SearchSurfacePhase.result => 'success',
+      SearchSurfacePhase.empty => 'empty',
+      SearchSurfacePhase.error => 'error',
+    };
+    debugPrint(
+      '[SEARCH_OVERFLOW_GUARD_AUDIT] mode=${_searchResultScreenTag()} '
+      'phase=$phaseName keyboardVisible=$keyboardVisible '
+      'hasResult=${search.results.isNotEmpty} '
+      'hasError=${search.isErrorVisibleForMode(_providerModeTag())} '
+      'headerVisible=${_showCompactHeaderForPhase(phase)} '
+      'inputDeckVisible=${_showInputDeckForPhase(phase)} '
+      'resultAreaExpanded=true '
+      'errorCardInsideExpanded=${phase == SearchSurfacePhase.error} '
+      'availableHeight=$availableHeight bottomInset=${mq.viewInsets.bottom}',
+    );
+  }
+
+  void _logSearchKeyboardLayoutAudit({
+    required bool keyboardVisible,
+    required SearchSurfacePhase phase,
+    required bool errorCardCompact,
+    required BuildContext context,
+  }) {
+    if (!kDebugMode) return;
+    final focusField = _savedShopKeywordFocusNode.hasFocus
+        ? 'savedShopKeyword'
+        : (_productDetailSheetKeywordFocus.hasFocus ? 'productKeyword' : '-');
+    final mq = MediaQuery.of(context);
+    final availableHeight = mq.size.height - mq.viewInsets.bottom;
+    debugPrint(
+      '[SEARCH_KEYBOARD_LAYOUT_AUDIT] mode=${_searchResultScreenTag()} '
+      'keyboardVisible=$keyboardVisible focusField=$focusField '
+      'onSearchUnfocusCalled=true errorCardCompact=$errorCardCompact '
+      'availableHeight=$availableHeight',
+    );
+  }
+
+  void _logSearchErrorStateAudit({
+    required RakutenSearchProvider search,
+    required SearchSurfacePhase phase,
+  }) {
+    if (!kDebugMode) return;
+    final visibleSurface = switch (phase) {
+      SearchSurfacePhase.loading => 'loading',
+      SearchSurfacePhase.result => 'result',
+      SearchSurfacePhase.empty => 'empty',
+      SearchSurfacePhase.error => 'error',
+      SearchSurfacePhase.input => search.results.isNotEmpty
+          ? 'result'
+          : 'input',
+    };
+    final withWarning =
+        search.retryFailureBannerMessage != null ? 'resultWithWarning' : visibleSurface;
+    debugPrint(
+      '[SEARCH_ERROR_STATE_AUDIT] mode=${_searchResultScreenTag()} '
+      'hasPreviousResult=${search.hasPreviousResult} '
+      'hasError=${search.isErrorVisibleForMode(_providerModeTag())} '
+      'isLoading=${search.status == RakutenSearchStatus.loading} '
+      'visibleSurface=$withWarning',
+    );
   }
 
   void _logSearchLayoutGuard(
@@ -823,117 +957,153 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final kbInset = MediaQuery.viewInsetsOf(context).bottom;
-    if (kDebugMode && kbInset > 0) {
-      debugPrint(
-        '[SEARCH_LAYOUT_STABILITY] phase=beforeSearch keyboardVisible=true overflowGuard=true',
-      );
-    }
+    final keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
+    final keyboardVisible = keyboardInset > 0;
     return Scaffold(
       backgroundColor: HomeScreenColors.canvas,
       resizeToAvoidBottomInset: true,
-      body: Padding(
-        padding: EdgeInsets.only(bottom: kbInset),
-        child: Stack(
-          clipBehavior: Clip.none,
-          fit: StackFit.expand,
-          children: [
-            SearchGroupScreenShell(
-              backgroundColor: HomeScreenColors.canvas,
-              contentPadding: EdgeInsets.zero,
-              child:
-                  Consumer3<
-                    RakutenSearchProvider,
-                    RakutenManagedProductProvider,
-                    SavedShopProvider
-                  >(
-                    builder: (context, search, managed, saved, _) {
-                      final hasResults = _hasSearchResults(search);
-                      final compactSetup = _shouldUseCompactSearchSetup(search);
-                      final keyboardOpen = kbInset > 0;
-                        if (kDebugMode) {
-                        _logSearchHeaderActionAudit(hasResults: hasResults);
-                        _logSearchHeaderDuplicateAudit(hasResults: hasResults);
-                        _logSearchHeaderWidgetTreeAudit(
-                          compactSetup: compactSetup,
-                          hasResults: hasResults,
-                        );
-                        _logSearchLayoutGuard(
-                          context,
-                          keyboardInset: kbInset,
-                          compactSetup: compactSetup,
-                        );
-                      }
-                      return Column(
-                        children: [
-                          _buildBulkOperationBanner(context),
-                          if (hasResults)
-                            _buildPostSearchCompactSetupBar(
-                              context,
-                              search,
-                              saved,
-                            )
-                          else
-                            Flexible(
-                              fit: FlexFit.loose,
-                              flex: keyboardOpen ? 1 : 0,
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxHeight: keyboardOpen
-                                      ? MediaQuery.sizeOf(context).height *
-                                            0.5
-                                      : double.infinity,
-                                ),
-                                child: SingleChildScrollView(
-                                  key: const ValueKey<String>(
-                                    'search_mode_input_scroll',
+      body: Stack(
+        clipBehavior: Clip.none,
+        fit: StackFit.expand,
+        children: [
+          SearchGroupScreenShell(
+            backgroundColor: HomeScreenColors.canvas,
+            contentPadding: EdgeInsets.zero,
+            child:
+                Consumer3<
+                  RakutenSearchProvider,
+                  RakutenManagedProductProvider,
+                  SavedShopProvider
+                >(
+                  builder: (context, search, managed, saved, _) {
+                    final phase = _resolveSearchSurfacePhase(search);
+                    final hasResults = phase == SearchSurfacePhase.result;
+                    final compactSetup = _showCompactHeaderForPhase(phase);
+                    _logSearchLayoutPhaseTransition(
+                      nextPhase: phase,
+                      reason: 'build',
+                    );
+                    if (kDebugMode) {
+                      _logSearchHeaderActionAudit(hasResults: hasResults);
+                      _logSearchHeaderDuplicateAudit(hasResults: hasResults);
+                      _logSearchHeaderWidgetTreeAudit(
+                        compactSetup: compactSetup,
+                        hasResults: hasResults,
+                      );
+                      _logSearchLayoutGuard(
+                        context,
+                        keyboardInset: keyboardInset,
+                        compactSetup: compactSetup,
+                      );
+                      _logSearchSurfacePhaseAudit(
+                        phase: phase,
+                        search: search,
+                        keyboardVisible: keyboardVisible,
+                      );
+                      _logSearchOverflowGuardAudit(
+                        context: context,
+                        phase: phase,
+                        search: search,
+                        keyboardVisible: keyboardVisible,
+                      );
+                      _logSearchErrorStateAudit(search: search, phase: phase);
+                      debugPrint(
+                        '[SEARCH_LAYOUT_STABILITY] phase=${phase.name} '
+                        'keyboardVisible=$keyboardVisible overflowGuard=true',
+                      );
+                    }
+                    final showInputDeck = _showInputDeckForPhase(phase);
+                    final showCompactHeader = _showCompactHeaderForPhase(phase);
+                    return Column(
+                      children: [
+                        _buildBulkOperationBanner(context),
+                        if (showInputDeck)
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: LayoutBuilder(
+                              builder: (context, constraints) {
+                                final maxHeader = keyboardVisible
+                                    ? (constraints.maxHeight * 0.55)
+                                          .clamp(120.0, constraints.maxHeight)
+                                    : constraints.maxHeight;
+                                return ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxHeight: maxHeader.isFinite
+                                        ? maxHeader
+                                        : 480,
                                   ),
-                                  physics: const ClampingScrollPhysics(),
-                                  keyboardDismissBehavior:
-                                      ScrollViewKeyboardDismissBehavior.onDrag,
-                                  child: _buildModeAndInputArea(
-                                    context,
-                                    search,
-                                    saved,
+                                  child: SingleChildScrollView(
+                                    key: const ValueKey<String>(
+                                      'search_mode_input_scroll',
+                                    ),
+                                    physics: const ClampingScrollPhysics(),
+                                    keyboardDismissBehavior:
+                                        ScrollViewKeyboardDismissBehavior
+                                            .onDrag,
+                                    child: _buildModeAndInputArea(
+                                      context,
+                                      search,
+                                      saved,
+                                    ),
                                   ),
-                                ),
+                                );
+                              },
+                            ),
+                          )
+                        else if (showCompactHeader)
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: SingleChildScrollView(
+                              key: const ValueKey<String>(
+                                'search_compact_header_scroll',
+                              ),
+                              physics: const ClampingScrollPhysics(),
+                              child: _buildPostSearchCompactSetupBar(
+                                context,
+                                search,
+                                saved,
                               ),
                             ),
+                          ),
+                        if (showInputDeck || showCompactHeader)
                           Divider(
                             height: 1,
                             thickness: 1,
                             color: HomeScreenColors.inlineDivider,
                           ),
-                          Expanded(
-                            child: _mode == _RakutenSearchMode.product
-                                ? GestureDetector(
-                                    behavior: HitTestBehavior.translucent,
-                                    onTap: _dismissKeywordSearchKeyboard,
-                                    child: _buildResultArea(
-                                      context,
-                                      search,
-                                      managed,
-                                      saved,
-                                    ),
-                                  )
-                                : _buildResultArea(
+                        Expanded(
+                          child: _mode == _RakutenSearchMode.product
+                              ? GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  onTap: _dismissKeywordSearchKeyboard,
+                                  child: _buildResultArea(
                                     context,
                                     search,
                                     managed,
                                     saved,
+                                    phase: phase,
+                                    keyboardVisible: keyboardVisible,
                                   ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-            ),
-            CommonDraggableEdgeFab(
-              shellTabIndex: context.watch<AppShellController>().currentIndex,
-              onCommentTap: () => _returnToShellWithTab(context, 2),
-            ),
-          ],
-        ),
+                                )
+                              : _buildResultArea(
+                                  context,
+                                  search,
+                                  managed,
+                                  saved,
+                                  phase: phase,
+                                  keyboardVisible: keyboardVisible,
+                                ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+          ),
+          CommonDraggableEdgeFab(
+            shellTabIndex: context.watch<AppShellController>().currentIndex,
+            onCommentTap: () => _returnToShellWithTab(context, 2),
+          ),
+        ],
       ),
       bottomNavigationBar: _buildBottomNavigationBar(context),
     );
@@ -1291,9 +1461,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   void _runSearch(BuildContext context) {
     if (_blockRoomTourSearchForSnack('search')) return;
-    if (!_savedShopKeywordEntryEffective) {
-      _dismissKeywordSearchKeyboard();
-    }
+    FocusScope.of(context).unfocus();
+    _dismissKeywordSearchKeyboard();
     if (_savedShopKeywordEntryEffective) {
       final scopedShop = _effectiveShopCodeForApi(context);
       final keyword = _keywordController.text;
@@ -1329,6 +1498,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       _searchHeaderCollapsed = true;
     });
     if (kDebugMode) {
+      _logSearchKeyboardLayoutAudit(
+        keyboardVisible: false,
+        phase: SearchSurfacePhase.loading,
+        errorCardCompact: false,
+        context: context,
+      );
       debugPrint(
         '[SEARCH_LAYOUT_STABILITY] phase=loading keyboardVisible=false overflowGuard=true',
       );
@@ -1384,6 +1559,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     final modeTag = _savedShopKeywordEntryEffective ? 'savedShop' : 'product';
     final searchProv = context.read<RakutenSearchProvider>();
     final sessionId = searchProv.beginSearchSession(modeTag: modeTag);
+    searchProv.clearErrorForNewSearch(modeTag: modeTag, requestId: sessionId);
     if (kDebugMode) {
       debugPrint(
         '[SEARCH_EXECUTE_TRACE] sessionId=$sessionId mode=$modeTag '
@@ -2195,6 +2371,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       _searchHeaderCollapsed = true;
     });
     _restoreSearchSession(_modeCacheKey());
+    if (mounted) {
+      context.read<RakutenSearchProvider>().clearErrorIfModeMismatch(
+        _providerModeTag(),
+      );
+    }
     if (kDebugMode) {
       final from = fromSavedShop ? 'savedShop' : fromMode;
       debugPrint(
@@ -3937,18 +4118,103 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
+  Widget _buildSearchRetryFailureBanner(
+    BuildContext context,
+    RakutenSearchProvider search,
+  ) {
+    final message = search.retryFailureBannerMessage;
+    if (message == null || message.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return Material(
+      color: AppColors.error.withValues(alpha: 0.1),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.warning_amber_rounded, size: 18, color: AppColors.error),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                '再検索に失敗しました：$message',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      height: 1.35,
+                      color: HomeScreenColors.metricTileTitleColor,
+                    ),
+              ),
+            ),
+            IconButton(
+              visualDensity: VisualDensity.compact,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+              onPressed: search.clearRetryFailureBanner,
+              icon: const Icon(Icons.close_rounded, size: 18),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildResultArea(
     BuildContext context,
     RakutenSearchProvider search,
     RakutenManagedProductProvider managed,
-    SavedShopProvider saved,
-  ) {
+    SavedShopProvider saved, {
+    required SearchSurfacePhase phase,
+    required bool keyboardVisible,
+  }) {
     _showCompletionFeedbackIfNeeded(context, search);
     if (_mode == _RakutenSearchMode.shopDiscovery) {
       return _buildShopDiscoveryResultArea(context, search);
     }
     if (_mode == _RakutenSearchMode.genre) {
       return _buildGenreResultArea(context, search, managed, saved);
+    }
+    final retryBanner = _buildSearchRetryFailureBanner(context, search);
+    switch (phase) {
+      case SearchSurfacePhase.loading:
+        return const Center(
+          child: AppLoadingView(message: '商品を探しています', inline: false),
+        );
+      case SearchSurfacePhase.error:
+        if (kDebugMode) {
+          _logSearchKeyboardLayoutAudit(
+            keyboardVisible: keyboardVisible,
+            phase: phase,
+            errorCardCompact: keyboardVisible,
+            context: context,
+          );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            retryBanner,
+            Expanded(
+              child: RakutenSearchErrorView(
+                compactLayout: keyboardVisible,
+                title: '検索結果を表示できませんでした',
+                stateLine: _savedShopKeywordEntryEffective
+                    ? '状態: 保存ショップ検索に失敗しました'
+                    : '状態: 検索に失敗しました',
+                message: search.errorMessage.isNotEmpty
+                    ? search.errorMessage
+                    : '時間をおいて「もう一度検索する」を押すか、条件を緩めて試してください。',
+                onRetry: () => _runSearch(context),
+                onAdjustConditions: () => _openProductConditionsSheet(context),
+                adjustLabel: _savedShopKeywordEntryEffective
+                    ? '条件を開く'
+                    : 'キーワードを開く',
+              ),
+            ),
+          ],
+        );
+      case SearchSurfacePhase.input:
+      case SearchSurfacePhase.result:
+      case SearchSurfacePhase.empty:
+        break;
     }
     switch (search.status) {
       case RakutenSearchStatus.idle:
@@ -3969,23 +4235,31 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         );
       case RakutenSearchStatus.loading:
         return const Center(
-          // 共通AppLoadingViewへ置換: 商品検索中のローディング表示。
           child: AppLoadingView(message: '商品を探しています', inline: false),
         );
       case RakutenSearchStatus.error:
-        return RakutenSearchErrorView(
-          title: '検索結果を表示できませんでした',
-          stateLine: _savedShopKeywordEntryEffective
-              ? '状態: 保存ショップ検索に失敗しました'
-              : '状態: 検索に失敗しました',
-          message: search.errorMessage.isNotEmpty
-              ? search.errorMessage
-              : '時間をおいて「もう一度検索する」を押すか、条件を緩めて試してください。',
-          onRetry: () => _runSearch(context),
-          onAdjustConditions: () => _openProductConditionsSheet(context),
-          adjustLabel: _savedShopKeywordEntryEffective
-              ? '条件を開く'
-              : 'キーワードを開く',
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            retryBanner,
+            Expanded(
+              child: RakutenSearchErrorView(
+                compactLayout: keyboardVisible,
+                title: '検索結果を表示できませんでした',
+                stateLine: _savedShopKeywordEntryEffective
+                    ? '状態: 保存ショップ検索に失敗しました'
+                    : '状態: 検索に失敗しました',
+                message: search.errorMessage.isNotEmpty
+                    ? search.errorMessage
+                    : '時間をおいて「もう一度検索する」を押すか、条件を緩めて試してください。',
+                onRetry: () => _runSearch(context),
+                onAdjustConditions: () => _openProductConditionsSheet(context),
+                adjustLabel: _savedShopKeywordEntryEffective
+                    ? '条件を開く'
+                    : 'キーワードを開く',
+              ),
+            ),
+          ],
         );
       case RakutenSearchStatus.success:
         if (search.results.isEmpty) {
@@ -4002,8 +4276,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           }
           return RakutenSearchEmptyView(
             icon: Icons.inventory_2_outlined,
-            title: '該当する商品がありません',
-            body: 'キーワードや条件を見直してみてください。',
+            title: _savedShopKeywordEntryEffective
+                ? 'このショップでは該当商品が見つかりませんでした'
+                : '該当する商品がありません',
+            body: _savedShopKeywordEntryEffective
+                ? 'キーワードを変えるか、条件を緩めて再検索してください。'
+                : 'キーワードや条件を見直してみてください。',
             hints: const ['言い回しを変える・条件を緩める', '除外ワードやショップ絞り込みを外す'],
             onRefine: () => _openProductConditionsSheet(context),
             refineLabel: '条件を開く',
@@ -4032,61 +4310,73 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           success: true,
         );
         final shortfallNote = search.keywordManagedVisibleShortfallNote();
-        return _buildSearchResultsHeaderAndListColumn(
-          compactHeader: true,
-          headerChildren: [
-            if (shortfallNote != null)
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                  RakutenSearchScreenUi.screenPadH,
-                  0,
-                  RakutenSearchScreenUi.screenPadH,
-                  6,
-                ),
-                child: Text(
-                  shortfallNote,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontWeight: FontWeight.w600,
-                        height: 1.35,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            retryBanner,
+            Expanded(
+              child: _buildSearchResultsHeaderAndListColumn(
+                compactHeader: true,
+                headerChildren: [
+                  if (shortfallNote != null)
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        RakutenSearchScreenUi.screenPadH,
+                        0,
+                        RakutenSearchScreenUi.screenPadH,
+                        6,
                       ),
+                      child: Text(
+                        shortfallNote,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondary,
+                              fontWeight: FontWeight.w600,
+                              height: 1.35,
+                            ),
+                      ),
+                    ),
+                  _buildBulkSelectionHeaderRow(
+                    context,
+                    search,
+                    managed,
+                    orderedResults,
+                  ),
+                ],
+                listPane: _buildResultsListWithBulkBar(
+                  context,
+                  search: search,
+                  saved: saved,
+                  managed: managed,
+                  orderedResults: orderedResults,
+                  scrollController: _keywordResultsScrollController,
+                  keywordPreferredFilteredAllOut: keywordPreferredFilteredAllOut,
+                  emptyPreferredFilteredOut: RakutenSearchEmptyView(
+                    icon: Icons.store_mall_directory_outlined,
+                    title: '一覧を表示できませんでした',
+                    body: '保存済みショップの商品だけがヒットし、表示対象がありませんでした。',
+                    hints: const ['条件を変えて再検索', 'ジャンル探索も試す'],
+                    onRefine: () => _openProductConditionsSheet(context),
+                    refineLabel: '条件を開く',
+                    stateFootnote: '候補・コレ済以外は結果に含めています。',
+                  ),
+                  emptyGenericFilteredOut: RakutenSearchEmptyView(
+                    icon: Icons.filter_alt_off_outlined,
+                    title: '表示できる商品がありません',
+                    body: search.keywordManagedVisibleShortfallNote() ??
+                        '取得はできていますが、候補済・安全性フィルタ等の適用後は0件です。',
+                    hints: const [
+                      '条件を緩める',
+                      'キーワードを変えて再検索',
+                      'ジャンル探索に切り替える',
+                    ],
+                    onRefine: () => _openProductConditionsSheet(context),
+                    refineLabel: '条件を開く',
+                    stateFootnote: '取得は完了しています。',
+                  ),
                 ),
               ),
-            _buildBulkSelectionHeaderRow(
-              context,
-              search,
-              managed,
-              orderedResults,
             ),
           ],
-          listPane: _buildResultsListWithBulkBar(
-            context,
-            search: search,
-            saved: saved,
-            managed: managed,
-            orderedResults: orderedResults,
-            scrollController: _keywordResultsScrollController,
-            keywordPreferredFilteredAllOut: keywordPreferredFilteredAllOut,
-            emptyPreferredFilteredOut: RakutenSearchEmptyView(
-              icon: Icons.store_mall_directory_outlined,
-              title: '一覧を表示できませんでした',
-              body: '保存済みショップの商品だけがヒットし、表示対象がありませんでした。',
-              hints: const ['条件を変えて再検索', 'ジャンル探索も試す'],
-              onRefine: () => _openProductConditionsSheet(context),
-              refineLabel: '条件を開く',
-              stateFootnote: '候補・コレ済以外は結果に含めています。',
-            ),
-            emptyGenericFilteredOut: RakutenSearchEmptyView(
-              icon: Icons.filter_alt_off_outlined,
-              title: '表示できる商品がありません',
-              body: search.keywordManagedVisibleShortfallNote() ??
-                  '取得はできていますが、候補済・安全性フィルタ等の適用後は0件です。',
-              hints: const ['条件を緩める', 'キーワードを変えて再検索', 'ジャンル探索に切り替える'],
-              onRefine: () => _openProductConditionsSheet(context),
-              refineLabel: '条件を開く',
-              stateFootnote: '取得は完了しています。',
-            ),
-          ),
         );
     }
   }

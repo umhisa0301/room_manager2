@@ -51,6 +51,9 @@ class RakutenSearchSessionCache {
       lastKeyword: snap.lastKeyword,
       keywordSearchHadApiHitsButNoVisibleResults:
           snap.keywordSearchHadApiHitsButNoVisibleResults,
+      errorModeTag: snap.status == RakutenSearchStatus.error
+          ? _providerModeTagForCacheKey(key)
+          : null,
     );
     _log('restore', key, snap.results.length);
   }
@@ -65,6 +68,15 @@ class RakutenSearchSessionCache {
     _providerByMode.remove(key);
     _uiByMode.remove(key);
     _log('clear', key, 0);
+  }
+
+  static String? _providerModeTagForCacheKey(String key) {
+    return switch (key) {
+      modeSavedShop => 'savedShop',
+      modeGenre => 'genre',
+      modeShopDiscovery => 'shopDiscovery',
+      _ => 'product',
+    };
   }
 
   void _log(String event, String key, int resultCount) {
