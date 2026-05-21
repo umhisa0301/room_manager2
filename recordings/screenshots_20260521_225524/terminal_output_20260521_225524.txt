@@ -1,0 +1,729 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-21 22:55:24
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260521_225524.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260521_225524.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260521_225524.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260521_225524.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260521_225524.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260521_225524
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260521_225524\terminal_output_20260521_225524.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 17204).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             17.8s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.9s
+D/FlutterJNI(17477): Beginning load of flutter...
+D/FlutterJNI(17477): flutter (null) was loaded normally!
+I/flutter (17477): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (17477): [DEBUG_LOG_VOLUME_AUDIT] nativeLogsObserved=true appVerboseLogsReduced=true rakutenUrlVerbose=false genreResolveVerbose=false productCardVerbose=false
+I/flutter (17477): verifyMode=false
+I/flutter (17477): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter (17477): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                    88ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:55273/AdEg0l7hcY8=/
+I/flutter (17477): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100227 resolvedGenreNames=食品 invalidGenreIds= corrected=false
+I/flutter (17477): [GENRE_PREF_LOAD] favoriteGenreIds=100227 favoriteGenreNames=食品 source=repositoryLoad
+I/flutter (17477): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17477): [ROOMコレ診断] loadAll 初回サマリー parsed=245 rawJsonList=245
+I/flutter (17477): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (17477): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter (17477): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=true enabled=true label=投稿済み商品を取り込む reason=rendered
+I/flutter (17477): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=true enabled=true label=反応を確認する reason=rendered
+I/flutter (17477): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=analysis visible=true enabled=true label=反応があった商品は分析タブで確認できます reason=textLinkOnly
+I/flutter (17477): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=home visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/flutter (17477): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17477): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=CommonDraggableEdgeFab file=lib/widgets/common_draggable_edge_fab.dart visible=true reason=commentEdgeFabRightSideNotMenu
+I/flutter (17477): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (17477): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=204 afterFilterLen=204 surface=ok_list ui=ready
+I/flutter (17477): [ROOMコレ診断] 描画リスト先頭 productId=k-honda:10009188 title=＼ポイント2倍 5月22日まで／アンパンマン ミニバスタオル 50×100cm 綿100% 無撚糸 ジャガードタオル キャラクター バイキンマン しょくぱんまん カレーパンマン ドキンちゃん コキンちゃん 保育園 幼稚園 男の子 女の子 かわいい [apf][cbt]【メール便OK】 status=candidate len=204
+I/flutter (17477): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=204 doneCount=41 roomImportedDoneCount=40 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (17477): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=40 appCollectedCount=1 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=204 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-20 postCount=1 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-21 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter (17477): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=true visible=true reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=true visible=true reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=myPage visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/Choreographer(17477): Skipped 199 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:55273/AdEg0l7hcY8=/
+I/flutter (17477): [MANAGED_PRODUCT_SAVE]
+I/flutter (17477): action=refresh
+I/flutter (17477): productId=
+I/flutter (17477): itemCode=
+I/flutter (17477): beforePendingCount=204
+I/flutter (17477): afterPendingCount=204
+I/flutter (17477): afterDoneCount=41
+I/flutter (17477): [MANAGED_PRODUCT_LOAD]
+I/flutter (17477): source=provider
+I/flutter (17477): pendingCount=204
+I/flutter (17477): doneCount=41
+I/flutter (17477): filter=
+I/flutter (17477): tab=
+I/flutter (17477): [ROOMコレ診断] refreshManagedProductList 完了 total=245 candidate=204 done=41 ui=ready
+I/flutter (17477): [HOME_SECTION_ORDER] order=todayRoomOperation,roomColleManagement,roomSync,recentCandidates
+I/flutter (17477): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=none file=lib/screens/home_placeholder_screen.dart visible=false reason=noDrawerNoMenuFabOnHomeBody
+I/flutter (17477): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (17477): beforeDoneCount=41
+I/flutter (17477): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter (17477): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (17477): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (17477): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (17477): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (17477): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (17477): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-20T23:13:55.748986
+I/flutter (17477): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=false
+I/flutter (17477): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (17477): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (17477): [RECOMMEND_TRACE] action=regenerateToday
+I/flutter (17477): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (17477): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-20T23:13:55.748986
+I/flutter (17477): [RECOMMEND_TRACE] generate start
+I/flutter (17477): [RECOMMEND_TRACE] profile nickname=あかさ
+I/flutter (17477): [RECOMMEND_STYLE] selected=affordable
+I/flutter (17477): [SEARCH_STYLE_TRACE] selectedStyle=affordable
+I/flutter (17477): [RECOMMEND_TRACE] favoriteGenreIds=100227
+I/flutter (17477): [GENRE_PREF_LOAD] favoriteGenreIds=100227 favoriteGenreNames=食品 source=recommend
+I/flutter (17477): [RECOMMEND_TRACE] searchPreferences=affordable
+I/flutter (17477): [RECOMMEND_TRACE] savedShopCount=3
+I/flutter (17477): [RECOMMEND_TRACE] doneProductCount=41
+I/flutter (17477): [RECOMMEND_TRACE] candidateProductCount=204
+I/flutter (17477): [RECOMMEND_START] genreCount=1 savedShopCount=3 doneCount=41 candidateCount=204 selectedStyle=affordable
+I/flutter (17477): [GENRE_PREF_MISMATCH] savedGenreId=100227 usedGenreId=563737 savedName=食品 usedName=お店屋さん reason=historyGenreNotInFavorites source=recommend
+I/flutter (17477): [GENRE_PREF_MISMATCH] savedGenreId=100227 usedGenreId=201610 savedName=食品 usedName=知育玩具・学習玩具 reason=historyGenreNotInFavorites source=recommend
+I/flutter (17477): [GENRE_PREF_MISMATCH] savedGenreId=100227 usedGenreId=201598 savedName=食品 usedName=ベビー向けおもちゃ reason=historyGenreNotInFavorites source=recommend
+I/flutter (17477): [GENRE_PREF_MISMATCH] savedGenreId=100227 usedGenreId=101914 savedName=食品 usedName=おもちゃ reason=historyGenreNotInFavorites source=recommend
+I/flutter (17477): [RECOMMEND_PLAN] count=7
+I/flutter (17477): [RECOMMEND_GENERATE] start requestCount=0 planCount=7
+I/flutter (17477): [RECOMMEND_REACTION] commentGenres=2 likeGenres=13 commentShops=1 likeShops=6 priceBands=20000-49999,5000-9999,10000-19999,2000-4999
+I/flutter (17477): [RECOMMEND_POOL] raw=0 valid=0 scored=0
+I/flutter (17477): [RECOMMEND_SELECT] strictSelected=0
+I/flutter (17477): [RECOMMEND_PHASE] phase=personal
+I/flutter (17477): [RECOMMEND] search keyword=食品
+I/flutter (17477): [RECOMMEND] genreId=100227
+I/flutter (17477): [RECOMMEND] searchPreference=
+I/flutter (17477): [RECOMMEND] minPrice=500
+I/flutter (17477): [RECOMMEND] maxPrice=10000
+I/flutter (17477): [RECOMMEND] sanitizedMinPrice=500
+I/flutter (17477): [RECOMMEND] sanitizedMaxPrice=10000
+I/flutter (17477): [RECOMMEND_PLAN] phase=personal relax=0 source=genre index=1 keyword=食品 genreId=100227 shopCode= style=affordable minPrice=500 maxPrice=10000 sort=
+I/flutter (17477): [RECOMMEND_API] planIndex=1 keyword=食品 genreId=100227 shopCode= page=1
+I/flutter (17477): [RECOMMEND_API] phase=personal start index=1 page=1
+I/flutter (17477): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=食品 genreId=100227 shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=1 expectedApiCalls=1
+I/flutter (17477): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=食品 genreId=100227 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (17477): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (17477): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E9%A3%9F%E5%93%81&minPrice=500&maxPrice=10000&minReviewCount=10&minReviewAverage=3.6&genreId=100227
+I/flutter (17477): [MANAGED_PRODUCT_SAVE]
+I/flutter (17477): action=refresh
+I/flutter (17477): productId=
+I/flutter (17477): itemCode=
+I/flutter (17477): beforePendingCount=204
+I/flutter (17477): afterPendingCount=204
+I/flutter (17477): beforeDoneCount=41
+I/flutter (17477): afterDoneCount=41
+I/flutter (17477): [MANAGED_PRODUCT_LOAD]
+I/flutter (17477): source=screen
+I/flutter (17477): pendingCount=204
+I/flutter (17477): doneCount=41
+I/flutter (17477): filter=
+I/flutter (17477): tab=candidate
+I/flutter (17477): [ROOMコレ診断] refreshManagedProductList 完了 total=245 candidate=204 done=41 ui=ready
+I/flutter (17477): [ROOMコレ診断] ROOMコレ画面起動後 total=245 candidate=204 done=41 listUi=RakutenManagedProductListUiStatus.ready tabIdx=0
+I/flutter (17477): [MANAGED_PRODUCT_SAVE]
+I/flutter (17477): action=refresh
+I/flutter (17477): productId=
+I/flutter (17477): itemCode=
+I/flutter (17477): beforePendingCount=204
+I/flutter (17477): afterPendingCount=204
+I/flutter (17477): beforeDoneCount=41
+I/flutter (17477): afterDoneCount=41
+I/flutter (17477): [MANAGED_PRODUCT_LOAD]
+I/flutter (17477): source=provider
+I/flutter (17477): pendingCount=204
+I/flutter (17477): doneCount=41
+I/flutter (17477): filter=
+I/flutter (17477): tab=
+I/flutter (17477): [ROOMコレ診断] refreshManagedProductList 完了 total=245 candidate=204 done=41 ui=ready
+I/flutter (17477): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter (17477): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=true enabled=true label=投稿済み商品を取り込む reason=rendered
+I/flutter (17477): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=true enabled=true label=反応を確認する reason=rendered
+I/flutter (17477): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=analysis visible=true enabled=true label=反応があった商品は分析タブで確認できます reason=textLinkOnly
+I/flutter (17477): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=home visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/flutter (17477): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter (17477): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter (17477): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=true visible=true reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=true visible=true reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=myPage visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/flutter (17477): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=204 doneCount=41 roomImportedDoneCount=40 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (17477): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=40 appCollectedCount=1 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=204 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-20 postCount=1 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-21 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=204 afterFilterLen=204 surface=ok_list ui=ready
+I/flutter (17477): [ROOMコレ診断] 描画リスト先頭 productId=k-honda:10009188 title=＼ポイント2倍 5月22日まで／アンパンマン ミニバスタオル 50×100cm 綿100% 無撚糸 ジャガードタオル キャラクター バイキンマン しょくぱんまん カレーパンマン ドキンちゃん コキンちゃん 保育園 幼稚園 男の子 女の子 かわいい [apf][cbt]【メール便OK】 status=candidate len=204
+I/WebViewFactory(17477): Loading com.google.android.webview version 148.0.7778.120 (code 777812003)
+D/ApplicationLoaders(17477): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(17477): Loading /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(17477): Configuring clns-5 for other apk /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/lib/arm64:/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(17477): version=148.0.7778.120 (777812003) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(17477): Load /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk): ok
+D/nativeloader(17477): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk): ok
+I/chromium(17477): [0521/225601.909766:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(17477): Successfully loaded native library
+I/cr_CachingUmaRecorder(17477): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(17477): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(17477): #registerProvider() provider:WV.wk@9f9ad37 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(17477): #setManagerAndSource() 0
+I/cr_DisplayManager(17477): Is Display Topology available: false
+I/cr_CombinedPProvider(17477): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(17477): Compat change id reported: 183155436; UID 10465; state: ENABLED
+I/cr_AppResProvider(17477): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(17477): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(17477): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(17477): #flushPolicies()
+W/chromium(17477): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(17477): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 108766036
+D/CompatibilityChangeReporter(17477): Compat change id reported: 214741472; UID 10465; state: ENABLED
+I/CameraManagerGlobal(17477): Connecting to camera service
+D/CompatibilityChangeReporter(17477): Compat change id reported: 171228096; UID 10465; state: ENABLED
+I/PlatformViewsController(17477): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(17477): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(17477): Compat change id reported: 236825255; UID 10465; state: ENABLED
+W/libc    (17477): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(17477): type=1400 audit(0.0:592230): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c209,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(17477): Compat change id reported: 193247900; UID 10465; state: ENABLED
+I/Choreographer(17477): Skipped 86 frames!  The application may be doing too much work on its main thread.
+W/o.room_manager2(17477): type=1400 audit(0.0:592231): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c209,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (17477): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+I/AdrenoVK-0(17477): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(17477): Build Date              : 08/23/22
+I/AdrenoVK-0(17477): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(17477): Remote Branch           : 
+I/AdrenoVK-0(17477): Local Branch            : 
+I/AdrenoVK-0(17477): Remote Branch           : 
+I/AdrenoVK-0(17477): Reconstruct Branch      : 
+I/AdrenoVK-0(17477): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(17477): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(17477): Installing profile for com.stepbytestudio.room_manager2
+I/OpenGLRenderer(17477): Davey! duration=1510ms; Flags=1, FrameTimelineVsyncId=656625003, IntendedVsync=4870338951480626, Vsync=4870340384813902, InputEventId=0, HandleInputStart=4870340401637526, AnimationStart=4870340401639036, PerformTraversalsStart=4870340401660130, DrawStart=4870340413875911, FrameDeadline=4870338968147292, FrameInterval=4870340401295286, FrameStartTime=16666666, SyncQueued=4870340449223463, SyncStart=4870340449323151, IssueDrawCommandsStart=4870340450575703, SwapBuffers=4870340460659505, FrameCompleted=4870340461874296, DequeueBufferDuration=2497084, QueueBufferDuration=688803, GpuCompleted=4870340461772109, SwapBuffersCompleted=4870340461874296, DisplayPresentTime=0, CommandSubmissionCompleted=4870340460659505, 
+I/flutter (17477): [Rakuten] response status=200 page=1 bytes=189547
+I/flutter (17477): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (17477): [RECOMMEND_TRACE] rawCount=30
+I/flutter (17477): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=1622 statusCode=200
+I/flutter (17477): [RakutenGenre][API] itemCode=gyouzakan:10000297 rawGenreId=214111 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=gyouzakan:10000297 model.genreId=214111 model.genreName= jsonRaw=生餃子 jsonRolled=生餃子 displayGenre=生餃子
+I/flutter (17477): [RakutenGenre][API] itemCode=kouragumi:10001520 rawGenreId=304578 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=kouragumi:10001520 model.genreId=304578 model.genreName= jsonRaw=サバ jsonRolled=サバ displayGenre=サバ
+I/flutter (17477): [RakutenGenre][API] itemCode=matsuyoshi:10002535 rawGenreId=200962 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=matsuyoshi:10002535 model.genreId=200962 model.genreName= jsonRaw=セット・詰め合わせ jsonRolled=セット・詰め合わせ displayGenre=セット・詰め合わせ
+I/flutter (17477): [RakutenGenre][API] itemCode=morigen:10001043 rawGenreId=566627 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=morigen:10001043 model.genreId=566627 model.genreName= jsonRaw=トロ jsonRolled=トロ displayGenre=トロ
+I/flutter (17477): [RakutenGenre][API] itemCode=kaneta:10000799 rawGenreId=304664 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=kaneta:10000799 model.genreId=304664 model.genreName= jsonRaw=シチュー jsonRolled=シチュー displayGenre=シチュー
+I/flutter (17477): [RakutenGenre][API] itemCode=nikudonya:10000165 rawGenreId=200925 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=nikudonya:10000165 model.genreId=200925 model.genreName= jsonRaw=ハラミ jsonRolled=ハラミ displayGenre=ハラミ
+I/flutter (17477): [RakutenGenre][API] itemCode=kado-select:10000195 rawGenreId=566062 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=kado-select:10000195 model.genreId=566062 model.genreName= jsonRaw=西京漬・漬魚 jsonRolled=西京漬・漬魚 displayGenre=西京漬・漬魚
+I/flutter (17477): [RakutenGenre][API] itemCode=e-cha:10002295 rawGenreId=214077 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=e-cha:10002295 model.genreId=214077 model.genreName= jsonRaw=お茶漬け jsonRolled=お茶漬け displayGenre=お茶漬け
+I/flutter (17477): [RakutenGenre][API] itemCode=once-in:10000527 rawGenreId=214111 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=once-in:10000527 model.genreId=214111 model.genreName= jsonRaw=生餃子 jsonRolled=生餃子 displayGenre=生餃子
+I/flutter (17477): [RakutenGenre][API] itemCode=rakuten24:10827589 rawGenreId=110487 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=rakuten24:10827589 model.genreId=110487 model.genreName= jsonRaw=ラーメン jsonRolled=ラーメン displayGenre=ラーメン
+I/flutter (17477): [RakutenGenre][API] itemCode=rebun:10007922 rawGenreId=101535 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=rebun:10007922 model.genreId=101535 model.genreName= jsonRaw=セット・詰め合わせ jsonRolled=セット・詰め合わせ displayGenre=セット・詰め合わせ
+I/flutter (17477): [RakutenGenre][API] itemCode=pururunhime:10000166 rawGenreId=100276 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=pururunhime:10000166 model.genreId=100276 model.genreName= jsonRaw=スープ jsonRolled=スープ displayGenre=スープ
+I/flutter (17477): [RakutenGenre][API] itemCode=sankyotikusan:10000100 rawGenreId=100230 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=sankyotikusan:10000100 model.genreId=100230 model.genreName= jsonRaw=その他 jsonRolled=豚肉 displayGenre=豚肉
+I/flutter (17477): [RakutenGenre][API] itemCode=wakuwaku7460:10000356 rawGenreId=566651 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=wakuwaku7460:10000356 model.genreId=566651 model.genreName= jsonRaw=セット・詰め合わせ jsonRolled=セット・詰め合わせ displayGenre=セット・詰め合わせ
+I/flutter (17477): [RakutenGenre][API] itemCode=chanova:10000636 rawGenreId=201048 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=chanova:10000636 model.genreId=201048 model.genreName= jsonRaw=その他 jsonRolled=中華惣菜・点心 displayGenre=中華惣菜・点心
+I/flutter (17477): [RakutenGenre][API] itemCode=otaru-kaiyo:10000006 rawGenreId=214099 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=otaru-kaiyo:10000006 model.genreId=214099 model.genreName= jsonRaw=カレー jsonRolled=カレー displayGenre=カレー
+I/flutter (17477): [RakutenGenre][API] itemCode=pururunhime:10000159 rawGenreId=100276 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=pururunhime:10000159 model.genreId=100276 model.genreName= jsonRaw=スープ jsonRolled=スープ displayGenre=スープ
+I/flutter (17477): [RakutenGenre][API] itemCode=irisplaza-r:10127791 rawGenreId=507786 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=irisplaza-r:10127791 model.genreId=507786 model.genreName= jsonRaw=セット・詰め合わせ jsonRolled=セット・詰め合わせ displayGenre=セット・詰め合わせ
+I/flutter (17477): [RakutenGenre][API] itemCode=gakouin:10000051 rawGenreId=568516 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=gakouin:10000051 model.genreId=568516 model.genreName= jsonRaw=焼き魚 jsonRolled=焼き魚 displayGenre=焼き魚
+I/flutter (17477): [RakutenGenre][API] itemCode=toureifoods:10000119 rawGenreId=101535 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=toureifoods:10000119 model.genreId=101535 model.genreName= jsonRaw=セット・詰め合わせ jsonRolled=セット・詰め合わせ displayGenre=セット・詰め合わせ
+I/flutter (17477): [RakutenGenre][API] itemCode=chanova:10000300 rawGenreId=201048 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=chanova:10000300 model.genreId=201048 model.genreName= jsonRaw=その他 jsonRolled=中華惣菜・点心 displayGenre=中華惣菜・点心
+I/flutter (17477): [RakutenGenre][API] itemCode=jonetsu:10000099 rawGenreId=200925 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=jonetsu:10000099 model.genreId=200925 model.genreName= jsonRaw=ハラミ jsonRolled=ハラミ displayGenre=ハラミ
+I/flutter (17477): [RakutenGenre][API] itemCode=abctown:10002706 rawGenreId=509756 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=abctown:10002706 model.genreId=509756 model.genreName= jsonRaw=韓国海苔 jsonRolled=韓国海苔 displayGenre=韓国海苔
+I/flutter (17477): [RakutenGenre][API] itemCode=yuuzen:10000648 rawGenreId=304666 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=yuuzen:10000648 model.genreId=304666 model.genreName= jsonRaw=セット・詰め合わせ jsonRolled=セット・詰め合わせ displayGenre=セット・詰め合わせ
+I/flutter (17477): [RakutenGenre][API] itemCode=pururunhime:10000983 rawGenreId=100276 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=pururunhime:10000983 model.genreId=100276 model.genreName= jsonRaw=スープ jsonRolled=スープ displayGenre=スープ
+I/flutter (17477): [RakutenGenre][API] itemCode=dining-shioso:10000544 rawGenreId=207774 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=dining-shioso:10000544 model.genreId=207774 model.genreName= jsonRaw=サケ jsonRolled=サケ displayGenre=サケ
+I/flutter (17477): [RakutenGenre][API] itemCode=kwgchi:10000002 rawGenreId=304587 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=kwgchi:10000002 model.genreId=304587 model.genreName= jsonRaw=セット・詰め合わせ jsonRolled=セット・詰め合わせ displayGenre=セット・詰め合わせ
+I/flutter (17477): [RakutenGenre][API] itemCode=kwgchi:10001087 rawGenreId=304587 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=kwgchi:10001087 model.genreId=304587 model.genreName= jsonRaw=セット・詰め合わせ jsonRolled=セット・詰め合わせ displayGenre=セット・詰め合わせ
+I/flutter (17477): [RakutenGenre][API] itemCode=syabumaru:10007131 rawGenreId=566683 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=syabumaru:10007131 model.genreId=566683 model.genreName= jsonRaw=牛丼 jsonRolled=牛丼 displayGenre=牛丼
+I/flutter (17477): [RakutenGenre][API] itemCode=bali-indah:10124357 rawGenreId=214104 rawGenreName= rawKeys=genreId
+I/flutter (17477): [RakutenGenre][MAP] itemCode=bali-indah:10124357 model.genreId=214104 model.genreName= jsonRaw=ハンバーグ jsonRolled=ハンバーグ displayGenre=ハンバーグ
+I/flutter (17477): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (17477): [Rakuten] repository search total mapped=30
+I/flutter (17477): [Rakuten] genreSearch mapped item count=30
+I/flutter (17477): [Rakuten] genreSearch before filter count=30
+I/flutter (17477): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (17477): [RECOMMEND_API] phase=personal status=200 rawCount=30
+I/flutter (17477): [PRODUCT_SAFETY_FILTER] source=recommend itemCode=rakuten24:10827589 title=日清 カップヌードル(ケース)(78g*20食入)【カップヌードル】[インスタントカップ麺 即席ラーメン 醤油 日清食品] genreName= shopName=楽天24 blocked=true reason=adult
+I/flutter (17477): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=rakuten24:10827589 matchedKeywords=
+I/flutter (17477): [RECOMMEND_FILTER] raw=30 afterExclude=22 reasonCounts={other: 7, safetyBlocked: 1}
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=gyouzakan:10000297 title=【4年連続中華総菜・点心部門グルメ大賞受賞！】餃子 送料無料 【5000万個完売】 中華点心 黒餃子！合計96個約16人前！生餃子 ぎょうざメガ盛 ぎょうざ 冷凍餃子 冷凍食品
+I/flutter (17477): [RECOMMEND_TRACE] exclude reason=alreadyCandidate
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=kouragumi:10001520 title=本日最終日★値上げ前に★今の価格5/21/23:59まで！相場高騰中の骨取りサバ切身 1kg 送料無料2,740円～ 無塩or有塩が選べる♪骨とり 骨なし 鯖 さば 冷凍食品 父の日 ギフト プレゼント 【P】
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=kouragumi:10001520 title=本日最終日★値上げ前に★今の価格5/21/23:59まで！相場高騰中の骨取りサバ切身 1kg 送料無料2,740円～ 無塩or有塩が選べる♪骨とり 骨なし 鯖 さば 冷凍食品 父の日 ギフト プレゼント 【P】
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=matsuyoshi:10002535 title=【父の日 早期P5倍】ハンバーグ ギフト 松阪牛 グルメ ハンバーグ【楽天グルメ大賞】2026 父 父の日 ギフト 肉ギフト プレゼント 食べ物 食品 母 お肉 松坂牛 牛肉 肉 お取り寄せグルメ 松良 グルメ お祝い返し 人気 誕生日 お惣菜 冷凍 内祝い 高級 母の日
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=matsuyoshi:10002535 title=【父の日 早期P5倍】ハンバーグ ギフト 松阪牛 グルメ ハンバーグ【楽天グルメ大賞】2026 父 父の日 ギフト 肉ギフト プレゼント 食べ物 食品 母 お肉 松坂牛 牛肉 肉 お取り寄せグルメ 松良 グルメ お祝い返し 人気 誕生日 お惣菜 冷凍 内祝い 高級 母の日
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=morigen:10001043 title=ねぎとろ 小分け 10人前 15人前 ネギトロ 冷凍 マグロ ねぎトロ ネギとろ ネギトロ丼 おつまみ まぐろ 食品 お取り寄せ たたき ギフト プレゼント
+I/flutter (17477): [RECOMMEND_TRACE] exclude reason=alreadyCandidate
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=kaneta:10000799 title=牛タン シチュー 180g×4袋 レトルト レンジ 食品 全国送料無料 ネコポス カネタ●牛たんシチュー180g×4袋●k-03
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=kaneta:10000799 title=牛タン シチュー 180g×4袋 レトルト レンジ 食品 全国送料無料 ネコポス カネタ●牛たんシチュー180g×4袋●k-03
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=nikudonya:10000165 title=極旨秘伝タレ漬け 牛 ハラミ 1kg 味付け肉 約4-6人前 焼肉 肉 牛肉 冷凍 食品 お肉 ハラミ肉 ハラミステーキ 安い 訳あり
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=nikudonya:10000165 title=極旨秘伝タレ漬け 牛 ハラミ 1kg 味付け肉 約4-6人前 焼肉 肉 牛肉 冷凍 食品 お肉 ハラミ肉 ハラミステーキ 安い 訳あり
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=kado-select:10000195 title=父の日 ギフト プレゼント 【父の日お届けは6/19正午ご注文まで※前払いなど例外あり】【6年連続受賞 楽天グルメ大賞】【天然高級魚 銀だら入り西京漬・粕漬セット 5～8切入】送料無料 内祝 お返し お中元【★父の日用やお中元用でも、配達日指定がない場合は最短発送★】
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=kado-select:10000195 title=父の日 ギフト プレゼント 【父の日お届けは6/19正午ご注文まで※前払いなど例外あり】【6年連続受賞 楽天グルメ大賞】【天然高級魚 銀だら入り西京漬・粕漬セット 5～8切入】送料無料 内祝 お返し お中元【★父の日用やお中元用でも、配達日指定がない場合は最短発送★】
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=e-cha:10002295 title=【高級ギフト 365日出荷！】高級海鮮お茶漬けセット 金目鯛、うなぎ、まぐろ、鮭、いわし、磯海苔 送料無料 誕生日プレゼント 父の日 御中元 2026 出産内祝い お返し 最強配送 鰻 結婚 母 父 男性 女性 お祝い お礼 ありがとう 詰め合わせ 食品 魚 クーポン 早割 魚 グルメ
+I/flutter (17477): [RECOMMEND_TRACE] exclude reason=alreadyCandidate
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=once-in:10000527 title=（2週間〜3週間でお届け）＼23日20:00〜23日20:00〜半額クーポンで2,480円送料無料！／累計2000万個完売！奇跡の一粒「タレなしで食べれる、すっぴん餃子」100個 絶品味付き約1.8kg！約16人前 国産豚肉 国産キャベツ使用！おかず お弁当 冷凍食品 餃子 ぎょうざ ギョウザ
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=once-in:10000527 title=（2週間〜3週間でお届け）＼23日20:00〜23日20:00〜半額クーポンで2,480円送料無料！／累計2000万個完売！奇跡の一粒「タレなしで食べれる、すっぴん餃子」100個 絶品味付き約1.8kg！約16人前 国産豚肉 国産キャベツ使用！おかず お弁当 冷凍食品 餃子 ぎょうざ ギョウザ
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=rakuten24:10827589 title=日清 カップヌードル(ケース)(78g*20食入)【カップヌードル】[インスタントカップ麺 即席ラーメン 醤油 日清食品]
+I/flutter (17477): [PRODUCT_SAFETY_FILTER] source=recommend itemCode=rakuten24:10827589 title=日清 カップヌードル(ケース)(78g*20食入)【カップヌードル】[インスタントカップ麺 即席ラーメン 醤油 日清食品] genreName= shopName=楽天24 blocked=true reason=adult
+I/flutter (17477): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=rakuten24:10827589 matchedKeywords=
+I/flutter (17477): [RECOMMEND_TRACE] exclude reason=safetyBlocked
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=rebun:10007922 title=父の日 ギフト 北海道 海鮮8点 セット NAGOMI【グルメ大賞2025受賞】【送料無料】内祝い お返し 5000円 誕生日 プレゼント 食べ物 食品 お取り寄せグルメ 海鮮 海産 おつまみ 詰め合わせ 出産 結婚 60代 70代 お礼 景品 母の日 お中元 御中元 夏ギフト
+I/flutter (17477): [RECOMMEND_TRACE] exclude reason=alreadyCandidate
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=pururunhime:10000166 title=【送料無料】ぷるるん姫 満腹美人食べるバランスDIET 10種の野菜たっぷり麹のポタージュ 24食入り！ダイエット食品 ダイエット diet ス−プ 酵素
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=pururunhime:10000166 title=【送料無料】ぷるるん姫 満腹美人食べるバランスDIET 10種の野菜たっぷり麹のポタージュ 24食入り！ダイエット食品 ダイエット diet ス−プ 酵素
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=sankyotikusan:10000100 title=【送料無料】九州産 豚こま切れ肉 メガ盛り 1kg＋500gで1.5kg■豚小間 豚コマ 切り落とし 豚肉 国産 食品 グルメ■（※北海道・沖縄は配送料要）
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=sankyotikusan:10000100 title=【送料無料】九州産 豚こま切れ肉 メガ盛り 1kg＋500gで1.5kg■豚小間 豚コマ 切り落とし 豚肉 国産 食品 グルメ■（※北海道・沖縄は配送料要）
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=wakuwaku7460:10000356 title=9品選べるお試しセット ギフト 惣菜 お惣菜 お試し セット 冷凍食品 お弁当 おかず 詰め合わせ 食品 福袋 冷凍惣菜 お歳暮 冷凍 業務用 おつまみ 煮物 和風 洋風 中華 肉 魚 野菜
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=wakuwaku7460:10000356 title=9品選べるお試しセット ギフト 惣菜 お惣菜 お試し セット 冷凍食品 お弁当 おかず 詰め合わせ 食品 福袋 冷凍惣菜 お歳暮 冷凍 業務用 おつまみ 煮物 和風 洋風 中華 肉 魚 野菜
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=chanova:10000636 title=メガ盛り10種10食中華福袋セット 送料無料 2026 母の日 ギフト 時短 調理 中華 あす楽 食べ物 プレゼント 惣菜 湯煎 調理済み 詰め合わせ 冷凍食品 総菜 お取り寄せグルメ おかず レトルト 贈り物 食品福袋 お試し 業務用 美味しい
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=chanova:10000636 title=メガ盛り10種10食中華福袋セット 送料無料 2026 母の日 ギフト 時短 調理 中華 あす楽 食べ物 プレゼント 惣菜 湯煎 調理済み 詰め合わせ 冷凍食品 総菜 お取り寄せグルメ おかず レトルト 贈り物 食品福袋 お試し 業務用 美味しい
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(17477): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(17477): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=otaru-kaiyo:10000006 title=【北海道スープカレー セット4個入】海鮮 ギフト 贈り物 スープカレー 北海道 海鮮 海産物 食品 カレー セット 北海道産 ギフト カレー プレゼント お取り寄せグルメ 高級 ギフト 魚介類 チキン 厳選 内祝い お祝い 海の幸
+I/flutter (17477): [RECOMMEND_TRACE] exclude reason=alreadyCandidate
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=pururunhime:10000159 title=ぷるるん姫 満腹美人 ダイエットクラムチャウダー24食入り！豆乳仕立て diet ダイエット食品 ダイエット ス−プ
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=pururunhime:10000159 title=ぷるるん姫 満腹美人 ダイエットクラムチャウダー24食入り！豆乳仕立て diet ダイエット食品 ダイエット ス−プ
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=irisplaza-r:10127791 title=【18缶】やきとり 3缶×6種類の味セット やきとり 缶詰 ホテイ 備蓄 おつまみ 炭火 塩レモン 防災 鶏肉 たれ 塩味 うま辛 食品 ガーリック 柚子 ホテイフーズ【iris_dl05】
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=irisplaza-r:10127791 title=【18缶】やきとり 3缶×6種類の味セット やきとり 缶詰 ホテイ 備蓄 おつまみ 炭火 塩レモン 防災 鶏肉 たれ 塩味 うま辛 食品 ガーリック 柚子 ホテイフーズ【iris_dl05】
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=gakouin:10000051 title=母の日 父の日 ギフト お誕生日 内祝い プレゼント【 華 】【 選べる！京の 西京焼き or 西京漬け 4切 詰め合わせ 】 送料無料 調理済み 惣菜 高級 お祝 70代 食べ物 実用的 グルメ 海鮮 食品 冷凍 60代 贈り物 喜ばれる お誕生日 結婚内祝 出産内祝い 入学内祝い
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=gakouin:10000051 title=母の日 父の日 ギフト お誕生日 内祝い プレゼント【 華 】【 選べる！京の 西京焼き or 西京漬け 4切 詰め合わせ 】 送料無料 調理済み 惣菜 高級 お祝 70代 食べ物 実用的 グルメ 海鮮 食品 冷凍 60代 贈り物 喜ばれる お誕生日 結婚内祝 出産内祝い 入学内祝い
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=toureifoods:10000119 title=焼くだけ 西京漬け【魚邑 漬け魚5種10枚】父の日 メッセージ 送料無料 焼き魚 魚 ギンダラ 詰め合わせ ギフトセット 冷凍食品 セット お礼 グルメ お祝い ギフト プレゼント 味噌漬 冷凍 惣菜 国内製造 のし対応 御礼 御祝 内祝 のし 西京焼 西京
+I/flutter (17477): [RECOMMEND_TRACE] exclude reason=alreadyCandidate
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=chanova:10000300 title=中華料理9種9品セット 送料無料 母の日 父の日 時短 中華惣菜 2026 中華 セット ギフト 冷凍食品 食べ お惣菜 詰め合わせ 手作り おかず お取り寄せグルメ お弁当 冷凍 レトルト 贈り物 食品 お試し※沖縄1000円、北海道600円・離島別途送料必要
+I/flutter (17477): [RECOMMEND_TRACE] exclude reason=alreadyCandidate
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=jonetsu:10000099 title=おうち焼肉の定番ハラミ やわらかハラミ味噌だれ漬け 600g お試し 焼肉 BBQ バーベキュー 焼肉セット バーベキューセット 牛肉 食品 肉 味付け 冷凍 小分け 情熱ホルモン 北海道沖縄配送は別途送料追加
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=jonetsu:10000099 title=おうち焼肉の定番ハラミ やわらかハラミ味噌だれ漬け 600g お試し 焼肉 BBQ バーベキュー 焼肉セット バーベキューセット 牛肉 食品 肉 味付け 冷凍 小分け 情熱ホルモン 北海道沖縄配送は別途送料追加
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=abctown:10002706 title=★配送無料★4袋セット★ヤンバン★キムブガク 50g 味選択 のり天 韓国のり 海苔 海苔天 エビ味 キムチ味 ニンニク味 オリジナル味 韓国お菓子 おつまみ 韓国食品 韓国スイーツ 人気 おいしい お土産 おすすめ サクサク
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=abctown:10002706 title=★配送無料★4袋セット★ヤンバン★キムブガク 50g 味選択 のり天 韓国のり 海苔 海苔天 エビ味 キムチ味 ニンニク味 オリジナル味 韓国お菓子 おつまみ 韓国食品 韓国スイーツ 人気 おいしい お土産 おすすめ サクサク
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=yuuzen:10000648 title=年間 BEST5 ベストヒット セット 5種8食 楽天ランキング常連 ハンバーグ入り 冷凍 食品 おかず 肉 惣菜 送料無料 お取り寄せ グルメ ギフトに 仕送りに 通販 総菜 うま味調味料 無添加 自然派志向 明和食品
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=yuuzen:10000648 title=年間 BEST5 ベストヒット セット 5種8食 楽天ランキング常連 ハンバーグ入り 冷凍 食品 おかず 肉 惣菜 送料無料 お取り寄せ グルメ ギフトに 仕送りに 通販 総菜 うま味調味料 無添加 自然派志向 明和食品
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=pururunhime:10000983 title=たっぷり60包 すごい元気わかめスープ オルニチンしじみ300個 発酵エキス入りダイエット食品 ダイエットスープ 置き換えダイエット ダイエット食品 低カロリー 低糖質 糖質オフ 糖質制限 食品 美容食品 満腹感
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=pururunhime:10000983 title=たっぷり60包 すごい元気わかめスープ オルニチンしじみ300個 発酵エキス入りダイエット食品 ダイエットスープ 置き換えダイエット ダイエット食品 低カロリー 低糖質 糖質オフ 糖質制限 食品 美容食品 満腹感
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=dining-shioso:10000544 title=銀鮭 切り身 1kg 肉厚 10切れ 加熱用 鮭 さけ サケ 焼き鮭 焼き魚 魚 さかな 冷凍 家庭用 お弁当用 お弁当 おかず 惣菜 お惣菜 冷凍食品 冷凍総菜【送料無料】 父の日
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=dining-shioso:10000544 title=銀鮭 切り身 1kg 肉厚 10切れ 加熱用 鮭 さけ サケ 焼き鮭 焼き魚 魚 さかな 冷凍 家庭用 お弁当用 お弁当 おかず 惣菜 お惣菜 冷凍食品 冷凍総菜【送料無料】 父の日
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=kwgchi:10000002 title=ギフト 肉 ＼TBS Nスタで紹介／ 黄金比率 ハンバーグ4個 メンチカツ 4個 お試し セット 1kg 訳あり 福袋 2023 | 送料無料 | 肉 母の日 父の日 お取り寄せグルメ 和牛 出産内祝い 内祝い ギフト 冷凍 グルメ 肉の日 食品
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=kwgchi:10000002 title=ギフト 肉 ＼TBS Nスタで紹介／ 黄金比率 ハンバーグ4個 メンチカツ 4個 お試し セット 1kg 訳あり 福袋 2023 | 送料無料 | 肉 母の日 父の日 お取り寄せグルメ 和牛 出産内祝い 内祝い ギフト 冷凍 グルメ 肉の日 食品
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=kwgchi:10001087 title=焼肉セット メガ盛り 1kg | 和牛 焼肉 豚カルビ 牛 ハラミ 肉 | 送料無料 | ギフト 食品 食べ物 内祝い 御祝い グルメ 食べ物 | 肉 焼肉 焼肉セット 牛肉 バーベキュー お肉 和牛 冷凍 | 出産内祝い 肉の日
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=kwgchi:10001087 title=焼肉セット メガ盛り 1kg | 和牛 焼肉 豚カルビ 牛 ハラミ 肉 | 送料無料 | ギフト 食品 食べ物 内祝い 御祝い グルメ 食べ物 | 肉 焼肉 焼肉セット 牛肉 バーベキュー お肉 和牛 冷凍 | 出産内祝い 肉の日
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=syabumaru:10007131 title=牛丼 牛丼の具 20個セット お肉屋さんのこだわり たっぷり牛肉の簡単牛丼 昼ごはん ストック 時短 お弁当 お試し 便利 夜食 手軽 グルメ おつまみ 牛皿 冷凍食品 冷凍 おかず セット 冷食 お惣菜 湯煎 温めるだけ 仕送り 1食120g
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=syabumaru:10007131 title=牛丼 牛丼の具 20個セット お肉屋さんのこだわり たっぷり牛肉の簡単牛丼 昼ごはん ストック 時短 お弁当 お試し 便利 夜食 手軽 グルメ おつまみ 牛皿 冷凍食品 冷凍 おかず セット 冷食 お惣菜 湯煎 温めるだけ 仕送り 1食120g
+I/flutter (17477): [RECOMMEND_TRACE] raw item itemCode=bali-indah:10124357 title=レンチン 惣菜 神戸開花亭 シリーズ ハンバーグ シチュー スープ 7種類14個 詰め合わせ セット 電子レンジ レトルト食品 おかず 常温保存 キャンプ飯 洋食 常温 温めるだけ 仕送り 一人暮らし お取り寄せ ギフト プレゼント 備蓄 防災食 非常食 父の日 御中元 お中元
+I/flutter (17477): [RECOMMEND_TRACE] accepted itemCode=bali-indah:10124357 title=レンチン 惣菜 神戸開花亭 シリーズ ハンバーグ シチュー スープ 7種類14個 詰め合わせ セット 電子レンジ レトルト食品 おかず 常温保存 キャンプ飯 洋食 常温 温めるだけ 仕送り 一人暮らし お取り寄せ ギフト プレゼント 備蓄 防災食 非常食 父の日 御中元 お中元
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=kouragumi:10001520 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=kouragumi:10001520 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=kouragumi:10001520 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=kouragumi:10001520 title=本日最終日★値上げ前に★今の価格5/21/23:59まで！相場高騰中の骨取りサバ切身 1kg 送料無料2,740円～ 無塩or有塩が選べる♪骨とり 骨なし 鯖 さば 冷凍食品 父の日 ギフト プレゼント 【P】 price=2740 reviewAverage=4.51 reviewCount=16851 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=342.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=matsuyoshi:10002535 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=matsuyoshi:10002535 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=matsuyoshi:10002535 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=matsuyoshi:10002535 title=【父の日 早期P5倍】ハンバーグ ギフト 松阪牛 グルメ ハンバーグ【楽天グルメ大賞】2026 父 父の日 ギフト 肉ギフト プレゼント 食べ物 食品 母 お肉 松坂牛 牛肉 肉 お取り寄せグルメ 松良 グルメ お祝い返し 人気 誕生日 お惣菜 冷凍 内祝い 高級 母の日 price=3980 reviewAverage=4.54 reviewCount=978 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=342.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=kaneta:10000799 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=kaneta:10000799 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=kaneta:10000799 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=kaneta:10000799 title=牛タン シチュー 180g×4袋 レトルト レンジ 食品 全国送料無料 ネコポス カネタ●牛たんシチュー180g×4袋●k-03 price=2900 reviewAverage=4.23 reviewCount=1219 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=319.9 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=nikudonya:10000165 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=nikudonya:10000165 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=nikudonya:10000165 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=nikudonya:10000165 title=極旨秘伝タレ漬け 牛 ハラミ 1kg 味付け肉 約4-6人前 焼肉 肉 牛肉 冷凍 食品 お肉 ハラミ肉 ハラミステーキ 安い 訳あり price=3280 reviewAverage=4.02 reviewCount=2376 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=319.9 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=kado-select:10000195 score=30.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=kado-select:10000195 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=kado-select:10000195 score=45.0 reasons=投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=kado-select:10000195 title=父の日 ギフト プレゼント 【父の日お届けは6/19正午ご注文まで※前払いなど例外あり】【6年連続受賞 楽天グルメ大賞】【天然高級魚 銀だら入り西京漬・粕漬セット 5～8切入】送料無料 内祝 お返し お中元【★父の日用やお中元用でも、配達日指定がない場合は最短発送★】 price=3580 reviewAverage=4.77 reviewCount=3345 roomFit=8.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=301.8 reasons=買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=once-in:10000527 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=once-in:10000527 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=once-in:10000527 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=once-in:10000527 title=（2週間〜3週間でお届け）＼23日20:00〜23日20:00〜半額クーポンで2,480円送料無料！／累計2000万個完売！奇跡の一粒「タレなしで食べれる、すっぴん餃子」100個 絶品味付き約1.8kg！約16人前 国産豚肉 国産キャベツ使用！おかず お弁当 冷凍食品 餃子 ぎょうざ ギョウザ price=4960 reviewAverage=4.42 reviewCount=2010 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=50.0 score=311.9 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=pururunhime:10000166 score=30.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=pururunhime:10000166 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=pururunhime:10000166 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=pururunhime:10000166 title=【送料無料】ぷるるん姫 満腹美人食べるバランスDIET 10種の野菜たっぷり麹のポタージュ 24食入り！ダイエット食品 ダイエット diet ス−プ 酵素 price=3980 reviewAverage=4.43 reviewCount=121 roomFit=0.0 reaction=30.0 reviewEvidence=44.0 postability=50.0 score=343.4 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=sankyotikusan:10000100 score=30.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=sankyotikusan:10000100 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=sankyotikusan:10000100 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=sankyotikusan:10000100 title=【送料無料】九州産 豚こま切れ肉 メガ盛り 1kg＋500gで1.5kg■豚小間 豚コマ 切り落とし 豚肉 国産 食品 グルメ■（※北海道・沖縄は配送料要） price=2480 reviewAverage=4.50 reviewCount=2200 roomFit=0.0 reaction=30.0 reviewEvidence=44.0 postability=50.0 score=343.4 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_EXCLUDE] itemCode=wakuwaku7460:10000356 price=3980 reason=businessItem
+I/flutter (17477): [RECOMMEND_EXCLUDE] itemCode=chanova:10000636 price=4980 reason=businessItem
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=pururunhime:10000159 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=pururunhime:10000159 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=pururunhime:10000159 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=pururunhime:10000159 title=ぷるるん姫 満腹美人 ダイエットクラムチャウダー24食入り！豆乳仕立て diet ダイエット食品 ダイエット ス−プ price=3980 reviewAverage=3.81 reviewCount=43 roomFit=0.0 reaction=15.0 reviewEvidence=32.0 postability=50.0 score=262.7 reasons=好きなジャンルに近い|買いやすい価格|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=irisplaza-r:10127791 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=irisplaza-r:10127791 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=irisplaza-r:10127791 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=irisplaza-r:10127791 title=【18缶】やきとり 3缶×6種類の味セット やきとり 缶詰 ホテイ 備蓄 おつまみ 炭火 塩レモン 防災 鶏肉 たれ 塩味 うま辛 食品 ガーリック 柚子 ホテイフーズ【iris_dl05】 price=3080 reviewAverage=4.38 reviewCount=8 roomFit=0.0 reaction=15.0 reviewEvidence=22.0 postability=40.0 score=238.7 reasons=好きなジャンルに近い|買いやすい価格|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=gakouin:10000051 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=gakouin:10000051 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=gakouin:10000051 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=gakouin:10000051 title=母の日 父の日 ギフト お誕生日 内祝い プレゼント【 華 】【 選べる！京の 西京焼き or 西京漬け 4切 詰め合わせ 】 送料無料 調理済み 惣菜 高級 お祝 70代 食べ物 実用的 グルメ 海鮮 食品 冷凍 60代 贈り物 喜ばれる お誕生日 結婚内祝 出産内祝い 入学内祝い price=3980 reviewAverage=4.45 reviewCount=5972 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=342.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=jonetsu:10000099 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=jonetsu:10000099 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=jonetsu:10000099 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=jonetsu:10000099 title=おうち焼肉の定番ハラミ やわらかハラミ味噌だれ漬け 600g お試し 焼肉 BBQ バーベキュー 焼肉セット バーベキューセット 牛肉 食品 肉 味付け 冷凍 小分け 情熱ホルモン 北海道沖縄配送は別途送料追加 price=2613 reviewAverage=4.19 reviewCount=3240 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=50.0 score=311.9 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=abctown:10002706 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=abctown:10002706 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=abctown:10002706 title=★配送無料★4袋セット★ヤンバン★キムブガク 50g 味選択 のり天 韓国のり 海苔 海苔天 エビ味 キムチ味 ニンニク味 オリジナル味 韓国お菓子 おつまみ 韓国食品 韓国スイーツ 人気 おいしい お土産 おすすめ サクサク price=1990 reviewAverage=4.31 reviewCount=13 roomFit=0.0 reaction=0.0 reviewEvidence=34.0 postability=50.0 score=264.4 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=yuuzen:10000648 score=30.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=yuuzen:10000648 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=yuuzen:10000648 score=60.0 reasons=投稿しやすい|投稿しやすい
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(17477): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(17477): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(17477): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(17477): updateAcquireFence: Did not find frame.
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=yuuzen:10000648 title=年間 BEST5 ベストヒット セット 5種8食 楽天ランキング常連 ハンバーグ入り 冷凍 食品 おかず 肉 惣菜 送料無料 お取り寄せ グルメ ギフトに 仕送りに 通販 総菜 うま味調味料 無添加 自然派志向 明和食品 price=5280 reviewAverage=4.59 reviewCount=1054 roomFit=8.0 reaction=30.0 reviewEvidence=44.0 postability=60.0 score=373.8 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=pururunhime:10000983 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=pururunhime:10000983 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=pururunhime:10000983 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=pururunhime:10000983 title=たっぷり60包 すごい元気わかめスープ オルニチンしじみ300個 発酵エキス入りダイエット食品 ダイエットスープ 置き換えダイエット ダイエット食品 低カロリー 低糖質 糖質オフ 糖質制限 食品 美容食品 満腹感 price=2990 reviewAverage=4.63 reviewCount=49 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=50.0 score=334.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=dining-shioso:10000544 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=dining-shioso:10000544 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=dining-shioso:10000544 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=dining-shioso:10000544 title=銀鮭 切り身 1kg 肉厚 10切れ 加熱用 鮭 さけ サケ 焼き鮭 焼き魚 魚 さかな 冷凍 家庭用 お弁当用 お弁当 おかず 惣菜 お惣菜 冷凍食品 冷凍総菜【送料無料】 父の日 price=3799 reviewAverage=4.74 reviewCount=39 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=319.9 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=kwgchi:10000002 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=kwgchi:10000002 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=kwgchi:10000002 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=kwgchi:10000002 title=ギフト 肉 ＼TBS Nスタで紹介／ 黄金比率 ハンバーグ4個 メンチカツ 4個 お試し セット 1kg 訳あり 福袋 2023 | 送料無料 | 肉 母の日 父の日 お取り寄せグルメ 和牛 出産内祝い 内祝い ギフト 冷凍 グルメ 肉の日 食品 price=2790 reviewAverage=4.52 reviewCount=7773 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=342.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=kwgchi:10001087 score=30.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=kwgchi:10001087 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=kwgchi:10001087 title=焼肉セット メガ盛り 1kg | 和牛 焼肉 豚カルビ 牛 ハラミ 肉 | 送料無料 | ギフト 食品 食べ物 内祝い 御祝い グルメ 食べ物 | 肉 焼肉 焼肉セット 牛肉 バーベキュー お肉 和牛 冷凍 | 出産内祝い 肉の日 price=5900 reviewAverage=4.27 reviewCount=393 roomFit=8.0 reaction=30.0 reviewEvidence=44.0 postability=60.0 score=373.8 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=syabumaru:10007131 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=syabumaru:10007131 score=16.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=syabumaru:10007131 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=syabumaru:10007131 title=牛丼 牛丼の具 20個セット お肉屋さんのこだわり たっぷり牛肉の簡単牛丼 昼ごはん ストック 時短 お弁当 お試し 便利 夜食 手軽 グルメ おつまみ 牛皿 冷凍食品 冷凍 おかず セット 冷食 お惣菜 湯煎 温めるだけ 仕送り 1食120g price=7480 reviewAverage=4.50 reviewCount=2 roomFit=16.0 reaction=15.0 reviewEvidence=12.0 postability=40.0 score=257.5 reasons=好きなジャンルに近い|買いやすい価格|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=bali-indah:10124357 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=bali-indah:10124357 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=bali-indah:10124357 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=bali-indah:10124357 title=レンチン 惣菜 神戸開花亭 シリーズ ハンバーグ シチュー スープ 7種類14個 詰め合わせ セット 電子レンジ レトルト食品 おかず 常温保存 キャンプ飯 洋食 常温 温めるだけ 仕送り 一人暮らし お取り寄せ ギフト プレゼント 備蓄 防災食 非常食 父の日 御中元 お中元 price=6138 reviewAverage=4.62 reviewCount=97 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=342.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_POOL] raw=22 valid=20 scored=20
+I/flutter (17477): [RECOMMEND_SELECT] strictSelected=10
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=kouragumi:10001520 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=kouragumi:10001520 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=kouragumi:10001520 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=kouragumi:10001520 title=本日最終日★値上げ前に★今の価格5/21/23:59まで！相場高騰中の骨取りサバ切身 1kg 送料無料2,740円～ 無塩or有塩が選べる♪骨とり 骨なし 鯖 さば 冷凍食品 父の日 ギフト プレゼント 【P】 price=2740 reviewAverage=4.51 reviewCount=16851 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=342.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=matsuyoshi:10002535 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=matsuyoshi:10002535 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=matsuyoshi:10002535 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=matsuyoshi:10002535 title=【父の日 早期P5倍】ハンバーグ ギフト 松阪牛 グルメ ハンバーグ【楽天グルメ大賞】2026 父 父の日 ギフト 肉ギフト プレゼント 食べ物 食品 母 お肉 松坂牛 牛肉 肉 お取り寄せグルメ 松良 グルメ お祝い返し 人気 誕生日 お惣菜 冷凍 内祝い 高級 母の日 price=3980 reviewAverage=4.54 reviewCount=978 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=342.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=kaneta:10000799 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=kaneta:10000799 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=kaneta:10000799 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=kaneta:10000799 title=牛タン シチュー 180g×4袋 レトルト レンジ 食品 全国送料無料 ネコポス カネタ●牛たんシチュー180g×4袋●k-03 price=2900 reviewAverage=4.23 reviewCount=1219 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=319.9 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=nikudonya:10000165 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=nikudonya:10000165 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=nikudonya:10000165 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=kwgchi:10001087 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=nikudonya:10000165 title=極旨秘伝タレ漬け 牛 ハラミ 1kg 味付け肉 約4-6人前 焼肉 肉 牛肉 冷凍 食品 お肉 ハラミ肉 ハラミステーキ 安い 訳あり price=3280 reviewAverage=4.02 reviewCount=2376 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=319.9 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=kado-select:10000195 score=30.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=kado-select:10000195 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=kado-select:10000195 score=45.0 reasons=投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=kado-select:10000195 title=父の日 ギフト プレゼント 【父の日お届けは6/19正午ご注文まで※前払いなど例外あり】【6年連続受賞 楽天グルメ大賞】【天然高級魚 銀だら入り西京漬・粕漬セット 5～8切入】送料無料 内祝 お返し お中元【★父の日用やお中元用でも、配達日指定がない場合は最短発送★】 price=3580 reviewAverage=4.77 reviewCount=3345 roomFit=8.0 reaction=30.0 reviewEvidence=44.0 postability=45.0 score=301.8 reasons=買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=once-in:10000527 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=once-in:10000527 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=once-in:10000527 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=once-in:10000527 title=（2週間〜3週間でお届け）＼23日20:00〜23日20:00〜半額クーポンで2,480円送料無料！／累計2000万個完売！奇跡の一粒「タレなしで食べれる、すっぴん餃子」100個 絶品味付き約1.8kg！約16人前 国産豚肉 国産キャベツ使用！おかず お弁当 冷凍食品 餃子 ぎょうざ ギョウザ price=4960 reviewAverage=4.42 reviewCount=2010 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=50.0 score=311.9 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=pururunhime:10000166 score=30.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=pururunhime:10000166 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=pururunhime:10000166 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=pururunhime:10000166 title=【送料無料】ぷるるん姫 満腹美人食べるバランスDIET 10種の野菜たっぷり麹のポタージュ 24食入り！ダイエット食品 ダイエット diet ス−プ 酵素 price=3980 reviewAverage=4.43 reviewCount=121 roomFit=0.0 reaction=30.0 reviewEvidence=44.0 postability=50.0 score=343.4 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=sankyotikusan:10000100 score=30.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=sankyotikusan:10000100 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=sankyotikusan:10000100 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=sankyotikusan:10000100 title=【送料無料】九州産 豚こま切れ肉 メガ盛り 1kg＋500gで1.5kg■豚小間 豚コマ 切り落とし 豚肉 国産 食品 グルメ■（※北海道・沖縄は配送料要） price=2480 reviewAverage=4.50 reviewCount=2200 roomFit=0.0 reaction=30.0 reviewEvidence=44.0 postability=50.0 score=343.4 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_EXCLUDE] itemCode=wakuwaku7460:10000356 price=3980 reason=businessItem
+I/flutter (17477): [RECOMMEND_EXCLUDE] itemCode=chanova:10000636 price=4980 reason=businessItem
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=pururunhime:10000159 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=pururunhime:10000159 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=pururunhime:10000159 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=pururunhime:10000159 title=ぷるるん姫 満腹美人 ダイエットクラムチャウダー24食入り！豆乳仕立て diet ダイエット食品 ダイエット ス−プ price=3980 reviewAverage=3.81 reviewCount=43 roomFit=0.0 reaction=15.0 reviewEvidence=32.0 postability=50.0 score=262.7 reasons=好きなジャンルに近い|買いやすい価格|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=irisplaza-r:10127791 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=irisplaza-r:10127791 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=irisplaza-r:10127791 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=irisplaza-r:10127791 title=【18缶】やきとり 3缶×6種類の味セット やきとり 缶詰 ホテイ 備蓄 おつまみ 炭火 塩レモン 防災 鶏肉 たれ 塩味 うま辛 食品 ガーリック 柚子 ホテイフーズ【iris_dl05】 price=3080 reviewAverage=4.38 reviewCount=8 roomFit=0.0 reaction=15.0 reviewEvidence=22.0 postability=40.0 score=238.7 reasons=好きなジャンルに近い|買いやすい価格|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=gakouin:10000051 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=gakouin:10000051 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=gakouin:10000051 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=gakouin:10000051 title=母の日 父の日 ギフト お誕生日 内祝い プレゼント【 華 】【 選べる！京の 西京焼き or 西京漬け 4切 詰め合わせ 】 送料無料 調理済み 惣菜 高級 お祝 70代 食べ物 実用的 グルメ 海鮮 食品 冷凍 60代 贈り物 喜ばれる お誕生日 結婚内祝 出産内祝い 入学内祝い price=3980 reviewAverage=4.45 reviewCount=5972 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=342.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=jonetsu:10000099 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=jonetsu:10000099 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=jonetsu:10000099 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=jonetsu:10000099 title=おうち焼肉の定番ハラミ やわらかハラミ味噌だれ漬け 600g お試し 焼肉 BBQ バーベキュー 焼肉セット バーベキューセット 牛肉 食品 肉 味付け 冷凍 小分け 情熱ホルモン 北海道沖縄配送は別途送料追加 price=2613 reviewAverage=4.19 reviewCount=3240 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=50.0 score=311.9 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=abctown:10002706 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=abctown:10002706 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=abctown:10002706 title=★配送無料★4袋セット★ヤンバン★キムブガク 50g 味選択 のり天 韓国のり 海苔 海苔天 エビ味 キムチ味 ニンニク味 オリジナル味 韓国お菓子 おつまみ 韓国食品 韓国スイーツ 人気 おいしい お土産 おすすめ サクサク price=1990 reviewAverage=4.31 reviewCount=13 roomFit=0.0 reaction=0.0 reviewEvidence=34.0 postability=50.0 score=264.4 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=yuuzen:10000648 score=30.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=yuuzen:10000648 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=yuuzen:10000648 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=yuuzen:10000648 title=年間 BEST5 ベストヒット セット 5種8食 楽天ランキング常連 ハンバーグ入り 冷凍 食品 おかず 肉 惣菜 送料無料 お取り寄せ グルメ ギフトに 仕送りに 通販 総菜 うま味調味料 無添加 自然派志向 明和食品 price=5280 reviewAverage=4.59 reviewCount=1054 roomFit=8.0 reaction=30.0 reviewEvidence=44.0 postability=60.0 score=373.8 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=pururunhime:10000983 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=pururunhime:10000983 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=pururunhime:10000983 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=pururunhime:10000983 title=たっぷり60包 すごい元気わかめスープ オルニチンしじみ300個 発酵エキス入りダイエット食品 ダイエットスープ 置き換えダイエット ダイエット食品 低カロリー 低糖質 糖質オフ 糖質制限 食品 美容食品 満腹感 price=2990 reviewAverage=4.63 reviewCount=49 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=50.0 score=334.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=dining-shioso:10000544 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=dining-shioso:10000544 score=0.0 reasons=
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=dining-shioso:10000544 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=dining-shioso:10000544 title=銀鮭 切り身 1kg 肉厚 10切れ 加熱用 鮭 さけ サケ 焼き鮭 焼き魚 魚 さかな 冷凍 家庭用 お弁当用 お弁当 おかず 惣菜 お惣菜 冷凍食品 冷凍総菜【送料無料】 父の日 price=3799 reviewAverage=4.74 reviewCount=39 roomFit=0.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=319.9 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=kwgchi:10000002 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=kwgchi:10000002 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=kwgchi:10000002 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=kwgchi:10000002 title=ギフト 肉 ＼TBS Nスタで紹介／ 黄金比率 ハンバーグ4個 メンチカツ 4個 お試し セット 1kg 訳あり 福袋 2023 | 送料無料 | 肉 母の日 父の日 お取り寄せグルメ 和牛 出産内祝い 内祝い ギフト 冷凍 グルメ 肉の日 食品 price=2790 reviewAverage=4.52 reviewCount=7773 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=342.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=kwgchi:10001087 score=30.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=kwgchi:10001087 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=kwgchi:10001087 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=kwgchi:10001087 title=焼肉セット メガ盛り 1kg | 和牛 焼肉 豚カルビ 牛 ハラミ 肉 | 送料無料 | ギフト 食品 食べ物 内祝い 御祝い グルメ 食べ物 | 肉 焼肉 焼肉セット 牛肉 バーベキュー お肉 和牛 冷凍 | 出産内祝い 肉の日 price=5900 reviewAverage=4.27 reviewCount=393 roomFit=8.0 reaction=30.0 reviewEvidence=44.0 postability=60.0 score=373.8 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=syabumaru:10007131 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=syabumaru:10007131 score=16.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=syabumaru:10007131 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=syabumaru:10007131 title=牛丼 牛丼の具 20個セット お肉屋さんのこだわり たっぷり牛肉の簡単牛丼 昼ごはん ストック 時短 お弁当 お試し 便利 夜食 手軽 グルメ おつまみ 牛皿 冷凍食品 冷凍 おかず セット 冷食 お惣菜 湯煎 温めるだけ 仕送り 1食120g price=7480 reviewAverage=4.50 reviewCount=2 roomFit=16.0 reaction=15.0 reviewEvidence=12.0 postability=40.0 score=257.5 reasons=好きなジャンルに近い|買いやすい価格|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_REACTION_SCORE] itemCode=bali-indah:10124357 score=15.0 reasons=
+I/flutter (17477): [RECOMMEND_ROOM_FIT] itemCode=bali-indah:10124357 score=8.0 reasons=ROOM向き
+I/flutter (17477): [RECOMMEND_POSTABILITY] itemCode=bali-indah:10124357 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_SCORE] itemCode=bali-indah:10124357 title=レンチン 惣菜 神戸開花亭 シリーズ ハンバーグ シチュー スープ 7種類14個 詰め合わせ セット 電子レンジ レトルト食品 おかず 常温保存 キャンプ飯 洋食 常温 温めるだけ 仕送り 一人暮らし お取り寄せ ギフト プレゼント 備蓄 防災食 非常食 父の日 御中元 お中元 price=6138 reviewAverage=4.62 reviewCount=97 roomFit=8.0 reaction=15.0 reviewEvidence=44.0 postability=60.0 score=342.3 reasons=好きなジャンルに近い|買いやすい価格|高評価|レビュー多め|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (17477): [RECOMMEND_POOL] raw=22 valid=20 scored=20
+I/flutter (17477): [RECOMMEND_SELECT] strictSelected=10
+I/flutter (17477): [RECOMMEND_API_GUARD] skipExtraSearch reason=poolHasEnoughBackfill
+I/flutter (17477): [RECOMMEND_API_GUARD] extraSearchAllowed=false
+I/flutter (17477): [RECOMMEND] apiCalls=1 poolSize=22
+I/flutter (17477): [RECOMMEND] final count: 10
+I/flutter (17477): [RECOMMEND_BUCKET] personal=10 relaxed=0 discovery=0 total=10
+I/flutter (17477): [RECOMMEND_RESULT] style=affordable personalCount=10 discoveryCount=0 total=10
+I/flutter (17477): [RECOMMEND_TRACE] finalCandidateCount=10
+I/flutter (17477): [RECOMMEND_TRACE] failureType=none
+I/flutter (17477): [RECOMMEND_RESULT] status=success count=10
+I/flutter (17477): [RECOMMEND_GENERATE] end requestCount=1 planCount=7
+I/flutter (17477): [RECOMMEND_SUMMARY] totalApiRequests=1 totalPlans=7 selectedCount=10 excludedCount=8 durationMs=2294
+I/flutter (17477): [TODAY_RECOMMEND_API_USAGE] sessionId=1779371761222 phase=finalize apiCalls=1 genreSearchCalls=1 shopSearchCalls=0 keywordSearchCalls=0 excludedBySafety=1 excludedByDuplicate=7 finalItems=10
+I/flutter (17477): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (17477): [RECOMMEND_SAVE] savedBundle=true count=10
+I/flutter (17477): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (17477): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-21T22:56:03.493528
+I/flutter (17477): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (17477): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter (17477): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter (17477): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=true enabled=true label=投稿済み商品を取り込む reason=rendered
+I/flutter (17477): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=true enabled=true label=反応を確認する reason=rendered
+I/flutter (17477): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (17477): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=analysis visible=true enabled=true label=反応があった商品は分析タブで確認できます reason=textLinkOnly
+I/flutter (17477): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=home visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/flutter (17477): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=204 doneCount=41 roomImportedDoneCount=40 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (17477): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=40 appCollectedCount=1 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-15 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=204 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-20 postCount=1 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ANALYTICS_DAILY_BAR] date=2026-05-21 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (17477): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (17477): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=204 afterFilterLen=204 surface=ok_list ui=ready
+I/flutter (17477): [ROOMコレ診断] 描画リスト先頭 productId=k-honda:10009188 title=＼ポイント2倍 5月22日まで／アンパンマン ミニバスタオル 50×100cm 綿100% 無撚糸 ジャガードタオル キャラクター バイキンマン しょくぱんまん カレーパンマン ドキンちゃん コキンちゃん 保育園 幼稚園 男の子 女の子 かわいい [apf][cbt]【メール便OK】 status=candidate len=204
+W/o.room_manager2(17477): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+W/o.room_manager2(17477): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260521_225524\room_manager2_shot_001.png
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260521_225524.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260521_225524.mp4 (0 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260521_225524
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260521_225524\terminal_output_20260521_225524.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260521_225524.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260521_225524.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260521_225524.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260521_225524.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260521_225524.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
