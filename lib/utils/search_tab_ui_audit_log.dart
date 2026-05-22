@@ -34,3 +34,33 @@ void shopDiscoverySearchParamsLog(String message) {
   if (!kDebugMode) return;
   debugPrint('[SHOP_DISCOVERY_SEARCH_PARAMS] $message');
 }
+
+void searchResultViewportAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[SEARCH_RESULT_VIEWPORT_AUDIT] $message');
+}
+
+void searchBottomSpaceAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[SEARCH_BOTTOM_SPACE_AUDIT] $message');
+}
+
+void shopDetailResultViewportAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[SHOP_DETAIL_RESULT_VIEWPORT_AUDIT] $message');
+}
+
+void shopDetailExternalButtonCopyAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[SHOP_DETAIL_EXTERNAL_BUTTON_COPY_AUDIT] $message');
+}
+
+void registeredLabelCopyAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[REGISTERED_LABEL_COPY_AUDIT] $message');
+}
+
+void shopDiscoveryButtonCopyAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[SHOP_DISCOVERY_BUTTON_COPY_AUDIT] $message');
+}

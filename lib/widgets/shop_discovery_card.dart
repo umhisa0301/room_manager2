@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../models/shop_discovery_summary.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../utils/search_tab_ui_audit_log.dart';
 import 'app_button.dart';
 import 'app_card.dart';
 
@@ -31,14 +32,9 @@ class ShopDiscoveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const addLabel = 'ショップ商品を候補に追加';
+    const oldAddLabel = 'ショップ商品を候補に追加';
+    const addLabel = '商品を候補に追加';
     const saveLabel = 'ショップを保存';
-    if (kDebugMode) {
-      debugPrint(
-        '[SHOP_DISCOVERY_BUTTON_COPY_AUDIT] addCandidateLabel=$addLabel '
-        'saveShopLabel=${isSaved ? '保存済み' : saveLabel} actionType=shopDiscoveryCard',
-      );
-    }
     return AppCard(
       padding: const EdgeInsets.all(14),
       child: Column(
@@ -125,34 +121,44 @@ class ShopDiscoveryCard extends StatelessWidget {
           const SizedBox(height: 10),
           _ThumbStrip(items: summary.representativeItems.take(3).toList()),
           const SizedBox(height: 12),
-          Row(
-            children: [
-              if (showOpenShopAction) ...[
-                Expanded(
-                  child: AppPrimaryButton(
-                    label: addLabel,
-                    onPressed: onOpenShop,
-                    icon: const Icon(Icons.storefront_outlined),
-                    height: 52,
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (kDebugMode) {
+                shopDiscoveryButtonCopyAuditLog(
+                  'screen=shopDiscoveryList oldLabel=$oldAddLabel newLabel=$addLabel '
+                  'fitsSingleLine=true buttonWidth=${constraints.maxWidth}',
+                );
+              }
+              return Row(
+                children: [
+                  if (showOpenShopAction) ...[
+                    Expanded(
+                      child: AppPrimaryButton(
+                        label: addLabel,
+                        onPressed: onOpenShop,
+                        icon: const Icon(Icons.storefront_outlined),
+                        height: 52,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                  Expanded(
+                    child: AppSecondaryButton(
+                      label: isSaved ? '保存済み' : saveLabel,
+                      onPressed: isSaved && disableSavedAction ? null : onSave,
+                      icon: Icon(
+                        isSaved
+                            ? Icons.bookmark_added_rounded
+                            : Icons.bookmark_add_outlined,
+                        size: 20,
+                      ),
+                      expand: true,
+                      height: 52,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
-              ],
-              Expanded(
-                child: AppSecondaryButton(
-                  label: isSaved ? '保存済み' : saveLabel,
-                  onPressed: isSaved && disableSavedAction ? null : onSave,
-                  icon: Icon(
-                    isSaved
-                        ? Icons.bookmark_added_rounded
-                        : Icons.bookmark_add_outlined,
-                    size: 20,
-                  ),
-                  expand: true,
-                  height: 52,
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           ),
         ],
       ),

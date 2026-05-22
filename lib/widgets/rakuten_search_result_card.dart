@@ -7,6 +7,7 @@ import '../utils/product_card_rakuten_open.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../utils/shop_display_resolve.dart';
 import '../theme/app_theme.dart';
+import '../utils/search_tab_ui_audit_log.dart';
 import '../theme/home_screen_colors.dart';
 import 'app_button.dart';
 import 'room_colle_product_list_card_layout.dart';
@@ -380,10 +381,16 @@ class RakutenSearchResultCard extends StatelessWidget {
     }
 
     if (isCandidate) {
+      if (kDebugMode) {
+        registeredLabelCopyAuditLog(
+          'screen=searchResultCard oldLabel=候補に登録済み newLabel=登録済 '
+          'isDisabledButton=true isChip=false productId=${item.productId}',
+        );
+      }
       return Tooltip(
         message: 'コレ候補に登録済みです。重複登録はできません。ROOMコレの候補一覧から確認できます。',
         child: AppOutlineButton(
-          label: '候補に登録済み',
+          label: '登録済',
           icon: Icon(Icons.bookmark_added_outlined, size: compact ? 16.0 : 18.0),
           height: height,
           expand: true,
@@ -503,7 +510,14 @@ class _SearchCardStatusLozenge extends StatelessWidget {
     final fg = isDone
         ? HomeScreenColors.metricRoleDoneIcon
         : HomeScreenColors.metricRoleCandidateIcon;
-    final label = isDone ? 'コレ済' : '候補に登録済み';
+    const oldLabel = '候補に登録済み';
+    final label = isDone ? 'コレ済' : '登録済';
+    if (kDebugMode && !isDone) {
+      registeredLabelCopyAuditLog(
+        'screen=searchResultCard oldLabel=$oldLabel newLabel=$label '
+        'isDisabledButton=false isChip=true productId=-',
+      );
+    }
     final icon = isDone
         ? Icons.verified_outlined
         : Icons.bookmark_added_outlined;

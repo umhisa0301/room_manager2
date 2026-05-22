@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,7 @@ import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
 import '../widgets/app_button.dart';
 import '../widgets/rakuten_search_result_card.dart';
+import '../utils/search_tab_ui_audit_log.dart';
 import '../widgets/search_group_screen_shell.dart';
 import 'saved_shops_screen.dart';
 
@@ -39,6 +41,7 @@ class ShopDiscoveryDetailScreen extends StatefulWidget {
 
 class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
   _ShopDetailSort _sort = _ShopDetailSort.reviewCount;
+  final ScrollController _detailItemsScrollController = ScrollController();
 
   /// 表示用商品（保存ショップ等で初期が空のときは shopCode 検索で埋める）。
   late List<RakutenSearchItem> _items;
@@ -64,6 +67,41 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
       } else {
         _prefetchGenreLabelsFor(_items);
       }
+    });
+  }
+
+  @override
+  void dispose() {
+    _detailItemsScrollController.dispose();
+    super.dispose();
+  }
+
+  void _scheduleShopDetailViewportAudit({
+    required BuildContext context,
+    required int resultCount,
+    required double bottomPadding,
+  }) {
+    if (!kDebugMode) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      var listViewportHeight = -1.0;
+      var bottomSpaceEstimate = -1.0;
+      var firstItemVisible = false;
+      if (_detailItemsScrollController.hasClients) {
+        final pos = _detailItemsScrollController.position;
+        listViewportHeight = pos.viewportDimension;
+        bottomSpaceEstimate = (pos.viewportDimension -
+                pos.maxScrollExtent -
+                bottomPadding)
+            .clamp(0.0, double.infinity);
+        firstItemVisible = pos.pixels <= 1;
+      }
+      shopDetailResultViewportAuditLog(
+        'shopName=${widget.summary.shopName} resultCount=$resultCount '
+        'headerHeight=shopDetailHeader+filter listViewportHeight=$listViewportHeight '
+        'bottomPadding=$bottomPadding firstItemVisible=$firstItemVisible '
+        'bottomSpaceEstimate=$bottomSpaceEstimate',
+      );
     });
   }
 
@@ -367,7 +405,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                               ),
                               SizedBox(height: AppDimensions.spacingSm),
                               AppSecondaryButton(
-                                label: 'ショップを外部で開く',
+                                label: 'ショップを楽天で開く',
                                 expand: false,
                                 onPressed: () => _openShopUrl(context),
                                 icon: const Icon(Icons.open_in_new_rounded),
@@ -378,12 +416,19 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                       ),
                     );
                   }
+                  final detailBottomPad = RakutenSearchScreenUi.listBottomPad;
+                  _scheduleShopDetailViewportAudit(
+                    context: context,
+                    resultCount: items.length,
+                    bottomPadding: detailBottomPad,
+                  );
                   return ListView.separated(
+                    controller: _detailItemsScrollController,
                     padding: EdgeInsets.fromLTRB(
                       RakutenSearchScreenUi.screenPadH,
                       RakutenSearchScreenUi.listScrollTopPad,
                       RakutenSearchScreenUi.screenPadH,
-                      AppDimensions.spacingLg,
+                      detailBottomPad,
                     ),
                     itemCount: items.length,
                     separatorBuilder: (_, __) =>
@@ -421,6 +466,12 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
 
   Future<void> _openShopUrl(BuildContext context) async {
     final url = widget.summary.shopUrl.trim();
+    if (kDebugMode) {
+      shopDetailExternalButtonCopyAuditLog(
+        'oldLabel=外部で開く newLabel=楽天で開く opensRakuten=true '
+        'urlType=${url.isEmpty ? 'unknown' : 'shopUrl'}',
+      );
+    }
     if (url.isEmpty) {
       ScaffoldMessenger.of(
         context,
@@ -490,9 +541,16 @@ class _ShopDetailHeader extends StatelessWidget {
                 onPressed: onBackToSearch,
               ),
               _HeaderMiniButton(
-                label: '外部で開く',
+                label: '楽天で開く',
                 icon: const Icon(Icons.open_in_new_rounded, size: 18),
-                onPressed: onOpenExternal,
+                onPressed: () {
+                  if (kDebugMode) {
+                    shopDetailExternalButtonCopyAuditLog(
+                      'oldLabel=外部で開く newLabel=楽天で開く opensRakuten=true urlType=shopUrl',
+                    );
+                  }
+                  onOpenExternal();
+                },
               ),
               IconButton(
                 tooltip: 'その他',

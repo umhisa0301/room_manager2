@@ -51,7 +51,11 @@ abstract final class RakutenSearchScreenUi {
   /// ショップ発掘リストの下余白 = [listBottomPad] + この値。
   static const double listScrollExtraPadDiscovery = 14;
 
-  /// キーワード結果で選択モード時のフローティングバー用。
+  /// 一括選択バーのボタン高さ（[AppPrimaryButton] height と揃える）。
+  static const double bulkSelectionBarButtonHeight = 48;
+
+  /// リストが Column 内の一括バーと重ならないよう確保する下余白の目安
+  /// （バーはリスト外に配置するため、通常は [listBottomPad] のみで足りる）。
   static const double listBottomPadWithSelectionBar = 88;
 
   /// リスト先頭の微余白（カード密度を ROOM 一覧に寄せる）。

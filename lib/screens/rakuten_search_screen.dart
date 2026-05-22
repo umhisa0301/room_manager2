@@ -3918,6 +3918,124 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
+  double _bulkSelectionBarLayoutHeight(BuildContext context) {
+    final safeBottom = MediaQuery.paddingOf(context).bottom;
+    return RakutenSearchScreenUi.bulkSelectionBarButtonHeight +
+        RakutenSearchScreenUi.gapFieldStack +
+        RakutenSearchScreenUi.gapFloatingBarPad +
+        safeBottom;
+  }
+
+  double _listBottomPaddingForResults(
+    BuildContext context, {
+    required bool bulkBarVisible,
+  }) {
+    if (!bulkBarVisible) {
+      return RakutenSearchScreenUi.listBottomPad;
+    }
+    // 一括バーは Column 内でリストの下に配置するため、リスト側は最小余白のみ。
+    return RakutenSearchScreenUi.listBottomPad;
+  }
+
+  void _scheduleSearchResultViewportAudit({
+    required BuildContext context,
+    required ScrollController scrollController,
+    required int resultCount,
+    required double listBottomPadding,
+    required bool bottomActionBarVisible,
+    required bool hasBulkHeader,
+    String phase = 'result',
+  }) {
+    if (!kDebugMode) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final mq = MediaQuery.of(context);
+      final screenHeight = mq.size.height;
+      final bottomNavHeight = kBottomNavigationBarHeight + mq.padding.bottom;
+      final bottomActionBarHeight = bottomActionBarVisible
+          ? _bulkSelectionBarLayoutHeight(context)
+          : 0.0;
+      var listViewportHeight = -1.0;
+      var firstVisibleIndex = -1;
+      var lastVisibleIndex = -1;
+      var unusedBottomSpaceEstimate = -1.0;
+      if (scrollController.hasClients) {
+        final pos = scrollController.position;
+        listViewportHeight = pos.viewportDimension;
+        unusedBottomSpaceEstimate = (pos.viewportDimension -
+                pos.maxScrollExtent -
+                listBottomPadding)
+            .clamp(0.0, double.infinity);
+        if (resultCount > 0) {
+          firstVisibleIndex = pos.pixels <= 1 ? 0 : -1;
+          lastVisibleIndex =
+              pos.pixels >= pos.maxScrollExtent - 1 ? resultCount - 1 : -1;
+        }
+      }
+      searchResultViewportAuditLog(
+        'mode=${_searchResultScreenTag()} phase=$phase screenHeight=$screenHeight '
+        'headerHeight=compact bulkHeaderHeight=${hasBulkHeader ? 'bulkRow' : '-'} '
+        'bottomNavHeight=$bottomNavHeight bottomActionBarVisible=$bottomActionBarVisible '
+        'bottomActionBarHeight=$bottomActionBarHeight listViewportHeight=$listViewportHeight '
+        'listBottomPadding=$listBottomPadding unusedBottomSpaceEstimate=$unusedBottomSpaceEstimate '
+        'resultCount=$resultCount firstVisibleIndex=$firstVisibleIndex '
+        'lastVisibleIndex=$lastVisibleIndex',
+      );
+      searchBottomSpaceAuditLog(
+        'mode=${_searchResultScreenTag()} hasSelection=$bottomActionBarVisible '
+        'selectedCount=${_selectedProductIds.length} bottomBarVisible=$bottomActionBarVisible '
+        'reservedBottomSpace=${bottomActionBarVisible ? bottomActionBarHeight : 0.0} '
+        'actualBottomPadding=$listBottomPadding '
+        'reason=${bottomActionBarVisible ? 'barInColumnLayoutUsesMinimalListPad' : 'noSelectionMinimalPad'}',
+      );
+    });
+  }
+
+  void _scheduleShopDiscoveryViewportAudit({
+    required BuildContext context,
+    required ScrollController scrollController,
+    required int resultCount,
+    required double listBottomPadding,
+  }) {
+    if (!kDebugMode) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final mq = MediaQuery.of(context);
+      final screenHeight = mq.size.height;
+      final bottomNavHeight = kBottomNavigationBarHeight + mq.padding.bottom;
+      var listViewportHeight = -1.0;
+      var unusedBottomSpaceEstimate = -1.0;
+      var firstVisibleIndex = -1;
+      var lastVisibleIndex = -1;
+      if (scrollController.hasClients) {
+        final pos = scrollController.position;
+        listViewportHeight = pos.viewportDimension;
+        unusedBottomSpaceEstimate = (pos.viewportDimension -
+                pos.maxScrollExtent -
+                listBottomPadding)
+            .clamp(0.0, double.infinity);
+        if (resultCount > 0) {
+          firstVisibleIndex = pos.pixels <= 1 ? 0 : -1;
+          lastVisibleIndex =
+              pos.pixels >= pos.maxScrollExtent - 1 ? resultCount - 1 : -1;
+        }
+      }
+      searchResultViewportAuditLog(
+        'mode=shopDiscovery phase=result screenHeight=$screenHeight '
+        'headerHeight=discoverySummary bulkHeaderHeight=- '
+        'bottomNavHeight=$bottomNavHeight bottomActionBarVisible=false '
+        'bottomActionBarHeight=0 listViewportHeight=$listViewportHeight '
+        'listBottomPadding=$listBottomPadding unusedBottomSpaceEstimate=$unusedBottomSpaceEstimate '
+        'resultCount=$resultCount firstVisibleIndex=$firstVisibleIndex '
+        'lastVisibleIndex=$lastVisibleIndex',
+      );
+      searchBottomSpaceAuditLog(
+        'mode=shopDiscovery hasSelection=false selectedCount=0 bottomBarVisible=false '
+        'reservedBottomSpace=0 actualBottomPadding=$listBottomPadding reason=noBulkBarMinimalPad',
+      );
+    });
+  }
+
   void _showCompletionFeedbackIfNeeded(
     BuildContext context,
     RakutenSearchProvider search,
@@ -3988,14 +4106,23 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     Widget? emptyGenericFilteredOut,
   }) {
     final bulkBar = _selectedProductIds.isNotEmpty;
-    final bottomPad = bulkBar
-        ? RakutenSearchScreenUi.listBottomPadWithSelectionBar
-        : RakutenSearchScreenUi.listBottomPad + AppDimensions.spacingSm;
+    final bottomPad = _listBottomPaddingForResults(
+      context,
+      bulkBarVisible: bulkBar,
+    );
     final listPadding = EdgeInsets.fromLTRB(
       RakutenSearchScreenUi.screenPadH,
       RakutenSearchScreenUi.listScrollTopPad,
       RakutenSearchScreenUi.screenPadH,
       bottomPad,
+    );
+    _scheduleSearchResultViewportAudit(
+      context: context,
+      scrollController: scrollController,
+      resultCount: orderedResults.length,
+      listBottomPadding: bottomPad,
+      bottomActionBarVisible: bulkBar,
+      hasBulkHeader: _bulkCheckboxVisible(search),
     );
     Widget resultCardAt(int index) {
       final item = orderedResults[index];
@@ -4463,41 +4590,48 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           );
         }
         final shortfallNote = search.keywordManagedVisibleShortfallNote();
-        return _buildSearchResultsHeaderAndListColumn(
-          compactHeader: true,
-          headerChildren: [
-            if (shortfallNote != null)
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                  RakutenSearchScreenUi.screenPadH,
-                  0,
-                  RakutenSearchScreenUi.screenPadH,
-                  6,
-                ),
-                child: Text(
-                  shortfallNote,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontWeight: FontWeight.w600,
-                        height: 1.35,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: _buildSearchResultsHeaderAndListColumn(
+                compactHeader: true,
+                headerChildren: [
+                  if (shortfallNote != null)
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        RakutenSearchScreenUi.screenPadH,
+                        0,
+                        RakutenSearchScreenUi.screenPadH,
+                        6,
                       ),
+                      child: Text(
+                        shortfallNote,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondary,
+                              fontWeight: FontWeight.w600,
+                              height: 1.35,
+                            ),
+                      ),
+                    ),
+                  _buildBulkSelectionHeaderRow(
+                    context,
+                    search,
+                    managed,
+                    orderedResults,
+                  ),
+                ],
+                listPane: _buildResultsListWithBulkBar(
+                  context,
+                  search: search,
+                  saved: saved,
+                  managed: managed,
+                  orderedResults: orderedResults,
+                  scrollController: _genreResultsScrollController,
                 ),
               ),
-            _buildBulkSelectionHeaderRow(
-              context,
-              search,
-              managed,
-              orderedResults,
             ),
           ],
-          listPane: _buildResultsListWithBulkBar(
-            context,
-            search: search,
-            saved: saved,
-            managed: managed,
-            orderedResults: orderedResults,
-            scrollController: _genreResultsScrollController,
-          ),
         );
     }
   }
@@ -4638,34 +4772,51 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   ),
                 ),
                 Expanded(
-                  child: ListView.separated(
-                    controller: _shopDiscoveryResultsScrollController,
-                    padding: EdgeInsets.fromLTRB(
-                      RakutenSearchScreenUi.screenPadH,
-                      RakutenSearchScreenUi.listScrollTopPad,
-                      RakutenSearchScreenUi.screenPadH,
-                      RakutenSearchScreenUi.listBottomPad +
-                          RakutenSearchScreenUi.listScrollExtraPadDiscovery,
-                    ),
-                    itemCount: visible.length,
-                    separatorBuilder: (_, __) =>
-                        SizedBox(height: RakutenSearchScreenUi.listCardGap),
-                    itemBuilder: (context, index) {
-                      final summary = visible[index];
-                      final shopItems = search.results
-                          .where(
-                            (e) => _shopDiscoveryGroupKey(e) == summary.shopKey,
-                          )
-                          .toList(growable: false);
-                      final isSaved = saved.isSaved(summary.shopKey);
-                      return ShopDiscoveryCard(
-                        summary: summary,
-                        rank: index + 1,
-                        isSaved: isSaved,
-                        onOpenShop: () =>
-                            _openShopDetail(context, summary, shopItems),
-                        onSave: () =>
-                            _saveDiscoveredShop(context, summary, isSaved),
+                  child: Builder(
+                    builder: (listContext) {
+                      final discoveryBottomPad =
+                          RakutenSearchScreenUi.listBottomPad;
+                      _scheduleShopDiscoveryViewportAudit(
+                        context: listContext,
+                        scrollController: _shopDiscoveryResultsScrollController,
+                        resultCount: visible.length,
+                        listBottomPadding: discoveryBottomPad,
+                      );
+                      return ListView.separated(
+                        controller: _shopDiscoveryResultsScrollController,
+                        padding: EdgeInsets.fromLTRB(
+                          RakutenSearchScreenUi.screenPadH,
+                          RakutenSearchScreenUi.listScrollTopPad,
+                          RakutenSearchScreenUi.screenPadH,
+                          discoveryBottomPad,
+                        ),
+                        itemCount: visible.length,
+                        separatorBuilder: (_, __) => SizedBox(
+                          height: RakutenSearchScreenUi.listCardGap,
+                        ),
+                        itemBuilder: (context, index) {
+                          final summary = visible[index];
+                          final shopItems = search.results
+                              .where(
+                                (e) =>
+                                    _shopDiscoveryGroupKey(e) ==
+                                    summary.shopKey,
+                              )
+                              .toList(growable: false);
+                          final isSaved = saved.isSaved(summary.shopKey);
+                          return ShopDiscoveryCard(
+                            summary: summary,
+                            rank: index + 1,
+                            isSaved: isSaved,
+                            onOpenShop: () =>
+                                _openShopDetail(context, summary, shopItems),
+                            onSave: () => _saveDiscoveredShop(
+                              context,
+                              summary,
+                              isSaved,
+                            ),
+                          );
+                        },
                       );
                     },
                   ),
