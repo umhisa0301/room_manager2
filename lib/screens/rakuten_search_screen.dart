@@ -153,6 +153,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   );
   bool _savedShopSearchCanSubmit = false;
   SearchSurfacePhase _previousSearchPhase = SearchSurfacePhase.input;
+  final GlobalKey _resultSurfaceLayoutKey = GlobalKey(
+    debugLabel: 'searchResultSurface',
+  );
+  final GlobalKey _compactHeaderLayoutKey = GlobalKey(
+    debugLabel: 'searchCompactHeader',
+  );
+  final GlobalKey _listViewportLayoutKey = GlobalKey(
+    debugLabel: 'searchListViewport',
+  );
+  double? _lastResultSurfaceMaxHeight;
 
   RakutenSearchProvider? _cachedSearchProvider;
   BulkOperationStateController? _cachedBulkCtl;
@@ -571,14 +581,66 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   void _logSearchLayoutPhaseTransition({
     required SearchSurfacePhase nextPhase,
     required String reason,
+    required RakutenSearchProvider search,
+    String triggeredBy = 'build',
   }) {
     if (!kDebugMode) return;
     if (_previousSearchPhase == nextPhase) return;
+    final hasResultBefore = _previousSearchPhase == SearchSurfacePhase.result;
+    final hasResultAfter = nextPhase == SearchSurfacePhase.result;
+    final hasErrorBefore = _previousSearchPhase == SearchSurfacePhase.error;
+    final hasErrorAfter = nextPhase == SearchSurfacePhase.error;
     debugPrint(
       '[SEARCH_LAYOUT_PHASE_AUDIT] previousPhase=${_previousSearchPhase.name} '
       'nextPhase=${nextPhase.name} mode=${_searchResultScreenTag()} reason=$reason',
     );
+    searchPhaseTransitionAuditLog(
+      'previousPhase=${_previousSearchPhase.name} nextPhase=${nextPhase.name} '
+      'mode=${_searchResultScreenTag()} hasResultBefore=$hasResultBefore '
+      'hasResultAfter=$hasResultAfter hasErrorBefore=$hasErrorBefore '
+      'hasErrorAfter=$hasErrorAfter '
+      'isLoading=${search.status == RakutenSearchStatus.loading} '
+      'triggeredBy=$triggeredBy',
+    );
     _previousSearchPhase = nextPhase;
+  }
+
+  MediaQueryData _resolveSheetMediaQuery(
+    BuildContext sheetContext, {
+    MediaQueryData? capturedParent,
+  }) {
+    return MediaQuery.maybeOf(sheetContext) ??
+        capturedParent ??
+        const MediaQueryData();
+  }
+
+  void _logSearchConditionSheetContext({
+    required String action,
+    required BuildContext parentContext,
+    BuildContext? sheetContext,
+    MediaQueryData? capturedParent,
+    String reason = '-',
+  }) {
+    if (!kDebugMode) return;
+    final parentMq = MediaQuery.maybeOf(parentContext);
+    final sheetMq = sheetContext == null
+        ? null
+        : MediaQuery.maybeOf(sheetContext);
+    final mediaQuerySource = sheetMq != null
+        ? 'sheet'
+        : (parentMq != null ? 'parent' : 'fallback');
+    searchConditionSheetContextAuditLog(
+      'action=$action parentMounted=${parentContext.mounted} '
+      'sheetContextHasMediaQuery=${sheetMq != null} mediaQuerySource=$mediaQuerySource '
+      'routeIsCurrent=${ModalRoute.of(parentContext)?.isCurrent ?? false} reason=$reason',
+    );
+    if (capturedParent != null && sheetMq == null && parentMq == null) {
+      searchTransientErrorAuditLog(
+        'mode=${_searchResultScreenTag()} duringSearch=false exceptionType=missingMediaQuery '
+        'widget=PendingCollectResumeNoticeHost file=rakuten_search_screen.dart line=- '
+        'prevented=true fallbackApplied=true',
+      );
+    }
   }
 
   void _logSearchOverflowGuardAudit({
@@ -982,6 +1044,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                     _logSearchLayoutPhaseTransition(
                       nextPhase: phase,
                       reason: 'build',
+                      search: search,
+                      triggeredBy: 'build',
                     );
                     if (kDebugMode) {
                       _logSearchHeaderActionAudit(hasResults: hasResults);
@@ -1020,49 +1084,80 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         if (showInputDeck)
                           Flexible(
                             fit: FlexFit.loose,
-                            child: LayoutBuilder(
-                              builder: (context, constraints) {
-                                final maxHeader = keyboardVisible
-                                    ? (constraints.maxHeight * 0.55)
-                                          .clamp(120.0, constraints.maxHeight)
-                                    : constraints.maxHeight;
-                                return ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxHeight: maxHeader.isFinite
-                                        ? maxHeader
-                                        : 480,
-                                  ),
-                                  child: SingleChildScrollView(
-                                    key: const ValueKey<String>(
-                                      'search_mode_input_scroll',
-                                    ),
-                                    physics: const ClampingScrollPhysics(),
-                                    keyboardDismissBehavior:
-                                        ScrollViewKeyboardDismissBehavior
-                                            .onDrag,
-                                    child: _buildModeAndInputArea(
-                                      context,
-                                      search,
-                                      saved,
-                                    ),
-                                  ),
-                                );
-                              },
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    final maxHeader = keyboardVisible
+                                        ? (constraints.maxHeight * 0.55).clamp(
+                                            120.0,
+                                            constraints.maxHeight,
+                                          )
+                                        : (constraints.maxHeight * 0.62).clamp(
+                                            160.0,
+                                            520.0,
+                                          );
+                                    return ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxHeight: maxHeader.isFinite
+                                            ? maxHeader
+                                            : 480,
+                                      ),
+                                      child: SingleChildScrollView(
+                                        key: const ValueKey<String>(
+                                          'search_mode_input_scroll',
+                                        ),
+                                        physics: const ClampingScrollPhysics(),
+                                        keyboardDismissBehavior:
+                                            ScrollViewKeyboardDismissBehavior
+                                                .onDrag,
+                                        child: _buildModeAndInputArea(
+                                          context,
+                                          search,
+                                          saved,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           )
                         else if (showCompactHeader)
                           Flexible(
                             fit: FlexFit.loose,
-                            child: SingleChildScrollView(
-                              key: const ValueKey<String>(
-                                'search_compact_header_scroll',
-                              ),
-                              physics: const ClampingScrollPhysics(),
-                              child: _buildPostSearchCompactSetupBar(
-                                context,
-                                search,
-                                saved,
-                              ),
+                            child: Column(
+                              key: _compactHeaderLayoutKey,
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                LayoutBuilder(
+                                  builder: (headerContext, headerConstraints) {
+                                    final maxHeaderScroll = (headerConstraints
+                                                .maxHeight *
+                                            0.42)
+                                        .clamp(120.0, 360.0);
+                                    return ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxHeight: maxHeaderScroll,
+                                      ),
+                                      child: SingleChildScrollView(
+                                        key: const ValueKey<String>(
+                                          'search_compact_header_scroll',
+                                        ),
+                                        physics: const ClampingScrollPhysics(),
+                                        child: _buildPostSearchCompactSetupBar(
+                                          headerContext,
+                                          search,
+                                          saved,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         if (showInputDeck || showCompactHeader)
@@ -1072,27 +1167,29 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             color: HomeScreenColors.inlineDivider,
                           ),
                         Expanded(
-                          child: _mode == _RakutenSearchMode.product
-                              ? GestureDetector(
-                                  behavior: HitTestBehavior.translucent,
-                                  onTap: _dismissKeywordSearchKeyboard,
-                                  child: _buildResultArea(
-                                    context,
-                                    search,
-                                    managed,
-                                    saved,
-                                    phase: phase,
-                                    keyboardVisible: keyboardVisible,
-                                  ),
-                                )
-                              : _buildResultArea(
-                                  context,
-                                  search,
-                                  managed,
-                                  saved,
-                                  phase: phase,
-                                  keyboardVisible: keyboardVisible,
-                                ),
+                          child: LayoutBuilder(
+                            key: _resultSurfaceLayoutKey,
+                            builder: (resultContext, resultConstraints) {
+                              _lastResultSurfaceMaxHeight =
+                                  resultConstraints.maxHeight;
+                              final resultChild = _buildResultArea(
+                                resultContext,
+                                search,
+                                managed,
+                                saved,
+                                phase: phase,
+                                keyboardVisible: keyboardVisible,
+                                resultMaxHeight: resultConstraints.maxHeight,
+                              );
+                              return _mode == _RakutenSearchMode.product
+                                  ? GestureDetector(
+                                      behavior: HitTestBehavior.translucent,
+                                      onTap: _dismissKeywordSearchKeyboard,
+                                      child: resultChild,
+                                    )
+                                  : resultChild;
+                            },
+                          ),
                         ),
                       ],
                     );
@@ -1385,6 +1482,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }
     setState(() => _detailSheetFormError = null);
     FocusManager.instance.primaryFocus?.unfocus();
+    _logSearchConditionSheetContext(
+      action: 'searchStartWhileOpen',
+      parentContext: screenContext,
+      sheetContext: sheetContext,
+      reason: 'keywordSubmit',
+    );
     Navigator.of(sheetContext).pop();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
@@ -1435,6 +1538,12 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     }
     setState(() => _detailSheetFormError = null);
     FocusManager.instance.primaryFocus?.unfocus();
+    _logSearchConditionSheetContext(
+      action: 'searchStartWhileOpen',
+      parentContext: screenContext,
+      sheetContext: sheetContext,
+      reason: 'genreSubmit',
+    );
     Navigator.of(sheetContext).pop();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
@@ -2546,6 +2655,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   Future<void> _openProductConditionsSheet(BuildContext screenContext) async {
+    if (!screenContext.mounted) return;
     if (_mode == _RakutenSearchMode.product) {
       _dismissKeywordSearchKeyboard();
     }
@@ -2553,18 +2663,41 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     _detailSheetFormError = null;
     _detailSearchAutovalidate = false;
     AppInputLimits.logDetailSearchSheetLimitsApplied();
+    final capturedParentMq = MediaQuery.maybeOf(screenContext);
+    _logSearchConditionSheetContext(
+      action: 'open',
+      parentContext: screenContext,
+      capturedParent: capturedParentMq,
+      reason: 'beforeShowModalBottomSheet',
+    );
     await showModalBottomSheet<void>(
       context: screenContext,
       isScrollControlled: true,
       showDragHandle: true,
       builder: (sheetContext) {
+        try {
+        _logSearchConditionSheetContext(
+          action: 'build',
+          parentContext: screenContext,
+          sheetContext: sheetContext,
+          capturedParent: capturedParentMq,
+          reason: 'sheetBuilder',
+        );
         searchFilterSheetLayoutLog();
-        final sheetKeyboardInset = MediaQuery.of(screenContext).viewInsets.bottom;
+        final sheetMq = _resolveSheetMediaQuery(
+          sheetContext,
+          capturedParent: capturedParentMq,
+        );
+        final sheetKeyboardInset = sheetMq.viewInsets.bottom;
         searchFilterSheetOverflowGuardLog(keyboardInset: sheetKeyboardInset);
         return StatefulBuilder(
           builder: (modalContext, setModalState) {
-            final sheetInset = MediaQuery.of(sheetContext).viewInsets.bottom;
-            final sheetHeight = MediaQuery.sizeOf(sheetContext).height * 0.9;
+            final modalMq = _resolveSheetMediaQuery(
+              sheetContext,
+              capturedParent: capturedParentMq,
+            );
+            final sheetInset = modalMq.viewInsets.bottom;
+            final sheetHeight = modalMq.size.height * 0.9;
             return Material(
               color: HomeScreenColors.canvas,
               child: SafeArea(
@@ -2590,7 +2723,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                       : 'ジャンル探索',
                                   textAlign: TextAlign.center,
                                   style: RakutenSearchScreenUi
-                                      .sectionHeadingAccent(context),
+                                      .sectionHeadingAccent(sheetContext),
                                 ),
                               ),
                               TextButton(
@@ -2623,7 +2756,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                               ),
                               child: Text(
                                 _detailSheetFormError!,
-                                style: Theme.of(context)
+                                style: Theme.of(sheetContext)
                                     .textTheme
                                     .bodySmall
                                     ?.copyWith(
@@ -2653,7 +2786,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                           _mode == _RakutenSearchMode.product
                               ? 'キーワードと条件を編集します。'
                               : 'ジャンル（必須）を選択してください。',
-                          style: RakutenSearchScreenUi.sheetIntroBody(context),
+                          style: RakutenSearchScreenUi.sheetIntroBody(sheetContext),
                         ),
                         if (_mode == _RakutenSearchMode.genre) ...[
                           const SizedBox(
@@ -2909,8 +3042,40 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             );
           },
         );
+        } catch (e, st) {
+          searchTransientErrorAuditLog(
+            'mode=${_searchResultScreenTag()} duringSearch=false exceptionType=${e.runtimeType} '
+            'widget=PendingCollectResumeNoticeHost file=rakuten_search_screen.dart line=2560 '
+            'prevented=true fallbackApplied=true',
+          );
+          if (kDebugMode) {
+            debugPrint(
+              '[SEARCH_CONDITION_SHEET_BUILD_ERROR] $e\n$st',
+            );
+          }
+          return Material(
+            color: HomeScreenColors.canvas,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  '条件画面の表示に失敗しました。もう一度お試しください。',
+                  style: Theme.of(sheetContext).textTheme.bodyMedium,
+                ),
+              ),
+            ),
+          );
+        }
       },
     );
+    if (screenContext.mounted) {
+      _logSearchConditionSheetContext(
+        action: 'close',
+        parentContext: screenContext,
+        capturedParent: capturedParentMq,
+        reason: 'afterShowModalBottomSheet',
+      );
+    }
     if (!mounted) return;
     setState(() {});
   }
@@ -2945,13 +3110,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         Text(
                           'ショップ発掘',
                           style: RakutenSearchScreenUi.sectionHeadingAccent(
-                            context,
+                            sheetContext,
                           ),
                         ),
                         const SizedBox(height: 6),
                         Text(
                           'キーワードまたはジャンルを指定してください。',
-                          style: RakutenSearchScreenUi.sheetIntroBody(context),
+                          style: RakutenSearchScreenUi.sheetIntroBody(sheetContext),
                         ),
                         const SizedBox(
                           height: RakutenSearchScreenUi.sheetBlockGap,
@@ -3937,6 +4102,22 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return RakutenSearchScreenUi.listBottomPad;
   }
 
+  double? _renderBoxHeight(GlobalKey key) {
+    final ctx = key.currentContext;
+    if (ctx == null) return null;
+    final box = ctx.findRenderObject();
+    if (box is! RenderBox || !box.hasSize) return null;
+    return box.size.height;
+  }
+
+  double? _renderBoxGlobalBottom(GlobalKey key) {
+    final ctx = key.currentContext;
+    if (ctx == null) return null;
+    final box = ctx.findRenderObject();
+    if (box is! RenderBox || !box.hasSize) return null;
+    return box.localToGlobal(Offset(0, box.size.height)).dy;
+  }
+
   void _scheduleSearchResultViewportAudit({
     required BuildContext context,
     required ScrollController scrollController,
@@ -3945,13 +4126,24 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required bool bottomActionBarVisible,
     required bool hasBulkHeader,
     String phase = 'result',
+    double? resultSurfaceMaxHeight,
   }) {
     if (!kDebugMode) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final mq = MediaQuery.of(context);
       final screenHeight = mq.size.height;
-      final bottomNavHeight = kBottomNavigationBarHeight + mq.padding.bottom;
+      final safeTop = mq.padding.top;
+      final safeBottom = mq.padding.bottom;
+      final appBottomNavHeight = kBottomNavigationBarHeight + safeBottom;
+      final outerAvailableHeight = screenHeight - safeTop - safeBottom;
+      final shellBodyHeight = outerAvailableHeight;
+      final resultSurfaceHeight = _renderBoxHeight(_resultSurfaceLayoutKey) ??
+          resultSurfaceMaxHeight ??
+          -1.0;
+      final headerActualHeight =
+          _renderBoxHeight(_compactHeaderLayoutKey) ?? -1.0;
+      final listParentHeight = _renderBoxHeight(_listViewportLayoutKey) ?? -1.0;
       final bottomActionBarHeight = bottomActionBarVisible
           ? _bulkSelectionBarLayoutHeight(context)
           : 0.0;
@@ -3972,14 +4164,49 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               pos.pixels >= pos.maxScrollExtent - 1 ? resultCount - 1 : -1;
         }
       }
+      final calculatedExpectedListHeight = (resultSurfaceHeight > 0
+              ? resultSurfaceHeight
+              : outerAvailableHeight - appBottomNavHeight) -
+          headerActualHeight -
+          (hasBulkHeader ? 44.0 : 0.0) -
+          bottomActionBarHeight;
+      final missingHeight = calculatedExpectedListHeight > 0 &&
+              listViewportHeight > 0
+          ? (calculatedExpectedListHeight - listViewportHeight)
+              .clamp(0.0, double.infinity)
+          : -1.0;
+      searchResultParentConstraintAuditLog(
+        'mode=${_searchResultScreenTag()} phase=$phase screenHeight=$screenHeight '
+        'safeAreaTop=$safeTop safeAreaBottom=$safeBottom '
+        'appBottomNavHeight=$appBottomNavHeight outerAvailableHeight=$outerAvailableHeight '
+        'shellBodyHeight=$shellBodyHeight resultSurfaceHeight=$resultSurfaceHeight '
+        'headerActualHeight=$headerActualHeight actionRowActualHeight=compactHeader '
+        'bulkHeaderActualHeight=${hasBulkHeader ? 44 : 0} listParentHeight=$listParentHeight '
+        'listViewportHeight=$listViewportHeight '
+        'calculatedExpectedListHeight=$calculatedExpectedListHeight '
+        'missingHeight=$missingHeight constraintSource=compactHeaderNoLongerSplitsFlexWithExpanded',
+      );
       searchResultViewportAuditLog(
         'mode=${_searchResultScreenTag()} phase=$phase screenHeight=$screenHeight '
-        'headerHeight=compact bulkHeaderHeight=${hasBulkHeader ? 'bulkRow' : '-'} '
-        'bottomNavHeight=$bottomNavHeight bottomActionBarVisible=$bottomActionBarVisible '
+        'headerHeight=$headerActualHeight bulkHeaderHeight=${hasBulkHeader ? 'bulkRow' : '-'} '
+        'bottomNavHeight=$appBottomNavHeight bottomActionBarVisible=$bottomActionBarVisible '
         'bottomActionBarHeight=$bottomActionBarHeight listViewportHeight=$listViewportHeight '
         'listBottomPadding=$listBottomPadding unusedBottomSpaceEstimate=$unusedBottomSpaceEstimate '
         'resultCount=$resultCount firstVisibleIndex=$firstVisibleIndex '
         'lastVisibleIndex=$lastVisibleIndex',
+      );
+      final listBottomGlobalY = _renderBoxGlobalBottom(_listViewportLayoutKey);
+      final bottomNavTopGlobalY = screenHeight - appBottomNavHeight;
+      final blankHeightBetweenListAndBottomNav =
+          listBottomGlobalY != null && bottomNavTopGlobalY > 0
+          ? (bottomNavTopGlobalY - listBottomGlobalY).clamp(0.0, double.infinity)
+          : -1.0;
+      searchResultBlankAreaAuditLog(
+        'mode=${_searchResultScreenTag()} screenHeight=$screenHeight '
+        'listBottomGlobalY=${listBottomGlobalY ?? -1} bottomNavTopGlobalY=$bottomNavTopGlobalY '
+        'blankHeightBetweenListAndBottomNav=$blankHeightBetweenListAndBottomNav '
+        'bottomBarVisible=$bottomActionBarVisible bottomBarTopGlobalY=- '
+        'reason=${blankHeightBetweenListAndBottomNav > 24 ? 'parentConstraintOrFlexSplit' : 'withinExpectedRange'}',
       );
       searchBottomSpaceAuditLog(
         'mode=${_searchResultScreenTag()} hasSelection=$bottomActionBarVisible '
@@ -3997,43 +4224,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required int resultCount,
     required double listBottomPadding,
   }) {
-    if (!kDebugMode) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      final mq = MediaQuery.of(context);
-      final screenHeight = mq.size.height;
-      final bottomNavHeight = kBottomNavigationBarHeight + mq.padding.bottom;
-      var listViewportHeight = -1.0;
-      var unusedBottomSpaceEstimate = -1.0;
-      var firstVisibleIndex = -1;
-      var lastVisibleIndex = -1;
-      if (scrollController.hasClients) {
-        final pos = scrollController.position;
-        listViewportHeight = pos.viewportDimension;
-        unusedBottomSpaceEstimate = (pos.viewportDimension -
-                pos.maxScrollExtent -
-                listBottomPadding)
-            .clamp(0.0, double.infinity);
-        if (resultCount > 0) {
-          firstVisibleIndex = pos.pixels <= 1 ? 0 : -1;
-          lastVisibleIndex =
-              pos.pixels >= pos.maxScrollExtent - 1 ? resultCount - 1 : -1;
-        }
-      }
-      searchResultViewportAuditLog(
-        'mode=shopDiscovery phase=result screenHeight=$screenHeight '
-        'headerHeight=discoverySummary bulkHeaderHeight=- '
-        'bottomNavHeight=$bottomNavHeight bottomActionBarVisible=false '
-        'bottomActionBarHeight=0 listViewportHeight=$listViewportHeight '
-        'listBottomPadding=$listBottomPadding unusedBottomSpaceEstimate=$unusedBottomSpaceEstimate '
-        'resultCount=$resultCount firstVisibleIndex=$firstVisibleIndex '
-        'lastVisibleIndex=$lastVisibleIndex',
-      );
-      searchBottomSpaceAuditLog(
-        'mode=shopDiscovery hasSelection=false selectedCount=0 bottomBarVisible=false '
-        'reservedBottomSpace=0 actualBottomPadding=$listBottomPadding reason=noBulkBarMinimalPad',
-      );
-    });
+    _scheduleSearchResultViewportAudit(
+      context: context,
+      scrollController: scrollController,
+      resultCount: resultCount,
+      listBottomPadding: listBottomPadding,
+      bottomActionBarVisible: false,
+      hasBulkHeader: false,
+      phase: 'result',
+      resultSurfaceMaxHeight: _lastResultSurfaceMaxHeight,
+    );
   }
 
   void _showCompletionFeedbackIfNeeded(
@@ -4123,6 +4323,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       listBottomPadding: bottomPad,
       bottomActionBarVisible: bulkBar,
       hasBulkHeader: _bulkCheckboxVisible(search),
+      resultSurfaceMaxHeight: _lastResultSurfaceMaxHeight,
     );
     Widget resultCardAt(int index) {
       final item = orderedResults[index];
@@ -4167,13 +4368,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
     Widget listOrEmpty() {
       if (orderedResults.isNotEmpty) {
-        return ListView.separated(
-          controller: scrollController,
-          padding: listPadding,
-          itemCount: orderedResults.length,
-          separatorBuilder: (_, __) =>
-              SizedBox(height: RakutenSearchScreenUi.listCardGap),
-          itemBuilder: (context, index) => resultCardAt(index),
+        return KeyedSubtree(
+          key: _listViewportLayoutKey,
+          child: ListView.separated(
+            controller: scrollController,
+            padding: listPadding,
+            itemCount: orderedResults.length,
+            separatorBuilder: (_, __) =>
+                SizedBox(height: RakutenSearchScreenUi.listCardGap),
+            itemBuilder: (context, index) => resultCardAt(index),
+          ),
         );
       }
       if (keywordPreferredFilteredAllOut && emptyPreferredFilteredOut != null) {
@@ -4292,6 +4496,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     SavedShopProvider saved, {
     required SearchSurfacePhase phase,
     required bool keyboardVisible,
+    double? resultMaxHeight,
   }) {
     _showCompletionFeedbackIfNeeded(context, search);
     if (_mode == _RakutenSearchMode.shopDiscovery) {
@@ -4718,83 +4923,81 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                 stateFootnote: '検索は成功しています。',
               );
             }
-            return Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    RakutenSearchScreenUi.screenPadH,
-                    RakutenSearchScreenUi.gapListAfterDivider,
-                    RakutenSearchScreenUi.screenPadH,
-                    RakutenSearchScreenUi.gapFieldStack,
-                  ),
-                  child: AppCard(
-                    // 共通AppCardへ置換: ショップ発掘の結果ヘッダー。
-                    padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-                    backgroundColor: HomeScreenColors.deckFill,
-                    borderColor: HomeScreenColors.deckOutline,
-                    radius: RakutenSearchScreenUi.radiusSectionInner,
-                    elevated: true,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'ショップ発掘の結果 ${visible.length}件（スコア順）',
-                          style: Theme.of(context).textTheme.titleSmall
-                              ?.copyWith(
-                                color: HomeScreenColors.metricTileTitleColor,
-                                fontWeight: FontWeight.w800,
-                                fontSize: 13.5,
-                                letterSpacing: -0.12,
-                              ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          'スコアはヒット数・評価数・評価点から算出しています。',
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: HomeScreenColors.metricTileCaptionColor,
-                                height: 1.35,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 11.5,
-                              ),
-                        ),
-                        Text(
-                          '※ 保存済みショップは除外（$removedCount件）。',
-                          style: Theme.of(context).textTheme.labelSmall
-                              ?.copyWith(
-                                color: HomeScreenColors.footnoteMuted,
-                                height: 1.32,
-                                fontWeight: FontWeight.w500,
-                              ),
-                        ),
-                      ],
+            final discoveryBottomPad = RakutenSearchScreenUi.listBottomPad;
+            _scheduleShopDiscoveryViewportAudit(
+              context: context,
+              scrollController: _shopDiscoveryResultsScrollController,
+              resultCount: visible.length,
+              listBottomPadding: discoveryBottomPad,
+            );
+            final summaryHeader = Padding(
+              padding: EdgeInsets.fromLTRB(
+                RakutenSearchScreenUi.screenPadH,
+                RakutenSearchScreenUi.gapListAfterDivider,
+                RakutenSearchScreenUi.screenPadH,
+                RakutenSearchScreenUi.gapFieldStack,
+              ),
+              child: AppCard(
+                padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+                backgroundColor: HomeScreenColors.deckFill,
+                borderColor: HomeScreenColors.deckOutline,
+                radius: RakutenSearchScreenUi.radiusSectionInner,
+                elevated: true,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'ショップ発掘の結果 ${visible.length}件（スコア順）',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: HomeScreenColors.metricTileTitleColor,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 13.5,
+                            letterSpacing: -0.12,
+                          ),
                     ),
-                  ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'スコアはヒット数・評価数・評価点から算出しています。',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: HomeScreenColors.metricTileCaptionColor,
+                            height: 1.35,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 11.5,
+                          ),
+                    ),
+                    Text(
+                      '※ 保存済みショップは除外（$removedCount件）。',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: HomeScreenColors.footnoteMuted,
+                            height: 1.32,
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: Builder(
-                    builder: (listContext) {
-                      final discoveryBottomPad =
-                          RakutenSearchScreenUi.listBottomPad;
-                      _scheduleShopDiscoveryViewportAudit(
-                        context: listContext,
-                        scrollController: _shopDiscoveryResultsScrollController,
-                        resultCount: visible.length,
-                        listBottomPadding: discoveryBottomPad,
-                      );
-                      return ListView.separated(
-                        controller: _shopDiscoveryResultsScrollController,
-                        padding: EdgeInsets.fromLTRB(
-                          RakutenSearchScreenUi.screenPadH,
-                          RakutenSearchScreenUi.listScrollTopPad,
-                          RakutenSearchScreenUi.screenPadH,
-                          discoveryBottomPad,
-                        ),
-                        itemCount: visible.length,
-                        separatorBuilder: (_, __) => SizedBox(
-                          height: RakutenSearchScreenUi.listCardGap,
-                        ),
-                        itemBuilder: (context, index) {
+              ),
+            );
+            return KeyedSubtree(
+              key: _listViewportLayoutKey,
+              child: ListView(
+                controller: _shopDiscoveryResultsScrollController,
+                padding: EdgeInsets.fromLTRB(
+                  0,
+                  RakutenSearchScreenUi.listScrollTopPad,
+                  0,
+                  discoveryBottomPad,
+                ),
+                children: [
+                  summaryHeader,
+                  for (var index = 0; index < visible.length; index++) ...[
+                    if (index > 0)
+                      SizedBox(height: RakutenSearchScreenUi.listCardGap),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: RakutenSearchScreenUi.screenPadH,
+                      ),
+                      child: Builder(
+                        builder: (cardContext) {
                           final summary = visible[index];
                           final shopItems = search.results
                               .where(
@@ -4808,20 +5011,23 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                             summary: summary,
                             rank: index + 1,
                             isSaved: isSaved,
-                            onOpenShop: () =>
-                                _openShopDetail(context, summary, shopItems),
+                            onOpenShop: () => _openShopDetail(
+                              cardContext,
+                              summary,
+                              shopItems,
+                            ),
                             onSave: () => _saveDiscoveredShop(
-                              context,
+                              cardContext,
                               summary,
                               isSaved,
                             ),
                           );
                         },
-                      );
-                    },
-                  ),
-                ),
-              ],
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             );
           },
         );

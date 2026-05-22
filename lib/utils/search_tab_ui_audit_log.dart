@@ -64,3 +64,28 @@ void shopDiscoveryButtonCopyAuditLog(String message) {
   if (!kDebugMode) return;
   debugPrint('[SHOP_DISCOVERY_BUTTON_COPY_AUDIT] $message');
 }
+
+void searchResultParentConstraintAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[SEARCH_RESULT_PARENT_CONSTRAINT_AUDIT] $message');
+}
+
+void searchResultBlankAreaAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[SEARCH_RESULT_BLANK_AREA_AUDIT] $message');
+}
+
+void searchConditionSheetContextAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[SEARCH_CONDITION_SHEET_CONTEXT_AUDIT] $message');
+}
+
+void searchTransientErrorAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[SEARCH_TRANSIENT_ERROR_AUDIT] $message');
+}
+
+void searchPhaseTransitionAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[SEARCH_PHASE_TRANSITION_AUDIT] $message');
+}
