@@ -89,3 +89,8 @@ void searchPhaseTransitionAuditLog(String message) {
   if (!kDebugMode) return;
   debugPrint('[SEARCH_PHASE_TRANSITION_AUDIT] $message');
 }
+
+void searchResultWidgetTreeAuditLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[SEARCH_RESULT_WIDGET_TREE_AUDIT] $message');
+}

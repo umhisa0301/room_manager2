@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,6 +29,17 @@ class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
+  @override
+  void initState() {
+    super.initState();
+    if (kDebugMode && const bool.fromEnvironment('LAYOUT_AUDIT_SEED')) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+        await openRakutenSearchScreen(context);
+      });
+    }
+  }
+
   static const List<Widget> _screens = [
     HomePlaceholderScreen(),
     ProductsPlaceholderScreen(),
