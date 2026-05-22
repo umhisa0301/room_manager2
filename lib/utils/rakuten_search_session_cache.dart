@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../models/rakuten_search_item.dart';
 import '../state/rakuten_search_provider.dart';
+import 'search_result_envelope.dart';
 
 /// 探す画面の同一セッション内状態保持（タブ往復・探し方切替用）。
 class RakutenSearchSessionCache {
@@ -11,6 +12,7 @@ class RakutenSearchSessionCache {
 
   final Map<String, _ModeSnapshot> _providerByMode = {};
   final Map<String, RakutenSearchUiSnapshot> _uiByMode = {};
+  final Map<String, SearchResultEnvelope> _envelopeByMode = {};
 
   static const String modeProduct = 'productSearch';
   static const String modeGenre = 'genreSearch';
@@ -25,7 +27,11 @@ class RakutenSearchSessionCache {
     return searchModeName;
   }
 
-  void saveProviderSnapshot(String key, RakutenSearchProvider search) {
+  void saveProviderSnapshot(
+    String key,
+    RakutenSearchProvider search, {
+    SearchResultEnvelope? envelope,
+  }) {
     _providerByMode[key] = _ModeSnapshot(
       status: search.status,
       results: List<RakutenSearchItem>.from(search.results),
@@ -33,7 +39,14 @@ class RakutenSearchSessionCache {
       lastKeyword: search.lastKeyword,
       keywordSearchHadApiHitsButNoVisibleResults:
           search.keywordSearchHadApiHitsButNoVisibleResults,
+      ownerMode: envelope?.ownerMode ?? key,
+      searchKey: envelope?.searchKey,
+      genreId: envelope?.genreId,
+      shopCode: envelope?.shopCode,
     );
+    if (envelope != null) {
+      _envelopeByMode[key] = envelope;
+    }
     _log('save', key, search.results.length);
   }
 
@@ -58,15 +71,25 @@ class RakutenSearchSessionCache {
     _log('restore', key, snap.results.length);
   }
 
+  SearchResultEnvelope? envelopeForMode(String key) => _envelopeByMode[key];
+
   void saveUiSnapshot(String key, RakutenSearchUiSnapshot ui) {
     _uiByMode[key] = ui;
   }
 
   RakutenSearchUiSnapshot? uiSnapshot(String key) => _uiByMode[key];
 
+  /// Provider スナップショットと結果エンベロープのみ削除（UI 入力は保持）。
+  void clearProviderSnapshot(String key) {
+    _providerByMode.remove(key);
+    _envelopeByMode.remove(key);
+    _log('clearProvider', key, 0);
+  }
+
   void clearMode(String key) {
     _providerByMode.remove(key);
     _uiByMode.remove(key);
+    _envelopeByMode.remove(key);
     _log('clear', key, 0);
   }
 
@@ -94,6 +117,10 @@ class _ModeSnapshot {
     required this.errorMessage,
     required this.lastKeyword,
     required this.keywordSearchHadApiHitsButNoVisibleResults,
+    required this.ownerMode,
+    this.searchKey,
+    this.genreId,
+    this.shopCode,
   });
 
   final RakutenSearchStatus status;
@@ -101,6 +128,10 @@ class _ModeSnapshot {
   final String errorMessage;
   final String lastKeyword;
   final bool keywordSearchHadApiHitsButNoVisibleResults;
+  final String ownerMode;
+  final String? searchKey;
+  final String? genreId;
+  final String? shopCode;
 }
 
 /// 検索画面の入力・選択状態（コントローラ文字列のスナップショット）。
@@ -128,6 +159,7 @@ class RakutenSearchUiSnapshot {
     this.selectedProductIds = const {},
     this.searchHeaderCollapsed = false,
     this.savedShopKeywordFlow = false,
+    this.shopDiscoveryHasSearched = false,
   });
 
   final String keyword;
@@ -154,4 +186,5 @@ class RakutenSearchUiSnapshot {
   final Set<String> selectedProductIds;
   final bool searchHeaderCollapsed;
   final bool savedShopKeywordFlow;
+  final bool shopDiscoveryHasSearched;
 }

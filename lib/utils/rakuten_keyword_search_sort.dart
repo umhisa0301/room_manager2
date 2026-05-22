@@ -1,5 +1,44 @@
 import '../models/rakuten_search_item.dart';
 
+/// ユーザー向けの並び順ラベル（API 内部名は出さない）。
+String rakutenKeywordSearchSortDisplayLabel(
+  RakutenKeywordSearchSortMode mode, {
+  bool menuItem = false,
+}) {
+  switch (mode) {
+    case RakutenKeywordSearchSortMode.defaultOrder:
+      return menuItem ? 'おすすめ順' : 'おすすめ';
+    case RakutenKeywordSearchSortMode.priceAscending:
+      return menuItem ? '価格が安い順' : '価格が安い';
+    case RakutenKeywordSearchSortMode.ratingDescending:
+      return menuItem ? '評価が高い順' : '評価が高い';
+    case RakutenKeywordSearchSortMode.reviewCountDescending:
+      return menuItem ? 'レビューが多い順' : 'レビューが多い';
+  }
+}
+
+/// 結果ヘッダー向け「並び順：◯◯」。
+String rakutenKeywordSearchSortHeaderLabel(RakutenKeywordSearchSortMode mode) {
+  return '並び順：${rakutenKeywordSearchSortDisplayLabel(mode)}';
+}
+
+/// API sort パラメータ文字列のユーザー向け表示（未知はおすすめ）。
+String rakutenApiSortDisplayLabel(String? apiSort) {
+  final s = apiSort?.trim() ?? '';
+  if (s.isEmpty || s == 'standard') {
+    return 'おすすめ';
+  }
+  return switch (s) {
+    'defaultOrder' => 'おすすめ',
+    '+itemPrice' || 'itemPriceAsc' => '価格が安い',
+    '-itemPrice' || 'itemPriceDesc' => '価格が高い',
+    '-reviewAverage' || 'reviewAverage' => '評価が高い',
+    '-reviewCount' || 'reviewCount' => 'レビューが多い',
+    'updateTimestamp' => '新しい順',
+    _ => 'おすすめ',
+  };
+}
+
 /// キーワード検索タブの結果一覧に対する並び替えモード（表示文言は画面側で付与する）。
 enum RakutenKeywordSearchSortMode {
   /// API・既存ロジックの順序のまま。

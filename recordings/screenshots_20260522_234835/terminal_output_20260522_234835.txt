@@ -1,0 +1,851 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-22 23:48:35
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260522_234835.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260522_234835.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260522_234835.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260522_234835.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260522_234835.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260522_234835
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260522_234835\terminal_output_20260522_234835.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 1680).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                          
+I/flutter ( 9439): [DEBUG_LOG_VOLUME_AUDIT] nativeLogsObserved=true appVerboseLogsReduced=true rakutenUrlVerbose=false genreResolveVerbose=false productCardVerbose=false
+I/flutter ( 9439): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter ( 9439): verifyMode=false
+I/flutter ( 9439): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter ( 9439): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=repositoryLoad
+I/flutter ( 9439): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 9439): [RECOMMEND_TRACE] savedBundle=true
+I/flutter ( 9439): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9439): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=false enabled=false label=ROOM投稿を取り込む reason=hiddenByUxPolicy
+I/flutter ( 9439): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYetOrBusy
+I/flutter ( 9439): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 9439): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=CommonDraggableEdgeFab file=lib/widgets/common_draggable_edge_fab.dart visible=true reason=commentEdgeFabRightSideNotMenu
+I/flutter ( 9439): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter ( 9439): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=0 afterFilterLen=0 surface=ok_empty_no_data ui=ready
+I/flutter ( 9439): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=0 roomImportedDoneCount=0 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter ( 9439): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=0 appCollectedCount=0 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-20 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-21 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-22 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9439): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9439): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=false visible=false reason=notImportedYet
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 9439): action=refresh
+I/flutter ( 9439): productId=
+I/flutter ( 9439): itemCode=
+I/flutter ( 9439): beforePendingCount=0
+I/flutter ( 9439): afterPendingCount=0
+I/flutter ( 9439): beforeDoneCount=0
+I/flutter ( 9439): afterDoneCount=0
+I/flutter ( 9439): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 9439): source=provider
+I/flutter ( 9439): pendingCount=0
+I/flutter ( 9439): doneCount=0
+I/flutter ( 9439): filter=
+I/flutter ( 9439): tab=
+I/flutter ( 9439): [ROOMコレ診断] refreshManagedProductList 完了 total=0 candidate=0 done=0 ui=ready
+I/flutter ( 9439): [HOME_SECTION_ORDER] order=todayRoomOperation,roomColleManagement,roomSync,recentCandidates
+I/flutter ( 9439): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=none file=lib/screens/home_placeholder_screen.dart visible=false reason=noDrawerNoMenuFabOnHomeBody
+I/flutter ( 9439): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 9439): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter ( 9439): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 9439): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter ( 9439): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 9439): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 9439): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 9439): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-22T23:32:54.596712
+I/flutter ( 9439): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 9439): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 9439): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 9439): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-22T23:32:54.596712
+I/flutter ( 9439): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 9439): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter ( 9439): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 9439): action=refresh
+I/flutter ( 9439): productId=
+I/flutter ( 9439): itemCode=
+I/flutter ( 9439): beforePendingCount=0
+I/flutter ( 9439): afterPendingCount=0
+I/flutter ( 9439): beforeDoneCount=0
+I/flutter ( 9439): afterDoneCount=0
+I/flutter ( 9439): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 9439): source=screen
+I/flutter ( 9439): pendingCount=0
+I/flutter ( 9439): doneCount=0
+I/flutter ( 9439): filter=
+I/flutter ( 9439): tab=candidate
+I/flutter ( 9439): [ROOMコレ診断] ROOMコレ画面起動後 total=0 candidate=0 done=0 listUi=RakutenManagedProductListUiStatus.ready tabIdx=0
+I/flutter ( 9439): [ROOMコレ診断] refreshManagedProductList 完了 total=0 candidate=0 done=0 ui=ready
+I/flutter ( 9439): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 9439): action=refresh
+I/flutter ( 9439): productId=
+I/flutter ( 9439): itemCode=
+I/flutter ( 9439): beforePendingCount=0
+I/flutter ( 9439): afterPendingCount=0
+I/flutter ( 9439): beforeDoneCount=0
+I/flutter ( 9439): afterDoneCount=0
+I/flutter ( 9439): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 9439): source=provider
+I/flutter ( 9439): pendingCount=0
+I/flutter ( 9439): doneCount=0
+I/flutter ( 9439): filter=
+I/flutter ( 9439): tab=
+I/flutter ( 9439): [ROOMコレ診断] refreshManagedProductList 完了 total=0 candidate=0 done=0 ui=ready
+I/flutter ( 9439): [SEARCH_RENDER_ERROR_AUDIT] checkedTerminal=true overflowFound=pending overflowFixed=pending target=searchHeader|savedShop
+I/flutter ( 9439): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter ( 9439): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter ( 9439): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=input isLoading=false hasResult=false hasError=false inputDeckVisible=true compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter ( 9439): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=beforeSearch keyboardVisible=false hasResult=false hasError=false headerVisible=false inputDeckVisible=true resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter ( 9439): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=false visibleSurface=input
+I/flutter ( 9439): [SEARCH_LAYOUT_STABILITY] phase=input keyboardVisible=false overflowGuard=true
+I/flutter ( 9439): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter ( 9439): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter ( 9439): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=false enabled=false label=ROOM投稿を取り込む reason=hiddenByUxPolicy
+I/flutter ( 9439): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYetOrBusy
+I/flutter ( 9439): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 9439): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9439): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9439): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=false visible=false reason=notImportedYet
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9439): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=0 roomImportedDoneCount=0 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter ( 9439): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=0 appCollectedCount=0 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-20 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-21 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ANALYTICS_DAILY_BAR] date=2026-05-22 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9439): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9439): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=0 afterFilterLen=0 surface=ok_empty_no_data ui=ready
+I/flutter ( 9439): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=365.42857142857144 selectedMode=product clipped=false horizontalScrollable=true
+I/flutter ( 9439): [SEARCH_STATE_PERSIST] screen=productSearch event=restore resultCount=0
+I/flutter ( 9439): [SEARCH_KEYBOARD_LAYOUT_AUDIT] mode=productSearch keyboardVisible=false focusField=- onSearchUnfocusCalled=true errorCardCompact=false availableHeight=844.5714285714286
+I/flutter ( 9439): [SEARCH_LAYOUT_STABILITY] phase=loading keyboardVisible=false overflowGuard=true
+I/flutter ( 9439): [SEARCH_MODE_STATE_AUDIT] event=beforeSearch mode=productSearch sourceMode=- keyword=アンパンマン genreId=- genreName=- productDetailGenreId=- savedShopCode=- savedShopName=- discoveryKeyword=- discoveryGenreId=- sort=defaultOrder
+I/flutter ( 9439): [SEARCH_FILTER_SANITIZE_AUDIT] mode=productSearch beforeKeyword=アンパンマン beforeGenreId=- beforeShopCode=- afterKeyword=アンパンマン afterGenreId=- afterShopCode=- removedFields=-
+I/flutter ( 9439): [Rakuten] keyword search execute keyword="アンパンマン" genreId=- genreName(lookup)=- shopCode=- shopName(saved lookup)=- hits=30 excludeRegistered=0 savedShopExcludeSet=0 
+I/flutter ( 9439): [SEARCH_TAB_UI_AUDIT] screen=productSearch hasGenreDrilldown=true hasSelectAllCheckbox=true hasInputLimits=true hasSafetyFilter=true hasFixedFooter=true
+I/flutter ( 9439): [SEARCH_EXECUTE_TRACE] sessionId=1 mode=product keyword="アンパンマン" selectedShopCode=- genreId=- startedAt=2026-05-22T23:48:43.639655
+I/flutter ( 9439): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=アンパンマン genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 expectedApiCalls=20
+I/flutter ( 9439): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9439): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9439): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter ( 9439): [SEARCH_RESULT_WIDGET_TREE_AUDIT] mode=productSearch phase=input rootWidget=Column shellBodyWidget=SearchGroupScreenShell>SizedBox.expand resultSurfaceWidget=Expanded>LayoutBuilder resultListParentWidget=Expanded>ListView usesFlexibleLoose=true usesExpandedForList=false usesAnimatedSwitcher=false usesMaintainSizeVisibility=false usesSingleChildScrollViewAroundWholeResult=false hasSpacerBelowList=false hasEmptyCardMounted=false hasErrorCardMounted=false hasLoadingCardMounted=false
+I/flutter ( 9439): [SEARCH_LAYOUT_PHASE_AUDIT] previousPhase=input nextPhase=loading mode=productSearch reason=build
+I/flutter ( 9439): [SEARCH_PHASE_TRANSITION_AUDIT] previousPhase=input nextPhase=loading mode=productSearch hasResultBefore=false hasResultAfter=false hasErrorBefore=false hasErrorAfter=false isLoading=true triggeredBy=build
+I/flutter ( 9439): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter ( 9439): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter ( 9439): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=loading isLoading=true hasResult=false hasError=false inputDeckVisible=false compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter ( 9439): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=loading keyboardVisible=false hasResult=false hasError=false headerVisible=false inputDeckVisible=false resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter ( 9439): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=true visibleSurface=loading
+I/flutter ( 9439): [SEARCH_LAYOUT_STABILITY] phase=loading keyboardVisible=false overflowGuard=true
+I/flutter ( 9439): [SEARCH_RESULT_WIDGET_TREE_AUDIT] mode=productSearch phase=loading rootWidget=Column shellBodyWidget=SearchGroupScreenShell>SizedBox.expand resultSurfaceWidget=Expanded>LayoutBuilder resultListParentWidget=Expanded>ListView usesFlexibleLoose=false usesExpandedForList=false usesAnimatedSwitcher=false usesMaintainSizeVisibility=false usesSingleChildScrollViewAroundWholeResult=false hasSpacerBelowList=false hasEmptyCardMounted=false hasErrorCardMounted=false hasLoadingCardMounted=true
+I/flutter ( 9439): [Rakuten] response status=200 page=1 bytes=142365
+I/flutter ( 9439): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 9439): [RECOMMEND_TRACE] rawCount=30
+I/flutter ( 9439): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=1 statusCode=200 rawCount=30 durationMs=1312 success=true
+I/flutter ( 9439): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=1312 statusCode=200
+I/flutter ( 9439): [RakutenGenre][API] itemCode=o-kawaya:10092612 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=o-kawaya:10092612 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=f041009-sendai:10000365 rawGenreId=553275 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=f041009-sendai:10000365 model.genreId=553275 model.genreName= jsonRaw=遊園地・テーマパーク jsonRolled=遊園地・テーマパーク displayGenre=遊園地・テーマパーク
+I/flutter ( 9439): [RakutenGenre][API] itemCode=festival-plaza:10038229 rawGenreId=406759 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=festival-plaza:10038229 model.genreId=406759 model.genreName= jsonRaw=こま jsonRolled=こま displayGenre=こま
+I/flutter ( 9439): [RakutenGenre][API] itemCode=netbaby:10046965 rawGenreId=201598 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=netbaby:10046965 model.genreId=201598 model.genreName= jsonRaw=その他 jsonRolled=ベビー向けおもちゃ displayGenre=ベビー向けおもちゃ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=o-kawaya:10068837 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=o-kawaya:10068837 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:11822422 rawGenreId=201597 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:11822422 model.genreId=201597 model.genreName= jsonRaw=手押し車・カタカタ jsonRolled=手押し車・カタカタ displayGenre=手押し車・カタカタ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=yoikutsu:10039551 rawGenreId=505374 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=yoikutsu:10039551 model.genreId=505374 model.genreName= jsonRaw=スニーカー jsonRolled=スニーカー displayGenre=スニーカー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:12053234 rawGenreId=201609 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:12053234 model.genreId=201609 model.genreName= jsonRaw=リズム・音楽 jsonRolled=リズム・音楽 displayGenre=リズム・音楽
+I/flutter ( 9439): [RakutenGenre][API] itemCode=f141003-yokohama:10000328 rawGenreId=553275 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=f141003-yokohama:10000328 model.genreId=553275 model.genreName= jsonRaw=遊園地・テーマパーク jsonRolled=遊園地・テーマパーク displayGenre=遊園地・テーマパーク
+I/flutter ( 9439): [RakutenGenre][API] itemCode=futon:10048515 rawGenreId=406674 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=futon:10048515 model.genreId=406674 model.genreName= jsonRaw=タオルケット jsonRolled=タオルケット displayGenre=タオルケット
+I/flutter ( 9439): [RakutenGenre][API] itemCode=orange-baby:10032686 rawGenreId=207523 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=orange-baby:10032686 model.genreId=207523 model.genreName= jsonRaw=ボクシング jsonRolled=ボクシング displayGenre=ボクシング
+I/flutter ( 9439): [RakutenGenre][API] itemCode=edion:10786248 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=edion:10786248 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter ( 9439): [RakutenGenre][API] itemCode=singuten:10001396 rawGenreId=201632 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=singuten:10001396 model.genreId=201632 model.genreName= jsonRaw=ぬいぐるみ jsonRolled=ぬいぐるみ displayGenre=ぬいぐるみ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=f281000-kobe:10001403 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=f281000-kobe:10001403 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter ( 9439): [RakutenGenre][API] itemCode=est-926:10004978 rawGenreId=566092 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=est-926:10004978 model.genreId=566092 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=biccamera:12256886 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=biccamera:12256886 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:11240487 rawGenreId=566440 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:11240487 model.genreId=566440 model.genreName= jsonRaw=電車 jsonRolled=電車 displayGenre=電車
+I/flutter ( 9439): [RakutenGenre][API] itemCode=rakuten24:11139834 rawGenreId=214099 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=rakuten24:11139834 model.genreId=214099 model.genreName= jsonRaw=カレー jsonRolled=カレー displayGenre=カレー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=bunbougu-shibuya:10028635 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=bunbougu-shibuya:10028635 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter ( 9439): [RakutenGenre][API] itemCode=jism:13490702 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=jism:13490702 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter ( 9439): [RakutenGenre][API] itemCode=netten-sanki:10009351 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=netten-sanki:10009351 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=ballballoon:10000689 rawGenreId=213748 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=ballballoon:10000689 model.genreId=213748 model.genreName= jsonRaw=バルーン・風船 jsonRolled=バルーン・風船 displayGenre=バルーン・風船
+I/flutter ( 9439): [RakutenGenre][API] itemCode=festival-plaza:10057188 rawGenreId=216045 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=festival-plaza:10057188 model.genreId=216045 model.genreName= jsonRaw=ポケットティッシュ jsonRolled=ポケットティッシュ displayGenre=ポケットティッシュ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=keitaistrap:10075118 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=keitaistrap:10075118 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter ( 9439): [RakutenGenre][API] itemCode=o-kawaya:10106369 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=o-kawaya:10106369 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=edion:10242175 rawGenreId=205281 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=edion:10242175 model.genreId=205281 model.genreName= jsonRaw=電話・携帯電話 jsonRolled=電話・携帯電話 displayGenre=電話・携帯電話
+I/flutter ( 9439): [RakutenGenre][API] itemCode=f401307-fukuoka:10000685 rawGenreId=553275 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=f401307-fukuoka:10000685 model.genreId=553275 model.genreName= jsonRaw=遊園地・テーマパーク jsonRolled=遊園地・テーマパーク displayGenre=遊園地・テーマパーク
+I/flutter ( 9439): [RakutenGenre][API] itemCode=orange-baby:10038241 rawGenreId=207522 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=orange-baby:10038241 model.genreId=207522 model.genreName= jsonRaw=サッカー jsonRolled=サッカー displayGenre=サッカー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:11880921 rawGenreId=101196 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:11880921 model.genreId=101196 model.genreName= jsonRaw=その他 jsonRolled=スポーツトイ displayGenre=スポーツトイ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=toysrus:10631119 rawGenreId=201597 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=toysrus:10631119 model.genreId=201597 model.genreName= jsonRaw=手押し車・カタカタ jsonRolled=手押し車・カタカタ displayGenre=手押し車・カタカタ
+I/flutter ( 9439): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=30/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9439): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9439): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9439): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter ( 9439): [Rakuten] response status=429 page=2 bytes=128
+I/flutter ( 9439): [RECOMMEND_TRACE] apiStatus=429
+I/flutter ( 9439): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter ( 9439): [Rakuten] searchItems failed page=2 attempt=1: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter ( 9439): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1476:21)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:247:24)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): 
+I/flutter ( 9439): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=2 statusCode=- rawCount=0 durationMs=0 success=false
+I/flutter ( 9439): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=false error=楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter ( 9439): [Rakuten] keywordManagedExclusion page=2 failed: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter ( 9439): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1476:21)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:247:24)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): 
+I/flutter ( 9439): [SHOP_SEARCH_PARTIAL_FAILURE] page=2 keptItems=30 messageForUser=一部のページ取得に失敗しました
+I/flutter ( 9439): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9439): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9439): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter ( 9439): [Rakuten] response status=200 page=3 bytes=114735
+I/flutter ( 9439): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 9439): [RECOMMEND_TRACE] rawCount=30
+I/flutter ( 9439): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=3 statusCode=200 rawCount=30 durationMs=484 success=true
+I/flutter ( 9439): [SHOP_SEARCH_API_CALL] page=3 hits=30 success=true durationMs=484 statusCode=200
+I/flutter ( 9439): [RakutenGenre][API] itemCode=3upmikami:10007628 rawGenreId=304707 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=3upmikami:10007628 model.genreId=304707 model.genreName= jsonRaw=グミ jsonRolled=グミ displayGenre=グミ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:11982119 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:11982119 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:11860595 rawGenreId=566432 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:11860595 model.genreId=566432 model.genreName= jsonRaw=ミニカー・トイカー jsonRolled=ミニカー・トイカー displayGenre=ミニカー・トイカー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=3upmikami:10007165 rawGenreId=304707 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=3upmikami:10007165 model.genreId=304707 model.genreName= jsonRaw=グミ jsonRolled=グミ displayGenre=グミ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=onestep:10441838 rawGenreId=214099 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=onestep:10441838 model.genreId=214099 model.genreName= jsonRaw=カレー jsonRolled=カレー displayGenre=カレー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=o-kawaya:10039501 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=o-kawaya:10039501 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=netten-sanki:10007926 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=netten-sanki:10007926 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=exicoast02:10006538 rawGenreId=100289 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=exicoast02:10006538 model.genreId=100289 model.genreName= jsonRaw=その他 jsonRolled=チョコレート displayGenre=チョコレート
+I/flutter ( 9439): [RakutenGenre][API] itemCode=festival-plaza:10056665 rawGenreId=214282 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=festival-plaza:10056665 model.genreId=214282 model.genreName= jsonRaw=チョコレートスナック jsonRolled=チョコレートスナック displayGenre=チョコレートスナック
+I/flutter ( 9439): [RakutenGenre][API] itemCode=toysrus:10688277 rawGenreId=551707 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=toysrus:10688277 model.genreId=551707 model.genreName= jsonRaw=色・かたち jsonRolled=色・かたち displayGenre=色・かたち
+I/flutter ( 9439): [RakutenGenre][API] itemCode=moumouhouse:10149813 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=moumouhouse:10149813 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter ( 9439): [RakutenGenre][API] itemCode=algos-online:10044055 rawGenreId=505257 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=algos-online:10044055 model.genreId=505257 model.genreName= jsonRaw=ジグソーパズル jsonRolled=ジグソーパズル displayGenre=ジグソーパズル
+I/flutter ( 9439): [RakutenGenre][API] itemCode=okagesama-market:10002296 rawGenreId=214204 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=okagesama-market:10002296 model.genreId=214204 model.genreName= jsonRaw=あめ・キャンディ jsonRolled=あめ・キャンディ displayGenre=あめ・キャンディ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=ju-suya:10009238 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=ju-suya:10009238 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter ( 9439): [RakutenGenre][API] itemCode=jism:14289097 rawGenreId=201597 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=jism:14289097 model.genreId=201597 model.genreName= jsonRaw=手押し車・カタカタ jsonRolled=手押し車・カタカタ displayGenre=手押し車・カタカタ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:12173518 rawGenreId=201609 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:12173518 model.genreId=201609 model.genreName= jsonRaw=リズム・音楽 jsonRolled=リズム・音楽 displayGenre=リズム・音楽
+I/flutter ( 9439): [RakutenGenre][API] itemCode=store-marufuku:10009247 rawGenreId=401371 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=store-marufuku:10009247 model.genreId=401371 model.genreName= jsonRaw=皿・プレート jsonRolled=皿・プレート displayGenre=皿・プレート
+I/flutter ( 9439): [RakutenGenre][API] itemCode=auc-ookawaya:10108955 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=auc-ookawaya:10108955 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter ( 9439): [RakutenGenre][API] itemCode=nttxstore:10003552 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=nttxstore:10003552 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:11908103 rawGenreId=201609 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:11908103 model.genreId=201609 model.genreName= jsonRaw=リズム・音楽 jsonRolled=リズム・音楽 displayGenre=リズム・音楽
+I/flutter ( 9439): [RakutenGenre][API] itemCode=festival-plaza:10040886 rawGenreId=214277 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=festival-plaza:10040886 model.genreId=214277 model.genreName= jsonRaw=駄菓子スナック jsonRolled=駄菓子スナック displayGenre=駄菓子スナック
+I/flutter ( 9439): [RakutenGenre][API] itemCode=onestep:10441840 rawGenreId=214099 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=onestep:10441840 model.genreId=214099 model.genreName= jsonRaw=カレー jsonRolled=カレー displayGenre=カレー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=book:21056643 rawGenreId=208880 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=book:21056643 model.genreId=208880 model.genreName= jsonRaw=図鑑 jsonRolled=図鑑 displayGenre=図鑑
+I/flutter ( 9439): [RakutenGenre][API] itemCode=okagesama-market:10003034 rawGenreId=304707 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=okagesama-market:10003034 model.genreId=304707 model.genreName= jsonRaw=グミ jsonRolled=グミ displayGenre=グミ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=okagesama-market:10002140 rawGenreId=200401 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=okagesama-market:10002140 model.genreId=200401 model.genreName= jsonRaw=ビスケット jsonRolled=ビスケット displayGenre=ビスケット
+I/flutter ( 9439): [RakutenGenre][API] itemCode=edion:10739184 rawGenreId=205250 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=edion:10739184 model.genreId=205250 model.genreName= jsonRaw=ブランコ jsonRolled=ブランコ displayGenre=ブランコ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=drinkman:10018488 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=drinkman:10018488 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:11860594 rawGenreId=566440 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:11860594 model.genreId=566440 model.genreName= jsonRaw=電車 jsonRolled=電車 displayGenre=電車
+I/flutter ( 9439): [RakutenGenre][API] itemCode=toysrus:10704358 rawGenreId=201632 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=toysrus:10704358 model.genreId=201632 model.genreName= jsonRaw=ぬいぐるみ jsonRolled=ぬいぐるみ displayGenre=ぬいぐるみ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=booxstore:12681599 rawGenreId=101260 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=booxstore:12681599 model.genreId=101260 model.genreName= jsonRaw=読み物 jsonRolled=読み物 displayGenre=読み物
+I/flutter ( 9439): [Rakuten] keywordManagedExclusion page=3 raw=30 parsed=30 visible=60/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9439): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9439): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9439): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter ( 9439): [Rakuten] response status=429 page=4 bytes=128
+I/flutter ( 9439): [RECOMMEND_TRACE] apiStatus=429
+I/flutter ( 9439): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter ( 9439): [Rakuten] searchItems failed page=4 attempt=1: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter ( 9439): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1476:21)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:247:24)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): 
+I/flutter ( 9439): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=4 statusCode=- rawCount=0 durationMs=0 success=false
+I/flutter ( 9439): [SHOP_SEARCH_API_CALL] page=4 hits=30 success=false error=楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter ( 9439): [Rakuten] keywordManagedExclusion page=4 failed: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter ( 9439): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1476:21)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:247:24)
+I/flutter ( 9439): <asynchronous suspension>
+I/flutter ( 9439): 
+I/flutter ( 9439): [SHOP_SEARCH_PARTIAL_FAILURE] page=4 keptItems=60 messageForUser=一部のページ取得に失敗しました
+I/flutter ( 9439): [Rakuten] request start mode=proxy page=5 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9439): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9439): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=5&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter ( 9439): [Rakuten] response status=200 page=5 bytes=127200
+I/flutter ( 9439): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 9439): [RECOMMEND_TRACE] rawCount=30
+I/flutter ( 9439): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=5 statusCode=200 rawCount=30 durationMs=370 success=true
+I/flutter ( 9439): [SHOP_SEARCH_API_CALL] page=5 hits=30 success=true durationMs=370 statusCode=200
+I/flutter ( 9439): [RakutenGenre][API] itemCode=onestep:10253489 rawGenreId=214099 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=onestep:10253489 model.genreId=214099 model.genreName= jsonRaw=カレー jsonRolled=カレー displayGenre=カレー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=festival-plaza:10005742 rawGenreId=213785 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=festival-plaza:10005742 model.genreId=213785 model.genreName= jsonRaw=すくい人形 jsonRolled=すくい人形 displayGenre=すくい人形
+I/flutter ( 9439): [RakutenGenre][API] itemCode=edion:10852219 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=edion:10852219 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=nttxstore:10003891 rawGenreId=201608 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=nttxstore:10003891 model.genreId=201608 model.genreName= jsonRaw=文字・ことば jsonRolled=文字・ことば displayGenre=文字・ことば
+I/flutter ( 9439): [RakutenGenre][API] itemCode=thrive:10028424 rawGenreId=406984 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=thrive:10028424 model.genreId=406984 model.genreName= jsonRaw=子供用弁当箱 jsonRolled=子供用弁当箱 displayGenre=子供用弁当箱
+I/flutter ( 9439): [RakutenGenre][API] itemCode=3upmikami:10000479 rawGenreId=214281 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=3upmikami:10000479 model.genreId=214281 model.genreName= jsonRaw=駄菓子キャンディ jsonRolled=駄菓子キャンディ displayGenre=駄菓子キャンディ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=applied2:11355573 rawGenreId=205275 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=applied2:11355573 model.genreId=205275 model.genreName= jsonRaw=その他 jsonRolled=ままごと・ごっこ遊びトイ displayGenre=ままごと・ごっこ遊びトイ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=tsuruha:10072443 rawGenreId=214077 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=tsuruha:10072443 model.genreId=214077 model.genreName= jsonRaw=お茶漬け jsonRolled=お茶漬け displayGenre=お茶漬け
+I/flutter ( 9439): [RakutenGenre][API] itemCode=netten-sanki:10003879 rawGenreId=213918 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=netten-sanki:10003879 model.genreId=213918 model.genreName= jsonRaw=巾着袋 jsonRolled=巾着袋 displayGenre=巾着袋
+I/flutter ( 9439): [RakutenGenre][API] itemCode=rakuten24:11338025 rawGenreId=207751 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=rakuten24:11338025 model.genreId=207751 model.genreName= jsonRaw=プレート・ボウル jsonRolled=プレート・ボウル displayGenre=プレート・ボウル
+I/flutter ( 9439): [RakutenGenre][API] itemCode=futon:10064373 rawGenreId=406655 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=futon:10064373 model.genreId=406655 model.genreName= jsonRaw=ガーゼケット jsonRolled=ガーゼケット displayGenre=ガーゼケット
+I/flutter ( 9439): [RakutenGenre][API] itemCode=netten-sanki:10009353 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=netten-sanki:10009353 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=festival-plaza:10045452 rawGenreId=401669 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=festival-plaza:10045452 model.genreId=401669 model.genreName= jsonRaw=ノート jsonRolled=ノート displayGenre=ノート
+I/flutter ( 9439): [RakutenGenre][API] itemCode=kishi-gum:10016683 rawGenreId=201587 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=kishi-gum:10016683 model.genreId=201587 model.genreName= jsonRaw=その他 jsonRolled=賞品・景品 displayGenre=賞品・景品
+I/flutter ( 9439): [RakutenGenre][API] itemCode=edion:10139770 rawGenreId=201632 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=edion:10139770 model.genreId=201632 model.genreName= jsonRaw=ぬいぐるみ jsonRolled=ぬいぐるみ displayGenre=ぬいぐるみ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:11240093 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:11240093 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter ( 9439): [RakutenGenre][API] itemCode=festival-plaza:10040888 rawGenreId=214277 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=festival-plaza:10040888 model.genreId=214277 model.genreName= jsonRaw=駄菓子スナック jsonRolled=駄菓子スナック displayGenre=駄菓子スナック
+I/flutter ( 9439): [RakutenGenre][API] itemCode=o-kawaya:10067804 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=o-kawaya:10067804 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=sanyodo-shop:10044540 rawGenreId=205261 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=sanyodo-shop:10044540 model.genreId=205261 model.genreName= jsonRaw=浮き輪 jsonRolled=浮き輪 displayGenre=浮き輪
+I/flutter ( 9439): [RakutenGenre][API] itemCode=aikawa:10000599 rawGenreId=213748 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=aikawa:10000599 model.genreId=213748 model.genreName= jsonRaw=バルーン・風船 jsonRolled=バルーン・風船 displayGenre=バルーン・風船
+I/flutter ( 9439): [RakutenGenre][API] itemCode=alude:10208963 rawGenreId=110496 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=alude:10208963 model.genreId=110496 model.genreName= jsonRaw=パスタソース jsonRolled=パスタソース displayGenre=パスタソース
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:12046875 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:12046875 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter ( 9439): [RakutenGenre][API] itemCode=edion:10480633 rawGenreId=201609 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=edion:10480633 model.genreId=201609 model.genreName= jsonRaw=リズム・音楽 jsonRolled=リズム・音楽 displayGenre=リズム・音楽
+I/flutter ( 9439): [RakutenGenre][API] itemCode=lec-character:10000000 rawGenreId=401372 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=lec-character:10000000 model.genreId=401372 model.genreName= jsonRaw=マグカップ・コップ jsonRolled=マグカップ・コップ displayGenre=マグカップ・コップ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=netten-sanki:10009348 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=netten-sanki:10009348 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=edion:10462822 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=edion:10462822 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter ( 9439): [RakutenGenre][API] itemCode=3upmikami:10006553 rawGenreId=214280 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=3upmikami:10006553 model.genreId=214280 model.genreName= jsonRaw=ラムネ jsonRolled=ラムネ displayGenre=ラムネ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=f262111-kyotanabe:10000204 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=f262111-kyotanabe:10000204 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter ( 9439): [RakutenGenre][API] itemCode=orange-baby:10036987 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=orange-baby:10036987 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter ( 9439): [RakutenGenre][API] itemCode=yoikutsu:10037770 rawGenreId=205154 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=yoikutsu:10037770 model.genreId=205154 model.genreName= jsonRaw=レインシューズ・長靴 jsonRolled=レインシューズ・長靴 displayGenre=レインシューズ・長靴
+I/flutter ( 9439): [Rakuten] keywordManagedExclusion page=5 raw=30 parsed=30 visible=90/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9439): [Rakuten] request start mode=proxy page=6 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 9439): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 9439): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=6&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter ( 9439): [Rakuten] response status=200 page=6 bytes=138008
+I/flutter ( 9439): [RECOMMEND_TRACE] apiStatus=200
+I/flutter ( 9439): [RECOMMEND_TRACE] rawCount=30
+I/flutter ( 9439): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=6 statusCode=200 rawCount=30 durationMs=440 success=true
+I/flutter ( 9439): [SHOP_SEARCH_API_CALL] page=6 hits=30 success=true durationMs=440 statusCode=200
+I/flutter ( 9439): [RakutenGenre][API] itemCode=akadepamizutani:10030288 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=akadepamizutani:10030288 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter ( 9439): [RakutenGenre][API] itemCode=rakuten24:10251846 rawGenreId=553383 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=rakuten24:10251846 model.genreId=553383 model.genreName= jsonRaw=第三類医薬品 jsonRolled=第三類医薬品 displayGenre=第三類医薬品
+I/flutter ( 9439): [RakutenGenre][API] itemCode=stellashop:10003988 rawGenreId=205146 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=stellashop:10003988 model.genreId=205146 model.genreName= jsonRaw=傘 jsonRolled=傘 displayGenre=傘
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:11984520 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:11984520 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter ( 9439): [RakutenGenre][API] itemCode=es-toys:11647154 rawGenreId=201608 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=es-toys:11647154 model.genreId=201608 model.genreName= jsonRaw=文字・ことば jsonRolled=文字・ことば displayGenre=文字・ことば
+I/flutter ( 9439): [RakutenGenre][API] itemCode=edion:10447580 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=edion:10447580 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter ( 9439): [RakutenGenre][API] itemCode=netten-sanki:10008665 rawGenreId=566108 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=netten-sanki:10008665 model.genreId=566108 model.genreName= jsonRaw=パンツ jsonRolled=パンツ displayGenre=パンツ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=auc-ookawaya:10082349 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=auc-ookawaya:10082349 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=toysrus:10654383 rawGenreId=201598 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=toysrus:10654383 model.genreId=201598 model.genreName= jsonRaw=その他 jsonRolled=ベビー向けおもちゃ displayGenre=ベビー向けおもちゃ
+I/flutter ( 9439): [RakutenGenre][API] itemCode=edion:10807383 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter ( 9439): [RakutenGenre][MAP] itemCode=edion:10807383 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter ( 9439): [Rakuten] keywordManagedExclusion page=6 raw=30 parsed=10 visible=100/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 9439): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=4 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter ( 9439): [SEARCH_FETCH_100_AUDIT] mode=product keyword=アンパンマン genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=6 pagesSucceeded=4 pagesFailed=2 rawTotal=120 excludedCandidate=0 excludedDone=0 excludedSafety=0 excludedDuplicate=0 excludedNoImage=0 excludedOther=0 excludedSavedShop=0 displayCount=100 stopReason=reachedTarget
+I/flutter ( 9439): [SHOP_SEARCH_FETCH_RESULT] screen=product apiCalls=4 rawItems=true dedupedItems=100 safetyExcluded=0 duplicateExcluded=0 registeredExcluded=0 savedShopExcluded=0 displayItems=100 failedPages=2 reason=reachedTarget
+I/flutter ( 9439): [SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+I/flutter ( 9439): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=6
+I/flutter ( 9439): [SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter ( 9439): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter ( 9439): [GenreMaster] search prefetch skip resolvedLocally=56
+I/flutter ( 9439): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter ( 9439): [SEARCH_LAYOUT_PHASE_AUDIT] previousPhase=loading nextPhase=result mode=productSearch reason=build
+I/flutter ( 9439): [SEARCH_PHASE_TRANSITION_AUDIT] previousPhase=loading nextPhase=result mode=productSearch hasResultBefore=false hasResultAfter=true hasErrorBefore=false hasErrorAfter=false isLoading=false triggeredBy=build
+I/flutter ( 9439): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=true conditionSummaryTapEnabled=true conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=false retryButtonVisible=true
+I/flutter ( 9439): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=true compactHeaderVisible=true expandedInputDeckVisible=false inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=0 reason=resultsUseCompactHeaderOnly
+I/flutter ( 9439): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=result isLoading=false hasResult=true hasError=false inputDeckVisible=false compactHeaderVisible=true emptyCardVisible=false errorCardVisible=false listVisible=true
+I/flutter ( 9439): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=success keyboardVisible=false hasResult=true hasError=false headerVisible=true inputDeckVisible=false resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter ( 9439): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=true hasError=false isLoading=false visibleSurface=result
+I/flutter ( 9439): [SEARCH_LAYOUT_STABILITY] phase=result keyboardVisible=false overflowGuard=true
+I/flutter ( 9439): [PRODUCT_SAFETY_FILTER] source=productSearch itemCode=futon:10048515 title=【SNSで紹介されました！】アンパンマン お昼寝 ケット 冷感 夏用 ひんやり 接触冷感 夏 保育園 85×115cm 子供 子ども こども キッズ ベビー キャラクター それいけ！アンパンマン 総柄 ピンク ブルー イエロー genreName= shopName=西川など寝具専門店こだわり安眠館 blocked=true reason=adult
+I/flutter ( 9439): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=futon:10048515 matchedKeywords=
+I/flutter ( 9439): [Rakuten] UI preferred excludes before=100 after=99 candidateExclude=0 doneExclude=0 savedShopExclude=0 safetyExclude=1 searchScopeShopCode=-
+I/flutter ( 9439): [SEARCH_RESULT_UNDER_100_REASON] mode=productSearch displayCount=99 target=100 reason=safetyFiltered uiSafetyExcluded=1 apiDisplayBeforeUi=100
+I/flutter ( 9439): [SEARCH_RESULT_CONDITION_SUMMARY_AUDIT] mode=productSearch summaryLine1=アンパンマン summaryLine2=条件：価格指定なし shopNameShown=false genreNameShown=false keywordShown=true
+I/flutter ( 9439): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=true conditionSummaryTapEnabled=true conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=false retryButtonVisible=true
+I/flutter ( 9439): [SEARCH_RESULT_HEADER_RENDER] screen=productSearch resultCount=100 hasLongDescription=false actions=changeCondition,sort,retry
+I/flutter ( 9439): [SEARCH_RESULT_CONDITION_SUMMARY_AUDIT] mode=productSearch summaryLine1=アンパンマン summaryLine2=条件：価格指定なし shopNameShown=false genreNameShown=false keywordShown=true
+I/flutter ( 9439): [SELECTION_UI_REDESIGN] screen=productSearch selectionModeRemoved=true checkboxAlwaysVisible=true radioLikeCircleRemoved=true
+I/flutter ( 9439): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter ( 9439): [SELECTION_UI_AUDIT] screen=productSearch supportsBulkSelection=true selectAllVisible=true selectedCount=0 totalSelectable=99
+I/flutter ( 9439): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=187.71428571428572 selectedMode=product clipped=true horizontalScrollable=true
+I/flutter ( 9439): [RakutenGenre][UI] itemCode=o-kawaya:10092612 ui.genreId=101914 ui.genreName=- ui.label=おもちゃ
+I/flutter ( 9439): [RakutenGenre][MASTER] itemCode=o-kawaya:10092612 genreId=101914 masterHit=true resolvedGenreName=おもちゃ
+I/flutter ( 9439): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 9439): [RakutenGenre][UI] itemCode=f041009-sendai:10000365 ui.genreId=553275 ui.genreName=- ui.label=遊園地・テーマパーク
+I/flutter ( 9439): [RakutenGenre][MASTER] itemCode=f041009-sendai:10000365 genreId=553275 masterHit=true resolvedGenreName=遊園地・テーマパーク
+I/flutter ( 9439): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 9439): [RakutenGenre][UI] itemCode=festival-plaza:10038229 ui.genreId=406759 ui.genreName=- ui.label=こま
+I/flutter ( 9439): [RakutenGenre][MASTER] itemCode=festival-plaza:10038229 genreId=406759 masterHit=true resolvedGenreName=こま
+I/flutter ( 9439): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 9439): [RakutenGenre][UI] itemCode=netbaby:10046965 ui.genreId=201598 ui.genreName=- ui.label=ベビー向けおもちゃ
+I/flutter ( 9439): [RakutenGenre][MASTER] itemCode=netbaby:10046965 genreId=201598 masterHit=true resolvedGenreName=ベビー向けおもちゃ
+I/flutter ( 9439): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 9439): [RakutenGenre][UI] itemCode=o-kawaya:10068837 ui.genreId=101914 ui.genreName=- ui.label=おもちゃ
+I/flutter ( 9439): [RakutenGenre][MASTER] itemCode=o-kawaya:10068837 genreId=101914 masterHit=true resolvedGenreName=おもちゃ
+I/flutter ( 9439): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 9439): [SEARCH_RESULT_WIDGET_TREE_AUDIT] mode=productSearch phase=result rootWidget=Column shellBodyWidget=SearchGroupScreenShell>SizedBox.expand resultSurfaceWidget=Expanded>LayoutBuilder resultListParentWidget=Expanded>ListView usesFlexibleLoose=false usesExpandedForList=true usesAnimatedSwitcher=false usesMaintainSizeVisibility=false usesSingleChildScrollViewAroundWholeResult=false hasSpacerBelowList=false hasEmptyCardMounted=false hasErrorCardMounted=false hasLoadingCardMounted=false
+I/flutter ( 9439): [SEARCH_RESULT_PARENT_CONSTRAINT_AUDIT] mode=productSearch phase=result screenHeight=844.5714285714286 safeAreaTop=0.0 safeAreaBottom=0.0 appBottomNavHeight=56.0 outerAvailableHeight=844.5714285714286 shellBodyHeight=844.5714285714286 resultSurfaceHeight=753.4285714285714 headerActualHeight=158.0 actionRowActualHeight=compactHeader bulkHeaderActualHeight=44 listParentHeight=543.4285714285714 listViewportHeight=543.4285714285714 calculatedExpectedListHeight=521.4285714285714 missingHeight=0.0 constraintSource=resultSurfaceExpandedListFillsRemainder
+I/flutter ( 9439): [SEARCH_RESULT_VIEWPORT_AUDIT] mode=productSearch phase=result screenHeight=844.5714285714286 headerHeight=158.0 bulkHeaderHeight=bulkRow bottomNavHeight=56.0 bottomActionBarVisible=false bottomActionBarHeight=0.0 listViewportHeight=543.4285714285714 listBottomPadding=12.0 unusedBottomSpaceEstimate=0.0 resultCount=99 firstVisibleIndex=0 lastVisibleIndex=-1
+I/flutter ( 9439): [SEARCH_RESULT_BLANK_AREA_AUDIT] mode=productSearch screenHeight=844.5714285714286 listBottomGlobalY=786.5714285714286 bottomNavTopGlobalY=788.5714285714286 blankHeightBetweenListAndBottomNav=2.0 bottomBarVisible=false bottomBarTopGlobalY=- reason=withinExpectedRange
+I/flutter ( 9439): [SEARCH_BOTTOM_SPACE_AUDIT] mode=productSearch hasSelection=false selectedCount=0 bottomBarVisible=false reservedBottomSpace=0.0 actualBottomPadding=12.0 reason=noSelectionMinimalPad
+I/flutter ( 9439): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=true conditionSummaryTapEnabled=true conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=false retryButtonVisible=true
+I/flutter ( 9439): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=true compactHeaderVisible=true expandedInputDeckVisible=false inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=0 reason=resultsUseCompactHeaderOnly
+I/flutter ( 9439): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=result isLoading=false hasResult=true hasError=false inputDeckVisible=false compactHeaderVisible=true emptyCardVisible=false errorCardVisible=false listVisible=true
+I/flutter ( 9439): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=success keyboardVisible=false hasResult=true hasError=false headerVisible=true inputDeckVisible=false resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter ( 9439): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=true hasError=false isLoading=false visibleSurface=result
+I/flutter ( 9439): [SEARCH_LAYOUT_STABILITY] phase=result keyboardVisible=false overflowGuard=true
+I/flutter ( 9439): [PRODUCT_SAFETY_FILTER] source=productSearch itemCode=futon:10048515 title=【SNSで紹介されました！】アンパンマン お昼寝 ケット 冷感 夏用 ひんやり 接触冷感 夏 保育園 85×115cm 子供 子ども こども キッズ ベビー キャラクター それいけ！アンパンマン 総柄 ピンク ブルー イエロー genreName= shopName=西川など寝具専門店こだわり安眠館 blocked=true reason=adult
+I/flutter ( 9439): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=futon:10048515 matchedKeywords=
+I/flutter ( 9439): [Rakuten] UI preferred excludes before=100 after=99 candidateExclude=0 doneExclude=0 savedShopExclude=0 safetyExclude=1 searchScopeShopCode=-
+I/flutter ( 9439): [SEARCH_RESULT_UNDER_100_REASON] mode=productSearch displayCount=99 target=100 reason=safetyFiltered uiSafetyExcluded=1 apiDisplayBeforeUi=100
+I/flutter ( 9439): [SEARCH_RESULT_CONDITION_SUMMARY_AUDIT] mode=productSearch summaryLine1=アンパンマン summaryLine2=条件：価格指定なし shopNameShown=false genreNameShown=false keywordShown=true
+I/flutter ( 9439): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=true conditionSummaryTapEnabled=true conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=false retryButtonVisible=true
+I/flutter ( 9439): [SEARCH_RESULT_HEADER_RENDER] screen=productSearch resultCount=100 hasLongDescription=false actions=changeCondition,sort,retry
+I/flutter ( 9439): [SEARCH_RESULT_CONDITION_SUMMARY_AUDIT] mode=productSearch summaryLine1=アンパンマン summaryLine2=条件：価格指定なし shopNameShown=false genreNameShown=false keywordShown=true
+I/flutter ( 9439): [SELECTION_UI_REDESIGN] screen=productSearch selectionModeRemoved=true checkboxAlwaysVisible=true radioLikeCircleRemoved=true
+I/flutter ( 9439): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter ( 9439): [SELECTION_UI_AUDIT] screen=productSearch supportsBulkSelection=true selectAllVisible=true selectedCount=0 totalSelectable=99
+I/flutter ( 9439): [RakutenGenre][UI] itemCode=o-kawaya:10092612 ui.genreId=101914 ui.genreName=- ui.label=おもちゃ
+I/flutter ( 9439): [RakutenGenre][MASTER] itemCode=o-kawaya:10092612 genreId=101914 masterHit=true resolvedGenreName=おもちゃ
+I/flutter ( 9439): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 9439): [RakutenGenre][UI] itemCode=f041009-sendai:10000365 ui.genreId=553275 ui.genreName=- ui.label=遊園地・テーマパーク
+I/flutter ( 9439): [RakutenGenre][MASTER] itemCode=f041009-sendai:10000365 genreId=553275 masterHit=true resolvedGenreName=遊園地・テーマパーク
+I/flutter ( 9439): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 9439): [RakutenGenre][UI] itemCode=festival-plaza:10038229 ui.genreId=406759 ui.genreName=- ui.label=こま
+I/flutter ( 9439): [RakutenGenre][MASTER] itemCode=festival-plaza:10038229 genreId=406759 masterHit=true resolvedGenreName=こま
+I/flutter ( 9439): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 9439): [RakutenGenre][UI] itemCode=netbaby:10046965 ui.genreId=201598 ui.genreName=- ui.label=ベビー向けおもちゃ
+I/flutter ( 9439): [RakutenGenre][MASTER] itemCode=netbaby:10046965 genreId=201598 masterHit=true resolvedGenreName=ベビー向けおもちゃ
+I/flutter ( 9439): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 9439): [RakutenGenre][UI] itemCode=o-kawaya:10068837 ui.genreId=101914 ui.genreName=- ui.label=おもちゃ
+I/flutter ( 9439): [RakutenGenre][MASTER] itemCode=o-kawaya:10068837 genreId=101914 masterHit=true resolvedGenreName=おもちゃ
+I/flutter ( 9439): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 9439): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=187.71428571428572 selectedMode=product clipped=true horizontalScrollable=true
+I/flutter ( 9439): [SEARCH_RESULT_WIDGET_TREE_AUDIT] mode=productSearch phase=result rootWidget=Column shellBodyWidget=SearchGroupScreenShell>SizedBox.expand resultSurfaceWidget=Expanded>LayoutBuilder resultListParentWidget=Expanded>ListView usesFlexibleLoose=false usesExpandedForList=true usesAnimatedSwitcher=false usesMaintainSizeVisibility=false usesSingleChildScrollViewAroundWholeResult=false hasSpacerBelowList=false hasEmptyCardMounted=false hasErrorCardMounted=false hasLoadingCardMounted=false
+I/flutter ( 9439): [SEARCH_RESULT_PARENT_CONSTRAINT_AUDIT] mode=productSearch phase=result screenHeight=844.5714285714286 safeAreaTop=0.0 safeAreaBottom=0.0 appBottomNavHeight=56.0 outerAvailableHeight=844.5714285714286 shellBodyHeight=844.5714285714286 resultSurfaceHeight=753.4285714285714 headerActualHeight=158.0 actionRowActualHeight=compactHeader bulkHeaderActualHeight=44 listParentHeight=543.4285714285714 listViewportHeight=543.4285714285714 calculatedExpectedListHeight=521.4285714285714 missingHeight=0.0 constraintSource=resultSurfaceExpandedListFillsRemainder
+I/flutter ( 9439): [SEARCH_RESULT_VIEWPORT_AUDIT] mode=productSearch phase=result screenHeight=844.5714285714286 headerHeight=158.0 bulkHeaderHeight=bulkRow bottomNavHeight=56.0 bottomActionBarVisible=false bottomActionBarHeight=0.0 listViewportHeight=543.4285714285714 listBottomPadding=12.0 unusedBottomSpaceEstimate=0.0 resultCount=99 firstVisibleIndex=0 lastVisibleIndex=-1
+I/flutter ( 9439): [SEARCH_RESULT_BLANK_AREA_AUDIT] mode=productSearch screenHeight=844.5714285714286 listBottomGlobalY=786.5714285714286 bottomNavTopGlobalY=788.5714285714286 blankHeightBetweenListAndBottomNav=2.0 bottomBarVisible=false bottomBarTopGlobalY=- reason=withinExpectedRange
+I/flutter ( 9439): [SEARCH_BOTTOM_SPACE_AUDIT] mode=productSearch hasSelection=false selectedCount=0 bottomBarVisible=false reservedBottomSpace=0.0 actualBottomPadding=12.0 reason=noSelectionMinimalPad
+Running Gradle task 'assembleDebug'...                             11.6s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.3s
+D/FlutterJNI( 9704): Beginning load of flutter...
+D/FlutterJNI( 9704): flutter (null) was loaded normally!
+I/flutter ( 9704): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter ( 9704): [DEBUG_LOG_VOLUME_AUDIT] nativeLogsObserved=true appVerboseLogsReduced=true rakutenUrlVerbose=false genreResolveVerbose=false productCardVerbose=false
+I/flutter ( 9704): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter ( 9704): verifyMode=false
+I/flutter ( 9704): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                    73ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:49622/AZhjMmi-SVA=/
+I/flutter ( 9704): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=repositoryLoad
+I/flutter ( 9704): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 9704): [RECOMMEND_TRACE] savedBundle=true
+I/flutter ( 9704): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9704): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=false enabled=false label=ROOM投稿を取り込む reason=hiddenByUxPolicy
+I/flutter ( 9704): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYetOrBusy
+I/flutter ( 9704): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 9704): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=CommonDraggableEdgeFab file=lib/widgets/common_draggable_edge_fab.dart visible=true reason=commentEdgeFabRightSideNotMenu
+I/flutter ( 9704): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter ( 9704): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=0 afterFilterLen=0 surface=ok_empty_no_data ui=ready
+I/flutter ( 9704): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=0 roomImportedDoneCount=0 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter ( 9704): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=0 appCollectedCount=0 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-20 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-21 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-22 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter ( 9704): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9704): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9704): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=false visible=false reason=notImportedYet
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 9704): action=refresh
+I/flutter ( 9704): productId=
+I/flutter ( 9704): itemCode=
+I/flutter ( 9704): beforePendingCount=0
+I/flutter ( 9704): afterPendingCount=0
+I/flutter ( 9704): beforeDoneCount=0
+I/flutter ( 9704): afterDoneCount=0
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9105?uri=http://127.0.0.1:49622/AZhjMmi-SVA=/
+I/flutter ( 9704): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 9704): source=provider
+I/flutter ( 9704): pendingCount=0
+I/flutter ( 9704): doneCount=0
+I/flutter ( 9704): filter=
+I/flutter ( 9704): tab=
+I/flutter ( 9704): [ROOMコレ診断] refreshManagedProductList 完了 total=0 candidate=0 done=0 ui=ready
+I/flutter ( 9704): [HOME_SECTION_ORDER] order=todayRoomOperation,roomColleManagement,roomSync,recentCandidates
+I/flutter ( 9704): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=none file=lib/screens/home_placeholder_screen.dart visible=false reason=noDrawerNoMenuFabOnHomeBody
+I/flutter ( 9704): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 9704): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter ( 9704): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 9704): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter ( 9704): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter ( 9704): [RECOMMEND_TRACE] action=ensureToday
+I/flutter ( 9704): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 9704): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-22T23:32:54.596712
+I/flutter ( 9704): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 9704): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 9704): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter ( 9704): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-22T23:32:54.596712
+I/flutter ( 9704): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter ( 9704): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter ( 9704): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 9704): action=refresh
+I/flutter ( 9704): productId=
+I/flutter ( 9704): itemCode=
+I/flutter ( 9704): beforePendingCount=0
+I/flutter ( 9704): afterPendingCount=0
+I/flutter ( 9704): beforeDoneCount=0
+I/flutter ( 9704): afterDoneCount=0
+I/flutter ( 9704): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 9704): source=screen
+I/flutter ( 9704): pendingCount=0
+I/flutter ( 9704): doneCount=0
+I/flutter ( 9704): filter=
+I/flutter ( 9704): tab=candidate
+I/flutter ( 9704): [ROOMコレ診断] refreshManagedProductList 完了 total=0 candidate=0 done=0 ui=ready
+I/flutter ( 9704): [ROOMコレ診断] ROOMコレ画面起動後 total=0 candidate=0 done=0 listUi=RakutenManagedProductListUiStatus.ready tabIdx=0
+I/flutter ( 9704): [MANAGED_PRODUCT_SAVE]
+I/flutter ( 9704): action=refresh
+I/flutter ( 9704): productId=
+I/flutter ( 9704): itemCode=
+I/flutter ( 9704): beforePendingCount=0
+I/flutter ( 9704): afterPendingCount=0
+I/flutter ( 9704): beforeDoneCount=0
+I/flutter ( 9704): afterDoneCount=0
+I/flutter ( 9704): [MANAGED_PRODUCT_LOAD]
+I/flutter ( 9704): source=provider
+I/flutter ( 9704): pendingCount=0
+I/flutter ( 9704): doneCount=0
+I/flutter ( 9704): filter=
+I/flutter ( 9704): tab=
+I/flutter ( 9704): [ROOMコレ診断] refreshManagedProductList 完了 total=0 candidate=0 done=0 ui=ready
+I/flutter ( 9704): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9704): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=false enabled=false label=ROOM投稿を取り込む reason=hiddenByUxPolicy
+I/flutter ( 9704): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYetOrBusy
+I/flutter ( 9704): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 9704): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9704): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter ( 9704): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=false visible=false reason=notImportedYet
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter ( 9704): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=0 doneCount=0 roomImportedDoneCount=0 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter ( 9704): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=0 appCollectedCount=0 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-20 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-21 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ANALYTICS_DAILY_BAR] date=2026-05-22 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter ( 9704): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter ( 9704): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=0 afterFilterLen=0 surface=ok_empty_no_data ui=ready
+I/Choreographer( 9704): Skipped 219 frames!  The application may be doing too much work on its main thread.
+I/WebViewFactory( 9704): Loading com.google.android.webview version 148.0.7778.120 (code 777812003)
+I/OpenGLRenderer( 9704): Davey! duration=3684ms; Flags=1, FrameTimelineVsyncId=672299748, IntendedVsync=4959917373990330, Vsync=4959921035803482, InputEventId=0, HandleInputStart=4959921047922676, AnimationStart=4959921047924135, PerformTraversalsStart=4959921047924551, DrawStart=4959921049652937, FrameDeadline=4959917390656996, FrameInterval=4959921046159135, FrameStartTime=16720608, SyncQueued=4959921050511947, SyncStart=4959921050618093, IssueDrawCommandsStart=4959921051092937, SwapBuffers=4959921057204812, FrameCompleted=4959921058292208, DequeueBufferDuration=2530521, QueueBufferDuration=627656, GpuCompleted=4959921058292208, SwapBuffersCompleted=4959921058210593, DisplayPresentTime=0, CommandSubmissionCompleted=4959921057204812, 
+D/ApplicationLoaders( 9704): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2( 9704): Loading /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader( 9704): Configuring clns-5 for other apk /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/lib/arm64:/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider( 9704): version=148.0.7778.120 (777812003) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader( 9704): Load /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk): ok
+D/nativeloader( 9704): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk): ok
+I/chromium( 9704): [0522/234903.332611:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader( 9704): Successfully loaded native library
+I/cr_CachingUmaRecorder( 9704): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH( 9704): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider( 9704): #registerProvider() provider:WV.wk@845380d isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider( 9704): #setManagerAndSource() 0
+I/cr_DisplayManager( 9704): Is Display Topology available: false
+I/cr_CombinedPProvider( 9704): #linkNativeInternal() 1
+D/CompatibilityChangeReporter( 9704): Compat change id reported: 183155436; UID 10468; state: ENABLED
+I/cr_AppResProvider( 9704): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 9704): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 9704): #onSettingsAvailable() 0
+I/cr_CombinedPProvider( 9704): #flushPolicies()
+W/chromium( 9704): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium( 9704): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 39818943
+D/CompatibilityChangeReporter( 9704): Compat change id reported: 214741472; UID 10468; state: ENABLED
+I/CameraManagerGlobal( 9704): Connecting to camera service
+D/CompatibilityChangeReporter( 9704): Compat change id reported: 171228096; UID 10468; state: ENABLED
+I/PlatformViewsController( 9704): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController( 9704): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter( 9704): Compat change id reported: 236825255; UID 10468; state: ENABLED
+W/libc    ( 9704): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 9704): type=1400 audit(0.0:604450): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c212,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/CompatibilityChangeReporter( 9704): Compat change id reported: 193247900; UID 10468; state: ENABLED
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+I/Choreographer( 9704): Skipped 34 frames!  The application may be doing too much work on its main thread.
+W/libc    ( 9704): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 9704): type=1400 audit(0.0:604451): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c212,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0( 9704): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0( 9704): Build Date              : 08/23/22
+I/AdrenoVK-0( 9704): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0( 9704): Local Branch            : 
+I/AdrenoVK-0( 9704): Remote Branch           : 
+I/AdrenoVK-0( 9704): Remote Branch           : 
+I/AdrenoVK-0( 9704): Reconstruct Branch      : 
+I/AdrenoVK-0( 9704): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0( 9704): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI( 9704): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+D/ProfileInstaller( 9704): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+E/FrameEvents( 9704): updateAcquireFence: Did not find frame.
+W/o.room_manager2( 9704): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+W/o.room_manager2( 9704): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.

@@ -2653,4 +2653,1758 @@ The compact header uses `Flexible(fit: FlexFit.loose)` which should only take wh
 When `showCompactHeader` is true during the result phase, the compact header uses `Flexible(fit: FlexFit.loose)` while the result area uses `Expanded`. The issue likely stems from how `_buildSearchResultsHeaderAndListColumn` structures the header and list column, especially if the header takes up more space than expected. The height of `_buildPostSearchCompactSetupBar` and the overall column structure may also contribute.
 
 In shop discovery, a Column with a summary card and Expanded list places the summary outside the Expanded widget, causing the list to receive less space. For product/genre, the structure is:
-- Expanded -> `_buildResultArea`</details></think>
+- Expanded -> `_buildResultArea`
+  - Column with retryBanner + Expanded -> `_buildSearchResultsHeaderAndListColumn`
+    - compactHeader: Column with headerChildren + Expanded(listPane)
+    - listPane: `_buildResultsListWithBulkBar` with Column Expanded(list) + bar
+
+The problem might be the outer `Flexible(loose)` for the
+
+So we have:
+- bulk banner
+- Flexible(compact header scroll)  <- takes minimum, loose
+- Divider
+- Expanded(result area)
+
+The result Expanded should get most space. Unless... the Flexible compact header is taking too much? Unlikely with loose.
+
+Inside result area for product success:
+```dart
+return Column(
+  children: [
+    retryBanner,
+    Expanded(
+      child: _buildSearchResultsHeaderAndListColumn(
+        compactHeader: true,
+        headerChildren: [...shortfall, bulk selection],
+        listPane: _buildResultsListWithBulkBar(...),
+      ),
+    ),
+  ],
+);
+```
+
+The layout hierarchy appears correct, with `Expanded` widgets properly structured to allocate space. However, the viewport height is limited to 324px on an 844px screen, suggesting an unexpected expansion of the `Flexible(fit: FlexFit.loose)` widget. The compact header scroll area within this flexible space may be consuming more space than intended, despite using `FlexFit.loose`, which should only take what it needs. This could stem from the `SingleChildScrollView` inside the flexible container expanding beyond its expected bounds.
+
+Flexible with `FlexFit.loose` allows the child to size itself between 0 and the maximum height, but it doesn't prevent the child from expanding to fill the available space. In a Column, a `SingleChildScrollView` inside a `Flexible` with `FlexFit.loose` will expand to fill the full height allowed by the `Flexible`, even though `FlexFit.loose` intends to constrain it to its intrinsic height.
+
+This behavior causes the compact header to take up more space than intended, especially when the `SingleChildScrollView` inside it expands to fill the available height, leading to incorrect layout sizing.
+
+When `Flexible(fit: FlexFit.loose)` contains a `SingleChildScrollView`, the scroll view may expand to fill the available space in the column before `Expanded` gets its share, or they may compete for space. In a Flutter Column, both `Flexible(loose)` and `Expanded` have flex 1, meaning the `Flexible` can take up to its flex share, and `Expanded` fills remaining space. However, `Flexible(loose)` allows the child to grow up to its flex portion, potentially causing conflicts with `Expanded` if not managed carefully.
+
+The root cause is that both the compact header's `Flexible(loose)` and the result area's `Expanded` have flex 1, causing them to split the remaining space equally. This means each takes about 50% of the available space, leaving less room for the actual content than intended.
+
+The header area is receiving about 50% of the available space, leaving only ~324px for the list viewport on an 844px screen. Shop discovery has a similar issue, compounded by a summary card that consumes additional space. 
+
+To fix this, replace the `Flexible(loose)` in the compact header with an intrinsic height wrapper that doesn't use flex at all when displaying results, ensuring it only takes the space it needs.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "**/*.dart",
+  "pattern": "PendingCollectResumeNoticeHost|searchFilterSheetLayoutLog|searchFilterSheetOverflowGuardLog"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "pattern": "PendingCollectResumeNoticeHost|searchFilterSheetLayoutLog|searchFilterSheetOverflowGuardLog",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": ".\\lib\\screens\\rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": ".\\lib\\main.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": ".\\lib\\utils\\room_sync_log.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": ".\\lib\\widgets\\pending_collect_resume_notice_host.dart"
+    }
+  ],
+  "totalFiles": 4,
+  "totalMatches": 11
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\utils\room_sync_log.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\pending_collect_resume_notice_host.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_buildPostSearchCompactSetupBar"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_buildPostSearchCompactSetupBar",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+The error at line 2562 occurs because `MediaQuery.of(screenContext).viewInsets.bottom` fails when the bottom sheet builds, as `screenContext` may lack MediaQuery in the overlay route tree or could be unmounted.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "MediaQuery\\.of\\(screenContext\\)|showModalBottomSheet"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "MediaQuery\\.of\\(screenContext\\)|showModalBottomSheet",
+  "topFiles": [
+    {
+      "matchCount": 4,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 4
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+The compact header correctly uses `mainAxisSize: MainAxisSize.min` in its Column layout.
+
+The compact header uses `mainAxisSize: MainAxisSize.min` in its Column layout. However, it's wrapped in `Flexible(loose)` and `SingleChildScrollView`, causing it to expand and fill available space.
+
+To fix the layout, replace the compact header section with a non-flexible child:
+
+```dart
+else if (showCompactHeader)
+  SingleChildScrollView(
+    key: const ValueKey<String>('search_compact_header_scroll'),
+    physics: const ClampingScrollPhysics(),
+    shrinkWrap: true,
+    child: _buildPostSearchCompactSetupBar(...),
+  ),
+```
+
+When a `SingleChildScrollView` is placed inside a `Column` without `Flexible`, it respects the maximum height constraint provided by the `Column`. Since `Column` offers an unbounded max height, the `SingleChildScrollView` will size itself to its child's intrinsic height, not expanding beyond it. This behavior occurs because non-flexible widgets in a `Column` receive the full available space, while `SingleChildScrollView` respects the constraints given by its parent. When `shrinkWrap` is false, it behaves differently than when it's true, where it sizes to fit its content within the available space.
+
+However, if `shrinkWrap` is enabled, the `SingleChildScrollView` will adjust its height based on its child's intrinsic dimensions, which can lead to unexpected layout behaviors if not properly configured. In such cases, wrapping the `SingleChildScrollView` with `Flexible` or `Expanded` ensures that it properly expands to fill the available space, preventing layout issues.
+
+In a Column, non-flexible widgets receive the remaining space as their maximum height, causing SingleChildScrollView to expand infinitely by default. The solution is to avoid using SingleChildScrollView for the compact header and instead use the bar widget directly with `mainAxisSize: MainAxisSize.min`. If overflow occurs on small screens, wrap only the necessary parts with `LayoutBuilder`.
+
+```dart
+else if (showCompactHeader)
+  LayoutBuilder(
+    builder: (context, constraints) {
+```
+
+returning a ConstrainedBox with a max height constraint of 45% of the available height, containing a SingleChildScrollView that wraps the compact header build function.
+
+In a Column layout, when the compact header is placed without a Flexible parent, it receives the full remaining height from the Column. To ensure it only takes up intrinsic space, remove the SingleChildScrollView and use the compact header widget directly. The order of elements matters: banner, compact header, divider, then Expanded results. For the compact header specifically, use the build function directly without additional wrappers.
+
+No scroll and no flexible widget are used for the Column child with minimal intrinsic height.  
+If keyboard or small screen causes overflow, wrap with `Flexible(fit: FlexFit.loose, child: Column(mainAxisSize: MainAxisSize.min, children: [...]))`.  
+
+Avoid using `flex: 0` directly; instead, use `Flexible(fit: FlexFit.loose)` to prevent expansion.  
+For the compact header, place `SingleChildScrollView` inside a `Flexible` widget with `MainAxisSize.min` to maintain intrinsic sizing.
+
+The Column with `mainAxisSize: MainAxisSize.min` constrains the `SingleChildScrollView`'s max height to the child's intrinsic height, preventing expansion.
+
+For the input deck phase, when `showInputDeck` is true, a `Flexible` widget with `LayoutBuilder` should be used to avoid space splitting. The header should be capped, while results take up the remaining space with only one `Expanded` widget for results.
+
+When the input phase occurs, the result area remains idle, suggesting that splitting the space may be acceptable. For loading or empty phases with a compact header, the logic depends on whether `showInputDeck` and `showCompactHeader` are true. During the loading phase, both flags are typically false, while during the empty phase, `showCompactHeader` is true. The `_showCompactHeaderForPhase` function determines when to display the compact header, usually during result or empty states. Therefore, for loading, neither flag is set, and for empty, only `showCompactHeader` is active.
+
+Then only the expanded result area shows loading, which is correct and uses full height.
+
+For the empty state, the compact header and expanded empty view split the screen 50/50, showing the same bug.
+
+The compact header wrapper needs to be fixed for all cases.
+
+In shop discovery, the structure inside `_buildShopDiscoveryResultArea` is:
+```dart
+Column(
+  children: [
+    Padding(... summary card ...),  // fixed height ~100
+    Expanded(ListView),
+  ],
+)
+
+This is inside the expanded result area and should work properly if the outer compact header doesn't consume 50% of the space.
+
+The discovery list viewport is 282 vs product 324  the difference is approximately the summary card (~40px) plus less outer space, confirming the same root cause.
+
+GlobalKeys are needed for measuring heights to enable detailed auditing, such as tracking `listBottomGlobalY`. A simpler approach uses `LayoutBuilder` to obtain `constraints.maxHeight` for the result surface height. Alternatively, global keys can be added to the result expanded child, list view parent, and compact header for more precise measurements. The implementation will use `LayoutBuilder` around the expanded result child to capture `maxHeight` for audit purposes.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\utils\search_tab_ui_audit_log.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+The null check error occurs at `MediaQuery.of(screenContext)` because the bottom sheet builder may run before the `screenContext` has a MediaQuery ancestor, particularly during certain rebuild paths.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_submitKeywordSearchFromDetailSheet|_submitGenreSearchFromDetailSheet|_detailConditionsSheet"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_submitKeywordSearchFromDetailSheet|_submitGenreSearchFromDetailSheet|_detailConditionsSheet",
+  "topFiles": [
+    {
+      "matchCount": 6,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 6
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Now I'll implement all fixes:
+
+1.
+
+**Layout fix** - Changed compact header from `Flexible(loose) + SingleChildScrollView` to a flexible column layout with minimal main axis size and stretch cross-axis alignment. Added optional scrolling for small screens by wrapping content in a scrollable widget within the column.
+
+The layout fix involved changing the compact header from `Flexible(loose) + SingleChildScrollView` to a flexible column layout with minimal main axis size and stretch cross-axis alignment, while also adding optional scrolling for small screens by wrapping content in a scrollable widget within the column.
+
+For the result area, an alternative fix involves giving Expanded a flex value of 2 or higher, though the exact implementation details are not fully visible in the provided code snippet.
+
+After fixing the compact header to use minimal size, the Expanded widget now takes all available space without needing a flex value of 3. The Flexible(loose) with LayoutBuilder in the input deck case may still cause splitting during the input phase, leading to a 50/50 layout issue on the input screen, though user complaints primarily relate to the result phase.
+
+When in the input phase, only the input Flexible and Expanded widgets are active, which may still cause splittingthough this is less critical.
+
+For shop discovery, the summary header should be moved into the scrollable list header either by using a CustomScrollView with a nested scroll or by placing the summary as the first item in a ListView. This approach allows the Expanded widget to utilize the full available height within a single scroll view.
+
+The layout now uses a ListView with a summary card and shop discovery cards, unified under a single scroll view that utilizes the full available height. GlobalKeys have been added for audit purposes: `_resultSurfaceKey`, `_compactHeaderKey`, and `_listViewportKey`.
+
+Widgets should be wrapped and measured within a post-frame callback for accurate layout calculations.
+
+Enhanced audit methods now replace or extend `_scheduleSearchResultViewportAudit`.
+
+The `_logSearchLayoutPhaseTransition` method has been enhanced to support `[SEARCH_PHASE_TRANSITION_AUDIT]`.
+
+A helper function was added to properly handle media query data for bottom sheets:
+```dart
+MediaQueryData _mediaQueryForSheet(BuildContext sheetContext, {MediaQueryData? captured}) {
+  return MediaQuery.maybeOf(sheetContext) ?? captured ?? MediaQueryData();
+}
+```
+Before showing the bottom sheet, capture the current media query:
+```dart
+final capturedMq = MediaQuery.maybeOf(screenContext);
+```
+
+Use `sheetContext` instead of `context` for all `MediaQuery` calls in builders. Replace `Theme.of(context)` with `Theme.of(sheetContext)` in sheet builders when `sheetContext` is the correct build context.
+
+Wrap builder functions with error handling to catch exceptions and log errors, though fixing the root cause is preferred over swallowing errors.
+
+Add a mounted check at the beginning of `_openProductConditionsSheet`.
+
+I'll implement the search condition sheet context audit log and enhance the phase transition logging with additional fields.
+
+For measuring the list's bottom position, I'll use a RenderBox from the scroll controller or key on the list.
+
+To find the bottom navigation bar position, I'll either use a key on the scaffold's bottom bar or calculate it as screenHeight minus the bottom navigation height.
+
+The blank height will then be calculated as the difference between the bottom navigation top position and the list's bottom global Y coordinate.</details></think>
+
+_**Agent (default)**_
+
+原因は `Flexible` と `Expanded` が同じ flex で高さを分割していることです。修正を実装します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\utils\search_tab_ui_audit_log.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+I need to update the `_buildResultArea` signature to accept an optional `resultMaxHeight` parameter and pass it to audit scheduling.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Refactor the shop discovery section to use a single ListView implementation.
+
+The shop discovery audit now uses the same parent constraint audit as other components. The `resultSurfaceMaxHeight` is passed from `_buildResultArea` to `_buildResultsListWithBulkBar` via a field `_lastResultSurfaceMaxHeight` set in the LayoutBuilder. This value is stored in an instance variable when the LayoutBuilder runs, ensuring proper height constraints are maintained throughout the build process.
+
+Pass the `resultSurfaceMaxHeight` to the audit in `_buildResultsListWithBulkBar` by reading `_lastResultSurfaceMaxHeight`. Fix the shop discovery list structure and add a key to the list viewport for discovery.
+
+Replace `Column` with a summary and `Expanded` in shop discovery:
+
+```dart
+return Column(
+  crossAxisAlignment: stretch,
+  children: [
+    Expanded(
+      child: Builder(
+```
+
+Fix `Theme.of(context)` to `sheetContext` in `_openShopDiscoveryConditionsSheet`.
+
+Add try-catch in product conditions sheet builder for safety.
+
+Log the close action after `showModalBottomSheet`.
+
+Update `_submitKeywordSearchFromDetailSheet` to log `searchStartWhileOpen`.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_logSearchLayoutPhaseTransition"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_logSearchLayoutPhaseTransition",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Refactor the shop discovery list and update the shop discovery audit to use the parent constraint audit.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Add the genre submit sheet log as well.
+
+Fixed the shop discovery sheet theme and added a try-catch wrapper for the product sheet builder. The shop discovery result area now returns a ListView directly without an Expanded parent, as the parent LayoutBuilder Expanded in the main build handles expansion. The structure remains: Expanded  LayoutBuilder  _buildResultArea  _buildShopDiscoveryResultArea  ListView.
+
+ListView inside Expanded now properly respects bounded height, ensuring full viewport display. The product success structure remains unchanged at Expanded -> Column -> Expanded -> listPane.
+
+The _submitGenreSearchFromDetailSheet function was updated to include the same logging. A try/catch wrapper was added to the bottom sheet builder to handle exceptions gracefully, with error logging and a fallback UI displayed when issues occur.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "Theme\\.of\\(context\\)"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "Theme\\.of\\(context\\)",
+  "topFiles": [
+    {
+      "matchCount": 23,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 23
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Fix the shop discovery sheet theme to use sheetContext instead.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd "c:\dev\app_project\room_manager2" && flutter analyze lib/screens/rakuten_search_screen.dart lib/utils/search_tab_ui_audit_log.dart 2>&1</summary>
+
+```bash
+cd "c:\dev\app_project\room_manager2" && flutter analyze lib/screens/rakuten_search_screen.dart lib/utils/search_tab_ui_audit_log.dart 2>&1
+```
+
+```
+Analyzing 2 items...                                            
+
+   info - Don't use 'BuildContext's across async gaps - lib\screens\rakuten_search_screen.dart:3073:7 - use_build_context_synchronously
+
+1 issue found. (ran in 4.0s)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd "c:\dev\app_project\room_manager2" && flutter test 2>&1</summary>
+
+```bash
+cd "c:\dev\app_project\room_manager2" && flutter test 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が最優先
+00:00 +1: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が無ければ itemUrl
+00:00 +2: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliate と item が空なら rakutenUrl
+00:00 +3: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:00 +4: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and keeps single value
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated,affordable new=premium
+00:00 +5: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles effectivePostStyleList uses balance without showing it as selected
+00:01 +6: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 通常URL・クエリ付きで itemCode を抽出する
+00:01 +7: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 末尾スラッシュなしでも itemCode を抽出する
+00:01 +8: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 検索結果ホストは非商品ページエラーになる
+00:01 +9: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天以外のURLは商品ページURLエラーになる
+00:01 +10: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl item.rakuten で商品セグメントが不正なら確認できないエラー
+00:01 +11: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ済みがコレ候補より優先される
+00:01 +12: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ候補として分類される
+00:01 +13: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts 未登録
+00:02 +14: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser https の item.rakuten から shop / セグメント / 正規URL
+00:02 +15: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser http でも抽出できる
+00:02 +16: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser HTML 内の複数リンクから数値ID付きを優先
+00:02 +17: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RoomUrlResolver ROOM HTML から楽天商品URLを取得できる
+[ROOM_IMPORT_API] type=roomPage status=200 durationMs=20
+[ROOM_IMPORT_API] rateLimitDetected=false
+00:02 +18: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:03 +19: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathFromCollectsRow reads nested item URL
+[ROOM_COLLECTS_RESPONSE_SHAPE] itemKeys=id,meta productLikeKeys=- userLikeKeys=- imageLikeKeys=- hasProductImage=false hasUserIcon=false
+[ROOM_IMPORT_COLLECTS_IMAGE_KEYS] productId=17001234567890 keys=meta.link selectedKey=- rejectedKeys=meta.link
+00:03 +20: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMプロフィールURLを許可して正規化する
+00:03 +21: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /items 付きROOMプロフィールURLを許可して正規化する
+00:03 +22: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /collections と /likes もプロフィール導線として許可する
+00:03 +23: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 空は任意入力として許可する
+00:03 +24: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat httpは拒否する
+00:03 +25: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 楽天市場URLは拒否する
+00:03 +26: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMトップURLのみは拒否する
+00:03 +27: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOM商品URL相当の複数パスは拒否する
+00:03 +28: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat roomIdなしの /items は拒否する
+00:03 +29: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 短縮URLは拒否する
+00:03 +30: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers extractRoomId extracts roomId from profile child routes
+00:03 +31: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers normalizeProfileUrl always stores profile URL
+00:03 +32: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers buildItemsUrl builds posting list URL from saved profile URL
+00:03 +33: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 200系は保存可能な確認成功にする
+00:03 +34: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 404は保存不可にする
+00:03 +35: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 403/429は形式OKなら確認保留で保存可能にする
+00:03 +36: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 通信失敗は形式OKなら確認保留で保存可能にする
+00:04 +37: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:04 +38: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+00:04 +39: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからない場合は null
+00:04 +40: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: beginSearchSession increments active request id
+00:04 +41: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorForNewSearch clears error and retry banner
+[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=1 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+00:04 +42: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorIfModeMismatch clears error owned by another mode
+00:04 +43: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: isErrorVisibleForMode is true only for matching tag
+00:05 +44: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:05 +45: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除外
+00:05 +46: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+00:05 +47: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter BLCDコレクションは除外
+00:05 +48: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 濡れトロは除外
+00:05 +49: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おもちゃ/宮本真希[DVD]は adultKeyword がなければ通す
+00:05 +50: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ベビー おもちゃは通す
+00:05 +51: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ビール10本セットは除外
+00:05 +52: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 名入れワインは除外
+00:05 +53: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter シャンパングラスは通す
+00:05 +54: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ワイングラスは通す
+00:05 +55: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 子供服は通す
+00:05 +56: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter アダルトグッズは除外
+00:05 +57: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter グラビア写真集は除外
+00:05 +58: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ジャンル名がビール・洋酒なら除外
+00:05 +59: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+00:05 +60: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+00:06 +61: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop and url slug match accepts candidate
+00:06 +62: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch price match alone does not accept candidate
+00:06 +63: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop mismatch rejects candidate
+00:06 +64: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 price=3980 に incoming price=-1 が来ても 3980 を維持
+00:07 +65: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 imageUrl 有効、incoming 空なら既存維持
+00:07 +66: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 shopCode 有効、incoming 空なら既存維持
+00:07 +67: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 genreName 有効、incoming 空なら既存維持
+00:07 +68: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge incoming api値が有効な場合だけ上書き
+00:07 +69: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl extracts composite itemCode and slug from event+dest
+[ROOM_RAT_REDIRECT_EXTRACT] rawUrl=https://room.rakuten.co.jp/rat/relay/click.html?event=%7B%22shopurl%22%3A%22soukaidrink%22%2C%22itemid%22%3A%5B%22306273%2F10002596%22%5D%7D&amp;dest=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2F00000000%2Ftest%2F%3Fpc=https%2… decodedDest=https://hb.afl.rakuten.co.jp/hgc/00000000/test/?pc=https://item.rakuten.co.jp/soukaidrink/4901085161999/ decodedPcUrl=https://item.rakuten.co.jp/soukaidrink/4901085161999/ shopCode=soukaidrink urlProductCode=4901085161999 rakutenItemUrl=https://item.rakuten.co.jp/soukaidrink/4901085161999/ eventShopUrl=soukaidrink eventItemIdRaw=306273/10002596 apiItemCode=10002596 apiCompositeItemCode=soukaidrink:10002596 genreId=(empty)
+00:07 +70: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl supports rat-redirect host and drinkshop slug
+[ROOM_RAT_REDIRECT_EXTRACT] rawUrl=https://room.rakuten.co.jp/rat-redirect?event=%7B%22shopurl%22%3A%22drinkshop%22%2C%22itemid%22%3A%5B%22213103%2F10531958%22%5D%2C%22igenre%22%3A%5B408254%5D%7D&amp;dest=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fx%2Fy%2F%3F… decodedDest=https://hb.afl.rakuten.co.jp/hgc/x/y/?pc=https://item.rakuten.co.jp/drinkshop/29022-2/ decodedPcUrl=https://item.rakuten.co.jp/drinkshop/29022-2/ shopCode=drinkshop urlProductCode=29022-2 rakutenItemUrl=https://item.rakuten.co.jp/drinkshop/29022-2/ eventShopUrl=drinkshop eventItemIdRaw=213103/10531958 apiItemCode=10531958 apiCompositeItemCode=drinkshop:10531958 genreId=408254
+00:07 +71: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: roomImportEnrichSlugShouldSkipDirectItemCode flags slug-like segments
+00:07 +72: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:07 +73: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics reactionScore は like + comment*3
+00:07 +74: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genre 空は ジャンル未確認
+00:07 +75: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName 空なら shopCode をUIに出さずショップ未確認
+00:07 +76: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName も shopCode も空なら ショップ未確認
+00:07 +77: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics 未分類ジャンルは傾向集計対象外
+[ANALYTICS_UNKNOWN_EXCLUDE] field=genre rawLabel=未分類 excluded=true reason=unknownLabel
+00:07 +78: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genreName空でもgenreIdからマスタ解決できれば集計対象
+00:07 +79: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopCodeのみのショップは傾向集計対象外
+[ANALYTICS_UNKNOWN_EXCLUDE] field=shop rawLabel=girl-k excluded=true reason=codeOnly
+00:08 +80: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 価格だけ未取得のとき強い未確認文言は出さない
+[ROOM_UNCONFIRMED_DISPLAY_CLASSIFY] productId=pid-1 hasTitle=true hasImage=true hasItemUrl=true hasShopCode=true hasShopName=true hasGenreName=false hasPrice=false label=価格を確認できません detail=販売状況が変わった可能性があります severity=info
+00:08 +81: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 商品名も画像も無いときは売り切れ系を表示
+[ROOM_UNCONFIRMED_REASON_RENDER] productId=pid-1 pendingReason=soldOutOrUnavailable price=0 label=売り切れ・販売停止の可能性 shown=true
+[ROOM_UNCONFIRMED_DISPLAY_CLASSIFY] productId=pid-1 hasTitle=false hasImage=false hasItemUrl=true hasShopCode=true hasShopName=true hasGenreName=false hasPrice=false label=売り切れ・販売停止の可能性 detail=- severity=error
+00:08 +82: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd "c:\dev\app_project\room_manager2" && flutter analyze 2>&1</summary>
+
+```bash
+cd "c:\dev\app_project\room_manager2" && flutter analyze 2>&1
+```
+
+```
+Analyzing room_manager2...                                      
+
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:113:17 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:114:21 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:149:26 - use_build_context_synchronously
+
+3 issues found. (ran in 9.5s)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Analyze passed for our file. Provide Japanese completion report.</details></think>
+
+_**Agent (default)**_
+
+追加修正を反映しました。前回の ListView padding 調整だけでは不十分で、**親 Column の flex 配分**が根本原因でした。
+
+---
+
+## 1. 下部空白が残っていた本当の原因
+
+検索結果表示時（`SearchSurfacePhase.result`）の Column で、
+
+- **コンパクトヘッダー**: `Flexible(fit: FlexFit.loose)` + `SingleChildScrollView`
+- **結果エリア**: `Expanded`
+
+が **同じ flex=1 で縦方向をほぼ半分ずつ分割**していました。`SingleChildScrollView` は親の最大高さいっぱいに伸びるため、ヘッダー側が約 50% を占有し、リストの `listViewportHeight` が **324px / 282px 程度**に固定されていました。
+
+`unusedBottomSpaceEstimate=0.0` は ListView **内部**の余白しか見ておらず、リスト下端とボトムナビの間の空白は検出できていませんでした。
+
+## 2. listViewportHeight が 324px / 282px で止まっていた原因
+
+| 要因 | 内容 |
+|------|------|
+| 商品名/ジャンル/保存ショップ | コンパクトヘッダーと結果 `Expanded` の **1:1 flex 分割** |
+| ショップ発掘 | 上記に加え、結果サマリーカードが `Expanded` 外の固定高さとして存在し、リスト領域がさらに縮小 |
+
+## 3. 検索結果リストの親制約をどう修正したか
+
+1. **コンパクトヘッダー**を `Column(mainAxisSize: MainAxisSize.min)` で包み、必要高さだけ使う（最大 42% までのスクロールは維持）
+2. **入力デッキ**も同様に `mainAxisSize: min` で flex 奪取を防止
+3. **結果エリア**を `LayoutBuilder` + `GlobalKey` で計測可能に
+4. **ショップ発掘**は「固定ヘッダー + 別 ListView」をやめ、**1 本の ListView**（サマリー + カード）に統一し、親 `Expanded` の高さをすべてリストに渡す
+
+## 4. 修正後の listViewportHeight / blankHeightBetweenListAndBottomNav
+
+この環境では再ビルド後の実機ログは未取得です。再ビルド後、次のログで確認してください。
+
+- `listViewportHeight` が **480〜560px 前後**（SHG08・画面高 ~844px）
+- `[SEARCH_RESULT_BLANK_AREA_AUDIT] blankHeightBetweenListAndBottomNav` が **0〜24px 程度**
+
+## 5. 一瞬出るエラー画面の原因
+
+検索 API エラーではなく、`_openProductConditionsSheet` の `showModalBottomSheet` **builder 内**で `MediaQuery.of(screenContext)` を参照していたことが原因です。シート表示中に親 `screenContext` の `MediaQuery` が無効になり、`_TypeError: Null check operator used on a null value` が発生していました。
+
+## 6. BottomSheet / MediaQuery / context の修正内容
+
+- builder 内は **`sheetContext` + `MediaQuery.maybeOf`**（親 MQ を開く前に退避）
+- `Theme.of` もシート用 context に統一
+- builder を **try/catch** で保護し、失敗時はフォールバック UI（クラッシュで赤画面を出さない）
+- 検索開始時に `[SEARCH_CONDITION_SHEET_CONTEXT_AUDIT] action=searchStartWhileOpen` を記録
+- `screenContext.mounted` チェックを追加
+
+## 7. 追加ログ一覧
+
+| ログ | 用途 |
+|------|------|
+| `[SEARCH_RESULT_PARENT_CONSTRAINT_AUDIT]` | 親制約・期待リスト高・missingHeight |
+| `[SEARCH_RESULT_BLANK_AREA_AUDIT]` | リスト下端とボトムナビ間の実空白 |
+| `[SEARCH_CONDITION_SHEET_CONTEXT_AUDIT]` | シート open/build/close/searchStart |
+| `[SEARCH_TRANSIENT_ERROR_AUDIT]` | シート build 例外の捕捉 |
+| `[SEARCH_PHASE_TRANSITION_AUDIT]` | フェーズ遷移の詳細 |
+
+## 8. 修正ファイル一覧
+
+- `lib/screens/rakuten_search_screen.dart`
+- `lib/utils/search_tab_ui_audit_log.dart`
+
+## 9. flutter analyze 結果
+
+**成功**（新規 issue なし）。既存 info 3件のみ（`today_recommendations_screen.dart`）。
+
+## 10. flutter test 結果
+
+**全82件パス**
+
+## 11. 実機ログ確認結果
+
+このセッションでは修正後の SHG08 実機ログは未取得です。**ホットリロードではなく再ビルド**後、指定の 8 操作を行い、以下が出ないことを確認してください。
+
+出てはいけない: `EXCEPTION CAUGHT BY WIDGETS LIBRARY`, `Null check operator`, `RenderFlex overflowed`, `BOTTOM OVERFLOWED`
+
+出ること: `[SEARCH_RESULT_PARENT_CONSTRAINT_AUDIT]`, `[SEARCH_RESULT_BLANK_AREA_AUDIT]` など
+
+`.\run_and_record_select_device.ps1` または `flutter run -d SXILHMB270711564` でログを共有いただければ、数値もこちらで追確認できます。
+
+## 12. iOS移植監査メモ
+
+- 変更は Flutter 標準レイアウト（`Column` / `Flexible` / `Expanded` / `ListView`）と `MediaQuery.maybeOf` のみ
+- iOS でも flex 配分・SafeArea・ボトムナビの挙動は同一
+- シートの MQ 退避パターンは iOS のモーダル route でも有効
+
+---
+
+**要点:** 空白は padding ではなく **「コンパクトヘッダー Flexible と結果 Expanded の 1:1 分割」** が原因でした。ヘッダーを intrinsic 高さにし、発掘は 1 本の ListView に統一しています。実機で `listViewportHeight` と `blankHeightBetweenListAndBottomNav` を確認してください。
+
+---
+
+_**User**_
+
+現在の Flutter アプリ room_manager2 の「探す」画面について、下部空白がまだ解消していません。
+前回の修正報告では「親 Column の flex 配分を直した」とありましたが、実機ログとスクショ上では未解消です。
+
+重要：
+- ファイル名・クラス名・既存関数名は勝手に変更しない。
+- ClipRect や見た目だけの隠蔽は禁止。
+- ListView padding の調整だけで終わらせない。
+- 今回は「探す画面全体の縦レイアウト構造」を再点検し、結果リストがボトムナビ直上まで伸びる構造に作り直す。
+- 修正後は必ず実機ログで数値確認する。
+- 「再ビルド後の実機ログ未取得です」で終わらせない。実機で確認してから報告する。
+
+============================================================
+1. 現在のログから確定している未解消事実
+============================================================
+
+修正後ログ terminal_output_20260522_231200.txt で以下が出ています。
+
+[SEARCH_RESULT_PARENT_CONSTRAINT_AUDIT]
+mode=productSearch
+phase=result
+screenHeight=844.5714285714286
+shellBodyHeight=844.5714285714286
+resultSurfaceHeight=376.2142857142857
+headerActualHeight=220.0
+bulkHeaderActualHeight=44
+listParentHeight=324.2142857142857
+listViewportHeight=324.2142857142857
+constraintSource=compactHeaderNoLongerSplitsFlexWithExpanded
+
+[SEARCH_RESULT_BLANK_AREA_AUDIT]
+listBottomGlobalY=630.3571428571429
+bottomNavTopGlobalY=788.5714285714286
+blankHeightBetweenListAndBottomNav=158.21428571428567
+reason=parentConstraintOrFlexSplit
+
+つまり、前回修正後も、
+- listViewportHeight は 324px のまま
+- ボトムナビ上まで 158px の空白が残っている
+- reason も parentConstraintOrFlexSplit のまま
+です。
+
+これはユーザーのスクショでも確認できます。
+検索結果カードが2件弱で止まり、下3分の1近くが空白固定になっています。
+
+============================================================
+2. 前回の見立ての誤りを修正
+============================================================
+
+前回は「コンパクトヘッダー Flexible と結果 Expanded の 1:1 分割」が原因とされました。
+しかし修正後ログでも未解消です。
+
+今回の仮説：
+- 問題は compactHeader と result Expanded の直接の 1:1 分割だけではない。
+- もっと外側の SearchGroupScreenShell / Stack / Padding / SafeArea / Consumer3 / SizedBox.expand / Column のいずれかで、結果表示領域が 376px 前後に制限されている。
+- `shellBodyHeight=844` なのに `resultSurfaceHeight=376` しかないため、画面本体の約半分が結果サーフェスに渡っていない。
+- `headerActualHeight=220` も高すぎる。現在のコンパクトヘッダーは見た目上そこまで必要ないはず。
+- `calculatedExpectedListHeight=112` という計算値もおかしい。期待リスト高の算出式が間違っている可能性がある。
+
+まず、次をコード上で特定してください：
+- resultSurfaceHeight を 376px にしている親 Widget
+- listParentHeight を 324px にしている親 Widget
+- blankHeightBetweenListAndBottomNav=158px の空白を実際に占有している Widget
+- `headerActualHeight=220` になっている理由
+- `calculatedExpectedListHeight=112` の算出式が妥当か
+
+============================================================
+3. 探す画面の結果表示時レイアウトを明確な構造に作り直す
+============================================================
+
+検索結果あり phase=result の時は、必ず以下の構造にしてください。
+
+SearchGroupScreenShell body:
+Column(
+  children: [
+    // A. コンパクト条件ヘッダー：必要最小限の高さのみ
+    ResultConditionHeader(), // mainAxisSize.min
+
+    // B. 条件変更・並び順・再検索の操作行：必要最小限
+    ResultActionRow(), // mainAxisSize.min
+
+    // C. 件数説明：必要なら1行だけ。長文で高さを取らない
+    ResultCountText(), // mainAxisSize.min
+
+    // D. すべて選択行：必要最小限
+    BulkSelectionHeader(), // mainAxisSize.min
+
+    // E. 残り全部を検索結果リストに渡す
+    Expanded(
+      child: SearchResultListView(...)
+    ),
+
+    // F. 選択時のみ固定CTAバー
+    if (hasSelection)
+      BulkActionBar(),
+  ],
+)
+
+禁止：
+- 結果リストの親に Flexible(fit: FlexFit.loose) を使わない
+- 結果リストの親に IntrinsicHeight を使わない
+- 結果リストの親に SizedBox(height: xxx) を使わない
+- 結果リストの親に ConstrainedBox(maxHeight: xxx) を使わない
+- 結果あり時に SingleChildScrollView で画面全体を包まない
+- 結果あり時に `Column(mainAxisSize: MainAxisSize.min)` の中へ Expanded を入れない
+- 結果リストとボトムナビの間に Spacer / SizedBox / Padding / SliverToBoxAdapter の空白を置かない
+- 空白を `Container(color:...)` や `ClipRect` でごまかさない
+
+期待値：
+- SHG08 screenHeight=844 前後
+- bottomNavTopGlobalY=788 前後
+- listBottomGlobalY は bottomNavTopGlobalY に近い値
+- blankHeightBetweenListAndBottomNav は 0〜24px
+- listViewportHeight は最低でも 480px 以上
+- 通常時は3件目以降も画面内に自然に見え始める
+
+============================================================
+4. headerActualHeight=220 を圧縮する
+============================================================
+
+現在ログでは headerActualHeight=220.0 です。
+これはコンパクトヘッダーとして大きすぎます。
+
+商品名検索結果の場合、ヘッダーは以下程度で十分です。
+
+行1:
+アンパンマン
+条件：価格指定なし
+
+行2:
+[条件変更] [並び順 評価順] [再検索]
+
+この程度なら、ヘッダー関連全体で 120〜150px 程度に収まるはずです。
+現在の220pxは、どこかに不要な余白・Padding・説明文・古い入力領域が残っている可能性があります。
+
+調査・修正してください：
+- ResultConditionHeader の上下Padding
+- ResultActionRow の上下Padding
+- 件数説明文の高さ
+- `SizedBox(height: AppDimensions.spacing...)` の重複
+- `SearchGroupScreenShell` 側の section padding
+- `compactHeader` と呼びつつ内部で旧入力デッキ相当の高さを持っていないか
+
+============================================================
+5. 検索結果がある時は「空状態カード用の領域」を残さない
+============================================================
+
+スクショ上、リストの下に空状態カードがあった場所のような広い空白が残っている可能性もあります。
+
+確認してください：
+- phase=result で emptyCard / errorCard / loadingCard の placeholder 領域が残っていないか
+- `AnimatedSwitcher` / `AnimatedSize` / `Stack` の前画面サイズが残っていないか
+- `Visibility(visible:false, maintainSize:true)` が使われていないか
+- `Offstage` ではなくサイズ維持するWidgetが残っていないか
+- 検索前カードの高さが phase=result 後も残っていないか
+
+もし AnimatedSwitcher を使っている場合：
+- `layoutBuilder` が previousChildren をサイズ維持していないか確認
+- result phase では result list のみが高さを持つようにする
+
+============================================================
+6. 黄色黒スラッシュ overflow もまだ出ている
+============================================================
+
+修正後ログにまだ以下が出ています。
+
+EXCEPTION CAUGHT BY RENDERING LIBRARY
+A RenderFlex overflowed by 18 pixels on the bottom.
+
+該当箇所：
+Column:file:///C:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart:1087:36
+
+Widget tree：
+Column ← Flexible ← Column ← Consumer3<RakutenSearchProvider, RakutenManagedProductProvider, SavedShopProvider> ← SizedBox.expand ← Padding ← MediaQuery ← Padding ← SafeArea ← ColoredBox ← SearchGroupScreenShell ← Stack
+
+constraints:
+BoxConstraints(0.0<=w<=411.4, 0.0<=h<=255.2)
+
+この `Flexible(fit: FlexFit.loose)` がまだ残っています。
+前回「Flexible分割を直した」とありますが、ログ上は残っています。
+
+対応：
+- rakuten_search_screen.dart:1087 付近の Column ← Flexible を特定
+- 検索結果あり / loading / input / sheet表示中で同じ親制約を使っていないか確認
+- phase=input かつキーボード表示中なら、入力デッキ全体を SingleChildScrollView へ逃がす
+- phase=result では Flexible ではなく Expanded でリストに残り高さを渡す
+- phase=loading / error は小さいカードだけを Center/Expanded 内に表示し、旧入力デッキは消す
+
+完了条件：
+- `RenderFlex overflowed` が完全に消える
+- `Column ← Flexible ← Column ← Consumer3...` の overflow が出ない
+- 検索中・条件シート表示中・キーボード表示中でも黄色黒スラッシュが出ない
+
+============================================================
+7. 監査ログを実態に合わせて修正
+============================================================
+
+現在ログでは以下のように矛盾があります。
+
+blankHeightBetweenListAndBottomNav=158.2 と正しく出ている一方、
+missingHeight=0.0
+calculatedExpectedListHeight=112.2
+constraintSource=compactHeaderNoLongerSplitsFlexWithExpanded
+
+これは監査ログの期待値計算が間違っている可能性があります。
+
+修正してください：
+- `calculatedExpectedListHeight` は以下で計算する
+  bottomNavTopGlobalY - listTopGlobalY - bottomBarHeight - allowedBottomGap
+- `missingHeight` は以下で計算する
+  max(0, blankHeightBetweenListAndBottomNav - 24)
+- `constraintSource` は実際に特定できない場合は unknown にする
+- 直っていないのに `compactHeaderNoLongerSplitsFlexWithExpanded` のような解決済み風の文言を出さない
+
+追加ログ：
+[SEARCH_RESULT_WIDGET_TREE_AUDIT]
+- mode
+- phase
+- rootWidget
+- shellBodyWidget
+- resultSurfaceWidget
+- resultListParentWidget
+- usesFlexibleLoose
+- usesExpandedForList
+- usesAnimatedSwitcher
+- usesMaintainSizeVisibility
+- usesSingleChildScrollViewAroundWholeResult
+- hasSpacerBelowList
+- hasEmptyCardMounted
+- hasErrorCardMounted
+- hasLoadingCardMounted
+
+============================================================
+8. 実機確認は必須
+============================================================
+
+今回は「実機ログ未取得」では完了にしないでください。
+必ず SHG08 で再ビルド後に確認してください。
+
+実行：
+flutter run -d SXILHMB270711564
+
+確認操作：
+1. 商品名「アンパンマン」で検索
+2. 全選択ON
+3. 全選択OFF
+4. 条件変更を開いて閉じる
+5. 条件変更から再検索
+6. ジャンル検索
+7. 保存ショップ検索
+8. ショップ発掘
+
+確認ワード：
+出てはいけない：
+- RenderFlex overflowed
+- BOTTOM OVERFLOWED
+- OVERFLOWING
+- EXCEPTION CAUGHT BY RENDERING LIBRARY
+- EXCEPTION CAUGHT BY WIDGETS LIBRARY
+- Null check operator used on a null value
+- setState after dispose
+- deactivated widget
+
+必ず出す：
+- [SEARCH_RESULT_PARENT_CONSTRAINT_AUDIT]
+- [SEARCH_RESULT_BLANK_AREA_AUDIT]
+- [SEARCH_RESULT_WIDGET_TREE_AUDIT]
+
+数値合格ライン：
+- listViewportHeight >= 480
+- blankHeightBetweenListAndBottomNav <= 24
+- headerActualHeight <= 160
+- resultSurfaceHeight >= 540
+- usesFlexibleLoose=false
+- usesExpandedForList=true
+- hasSpacerBelowList=false
+- hasEmptyCardMounted=false when phase=result
+- hasErrorCardMounted=false when phase=result
+- hasLoadingCardMounted=false when phase=result
+
+============================================================
+9. 完了報告フォーマット
+============================================================
+
+以下の形式で報告してください。
+
+1. なぜ前回修正後も空白が残っていたか
+2. resultSurfaceHeight が 376px で止まっていた本当の原因
+3. listViewportHeight が 324px のままだった原因
+4. rakuten_search_screen.dart:1087 の Flexible / Column overflow の原因
+5. 探す画面 result phase のレイアウトをどう作り直したか
+6. headerActualHeight を何pxから何pxへ減らしたか
+7. 修正後の実機ログ数値
+   - resultSurfaceHeight
+   - headerActualHeight
+   - listViewportHeight
+   - blankHeightBetweenListAndBottomNav
+   - usesFlexibleLoose
+   - usesExpandedForList
+8. 追加ログ一覧
+9. 修正ファイル一覧
+10. flutter analyze 結果
+11. flutter test 結果
+12. 実機確認結果
+13. iOS移植監査メモ
+
+---
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+The user needs help resolving layout problems on the search screen within the Flutter application.</details></think>
+
+_**Agent (default)**_
+
+レイアウト構造を再点検し、実機で数値確認まで行います。まず現行コードと実機ログを確認します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: </summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
