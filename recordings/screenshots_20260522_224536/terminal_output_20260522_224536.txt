@@ -1,0 +1,1304 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-22 22:45:36
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260522_224536.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260522_224536.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260522_224536.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260522_224536.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260522_224536.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260522_224536
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260522_224536\terminal_output_20260522_224536.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 25456).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             17.6s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.2s
+D/FlutterJNI(29561): Beginning load of flutter...
+D/FlutterJNI(29561): flutter (null) was loaded normally!
+I/flutter (29561): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (29561): [DEBUG_LOG_VOLUME_AUDIT] nativeLogsObserved=true appVerboseLogsReduced=true rakutenUrlVerbose=false genreResolveVerbose=false productCardVerbose=false
+I/flutter (29561): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter (29561): verifyMode=false
+I/flutter (29561): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                    75ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:54300/8REWs-h-T3Y=/
+I/flutter (29561): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100227 resolvedGenreNames=食品 invalidGenreIds= corrected=false
+I/flutter (29561): [GENRE_PREF_LOAD] favoriteGenreIds=100227 favoriteGenreNames=食品 source=repositoryLoad
+I/flutter (29561): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (29561): [ROOMコレ診断] loadAll 初回サマリー parsed=255 rawJsonList=255
+I/flutter (29561): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (29561): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter (29561): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=true enabled=true label=投稿済み商品を取り込む reason=rendered
+I/flutter (29561): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=true enabled=true label=反応を確認する reason=rendered
+I/flutter (29561): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=analysis visible=true enabled=true label=反応があった商品は分析タブで確認できます reason=textLinkOnly
+I/flutter (29561): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=home visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/flutter (29561): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (29561): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=CommonDraggableEdgeFab file=lib/widgets/common_draggable_edge_fab.dart visible=true reason=commentEdgeFabRightSideNotMenu
+I/flutter (29561): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (29561): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=43 afterFilterLen=43 surface=ok_list ui=ready
+I/flutter (29561): [ROOMコレ診断] 描画リスト先頭 productId=bali-indah:10124357 title=レンチン 惣菜 神戸開花亭 シリーズ ハンバーグ シチュー スープ 7種類14個 詰め合わせ セット 電子レンジ レトルト食品 おかず 常温保存 キャンプ飯 洋食 常温 温めるだけ 仕送り 一人暮らし お取り寄せ ギフト プレゼント 備蓄 防災食 非常食 父の日 御中元 お中元 status=done len=43
+I/flutter (29561): [REACTION_STATUS_RENDER] productId=bali-indah:10124357 roomLikeCount=- roomCommentCount=- chipLabel=未取り込み source=computed
+I/flutter (29561): [REACTION_STATUS_RENDER] productId=pururunhime:10000983 roomLikeCount=- roomCommentCount=- chipLabel=未取り込み source=computed
+I/flutter (29561): [REACTION_STATUS_RENDER] productId=tigercat:10036410 roomLikeCount=- roomCommentCount=- chipLabel=未取り込み source=computed
+I/flutter (29561): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=212 doneCount=43 roomImportedDoneCount=40 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (29561): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=40 appCollectedCount=3 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=204 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-20 postCount=1 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-21 postCount=2 candidateCount=8 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-22 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter (29561): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=true visible=true reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=true visible=true reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=myPage visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9102?uri=http://127.0.0.1:54300/8REWs-h-T3Y=/
+I/flutter (29561): [MANAGED_PRODUCT_SAVE]
+I/flutter (29561): action=refresh
+I/flutter (29561): productId=
+I/flutter (29561): itemCode=
+I/flutter (29561): beforePendingCount=212
+I/flutter (29561): afterPendingCount=212
+I/flutter (29561): beforeDoneCount=43
+I/flutter (29561): afterDoneCount=43
+I/flutter (29561): [MANAGED_PRODUCT_LOAD]
+I/flutter (29561): source=provider
+I/flutter (29561): pendingCount=212
+I/flutter (29561): doneCount=43
+I/flutter (29561): filter=
+I/flutter (29561): tab=
+I/flutter (29561): [ROOMコレ診断] refreshManagedProductList 完了 total=255 candidate=212 done=43 ui=ready
+I/flutter (29561): [HOME_SECTION_ORDER] order=todayRoomOperation,roomColleManagement,roomSync,recentCandidates
+I/flutter (29561): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=none file=lib/screens/home_placeholder_screen.dart visible=false reason=noDrawerNoMenuFabOnHomeBody
+I/flutter (29561): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (29561): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter (29561): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (29561): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (29561): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (29561): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (29561): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (29561): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-22T00:14:55.378643
+I/flutter (29561): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (29561): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (29561): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (29561): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-22T00:14:55.378643
+I/flutter (29561): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (29561): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter (29561): [MANAGED_PRODUCT_SAVE]
+I/flutter (29561): action=refresh
+I/flutter (29561): productId=
+I/flutter (29561): itemCode=
+I/flutter (29561): beforePendingCount=212
+I/flutter (29561): afterPendingCount=212
+I/flutter (29561): beforeDoneCount=43
+I/flutter (29561): afterDoneCount=43
+I/flutter (29561): [MANAGED_PRODUCT_LOAD]
+I/flutter (29561): source=screen
+I/flutter (29561): doneCount=43
+I/flutter (29561): filter=
+I/flutter (29561): tab=done
+I/flutter (29561): [ROOMコレ診断] refreshManagedProductList 完了 total=255 candidate=212 done=43 ui=ready
+I/flutter (29561): [ROOMコレ診断] ROOMコレ画面起動後 total=255 candidate=212 done=43 listUi=RakutenManagedProductListUiStatus.ready tabIdx=1
+I/flutter (29561): pendingCount=212
+I/flutter (29561): [MANAGED_PRODUCT_SAVE]
+I/flutter (29561): action=refresh
+I/flutter (29561): productId=
+I/flutter (29561): itemCode=
+I/flutter (29561): beforePendingCount=212
+I/flutter (29561): afterPendingCount=212
+I/flutter (29561): beforeDoneCount=43
+I/flutter (29561): [MANAGED_PRODUCT_LOAD]
+I/flutter (29561): afterDoneCount=43
+I/flutter (29561): source=provider
+I/flutter (29561): pendingCount=212
+I/flutter (29561): doneCount=43
+I/flutter (29561): filter=
+I/flutter (29561): tab=
+I/flutter (29561): [ROOMコレ診断] refreshManagedProductList 完了 total=255 candidate=212 done=43 ui=ready
+I/Choreographer(29561): Skipped 210 frames!  The application may be doing too much work on its main thread.
+I/flutter (29561): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/OpenGLRenderer(29561): Davey! duration=3530ms; Flags=1, FrameTimelineVsyncId=672217124, IntendedVsync=4956148188557742, Vsync=4956151696966632, InputEventId=0, HandleInputStart=4956151701487812, AnimationStart=4956151701489583, PerformTraversalsStart=4956151701490000, DrawStart=4956151704654739, FrameDeadline=4956148205224408, FrameInterval=4956151701188437, FrameStartTime=16706709, SyncQueued=4956151707699531, SyncStart=4956151707813906, IssueDrawCommandsStart=4956151708445260, SwapBuffers=4956151716919270, FrameCompleted=4956151719585000, DequeueBufferDuration=2287917, QueueBufferDuration=599948, GpuCompleted=4956151719585000, SwapBuffersCompleted=4956151718079739, DisplayPresentTime=0, CommandSubmissionCompleted=4956151716919270, 
+I/flutter (29561): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter (29561): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=true visible=true reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=true visible=true reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=myPage visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/flutter (29561): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter (29561): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=true enabled=true label=投稿済み商品を取り込む reason=rendered
+I/flutter (29561): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=true enabled=true label=反応を確認する reason=rendered
+I/flutter (29561): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=true visible=true reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=true visible=true reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=analysis visible=true enabled=true label=反応があった商品は分析タブで確認できます reason=textLinkOnly
+I/flutter (29561): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=home visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/flutter (29561): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=212 doneCount=43 roomImportedDoneCount=40 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=0 reason=excludeRoomImportFromCandidate
+I/flutter (29561): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=40 appCollectedCount=3 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-16 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=204 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-20 postCount=1 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-21 postCount=2 candidateCount=8 candidateSource=statusCandidateOnly
+I/flutter (29561): [ANALYTICS_DAILY_BAR] date=2026-05-22 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (29561): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (29561): [ROOMコレ診断] 一覧直前 tab=done kw="" more=false urlExcl=false day=false baseLen=43 afterFilterLen=43 surface=ok_list ui=ready
+I/flutter (29561): [ROOMコレ診断] 描画リスト先頭 productId=bali-indah:10124357 title=レンチン 惣菜 神戸開花亭 シリーズ ハンバーグ シチュー スープ 7種類14個 詰め合わせ セット 電子レンジ レトルト食品 おかず 常温保存 キャンプ飯 洋食 常温 温めるだけ 仕送り 一人暮らし お取り寄せ ギフト プレゼント 備蓄 防災食 非常食 父の日 御中元 お中元 status=done len=43
+I/flutter (29561): [REACTION_STATUS_RENDER] productId=pururunhime:10000983 roomLikeCount=- roomCommentCount=- chipLabel=未取り込み source=computed
+I/flutter (29561): [REACTION_STATUS_RENDER] productId=tigercat:10036410 roomLikeCount=- roomCommentCount=- chipLabel=未取り込み source=computed
+I/flutter (29561): [REACTION_STATUS_RENDER] productId=bali-indah:10124357 roomLikeCount=- roomCommentCount=- chipLabel=未取り込み source=computed
+I/WebViewFactory(29561): Loading com.google.android.webview version 148.0.7778.120 (code 777812003)
+D/ApplicationLoaders(29561): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(29561): Loading /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(29561): Configuring clns-5 for other apk /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/lib/arm64:/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(29561): version=148.0.7778.120 (777812003) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(29561): Load /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk): ok
+D/nativeloader(29561): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk): ok
+E/chromium(29561): [0522/224614.566318:ERROR:android_webview/browser/variations/variations_seed_loader.cc:39] Seed missing signature.
+I/cr_LibraryLoader(29561): Successfully loaded native library
+I/cr_CachingUmaRecorder(29561): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(29561): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(29561): #registerProvider() provider:WV.wk@e31e5d3 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(29561): #setManagerAndSource() 0
+I/cr_DisplayManager(29561): Is Display Topology available: false
+I/cr_CombinedPProvider(29561): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(29561): Compat change id reported: 183155436; UID 10465; state: ENABLED
+I/cr_AppResProvider(29561): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(29561): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(29561): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(29561): #flushPolicies()
+W/chromium(29561): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(29561): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 108766036
+D/CompatibilityChangeReporter(29561): Compat change id reported: 214741472; UID 10465; state: ENABLED
+I/CameraManagerGlobal(29561): Connecting to camera service
+D/CompatibilityChangeReporter(29561): Compat change id reported: 171228096; UID 10465; state: ENABLED
+I/PlatformViewsController(29561): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(29561): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(29561): Compat change id reported: 236825255; UID 10465; state: ENABLED
+W/libc    (29561): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(29561): type=1400 audit(0.0:602263): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c209,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(29561): Compat change id reported: 193247900; UID 10465; state: ENABLED
+I/Choreographer(29561): Skipped 83 frames!  The application may be doing too much work on its main thread.
+W/libc    (29561): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(29561): type=1400 audit(0.0:602264): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c209,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(29561): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(29561): Build Date              : 08/23/22
+I/AdrenoVK-0(29561): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(29561): Local Branch            : 
+I/AdrenoVK-0(29561): Remote Branch           : 
+I/AdrenoVK-0(29561): Remote Branch           : 
+I/AdrenoVK-0(29561): Reconstruct Branch      : 
+I/AdrenoVK-0(29561): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(29561): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(29561): Davey! duration=1430ms; Flags=0, FrameTimelineVsyncId=672217182, IntendedVsync=4956151713359664, Vsync=4956153096692942, InputEventId=0, HandleInputStart=4956153102509999, AnimationStart=4956153102511509, PerformTraversalsStart=4956153102546926, DrawStart=4956153108305468, FrameDeadline=4956151747046716, FrameInterval=4956153101821457, FrameStartTime=16706709, SyncQueued=4956153138211301, SyncStart=4956153139136718, IssueDrawCommandsStart=4956153139221093, SwapBuffers=4956153142199426, FrameCompleted=4956153144732499, DequeueBufferDuration=2421354, QueueBufferDuration=2296979, GpuCompleted=4956153144563228, SwapBuffersCompleted=4956153144732499, DisplayPresentTime=0, CommandSubmissionCompleted=4956153142199426, 
+D/ProfileInstaller(29561): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+E/FrameEvents(29561): updateAcquireFence: Did not find frame.
+W/o.room_manager2(29561): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+W/o.room_manager2(29561): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (29561): [URL_ADD_ENTRY_VISIBILITY] visible=false reason=temporarilyHiddenByUxPolicy codeKept=true
+W/WindowOnBackDispatcher(29561): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(29561): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (29561): [SEARCH_RENDER_ERROR_AUDIT] checkedTerminal=true overflowFound=pending overflowFixed=pending target=searchHeader|savedShop
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=input isLoading=false hasResult=false hasError=false inputDeckVisible=true compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=beforeSearch keyboardVisible=false hasResult=false hasError=false headerVisible=false inputDeckVisible=true resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=false visibleSurface=input
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=input keyboardVisible=false overflowGuard=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=365.42857142857144 selectedMode=product clipped=false horizontalScrollable=true
+I/flutter (29561): [SEARCH_STATE_PERSIST] screen=productSearch event=restore resultCount=0
+W/WindowOnBackDispatcher(29561): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(29561): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=input isLoading=false hasResult=false hasError=false inputDeckVisible=true compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=beforeSearch keyboardVisible=false hasResult=false hasError=false headerVisible=false inputDeckVisible=true resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=false visibleSurface=input
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=input keyboardVisible=false overflowGuard=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=365.42857142857144 selectedMode=product clipped=false horizontalScrollable=true
+I/flutter (29561): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter (29561): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter (29561): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter (29561): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter (29561): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter (29561): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/flutter (29561): [SEARCH_CONDITION_SHEET_CONTEXT_AUDIT] action=open parentMounted=true sheetContextHasMediaQuery=false mediaQuerySource=parent routeIsCurrent=true reason=beforeShowModalBottomSheet
+I/flutter (29561): [SEARCH_CONDITION_SHEET_CONTEXT_AUDIT] action=build parentMounted=true sheetContextHasMediaQuery=true mediaQuerySource=sheet routeIsCurrent=false reason=sheetBuilder
+I/flutter (29561): [SEARCH_FILTER_SHEET_LAYOUT] hasFixedHeader=true hasFixedFooter=true keyboardAware=true
+I/flutter (29561): [SEARCH_FILTER_SHEET_OVERFLOW_GUARD] hasFixedHeader=true hasScrollableBody=true hasFixedFooter=true keyboardInset=0.0 reason=preventRenderFlexOverflow
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=input isLoading=false hasResult=false hasError=false inputDeckVisible=true compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=beforeSearch keyboardVisible=false hasResult=false hasError=false headerVisible=false inputDeckVisible=true resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=false visibleSurface=input
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=input keyboardVisible=false overflowGuard=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=365.42857142857144 selectedMode=product clipped=false horizontalScrollable=true
+I/ImeTracker(29561): com.stepbytestudio.room_manager2:1853bbe3: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(29561): showSoftInput() view=io.flutter.embedding.android.FlutterView{6744bc6 VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/ImeTracker(29561): com.stepbytestudio.room_manager2:1f733f3a: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(29561): showSoftInput() view=io.flutter.embedding.android.FlutterView{6744bc6 VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(29561): The input method toggled cursor monitoring on
+D/InsetsController(29561): show(ime(), fromIme=true)
+D/InsetsController(29561): show(ime(), fromIme=true)
+I/ImeTracker(29561): com.stepbytestudio.room_manager2:1f733f3a: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/flutter (29561): [SEARCH_CONDITION_SHEET_CONTEXT_AUDIT] action=build parentMounted=true sheetContextHasMediaQuery=true mediaQuerySource=sheet routeIsCurrent=false reason=sheetBuilder
+I/flutter (29561): [SEARCH_FILTER_SHEET_LAYOUT] hasFixedHeader=true hasFixedFooter=true keyboardAware=true
+I/flutter (29561): [SEARCH_FILTER_SHEET_OVERFLOW_GUARD] hasFixedHeader=true hasScrollableBody=true hasFixedFooter=true keyboardInset=118.85714285714286 reason=preventRenderFlexOverflow
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=input isLoading=false hasResult=false hasError=false inputDeckVisible=true compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=beforeSearch keyboardVisible=true hasResult=false hasError=false headerVisible=false inputDeckVisible=true resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=false visibleSurface=input
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=input keyboardVisible=true overflowGuard=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=365.42857142857144 selectedMode=product clipped=false horizontalScrollable=true
+I/flutter (29561): [SEARCH_CONDITION_SHEET_CONTEXT_AUDIT] action=build parentMounted=true sheetContextHasMediaQuery=true mediaQuerySource=sheet routeIsCurrent=false reason=sheetBuilder
+I/flutter (29561): [SEARCH_FILTER_SHEET_LAYOUT] hasFixedHeader=true hasFixedFooter=true keyboardAware=true
+I/flutter (29561): [SEARCH_FILTER_SHEET_OVERFLOW_GUARD] hasFixedHeader=true hasScrollableBody=true hasFixedFooter=true keyboardInset=303.42857142857144 reason=preventRenderFlexOverflow
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=input isLoading=false hasResult=false hasError=false inputDeckVisible=true compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=beforeSearch keyboardVisible=true hasResult=false hasError=false headerVisible=false inputDeckVisible=true resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=false visibleSurface=input
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=input keyboardVisible=true overflowGuard=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=365.42857142857144 selectedMode=product clipped=false horizontalScrollable=true
+
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 20 pixels on the bottom.
+
+The relevant error-causing widget was:
+  Column
+  Column:file:///C:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart:1087:36
+
+To inspect this widget in Flutter DevTools, visit:
+http://127.0.0.1:9102/#/inspector?uri=http%3A%2F%2F127.0.0.1%3A54300%2F8REWs-h-T3Y%3D%2F&inspectorRef=inspector-0
+
+The overflowing RenderFlex has an orientation of Axis.vertical.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#c1958 relayoutBoundary=up1 OVERFLOWING:
+  needs compositing
+  creator: Column ← Flexible ← Column ← Consumer3<RakutenSearchProvider,
+    RakutenManagedProductProvider, SavedShopProvider> ← SizedBox.expand ← Padding ← MediaQuery ←
+    Padding ← SafeArea ← ColoredBox ← SearchGroupScreenShell ← Stack ← ⋯
+  parentData: offset=Offset(0.0, 0.0); flex=1; fit=FlexFit.loose (can use size)
+  constraints: BoxConstraints(0.0<=w<=411.4, 0.0<=h<=253.5)
+  size: Size(411.4, 253.5)
+  mainAxisAlignment: start
+  mainAxisSize: min
+  crossAxisAlignment: stretch
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+  direction: vertical
+I/ImeTracker(29561): com.stepbytestudio.room_manager2:1853bbe3: onShown
+I/flutter (29561): [SEARCH_CONDITION_SHEET_CONTEXT_AUDIT] action=build parentMounted=true sheetContextHasMediaQuery=true mediaQuerySource=sheet routeIsCurrent=false reason=sheetBuilder
+I/flutter (29561): [SEARCH_FILTER_SHEET_LAYOUT] hasFixedHeader=true hasFixedFooter=true keyboardAware=true
+I/flutter (29561): [SEARCH_FILTER_SHEET_OVERFLOW_GUARD] hasFixedHeader=true hasScrollableBody=true hasFixedFooter=true keyboardInset=308.0 reason=preventRenderFlexOverflow
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=input isLoading=false hasResult=false hasError=false inputDeckVisible=true compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=beforeSearch keyboardVisible=true hasResult=false hasError=false headerVisible=false inputDeckVisible=true resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=false visibleSurface=input
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=input keyboardVisible=true overflowGuard=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=365.42857142857144 selectedMode=product clipped=false horizontalScrollable=true
+I/flutter (29561): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter (29561): [SEARCH_CONDITION_SHEET_CONTEXT_AUDIT] action=searchStartWhileOpen parentMounted=true sheetContextHasMediaQuery=true mediaQuerySource=sheet routeIsCurrent=false reason=keywordSubmit
+I/flutter (29561): [SEARCH_CONDITION_SHEET_CONTEXT_AUDIT] action=close parentMounted=true sheetContextHasMediaQuery=false mediaQuerySource=parent routeIsCurrent=true reason=afterShowModalBottomSheet
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=input isLoading=false hasResult=false hasError=false inputDeckVisible=true compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=beforeSearch keyboardVisible=true hasResult=false hasError=false headerVisible=false inputDeckVisible=true resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=false visibleSurface=input
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=input keyboardVisible=true overflowGuard=true
+I/flutter (29561): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter (29561): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter (29561): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=365.42857142857144 selectedMode=product clipped=false horizontalScrollable=true
+I/flutter (29561): [SEARCH_KEYBOARD_LAYOUT_AUDIT] mode=productSearch keyboardVisible=false focusField=- onSearchUnfocusCalled=true errorCardCompact=false availableHeight=844.5714285714286
+I/flutter (29561): [SEARCH_MODE_STATE_AUDIT] event=beforeSearch mode=productSearch sourceMode=- keyword=アンパンマン genreId=- genreName=- productDetailGenreId=- savedShopCode=- savedShopName=- discoveryKeyword=- discoveryGenreId=- sort=defaultOrder
+I/flutter (29561): [SEARCH_FILTER_SANITIZE_AUDIT] mode=productSearch beforeKeyword=アンパンマン beforeGenreId=- beforeShopCode=- afterKeyword=アンパンマン afterGenreId=- afterShopCode=- removedFields=-
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=loading keyboardVisible=false overflowGuard=true
+I/flutter (29561): [Rakuten] keyword search execute keyword="アンパンマン" genreId=- genreName(lookup)=- shopCode=- shopName(saved lookup)=- hits=30 excludeRegistered=255 savedShopExcludeSet=4 
+I/flutter (29561): [SEARCH_EXECUTE_TRACE] sessionId=1 mode=product keyword="アンパンマン" selectedShopCode=- genreId=- startedAt=2026-05-22T22:47:52.583365
+I/flutter (29561): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=アンパンマン genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 expectedApiCalls=20
+I/flutter (29561): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (29561): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (29561): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/ImeTracker(29561): com.stepbytestudio.room_manager2:15923201: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+I/flutter (29561): [SEARCH_TAB_UI_AUDIT] screen=productSearch hasGenreDrilldown=true hasSelectAllCheckbox=true hasInputLimits=true hasSafetyFilter=true hasFixedFooter=true
+D/InputConnectionAdaptor(29561): The input method toggled cursor monitoring off
+I/flutter (29561): [SEARCH_LAYOUT_PHASE_AUDIT] previousPhase=input nextPhase=loading mode=productSearch reason=build
+I/flutter (29561): [SEARCH_PHASE_TRANSITION_AUDIT] previousPhase=input nextPhase=loading mode=productSearch hasResultBefore=false hasResultAfter=false hasErrorBefore=false hasErrorAfter=false isLoading=true triggeredBy=build
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=loading isLoading=true hasResult=false hasError=false inputDeckVisible=false compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=loading keyboardVisible=true hasResult=false hasError=false headerVisible=false inputDeckVisible=false resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=true visibleSurface=loading
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=loading keyboardVisible=true overflowGuard=true
+W/WindowOnBackDispatcher(29561): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@147506639 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@480d38
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=loading isLoading=true hasResult=false hasError=false inputDeckVisible=false compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=loading keyboardVisible=true hasResult=false hasError=false headerVisible=false inputDeckVisible=false resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=true visibleSurface=loading
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=loading keyboardVisible=true overflowGuard=true
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=loading isLoading=true hasResult=false hasError=false inputDeckVisible=false compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=loading keyboardVisible=true hasResult=false hasError=false headerVisible=false inputDeckVisible=false resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=true visibleSurface=loading
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=loading keyboardVisible=true overflowGuard=true
+I/flutter (29561): [REACTION_STATUS_RENDER] productId=tigercat:10036410 roomLikeCount=- roomCommentCount=- chipLabel=未取り込み source=computed
+I/flutter (29561): [ROOM_SYNC_CARD_UX_RENDER] state=ready showImportButton=true showReactionButton=true showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=true enabled=true label=投稿済み商品を取り込む reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=true enabled=true label=反応を確認する reason=ready
+I/flutter (29561): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=true visible=true reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=true visible=true reason=ready
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=true visible=false reason=hiddenByUxPolicy
+I/flutter (29561): [ROOM_SYNC_REACTION_BUTTON_STYLE] screen=myPage visible=true enabled=true foregroundColor=4279900698 backgroundColor=4294966268 borderColor=4293440712 contrastSafe=true reason=ready
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=loading isLoading=true hasResult=false hasError=false inputDeckVisible=false compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=loading keyboardVisible=true hasResult=false hasError=false headerVisible=false inputDeckVisible=false resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=true visibleSurface=loading
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=loading keyboardVisible=true overflowGuard=true
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=false conditionSummaryTapEnabled=false conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=true retryButtonVisible=false
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=false compactHeaderVisible=false expandedInputDeckVisible=true inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=1 reason=preSearchInputDeck
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=loading isLoading=true hasResult=false hasError=false inputDeckVisible=false compactHeaderVisible=false emptyCardVisible=false errorCardVisible=false listVisible=false
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=loading keyboardVisible=false hasResult=false hasError=false headerVisible=false inputDeckVisible=false resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=false hasError=false isLoading=true visibleSurface=loading
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=loading keyboardVisible=false overflowGuard=true
+I/ImeTracker(29561): com.stepbytestudio.room_manager2:c5c2be57: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker(29561): com.stepbytestudio.room_manager2:15923201: onHidden
+I/flutter (29561): [Rakuten] response status=200 page=1 bytes=141616
+I/flutter (29561): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (29561): [RECOMMEND_TRACE] rawCount=30
+I/flutter (29561): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=1 statusCode=200 rawCount=30 durationMs=1003 success=true
+I/flutter (29561): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=1003 statusCode=200
+I/flutter (29561): [RakutenGenre][API] itemCode=o-kawaya:10092612 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=o-kawaya:10092612 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=netbaby:10046965 rawGenreId=201598 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netbaby:10046965 model.genreId=201598 model.genreName= jsonRaw=その他 jsonRolled=ベビー向けおもちゃ displayGenre=ベビー向けおもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=f041009-sendai:10000365 rawGenreId=553275 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=f041009-sendai:10000365 model.genreId=553275 model.genreName= jsonRaw=遊園地・テーマパーク jsonRolled=遊園地・テーマパーク displayGenre=遊園地・テーマパーク
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10038229 rawGenreId=406759 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10038229 model.genreId=406759 model.genreName= jsonRaw=こま jsonRolled=こま displayGenre=こま
+I/flutter (29561): [RakutenGenre][API] itemCode=o-kawaya:10068837 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=o-kawaya:10068837 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11822422 rawGenreId=201597 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11822422 model.genreId=201597 model.genreName= jsonRaw=手押し車・カタカタ jsonRolled=手押し車・カタカタ displayGenre=手押し車・カタカタ
+I/flutter (29561): [RakutenGenre][API] itemCode=yoikutsu:10039551 rawGenreId=505374 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=yoikutsu:10039551 model.genreId=505374 model.genreName= jsonRaw=スニーカー jsonRolled=スニーカー displayGenre=スニーカー
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:12053234 rawGenreId=201609 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:12053234 model.genreId=201609 model.genreName= jsonRaw=リズム・音楽 jsonRolled=リズム・音楽 displayGenre=リズム・音楽
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10786248 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10786248 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=f141003-yokohama:10000328 rawGenreId=553275 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=f141003-yokohama:10000328 model.genreId=553275 model.genreName= jsonRaw=遊園地・テーマパーク jsonRolled=遊園地・テーマパーク displayGenre=遊園地・テーマパーク
+I/flutter (29561): [RakutenGenre][API] itemCode=orange-baby:10032686 rawGenreId=207523 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=orange-baby:10032686 model.genreId=207523 model.genreName= jsonRaw=ボクシング jsonRolled=ボクシング displayGenre=ボクシング
+I/flutter (29561): [RakutenGenre][API] itemCode=futon:10048515 rawGenreId=406674 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=futon:10048515 model.genreId=406674 model.genreName= jsonRaw=タオルケット jsonRolled=タオルケット displayGenre=タオルケット
+I/flutter (29561): [RakutenGenre][API] itemCode=singuten:10001396 rawGenreId=201632 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=singuten:10001396 model.genreId=201632 model.genreName= jsonRaw=ぬいぐるみ jsonRolled=ぬいぐるみ displayGenre=ぬいぐるみ
+I/flutter (29561): [RakutenGenre][API] itemCode=f281000-kobe:10001403 rawGenreId=101954 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=f281000-kobe:10001403 model.genreId=101954 model.genreName= jsonRaw=その他 jsonRolled=カタログギフト・チケット displayGenre=カタログギフト・チケット
+I/flutter (29561): [RakutenGenre][API] itemCode=biccamera:12256886 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=biccamera:12256886 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11240487 rawGenreId=566440 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11240487 model.genreId=566440 model.genreName= jsonRaw=電車 jsonRolled=電車 displayGenre=電車
+I/flutter (29561): [RakutenGenre][API] itemCode=rakuten24:11139834 rawGenreId=214099 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=rakuten24:11139834 model.genreId=214099 model.genreName= jsonRaw=カレー jsonRolled=カレー displayGenre=カレー
+I/flutter (29561): [RakutenGenre][API] itemCode=bunbougu-shibuya:10028635 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=bunbougu-shibuya:10028635 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (29561): [RakutenGenre][API] itemCode=jism:13490702 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=jism:13490702 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10009351 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10009351 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=ballballoon:10000689 rawGenreId=213748 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=ballballoon:10000689 model.genreId=213748 model.genreName= jsonRaw=バルーン・風船 jsonRolled=バルーン・風船 displayGenre=バルーン・風船
+I/flutter (29561): [RakutenGenre][API] itemCode=sundrug:10084236 rawGenreId=100670 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=sundrug:10084236 model.genreId=100670 model.genreName= jsonRaw=ティッシュペーパー jsonRolled=ティッシュペーパー displayGenre=ティッシュペーパー
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10057188 rawGenreId=216045 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10057188 model.genreId=216045 model.genreName= jsonRaw=ポケットティッシュ jsonRolled=ポケットティッシュ displayGenre=ポケットティッシュ
+I/flutter (29561): [RakutenGenre][API] itemCode=keitaistrap:10075118 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=keitaistrap:10075118 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (29561): [RakutenGenre][API] itemCode=o-kawaya:10106369 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=o-kawaya:10106369 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10242175 rawGenreId=205281 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10242175 model.genreId=205281 model.genreName= jsonRaw=電話・携帯電話 jsonRolled=電話・携帯電話 displayGenre=電話・携帯電話
+I/flutter (29561): [RakutenGenre][API] itemCode=f401307-fukuoka:10000685 rawGenreId=553275 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=f401307-fukuoka:10000685 model.genreId=553275 model.genreName= jsonRaw=遊園地・テーマパーク jsonRolled=遊園地・テーマパーク displayGenre=遊園地・テーマパーク
+I/flutter (29561): [RakutenGenre][API] itemCode=orange-baby:10038241 rawGenreId=207522 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=orange-baby:10038241 model.genreId=207522 model.genreName= jsonRaw=サッカー jsonRolled=サッカー displayGenre=サッカー
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11880921 rawGenreId=101196 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11880921 model.genreId=101196 model.genreName= jsonRaw=その他 jsonRolled=スポーツトイ displayGenre=スポーツトイ
+I/flutter (29561): [RakutenGenre][API] itemCode=toysrus:10631119 rawGenreId=201597 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=toysrus:10631119 model.genreId=201597 model.genreName= jsonRaw=手押し車・カタカタ jsonRolled=手押し車・カタカタ displayGenre=手押し車・カタカタ
+I/flutter (29561): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=7/100 dropReg=22 dropDup=0 dropAppFilter=0 dropSavedShop=1
+I/flutter (29561): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (29561): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (29561): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter (29561): [Rakuten] response status=200 page=2 bytes=125512
+I/flutter (29561): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (29561): [RECOMMEND_TRACE] rawCount=30
+I/flutter (29561): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=2 statusCode=200 rawCount=30 durationMs=426 success=true
+I/flutter (29561): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=true durationMs=426 statusCode=200
+I/flutter (29561): [RakutenGenre][API] itemCode=est-926:10004978 rawGenreId=566092 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=est-926:10004978 model.genreId=566092 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=yoikutsu:10039513 rawGenreId=568327 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=yoikutsu:10039513 model.genreId=568327 model.genreName= jsonRaw=スニーカー jsonRolled=スニーカー displayGenre=スニーカー
+I/flutter (29561): [RakutenGenre][API] itemCode=futon:10064372 rawGenreId=406674 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=futon:10064372 model.genreId=406674 model.genreName= jsonRaw=タオルケット jsonRolled=タオルケット displayGenre=タオルケット
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10858474 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10858474 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:12058782 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:12058782 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11811704 rawGenreId=201598 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11811704 model.genreId=201598 model.genreName= jsonRaw=その他 jsonRolled=ベビー向けおもちゃ displayGenre=ベビー向けおもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=keitaistrap:10075119 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=keitaistrap:10075119 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=jism:13855068 rawGenreId=201598 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=jism:13855068 model.genreId=201598 model.genreName= jsonRaw=その他 jsonRolled=ベビー向けおもちゃ displayGenre=ベビー向けおもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=grengren:10000112 rawGenreId=566396 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=grengren:10000112 model.genreId=566396 model.genreName= jsonRaw=抱き人形 jsonRolled=抱き人形 displayGenre=抱き人形
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11742696 rawGenreId=201598 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11742696 model.genreId=201598 model.genreName= jsonRaw=その他 jsonRolled=ベビー向けおもちゃ displayGenre=ベビー向けおもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11608173 rawGenreId=205270 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11608173 model.genreId=205270 model.genreName= jsonRaw=お絵かき jsonRolled=お絵かき displayGenre=お絵かき
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10003728 rawGenreId=214282 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10003728 model.genreId=214282 model.genreName= jsonRaw=チョコレートスナック jsonRolled=チョコレートスナック displayGenre=チョコレートスナック
+I/flutter (29561): [RakutenGenre][API] itemCode=3upmikami:10001123 rawGenreId=214278 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=3upmikami:10001123 model.genreId=214278 model.genreName= jsonRaw=小袋菓子 jsonRolled=小袋菓子 displayGenre=小袋菓子
+I/flutter (29561): [RakutenGenre][API] itemCode=toysrus:10578194 rawGenreId=205218 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=toysrus:10578194 model.genreId=205218 model.genreName= jsonRaw=歩行器 jsonRolled=歩行器 displayGenre=歩行器
+I/flutter (29561): [RakutenGenre][API] itemCode=jism:14499802 rawGenreId=205270 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=jism:14499802 model.genreId=205270 model.genreName= jsonRaw=お絵かき jsonRolled=お絵かき displayGenre=お絵かき
+I/flutter (29561): [RakutenGenre][API] itemCode=babyshop8:10009653 rawGenreId=402788 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=babyshop8:10009653 model.genreId=402788 model.genreName= jsonRaw=大人用マスク jsonRolled=大人用マスク displayGenre=大人用マスク
+I/flutter (29561): [RakutenGenre][API] itemCode=okagesama-market:10002534 rawGenreId=100289 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=okagesama-market:10002534 model.genreId=100289 model.genreName= jsonRaw=その他 jsonRolled=チョコレート displayGenre=チョコレート
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10816609 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10816609 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=grengren:10019183 rawGenreId=201632 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=grengren:10019183 model.genreId=201632 model.genreName= jsonRaw=ぬいぐるみ jsonRolled=ぬいぐるみ displayGenre=ぬいぐるみ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11237450 rawGenreId=566440 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11237450 model.genreId=566440 model.genreName= jsonRaw=電車 jsonRolled=電車 displayGenre=電車
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10858464 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10858464 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11842466 rawGenreId=201632 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11842466 model.genreId=201632 model.genreName= jsonRaw=ぬいぐるみ jsonRolled=ぬいぐるみ displayGenre=ぬいぐるみ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:12107482 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:12107482 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10056667 rawGenreId=214280 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10056667 model.genreId=214280 model.genreName= jsonRaw=ラムネ jsonRolled=ラムネ displayGenre=ラムネ
+I/flutter (29561): [RakutenGenre][API] itemCode=sundrug:10105444 rawGenreId=304707 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=sundrug:10105444 model.genreId=304707 model.genreName= jsonRaw=グミ jsonRolled=グミ displayGenre=グミ
+I/flutter (29561): [RakutenGenre][API] itemCode=cheriejk:10021630 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=cheriejk:10021630 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=moumouhouse:10149814 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=moumouhouse:10149814 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter (29561): [RakutenGenre][API] itemCode=3upmikami:10007327 rawGenreId=100289 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=3upmikami:10007327 model.genreId=100289 model.genreName= jsonRaw=その他 jsonRolled=チョコレート displayGenre=チョコレート
+I/flutter (29561): [RakutenGenre][API] itemCode=cheriejk:10021621 rawGenreId=566107 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=cheriejk:10021621 model.genreId=566107 model.genreName= jsonRaw=その他 jsonRolled=トップス displayGenre=トップス
+I/flutter (29561): [RakutenGenre][API] itemCode=dagasi:10002379 rawGenreId=304707 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=dagasi:10002379 model.genreId=304707 model.genreName= jsonRaw=グミ jsonRolled=グミ displayGenre=グミ
+I/flutter (29561): [Rakuten] keywordManagedExclusion page=2 raw=30 parsed=30 visible=9/100 dropReg=28 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter (29561): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (29561): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (29561): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter (29561): [Rakuten] response status=200 page=3 bytes=114735
+I/flutter (29561): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (29561): [RECOMMEND_TRACE] rawCount=30
+I/flutter (29561): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=3 statusCode=200 rawCount=30 durationMs=355 success=true
+I/flutter (29561): [SHOP_SEARCH_API_CALL] page=3 hits=30 success=true durationMs=355 statusCode=200
+I/flutter (29561): [RakutenGenre][API] itemCode=3upmikami:10007628 rawGenreId=304707 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=3upmikami:10007628 model.genreId=304707 model.genreName= jsonRaw=グミ jsonRolled=グミ displayGenre=グミ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11982119 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11982119 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11860595 rawGenreId=566432 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11860595 model.genreId=566432 model.genreName= jsonRaw=ミニカー・トイカー jsonRolled=ミニカー・トイカー displayGenre=ミニカー・トイカー
+I/flutter (29561): [RakutenGenre][API] itemCode=3upmikami:10007165 rawGenreId=304707 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=3upmikami:10007165 model.genreId=304707 model.genreName= jsonRaw=グミ jsonRolled=グミ displayGenre=グミ
+I/flutter (29561): [RakutenGenre][API] itemCode=onestep:10441838 rawGenreId=214099 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=onestep:10441838 model.genreId=214099 model.genreName= jsonRaw=カレー jsonRolled=カレー displayGenre=カレー
+I/flutter (29561): [RakutenGenre][API] itemCode=o-kawaya:10039501 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=o-kawaya:10039501 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10007926 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10007926 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=exicoast02:10006538 rawGenreId=100289 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=exicoast02:10006538 model.genreId=100289 model.genreName= jsonRaw=その他 jsonRolled=チョコレート displayGenre=チョコレート
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10056665 rawGenreId=214282 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10056665 model.genreId=214282 model.genreName= jsonRaw=チョコレートスナック jsonRolled=チョコレートスナック displayGenre=チョコレートスナック
+I/flutter (29561): [RakutenGenre][API] itemCode=toysrus:10688277 rawGenreId=551707 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=toysrus:10688277 model.genreId=551707 model.genreName= jsonRaw=色・かたち jsonRolled=色・かたち displayGenre=色・かたち
+I/flutter (29561): [RakutenGenre][API] itemCode=algos-online:10044055 rawGenreId=505257 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=algos-online:10044055 model.genreId=505257 model.genreName= jsonRaw=ジグソーパズル jsonRolled=ジグソーパズル displayGenre=ジグソーパズル
+I/flutter (29561): [RakutenGenre][API] itemCode=moumouhouse:10149813 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=moumouhouse:10149813 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter (29561): [RakutenGenre][API] itemCode=okagesama-market:10002296 rawGenreId=214204 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=okagesama-market:10002296 model.genreId=214204 model.genreName= jsonRaw=あめ・キャンディ jsonRolled=あめ・キャンディ displayGenre=あめ・キャンディ
+I/flutter (29561): [RakutenGenre][API] itemCode=ju-suya:10009238 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=ju-suya:10009238 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter (29561): [RakutenGenre][API] itemCode=jism:14289097 rawGenreId=201597 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=jism:14289097 model.genreId=201597 model.genreName= jsonRaw=手押し車・カタカタ jsonRolled=手押し車・カタカタ displayGenre=手押し車・カタカタ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:12173518 rawGenreId=201609 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:12173518 model.genreId=201609 model.genreName= jsonRaw=リズム・音楽 jsonRolled=リズム・音楽 displayGenre=リズム・音楽
+I/flutter (29561): [RakutenGenre][API] itemCode=store-marufuku:10009247 rawGenreId=401371 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=store-marufuku:10009247 model.genreId=401371 model.genreName= jsonRaw=皿・プレート jsonRolled=皿・プレート displayGenre=皿・プレート
+I/flutter (29561): [RakutenGenre][API] itemCode=auc-ookawaya:10108955 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=auc-ookawaya:10108955 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=nttxstore:10003552 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=nttxstore:10003552 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11908103 rawGenreId=201609 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11908103 model.genreId=201609 model.genreName= jsonRaw=リズム・音楽 jsonRolled=リズム・音楽 displayGenre=リズム・音楽
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10040886 rawGenreId=214277 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10040886 model.genreId=214277 model.genreName= jsonRaw=駄菓子スナック jsonRolled=駄菓子スナック displayGenre=駄菓子スナック
+I/flutter (29561): [RakutenGenre][API] itemCode=onestep:10441840 rawGenreId=214099 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=onestep:10441840 model.genreId=214099 model.genreName= jsonRaw=カレー jsonRolled=カレー displayGenre=カレー
+I/flutter (29561): [RakutenGenre][API] itemCode=book:21056643 rawGenreId=208880 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=book:21056643 model.genreId=208880 model.genreName= jsonRaw=図鑑 jsonRolled=図鑑 displayGenre=図鑑
+I/flutter (29561): [RakutenGenre][API] itemCode=okagesama-market:10003034 rawGenreId=304707 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=okagesama-market:10003034 model.genreId=304707 model.genreName= jsonRaw=グミ jsonRolled=グミ displayGenre=グミ
+I/flutter (29561): [RakutenGenre][API] itemCode=okagesama-market:10002140 rawGenreId=200401 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=okagesama-market:10002140 model.genreId=200401 model.genreName= jsonRaw=ビスケット jsonRolled=ビスケット displayGenre=ビスケット
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10739184 rawGenreId=205250 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10739184 model.genreId=205250 model.genreName= jsonRaw=ブランコ jsonRolled=ブランコ displayGenre=ブランコ
+I/flutter (29561): [RakutenGenre][API] itemCode=drinkman:10018488 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=drinkman:10018488 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11860594 rawGenreId=566440 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11860594 model.genreId=566440 model.genreName= jsonRaw=電車 jsonRolled=電車 displayGenre=電車
+I/flutter (29561): [RakutenGenre][API] itemCode=toysrus:10704358 rawGenreId=201632 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=toysrus:10704358 model.genreId=201632 model.genreName= jsonRaw=ぬいぐるみ jsonRolled=ぬいぐるみ displayGenre=ぬいぐるみ
+I/flutter (29561): [RakutenGenre][API] itemCode=booxstore:12681599 rawGenreId=101260 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=booxstore:12681599 model.genreId=101260 model.genreName= jsonRaw=読み物 jsonRolled=読み物 displayGenre=読み物
+I/flutter (29561): [Rakuten] keywordManagedExclusion page=3 raw=30 parsed=30 visible=14/100 dropReg=23 dropDup=0 dropAppFilter=0 dropSavedShop=2
+I/flutter (29561): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (29561): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (29561): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter (29561): [Rakuten] response status=200 page=4 bytes=123295
+I/flutter (29561): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (29561): [RECOMMEND_TRACE] rawCount=30
+I/flutter (29561): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=4 statusCode=200 rawCount=30 durationMs=713 success=true
+I/flutter (29561): [SHOP_SEARCH_API_CALL] page=4 hits=30 success=true durationMs=713 statusCode=200
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11860600 rawGenreId=566432 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11860600 model.genreId=566432 model.genreName= jsonRaw=ミニカー・トイカー jsonRolled=ミニカー・トイカー displayGenre=ミニカー・トイカー
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11956785 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11956785 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=o-kawaya:10074710 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=o-kawaya:10074710 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10732860 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10732860 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10483098 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10483098 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=o-kawaya:10136303 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=o-kawaya:10136303 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10399680 rawGenreId=566440 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10399680 model.genreId=566440 model.genreName= jsonRaw=電車 jsonRolled=電車 displayGenre=電車
+I/flutter (29561): [RakutenGenre][API] itemCode=lec-character:10000379 rawGenreId=406997 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=lec-character:10000379 model.genreId=406997 model.genreName= jsonRaw=トリオセット jsonRolled=トリオセット displayGenre=トリオセット
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10008222 rawGenreId=213792 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10008222 model.genreId=213792 model.genreName= jsonRaw=当てくじ jsonRolled=当てくじ displayGenre=当てくじ
+I/flutter (29561): [RakutenGenre][API] itemCode=algos-online:10044056 rawGenreId=505257 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=algos-online:10044056 model.genreId=505257 model.genreName= jsonRaw=ジグソーパズル jsonRolled=ジグソーパズル displayGenre=ジグソーパズル
+I/flutter (29561): [RakutenGenre][API] itemCode=o-kawaya:10071353 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=o-kawaya:10071353 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=cheriejk:10021828 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=cheriejk:10021828 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=pivot-sanyoh:10194563 rawGenreId=563738 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=pivot-sanyoh:10194563 model.genreId=563738 model.genreName= jsonRaw=お医者さん jsonRolled=お医者さん displayGenre=お医者さん
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10399475 rawGenreId=563736 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10399475 model.genreId=563736 model.genreName= jsonRaw=家事 jsonRolled=家事 displayGenre=家事
+I/flutter (29561): [RakutenGenre][API] itemCode=f262111-kyotanabe:10000272 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=f262111-kyotanabe:10000272 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter (29561): [RakutenGenre][API] itemCode=okagesama-market:10000381 rawGenreId=214280 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=okagesama-market:10000381 model.genreId=214280 model.genreName= jsonRaw=ラムネ jsonRolled=ラムネ displayGenre=ラムネ
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10787902 rawGenreId=201632 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10787902 model.genreId=201632 model.genreName= jsonRaw=ぬいぐるみ jsonRolled=ぬいぐるみ displayGenre=ぬいぐるみ
+I/flutter (29561): [RakutenGenre][API] itemCode=takaoka:10049175 rawGenreId=564652 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=takaoka:10049175 model.genreId=564652 model.genreName= jsonRaw=コーンスナック jsonRolled=コーンスナック displayGenre=コーンスナック
+I/flutter (29561): [RakutenGenre][API] itemCode=singuten:10013238 rawGenreId=201632 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=singuten:10013238 model.genreId=201632 model.genreName= jsonRaw=ぬいぐるみ jsonRolled=ぬいぐるみ displayGenre=ぬいぐるみ
+I/flutter (29561): [RakutenGenre][API] itemCode=toysrus:10685821 rawGenreId=201598 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=toysrus:10685821 model.genreId=201598 model.genreName= jsonRaw=その他 jsonRolled=ベビー向けおもちゃ displayGenre=ベビー向けおもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=zakka-off:10012367 rawGenreId=403753 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=zakka-off:10012367 model.genreId=403753 model.genreName= jsonRaw=ハンドタオル jsonRolled=ハンドタオル displayGenre=ハンドタオル
+I/flutter (29561): [RakutenGenre][API] itemCode=futon:10072321 rawGenreId=205718 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=futon:10072321 model.genreId=205718 model.genreName= jsonRaw=クッション jsonRolled=クッション displayGenre=クッション
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11880920 rawGenreId=207522 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11880920 model.genreId=207522 model.genreName= jsonRaw=サッカー jsonRolled=サッカー displayGenre=サッカー
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:12172910 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:12172910 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=takaoka:10049173 rawGenreId=405018 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=takaoka:10049173 model.genreId=405018 model.genreName= jsonRaw=その他 jsonRolled=スナック菓子 displayGenre=スナック菓子
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11880924 rawGenreId=551266 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11880924 model.genreId=551266 model.genreName= jsonRaw=カスタネット jsonRolled=カスタネット displayGenre=カスタネット
+I/flutter (29561): [RakutenGenre][API] itemCode=o-kawaya:10106907 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=o-kawaya:10106907 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=o-kawaya:10054914 rawGenreId=201597 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=o-kawaya:10054914 model.genreId=201597 model.genreName= jsonRaw=手押し車・カタカタ jsonRolled=手押し車・カタカタ displayGenre=手押し車・カタカタ
+I/flutter (29561): [RakutenGenre][API] itemCode=stylife:15600249 rawGenreId=566092 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=stylife:15600249 model.genreId=566092 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=stylife:14550441 rawGenreId=501765 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=stylife:14550441 model.genreId=501765 model.genreName= jsonRaw=キッズ・ジュニア用ラッシュガード jsonRolled=キッズ・ジュニア用ラッシュガード displayGenre=キッズ・ジュニア用ラッシュガード
+I/flutter (29561): [Rakuten] keywordManagedExclusion page=4 raw=30 parsed=30 visible=17/100 dropReg=24 dropDup=0 dropAppFilter=0 dropSavedShop=3
+I/flutter (29561): [Rakuten] request start mode=proxy page=5 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (29561): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (29561): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=5&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter (29561): [Rakuten] response status=429 page=5 bytes=128
+I/flutter (29561): [RECOMMEND_TRACE] apiStatus=429
+I/flutter (29561): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter (29561): [Rakuten] searchItems failed page=5 attempt=1: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (29561): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (29561): <asynchronous suspension>
+I/flutter (29561): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (29561): <asynchronous suspension>
+I/flutter (29561): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1476:21)
+I/flutter (29561): <asynchronous suspension>
+I/flutter (29561): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:247:24)
+I/flutter (29561): <asynchronous suspension>
+I/flutter (29561): 
+I/flutter (29561): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=5 statusCode=- rawCount=0 durationMs=0 success=false
+I/flutter (29561): [SHOP_SEARCH_API_CALL] page=5 hits=30 success=false error=楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (29561): [Rakuten] keywordManagedExclusion page=5 failed: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (29561): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (29561): <asynchronous suspension>
+I/flutter (29561): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (29561): <asynchronous suspension>
+I/flutter (29561): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1476:21)
+I/flutter (29561): <asynchronous suspension>
+I/flutter (29561): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:247:24)
+I/flutter (29561): <asynchronous suspension>
+I/flutter (29561): 
+I/flutter (29561): [SHOP_SEARCH_PARTIAL_FAILURE] page=5 keptItems=17 messageForUser=一部のページ取得に失敗しました
+I/flutter (29561): [Rakuten] request start mode=proxy page=6 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (29561): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (29561): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=6&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter (29561): [Rakuten] response status=200 page=6 bytes=139764
+I/flutter (29561): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (29561): [RECOMMEND_TRACE] rawCount=30
+I/flutter (29561): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=6 statusCode=200 rawCount=30 durationMs=487 success=true
+I/flutter (29561): [SHOP_SEARCH_API_CALL] page=6 hits=30 success=true durationMs=487 statusCode=200
+I/flutter (29561): [RakutenGenre][API] itemCode=yoikutsu:10037770 rawGenreId=205154 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=yoikutsu:10037770 model.genreId=205154 model.genreName= jsonRaw=レインシューズ・長靴 jsonRolled=レインシューズ・長靴 displayGenre=レインシューズ・長靴
+I/flutter (29561): [RakutenGenre][API] itemCode=akadepamizutani:10030288 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=akadepamizutani:10030288 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=rakuten24:10251846 rawGenreId=553383 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=rakuten24:10251846 model.genreId=553383 model.genreName= jsonRaw=第三類医薬品 jsonRolled=第三類医薬品 displayGenre=第三類医薬品
+I/flutter (29561): [RakutenGenre][API] itemCode=stellashop:10003988 rawGenreId=205146 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=stellashop:10003988 model.genreId=205146 model.genreName= jsonRaw=傘 jsonRolled=傘 displayGenre=傘
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11984520 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11984520 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11647154 rawGenreId=201608 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11647154 model.genreId=201608 model.genreName= jsonRaw=文字・ことば jsonRolled=文字・ことば displayGenre=文字・ことば
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10447580 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10447580 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10008665 rawGenreId=566108 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10008665 model.genreId=566108 model.genreName= jsonRaw=パンツ jsonRolled=パンツ displayGenre=パンツ
+I/flutter (29561): [RakutenGenre][API] itemCode=auc-ookawaya:10082349 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=auc-ookawaya:10082349 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=toysrus:10654383 rawGenreId=201598 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=toysrus:10654383 model.genreId=201598 model.genreName= jsonRaw=その他 jsonRolled=ベビー向けおもちゃ displayGenre=ベビー向けおもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10807383 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10807383 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:12115414 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:12115414 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11608174 rawGenreId=205275 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11608174 model.genreId=205275 model.genreName= jsonRaw=その他 jsonRolled=ままごと・ごっこ遊びトイ displayGenre=ままごと・ごっこ遊びトイ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11237453 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11237453 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=sakurayashouten:10007640 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=sakurayashouten:10007640 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11680737 rawGenreId=207524 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11680737 model.genreId=207524 model.genreName= jsonRaw=ゴルフ jsonRolled=ゴルフ displayGenre=ゴルフ
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10007838 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10007838 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=office31:10031406 rawGenreId=215927 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=office31:10031406 model.genreId=215927 model.genreName= jsonRaw=フライパン jsonRolled=フライパン displayGenre=フライパン
+I/flutter (29561): [RakutenGenre][API] itemCode=moumouhouse:10372664 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=moumouhouse:10372664 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter (29561): [RakutenGenre][API] itemCode=babyshop8:10007830 rawGenreId=401167 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=babyshop8:10007830 model.genreId=401167 model.genreName= jsonRaw=虫よけ用品 jsonRolled=虫よけ用品 displayGenre=虫よけ用品
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11740444 rawGenreId=201609 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11740444 model.genreId=201609 model.genreName= jsonRaw=リズム・音楽 jsonRolled=リズム・音楽 displayGenre=リズム・音楽
+I/flutter (29561): [RakutenGenre][API] itemCode=toysrus:10700749 rawGenreId=566402 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=toysrus:10700749 model.genreId=566402 model.genreName= jsonRaw=お料理・お食事 jsonRolled=お料理・お食事 displayGenre=お料理・お食事
+I/flutter (29561): [RakutenGenre][API] itemCode=ballballoon:10000258 rawGenreId=213748 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=ballballoon:10000258 model.genreId=213748 model.genreName= jsonRaw=バルーン・風船 jsonRolled=バルーン・風船 displayGenre=バルーン・風船
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10159647 rawGenreId=201594 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10159647 model.genreId=201594 model.genreName= jsonRaw=ベッドメリー・モビール jsonRolled=ベッドメリー・モビール displayGenre=ベッドメリー・モビール
+I/flutter (29561): [RakutenGenre][API] itemCode=yoikutsu:10005083 rawGenreId=568327 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=yoikutsu:10005083 model.genreId=568327 model.genreName= jsonRaw=スニーカー jsonRolled=スニーカー displayGenre=スニーカー
+I/flutter (29561): [RakutenGenre][API] itemCode=grengren:10019855 rawGenreId=508422 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=grengren:10019855 model.genreId=508422 model.genreName= jsonRaw=ショルダーバッグ・メッセンジャーバッグ jsonRolled=ショルダーバッグ・メッセンジャーバッグ displayGenre=ショルダーバッグ・メッセンジャーバッグ
+I/flutter (29561): [RakutenGenre][API] itemCode=little-lemonade:10013047 rawGenreId=213748 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=little-lemonade:10013047 model.genreId=213748 model.genreName= jsonRaw=バルーン・風船 jsonRolled=バルーン・風船 displayGenre=バルーン・風船
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:12046436 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:12046436 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (29561): [RakutenGenre][API] itemCode=kame:10029563 rawGenreId=502925 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=kame:10029563 model.genreId=502925 model.genreName= jsonRaw=各種駄菓子セット jsonRolled=各種駄菓子セット displayGenre=各種駄菓子セット
+I/flutter (29561): [RakutenGenre][API] itemCode=stylife:15513995 rawGenreId=563889 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=stylife:15513995 model.genreId=563889 model.genreName= jsonRaw=スパッツ・レギンス jsonRolled=スパッツ・レギンス displayGenre=スパッツ・レギンス
+I/flutter (29561): [Rakuten] keywordManagedExclusion page=6 raw=30 parsed=30 visible=26/100 dropReg=16 dropDup=0 dropAppFilter=0 dropSavedShop=5
+I/flutter (29561): [Rakuten] request start mode=proxy page=7 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (29561): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (29561): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=7&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter (29561): [Rakuten] response status=200 page=7 bytes=123529
+I/flutter (29561): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (29561): [RECOMMEND_TRACE] rawCount=30
+I/flutter (29561): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=7 statusCode=200 rawCount=30 durationMs=344 success=true
+I/flutter (29561): [SHOP_SEARCH_API_CALL] page=7 hits=30 success=true durationMs=344 statusCode=200
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10399654 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10399654 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=ballballoon:10000891 rawGenreId=213748 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=ballballoon:10000891 model.genreId=213748 model.genreName= jsonRaw=バルーン・風船 jsonRolled=バルーン・風船 displayGenre=バルーン・風船
+I/flutter (29561): [RakutenGenre][API] itemCode=jism:14196736 rawGenreId=205275 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=jism:14196736 model.genreId=205275 model.genreName= jsonRaw=その他 jsonRolled=ままごと・ごっこ遊びトイ displayGenre=ままごと・ごっこ遊びトイ
+I/flutter (29561): [RakutenGenre][API] itemCode=jism:12016799 rawGenreId=406770 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=jism:12016799 model.genreId=406770 model.genreName= jsonRaw=コレクタードール jsonRolled=コレクタードール displayGenre=コレクタードール
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10495770 rawGenreId=205281 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10495770 model.genreId=205281 model.genreName= jsonRaw=電話・携帯電話 jsonRolled=電話・携帯電話 displayGenre=電話・携帯電話
+I/flutter (29561): [RakutenGenre][API] itemCode=superfoot-2:10000046 rawGenreId=568327 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=superfoot-2:10000046 model.genreId=568327 model.genreName= jsonRaw=スニーカー jsonRolled=スニーカー displayGenre=スニーカー
+I/flutter (29561): [RakutenGenre][API] itemCode=jism:13482717 rawGenreId=566397 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=jism:13482717 model.genreId=566397 model.genreName= jsonRaw=ミニドール jsonRolled=ミニドール displayGenre=ミニドール
+I/flutter (29561): [RakutenGenre][API] itemCode=cinemacollection:10482676 rawGenreId=216080 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=cinemacollection:10482676 model.genreId=216080 model.genreName= jsonRaw=クレヨン jsonRolled=クレヨン displayGenre=クレヨン
+I/flutter (29561): [RakutenGenre][API] itemCode=at-life:11881581 rawGenreId=506394 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=at-life:11881581 model.genreId=506394 model.genreName= jsonRaw=子供用マスク jsonRolled=子供用マスク displayGenre=子供用マスク
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10036906 rawGenreId=213788 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][API] itemCode=est-926:10006998 rawGenreId=566092 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10036906 model.genreId=213788 model.genreName= jsonRaw=水ヨーヨー jsonRolled=水ヨーヨー displayGenre=水ヨーヨー
+I/flutter (29561): [RakutenGenre][MAP] itemCode=est-926:10006998 model.genreId=566092 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=book:21641464 rawGenreId=208876 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=book:21641464 model.genreId=208876 model.genreName= jsonRaw=絵本（日本） jsonRolled=絵本（日本） displayGenre=絵本（日本）
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10010973 rawGenreId=406810 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10010973 model.genreId=406810 model.genreName= jsonRaw=食玩・おまけ jsonRolled=食玩・おまけ displayGenre=食玩・おまけ
+I/flutter (29561): [RakutenGenre][API] itemCode=livingut:10154850 rawGenreId=401372 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=livingut:10154850 model.genreId=401372 model.genreName= jsonRaw=マグカップ・コップ jsonRolled=マグカップ・コップ displayGenre=マグカップ・コップ
+I/flutter (29561): [RakutenGenre][MAP] itemCode=cherico:10020993 model.genreId=564235 model.genreName= jsonRaw=リストバンド jsonRolled=リストバンド displayGenre=リストバンド
+I/flutter (29561): [RakutenGenre][API] itemCode=cherico:10020993 rawGenreId=564235 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][API] itemCode=tsuruha:10072434 rawGenreId=100311 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=tsuruha:10072434 model.genreId=100311 model.genreName= jsonRaw=その他 jsonRolled=ふりかけ displayGenre=ふりかけ
+I/flutter (29561): [RakutenGenre][API] itemCode=toysrus:10710370 rawGenreId=551272 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=toysrus:10710370 model.genreId=551272 model.genreName= jsonRaw=車 jsonRolled=車 displayGenre=車
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10009378 rawGenreId=566108 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10009378 model.genreId=566108 model.genreName= jsonRaw=パンツ jsonRolled=パンツ displayGenre=パンツ
+
+I/flutter (29561): [RakutenGenre][API] itemCode=tigercat:10024798 rawGenreId=214204 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=tigercat:10024798 model.genreId=214204 model.genreName= jsonRaw=あめ・キャンディ jsonRolled=あめ・キャンディ displayGenre=あめ・キャンディ
+I/flutter (29561): [RakutenGenre][API] itemCode=k-honda:10009212 rawGenreId=213925 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][API] itemCode=nttxstore:10003320 rawGenreId=563739 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=k-honda:10009212 model.genreId=213925 model.genreName= jsonRaw=ハンドタオル・ハンカチ jsonRolled=ハンドタオル・ハンカチ displayGenre=ハンドタオル・ハンカチ
+I/flutter (29561): [RakutenGenre][MAP] itemCode=nttxstore:10003320 model.genreId=563739 model.genreName= jsonRaw=大工さん jsonRolled=大工さん displayGenre=大工さん
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10348394 rawGenreId=566400 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10348394 model.genreId=566400 model.genreName= jsonRaw=家具 jsonRolled=家具 displayGenre=家具
+[QUIT] Q received; stopping Flutter and controller.
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11894459 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11894459 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10038226 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11819235 rawGenreId=201608 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11819235 model.genreId=201608 model.genreName= jsonRaw=文字・ことば jsonRolled=文字・ことば displayGenre=文字・ことば
+I/flutter (29561): [RakutenGenre][API] itemCode=tigercat:10036410 rawGenreId=205275 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=tigercat:10036410 model.genreId=205275 model.genreName= jsonRaw=その他 jsonRolled=ままごと・ごっこ遊びトイ displayGenre=ままごと・ごっこ遊びトイ
+I/flutter (29561): [RakutenGenre][API] itemCode=tigercat:10016601 rawGenreId=566458 rawGenreName= rawKeys=genreId
+Stop command received. Stopping flutter...
+I/flutter (29561): [RakutenGenre][MAP] itemCode=tigercat:10016601 model.genreId=566458 model.genreName= jsonRaw=その他 jsonRolled=ファミリートイ・ゲーム displayGenre=ファミリートイ・ゲーム
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11240287 rawGenreId=213963 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10038226 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11240287 model.genreId=213963 model.genreName= jsonRaw=ベビーチェア本体 jsonRolled=ベビーチェア本体 displayGenre=ベビーチェア本体
+I/flutter (29561): [RakutenGenre][API] itemCode=onestep:10441842 rawGenreId=110496 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=onestep:10441842 model.genreId=110496 model.genreName= jsonRaw=パスタソース jsonRolled=パスタソース displayGenre=パスタソース
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11209906 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11209906 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [Rakuten] keywordManagedExclusion page=7 raw=30 parsed=30 visible=37/100 dropReg=17 dropDup=0 dropAppFilter=0 dropSavedShop=2
+I/flutter (29561): [Rakuten] request start mode=proxy page=8 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (29561): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (29561): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=8&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter (29561): [Rakuten] response status=200 page=8 bytes=127821
+I/flutter (29561): [RECOMMEND_TRACE] apiStatus=200
+
+====================================================
+Flutter process ended
+====================================================
+I/flutter (29561): [RECOMMEND_TRACE] rawCount=30
+I/flutter (29561): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=8 statusCode=200 rawCount=30 durationMs=421 success=true
+I/flutter (29561): [SHOP_SEARCH_API_CALL] page=8 hits=30 success=true durationMs=421 statusCode=200
+I/flutter (29561): [RakutenGenre][API] itemCode=office31:10027619 rawGenreId=301748 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=office31:10027619 model.genreId=301748 model.genreName= jsonRaw=クリアケース・クリアファイル jsonRolled=クリアケース・クリアファイル displayGenre=クリアケース・クリアファイル
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10403565 rawGenreId=213415 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10403565 model.genreId=213415 model.genreName= jsonRaw=ボウリング jsonRolled=ボウリング displayGenre=ボウリング
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10040887 rawGenreId=214277 rawGenreName= rawKeys=genreId
+[FLUTTER] Process ended. stopRequestedByQ=True
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10040887 model.genreId=214277 model.genreName= jsonRaw=駄菓子スナック jsonRolled=駄菓子スナック displayGenre=駄菓子スナック
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11645771 rawGenreId=205275 rawGenreName= rawKeys=genreId
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11645771 model.genreId=205275 model.genreName= jsonRaw=その他 jsonRolled=ままごと・ごっこ遊びトイ displayGenre=ままごと・ごっこ遊びトイ
+I/flutter (29561): [RakutenGenre][API] itemCode=3upmikami:10005019 rawGenreId=100289 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=3upmikami:10005019 model.genreId=100289 model.genreName= jsonRaw=その他 jsonRolled=チョコレート displayGenre=チョコレート
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11880946 rawGenreId=213405 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11880946 model.genreId=213405 model.genreName= jsonRaw=笛・ラッパ jsonRolled=笛・ラッパ displayGenre=笛・ラッパ
+I/flutter (29561): [RakutenGenre][API] itemCode=algos-online:10046009 rawGenreId=505257 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=algos-online:10046009 model.genreId=505257 model.genreName= jsonRaw=ジグソーパズル jsonRolled=ジグソーパズル displayGenre=ジグソーパズル
+I/flutter (29561): [RakutenGenre][API] itemCode=marimo-baby:10045794 rawGenreId=401127 rawGenreName= rawKeys=genreId
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+I/flutter (29561): [RakutenGenre][MAP] itemCode=marimo-baby:10045794 model.genreId=401127 model.genreName= jsonRaw=福袋 jsonRolled=福袋 displayGenre=福袋
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11931720 rawGenreId=205275 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11931720 model.genreId=205275 model.genreName= jsonRaw=その他 jsonRolled=ままごと・ごっこ遊びトイ displayGenre=ままごと・ごっこ遊びトイ
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10875123 rawGenreId=101196 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10875123 model.genreId=101196 model.genreName= jsonRaw=その他 jsonRolled=スポーツトイ displayGenre=スポーツトイ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11236658 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11236658 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (29561): [RakutenGenre][API] itemCode=okagesama-market:10002304 rawGenreId=214280 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=okagesama-market:10002304 model.genreId=214280 model.genreName= jsonRaw=ラムネ jsonRolled=ラムネ displayGenre=ラムネ
+I/flutter (29561): [RakutenGenre][API] itemCode=toysrus:10689657 rawGenreId=563736 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=toysrus:10689657 model.genreId=563736 model.genreName= jsonRaw=家事 jsonRolled=家事 displayGenre=家事
+I/flutter (29561): [RakutenGenre][API] itemCode=onestep:10441844 rawGenreId=201048 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=onestep:10441844 model.genreId=201048 model.genreName= jsonRaw=その他 jsonRolled=中華惣菜・点心 displayGenre=中華惣菜・点心
+I/flutter (29561): [RakutenGenre][API] itemCode=nttxstore:10002973 rawGenreId=201598 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=nttxstore:10002973 model.genreId=201598 model.genreName= jsonRaw=その他 jsonRolled=ベビー向けおもちゃ displayGenre=ベビー向けおもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11239974 rawGenreId=201632 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11239974 model.genreId=201632 model.genreName= jsonRaw=ぬいぐるみ jsonRolled=ぬいぐるみ displayGenre=ぬいぐるみ
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10785572 rawGenreId=566397 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10785572 model.genreId=566397 model.genreName= jsonRaw=ミニドール jsonRolled=ミニドール displayGenre=ミニドール
+I/flutter (29561): [RakutenGenre][API] itemCode=3upmikami:10007157 rawGenreId=214282 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=3upmikami:10007157 model.genreId=214282 model.genreName= jsonRaw=チョコレートスナック jsonRolled=チョコレートスナック displayGenre=チョコレートスナック
+I/flutter (29561): [RakutenGenre][API] itemCode=stylife:15275269 rawGenreId=563889 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=stylife:15275269 model.genreId=563889 model.genreName= jsonRaw=スパッツ・レギンス jsonRolled=スパッツ・レギンス displayGenre=スパッツ・レギンス
+I/flutter (29561): [RakutenGenre][API] itemCode=k-honda:10009404 rawGenreId=213925 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=k-honda:10009404 model.genreId=213925 model.genreName= jsonRaw=ハンドタオル・ハンカチ jsonRolled=ハンドタオル・ハンカチ displayGenre=ハンドタオル・ハンカチ
+I/flutter (29561): [RakutenGenre][API] itemCode=at-life:12620827 rawGenreId=205761 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=at-life:12620827 model.genreId=205761 model.genreName= jsonRaw=入浴剤 jsonRolled=入浴剤 displayGenre=入浴剤
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10501227 rawGenreId=566436 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10501227 model.genreId=566436 model.genreName= jsonRaw=セット jsonRolled=セット displayGenre=セット
+I/flutter (29561): [RakutenGenre][API] itemCode=blueballoon:10000141 rawGenreId=213748 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=blueballoon:10000141 model.genreId=213748 model.genreName= jsonRaw=バルーン・風船 jsonRolled=バルーン・風船 displayGenre=バルーン・風船
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10060488 rawGenreId=111163 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10060488 model.genreId=111163 model.genreName= jsonRaw=シール・ステッカー jsonRolled=シール・ステッカー displayGenre=シール・ステッカー
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11884031 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11884031 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11965048 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11965048 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=applied2:11728720 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=applied2:11728720 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10040889 rawGenreId=204429 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10040889 model.genreId=204429 model.genreName= jsonRaw=その他 jsonRolled=駄菓子 displayGenre=駄菓子
+I/flutter (29561): [RakutenGenre][API] itemCode=stylife:15553737 rawGenreId=213872 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=stylife:15553737 model.genreId=213872 model.genreName= jsonRaw=キャップ jsonRolled=キャップ displayGenre=キャップ
+I/flutter (29561): [RakutenGenre][API] itemCode=booxstore:10901009 rawGenreId=101260 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=booxstore:10901009 model.genreId=101260 model.genreName= jsonRaw=読み物 jsonRolled=読み物 displayGenre=読み物
+I/flutter (29561): [Rakuten] keywordManagedExclusion page=8 raw=30 parsed=30 visible=50/100 dropReg=10 dropDup=0 dropAppFilter=0 dropSavedShop=7
+I/flutter (29561): [Rakuten] request start mode=proxy page=9 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (29561): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (29561): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=9&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter (29561): [Rakuten] response status=200 page=9 bytes=120371
+I/flutter (29561): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (29561): [RECOMMEND_TRACE] rawCount=30
+I/flutter (29561): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=9 statusCode=200 rawCount=30 durationMs=372 success=true
+I/flutter (29561): [SHOP_SEARCH_API_CALL] page=9 hits=30 success=true durationMs=372 statusCode=200
+I/flutter (29561): [RakutenGenre][API] itemCode=jeijei:10043748 rawGenreId=505257 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=jeijei:10043748 model.genreId=505257 model.genreName= jsonRaw=ジグソーパズル jsonRolled=ジグソーパズル displayGenre=ジグソーパズル
+I/flutter (29561): [RakutenGenre][API] itemCode=lec-character:10000015 rawGenreId=406987 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=lec-character:10000015 model.genreId=406987 model.genreName= jsonRaw=子供用水筒・マグボトル jsonRolled=子供用水筒・マグボトル displayGenre=子供用水筒・マグボトル
+I/flutter (29561): [RakutenGenre][API] itemCode=yoikutsu:10005084 rawGenreId=568327 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=yoikutsu:10005084 model.genreId=568327 model.genreName= jsonRaw=スニーカー jsonRolled=スニーカー displayGenre=スニーカー
+I/flutter (29561): [RakutenGenre][API] itemCode=at-life:11881582 rawGenreId=506394 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=at-life:11881582 model.genreId=506394 model.genreName= jsonRaw=子供用マスク jsonRolled=子供用マスク displayGenre=子供用マスク
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11987634 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11987634 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10009219 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10009219 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=cheriejk:10021806 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=cheriejk:10021806 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=okagesama-market:10003033 rawGenreId=304707 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=okagesama-market:10003033 model.genreId=304707 model.genreName= jsonRaw=グミ jsonRolled=グミ displayGenre=グミ
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10847873 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10847873 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10072693 rawGenreId=406704 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10072693 model.genreId=406704 model.genreName= jsonRaw=セット jsonRolled=セット displayGenre=セット
+I/flutter (29561): [RakutenGenre][API] itemCode=king-bear777:10001661 rawGenreId=201632 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=king-bear777:10001661 model.genreId=201632 model.genreName= jsonRaw=ぬいぐるみ jsonRolled=ぬいぐるみ displayGenre=ぬいぐるみ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:12001696 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:12001696 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=kishi-gum:10004800 rawGenreId=405427 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=kishi-gum:10004800 model.genreId=405427 model.genreName= jsonRaw=ぬりえ jsonRolled=ぬりえ displayGenre=ぬりえ
+I/flutter (29561): [RakutenGenre][API] itemCode=jism:13463903 rawGenreId=568356 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=jism:13463903 model.genreId=568356 model.genreName= jsonRaw=ねんど jsonRolled=ねんど displayGenre=ねんど
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11215513 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11215513 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10009387 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10009387 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10777057 rawGenreId=566432 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10777057 model.genreId=566432 model.genreName= jsonRaw=ミニカー・トイカー jsonRolled=ミニカー・トイカー displayGenre=ミニカー・トイカー
+I/flutter (29561): [RakutenGenre][API] itemCode=office31:10032619 rawGenreId=508418 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=office31:10032619 model.genreId=508418 model.genreName= jsonRaw=レッスンバッグ・トートバッグ jsonRolled=レッスンバッグ・トートバッグ displayGenre=レッスンバッグ・トートバッグ
+I/flutter (29561): [RakutenGenre][API] itemCode=lecdirect:10002590 rawGenreId=505416 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=lecdirect:10002590 model.genreId=505416 model.genreName= jsonRaw=手・口ふきウェットティッシュ jsonRolled=手・口ふきウェットティッシュ displayGenre=手・口ふきウェットティッシュ
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10160946 rawGenreId=213424 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10160946 model.genreId=213424 model.genreName= jsonRaw=電動ロボット jsonRolled=電動ロボット displayGenre=電動ロボット
+I/flutter (29561): [RakutenGenre][API] itemCode=livingut:10138776 rawGenreId=407060 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=livingut:10138776 model.genreId=407060 model.genreName= jsonRaw=その他 jsonRolled=弁当箱・水筒 displayGenre=弁当箱・水筒
+I/flutter (29561): [RakutenGenre][API] itemCode=akadepamizutani:10030289 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=akadepamizutani:10030289 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=bookoffonline:11200613 rawGenreId=207505 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=bookoffonline:11200613 model.genreId=207505 model.genreName= jsonRaw=学習・教育 jsonRolled=学習・教育 displayGenre=学習・教育
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:11860597 rawGenreId=566432 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:11860597 model.genreId=566432 model.genreName= jsonRaw=ミニカー・トイカー jsonRolled=ミニカー・トイカー displayGenre=ミニカー・トイカー
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10007987 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10007987 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=o-kawaya:10071959 rawGenreId=101914 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=o-kawaya:10071959 model.genreId=101914 model.genreName= jsonRaw=その他 jsonRolled=おもちゃ displayGenre=おもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10788112 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10788112 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (29561): [RakutenGenre][API] itemCode=toysrus:10674970 rawGenreId=201598 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=toysrus:10674970 model.genreId=201598 model.genreName= jsonRaw=その他 jsonRolled=ベビー向けおもちゃ displayGenre=ベビー向けおもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=pivot-sanyoh:10229414 rawGenreId=101872 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=pivot-sanyoh:10229414 model.genreId=101872 model.genreName= jsonRaw=その他 jsonRolled=文房具・事務用品 displayGenre=文房具・事務用品
+I/flutter (29561): [RakutenGenre][API] itemCode=futontown:10002283 rawGenreId=508241 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=futontown:10002283 model.genreId=508241 model.genreName= jsonRaw=抱き枕 jsonRolled=抱き枕 displayGenre=抱き枕
+I/flutter (29561): [Rakuten] keywordManagedExclusion page=9 raw=30 parsed=30 visible=70/100 dropReg=3 dropDup=0 dropAppFilter=0 dropSavedShop=7
+I/flutter (29561): [Rakuten] request start mode=proxy page=10 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (29561): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (29561): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=10&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter (29561): [Rakuten] response status=200 page=10 bytes=124529
+I/flutter (29561): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (29561): [RECOMMEND_TRACE] rawCount=30
+I/flutter (29561): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=10 statusCode=200 rawCount=30 durationMs=369 success=true
+I/flutter (29561): [SHOP_SEARCH_API_CALL] page=10 hits=30 success=true durationMs=369 statusCode=200
+I/flutter (29561): [RakutenGenre][API] itemCode=ballballoon:10000256 rawGenreId=213748 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=ballballoon:10000256 model.genreId=213748 model.genreName= jsonRaw=バルーン・風船 jsonRolled=バルーン・風船 displayGenre=バルーン・風船
+I/flutter (29561): [RakutenGenre][API] itemCode=bookoffonline:11121491 rawGenreId=207505 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=bookoffonline:11121491 model.genreId=207505 model.genreName= jsonRaw=学習・教育 jsonRolled=学習・教育 displayGenre=学習・教育
+I/flutter (29561): [RakutenGenre][API] itemCode=cherico:10016874 rawGenreId=213926 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=cherico:10016874 model.genreId=213926 model.genreName= jsonRaw=その他 jsonRolled=タオル・ハンカチ displayGenre=タオル・ハンカチ
+I/flutter (29561): [RakutenGenre][API] itemCode=grengren:10028156 rawGenreId=508414 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=grengren:10028156 model.genreId=508414 model.genreName= jsonRaw=バックパック・リュック jsonRolled=バックパック・リュック displayGenre=バックパック・リュック
+I/flutter (29561): [RakutenGenre][API] itemCode=cherico:10000178 rawGenreId=213925 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=cherico:10000178 model.genreId=213925 model.genreName= jsonRaw=ハンドタオル・ハンカチ jsonRolled=ハンドタオル・ハンカチ displayGenre=ハンドタオル・ハンカチ
+I/flutter (29561): [RakutenGenre][API] itemCode=emedama:11195309 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=emedama:11195309 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10005023 rawGenreId=551632 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10005023 model.genreId=551632 model.genreName= jsonRaw=トレーニングパンツ jsonRolled=トレーニングパンツ displayGenre=トレーニングパンツ
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10040890 rawGenreId=204429 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10040890 model.genreId=204429 model.genreName= jsonRaw=その他 jsonRolled=駄菓子 displayGenre=駄菓子
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10009289 rawGenreId=205179 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10009289 model.genreId=205179 model.genreName= jsonRaw=Tシャツ・カットソー jsonRolled=Tシャツ・カットソー displayGenre=Tシャツ・カットソー
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10445432 rawGenreId=563736 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10445432 model.genreId=563736 model.genreName= jsonRaw=家事 jsonRolled=家事 displayGenre=家事
+I/flutter (29561): [RakutenGenre][API] itemCode=office31:10031552 rawGenreId=216080 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=office31:10031552 model.genreId=216080 model.genreName= jsonRaw=クレヨン jsonRolled=クレヨン displayGenre=クレヨン
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10008699 rawGenreId=205175 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10008699 model.genreId=205175 model.genreName= jsonRaw=コート・ジャケット jsonRolled=コート・ジャケット displayGenre=コート・ジャケット
+I/flutter (29561): [RakutenGenre][API] itemCode=aikawa:10001073 rawGenreId=213789 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=aikawa:10001073 model.genreId=213789 model.genreName= jsonRaw=お面 jsonRolled=お面 displayGenre=お面
+I/flutter (29561): [RakutenGenre][API] itemCode=festival-plaza:10011597 rawGenreId=213789 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=festival-plaza:10011597 model.genreId=213789 model.genreName= jsonRaw=お面 jsonRolled=お面 displayGenre=お面
+I/flutter (29561): [RakutenGenre][API] itemCode=algos-online:10044052 rawGenreId=505257 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=algos-online:10044052 model.genreId=505257 model.genreName= jsonRaw=ジグソーパズル jsonRolled=ジグソーパズル displayGenre=ジグソーパズル
+I/flutter (29561): [RakutenGenre][API] itemCode=orange-baby:10037017 rawGenreId=201598 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=orange-baby:10037017 model.genreId=201598 model.genreName= jsonRaw=その他 jsonRolled=ベビー向けおもちゃ displayGenre=ベビー向けおもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:12006735 rawGenreId=563737 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:12006735 model.genreId=563737 model.genreName= jsonRaw=お店屋さん jsonRolled=お店屋さん displayGenre=お店屋さん
+I/flutter (29561): [RakutenGenre][API] itemCode=dagasi:10005817 rawGenreId=304707 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=dagasi:10005817 model.genreId=304707 model.genreName= jsonRaw=グミ jsonRolled=グミ displayGenre=グミ
+I/flutter (29561): [RakutenGenre][API] itemCode=algos-online:10044053 rawGenreId=505257 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=algos-online:10044053 model.genreId=505257 model.genreName= jsonRaw=ジグソーパズル jsonRolled=ジグソーパズル displayGenre=ジグソーパズル
+I/flutter (29561): [RakutenGenre][API] itemCode=booxstore:13133349 rawGenreId=101260 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=booxstore:13133349 model.genreId=101260 model.genreName= jsonRaw=読み物 jsonRolled=読み物 displayGenre=読み物
+I/flutter (29561): [RakutenGenre][API] itemCode=netten-sanki:10008828 rawGenreId=508439 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netten-sanki:10008828 model.genreId=508439 model.genreName= jsonRaw=スウェット・トレーナー jsonRolled=スウェット・トレーナー displayGenre=スウェット・トレーナー
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10791074 rawGenreId=201606 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10791074 model.genreId=201606 model.genreName= jsonRaw=知育パズル jsonRolled=知育パズル displayGenre=知育パズル
+I/flutter (29561): [RakutenGenre][API] itemCode=office31:10031100 rawGenreId=403809 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=office31:10031100 model.genreId=403809 model.genreName= jsonRaw=定期入れ・パスケース jsonRolled=定期入れ・パスケース displayGenre=定期入れ・パスケース
+I/flutter (29561): [RakutenGenre][API] itemCode=jism:13538938 rawGenreId=201593 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=jism:13538938 model.genreId=201593 model.genreName= jsonRaw=おふろのおもちゃ jsonRolled=おふろのおもちゃ displayGenre=おふろのおもちゃ
+I/flutter (29561): [RakutenGenre][API] itemCode=rakuten24:11324396 rawGenreId=110487 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=rakuten24:11324396 model.genreId=110487 model.genreName= jsonRaw=ラーメン jsonRolled=ラーメン displayGenre=ラーメン
+I/flutter (29561): [RakutenGenre][API] itemCode=netbaby:10048603 rawGenreId=406987 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=netbaby:10048603 model.genreId=406987 model.genreName= jsonRaw=子供用水筒・マグボトル jsonRolled=子供用水筒・マグボトル displayGenre=子供用水筒・マグボトル
+I/flutter (29561): [RakutenGenre][API] itemCode=moumouhouse:10372782 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=moumouhouse:10372782 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10732855 rawGenreId=201605 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10732855 model.genreId=201605 model.genreName= jsonRaw=かず・計算 jsonRolled=かず・計算 displayGenre=かず・計算
+I/flutter (29561): [RakutenGenre][API] itemCode=ikurun:10041179 rawGenreId=405427 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=ikurun:10041179 model.genreId=405427 model.genreName= jsonRaw=ぬりえ jsonRolled=ぬりえ displayGenre=ぬりえ
+I/flutter (29561): [RakutenGenre][API] itemCode=lops:10003902 rawGenreId=403725 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=lops:10003902 model.genreId=403725 model.genreName= jsonRaw=靴下 jsonRolled=靴下 displayGenre=靴下
+I/flutter (29561): [Rakuten] keywordManagedExclusion page=10 raw=30 parsed=30 visible=96/100 dropReg=1 dropDup=0 dropAppFilter=0 dropSavedShop=3
+I/flutter (29561): [Rakuten] request start mode=proxy page=11 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (29561): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (29561): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=11&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3
+I/flutter (29561): [Rakuten] response status=200 page=11 bytes=116159
+I/flutter (29561): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (29561): [RECOMMEND_TRACE] rawCount=30
+I/flutter (29561): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=11 statusCode=200 rawCount=30 durationMs=446 success=true
+I/flutter (29561): [SHOP_SEARCH_API_CALL] page=11 hits=30 success=true durationMs=446 statusCode=200
+I/flutter (29561): [RakutenGenre][API] itemCode=takaoka:10046526 rawGenreId=564652 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=takaoka:10046526 model.genreId=564652 model.genreName= jsonRaw=コーンスナック jsonRolled=コーンスナック displayGenre=コーンスナック
+I/flutter (29561): [RakutenGenre][API] itemCode=es-toys:12076806 rawGenreId=201610 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=es-toys:12076806 model.genreId=201610 model.genreName= jsonRaw=その他 jsonRolled=知育玩具・学習玩具 displayGenre=知育玩具・学習玩具
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10699080 rawGenreId=207522 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10699080 model.genreId=207522 model.genreName= jsonRaw=サッカー jsonRolled=サッカー displayGenre=サッカー
+I/flutter (29561): [RakutenGenre][API] itemCode=edion:10399890 rawGenreId=566402 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=edion:10399890 model.genreId=566402 model.genreName= jsonRaw=お料理・お食事 jsonRolled=お料理・お食事 displayGenre=お料理・お食事
+I/flutter (29561): [RakutenGenre][API] itemCode=mraco:10000713 rawGenreId=110692 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=mraco:10000713 model.genreId=110692 model.genreName= jsonRaw=野菜・果実飲料 jsonRolled=野菜・果実飲料 displayGenre=野菜・果実飲料
+I/flutter (29561): [RakutenGenre][API] itemCode=book:20859861 rawGenreId=208876 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=book:20859861 model.genreId=208876 model.genreName= jsonRaw=絵本（日本） jsonRolled=絵本（日本） displayGenre=絵本（日本）
+I/flutter (29561): [RakutenGenre][API] itemCode=auc-modelbase-z:10008815 rawGenreId=553785 rawGenreName= rawKeys=genreId
+I/flutter (29561): [RakutenGenre][MAP] itemCode=auc-modelbase-z:10008815 model.genreId=553785 model.genreName= jsonRaw=ガチャガチャ jsonRolled=ガチャガチャ displayGenre=ガチャガチャ
+I/flutter (29561): [Rakuten] keywordManagedExclusion page=11 raw=30 parsed=7 visible=100/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=3
+I/flutter (29561): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=10 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter (29561): [SEARCH_FETCH_100_AUDIT] mode=product keyword=アンパンマン genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=11 pagesSucceeded=10 pagesFailed=1 rawTotal=300 excludedCandidate=143 excludedDone=1 excludedSafety=0 excludedDuplicate=0 excludedNoImage=0 excludedOther=0 excludedSavedShop=33 displayCount=100 stopReason=reachedTarget
+I/flutter (29561): [SHOP_SEARCH_FETCH_RESULT] screen=product apiCalls=10 rawItems=true dedupedItems=100 safetyExcluded=0 duplicateExcluded=0 registeredExcluded=144 savedShopExcluded=33 displayItems=100 failedPages=1 reason=reachedTarget
+I/flutter (29561): [SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+I/flutter (29561): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=6
+I/flutter (29561): [SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter (29561): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter (29561): [GenreMaster] search prefetch skip resolvedLocally=68
+I/flutter (29561): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter (29561): [SEARCH_LAYOUT_PHASE_AUDIT] previousPhase=loading nextPhase=result mode=productSearch reason=build
+I/flutter (29561): [SEARCH_PHASE_TRANSITION_AUDIT] previousPhase=loading nextPhase=result mode=productSearch hasResultBefore=false hasResultAfter=true hasErrorBefore=false hasErrorAfter=false isLoading=false triggeredBy=build
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=true conditionSummaryTapEnabled=true conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=false retryButtonVisible=true
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=true compactHeaderVisible=true expandedInputDeckVisible=false inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=0 reason=resultsUseCompactHeaderOnly
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=result isLoading=false hasResult=true hasError=false inputDeckVisible=false compactHeaderVisible=true emptyCardVisible=false errorCardVisible=false listVisible=true
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=success keyboardVisible=false hasResult=true hasError=false headerVisible=true inputDeckVisible=false resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=true hasError=false isLoading=false visibleSurface=result
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=result keyboardVisible=false overflowGuard=true
+I/flutter (29561): [SEARCH_RESULT_CONDITION_SUMMARY_AUDIT] mode=productSearch summaryLine1=アンパンマン summaryLine2=条件：価格指定なし shopNameShown=false genreNameShown=false keywordShown=true
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=true conditionSummaryTapEnabled=true conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=false retryButtonVisible=true
+I/flutter (29561): [SEARCH_RESULT_HEADER_RENDER] screen=productSearch resultCount=100 hasLongDescription=false actions=changeCondition,sort,retry
+I/flutter (29561): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter (29561): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=387.42857142857144 selectedMode=product clipped=false horizontalScrollable=true
+I/flutter (29561): [PRODUCT_SAFETY_FILTER] source=productSearch itemCode=futon:10048515 title=【SNSで紹介されました！】アンパンマン お昼寝 ケット 冷感 夏用 ひんやり 接触冷感 夏 保育園 85×115cm 子供 子ども こども キッズ ベビー キャラクター それいけ！アンパンマン 総柄 ピンク ブルー イエロー genreName= shopName=西川など寝具専門店こだわり安眠館 blocked=true reason=adult
+I/flutter (29561): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=futon:10048515 matchedKeywords=
+I/flutter (29561): [PRODUCT_SAFETY_FILTER] source=productSearch itemCode=yoikutsu:10039513 title=【5/23 20:00-5/27 1:59 10%OFFクーポン】それいけ！アンパンマン ベビーシューズ 子供靴 ドキンちゃん コキンちゃん ばいきんまん 男の子 女の子 ムーンスター moonstar【2025年秋新作】AP B59 イエロー genreName= shopName=ムーンスター公式ショップ blocked=true reason=adult
+I/flutter (29561): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=yoikutsu:10039513 matchedKeywords=
+I/flutter (29561): [PRODUCT_SAFETY_FILTER] source=productSearch itemCode=grengren:10028156 title=アンパンマン ミニてさげ (ピンク・ブルー・イエロー)（ANW-1300）日本製/トートバッグ/手提げ/バッグ/かばん/小物入れ/キャラクター/かわいい/子ども/キッズ/幼稚園/入園/通園/おもちゃ/雑貨/グッズ/ギフト/プレゼント genreName= shopName=グリングリン blocked=true reason=adult
+I/flutter (29561): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=grengren:10028156 matchedKeywords=
+I/flutter (29561): [PRODUCT_SAFETY_FILTER] source=productSearch itemCode=netten-sanki:10005023 title=アンパンマン トレーニングパンツ 3層 2枚組 トレパン アニメ キャラクター 男児 女児 ベビー 子供 下着 インナー 肌着 90 95 100 110【2点までメール便可】 genreName= shopName=サンキインターネット販売店 blocked=true reason=adult
+I/flutter (29561): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=netten-sanki:10005023 matchedKeywords=
+I/flutter (29561): [Rakuten] UI preferred excludes before=100 after=96 candidateExclude=0 doneExclude=0 savedShopExclude=0 safetyExclude=4 searchScopeShopCode=-
+I/flutter (29561): [SEARCH_RESULT_UNDER_100_REASON] mode=productSearch displayCount=96 target=100 reason=safetyFiltered uiSafetyExcluded=4 apiDisplayBeforeUi=100
+I/flutter (29561): [SELECTION_UI_REDESIGN] screen=productSearch selectionModeRemoved=true checkboxAlwaysVisible=true radioLikeCircleRemoved=true
+I/flutter (29561): [SELECTION_UI_AUDIT] screen=productSearch supportsBulkSelection=true selectAllVisible=true selectedCount=0 totalSelectable=96
+I/flutter (29561): [RakutenGenre][UI] itemCode=festival-plaza:10038229 ui.genreId=406759 ui.genreName=- ui.label=こま
+I/flutter (29561): [RakutenGenre][MASTER] itemCode=festival-plaza:10038229 genreId=406759 masterHit=true resolvedGenreName=こま
+I/flutter (29561): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (29561): [RakutenGenre][UI] itemCode=o-kawaya:10068837 ui.genreId=101914 ui.genreName=- ui.label=おもちゃ
+I/flutter (29561): [RakutenGenre][MASTER] itemCode=o-kawaya:10068837 genreId=101914 masterHit=true resolvedGenreName=おもちゃ
+I/flutter (29561): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (29561): [RakutenGenre][UI] itemCode=biccamera:12256886 ui.genreId=563737 ui.genreName=- ui.label=お店屋さん
+I/flutter (29561): [RakutenGenre][MASTER] itemCode=biccamera:12256886 genreId=563737 masterHit=true resolvedGenreName=お店屋さん
+I/flutter (29561): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (29561): [RakutenGenre][UI] itemCode=bunbougu-shibuya:10028635 ui.genreId=201606 ui.genreName=- ui.label=知育パズル
+I/flutter (29561): [RakutenGenre][MASTER] itemCode=bunbougu-shibuya:10028635 genreId=201606 masterHit=true resolvedGenreName=知育パズル
+I/flutter (29561): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (29561): [SEARCH_RESULT_PARENT_CONSTRAINT_AUDIT] mode=productSearch phase=result screenHeight=844.5714285714286 safeAreaTop=0.0 safeAreaBottom=0.0 appBottomNavHeight=56.0 outerAvailableHeight=844.5714285714286 shellBodyHeight=844.5714285714286 resultSurfaceHeight=376.2142857142857 headerActualHeight=220.0 actionRowActualHeight=compactHeader bulkHeaderActualHeight=44 listParentHeight=324.2142857142857 listViewportHeight=324.2142857142857 calculatedExpectedListHeight=112.21428571428572 missingHeight=0.0 constraintSource=compactHeaderNoLongerSplitsFlexWithExpanded
+I/flutter (29561): [SEARCH_RESULT_VIEWPORT_AUDIT] mode=productSearch phase=result screenHeight=844.5714285714286 headerHeight=220.0 bulkHeaderHeight=bulkRow bottomNavHeight=56.0 bottomActionBarVisible=false bottomActionBarHeight=0.0 listViewportHeight=324.2142857142857 listBottomPadding=12.0 unusedBottomSpaceEstimate=0.0 resultCount=96 firstVisibleIndex=0 lastVisibleIndex=-1
+I/flutter (29561): [SEARCH_RESULT_BLANK_AREA_AUDIT] mode=productSearch screenHeight=844.5714285714286 listBottomGlobalY=630.3571428571429 bottomNavTopGlobalY=788.5714285714286 blankHeightBetweenListAndBottomNav=158.21428571428567 bottomBarVisible=false bottomBarTopGlobalY=- reason=parentConstraintOrFlexSplit
+I/flutter (29561): [SEARCH_BOTTOM_SPACE_AUDIT] mode=productSearch hasSelection=false selectedCount=0 bottomBarVisible=false reservedBottomSpace=0.0 actualBottomPadding=12.0 reason=noSelectionMinimalPad
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=true conditionSummaryTapEnabled=true conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=false retryButtonVisible=true
+I/flutter (29561): [SEARCH_HEADER_DUPLICATE_AUDIT] mode=productSearch hasResult=true compactHeaderVisible=true expandedInputDeckVisible=false inputDeckRenderedInList=false renderCountOfModeSelector=1 renderCountOfSearchInput=0 reason=resultsUseCompactHeaderOnly
+I/flutter (29561): [SEARCH_SURFACE_PHASE_AUDIT] mode=productSearch phase=result isLoading=false hasResult=true hasError=false inputDeckVisible=false compactHeaderVisible=true emptyCardVisible=false errorCardVisible=false listVisible=true
+I/flutter (29561): [SEARCH_OVERFLOW_GUARD_AUDIT] mode=productSearch phase=success keyboardVisible=false hasResult=true hasError=false headerVisible=true inputDeckVisible=false resultAreaExpanded=true errorCardInsideExpanded=false availableHeight=844.5714285714286 bottomInset=0.0
+I/flutter (29561): [SEARCH_ERROR_STATE_AUDIT] mode=productSearch hasPreviousResult=true hasError=false isLoading=false visibleSurface=result
+I/flutter (29561): [SEARCH_LAYOUT_STABILITY] phase=result keyboardVisible=false overflowGuard=true
+I/flutter (29561): [SEARCH_RESULT_CONDITION_SUMMARY_AUDIT] mode=productSearch summaryLine1=アンパンマン summaryLine2=条件：価格指定なし shopNameShown=false genreNameShown=false keywordShown=true
+I/flutter (29561): [SEARCH_HEADER_ACTION_AUDIT] mode=productSearch hasResult=true conditionSummaryTapEnabled=true conditionButtonVisible=true sortButtonVisible=true searchButtonVisible=false retryButtonVisible=true
+I/flutter (29561): [SEARCH_RESULT_HEADER_RENDER] screen=productSearch resultCount=100 hasLongDescription=false actions=changeCondition,sort,retry
+I/flutter (29561): [SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true modeCount=4 selectedMode=product height=46.0 horizontalScroll=true
+I/flutter (29561): [PRODUCT_SAFETY_FILTER] source=productSearch itemCode=futon:10048515 title=【SNSで紹介されました！】アンパンマン お昼寝 ケット 冷感 夏用 ひんやり 接触冷感 夏 保育園 85×115cm 子供 子ども こども キッズ ベビー キャラクター それいけ！アンパンマン 総柄 ピンク ブルー イエロー genreName= shopName=西川など寝具専門店こだわり安眠館 blocked=true reason=adult
+I/flutter (29561): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=futon:10048515 matchedKeywords=
+I/flutter (29561): [PRODUCT_SAFETY_FILTER] source=productSearch itemCode=yoikutsu:10039513 title=【5/23 20:00-5/27 1:59 10%OFFクーポン】それいけ！アンパンマン ベビーシューズ 子供靴 ドキンちゃん コキンちゃん ばいきんまん 男の子 女の子 ムーンスター moonstar【2025年秋新作】AP B59 イエロー genreName= shopName=ムーンスター公式ショップ blocked=true reason=adult
+I/flutter (29561): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=yoikutsu:10039513 matchedKeywords=
+I/flutter (29561): [PRODUCT_SAFETY_FILTER] source=productSearch itemCode=grengren:10028156 title=アンパンマン ミニてさげ (ピンク・ブルー・イエロー)（ANW-1300）日本製/トートバッグ/手提げ/バッグ/かばん/小物入れ/キャラクター/かわいい/子ども/キッズ/幼稚園/入園/通園/おもちゃ/雑貨/グッズ/ギフト/プレゼント genreName= shopName=グリングリン blocked=true reason=adult
+I/flutter (29561): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=grengren:10028156 matchedKeywords=
+I/flutter (29561): [PRODUCT_SAFETY_FILTER] source=productSearch itemCode=netten-sanki:10005023 title=アンパンマン トレーニングパンツ 3層 2枚組 トレパン アニメ キャラクター 男児 女児 ベビー 子供 下着 インナー 肌着 90 95 100 110【2点までメール便可】 genreName= shopName=サンキインターネット販売店 blocked=true reason=adult
+I/flutter (29561): [RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=adult itemCode=netten-sanki:10005023 matchedKeywords=
+I/flutter (29561): [Rakuten] UI preferred excludes before=100 after=96 candidateExclude=0 doneExclude=0 savedShopExclude=0 safetyExclude=4 searchScopeShopCode=-
+I/flutter (29561): [SEARCH_RESULT_UNDER_100_REASON] mode=productSearch displayCount=96 target=100 reason=safetyFiltered uiSafetyExcluded=4 apiDisplayBeforeUi=100
+I/flutter (29561): [SELECTION_UI_REDESIGN] screen=productSearch selectionModeRemoved=true checkboxAlwaysVisible=true radioLikeCircleRemoved=true
+I/flutter (29561): [SELECTION_UI_AUDIT] screen=productSearch supportsBulkSelection=true selectAllVisible=true selectedCount=0 totalSelectable=96
+I/flutter (29561): [RakutenGenre][UI] itemCode=festival-plaza:10038229 ui.genreId=406759 ui.genreName=- ui.label=こま
+I/flutter (29561): [RakutenGenre][MASTER] itemCode=festival-plaza:10038229 genreId=406759 masterHit=true resolvedGenreName=こま
+I/flutter (29561): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (29561): [RakutenGenre][UI] itemCode=o-kawaya:10068837 ui.genreId=101914 ui.genreName=- ui.label=おもちゃ
+I/flutter (29561): [RakutenGenre][MASTER] itemCode=o-kawaya:10068837 genreId=101914 masterHit=true resolvedGenreName=おもちゃ
+I/flutter (29561): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (29561): [RakutenGenre][UI] itemCode=biccamera:12256886 ui.genreId=563737 ui.genreName=- ui.label=お店屋さん
+I/flutter (29561): [RakutenGenre][MASTER] itemCode=biccamera:12256886 genreId=563737 masterHit=true resolvedGenreName=お店屋さん
+I/flutter (29561): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (29561): [RakutenGenre][UI] itemCode=bunbougu-shibuya:10028635 ui.genreId=201606 ui.genreName=- ui.label=知育パズル
+I/flutter (29561): [RakutenGenre][MASTER] itemCode=bunbougu-shibuya:10028635 genreId=201606 masterHit=true resolvedGenreName=知育パズル
+I/flutter (29561): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (29561): [SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=411.42857142857144 totalTabWidth=387.42857142857144 selectedMode=product clipped=false horizontalScrollable=true
+I/flutter (29561): [SEARCH_RESULT_PARENT_CONSTRAINT_AUDIT] mode=productSearch phase=result screenHeight=844.5714285714286 safeAreaTop=0.0 safeAreaBottom=0.0 appBottomNavHeight=56.0 outerAvailableHeight=844.5714285714286 shellBodyHeight=844.5714285714286 resultSurfaceHeight=376.2142857142857 headerActualHeight=220.0 actionRowActualHeight=compactHeader bulkHeaderActualHeight=44 listParentHeight=324.2142857142857 listViewportHeight=324.2142857142857 calculatedExpectedListHeight=112.21428571428572 missingHeight=0.0 constraintSource=compactHeaderNoLongerSplitsFlexWithExpanded
+I/flutter (29561): [SEARCH_RESULT_VIEWPORT_AUDIT] mode=productSearch phase=result screenHeight=844.5714285714286 headerHeight=220.0 bulkHeaderHeight=bulkRow bottomNavHeight=56.0 bottomActionBarVisible=false bottomActionBarHeight=0.0 listViewportHeight=324.2142857142857 listBottomPadding=12.0 unusedBottomSpaceEstimate=0.0 resultCount=96 firstVisibleIndex=0 lastVisibleIndex=-1
+I/flutter (29561): [SEARCH_RESULT_BLANK_AREA_AUDIT] mode=productSearch screenHeight=844.5714285714286 listBottomGlobalY=630.3571428571429 bottomNavTopGlobalY=788.5714285714286 blankHeightBetweenListAndBottomNav=158.21428571428567 bottomBarVisible=false bottomBarTopGlobalY=- reason=parentConstraintOrFlexSplit
+I/flutter (29561): [SEARCH_BOTTOM_SPACE_AUDIT] mode=productSearch hasSelection=false selectedCount=0 bottomBarVisible=false reservedBottomSpace=0.0 actualBottomPadding=12.0 reason=noSelectionMinimalPad
+I/flutter (29561): [RakutenGenre][UI] itemCode=sundrug:10084236 ui.genreId=100670 ui.genreName=- ui.label=ティッシュペーパー
+I/flutter (29561): [RakutenGenre][MASTER] itemCode=sundrug:10084236 genreId=100670 masterHit=true resolvedGenreName=ティッシュペーパー
+I/flutter (29561): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260522_224536.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260522_224536.mp4 (4953305 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260522_224536
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260522_224536\terminal_output_20260522_224536.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260522_224536.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260522_224536.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260522_224536.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260522_224536.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260522_224536.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
