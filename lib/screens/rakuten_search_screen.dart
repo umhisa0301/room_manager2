@@ -1172,19 +1172,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       children: [
         _buildBulkOperationBanner(context),
         Flexible(
-          fit: FlexFit.loose,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SingleChildScrollView(
-                key: const ValueKey<String>('search_mode_input_scroll'),
-                physics: const ClampingScrollPhysics(),
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                child: _buildModeAndInputArea(context, search, saved),
-              ),
-            ],
+          fit: keyboardVisible ? FlexFit.tight : FlexFit.loose,
+          child: SingleChildScrollView(
+            key: const ValueKey<String>('search_mode_input_scroll'),
+            physics: const ClampingScrollPhysics(),
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: EdgeInsets.only(
+              bottom: keyboardVisible
+                  ? MediaQuery.viewInsetsOf(context).bottom
+                  : 0,
+            ),
+            child: _buildModeAndInputArea(context, search, saved),
           ),
         ),
         Divider(
