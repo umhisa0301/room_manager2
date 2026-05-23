@@ -231,14 +231,6 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     final genreIds = <String, String>{};
     for (final p in subset) {
       if (!roomReactionAnalyticsGenreTrendEligible(p)) {
-        if (kDebugMode) {
-          AnalyticsUnknownLabel.logExistingDataGuard(
-            productId: p.productId,
-            genreName: p.genreName,
-            genreId: p.genreId,
-            excludedFromTrend: true,
-          );
-        }
         continue;
       }
       final label = _resolvedGenreLabelForOutcome(p);
@@ -433,12 +425,10 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
     final sampleHeadline = doneTotal == n
         ? '評価が付いた$n件から読み取れること'
         : '評価が付いた$n件から読み取れること（コレ済$doneTotal件）';
-    if (kDebugMode) {
-      debugPrint(
-        '[ANALYTICS_SAMPLE_COUNT_COPY] outcomeCount=$n doneTotal=$doneTotal '
-        'headline=$sampleHeadline lens=$lensJa',
-      );
-    }
+    analyticsCountSourceLog(
+      'tag=ANALYTICS_SAMPLE_COUNT_COPY outcomeCount=$n doneTotal=$doneTotal '
+      'headline=$sampleHeadline lens=$lensJa',
+    );
     final rationale = StringBuffer()
       ..write('$sampleHeadline（$lensJa）：')
       ..write('\n');
@@ -1120,13 +1110,11 @@ class _RoomReactionAnalyticsSectionState
     final canExpandProducts = reactedSorted.length > compactProductCap;
     final genreRowsShown = genreRows.take(compactAggCap).toList();
     final shopRowsShown = shopRows.take(compactAggCap).toList();
-    if (kDebugMode) {
-      debugPrint(
-        '[ANALYTICS_UI_COMPACT] nextActions=decisionCard '
-        'topProductsShown=$topLimit genresShown=${genreRowsShown.length} '
-        'shopsShown=${shopRowsShown.length} expanded=$_topProductsExpanded',
-      );
-    }
+    analyticsCountSourceLog(
+      'tag=ANALYTICS_UI_COMPACT nextActions=decisionCard '
+      'topProductsShown=$topLimit genresShown=${genreRowsShown.length} '
+      'shopsShown=${shopRowsShown.length} expanded=$_topProductsExpanded',
+    );
 
     final children = <Widget>[
       AppCard(
@@ -1304,9 +1292,12 @@ class _RoomReactionAnalyticsSectionState
             const SizedBox(height: 10),
             if (shopRows.isEmpty)
               Text(
-                '表示できるショップの集計がありません',
+                unknownShopCount >= withReaction.length
+                    ? 'ショップ未確認の商品は傾向から除外しています。ROOMコレで商品情報を確認すると表示されます。'
+                    : 'ショップ傾向はまだ十分にありません。商品情報の確認後に表示されます。',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.textSecondary,
+                      height: 1.4,
                     ),
               )
             else

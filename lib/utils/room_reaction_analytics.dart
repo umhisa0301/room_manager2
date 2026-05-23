@@ -4,6 +4,7 @@ import '../models/rakuten_managed_product.dart';
 import '../models/room_reaction_sync_history_entry.dart';
 import '../models/room_reaction_sync_top_product.dart';
 import 'analytics_unknown_label.dart';
+import 'app_debug_log.dart';
 
 /// ROOM 反応分析の対象・スコア・ログの単一情報源。
 
@@ -128,8 +129,7 @@ void logRoomReactionAnalyticsSource({
   required int genresAggregated,
   required int shopsAggregated,
 }) {
-  if (!kDebugMode) return;
-  debugPrint(
+  analyticsAuditLog(
     '[ROOM_REACTION_ANALYTICS_SOURCE] '
     'totalDoneRoomItems=$totalDoneRoomItems '
     'itemsWithReaction=$itemsWithReaction '
@@ -149,8 +149,7 @@ void logRoomReactionAnalyticsTopProduct({
   required String shopName,
   required String genreName,
 }) {
-  if (!kDebugMode) return;
-  debugPrint(
+  analyticsAuditLog(
     '[ROOM_REACTION_ANALYTICS_TOP_PRODUCT] '
     'rank=$rank '
     'productId=$productId '
@@ -368,7 +367,7 @@ void logAnalyticsGenreEligibilityAudit({
       excludedUnknown++;
     }
   }
-  debugPrint(
+  analyticsAuditLog(
     '[ANALYTICS_GENRE_ELIGIBILITY_AUDIT] totalDone=$totalDone '
     'reactionItems=${reactionItems.length} genreNamePresent=$genreNamePresent '
     'genreIdPresent=$genreIdPresent genreResolvedFromId=$genreResolvedFromId '

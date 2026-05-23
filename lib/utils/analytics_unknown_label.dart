@@ -1,6 +1,5 @@
-import 'package:flutter/foundation.dart';
-
 import '../services/rakuten_genre_master_service.dart';
+import 'app_debug_log.dart';
 import 'shop_display_resolve.dart';
 
 /// 反応分析・次にやることから除外する「未分類／未確認」ラベル判定。
@@ -102,8 +101,7 @@ abstract final class AnalyticsUnknownLabel {
     required String genreId,
     required bool excludedFromTrend,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    analyticsAuditLog(
       '[UNKNOWN_GENRE_EXISTING_DATA_GUARD] productId=$productId '
       'genreName=${genreName.isEmpty ? '-' : genreName} genreId=${genreId.isEmpty ? '-' : genreId} '
       'excludedFromTrend=$excludedFromTrend keptInStorage=true',
@@ -115,8 +113,7 @@ abstract final class AnalyticsUnknownLabel {
     required bool removed,
     required String reason,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    analyticsAuditLog(
       '[ROOM_NEXT_ACTION_UNKNOWN_GUARD] candidateAction=$candidateAction '
       'removed=$removed reason=$reason',
     );
@@ -127,8 +124,7 @@ abstract final class AnalyticsUnknownLabel {
     required String rawLabel,
     required String reason,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    analyticsAuditLog(
       '[ANALYTICS_UNKNOWN_EXCLUDE] field=$field rawLabel=$rawLabel '
       'excluded=true reason=$reason',
     );
