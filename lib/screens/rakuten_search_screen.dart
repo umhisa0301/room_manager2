@@ -44,6 +44,7 @@ import '../widgets/search_group_screen_shell.dart';
 import '../widgets/shop_discovery_card.dart';
 import '../widgets/search_bulk_selection_header.dart';
 import '../widgets/search_mode_segment_bar.dart';
+import '../utils/app_debug_log.dart';
 import '../utils/search_tab_ui_audit_log.dart';
 import 'add_candidate_from_url_screen.dart';
 import 'saved_shops_screen.dart';
@@ -224,12 +225,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         _runSearch(context);
       }
     });
-    if (kDebugMode) {
-      debugPrint(
-        '[SEARCH_RENDER_ERROR_AUDIT] checkedTerminal=true overflowFound=pending '
-        'overflowFixed=pending target=searchHeader|savedShop',
-      );
-    }
+    searchAuditLog(
+      '[SEARCH_RENDER_ERROR_AUDIT] checkedTerminal=true overflowFound=pending '
+      'overflowFixed=pending target=searchHeader|savedShop',
+    );
   }
 
   @override
@@ -295,8 +294,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required String event,
     String reason = '-',
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
+    searchAuditLog(
       '[SAVED_SHOP_KEYWORD_FOCUS_AUDIT] event=$event '
       'hasFocus=${_savedShopKeywordFocusNode.hasFocus} '
       'keywordLength=${_keywordController.text.length} '
@@ -306,8 +305,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   void _logSavedShopKeywordRebuildAudit() {
-    if (!kDebugMode) return;
-    debugPrint(
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
+    searchAuditLog(
       '[SAVED_SHOP_KEYWORD_REBUILD_AUDIT] selectedShopCode=${_selectedShopCode ?? '-'} '
       'keyword=${_keywordController.text.trim()} controllerPreserved=true '
       'focusNodePreserved=true',
@@ -522,11 +521,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       envelope: _buildResultEnvelopeForMode(search, key),
     );
     cache.saveUiSnapshot(key, _captureUiSnapshot());
-    if (kDebugMode) {
-      debugPrint(
-        '[SEARCH_DISPOSE_SAVE_FIX] providerCached=true contextReadInDispose=false saved=true',
-      );
-    }
+    searchAuditLog(
+      '[SEARCH_DISPOSE_SAVE_FIX] providerCached=true contextReadInDispose=false saved=true',
+    );
   }
 
   void _restoreSearchSession(String key) {
@@ -749,10 +746,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context, {
     String? sourceMode,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     final ownership = _evaluateResultOwnership(search, context);
     final envelope = ownership.envelope;
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_RESULT_OWNERSHIP_AUDIT] activeMode=${_modeCacheKey()} '
       'resultOwnerMode=${envelope?.ownerMode ?? '-'} '
       'sourceMode=${sourceMode ?? '-'} '
@@ -769,9 +766,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required bool accepted,
     String? reason,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     final envelope = RakutenSearchSessionCache.instance.envelopeForMode(toMode);
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_MODE_RESULT_ISOLATION_AUDIT] fromMode=$fromMode toMode=$toMode '
       'restoredResultCount=${search.results.length} '
       'restoredResultOwnerMode=${envelope?.ownerMode ?? '-'} '
@@ -785,8 +782,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required int afterResultCount,
     required SearchSurfacePhase phaseAfterClear,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
+    searchAuditLog(
       '[SEARCH_CLEAR_RESULT_AUDIT] mode=$mode beforeResultCount=$beforeResultCount '
       'afterResultCount=$afterResultCount keywordPreserved=true '
       'genrePreserved=${mode == RakutenSearchSessionCache.modeGenre} '
@@ -796,8 +793,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   void _logSearchSortLabelAudit(RakutenKeywordSearchSortMode mode) {
-    if (!kDebugMode) return;
-    debugPrint(
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
+    searchAuditLog(
       '[SEARCH_SORT_LABEL_AUDIT] mode=${_searchResultScreenTag()} '
       'internalSort=${mode.name} displayLabel=${rakutenKeywordSearchSortDisplayLabel(mode)} '
       'userFriendly=true',
@@ -808,11 +805,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context,
     RakutenSearchProvider search,
   ) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     final lines = _searchResultConditionSummaryLines(context);
     final ownership = _evaluateResultOwnership(search, context);
     final envelope = ownership.envelope;
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_RESULT_HEADER_SUMMARY_AUDIT] mode=${_searchResultScreenTag()} '
       'summaryShopName=${lines.where((l) => l.startsWith('保存ショップ')).join(';')} '
       'summaryKeyword=${lines.where((l) => l.startsWith('キーワード') || l.startsWith('商品名')).join(';')} '
@@ -876,11 +873,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required RakutenSearchProvider search,
     required bool keyboardVisible,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     final mode = _searchResultScreenTag();
     final hasResult = search.results.isNotEmpty;
     final hasError = search.isErrorVisibleForMode(_providerModeTag());
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_SURFACE_PHASE_AUDIT] mode=$mode phase=${phase.name} '
       'isLoading=${search.status == RakutenSearchStatus.loading} '
       'hasResult=$hasResult hasError=$hasError '
@@ -898,13 +895,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required RakutenSearchProvider search,
     String triggeredBy = 'build',
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     if (_previousSearchPhase == nextPhase) return;
     final hasResultBefore = _previousSearchPhase == SearchSurfacePhase.result;
     final hasResultAfter = nextPhase == SearchSurfacePhase.result;
     final hasErrorBefore = _previousSearchPhase == SearchSurfacePhase.error;
     final hasErrorAfter = nextPhase == SearchSurfacePhase.error;
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_LAYOUT_PHASE_AUDIT] previousPhase=${_previousSearchPhase.name} '
       'nextPhase=${nextPhase.name} mode=${_searchResultScreenTag()} reason=$reason',
     );
@@ -935,7 +932,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     MediaQueryData? capturedParent,
     String reason = '-',
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     final parentMq = MediaQuery.maybeOf(parentContext);
     final sheetMq = sheetContext == null
         ? null
@@ -963,6 +960,120 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       phase == SearchSurfacePhase.loading ||
       phase == SearchSurfacePhase.error;
 
+  bool _usesSavedShopInputPhaseScrollLayout(SearchSurfacePhase phase) =>
+      _savedShopKeywordEntryEffective && phase == SearchSurfacePhase.input;
+
+  Widget _buildSavedShopInputPhaseBody(
+    BuildContext context, {
+    required RakutenSearchProvider search,
+    required RakutenManagedProductProvider managed,
+    required SavedShopProvider saved,
+    required bool keyboardVisible,
+  }) {
+    _scheduleSearchResultWidgetTreeAudit(
+      phase: SearchSurfacePhase.input,
+      usesFlexibleLoose: false,
+      usesExpandedForList: true,
+      hasEmptyCardMounted: true,
+      hasErrorCardMounted: false,
+      hasLoadingCardMounted: false,
+      usesSingleChildScrollViewAroundWholeResult: true,
+    );
+    final shopSelected = _effectiveShopCodeForApi(context) != null;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildBulkOperationBanner(context),
+        Expanded(
+          child: LayoutBuilder(
+            builder: (layoutContext, constraints) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (!mounted) return;
+                _logSavedShopInputLayoutAudit(
+                  layoutContext,
+                  availableHeight: constraints.maxHeight,
+                  shopSelected: shopSelected,
+                  keyboardVisible: keyboardVisible,
+                );
+              });
+              return ListView(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.viewInsetsOf(layoutContext).bottom +
+                      AppDimensions.spacingLg,
+                ),
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                children: [
+                  _buildModeAndInputArea(layoutContext, search, saved),
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: HomeScreenColors.inlineDivider,
+                  ),
+                  _buildSavedShopInputPhaseIdleCard(
+                    layoutContext,
+                    search,
+                    shopSelected: shopSelected,
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSavedShopInputPhaseIdleCard(
+    BuildContext context,
+    RakutenSearchProvider search, {
+    required bool shopSelected,
+  }) {
+    if (_savedShopRequiresShopButMissing(context)) {
+      return const RakutenSearchIdleView(
+        icon: Icons.storefront_outlined,
+        title: '保存ショップを選択してください',
+        subtitle: 'ショップを選んでからキーワードで検索できます。',
+        compactLayout: true,
+      );
+    }
+    return RakutenSearchIdleView(
+      icon: Icons.storefront_outlined,
+      title: '店内検索の結果がここに表示されます',
+      subtitle: shopSelected
+          ? 'このショップ内でキーワード検索できます。'
+          : 'ショップとキーワードを指定して検索してください。',
+      compactLayout: true,
+    );
+  }
+
+  void _logSavedShopInputLayoutAudit(
+    BuildContext context, {
+    required double availableHeight,
+    required bool shopSelected,
+    required bool keyboardVisible,
+  }) {
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
+    final shopName = shopSelected
+        ? _savedShopNameForLog(context, _selectedShopCode)
+        : '-';
+    final keywordLen = _keywordController.text.length;
+    final deckBase = 220.0;
+    final selectedExtra = shopSelected ? 168.0 : 72.0;
+    final idleCard = shopSelected ? 92.0 : 108.0;
+    final contentEstimated = deckBase + selectedExtra + idleCard;
+    const scrollable = true;
+    const overflowRisk = false;
+    searchAuditLog(
+      '[SAVED_SHOP_INPUT_LAYOUT_AUDIT] selectedShop=$shopSelected '
+      'selectedShopNameLength=${shopName == '-' ? 0 : shopName.length} '
+      'keywordLength=$keywordLen keyboardVisible=$keyboardVisible '
+      'availableHeight=$availableHeight contentEstimatedHeight=$contentEstimated '
+      'scrollable=$scrollable overflowRisk=$overflowRisk '
+      'idleCardVisible=true idleCardCompact=$shopSelected',
+    );
+  }
+
   void _scheduleSearchResultWidgetTreeAudit({
     required SearchSurfacePhase phase,
     required bool usesFlexibleLoose,
@@ -970,8 +1081,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required bool hasEmptyCardMounted,
     required bool hasErrorCardMounted,
     required bool hasLoadingCardMounted,
+    bool usesSingleChildScrollViewAroundWholeResult = false,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       searchResultWidgetTreeAuditLog(
@@ -980,7 +1092,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         'resultSurfaceWidget=Expanded>LayoutBuilder resultListParentWidget=Expanded>ListView '
         'usesFlexibleLoose=$usesFlexibleLoose usesExpandedForList=$usesExpandedForList '
         'usesAnimatedSwitcher=false usesMaintainSizeVisibility=false '
-        'usesSingleChildScrollViewAroundWholeResult=false hasSpacerBelowList=false '
+        'usesSingleChildScrollViewAroundWholeResult=$usesSingleChildScrollViewAroundWholeResult '
+        'hasSpacerBelowList=false '
         'hasEmptyCardMounted=$hasEmptyCardMounted hasErrorCardMounted=$hasErrorCardMounted '
         'hasLoadingCardMounted=$hasLoadingCardMounted',
       );
@@ -1033,6 +1146,16 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
           ),
         ],
+      );
+    }
+
+    if (_usesSavedShopInputPhaseScrollLayout(phase)) {
+      return _buildSavedShopInputPhaseBody(
+        context,
+        search: search,
+        managed: managed,
+        saved: saved,
+        keyboardVisible: keyboardVisible,
       );
     }
 
@@ -1110,7 +1233,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (kDebugMode) {
       _logSearchResultConditionSummaryAudit(context);
       _logSearchHeaderActionAudit(hasResults: true);
-      debugPrint(
+      searchAuditLog(
         '[SEARCH_RESULT_HEADER_RENDER] screen=${_searchResultScreenTag()} '
         'resultCount=${search.results.length} hasLongDescription=false '
         'actions=changeCondition,sort,retry,clearResults',
@@ -1279,12 +1402,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       afterResultCount: search.results.length,
       phaseAfterClear: phase,
     );
-    if (kDebugMode) {
-      debugPrint(
-        '[SEARCH_HEADER_ACTION_AUDIT] mode=${_searchResultScreenTag()} '
-        'event=clearResults phaseAfter=${phase.name}',
-      );
-    }
+    searchAuditLog(
+      '[SEARCH_HEADER_ACTION_AUDIT] mode=${_searchResultScreenTag()} '
+      'event=clearResults phaseAfter=${phase.name}',
+    );
   }
 
   Widget _buildProductGenreResultPhaseColumn(
@@ -1481,7 +1602,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required RakutenSearchProvider search,
     required bool keyboardVisible,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     final mq = MediaQuery.of(context);
     final availableHeight = mq.size.height - mq.padding.top - mq.padding.bottom;
     final phaseName = switch (phase) {
@@ -1491,7 +1612,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       SearchSurfacePhase.empty => 'empty',
       SearchSurfacePhase.error => 'error',
     };
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_OVERFLOW_GUARD_AUDIT] mode=${_searchResultScreenTag()} '
       'phase=$phaseName keyboardVisible=$keyboardVisible '
       'hasResult=${search.results.isNotEmpty} '
@@ -1510,13 +1631,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required bool errorCardCompact,
     required BuildContext context,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     final focusField = _savedShopKeywordFocusNode.hasFocus
         ? 'savedShopKeyword'
         : (_productDetailSheetKeywordFocus.hasFocus ? 'productKeyword' : '-');
     final mq = MediaQuery.of(context);
     final availableHeight = mq.size.height - mq.viewInsets.bottom;
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_KEYBOARD_LAYOUT_AUDIT] mode=${_searchResultScreenTag()} '
       'keyboardVisible=$keyboardVisible focusField=$focusField '
       'onSearchUnfocusCalled=true errorCardCompact=$errorCardCompact '
@@ -1528,7 +1649,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required RakutenSearchProvider search,
     required SearchSurfacePhase phase,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     final visibleSurface = switch (phase) {
       SearchSurfacePhase.loading => 'loading',
       SearchSurfacePhase.result => 'result',
@@ -1540,7 +1661,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     };
     final withWarning =
         search.retryFailureBannerMessage != null ? 'resultWithWarning' : visibleSurface;
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_ERROR_STATE_AUDIT] mode=${_searchResultScreenTag()} '
       'hasPreviousResult=${search.hasPreviousResult} '
       'hasError=${search.isErrorVisibleForMode(_providerModeTag())} '
@@ -1556,7 +1677,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }) {
     if (!kDebugMode || !DebugLogFlags.enableVerboseSearchStateLog) return;
     final bottomSafe = MediaQuery.paddingOf(context).bottom;
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_LAYOUT_GUARD] mode=${_searchResultScreenTag()} '
       'keyboardInset=$keyboardInset bottomSafeArea=$bottomSafe '
       'usesExpandedList=true usesBottomPadding=true compactSetup=$compactSetup',
@@ -1569,8 +1690,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required bool searchEnabled,
     String? disabledReason,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
+    searchAuditLog(
       '[SAVED_SHOP_SEARCH_UX_AUDIT] selectedShop=$selectedShop '
       'keywordEmpty=$keywordEmpty duplicateGuideTextCount=0 '
       'keywordTapOpensDetailSheet=false conditionButtonVisible=$selectedShop '
@@ -1581,13 +1702,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   void _logSearchHeaderDuplicateAudit({
     required bool hasResults,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     final compactHeaderVisible = hasResults;
     final expandedInputDeckVisible = !hasResults;
     final inputDeckRenderedInList = false;
     final modeSelectorCount = hasResults ? 1 : 1;
     final searchInputCount = hasResults ? 0 : 1;
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_HEADER_DUPLICATE_AUDIT] mode=${_searchResultScreenTag()} '
       'hasResult=$hasResults compactHeaderVisible=$compactHeaderVisible '
       'expandedInputDeckVisible=$expandedInputDeckVisible '
@@ -1604,25 +1725,25 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }) {
     if (!kDebugMode || !DebugLogFlags.enableVerboseSearchStateLog) return;
     final mode = _searchResultScreenTag();
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_HEADER_WIDGET_TREE_AUDIT] mode=$mode usesSharedHeader=true '
       'legacyModeHeaderVisible=false extraTopTitleVisible=false '
       'setupHeaderVisible=${!compactSetup} compactHeaderVisible=$compactSetup '
       'hasResults=$hasResults',
     );
     if (_savedShopKeywordEntryEffective) {
-      debugPrint(
+      searchAuditLog(
         '[SAVED_SHOP_HEADER_AUDIT] legacyHeaderRemoved=true usesSharedSearchHeader=true '
         'giantShopSelectCard=false disabledReasonVisible=true',
       );
     }
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_RESULT_AREA_AUDIT] mode=$mode hasResults=$hasResults '
       'setupHeaderVisible=${!compactSetup} compactHeaderVisible=$compactSetup '
       'resultAreaExpanded=$hasResults selectAllVisibleWithoutScroll=$hasResults '
       'firstItemVisibleWithoutScroll=$hasResults',
     );
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_HEADER_HEIGHT] mode=$mode phase=${compactSetup ? 'afterSearch' : 'beforeSearch'} '
       'height=${compactSetup ? 'compact' : 'setup'}',
     );
@@ -1659,7 +1780,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           return const SizedBox.shrink();
         }
         if (kDebugMode && running) {
-          debugPrint(
+          searchAuditLog(
             '[BULK_REGISTER_UI_STATE] isRunning=true mode=candidate '
             'processed=$_bulkRegisterProcessed total=$_bulkRegisterTotal',
           );
@@ -1737,9 +1858,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   void _logSearchResultConditionSummaryAudit(BuildContext context) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     final lines = _searchResultConditionSummaryLines(context);
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_RESULT_CONDITION_SUMMARY_AUDIT] mode=${_searchResultScreenTag()} '
       'summaryLine1=${lines.isNotEmpty ? lines.first : '-'} '
       'summaryLine2=${lines.length > 1 ? lines[1] : '-'} '
@@ -1750,8 +1871,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   void _logSearchHeaderActionAudit({required bool hasResults}) {
-    if (!kDebugMode) return;
-    debugPrint(
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
+    searchAuditLog(
       '[SEARCH_HEADER_ACTION_AUDIT] mode=${_searchResultScreenTag()} '
       'hasResult=$hasResults conditionSummaryTapEnabled=$hasResults '
       'conditionButtonVisible=true sortButtonVisible=${_mode != _RakutenSearchMode.shopDiscovery} '
@@ -1811,7 +1932,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }) {
     if (!kDebugMode || !_savedShopKeywordEntryEffective) return;
     final c = _buildProductCondition(context);
-    debugPrint(
+    importantDebugLog(
       '[SAVED_SHOP_SEARCH_EXECUTE] shopCode=${c.shopCode ?? '-'} '
       'keyword="${c.keyword}" genreId=${c.genreId ?? '-'} '
       'minPrice=${c.minPrice ?? '-'} maxPrice=${c.maxPrice ?? '-'} '
@@ -1904,7 +2025,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                         keyboardVisible: keyboardVisible,
                       );
                       _logSearchErrorStateAudit(search: search, phase: phase);
-                      debugPrint(
+                      searchAuditLog(
                         '[SEARCH_LAYOUT_STABILITY] phase=${phase.name} '
                         'keyboardVisible=$keyboardVisible overflowGuard=true',
                       );
@@ -2337,7 +2458,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         errorCardCompact: false,
         context: context,
       );
-      debugPrint(
+      searchAuditLog(
         '[SEARCH_LAYOUT_STABILITY] phase=loading keyboardVisible=false overflowGuard=true',
       );
     }
@@ -2362,13 +2483,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     if (kDebugMode) {
       final c = condition;
       if (_savedShopKeywordEntryEffective) {
-        debugPrint(
+        searchAuditLog(
           '[SAVED_SHOP_SEARCH_PARAMS] shopCode=${c.shopCode ?? '-'} '
           'keyword="${c.keyword}" genreId=${c.genreId ?? '-'} '
           'minPrice=${c.minPrice ?? '-'} maxPrice=${c.maxPrice ?? '-'}',
         );
       }
-      debugPrint(
+      importantDebugLog(
         '[Rakuten] keyword search execute keyword="${c.keyword}" '
         'genreId=${c.genreId ?? '-'} '
         'genreName(lookup)=${_labelForGenre(c.genreId) ?? '-'} '
@@ -2378,7 +2499,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         'savedShopExcludeSet=${excludeSavedForKeywordPass.length} ',
       );
       if (_savedShopKeywordEntryEffective) {
-        debugPrint(
+        importantDebugLog(
           '[SAVED_SHOP_SEARCH] apiShopCode=${c.shopCode ?? '-'} '
           'keyword="${c.keyword}" itemCode=${c.itemCode ?? '-'}',
         );
@@ -2394,7 +2515,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     final sessionId = searchProv.beginSearchSession(modeTag: modeTag);
     searchProv.clearErrorForNewSearch(modeTag: modeTag, requestId: sessionId);
     if (kDebugMode) {
-      debugPrint(
+      importantDebugLog(
         '[SEARCH_EXECUTE_TRACE] sessionId=$sessionId mode=$modeTag '
         'keyword="${condition.keyword}" selectedShopCode=${condition.shopCode ?? '-'} '
         'genreId=${condition.genreId ?? '-'} startedAt=${DateTime.now().toIso8601String()}',
@@ -2504,14 +2625,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       }
     }
     final n = out.normalized();
-    if (kDebugMode) {
-      debugPrint(
-        '[SEARCH_FILTER_SANITIZE_AUDIT] mode=${_searchResultScreenTag()} '
-        'beforeKeyword=$beforeKw beforeGenreId=$beforeG beforeShopCode=$beforeS '
-        'afterKeyword=${n.keyword} afterGenreId=${n.genreId ?? '-'} '
-        'afterShopCode=${n.shopCode ?? '-'} removedFields=${removed.isEmpty ? '-' : removed.join(',')}',
-      );
-    }
+    searchAuditLog(
+      '[SEARCH_FILTER_SANITIZE_AUDIT] mode=${_searchResultScreenTag()} '
+      'beforeKeyword=$beforeKw beforeGenreId=$beforeG beforeShopCode=$beforeS '
+      'afterKeyword=${n.keyword} afterGenreId=${n.genreId ?? '-'} '
+      'afterShopCode=${n.shopCode ?? '-'} '
+      'removedFields=${removed.isEmpty ? '-' : removed.join(',')}',
+    );
     return n;
   }
 
@@ -2520,11 +2640,11 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required BuildContext context,
     String? sourceMode,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     final savedName = _savedShopKeywordEntryEffective
         ? (_savedShopNameForLog(context, _selectedShopCode))
         : '-';
-    debugPrint(
+    searchAuditLog(
       '[SEARCH_MODE_STATE_AUDIT] event=$event mode=${_searchResultScreenTag()} '
       'sourceMode=${sourceMode ?? '-'} '
       'keyword=${_keywordController.text.trim().isEmpty ? '-' : _keywordController.text.trim()} '
@@ -2673,7 +2793,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
     if (kDebugMode) {
       final picked = scoped != null ? savedProv.findById(scoped) : null;
-      debugPrint(
+      searchAuditLog(
         '[SAVED_SHOP_SEARCH_STATE] selectedShopCode=${scoped ?? '-'} '
         'selectedShopName=${picked?.shopName ?? '-'} keyword=${_keywordController.text.trim()} '
         'canSearch=$canSearch disabledReason=${disabledReason ?? '-'}',
@@ -2736,27 +2856,33 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             color: HomeScreenColors.metricTileTitleColor,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Text(
                 shopLabel,
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w800,
+                  height: 1.25,
                 ),
               ),
             ),
             TextButton(
+              style: TextButton.styleFrom(
+                visualDensity: VisualDensity.compact,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+              ),
               onPressed: () =>
                   _openSavedShopKeywordShopPicker(context, savedProv),
               child: const Text('変更'),
             ),
           ],
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapFieldStack),
+        const SizedBox(height: 8),
         Text(
           'キーワード',
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -2764,7 +2890,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             color: HomeScreenColors.metricTileTitleColor,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         AppTextField(
           key: const ValueKey<String>('saved_shop_keyword_field'),
           controller: _keywordController,
@@ -2794,20 +2920,23 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             ),
           ),
         ],
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         OutlinedButton.icon(
           onPressed: () => _openProductConditionsSheet(context),
           icon: const Icon(Icons.tune_rounded, size: 16),
           label: const Text('条件を変更'),
           style: OutlinedButton.styleFrom(
+            visualDensity: VisualDensity.compact,
             foregroundColor: AppColors.accentPrimary,
             side: BorderSide(color: AppColors.accentPrimary),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           ),
         ),
-        SizedBox(height: RakutenSearchScreenUi.gapBeforePrimaryCta),
+        const SizedBox(height: 8),
         AppPrimaryButton(
           label: 'このショップで探す',
           icon: const Icon(Icons.search_rounded, size: 22),
+          height: 46,
           onPressed: canSearch ? () => _runSearch(context) : null,
         ),
       ],
@@ -3093,7 +3222,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     final previousResultKept = ownership.accepted && search.results.isNotEmpty;
     if (kDebugMode) {
       final from = fromSavedShop ? 'savedShop' : fromMode;
-      debugPrint(
+      searchAuditLog(
         '[SEARCH_MODE_SWITCH] from=$from to=${way.name} '
         'previousResultKept=$previousResultKept',
       );
@@ -3669,7 +3798,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             'prevented=true fallbackApplied=true',
           );
           if (kDebugMode) {
-            debugPrint(
+            importantDebugLog(
               '[SEARCH_CONDITION_SHEET_BUILD_ERROR] $e\n$st',
             );
           }
@@ -4044,7 +4173,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   void _setSelectedGenreId(String? value) {
     if (kDebugMode) {
-      debugPrint(
+      searchAuditLog(
         '[Rakuten] genre UI selected label=${_genreUiLabelForId(value)} '
         'genreId=${value ?? '(null)'} '
         'genreName(lookup)=${_labelForGenre(value) ?? '(null)'}',
@@ -4055,7 +4184,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   void _setProductDetailGenreId(String? value) {
     if (kDebugMode) {
-      debugPrint(
+      searchAuditLog(
         '[Rakuten] productDetailGenre selected label=${_genreUiLabelForId(value)} '
         'genreId=${value ?? '(null)'}',
       );
@@ -4064,17 +4193,84 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   void _setSelectedShopCode(BuildContext context, String? value) {
+    if (_savedShopKeywordEntryEffective) {
+      _applySavedShopSelection(context, value);
+      return;
+    }
     if (kDebugMode) {
       final shop = value != null && value.trim().isNotEmpty
           ? context.read<SavedShopProvider>().findById(value.trim())
           : null;
-      debugPrint(
+      searchAuditLog(
         '[Rakuten] shop UI selected label=${shop?.shopName ?? value ?? '指定なし'} '
         'shopCode=${value ?? '(null)'} shopName=${shop?.shopName ?? '(null)'} '
         'shopUrl=${shop?.shopUrl ?? '-'} savedModel shopId=${shop?.shopId ?? '-'}',
       );
     }
     setState(() => _selectedShopCode = value);
+  }
+
+  void _applySavedShopSelection(BuildContext context, String? value) {
+    final normalized = value?.trim();
+    final nextCode =
+        normalized != null && normalized.isNotEmpty ? normalized : null;
+    final beforeShop = _selectedShopCode;
+    final beforeKeyword = _keywordController.text;
+    if (beforeShop == nextCode) return;
+
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    final search = context.read<RakutenSearchProvider>();
+    const cacheKey = RakutenSearchSessionCache.modeSavedShop;
+    RakutenSearchSessionCache.instance.clearProviderSnapshot(cacheKey);
+
+    var providerResultCleared = false;
+    const envelopeCleared = true;
+    if (search.results.isNotEmpty ||
+        search.status == RakutenSearchStatus.success ||
+        search.status == RakutenSearchStatus.error) {
+      search.resetTransientState();
+      search.clearRetryFailureBanner();
+      providerResultCleared = true;
+      _lastEnvelopeSyncStatus = RakutenSearchStatus.idle;
+    }
+
+    if (!mounted) {
+      if (kDebugMode) {
+        searchAuditLog(
+          '[SAVED_SHOP_SELECTION_APPLY_AUDIT] beforeShopCode=${beforeShop ?? '-'} '
+          'afterShopCode=${nextCode ?? '-'} beforeKeyword=$beforeKeyword '
+          'afterKeyword=$beforeKeyword providerResultCleared=$providerResultCleared '
+          'envelopeCleared=$envelopeCleared phaseAfterSelection=input '
+          'focusCleared=true mounted=false',
+        );
+      }
+      return;
+    }
+
+    setState(() {
+      _selectedShopCode = nextCode;
+      _selectedProductIds.clear();
+    });
+
+    final phase = _resolveSearchSurfacePhase(search, context);
+    if (kDebugMode) {
+      final shop = nextCode != null
+          ? context.read<SavedShopProvider>().findById(nextCode)
+          : null;
+      searchAuditLog(
+        '[Rakuten] shop UI selected label=${shop?.shopName ?? nextCode ?? '指定なし'} '
+        'shopCode=${nextCode ?? '(null)'} shopName=${shop?.shopName ?? '(null)'} '
+        'shopUrl=${shop?.shopUrl ?? '-'} savedModel shopId=${shop?.shopId ?? '-'}',
+      );
+      searchAuditLog(
+        '[SAVED_SHOP_SELECTION_APPLY_AUDIT] beforeShopCode=${beforeShop ?? '-'} '
+        'afterShopCode=${nextCode ?? '-'} beforeKeyword=$beforeKeyword '
+        'afterKeyword=${_keywordController.text} providerResultCleared=$providerResultCleared '
+        'envelopeCleared=$envelopeCleared phaseAfterSelection=${phase.name} '
+        'focusCleared=true mounted=true',
+      );
+    }
   }
 
   String _savedShopNameForLog(BuildContext context, String? shopCode) {
@@ -4116,7 +4312,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       ).normalized(),
     );
     if (kDebugMode) {
-      debugPrint(
+      importantDebugLog(
         '[Rakuten] genreSearch execute keyword="${condition.keyword}" '
         'keywordLen=${condition.keyword.length} '
         'genreId=${condition.genreId ?? '-'} '
@@ -4147,7 +4343,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     final searchProv = context.read<RakutenSearchProvider>();
     final sessionId = searchProv.beginSearchSession(modeTag: 'genre');
     if (kDebugMode) {
-      debugPrint(
+      importantDebugLog(
         '[SEARCH_EXECUTE_TRACE] sessionId=$sessionId mode=genre '
         'keyword="${condition.keyword}" selectedShopCode=${condition.shopCode ?? '-'} '
         'genreId=${condition.genreId ?? '-'} startedAt=${DateTime.now().toIso8601String()}',
@@ -4190,21 +4386,21 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       itemUrl: item.itemUrl,
       affiliateUrl: item.affiliateUrl,
     );
-    if (blocked) {
-      ProductSafetyFilter.logFilter(
-        source: _safetyFilterSourceForMode(),
-        itemCode: item.productId,
-        title: item.itemName,
-        shopName: item.shopName,
-        genreName: item.genreName,
-        blocked: true,
-        reasons: ProductSafetyFilter.blockedReasons(
-          itemName: item.itemName,
-          shopName: item.shopName,
-          genreName: item.genreName,
-        ),
-      );
-    }
+    ProductSafetyFilter.logFilter(
+      source: _safetyFilterSourceForMode(),
+      itemCode: item.productId,
+      title: item.itemName,
+      shopName: item.shopName,
+      genreName: item.genreName,
+      blocked: blocked,
+      reasons: blocked
+          ? ProductSafetyFilter.blockedReasons(
+              itemName: item.itemName,
+              shopName: item.shopName,
+              genreName: item.genreName,
+            )
+          : const [],
+    );
     return blocked;
   }
 
@@ -4215,6 +4411,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     String? searchScopeShopCode,
   }) {
     if (source.isEmpty) return source;
+    ProductSafetyFilter.beginBatch(_safetyFilterSourceForMode());
     final scoped = searchScopeShopCode?.trim() ?? '';
     final out = <RakutenSearchItem>[];
     var exclCandidate = 0;
@@ -4248,7 +4445,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       out.add(item);
     }
     if (kDebugMode) {
-      debugPrint(
+      searchAuditLog(
         '[Rakuten] UI preferred excludes before=${source.length} after=${out.length} '
         'candidateExclude=$exclCandidate doneExclude=$exclDone savedShopExclude=$exclSavedShop '
         'safetyExclude=$exclSafety searchScopeShopCode=${scoped.isEmpty ? '-' : scoped}',
@@ -4259,13 +4456,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             : (exclSavedShop > 0
                   ? 'savedShopUiExclude'
                   : 'uiPostFilter');
-        debugPrint(
+        importantDebugLog(
           '[SEARCH_RESULT_UNDER_100_REASON] mode=${_searchResultScreenTag()} '
           'displayCount=${out.length} target=100 reason=$reason '
           'uiSafetyExcluded=$exclSafety apiDisplayBeforeUi=${source.length}',
         );
       }
     }
+    ProductSafetyFilter.endBatch();
     // 除外後が極端に少ないときは、呼び出し側で元リストにフォールバックさせる。
     return out;
   }
@@ -4353,7 +4551,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
     if (confirmed != true) return;
     if (kDebugMode) {
-      debugPrint(
+      importantDebugLog(
         '[OPERATION_CONFIRM_DIALOG] operation=bulkRegister shown=true accepted=true',
       );
     }
@@ -4443,7 +4641,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       }
     }
     if (kDebugMode) {
-      debugPrint(
+      searchAuditLog(
         '[BULK_REGISTER_UI_STATE] isRunning=false mode=candidate '
         'processed=$_bulkRegisterTotal total=$_bulkRegisterTotal',
       );
@@ -4673,7 +4871,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         .where((e) => _isSelectableForBulk(e, managed))
         .length;
     if (kDebugMode) {
-      debugPrint(
+      searchAuditLog(
         '[SELECTION_UI_REDESIGN] screen=${_selectionScreenTag()} '
         'selectionModeRemoved=true checkboxAlwaysVisible=true radioLikeCircleRemoved=true',
       );
@@ -4754,7 +4952,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     String phase = 'result',
     double? resultSurfaceMaxHeight,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final mq = MediaQuery.of(context);
@@ -5266,7 +5464,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         );
       case RakutenSearchStatus.success:
         if (kDebugMode) {
-          debugPrint(
+          searchAuditLog(
             '[Rakuten] genreSearch before render count=${search.results.length}',
           );
         }
@@ -5305,7 +5503,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         );
         final filteredResults = managedPreferred;
         if (kDebugMode) {
-          debugPrint(
+          searchAuditLog(
             '[Rakuten] genreSearch after filter count (preferred excludes)=${filteredResults.length}',
           );
         }
@@ -5330,7 +5528,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         }
         final orderedResults = filteredResults;
         if (kDebugMode) {
-          debugPrint(
+          searchAuditLog(
             '[Rakuten] genreSearch itemBuilder count=${orderedResults.length} '
             'showingCount=${orderedResults.length}',
           );
@@ -5358,8 +5556,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     required String emptyReason,
     required String userMessageType,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    if (!kDebugMode || !DebugLogFlags.kSearchAuditLogsEnabled) return;
+    searchAuditLog(
       '[SHOP_DISCOVERY_EMPTY_REASON_AUDIT] hasSearched=$hasSearched '
       'keyword=${_shopDiscoveryKeywordController.text.trim().isEmpty ? '-' : _shopDiscoveryKeywordController.text.trim()} '
       'genreId=${_selectedDiscoveryGenreId ?? '-'} rawShopCount=$rawShopCount '
