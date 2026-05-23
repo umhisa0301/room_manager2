@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
+import '../utils/app_debug_log.dart';
 
 /// 探し方セレクター（ROOMコレの SegmentedButton 風・横スクロール可）。
 class SearchModeSegmentBar extends StatefulWidget {
@@ -81,7 +81,6 @@ class _SearchModeSegmentBarState extends State<SearchModeSegmentBar> {
   }
 
   void _logSegmentVisibility({required bool scrolledToSelected}) {
-    if (!kDebugMode) return;
     final screenWidth = MediaQuery.sizeOf(context).width;
     final selectedCtx = _tileKeys[widget.selected]?.currentContext;
     var selectedTabLeft = -1.0;
@@ -107,26 +106,28 @@ class _SearchModeSegmentBarState extends State<SearchModeSegmentBar> {
         availableTabWidth = parentBox.size.width;
       }
     }
-    debugPrint(
+    AuditLogDeduper.logOnce(
+      'segment_visibility_${widget.auditPhase}_${widget.selected.name}',
       '[SEARCH_MODE_SEGMENT_VISIBILITY_AUDIT] phase=${widget.auditPhase} '
       'selectedMode=${widget.selected.name} screenWidth=$screenWidth '
       'availableTabWidth=$availableTabWidth selectedTabLeft=$selectedTabLeft '
       'selectedTabRight=$selectedTabRight '
       'selectedTabFullyVisible=$selectedTabFullyVisible '
       'scrolledToSelected=$scrolledToSelected clippedByRightEdge=$clippedByRightEdge',
+      searchAuditLog,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final modes = SearchModeSegment.values;
-    if (kDebugMode) {
-      debugPrint(
-        '[SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true '
-        'modeCount=${modes.length} selectedMode=${widget.selected.name} '
-        'height=$_segmentHeight horizontalScroll=${modes.length > 3}',
-      );
-    }
+    AuditLogDeduper.logOnce(
+      'segment_style_${widget.selected.name}',
+      '[SEARCH_MODE_SEGMENT_STYLE_AUDIT] usesRoomColleLikeSegment=true '
+      'modeCount=${modes.length} selectedMode=${widget.selected.name} '
+      'height=$_segmentHeight horizontalScroll=${modes.length > 3}',
+      searchAuditLog,
+    );
     return DecoratedBox(
       decoration: BoxDecoration(
         color: HomeScreenColors.roomContentWellFill,
@@ -143,14 +144,14 @@ class _SearchModeSegmentBarState extends State<SearchModeSegmentBar> {
             ),
             child: LayoutBuilder(
               builder: (context, constraints) {
-                if (kDebugMode) {
-                  final sw = MediaQuery.sizeOf(context).width;
-                  debugPrint(
-                    '[SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=$sw '
-                    'totalTabWidth=${constraints.maxWidth} selectedMode=${widget.selected.name} '
-                    'clipped=${constraints.maxWidth < 360} horizontalScrollable=true',
-                  );
-                }
+                final sw = MediaQuery.sizeOf(context).width;
+                AuditLogDeduper.logOnce(
+                  'segment_overflow_${widget.selected.name}',
+                  '[SEARCH_MODE_SEGMENT_OVERFLOW_AUDIT] screenWidth=$sw '
+                  'totalTabWidth=${constraints.maxWidth} selectedMode=${widget.selected.name} '
+                  'clipped=${constraints.maxWidth < 360} horizontalScrollable=true',
+                  searchAuditLog,
+                );
                 SchedulerBinding.instance.addPostFrameCallback((_) {
                   if (!mounted) return;
                   if (_lastScrolledSelection != widget.selected) {

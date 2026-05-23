@@ -23,6 +23,7 @@ import '../theme/home_screen_colors.dart';
 import '../theme/room_colle_list_accent.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../utils/room_colle_candidate_stale.dart';
+import '../utils/app_debug_log.dart';
 import '../utils/room_reaction_analytics.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_screen_status.dart';
@@ -1970,7 +1971,7 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
         final nDone = m
             .sortedItemsForStatus(RakutenManagedProductStatus.done)
             .length;
-        debugPrint(
+        roomAuditLog(
           '[ROOMコレ診断] ROOMコレ画面起動後 total=${m.items.length} candidate=$nCand '
           'done=$nDone listUi=${m.listUiStatus} tabIdx=${_tabController.index}',
         );
@@ -3087,21 +3088,19 @@ class _RoomManagedProductListTabState
           canShowDayEmptyMessage: canShowDayEmpty,
         );
         _debugLogSurface(surface);
-        if (kDebugMode) {
-          debugPrint(
-            '[ROOMコレ診断] 一覧直前 tab=${widget.status.name} kw="${widget.listFilters.keyword}" '
-            'more=${widget.listFilters.hasNonKeywordConstraints} '
-            'urlExcl=${widget.excludeUrlNotReady} day=${widget.doneAtLocalDayFilter != null} '
-            'baseLen=${baseList.length} afterFilterLen=${list.length} '
-            'surface=${surface.debugLabel} ui=${ui.name}',
+        roomAuditLog(
+          '[ROOMコレ診断] 一覧直前 tab=${widget.status.name} kw="${widget.listFilters.keyword}" '
+          'more=${widget.listFilters.hasNonKeywordConstraints} '
+          'urlExcl=${widget.excludeUrlNotReady} day=${widget.doneAtLocalDayFilter != null} '
+          'baseLen=${baseList.length} afterFilterLen=${list.length} '
+          'surface=${surface.debugLabel} ui=${ui.name}',
+        );
+        if (list.isNotEmpty) {
+          final f = list.first;
+          verboseItemLog(
+            '[ROOMコレ診断] 描画リスト先頭 productId=${f.productId} title=${f.itemName} '
+            'status=${f.status.name} len=${list.length}',
           );
-          if (list.isNotEmpty) {
-            final f = list.first;
-            debugPrint(
-              '[ROOMコレ診断] 描画リスト先頭 productId=${f.productId} title=${f.itemName} '
-              'status=${f.status.name} len=${list.length}',
-            );
-          }
         }
 
         switch (surface) {

@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/debug_log_flags.dart';
 import '../models/rakuten_managed_product.dart';
+import 'app_debug_log.dart';
 
 /// ROOMコレ候補／コレ済の状態追跡用デバッグログ（[kDebugMode] のみ出力）。
 class ManagedProductDiagLog {
@@ -49,14 +51,24 @@ class ManagedProductDiagLog {
     int afterDoneCount = -1,
   }) {
     if (!kDebugMode) return;
-    debugPrint('[MANAGED_PRODUCT_SAVE]');
-    debugPrint('action=$action');
-    debugPrint('productId=$productId');
-    debugPrint('itemCode=$itemCode');
-    debugPrint('beforePendingCount=$beforePendingCount');
-    debugPrint('afterPendingCount=$afterPendingCount');
-    debugPrint('beforeDoneCount=$beforeDoneCount');
-    debugPrint('afterDoneCount=$afterDoneCount');
+    if (!DebugLogFlags.kVerboseItemLogsEnabled) {
+      if (DebugLogFlags.kDebugLogSummaryEnabled) {
+        debugSummaryLog(
+          '[MANAGED_PRODUCT_SAVE] action=$action productId=$productId '
+          'pending=$beforePendingCount→$afterPendingCount '
+          'done=$beforeDoneCount→$afterDoneCount',
+        );
+      }
+      return;
+    }
+    verboseItemLog('[MANAGED_PRODUCT_SAVE]');
+    verboseItemLog('action=$action');
+    verboseItemLog('productId=$productId');
+    verboseItemLog('itemCode=$itemCode');
+    verboseItemLog('beforePendingCount=$beforePendingCount');
+    verboseItemLog('afterPendingCount=$afterPendingCount');
+    verboseItemLog('beforeDoneCount=$beforeDoneCount');
+    verboseItemLog('afterDoneCount=$afterDoneCount');
   }
 
   static void logLoad({
@@ -67,12 +79,21 @@ class ManagedProductDiagLog {
     String tab = '',
   }) {
     if (!kDebugMode) return;
-    debugPrint('[MANAGED_PRODUCT_LOAD]');
-    debugPrint('source=$source');
-    debugPrint('pendingCount=$pendingCount');
-    debugPrint('doneCount=$doneCount');
-    debugPrint('filter=$filter');
-    debugPrint('tab=$tab');
+    if (!DebugLogFlags.kVerboseItemLogsEnabled) {
+      if (DebugLogFlags.kDebugLogSummaryEnabled) {
+        debugSummaryLog(
+          '[MANAGED_PRODUCT_LOAD] source=$source pending=$pendingCount '
+          'done=$doneCount filter=$filter tab=$tab',
+        );
+      }
+      return;
+    }
+    verboseItemLog('[MANAGED_PRODUCT_LOAD]');
+    verboseItemLog('source=$source');
+    verboseItemLog('pendingCount=$pendingCount');
+    verboseItemLog('doneCount=$doneCount');
+    verboseItemLog('filter=$filter');
+    verboseItemLog('tab=$tab');
   }
 
   static void logMutationLock({
@@ -80,8 +101,9 @@ class ManagedProductDiagLog {
     required String blockedAction,
   }) {
     if (!kDebugMode) return;
-    debugPrint('[MANAGED_PRODUCT_MUTATION_LOCK]');
-    debugPrint('isBulkRunning=$isBulkRunning');
-    debugPrint('blockedAction=$blockedAction');
+    importantDebugLog(
+      '[MANAGED_PRODUCT_MUTATION_LOCK] isBulkRunning=$isBulkRunning '
+      'blockedAction=$blockedAction',
+    );
   }
 }

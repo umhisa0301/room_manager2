@@ -52,7 +52,7 @@ abstract final class ShopDisplayResolve {
     required String uiText,
     String fallback = 'resolvedShopName',
   }) {
-    if (!kDebugMode || !DebugLogFlags.enableVerboseShopCodeUiAuditLog) return;
+    if (!kDebugMode || !DebugLogFlags.kVerboseItemLogsEnabled) return;
     final sc = shopCode?.trim() ?? '';
     final sn = shopName?.trim() ?? '';
     final exposed = sc.isNotEmpty && uiText == sc;

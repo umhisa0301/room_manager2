@@ -60,10 +60,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kDebugMode) {
     debugPrint(
-      '[DEBUG_LOG_VOLUME_AUDIT] nativeLogsObserved=true appVerboseLogsReduced=true '
-      'rakutenUrlVerbose=${DebugLogFlags.enableVerboseRakutenUrlLog} '
-      'genreResolveVerbose=${DebugLogFlags.enableVerboseGenreResolveLog} '
-      'productCardVerbose=${DebugLogFlags.enableVerboseProductCardAuditLog}',
+      '[DEBUG_LOG_VOLUME] searchAudit=${DebugLogFlags.kSearchAuditLogsEnabled} '
+      'roomAudit=${DebugLogFlags.kRoomAuditLogsEnabled} '
+      'analyticsAudit=${DebugLogFlags.kAnalyticsAuditLogsEnabled} '
+      'verboseItem=${DebugLogFlags.kVerboseItemLogsEnabled} '
+      'summary=${DebugLogFlags.kDebugLogSummaryEnabled}',
     );
   }
   roomImportEnrichModeLog(RoomImportEnrichmentVerifyConfig.enabled);

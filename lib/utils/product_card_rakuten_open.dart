@@ -10,7 +10,7 @@ abstract final class ProductCardRakutenOpen {
     required String screen,
     required String cardType,
   }) {
-    if (!kDebugMode || !DebugLogFlags.enableVerboseProductCardAuditLog) return;
+    if (!kDebugMode || !DebugLogFlags.kVerboseItemLogsEnabled) return;
     debugPrint(
       '[PRODUCT_CARD_TAP_TARGET_AUDIT] screen=$screen cardType=$cardType '
       'imageTapOpensRakuten=true titleTapOpensRakuten=true usesAffiliateUrl=true '

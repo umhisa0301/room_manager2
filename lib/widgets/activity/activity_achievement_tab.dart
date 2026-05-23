@@ -14,6 +14,7 @@ import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
 import '../../state/today_recommendation_provider.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/app_debug_log.dart';
 import '../../utils/room_sync_log.dart';
 import '../../widgets/app_card.dart';
 import 'activity_navigation_helpers.dart';
@@ -918,20 +919,18 @@ class _WeekTotalBarsCardState extends State<_WeekTotalBarsCard> {
         day,
       );
       series.add((day: day, posts: posts, cand: cand));
-      if (kDebugMode) {
-        final mm = day.month.toString().padLeft(2, '0');
-        final dd = day.day.toString().padLeft(2, '0');
-        analyticsDailyBarLog(
-          'date=${day.year}-$mm-$dd '
-          'postCount=$posts candidateCount=$cand '
-          'candidateSource=statusCandidateOnly',
-        );
-        roomImportActivityVisibilityLog(
-          screen: 'achievement',
-          visible: false,
-          reason: 'notUserActivity',
-        );
+    }
+    if (kDebugMode && series.isNotEmpty) {
+      final parts = <String>[];
+      for (final e in series) {
+        final mm = e.day.month.toString().padLeft(2, '0');
+        final dd = e.day.day.toString().padLeft(2, '0');
+        parts.add('${e.day.year}-$mm-$dd:p${e.posts}/c${e.cand}');
       }
+      analyticsAuditLog(
+        '[ANALYTICS_DAILY_BAR] weekSummary=${parts.join(' ')} '
+        'candidateSource=statusCandidateOnly',
+      );
     }
 
     var weekPosts = 0;

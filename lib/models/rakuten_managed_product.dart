@@ -564,7 +564,9 @@ class RakutenManagedProduct {
       return _fromJsonImpl(json);
     } catch (e, st) {
       if (kDebugMode) {
-        debugPrint('[ROOMコレ診断] RakutenManagedProduct.fromJson 失敗: $e\n$st');
+        if (kDebugMode) {
+          debugPrint('[ROOMコレ診断] RakutenManagedProduct.fromJson 失敗: $e\n$st');
+        }
       }
       return null;
     }

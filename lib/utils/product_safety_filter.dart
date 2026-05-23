@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/debug_log_flags.dart';
+import 'app_debug_log.dart';
+
 /// 不適切商品除外の理由（ログ・テスト用）。
 enum ProductSafetyBlockReason {
   adultKeyword,
@@ -387,6 +390,34 @@ abstract final class ProductSafetyFilter {
     return reasons.map((e) => e.name).join(',');
   }
 
+  static String? _batchSource;
+  static int _batchTotal = 0;
+  static int _batchBlocked = 0;
+  static final Map<String, int> _batchReasonBreakdown = <String, int>{};
+  static final List<String> _batchBlockedExamples = <String>[];
+
+  /// 検索1回分の集計ログ用。検索開始時に呼ぶ。
+  static void beginBatch(String source) {
+    _batchSource = source;
+    _batchTotal = 0;
+    _batchBlocked = 0;
+    _batchReasonBreakdown.clear();
+    _batchBlockedExamples.clear();
+  }
+
+  /// 検索完了後に1行サマリを出す（通常デバッグ）。
+  static void endBatch() {
+    if (!kDebugMode || _batchSource == null) return;
+    final examples = _batchBlockedExamples.take(3).join(' | ');
+    debugSummaryLog(
+      '[PRODUCT_SAFETY_FILTER] source=$_batchSource totalItems=$_batchTotal '
+      'blockedCount=$_batchBlocked '
+      'reasonBreakdown=${_batchReasonBreakdown.entries.map((e) => '${e.key}:${e.value}').join(',')} '
+      'firstBlockedExamples=${examples.isEmpty ? '-' : examples}',
+    );
+    _batchSource = null;
+  }
+
   static void logFilter({
     required String source,
     required String itemCode,
@@ -399,14 +430,27 @@ abstract final class ProductSafetyFilter {
   }) {
     if (!kDebugMode) return;
     final reasonTag = primaryLogReason(reasons);
-    debugPrint(
+    if (_batchSource != null && source == _batchSource) {
+      _batchTotal++;
+      if (blocked) {
+        _batchBlocked++;
+        _batchReasonBreakdown[reasonTag] =
+            (_batchReasonBreakdown[reasonTag] ?? 0) + 1;
+        if (_batchBlockedExamples.length < 3) {
+          final t = title.trim().isEmpty ? '(empty)' : title.trim();
+          _batchBlockedExamples.add('$itemCode:$t:$reasonTag');
+        }
+      }
+    }
+    if (!DebugLogFlags.kVerboseItemLogsEnabled) return;
+    verboseItemLog(
       '[PRODUCT_SAFETY_FILTER] source=$source itemCode=$itemCode '
       'title=${title.trim().isEmpty ? '(empty)' : title.trim()} '
       'genreName=${genreName.trim()} shopName=${shopName.trim()} '
       'blocked=$blocked reason=$reasonTag',
     );
     if (blocked) {
-      debugPrint(
+      verboseItemLog(
         '[RECOMMEND_EXCLUDE] reason=safetyBlocked blockReason=$reasonTag '
         'itemCode=$itemCode matchedKeywords=${matchedKeywords.join(',')}',
       );

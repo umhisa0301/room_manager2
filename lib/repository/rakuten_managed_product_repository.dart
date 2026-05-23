@@ -16,6 +16,7 @@ import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_reaction_status_display.dart';
 import '../utils/room_import_product_image.dart';
 import '../utils/room_import_safe_merge.dart';
+import '../utils/app_debug_log.dart';
 import '../utils/room_sync_log.dart';
 
 /// ROOM 同期で既存コレ済行にヒットした照合結果（照合順は [RakutenManagedProductRepository.findRoomImportExistingRowMatch]）。
@@ -208,11 +209,9 @@ class RakutenManagedProductRepository {
           } else if (entry is Map) {
             map = Map<String, dynamic>.from(entry);
           } else {
-            if (kDebugMode) {
-              debugPrint(
-                '[ROOMコレ診断] loadAll skip non-map entry type=${entry.runtimeType}',
-              );
-            }
+            roomAuditLog(
+              '[ROOMコレ診断] loadAll skip non-map entry type=${entry.runtimeType}',
+            );
             continue;
           }
           final item = RakutenManagedProduct.fromJson(map);
@@ -220,23 +219,19 @@ class RakutenManagedProductRepository {
             out.add(item);
           }
         } catch (e, st) {
-          if (kDebugMode) {
-            debugPrint('[ROOMコレ診断] loadAll skip corrupt entry: $e\n$st');
-          }
+          importantDebugLog('[ROOMコレ診断] loadAll skip corrupt entry: $e\n$st');
         }
       }
-      if (kDebugMode && !_debugLoggedLoadAllSummaryOnce) {
+      if (!_debugLoggedLoadAllSummaryOnce) {
         _debugLoggedLoadAllSummaryOnce = true;
-        debugPrint(
+        roomAuditLog(
           '[ROOMコレ診断] loadAll 初回サマリー parsed=${out.length} '
           'rawJsonList=${decoded.length}',
         );
       }
       return out;
     } catch (e, st) {
-      if (kDebugMode) {
-        debugPrint('[ROOMコレ診断] loadAll 全体失敗（JSON等）: $e\n$st');
-      }
+      importantDebugLog('[ROOMコレ診断] loadAll 全体失敗（JSON等）: $e\n$st');
       return [];
     }
   }
@@ -377,12 +372,10 @@ class RakutenManagedProductRepository {
       beforeDoneCount: beforeCounts.$2,
       afterDoneCount: afterCounts.$2,
     );
-    if (kDebugMode) {
-      debugPrint(
-        '[ROOMコレ診断] registerCandidateFromSearchItem 保存 productId=${item.productId} '
-        'status=candidate saveCount=${list.length}',
-      );
-    }
+    roomAuditLog(
+      '[ROOMコレ診断] registerCandidateFromSearchItem 保存 productId=${item.productId} '
+      'status=candidate saveCount=${list.length}',
+    );
     return true;
   }
 
