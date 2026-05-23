@@ -422,11 +422,19 @@ Additional data:
 
 ```json
 {
-  "status": "loading",
-  "subagentComposerId": "e3be02e0-c89d-41cf-9bec-152194fea20f"
+  "status": "success",
+  "subagentComposerId": "e3be02e0-c89d-41cf-9bec-152194fea20f",
+  "terminationReason": "completed"
 }
 ```
-Status: **loading**
+Result:
+
+```json
+{
+  "agentId": "e3be02e0-c89d-41cf-9bec-152194fea20f"
+}
+```
+Status: **completed**
 
 
 </details>
@@ -604,3 +612,2819 @@ Directory: **c:\dev\app_project\room_manager2** (27 files)
 <summary>Tool use: **glob_file_search**</summary>
 
 </details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+I will examine the key files thoroughly to implement the necessary changes.</details></think>
+
+_**Agent (default)**_
+
+主要ファイルの該当箇所を読み、実装方針を固めます。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\utils\rakuten_search_session_cache.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\rakuten_search_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\search_mode_segment_bar.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_buildResultPhase|_onSearchWayPicked|_keywordSortModeLabel|_apiSortParamForMode|searchKey|SEARCH_"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_buildResultPhase|_onSearchWayPicked|_keywordSortModeLabel|_apiSortParamForMode|searchKey|SEARCH_",
+  "topFiles": [
+    {
+      "matchCount": 51,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 51
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+I need to read additional sections, specifically _onSearchWayPicked starting from line 2696.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+I have a clear understanding and will now proceed to plan the implementation.
+
+**SearchResultEnvelope** should be added to `rakuten_search_session_cache.dart` as an internal structure extending `_ModeSnapshot`, containing ownerMode, searchKey, genreId, shopCode, keyword, sort, resultItems, and createdAt.
+
+Session cache updates require including envelope metadata when saving/restoring, and validating that mode and searchKey match current conditions during restoration before displaying results.
+
+Screen-level validation involves adding `_activeModeAcceptedResults(search)` to check ownership before utilizing `search.results`.
+
+**Mode segment visibility** requires converting `SearchModeSegmentBar` to a StatefulWidget or passing a ScrollController with GlobalKeys per tab to enable auto-scrolling on selection. The navigation row should be split into separate rows for the back button and mode tabs if necessary, ensuring the selected tab remains fully visible. A `[SEARCH_MODE_SEGMENT_VISIBILITY_AUDIT]` log should be added for tracking.
+
+**Clear search button** should be added to `_buildResultActionRow` with the function `_clearActiveModeSearchResults`.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "searchKey|conditionSnapshot|ownerMode"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "searchKey|conditionSnapshot|ownerMode",
+  "topFiles": [
+    {
+      "matchCount": 11,
+      "uri": "lib/utils/app_input_limits.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/repository/rakuten_search_repository.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/state/rakuten_search_provider.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 5,
+  "totalMatches": 20
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\utils\rakuten_keyword_search_sort.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+I need to implement a comprehensive solution.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\test\state\rakuten_search_provider_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_searchResultOwnership|_acceptResults|orderedResults"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_searchResultOwnership|_acceptResults|orderedResults",
+  "topFiles": [
+    {
+      "matchCount": 22,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 22
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Let me plan the implementation in detail.
+
+Create `lib/utils/search_result_envelope.dart` with a `SearchResultEnvelope` class that includes fields like `ownerMode`, `searchKey`, `keyword`, and `resultItems`, along with a `buildSearchResultSearchKey` function to generate deterministic keys. Update `_ModeSnapshot` in the session cache to include optional envelope fields such as `ownerMode`, `searchKey`, `genreId`, `shopCode`, and `sort`.
+
+Update `saveProviderSnapshot` to optionally accept `SearchResultEnvelope` metadata, storing envelope fields directly in `_ModeSnapshot`. The screen will validate this metadata on display.
+
+The screen now manages cached search result envelopes and shop discovery states. It saves and restores envelope data during session caching and validates envelope contents before displaying results. When search results are applied, the envelope is captured for later use. A helper method determines whether provider results should be displayed based on the active envelope's validity.
+
+If the envelope is null but search results are available and the status is successful, the provider state likely comes from another mode and should be rejected. The issue occurs during mode switches when restoring from cachewhen restoration is skipped due to loading, incorrect results appear.
+
+To fix this:
+1. On mode switch, always restore the snapshot or reset if theres a mismatchhandle loading skips by canceling or forcing a restore after loading completes.
+2. Validate the envelope before displaying results.
+3. When saving, include the current search key from the active conditions at the time of the search.
+
+When saving the session in `_saveCurrentSearchSession`, capture the current envelope from `_lastSearchEnvelopeForMode[key]`. When a search completes, set the envelope with a searchKey computed from the condition used.
+
+For `_resolveSearchSurfacePhase`, use gated results with a `_displayableResults` helper that returns an empty list if `_acceptSearchResults` fails. The `_acceptSearchResults` method checks the active mode cache key and retrieves the stored envelope for that mode from either the cache or in-memory `_modeEnvelopes`.
+
+If the search status is not successful, the screen may still display loading or error states. For successful searches with results, the owner mode must match the current mode cache key, the search key must match the current search key, and other fields like shop code and genre ID must align accordingly. The screen tracks envelope data in the cache and avoids modifying provider structures directly.
+
+The flow involves capturing the result envelope after a successful search, which is called from the search completion listener. This ensures that the envelope is properly saved and validated before being used for display.
+
+Need to detect search completion, likely in build when status changes. On `_runSearch`, store `_pendingSearchKey` and `_pendingOwnerMode` before search, then update envelope on success. After `searchWithCondition` completes, screen cannot directly receive callback; use build-phase detection or wrap search calls to track completion.
+
+In build(), when search.status becomes success, call `_syncResultEnvelopeIfNeeded(search)` to update the result envelope if needed.
+
+The method checks if the search status is successful and compares the current search key and result count with existing data. If they match, no update is made; otherwise, a new `SearchResultEnvelope` is created and stored.
+
+During mode switch restoration, the session is restored using `_restoreSearchSession`, which handles loading cached envelope data and validating it against current conditions.
+
+The session cache now stores `SearchResultEnvelope` data alongside provider snapshots, ensuring that envelope details are persisted and restored correctly during mode switches. The `saveProviderSnapshot` method is extended to accept an optional `SearchResultEnvelope`, which is saved in `_envelopeByMode` and its metadata is included in the `_ModeSnapshot`. During restoration, the active envelope is loaded from the cached data.
+
+The mode segment bar is implemented as a StatefulWidget with a ScrollController, featuring GlobalKeys for each segment tile and automatic scrolling to the selected tab. To prevent clipping of the selected tab label, the navigation is split into a column with a back button row and a full-width segment bar, using `FittedBox` or minimum width constraints for the selected tab. The `Expanded` widget is avoided to prevent squeezing the scroll view. The `compactHeaderMode` option removes ellipsis from the selected tab using `FittedBox` or fixed width. The `_buildResultPhaseNavigationRow` method is updated to support this layout.
+
+The UI now separates the back button row and mode tab row, with the segment bar scrolling to the selected tab. The clear button resets the active mode's search results by clearing transient state and resetting the provider snapshot.
+
+The screen handles search result envelopes by validating them before display and ensuring proper restoration during mode switches. It captures and stores envelope data upon successful searches, updating the UI only when the envelope matches current conditions. During restoration, it validates cached envelope data against current settings to prevent incorrect displays. The session cache persists envelope information alongside provider snapshots for accurate mode transitions. The mode segment bar uses a scroll controller and global keys for navigation, avoiding expanded widgets to prevent layout issues. The back button remains full-width and left-aligned, with the segment bar positioned below it.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\services\shop_discovery_aggregator.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_runShopDiscovery|_runGenreSearch"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_runShopDiscovery|_runGenreSearch",
+  "topFiles": [
+    {
+      "matchCount": 11,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 11
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+I will implement all the files.
+
+I will create a comprehensive implementation plan including: SearchResultEnvelope and search key builder in a new file, extending _ModeSnapshot and adding envelope storage in rakuten_search_session_cache.dart, implementing display label functions in rakuten_keyword_search_sort.dart, creating a StatefulWidget with scroll-to-selected and visibility audit in search_mode_segment_bar.dart, and making major updates to rakuten_search_screen.dart.
+
+For provider restoration during loading, I will modify the screen's `_restoreSearchSession` method to call `resetTransientState` before restoring the session if switching modes while loading. Alternatively, I will update `restoreFromSnapshot` to accept a force flag to avoid major provider changes. I will also validate the envelope after restoration.
+
+Screen fix on mode switch:
+```dart
+void _restoreSearchSession(String key) {
+  ...
+  if (search.status == RakutenSearchStatus.loading) {
+    search.resetTransientState(); // cancel showing wrong results
+  }
+  cache.restoreProviderSnapshot(key, search);
+  ...
+}
+```
+
+For `_onSearchWayPicked`, implement proper isolation audit logging.
+
+Helper methods in screen:
+- `_currentSearchKey()` 
+- `_captureAndSaveResultEnvelope(RakutenSearchProvider search)`
+- `_acceptSearchResults(RakutenSearchProvider search, BuildContext context)` returns (bool accepted, String? rejectReason)
+- `_effectiveResultsForDisplay(search, context)` returns empty if not accepted
+
+Update `_resolveSearchSurfacePhase` to use accepted results count.
+
+Update `_buildResultArea` paths to gate on `_acceptSearchResults`.</details></think>
+
+_**Agent (default)**_
+
+実装を進めます。まず `SearchResultEnvelope` とセッションキャッシュの拡張から着手します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write">
+<details>
+<summary>Tool use: **todo_write**</summary>
+
+
+Parameters:
+
+```json
+{
+  "merge": true
+}
+```
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "SearchResultEnvelope + session cache 拡張",
+      "id": "1",
+      "status": "in_progress"
+    },
+    {
+      "content": "SearchModeSegmentBar: タブ可視化・監査ログ",
+      "id": "2",
+      "status": "pending"
+    },
+    {
+      "content": "rakuten_search_screen: 結果分離・クリア・ヘッダー・空状態",
+      "id": "3",
+      "status": "pending"
+    },
+    {
+      "content": "並び順ラベル + flutter analyze/test + 実機確認",
+      "id": "4",
+      "status": "pending"
+    }
+  ],
+  "success": true
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write"><details>
+<summary>Tool use: **todo_write**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\utils\search_result_envelope.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\utils\rakuten_search_session_cache.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\utils\rakuten_keyword_search_sort.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Update search_mode_segment_bar.dart to use StatefulWidget with scroll controller and visibility audit.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\widgets\search_mode_segment_bar.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+I need to make extensive changes to rakuten_search_screen.dart.
+
+I will add imports and state variables, then update methods and UI elements in rakuten_search_screen.dart through multiple search and replace operations.
+
+First, I'll add the import statement and state variable after line 133:
+```dart
+import '../utils/search_result_envelope.dart';
+
+bool _shopDiscoveryHasSearched = false;
+```
+
+Then I'll update the `_captureUiSnapshot` method to include `shopDiscoveryHasSearched` and modify the save/restore/clear functionality, navigation rows, action rows, phase resolution, result areas, sort labels, and shop discovery features.
+
+I need to update the `_applyUiSnapshot` method to restore the UI state and add helper methods for saving and building result envelopes.
+
+The `_saveCurrentSearchSession` method will save the current search session with a result envelope when the search status is successful. The `_buildResultEnvelopeForCache` method will create an envelope for caching results, but only when there are successful search results or even empty results after a search.
+
+I'll implement these methods after the `_restoreSearchSession` method around line 532. The result envelope will only be built when the search status indicates success, ensuring that cached data is properly structured for future use.
+
+When saving, the envelope should always refresh if there's a matching search, and the `_envelopeForProviderSave` method will create a new envelope with current search results when the search status is not idle.
+
+The code snippet shows the initialization of a `createdAt` timestamp and introduces a method `_evaluateResultOwnership` that checks ownership of search results. This method evaluates whether the search results can be accepted based on active mode, saved shop keyword entry, and effective shop code. It also checks if there's an existing envelope for the current mode in the cache.
+
+If no envelope exists, it likely proceeds with further logic to handle the evaluation. The method returns a tuple indicating whether the results are accepted and optionally a reason for rejection. This ensures proper handling of search result ownership before proceeding with UI updates or caching.
+
+The implementation handles cases where the saved shop isn't selected but results exist, preventing acceptance under such conditions. It also integrates with the session cache to validate against existing data. The method is part of a larger system managing search sessions and their associated data integrity.
+
+The code appears to be part of a larger class managing search functionality, likely within a Flutter application using the `rakuten_search_screen.dart`
+
+If the search results are not accepted due to mode or key mismatches, the system should return the input if the results were incorrectly displayed.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_resolveSearchSurfacePhase"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_resolveSearchSurfacePhase",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Only one call site exists at line 1523, so a BuildContext parameter can be added.
+
+To properly log isolation audit during mode switch restoration, update `_onSearchWayPicked` to handle restore scenarios where provider resets may be needed if ownership fails. During restore, cached data is placed into the provider, requiring matching envelopes. When switching to mode B, its snapshot is restored only if the envelope matches the UI. However, issues arise when switching before savingsaving mode A first, then restoring mode Bwhich should still function correctly. To address loading skips during restore, add logic in `_restoreSearchSession` to reset transient state if the search status is loading.
+
+cache.restoreProviderSnapshot(key, search);  
+Also when switching modes during loading, the in-flight result might apply to the wrong modethough the provider checks modeTag on session, it doesn't verify modeTag on apply. If the session ID matches due to no new search, add an activeSearchModeTag check in _applySearchResultIfCurrent to prevent incorrect application. To avoid large provider changes, implement a screen-level fix by incrementing session or resetting on mode switch when status is loading.
+
+search.beginSearchSession(modeTag: _providerModeTag()); // new session, stale results ignored
+
+To prevent stale async results from applying after mode switching, invalidate the old session by calling search.beginSearchSession with the new modeTag at the end of _onSearchWayPicked after restore. This ensures that any pending results from the previous mode do not incorrectly apply to the new mode.
+
+When the restore process loads old results, this behavior is intentional. To ensure proper envelope tracking after a successful search, a method `_syncEnvelopeAfterSearch` was added to update the cache envelope upon status change to success. This function builds the envelope from current search data and saves it to the cache without performing a full provider save. Although calling this in build during the result phase could be heavy, it's better positioned at the end of `_runSearch` pathsthough these are asynchronous and unawaited.
+
+Use a listener in initState to respond to search provider changes, and remove the listener in dispose. When the search status indicates success or error, persist the result envelope for the active mode.</details></think>
+
+_**Agent (default)**_
+
+`rakuten_search_screen.dart` に主要な変更を適用します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Update the shop discovery section to include empty states and implement a hasSearched flag.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "SearchModeSegmentBar"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "SearchModeSegmentBar",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Update the shop discovery success empty states and ownership check.
+
+Update the shop discovery success empty states and ownership checks. For shop discovery, gate results with ownership, requiring ownerMode to be shopDiscovery. Use gated results for product/genre areas, showing idle view for saved shops without shops. Replace shop discovery success empty handling with detailed states. Update input SearchModeSegmentBar with auditPhase and read line 2860 for input segment bar.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Update the input SearchModeSegmentBar with auditPhase set to 'input'.
+
+Add a saved shop guard in _buildResultArea at the start of the product path. For success in product _buildResultArea, add an ownership check that returns an idle or input view if ownership is not accepted.
+
+When the envelope is null on initial success before syncing, valid results may be incorrectly rejected. The flow processes search completion, builds results, syncs the envelope, and then resolves the search surface phase. Although `_maybeSyncEnvelope` runs first and should ensure the envelope exists before phase resolution, it only executes when the status changes to success. This means during the first frame, when status becomes success and sync occurs, the envelope gets saved properly. However, this timing can still lead to issues if not handled correctly.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+The header band should only display when the phase is result or empty, which is already managed by the caller.
+
+The duplicate `_logSearchResultConditionSummaryAudit` in `_buildResultConditionHeader` has been removed. Flutter analyze revealed errors that need fixing, including updating `_buildResultPhaseHeaderBand` to not display when ownership rejects, as phase resolution handles this. An issue exists where `_evaluateResultOwnership` returns `noEnvelope` when results aren't empty but envelope is null; however, on first success frame `_maybeSyncEnvelope` runs first, creating the envelope during the same build via `_persistResultEnvelopeForActiveMode`, which calls `saveProviderSnapshot`.
+
+Envelope persistence ensures that `envelopeForMode` reads from cache, and saving updates the cache accordingly. After clearing, the envelope is properly reset. Genre search completion requires persisting the envelope, which is handled by `_maybeSyncEnvelope` during build. Running analysis and tests is necessary. A shop discovery header should be added for the result phase with condition summary, matching the user's request for a unified 3-row header including a condition header and action row, similar to other phases.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+For visible shop discovery results, update to use the full header band.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+When users search and encounter empty views in the wrap shop discovery, chrome wrapping can be added as an optional enhancement.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd "c:\dev\app_project\room_manager2" && flutter analyze lib/screens/rakuten_search_screen.dart lib/utils/rakuten_search_session_cache.dart lib/utils/search_result_envelope.dart lib/widgets/search_mode_segment_bar.dart lib/utils/rakuten_keyword_search_sort.dart 2>&1</summary>
+
+```bash
+cd "c:\dev\app_project\room_manager2" && flutter analyze lib/screens/rakuten_search_screen.dart lib/utils/rakuten_search_session_cache.dart lib/utils/search_result_envelope.dart lib/widgets/search_mode_segment_bar.dart lib/utils/rakuten_keyword_search_sort.dart 2>&1
+```
+
+```
+Analyzing 5 items...                                            
+No issues found! (ran in 19.5s)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd "c:\dev\app_project\room_manager2" && flutter test 2>&1</summary>
+
+```bash
+cd "c:\dev\app_project\room_manager2" && flutter test 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が最優先
+00:00 +1: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が無ければ itemUrl
+00:00 +2: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliate と item が空なら rakutenUrl
+00:00 +3: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:00 +4: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and keeps single value
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated,affordable new=premium
+00:00 +5: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles effectivePostStyleList uses balance without showing it as selected
+00:00 +6: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 通常URL・クエリ付きで itemCode を抽出する
+00:00 +7: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 末尾スラッシュなしでも itemCode を抽出する
+00:00 +8: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 検索結果ホストは非商品ページエラーになる
+00:00 +9: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天以外のURLは商品ページURLエラーになる
+00:00 +10: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl item.rakuten で商品セグメントが不正なら確認できないエラー
+00:00 +11: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ済みがコレ候補より優先される
+00:00 +12: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ候補として分類される
+00:00 +13: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts 未登録
+00:00 +14: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser https の item.rakuten から shop / セグメント / 正規URL
+00:01 +15: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser http でも抽出できる
+00:01 +16: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser HTML 内の複数リンクから数値ID付きを優先
+00:01 +17: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RoomUrlResolver ROOM HTML から楽天商品URLを取得できる
+[ROOM_IMPORT_API] type=roomPage status=200 durationMs=14
+[ROOM_IMPORT_API] rateLimitDetected=false
+00:01 +18: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:01 +19: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathFromCollectsRow reads nested item URL
+[ROOM_COLLECTS_RESPONSE_SHAPE] itemKeys=id,meta productLikeKeys=- userLikeKeys=- imageLikeKeys=- hasProductImage=false hasUserIcon=false
+[ROOM_IMPORT_COLLECTS_IMAGE_KEYS] productId=17001234567890 keys=meta.link selectedKey=- rejectedKeys=meta.link
+00:01 +20: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMプロフィールURLを許可して正規化する
+00:01 +21: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /items 付きROOMプロフィールURLを許可して正規化する
+00:01 +22: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /collections と /likes もプロフィール導線として許可する
+00:01 +23: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 空は任意入力として許可する
+00:01 +24: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat httpは拒否する
+00:01 +25: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 楽天市場URLは拒否する
+00:01 +26: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMトップURLのみは拒否する
+00:01 +27: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOM商品URL相当の複数パスは拒否する
+00:01 +28: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat roomIdなしの /items は拒否する
+00:01 +29: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 短縮URLは拒否する
+00:01 +30: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers extractRoomId extracts roomId from profile child routes
+00:01 +31: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers normalizeProfileUrl always stores profile URL
+00:01 +32: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers buildItemsUrl builds posting list URL from saved profile URL
+00:01 +33: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 200系は保存可能な確認成功にする
+00:01 +34: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 404は保存不可にする
+00:01 +35: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 403/429は形式OKなら確認保留で保存可能にする
+00:01 +36: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 通信失敗は形式OKなら確認保留で保存可能にする
+00:02 +37: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:02 +38: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+00:02 +39: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからない場合は null
+00:02 +40: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: beginSearchSession increments active request id
+00:02 +41: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorForNewSearch clears error and retry banner
+[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=1 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+00:02 +42: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorIfModeMismatch clears error owned by another mode
+00:02 +43: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: isErrorVisibleForMode is true only for matching tag
+00:02 +44: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:02 +45: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除外
+00:02 +46: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+00:02 +47: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter BLCDコレクションは除外
+00:02 +48: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 濡れトロは除外
+00:02 +49: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おもちゃ/宮本真希[DVD]は adultKeyword がなければ通す
+00:02 +50: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ベビー おもちゃは通す
+00:02 +51: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ビール10本セットは除外
+00:02 +52: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 名入れワインは除外
+00:02 +53: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter シャンパングラスは通す
+00:02 +54: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ワイングラスは通す
+00:02 +55: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 子供服は通す
+00:02 +56: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter アダルトグッズは除外
+00:02 +57: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter グラビア写真集は除外
+00:02 +58: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ジャンル名がビール・洋酒なら除外
+00:03 +59: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+00:03 +60: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+00:03 +61: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop and url slug match accepts candidate
+00:03 +62: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch price match alone does not accept candidate
+00:03 +63: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop mismatch rejects candidate
+00:03 +64: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 price=3980 に incoming price=-1 が来ても 3980 を維持
+00:03 +65: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 imageUrl 有効、incoming 空なら既存維持
+00:03 +66: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 shopCode 有効、incoming 空なら既存維持
+00:03 +67: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 genreName 有効、incoming 空なら既存維持
+00:03 +68: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge incoming api値が有効な場合だけ上書き
+00:04 +69: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl extracts composite itemCode and slug from event+dest
+[ROOM_RAT_REDIRECT_EXTRACT] rawUrl=https://room.rakuten.co.jp/rat/relay/click.html?event=%7B%22shopurl%22%3A%22soukaidrink%22%2C%22itemid%22%3A%5B%22306273%2F10002596%22%5D%7D&amp;dest=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2F00000000%2Ftest%2F%3Fpc=https%2… decodedDest=https://hb.afl.rakuten.co.jp/hgc/00000000/test/?pc=https://item.rakuten.co.jp/soukaidrink/4901085161999/ decodedPcUrl=https://item.rakuten.co.jp/soukaidrink/4901085161999/ shopCode=soukaidrink urlProductCode=4901085161999 rakutenItemUrl=https://item.rakuten.co.jp/soukaidrink/4901085161999/ eventShopUrl=soukaidrink eventItemIdRaw=306273/10002596 apiItemCode=10002596 apiCompositeItemCode=soukaidrink:10002596 genreId=(empty)
+00:04 +70: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl supports rat-redirect host and drinkshop slug
+[ROOM_RAT_REDIRECT_EXTRACT] rawUrl=https://room.rakuten.co.jp/rat-redirect?event=%7B%22shopurl%22%3A%22drinkshop%22%2C%22itemid%22%3A%5B%22213103%2F10531958%22%5D%2C%22igenre%22%3A%5B408254%5D%7D&amp;dest=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fx%2Fy%2F%3F… decodedDest=https://hb.afl.rakuten.co.jp/hgc/x/y/?pc=https://item.rakuten.co.jp/drinkshop/29022-2/ decodedPcUrl=https://item.rakuten.co.jp/drinkshop/29022-2/ shopCode=drinkshop urlProductCode=29022-2 rakutenItemUrl=https://item.rakuten.co.jp/drinkshop/29022-2/ eventShopUrl=drinkshop eventItemIdRaw=213103/10531958 apiItemCode=10531958 apiCompositeItemCode=drinkshop:10531958 genreId=408254
+00:04 +71: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: roomImportEnrichSlugShouldSkipDirectItemCode flags slug-like segments
+00:04 +72: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:04 +73: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics reactionScore は like + comment*3
+00:04 +74: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genre 空は ジャンル未確認
+00:04 +75: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName 空なら shopCode をUIに出さずショップ未確認
+00:04 +76: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName も shopCode も空なら ショップ未確認
+00:04 +77: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics 未分類ジャンルは傾向集計対象外
+[ANALYTICS_UNKNOWN_EXCLUDE] field=genre rawLabel=未分類 excluded=true reason=unknownLabel
+00:04 +78: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genreName空でもgenreIdからマスタ解決できれば集計対象
+00:04 +79: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopCodeのみのショップは傾向集計対象外
+[ANALYTICS_UNKNOWN_EXCLUDE] field=shop rawLabel=girl-k excluded=true reason=codeOnly
+00:04 +80: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 価格だけ未取得のとき強い未確認文言は出さない
+[ROOM_UNCONFIRMED_DISPLAY_CLASSIFY] productId=pid-1 hasTitle=true hasImage=true hasItemUrl=true hasShopCode=true hasShopName=true hasGenreName=false hasPrice=false label=価格を確認できません detail=販売状況が変わった可能性があります severity=info
+00:04 +81: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 商品名も画像も無いときは売り切れ系を表示
+[ROOM_UNCONFIRMED_REASON_RENDER] productId=pid-1 pendingReason=soldOutOrUnavailable price=0 label=売り切れ・販売停止の可能性 shown=true
+[ROOM_UNCONFIRMED_DISPLAY_CLASSIFY] productId=pid-1 hasTitle=false hasImage=false hasItemUrl=true hasShopCode=true hasShopName=true hasGenreName=false hasPrice=false label=売り切れ・販売停止の可能性 detail=- severity=error
+00:04 +82: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd "c:\dev\app_project\room_manager2" && flutter devices 2>&1</summary>
+
+```bash
+cd "c:\dev\app_project\room_manager2" && flutter devices 2>&1
+```
+
+```
+Found 4 connected devices:
+  SHG08 (mobile)    • SXILHMB270711564 • android-arm64  • Android 14 (API 34)
+  Windows (desktop) • windows          • windows-x64    • Microsoft Windows [Version 10.0.26200.8457]
+  Chrome (web)      • chrome           • web-javascript • Google Chrome 148.0.7778.168
+  Edge (web)        • edge             • web-javascript • Microsoft Edge 148.0.3967.70
+
+Run "flutter emulators" to list and start any available device emulators.
+
+If you expected another device to be detected, please run "flutter doctor" to diagnose potential issues. You may also try increasing the time to wait for connected devices with the "--device-timeout" flag. Visit https://flutter.dev/setup/ for troubleshooting tips.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Run Flutter on the SHG08 device in the background while monitoring its performance.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd "c:\dev\app_project\room_manager2" && flutter run -d SXILHMB270711564 2>&1</summary>
+
+```bash
+cd "c:\dev\app_project\room_manager2" && flutter run -d SXILHMB270711564 2>&1
+```
+
+```
+]633;CLaunching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             12.3s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.8s
+D/FlutterJNI(16769): Beginning load of flutter...
+D/FlutterJNI(16769): flutter (null) was loaded normally!
+I/flutter (16769): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (16769): [DEBUG_LOG_VOLUME_AUDIT] nativeLogsObserved=true appVerboseLogsReduced=true rakutenUrlVerbose=false genreResolveVerbose=false productCardVerbose=false
+I/flutter (16769): [ROOM_IMPORT_ENRICH_MODE]
+I/flutter (16769): verifyMode=false
+I/flutter (16769): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                    88ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:53295/Va5MoBNm3ek=/
+I/flutter (16769): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=repositoryLoad
+I/flutter (16769): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (16769): [ROOMコレ診断] loadAll 初回サマリー parsed=2 rawJsonList=2
+I/flutter (16769): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (16769): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter (16769): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=false enabled=false label=ROOM投稿を取り込む reason=hiddenByUxPolicy
+I/flutter (16769): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYetOrBusy
+I/flutter (16769): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=false visible=false reason=missingRoomUrl
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (16769): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=CommonDraggableEdgeFab file=lib/widgets/common_draggable_edge_fab.dart visible=true reason=commentEdgeFabRightSideNotMenu
+I/flutter (16769): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (16769): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=2 afterFilterLen=2 surface=ok_list ui=ready
+I/flutter (16769): [ROOMコレ診断] 描画リスト先頭 productId=tiger-online:10005028 title=【タイガー魔法瓶 楽天市場店】水筒 食洗機対応 パッキン一体 らくらくキャップ 真空断熱 ボトル 350ml 500ml 600ml MMZ-W035 MMZ-W050 MMZ-W060 コンパクト 軽量 保温 保冷 直飲み おしゃれ ステンレスボトル サハラ 食洗機 ブラック ホワイト タイガー status=candidate len=2
+I/flutter (16769): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=2 doneCount=0 roomImportedDoneCount=0 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=2 reason=excludeRoomImportFromCandidate
+I/flutter (16769): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=0 appCollectedCount=0 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-20 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-21 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-22 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-23 postCount=0 candidateCount=2 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter (16769): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter (16769): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=false visible=false reason=notImportedYet
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [MANAGED_PRODUCT_SAVE]
+I/flutter (16769): action=refresh
+I/flutter (16769): productId=
+I/flutter (16769): itemCode=
+I/flutter (16769): beforePendingCount=2
+I/flutter (16769): afterPendingCount=2
+I/flutter (16769): beforeDoneCount=0
+I/flutter (16769): afterDoneCount=0
+I/flutter (16769): [MANAGED_PRODUCT_LOAD]
+I/flutter (16769): source=provider
+I/flutter (16769): pendingCount=2
+I/flutter (16769): doneCount=0
+I/flutter (16769): filter=
+I/flutter (16769): tab=
+I/flutter (16769): [ROOMコレ診断] refreshManagedProductList 完了 total=2 candidate=2 done=0 ui=ready
+I/flutter (16769): [HOME_SECTION_ORDER] order=todayRoomOperation,roomColleManagement,roomSync,recentCandidates
+I/flutter (16769): [UNKNOWN_FLOATING_BUTTON_AUDIT] screen=home widget=none file=lib/screens/home_placeholder_screen.dart visible=false reason=noDrawerNoMenuFabOnHomeBody
+I/flutter (16769): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (16769): [RECOMMEND_TRIGGER] source=postFrame
+I/flutter (16769): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (16769): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (16769): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (16769): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (16769): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (16769): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-23T00:36:09.817323
+I/flutter (16769): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (16769): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (16769): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (16769): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-23T00:36:09.817323
+I/flutter (16769): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (16769): [RECOMMEND_GUARD] skipReason=bundleExists
+I/flutter (16769): [MANAGED_PRODUCT_SAVE]
+I/flutter (16769): action=refresh
+I/flutter (16769): productId=
+I/flutter (16769): itemCode=
+I/flutter (16769): beforePendingCount=2
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9105?uri=http://127.0.0.1:53295/Va5MoBNm3ek=/
+I/flutter (16769): afterPendingCount=2
+I/flutter (16769): beforeDoneCount=0
+I/flutter (16769): afterDoneCount=0
+I/flutter (16769): [MANAGED_PRODUCT_LOAD]
+I/flutter (16769): source=screen
+I/flutter (16769): pendingCount=2
+I/flutter (16769): doneCount=0
+I/flutter (16769): filter=
+I/flutter (16769): tab=candidate
+I/flutter (16769): [ROOMコレ診断] refreshManagedProductList 完了 total=2 candidate=2 done=0 ui=ready
+I/flutter (16769): [ROOMコレ診断] ROOMコレ画面起動後 total=2 candidate=2 done=0 listUi=RakutenManagedProductListUiStatus.ready tabIdx=0
+I/flutter (16769): [MANAGED_PRODUCT_SAVE]
+I/flutter (16769): action=refresh
+I/flutter (16769): productId=
+I/flutter (16769): itemCode=
+I/flutter (16769): beforePendingCount=2
+I/flutter (16769): afterPendingCount=2
+I/flutter (16769): beforeDoneCount=0
+I/flutter (16769): afterDoneCount=0
+I/flutter (16769): [MANAGED_PRODUCT_LOAD]
+I/flutter (16769): source=provider
+I/flutter (16769): pendingCount=2
+I/flutter (16769): doneCount=0
+I/flutter (16769): filter=
+I/flutter (16769): tab=
+I/flutter (16769): [ROOMコレ診断] refreshManagedProductList 完了 total=2 candidate=2 done=0 ui=ready
+I/flutter (16769): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (16769): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter (16769): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=myPage widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter (16769): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=myPage visible=false reason=hiddenForNormalUx
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=reaction canRun=false visible=false reason=notImportedYet
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=myPage button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [ROOM_SYNC_CARD_UX_RENDER] state=noRoomUrl showImportButton=false showReactionButton=false showAnalysisCta=false hiddenDisabledButtons=none
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import visible=false enabled=false label=ROOM投稿を取り込む reason=missingRoomUrl
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYet
+I/flutter (16769): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=import visible=false enabled=false label=ROOM投稿を取り込む reason=hiddenByUxPolicy
+I/flutter (16769): [ROOM_SYNC_EMPTY_BUTTON_AUDIT] screen=home widget=none button=reaction visible=false enabled=false label=反応を確認する reason=notImportedYetOrBusy
+I/flutter (16769): [ROOM_SYNC_MAINTENANCE_VISIBILITY] screen=home visible=false reason=hiddenForNormalUx
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=import canRun=false visible=false reason=missingRoomUrl
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=reaction canRun=false visible=false reason=missingRoomUrl
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=maintenance canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=deepSearch canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [ROOM_SYNC_BUTTON_RENDER_DECISION] screen=home button=metadataRetry canRun=false visible=false reason=hiddenByUxPolicy
+I/flutter (16769): [ANALYTICS_COUNT_SOURCE] screen=achievement candidateCount=2 doneCount=0 roomImportedDoneCount=0 todayCollectedByApp=0 todayImportedFromRoom=0 todayCandidatesMetric=2 reason=excludeRoomImportFromCandidate
+I/flutter (16769): [ROOM_IMPORT_ANALYTICS_SEPARATION] importedFromRoomCount=0 appCollectedCount=0 todayRoomImportCount=0 todayAppCollectCount=0 excludedFromTodayCollect=true
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-17 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-18 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-19 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-20 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-21 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-22 postCount=0 candidateCount=0 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ANALYTICS_DAILY_BAR] date=2026-05-23 postCount=0 candidateCount=2 candidateSource=statusCandidateOnly
+I/flutter (16769): [ROOM_IMPORT_ACTIVITY_VISIBILITY] screen=achievement visible=false reason=notUserActivity
+I/flutter (16769): [ROOMコレ診断] 一覧直前 tab=candidate kw="" more=false urlExcl=false day=false baseLen=2 afterFilterLen=2 surface=ok_list ui=ready
+I/flutter (16769): [ROOMコレ診断] 描画リスト先頭 productId=tiger-online:10005028 title=【タイガー魔法瓶 楽天市場店】水筒 食洗機対応 パッキン一体 らくらくキャップ 真空断熱 ボトル 350ml 500ml 600ml MMZ-W035 MMZ-W050 MMZ-W060 コンパクト 軽量 保温 保冷 直飲み おしゃれ ステンレスボトル サハラ 食洗機 ブラック ホワイト タイガー status=candidate len=2
+W/o.room_manager2(16769): Verification of kotlinx.coroutines.channels.Channel kotlinx.coroutines.channels.ChannelKt.Channel(int, kotlinx.coroutines.channels.BufferOverflow, kotlin.jvm.functions.Function1) took 104.701ms (1279.83 bytecodes/s) (0B arena alloc)
+I/Choreographer(16769): Skipped 255 frames!  The application may be doing too much work on its main thread.
+I/OpenGLRenderer(16769): Davey! duration=4286ms; Flags=1, FrameTimelineVsyncId=672355744, IntendedVsync=4963908607838486, Vsync=4963912869081776, InputEventId=0, HandleInputStart=4963912873640424, AnimationStart=4963912873642195, PerformTraversalsStart=4963912873642664, DrawStart=4963912876552976, FrameDeadline=4963908624505152, FrameInterval=4963912873142976, FrameStartTime=16710758, SyncQueued=4963912878192091, SyncStart=4963912878306310, IssueDrawCommandsStart=4963912878919643, SwapBuffers=4963912893107612, FrameCompleted=4963912894945893, DequeueBufferDuration=2260834, QueueBufferDuration=1250781, GpuCompleted=4963912894398029, SwapBuffersCompleted=4963912894945893, DisplayPresentTime=0, CommandSubmissionCompleted=4963912893107612, 
+I/WebViewFactory(16769): Loading com.google.android.webview version 148.0.7778.120 (code 777812003)
+D/ApplicationLoaders(16769): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(16769): Loading /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(16769): Configuring clns-5 for other apk /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/lib/arm64:/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(16769): version=148.0.7778.120 (777812003) minSdkVersion=29 multiprocess=true packageId=127 splits=&lt;none&gt;
+D/nativeloader(16769): Load /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk): ok
+D/nativeloader(16769): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk): ok
+I/chromium(16769): [0523/005535.217853:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(16769): Successfully loaded native library
+I/cr_CachingUmaRecorder(16769): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(16769): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(16769): #registerProvider() provider:WV.wk@39b03c2 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(16769): #setManagerAndSource() 0
+I/cr_DisplayManager(16769): Is Display Topology available: false
+I/cr_CombinedPProvider(16769): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(16769): Compat change id reported: 183155436; UID 10468; state: ENABLED
+I/cr_AppResProvider(16769): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(16769): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(16769): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(16769): #flushPolicies()
+W/chromium(16769): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(16769): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 58508513
+D/CompatibilityChangeReporter(16769): Compat change id reported: 214741472; UID 10468; state: ENABLED
+I/CameraManagerGlobal(16769): Connecting to camera service
+D/CompatibilityChangeReporter(16769): Compat change id reported: 171228096; UID 10468; state: ENABLED
+I/PlatformViewsController(16769): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(16769): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(16769): Compat change id reported: 236825255; UID 10468; state: ENABLED
+W/libc    (16769): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(16769): type=1400 audit(0.0:605495): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c212,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(16769): Compat change id reported: 193247900; UID 10468; state: ENABLED
+I/Choreographer(16769): Skipped 42 frames!  The application may be doing too much work on its main thread.
+W/o.room_manager2(16769): type=1400 audit(0.0:605496): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c212,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (16769): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+I/AdrenoVK-0(16769): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(16769): Build Date              : 08/23/22
+I/AdrenoVK-0(16769): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(16769): Local Branch            : 
+I/AdrenoVK-0(16769): Remote Branch           : 
+I/AdrenoVK-0(16769): Remote Branch           : 
+I/AdrenoVK-0(16769): Reconstruct Branch      : 
+I/AdrenoVK-0(16769): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(16769): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(16769): Davey! duration=760ms; Flags=0, FrameTimelineVsyncId=672355816, IntendedVsync=4963912884761502, Vsync=4963913586568902, InputEventId=0, HandleInputStart=4963913592380268, AnimationStart=4963913592381830, PerformTraversalsStart=4963913592407664, DrawStart=4963913599682872, FrameDeadline=4963912919169958, FrameInterval=4963913592024747, FrameStartTime=16710758, SyncQueued=4963913641990424, SyncStart=4963913642063966, IssueDrawCommandsStart=4963913642168914, SwapBuffers=4963913643959903, FrameCompleted=4963913645384851, DequeueBufferDuration=1117864, QueueBufferDuration=1082917, GpuCompleted=4963913644895684, SwapBuffersCompleted=4963913645384851, DisplayPresentTime=0, CommandSubmissionCompleted=4963913643959903, 
+D/ProfileInstaller(16769): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+E/FrameEvents(16769): updateAcquireFence: Did not find frame.
+W/o.room_manager2(16769): ApkAssets: Deleting an ApkAssets object '&lt;empty&gt; and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+W/o.room_manager2(16769): ApkAssets: Deleting an ApkAssets object '&lt;empty&gt; and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="await">
+<details>
+<summary>Tool use: **await**</summary>
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="await"><details>
+<summary>Tool use: **await**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\terminals\996133.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+App launched successfully on device.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd "c:\dev\app_project\room_manager2" && flutter analyze 2>&1</summary>
+
+```bash
+cd "c:\dev\app_project\room_manager2" && flutter analyze 2>&1
+```
+
+```
+Analyzing room_manager2...                                      
+
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:113:17 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:114:21 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:149:26 - use_build_context_synchronously
+
+3 issues found. (ran in 10.9s)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write">
+<details>
+<summary>Tool use: **todo_write**</summary>
+
+
+Parameters:
+
+```json
+{
+  "merge": true
+}
+```
+Result:
+
+```json
+{
+  "finalTodos": [
+    {
+      "content": "SearchResultEnvelope + session cache 拡張",
+      "id": "1",
+      "status": "completed"
+    },
+    {
+      "content": "SearchModeSegmentBar: タブ可視化・監査ログ",
+      "id": "2",
+      "status": "completed"
+    },
+    {
+      "content": "rakuten_search_screen: 結果分離・クリア・ヘッダー・空状態",
+      "id": "3",
+      "status": "completed"
+    },
+    {
+      "content": "並び順ラベル + flutter analyze/test + 実機確認",
+      "id": "4",
+      "status": "completed"
+    }
+  ],
+  "initialTodos": [
+    {
+      "content": "SearchResultEnvelope + session cache 拡張",
+      "id": "1",
+      "status": "in_progress"
+    },
+    {
+      "content": "SearchModeSegmentBar: タブ可視化・監査ログ",
+      "id": "2",
+      "status": "pending"
+    },
+    {
+      "content": "rakuten_search_screen: 結果分離・クリア・ヘッダー・空状態",
+      "id": "3",
+      "status": "pending"
+    },
+    {
+      "content": "並び順ラベル + flutter analyze/test + 実機確認",
+      "id": "4",
+      "status": "pending"
+    }
+  ],
+  "success": true,
+  "wasMerge": true
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="todo_write"><details>
+<summary>Tool use: **todo_write**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+## 完了報告
+
+### 1. ヘッダーの「保存ショップ」タブが見切れていた原因
+結果フェーズで **戻るボタンと4タブを同一 `Row` に詰め込み**、`Expanded` 内の横スクロール領域が狭くなっていました。選択タブの自動スクロールもなく、`_SegmentTile` の `TextOverflow.ellipsis` で「保存ショップ」が途中で切れていました。
+
+### 2. selected tab を必ず表示するための修正内容
+- 結果ヘッダーを **2行構成**（1行目: 戻る / 2行目: モードタブ全幅）に変更
+- `SearchModeSegmentBar` を `StatefulWidget` 化し、**選択タブへ `Scrollable.ensureVisible`（中央寄せ）**
+- 選択中タブは `minWidth: 88`・`TextOverflow.visible` に変更
+- `[SEARCH_MODE_SEGMENT_VISIBILITY_AUDIT]` を追加
+
+### 3. 別タブの検索結果を引きずっていた原因
+- **単一の `RakutenSearchProvider`** をモード切替時の save/restore のみで分離
+- `previousResultKept=true` がログ固定で、**ownerMode / searchKey の照合なし**
+- 検索 `loading` 中の restore スキップで、**別モードの結果が Provider に残る**可能性
+- 保存ショップ未選択でも success 結果をそのまま表示していた
+
+### 4. 検索結果の ownerMode / searchKey 分離の実装内容
+- `SearchResultEnvelope`（`lib/utils/search_result_envelope.dart`）を追加
+  - `ownerMode`, `searchKey`, `keyword`, `genreId`, `shopCode`, `sort`, `resultItems`, `createdAt`
+- `RakutenSearchSessionCache` にエンベロープ保存・`clearProviderSnapshot` を追加
+- 表示前に `_evaluateResultOwnership` で検証（`[SEARCH_RESULT_OWNERSHIP_AUDIT]`）
+- モード切替時は `beginSearchSession` で古い非同期結果を無効化（`[SEARCH_MODE_RESULT_ISOLATION_AUDIT]`）
+- 成功時に `_maybeSyncEnvelope` でエンベロープを同期保存
+
+### 5. 保存ショップ未選択時に結果を出さない制御
+- `_savedShopRequiresShopButMissing` で **shopCode 未選択時は結果表示を拒否**
+- フェーズは `input`、一覧は「保存ショップを選択してください」 idle を表示
+- サマリーは「保存ショップ：未選択」のまま結果は出さない
+
+### 6. 「検索をクリア」ボタンの仕様
+- 結果ヘッダー3行目に **「検索をクリア」**（`Icons.backspace_outlined`）を追加
+- **activeMode の Provider 結果・エンベロープ・選択商品・retry banner のみクリア**
+- 他モードのキャッシュは保持
+- 入力値（キーワード・ジャンル・ショップ選択）は原則保持
+- `[SEARCH_CLEAR_RESULT_AUDIT]` を出力
+
+### 7. 並び順「デフォルト」を「おすすめ」に変更した内容
+- `rakutenKeywordSearchSortDisplayLabel` / `rakutenKeywordSearchSortHeaderLabel` を追加
+- UI は **「並び順：おすすめ」** 等（「デフォルト」は非表示）
+- `[SEARCH_SORT_LABEL_AUDIT]` で `internalSort` と `displayLabel` を記録
+
+### 8. ショップ発掘の空状態文言の出し分け
+| 状態 | 文言 |
+|------|------|
+| A. 未検索 | 発掘結果はここに並びます（既存 idle） |
+| B. 商品0件 | 条件に合うショップが見つかりませんでした |
+| C. すべて保存済み | 新しく保存できるショップはありませんでした ＋ 除外件数 |
+| D. 安全フィルタ等 | 表示できるショップがありませんでした |
+
+`[SHOP_DISCOVERY_EMPTY_REASON_AUDIT]` で `hasSearched` / 各種 count / `emptyReason` を記録。初期表示で「新規のショップ候補がありません」は出しません。
+
+### 9. 追加ログ一覧
+- `[SEARCH_RESULT_OWNERSHIP_AUDIT]`
+- `[SEARCH_MODE_RESULT_ISOLATION_AUDIT]`
+- `[SEARCH_CLEAR_RESULT_AUDIT]`
+- `[SEARCH_SORT_LABEL_AUDIT]`
+- `[SHOP_DISCOVERY_EMPTY_REASON_AUDIT]`
+- `[SEARCH_MODE_SEGMENT_VISIBILITY_AUDIT]`
+- `[SEARCH_RESULT_HEADER_SUMMARY_AUDIT]`
+
+### 10. 修正ファイル一覧
+- `lib/utils/search_result_envelope.dart`（新規）
+- `lib/utils/rakuten_search_session_cache.dart`
+- `lib/utils/rakuten_keyword_search_sort.dart`
+- `lib/widgets/search_mode_segment_bar.dart`
+- `lib/screens/rakuten_search_screen.dart`
+
+### 11. flutter analyze 結果
+- 変更ファイル5件: **問題なし**
+- プロジェクト全体: **info 3件**（`today_recommendations_screen.dart` の既存 `use_build_context_synchronously` のみ。今回の変更とは無関係）
+
+### 12. flutter test 結果
+- **82件すべて成功**
+
+### 13. 実機確認結果
+- **SHG08（`SXILHMB270711564`）で `flutter run` 成功**（ビルド・インストール・起動まで確認）
+- 起動ログに `RenderFlex overflowed` / `EXCEPTION` / `Null check` 等は **なし**
+- ご指定の操作シナリオ（水筒検索→タブ往復→クリア等）は **手動操作が必要**のため、実機上で探す画面を開き上記手順でご確認ください。操作時に上記監査ログが logcat に出ます。
+
+### 14. iOS移植監査メモ
+| 項目 | 内容 |
+|------|------|
+| 状態分離 | `SearchResultEnvelope` + セッションキャッシュは **Flutter/Dart のみ**。Swift 側は同様の modeKey + searchKey 照合モデルを用意すれば移植しやすい |
+| タブ可視化 | `Scrollable.ensureVisible` は iOS `UICollectionView.scrollToItem` 相当。戻る＋タブの2行レイアウトは Auto Layout でも再現しやすい |
+| 単一 Provider | iOS でも「1つの検索 VM + モード別スナップショット」パターンを推奨。モードタグ付き sessionId でレースガードを維持 |
+| 文言 | 並び順・空状態は **表示層のマッピング** に閉じているため、`Localizable.strings` へそのまま移せる |
+| リスク | `restoreFromSnapshot` の loading スキップは Provider 側に残存。画面側で loading 時 reset 済みだが、iOS でも「切替時は in-flight を無効化」を明示実装すると安全 |
+
+---
+
+実機で探す画面の操作確認までこちらで進めますか？ その場合は、操作後の logcat に上記監査ログが出ているかも一緒に見ます。
+
+---
+
+_**User**_
+
+<system_notification>
+The following task has finished. If you were already aware, ignore this notification and do not restate prior responses.
+
+<task>
+kind: shell
+status: success
+task_id: 996133
+title: Run app on SHG08 device
+output_path: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\terminals\996133.txt
+</task>
+</system_notification>
+<user_query>Briefly inform the user about the task result and perform any follow-up actions (if needed). If there's no follow-ups needed, don't explicitly say that.</user_query>
+
+---
+
+_**Agent (default)**_
+
+SHG08（`SXILHMB270711564`）への `flutter run` は問題なく完了しました。ビルド・インストール・起動まで確認済みで、起動時ログに overflow や例外は出ていません。
+
+探す画面の修正（モード別結果分離・タブ見切れ対策・「検索をクリア」・並び順表示・ショップ発掘の空状態）はコードと `flutter analyze` / `flutter test` まで反映済みです。水筒検索やタブ往復などの操作確認は、実機で探す画面を開いて手順どおり試すと、監査ログが logcat に出ます。
+
+---
+
+_**User**_
+
+現在の Flutter アプリ room_manager2 の「探す」画面について、保存ショップ選択時だけ UI が overflow します。
+
+今回の修正対象：
+- 保存ショップタブでショップを選択した直後の input phase レイアウト崩れを直す。
+- 検索結果 phase の改善済み構造は壊さない。
+- 検索結果の ownerMode / searchKey 分離、検索をクリア、並び順：おすすめ、ショップ発掘空状態の修正は維持する。
+- 今回は API ロジックではなく、保存ショップ input phase の縦レイアウト制約を修正する。
+
+重要：
+- ファイル名・クラス名・既存関数名は勝手に変更しない。
+- 既存の検索結果 phase の Expanded/ListView 構造は壊さない。
+- 保存ショップ選択処理、SavedShopProvider、SearchResultEnvelope の状態分離は変更しない。
+- iOS移植監査の観点も報告に含める。
+
+============================================================
+1. 現在起きている問題
+============================================================
+
+保存ショップタブで「タイガー魔法瓶 楽天市場店」を選択すると、保存ショップ input phase で黄色黒の overflow が出ます。
+
+画面状態：
+- mode = savedShopSearch
+- phase = input
+- selectedShopCode = tiger-online
+- selectedShopName = タイガー魔法瓶 楽天市場店
+- keyword = 水筒 または 空
+- 検索結果はまだ表示前
+- 下部に「店内検索の結果がここに表示されます」カードがある
+
+ログ上も以下のような状態です。
+- [SAVED_SHOP_KEYWORD_REBUILD_AUDIT] selectedShopCode=tiger-online keyword=水筒 controllerPreserved=true
+- [SAVED_SHOP_SEARCH_STATE] selectedShopCode=tiger-online selectedShopName=タイガー魔法瓶 楽天市場店 keyword=水筒 canSearch=true
+- その前後で RenderFlex overflow が出ている
+
+つまり、保存ショップ選択自体は成功しています。
+壊れているのは「保存ショップ選択済みの入力デッキ + 下部 idle/empty カード」を同じ縦Columnに固定配置していることです。
+
+============================================================
+2. 推定原因
+============================================================
+
+保存ショップ input phase では、未選択時よりも表示要素が増えます。
+
+未選択時：
+- 戻る
+- モードタブ
+- 説明文
+- ショップを選択ボタン
+- idleカード
+
+選択後：
+- 戻る
+- モードタブ
+- 選択中のショップ
+- 変更リンク
+- キーワード欄
+- 条件を変更ボタン
+- 検索ボタン
+- idleカード
+
+この「選択中のショップ」「キーワード」「条件ボタン」「検索ボタン」が増えた状態で、親Columnが画面高さに収まらず BOTTOM OVERFLOWED しています。
+
+修正方針：
+- 保存ショップ input phase は、固定Columnではなくスクロール可能な入力面にする。
+- ただし検索結果 phase は現状の改善済み構造を維持する。
+- input phase だけを「上部入力デッキ + 下部idleカード」を1本の ListView / CustomScrollView にするか、Flexible + SingleChildScrollView で必ず収まるようにする。
+
+============================================================
+3. 実装修正方針
+============================================================
+
+対象は rakuten_search_screen.dart の保存ショップ input phase。
+
+以下のどちらかで実装してください。
+
+推奨A：
+保存ショップ input phase 専用に、スクロール可能な body を作る。
+
+例：
+Widget _buildSavedShopInputPhaseBody(...) {
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      return ListView(
+        padding: EdgeInsets.only(
+          left: ...,
+          right: ...,
+          top: ...,
+          bottom: MediaQuery.viewInsetsOf(context).bottom + AppDimensions.spacingLg,
+        ),
+        children: [
+          _buildModeSegmentHeader(...),
+          _buildSavedShopInputDeck(...),
+          _buildSavedShopIdleCard(...),
+        ],
+      );
+    },
+  );
+}
+
+条件：
+- ListView は親 Expanded の中に置く
+- Column 直下に自然高さの子を詰め込まない
+- キーボード表示時も overflow しない
+- idleカードは検索前の案内なので、画面下に固定しなくてよい
+- selectedShop がある場合、idleカードは少し小さめにしてよい
+
+推奨B：
+既存Columnを維持する場合でも、入力デッキ側を Flexible + SingleChildScrollView にして、idleカードを Expanded 内に押し込まない。
+
+ただし、Bはまた再発しやすいので、できればAの ListView 化を優先してください。
+
+============================================================
+4. 保存ショップ input phase の表示整理
+============================================================
+
+保存ショップ選択後の画面は、次のように縦圧縮してください。
+
+表示順：
+1. 戻る
+2. モードタブ
+3. 選択中のショップ
+   - ラベル：選択中のショップ
+   - 店名
+   - 右側に「変更」
+4. キーワード欄
+5. 条件を変更
+6. このショップで探す
+7. idleカード
+
+ただし高さ削減のため、以下を適用してください。
+
+- 「選択中のショップ」ブロックの上下余白を小さくする
+- 店名が長い場合は最大2行、以降 ellipsis
+- 「キーワード」ラベルと入力欄の間隔を詰める
+- 「条件を変更」と「このショップで探す」の間隔を詰める
+- idleカードは selectedShop=true のとき高さを抑える
+  - 例：
+    店内検索の結果がここに表示されます
+    このショップ内でキーワード検索できます。
+- selectedShop=true なら説明文「保存済みショップから検索対象のショップを選択してください。」は非表示にしてよい
+- selectedShop=true なら「ショップを選択」ボタンは出さず、「変更」リンクだけでよい
+
+============================================================
+5. キーボード表示時の対策
+============================================================
+
+条件検索シートやキーワード入力でキーボードが出た時にも overflow しないようにしてください。
+
+対応：
+- MediaQuery.viewInsetsOf(context).bottom を ListView bottom padding に加える
+- 検索実行時は FocusScope.of(context).unfocus()
+- bottom sheet 表示中に親 screenContext の MediaQuery.of を直接参照しない
+- 既存の MediaQuery.maybeOf / sheetContext 対策は維持する
+
+追加ログ：
+[SAVED_SHOP_INPUT_LAYOUT_AUDIT]
+- selectedShop
+- selectedShopNameLength
+- keywordLength
+- keyboardVisible
+- availableHeight
+- contentEstimatedHeight
+- scrollable
+- overflowRisk
+- idleCardVisible
+- idleCardCompact
+
+合格条件：
+- selectedShop=true でも overflowRisk=false
+- scrollable=true
+- キーボード表示時も RenderFlex overflowed が出ない
+
+============================================================
+6. 保存ショップ選択時の状態更新監査
+============================================================
+
+保存ショップ選択後、UIが一瞬エラーに見えるので、状態更新の順序もログで見てください。
+
+追加ログ：
+[SAVED_SHOP_SELECTION_APPLY_AUDIT]
+- beforeShopCode
+- afterShopCode
+- beforeKeyword
+- afterKeyword
+- providerResultCleared
+- envelopeCleared
+- phaseAfterSelection
+- focusCleared
+- mounted
+
+仕様：
+- 保存ショップを変更したら、現在の savedShopSearch 結果はクリアして input phase に戻す
+- 他モードの検索結果は消さない
+- keyword は保持してよい
+- selectedShopCode / selectedShopName を更新した後、setState は mounted 確認後に1回だけ
+- async処理がある場合、await後に mounted を必ず確認する
+
+============================================================
+7. 既存修正を壊さないこと
+============================================================
+
+以下は維持してください。
+
+- result phase の下部空白改善
+- SearchResultEnvelope による ownerMode / searchKey 分離
+- 別タブ結果を引きずらない制御
+- 保存ショップ未選択時に結果を表示しない制御
+- 検索をクリアボタン
+- 並び順：おすすめ
+- ショップ発掘の空状態文言
+- SearchModeSegmentBar の選択タブ可視化
+- result phase で usesFlexibleLoose=false
+
+今回の修正で result phase に Flexible(loose) を戻さないでください。
+
+============================================================
+8. 実機確認
+============================================================
+
+必ず SHG08 実機で確認してください。
+
+実行：
+flutter run -d SXILHMB270711564
+
+確認操作：
+1. 探すタブを開く
+2. 保存ショップタブへ移動
+3. 保存ショップを選択
+4. タイガー魔法瓶 楽天市場店を選ぶ
+5. overflow が出ないことを確認
+6. キーワードに「水筒」を入力
+7. キーボード表示中も overflow が出ないことを確認
+8. 検索実行
+9. 結果表示後も下部空白が再発しないことを確認
+10. 商品名・ジャンル・ショップ発掘へ切り替えて既存修正が壊れていないことを確認
+
+出てはいけないログ：
+- RenderFlex overflowed
+- BOTTOM OVERFLOWED
+- EXCEPTION CAUGHT BY RENDERING LIBRARY
+- EXCEPTION CAUGHT BY WIDGETS LIBRARY
+- Null check operator used on a null value
+- setState after dispose
+- deactivated widget
+
+必ず出すログ：
+- [SAVED_SHOP_SELECTION_APPLY_AUDIT]
+- [SAVED_SHOP_INPUT_LAYOUT_AUDIT]
+- [SAVED_SHOP_SEARCH_STATE]
+- [SEARCH_SURFACE_PHASE_AUDIT]
+- [SEARCH_RESULT_WIDGET_TREE_AUDIT]
+
+============================================================
+9. 完了報告フォーマット
+============================================================
+
+以下の形式で報告してください。
+
+1. 保存ショップ選択時に overflow していた原因
+2. savedShopSearch input phase のレイアウト修正内容
+3. selectedShop=true 時の表示圧縮内容
+4. キーボード表示時の overflow 対策
+5. 保存ショップ選択後の状態更新順序
+6. 既存の result phase 空白改善に影響がないこと
+7. 追加ログ一覧
+8. 修正ファイル一覧
+9. flutter analyze 結果
+10. flutter test 結果
+11. SHG08 実機確認結果
+12. iOS移植監査メモ
+
+---
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+The user wants assistance fixing an overflow issue in the saved shop input section of the search screen within their Flutter application.</details></think>
+
+_**Agent (default)**_
+
+保存ショップ input phase の overflow 原因を特定し、スクロール可能なレイアウトに修正します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_buildSavedShop|savedShopKeyword|_buildModeAndInputArea|SAVED_SHOP"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_buildSavedShop|savedShopKeyword|_buildModeAndInputArea|SAVED_SHOP",
+  "topFiles": [
+    {
+      "matchCount": 89,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 89
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_setSelectedShopCode|_openSavedShopKeywordShopPicker"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_setSelectedShopCode|_openSavedShopKeywordShopPicker",
+  "topFiles": [
+    {
+      "matchCount": 6,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 6
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+The key sections to examine include the build method for input phase layout, _buildModeAndInputArea, _buildSavedShopInput, _setSelectedShopCode, and the structure of the result area.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "SEARCH_RESULT_WIDGET_TREE_AUDIT|AppDimensions"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "SEARCH_RESULT_WIDGET_TREE_AUDIT|AppDimensions",
+  "topFiles": [
+    {
+      "matchCount": 4,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "lib/widgets/empty_state_view.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/widgets/app_tab.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/app_shell.dart"
+    },
+    {
+      "matchCount": 7,
+      "uri": "lib/theme/rakuten_search_screen_tokens.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/theme/app_dimensions.dart"
+    },
+    {
+      "matchCount": 10,
+      "uri": "lib/screens/mypage_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/widgets/product_card.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/screens/comments_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib/widgets/product_form_content.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib/widgets/search_group_screen_shell.dart"
+    },
+    {
+      "matchCount": 14,
+      "uri": "lib/widgets/add_candidate_entry_sheet.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib\\app_shell.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib/screens/shop_discovery_detail_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\utils\\search_tab_ui_audit_log.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/product_detail_screen.dart"
+    },
+    {
+      "matchCount": 8,
+      "uri": "lib/screens/saved_shops_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib/screens/comment_template_edit_screen.dart"
+    }
+  ],
+  "totalFiles": 23,
+  "totalMatches": 104
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_usesResultSurfaceFullHeightLayout"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_usesResultSurfaceFullHeightLayout",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\rakuten_search_feedback.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\rakuten_search_feedback.dart",
+  "pattern": "class RakutenSearchIdleView|compactLayout"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\rakuten_search_feedback.dart",
+  "pattern": "class RakutenSearchIdleView|compactLayout",
+  "topFiles": [
+    {
+      "matchCount": 15,
+      "uri": "lib\\widgets\\rakuten_search_feedback.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 15
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\widgets\rakuten_search_feedback.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+The input phase uses `_buildSearchMainBodyColumn` which contains a `Column` with `Flexible(loose)` wrapping `SingleChildScrollView` and `_buildModeAndInputArea` for the input deck.
+
+The issue likely stems from how the Expanded idle card handles space allocation, particularly when `RakutenSearchIdleView` uses `stretchToFillViewport: false` with `compactLayout: true`. Additionally, overflow may occur within the input Column when a shop is selected, especially since `_buildSavedShopInput` returns a tall Column</details></think>
