@@ -1518,6 +1518,8 @@ enum _RoomColleListSurface {
   readyEmptyFilteredByDay,
   readyEmptyFilteredByUrl,
   readyEmptyFilteredBySearch,
+  readyEmptyFilteredByMeta,
+  readyEmptyFilteredByReaction,
   readyEmptyAnomaly,
   readyList,
 }
@@ -1537,6 +1539,10 @@ extension on _RoomColleListSurface {
         return 'ok_empty_filter_url';
       case _RoomColleListSurface.readyEmptyFilteredBySearch:
         return 'ok_empty_filter_search';
+      case _RoomColleListSurface.readyEmptyFilteredByMeta:
+        return 'ok_empty_filter_meta';
+      case _RoomColleListSurface.readyEmptyFilteredByReaction:
+        return 'ok_empty_filter_reaction';
       case _RoomColleListSurface.readyEmptyAnomaly:
         return 'ok_empty_anomaly';
       case _RoomColleListSurface.readyList:
@@ -1556,6 +1562,8 @@ _RoomColleListSurface _resolveRoomColleListSurface({
   required RoomColleListFilterCriteria listFilters,
   required bool hasDayFilter,
   required bool canShowDayEmptyMessage,
+  bool metaFilterHidAll = false,
+  bool reactionFilterHidAll = false,
 }) {
   if (ui == RakutenManagedProductListUiStatus.loading) {
     return _RoomColleListSurface.loading;
@@ -1575,6 +1583,12 @@ _RoomColleListSurface _resolveRoomColleListSurface({
   if (list.isEmpty) {
     if (urlActive && scoped.isNotEmpty && urlScoped.isEmpty) {
       return _RoomColleListSurface.readyEmptyFilteredByUrl;
+    }
+    if (metaFilterHidAll) {
+      return _RoomColleListSurface.readyEmptyFilteredByMeta;
+    }
+    if (reactionFilterHidAll) {
+      return _RoomColleListSurface.readyEmptyFilteredByReaction;
     }
     if (scoped.isNotEmpty && listFilters.hasAnyReducingFilter) {
       return _RoomColleListSurface.readyEmptyFilteredBySearch;
@@ -2443,7 +2457,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                             onRecoverFromListError:
                                 _recoverRoomColleListAndFilters,
                             emptyTitle: 'コレ候補はまだありません',
-                            emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
+                            emptySubtitle:
+                                '「探す」や「今日のおすすめ」から候補に追加できます。',
                             emptyHint: '',
                             accentColor: RoomColleListAccent.candidate,
                             listScrollController: _candidateScrollController,
@@ -2699,7 +2714,8 @@ class _ProductsPlaceholderScreenState extends State<ProductsPlaceholderScreen>
                                     _persistRoomColleUiNow();
                                   },
                             emptyTitle: 'コレ済の商品はまだありません',
-                            emptySubtitle: '保存データでは、このタブに該当する商品はまだありません。',
+                            emptySubtitle:
+                                'ROOMに投稿した商品や、候補からコレ済に移した商品がここに表示されます。',
                             emptyHint: '',
                             dayFilterEmptyTitle: 'この日にコレした商品はありません',
                             dayFilterEmptySubtitle:
@@ -3040,6 +3056,7 @@ class _RoomManagedProductListTabState
         }
         final savedShopIds = _savedShopIdSet(context);
         final todayRecommendationIds = _todayRecommendationIdSet(context);
+        final baseList = provider.sortedItemsForStatus(widget.status);
 
         final listRaw = _roomListVisibleItems(
           provider: provider,
@@ -3055,13 +3072,40 @@ class _RoomManagedProductListTabState
           doneAtLocalDayFilter: widget.doneAtLocalDayFilter,
           roomImportMetaFilter: widget.roomImportMetaFilter,
         );
+        final listWithoutMetaFilter = widget.roomImportMetaFilter !=
+                _RoomImportMetaListFilter.all
+            ? _roomListVisibleItems(
+                provider: provider,
+                status: widget.status,
+                listFilters: widget.listFilters,
+                excludeUrlNotReady: widget.excludeUrlNotReady,
+                savedShopIds: savedShopIds,
+                todayRecommendationProductIds: todayRecommendationIds,
+                genreLabelForProduct: (product) => _roomColleGenreLabelForProduct(
+                  product,
+                  prefetchedGenreLabels: _genrePrefetchLabels,
+                ),
+                doneAtLocalDayFilter: widget.doneAtLocalDayFilter,
+                roomImportMetaFilter: _RoomImportMetaListFilter.all,
+              )
+            : listRaw;
+        final metaFilterHidAll =
+            widget.roomImportMetaFilter != _RoomImportMetaListFilter.all &&
+            listWithoutMetaFilter.isNotEmpty &&
+            listRaw.isEmpty;
+        final reactionFilterHidAll =
+            widget.status == RakutenManagedProductStatus.done &&
+            widget.listFilters.doneQuickFilter ==
+                RoomColleDoneQuickFilterPreset.roomReaction &&
+            widget.listFilters.keyword.trim().isEmpty &&
+            listRaw.isEmpty &&
+            baseList.isNotEmpty;
         final list = _sortRoomColleListItems(
           listRaw,
           widget.status,
           widget.sortPreset,
         );
 
-        final baseList = provider.sortedItemsForStatus(widget.status);
         final day = widget.doneAtLocalDayFilter;
         final scoped =
             widget.status == RakutenManagedProductStatus.done && day != null
@@ -3086,6 +3130,8 @@ class _RoomManagedProductListTabState
           listFilters: widget.listFilters,
           hasDayFilter: widget.doneAtLocalDayFilter != null,
           canShowDayEmptyMessage: canShowDayEmpty,
+          metaFilterHidAll: metaFilterHidAll,
+          reactionFilterHidAll: reactionFilterHidAll,
         );
         _debugLogSurface(surface);
         roomAuditLog(
@@ -3181,6 +3227,35 @@ class _RoomManagedProductListTabState
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
                   _RoomCollectionSearchEmptyState(
+                    accentColor: widget.accentColor,
+                    embedInListView: false,
+                  ),
+                ],
+              ),
+            );
+
+          case _RoomColleListSurface.readyEmptyFilteredByMeta:
+            return _roomColleRefreshableScroll(
+              provider,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  _RoomImportMetaFilterEmptyState(
+                    accentColor: widget.accentColor,
+                    metaFilter: widget.roomImportMetaFilter,
+                    embedInListView: false,
+                  ),
+                ],
+              ),
+            );
+
+          case _RoomColleListSurface.readyEmptyFilteredByReaction:
+            return _roomColleRefreshableScroll(
+              provider,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  _RoomReactionFilterEmptyState(
                     accentColor: widget.accentColor,
                     embedInListView: false,
                   ),
@@ -3433,6 +3508,146 @@ class _DoneDayFilterBanner extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+/// コレ済タブの「未確認」「確認済」セグメントで0件のとき。
+class _RoomImportMetaFilterEmptyState extends StatelessWidget {
+  const _RoomImportMetaFilterEmptyState({
+    required this.accentColor,
+    required this.metaFilter,
+    this.embedInListView = true,
+  });
+
+  final Color accentColor;
+  final _RoomImportMetaListFilter metaFilter;
+  final bool embedInListView;
+
+  @override
+  Widget build(BuildContext context) {
+    final String title;
+    final String subtitle;
+    switch (metaFilter) {
+      case _RoomImportMetaListFilter.incompleteOnly:
+        title = '未確認の商品はありません';
+        subtitle = '現在表示中の商品は確認済みです。価格・ショップ名などはカード上の補足で確認できます。';
+        break;
+      case _RoomImportMetaListFilter.completeOnly:
+        title = '確認済の商品はありません';
+        subtitle = 'ROOM取り込み商品のうち、価格やショップ名の確認が必要なものが「未確認」に表示されます。';
+        break;
+      case _RoomImportMetaListFilter.all:
+        title = '一致する商品がありません';
+        subtitle = '';
+        break;
+    }
+    final pane = SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.35,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.fact_check_outlined,
+                size: 44,
+                color: accentColor.withValues(alpha: 0.42),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: HomeScreenColors.titlePrimary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
+              ),
+              if (subtitle.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  subtitle,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: HomeScreenColors.groupedSectionBody,
+                    height: 1.4,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+    if (embedInListView) {
+      return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [pane],
+      );
+    }
+    return pane;
+  }
+}
+
+/// コレ済タブの「反応あり」チップで0件のとき。
+class _RoomReactionFilterEmptyState extends StatelessWidget {
+  const _RoomReactionFilterEmptyState({
+    required this.accentColor,
+    this.embedInListView = true,
+  });
+
+  final Color accentColor;
+  final bool embedInListView;
+
+  @override
+  Widget build(BuildContext context) {
+    final pane = SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.35,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: _kRoomListScreenPadH),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.favorite_border_rounded,
+                size: 44,
+                color: accentColor.withValues(alpha: 0.42),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                '反応ありの商品はまだありません',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: HomeScreenColors.titlePrimary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'ROOM投稿の反応を確認すると、いいね・コメントがある商品をここで絞り込めます。',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: HomeScreenColors.groupedSectionBody,
+                  height: 1.4,
+                  fontSize: 13,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    if (embedInListView) {
+      return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [pane],
+      );
+    }
+    return pane;
   }
 }
 

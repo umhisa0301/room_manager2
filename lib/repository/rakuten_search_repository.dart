@@ -9,6 +9,7 @@ import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../services/genre_master_service.dart';
 import '../services/rakuten_api_service.dart';
+import '../utils/app_debug_log.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../utils/room_import_product_url_match.dart';
 import '../utils/room_sync_log.dart';
@@ -266,6 +267,11 @@ class RakutenSearchRepository {
 
   final RakutenApiService _apiService;
 
+  int _rakutenGenreSummaryTotal = 0;
+  int _rakutenGenreSummaryUnresolved = 0;
+  int _rakutenGenreSummaryUsedMaster = 0;
+  int _rakutenGenreSummaryRawGenreNameEmpty = 0;
+
   /// 検証モード: 失敗した A/B/C は同一セッションでは再試行しない。
   static final Set<String> _verifyBlockedPatterns = <String>{};
 
@@ -301,6 +307,7 @@ class RakutenSearchRepository {
       'targetDisplayCount=100 hitsPerRequest=$hitsPerRequest '
       'maxPages=$boundedMaxPages expectedApiCalls=$boundedMaxPages',
     );
+    _resetRakutenGenreLogBatch();
     final results = <RakutenSearchItem>[];
     var apiCalls = 0;
     var failedPages = 0;
@@ -392,6 +399,7 @@ class RakutenSearchRepository {
           '[Rakuten] recommendation purpose skip app-side filter count=${results.length}',
         );
       }
+      _flushRakutenGenreLogSummary();
       return results;
     }
 
@@ -403,6 +411,7 @@ class RakutenSearchRepository {
         debugPrint('[Rakuten] app-side filter failed: $e');
         debugPrint('$st');
       }
+      _flushRakutenGenreLogSummary();
       return results;
     }
     if (kDebugMode) {
@@ -432,6 +441,7 @@ class RakutenSearchRepository {
       'duplicateExcluded=0 displayItems=${afterFilter.length} '
       'failedPages=$failedPages reason=$stopReason',
     );
+    _flushRakutenGenreLogSummary();
     return afterFilter;
   }
 
@@ -1445,6 +1455,7 @@ class RakutenSearchRepository {
         .where((e) => e.isNotEmpty)
         .toSet();
 
+    _resetRakutenGenreLogBatch();
     final visible = <RakutenSearchItem>[];
     final seenIds = <String>{};
     var receivedAnyFromApi = false;
@@ -1668,6 +1679,7 @@ class RakutenSearchRepository {
       'failedPages=$failedPages reason=${stopReason.name}',
     );
 
+    _flushRakutenGenreLogSummary();
     return RakutenKeywordSearchRepositoryResult(
       items: displayItems,
       receivedAnyItemFromApi: receivedAnyFromApi,
@@ -1794,10 +1806,74 @@ class RakutenSearchRepository {
         debugPrint('[RAKUTEN_URL] itemUrl=${item.itemUrl}');
         debugPrint('[RAKUTEN_URL] affiliateUrl=${item.affiliateUrl}');
       }
-      _rakutenGenreLogApi(json, productId);
-      _rakutenGenreLogMap(item);
+      _rakutenGenreRecordAndLog(json, productId, item);
     }
     return item;
+  }
+
+  void _resetRakutenGenreLogBatch() {
+    _rakutenGenreSummaryTotal = 0;
+    _rakutenGenreSummaryUnresolved = 0;
+    _rakutenGenreSummaryUsedMaster = 0;
+    _rakutenGenreSummaryRawGenreNameEmpty = 0;
+  }
+
+  void _flushRakutenGenreLogSummary() {
+    if (!kDebugMode || _rakutenGenreSummaryTotal == 0) return;
+    final resolved = _rakutenGenreSummaryTotal - _rakutenGenreSummaryUnresolved;
+    debugSummaryLog(
+      '[RakutenGenre][SUMMARY] total=$_rakutenGenreSummaryTotal '
+      'resolved=$resolved unresolved=$_rakutenGenreSummaryUnresolved '
+      'usedMaster=$_rakutenGenreSummaryUsedMaster '
+      'rawGenreNameEmpty=$_rakutenGenreSummaryRawGenreNameEmpty',
+    );
+    _resetRakutenGenreLogBatch();
+  }
+
+  bool _rakutenGenrePerItemLogsEnabled() =>
+      DebugLogFlags.kVerboseItemLogsEnabled ||
+      DebugLogFlags.kSearchAuditLogsEnabled;
+
+  void _emitRakutenGenrePerItemLog(String message) {
+    if (!kDebugMode || !_rakutenGenrePerItemLogsEnabled()) return;
+    if (DebugLogFlags.kVerboseItemLogsEnabled) {
+      verboseItemLog(message);
+    } else {
+      searchAuditLog(message);
+    }
+  }
+
+  void _rakutenGenreRecordAndLog(
+    Map<String, dynamic> json,
+    String itemCode,
+    RakutenSearchItem item,
+  ) {
+    _rakutenGenreRecordMapStats(item);
+    _rakutenGenreLogApi(json, itemCode);
+    _rakutenGenreLogMap(item);
+  }
+
+  void _rakutenGenreRecordMapStats(RakutenSearchItem m) {
+    _rakutenGenreSummaryTotal++;
+    final rawNameEmpty = m.genreName.trim().isEmpty;
+    if (rawNameEmpty) {
+      _rakutenGenreSummaryRawGenreNameEmpty++;
+    }
+    final display = RakutenProductGenreDisplay.resolve(
+      apiGenreName: m.genreName,
+      persistedGenreName: null,
+      prefetchedGenreName: null,
+      genreId: m.genreId,
+      traceItemCode: null,
+    );
+    if (display == RakutenProductGenreDisplay.unknownLabel) {
+      _rakutenGenreSummaryUnresolved++;
+    }
+    if (rawNameEmpty &&
+        display != RakutenProductGenreDisplay.unknownLabel &&
+        m.genreId.trim().isNotEmpty) {
+      _rakutenGenreSummaryUsedMaster++;
+    }
   }
 
   void _rakutenGenreLogApi(Map<String, dynamic> json, String itemCode) {
@@ -1810,7 +1886,7 @@ class RakutenSearchRepository {
     final rawKeysStr = gk.isNotEmpty
         ? gk.join(',')
         : '(no *genre* in keys) sample=${keys.take(12).join(',')}';
-    debugPrint(
+    _emitRakutenGenrePerItemLog(
       '[RakutenGenre][API] itemCode=$itemCode rawGenreId=$rawGenreId '
       'rawGenreName=$rawGenreName rawKeys=$rawKeysStr',
     );
@@ -1832,7 +1908,7 @@ class RakutenSearchRepository {
       genreId: m.genreId,
       traceItemCode: null,
     );
-    debugPrint(
+    _emitRakutenGenrePerItemLog(
       '[RakutenGenre][MAP] itemCode=${m.productId} model.genreId=${m.genreId} '
       'model.genreName=${m.genreName} jsonRaw=$jsonRaw jsonRolled=$jsonRolled '
       'displayGenre=$display',

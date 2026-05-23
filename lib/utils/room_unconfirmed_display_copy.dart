@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/debug_log_flags.dart';
 import '../models/rakuten_managed_product.dart';
 import '../services/room_import_metadata_enrichment.dart';
+import 'app_debug_log.dart';
 import 'room_import_pending_user_copy.dart';
 import 'room_reaction_status_display.dart';
 import 'shop_display_resolve.dart';
@@ -24,9 +26,9 @@ abstract final class RoomUnconfirmedDisplayCopy {
     if (!shouldShowPendingHint(product)) return null;
     final info = _classify(product);
     if (info.chipLabel == null) return null;
-    if (kDebugMode) {
+    if (kDebugMode && DebugLogFlags.kVerboseItemLogsEnabled) {
       final reason = RoomImportPendingUserCopy.classify(product);
-      debugPrint(
+      verboseItemLog(
         '[ROOM_UNCONFIRMED_REASON_RENDER] productId=${product.productId.trim()} '
         'pendingReason=${RoomImportPendingUserCopy.logReasonLabel(reason)} '
         'price=${product.itemPrice} label=${info.chipLabel} shown=true',
@@ -40,7 +42,7 @@ abstract final class RoomUnconfirmedDisplayCopy {
     if (!shouldShowPendingHint(product)) return null;
     final info = _classify(product);
     if (info.priceSubline == null) return null;
-    if (kDebugMode) {
+    if (kDebugMode && DebugLogFlags.kVerboseItemLogsEnabled) {
       _logClassify(product, info);
     }
     return info.priceSubline;
@@ -115,7 +117,7 @@ abstract final class RoomUnconfirmedDisplayCopy {
     if (hasShopCode && !hasShopName) {
       return const _RoomUnconfirmedDisplayInfo(
         chipLabel: 'ショップ名を確認中',
-        priceSubline: 'ショップコードは取得済みです',
+        priceSubline: 'ショップ名はあとで表示されます',
         severity: 'info',
       );
     }
@@ -178,7 +180,7 @@ abstract final class RoomUnconfirmedDisplayCopy {
     _RoomUnconfirmedDisplayInfo info,
   ) {
     final shopName = product.shopName.trim();
-    debugPrint(
+    verboseItemLog(
       '[ROOM_UNCONFIRMED_DISPLAY_CLASSIFY] productId=${product.productId.trim()} '
       'hasTitle=${product.itemName.trim().isNotEmpty} '
       'hasImage=${product.imageUrl.trim().isNotEmpty} '

@@ -354,7 +354,7 @@ class RakutenManagedProductRepository {
       resolvedGenreName: resolvedLabel,
     );
     if (kDebugMode) {
-      debugPrint(
+      verboseItemLog(
         '[RakutenGenre][SAVE] itemCode=${candidate.productId} '
         'save.genreId=${candidate.genreId} save.genreName=${candidate.genreName} '
         'save.resolvedGenreName=${candidate.resolvedGenreName}',

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../config/debug_log_flags.dart';
 import '../services/rakuten_genre_master_service.dart';
+import 'app_debug_log.dart';
 
 /// 商品一覧・検索結果向けのジャンル表示名（UI とロジックの境界）。
 ///
@@ -16,9 +17,6 @@ class RakutenProductGenreDisplay {
   RakutenProductGenreDisplay._();
 
   static const String unknownLabel = 'ジャンル未確認';
-
-  /// ログ過多防止（1セッションあたりの [RakutenGenre][UI]/[MASTER] 出力上限）。
-  static int _rakutenGenreTraceBudget = 80;
 
   /// [prefetchedGenreName] が [genreId] と同一文字列のときは、名前として採用しない（取得失敗時のプレースホルダ除外）。
   static String resolve({
@@ -119,10 +117,14 @@ class RakutenProductGenreDisplay {
     required String finalLabel,
     String? masterLookupForTrace,
   }) {
-    if (!kDebugMode || traceItemCode == null || _rakutenGenreTraceBudget <= 0) {
+    if (!kDebugMode || traceItemCode == null) return;
+    if (!DebugLogFlags.kVerboseItemLogsEnabled &&
+        !DebugLogFlags.kSearchAuditLogsEnabled) {
       return;
     }
-    _rakutenGenreTraceBudget--;
+    final emit = DebugLogFlags.kVerboseItemLogsEnabled
+        ? verboseItemLog
+        : searchAuditLog;
     final code = traceItemCode.trim().isEmpty ? '-' : traceItemCode.trim();
     final api = apiGenreName?.trim() ?? '';
     final persisted = persistedGenreName?.trim() ?? '';
@@ -130,13 +132,13 @@ class RakutenProductGenreDisplay {
     final uiGenreName = api.isNotEmpty
         ? api
         : (persisted.isNotEmpty ? persisted : (pf.isNotEmpty ? pf : '-'));
-    debugPrint(
+    emit(
       '[RakutenGenre][UI] itemCode=$code ui.genreId=${genreId.trim()} '
       'ui.genreName=$uiGenreName ui.label=$finalLabel',
     );
     final gid = genreId.trim();
     if (gid.isEmpty) {
-      debugPrint(
+      emit(
         '[RakutenGenre][MASTER] itemCode=$code genreId=- masterHit=false '
         'resolvedGenreName=-',
       );
@@ -147,7 +149,7 @@ class RakutenProductGenreDisplay {
         RakutenGenreMasterService.instance.genreNameIfKnown(gid);
     final hit = known != null && known.isNotEmpty;
     final resolved = hit ? known : '-';
-    debugPrint(
+    emit(
       '[RakutenGenre][MASTER] itemCode=$code genreId=$gid masterHit=$hit '
       'resolvedGenreName=$resolved',
     );
@@ -166,7 +168,7 @@ class RakutenProductGenreDisplay {
     final api = (apiGenreName?.trim().isEmpty ?? true)
         ? '-'
         : apiGenreName!.trim();
-    debugPrint(
+    verboseItemLog(
       '[GenreDisplay] itemCode=$c genreId=$g apiGenreName=$api final=$finalLabel',
     );
   }
