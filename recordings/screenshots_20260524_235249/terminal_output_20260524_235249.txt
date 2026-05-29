@@ -1,0 +1,729 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-24 23:52:49
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260524_235249.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260524_235249.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260524_235249.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260524_235249.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260524_235249.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260524_235249
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260524_235249\terminal_output_20260524_235249.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 9328).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started. Use the separate controller window.
+Streaming flutter logs below...
+
+
+┌─────────────────────────────────────────────────────────┐
+│ A new version of Flutter is available!                  │
+│                                                         │
+│ To update to the latest version, run "flutter upgrade". │
+└─────────────────────────────────────────────────────────┘
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             59.0s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.3s
+D/FlutterJNI(22125): Beginning load of flutter...
+D/FlutterJNI(22125): flutter (null) was loaded normally!
+I/flutter (22125): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (22125): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (22125): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+E/OpenGLRenderer(22125): Unable to match the desired swap behavior.
+Syncing files to device SHG08...                                    85ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:64632/Tstku-hA9co=/
+I/o.room_manager2(22125): Compiler allocated 4412KB to compile void android.view.ViewRootImpl.performTraversals()
+I/flutter (22125): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (22125): [ONBOARDING_UI] route=legal termsAccepted=false initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9105?uri=http://127.0.0.1:64632/Tstku-hA9co=/
+I/Choreographer(22125): Skipped 166 frames!  The application may be doing too much work on its main thread.
+I/OpenGLRenderer(22125): Davey! duration=2800ms; Flags=1, FrameTimelineVsyncId=697535035, IntendedVsync=5133025619788207, Vsync=5133028393280185, InputEventId=0, HandleInputStart=5133028402917839, AnimationStart=5133028402919141, PerformTraversalsStart=5133028402919558, DrawStart=5133028406953881, FrameDeadline=5133025636454873, FrameInterval=5133028402586589, FrameStartTime=16707783, SyncQueued=5133028409886329, SyncStart=5133028409995860, IssueDrawCommandsStart=5133028410627422, SwapBuffers=5133028418358985, FrameCompleted=5133028419971797, DequeueBufferDuration=2479011, QueueBufferDuration=1085990, GpuCompleted=5133028419554506, SwapBuffersCompleted=5133028419971797, DisplayPresentTime=281470681808895, CommandSubmissionCompleted=5133028418358985, 
+I/WebViewFactory(22125): Loading com.google.android.webview version 148.0.7778.120 (code 777812003)
+D/ApplicationLoaders(22125): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(22125): Loading /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(22125): Configuring clns-5 for other apk /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/lib/arm64:/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(22125): version=148.0.7778.120 (777812003) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(22125): Load /data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk): ok
+D/nativeloader(22125): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~_8OoqJCkH44ewxyo96bWDg==/com.google.android.webview-yM86reEgUpzHYxFtgzWVbQ==/base.apk): ok
+I/cr_LibraryLoader(22125): Successfully loaded native library
+I/cr_CachingUmaRecorder(22125): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(22125): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(22125): #registerProvider() provider:WV.wk@39b03c2 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(22125): #setManagerAndSource() 0
+I/cr_DisplayManager(22125): Is Display Topology available: false
+I/cr_CombinedPProvider(22125): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(22125): Compat change id reported: 183155436; UID 10470; state: ENABLED
+I/cr_AppResProvider(22125): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(22125): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(22125): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(22125): #flushPolicies()
+W/chromium(22125): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(22125): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 47510071
+D/CompatibilityChangeReporter(22125): Compat change id reported: 214741472; UID 10470; state: ENABLED
+I/CameraManagerGlobal(22125): Connecting to camera service
+D/CompatibilityChangeReporter(22125): Compat change id reported: 171228096; UID 10470; state: ENABLED
+I/PlatformViewsController(22125): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(22125): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(22125): Compat change id reported: 236825255; UID 10470; state: ENABLED
+W/libc    (22125): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(22125): type=1400 audit(0.0:619005): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c214,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(22125): Compat change id reported: 193247900; UID 10470; state: ENABLED
+I/Choreographer(22125): Skipped 54 frames!  The application may be doing too much work on its main thread.
+W/libc    (22125): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(22125): type=1400 audit(0.0:619006): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c214,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(22125): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(22125): Build Date              : 08/23/22
+I/AdrenoVK-0(22125): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(22125): Local Branch            : 
+I/AdrenoVK-0(22125): Remote Branch           : 
+I/AdrenoVK-0(22125): Remote Branch           : 
+I/AdrenoVK-0(22125): Reconstruct Branch      : 
+I/AdrenoVK-0(22125): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(22125): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(22125): Davey! duration=1016ms; Flags=0, FrameTimelineVsyncId=697535145, IntendedVsync=5133028409759805, Vsync=5133029311917501, InputEventId=0, HandleInputStart=5133029321754349, AnimationStart=5133029321755859, PerformTraversalsStart=5133029321806276, DrawStart=5133029328135078, FrameDeadline=5133028443362417, FrameInterval=5133029321418151, FrameStartTime=16707783, SyncQueued=5133029423046484, SyncStart=5133029423128672, IssueDrawCommandsStart=5133029423240130, SwapBuffers=5133029425143151, FrameCompleted=5133029426521641, DequeueBufferDuration=1252813, QueueBufferDuration=1034687, GpuCompleted=5133029426311068, SwapBuffersCompleted=5133029426521641, DisplayPresentTime=21281953, CommandSubmissionCompleted=5133029425143151, 
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(22125): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(22125): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+E/FrameEvents(22125): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(22125): Installing profile for com.stepbytestudio.room_manager2
+I/flutter (22125): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (22125): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:8853cd9e: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(22125): showSoftInput() view=io.flutter.embedding.android.FlutterView{e7046b4 VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(22125): The input method toggled cursor monitoring on
+D/InsetsController(22125): show(ime(), fromIme=true)
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:8853cd9e: onShown
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:c44eea1e: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor(22125): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher(22125): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@147506639 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@b434b50
+W/WindowOnBackDispatcher(22125): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(22125): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:726f75c5: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:c44eea1e: onHidden
+I/flutter (22125): [SEARCH_STYLE_SAVE] selected=balance
+I/flutter (22125): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+W/WindowOnBackDispatcher(22125): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(22125): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (22125): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (22125): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (22125): [INITIAL_SETUP_GENRE_UI_UNIFIED] oldPickerVisible=false treePickerVisible=true reason=avoidDuplicateGenreSelectionArea
+I/flutter (22125): [GENRE_PICKER_MODE] screen=initialSetup selectionMode=multi usesCheckbox=true usesRadio=false
+I/flutter (22125): [GENRE_SELECTION_WIDGET_AUDIT] screen=initialSetup multiSelect=true widget=checkbox valid=true
+I/flutter (22125): [GENRE_TREE_OPEN] rootCount=39 source=initialSetup
+I/flutter (22125): [INITIAL_SETUP_GENRE_TREE_OPEN] selectedCount=0 maxSelectable=5
+I/flutter (22125): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=100533 genreName=キッズ・ベビー・マタニティ depth=0 selected=true selectedCount=1
+I/flutter (22125): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=100533 genreName=キッズ・ベビー・マタニティ depth=0 selected=false selectedCount=0
+I/flutter (22125): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=100533 genreName=キッズ・ベビー・マタニティ depth=0 selected=true selectedCount=1
+I/flutter (22125): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=100533 genreName=キッズ・ベビー・マタニティ depth=0 selected=false selectedCount=0
+I/flutter (22125): [GENRE_TREE_NAVIGATE] fromGenreId=(root) toGenreId=100533 depth=1 childrenCount=20
+I/flutter (22125): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=566090 genreName=ベビー用インテリア・収納用品 depth=1 selected=true selectedCount=1
+I/flutter (22125): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=111102 genreName=ベビーファッション depth=1 selected=true selectedCount=2
+I/flutter (22125): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=111102 genreName=ベビーファッション depth=1 selected=false selectedCount=1
+I/flutter (22125): [GENRE_PREF_SAVE_NORMALIZED] source=initialSetup genreId=566090 inputGenreName= resolvedGenreName=ベビー用インテリア・収納用品 nameCorrected=false
+I/flutter (22125): [GENRE_PREF_SAVE] selectedGenreId=566090 selectedGenreName=ベビー用インテリア・収納用品 source=initialSetup
+I/flutter (22125): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (22125): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (22125): [INITIAL_SETUP_GENRE_UI_UNIFIED] oldPickerVisible=false treePickerVisible=true reason=avoidDuplicateGenreSelectionArea
+I/flutter (22125): [GENRE_PICKER_MODE] screen=initialSetup selectionMode=multi usesCheckbox=true usesRadio=false
+I/flutter (22125): [GENRE_SELECTION_WIDGET_AUDIT] screen=initialSetup multiSelect=true widget=checkbox valid=true
+I/flutter (22125): [GENRE_TREE_OPEN] rootCount=39 source=initialSetup
+I/flutter (22125): [INITIAL_SETUP_GENRE_TREE_OPEN] selectedCount=1 maxSelectable=5
+I/flutter (22125): [GENRE_PREF_SAVE_NORMALIZED] source=initialSetup genreId=566090 inputGenreName= resolvedGenreName=ベビー用インテリア・収納用品 nameCorrected=false
+I/flutter (22125): [GENRE_PREF_SAVE] selectedGenreId=566090 selectedGenreName=ベビー用インテリア・収納用品 source=initialSetup
+I/flutter (22125): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (22125): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=566090 postStyles=balance recommendationStarted=true recommendationCount=0 savedShopCount=0 shopSaved=false failedReason=
+I/flutter (22125): [GENRE_PREF_LOAD] favoriteGenreIds=566090 favoriteGenreNames=ベビー用インテリア・収納用品 source=shopRecommend
+I/flutter (22125): [INITIAL_SETUP_SHOP_RECOMMEND_GENRE] genreId=566090 genreName=ベビー用インテリア・収納用品 fallbackUsed=false fallbackReason=lastPickedInSession
+I/flutter (22125): [INITIAL_SETUP_GENRE_BINDING] selectedGenreIds=566090 selectedGenreNames=ベビー用インテリア・収納用品 shopRecommendGenreId=566090 shopRecommendGenreName=ベビー用インテリア・収納用品 source=initialSetup matched=true reason=lastPickedInSession
+I/flutter (22125): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword= genreId=566090 shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=4 expectedApiCalls=4
+I/flutter (22125): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=566090 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (22125): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (22125): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&genreId=566090
+I/flutter (22125): [Rakuten] response status=200 page=1 bytes=151242
+I/flutter (22125): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (22125): [RECOMMEND_TRACE] rawCount=30
+I/flutter (22125): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=1042 statusCode=200
+I/flutter (22125): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (22125): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=566090 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (22125): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (22125): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&genreId=566090
+I/flutter (22125): [Rakuten] response status=429 page=2 bytes=128
+I/flutter (22125): [RECOMMEND_TRACE] apiStatus=429
+I/flutter (22125): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter (22125): [Rakuten] searchItems failed page=2 attempt=1: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (22125): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): #2      RakutenSearchRepository.search (package:room_manager2/repository/rakuten_search_repository.dart:322:21)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): #3      _EasyInitialSetupScreenState._loadShopRecommendations (package:room_manager2/screens/easy_initial_setup_screen.dart:320:24)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): 
+I/flutter (22125): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=false error=楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (22125): [Rakuten] page fetch failed page=2: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (22125): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): #2      RakutenSearchRepository.search (package:room_manager2/repository/rakuten_search_repository.dart:322:21)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (22125): #3      _EasyInitialSetupScreenState._loadShopRecommendations (package:room_manager2/screens/easy_initial_setup_screen.dart:320:24)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): 
+I/flutter (22125): [SHOP_SEARCH_PARTIAL_FAILURE] page=2 keptItems=30 messageForUser=一部のページ取得に失敗しました
+I/flutter (22125): [Rakuten] repository search total mapped=30
+I/flutter (22125): [Rakuten] genreSearch mapped item count=30
+I/flutter (22125): [Rakuten] genreSearch before filter count=30
+I/flutter (22125): [Rakuten] genreSearch after filter count=30
+I/flutter (22125): [SEARCH_FETCH_100_AUDIT] mode=productSearch keyword= genreId=566090 shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=4 pagesRequested=2 pagesSucceeded=1 pagesFailed=1 rawTotal=30 excludedCandidate=0 excludedDone=0 excludedSafety=0 excludedDuplicate=0 excludedNoImage=0 excludedOther=0 excludedSavedShop=0 displayCount=30 stopReason=partialFailure
+I/flutter (22125): [SHOP_SEARCH_FETCH_RESULT] screen=productSearch apiCalls=2 rawItems=30 dedupedItems=30 safetyExcluded=0 duplicateExcluded=0 displayItems=30 failedPages=1 reason=partialFailure
+I/flutter (22125): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (22125): [ONBOARDING_SHOP_RECOMMEND] shopName=takushistore imageCount=2 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/takushistore/cabinet/3z7/tnr/rfgd66_0.jpg?_ex=128x128 reason=balance
+I/flutter (22125): [ONBOARDING_SHOP_RECOMMEND] shopName=ショップリブシル imageCount=2 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/shop-livesil/cabinet/woa/7vo/efymz_0.jpg?_ex=128x128 reason=balance
+I/flutter (22125): [ONBOARDING_SHOP_RECOMMEND] shopName=グラティアHOME imageCount=1 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/gratiahome/cabinet/sry/0f5/02rhr_00.jpg?_ex=128x128 reason=balance
+I/flutter (22125): [ONBOARDING_SHOP_RECOMMEND] shopName=ウッドギャラリー樹 imageCount=1 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/w-itsuki/cabinet/yuboku/864-g140-5.jpg?_ex=128x128 reason=balance
+I/flutter (22125): [ONBOARDING_SHOP_RECOMMEND] shopName=家具インテリア館 imageCount=1 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/kaguin/cabinet/tasya81/7185269-e.jpg?_ex=128x128 reason=balance
+I/flutter (22125): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=566090 postStyles=balance recommendationStarted=true recommendationCount=5 savedShopCount=0 shopSaved=false failedReason=
+I/flutter (22125): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=566090 postStyles=balance recommendationStarted=true recommendationCount=5 savedShopCount=1 shopSaved=true failedReason=
+I/flutter (22125): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (22125): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (22125): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=566090 postStyles=balance recommendationStarted=true recommendationCount=5 savedShopCount=2 shopSaved=true failedReason=
+I/flutter (22125): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (22125): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (22125): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (22125): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (22125): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (22125): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (22125): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (22125): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (22125): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (22125): [RECOMMEND_TRACE] lastGeneratedAt=null
+I/flutter (22125): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=false
+I/flutter (22125): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (22125): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (22125): [RECOMMEND_TRACE] action=regenerateToday
+I/flutter (22125): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (22125): [RECOMMEND_TRACE] lastGeneratedAt=null
+I/flutter (22125): [RECOMMEND_TRACE] generate start
+I/flutter (22125): [RECOMMEND_TRACE] profile nickname=ルーマネ
+I/flutter (22125): [RECOMMEND_STYLE] selected=balance
+I/flutter (22125): [SEARCH_STYLE_TRACE] selectedStyle=balance
+I/flutter (22125): [RECOMMEND_TRACE] favoriteGenreIds=566090
+I/flutter (22125): [GENRE_PREF_LOAD] favoriteGenreIds=566090 favoriteGenreNames=ベビー用インテリア・収納用品 source=recommend
+I/flutter (22125): [RECOMMEND_TRACE] searchPreferences=balance
+I/flutter (22125): [RECOMMEND_TRACE] savedShopCount=2
+I/flutter (22125): [RECOMMEND_TRACE] doneProductCount=0
+I/flutter (22125): [RECOMMEND_TRACE] candidateProductCount=0
+I/flutter (22125): [RECOMMEND_START] genreCount=1 savedShopCount=2 doneCount=0 candidateCount=0 selectedStyle=balance
+I/flutter (22125): [RECOMMEND_PLAN] count=7
+I/flutter (22125): [RECOMMEND_GENERATE] start requestCount=0 planCount=7
+I/flutter (22125): [RECOMMEND_REACTION] commentGenres=0 likeGenres=0 commentShops=0 likeShops=0 priceBands=
+I/flutter (22125): [RECOMMEND_PHASE] phase=personal
+I/flutter (22125): [RECOMMEND] search keyword=ベビー用インテリア・収納用品
+I/flutter (22125): [RECOMMEND] genreId=566090
+I/flutter (22125): [RECOMMEND] searchPreference=
+I/flutter (22125): [RECOMMEND] minPrice=null
+I/flutter (22125): [RECOMMEND] maxPrice=null
+I/flutter (22125): [RECOMMEND] sanitizedMinPrice=null
+I/flutter (22125): [RECOMMEND] sanitizedMaxPrice=null
+I/flutter (22125): [RECOMMEND_SELECT] strictSelected=0
+I/flutter (22125): [RECOMMEND_POOL] raw=0 valid=0 scored=0
+I/flutter (22125): [RECOMMEND_PLAN] phase=personal relax=0 source=genre index=1 keyword=ベビー用インテリア・収納用品 genreId=566090 shopCode= style=balance minPrice= maxPrice= sort=
+I/flutter (22125): [RECOMMEND_API] planIndex=1 keyword=ベビー用インテリア・収納用品 genreId=566090 shopCode= page=1
+I/flutter (22125): [RECOMMEND_API] phase=personal start index=1 page=1
+I/flutter (22125): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=ベビー用インテリア・収納用品 genreId=566090 shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=1 expectedApiCalls=1
+I/flutter (22125): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=ベビー用インテリア・収納用品 genreId=566090 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (22125): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (22125): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%83%99%E3%83%93%E3%83%BC%E7%94%A8%E3%82%A4%E3%83%B3%E3%83%86%E3%83%AA%E3%82%A2%E3%83%BB%E5%8F%8E%E7%B4%8D%E7%94%A8%E5%93%81&minReviewCount=10&minReviewAverage=3.6&genreId=566090
+I/flutter (22125): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (22125): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (22125): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (22125): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (22125): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (22125): [Rakuten] response status=200 page=1 bytes=105371
+I/flutter (22125): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (22125): [RECOMMEND_TRACE] rawCount=30
+I/flutter (22125): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=698 statusCode=200
+I/flutter (22125): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (22125): [Rakuten] genreSearch mapped item count=30
+I/flutter (22125): [Rakuten] genreSearch before filter count=30
+I/flutter (22125): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (22125): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (22125): [RECOMMEND_API] phase=personal status=200 rawCount=30
+I/flutter (22125): [RECOMMEND_FILTER] raw=30 afterExclude=30 reasonCounts={}
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=suzuto:10785609 title=【送料無料/直送】キッズデスク/プレゼント お祝い 誕生日祝い 敬老の日 母の日 父の日 自家消費にも キッズ・ベビー・マタニティ ベビー用インテリア・収納用品 ベビーラック・ハイローベッド
+I/flutter (22125): [Rakuten] repository search total mapped=30
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=suzuto:10785609 title=【送料無料/直送】キッズデスク/プレゼント お祝い 誕生日祝い 敬老の日 母の日 父の日 自家消費にも キッズ・ベビー・マタニティ ベビー用インテリア・収納用品 ベビーラック・ハイローベッド
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=f364053-kamiita:10000076 title=【ふるさと納税】 ネーム入り 子供椅子 テーブル工房 卓《90日以内に順次出荷(土日祝除く)》名入れ可 キッズ ベビー マタニティ ベビー用 インテリア 収納用品 ベビーチェア ファッション 椅子 工芸品 徳島県 上坂町
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=f364053-kamiita:10000076 title=【ふるさと納税】 ネーム入り 子供椅子 テーブル工房 卓《90日以内に順次出荷(土日祝除く)》名入れ可 キッズ ベビー マタニティ ベビー用 インテリア 収納用品 ベビーチェア ファッション 椅子 工芸品 徳島県 上坂町
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=geki-pla:10121841 title=送料無料 チェアベルト ベビー 補助ベルト ベビーチェア 椅子 転倒防止 落下防止 安全 赤ちゃん ダイニング 保護 安心 簡単 軽い クッション 幼児 安全グッズ おすわり
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=geki-pla:10121841 title=送料無料 チェアベルト ベビー 補助ベルト ベビーチェア 椅子 転倒防止 落下防止 安全 赤ちゃん ダイニング 保護 安心 簡単 軽い クッション 幼児 安全グッズ おすわり
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=plusnao:10367126 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=plusnao:10367126 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=plusnao:10324512 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=plusnao:10324512 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=plusnao:10366314 title=送料無料 キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリー
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=plusnao:10366314 title=送料無料 キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリー
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=motto-motto:10089155 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=motto-motto:10089155 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=kobe-s:10047291 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=kobe-s:10047291 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=motto-motto:10088327 title=送料無料 キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリー
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=motto-motto:10088327 title=送料無料 キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリー
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=geki-pla:10113408 title=送料無料 ベビーハンガー 5本セット 木製ハンガー デザイン 王冠 耳付き ウサギ ネコ クマ かわいい おしゃれ 子供用 赤ちゃん キッズ 薄型 衣類収納用 ディスプレイ ショップ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=geki-pla:10113408 title=送料無料 ベビーハンガー 5本セット 木製ハンガー デザイン 王冠 耳付き ウサギ ネコ クマ かわいい おしゃれ 子供用 赤ちゃん キッズ 薄型 衣類収納用 ディスプレイ ショップ
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=kobe-s:10084466 title=キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリーン
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=kobe-s:10084466 title=キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリーン
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=kobe-s:10079072 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=kobe-s:10079072 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=kobe-s:10108422 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=kobe-s:10108422 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=geki-pla:10039258 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=geki-pla:10039258 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=kobe-s:10119195 title=送料無料 ベビーハンガー 5本セット 木製ハンガー デザイン 王冠 耳付き ウサギ ネコ クマ かわいい おしゃれ 子供用 赤ちゃん キッズ 薄型 衣類収納用 ディスプレイ ショップ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=kobe-s:10119195 title=送料無料 ベビーハンガー 5本セット 木製ハンガー デザイン 王冠 耳付き ウサギ ネコ クマ かわいい おしゃれ 子供用 赤ちゃん キッズ 薄型 衣類収納用 ディスプレイ ショップ
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=motto-motto:10080436 title=送料無料 ベビーハンガー 20本セット ベビー 赤ちゃん キッズ 子供 ハンガー 滑り止め 肩紐掛け付き シンプル 洗濯物干し 衣類 洋服 Tシャツ ワンピース ズボン 青 ピンク カーキ色
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=motto-motto:10080436 title=送料無料 ベビーハンガー 20本セット ベビー 赤ちゃん キッズ 子供 ハンガー 滑り止め 肩紐掛け付き シンプル 洗濯物干し 衣類 洋服 Tシャツ ワンピース ズボン 青 ピンク カーキ色
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=motto-motto:10111242 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=motto-motto:10111242 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=laforest:10113260 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=laforest:10113260 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=plusnao:10400455 title=送料無料 ベビーハンガー 5本セット 木製ハンガー デザイン 王冠 耳付き ウサギ ネコ クマ かわいい おしゃれ 子供用 赤ちゃん キッズ 薄型 衣類収納用 ディスプレイ ショップ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=plusnao:10400455 title=送料無料 ベビーハンガー 5本セット 木製ハンガー デザイン 王冠 耳付き ウサギ ネコ クマ かわいい おしゃれ 子供用 赤ちゃん キッズ 薄型 衣類収納用 ディスプレイ ショップ
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=motto-motto:10051363 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=motto-motto:10051363 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=geki-pla:10079038 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=geki-pla:10079038 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=plusnao:10361003 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=plusnao:10361003 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=kobe-s:10119891 title=送料無料 ベビーハンガー キッズハンガー 5本セット 子供用ハンガー 物干しハンガー クローゼット収納 子供服 洗濯用品 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=kobe-s:10119891 title=送料無料 ベビーハンガー キッズハンガー 5本セット 子供用ハンガー 物干しハンガー クローゼット収納 子供服 洗濯用品 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=geki-pla:10114041 title=送料無料 ベビーハンガー キッズハンガー 5本セット 子供用ハンガー 物干しハンガー クローゼット収納 子供服 洗濯用品 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=geki-pla:10114041 title=送料無料 ベビーハンガー キッズハンガー 5本セット 子供用ハンガー 物干しハンガー クローゼット収納 子供服 洗濯用品 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=plusnao:10358448 title=送料無料 ベビーハンガー 20本セット ベビー 赤ちゃん キッズ 子供 ハンガー 滑り止め 肩紐掛け付き シンプル 洗濯物干し 衣類 洋服 Tシャツ ワンピース ズボン 青 ピンク カーキ色
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=plusnao:10358448 title=送料無料 ベビーハンガー 20本セット ベビー 赤ちゃん キッズ 子供 ハンガー 滑り止め 肩紐掛け付き シンプル 洗濯物干し 衣類 洋服 Tシャツ ワンピース ズボン 青 ピンク カーキ色
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=plusnao:10388333 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=plusnao:10388333 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=laforest:10155371 title=送料無料 収納ポケット ベビーベッド収納 吊り下げ ベッドサイドポケット おもちゃ おむつ タオル 小物入れ シンプル 無地
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=laforest:10155371 title=送料無料 収納ポケット ベビーベッド収納 吊り下げ ベッドサイドポケット おもちゃ おむつ タオル 小物入れ シンプル 無地
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=laforest:10106456 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=laforest:10106456 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=laforest:10047171 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=laforest:10047171 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ
+I/flutter (22125): [RECOMMEND_TRACE] raw item itemCode=geki-pla:10102297 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ
+I/flutter (22125): [RECOMMEND_TRACE] accepted itemCode=geki-pla:10102297 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=suzuto:10785609 score=8.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=suzuto:10785609 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=suzuto:10785609 title=【送料無料/直送】キッズデスク/プレゼント お祝い 誕生日祝い 敬老の日 母の日 父の日 自家消費にも キッズ・ベビー・マタニティ ベビー用インテリア・収納用品 ベビーラック・ハイローベッド price=18150 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-33.6 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_EXCLUDE] itemCode=f364053-kamiita:10000076 price=46000 reason=highPriceNoReview
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=geki-pla:10121841 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=geki-pla:10121841 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=geki-pla:10121841 title=送料無料 チェアベルト ベビー 補助ベルト ベビーチェア 椅子 転倒防止 落下防止 安全 赤ちゃん ダイニング 保護 安心 簡単 軽い クッション 幼児 安全グッズ おすわり price=930 reviewAverage=4.50 reviewCount=2 roomFit=0.0 reaction=0.0 reviewEvidence=12.0 postability=40.0 score=59.2 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10367126 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10367126 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10367126 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート price=1010 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10324512 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10324512 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10324512 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ price=799 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10366314 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10366314 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10366314 title=送料無料 キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリー price=1070 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=motto-motto:10089155 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=motto-motto:10089155 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=motto-motto:10089155 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート price=1010 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=kobe-s:10047291 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=kobe-s:10047291 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=kobe-s:10047291 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ price=799 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=motto-motto:10088327 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=motto-motto:10088327 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=motto-motto:10088327 title=送料無料 キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリー price=1070 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_EXCLUDE] itemCode=geki-pla:10113408 price=490 reason=tooCheap
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=kobe-s:10084466 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=kobe-s:10084466 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=kobe-s:10084466 title=キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリーン price=1070 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=kobe-s:10079072 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=kobe-s:10079072 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=kobe-s:10079072 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地 price=1980 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=40.0 score=-108.0 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=kobe-s:10108422 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=kobe-s:10108422 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=kobe-s:10108422 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ price=510 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=geki-pla:10039258 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=geki-pla:10039258 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=geki-pla:10039258 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ price=799 reviewAverage=3.00 reviewCount=1 roomFit=16.0 reaction=0.0 reviewEvidence=-30.0 postability=30.0 score=-16.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_EXCLUDE] itemCode=kobe-s:10119195 price=490 reason=tooCheap
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=motto-motto:10080436 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=motto-motto:10080436 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=motto-motto:10080436 title=送料無料 ベビーハンガー 20本セット ベビー 赤ちゃん キッズ 子供 ハンガー 滑り止め 肩紐掛け付き シンプル 洗濯物干し 衣類 洋服 Tシャツ ワンピース ズボン 青 ピンク カーキ色 price=1400 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-116.0 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=motto-motto:10111242 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=motto-motto:10111242 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=motto-motto:10111242 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ price=510 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=laforest:10113260 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=laforest:10113260 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=laforest:10113260 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート price=1010 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_EXCLUDE] itemCode=plusnao:10400455 price=490 reason=tooCheap
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=motto-motto:10051363 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=motto-motto:10051363 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=motto-motto:10051363 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ price=799 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=geki-pla:10079038 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=geki-pla:10079038 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=geki-pla:10079038 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート price=1010 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10361003 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10361003 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10361003 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地 price=1980 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=40.0 score=-108.0 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=kobe-s:10119891 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=kobe-s:10119891 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=kobe-s:10119891 title=送料無料 ベビーハンガー キッズハンガー 5本セット 子供用ハンガー 物干しハンガー クローゼット収納 子供服 洗濯用品 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート price=640 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=geki-pla:10114041 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=geki-pla:10114041 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=geki-pla:10114041 title=送料無料 ベビーハンガー キッズハンガー 5本セット 子供用ハンガー 物干しハンガー クローゼット収納 子供服 洗濯用品 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート price=640 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10358448 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10358448 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10358448 title=送料無料 ベビーハンガー 20本セット ベビー 赤ちゃん キッズ 子供 ハンガー 滑り止め 肩紐掛け付き シンプル 洗濯物干し 衣類 洋服 Tシャツ ワンピース ズボン 青 ピンク カーキ色 price=1400 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-116.0 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10388333 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10388333 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10388333 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ price=510 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=laforest:10155371 score=8.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=laforest:10155371 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=laforest:10155371 title=送料無料 収納ポケット ベビーベッド収納 吊り下げ ベッドサイドポケット おもちゃ おむつ タオル 小物入れ シンプル 無地 price=680 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=0.0 reviewEvidence=-55.0 postability=40.0 score=-85.6 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=laforest:10106456 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=laforest:10106456 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=laforest:10106456 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地 price=1980 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=40.0 score=-108.0 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=laforest:10047171 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=laforest:10047171 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=laforest:10047171 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ price=799 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=geki-pla:10102297 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=geki-pla:10102297 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=geki-pla:10102297 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ price=510 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_POOL] raw=30 valid=26 scored=26
+I/flutter (22125): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter (22125): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter (22125): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter (22125): [RECOMMEND_SELECT] strictSelected=10
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=suzuto:10785609 score=8.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=suzuto:10785609 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=suzuto:10785609 title=【送料無料/直送】キッズデスク/プレゼント お祝い 誕生日祝い 敬老の日 母の日 父の日 自家消費にも キッズ・ベビー・マタニティ ベビー用インテリア・収納用品 ベビーラック・ハイローベッド price=18150 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-33.6 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_EXCLUDE] itemCode=f364053-kamiita:10000076 price=46000 reason=highPriceNoReview
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=geki-pla:10121841 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=geki-pla:10121841 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=geki-pla:10121841 title=送料無料 チェアベルト ベビー 補助ベルト ベビーチェア 椅子 転倒防止 落下防止 安全 赤ちゃん ダイニング 保護 安心 簡単 軽い クッション 幼児 安全グッズ おすわり price=930 reviewAverage=4.50 reviewCount=2 roomFit=0.0 reaction=0.0 reviewEvidence=12.0 postability=40.0 score=59.2 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10367126 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10367126 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10367126 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート price=1010 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10324512 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10324512 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10324512 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ price=799 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10366314 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10366314 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10366314 title=送料無料 キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリー price=1070 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=motto-motto:10089155 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=motto-motto:10089155 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=motto-motto:10089155 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート price=1010 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=kobe-s:10047291 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=kobe-s:10047291 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=kobe-s:10047291 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ price=799 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=motto-motto:10088327 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=motto-motto:10088327 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=motto-motto:10088327 title=送料無料 キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリー price=1070 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_EXCLUDE] itemCode=geki-pla:10113408 price=490 reason=tooCheap
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=kobe-s:10084466 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=kobe-s:10084466 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=kobe-s:10084466 title=キッズハンガー ベビーハンガー 5本セット 同色5本セット 連結 延長 伸縮性 長さ調節 子供服 洗濯用品 クマ 熊 アニマル 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 可愛い 省スペース キュート ブルー ピンク グリーン price=1070 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=kobe-s:10079072 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=kobe-s:10079072 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=kobe-s:10079072 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地 price=1980 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=40.0 score=-108.0 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=kobe-s:10108422 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=kobe-s:10108422 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=kobe-s:10108422 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ price=510 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=geki-pla:10039258 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=geki-pla:10039258 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=geki-pla:10039258 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ price=799 reviewAverage=3.00 reviewCount=1 roomFit=16.0 reaction=0.0 reviewEvidence=-30.0 postability=30.0 score=-16.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_EXCLUDE] itemCode=kobe-s:10119195 price=490 reason=tooCheap
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=motto-motto:10080436 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=motto-motto:10080436 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=motto-motto:10080436 title=送料無料 ベビーハンガー 20本セット ベビー 赤ちゃん キッズ 子供 ハンガー 滑り止め 肩紐掛け付き シンプル 洗濯物干し 衣類 洋服 Tシャツ ワンピース ズボン 青 ピンク カーキ色 price=1400 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-116.0 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=motto-motto:10111242 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=motto-motto:10111242 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=motto-motto:10111242 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ price=510 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=laforest:10113260 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=laforest:10113260 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=laforest:10113260 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート price=1010 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_EXCLUDE] itemCode=plusnao:10400455 price=490 reason=tooCheap
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=motto-motto:10051363 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=motto-motto:10051363 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=motto-motto:10051363 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ price=799 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=geki-pla:10079038 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=geki-pla:10079038 score=24.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=geki-pla:10079038 title=送料無料 キッズハンガー ベビーハンガー 10本セット 同色10本セット 子供服 洗濯用品 子供用ハンガー 物干しハンガー クローゼット収納 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート 女の子 女子 小学生 幼児 可愛い 省スペース キュート price=1010 reviewAverage=0.00 reviewCount=0 roomFit=24.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-48.8 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10361003 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10361003 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10361003 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地 price=1980 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=40.0 score=-108.0 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=kobe-s:10119891 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=kobe-s:10119891 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=kobe-s:10119891 title=送料無料 ベビーハンガー キッズハンガー 5本セット 子供用ハンガー 物干しハンガー クローゼット収納 子供服 洗濯用品 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート price=640 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=geki-pla:10114041 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=geki-pla:10114041 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=geki-pla:10114041 title=送料無料 ベビーハンガー キッズハンガー 5本セット 子供用ハンガー 物干しハンガー クローゼット収納 子供服 洗濯用品 衣類収納 型崩れ防止 洗濯物干し 日用品 リボン キュート price=640 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10358448 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10358448 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10358448 title=送料無料 ベビーハンガー 20本セット ベビー 赤ちゃん キッズ 子供 ハンガー 滑り止め 肩紐掛け付き シンプル 洗濯物干し 衣類 洋服 Tシャツ ワンピース ズボン 青 ピンク カーキ色 price=1400 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-116.0 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=plusnao:10388333 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=plusnao:10388333 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=plusnao:10388333 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ price=510 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=laforest:10155371 score=8.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=laforest:10155371 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=laforest:10155371 title=送料無料 収納ポケット ベビーベッド収納 吊り下げ ベッドサイドポケット おもちゃ おむつ タオル 小物入れ シンプル 無地 price=680 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=0.0 reviewEvidence=-55.0 postability=40.0 score=-85.6 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=laforest:10106456 score=0.0 reasons=
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=laforest:10106456 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=laforest:10106456 title=送料無料 チェアベルト ベビー 赤ちゃん 子供 お座り補助 折りたたみ式 肩ベルト付き シンプル 椅子 転落 ずり落ち 防止 サポート 持ち運び 出産祝い プレゼント 黒 ネイビー 赤 無地 price=1980 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=40.0 score=-108.0 reasons=バランス|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=laforest:10047171 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=laforest:10047171 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=laforest:10047171 title=送料無料 ベビーハンガー 5本セット キッズハンガー 伸縮ハンガー 子供服用 物干し 洗濯用品 収納 7段階調節 連結 省スペース クマ 可愛い ランドリーグッズ price=799 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_ROOM_FIT] itemCode=geki-pla:10102297 score=16.0 reasons=ROOM向き
+I/flutter (22125): [RECOMMEND_POSTABILITY] itemCode=geki-pla:10102297 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_SCORE] itemCode=geki-pla:10102297 title=送料無料 収納ポケット ベビーベッド サイドポケット ベッドサイド 収納 ポケット バッグ 小物入れ 吊り ベビー ベッド収納ラック 吊り下げ おむつ おもちゃ タオル おしゃれ price=510 reviewAverage=0.00 reviewCount=0 roomFit=16.0 reaction=0.0 reviewEvidence=-55.0 postability=30.0 score=-71.2 reasons=バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (22125): [RECOMMEND_POOL] raw=30 valid=26 scored=26
+I/flutter (22125): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter (22125): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter (22125): [RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35
+I/flutter (22125): [RECOMMEND_SELECT] strictSelected=10
+I/flutter (22125): [RECOMMEND_API_GUARD] skipExtraSearch reason=poolHasEnoughBackfill
+I/flutter (22125): [RECOMMEND_API_GUARD] extraSearchAllowed=false
+I/flutter (22125): [RECOMMEND] apiCalls=1 poolSize=30
+I/flutter (22125): [RECOMMEND] final count: 10
+I/flutter (22125): [RECOMMEND_BUCKET] personal=10 relaxed=0 discovery=0 total=10
+I/flutter (22125): [RECOMMEND_RESULT] style=balance personalCount=10 discoveryCount=0 total=10
+I/flutter (22125): [RECOMMEND_TRACE] finalCandidateCount=10
+I/flutter (22125): [RECOMMEND_TRACE] failureType=none
+I/flutter (22125): [RECOMMEND_RESULT] status=success count=10
+I/flutter (22125): [RECOMMEND_GENERATE] end requestCount=1 planCount=7
+I/flutter (22125): [RECOMMEND_SUMMARY] totalApiRequests=1 totalPlans=7 selectedCount=10 excludedCount=0 durationMs=934
+I/flutter (22125): [TODAY_RECOMMEND_API_USAGE] sessionId=1779634869132 phase=finalize apiCalls=1 genreSearchCalls=1 shopSearchCalls=0 keywordSearchCalls=0 excludedBySafety=0 excludedByDuplicate=0 finalItems=10
+I/flutter (22125): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (22125): [RECOMMEND_SAVE] savedBundle=true count=10
+W/WindowOnBackDispatcher(22125): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(22125): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+W/WindowOnBackDispatcher(22125): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(22125): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (22125): [SEARCH_STATE_PERSIST] screen=productSearch event=restore resultCount=0
+I/flutter (22125): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter (22125): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter (22125): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter (22125): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter (22125): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter (22125): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:bac6c422: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(22125): showSoftInput() view=io.flutter.embedding.android.FlutterView{e7046b4 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:fe7e9625: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(22125): showSoftInput() view=io.flutter.embedding.android.FlutterView{e7046b4 VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(22125): The input method toggled cursor monitoring on
+D/InsetsController(22125): show(ime(), fromIme=true)
+D/InsetsController(22125): show(ime(), fromIme=true)
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:fe7e9625: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:bac6c422: onShown
+I/flutter (22125): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter (22125): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter (22125): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter (22125): [Rakuten] keyword search execute keyword="ステンレスボトル" genreId=- genreName(lookup)=- shopCode=- shopName(saved lookup)=- hits=30 excludeRegistered=0 savedShopExcludeSet=2 
+I/flutter (22125): [SEARCH_EXECUTE_TRACE] sessionId=1 mode=product keyword="ステンレスボトル" selectedShopCode=- genreId=- startedAt=2026-05-25T00:01:34.959827
+I/flutter (22125): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=ステンレスボトル genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 expectedApiCalls=20
+I/flutter (22125): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=ステンレスボトル genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (22125): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (22125): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%82%B9%E3%83%86%E3%83%B3%E3%83%AC%E3%82%B9%E3%83%9C%E3%83%88%E3%83%AB
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:aafbc1ce: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor(22125): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher(22125): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@147506639 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@d37bd99
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:92db386a: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker(22125): com.stepbytestudio.room_manager2:aafbc1ce: onHidden
+I/flutter (22125): [Rakuten] response status=200 page=1 bytes=201303
+I/flutter (22125): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (22125): [RECOMMEND_TRACE] rawCount=30
+I/flutter (22125): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=1 statusCode=200 rawCount=30 durationMs=698 success=true
+I/flutter (22125): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=698 statusCode=200
+I/flutter (22125): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=30/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter (22125): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=ステンレスボトル genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (22125): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (22125): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E3%82%B9%E3%83%86%E3%83%B3%E3%83%AC%E3%82%B9%E3%83%9C%E3%83%88%E3%83%AB
+I/flutter (22125): [Rakuten] response status=200 page=2 bytes=173168
+I/flutter (22125): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (22125): [RECOMMEND_TRACE] rawCount=30
+I/flutter (22125): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=2 statusCode=200 rawCount=30 durationMs=588 success=true
+I/flutter (22125): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=true durationMs=588 statusCode=200
+I/flutter (22125): [Rakuten] keywordManagedExclusion page=2 raw=30 parsed=30 visible=60/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter (22125): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=ステンレスボトル genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (22125): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (22125): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E3%82%B9%E3%83%86%E3%83%B3%E3%83%AC%E3%82%B9%E3%83%9C%E3%83%88%E3%83%AB
+I/flutter (22125): [Rakuten] response status=429 page=3 bytes=128
+I/flutter (22125): [RECOMMEND_TRACE] apiStatus=429
+I/flutter (22125): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter (22125): [Rakuten] searchItems failed page=3 attempt=1: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (22125): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1487:21)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:247:24)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): 
+I/flutter (22125): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=3 statusCode=- rawCount=0 durationMs=0 success=false
+I/flutter (22125): [SHOP_SEARCH_API_CALL] page=3 hits=30 success=false error=楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (22125): [Rakuten] keywordManagedExclusion page=3 failed: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (22125): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1487:21)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:247:24)
+I/flutter (22125): <asynchronous suspension>
+I/flutter (22125): 
+I/flutter (22125): [SHOP_SEARCH_PARTIAL_FAILURE] page=3 keptItems=60 messageForUser=一部のページ取得に失敗しました
+I/flutter (22125): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=ステンレスボトル genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (22125): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (22125): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E3%82%B9%E3%83%86%E3%83%B3%E3%83%AC%E3%82%B9%E3%83%9C%E3%83%88%E3%83%AB
+I/flutter (22125): [Rakuten] response status=200 page=4 bytes=183859
+I/flutter (22125): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (22125): [RECOMMEND_TRACE] rawCount=30
+I/flutter (22125): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=4 statusCode=200 rawCount=30 durationMs=411 success=true
+I/flutter (22125): [SHOP_SEARCH_API_CALL] page=4 hits=30 success=true durationMs=411 statusCode=200
+I/flutter (22125): [Rakuten] keywordManagedExclusion page=4 raw=30 parsed=30 visible=90/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter (22125): [Rakuten] request start mode=proxy page=5 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=ステンレスボトル genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (22125): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (22125): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=5&hits=30&keyword=%E3%82%B9%E3%83%86%E3%83%B3%E3%83%AC%E3%82%B9%E3%83%9C%E3%83%88%E3%83%AB
+I/flutter (22125): [Rakuten] response status=200 page=5 bytes=190670
+I/flutter (22125): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (22125): [RECOMMEND_TRACE] rawCount=30
+I/flutter (22125): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=5 statusCode=200 rawCount=30 durationMs=479 success=true
+I/flutter (22125): [SHOP_SEARCH_API_CALL] page=5 hits=30 success=true durationMs=479 statusCode=200
+I/flutter (22125): [Rakuten] keywordManagedExclusion page=5 raw=30 parsed=10 visible=100/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter (22125): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=4 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter (22125): [SEARCH_FETCH_100_AUDIT] mode=product keyword=ステンレスボトル genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=5 pagesSucceeded=4 pagesFailed=1 rawTotal=120 excludedCandidate=0 excludedDone=0 excludedSafety=0 excludedDuplicate=0 excludedNoImage=0 excludedOther=0 excludedSavedShop=0 displayCount=100 stopReason=reachedTarget
+I/flutter (22125): [SHOP_SEARCH_FETCH_RESULT] screen=product apiCalls=4 rawItems=true dedupedItems=100 safetyExcluded=0 duplicateExcluded=0 registeredExcluded=0 savedShopExcluded=0 displayItems=100 failedPages=1 reason=reachedTarget
+I/flutter (22125): [RakutenGenre][SUMMARY] total=100 resolved=100 unresolved=0 usedMaster=100 rawGenreNameEmpty=100
+I/flutter (22125): [SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+I/flutter (22125): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=8
+I/flutter (22125): [SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter (22125): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter (22125): [GenreMaster] search prefetch skip resolvedLocally=3
+I/flutter (22125): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter (22125): [SEARCH_STATE_PERSIST] screen=productSearch event=save resultCount=100
+I/flutter (22125): [SEARCH_RESULT_UNDER_100_REASON] mode=productSearch displayCount=97 target=100 reason=safetyFiltered uiSafetyExcluded=3 apiDisplayBeforeUi=100
+I/flutter (22125): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=3 reasonBreakdown=adult:2,alcohol:1 firstBlockedExamples=tiger-online:10005033:【タイガー魔法瓶 楽天市場店】水筒 パッキン一体 食洗機対応 真空断熱 ボトル 200ml 300ml MMP-W020 MMP-W030 ミニ スリム コンパクト 軽量 保温 保冷 直飲み おしゃれ ステンレスボトル サハラ 食洗機 ホワイト ブルー イエロー ブラック ピンク ベージュ タイガー:adult | import-luxy:10000004:【 価格以上の満足感 】ドイツ発 炭酸対応 水筒 500ml 750ml 1L 保冷 保温 真空断熱 直飲み 炭酸水 ビール 入れられる 炭酸ボトル マグボトル ステンレスボトル マイボトル おしゃれ グロウラー アウトドア ヨガ スポーツ プレゼント 送料無料 メーカー保証付き フラスク:alcohol | bottlebottle:10000000:送料無料 1リットル 水筒 1L 大容量 子供 大人 直飲み 保温保冷 真空断熱 ステン�
+I/flutter (22125): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (22125): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (22125): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (22125): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (22125): [SEARCH_RESULT_UNDER_100_REASON] mode=productSearch displayCount=97 target=100 reason=safetyFiltered uiSafetyExcluded=3 apiDisplayBeforeUi=100
+I/flutter (22125): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=3 reasonBreakdown=adult:2,alcohol:1 firstBlockedExamples=tiger-online:10005033:【タイガー魔法瓶 楽天市場店】水筒 パッキン一体 食洗機対応 真空断熱 ボトル 200ml 300ml MMP-W020 MMP-W030 ミニ スリム コンパクト 軽量 保温 保冷 直飲み おしゃれ ステンレスボトル サハラ 食洗機 ホワイト ブルー イエロー ブラック ピンク ベージュ タイガー:adult | import-luxy:10000004:【 価格以上の満足感 】ドイツ発 炭酸対応 水筒 500ml 750ml 1L 保冷 保温 真空断熱 直飲み 炭酸水 ビール 入れられる 炭酸ボトル マグボトル ステンレスボトル マイボトル おしゃれ グロウラー アウトドア ヨガ スポーツ プレゼント 送料無料 メーカー保証付き フラスク:alcohol | bottlebottle:10000000:送料無料 1リットル 水筒 1L 大容量 子供 大人 直飲み 保温保冷 真空断熱 ステン�
+I/flutter (22125): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (22125): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (22125): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (22125): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (22125): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260524_235249.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260524_235249.mp4 (2531497 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260524_235249
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260524_235249\terminal_output_20260524_235249.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260524_235249.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260524_235249.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260524_235249.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260524_235249.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260524_235249.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.

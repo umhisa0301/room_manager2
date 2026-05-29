@@ -219,7 +219,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: '楽天ROOM運用補助',
+        title: 'ROOM manager',
         theme: AppTheme.lightTheme,
         scaffoldMessengerKey: appRootScaffoldMessengerKey,
         builder: (context, child) {

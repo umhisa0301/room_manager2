@@ -27,6 +27,7 @@ import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../widgets/app_button.dart';
 import '../widgets/room_colle_product_list_card_layout.dart';
+import '../utils/app_debug_log.dart';
 import '../utils/room_reaction_analytics.dart';
 import '../utils/room_sync_button_visibility.dart';
 import '../utils/room_sync_card_copy.dart';
@@ -416,17 +417,17 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
 
   void _trace(String message) {
     if (!mounted) return;
-    debugPrint('[RECOMMEND_TRACE] $message');
+    roomAuditLog('[RECOMMEND_TRACE] $message');
   }
 
   void _trigger(String source) {
     if (!mounted) return;
-    debugPrint('[RECOMMEND_TRIGGER] source=$source');
+    roomAuditLog('[RECOMMEND_TRIGGER] source=$source');
   }
 
   void _guard(String reason) {
     if (!mounted) return;
-    debugPrint('[RECOMMEND_GUARD] $reason');
+    roomAuditLog('[RECOMMEND_GUARD] $reason');
   }
 
   Future<void> _openRoomUrlEditSheet(BuildContext context) async {
@@ -574,6 +575,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 onOpenCandidates: () =>
                                     _openRoomList(context, initialTabIndex: 0),
                                 onOpenActivity: () => _openActivity(context),
+                                regenerateCooldownHint: recProvider
+                                    .manualRegenerateCooldownStatus()
+                                    .userFacingWaitLabel,
                                 onPrimaryRecommendations: () =>
                                     _openTodayRecommendations(context),
                               ),
@@ -767,6 +771,15 @@ class _HomeRoomPostImportSection extends StatelessWidget {
         debugPrint(
           '[ROOM_REACTION_SYNC_START_GUARD] screen=home blockedByBusy=true '
           'confirmed=false',
+        );
+      }
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'ROOMデータの更新が終わってから、反応の確認を行ってください',
+            ),
+          ),
         );
       }
       return;
@@ -1025,9 +1038,25 @@ class _HomeRoomPostImportSection extends StatelessWidget {
               ] else ...[
                 if (syncBusy) ...[
                   Text(
-                    busyLead,
+                    'ROOMデータを更新中です',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'この間、検索や候補追加は一時停止されます。完了までしばらくお待ちください。',
+                    style: _HomeUi.tapHint(context).copyWith(
+                      fontSize: 13,
+                      height: 1.35,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    busyLead,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: HomeScreenColors.bodyOnSection,
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -1187,6 +1216,13 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 6),
+                    Text(
+                      importedDoneCount > 0
+                          ? 'ROOMに投稿済みの商品をアプリに追加します。'
+                          : '過去のROOM投稿をコレ済に追加します。',
+                      style: _HomeUi.tapHint(context),
+                    ),
                   ],
                   if (showReactionButton) ...[
                     const SizedBox(height: 10),
@@ -1200,11 +1236,18 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                         _handleReactionSync(context);
                       },
                     ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '取り込み済み商品のいいね・コメント数を確認します。',
+                      style: _HomeUi.tapHint(context),
+                    ),
+                  ] else if (showImportButton) ...[
+                    const SizedBox(height: 6),
+                    Text(
+                      RoomSyncCardCopy.combinedFooterHint,
+                      style: _HomeUi.tapHint(context),
+                    ),
                   ],
-                  Text(
-                    RoomSyncCardCopy.combinedFooterHint,
-                    style: _HomeUi.tapHint(context),
-                  ),
                   if (showRoomSyncMaintenanceDebugUi) ...[
                     const SizedBox(height: 14),
                     ExpansionTile(
@@ -1316,6 +1359,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
     required this.recTotalCount,
     required this.recommendationHintLine,
     required this.recommendationStatusMessage,
+    required this.regenerateCooldownHint,
     required this.onOpenSearch,
     required this.onOpenCandidates,
     required this.onOpenActivity,
@@ -1335,6 +1379,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
   final int recTotalCount;
   final String? recommendationHintLine;
   final String? recommendationStatusMessage;
+  final String regenerateCooldownHint;
   final VoidCallback onOpenSearch;
   final VoidCallback onOpenCandidates;
   final VoidCallback onOpenActivity;
@@ -1352,6 +1397,9 @@ class _HomeTodayProgressCard extends StatelessWidget {
     );
 
     final primary = _primaryAction();
+    final showRegenerateCooldown =
+        primary.label == 'おすすめを再生成' &&
+        regenerateCooldownHint.trim().isNotEmpty;
     final pendingLine =
         generationStatus == TodayRecommendationGenerationStatus.loading
         ? 'おすすめを準備中です'
@@ -1440,14 +1488,24 @@ class _HomeTodayProgressCard extends StatelessWidget {
               ).copyWith(fontSize: 12, color: HomeScreenColors.footnoteMuted),
             ),
           ],
+          if (showRegenerateCooldown) ...[
+            const SizedBox(height: 6),
+            Text(
+              regenerateCooldownHint.trim(),
+              maxLines: 2,
+              softWrap: true,
+              style: _HomeUi.tapHint(context).copyWith(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: HomeScreenColors.bodyOnSection,
+              ),
+            ),
+          ],
           const SizedBox(height: 14),
           _HomeHeroCtaButton(
             icon: primary.icon,
             label: primary.label,
-            onPressed:
-                generationStatus == TodayRecommendationGenerationStatus.loading
-                ? null
-                : primary.onPressed,
+            onPressed: primary.onPressed,
           ),
         ],
       ),
@@ -1460,7 +1518,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
       return _HomeActionSpec(
         label: '準備中',
         icon: Icons.auto_awesome_rounded,
-        onPressed: () {},
+        onPressed: null,
       );
     }
     if (pendingCount > 0) {
@@ -1559,7 +1617,7 @@ class _HomeActionSpec {
 
   final String label;
   final IconData icon;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 }
 
 class _HomeAnimatedPostedCount extends StatefulWidget {
@@ -1861,7 +1919,7 @@ class _HomeOutlinedHomeButton extends StatelessWidget {
 
   final IconData icon;
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double minHeight;
   final double verticalPadding;
 
@@ -2585,7 +2643,10 @@ class _RecentCandidatesPanel extends StatelessWidget {
           children: [
             Text('候補はまだありません', style: _HomeUi.bodyEmphasis(context)),
             const SizedBox(height: _HomeUi.gapTight),
-            Text('おすすめ画面または楽天検索から追加できます。', style: _HomeUi.sectionBody(context)),
+            Text(
+              '「探す」や「今日のおすすめ」から追加できます。',
+              style: _HomeUi.sectionBody(context),
+            ),
           ],
         ),
       );

@@ -3,7 +3,10 @@ param(
     [string]$RakutenAffiliateId = "",
     [string]$RemoteVideoPath = "/sdcard/Movies/play_demo.mp4",
     [int]$VideoBitRate = 8000000,
-    [switch]$DemoMode
+    [switch]$DemoMode,
+    # 未指定時は起動時に 1=debug / 2=release を選択。Play 用スクショは release 推奨（DEBUG バナー非表示）。
+    [ValidateSet("debug", "release", "")]
+    [string]$BuildMode = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -180,6 +183,28 @@ function Get-ConnectedDevices {
     return $devices
 }
 
+function Select-BuildMode {
+    if ($BuildMode -eq "debug" -or $BuildMode -eq "release") {
+        $label = if ($BuildMode -eq "release") { "Release (no DEBUG banner)" } else { "Debug (hot reload)" }
+        Write-Host "Build mode (from parameter): $label" -ForegroundColor Green
+        return $BuildMode
+    }
+
+    Write-Section "Select build mode"
+    Write-Host "[1] Debug   - hot reload (R), DEBUG banner shown" -ForegroundColor Cyan
+    Write-Host "[2] Release - for Play Store screenshots (no DEBUG banner)" -ForegroundColor Cyan
+    Write-Host ""
+
+    while ($true) {
+        $inputValue = Read-Host "Enter number (1 or 2)"
+        switch ($inputValue.Trim()) {
+            "1" { return "debug" }
+            "2" { return "release" }
+            default { Write-Host "Invalid number. Enter 1 or 2." -ForegroundColor Yellow }
+        }
+    }
+}
+
 function Select-AndroidDevice {
     $devices = Get-ConnectedDevices
 
@@ -318,12 +343,20 @@ function Save-Screenshot {
 }
 
 function Show-Help {
+    param([bool]$ReleaseMode = $false)
+
     Write-Host ""
     Write-Host "Controller window commands:" -ForegroundColor Cyan
     Write-Host "  S : save screenshot" -ForegroundColor Cyan
-    Write-Host "  R : flutter hot reload" -ForegroundColor Cyan
+    if (-not $ReleaseMode) {
+        Write-Host "  R : flutter hot reload" -ForegroundColor Cyan
+    }
     Write-Host "  Q : stop flutter and collect video" -ForegroundColor Cyan
     Write-Host "  H : show help" -ForegroundColor Cyan
+    if ($ReleaseMode) {
+        Write-Host ""
+        Write-Host "  (Release mode: hot reload is not available)" -ForegroundColor DarkGray
+    }
     Write-Host ""
 }
 
@@ -352,7 +385,8 @@ function Start-ControllerWindow {
         [string]$ControllerScript,
         [string]$CommandFilePath,
         [string]$LockFilePath,
-        [string]$AppName
+        [string]$AppName,
+        [bool]$ReleaseMode = $false
     )
 
     if (-not (Test-Path $ControllerScript)) {
@@ -368,6 +402,9 @@ function Start-ControllerWindow {
         "-LockFilePath", $LockFilePath,
         "-AppName", $AppName
     )
+    if ($ReleaseMode) {
+        $controllerArgs += "-ReleaseMode"
+    }
 
     return Start-Process `
         -FilePath $pwshPath `
@@ -390,11 +427,15 @@ if (-not (Test-CommandExists "adb")) {
     throw "adb command not found. Check PATH."
 }
 
+$selectedBuildMode = Select-BuildMode
+$script:IsReleaseMode = ($selectedBuildMode -eq "release")
+
 Write-Section "Check adb devices"
 $selectedDevice = Select-AndroidDevice
 $deviceId = $selectedDevice.Id
 
 Write-TerminalLog "Device       : $deviceId [$($selectedDevice.Manufacturer) $($selectedDevice.Model)]" -ForegroundColor Green
+Write-TerminalLog "Build mode   : $selectedBuildMode$(if ($script:IsReleaseMode) { ' (no DEBUG banner)' } else { ' (hot reload)' })" -ForegroundColor Green
 Write-TerminalLog "Project dir  : $CurrentDir" -ForegroundColor Green
 Write-TerminalLog "App name     : $SafeAppName" -ForegroundColor Green
 
@@ -411,6 +452,7 @@ try {
         "Started (local): $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')",
         "Project directory: $CurrentDir",
         "App name (safe folder token): $SafeAppName",
+        "Build mode: $selectedBuildMode",
         "DemoMode: $demoNote",
         "RakutenAppId: $(if ($RakutenAppId) { '(set)' } else { '(empty)' })",
         "RakutenAffiliateId: $(if ($RakutenAffiliateId) { '(set)' } else { '(empty)' })",
@@ -462,7 +504,7 @@ Write-TerminalLog "Terminal output log    : $script:TerminalOutputLogPath" -Fore
 Write-TerminalLog "Command file           : $CommandFile" -ForegroundColor Yellow
 Write-TerminalLog ""
 
-Show-Help
+Show-Help -ReleaseMode:$script:IsReleaseMode
 
 $screenArgs = @("-s", $deviceId, "shell", "screenrecord", "--bit-rate", "$VideoBitRate", $RemoteVideoPath)
 $null = Start-Process `
@@ -483,7 +525,8 @@ $controllerProcess = Start-ControllerWindow `
     -ControllerScript $ControllerScriptPath `
     -CommandFilePath $CommandFile `
     -LockFilePath $LockFile `
-    -AppName $SafeAppName
+    -AppName $SafeAppName `
+    -ReleaseMode:$script:IsReleaseMode
 
 Write-TerminalLog "[CONTROLLER] Secondary controller window started (PID: $($controllerProcess.Id))."
 
@@ -499,6 +542,10 @@ $flutterArgs = @(
 
 if ($DemoMode) {
     $flutterArgs += "--dart-define=DEMO_MODE=true"
+}
+
+if ($script:IsReleaseMode) {
+    $flutterArgs += "--release"
 }
 
 $flutterExe = Get-FlutterCommandPath
@@ -587,7 +634,12 @@ $flutterProc.BeginOutputReadLine()
 $flutterProc.BeginErrorReadLine()
 
 Write-TerminalLog ""
-Write-TerminalLog "Flutter started. Use the separate controller window." -ForegroundColor Green
+$flutterModeNote = if ($script:IsReleaseMode) {
+    "Flutter started (release). Use the separate controller window."
+} else {
+    "Flutter started (debug). Use the separate controller window."
+}
+Write-TerminalLog $flutterModeNote -ForegroundColor Green
 Write-TerminalLog "Streaming flutter logs below..." -ForegroundColor Green
 Write-TerminalLog ""
 
@@ -641,20 +693,25 @@ try {
             }
 
             "r" {
-                try {
-                    if (-not $flutterProc.HasExited) {
-                        $flutterProc.StandardInput.WriteLine("r")
-                        $flutterProc.StandardInput.Flush()
-                        Write-TerminalLog "[HOT RELOAD] Sent 'r' to Flutter stdin. Hot reload command sent." -ForegroundColor Green
+                if ($script:IsReleaseMode) {
+                    Write-TerminalLog "[HOT RELOAD] Skipped: not available in release mode." -ForegroundColor Yellow
+                }
+                else {
+                    try {
+                        if (-not $flutterProc.HasExited) {
+                            $flutterProc.StandardInput.WriteLine("r")
+                            $flutterProc.StandardInput.Flush()
+                            Write-TerminalLog "[HOT RELOAD] Sent 'r' to Flutter stdin. Hot reload command sent." -ForegroundColor Green
+                        }
+                    } catch {
+                        Write-Host "Hot reload failed: $($_.Exception.Message)" -ForegroundColor Red
+                        Write-TerminalLog "[HOT RELOAD] Failed: $($_.Exception.Message)" -ForegroundColor Red
                     }
-                } catch {
-                    Write-Host "Hot reload failed: $($_.Exception.Message)" -ForegroundColor Red
-                    Write-TerminalLog "[HOT RELOAD] Failed: $($_.Exception.Message)" -ForegroundColor Red
                 }
             }
 
             "h" {
-                Show-Help
+                Show-Help -ReleaseMode:$script:IsReleaseMode
             }
         }
     }

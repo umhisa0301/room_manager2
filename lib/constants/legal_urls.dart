@@ -6,5 +6,5 @@ abstract final class LegalUrls {
 
   /// 利用規約（未整備時はダミーURLのまま差し替えてください）。
   static const String termsOfService =
-      'https://www.stepbyte-studio.koji-ro.com/?page_id=309';
+      'https://www.stepbyte-studio.koji-ro.com/?page_id=317';
 }

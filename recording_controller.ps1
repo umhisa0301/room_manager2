@@ -5,7 +5,8 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$LockFilePath,
 
-    [string]$AppName = "app"
+    [string]$AppName = "app",
+    [switch]$ReleaseMode
 )
 
 $ErrorActionPreference = "Continue"
@@ -25,11 +26,20 @@ function Show-Help {
     Write-Host ""
     Write-Host "=====================================" -ForegroundColor Cyan
     Write-Host ("Controller - " + $AppName) -ForegroundColor Cyan
+    if ($ReleaseMode) {
+        Write-Host "Mode: Release (screenshots)" -ForegroundColor DarkGray
+    }
     Write-Host "=====================================" -ForegroundColor Cyan
     Write-Host "S : Screenshot" -ForegroundColor Green
-    Write-Host "R : Hot Reload" -ForegroundColor Green
+    if (-not $ReleaseMode) {
+        Write-Host "R : Hot Reload" -ForegroundColor Green
+    }
     Write-Host "Q : Stop and Save" -ForegroundColor Yellow
     Write-Host "H : Help" -ForegroundColor Cyan
+    if ($ReleaseMode) {
+        Write-Host ""
+        Write-Host "(Hot reload unavailable in release mode)" -ForegroundColor DarkGray
+    }
     Write-Host ""
 }
 
@@ -60,8 +70,13 @@ while ($true) {
             }
 
             "R" {
-                Write-Command "r"
-                Write-Host ("[" + (Get-Date -Format "HH:mm:ss") + "] Hot Reload") -ForegroundColor Green
+                if ($ReleaseMode) {
+                    Write-Host ("[" + (Get-Date -Format "HH:mm:ss") + "] Hot reload unavailable in release mode") -ForegroundColor Yellow
+                }
+                else {
+                    Write-Command "r"
+                    Write-Host ("[" + (Get-Date -Format "HH:mm:ss") + "] Hot Reload") -ForegroundColor Green
+                }
             }
 
             "H" {
