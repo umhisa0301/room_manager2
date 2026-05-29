@@ -10,9 +10,11 @@ import '../models/rakuten_search_item.dart';
 import '../services/genre_master_service.dart';
 import '../services/rakuten_api_service.dart';
 import '../utils/app_debug_log.dart';
+import '../utils/product_safety_filter.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../utils/room_import_product_url_match.dart';
 import '../utils/room_sync_log.dart';
+import '../utils/search_result_quality_filter.dart';
 import '../utils/shop_search_fetch_log.dart';
 
 /// キーワード検索（管理除外パス）のページング終了理由。
@@ -42,6 +44,10 @@ class RakutenKeywordSearchRepositoryResult {
     this.excludedCandidate = 0,
     this.excludedDone = 0,
     this.excludedSafety = 0,
+    this.excludedNoImage = 0,
+    this.excludedNoPrice = 0,
+    this.excludedNoName = 0,
+    this.excludedNoUrl = 0,
     this.excludedDuplicate = 0,
     this.excludedSavedShop = 0,
     this.pagesFailed = 0,
@@ -64,6 +70,10 @@ class RakutenKeywordSearchRepositoryResult {
   final int excludedCandidate;
   final int excludedDone;
   final int excludedSafety;
+  final int excludedNoImage;
+  final int excludedNoPrice;
+  final int excludedNoName;
+  final int excludedNoUrl;
   final int excludedDuplicate;
   final int excludedSavedShop;
   final int pagesFailed;
@@ -81,6 +91,10 @@ class RakutenKeywordManagedFetchSummary {
     this.excludedCandidate = 0,
     this.excludedDone = 0,
     this.excludedSafety = 0,
+    this.excludedNoImage = 0,
+    this.excludedNoPrice = 0,
+    this.excludedNoName = 0,
+    this.excludedNoUrl = 0,
     this.excludedDuplicate = 0,
     this.excludedSavedShop = 0,
     this.pagesFailed = 0,
@@ -98,6 +112,10 @@ class RakutenKeywordManagedFetchSummary {
       excludedCandidate: r.excludedCandidate,
       excludedDone: r.excludedDone,
       excludedSafety: r.excludedSafety,
+      excludedNoImage: r.excludedNoImage,
+      excludedNoPrice: r.excludedNoPrice,
+      excludedNoName: r.excludedNoName,
+      excludedNoUrl: r.excludedNoUrl,
       excludedDuplicate: r.excludedDuplicate,
       excludedSavedShop: r.excludedSavedShop,
       pagesFailed: r.pagesFailed,
@@ -112,6 +130,10 @@ class RakutenKeywordManagedFetchSummary {
   final int excludedCandidate;
   final int excludedDone;
   final int excludedSafety;
+  final int excludedNoImage;
+  final int excludedNoPrice;
+  final int excludedNoName;
+  final int excludedNoUrl;
   final int excludedDuplicate;
   final int excludedSavedShop;
   final int pagesFailed;
@@ -1415,11 +1437,20 @@ class RakutenSearchRepository {
     int startPage = 1,
     int maxFetchPages = keywordManagedExclusionMaxApiPages,
     Duration interPageDelay = const Duration(milliseconds: 220),
+    bool applyDisplayQualityGate = true,
   }) async {
     if (kDemoModeEnabled) {
+      final normalizedDemo = condition.normalized();
       final filtered = DemoModeData.querySearchItems(condition)
           .where((e) => !excludeRegisteredProductIds.contains(e.productId))
           .where((e) => !excludeSavedShopCodes.contains(e.shopCode))
+          .where(
+            (e) =>
+                SearchResultQualityFilter.passesDisplayQuality(
+                  e,
+                  condition: normalizedDemo,
+                ),
+          )
           .toList(growable: false);
       final out = filtered.take(targetVisibleCount).toList(growable: false);
       return RakutenKeywordSearchRepositoryResult(
@@ -1465,10 +1496,20 @@ class RakutenSearchRepository {
     var failedPages = 0;
     var rawTotal = 0;
     var safetyExcluded = 0;
+    var noImageExcluded = 0;
+    var noPriceExcluded = 0;
+    var noNameExcluded = 0;
+    var noUrlExcluded = 0;
+    var reviewThresholdExcluded = 0;
     var duplicateExcluded = 0;
     var candidateExcluded = 0;
     var doneExcluded = 0;
     var savedShopExcluded = 0;
+    final qualityGate = applyDisplayQualityGate &&
+        (fetchMode == 'product' ||
+            fetchMode == 'genre' ||
+            fetchMode == 'savedShop');
+    final fetchSw = Stopwatch()..start();
     RakutenKeywordSearchStopReason? explicitStop;
     shopSearchFetchPlanLog(
       'screen=productSearch keyword=${normalized.keyword} '
@@ -1545,11 +1586,51 @@ class RakutenSearchRepository {
               duplicateExcluded++;
               continue;
             }
-            final passed = _applyAppSideFilters([item], normalized);
-            if (passed.isEmpty) {
-              pageDroppedAppFilter++;
-              safetyExcluded++;
-              continue;
+            if (qualityGate) {
+              final reason = SearchResultQualityFilter.exclusionReason(
+                item,
+                condition: normalized,
+                checkSafety: true,
+              );
+              if (reason != null) {
+                pageDroppedAppFilter++;
+                switch (reason) {
+                  case SearchQualityExcludeReason.noImage:
+                    noImageExcluded++;
+                  case SearchQualityExcludeReason.noPrice:
+                    noPriceExcluded++;
+                  case SearchQualityExcludeReason.noName:
+                    noNameExcluded++;
+                  case SearchQualityExcludeReason.noUrl:
+                    noUrlExcluded++;
+                  case SearchQualityExcludeReason.safety:
+                    safetyExcluded++;
+                    ProductSafetyFilter.logFilter(
+                      source: fetchMode,
+                      itemCode: id,
+                      title: item.itemName,
+                      shopName: item.shopName,
+                      genreName: item.genreName,
+                      blocked: true,
+                      reasons: ProductSafetyFilter.blockedReasons(
+                        itemName: item.itemName,
+                        shopName: item.shopName,
+                        genreName: item.genreName,
+                      ),
+                    );
+                  case SearchQualityExcludeReason.reviewCount:
+                  case SearchQualityExcludeReason.reviewAverage:
+                    reviewThresholdExcluded++;
+                }
+                continue;
+              }
+            } else {
+              final passed = _applyAppSideFilters([item], normalized);
+              if (passed.isEmpty) {
+                pageDroppedAppFilter++;
+                reviewThresholdExcluded++;
+                continue;
+              }
             }
             final shopCode = item.shopCode.trim();
             final scopedShop = normalized.shopCode?.trim() ?? '';
@@ -1648,7 +1729,23 @@ class RakutenSearchRepository {
       excludedDone: doneExcluded,
       excludedDuplicate: duplicateExcluded,
       excludedSafety: safetyExcluded,
+      excludedNoImage: noImageExcluded,
+      excludedNoPrice: noPriceExcluded,
     );
+    fetchSw.stop();
+    if (qualityGate) {
+      searchAuditLog(
+        '[SEARCH_QUALITY_FILTER_SUMMARY] mode=$fetchMode '
+        'keyword=${normalized.keyword} genreId=${normalized.genreId ?? '-'} '
+        'shopCode=${normalized.shopCode ?? '-'} sort=${normalized.sort ?? '-'} '
+        'raw=$rawTotal afterManagedExclude=${displayItems.length} '
+        'excludedNoImage=$noImageExcluded excludedNoPrice=$noPriceExcluded '
+        'excludedNoName=$noNameExcluded excludedNoUrl=$noUrlExcluded '
+        'excludedSafety=$safetyExcluded excludedReviewThreshold=$reviewThresholdExcluded '
+        'visible=${displayItems.length} stopReason=${stopReason.name} '
+        'durationMs=${fetchSw.elapsedMilliseconds}',
+      );
+    }
     if (kDebugMode) {
       debugPrint(
         '[SEARCH_FETCH_100_AUDIT] mode=$fetchMode keyword=${normalized.keyword} '
@@ -1658,7 +1755,9 @@ class RakutenSearchRepository {
         'pagesSucceeded=$apiPagesFetched pagesFailed=$failedPages rawTotal=$rawTotal '
         'excludedCandidate=$candidateExcluded excludedDone=$doneExcluded '
         'excludedSafety=$safetyExcluded excludedDuplicate=$duplicateExcluded '
-        'excludedNoImage=0 excludedOther=0 '
+        'excludedNoImage=$noImageExcluded excludedNoPrice=$noPriceExcluded '
+        'excludedNoName=$noNameExcluded excludedNoUrl=$noUrlExcluded '
+        'excludedReviewThreshold=$reviewThresholdExcluded excludedOther=0 '
         'excludedSavedShop=$savedShopExcluded displayCount=${displayItems.length} '
         'stopReason=$under100Reason',
       );
@@ -1666,6 +1765,8 @@ class RakutenSearchRepository {
         debugPrint(
           '[SEARCH_RESULT_UNDER_100_REASON] mode=$fetchMode displayCount=${displayItems.length} '
           'target=$targetVisibleCount reason=$under100Reason '
+          'excludedNoImage=$noImageExcluded excludedNoPrice=$noPriceExcluded '
+          'excludedSafety=$safetyExcluded '
           'pagesSucceeded=$apiPagesFetched pagesFailed=$failedPages',
         );
       }
@@ -1690,6 +1791,10 @@ class RakutenSearchRepository {
       excludedCandidate: candidateExcluded,
       excludedDone: doneExcluded,
       excludedSafety: safetyExcluded,
+      excludedNoImage: noImageExcluded,
+      excludedNoPrice: noPriceExcluded,
+      excludedNoName: noNameExcluded,
+      excludedNoUrl: noUrlExcluded,
       excludedDuplicate: duplicateExcluded,
       excludedSavedShop: savedShopExcluded,
       pagesFailed: failedPages,
@@ -1706,6 +1811,8 @@ class RakutenSearchRepository {
     required int excludedDone,
     required int excludedDuplicate,
     required int excludedSafety,
+    int excludedNoImage = 0,
+    int excludedNoPrice = 0,
   }) {
     if (displayCount >= targetVisibleCount) return 'reachedTarget';
     final excluded = excludedCandidate + excludedDone;
@@ -1719,7 +1826,18 @@ class RakutenSearchRepository {
       return 'tooManyExcludedCandidate';
     }
     if (excludedDuplicate > displayCount) return 'tooManyDuplicates';
+    final qualityExcluded = excludedNoImage + excludedNoPrice;
+    if (qualityExcluded > displayCount) {
+      if (excludedNoImage >= excludedNoPrice && excludedNoImage > 0) {
+        return 'noImage';
+      }
+      if (excludedNoPrice > 0) return 'noPrice';
+    }
     if (excludedSafety > displayCount) return 'safetyFiltered';
+    if (excludedSafety > 0 && qualityExcluded > 0) return 'qualityFiltered';
+    if (excludedNoImage > 0) return 'noImage';
+    if (excludedNoPrice > 0) return 'noPrice';
+    if (excludedSafety > 0) return 'safetyFiltered';
     return switch (stopReason) {
       RakutenKeywordSearchStopReason.reachedTarget => 'reachedTarget',
       RakutenKeywordSearchStopReason.apiNoMoreResults => 'reachedEnd',
@@ -2235,30 +2353,16 @@ class RakutenSearchRepository {
     List<RakutenSearchItem> source,
     RakutenProductSearchCondition condition,
   ) {
-    final thresholdComment = condition.minCommentCount;
-    final thresholdReview = condition.minReviewCount;
-    final requiredReviewCount = switch ((thresholdComment, thresholdReview)) {
-      (null, null) => null,
-      (final c?, null) => c,
-      (null, final r?) => r,
-      (final c?, final r?) => c > r ? c : r,
-    };
-
-    return source.where((item) {
-      if (requiredReviewCount != null &&
-          item.reviewCount < requiredReviewCount) {
-        return false;
-      }
-      if (condition.minReviewAverage != null &&
-          item.reviewAverage < condition.minReviewAverage!) {
-        return false;
-      }
-      // shopCode はクエリで API が既に絞り込む。Item 側の shopCode が空・表記差で
-      // 一致しない場合があり、クライアント再判定で全件落ちうるためここでは判定しない。
-      // genreId はクエリパラメータで API が既に絞り込む。レスポンス各 Item の genreId は
-      // 子ジャンルIDのみで親 genreId を部分文字列に含まないことが多く、クライアント側の
-      // 文字列一致・contains では誤って全件落ちるためここでは判定しない。
-      return true;
-    }).toList();
+    return source
+        .where(
+          (item) =>
+              SearchResultQualityFilter.exclusionReason(
+                item,
+                condition: condition,
+                checkSafety: false,
+              ) ==
+              null,
+        )
+        .toList(growable: false);
   }
 }

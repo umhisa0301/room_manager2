@@ -102,11 +102,16 @@ class RakutenSearchProvider extends ChangeNotifier {
     if (s.stopReason == RakutenKeywordSearchStopReason.partialFetchFailure) {
       return '一部の商品を取得できませんでした。条件を変えるか、もう一度検索してください。';
     }
+    final qualityExcl =
+        s.excludedNoImage + s.excludedNoPrice + s.excludedSafety;
+    final qualityNote = qualityExcl > 0
+        ? '画像や価格が確認できない商品、候補・コレ済は除外しています。'
+        : '候補・コレ済の商品は除外しています。';
     if (n > 0 && n < s.targetVisibleCap) {
-      return '条件に合う商品を$n件表示しています。候補・コレ済の商品は除外しています。';
+      return '条件に合う商品を$n件表示しています。$qualityNote';
     }
     if (excluded > 0 && n > 0) {
-      return '条件に合う商品を$n件表示しています。候補・コレ済の商品は除外しています。';
+      return '条件に合う商品を$n件表示しています。$qualityNote';
     }
     if (excluded > 0) {
       return '候補・コレ済の商品は除外しています。';
@@ -244,6 +249,11 @@ class RakutenSearchProvider extends ChangeNotifier {
       final List<RakutenSearchItem> fetched;
       apiCalled = true;
       if (excludeRegisteredProductIds != null) {
+        final fetchMode = modeTag == 'genre'
+            ? 'genre'
+            : (modeTag == 'savedShop'
+                  ? 'savedShop'
+                  : (modeTag == 'shopDiscovery' ? 'shopDiscovery' : 'product'));
         final result = await _repository.searchKeywordWithManagedExclusion(
           condition: normalized,
           excludeRegisteredProductIds: excludeRegisteredProductIds,
@@ -251,9 +261,8 @@ class RakutenSearchProvider extends ChangeNotifier {
               excludeCandidateProductIds ?? const {},
           excludeDoneProductIds: excludeDoneProductIds ?? const {},
           excludeSavedShopCodes: excludeSavedShopCodes ?? const {},
-          fetchMode: modeTag == 'genre'
-              ? 'genre'
-              : (modeTag == 'savedShop' ? 'savedShop' : 'product'),
+          fetchMode: fetchMode,
+          applyDisplayQualityGate: fetchMode != 'shopDiscovery',
         );
         fetched = result.items;
         responseStatus = 200;
@@ -271,6 +280,8 @@ class RakutenSearchProvider extends ChangeNotifier {
             excludedDone: result.excludedDone,
             excludedDuplicate: result.excludedDuplicate,
             excludedSafety: result.excludedSafety,
+            excludedNoImage: result.excludedNoImage,
+            excludedNoPrice: result.excludedNoPrice,
           );
           if (result.items.length < result.targetVisibleCount) {
             debugPrint(

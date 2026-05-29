@@ -29,6 +29,20 @@ void main() {
       );
     });
 
+    test('おとなのおもちゃは除外', () {
+      expect(
+        ProductSafetyFilter.isBlockedProduct(itemName: 'おとなのおもちゃ'),
+        isTrue,
+      );
+    });
+
+    test('sex toy は除外', () {
+      expect(
+        ProductSafetyFilter.isBlockedProduct(itemName: 'sex toy set'),
+        isTrue,
+      );
+    });
+
     test('BLCDコレクションは除外', () {
       expect(
         ProductSafetyFilter.isBlockedProduct(

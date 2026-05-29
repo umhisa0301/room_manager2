@@ -126,9 +126,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   bool _routeSubscribed = false;
   bool _initialSavedShopPresetApplied = false;
   RakutenKeywordSearchSortMode _genreExploreSort =
-      RakutenKeywordSearchSortMode.defaultOrder;
+      rakutenKeywordSearchDefaultSortMode;
   RakutenKeywordSearchSortMode _keywordSort =
-      RakutenKeywordSearchSortMode.defaultOrder;
+      rakutenKeywordSearchDefaultSortMode;
   final ScrollController _keywordResultsScrollController = ScrollController();
   final ScrollController _genreResultsScrollController = ScrollController();
   final ScrollController _shopDiscoveryResultsScrollController =
@@ -4125,6 +4125,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     context.read<RakutenSearchProvider>().searchWithCondition(
       condition,
       excludeRegisteredProductIds: excludeIds,
+      modeTag: 'shopDiscovery',
     );
   }
 
@@ -4698,25 +4699,17 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   }
 
   String? _apiSortParamForMode(RakutenKeywordSearchSortMode mode) {
-    switch (mode) {
-      case RakutenKeywordSearchSortMode.defaultOrder:
-        return null;
-      case RakutenKeywordSearchSortMode.priceAscending:
-        return '+itemPrice';
-      case RakutenKeywordSearchSortMode.ratingDescending:
-        return '-reviewAverage';
-      case RakutenKeywordSearchSortMode.reviewCountDescending:
-        return '-reviewCount';
-    }
+    return rakutenKeywordSearchApiSortParam(mode);
   }
 
   void _onKeywordSortChanged(
     BuildContext context,
     RakutenKeywordSearchSortMode next,
   ) {
-    if (_keywordSort == next) return;
-    setState(() => _keywordSort = next);
-    _logSearchSortLabelAudit(next);
+    final normalized = normalizeRakutenKeywordSearchSortMode(next);
+    if (_keywordSort == normalized) return;
+    setState(() => _keywordSort = normalized);
+    _logSearchSortLabelAudit(normalized);
     final search = context.read<RakutenSearchProvider>();
     if (_mode == _RakutenSearchMode.product &&
         search.status == RakutenSearchStatus.success) {
@@ -4728,9 +4721,10 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context,
     RakutenKeywordSearchSortMode next,
   ) {
-    if (_genreExploreSort == next) return;
-    setState(() => _genreExploreSort = next);
-    _logSearchSortLabelAudit(next);
+    final normalized = normalizeRakutenKeywordSearchSortMode(next);
+    if (_genreExploreSort == normalized) return;
+    setState(() => _genreExploreSort = normalized);
+    _logSearchSortLabelAudit(normalized);
     final search = context.read<RakutenSearchProvider>();
     if (_mode == _RakutenSearchMode.genre &&
         search.status == RakutenSearchStatus.success) {
@@ -4747,7 +4741,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       initialValue: value,
       onSelected: onSortSelected,
       itemBuilder: (ctx) => [
-        for (final m in RakutenKeywordSearchSortMode.values)
+        for (final m in rakutenKeywordSearchUserSelectableSortModes)
           PopupMenuItem(
             value: m,
             child: Text(
@@ -4816,7 +4810,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   color: HomeScreenColors.leadOnSection,
                 ),
                 style: valueStyle,
-                items: RakutenKeywordSearchSortMode.values.map((mode) {
+                items: rakutenKeywordSearchUserSelectableSortModes.map((mode) {
                   return DropdownMenuItem<RakutenKeywordSearchSortMode>(
                     value: mode,
                     child: Text(_keywordSortModeLabel(mode)),
@@ -5275,7 +5269,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           icon: Icons.manage_search_outlined,
           title: '検索結果がここに並びます',
           subtitle: 'キーワードを入れて「検索」。気に入った商品は「候補に追加」でROOMコレへ。',
-          stateFootnote: '候補・コレ済は除外（最大100件）。',
+          stateFootnote: '候補・コレ済・画像/価格未確認は除外（最大100件）。',
           compactLayout: true,
         );
       case RakutenSearchStatus.loading:
@@ -5330,7 +5324,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             icon: Icons.manage_search_outlined,
             title: '検索結果がここに並びます',
             subtitle: 'キーワードを入れて「検索」。気に入った商品は「候補に追加」でROOMコレへ。',
-            stateFootnote: '候補・コレ済は除外（最大100件）。',
+            stateFootnote: '候補・コレ済・画像/価格未確認は除外（最大100件）。',
             compactLayout: true,
           );
         }
@@ -5441,7 +5435,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           icon: Icons.explore_outlined,
           title: 'ジャンル探索の結果はここに並びます',
           subtitle: 'ジャンルを選んで「検索」。気に入った商品は「候補に追加」でROOMコレに保存。',
-          stateFootnote: '候補・コレ済は除外（最大100件）。',
+          stateFootnote: '候補・コレ済・画像/価格未確認は除外（最大100件）。',
           compactLayout: true,
         );
       case RakutenSearchStatus.loading:
@@ -5473,7 +5467,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             icon: Icons.explore_outlined,
             title: 'ジャンル探索の結果はここに並びます',
             subtitle: 'ジャンルを選んで「検索」。気に入った商品は「候補に追加」でROOMコレに保存。',
-            stateFootnote: '候補・コレ済は除外（最大100件）。',
+            stateFootnote: '候補・コレ済・画像/価格未確認は除外（最大100件）。',
             compactLayout: true,
           );
         }
