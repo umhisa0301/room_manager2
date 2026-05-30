@@ -1,0 +1,1080 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-31 03:22:31
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260531_032231.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260531_032231.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260531_032231.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260531_032231.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260531_032231.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260531_032231
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260531_032231\terminal_output_20260531_032231.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 42024).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             30.6s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.5s
+D/FlutterJNI(30364): Beginning load of flutter...
+D/FlutterJNI(30364): flutter (null) was loaded normally!
+I/flutter (30364): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (30364): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (30364): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter (30364): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                    83ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:59955/ieVQPeyA9Ao=/
+I/flutter (30364): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (30364): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (30364): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (30364): [ROOMコレ][surface] tab=done surface=ok_empty_no_data
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9103?uri=http://127.0.0.1:59955/ieVQPeyA9Ao=/
+I/flutter (30364): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=7→7 done=0→0
+I/flutter (30364): [MANAGED_PRODUCT_LOAD] source=provider pending=7 done=0 filter= tab=
+I/flutter (30364): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (30364): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (30364): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (30364): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (30364): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-30T04:58:03.505176
+I/flutter (30364): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (30364): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (30364): [RECOMMEND_TRACE] action=regenerateToday
+I/flutter (30364): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (30364): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-30T04:58:03.505176
+I/flutter (30364): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=false
+I/flutter (30364): [RECOMMEND_TRACE] generate start
+I/flutter (30364): [RECOMMEND_TRACE] profile nickname=
+I/flutter (30364): [RECOMMEND_STYLE] selected=balance
+I/flutter (30364): [SEARCH_STYLE_TRACE] selectedStyle=balance
+I/flutter (30364): [RECOMMEND_TRACE] favoriteGenreIds=
+I/flutter (30364): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=recommend
+I/flutter (30364): [RECOMMEND_TRACE] searchPreferences=balance
+I/flutter (30364): [RECOMMEND_TRACE] savedShopCount=0
+I/flutter (30364): [RECOMMEND_TRACE] doneProductCount=0
+I/flutter (30364): [RECOMMEND_TRACE] candidateProductCount=7
+I/flutter (30364): [RECOMMEND_START] genreCount=0 savedShopCount=0 doneCount=0 candidateCount=7 selectedStyle=balance
+I/flutter (30364): [RECOMMEND_REACTION] commentGenres=0 likeGenres=6 commentShops=0 likeShops=6 priceBands=2000-4999,5000-9999,20000-49999,500-1999
+I/flutter (30364): [RECOMMEND_PLAN] count=2
+I/flutter (30364): [RECOMMEND_GENERATE] start requestCount=0 planCount=2
+I/flutter (30364): [RECOMMEND_REACTION] commentGenres=0 likeGenres=6 commentShops=0 likeShops=6 priceBands=2000-4999,5000-9999,20000-49999,500-1999
+I/flutter (30364): [RECOMMEND_POOL] raw=0 valid=0 scored=0
+I/flutter (30364): [RECOMMEND_SELECT] strictSelected=0
+I/flutter (30364): [RECOMMEND_PHASE] phase=personal
+I/flutter (30364): [RECOMMEND] search keyword=バームクーヘン
+I/flutter (30364): [RECOMMEND] genreId=201117
+I/flutter (30364): [RECOMMEND] searchPreference=-reviewCount
+I/flutter (30364): [RECOMMEND] minPrice=null
+I/flutter (30364): [RECOMMEND] maxPrice=null
+I/flutter (30364): [RECOMMEND] sanitizedMinPrice=null
+I/flutter (30364): [RECOMMEND] sanitizedMaxPrice=null
+I/flutter (30364): [RECOMMEND_PLAN] phase=personal relax=0 source=reactionGenre index=1 keyword=バームクーヘン genreId=201117 shopCode= style=balance minPrice= maxPrice= sort=-reviewCount
+I/flutter (30364): [RECOMMEND_API] planIndex=1 keyword=バームクーヘン genreId=201117 shopCode= page=1
+I/flutter (30364): [RECOMMEND_API] phase=personal start index=1 page=1
+I/flutter (30364): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=バームクーヘン genreId=201117 shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=1 expectedApiCalls=1
+I/flutter (30364): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=バームクーヘン genreId=201117 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (30364): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (30364): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%83%90%E3%83%BC%E3%83%A0%E3%82%AF%E3%83%BC%E3%83%98%E3%83%B3&minReviewCount=10&minReviewAverage=3.6&genreId=201117&sort=-reviewCount
+I/flutter (30364): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=7→7 done=0→0
+I/flutter (30364): [MANAGED_PRODUCT_LOAD] source=screen pending=7 done=0 filter= tab=done
+I/flutter (30364): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=7→7 done=0→0
+I/flutter (30364): [MANAGED_PRODUCT_LOAD] source=provider pending=7 done=0 filter= tab=
+I/flutter (30364): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/Choreographer(30364): Skipped 249 frames!  The application may be doing too much work on its main thread.
+I/OpenGLRenderer(30364): Davey! duration=4188ms; Flags=1, FrameTimelineVsyncId=821350406, IntendedVsync=5663971286635733, Vsync=5663975447290775, InputEventId=0, HandleInputStart=5663975461138058, AnimationStart=5663975461139256, PerformTraversalsStart=5663975461139725, DrawStart=5663975462776183, FrameDeadline=5663971303302399, FrameInterval=5663975460763058, FrameStartTime=16709458, SyncQueued=5663975463520975, SyncStart=5663975463603527, IssueDrawCommandsStart=5663975464244256, SwapBuffers=5663975473940715, FrameCompleted=5663975475416912, DequeueBufferDuration=2235885, QueueBufferDuration=1058541, GpuCompleted=5663975475094360, SwapBuffersCompleted=5663975475416912, DisplayPresentTime=0, CommandSubmissionCompleted=5663975473940715, 
+I/WebViewFactory(30364): Loading com.google.android.webview version 148.0.7778.178 (code 777817803)
+D/ApplicationLoaders(30364): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(30364): Loading /data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(30364): Configuring clns-5 for other apk /data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/lib/arm64:/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(30364): version=148.0.7778.178 (777817803) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(30364): Load /data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk): ok
+D/nativeloader(30364): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk): ok
+I/cr_LibraryLoader(30364): Successfully loaded native library
+I/cr_CachingUmaRecorder(30364): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(30364): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(30364): #registerProvider() provider:WV.wk@e31e5d3 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(30364): #setManagerAndSource() 0
+I/cr_DisplayManager(30364): Is Display Topology available: false
+I/cr_CombinedPProvider(30364): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(30364): Compat change id reported: 183155436; UID 10474; state: ENABLED
+I/cr_AppResProvider(30364): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(30364): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(30364): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(30364): #flushPolicies()
+W/chromium(30364): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(30364): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 75906610
+D/CompatibilityChangeReporter(30364): Compat change id reported: 214741472; UID 10474; state: ENABLED
+I/CameraManagerGlobal(30364): Connecting to camera service
+D/CompatibilityChangeReporter(30364): Compat change id reported: 171228096; UID 10474; state: ENABLED
+I/PlatformViewsController(30364): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(30364): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(30364): Compat change id reported: 236825255; UID 10474; state: ENABLED
+W/o.room_manager2(30364): type=1400 audit(0.0:676675): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c218,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (30364): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(30364): Compat change id reported: 193247900; UID 10474; state: ENABLED
+I/Choreographer(30364): Skipped 58 frames!  The application may be doing too much work on its main thread.
+W/libc    (30364): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(30364): type=1400 audit(0.0:676676): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c218,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(30364): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(30364): Build Date              : 08/23/22
+I/AdrenoVK-0(30364): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(30364): Local Branch            : 
+I/AdrenoVK-0(30364): Remote Branch           : 
+I/AdrenoVK-0(30364): Remote Branch           : 
+I/AdrenoVK-0(30364): Reconstruct Branch      : 
+I/AdrenoVK-0(30364): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(30364): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(30364): Davey! duration=1042ms; Flags=0, FrameTimelineVsyncId=821350489, IntendedVsync=5663975463521079, Vsync=5663976433538831, InputEventId=0, HandleInputStart=5663976443444100, AnimationStart=5663976443445818, PerformTraversalsStart=5663976443473110, DrawStart=5663976454406704, FrameDeadline=5663975497376357, FrameInterval=5663976443073891, FrameStartTime=16709458, SyncQueued=5663976501817172, SyncStart=5663976501896287, IssueDrawCommandsStart=5663976501959516, SwapBuffers=5663976505105037, FrameCompleted=5663976506445975, DequeueBufferDuration=2549583, QueueBufferDuration=1051719, GpuCompleted=5663976506371652, SwapBuffersCompleted=5663976506445975, DisplayPresentTime=0, CommandSubmissionCompleted=5663976505105037, 
+D/ProfileInstaller(30364): Installing profile for com.stepbytestudio.room_manager2
+I/flutter (30364): [Rakuten] response status=200 page=1 bytes=205997
+I/flutter (30364): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (30364): [RECOMMEND_TRACE] rawCount=30
+I/flutter (30364): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=1540 statusCode=200
+I/flutter (30364): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (30364): [Rakuten] repository search total mapped=30
+I/flutter (30364): [Rakuten] genreSearch mapped item count=30
+I/flutter (30364): [Rakuten] genreSearch before filter count=30
+I/flutter (30364): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (30364): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (30364): [RECOMMEND_API] phase=personal status=200 rawCount=30
+I/flutter (30364): [RECOMMEND_FILTER] raw=30 afterExclude=29 reasonCounts={other: 1}
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=madame1214:10000000 title=バームクーヘン ギフト『 マダムブリュレ 』【冷凍便】 新感覚 バウムクーヘン 人気 スイーツ お取り寄せ 内祝 プレゼント
+I/flutter (30364): [RECOMMEND_TRACE] exclude reason=alreadyCandidate
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000217 title=5種から選べる スーパージャンボクーヘン3個セット 超ド級スーパージャンボクーヘン3個（450g×3） 2026 食品 バームクーヘン スイーツ 送料無料 訳あり 在庫処分 父の日 2026 B
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000217 title=5種から選べる スーパージャンボクーヘン3個セット 超ド級スーパージャンボクーヘン3個（450g×3） 2026 食品 バームクーヘン スイーツ 送料無料 訳あり 在庫処分 父の日 2026 B
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000194 title=【限界価格に挑戦！】 選べる！ 大容量バームクーヘン切り落とし★訳アリ わけあり 福袋 2026 訳あり お菓子 送料無料 在庫処分 人気 ランキング アウトレット 父の日 2026 202605b D
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000194 title=【限界価格に挑戦！】 選べる！ 大容量バームクーヘン切り落とし★訳アリ わけあり 福袋 2026 訳あり お菓子 送料無料 在庫処分 人気 ランキング アウトレット 父の日 2026 202605b D
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=oyaizu:10000005 title=抹茶スイーツ 父の日 お中元 バームクーヘン バウムクーヘン スイーツ お菓子 静岡抹茶バウムクーヘン 雅正庵 お祝い 出産内祝い 内祝い ギフト プレゼント 送料無料 焼き菓子 洋菓子 かわいい 誕生日 お返し 御供 御礼
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=oyaizu:10000005 title=抹茶スイーツ 父の日 お中元 バームクーヘン バウムクーヘン スイーツ お菓子 静岡抹茶バウムクーヘン 雅正庵 お祝い 出産内祝い 内祝い ギフト プレゼント 送料無料 焼き菓子 洋菓子 かわいい 誕生日 お返し 御供 御礼
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=lafamille:10000000 title=黄金 バウムクーヘン Mサイズ最短翌日お届け対応：正午12：00受付まで！当日発送／日祝発送休み／非対応商品ご一緒にご注文⇒翌日お届け不可 バームクーヘン スイーツ お取り寄せ お中元 内祝 出産祝 結婚祝 プレゼント 誕生日 ギフト
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=lafamille:10000000 title=黄金 バウムクーヘン Mサイズ最短翌日お届け対応：正午12：00受付まで！当日発送／日祝発送休み／非対応商品ご一緒にご注文⇒翌日お届け不可 バームクーヘン スイーツ お取り寄せ お中元 内祝 出産祝 結婚祝 プレゼント 誕生日 ギフト
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000275 title=【最大17,000円相当が当たる】バームクーヘンガチャ福袋 ガチャ 2026 食品 食べ物 バームクーヘンガチャ内容一新 福袋 在庫処分 送料無料 バームクーヘン スイーツ 訳あり お取り寄せ　詰め合わせ 父の日 2026 U 202605b
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000275 title=【最大17,000円相当が当たる】バームクーヘンガチャ福袋 ガチャ 2026 食品 食べ物 バームクーヘンガチャ内容一新 福袋 在庫処分 送料無料 バームクーヘン スイーツ 訳あり お取り寄せ　詰め合わせ 父の日 2026 U 202605b
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000234 title=S【期間限定33%オフ！1,500円→1,000円ポッキリ】 訳あり ミニクーヘン8個入り ★工場長のおまかせ400g以上 ※4種類入るとは限りません。 送料無料 メール便 バームクーヘン バウムクーヘン スイーツ お菓子 お取り寄せ I
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000234 title=S【期間限定33%オフ！1,500円→1,000円ポッキリ】 訳あり ミニクーヘン8個入り ★工場長のおまかせ400g以上 ※4種類入るとは限りません。 送料無料 メール便 バームクーヘン バウムクーヘン スイーツ お菓子 お取り寄せ I
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000239 title=【単品合計価格5,800円以上相当が2,999円！】 福袋 2026 食品 スーパージャンボ福袋 在庫処分 送料無料 バームクーヘン スイーツ 訳あり 父の日 2026 詰め合わせ 202605b U
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000239 title=【単品合計価格5,800円以上相当が2,999円！】 福袋 2026 食品 スーパージャンボ福袋 在庫処分 送料無料 バームクーヘン スイーツ 訳あり 父の日 2026 詰め合わせ 202605b U
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000195 title=訳ありバームクーヘンメガ盛り1kg★工場長のおまかせ 1kg 訳あり わけあり スイーツ 送料無料 福袋 2026 在庫処分 人気 ランキング 詰め合わせ 食品 アウトレット お取り寄せ D
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000195 title=訳ありバームクーヘンメガ盛り1kg★工場長のおまかせ 1kg 訳あり わけあり スイーツ 送料無料 福袋 2026 在庫処分 人気 ランキング 詰め合わせ 食品 アウトレット お取り寄せ D
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000211 title=S 【期間限定42％OFF！3,500円→1,999円！】 5種から選べる スーパージャンボクーヘン2個セット 1個450gの超ド級バームクーヘン！ 2026 食品 訳アリ スイーツ お菓子 送料無料 人気 ギフト プレゼント 在庫処分 ランキング 父の日 2026 A
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000211 title=S 【期間限定42％OFF！3,500円→1,999円！】 5種から選べる スーパージャンボクーヘン2個セット 1個450gの超ド級バームクーヘン！ 2026 食品 訳アリ スイーツ お菓子 送料無料 人気 ギフト プレゼント 在庫処分 ランキング 父の日 2026 A
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=aikuru:10108712 title=出産内祝い バウムクーヘン 『フェアリーバウムS』 送料無料 スイーツ 菓子折り 内祝い お返し 結婚内祝い 御祝 長寿 敬老
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=aikuru:10108712 title=出産内祝い バウムクーヘン 『フェアリーバウムS』 送料無料 スイーツ 菓子折り 内祝い お返し 結婚内祝い 御祝 長寿 敬老
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=madame1214:10000006 title=バームクーヘン ギフト『 塩キャラメルバウム 』【冷凍便】人気 バウムクーヘン スイーツ お取り寄せ ケーキ プレゼント
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=madame1214:10000006 title=バームクーヘン ギフト『 塩キャラメルバウム 』【冷凍便】人気 バウムクーヘン スイーツ お取り寄せ ケーキ プレゼント
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=madame1214:10000002 title=バームクーヘン ギフト『 バウムクーヘンS』【冷蔵便】バウムクーヘン 人気 お取り寄せ スイーツ ケーキ プレゼント
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=madame1214:10000002 title=バームクーヘン ギフト『 バウムクーヘンS』【冷蔵便】バウムクーヘン 人気 お取り寄せ スイーツ ケーキ プレゼント
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000170 title=P ＼ポイント10倍★7/13 9:59まで／ アップルクーヘン1個 お菓子 プレゼント ギフト 手土産 お礼 スイーツ バームクーヘン おしゃれ かわいい 内祝い お祝い 子供 セット フルーツ 父の日 父の日ギフト 2026 202605b
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000170 title=P ＼ポイント10倍★7/13 9:59まで／ アップルクーヘン1個 お菓子 プレゼント ギフト 手土産 お礼 スイーツ バームクーヘン おしゃれ かわいい 内祝い お祝い 子供 セット フルーツ 父の日 父の日ギフト 2026 202605b
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000225 title=5種から選べる スーパージャンボクーヘン5個 1個450gの超ド級　バームクーヘン 2026 訳あり スイーツ お菓子 送料無料 在庫処分 人気 ランキング お取り寄せ ギフト プレゼント 父の日 2026 C
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000225 title=5種から選べる スーパージャンボクーヘン5個 1個450gの超ド級　バームクーヘン 2026 訳あり スイーツ お菓子 送料無料 在庫処分 人気 ランキング お取り寄せ ギフト プレゼント 父の日 2026 C
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=etaiyou:10000218 title=【 父の日ギフト2026 スイーツ 】 すいかバウム | 楽天ランキング1位獲得 バームクーヘン 高級 バウムクーヘン スイカ ムース おもしろ スイーツギフト おもしろプレゼント かわいい 米粉 100％ お取り寄せスイーツ 誕生日 ケーキ ウケ 狙い 子供 ギフト
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=etaiyou:10000218 title=【 父の日ギフト2026 スイーツ 】 すいかバウム | 楽天ランキング1位獲得 バームクーヘン 高級 バウムクーヘン スイカ ムース おもしろ スイーツギフト おもしろプレゼント かわいい 米粉 100％ お取り寄せスイーツ 誕生日 ケーキ ウケ 狙い 子供 ギフト
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000198 title=【メーカー希望小売価格4,200円→2,999円！】訳ありバームクーヘンギガ盛り2kg★工場長のおまかせ※バニラ500g×4の場合もございます 福袋 2026 スイーツ 送料無料 在庫処分 E
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000198 title=【メーカー希望小売価格4,200円→2,999円！】訳ありバームクーヘンギガ盛り2kg★工場長のおまかせ※バニラ500g×4の場合もございます 福袋 2026 スイーツ 送料無料 在庫処分 E
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=jurinbaum:10000008 title=バウムクーヘン お歳暮 内祝い 母の日 結婚内祝い 出産内祝い 米粉 バームクーヘン 敬老の日 御中元 送料無料 ギフト スイーツ 長寿祝い お返し 出産 お菓子 結婚式 内祝 引出物 引き物 お祝い返し グルテンフリー 洋菓子 プレミアムギフトM
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=jurinbaum:10000008 title=バウムクーヘン お歳暮 内祝い 母の日 結婚内祝い 出産内祝い 米粉 バームクーヘン 敬老の日 御中元 送料無料 ギフト スイーツ 長寿祝い お返し 出産 お菓子 結婚式 内祝 引出物 引き物 お祝い返し グルテンフリー 洋菓子 プレミアムギフトM
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=aikuru:10108714 title=出産内祝い お菓子 バウムクーヘン 『フェアリーバウムM』 送料無料 スイーツ 菓子折り お返し 内祝い 結婚内祝い 御祝 長寿 敬老
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=aikuru:10108714 title=出産内祝い お菓子 バウムクーヘン 『フェアリーバウムM』 送料無料 スイーツ 菓子折り お返し 内祝い 結婚内祝い 御祝 長寿 敬老
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=hanaechizen:10000612 title=父の日 お中元 送料無料 ハートの苺バウムクーヘン ブライダル プレゼント スイーツ お祝 婚礼 お菓子 誕生日 内祝 ギフト お取り寄せ 出産祝 還暦祝 結婚祝 転勤 焼菓子 卒業 入学
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=hanaechizen:10000612 title=父の日 お中元 送料無料 ハートの苺バウムクーヘン ブライダル プレゼント スイーツ お祝 婚礼 お菓子 誕生日 内祝 ギフト お取り寄せ 出産祝 還暦祝 結婚祝 転勤 焼菓子 卒業 入学
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=bellevie-harima:10155871 title=父の日 スイーツ お菓子 ギフト 内祝い バウムクーヘン 個包装 森の庭 焦がしキャラメルがしみ込んだバーム詰合せ 14個入 MRK-04（包装済 外のし）手土産 焼き菓子 詰め合わせ 出産内祝い 結婚内祝い 結婚祝い JGS お急ぎ便 送料無料 お返し 父の日ギフト
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=bellevie-harima:10155871 title=父の日 スイーツ お菓子 ギフト 内祝い バウムクーヘン 個包装 森の庭 焦がしキャラメルがしみ込んだバーム詰合せ 14個入 MRK-04（包装済 外のし）手土産 焼き菓子 詰め合わせ 出産内祝い 結婚内祝い 結婚祝い JGS お急ぎ便 送料無料 お返し 父の日ギフト
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000236 title=訳あり ミニクーヘン8個入り ★工場長のおまかせ400g以上 ※4種類入るとは限りません。 送料無料 メール便 バームクーヘン バウムクーヘン 在庫処分 I
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000236 title=訳あり ミニクーヘン8個入り ★工場長のおまかせ400g以上 ※4種類入るとは限りません。 送料無料 メール便 バームクーヘン バウムクーヘン 在庫処分 I
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=auc-fureaigift:10005346 title=数量限定 訳あり スイーツ 送料無料 バームクーヘン切り落とし メガ盛り約1kg 約2kg 約3kg バームクーヘンしっとりフワフワ 美味しさ丸カジリ おすすめ
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=auc-fureaigift:10005346 title=数量限定 訳あり スイーツ 送料無料 バームクーヘン切り落とし メガ盛り約1kg 約2kg 約3kg バームクーヘンしっとりフワフワ 美味しさ丸カジリ おすすめ
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000220 title=5種から選べる 超ド級スーパージャンボクーヘン3個（450g×3） バウムクーヘン 2026 食品 在庫処分 人気 ランキング 詰め合わせ 食品 アウトレット お取り寄せ B
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000220 title=5種から選べる 超ド級スーパージャンボクーヘン3個（450g×3） バウムクーヘン 2026 食品 在庫処分 人気 ランキング 詰め合わせ 食品 アウトレット お取り寄せ B
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=villon1965:10000041 title=[ 訳あり バウムクーヘン ] 切れ端 大容量 お菓子 スイーツ ギフト 誕生日 お中元 内祝い 縁起物 結婚祝い 高級 差し入れ お土産 プチギフト プレゼント 贈り物 焼き菓子 お歳暮 ヴィヨン バームクーヘン フードロス
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=villon1965:10000041 title=[ 訳あり バウムクーヘン ] 切れ端 大容量 お菓子 スイーツ ギフト 誕生日 お中元 内祝い 縁起物 結婚祝い 高級 差し入れ お土産 プチギフト プレゼント 贈り物 焼き菓子 お歳暮 ヴィヨン バームクーヘン フードロス
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=shitamachibaum:10000212 title=5種から選べる スーパージャンボクーヘン2個セット 1個450gの超ド級 送料無料 2026 食品 バームクーヘン 訳あり おやつ スイーツ 在庫処分 A
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=shitamachibaum:10000212 title=5種から選べる スーパージャンボクーヘン2個セット 1個450gの超ド級 送料無料 2026 食品 バームクーヘン 訳あり おやつ スイーツ 在庫処分 A
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=jurinbaum:10000001 title=＼まとめ買いで更にお得／バームクーヘン バウムクーヘン 米粉 グルテンフリー ギフト 母の日 お中元 お菓子 敬老の日 七五三 お中元 スイーツ 送料無料 洋菓子 焼き菓子 お返し 結婚祝い 出産祝い 内祝い お歳暮 贈答品 引出物 ラッピング 2個 3個
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=jurinbaum:10000001 title=＼まとめ買いで更にお得／バームクーヘン バウムクーヘン 米粉 グルテンフリー ギフト 母の日 お中元 お菓子 敬老の日 七五三 お中元 スイーツ 送料無料 洋菓子 焼き菓子 お返し 結婚祝い 出産祝い 内祝い お歳暮 贈答品 引出物 ラッピング 2個 3個
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=jurinbaum:10000005 title=バウムクーヘン 内祝い バームクーヘン 母の日 お中元 お歳暮 敬老の日 七五三 出産内祝い 結婚内祝い 米粉 ギフト セット スイーツ お返し 出産 お菓子 結婚式 内祝 引き出物 引出物 お祝い返し グルテンフリー 洋菓子 ギフトセット
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=jurinbaum:10000005 title=バウムクーヘン 内祝い バームクーヘン 母の日 お中元 お歳暮 敬老の日 七五三 出産内祝い 結婚内祝い 米粉 ギフト セット スイーツ お返し 出産 お菓子 結婚式 内祝 引き出物 引出物 お祝い返し グルテンフリー 洋菓子 ギフトセット
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=nattokushop:10003211 title=早割 お中元 父の日 2026 銀座 千疋屋 銀座フルーツクーヘン 12個 SK2793 銀座千疋屋 スイーツ ギフト バームクーヘン 洋菓子 お菓子 お取り寄せ 手土産 内祝い 出産内祝い 結婚祝い 誕生日 日持ち 小分け 高級 個包装 送料無料 お供え 夏ギフト 御中元
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=nattokushop:10003211 title=早割 お中元 父の日 2026 銀座 千疋屋 銀座フルーツクーヘン 12個 SK2793 銀座千疋屋 スイーツ ギフト バームクーヘン 洋菓子 お菓子 お取り寄せ 手土産 内祝い 出産内祝い 結婚祝い 誕生日 日持ち 小分け 高級 個包装 送料無料 お供え 夏ギフト 御中元
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=b-kirari:10000063 title=送料無料 訳あり グルテンフリー ライスバウムクーヘン 1kg(500g×2袋) 米粉100% スイーツ 小麦アレルギー 訳アリ お試し はしっこバウム
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=b-kirari:10000063 title=送料無料 訳あり グルテンフリー ライスバウムクーヘン 1kg(500g×2袋) 米粉100% スイーツ 小麦アレルギー 訳アリ お試し はしっこバウム
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000217 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000217 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000217 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000217 title=5種から選べる スーパージャンボクーヘン3個セット 超ド級スーパージャンボクーヘン3個（450g×3） 2026 食品 バームクーヘン スイーツ 送料無料 訳あり 在庫処分 父の日 2026 B price=5000 reviewAverage=4.32 reviewCount=10350 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=60.0 score=271.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000194 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000194 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000194 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000194 title=【限界価格に挑戦！】 選べる！ 大容量バームクーヘン切り落とし★訳アリ わけあり 福袋 2026 訳あり お菓子 送料無料 在庫処分 人気 ランキング アウトレット 父の日 2026 202605b D price=1999 reviewAverage=4.11 reviewCount=6529 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=45.0 score=227.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=oyaizu:10000005 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=oyaizu:10000005 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=oyaizu:10000005 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=oyaizu:10000005 title=抹茶スイーツ 父の日 お中元 バームクーヘン バウムクーヘン スイーツ お菓子 静岡抹茶バウムクーヘン 雅正庵 お祝い 出産内祝い 内祝い ギフト プレゼント 送料無料 焼き菓子 洋菓子 かわいい 誕生日 お返し 御供 御礼 price=1830 reviewAverage=4.48 reviewCount=5476 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=lafamille:10000000 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=lafamille:10000000 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=lafamille:10000000 score=45.0 reasons=投稿しやすい
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(30364): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=lafamille:10000000 title=黄金 バウムクーヘン Mサイズ最短翌日お届け対応：正午12：00受付まで！当日発送／日祝発送休み／非対応商品ご一緒にご注文⇒翌日お届け不可 バームクーヘン スイーツ お取り寄せ お中元 内祝 出産祝 結婚祝 プレゼント 誕生日 ギフト price=3024 reviewAverage=4.43 reviewCount=3360 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000275 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000275 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000275 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000275 title=【最大17,000円相当が当たる】バームクーヘンガチャ福袋 ガチャ 2026 食品 食べ物 バームクーヘンガチャ内容一新 福袋 在庫処分 送料無料 バームクーヘン スイーツ 訳あり お取り寄せ　詰め合わせ 父の日 2026 U 202605b price=2999 reviewAverage=4.08 reviewCount=2466 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=60.0 score=271.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000234 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000234 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000234 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000234 title=S【期間限定33%オフ！1,500円→1,000円ポッキリ】 訳あり ミニクーヘン8個入り ★工場長のおまかせ400g以上 ※4種類入るとは限りません。 送料無料 メール便 バームクーヘン バウムクーヘン スイーツ お菓子 お取り寄せ I price=1000 reviewAverage=4.40 reviewCount=1797 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=35.0 score=251.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000239 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000239 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000239 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000239 title=【単品合計価格5,800円以上相当が2,999円！】 福袋 2026 食品 スーパージャンボ福袋 在庫処分 送料無料 バームクーヘン スイーツ 訳あり 父の日 2026 詰め合わせ 202605b U price=2999 reviewAverage=4.48 reviewCount=1612 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=60.0 score=271.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000195 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000195 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000195 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000195 title=訳ありバームクーヘンメガ盛り1kg★工場長のおまかせ 1kg 訳あり わけあり スイーツ 送料無料 福袋 2026 在庫処分 人気 ランキング 詰め合わせ 食品 アウトレット お取り寄せ D price=2100 reviewAverage=4.18 reviewCount=1567 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=50.0 score=231.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000211 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000211 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000211 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000211 title=S 【期間限定42％OFF！3,500円→1,999円！】 5種から選べる スーパージャンボクーヘン2個セット 1個450gの超ド級バームクーヘン！ 2026 食品 訳アリ スイーツ お菓子 送料無料 人気 ギフト プレゼント 在庫処分 ランキング 父の日 2026 A price=1999 reviewAverage=4.28 reviewCount=1465 roomFit=8.0 reaction=35.0 reviewEvidence=44.0 postability=60.0 score=262.3 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=aikuru:10108712 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=aikuru:10108712 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=aikuru:10108712 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=aikuru:10108712 title=出産内祝い バウムクーヘン 『フェアリーバウムS』 送料無料 スイーツ 菓子折り 内祝い お返し 結婚内祝い 御祝 長寿 敬老 price=1498 reviewAverage=4.48 reviewCount=1241 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=45.0 score=227.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=madame1214:10000006 score=65.0 reasons=♡されやすい|♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=madame1214:10000006 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=madame1214:10000006 score=55.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=madame1214:10000006 title=バームクーヘン ギフト『 塩キャラメルバウム 』【冷凍便】人気 バウムクーヘン スイーツ お取り寄せ ケーキ プレゼント price=3300 reviewAverage=4.15 reviewCount=964 roomFit=8.0 reaction=65.0 reviewEvidence=44.0 postability=55.0 score=321.3 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=madame1214:10000002 score=65.0 reasons=♡されやすい|♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=madame1214:10000002 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=madame1214:10000002 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=madame1214:10000002 title=バームクーヘン ギフト『 バウムクーヘンS』【冷蔵便】バウムクーヘン 人気 お取り寄せ スイーツ ケーキ プレゼント price=1836 reviewAverage=3.93 reviewCount=877 roomFit=8.0 reaction=65.0 reviewEvidence=32.0 postability=45.0 score=279.1 reasons=候補に近い|バランス|レビュー多め|ROOM向き|♡されやすい|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000170 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000170 score=16.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000170 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000170 title=P ＼ポイント10倍★7/13 9:59まで／ アップルクーヘン1個 お菓子 プレゼント ギフト 手土産 お礼 スイーツ バームクーヘン おしゃれ かわいい 内祝い お祝い 子供 セット フルーツ 父の日 父の日ギフト 2026 202605b price=1720 reviewAverage=4.28 reviewCount=795 roomFit=16.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=304.2 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000225 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000225 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000225 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000225 title=5種から選べる スーパージャンボクーヘン5個 1個450gの超ド級　バームクーヘン 2026 訳あり スイーツ お菓子 送料無料 在庫処分 人気 ランキング お取り寄せ ギフト プレゼント 父の日 2026 C price=8000 reviewAverage=4.49 reviewCount=777 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=etaiyou:10000218 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=etaiyou:10000218 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=etaiyou:10000218 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=etaiyou:10000218 title=【 父の日ギフト2026 スイーツ 】 すいかバウム | 楽天ランキング1位獲得 バームクーヘン 高級 バウムクーヘン スイカ ムース おもしろ スイーツギフト おもしろプレゼント かわいい 米粉 100％ お取り寄せスイーツ 誕生日 ケーキ ウケ 狙い 子供 ギフト price=3980 reviewAverage=4.53 reviewCount=751 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000198 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000198 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000198 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000198 title=【メーカー希望小売価格4,200円→2,999円！】訳ありバームクーヘンギガ盛り2kg★工場長のおまかせ※バニラ500g×4の場合もございます 福袋 2026 スイーツ 送料無料 在庫処分 E price=2999 reviewAverage=4.51 reviewCount=750 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=35.0 score=219.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=jurinbaum:10000008 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=jurinbaum:10000008 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=jurinbaum:10000008 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=jurinbaum:10000008 title=バウムクーヘン お歳暮 内祝い 母の日 結婚内祝い 出産内祝い 米粉 バームクーヘン 敬老の日 御中元 送料無料 ギフト スイーツ 長寿祝い お返し 出産 お菓子 結婚式 内祝 引出物 引き物 お祝い返し グルテンフリー 洋菓子 プレミアムギフトM price=4480 reviewAverage=4.74 reviewCount=740 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=aikuru:10108714 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=aikuru:10108714 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=aikuru:10108714 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=aikuru:10108714 title=出産内祝い お菓子 バウムクーヘン 『フェアリーバウムM』 送料無料 スイーツ 菓子折り お返し 内祝い 結婚内祝い 御祝 長寿 敬老 price=1988 reviewAverage=4.49 reviewCount=715 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=45.0 score=227.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=hanaechizen:10000612 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=hanaechizen:10000612 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=hanaechizen:10000612 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=hanaechizen:10000612 title=父の日 お中元 送料無料 ハートの苺バウムクーヘン ブライダル プレゼント スイーツ お祝 婚礼 お菓子 誕生日 内祝 ギフト お取り寄せ 出産祝 還暦祝 結婚祝 転勤 焼菓子 卒業 入学 price=3580 reviewAverage=4.50 reviewCount=699 roomFit=8.0 reaction=35.0 reviewEvidence=44.0 postability=45.0 score=250.3 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=bellevie-harima:10155871 score=50.0 reasons=♡されやすい|♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=bellevie-harima:10155871 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=bellevie-harima:10155871 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=bellevie-harima:10155871 title=父の日 スイーツ お菓子 ギフト 内祝い バウムクーヘン 個包装 森の庭 焦がしキャラメルがしみ込んだバーム詰合せ 14個入 MRK-04（包装済 外のし）手土産 焼き菓子 詰め合わせ 出産内祝い 結婚内祝い 結婚祝い JGS お急ぎ便 送料無料 お返し 父の日ギフト price=2527 reviewAverage=4.53 reviewCount=698 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000236 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000236 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000236 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000236 title=訳あり ミニクーヘン8個入り ★工場長のおまかせ400g以上 ※4種類入るとは限りません。 送料無料 メール便 バームクーヘン バウムクーヘン 在庫処分 I price=1500 reviewAverage=4.36 reviewCount=632 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=35.0 score=251.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=auc-fureaigift:10005346 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=auc-fureaigift:10005346 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=auc-fureaigift:10005346 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=auc-fureaigift:10005346 title=数量限定 訳あり スイーツ 送料無料 バームクーヘン切り落とし メガ盛り約1kg 約2kg 約3kg バームクーヘンしっとりフワフワ 美味しさ丸カジリ おすすめ price=2280 reviewAverage=4.50 reviewCount=599 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=35.0 score=219.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000220 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000220 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000220 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000220 title=5種から選べる 超ド級スーパージャンボクーヘン3個（450g×3） バウムクーヘン 2026 食品 在庫処分 人気 ランキング 詰め合わせ 食品 アウトレット お取り寄せ B price=5000 reviewAverage=4.41 reviewCount=598 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=50.0 score=231.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=villon1965:10000041 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=villon1965:10000041 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=villon1965:10000041 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=villon1965:10000041 title=[ 訳あり バウムクーヘン ] 切れ端 大容量 お菓子 スイーツ ギフト 誕生日 お中元 内祝い 縁起物 結婚祝い 高級 差し入れ お土産 プチギフト プレゼント 贈り物 焼き菓子 お歳暮 ヴィヨン バームクーヘン フードロス price=1980 reviewAverage=4.26 reviewCount=575 roomFit=8.0 reaction=35.0 reviewEvidence=44.0 postability=45.0 score=250.3 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000212 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000212 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000212 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000212 title=5種から選べる スーパージャンボクーヘン2個セット 1個450gの超ド級 送料無料 2026 食品 バームクーヘン 訳あり おやつ スイーツ 在庫処分 A price=3500 reviewAverage=4.36 reviewCount=571 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=50.0 score=263.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=jurinbaum:10000001 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=jurinbaum:10000001 score=8.0 reasons=ROOM向き
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+E/FrameEvents(30364): updateAcquireFence: Did not find frame.
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=jurinbaum:10000001 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=jurinbaum:10000001 title=＼まとめ買いで更にお得／バームクーヘン バウムクーヘン 米粉 グルテンフリー ギフト 母の日 お中元 お菓子 敬老の日 七五三 お中元 スイーツ 送料無料 洋菓子 焼き菓子 お返し 結婚祝い 出産祝い 内祝い お歳暮 贈答品 引出物 ラッピング 2個 3個 price=2500 reviewAverage=4.54 reviewCount=569 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=jurinbaum:10000005 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=jurinbaum:10000005 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=jurinbaum:10000005 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=jurinbaum:10000005 title=バウムクーヘン 内祝い バームクーヘン 母の日 お中元 お歳暮 敬老の日 七五三 出産内祝い 結婚内祝い 米粉 ギフト セット スイーツ お返し 出産 お菓子 結婚式 内祝 引き出物 引出物 お祝い返し グルテンフリー 洋菓子 ギフトセット price=3500 reviewAverage=4.61 reviewCount=551 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=nattokushop:10003211 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=nattokushop:10003211 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=nattokushop:10003211 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=nattokushop:10003211 title=早割 お中元 父の日 2026 銀座 千疋屋 銀座フルーツクーヘン 12個 SK2793 銀座千疋屋 スイーツ ギフト バームクーヘン 洋菓子 お菓子 お取り寄せ 手土産 内祝い 出産内祝い 結婚祝い 誕生日 日持ち 小分け 高級 個包装 送料無料 お供え 夏ギフト 御中元 price=3240 reviewAverage=4.57 reviewCount=536 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=b-kirari:10000063 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=b-kirari:10000063 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=b-kirari:10000063 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=b-kirari:10000063 title=送料無料 訳あり グルテンフリー ライスバウムクーヘン 1kg(500g×2袋) 米粉100% スイーツ 小麦アレルギー 訳アリ お試し はしっこバウム price=2980 reviewAverage=4.67 reviewCount=509 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=35.0 score=219.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_POOL] raw=29 valid=29 scored=29
+I/flutter (30364): [RECOMMEND_DIVERSITY] demotedBecause=sameGenre penalty=-25
+I/flutter (30364): [RECOMMEND_SELECT] strictSelected=10
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000217 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000217 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000217 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000217 title=5種から選べる スーパージャンボクーヘン3個セット 超ド級スーパージャンボクーヘン3個（450g×3） 2026 食品 バームクーヘン スイーツ 送料無料 訳あり 在庫処分 父の日 2026 B price=5000 reviewAverage=4.32 reviewCount=10350 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=60.0 score=271.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000194 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000194 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000194 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000194 title=【限界価格に挑戦！】 選べる！ 大容量バームクーヘン切り落とし★訳アリ わけあり 福袋 2026 訳あり お菓子 送料無料 在庫処分 人気 ランキング アウトレット 父の日 2026 202605b D price=1999 reviewAverage=4.11 reviewCount=6529 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=45.0 score=227.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=oyaizu:10000005 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=oyaizu:10000005 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=oyaizu:10000005 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=oyaizu:10000005 title=抹茶スイーツ 父の日 お中元 バームクーヘン バウムクーヘン スイーツ お菓子 静岡抹茶バウムクーヘン 雅正庵 お祝い 出産内祝い 内祝い ギフト プレゼント 送料無料 焼き菓子 洋菓子 かわいい 誕生日 お返し 御供 御礼 price=1830 reviewAverage=4.48 reviewCount=5476 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=lafamille:10000000 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=lafamille:10000000 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=lafamille:10000000 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=lafamille:10000000 title=黄金 バウムクーヘン Mサイズ最短翌日お届け対応：正午12：00受付まで！当日発送／日祝発送休み／非対応商品ご一緒にご注文⇒翌日お届け不可 バームクーヘン スイーツ お取り寄せ お中元 内祝 出産祝 結婚祝 プレゼント 誕生日 ギフト price=3024 reviewAverage=4.43 reviewCount=3360 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000275 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000275 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000275 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000275 title=【最大17,000円相当が当たる】バームクーヘンガチャ福袋 ガチャ 2026 食品 食べ物 バームクーヘンガチャ内容一新 福袋 在庫処分 送料無料 バームクーヘン スイーツ 訳あり お取り寄せ　詰め合わせ 父の日 2026 U 202605b price=2999 reviewAverage=4.08 reviewCount=2466 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=60.0 score=271.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000234 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000234 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000234 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000234 title=S【期間限定33%オフ！1,500円→1,000円ポッキリ】 訳あり ミニクーヘン8個入り ★工場長のおまかせ400g以上 ※4種類入るとは限りません。 送料無料 メール便 バームクーヘン バウムクーヘン スイーツ お菓子 お取り寄せ I price=1000 reviewAverage=4.40 reviewCount=1797 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=35.0 score=251.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000239 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000239 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000239 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000239 title=【単品合計価格5,800円以上相当が2,999円！】 福袋 2026 食品 スーパージャンボ福袋 在庫処分 送料無料 バームクーヘン スイーツ 訳あり 父の日 2026 詰め合わせ 202605b U price=2999 reviewAverage=4.48 reviewCount=1612 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=60.0 score=271.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000195 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000195 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000195 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000195 title=訳ありバームクーヘンメガ盛り1kg★工場長のおまかせ 1kg 訳あり わけあり スイーツ 送料無料 福袋 2026 在庫処分 人気 ランキング 詰め合わせ 食品 アウトレット お取り寄せ D price=2100 reviewAverage=4.18 reviewCount=1567 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=50.0 score=231.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000211 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000211 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000211 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000211 title=S 【期間限定42％OFF！3,500円→1,999円！】 5種から選べる スーパージャンボクーヘン2個セット 1個450gの超ド級バームクーヘン！ 2026 食品 訳アリ スイーツ お菓子 送料無料 人気 ギフト プレゼント 在庫処分 ランキング 父の日 2026 A price=1999 reviewAverage=4.28 reviewCount=1465 roomFit=8.0 reaction=35.0 reviewEvidence=44.0 postability=60.0 score=262.3 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=aikuru:10108712 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=aikuru:10108712 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=aikuru:10108712 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=aikuru:10108712 title=出産内祝い バウムクーヘン 『フェアリーバウムS』 送料無料 スイーツ 菓子折り 内祝い お返し 結婚内祝い 御祝 長寿 敬老 price=1498 reviewAverage=4.48 reviewCount=1241 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=45.0 score=227.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=madame1214:10000006 score=65.0 reasons=♡されやすい|♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=madame1214:10000006 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=madame1214:10000006 score=55.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=madame1214:10000006 title=バームクーヘン ギフト『 塩キャラメルバウム 』【冷凍便】人気 バウムクーヘン スイーツ お取り寄せ ケーキ プレゼント price=3300 reviewAverage=4.15 reviewCount=964 roomFit=8.0 reaction=65.0 reviewEvidence=44.0 postability=55.0 score=321.3 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=madame1214:10000002 score=65.0 reasons=♡されやすい|♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=madame1214:10000002 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=madame1214:10000002 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=madame1214:10000002 title=バームクーヘン ギフト『 バウムクーヘンS』【冷蔵便】バウムクーヘン 人気 お取り寄せ スイーツ ケーキ プレゼント price=1836 reviewAverage=3.93 reviewCount=877 roomFit=8.0 reaction=65.0 reviewEvidence=32.0 postability=45.0 score=279.1 reasons=候補に近い|バランス|レビュー多め|ROOM向き|♡されやすい|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000170 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000170 score=16.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000170 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000170 title=P ＼ポイント10倍★7/13 9:59まで／ アップルクーヘン1個 お菓子 プレゼント ギフト 手土産 お礼 スイーツ バームクーヘン おしゃれ かわいい 内祝い お祝い 子供 セット フルーツ 父の日 父の日ギフト 2026 202605b price=1720 reviewAverage=4.28 reviewCount=795 roomFit=16.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=304.2 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000225 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000225 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000225 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000225 title=5種から選べる スーパージャンボクーヘン5個 1個450gの超ド級　バームクーヘン 2026 訳あり スイーツ お菓子 送料無料 在庫処分 人気 ランキング お取り寄せ ギフト プレゼント 父の日 2026 C price=8000 reviewAverage=4.49 reviewCount=777 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=etaiyou:10000218 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=etaiyou:10000218 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=etaiyou:10000218 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=etaiyou:10000218 title=【 父の日ギフト2026 スイーツ 】 すいかバウム | 楽天ランキング1位獲得 バームクーヘン 高級 バウムクーヘン スイカ ムース おもしろ スイーツギフト おもしろプレゼント かわいい 米粉 100％ お取り寄せスイーツ 誕生日 ケーキ ウケ 狙い 子供 ギフト price=3980 reviewAverage=4.53 reviewCount=751 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000198 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000198 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000198 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000198 title=【メーカー希望小売価格4,200円→2,999円！】訳ありバームクーヘンギガ盛り2kg★工場長のおまかせ※バニラ500g×4の場合もございます 福袋 2026 スイーツ 送料無料 在庫処分 E price=2999 reviewAverage=4.51 reviewCount=750 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=35.0 score=219.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=jurinbaum:10000008 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=jurinbaum:10000008 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=jurinbaum:10000008 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=jurinbaum:10000008 title=バウムクーヘン お歳暮 内祝い 母の日 結婚内祝い 出産内祝い 米粉 バームクーヘン 敬老の日 御中元 送料無料 ギフト スイーツ 長寿祝い お返し 出産 お菓子 結婚式 内祝 引出物 引き物 お祝い返し グルテンフリー 洋菓子 プレミアムギフトM price=4480 reviewAverage=4.74 reviewCount=740 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=aikuru:10108714 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=aikuru:10108714 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=aikuru:10108714 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=aikuru:10108714 title=出産内祝い お菓子 バウムクーヘン 『フェアリーバウムM』 送料無料 スイーツ 菓子折り お返し 内祝い 結婚内祝い 御祝 長寿 敬老 price=1988 reviewAverage=4.49 reviewCount=715 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=45.0 score=227.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=hanaechizen:10000612 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=hanaechizen:10000612 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=hanaechizen:10000612 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=hanaechizen:10000612 title=父の日 お中元 送料無料 ハートの苺バウムクーヘン ブライダル プレゼント スイーツ お祝 婚礼 お菓子 誕生日 内祝 ギフト お取り寄せ 出産祝 還暦祝 結婚祝 転勤 焼菓子 卒業 入学 price=3580 reviewAverage=4.50 reviewCount=699 roomFit=8.0 reaction=35.0 reviewEvidence=44.0 postability=45.0 score=250.3 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=bellevie-harima:10155871 score=50.0 reasons=♡されやすい|♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=bellevie-harima:10155871 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=bellevie-harima:10155871 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=bellevie-harima:10155871 title=父の日 スイーツ お菓子 ギフト 内祝い バウムクーヘン 個包装 森の庭 焦がしキャラメルがしみ込んだバーム詰合せ 14個入 MRK-04（包装済 外のし）手土産 焼き菓子 詰め合わせ 出産内祝い 結婚内祝い 結婚祝い JGS お急ぎ便 送料無料 お返し 父の日ギフト price=2527 reviewAverage=4.53 reviewCount=698 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000236 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000236 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000236 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000236 title=訳あり ミニクーヘン8個入り ★工場長のおまかせ400g以上 ※4種類入るとは限りません。 送料無料 メール便 バームクーヘン バウムクーヘン 在庫処分 I price=1500 reviewAverage=4.36 reviewCount=632 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=35.0 score=251.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=auc-fureaigift:10005346 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=auc-fureaigift:10005346 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=auc-fureaigift:10005346 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=auc-fureaigift:10005346 title=数量限定 訳あり スイーツ 送料無料 バームクーヘン切り落とし メガ盛り約1kg 約2kg 約3kg バームクーヘンしっとりフワフワ 美味しさ丸カジリ おすすめ price=2280 reviewAverage=4.50 reviewCount=599 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=35.0 score=219.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000220 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000220 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000220 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000220 title=5種から選べる 超ド級スーパージャンボクーヘン3個（450g×3） バウムクーヘン 2026 食品 在庫処分 人気 ランキング 詰め合わせ 食品 アウトレット お取り寄せ B price=5000 reviewAverage=4.41 reviewCount=598 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=50.0 score=231.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=villon1965:10000041 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=villon1965:10000041 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=villon1965:10000041 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=villon1965:10000041 title=[ 訳あり バウムクーヘン ] 切れ端 大容量 お菓子 スイーツ ギフト 誕生日 お中元 内祝い 縁起物 結婚祝い 高級 差し入れ お土産 プチギフト プレゼント 贈り物 焼き菓子 お歳暮 ヴィヨン バームクーヘン フードロス price=1980 reviewAverage=4.26 reviewCount=575 roomFit=8.0 reaction=35.0 reviewEvidence=44.0 postability=45.0 score=250.3 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=shitamachibaum:10000212 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=shitamachibaum:10000212 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=shitamachibaum:10000212 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=shitamachibaum:10000212 title=5種から選べる スーパージャンボクーヘン2個セット 1個450gの超ド級 送料無料 2026 食品 バームクーヘン 訳あり おやつ スイーツ 在庫処分 A price=3500 reviewAverage=4.36 reviewCount=571 roomFit=0.0 reaction=50.0 reviewEvidence=44.0 postability=50.0 score=263.4 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=jurinbaum:10000001 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=jurinbaum:10000001 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=jurinbaum:10000001 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=jurinbaum:10000001 title=＼まとめ買いで更にお得／バームクーヘン バウムクーヘン 米粉 グルテンフリー ギフト 母の日 お中元 お菓子 敬老の日 七五三 お中元 スイーツ 送料無料 洋菓子 焼き菓子 お返し 結婚祝い 出産祝い 内祝い お歳暮 贈答品 引出物 ラッピング 2個 3個 price=2500 reviewAverage=4.54 reviewCount=569 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=jurinbaum:10000005 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=jurinbaum:10000005 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=jurinbaum:10000005 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=jurinbaum:10000005 title=バウムクーヘン 内祝い バームクーヘン 母の日 お中元 お歳暮 敬老の日 七五三 出産内祝い 結婚内祝い 米粉 ギフト セット スイーツ お返し 出産 お菓子 結婚式 内祝 引き出物 引出物 お祝い返し グルテンフリー 洋菓子 ギフトセット price=3500 reviewAverage=4.61 reviewCount=551 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=nattokushop:10003211 score=50.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=nattokushop:10003211 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=nattokushop:10003211 score=45.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=nattokushop:10003211 title=早割 お中元 父の日 2026 銀座 千疋屋 銀座フルーツクーヘン 12個 SK2793 銀座千疋屋 スイーツ ギフト バームクーヘン 洋菓子 お菓子 お取り寄せ 手土産 内祝い 出産内祝い 結婚祝い 誕生日 日持ち 小分け 高級 個包装 送料無料 お供え 夏ギフト 御中元 price=3240 reviewAverage=4.57 reviewCount=536 roomFit=8.0 reaction=50.0 reviewEvidence=44.0 postability=45.0 score=281.8 reasons=候補に近い|バランス|高評価|レビュー多め|ROOM向き|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=b-kirari:10000063 score=35.0 reasons=♡されやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=b-kirari:10000063 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=b-kirari:10000063 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=b-kirari:10000063 title=送料無料 訳あり グルテンフリー ライスバウムクーヘン 1kg(500g×2袋) 米粉100% スイーツ 小麦アレルギー 訳アリ お試し はしっこバウム price=2980 reviewAverage=4.67 reviewCount=509 roomFit=0.0 reaction=35.0 reviewEvidence=44.0 postability=35.0 score=219.9 reasons=候補に近い|バランス|高評価|レビュー多め|♡されやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_POOL] raw=29 valid=29 scored=29
+I/flutter (30364): [RECOMMEND_DIVERSITY] demotedBecause=sameGenre penalty=-25
+I/flutter (30364): [RECOMMEND_SELECT] strictSelected=10
+I/flutter (30364): [RECOMMEND] apiCalls=1 poolSize=29
+I/flutter (30364): [RECOMMEND] final count: 10
+I/flutter (30364): [RECOMMEND_BUCKET] personal=10 relaxed=0 discovery=0 total=10
+I/flutter (30364): [RECOMMEND_RESULT] style=balance personalCount=10 discoveryCount=0 total=10
+I/flutter (30364): [RECOMMEND_TRACE] finalCandidateCount=10
+I/flutter (30364): [RECOMMEND_TRACE] failureType=none
+I/flutter (30364): [RECOMMEND_RESULT] status=success count=10
+I/flutter (30364): [RECOMMEND_GENERATE] end requestCount=1 planCount=2
+I/flutter (30364): [RECOMMEND_SUMMARY] totalApiRequests=1 totalPlans=2 selectedCount=10 excludedCount=1 durationMs=1852
+I/flutter (30364): [TODAY_RECOMMEND_API_USAGE] sessionId=1780165399312 phase=finalize apiCalls=1 genreSearchCalls=1 shopSearchCalls=0 keywordSearchCalls=0 excludedBySafety=0 excludedByDuplicate=1 finalItems=10
+I/flutter (30364): [TODAY_RECOMMEND_QUALITY_SUMMARY] plans=2 apiCalls=1 rawItems=29 excludedManaged=1 excludedNoImage=0 excludedNoPrice=0 excludedNoName=0 excludedNoUrl=0 excludedSafety=0 deduped=29 finalItems=10 usedFavoriteGenres=0 usedAssistPlan=true fallbackUsed=false cooldownCanRegenerate=false cooldownRemainingSec=298
+I/flutter (30364): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (30364): [RECOMMEND_SAVE] savedBundle=true count=10
+W/o.room_manager2(30364): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+W/o.room_manager2(30364): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (30364): [RECOMMEND_TRIGGER] source=cta
+I/flutter (30364): [RECOMMEND_TRACE] trigger=cta
+I/flutter (30364): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (30364): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (30364): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-31T03:23:21.129870
+I/flutter (30364): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (30364): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (30364): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=0 alreadyAdded=0 skipped=0
+I/flutter (30364): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (30364): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher(30364): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(30364): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (30364): [RECOMMEND_TRIGGER] source=cta
+I/flutter (30364): [RECOMMEND_TRACE] trigger=cta
+I/flutter (30364): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (30364): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (30364): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-31T03:23:21.129870
+I/flutter (30364): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (30364): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (30364): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=0 alreadyAdded=0 skipped=0
+I/flutter (30364): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (30364): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher(30364): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(30364): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (30364): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+W/WindowOnBackDispatcher(30364): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(30364): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (30364): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter (30364): [INITIAL_SETUP_GENRE_UI_UNIFIED] oldPickerVisible=false treePickerVisible=true reason=avoidDuplicateGenreSelectionArea
+I/flutter (30364): [GENRE_PICKER_MODE] screen=initialSetup selectionMode=multi usesCheckbox=true usesRadio=false
+I/flutter (30364): [GENRE_SELECTION_WIDGET_AUDIT] screen=initialSetup multiSelect=true widget=checkbox valid=true
+I/flutter (30364): [GENRE_TREE_OPEN] rootCount=39 source=initialSetup
+I/flutter (30364): [INITIAL_SETUP_GENRE_TREE_OPEN] selectedCount=0 maxSelectable=3
+I/flutter (30364): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=100000 genreName=百貨店・総合通販・ギフト depth=0 selected=true selectedCount=1
+I/flutter (30364): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=100000 genreName=百貨店・総合通販・ギフト depth=0 selected=false selectedCount=0
+I/flutter (30364): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=100026 genreName=パソコン・周辺機器 depth=0 selected=true selectedCount=1
+I/flutter (30364): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=100227 genreName=食品 depth=0 selected=true selectedCount=2
+I/flutter (30364): [INITIAL_SETUP_GENRE_TREE_SELECT] genreId=100316 genreName=水・ソフトドリンク depth=0 selected=true selectedCount=3
+I/flutter (30364): [GENRE_PREF_SAVE_NORMALIZED] source=initialSetup genreId=100026 inputGenreName= resolvedGenreName=DVD・ブルーレイ・ソフト nameCorrected=false
+I/flutter (30364): [GENRE_PREF_SAVE_NORMALIZED] source=initialSetup genreId=100227 inputGenreName= resolvedGenreName=食品 nameCorrected=false
+I/flutter (30364): [GENRE_PREF_SAVE_NORMALIZED] source=initialSetup genreId=100316 inputGenreName= resolvedGenreName=水・ソフトドリンク nameCorrected=false
+I/flutter (30364): [GENRE_PREF_SAVE] selectedGenreId=100026 selectedGenreName=DVD・ブルーレイ・ソフト source=initialSetup
+I/flutter (30364): [GENRE_PREF_SAVE] selectedGenreId=100227 selectedGenreName=食品 source=initialSetup
+I/flutter (30364): [GENRE_PREF_SAVE] selectedGenreId=100316 selectedGenreName=水・ソフトドリンク source=initialSetup
+I/flutter (30364): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter (30364): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (30364): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (30364): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter (30364): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=100026,100227,100316 postStyles=balance recommendationStarted=true recommendationCount=0 savedShopCount=0 shopSaved=false failedReason=
+I/flutter (30364): [GENRE_PREF_LOAD] favoriteGenreIds=100026,100227,100316 favoriteGenreNames=DVD・ブルーレイ・ソフト,食品,水・ソフトドリンク source=shopRecommend
+I/flutter (30364): [INITIAL_SETUP_SHOP_RECOMMEND_GENRE] genreId=100316 genreName=水・ソフトドリンク fallbackUsed=false fallbackReason=lastPickedInSession
+I/flutter (30364): [INITIAL_SETUP_GENRE_BINDING] selectedGenreIds=100026,100227,100316 selectedGenreNames=DVD・ブルーレイ・ソフト,食品,水・ソフトドリンク shopRecommendGenreId=100316 shopRecommendGenreName=水・ソフトドリンク source=initialSetup matched=true reason=lastPickedInSession
+I/flutter (30364): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword= genreId=100316 shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=4 expectedApiCalls=4
+I/flutter (30364): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=100316 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (30364): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (30364): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&genreId=100316
+I/flutter (30364): [Rakuten] response status=200 page=1 bytes=131793
+I/flutter (30364): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (30364): [RECOMMEND_TRACE] rawCount=30
+I/flutter (30364): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=938 statusCode=200
+I/flutter (30364): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (30364): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=100316 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (30364): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (30364): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&genreId=100316
+I/flutter (30364): [Rakuten] response status=200 page=2 bytes=151901
+I/flutter (30364): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (30364): [RECOMMEND_TRACE] rawCount=30
+I/flutter (30364): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=true durationMs=474 statusCode=200
+I/flutter (30364): [Rakuten] page=2 parsedItems=30 / raw=30
+I/flutter (30364): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=100316 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (30364): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (30364): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&genreId=100316
+I/flutter (30364): [Rakuten] response status=200 page=3 bytes=129501
+I/flutter (30364): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (30364): [RECOMMEND_TRACE] rawCount=30
+I/flutter (30364): [SHOP_SEARCH_API_CALL] page=3 hits=30 success=true durationMs=1244 statusCode=200
+I/flutter (30364): [Rakuten] page=3 parsedItems=30 / raw=30
+I/flutter (30364): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=(omit) genreId=100316 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (30364): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (30364): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&genreId=100316
+I/flutter (30364): [Rakuten] response status=200 page=4 bytes=118471
+I/flutter (30364): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (30364): [RECOMMEND_TRACE] rawCount=30
+I/flutter (30364): [SHOP_SEARCH_API_CALL] page=4 hits=30 success=true durationMs=522 statusCode=200
+I/flutter (30364): [Rakuten] page=4 parsedItems=30 / raw=30
+I/flutter (30364): [Rakuten] repository search total mapped=120
+I/flutter (30364): [Rakuten] genreSearch mapped item count=120
+I/flutter (30364): [Rakuten] genreSearch before filter count=120
+I/flutter (30364): [Rakuten] genreSearch after filter count=119
+I/flutter (30364): [SEARCH_FETCH_100_AUDIT] mode=productSearch keyword= genreId=100316 shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=4 pagesRequested=4 pagesSucceeded=4 pagesFailed=0 rawTotal=120 excludedCandidate=0 excludedDone=0 excludedSafety=1 excludedDuplicate=0 excludedNoImage=0 excludedOther=0 excludedSavedShop=0 displayCount=119 stopReason=completed
+I/flutter (30364): [SHOP_SEARCH_FETCH_RESULT] screen=productSearch apiCalls=4 rawItems=120 dedupedItems=120 safetyExcluded=1 duplicateExcluded=0 displayItems=119 failedPages=0 reason=completed
+I/flutter (30364): [RakutenGenre][SUMMARY] total=120 resolved=120 unresolved=0 usedMaster=120 rawGenreNameEmpty=120
+I/flutter (30364): [ONBOARDING_SHOP_RECOMMEND] shopName=彩葉-variety tea shop- imageCount=1 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/irohatea/cabinet/items/11771341/fruits.jpg?_ex=128x128 reason=balance
+I/flutter (30364): [ONBOARDING_SHOP_RECOMMEND] shopName=コーヒー問屋ウエスト imageCount=1 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/west/cabinet/00810917/imgrc0067871136.jpg?_ex=128x128 reason=balance
+I/flutter (30364): [ONBOARDING_SHOP_RECOMMEND] shopName=健康・野草茶センター imageCount=1 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/yaso-cha/cabinet/itempage/017/017-320a.jpg?_ex=128x128 reason=balance
+I/flutter (30364): [ONBOARDING_SHOP_RECOMMEND] shopName=カフェ工房 imageCount=1 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/cafekobo/cabinet/item/2306_1903.jpg?_ex=128x128 reason=balance
+I/flutter (30364): [ONBOARDING_SHOP_RECOMMEND] shopName=珈茶問屋アンジェ楽天市場店 imageCount=1 firstImageUrl=https://thumbnail.image.rakuten.co.jp/@0_mall/ange-yokohama/cabinet/pic04/46059.jpg?_ex=128x128 reason=balance
+I/flutter (30364): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=100026,100227,100316 postStyles=balance recommendationStarted=true recommendationCount=5 savedShopCount=0 shopSaved=false failedReason=
+I/flutter (30364): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=100026,100227,100316 postStyles=balance recommendationStarted=true recommendationCount=5 savedShopCount=1 shopSaved=true failedReason=
+I/flutter (30364): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter (30364): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (30364): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (30364): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=100026,100227,100316 postStyles=balance recommendationStarted=true recommendationCount=5 savedShopCount=2 shopSaved=true failedReason=
+I/flutter (30364): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (30364): [ONBOARDING_SHOP_RECOMMEND] step=4 selectedGenres=100026,100227,100316 postStyles=balance recommendationStarted=true recommendationCount=5 savedShopCount=3 shopSaved=true failedReason=
+I/flutter (30364): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (30364): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (30364): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter (30364): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (30364): [RECOMMEND_TRIGGER] source=cta
+I/flutter (30364): [RECOMMEND_TRACE] trigger=cta
+I/flutter (30364): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (30364): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (30364): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-31T03:23:21.129870
+I/flutter (30364): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (30364): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (30364): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=0 alreadyAdded=0 skipped=0
+I/flutter (30364): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (30364): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher(30364): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(30364): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (30364): [TODAY_RECOMMEND_SELECT_ALL] checked=true selected=10
+I/flutter (30364): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=10 alreadyAdded=0 skipped=0
+I/flutter (30364): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (30364): [RECOMMEND_TRIGGER] source=manual
+I/flutter (30364): [RECOMMEND_TRACE] trigger=manual
+I/flutter (30364): [RECOMMEND_TRACE] action=regenerateToday
+I/flutter (30364): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (30364): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-31T03:23:21.129870
+I/flutter (30364): [RECOMMEND_TRACE] generate start
+I/flutter (30364): [RECOMMEND_TRACE] profile nickname=
+I/flutter (30364): [RECOMMEND_STYLE] selected=balance
+I/flutter (30364): [SEARCH_STYLE_TRACE] selectedStyle=balance
+I/flutter (30364): [RECOMMEND_TRACE] favoriteGenreIds=100026,100227,100316
+I/flutter (30364): [GENRE_PREF_LOAD] favoriteGenreIds=100026,100227,100316 favoriteGenreNames=DVD・ブルーレイ・ソフト,食品,水・ソフトドリンク source=recommend
+I/flutter (30364): [RECOMMEND_TRACE] searchPreferences=balance
+I/flutter (30364): [RECOMMEND_TRACE] savedShopCount=3
+I/flutter (30364): [RECOMMEND_TRACE] doneProductCount=0
+I/flutter (30364): [RECOMMEND_TRACE] candidateProductCount=7
+I/flutter (30364): [RECOMMEND_START] genreCount=3 savedShopCount=3 doneCount=0 candidateCount=7 selectedStyle=balance
+I/flutter (30364): [GENRE_PREF_MISMATCH] savedGenreId=100026 usedGenreId=566732 savedName=DVD・ブルーレイ・ソフト usedName=カタログギフト reason=historyGenreNotInFavorites source=recommend
+I/flutter (30364): [GENRE_PREF_MISMATCH] savedGenreId=100026 usedGenreId=201117 savedName=DVD・ブルーレイ・ソフト usedName=バウムクーヘン reason=historyGenreNotInFavorites source=recommend
+I/flutter (30364): [GENRE_PREF_MISMATCH] savedGenreId=100026 usedGenreId=503020 savedName=DVD・ブルーレイ・ソフト usedName=シートマスク・フェイスパック reason=historyGenreNotInFavorites source=recommend
+I/flutter (30364): [GENRE_PREF_MISMATCH] savedGenreId=100026 usedGenreId=503170 savedName=DVD・ブルーレイ・ソフト usedName=超音波美顔器 reason=historyGenreNotInFavorites source=recommend
+I/flutter (30364): [RECOMMEND_REACTION] commentGenres=0 likeGenres=6 commentShops=0 likeShops=6 priceBands=2000-4999,5000-9999,20000-49999,500-1999
+I/flutter (30364): [RECOMMEND_PLAN] count=4
+I/flutter (30364): [RECOMMEND_GENERATE] start requestCount=0 planCount=4
+I/flutter (30364): [RECOMMEND_REACTION] commentGenres=0 likeGenres=6 commentShops=0 likeShops=6 priceBands=2000-4999,5000-9999,20000-49999,500-1999
+I/flutter (30364): [RECOMMEND_POOL] raw=0 valid=0 scored=0
+I/flutter (30364): [RECOMMEND_SELECT] strictSelected=0
+I/flutter (30364): [RECOMMEND_PHASE] phase=personal
+I/flutter (30364): [RECOMMEND] search keyword=DVD・ブルーレイ・ソフト
+I/flutter (30364): [RECOMMEND] genreId=100026
+I/flutter (30364): [RECOMMEND] searchPreference=-reviewCount
+I/flutter (30364): [RECOMMEND] minPrice=null
+I/flutter (30364): [RECOMMEND] maxPrice=null
+I/flutter (30364): [RECOMMEND] sanitizedMinPrice=null
+I/flutter (30364): [RECOMMEND] sanitizedMaxPrice=null
+I/flutter (30364): [RECOMMEND_PLAN] phase=personal relax=0 source=genre index=1 keyword=DVD・ブルーレイ・ソフト genreId=100026 shopCode= style=balance minPrice= maxPrice= sort=-reviewCount
+I/flutter (30364): [RECOMMEND_API] planIndex=1 keyword=DVD・ブルーレイ・ソフト genreId=100026 shopCode= page=1
+I/flutter (30364): [RECOMMEND_API] phase=personal start index=1 page=1
+I/flutter (30364): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=DVD・ブルーレイ・ソフト genreId=100026 shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=1 expectedApiCalls=1
+I/flutter (30364): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=DVD・ブルーレイ・ソフト genreId=100026 shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (30364): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (30364): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=DVD%E3%83%BB%E3%83%96%E3%83%AB%E3%83%BC%E3%83%AC%E3%82%A4%E3%83%BB%E3%82%BD%E3%83%95%E3%83%88&minReviewCount=10&minReviewAverage=3.6&genreId=100026&sort=-reviewCount
+I/flutter (30364): [Rakuten] response status=200 page=1 bytes=114017
+I/flutter (30364): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (30364): [RECOMMEND_TRACE] rawCount=30
+I/flutter (30364): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=559 statusCode=200
+I/flutter (30364): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (30364): [Rakuten] repository search total mapped=30
+I/flutter (30364): [Rakuten] genreSearch mapped item count=30
+I/flutter (30364): [Rakuten] genreSearch before filter count=30
+I/flutter (30364): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (30364): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (30364): [RECOMMEND_API] phase=personal status=200 rawCount=30
+I/flutter (30364): [RECOMMEND_FILTER] raw=30 afterExclude=30 reasonCounts={}
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=wondershare:10000168 title=Wondershare DVD Memory(Windows版)高品質なDVD・BD、3ステップで作成　DVD作成 BD作成 ブルーレイDVD作成 チャプター作成 スライドショー作成　動画編集 ビデオ編集ソフト 写真編集 MP4対応 Windows11対応 永久ライセンス｜ワンダーシェアー
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=wondershare:10000168 title=Wondershare DVD Memory(Windows版)高品質なDVD・BD、3ステップで作成　DVD作成 BD作成 ブルーレイDVD作成 チャプター作成 スライドショー作成　動画編集 ビデオ編集ソフト 写真編集 MP4対応 Windows11対応 永久ライセンス｜ワンダーシェアー
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=pocketalk:10000235 title=【スーパーセール限定価格】Toast 20 Pro カード版　[Mac用][DVD/CD書き込みソフト]CD・DVD・Blu-ray書き込みソフト 2606SS
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=pocketalk:10000235 title=【スーパーセール限定価格】Toast 20 Pro カード版　[Mac用][DVD/CD書き込みソフト]CD・DVD・Blu-ray書き込みソフト 2606SS
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=pocketalk:10000491 title=Enjoy Blu-ray｜DVD・ブルーレイ再生ソフト｜Windows [CD-ROM]　パッケージ版
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=pocketalk:10000491 title=Enjoy Blu-ray｜DVD・ブルーレイ再生ソフト｜Windows [CD-ROM]　パッケージ版
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=ksdenki:10451179 title=gemsoft ユーティリティソフト ZEUS PLAYER ブルーレイ・DVD・4K・ハイレソ
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=ksdenki:10451179 title=gemsoft ユーティリティソフト ZEUS PLAYER ブルーレイ・DVD・4K・ハイレソ
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=aosasi-store:10000048 title=【日本正規品・一年保証有】ブルーレイドライブ 外付け ポータブル Blu-ray ディスクドライブ USB-A / USB-C ケーブル ソフト無し Windows Mac対応 Type-C ブルーレイプレーヤー BDドライブ DVDドライブ CD USB3.2 SD TFカードリーダ ハブ BDXL 書き込み 読み込み データ保存
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=aosasi-store:10000048 title=【日本正規品・一年保証有】ブルーレイドライブ 外付け ポータブル Blu-ray ディスクドライブ USB-A / USB-C ケーブル ソフト無し Windows Mac対応 Type-C ブルーレイプレーヤー BDドライブ DVDドライブ CD USB3.2 SD TFカードリーダ ハブ BDXL 書き込み 読み込み データ保存
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=pocketalk:10000234 title=【スーパーセール限定価格】Toast 20 Titanium カード版　[Mac用][DVD/CD書き込みソフト]CD・DVD・Blu-ray書き込みソフト 2606SS
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=pocketalk:10000234 title=【スーパーセール限定価格】Toast 20 Titanium カード版　[Mac用][DVD/CD書き込みソフト]CD・DVD・Blu-ray書き込みソフト 2606SS
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=pasodentsushin:10748510 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット）
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=pasodentsushin:10748510 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット）
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=auc-ulmax:11426392 title=サンワサプライ FCD-PSW10CL Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット） アクセサリ メディアケース SANWA SUPPLY 送料無料
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=auc-ulmax:11426392 title=サンワサプライ FCD-PSW10CL Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット） アクセサリ メディアケース SANWA SUPPLY 送料無料
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=rcmd:36717657 title=サンワサプライ Blu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット) FCD-PUS10CL(代引不可)
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=rcmd:36717657 title=サンワサプライ Blu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット) FCD-PUS10CL(代引不可)
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=cocoterrace:13081939 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット） FCD-PSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=cocoterrace:13081939 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット） FCD-PSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=bungubin:10205963 title=【お取り寄せ】エレコム Blu-ray・DVD・CD用スリム収納ソフトケース CCD-DP2B10WH
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=bungubin:10205963 title=【お取り寄せ】エレコム Blu-ray・DVD・CD用スリム収納ソフトケース CCD-DP2B10WH
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=pocchi-shop:10277001 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・10枚セット) FCD-PSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=pocchi-shop:10277001 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・10枚セット) FCD-PSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=r-syo-ei:10910561 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・10枚セット) FCD-PSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=r-syo-ei:10910561 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・10枚セット) FCD-PSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=2doriem:10680185 title=【中古】Enjoy Blu-ray｜DVD・ブルーレイ再生ソフト｜Windows
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=2doriem:10680185 title=【中古】Enjoy Blu-ray｜DVD・ブルーレイ再生ソフト｜Windows
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=kaichouseikatsu:10048943 title=【代引不可】Blu-ray・DVD・CDケース 2枚収納 10枚セット ソフトタイプ 収納ケース メディアケース 整理 保管 クリア サンワサプライ FCD-PSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=kaichouseikatsu:10048943 title=【代引不可】Blu-ray・DVD・CDケース 2枚収納 10枚セット ソフトタイプ 収納ケース メディアケース 整理 保管 クリア サンワサプライ FCD-PSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=osusumeshop777:10649264 title=【おすすめ・人気】【10枚×5セット】 サンワサプライ Blu-ray DVD CDケース 1枚収納ソフトタイプ クリア FCD-PUS10CLX5|安い 激安 格安
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=osusumeshop777:10649264 title=【おすすめ・人気】【10枚×5セット】 サンワサプライ Blu-ray DVD CDケース 1枚収納ソフトタイプ クリア FCD-PUS10CLX5|安い 激安 格安
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=vlookupstore:10639474 title=サンワサプライBlu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット)FCD-PUS10CL
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=vlookupstore:10639474 title=サンワサプライBlu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット)FCD-PUS10CL
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=tuzukiya:20535217 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・) FCD-PSW10CL 10枚
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=tuzukiya:20535217 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・) FCD-PSW10CL 10枚
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=edenki:21443051 title=(LINEクーポン有)サンワサプライ FCD-PSW10CL Blu−ray・DVD・CDケース 2枚収納ソフトタイプ・10枚セット FCDPSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=edenki:21443051 title=(LINEクーポン有)サンワサプライ FCD-PSW10CL Blu−ray・DVD・CDケース 2枚収納ソフトタイプ・10枚セット FCDPSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=rcmdse:17006846 title=サンワサプライ Blu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット) FCD-PUS10CL(代引不可)
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=rcmdse:17006846 title=サンワサプライ Blu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット) FCD-PUS10CL(代引不可)
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=eccrew:10056119 title=SANWA SUPPLY サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット）FCD-PSW10CL FCDPSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=eccrew:10056119 title=SANWA SUPPLY サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット）FCD-PSW10CL FCDPSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=edenki:22601986 title=直送・代引不可 【10枚×5セット】 サンワサプライ Blu-ray DVD CDケース 1枚収納ソフトタイプ クリア FCD-PUS10CLX5 別商品の同時注文不可
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=edenki:22601986 title=直送・代引不可 【10枚×5セット】 サンワサプライ Blu-ray DVD CDケース 1枚収納ソフトタイプ クリア FCD-PUS10CLX5 別商品の同時注文不可
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=tomstore:10897568 title=CD・DVD収納ケース 透明アクリル製 ps5ゲームソフト、アニメ収納ボックス 『W40×D15.6×H12.8cm』 CD/DVD/ブルーレイ 最大200枚収納 多機能：本、パンフレット、文房具など小物入れ
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=tomstore:10897568 title=CD・DVD収納ケース 透明アクリル製 ps5ゲームソフト、アニメ収納ボックス 『W40×D15.6×H12.8cm』 CD/DVD/ブルーレイ 最大200枚収納 多機能：本、パンフレット、文房具など小物入れ
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=kaichouseikatsu:10083557 title=【代引不可】Blu-ray・DVD・CDケース（1枚収納ソフトタイプ・10枚セット） サンワサプライ FCD-PUS10CL
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=kaichouseikatsu:10083557 title=【代引不可】Blu-ray・DVD・CDケース（1枚収納ソフトタイプ・10枚セット） サンワサプライ FCD-PUS10CL
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=rcmdse:16436338 title=【10枚×5セット】 サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ) FCD-PSW10CLX5(代引不可)【送料無料】
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=rcmdse:16436338 title=【10枚×5セット】 サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ) FCD-PSW10CLX5(代引不可)【送料無料】
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=jism:14127531 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット・クリア） FCD-PSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=jism:14127531 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット・クリア） FCD-PSW10CL
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=raspberrymarket:10238753 title=NIUBEECD・DVD収納ケース透明アクリル製ps5ゲームソフト、アニメ収納ボックス『W40xD15.6xH12.8cm』CD/DVD/ブルーレイ最大200枚収納多機能:本、パンフレット、文房具など小物入れ
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=raspberrymarket:10238753 title=NIUBEECD・DVD収納ケース透明アクリル製ps5ゲームソフト、アニメ収納ボックス『W40xD15.6xH12.8cm』CD/DVD/ブルーレイ最大200枚収納多機能:本、パンフレット、文房具など小物入れ
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=e-bear:10305904 title=gemsoft DOGA ブルーレイ・DVD作成ソフト付属版(対応OS:その他)(GG-M003) 目安在庫=△
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=e-bear:10305904 title=gemsoft DOGA ブルーレイ・DVD作成ソフト付属版(対応OS:その他)(GG-M003) 目安在庫=△
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=auc-kstar:10038660 title=Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット）　≪サンワサプライ≫　FCD-PSW10CL 【離島 発送不可】
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=auc-kstar:10038660 title=Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット）　≪サンワサプライ≫　FCD-PSW10CL 【離島 発送不可】
+I/flutter (30364): [RECOMMEND_TRACE] raw item itemCode=almeria:13149313 title=サンワサプライ Blu-ray・DVD・CDケース（1枚収納ソフトタイプ・10枚セット） FCD-PUS10CL
+I/flutter (30364): [RECOMMEND_TRACE] accepted itemCode=almeria:13149313 title=サンワサプライ Blu-ray・DVD・CDケース（1枚収納ソフトタイプ・10枚セット） FCD-PUS10CL
+I/flutter (30364): [RECOMMEND_EXCLUDE] itemCode=wondershare:10000168 price=4980 reason=businessItem
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=pocketalk:10000235 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=pocketalk:10000235 score=15.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=pocketalk:10000235 title=【スーパーセール限定価格】Toast 20 Pro カード版　[Mac用][DVD/CD書き込みソフト]CD・DVD・Blu-ray書き込みソフト 2606SS price=12980 reviewAverage=3.90 reviewCount=10 roomFit=0.0 reaction=0.0 reviewEvidence=22.0 postability=15.0 score=125.2 reasons=好きなジャンルに近い|バランス|レビュー多め|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=pocketalk:10000491 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=pocketalk:10000491 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=pocketalk:10000491 score=25.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=pocketalk:10000491 title=Enjoy Blu-ray｜DVD・ブルーレイ再生ソフト｜Windows [CD-ROM]　パッケージ版 price=5478 reviewAverage=3.25 reviewCount=8 roomFit=0.0 reaction=15.0 reviewEvidence=10.0 postability=25.0 score=135.5 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=ksdenki:10451179 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=ksdenki:10451179 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=ksdenki:10451179 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=ksdenki:10451179 title=gemsoft ユーティリティソフト ZEUS PLAYER ブルーレイ・DVD・4K・ハイレソ price=2691 reviewAverage=4.33 reviewCount=6 roomFit=0.0 reaction=15.0 reviewEvidence=22.0 postability=35.0 score=162.7 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=aosasi-store:10000048 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=aosasi-store:10000048 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=aosasi-store:10000048 score=25.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=aosasi-store:10000048 title=【日本正規品・一年保証有】ブルーレイドライブ 外付け ポータブル Blu-ray ディスクドライブ USB-A / USB-C ケーブル ソフト無し Windows Mac対応 Type-C ブルーレイプレーヤー BDドライブ DVDドライブ CD USB3.2 SD TFカードリーダ ハブ BDXL 書き込み 読み込み データ保存 price=7450 reviewAverage=4.00 reviewCount=5 roomFit=0.0 reaction=15.0 reviewEvidence=22.0 postability=25.0 score=154.7 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=pocketalk:10000234 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=pocketalk:10000234 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=pocketalk:10000234 score=25.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=pocketalk:10000234 title=【スーパーセール限定価格】Toast 20 Titanium カード版　[Mac用][DVD/CD書き込みソフト]CD・DVD・Blu-ray書き込みソフト 2606SS price=9980 reviewAverage=4.75 reviewCount=4 roomFit=0.0 reaction=15.0 reviewEvidence=22.0 postability=25.0 score=154.7 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=pasodentsushin:10748510 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=pasodentsushin:10748510 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=pasodentsushin:10748510 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=pasodentsushin:10748510 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット） price=1740 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=auc-ulmax:11426392 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=auc-ulmax:11426392 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=auc-ulmax:11426392 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=auc-ulmax:11426392 title=サンワサプライ FCD-PSW10CL Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット） アクセサリ メディアケース SANWA SUPPLY 送料無料 price=1805 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=rcmd:36717657 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=rcmd:36717657 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=rcmd:36717657 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=rcmd:36717657 title=サンワサプライ Blu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット) FCD-PUS10CL(代引不可) price=1120 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=cocoterrace:13081939 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=cocoterrace:13081939 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=cocoterrace:13081939 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=cocoterrace:13081939 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット） FCD-PSW10CL price=1145 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=bungubin:10205963 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=bungubin:10205963 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=bungubin:10205963 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=bungubin:10205963 title=【お取り寄せ】エレコム Blu-ray・DVD・CD用スリム収納ソフトケース CCD-DP2B10WH price=1681 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=pocchi-shop:10277001 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=pocchi-shop:10277001 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=pocchi-shop:10277001 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=pocchi-shop:10277001 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・10枚セット) FCD-PSW10CL price=1584 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=r-syo-ei:10910561 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=r-syo-ei:10910561 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=r-syo-ei:10910561 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=r-syo-ei:10910561 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・10枚セット) FCD-PSW10CL price=2080 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_EXCLUDE] itemCode=2doriem:10680185 price=7663 reason=businessItem
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=kaichouseikatsu:10048943 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=kaichouseikatsu:10048943 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=kaichouseikatsu:10048943 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=kaichouseikatsu:10048943 title=【代引不可】Blu-ray・DVD・CDケース 2枚収納 10枚セット ソフトタイプ 収納ケース メディアケース 整理 保管 クリア サンワサプライ FCD-PSW10CL price=1227 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=osusumeshop777:10649264 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=osusumeshop777:10649264 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=osusumeshop777:10649264 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=osusumeshop777:10649264 title=【おすすめ・人気】【10枚×5セット】 サンワサプライ Blu-ray DVD CDケース 1枚収納ソフトタイプ クリア FCD-PUS10CLX5|安い 激安 格安 price=7280 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=vlookupstore:10639474 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=vlookupstore:10639474 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=vlookupstore:10639474 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=vlookupstore:10639474 title=サンワサプライBlu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット)FCD-PUS10CL price=2287 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=tuzukiya:20535217 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=tuzukiya:20535217 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=tuzukiya:20535217 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=tuzukiya:20535217 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・) FCD-PSW10CL 10枚 price=1137 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=edenki:21443051 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=edenki:21443051 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=edenki:21443051 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=edenki:21443051 title=(LINEクーポン有)サンワサプライ FCD-PSW10CL Blu−ray・DVD・CDケース 2枚収納ソフトタイプ・10枚セット FCDPSW10CL price=1130 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=rcmdse:17006846 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=rcmdse:17006846 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=rcmdse:17006846 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=rcmdse:17006846 title=サンワサプライ Blu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット) FCD-PUS10CL(代引不可) price=950 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=eccrew:10056119 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=eccrew:10056119 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=eccrew:10056119 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=eccrew:10056119 title=SANWA SUPPLY サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット）FCD-PSW10CL FCDPSW10CL price=1227 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=edenki:22601986 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=edenki:22601986 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=edenki:22601986 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=edenki:22601986 title=直送・代引不可 【10枚×5セット】 サンワサプライ Blu-ray DVD CDケース 1枚収納ソフトタイプ クリア FCD-PUS10CLX5 別商品の同時注文不可 price=6466 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=tomstore:10897568 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=tomstore:10897568 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=tomstore:10897568 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=tomstore:10897568 title=CD・DVD収納ケース 透明アクリル製 ps5ゲームソフト、アニメ収納ボックス 『W40×D15.6×H12.8cm』 CD/DVD/ブルーレイ 最大200枚収納 多機能：本、パンフレット、文房具など小物入れ price=3669 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=kaichouseikatsu:10083557 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=kaichouseikatsu:10083557 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=kaichouseikatsu:10083557 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=kaichouseikatsu:10083557 title=【代引不可】Blu-ray・DVD・CDケース（1枚収納ソフトタイプ・10枚セット） サンワサプライ FCD-PUS10CL price=1124 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=rcmdse:16436338 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=rcmdse:16436338 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=rcmdse:16436338 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=rcmdse:16436338 title=【10枚×5セット】 サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ) FCD-PSW10CLX5(代引不可)【送料無料】 price=5700 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=jism:14127531 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=jism:14127531 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=jism:14127531 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=jism:14127531 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット・クリア） FCD-PSW10CL price=895 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=raspberrymarket:10238753 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=raspberrymarket:10238753 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=raspberrymarket:10238753 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=raspberrymarket:10238753 title=NIUBEECD・DVD収納ケース透明アクリル製ps5ゲームソフト、アニメ収納ボックス『W40xD15.6xH12.8cm』CD/DVD/ブルーレイ最大200枚収納多機能:本、パンフレット、文房具など小物入れ price=4849 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=e-bear:10305904 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=e-bear:10305904 score=15.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=e-bear:10305904 title=gemsoft DOGA ブルーレイ・DVD作成ソフト付属版(対応OS:その他)(GG-M003) 目安在庫=△ price=12483 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=15.0 score=-68.0 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=auc-kstar:10038660 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=auc-kstar:10038660 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=auc-kstar:10038660 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=auc-kstar:10038660 title=Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット）　≪サンワサプライ≫　FCD-PSW10CL 【離島 発送不可】 price=1078 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=almeria:13149313 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=almeria:13149313 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=almeria:13149313 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=almeria:13149313 title=サンワサプライ Blu-ray・DVD・CDケース（1枚収納ソフトタイプ・10枚セット） FCD-PUS10CL price=1892 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_POOL] raw=30 valid=28 scored=28
+I/flutter (30364): [RECOMMEND_SELECT] strictSelected=10
+I/flutter (30364): [RECOMMEND_EXCLUDE] itemCode=wondershare:10000168 price=4980 reason=businessItem
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=pocketalk:10000235 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=pocketalk:10000235 score=15.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=pocketalk:10000235 title=【スーパーセール限定価格】Toast 20 Pro カード版　[Mac用][DVD/CD書き込みソフト]CD・DVD・Blu-ray書き込みソフト 2606SS price=12980 reviewAverage=3.90 reviewCount=10 roomFit=0.0 reaction=0.0 reviewEvidence=22.0 postability=15.0 score=125.2 reasons=好きなジャンルに近い|バランス|レビュー多め|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=pocketalk:10000491 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=pocketalk:10000491 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=pocketalk:10000491 score=25.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=pocketalk:10000491 title=Enjoy Blu-ray｜DVD・ブルーレイ再生ソフト｜Windows [CD-ROM]　パッケージ版 price=5478 reviewAverage=3.25 reviewCount=8 roomFit=0.0 reaction=15.0 reviewEvidence=10.0 postability=25.0 score=135.5 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=ksdenki:10451179 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=ksdenki:10451179 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=ksdenki:10451179 score=35.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=ksdenki:10451179 title=gemsoft ユーティリティソフト ZEUS PLAYER ブルーレイ・DVD・4K・ハイレソ price=2691 reviewAverage=4.33 reviewCount=6 roomFit=0.0 reaction=15.0 reviewEvidence=22.0 postability=35.0 score=162.7 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=aosasi-store:10000048 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=aosasi-store:10000048 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=aosasi-store:10000048 score=25.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=aosasi-store:10000048 title=【日本正規品・一年保証有】ブルーレイドライブ 外付け ポータブル Blu-ray ディスクドライブ USB-A / USB-C ケーブル ソフト無し Windows Mac対応 Type-C ブルーレイプレーヤー BDドライブ DVDドライブ CD USB3.2 SD TFカードリーダ ハブ BDXL 書き込み 読み込み データ保存 price=7450 reviewAverage=4.00 reviewCount=5 roomFit=0.0 reaction=15.0 reviewEvidence=22.0 postability=25.0 score=154.7 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=pocketalk:10000234 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=pocketalk:10000234 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=pocketalk:10000234 score=25.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=pocketalk:10000234 title=【スーパーセール限定価格】Toast 20 Titanium カード版　[Mac用][DVD/CD書き込みソフト]CD・DVD・Blu-ray書き込みソフト 2606SS price=9980 reviewAverage=4.75 reviewCount=4 roomFit=0.0 reaction=15.0 reviewEvidence=22.0 postability=25.0 score=154.7 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=pasodentsushin:10748510 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=pasodentsushin:10748510 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=pasodentsushin:10748510 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=pasodentsushin:10748510 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット） price=1740 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=auc-ulmax:11426392 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=auc-ulmax:11426392 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=auc-ulmax:11426392 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=auc-ulmax:11426392 title=サンワサプライ FCD-PSW10CL Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット） アクセサリ メディアケース SANWA SUPPLY 送料無料 price=1805 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=rcmd:36717657 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=rcmd:36717657 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=rcmd:36717657 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=rcmd:36717657 title=サンワサプライ Blu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット) FCD-PUS10CL(代引不可) price=1120 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=cocoterrace:13081939 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=cocoterrace:13081939 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=cocoterrace:13081939 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=cocoterrace:13081939 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット） FCD-PSW10CL price=1145 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=bungubin:10205963 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=bungubin:10205963 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=bungubin:10205963 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=bungubin:10205963 title=【お取り寄せ】エレコム Blu-ray・DVD・CD用スリム収納ソフトケース CCD-DP2B10WH price=1681 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=pocchi-shop:10277001 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=pocchi-shop:10277001 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=pocchi-shop:10277001 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=pocchi-shop:10277001 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・10枚セット) FCD-PSW10CL price=1584 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=r-syo-ei:10910561 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=r-syo-ei:10910561 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=r-syo-ei:10910561 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=r-syo-ei:10910561 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・10枚セット) FCD-PSW10CL price=2080 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_EXCLUDE] itemCode=2doriem:10680185 price=7663 reason=businessItem
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=kaichouseikatsu:10048943 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=kaichouseikatsu:10048943 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=kaichouseikatsu:10048943 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=kaichouseikatsu:10048943 title=【代引不可】Blu-ray・DVD・CDケース 2枚収納 10枚セット ソフトタイプ 収納ケース メディアケース 整理 保管 クリア サンワサプライ FCD-PSW10CL price=1227 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=osusumeshop777:10649264 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=osusumeshop777:10649264 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=osusumeshop777:10649264 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=osusumeshop777:10649264 title=【おすすめ・人気】【10枚×5セット】 サンワサプライ Blu-ray DVD CDケース 1枚収納ソフトタイプ クリア FCD-PUS10CLX5|安い 激安 格安 price=7280 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=vlookupstore:10639474 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=vlookupstore:10639474 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=vlookupstore:10639474 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=vlookupstore:10639474 title=サンワサプライBlu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット)FCD-PUS10CL price=2287 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=tuzukiya:20535217 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=tuzukiya:20535217 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=tuzukiya:20535217 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=tuzukiya:20535217 title=サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ・) FCD-PSW10CL 10枚 price=1137 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=edenki:21443051 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=edenki:21443051 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=edenki:21443051 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=edenki:21443051 title=(LINEクーポン有)サンワサプライ FCD-PSW10CL Blu−ray・DVD・CDケース 2枚収納ソフトタイプ・10枚セット FCDPSW10CL price=1130 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=rcmdse:17006846 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=rcmdse:17006846 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=rcmdse:17006846 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=rcmdse:17006846 title=サンワサプライ Blu-ray・DVD・CDケース(1枚収納ソフトタイプ・10枚セット) FCD-PUS10CL(代引不可) price=950 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=eccrew:10056119 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=eccrew:10056119 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=eccrew:10056119 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=eccrew:10056119 title=SANWA SUPPLY サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット）FCD-PSW10CL FCDPSW10CL price=1227 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=edenki:22601986 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=edenki:22601986 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=edenki:22601986 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=edenki:22601986 title=直送・代引不可 【10枚×5セット】 サンワサプライ Blu-ray DVD CDケース 1枚収納ソフトタイプ クリア FCD-PUS10CLX5 別商品の同時注文不可 price=6466 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=tomstore:10897568 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=tomstore:10897568 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=tomstore:10897568 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=tomstore:10897568 title=CD・DVD収納ケース 透明アクリル製 ps5ゲームソフト、アニメ収納ボックス 『W40×D15.6×H12.8cm』 CD/DVD/ブルーレイ 最大200枚収納 多機能：本、パンフレット、文房具など小物入れ price=3669 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=kaichouseikatsu:10083557 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=kaichouseikatsu:10083557 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=kaichouseikatsu:10083557 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=kaichouseikatsu:10083557 title=【代引不可】Blu-ray・DVD・CDケース（1枚収納ソフトタイプ・10枚セット） サンワサプライ FCD-PUS10CL price=1124 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=rcmdse:16436338 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=rcmdse:16436338 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=rcmdse:16436338 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=rcmdse:16436338 title=【10枚×5セット】 サンワサプライ Blu-ray・DVD・CDケース(2枚収納ソフトタイプ) FCD-PSW10CLX5(代引不可)【送料無料】 price=5700 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=jism:14127531 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=jism:14127531 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=jism:14127531 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=jism:14127531 title=サンワサプライ Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット・クリア） FCD-PSW10CL price=895 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=raspberrymarket:10238753 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=raspberrymarket:10238753 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=raspberrymarket:10238753 score=30.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=raspberrymarket:10238753 title=NIUBEECD・DVD収納ケース透明アクリル製ps5ゲームソフト、アニメ収納ボックス『W40xD15.6xH12.8cm』CD/DVD/ブルーレイ最大200枚収納多機能:本、パンフレット、文房具など小物入れ price=4849 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=30.0 score=-2.1 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=e-bear:10305904 score=0.0 reasons=
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=e-bear:10305904 score=15.0 reasons=投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=e-bear:10305904 title=gemsoft DOGA ブルーレイ・DVD作成ソフト付属版(対応OS:その他)(GG-M003) 目安在庫=△ price=12483 reviewAverage=0.00 reviewCount=0 roomFit=0.0 reaction=0.0 reviewEvidence=-55.0 postability=15.0 score=-68.0 reasons=好きなジャンルに近い|バランス|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=auc-kstar:10038660 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=auc-kstar:10038660 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=auc-kstar:10038660 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=auc-kstar:10038660 title=Blu-ray・DVD・CDケース（2枚収納ソフトタイプ・10枚セット）　≪サンワサプライ≫　FCD-PSW10CL 【離島 発送不可】 price=1078 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_REACTION_SCORE] itemCode=almeria:13149313 score=15.0 reasons=
+I/flutter (30364): [RECOMMEND_ROOM_FIT] itemCode=almeria:13149313 score=8.0 reasons=ROOM向き
+I/flutter (30364): [RECOMMEND_POSTABILITY] itemCode=almeria:13149313 score=40.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_SCORE] itemCode=almeria:13149313 title=サンワサプライ Blu-ray・DVD・CDケース（1枚収納ソフトタイプ・10枚セット） FCD-PUS10CL price=1892 reviewAverage=0.00 reviewCount=0 roomFit=8.0 reaction=15.0 reviewEvidence=-55.0 postability=40.0 score=5.9 reasons=好きなジャンルに近い|バランス|ROOM向き|投稿しやすい|投稿しやすい
+I/flutter (30364): [RECOMMEND_POOL] raw=30 valid=28 scored=28
+I/flutter (30364): [RECOMMEND_SELECT] strictSelected=10
+I/flutter (30364): [RECOMMEND] apiCalls=1 poolSize=30
+I/flutter (30364): [RECOMMEND] final count: 10
+I/flutter (30364): [RECOMMEND_BUCKET] personal=10 relaxed=0 discovery=0 total=10
+I/flutter (30364): [RECOMMEND_RESULT] style=balance personalCount=10 discoveryCount=0 total=10
+I/flutter (30364): [RECOMMEND_TRACE] finalCandidateCount=10
+I/flutter (30364): [RECOMMEND_TRACE] failureType=none
+I/flutter (30364): [RECOMMEND_RESULT] status=success count=10
+I/flutter (30364): [RECOMMEND_GENERATE] end requestCount=1 planCount=4
+I/flutter (30364): [RECOMMEND_SUMMARY] totalApiRequests=1 totalPlans=4 selectedCount=10 excludedCount=0 durationMs=811
+I/flutter (30364): [TODAY_RECOMMEND_API_USAGE] sessionId=1780165740064 phase=finalize apiCalls=1 genreSearchCalls=1 shopSearchCalls=0 keywordSearchCalls=0 excludedBySafety=0 excludedByDuplicate=0 finalItems=10
+I/flutter (30364): [TODAY_RECOMMEND_QUALITY_SUMMARY] plans=4 apiCalls=1 rawItems=30 excludedManaged=0 excludedNoImage=0 excludedNoPrice=0 excludedNoName=0 excludedNoUrl=0 excludedSafety=0 deduped=30 finalItems=10 usedFavoriteGenres=3 usedAssistPlan=false fallbackUsed=false cooldownCanRegenerate=false cooldownRemainingSec=299
+I/flutter (30364): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (30364): [RECOMMEND_SAVE] savedBundle=true count=10
+I/flutter (30364): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=10 alreadyAdded=0 skipped=0
+I/flutter (30364): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=10 bulkButtonVisible=true
+I/flutter (30364): [TODAY_RECOMMEND_SELECT_ALL] checked=false selected=0
+I/flutter (30364): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=0 alreadyAdded=0 skipped=0
+I/flutter (30364): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (30364): [MYPAGE_GENRE_TREE_OPEN] source=mypage initialCount=3
+I/flutter (30364): [GENRE_PICKER_MODE] screen=mypage selectionMode=multi usesCheckbox=true usesRadio=false
+I/flutter (30364): [GENRE_SELECTION_WIDGET_AUDIT] screen=mypage multiSelect=true widget=checkbox valid=true
+I/flutter (30364): [GENRE_TREE_OPEN] rootCount=39 source=mypage
+I/flutter (30364): [INITIAL_SETUP_GENRE_TREE_OPEN] selectedCount=3 maxSelectable=3
+W/WindowOnBackDispatcher(30364): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(30364): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260531_032231\room_manager2_shot_001.png
+I/flutter (30364): [MYPAGE_GENRE_TREE_SELECT] count=3 ids=100026,100227,100316
+I/flutter (30364): [GENRE_PREF_SAVE_NORMALIZED] source=mypage genreId=100026 inputGenreName= resolvedGenreName=DVD・ブルーレイ・ソフト nameCorrected=false
+I/flutter (30364): [GENRE_PREF_SAVE_NORMALIZED] source=mypage genreId=100227 inputGenreName= resolvedGenreName=食品 nameCorrected=false
+I/flutter (30364): [GENRE_PREF_SAVE_NORMALIZED] source=mypage genreId=100316 inputGenreName= resolvedGenreName=水・ソフトドリンク nameCorrected=false
+I/flutter (30364): [MYPAGE_GENRE_SAVE] count=3 ids=100026,100227,100316 names=DVD・ブルーレイ・ソフト,食品,水・ソフトドリンク
+I/flutter (30364): [GENRE_PREF_SAVE] selectedGenreId=100026 selectedGenreName=DVD・ブルーレイ・ソフト source=mypage
+I/flutter (30364): [GENRE_PREF_SAVE] selectedGenreId=100227 selectedGenreName=食品 source=mypage
+I/flutter (30364): [GENRE_PREF_SAVE] selectedGenreId=100316 selectedGenreName=水・ソフトドリンク source=mypage
+I/flutter (30364): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (30364): [RECOMMEND_TRIGGER] source=cta
+I/flutter (30364): [RECOMMEND_TRACE] trigger=cta
+I/flutter (30364): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (30364): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (30364): [RECOMMEND_TRACE] lastGeneratedAt=2026-05-31T03:29:00.854915
+I/flutter (30364): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=true
+I/flutter (30364): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (30364): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=0 alreadyAdded=0 skipped=0
+I/flutter (30364): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (30364): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher(30364): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(30364): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260531_032231\room_manager2_shot_002.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260531_032231\room_manager2_shot_003.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260531_032231\room_manager2_shot_004.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260531_032231\room_manager2_shot_005.png
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260531_032231.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260531_032231.mp4 (3813677 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260531_032231
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260531_032231\terminal_output_20260531_032231.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260531_032231.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260531_032231.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260531_032231.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260531_032231.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260531_032231.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.

@@ -1,0 +1,1109 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-30 04:56:14
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260530_045614.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260530_045614.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260530_045614.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260530_045614.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260530_045614.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260530_045614
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260530_045614\terminal_output_20260530_045614.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 19512).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID=
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             42.3s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...          33.7s
+Error: ADB exited with exit code 1
+Performing Streamed Install
+
+adb.exe: failed to install C:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-debug.apk: Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.stepbytestudio.room_manager2 signatures do not match newer version; ignoring!]
+Uninstalling old version...
+Installing build\app\outputs\flutter-apk\app-debug.apk...           8.2s
+D/FlutterJNI(13805): Beginning load of flutter...
+D/FlutterJNI(13805): flutter (null) was loaded normally!
+I/flutter (13805): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (13805): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (13805): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter (13805): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                    82ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:60634/xy7BUrHrXHw=/
+I/flutter (13805): [ONBOARDING_UI] route=legal termsAccepted=false initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9103?uri=http://127.0.0.1:60634/xy7BUrHrXHw=/
+I/Choreographer(13805): Skipped 126 frames!  The application may be doing too much work on its main thread.
+I/OpenGLRenderer(13805): Davey! duration=2147ms; Flags=1, FrameTimelineVsyncId=817292693, IntendedVsync=5583246811200818, Vsync=5583248916232292, InputEventId=0, HandleInputStart=5583248919914218, AnimationStart=5583248919916041, PerformTraversalsStart=5583248919916457, DrawStart=5583248924291145, FrameDeadline=5583246827867484, FrameInterval=5583248919274478, FrameStartTime=16706599, SyncQueued=5583248926226822, SyncStart=5583248926342395, IssueDrawCommandsStart=5583248926926666, SwapBuffers=5583248956899113, FrameCompleted=5583248958515520, DequeueBufferDuration=2388282, QueueBufferDuration=1118489, GpuCompleted=5583248958194582, SwapBuffersCompleted=5583248958515520, DisplayPresentTime=0, CommandSubmissionCompleted=5583248956899113, 
+I/WebViewFactory(13805): Loading com.google.android.webview version 148.0.7778.178 (code 777817803)
+D/ApplicationLoaders(13805): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2(13805): Loading /data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(13805): Configuring clns-5 for other apk /data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/lib/arm64:/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(13805): version=148.0.7778.178 (777817803) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(13805): Load /data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk): ok
+D/nativeloader(13805): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk): ok
+I/chromium(13805): [0530/045753.389847:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/chromium(13805): [0530/045753.399518:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(13805): Successfully loaded native library
+I/cr_CachingUmaRecorder(13805): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(13805): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(13805): #registerProvider() provider:WV.wk@39b03c2 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(13805): #setManagerAndSource() 0
+I/cr_DisplayManager(13805): Is Display Topology available: false
+I/cr_CombinedPProvider(13805): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(13805): Compat change id reported: 183155436; UID 10474; state: ENABLED
+I/cr_AppResProvider(13805): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(13805): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(13805): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(13805): #flushPolicies()
+W/chromium(13805): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(13805): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 20971520
+D/CompatibilityChangeReporter(13805): Compat change id reported: 214741472; UID 10474; state: ENABLED
+D/CompatibilityChangeReporter(13805): Compat change id reported: 171228096; UID 10474; state: ENABLED
+I/CameraManagerGlobal(13805): Connecting to camera service
+I/PlatformViewsController(13805): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(13805): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(13805): Compat change id reported: 236825255; UID 10474; state: ENABLED
+W/libc    (13805): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(13805): type=1400 audit(0.0:669082): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c218,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(13805): Compat change id reported: 193247900; UID 10474; state: ENABLED
+I/Choreographer(13805): Skipped 45 frames!  The application may be doing too much work on its main thread.
+W/libc    (13805): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(13805): type=1400 audit(0.0:669083): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c218,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0
+I/AdrenoVK-0(13805): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(13805): Build Date              : 08/23/22
+I/AdrenoVK-0(13805): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(13805): Local Branch            : 
+I/AdrenoVK-0(13805): Remote Branch           : 
+I/AdrenoVK-0(13805): Remote Branch           : 
+I/AdrenoVK-0(13805): Reconstruct Branch      : 
+I/AdrenoVK-0(13805): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(13805): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(13805): Davey! duration=807ms; Flags=0, FrameTimelineVsyncId=817292756, IntendedVsync=5583248932789666, Vsync=5583249682789636, InputEventId=0, HandleInputStart=5583249691737499, AnimationStart=5583249691739634, PerformTraversalsStart=5583249691766561, DrawStart=5583249705922811, FrameDeadline=5583248983018755, FrameInterval=5583249690956353, FrameStartTime=16706599, SyncQueued=5583249733178332, SyncStart=5583249734322811, IssueDrawCommandsStart=5583249734408436, SwapBuffers=5583249739616092, FrameCompleted=5583249741533592, DequeueBufferDuration=3797344, QueueBufferDuration=1297500, GpuCompleted=5583249740810988, SwapBuffersCompleted=5583249741533592, DisplayPresentTime=0, CommandSubmissionCompleted=5583249739616092, 
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(13805): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+E/FrameEvents(13805): updateAcquireFence: Did not find frame.
+D/ProfileInstaller(13805): Installing profile for com.stepbytestudio.room_manager2
+I/flutter (13805): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (13805): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+W/o.room_manager2(13805): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+W/o.room_manager2(13805): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (13805): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+W/WindowOnBackDispatcher(13805): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(13805): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (13805): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter (13805): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter (13805): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (13805): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (13805): [ROOMコレ][surface] tab=candidate surface=ok_empty_no_data
+I/flutter (13805): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (13805): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (13805): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (13805): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (13805): [RECOMMEND_TRACE] action=ensureToday
+I/flutter (13805): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (13805): [RECOMMEND_TRACE] lastGeneratedAt=null
+I/flutter (13805): [RECOMMEND_TRACE] shouldSkipBecauseRecentlyTried=false
+I/flutter (13805): [RECOMMEND_TRIGGER] source=homeInit
+I/flutter (13805): [RECOMMEND_TRACE] trigger=homeInit
+I/flutter (13805): [RECOMMEND_TRACE] action=regenerateToday
+I/flutter (13805): [RECOMMEND_TRACE] alreadyGenerating=false
+I/flutter (13805): [RECOMMEND_TRACE] lastGeneratedAt=null
+I/flutter (13805): [RECOMMEND_TRACE] generate start
+I/flutter (13805): [RECOMMEND_TRACE] profile nickname=
+I/flutter (13805): [RECOMMEND_STYLE] selected=balance
+I/flutter (13805): [SEARCH_STYLE_TRACE] selectedStyle=balance
+I/flutter (13805): [RECOMMEND_TRACE] favoriteGenreIds=
+I/flutter (13805): [GENRE_PREF_LOAD] favoriteGenreIds= favoriteGenreNames= source=recommend
+I/flutter (13805): [RECOMMEND_TRACE] searchPreferences=balance
+I/flutter (13805): [RECOMMEND_TRACE] savedShopCount=0
+I/flutter (13805): [RECOMMEND_TRACE] doneProductCount=0
+I/flutter (13805): [RECOMMEND_TRACE] candidateProductCount=0
+I/flutter (13805): [RECOMMEND_START] genreCount=0 savedShopCount=0 doneCount=0 candidateCount=0 selectedStyle=balance
+I/flutter (13805): [RECOMMEND_PLAN] count=3
+I/flutter (13805): [RECOMMEND_GENERATE] start requestCount=0 planCount=3
+I/flutter (13805): [RECOMMEND_REACTION] commentGenres=0 likeGenres=0 commentShops=0 likeShops=0 priceBands=
+I/flutter (13805): [RECOMMEND_POOL] raw=0 valid=0 scored=0
+I/flutter (13805): [RECOMMEND_SELECT] strictSelected=0
+I/flutter (13805): [RECOMMEND_PHASE] phase=discovery
+I/flutter (13805): [RECOMMEND] search keyword=人気
+I/flutter (13805): [RECOMMEND] genreId=
+I/flutter (13805): [RECOMMEND] searchPreference=-reviewCount
+I/flutter (13805): [RECOMMEND] minPrice=null
+I/flutter (13805): [RECOMMEND] maxPrice=null
+I/flutter (13805): [RECOMMEND] sanitizedMinPrice=null
+I/flutter (13805): [RECOMMEND] sanitizedMaxPrice=null
+I/flutter (13805): [RECOMMEND_PLAN] phase=discovery relax=2 source=style index=1 keyword=人気 genreId= shopCode= style=balance minPrice= maxPrice= sort=-reviewCount
+I/flutter (13805): [RECOMMEND_API] planIndex=1 keyword=人気 genreId= shopCode= page=1
+I/flutter (13805): [RECOMMEND_API] phase=discovery start index=1 page=1
+I/flutter (13805): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=人気 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=1 expectedApiCalls=1
+I/flutter (13805): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=人気 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E4%BA%BA%E6%B0%97&minReviewCount=3&minReviewAverage=3.2&sort=-reviewCount
+I/flutter (13805): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (13805): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (13805): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (13805): [MANAGED_PRODUCT_LOAD] source=provider pending=0 done=0 filter= tab=
+I/flutter (13805): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (13805): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=0→0 done=0→0
+I/flutter (13805): [MANAGED_PRODUCT_LOAD] source=screen pending=0 done=0 filter= tab=candidate
+I/flutter (13805): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter (13805): [Rakuten] response status=200 page=1 bytes=248339
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=1160 statusCode=200
+I/flutter (13805): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter (13805): [Rakuten] repository search total mapped=30
+I/flutter (13805): [Rakuten] search mapped item count=30
+I/flutter (13805): [Rakuten] search before filter count=30
+I/flutter (13805): [Rakuten] recommendation purpose skip app-side filter count=30
+I/flutter (13805): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter (13805): [RECOMMEND_API] phase=discovery status=200 rawCount=30
+I/flutter (13805): [RECOMMEND_FILTER] raw=30 afterExclude=27 reasonCounts={safetyBlocked: 3}
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=darkangel:10002101 title=【期間限定：1枚797円！3枚セットで】 タイツ レギンス レディース 春 ハイウエスト Yラインカバー 腹巻 美脚 ストレッチ 高伸縮 ヒップアップ uvカット 接触冷感 ストッキング【 タイツ＆レギンス 】 ダークエンジェル
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=darkangel:10002101 title=【期間限定：1枚797円！3枚セットで】 タイツ レギンス レディース 春 ハイウエスト Yラインカバー 腹巻 美脚 ストレッチ 高伸縮 ヒップアップ uvカット 接触冷感 ストッキング【 タイツ＆レギンス 】 ダークエンジェル
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=smahoservice:10003781 title=【日本人気デザイナー監修 特別版登場！楽天年間ランキング1位】レディーススマートウォッチ 通話機能 24時間健康管理 1.9インチ大画面 IP68防水 300mah 運動モード歩数計 消費カロリー心拍数 睡眠モード 音楽製御 iPhone/Android対応
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=smahoservice:10003781 title=【日本人気デザイナー監修 特別版登場！楽天年間ランキング1位】レディーススマートウォッチ 通話機能 24時間健康管理 1.9インチ大画面 IP68防水 300mah 運動モード歩数計 消費カロリー心拍数 睡眠モード 音楽製御 iPhone/Android対応
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=gourmetcoffee:10001806 title=送料無料 コーヒー豆 コーヒー 2kg 怒涛の珈琲豆　粉 (G500×4) 加藤珈琲/グルメコーヒー豆専門加藤珈琲店　スペシャルティ
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=gourmetcoffee:10001806 title=送料無料 コーヒー豆 コーヒー 2kg 怒涛の珈琲豆　粉 (G500×4) 加藤珈琲/グルメコーヒー豆専門加藤珈琲店　スペシャルティ
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=queeneyes:10000234 title=【限定カラー】【クーポン利用で20%OFF】エバーカラーワンデーナチュラル (1箱20枚入り)( 送料無料 カラコン カラーコンタクト 度あり 度入り 度なし ワンデー 1day コンタクト エバーカラー エバーカラーワンデー エバカラ エバナチュ コンタクトレンズ )【新木優子】
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=queeneyes:10000234 title=【限定カラー】【クーポン利用で20%OFF】エバーカラーワンデーナチュラル (1箱20枚入り)( 送料無料 カラコン カラーコンタクト 度あり 度入り 度なし ワンデー 1day コンタクト エバーカラー エバーカラーワンデー エバカラ エバナチュ コンタクトレンズ )【新木優子】
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=kobe-beauty-labo:10000074 title=《公式店》【SALONIA ストレート ヘアアイロン 15mm 24mm 35mm】楽天1位送料無料 1年保証 耐熱ポーチ付き サロニア 人気 おすすめ プレゼント コテ アイロン hk クリスマスプレゼント 女性 slall
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=kobe-beauty-labo:10000074 title=《公式店》【SALONIA ストレート ヘアアイロン 15mm 24mm 35mm】楽天1位送料無料 1年保証 耐熱ポーチ付き サロニア 人気 おすすめ プレゼント コテ アイロン hk クリスマスプレゼント 女性 slall
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=iloveheaven:10002711 title=【返品交換0円】元祖脇肉キャッチャー | 補正下着 ブラ 脇肉 脇高 脇高ブラ 下着 大きい 育乳 垂れ 寄せ ブラジャー 盛れる はみ肉 寄せる レディース下着 バスト 補正 脇高ブラジャー しっかり 支える バストアップ 背中スッキリ 着痩せ 背中 肉 脇肉補正 背中肉 レース
+I/flutter (13805): [RECOMMEND_TRACE] exclude reason=safetyBlocked
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=f016918-betsukai:10003150 title=【ふるさと納税】2年連続 総合1位 ホタテ 訳あり 4個まで選び放題 ( ふるさと納税 ほたて ふるさと納税 訳あり 帆立 ふるさと ホタテ わけあり ホタテ貝柱 貝 人気 不揃い 魚介 ランキング 海鮮 貝柱 冷凍 発送時期が選べる 北海道 別海町 )（クラウドファンディング対象）
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=f016918-betsukai:10003150 title=【ふるさと納税】2年連続 総合1位 ホタテ 訳あり 4個まで選び放題 ( ふるさと納税 ほたて ふるさと納税 訳あり 帆立 ふるさと ホタテ わけあり ホタテ貝柱 貝 人気 不揃い 魚介 ランキング 海鮮 貝柱 冷凍 発送時期が選べる 北海道 別海町 )（クラウドファンディング対象）
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=mochikichi:10000534 title=（※期日指定6月30日までお届け可）もち吉 【送料無料】お味見セット もちの縁 味まどか (商品カタログ入り)［※お味見セットのみのご注文の場合、代金引換はできません。］
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=mochikichi:10000534 title=（※期日指定6月30日までお届け可）もち吉 【送料無料】お味見セット もちの縁 味まどか (商品カタログ入り)［※お味見セットのみのご注文の場合、代金引換はできません。］
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=apm24:10002135 title=シートマスク パック MJCARE エッセンスマスク 80・90・100枚 個包装 人気 ランキング 韓国 店長おすすめ 選べる 10種 フェイスマスク MIJIN ミジン フェイスパック ぱっく 顔パック ノンアルコール APM24 ギフト 誕生日 プレゼント CICA 韓国スキンケア 韓国コスメ
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=apm24:10002135 title=シートマスク パック MJCARE エッセンスマスク 80・90・100枚 個包装 人気 ランキング 韓国 店長おすすめ 選べる 10種 フェイスマスク MIJIN ミジン フェイスパック ぱっく 顔パック ノンアルコール APM24 ギフト 誕生日 プレゼント CICA 韓国スキンケア 韓国コスメ
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=case-by-case:10002035 title=P倍倍★1位6冠 正規品 モバイルバッテリー 超マット加工 PSE認証【200円offクーポン2個目に使える】大容量 小型 軽量 ミニ iPhone 急速充電 タイプc ケーブル ケーブル内蔵 Android Type-c ライトニング アイフォン アンドロイド 充電器 急速 急速充電器 5000/10000mAh
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=case-by-case:10002035 title=P倍倍★1位6冠 正規品 モバイルバッテリー 超マット加工 PSE認証【200円offクーポン2個目に使える】大容量 小型 軽量 ミニ iPhone 急速充電 タイプc ケーブル ケーブル内蔵 Android Type-c ライトニング アイフォン アンドロイド 充電器 急速 急速充電器 5000/10000mAh
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=candymagic:10000575 title=カラコン ワンデー【もれなく1箱無料】1箱あたり1,144円 ReVIA 1day COLOR 1箱 10枚 入/3箱合計 30枚入り カラー コンタクト コンタクトレンズ ワンデー レヴィア ナチュラル 自然 人気 ブラウン 度あり 度なし キャンマジ公式 2箱購入で＋1箱無料 送料無料 ネコポス
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=candymagic:10000575 title=カラコン ワンデー【もれなく1箱無料】1箱あたり1,144円 ReVIA 1day COLOR 1箱 10枚 入/3箱合計 30枚入り カラー コンタクト コンタクトレンズ ワンデー レヴィア ナチュラル 自然 人気 ブラウン 度あり 度なし キャンマジ公式 2箱購入で＋1箱無料 送料無料 ネコポス
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=motebeauty:10000472 title=美顔器 エビス ツインエレナイザープレミアム イオン導入 高周波 RF イオンクレンジング クール HOT 超音波美顔器 ランキング1位 リフトアップ シミ 毛穴 たるみ ほうれい線 プレゼント 人気【ebis 正規販売店】・送料無料・海外使用可能・日本製 プレゼント ギフト
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=motebeauty:10000472 title=美顔器 エビス ツインエレナイザープレミアム イオン導入 高周波 RF イオンクレンジング クール HOT 超音波美顔器 ランキング1位 リフトアップ シミ 毛穴 たるみ ほうれい線 プレゼント 人気【ebis 正規販売店】・送料無料・海外使用可能・日本製 プレゼント ギフト
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=nagasaki-kasutera:10000286 title=幸せの黄色いカステラ1号 送料無料 [ スイーツ 和菓子 お菓子 長崎カステラ プレゼント 焼き菓子 しっとり おすすめ グルメ大賞 10切れ カット済み 高級 老舗 女性 男性 おやつ ] SL T101
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=nagasaki-kasutera:10000286 title=幸せの黄色いカステラ1号 送料無料 [ スイーツ 和菓子 お菓子 長崎カステラ プレゼント 焼き菓子 しっとり おすすめ グルメ大賞 10切れ カット済み 高級 老舗 女性 男性 おやつ ] SL T101
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=sanchya:10011014 title=【選べるブラセット★3・5・10点タイプ】ブラジャー ショーツセット レディース 下着 盛れる A〜Fカップ 送料無料 老舗下着専門店 三恵 【3年連続楽天総合1位★累計54万セット突破】福袋2026 2025
+I/flutter (13805): [RECOMMEND_TRACE] exclude reason=safetyBlocked
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=madame1214:10000000 title=バームクーヘン ギフト『 マダムブリュレ 』【冷凍便】 新感覚 バウムクーヘン 人気 スイーツ お取り寄せ 内祝 プレゼント
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=madame1214:10000000 title=バームクーヘン ギフト『 マダムブリュレ 』【冷凍便】 新感覚 バウムクーヘン 人気 スイーツ お取り寄せ 内祝 プレゼント
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=f402052-iizuka:10000315 title=【ふるさと納税】★Wレビューキャンペーン実施中★【累計4000万個突破！】＼個数が選べる！／鉄板焼ハンバーグ デミソース 10個～20個 温めるだけ 福岡 飯塚 冷凍 小分け 大容量 ハンバーグ 肉 牛 簡単調理 特製 湯煎 人気 お試し 【20250303レビューCP】
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=f402052-iizuka:10000315 title=【ふるさと納税】★Wレビューキャンペーン実施中★【累計4000万個突破！】＼個数が選べる！／鉄板焼ハンバーグ デミソース 10個～20個 温めるだけ 福岡 飯塚 冷凍 小分け 大容量 ハンバーグ 肉 牛 簡単調理 特製 湯煎 人気 お試し 【20250303レビューCP】
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=bellevie-harima:10013190 title=カタログギフト 楽天1位ギフト大賞 [ソムリエアットギフト 最高級 ザ プレミアムカタログギフト ブラック シルバー ゴールド] 5900円(S-EO) 5000円コース ギフトカタログ 出産内祝い 結婚祝い 内祝い お返し (グルメ/ブランド）gws 父の日ギフト
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=bellevie-harima:10013190 title=カタログギフト 楽天1位ギフト大賞 [ソムリエアットギフト 最高級 ザ プレミアムカタログギフト ブラック シルバー ゴールド] 5900円(S-EO) 5000円コース ギフトカタログ 出産内祝い 結婚祝い 内祝い お返し (グルメ/ブランド）gws 父の日ギフト
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=adachi-umai:10000130 title=200円OFF sale セール 値引 割引 限定 特別 お得 米 白米 10kg 送料無料 コシヒカリ 5kg×2袋 愛知県産 令和7年産 コシヒカリ お米 10キロ 安い あす楽 送料無料【沖縄、配送不可】
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=adachi-umai:10000130 title=200円OFF sale セール 値引 割引 限定 特別 お得 米 白米 10kg 送料無料 コシヒカリ 5kg×2袋 愛知県産 令和7年産 コシヒカリ お米 10キロ 安い あす楽 送料無料【沖縄、配送不可】
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=wagasi:10000020 title=【特別価格】命名紙 一升餅 セット 名前入り個包装 小分け袋 リュック付き 名入れ小餅 風呂敷 選び取りカード きな粉 一生餅 背負い餅 一升米 紅白 写真用 踏み餅 生年月日 赤ちゃん ベビー 男の子 女の子 1歳 誕生日プレゼント 巾着 人気 初誕生お祝い 餅踏み 誕生餅
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=wagasi:10000020 title=【特別価格】命名紙 一升餅 セット 名前入り個包装 小分け袋 リュック付き 名入れ小餅 風呂敷 選び取りカード きな粉 一生餅 背負い餅 一升米 紅白 写真用 踏み餅 生年月日 赤ちゃん ベビー 男の子 女の子 1歳 誕生日プレゼント 巾着 人気 初誕生お祝い 餅踏み 誕生餅
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=busyman:10000122 title=【商品限定P5倍開催！】スーツケース 機内持込 軽量 キャリーバッグ TSAロック USBポート ドリンクホルダー 静音 人気 修学旅行 大容量 頑丈 かわいい おすすめ SSサイズ Sサイズ Mサイズ Lサイズ 子供 T9088 TANOBI【キャンペーン参加で3年間品質保証獲得！】
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=busyman:10000122 title=【商品限定P5倍開催！】スーツケース 機内持込 軽量 キャリーバッグ TSAロック USBポート ドリンクホルダー 静音 人気 修学旅行 大容量 頑丈 かわいい おすすめ SSサイズ Sサイズ Mサイズ Lサイズ 子供 T9088 TANOBI【キャンペーン参加で3年間品質保証獲得！】
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=hankoya-shop:10023335 title=【半額クーポン配布中！6月1日限定】 印鑑 はんこ ジョインティ 回転式ネーム印 Jointy J9 キャップレス ネーム印 ゴム印 【サイズ：10mm丸】 かわいいハンコ 認印 個人印鑑 朱肉不要 ハンコ 女性 仕事 会社 男性 かわい
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=hankoya-shop:10023335 title=【半額クーポン配布中！6月1日限定】 印鑑 はんこ ジョインティ 回転式ネーム印 Jointy J9 キャップレス ネーム印 ゴム印 【サイズ：10mm丸】 かわいいハンコ 認印 個人印鑑 朱肉不要 ハンコ 女性 仕事 会社 男性 かわい
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=tabletpckoubou:10001261 title=【楽天1位】 動画視聴に最適 10インチ ＼限定2000円OFFクーポン／ 128GB / 64GB WidevineL1対応 高性能 8コアCPU Android15 Wi-Fiモデル 10.1 タブレットPC 10.1インチ クリスマス タブレット 子供 キッズ 端末 本体 お祝い 卒業 入学 小学生 4/22迄
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=tabletpckoubou:10001261 title=【楽天1位】 動画視聴に最適 10インチ ＼限定2000円OFFクーポン／ 128GB / 64GB WidevineL1対応 高性能 8コアCPU Android15 Wi-Fiモデル 10.1 タブレットPC 10.1インチ クリスマス タブレット 子供 キッズ 端末 本体 お祝い 卒業 入学 小学生 4/22迄
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=yonayona:10000242 title=【人気5種を飲み比べ！】クラフトビール 飲み比べ よなよなエール ビール ギフト 詰め合わせ IPA 送料無料 お酒 プレゼント セット おしゃれ ヤッホーブルーイング 缶ビール お試し 地ビール インドの青鬼 水曜日のネコ
+I/flutter (13805): [RECOMMEND_TRACE] exclude reason=safetyBlocked
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=niccou-store:10000179 title=【お得な2枚組★楽天1位獲得】 NIMASO iPhone17 保護フィルム iPhone17e ガラスフィルム iPhone16 iPhone15 iPhone16e 保護フィルム iPhone17promax iPhone16promax iPhone15promax iPhone14promax13promax plus mini iPhone12pro air iPhoneSE3 フィルム 強化ガラスフィルム
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=niccou-store:10000179 title=【お得な2枚組★楽天1位獲得】 NIMASO iPhone17 保護フィルム iPhone17e ガラスフィルム iPhone16 iPhone15 iPhone16e 保護フィルム iPhone17promax iPhone16promax iPhone15promax iPhone14promax13promax plus mini iPhone12pro air iPhoneSE3 フィルム 強化ガラスフィルム
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=corsage:10001083 title=オシャモバ正規品【モバイルバッテリー 軽量 type-c usbc 小型 大容量 名入れ 卒業記念 記念品 プレゼント #OSHAMOBA iPhone 10000mAh ケーブル内蔵 薄型 薄い 軽い かわいい 充電器 スマホ 防災グッズ】★メール便送料無料★ ケーブル内蔵バッテリー {3}
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=corsage:10001083 title=オシャモバ正規品【モバイルバッテリー 軽量 type-c usbc 小型 大容量 名入れ 卒業記念 記念品 プレゼント #OSHAMOBA iPhone 10000mAh ケーブル内蔵 薄型 薄い 軽い かわいい 充電器 スマホ 防災グッズ】★メール便送料無料★ ケーブル内蔵バッテリー {3}
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=e-kit:10042595 title=＼ 高品質 高コスパ ／ 冷蔵庫 マット 冷蔵庫マット 冷蔵庫下マット クリア 透明 床暖房 キズ 凹み 防止 下敷き ポリカーボネート 洗濯機 SNSで大人気 [S/M/L] [ゼロキーパー]
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=e-kit:10042595 title=＼ 高品質 高コスパ ／ 冷蔵庫 マット 冷蔵庫マット 冷蔵庫下マット クリア 透明 床暖房 キズ 凹み 防止 下敷き ポリカーボネート 洗濯機 SNSで大人気 [S/M/L] [ゼロキーパー]
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=bellevie-harima:10013197 title=カタログギフト 楽天1位ギフト大賞 [ソムリエアットギフト 最高級 ザ プレミアムカタログギフト ブラック シルバー ゴールド] 10000円(S-AOO) 1万円コース 出産祝い 出産内祝い 結婚祝い 結婚内祝い 新築祝い 内祝い お返し グルメ gws 父の日ギフト
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=bellevie-harima:10013197 title=カタログギフト 楽天1位ギフト大賞 [ソムリエアットギフト 最高級 ザ プレミアムカタログギフト ブラック シルバー ゴールド] 10000円(S-AOO) 1万円コース 出産祝い 出産内祝い 結婚祝い 結婚内祝い 新築祝い 内祝い お返し グルメ gws 父の日ギフト
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=hanaro:10000896 title=【P10倍】iPhone17 ケース 手帳型 iPhone17e ケース 手帳 iPhone16 iPhone16e iPhone17Pro iPhone Air iPhone16Pro iPhone17ProMax iPhone 15 14 13 12 mini 16Plus 16ProMax カバー 手帳型ケース iPhone SE 第3世代 スマホケース スマホ
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=hanaro:10000896 title=【P10倍】iPhone17 ケース 手帳型 iPhone17e ケース 手帳 iPhone16 iPhone16e iPhone17Pro iPhone Air iPhone16Pro iPhone17ProMax iPhone 15 14 13 12 mini 16Plus 16ProMax カバー 手帳型ケース iPhone SE 第3世代 スマホケース スマホ
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=z-craft:10042820 title=クロックス クロックバンド CROCS サンダル メンズ レディース ブラック 黒 ホワイト 白 ネイビー 紺 パープル CROCBAND 11016 シューズ スリッポン サボ サボサンダル シンプル プレゼント 室内履き 海 アウトドア 人気 定番
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=z-craft:10042820 title=クロックス クロックバンド CROCS サンダル メンズ レディース ブラック 黒 ホワイト 白 ネイビー 紺 パープル CROCBAND 11016 シューズ スリッポン サボ サボサンダル シンプル プレゼント 室内履き 海 アウトドア 人気 定番
+I/flutter (13805): [RECOMMEND_TRACE] raw item itemCode=corsage:10001821 title=オシャモバ正規品【モバイルバッテリー 5000mAh usbc 軽量 小型 名入れ iFace対応 ミニ iPhone モバイル充電器 ケーブル内蔵 大容量 バッテリー 軽い かわいい くすみカラー 卒業記念 記念品 typec ケーブル不要 モバ充 モババ 防災】[メール便送料無料] #OSHAMOBA mini{3}
+I/flutter (13805): [RECOMMEND_TRACE] accepted itemCode=corsage:10001821 title=オシャモバ正規品【モバイルバッテリー 5000mAh usbc 軽量 小型 名入れ iFace対応 ミニ iPhone モバイル充電器 ケーブル内蔵 大容量 バッテリー 軽い かわいい くすみカラー 卒業記念 記念品 typec ケーブル不要 モバ充 モババ 防災】[メール便送料無料] #OSHAMOBA mini{3}
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=darkangel:10002101 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=darkangel:10002101 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=darkangel:10002101 title=【期間限定：1枚797円！3枚セットで】 タイツ レギンス レディース 春 ハイウエスト Yラインカバー 腹巻 美脚 ストレッチ 高伸縮 ヒップアップ uvカット 接触冷感 ストッキング【 タイツ＆レギンス 】 ダークエンジェル price=1390 reviewAverage=4.20 reviewCount=132012 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=smahoservice:10003781 score=0.0 reasons=
+W/WindowOnBackDispatcher(13805): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(13805): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=smahoservice:10003781 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=smahoservice:10003781 title=【日本人気デザイナー監修 特別版登場！楽天年間ランキング1位】レディーススマートウォッチ 通話機能 24時間健康管理 1.9インチ大画面 IP68防水 300mah 運動モード歩数計 消費カロリー心拍数 睡眠モード 音楽製御 iPhone/Android対応 price=2980 reviewAverage=4.39 reviewCount=48294 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=gourmetcoffee:10001806 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=gourmetcoffee:10001806 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=gourmetcoffee:10001806 title=送料無料 コーヒー豆 コーヒー 2kg 怒涛の珈琲豆　粉 (G500×4) 加藤珈琲/グルメコーヒー豆専門加藤珈琲店　スペシャルティ price=5398 reviewAverage=4.60 reviewCount=43032 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=139.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=queeneyes:10000234 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=queeneyes:10000234 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=queeneyes:10000234 title=【限定カラー】【クーポン利用で20%OFF】エバーカラーワンデーナチュラル (1箱20枚入り)( 送料無料 カラコン カラーコンタクト 度あり 度入り 度なし ワンデー 1day コンタクト エバーカラー エバーカラーワンデー エバカラ エバナチュ コンタクトレンズ )【新木優子】 price=2598 reviewAverage=4.36 reviewCount=40027 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=kobe-beauty-labo:10000074 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=kobe-beauty-labo:10000074 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=kobe-beauty-labo:10000074 title=《公式店》【SALONIA ストレート ヘアアイロン 15mm 24mm 35mm】楽天1位送料無料 1年保証 耐熱ポーチ付き サロニア 人気 おすすめ プレゼント コテ アイロン hk クリスマスプレゼント 女性 slall price=3828 reviewAverage=4.56 reviewCount=38481 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=139.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=f016918-betsukai:10003150 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=f016918-betsukai:10003150 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=f016918-betsukai:10003150 title=【ふるさと納税】2年連続 総合1位 ホタテ 訳あり 4個まで選び放題 ( ふるさと納税 ほたて ふるさと納税 訳あり 帆立 ふるさと ホタテ わけあり ホタテ貝柱 貝 人気 不揃い 魚介 ランキング 海鮮 貝柱 冷凍 発送時期が選べる 北海道 別海町 )（クラウドファンディング対象） price=8000 reviewAverage=4.85 reviewCount=30571 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=mochikichi:10000534 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=mochikichi:10000534 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=mochikichi:10000534 title=（※期日指定6月30日までお届け可）もち吉 【送料無料】お味見セット もちの縁 味まどか (商品カタログ入り)［※お味見セットのみのご注文の場合、代金引換はできません。］ price=1296 reviewAverage=4.69 reviewCount=29614 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=apm24:10002135 score=8.0 reasons=ROOM向き
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=apm24:10002135 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=apm24:10002135 title=シートマスク パック MJCARE エッセンスマスク 80・90・100枚 個包装 人気 ランキング 韓国 店長おすすめ 選べる 10種 フェイスマスク MIJIN ミジン フェイスパック ぱっく 顔パック ノンアルコール APM24 ギフト 誕生日 プレゼント CICA 韓国スキンケア 韓国コスメ price=3200 reviewAverage=4.72 reviewCount=29384 roomFit=8.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=161.8 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=case-by-case:10002035 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=case-by-case:10002035 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=case-by-case:10002035 title=P倍倍★1位6冠 正規品 モバイルバッテリー 超マット加工 PSE認証【200円offクーポン2個目に使える】大容量 小型 軽量 ミニ iPhone 急速充電 タイプc ケーブル ケーブル内蔵 Android Type-c ライトニング アイフォン アンドロイド 充電器 急速 急速充電器 5000/10000mAh price=1760 reviewAverage=4.44 reviewCount=29224 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=candymagic:10000575 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=candymagic:10000575 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=candymagic:10000575 title=カラコン ワンデー【もれなく1箱無料】1箱あたり1,144円 ReVIA 1day COLOR 1箱 10枚 入/3箱合計 30枚入り カラー コンタクト コンタクトレンズ ワンデー レヴィア ナチュラル 自然 人気 ブラウン 度あり 度なし キャンマジ公式 2箱購入で＋1箱無料 送料無料 ネコポス price=3432 reviewAverage=4.72 reviewCount=28541 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=motebeauty:10000472 score=8.0 reasons=ROOM向き
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=motebeauty:10000472 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=motebeauty:10000472 title=美顔器 エビス ツインエレナイザープレミアム イオン導入 高周波 RF イオンクレンジング クール HOT 超音波美顔器 ランキング1位 リフトアップ シミ 毛穴 たるみ ほうれい線 プレゼント 人気【ebis 正規販売店】・送料無料・海外使用可能・日本製 プレゼント ギフト price=29700 reviewAverage=4.17 reviewCount=25865 roomFit=8.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=153.8 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=nagasaki-kasutera:10000286 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=nagasaki-kasutera:10000286 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=nagasaki-kasutera:10000286 title=幸せの黄色いカステラ1号 送料無料 [ スイーツ 和菓子 お菓子 長崎カステラ プレゼント 焼き菓子 しっとり おすすめ グルメ大賞 10切れ カット済み 高級 老舗 女性 男性 おやつ ] SL T101 price=1780 reviewAverage=4.52 reviewCount=25751 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=139.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=madame1214:10000000 score=8.0 reasons=ROOM向き
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=madame1214:10000000 score=55.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=madame1214:10000000 title=バームクーヘン ギフト『 マダムブリュレ 』【冷凍便】 新感覚 バウムクーヘン 人気 スイーツ お取り寄せ 内祝 プレゼント price=3480 reviewAverage=4.02 reviewCount=23221 roomFit=8.0 reaction=0.0 reviewEvidence=44.0 postability=55.0 score=169.8 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=f402052-iizuka:10000315 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=f402052-iizuka:10000315 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=f402052-iizuka:10000315 title=【ふるさと納税】★Wレビューキャンペーン実施中★【累計4000万個突破！】＼個数が選べる！／鉄板焼ハンバーグ デミソース 10個～20個 温めるだけ 福岡 飯塚 冷凍 小分け 大容量 ハンバーグ 肉 牛 簡単調理 特製 湯煎 人気 お試し 【20250303レビューCP】 price=10000 reviewAverage=4.69 reviewCount=21274 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=bellevie-harima:10013190 score=8.0 reasons=ROOM向き
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=bellevie-harima:10013190 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=bellevie-harima:10013190 title=カタログギフト 楽天1位ギフト大賞 [ソムリエアットギフト 最高級 ザ プレミアムカタログギフト ブラック シルバー ゴールド] 5900円(S-EO) 5000円コース ギフトカタログ 出産内祝い 結婚祝い 内祝い お返し (グルメ/ブランド）gws 父の日ギフト price=4840 reviewAverage=4.68 reviewCount=20896 roomFit=8.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=161.8 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=adachi-umai:10000130 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=adachi-umai:10000130 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=adachi-umai:10000130 title=200円OFF sale セール 値引 割引 限定 特別 お得 米 白米 10kg 送料無料 コシヒカリ 5kg×2袋 愛知県産 令和7年産 コシヒカリ お米 10キロ 安い あす楽 送料無料【沖縄、配送不可】 price=7799 reviewAverage=4.57 reviewCount=20686 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=wagasi:10000020 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=wagasi:10000020 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=wagasi:10000020 title=【特別価格】命名紙 一升餅 セット 名前入り個包装 小分け袋 リュック付き 名入れ小餅 風呂敷 選び取りカード きな粉 一生餅 背負い餅 一升米 紅白 写真用 踏み餅 生年月日 赤ちゃん ベビー 男の子 女の子 1歳 誕生日プレゼント 巾着 人気 初誕生お祝い 餅踏み 誕生餅 price=3580 reviewAverage=4.88 reviewCount=20196 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=60.0 score=151.4 reasons=バランス|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=busyman:10000122 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=busyman:10000122 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=busyman:10000122 title=【商品限定P5倍開催！】スーツケース 機内持込 軽量 キャリーバッグ TSAロック USBポート ドリンクホルダー 静音 人気 修学旅行 大容量 頑丈 かわいい おすすめ SSサイズ Sサイズ Mサイズ Lサイズ 子供 T9088 TANOBI【キャンペーン参加で3年間品質保証獲得！】 price=3980 reviewAverage=4.40 reviewCount=17385 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=hankoya-shop:10023335 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=hankoya-shop:10023335 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=hankoya-shop:10023335 title=【半額クーポン配布中！6月1日限定】 印鑑 はんこ ジョインティ 回転式ネーム印 Jointy J9 キャップレス ネーム印 ゴム印 【サイズ：10mm丸】 かわいいハンコ 認印 個人印鑑 朱肉不要 ハンコ 女性 仕事 会社 男性 かわい price=740 reviewAverage=4.49 reviewCount=17191 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=tabletpckoubou:10001261 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=tabletpckoubou:10001261 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=tabletpckoubou:10001261 title=【楽天1位】 動画視聴に最適 10インチ ＼限定2000円OFFクーポン／ 128GB / 64GB WidevineL1対応 高性能 8コアCPU Android15 Wi-Fiモデル 10.1 タブレットPC 10.1インチ クリスマス タブレット 子供 キッズ 端末 本体 お祝い 卒業 入学 小学生 4/22迄 price=14580 reviewAverage=4.19 reviewCount=17037 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=niccou-store:10000179 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=niccou-store:10000179 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=niccou-store:10000179 title=【お得な2枚組★楽天1位獲得】 NIMASO iPhone17 保護フィルム iPhone17e ガラスフィルム iPhone16 iPhone15 iPhone16e 保護フィルム iPhone17promax iPhone16promax iPhone15promax iPhone14promax13promax plus mini iPhone12pro air iPhoneSE3 フィルム 強化ガラスフィルム price=1499 reviewAverage=4.64 reviewCount=16582 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=corsage:10001083 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=corsage:10001083 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=corsage:10001083 title=オシャモバ正規品【モバイルバッテリー 軽量 type-c usbc 小型 大容量 名入れ 卒業記念 記念品 プレゼント #OSHAMOBA iPhone 10000mAh ケーブル内蔵 薄型 薄い 軽い かわいい 充電器 スマホ 防災グッズ】★メール便送料無料★ ケーブル内蔵バッテリー {3} price=1680 reviewAverage=4.33 reviewCount=16329 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=60.0 score=151.4 reasons=バランス|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=e-kit:10042595 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=e-kit:10042595 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=e-kit:10042595 title=＼ 高品質 高コスパ ／ 冷蔵庫 マット 冷蔵庫マット 冷蔵庫下マット クリア 透明 床暖房 キズ 凹み 防止 下敷き ポリカーボネート 洗濯機 SNSで大人気 [S/M/L] [ゼロキーパー] price=3080 reviewAverage=4.67 reviewCount=15905 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=50.0 score=143.4 reasons=バランス|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=bellevie-harima:10013197 score=8.0 reasons=ROOM向き
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=bellevie-harima:10013197 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=bellevie-harima:10013197 title=カタログギフト 楽天1位ギフト大賞 [ソムリエアットギフト 最高級 ザ プレミアムカタログギフト ブラック シルバー ゴールド] 10000円(S-AOO) 1万円コース 出産祝い 出産内祝い 結婚祝い 結婚内祝い 新築祝い 内祝い お返し グルメ gws 父の日ギフト price=8640 reviewAverage=4.67 reviewCount=15849 roomFit=8.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=161.8 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=hanaro:10000896 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=hanaro:10000896 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=hanaro:10000896 title=【P10倍】iPhone17 ケース 手帳型 iPhone17e ケース 手帳 iPhone16 iPhone16e iPhone17Pro iPhone Air iPhone16Pro iPhone17ProMax iPhone 15 14 13 12 mini 16Plus 16ProMax カバー 手帳型ケース iPhone SE 第3世代 スマホケース スマホ price=1650 reviewAverage=4.58 reviewCount=15792 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=z-craft:10042820 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=z-craft:10042820 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=z-craft:10042820 title=クロックス クロックバンド CROCS サンダル メンズ レディース ブラック 黒 ホワイト 白 ネイビー 紺 パープル CROCBAND 11016 シューズ スリッポン サボ サボサンダル シンプル プレゼント 室内履き 海 アウトドア 人気 定番 price=3980 reviewAverage=4.54 reviewCount=15751 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=139.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=corsage:10001821 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=corsage:10001821 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=corsage:10001821 title=オシャモバ正規品【モバイルバッテリー 5000mAh usbc 軽量 小型 名入れ iFace対応 ミニ iPhone モバイル充電器 ケーブル内蔵 大容量 バッテリー 軽い かわいい くすみカラー 卒業記念 記念品 typec ケーブル不要 モバ充 モババ 防災】[メール便送料無料] #OSHAMOBA mini{3} price=1180 reviewAverage=4.36 reviewCount=15116 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=50.0 score=143.4 reasons=バランス|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_POOL] raw=27 valid=27 scored=27
+I/flutter (13805): [RECOMMEND_SELECT] strictSelected=3
+I/flutter (13805): [RECOMMEND_BACKFILL] fromExistingPool=true added=7
+I/flutter (13805): [RECOMMEND_BACKFILL] reason=diversityRelaxed
+I/flutter (13805): [RECOMMEND_BACKFILL] added=7 total=10
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=darkangel:10002101 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=darkangel:10002101 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=darkangel:10002101 title=【期間限定：1枚797円！3枚セットで】 タイツ レギンス レディース 春 ハイウエスト Yラインカバー 腹巻 美脚 ストレッチ 高伸縮 ヒップアップ uvカット 接触冷感 ストッキング【 タイツ＆レギンス 】 ダークエンジェル price=1390 reviewAverage=4.20 reviewCount=132012 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=smahoservice:10003781 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=smahoservice:10003781 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=smahoservice:10003781 title=【日本人気デザイナー監修 特別版登場！楽天年間ランキング1位】レディーススマートウォッチ 通話機能 24時間健康管理 1.9インチ大画面 IP68防水 300mah 運動モード歩数計 消費カロリー心拍数 睡眠モード 音楽製御 iPhone/Android対応 price=2980 reviewAverage=4.39 reviewCount=48294 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=gourmetcoffee:10001806 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=gourmetcoffee:10001806 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=gourmetcoffee:10001806 title=送料無料 コーヒー豆 コーヒー 2kg 怒涛の珈琲豆　粉 (G500×4) 加藤珈琲/グルメコーヒー豆専門加藤珈琲店　スペシャルティ price=5398 reviewAverage=4.60 reviewCount=43032 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=139.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=queeneyes:10000234 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=queeneyes:10000234 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=queeneyes:10000234 title=【限定カラー】【クーポン利用で20%OFF】エバーカラーワンデーナチュラル (1箱20枚入り)( 送料無料 カラコン カラーコンタクト 度あり 度入り 度なし ワンデー 1day コンタクト エバーカラー エバーカラーワンデー エバカラ エバナチュ コンタクトレンズ )【新木優子】 price=2598 reviewAverage=4.36 reviewCount=40027 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=kobe-beauty-labo:10000074 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=kobe-beauty-labo:10000074 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=kobe-beauty-labo:10000074 title=《公式店》【SALONIA ストレート ヘアアイロン 15mm 24mm 35mm】楽天1位送料無料 1年保証 耐熱ポーチ付き サロニア 人気 おすすめ プレゼント コテ アイロン hk クリスマスプレゼント 女性 slall price=3828 reviewAverage=4.56 reviewCount=38481 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=139.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=f016918-betsukai:10003150 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=f016918-betsukai:10003150 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=f016918-betsukai:10003150 title=【ふるさと納税】2年連続 総合1位 ホタテ 訳あり 4個まで選び放題 ( ふるさと納税 ほたて ふるさと納税 訳あり 帆立 ふるさと ホタテ わけあり ホタテ貝柱 貝 人気 不揃い 魚介 ランキング 海鮮 貝柱 冷凍 発送時期が選べる 北海道 別海町 )（クラウドファンディング対象） price=8000 reviewAverage=4.85 reviewCount=30571 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=mochikichi:10000534 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=mochikichi:10000534 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=mochikichi:10000534 title=（※期日指定6月30日までお届け可）もち吉 【送料無料】お味見セット もちの縁 味まどか (商品カタログ入り)［※お味見セットのみのご注文の場合、代金引換はできません。］ price=1296 reviewAverage=4.69 reviewCount=29614 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=apm24:10002135 score=8.0 reasons=ROOM向き
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=apm24:10002135 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=apm24:10002135 title=シートマスク パック MJCARE エッセンスマスク 80・90・100枚 個包装 人気 ランキング 韓国 店長おすすめ 選べる 10種 フェイスマスク MIJIN ミジン フェイスパック ぱっく 顔パック ノンアルコール APM24 ギフト 誕生日 プレゼント CICA 韓国スキンケア 韓国コスメ price=3200 reviewAverage=4.72 reviewCount=29384 roomFit=8.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=161.8 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=case-by-case:10002035 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=case-by-case:10002035 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=case-by-case:10002035 title=P倍倍★1位6冠 正規品 モバイルバッテリー 超マット加工 PSE認証【200円offクーポン2個目に使える】大容量 小型 軽量 ミニ iPhone 急速充電 タイプc ケーブル ケーブル内蔵 Android Type-c ライトニング アイフォン アンドロイド 充電器 急速 急速充電器 5000/10000mAh price=1760 reviewAverage=4.44 reviewCount=29224 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=candymagic:10000575 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=candymagic:10000575 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=candymagic:10000575 title=カラコン ワンデー【もれなく1箱無料】1箱あたり1,144円 ReVIA 1day COLOR 1箱 10枚 入/3箱合計 30枚入り カラー コンタクト コンタクトレンズ ワンデー レヴィア ナチュラル 自然 人気 ブラウン 度あり 度なし キャンマジ公式 2箱購入で＋1箱無料 送料無料 ネコポス price=3432 reviewAverage=4.72 reviewCount=28541 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=motebeauty:10000472 score=8.0 reasons=ROOM向き
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=motebeauty:10000472 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=motebeauty:10000472 title=美顔器 エビス ツインエレナイザープレミアム イオン導入 高周波 RF イオンクレンジング クール HOT 超音波美顔器 ランキング1位 リフトアップ シミ 毛穴 たるみ ほうれい線 プレゼント 人気【ebis 正規販売店】・送料無料・海外使用可能・日本製 プレゼント ギフト price=29700 reviewAverage=4.17 reviewCount=25865 roomFit=8.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=153.8 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=nagasaki-kasutera:10000286 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=nagasaki-kasutera:10000286 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=nagasaki-kasutera:10000286 title=幸せの黄色いカステラ1号 送料無料 [ スイーツ 和菓子 お菓子 長崎カステラ プレゼント 焼き菓子 しっとり おすすめ グルメ大賞 10切れ カット済み 高級 老舗 女性 男性 おやつ ] SL T101 price=1780 reviewAverage=4.52 reviewCount=25751 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=139.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=madame1214:10000000 score=8.0 reasons=ROOM向き
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=madame1214:10000000 score=55.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=madame1214:10000000 title=バームクーヘン ギフト『 マダムブリュレ 』【冷凍便】 新感覚 バウムクーヘン 人気 スイーツ お取り寄せ 内祝 プレゼント price=3480 reviewAverage=4.02 reviewCount=23221 roomFit=8.0 reaction=0.0 reviewEvidence=44.0 postability=55.0 score=169.8 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=f402052-iizuka:10000315 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=f402052-iizuka:10000315 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=f402052-iizuka:10000315 title=【ふるさと納税】★Wレビューキャンペーン実施中★【累計4000万個突破！】＼個数が選べる！／鉄板焼ハンバーグ デミソース 10個～20個 温めるだけ 福岡 飯塚 冷凍 小分け 大容量 ハンバーグ 肉 牛 簡単調理 特製 湯煎 人気 お試し 【20250303レビューCP】 price=10000 reviewAverage=4.69 reviewCount=21274 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=bellevie-harima:10013190 score=8.0 reasons=ROOM向き
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=bellevie-harima:10013190 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=bellevie-harima:10013190 title=カタログギフト 楽天1位ギフト大賞 [ソムリエアットギフト 最高級 ザ プレミアムカタログギフト ブラック シルバー ゴールド] 5900円(S-EO) 5000円コース ギフトカタログ 出産内祝い 結婚祝い 内祝い お返し (グルメ/ブランド）gws 父の日ギフト price=4840 reviewAverage=4.68 reviewCount=20896 roomFit=8.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=161.8 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=adachi-umai:10000130 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=adachi-umai:10000130 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=adachi-umai:10000130 title=200円OFF sale セール 値引 割引 限定 特別 お得 米 白米 10kg 送料無料 コシヒカリ 5kg×2袋 愛知県産 令和7年産 コシヒカリ お米 10キロ 安い あす楽 送料無料【沖縄、配送不可】 price=7799 reviewAverage=4.57 reviewCount=20686 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=wagasi:10000020 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=wagasi:10000020 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=wagasi:10000020 title=【特別価格】命名紙 一升餅 セット 名前入り個包装 小分け袋 リュック付き 名入れ小餅 風呂敷 選び取りカード きな粉 一生餅 背負い餅 一升米 紅白 写真用 踏み餅 生年月日 赤ちゃん ベビー 男の子 女の子 1歳 誕生日プレゼント 巾着 人気 初誕生お祝い 餅踏み 誕生餅 price=3580 reviewAverage=4.88 reviewCount=20196 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=60.0 score=151.4 reasons=バランス|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=busyman:10000122 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=busyman:10000122 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=busyman:10000122 title=【商品限定P5倍開催！】スーツケース 機内持込 軽量 キャリーバッグ TSAロック USBポート ドリンクホルダー 静音 人気 修学旅行 大容量 頑丈 かわいい おすすめ SSサイズ Sサイズ Mサイズ Lサイズ 子供 T9088 TANOBI【キャンペーン参加で3年間品質保証獲得！】 price=3980 reviewAverage=4.40 reviewCount=17385 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=hankoya-shop:10023335 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=hankoya-shop:10023335 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=hankoya-shop:10023335 title=【半額クーポン配布中！6月1日限定】 印鑑 はんこ ジョインティ 回転式ネーム印 Jointy J9 キャップレス ネーム印 ゴム印 【サイズ：10mm丸】 かわいいハンコ 認印 個人印鑑 朱肉不要 ハンコ 女性 仕事 会社 男性 かわい price=740 reviewAverage=4.49 reviewCount=17191 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=tabletpckoubou:10001261 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=tabletpckoubou:10001261 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=tabletpckoubou:10001261 title=【楽天1位】 動画視聴に最適 10インチ ＼限定2000円OFFクーポン／ 128GB / 64GB WidevineL1対応 高性能 8コアCPU Android15 Wi-Fiモデル 10.1 タブレットPC 10.1インチ クリスマス タブレット 子供 キッズ 端末 本体 お祝い 卒業 入学 小学生 4/22迄 price=14580 reviewAverage=4.19 reviewCount=17037 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=niccou-store:10000179 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=niccou-store:10000179 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=niccou-store:10000179 title=【お得な2枚組★楽天1位獲得】 NIMASO iPhone17 保護フィルム iPhone17e ガラスフィルム iPhone16 iPhone15 iPhone16e 保護フィルム iPhone17promax iPhone16promax iPhone15promax iPhone14promax13promax plus mini iPhone12pro air iPhoneSE3 フィルム 強化ガラスフィルム price=1499 reviewAverage=4.64 reviewCount=16582 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=corsage:10001083 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=corsage:10001083 score=60.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=corsage:10001083 title=オシャモバ正規品【モバイルバッテリー 軽量 type-c usbc 小型 大容量 名入れ 卒業記念 記念品 プレゼント #OSHAMOBA iPhone 10000mAh ケーブル内蔵 薄型 薄い 軽い かわいい 充電器 スマホ 防災グッズ】★メール便送料無料★ ケーブル内蔵バッテリー {3} price=1680 reviewAverage=4.33 reviewCount=16329 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=60.0 score=151.4 reasons=バランス|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=e-kit:10042595 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=e-kit:10042595 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=e-kit:10042595 title=＼ 高品質 高コスパ ／ 冷蔵庫 マット 冷蔵庫マット 冷蔵庫下マット クリア 透明 床暖房 キズ 凹み 防止 下敷き ポリカーボネート 洗濯機 SNSで大人気 [S/M/L] [ゼロキーパー] price=3080 reviewAverage=4.67 reviewCount=15905 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=50.0 score=143.4 reasons=バランス|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=bellevie-harima:10013197 score=8.0 reasons=ROOM向き
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=bellevie-harima:10013197 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=bellevie-harima:10013197 title=カタログギフト 楽天1位ギフト大賞 [ソムリエアットギフト 最高級 ザ プレミアムカタログギフト ブラック シルバー ゴールド] 10000円(S-AOO) 1万円コース 出産祝い 出産内祝い 結婚祝い 結婚内祝い 新築祝い 内祝い お返し グルメ gws 父の日ギフト price=8640 reviewAverage=4.67 reviewCount=15849 roomFit=8.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=161.8 reasons=バランス|高評価|レビュー多め|ROOM向き|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=hanaro:10000896 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=hanaro:10000896 score=35.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=hanaro:10000896 title=【P10倍】iPhone17 ケース 手帳型 iPhone17e ケース 手帳 iPhone16 iPhone16e iPhone17Pro iPhone Air iPhone16Pro iPhone17ProMax iPhone 15 14 13 12 mini 16Plus 16ProMax カバー 手帳型ケース iPhone SE 第3世代 スマホケース スマホ price=1650 reviewAverage=4.58 reviewCount=15792 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=35.0 score=131.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=z-craft:10042820 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=z-craft:10042820 score=45.0 reasons=投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=z-craft:10042820 title=クロックス クロックバンド CROCS サンダル メンズ レディース ブラック 黒 ホワイト 白 ネイビー 紺 パープル CROCBAND 11016 シューズ スリッポン サボ サボサンダル シンプル プレゼント 室内履き 海 アウトドア 人気 定番 price=3980 reviewAverage=4.54 reviewCount=15751 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=45.0 score=139.4 reasons=バランス|高評価|レビュー多め|投稿しやすい
+I/flutter (13805): [RECOMMEND_ROOM_FIT] itemCode=corsage:10001821 score=0.0 reasons=
+I/flutter (13805): [RECOMMEND_POSTABILITY] itemCode=corsage:10001821 score=50.0 reasons=投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_SCORE] itemCode=corsage:10001821 title=オシャモバ正規品【モバイルバッテリー 5000mAh usbc 軽量 小型 名入れ iFace対応 ミニ iPhone モバイル充電器 ケーブル内蔵 大容量 バッテリー 軽い かわいい くすみカラー 卒業記念 記念品 typec ケーブル不要 モバ充 モババ 防災】[メール便送料無料] #OSHAMOBA mini{3} price=1180 reviewAverage=4.36 reviewCount=15116 roomFit=0.0 reaction=0.0 reviewEvidence=44.0 postability=50.0 score=143.4 reasons=バランス|高評価|レビュー多め|投稿しやすい|投稿しやすい
+I/flutter (13805): [RECOMMEND_POOL] raw=27 valid=27 scored=27
+I/flutter (13805): [RECOMMEND_SELECT] strictSelected=3
+I/flutter (13805): [RECOMMEND_BACKFILL] fromExistingPool=true added=7
+I/flutter (13805): [RECOMMEND_BACKFILL] reason=diversityRelaxed
+I/flutter (13805): [RECOMMEND_BACKFILL] added=7 total=10
+I/flutter (13805): [RECOMMEND_API_GUARD] skipExtraSearch reason=poolHasEnoughBackfill
+I/flutter (13805): [RECOMMEND_API_GUARD] extraSearchAllowed=false
+I/flutter (13805): [RECOMMEND] apiCalls=1 poolSize=27
+I/flutter (13805): [RECOMMEND] final count: 10
+I/flutter (13805): [RECOMMEND_BUCKET] personal=0 relaxed=0 discovery=10 total=10
+I/flutter (13805): [RECOMMEND_RESULT] style=balance personalCount=0 discoveryCount=10 total=10
+I/flutter (13805): [RECOMMEND_TRACE] finalCandidateCount=10
+I/flutter (13805): [RECOMMEND_TRACE] failureType=none
+I/flutter (13805): [RECOMMEND_RESULT] status=success count=10
+I/flutter (13805): [RECOMMEND_GENERATE] end requestCount=1 planCount=3
+I/flutter (13805): [RECOMMEND_SUMMARY] totalApiRequests=1 totalPlans=3 selectedCount=10 excludedCount=3 durationMs=1436
+I/flutter (13805): [TODAY_RECOMMEND_API_USAGE] sessionId=1780084682076 phase=finalize apiCalls=1 genreSearchCalls=0 shopSearchCalls=0 keywordSearchCalls=1 excludedBySafety=3 excludedByDuplicate=0 finalItems=10
+I/flutter (13805): [RECOMMEND_TRACE] savedBundle=true
+I/flutter (13805): [RECOMMEND_SAVE] savedBundle=true count=10
+I/flutter (13805): [SEARCH_STATE_PERSIST] screen=productSearch event=restore resultCount=0
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:7d68ff14: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(13805): showSoftInput() view=io.flutter.embedding.android.FlutterView{d0f207f VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:6956243: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(13805): showSoftInput() view=io.flutter.embedding.android.FlutterView{d0f207f VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(13805): The input method toggled cursor monitoring on
+D/InsetsController(13805): show(ime(), fromIme=true)
+D/InsetsController(13805): show(ime(), fromIme=true)
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:6956243: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:7d68ff14: onShown
+I/flutter (13805): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter (13805): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter (13805): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter (13805): [Rakuten] keyword search execute keyword="アンパンマン" genreId=- genreName(lookup)=- shopCode=- shopName(saved lookup)=- hits=30 excludeRegistered=0 savedShopExcludeSet=0 
+I/flutter (13805): [SEARCH_EXECUTE_TRACE] sessionId=1 mode=product keyword="アンパンマン" selectedShopCode=- genreId=- startedAt=2026-05-30T04:58:18.810707
+I/flutter (13805): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=アンパンマン genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 expectedApiCalls=20
+I/flutter (13805): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3&sort=-reviewCount
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:8b7d2945: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor(13805): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher(13805): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@110191405 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@469a657
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:34fdc369: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:8b7d2945: onHidden
+I/flutter (13805): [Rakuten] response status=200 page=1 bytes=190780
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=1 statusCode=200 rawCount=30 durationMs=772 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=772 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=30/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3&sort=-reviewCount
+I/flutter (13805): [Rakuten] response status=200 page=2 bytes=165438
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=2 statusCode=200 rawCount=30 durationMs=433 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=true durationMs=433 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=2 raw=30 parsed=30 visible=60/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3&sort=-reviewCount
+I/flutter (13805): [Rakuten] response status=200 page=3 bytes=184461
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=3 statusCode=200 rawCount=30 durationMs=540 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=3 hits=30 success=true durationMs=540 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=3 raw=30 parsed=30 visible=86/100 dropReg=0 dropDup=0 dropAppFilter=4 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=アンパンマン genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E3%82%A2%E3%83%B3%E3%83%91%E3%83%B3%E3%83%9E%E3%83%B3&sort=-reviewCount
+I/flutter (13805): [Rakuten] response status=200 page=4 bytes=136988
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=4 statusCode=200 rawCount=30 durationMs=442 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=4 hits=30 success=true durationMs=442 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=4 raw=30 parsed=15 visible=100/100 dropReg=0 dropDup=1 dropAppFilter=0 dropSavedShop=0
+I/flutter (13805): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=4 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter (13805): [SEARCH_FETCH_100_AUDIT] mode=product keyword=アンパンマン genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=4 pagesSucceeded=4 pagesFailed=0 rawTotal=120 excludedCandidate=0 excludedDone=0 excludedSafety=4 excludedDuplicate=1 excludedNoImage=0 excludedNoPrice=0 excludedNoName=0 excludedNoUrl=0 excludedReviewThreshold=0 excludedOther=0 excludedSavedShop=0 displayCount=100 stopReason=reachedTarget
+I/flutter (13805): [SHOP_SEARCH_FETCH_RESULT] screen=product apiCalls=4 rawItems=true dedupedItems=100 safetyExcluded=4 duplicateExcluded=1 registeredExcluded=0 savedShopExcluded=0 displayItems=100 failedPages=0 reason=reachedTarget
+I/flutter (13805): [RakutenGenre][SUMMARY] total=105 resolved=105 unresolved=0 usedMaster=105 rawGenreNameEmpty=105
+I/flutter (13805): [SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+I/flutter (13805): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=6
+I/flutter (13805): [SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter (13805): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter (13805): [GenreMaster] search prefetch skip resolvedLocally=43
+I/flutter (13805): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter (13805): [SEARCH_STATE_PERSIST] screen=productSearch event=save resultCount=100
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:62a167de: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(13805): showSoftInput() view=io.flutter.embedding.android.FlutterView{d0f207f VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(13805): The input method toggled cursor monitoring on
+D/InsetsController(13805): show(ime(), fromIme=true)
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:62a167de: onShown
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:8b77536e: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+I/flutter (13805): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter (13805): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+D/InputConnectionAdaptor(13805): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher(13805): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@110191405 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@ed63f09
+
+The following assertion was thrown during a scheduler callback:
+Looking up a deactivated widget's ancestor is unsafe.
+At this point the state of the widget's element tree is no longer stable.
+To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by
+calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
+
+When the exception was thrown, this was the stack:
+#0      Element._debugCheckStateIsActiveForAncestorLookup.<anonymous closure> (package:flutter/src/widgets/framework.dart:4954:9)
+#1      Element._debugCheckStateIsActiveForAncestorLookup (package:flutter/src/widgets/framework.dart:4968:6)
+#2      Element.dependOnInheritedWidgetOfExactType (package:flutter/src/widgets/framework.dart:4988:12)
+#3      Focus.maybeOf (package:flutter/src/widgets/focus_scope.dart:458:19)
+#4      FocusScope.of (package:flutter/src/widgets/focus_scope.dart:835:18)
+══╡ EXCEPTION CAUGHT BY SCHEDULER LIBRARY ╞═════════════════════════════════════════════════════════
+#5      _RakutenSearchScreenState._runSearch (package:room_manager2/screens/rakuten_search_screen.dart:2416:16)
+#7      SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#6      _RakutenSearchScreenState._submitKeywordSearchFromDetailSheet.<anonymous closure> (package:room_manager2/screens/rakuten_search_screen.dart:2337:7)
+#8      SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1361:11)
+#9      SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1200:5)
+#10     _invoke (dart:ui/hooks.dart:330:13)
+#12     _drawFrame (dart:ui/hooks.dart:302:31)
+#11     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:444:5)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:cff60942: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:8b77536e: onHidden
+I/flutter (13805): [Rakuten] keyword search execute keyword="水筒" genreId=- genreName(lookup)=- shopCode=- shopName(saved lookup)=- hits=30 excludeRegistered=0 savedShopExcludeSet=0 
+I/flutter (13805): [SEARCH_EXECUTE_TRACE] sessionId=2 mode=product keyword="水筒" selectedShopCode=- genreId=- startedAt=2026-05-30T04:59:36.467529
+I/flutter (13805): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 expectedApiCalls=20
+I/flutter (13805): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter (13805): [Rakuten] response status=200 page=1 bytes=236444
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=1 statusCode=200 rawCount=30 durationMs=549 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=549 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=28/100 dropReg=0 dropDup=0 dropAppFilter=2 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter (13805): [Rakuten] response status=200 page=2 bytes=214198
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=2 statusCode=200 rawCount=30 durationMs=1208 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=true durationMs=1208 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=2 raw=30 parsed=30 visible=58/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter (13805): [Rakuten] response status=200 page=3 bytes=248695
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=3 statusCode=200 rawCount=30 durationMs=523 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=3 hits=30 success=true durationMs=523 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=3 raw=30 parsed=30 visible=88/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter (13805): [Rakuten] response status=429 page=4 bytes=128
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=429
+I/flutter (13805): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter (13805): [Rakuten] searchItems failed page=4 attempt=1: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (13805): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1528:21)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:257:24)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): 
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=4 statusCode=- rawCount=0 durationMs=0 success=false
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=4 hits=30 success=false error=楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=4 failed: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (13805): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1528:21)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:257:24)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): 
+I/flutter (13805): [SHOP_SEARCH_PARTIAL_FAILURE] page=4 keptItems=88 messageForUser=一部のページ取得に失敗しました
+I/flutter (13805): [Rakuten] request start mode=proxy page=5 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=5&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter (13805): [Rakuten] response status=200 page=5 bytes=195572
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=5 statusCode=200 rawCount=30 durationMs=461 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=5 hits=30 success=true durationMs=461 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=5 raw=30 parsed=13 visible=100/100 dropReg=0 dropDup=0 dropAppFilter=1 dropSavedShop=0
+I/flutter (13805): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=4 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter (13805): [SEARCH_FETCH_100_AUDIT] mode=product keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=5 pagesSucceeded=4 pagesFailed=1 rawTotal=120 excludedCandidate=0 excludedDone=0 excludedSafety=3 excludedDuplicate=0 excludedNoImage=0 excludedNoPrice=0 excludedNoName=0 excludedNoUrl=0 excludedReviewThreshold=0 excludedOther=0 excludedSavedShop=0 displayCount=100 stopReason=reachedTarget
+I/flutter (13805): [SHOP_SEARCH_FETCH_RESULT] screen=product apiCalls=4 rawItems=true dedupedItems=100 safetyExcluded=3 duplicateExcluded=0 registeredExcluded=0 savedShopExcluded=0 displayItems=100 failedPages=1 reason=reachedTarget
+I/flutter (13805): [RakutenGenre][SUMMARY] total=103 resolved=103 unresolved=0 usedMaster=103 rawGenreNameEmpty=103
+I/flutter (13805): [SEARCH_REQUEST_RACE_GUARD] mode=product requestId=2 activeRequestId=2 accepted=true reason=currentSession
+I/flutter (13805): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=2
+I/flutter (13805): [SEARCH_API_RESULT_APPLY] sessionId=2 activeSessionId=2 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter (13805): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter (13805): [GenreMaster] search prefetch skip resolvedLocally=21
+I/flutter (13805): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter (13805): [SEARCH_STATE_PERSIST] screen=productSearch event=save resultCount=100
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:f160bc99: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(13805): showSoftInput() view=io.flutter.embedding.android.FlutterView{d0f207f VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+D/InputConnectionAdaptor(13805): The input method toggled cursor monitoring on
+D/InsetsController(13805): show(ime(), fromIme=true)
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:f160bc99: onShown
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:4e896595: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+D/InputConnectionAdaptor(13805): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher(13805): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@110191405 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@f298928
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:703ca776: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:4e896595: onHidden
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [Rakuten] keyword search execute keyword="水筒" genreId=- genreName(lookup)=- shopCode=- shopName(saved lookup)=- hits=30 excludeRegistered=0 savedShopExcludeSet=0 
+I/flutter (13805): [SEARCH_EXECUTE_TRACE] sessionId=3 mode=product keyword="水筒" selectedShopCode=- genreId=- startedAt=2026-05-30T05:00:18.760774
+I/flutter (13805): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 expectedApiCalls=20
+I/flutter (13805): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-updateTimestamp
+I/flutter (13805): [Rakuten] response status=200 page=1 bytes=114646
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=1 statusCode=200 rawCount=30 durationMs=515 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=515 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=29/100 dropReg=0 dropDup=0 dropAppFilter=1 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-updateTimestamp
+I/flutter (13805): [Rakuten] response status=200 page=2 bytes=125722
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=2 statusCode=200 rawCount=30 durationMs=467 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=true durationMs=467 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=2 raw=30 parsed=30 visible=55/100 dropReg=0 dropDup=3 dropAppFilter=1 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-updateTimestamp
+I/flutter (13805): [Rakuten] response status=429 page=3 bytes=128
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=429
+I/flutter (13805): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter (13805): [Rakuten] searchItems failed page=3 attempt=1: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (13805): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1528:21)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:257:24)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): 
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=3 statusCode=- rawCount=0 durationMs=0 success=false
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=3 hits=30 success=false error=楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=3 failed: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter (13805): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:382:7)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:46:16)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #2      RakutenSearchRepository.searchKeywordWithManagedExclusion (package:room_manager2/repository/rakuten_search_repository.dart:1528:21)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): #3      RakutenSearchProvider.searchWithCondition (package:room_manager2/state/rakuten_search_provider.dart:257:24)
+I/flutter (13805): <asynchronous suspension>
+I/flutter (13805): 
+I/flutter (13805): [SHOP_SEARCH_PARTIAL_FAILURE] page=3 keptItems=55 messageForUser=一部のページ取得に失敗しました
+I/flutter (13805): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-updateTimestamp
+I/flutter (13805): [Rakuten] response status=200 page=4 bytes=120896
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=4 statusCode=200 rawCount=30 durationMs=341 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=4 hits=30 success=true durationMs=341 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=4 raw=30 parsed=30 visible=85/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=5 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=5&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-updateTimestamp
+I/flutter (13805): [Rakuten] response status=200 page=5 bytes=127221
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=5 statusCode=200 rawCount=30 durationMs=376 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=5 hits=30 success=true durationMs=376 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=5 raw=30 parsed=17 visible=100/100 dropReg=0 dropDup=0 dropAppFilter=2 dropSavedShop=0
+I/flutter (13805): [SEARCH_FETCH_100_AUDIT] mode=product keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=5 pagesSucceeded=4 pagesFailed=1 rawTotal=120 excludedCandidate=0 excludedDone=0 excludedSafety=4 excludedDuplicate=3 excludedNoImage=0 excludedNoPrice=0 excludedNoName=0 excludedNoUrl=0 excludedReviewThreshold=0 excludedOther=0 excludedSavedShop=0 displayCount=100 stopReason=reachedTarget
+I/flutter (13805): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=4 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter (13805): [SHOP_SEARCH_FETCH_RESULT] screen=product apiCalls=4 rawItems=true dedupedItems=100 safetyExcluded=4 duplicateExcluded=3 registeredExcluded=0 savedShopExcluded=0 displayItems=100 failedPages=1 reason=reachedTarget
+I/flutter (13805): [RakutenGenre][SUMMARY] total=107 resolved=107 unresolved=0 usedMaster=107 rawGenreNameEmpty=107
+I/flutter (13805): [SEARCH_REQUEST_RACE_GUARD] mode=product requestId=3 activeRequestId=3 accepted=true reason=currentSession
+I/flutter (13805): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=2
+I/flutter (13805): [SEARCH_API_RESULT_APPLY] sessionId=3 activeSessionId=3 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter (13805): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter (13805): [GenreMaster] search prefetch skip resolvedLocally=23
+I/flutter (13805): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter (13805): [SEARCH_STATE_PERSIST] screen=productSearch event=save resultCount=100
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter (13805): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:852f575f: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager(13805): showSoftInput() view=io.flutter.embedding.android.FlutterView{d0f207f VFE...... .F...... 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor(13805): The input method toggled cursor monitoring on
+D/InsetsController(13805): show(ime(), fromIme=true)
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:852f575f: onShown
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:7ae0c54: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor(13805): The input method toggled cursor monitoring off
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+W/WindowOnBackDispatcher(13805): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@110191405 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@f3d08c3
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:54b78959: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker(13805): com.stepbytestudio.room_manager2:7ae0c54: onHidden
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [Rakuten] keyword search execute keyword="水筒" genreId=- genreName(lookup)=- shopCode=- shopName(saved lookup)=- hits=30 excludeRegistered=0 savedShopExcludeSet=0 
+I/flutter (13805): [SEARCH_EXECUTE_TRACE] sessionId=4 mode=product keyword="水筒" selectedShopCode=- genreId=- startedAt=2026-05-30T05:00:38.078689
+I/flutter (13805): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 expectedApiCalls=20
+I/flutter (13805): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=%2BitemPrice
+I/flutter (13805): [Rakuten] response status=200 page=1 bytes=113264
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=1 statusCode=200 rawCount=30 durationMs=441 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=441 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=29/100 dropReg=0 dropDup=0 dropAppFilter=1 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=%2BitemPrice
+I/flutter (13805): [Rakuten] response status=200 page=2 bytes=95490
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=2 statusCode=200 rawCount=30 durationMs=352 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=true durationMs=352 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=2 raw=30 parsed=30 visible=53/100 dropReg=0 dropDup=0 dropAppFilter=6 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=%2BitemPrice
+I/flutter (13805): [Rakuten] response status=200 page=3 bytes=121511
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=3 statusCode=200 rawCount=30 durationMs=384 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=3 hits=30 success=true durationMs=384 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=3 raw=30 parsed=30 visible=81/100 dropReg=0 dropDup=0 dropAppFilter=2 dropSavedShop=0
+I/flutter (13805): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter (13805): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter (13805): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=%2BitemPrice
+I/flutter (13805): [Rakuten] response status=200 page=4 bytes=101652
+I/flutter (13805): [RECOMMEND_TRACE] apiStatus=200
+I/flutter (13805): [RECOMMEND_TRACE] rawCount=30
+I/flutter (13805): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=4 statusCode=200 rawCount=30 durationMs=374 success=true
+I/flutter (13805): [SHOP_SEARCH_API_CALL] page=4 hits=30 success=true durationMs=374 statusCode=200
+I/flutter (13805): [Rakuten] keywordManagedExclusion page=4 raw=30 parsed=19 visible=100/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter (13805): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=4 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter (13805): [SEARCH_FETCH_100_AUDIT] mode=product keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=4 pagesSucceeded=4 pagesFailed=0 rawTotal=120 excludedCandidate=0 excludedDone=0 excludedSafety=7 excludedDuplicate=0 excludedNoImage=2 excludedNoPrice=0 excludedNoName=0 excludedNoUrl=0 excludedReviewThreshold=0 excludedOther=0 excludedSavedShop=0 displayCount=100 stopReason=reachedTarget
+I/flutter (13805): [SHOP_SEARCH_FETCH_RESULT] screen=product apiCalls=4 rawItems=true dedupedItems=100 safetyExcluded=7 duplicateExcluded=0 registeredExcluded=0 savedShopExcluded=0 displayItems=100 failedPages=0 reason=reachedTarget
+I/flutter (13805): [RakutenGenre][SUMMARY] total=109 resolved=109 unresolved=0 usedMaster=109 rawGenreNameEmpty=109
+I/flutter (13805): [SEARCH_REQUEST_RACE_GUARD] mode=product requestId=4 activeRequestId=4 accepted=true reason=currentSession
+I/flutter (13805): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=2
+I/flutter (13805): [SEARCH_API_RESULT_APPLY] sessionId=4 activeSessionId=4 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter (13805): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter (13805): [GenreMaster] search prefetch skip resolvedLocally=16
+I/flutter (13805): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter (13805): [SEARCH_STATE_PERSIST] screen=productSearch event=save resultCount=100
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter (13805): [PRODUCT_OPEN_RAKUTEN] source=title screen=rakutenSearchResult productId=millibar:10541485 hasAffiliateUrl=true hasItemUrl=true opened=true
+Lost connection to device.
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=False
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] Remote recorded video was not found at /sdcard/Movies/play_demo.mp4 (pull skipped).
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260530_045614
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260530_045614\terminal_output_20260530_045614.txt
+Video                    : (not pulled - remote file missing)
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260530_045614.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260530_045614.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260530_045614.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260530_045614.log
+
+Done (video not found on device).
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
