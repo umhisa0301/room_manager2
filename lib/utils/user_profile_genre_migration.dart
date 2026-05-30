@@ -7,7 +7,7 @@ abstract final class UserProfileGenreMigration {
 
   static List<String> idsFromLegacyFavoriteGenresText(
     String raw, {
-    int maxCount = 5,
+    int maxCount = 3,
   }) {
     final t = raw.trim();
     if (t.isEmpty) return const [];

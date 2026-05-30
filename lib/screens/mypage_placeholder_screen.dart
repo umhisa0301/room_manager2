@@ -17,6 +17,7 @@ import '../services/room_import_limit_policy.dart';
 import '../widgets/room_import_enrichment_pending_hint.dart';
 import '../utils/app_input_limits.dart';
 import '../utils/favorite_genre_pref.dart';
+import '../utils/favorite_genre_selection_policy.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/room_sync_button_visibility.dart';
 import '../utils/room_sync_card_copy.dart';
@@ -122,7 +123,7 @@ class MypagePlaceholderScreen extends StatelessWidget {
     final picked = await GenreDrilldownPickerSheet.showMulti(
       context,
       initialSelectedIds: initialIds,
-      maxSelectable: 5,
+      maxSelectable: FavoriteGenreSelectionPolicy.maxSelectable,
       source: 'mypage',
     );
     if (picked == null || !context.mounted) return;

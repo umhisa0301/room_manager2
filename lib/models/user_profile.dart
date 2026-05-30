@@ -107,7 +107,7 @@ class UserProfile {
   final String occupation;
   final String favoriteGenres;
 
-  /// 好きなジャンルの楽天 `genreId` を `、` または `,` 区切りで保持（最大5件想定・UI側で制御）。
+  /// 好きなジャンルの楽天 `genreId` を `、` または `,` 区切りで保持（最大3件想定・UI側で制御）。
   final String favoriteGenreIds;
 
   /// 商品探索の傾向設定。`postStyleKeys` の値を `、` または `,` 区切りで1件保持する。

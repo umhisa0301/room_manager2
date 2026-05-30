@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../services/genre_master_service.dart';
 import '../theme/app_theme.dart';
 import '../utils/genre_pref_log.dart';
+import '../utils/favorite_genre_selection_policy.dart';
 import '../utils/genre_tree_builder.dart';
 
 /// ジャンル階層を掘って選ぶシート（検索1件 / 初期設定複数選択）。
@@ -14,7 +15,7 @@ class GenreDrilldownPickerSheet extends StatefulWidget {
     this.initialSelectedIds = const [],
     this.source = 'search',
     this.multiSelect = false,
-    this.maxSelectable = 5,
+    this.maxSelectable = FavoriteGenreSelectionPolicy.maxSelectable,
   });
 
   final String? initialGenreId;
@@ -42,7 +43,7 @@ class GenreDrilldownPickerSheet extends StatefulWidget {
   static Future<List<String>?> showMulti(
     BuildContext context, {
     List<String> initialSelectedIds = const [],
-    int maxSelectable = 5,
+    int maxSelectable = FavoriteGenreSelectionPolicy.maxSelectable,
     String source = 'initialSetup',
   }) {
     return showModalBottomSheet<List<String>>(

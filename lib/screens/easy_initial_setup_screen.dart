@@ -14,6 +14,7 @@ import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/app_input_limits.dart';
 import '../utils/favorite_genre_pref.dart';
+import '../utils/favorite_genre_selection_policy.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/onboarding_ui_log.dart';
 import '../utils/product_safety_filter.dart';
@@ -193,7 +194,7 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
     final picked = await GenreDrilldownPickerSheet.showMulti(
       context,
       initialSelectedIds: initial,
-      maxSelectable: 5,
+      maxSelectable: FavoriteGenreSelectionPolicy.maxSelectable,
       source: 'initialSetup',
     );
     if (picked == null || !mounted) return;

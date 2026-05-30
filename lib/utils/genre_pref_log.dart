@@ -5,6 +5,18 @@ import '../services/rakuten_genre_master_service.dart';
 
 /// 好みジャンル ID の保存・参照・不一致をログする。
 abstract final class GenrePrefLog {
+  static void logSaveSummary({
+    required Iterable<String> genreIds,
+    required Iterable<String> genreNames,
+    required String source,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[GENRE_PREF_SAVE_SUMMARY] ids=${genreIds.join(',')} '
+      'names=${genreNames.join(',')} source=$source',
+    );
+  }
+
   static void logSave({
     required String selectedGenreId,
     required String selectedGenreName,

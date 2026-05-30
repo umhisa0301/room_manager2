@@ -1,5 +1,6 @@
 import '../models/user_profile.dart';
 import '../services/rakuten_genre_master_service.dart';
+import 'favorite_genre_selection_policy.dart';
 import 'genre_pref_log.dart';
 
 /// 好みジャンル ID と表示名の整合（保存・読込）を担う。
@@ -29,7 +30,7 @@ abstract final class FavoriteGenrePref {
     final idList = genreIds
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
-        .take(5)
+        .take(FavoriteGenreSelectionPolicy.maxSelectable)
         .toList(growable: false);
     final inputNames = inputGenreNames?.toList() ?? const <String>[];
     final names = <String>[];
@@ -67,6 +68,12 @@ abstract final class FavoriteGenrePref {
       );
       names.add(storedName);
     }
+
+    GenrePrefLog.logSaveSummary(
+      genreIds: idList,
+      genreNames: names,
+      source: source,
+    );
 
     return UserProfile(
       displayName: base.displayName,

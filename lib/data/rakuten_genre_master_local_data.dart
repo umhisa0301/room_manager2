@@ -7,7 +7,7 @@ import '../models/rakuten_genre_master_entry.dart';
 abstract final class RakutenGenreMasterLocalData {
   static const List<RakutenGenreMasterEntry> entries = [
     RakutenGenreMasterEntry(genreId: '100005', genreName: '本・雑誌・漫画'),
-    RakutenGenreMasterEntry(genreId: '100026', genreName: 'DVD・ブルーレイ・ソフト'),
+    RakutenGenreMasterEntry(genreId: '100026', genreName: 'パソコン・周辺機器'),
     RakutenGenreMasterEntry(genreId: '100227', genreName: '食品'),
     RakutenGenreMasterEntry(genreId: '100371', genreName: '水・ソフトドリンク'),
     RakutenGenreMasterEntry(genreId: '100433', genreName: 'ビール・洋酒'),

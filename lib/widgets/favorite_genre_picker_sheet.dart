@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/rakuten_genre_master_entry.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../theme/app_theme.dart';
+import '../utils/favorite_genre_selection_policy.dart';
 import 'app_button.dart';
 
 class FavoriteGenrePickerSheet extends StatefulWidget {
@@ -32,10 +33,12 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
     final id = genreId.trim();
     if (id.isEmpty) return;
     if (checked == true) {
-      if (_selected.length >= 5) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('ジャンルは最大5件まで選択できます')));
+      if (_selected.length >= FavoriteGenreSelectionPolicy.maxSelectable) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('よく使うジャンルは最大3件まで選択できます'),
+          ),
+        );
         return;
       }
       setState(() => _selected.add(id));
@@ -56,7 +59,8 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
-    final limitReached = _selected.length >= 5;
+    final limitReached =
+        _selected.length >= FavoriteGenreSelectionPolicy.maxSelectable;
     return SafeArea(
       top: false,
       child: Padding(
@@ -98,7 +102,8 @@ class _FavoriteGenrePickerSheetState extends State<FavoriteGenrePickerSheet> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            '最大5件まで選べます（現在 ${_selected.length} / 5）',
+                            '最大${FavoriteGenreSelectionPolicy.maxSelectable}件まで選べます'
+                            '（現在 ${_selected.length} / ${FavoriteGenreSelectionPolicy.maxSelectable}）',
                             style: Theme.of(context).textTheme.labelMedium
                                 ?.copyWith(
                                   color: AppColors.textPrimary,

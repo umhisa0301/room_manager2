@@ -83,8 +83,14 @@ class RakutenGenreMasterService {
     final id = rawGenreId?.trim() ?? '';
     if (id.isEmpty) return null;
     final gms = GenreMasterService.instance;
+    // 同梱 JSON（genre_master_flutter）を簡易ローカル定数より優先（ID 衝突時の誤名を防ぐ）。
+    if (gms.isLoaded) {
+      final fromJson = gms.getDisplayGenreNameAvoidingOther(id);
+      if (fromJson != null && fromJson.trim().isNotEmpty) {
+        return fromJson;
+      }
+    }
     return _repository.findNameIfRegistered(id) ??
-        (gms.isLoaded ? gms.getDisplayGenreNameAvoidingOther(id) : null) ??
         _runtimeNamesByGenreId[id] ??
         gms.getDisplayGenreNameAvoidingOther(id);
   }
