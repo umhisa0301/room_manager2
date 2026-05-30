@@ -195,7 +195,7 @@ class _TodayRecommendationsScreenState
               return const AppScreenLoadingCenter(
                 title: '今日のおすすめを準備しています',
                 subtitle:
-                    '保存済みのプロフィールや検索履歴に基づき、候補を集めています。通信状況により少し時間がかかることがあります。',
+                    '保存ジャンルを中心に、画像・価格が確認できる商品を集めています。',
               );
             }
             if (rec.errorMessage != null &&
@@ -219,7 +219,7 @@ class _TodayRecommendationsScreenState
                 title: 'まだ今日のおすすめがありません',
                 body: favoriteGenres.isEmpty
                     ? 'まずはジャンルを設定すると精度が上がります。登録後に生成すると、好きなジャンルや候補履歴に近い商品を優先します。'
-                    : '下のボタンで最大10件のコレ候補を提案します。コレ履歴・候補履歴・保存ショップを使って、あなた向けに並び替えます。',
+                    : '下のボタンで最大10件のコレ候補を提案します。候補・コレ済は除外し、レビューが多い商品を優先します。',
                 actions: [
                   AppPrimaryButton(
                     label: '今日のおすすめを作る',
@@ -480,7 +480,7 @@ class _SummaryCard extends StatelessWidget {
           Text(
             completed
                 ? '10件見終わりました。次回は翌日に新しい候補が生成されます。'
-                : '候補 or 見送りで今日の投稿を整理できます',
+                : '今日チェックしたい商品です。候補・コレ済は除外しています',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
               height: 1.35,

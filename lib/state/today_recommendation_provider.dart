@@ -11,7 +11,10 @@ import '../utils/api_request_coordinator.dart';
 import '../repository/today_recommendation_repository.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/recommend_cooldown_policy.dart';
+import '../utils/favorite_genre_selection_policy.dart';
 import '../utils/product_safety_filter.dart';
+import '../utils/search_result_quality_filter.dart';
+import '../utils/today_recommendation_policy.dart';
 import '../utils/user_profile_preferred_genre_words.dart';
 import 'rakuten_managed_product_provider.dart';
 
@@ -383,6 +386,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final favoriteGenreIds = profile.favoriteGenreIdList
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
+        .take(FavoriteGenreSelectionPolicy.maxForRecommendGeneration)
         .toSet();
     final selectedStyle = profile.selectedSearchStyle;
     final postStyles = <String>{selectedStyle};
@@ -448,14 +452,47 @@ class TodayRecommendationProvider extends ChangeNotifier {
       );
     }
 
-    final plans = _buildPhasedSearchPlans(
-      favoriteGenreIds: favoriteGenreIds,
+    final rawHistoryGenres = _topGenresFromHistory(
+      doneItems,
+      candidateItems,
+      limit: 4,
+    );
+    final historyGenres = GenrePrefLog.filterHistoryGenresForSearch(
+      historyGenreIds: rawHistoryGenres,
+      favoriteGenreIds: favoriteGenreIds.toList(growable: false),
+      source: 'recommend',
+    );
+    final reactionProfileForPlans = _buildReactionProfile(
+      managedItems: managedItems,
+      doneItems: doneItems,
+      candidateItems: candidateItems,
+    );
+    final planSet = TodayRecommendationPlanBuilder.buildPlanSet(
+      favoriteGenreIds: favoriteGenreIds.toList(growable: false),
       savedShops: savedShops,
       doneItems: doneItems,
       candidateItems: candidateItems,
       keywords: keywords,
-      postStyles: postStyles,
+      reactionCommentGenreIds: reactionProfileForPlans.commentGenres,
+      reactionLikeGenreIds: reactionProfileForPlans.likeGenres,
+      reactionCommentShopIds: reactionProfileForPlans.commentShops,
+      reactionLikeShopIds: reactionProfileForPlans.likeShops,
+      historyGenreIdsFiltered: historyGenres,
     );
+    final mandatoryGenrePlans = planSet.favoriteGenrePlans
+        .map(_RecommendSearchPlan.fromSpec)
+        .toList(growable: false);
+    final assistPlan = planSet.assistPlan != null
+        ? _RecommendSearchPlan.fromSpec(planSet.assistPlan!)
+        : null;
+    final fallbackPlan = planSet.fallbackPlan != null
+        ? _RecommendSearchPlan.fromSpec(planSet.fallbackPlan!)
+        : null;
+    final plans = <_RecommendSearchPlan>[
+      ...mandatoryGenrePlans,
+      if (assistPlan != null) assistPlan,
+      if (fallbackPlan != null) fallbackPlan,
+    ];
     _planLogCount(plans.length);
     _generateLog(
       stage: 'start',
@@ -472,45 +509,36 @@ class TodayRecommendationProvider extends ChangeNotifier {
     var excludedCount = 0;
     var excludedBySafety = 0;
     var excludedByDuplicate = 0;
+    var excludedNoImage = 0;
+    var excludedNoPrice = 0;
+    var excludedNoUrl = 0;
+    var excludedNoName = 0;
     var allPlansNoItems = true;
     var rateLimited = false;
-    const maxApiHard = 10;
+    var fallbackUsed = false;
+    const maxApiHard = TodayRecommendationPolicy.maxApiCallsPerGeneration;
     final sessionId = DateTime.now().millisecondsSinceEpoch;
 
-    bool canCallMoreApi(int entryCount) {
-      if (entryCount >= 10) return false;
-      if (apiCalls >= maxApiHard) return false;
-      return true;
-    }
-
     final genreWords = UserProfilePreferredGenreWords.fromProfile(profile);
-    final reactionProfile = _buildReactionProfile(
-      managedItems: managedItems,
-      doneItems: doneItems,
-      candidateItems: candidateItems,
-    );
-    final guardedPlanCount = plans.length > 1 ? plans.length - 1 : plans.length;
-    var i = 0;
-    for (; i < guardedPlanCount; i++) {
-      final preview = _finalizeFromPool(
-        pool: pool,
-        metaById: metaById,
-        favoriteGenreIds: favoriteGenreIds,
-        savedShopIds: savedShopIds,
-        preferredGenreWords: genreWords,
-        doneItems: doneItems,
-        candidateItems: candidateItems,
-        postStyles: postStyles,
-        soldOutcomeItems: soldOutcomeItems,
-        reactedOutcomeItems: reactedOutcomeItems,
-        likedOnlyOutcomeItems: likedOnlyOutcomeItems,
-        recentCandidatesForBridge: recentCandidates,
-        staleCandidatesForBridge: staleCandidates,
-        reactionProfile: reactionProfile,
-      );
-      if (!canCallMoreApi(preview.entries.length)) break;
+    final reactionProfile = reactionProfileForPlans;
+    var assistPlanUsed = false;
+    var executedFavoriteGenrePlans = 0;
+    var skippedFavoriteGenrePlans = 0;
+    String? earlyStopReason;
+    var assistPlanExecuted = false;
+    var planIndex = 0;
 
-      final p = plans[i];
+    Future<bool> runPlan(_RecommendSearchPlan p) async {
+      planIndex += 1;
+      final idx = planIndex;
+      if (p.phase == 'fallback') fallbackUsed = true;
+      if (p.source == 'reactionGenre' ||
+          p.source == 'reactionShop' ||
+          p.source == 'savedShop' ||
+          p.source == 'historyGenre') {
+        assistPlanUsed = true;
+        assistPlanExecuted = true;
+      }
       _phaseLog(p.phase);
       final condition = _conditionWithPostStyles(
         keyword: p.keyword,
@@ -521,7 +549,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         sortOverride: p.sortOverride,
       );
       _planLogDetailed(
-        index: i + 1,
+        index: idx,
         phase: p.phase,
         relaxLevel: p.relaxLevel,
         source: p.source,
@@ -532,7 +560,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         postStyles: postStyles,
       );
       _apiLogDetailed(
-        planIndex: i + 1,
+        planIndex: idx,
         keyword: p.keyword,
         genreId: p.genreId,
         shopCode: p.shopCode,
@@ -544,14 +572,14 @@ class TodayRecommendationProvider extends ChangeNotifier {
         list = await _runSearchPlan(
           phase: p.phase,
           source: p.source,
-          planIndex: i + 1,
+          planIndex: idx,
           condition: condition,
           excludeIds: excludeIds,
         );
       } catch (e) {
         if (_isRateLimitError(e)) {
           rateLimited = true;
-          break;
+          return false;
         }
         rethrow;
       }
@@ -572,15 +600,30 @@ class TodayRecommendationProvider extends ChangeNotifier {
           doneItems: doneItems,
           candidateItems: candidateItems,
           dedup: pool,
+          condition: condition,
         );
         if (exclusion != null) {
           excludedCount += 1;
-          if (exclusion == 'safetyBlocked') {
-            excludedBySafety += 1;
-          } else if (exclusion == 'duplicate' ||
-              exclusion == 'alreadyCandidate' ||
-              exclusion == 'alreadyDone') {
-            excludedByDuplicate += 1;
+          switch (exclusion) {
+            case 'safetyBlocked':
+              excludedBySafety += 1;
+            case 'noImage':
+              excludedNoImage += 1;
+            case 'noPrice':
+              excludedNoPrice += 1;
+            case 'noUrl':
+              excludedNoUrl += 1;
+            case 'missingTitle':
+              excludedNoName += 1;
+            case 'lowReviewCount':
+            case 'lowReviewAverage':
+              break;
+            case 'duplicate':
+            case 'alreadyCandidate':
+            case 'alreadyDone':
+              excludedByDuplicate += 1;
+            default:
+              break;
           }
           _trace('exclude reason=$exclusion');
           continue;
@@ -596,11 +639,26 @@ class TodayRecommendationProvider extends ChangeNotifier {
         if (p.phase == 'discovery') m.fromDiscoveryPhase = true;
         if (p.source == 'shop') m.fromShopPlan = true;
       }
+      return true;
+    }
 
+    for (var i = 0; i < mandatoryGenrePlans.length; i++) {
+      if (TodayRecommendationExecutionPolicy.shouldSkipMandatoryGenrePlan(
+        apiCallsSoFar: apiCalls,
+      )) {
+        earlyStopReason = 'apiCapReachedBeforeRemainingGenres';
+        break;
+      }
+      final ok = await runPlan(mandatoryGenrePlans[i]);
+      if (!ok) break;
+      executedFavoriteGenrePlans += 1;
       if (pool.length > 45) break;
     }
 
-    var finalized = _finalizeFromPool(
+    skippedFavoriteGenrePlans =
+        mandatoryGenrePlans.length - executedFavoriteGenrePlans;
+
+    final previewAfterGenres = _finalizeFromPool(
       pool: pool,
       metaById: metaById,
       favoriteGenreIds: favoriteGenreIds,
@@ -616,102 +674,52 @@ class TodayRecommendationProvider extends ChangeNotifier {
       staleCandidatesForBridge: staleCandidates,
       reactionProfile: reactionProfile,
     );
-    if (!rateLimited && finalized.entries.length < 10) {
-      final hasExtraPlan = i < plans.length;
-      if (kDebugMode) {
-        debugPrint('[RECOMMEND_API_GUARD] extraSearchAllowed=$hasExtraPlan');
+
+    if (assistPlan != null &&
+        TodayRecommendationExecutionPolicy.shouldRunAssistPlan(
+          finalizedEntryCount: previewAfterGenres.entries.length,
+          hasAssistPlan: true,
+          apiCallsSoFar: apiCalls,
+        )) {
+      final ok = await runPlan(assistPlan);
+      if (!ok) {
+        // rate limited
       }
-      if (hasExtraPlan) {
-        final p = plans[i];
-        _apiLogDetailed(
-          planIndex: i + 1,
-          keyword: p.keyword,
-          genreId: p.genreId,
-          shopCode: p.shopCode,
-          page: 1,
-        );
-        final condition = _conditionWithPostStyles(
-          keyword: p.keyword,
-          postStyles: postStyles,
-          genreId: p.genreId,
-          shopCode: p.shopCode,
-          relaxLevel: p.relaxLevel,
-          sortOverride: p.sortOverride,
-        );
-        try {
-          final list = await _runSearchPlan(
-            phase: p.phase,
-            source: p.source,
-            planIndex: i + 1,
-            condition: condition,
-            excludeIds: excludeIds,
-          );
-          apiCalls += 1;
-          if (p.genreId != null && p.genreId!.trim().isNotEmpty) {
-            genreSearchCalls += 1;
-          } else if (p.shopCode != null && p.shopCode!.trim().isNotEmpty) {
-            shopSearchCalls += 1;
-          } else {
-            keywordSearchCalls += 1;
-          }
-          if (list.isNotEmpty) allPlansNoItems = false;
-          for (final item in list) {
-            final exclusion = _excludeReason(
-              item: item,
-              excludeIds: excludeIds,
-              doneItems: doneItems,
-              candidateItems: candidateItems,
-              dedup: pool,
-            );
-            if (exclusion != null) {
-              excludedCount += 1;
-              if (exclusion == 'safetyBlocked') {
-                excludedBySafety += 1;
-              } else if (exclusion == 'duplicate' ||
-                  exclusion == 'alreadyCandidate' ||
-                  exclusion == 'alreadyDone') {
-                excludedByDuplicate += 1;
-              }
-              continue;
-            }
-            final id = item.productId.trim();
-            pool[id] = item;
-            final m = metaById.putIfAbsent(id, () => _ItemPoolMeta());
-            if (p.phase == 'personal' || p.phase == 'fallback') {
-              m.fromPersonalPhase = true;
-            }
-            if (p.phase == 'relaxed') m.fromRelaxedPhase = true;
-            if (p.phase == 'discovery') m.fromDiscoveryPhase = true;
-            if (p.source == 'shop') m.fromShopPlan = true;
-          }
-          finalized = _finalizeFromPool(
-            pool: pool,
-            metaById: metaById,
-            favoriteGenreIds: favoriteGenreIds,
-            savedShopIds: savedShopIds,
-            preferredGenreWords: genreWords,
-            doneItems: doneItems,
-            candidateItems: candidateItems,
-            postStyles: postStyles,
-            soldOutcomeItems: soldOutcomeItems,
-            reactedOutcomeItems: reactedOutcomeItems,
-            likedOnlyOutcomeItems: likedOnlyOutcomeItems,
-            recentCandidatesForBridge: recentCandidates,
-            staleCandidatesForBridge: staleCandidates,
-            reactionProfile: reactionProfile,
-          );
-        } catch (e) {
-          if (_isRateLimitError(e)) {
-            rateLimited = true;
-          } else {
-            rethrow;
-          }
-        }
-      }
-    } else if (kDebugMode) {
-      debugPrint('[RECOMMEND_API_GUARD] skipExtraSearch reason=poolHasEnoughBackfill');
-      debugPrint('[RECOMMEND_API_GUARD] extraSearchAllowed=false');
+    } else if (assistPlan != null &&
+        previewAfterGenres.entries.length >=
+            TodayRecommendationPolicy.displayCap) {
+      earlyStopReason ??= 'assistSkippedSufficientFinalItems';
     }
+
+    if (fallbackPlan != null && apiCalls < maxApiHard) {
+      await runPlan(fallbackPlan);
+    }
+
+    _planExecutionSummaryLog(
+      plannedFavoriteGenres: mandatoryGenrePlans.length,
+      executedFavoriteGenrePlans: executedFavoriteGenrePlans,
+      skippedFavoriteGenrePlans: skippedFavoriteGenrePlans,
+      assistPlanExecuted: assistPlanExecuted,
+      apiCalls: apiCalls,
+      earlyStopReason: earlyStopReason,
+    );
+
+    final finalized = _finalizeFromPool(
+      pool: pool,
+      metaById: metaById,
+      favoriteGenreIds: favoriteGenreIds,
+      savedShopIds: savedShopIds,
+      preferredGenreWords: genreWords,
+      doneItems: doneItems,
+      candidateItems: candidateItems,
+      postStyles: postStyles,
+      soldOutcomeItems: soldOutcomeItems,
+      reactedOutcomeItems: reactedOutcomeItems,
+      likedOnlyOutcomeItems: likedOnlyOutcomeItems,
+      recentCandidatesForBridge: recentCandidates,
+      staleCandidatesForBridge: staleCandidates,
+      reactionProfile: reactionProfile,
+    );
 
     if (pool.isEmpty && allPlansNoItems) {
       _resultLog(status: 'failed', reason: 'allPlansNoItems', count: 0);
@@ -773,165 +781,30 @@ class TodayRecommendationProvider extends ChangeNotifier {
       excludedByDuplicate: excludedByDuplicate,
       finalItems: entries.length,
     );
+    _finalQualitySummaryLog(entries: entries);
+    _qualitySummaryLog(
+      plans: plans.length,
+      apiCalls: apiCalls,
+      rawItems: pool.length,
+      excludedManaged: excludedByDuplicate,
+      excludedNoImage: excludedNoImage,
+      excludedNoPrice: excludedNoPrice,
+      excludedNoName: excludedNoName,
+      excludedNoUrl: excludedNoUrl,
+      excludedSafety: excludedBySafety,
+      deduped: pool.length,
+      finalItems: entries.length,
+      plannedFavoriteGenres: mandatoryGenrePlans.length,
+      executedFavoriteGenrePlans: executedFavoriteGenrePlans,
+      skippedFavoriteGenrePlans: skippedFavoriteGenrePlans,
+      usedAssistPlan: assistPlanUsed,
+      fallbackUsed: fallbackUsed,
+    );
     return TodayRecommendationBundle(
       localDateKey: _localDateKey(DateTime.now()),
       generatedAt: DateTime.now(),
       entries: entries,
     );
-  }
-
-  /// フェーズ順に並べた検索プラン（API は上位から試し、10件または上限まで）。
-  List<_RecommendSearchPlan> _buildPhasedSearchPlans({
-    required Set<String> favoriteGenreIds,
-    required List<SavedShop> savedShops,
-    required List<RakutenManagedProduct> doneItems,
-    required List<RakutenManagedProduct> candidateItems,
-    required List<String> keywords,
-    required Set<String> postStyles,
-  }) {
-    final favList = favoriteGenreIds.toList(growable: false);
-    final keywordPrimary = keywords.isEmpty ? '人気' : keywords.first;
-    final keywordAlt = keywords.length >= 2
-        ? keywords[1]
-        : (keywords.isEmpty ? 'ランキング' : '売れ筋');
-    final rawHistoryGenres = _topGenresFromHistory(
-      doneItems,
-      candidateItems,
-      limit: 4,
-    );
-    final historyGenres = GenrePrefLog.filterHistoryGenresForSearch(
-      historyGenreIds: rawHistoryGenres,
-      favoriteGenreIds: favList,
-      source: 'recommend',
-    );
-    final plans = <_RecommendSearchPlan>[];
-
-    void addPlan(_RecommendSearchPlan plan) => plans.add(plan);
-
-    // Phase 1 personal（最大4）：ジャンル×探し方 × 保存ショップ × 履歴ジャンル
-    for (final gid in favList.take(2)) {
-      addPlan(
-        _RecommendSearchPlan(
-          phase: 'personal',
-          relaxLevel: 0,
-          source: 'genre',
-          keyword: keywordPrimary,
-          genreId: gid,
-          shopCode: null,
-        ),
-      );
-    }
-    for (final shop in savedShops.take(1)) {
-      final sid = shop.shopId.trim();
-      if (sid.isEmpty) continue;
-      addPlan(
-        _RecommendSearchPlan(
-          phase: 'personal',
-          relaxLevel: 0,
-          source: 'shop',
-          keyword: keywordPrimary,
-          genreId: null,
-          shopCode: sid,
-        ),
-      );
-    }
-    for (final gid in historyGenres) {
-      if (favList.take(2).contains(gid)) continue;
-      addPlan(
-        _RecommendSearchPlan(
-          phase: 'personal',
-          relaxLevel: 0,
-          source: 'style',
-          keyword: keywordPrimary,
-          genreId: gid,
-          shopCode: null,
-        ),
-      );
-      break;
-    }
-
-    // Phase 2 relaxed（最大3）：レビュー・価格を緩めつつジャンル軸は維持
-    for (final gid in favList.take(2)) {
-      addPlan(
-        _RecommendSearchPlan(
-          phase: 'relaxed',
-          relaxLevel: 1,
-          source: 'genre',
-          keyword: keywordAlt,
-          genreId: gid,
-          shopCode: null,
-        ),
-      );
-    }
-    if (savedShops.length >= 2) {
-      final sid = savedShops[1].shopId.trim();
-      if (sid.isNotEmpty) {
-        addPlan(
-          _RecommendSearchPlan(
-            phase: 'relaxed',
-            relaxLevel: 1,
-            source: 'shop',
-            keyword: keywordAlt,
-            genreId: null,
-            shopCode: sid,
-          ),
-        );
-      }
-    } else if (favList.length > 2) {
-      addPlan(
-        _RecommendSearchPlan(
-          phase: 'relaxed',
-          relaxLevel: 2,
-          source: 'genre',
-          keyword: keywordAlt,
-          genreId: favList[2],
-          shopCode: null,
-        ),
-      );
-    }
-
-    // Phase 3 discovery（最大2）：広め・トレンド寄り（枠は後段ピックで最大3）
-    addPlan(
-      _RecommendSearchPlan(
-        phase: 'discovery',
-        relaxLevel: 2,
-        source: 'style',
-        keyword: keywordPrimary,
-        genreId: favList.length >= 2
-            ? favList[1]
-            : (favList.isNotEmpty ? favList.first : null),
-        shopCode: null,
-        sortOverride: postStyles.contains(UserProfile.postStyleTrend)
-            ? '-updateTimestamp'
-            : '-reviewCount',
-      ),
-    );
-    addPlan(
-      const _RecommendSearchPlan(
-        phase: 'discovery',
-        relaxLevel: 3,
-        source: 'style',
-        keyword: '人気',
-        genreId: null,
-        shopCode: null,
-        sortOverride: '-reviewCount',
-      ),
-    );
-
-    // fallback（1）：フィルタをほぼ外した広い検索
-    addPlan(
-      _RecommendSearchPlan(
-        phase: 'fallback',
-        relaxLevel: 3,
-        source: 'style',
-        keyword: '売れ筋',
-        genreId: null,
-        shopCode: null,
-        sortOverride: null,
-      ),
-    );
-
-    return plans;
   }
 
   List<String> _topGenresFromHistory(
@@ -955,13 +828,12 @@ class TodayRecommendationProvider extends ChangeNotifier {
     RakutenSearchItem item, {
     required Set<String> postStyles,
   }) {
+    if (!SearchResultQualityFilter.passesDisplayQuality(item)) return false;
     if (_recommendRejectReason(item, postStyles: postStyles) != null) {
       return false;
     }
     if (item.itemPrice < 500 || item.itemPrice >= 50000) return false;
-    if (!(item.reviewCount >= 3 || item.reviewAverage >= 4.0)) return false;
-    if (item.imageUrl.trim().isEmpty) return false;
-    return item.itemUrl.trim().isNotEmpty || item.affiliateUrl.trim().isNotEmpty;
+    return item.reviewCount >= 3 || item.reviewAverage >= 4.0;
   }
 
   ({
@@ -1055,7 +927,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
         debugPrint('[RECOMMEND_BACKFILL] added=$added total=${entryList.length}');
       }
     }
-    final entries = entryList.toList(growable: false);
+    final entries = entryList
+        .where((e) => _passesRecommendFinalDisplayGate(e.item))
+        .toList(growable: false);
 
     final personalCount = entries
         .where((e) => e.section == TodayRecommendationSection.popular)
@@ -1109,11 +983,14 @@ class TodayRecommendationProvider extends ChangeNotifier {
       if (token.isNotEmpty && (tokenCounts[token] ?? 0) >= 2) {
         score -= 35;
       }
-      if (genre.isNotEmpty && (genreCounts[genre] ?? 0) >= 3) {
-        score -= 25;
+      if (genre.isNotEmpty &&
+          (genreCounts[genre] ?? 0) >=
+              TodayRecommendationPolicy.maxPerGenreInTop) {
+        score -= 80;
       }
-      if (shop.isNotEmpty && (shopCounts[shop] ?? 0) >= 2) {
-        score -= 30;
+      if (shop.isNotEmpty &&
+          (shopCounts[shop] ?? 0) >= TodayRecommendationPolicy.maxPerShopInTop) {
+        score -= 80;
       }
       if ((priceBandCounts[band] ?? 0) >= 4) {
         score -= 18;
@@ -1143,6 +1020,18 @@ class TodayRecommendationProvider extends ChangeNotifier {
         for (final e in list) {
           final id = e.item.productId.trim();
           if (id.isEmpty || selectedIds.contains(id)) continue;
+          final shop = e.item.shopCode.trim();
+          final genre = e.item.genreId.trim();
+          if (shop.isNotEmpty &&
+              (shopCounts[shop] ?? 0) >=
+                  TodayRecommendationPolicy.maxPerShopInTop) {
+            continue;
+          }
+          if (genre.isNotEmpty &&
+              (genreCounts[genre] ?? 0) >=
+                  TodayRecommendationPolicy.maxPerGenreInTop) {
+            continue;
+          }
           final s = adjustedScore(e);
           if (s > bestScore) {
             bestScore = s;
@@ -1236,6 +1125,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
           candidateItems: const <RakutenManagedProduct>[],
           dedup: const <String, RakutenSearchItem>{},
           checkDedup: false,
+          condition: condition,
         );
         if (reason == null) return true;
         reasonCounts[reason] = (reasonCounts[reason] ?? 0) + 1;
@@ -1280,13 +1170,26 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required List<RakutenManagedProduct> candidateItems,
     required Map<String, RakutenSearchItem> dedup,
     bool checkDedup = true,
+    RakutenProductSearchCondition? condition,
   }) {
     final id = item.productId.trim();
     if (id.isEmpty) return 'missingItemCode';
-    if (item.itemName.trim().isEmpty) return 'missingTitle';
-    final hasAnyUrl =
-        item.itemUrl.trim().isNotEmpty || item.affiliateUrl.trim().isNotEmpty;
-    if (!hasAnyUrl) return 'invalidUrl';
+    final quality = SearchResultQualityFilter.exclusionReason(
+      item,
+      condition: condition,
+      checkSafety: false,
+    );
+    if (quality != null) {
+      return switch (quality) {
+        SearchQualityExcludeReason.noName => 'missingTitle',
+        SearchQualityExcludeReason.noUrl => 'noUrl',
+        SearchQualityExcludeReason.noImage => 'noImage',
+        SearchQualityExcludeReason.noPrice => 'noPrice',
+        SearchQualityExcludeReason.safety => 'safetyBlocked',
+        SearchQualityExcludeReason.reviewCount => 'lowReviewCount',
+        SearchQualityExcludeReason.reviewAverage => 'lowReviewAverage',
+      };
+    }
     if (excludeIds.contains(id)) {
       if (doneItems.any((e) => e.productId.trim() == id)) return 'alreadyDone';
       if (candidateItems.any((e) => e.productId.trim() == id)) {
@@ -1452,6 +1355,105 @@ class TodayRecommendationProvider extends ChangeNotifier {
       'nextAvailableAt=${status.nextAvailableAt?.toIso8601String() ?? '-'} '
       'reason=${status.reason.isEmpty ? trigger : status.reason}',
     );
+  }
+
+  void _planExecutionSummaryLog({
+    required int plannedFavoriteGenres,
+    required int executedFavoriteGenrePlans,
+    required int skippedFavoriteGenrePlans,
+    required bool assistPlanExecuted,
+    required int apiCalls,
+    required String? earlyStopReason,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] '
+      'plannedFavoriteGenres=$plannedFavoriteGenres '
+      'executedFavoriteGenrePlans=$executedFavoriteGenrePlans '
+      'skippedFavoriteGenrePlans=$skippedFavoriteGenrePlans '
+      'assistPlanExecuted=$assistPlanExecuted apiCalls=$apiCalls '
+      'earlyStopReason=${earlyStopReason ?? '-'}',
+    );
+  }
+
+  void _finalQualitySummaryLog({
+    required List<TodayRecommendationEntry> entries,
+  }) {
+    if (!kDebugMode) return;
+    var zeroReview = 0;
+    var missingImage = 0;
+    var missingPrice = 0;
+    final genreDist = <String, int>{};
+    final shopDist = <String, int>{};
+    for (final e in entries) {
+      final item = e.item;
+      if (item.reviewCount <= 0 && item.reviewAverage <= 0) zeroReview += 1;
+      if (!SearchResultQualityFilter.hasDisplayableImage(item)) {
+        missingImage += 1;
+      }
+      if (!SearchResultQualityFilter.hasDisplayablePrice(item)) missingPrice += 1;
+      final g = item.genreName.trim().isNotEmpty
+          ? item.genreName.trim()
+          : (item.genreId.trim().isEmpty ? '-' : item.genreId.trim());
+      genreDist[g] = (genreDist[g] ?? 0) + 1;
+      final s = item.shopName.trim().isEmpty ? '-' : item.shopName.trim();
+      shopDist[s] = (shopDist[s] ?? 0) + 1;
+    }
+    debugPrint(
+      '[TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=${entries.length} '
+      'zeroReviewItems=$zeroReview missingImageItems=$missingImage '
+      'missingPriceItems=$missingPrice '
+      'genreDistribution=${genreDist.entries.map((e) => '${e.key}:${e.value}').join('|')} '
+      'shopDistribution=${shopDist.entries.map((e) => '${e.key}:${e.value}').join('|')}',
+    );
+  }
+
+  void _qualitySummaryLog({
+    required int plans,
+    required int apiCalls,
+    required int rawItems,
+    required int excludedManaged,
+    required int excludedNoImage,
+    required int excludedNoPrice,
+    required int excludedNoName,
+    required int excludedNoUrl,
+    required int excludedSafety,
+    required int deduped,
+    required int finalItems,
+    required int plannedFavoriteGenres,
+    required int executedFavoriteGenrePlans,
+    required int skippedFavoriteGenrePlans,
+    required bool usedAssistPlan,
+    required bool fallbackUsed,
+  }) {
+    if (!kDebugMode) return;
+    final cooldown = manualRegenerateCooldownStatus();
+    debugPrint(
+      '[TODAY_RECOMMEND_QUALITY_SUMMARY] plans=$plans apiCalls=$apiCalls '
+      'rawItems=$rawItems excludedManaged=$excludedManaged '
+      'excludedNoImage=$excludedNoImage excludedNoPrice=$excludedNoPrice '
+      'excludedNoName=$excludedNoName excludedNoUrl=$excludedNoUrl '
+      'excludedSafety=$excludedSafety deduped=$deduped finalItems=$finalItems '
+      'plannedFavoriteGenres=$plannedFavoriteGenres '
+      'executedFavoriteGenrePlans=$executedFavoriteGenrePlans '
+      'skippedFavoriteGenrePlans=$skippedFavoriteGenrePlans '
+      'usedAssistPlan=$usedAssistPlan fallbackUsed=$fallbackUsed '
+      'cooldownCanRegenerate=${cooldown.canRegenerate} '
+      'cooldownRemainingSec=${cooldown.remainingSeconds}',
+    );
+  }
+
+  bool _passesRecommendFinalDisplayGate(RakutenSearchItem item) {
+    if (!SearchResultQualityFilter.passesDisplayQuality(
+      item,
+      checkSafety: true,
+    )) {
+      return false;
+    }
+    if (item.reviewCount <= 0 && item.reviewAverage <= 0) {
+      return false;
+    }
+    return true;
   }
 
   void logTodayRecommendApiUsage({
@@ -1672,22 +1674,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
   }
 
   String? _sortForPostStyles(Set<String> postStyles) {
-    if (postStyles.contains(UserProfile.postStyleAffordable)) {
-      return null;
-    }
-    if (postStyles.contains(UserProfile.postStylePremium)) {
-      return '-itemPrice';
-    }
-    if (postStyles.contains(UserProfile.postStyleHighlyRated)) {
-      return '-reviewAverage';
-    }
-    if (postStyles.contains(UserProfile.postStyleReviewRich)) {
-      return '-reviewCount';
-    }
-    if (postStyles.contains(UserProfile.postStyleTrend)) {
-      return '-updateTimestamp';
-    }
-    return null;
+    return TodayRecommendationPolicy.apiSortForPostStyles(postStyles);
   }
 
   _ScoredRecommendation? _scoreRecommendationForBucket(
@@ -1908,13 +1895,23 @@ class TodayRecommendationProvider extends ChangeNotifier {
     RakutenSearchItem item, {
     required Set<String> postStyles,
   }) {
-    final title = item.itemName.trim();
-    final hasAnyUrl =
-        item.itemUrl.trim().isNotEmpty || item.affiliateUrl.trim().isNotEmpty;
     if (item.productId.trim().isEmpty) return 'missingItemCode';
-    if (title.isEmpty) return 'missingTitle';
-    if (!hasAnyUrl) return 'invalidUrl';
-    if (item.itemPrice <= 0) return 'missingPrice';
+    final quality = SearchResultQualityFilter.exclusionReason(
+      item,
+      checkSafety: true,
+    );
+    if (quality != null) {
+      return switch (quality) {
+        SearchQualityExcludeReason.noName => 'missingTitle',
+        SearchQualityExcludeReason.noUrl => 'invalidUrl',
+        SearchQualityExcludeReason.noImage => 'noImage',
+        SearchQualityExcludeReason.noPrice => 'missingPrice',
+        SearchQualityExcludeReason.safety => 'safetyBlocked',
+        SearchQualityExcludeReason.reviewCount => null,
+        SearchQualityExcludeReason.reviewAverage => null,
+      };
+    }
+    final title = item.itemName.trim();
     // 今日のおすすめ限定: 価格帯の下限/上限を共通化。
     if (item.itemPrice < 500) {
       return 'tooCheap';
@@ -1927,26 +1924,6 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (businessWord.hasMatch(title)) return 'businessItem';
     if (item.reviewCount == 0 && item.itemPrice >= 30000) {
       return 'highPriceNoReview';
-    }
-    if (postStyles.contains(UserProfile.postStyleSocial) &&
-        item.imageUrl.trim().isEmpty) {
-      return 'missingImage';
-    }
-    if (postStyles.contains(UserProfile.postStyleSocial)) {
-      final imageUrl = item.imageUrl.trim();
-      if (imageUrl.isNotEmpty &&
-          !RegExp(r'^https?://', caseSensitive: false).hasMatch(imageUrl)) {
-        return 'invalidImageUrl';
-      }
-    }
-    if (ProductSafetyFilter.isBlockedProduct(
-      itemName: item.itemName,
-      shopName: item.shopName,
-      genreName: item.genreName,
-      itemUrl: item.itemUrl,
-      affiliateUrl: item.affiliateUrl,
-    )) {
-      return 'safetyBlocked';
     }
     return null;
   }
@@ -2492,6 +2469,18 @@ class _RecommendSearchPlan {
     required this.shopCode,
     this.sortOverride,
   });
+
+  factory _RecommendSearchPlan.fromSpec(RecommendSearchPlanSpec spec) {
+    return _RecommendSearchPlan(
+      phase: spec.phase,
+      relaxLevel: spec.relaxLevel,
+      source: spec.source,
+      keyword: spec.keyword,
+      genreId: spec.genreId,
+      shopCode: spec.shopCode,
+      sortOverride: spec.sort,
+    );
+  }
 
   final String phase;
   final int relaxLevel;
