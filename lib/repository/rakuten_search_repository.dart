@@ -313,6 +313,7 @@ class RakutenSearchRepository {
   Future<List<RakutenSearchItem>> search({
     required RakutenProductSearchCondition condition,
     int maxPages = 4,
+    int startPage = 1,
     RakutenSearchPurpose searchPurpose = RakutenSearchPurpose.normal,
     String fetchScreen = 'productSearch',
   }) async {
@@ -322,12 +323,14 @@ class RakutenSearchRepository {
     final normalized = condition.normalized();
     const hitsPerRequest = 30;
     final boundedMaxPages = maxPages < 1 ? 1 : maxPages;
+    final boundedStartPage = startPage < 1 ? 1 : startPage;
     shopSearchFetchPlanLog(
       'screen=$fetchScreen keyword=${normalized.keyword} '
       'genreId=${normalized.genreId ?? '-'} '
       'shopCode=${normalized.shopCode ?? '-'} '
       'targetDisplayCount=100 hitsPerRequest=$hitsPerRequest '
-      'maxPages=$boundedMaxPages expectedApiCalls=$boundedMaxPages',
+      'startPage=$boundedStartPage maxPages=$boundedMaxPages '
+      'expectedApiCalls=$boundedMaxPages',
     );
     _resetRakutenGenreLogBatch();
     final results = <RakutenSearchItem>[];
@@ -335,7 +338,8 @@ class RakutenSearchRepository {
     var failedPages = 0;
     String stopReason = 'completed';
     // 1ページ最大30件 × 最大4ページで約120件（楽天API上限内）。
-    for (var page = 1; page <= boundedMaxPages; page++) {
+    final endPage = boundedStartPage + boundedMaxPages - 1;
+    for (var page = boundedStartPage; page <= endPage; page++) {
       try {
         if (page > 1) {
           await Future<void>.delayed(const Duration(milliseconds: 180));

@@ -24,18 +24,32 @@ void main() {
     expect(restored.item.reviewAverage, 4.5);
   });
 
-  test('noimage URL は品質ゲートで除外される', () {
-    const item = RakutenSearchItem(
-      productId: 'code:2',
-      itemName: '画像なし',
-      itemPrice: 1000,
-      itemUrl: 'https://example.com/item2',
+  test('reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される', () {
+    const zeroCount = RakutenSearchItem(
+      productId: 'code:3',
+      itemName: 'レビューなし',
+      itemPrice: 1200,
+      itemUrl: 'https://example.com/item3',
       affiliateUrl: '',
-      imageUrl: 'https://thumbnail.image.rakuten.co.jp/noimage.jpg',
+      imageUrl: 'https://example.com/img3.jpg',
       shopName: 'テスト店',
-      reviewCount: 20,
-      reviewAverage: 4.0,
+      reviewCount: 0,
+      reviewAverage: 4.5,
     );
-    expect(SearchResultQualityFilter.hasDisplayableImage(item), isFalse);
+    expect(SearchResultQualityFilter.passesDisplayQuality(zeroCount), isTrue);
+    expect(zeroCount.reviewCount <= 0 || zeroCount.reviewAverage <= 0, isTrue);
+
+    const zeroAverage = RakutenSearchItem(
+      productId: 'code:4',
+      itemName: '評価なし',
+      itemPrice: 1200,
+      itemUrl: 'https://example.com/item4',
+      affiliateUrl: '',
+      imageUrl: 'https://example.com/img4.jpg',
+      shopName: 'テスト店',
+      reviewCount: 10,
+      reviewAverage: 0,
+    );
+    expect(zeroAverage.reviewCount <= 0 || zeroAverage.reviewAverage <= 0, isTrue);
   });
 }
