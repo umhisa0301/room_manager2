@@ -1,0 +1,481 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-05-31 23:32:06
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: PRODUCT_CATALOG_ENABLED=true; CATALOG_AUDIT_LOGS=true
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260531_233206.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260531_233206.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260531_233206.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260531_233206.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260531_233206.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260531_233206
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260531_233206\terminal_output_20260531_233206.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 27364).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID= --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                              4.1s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.7s
+D/FlutterJNI( 8972): Beginning load of flutter...
+D/FlutterJNI( 8972): flutter (null) was loaded normally!
+I/flutter ( 8972): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter ( 8972): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter ( 8972): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter ( 8972): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                    80ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:60164/yqRB-kGrDyU=/
+I/flutter ( 8972): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100026,100227,100316 resolvedGenreNames=パソコン・周辺機器,食品,水・ソフトドリンク invalidGenreIds= corrected=false
+I/flutter ( 8972): [GENRE_PREF_LOAD] favoriteGenreIds=100026,100227,100316 favoriteGenreNames=パソコン・周辺機器,食品,水・ソフトドリンク source=repositoryLoad
+I/flutter ( 8972): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 8972): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/flutter ( 8972): [ROOMコレ][surface] tab=done surface=ok_empty_no_data
+I/Choreographer( 8972): Skipped 213 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9103?uri=http://127.0.0.1:60164/yqRB-kGrDyU=/
+I/flutter ( 8972): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=7→7 done=0→0
+I/flutter ( 8972): [MANAGED_PRODUCT_LOAD] source=provider pending=7 done=0 filter= tab=
+I/flutter ( 8972): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 8972): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=7→7 done=0→0
+I/flutter ( 8972): [MANAGED_PRODUCT_LOAD] source=screen pending=7 done=0 filter= tab=done
+I/flutter ( 8972): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=7→7 done=0→0
+I/flutter ( 8972): [MANAGED_PRODUCT_LOAD] source=provider pending=7 done=0 filter= tab=
+I/flutter ( 8972): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=true missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/WebViewFactory( 8972): Loading com.google.android.webview version 148.0.7778.178 (code 777817803)
+D/ApplicationLoaders( 8972): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2( 8972): Loading /data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader( 8972): Configuring clns-5 for other apk /data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/lib/arm64:/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider( 8972): version=148.0.7778.178 (777817803) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader( 8972): Load /data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk): ok
+D/nativeloader( 8972): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~jUSBbEV92YrYDCsZCIkMyg==/com.google.android.webview-Vf1OYb4P-4v8MafWVuWg6A==/base.apk): ok
+I/chromium( 8972): [0531/233229.423155:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader( 8972): Successfully loaded native library
+I/cr_CachingUmaRecorder( 8972): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH( 8972): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider( 8972): #registerProvider() provider:WV.wk@19fb2a4 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider( 8972): #setManagerAndSource() 0
+I/cr_DisplayManager( 8972): Is Display Topology available: false
+I/cr_CombinedPProvider( 8972): #linkNativeInternal() 1
+D/CompatibilityChangeReporter( 8972): Compat change id reported: 183155436; UID 10474; state: ENABLED
+I/cr_AppResProvider( 8972): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 8972): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 8972): #flushPolicies()
+W/chromium( 8972): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium( 8972): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 108766036
+D/CompatibilityChangeReporter( 8972): Compat change id reported: 214741472; UID 10474; state: ENABLED
+I/CameraManagerGlobal( 8972): Connecting to camera service
+D/CompatibilityChangeReporter( 8972): Compat change id reported: 171228096; UID 10474; state: ENABLED
+I/PlatformViewsController( 8972): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController( 8972): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter( 8972): Compat change id reported: 236825255; UID 10474; state: ENABLED
+W/libc    ( 8972): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 8972): type=1400 audit(0.0:682631): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c218,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter( 8972): Compat change id reported: 193247900; UID 10474; state: ENABLED
+I/Choreographer( 8972): Skipped 56 frames!  The application may be doing too much work on its main thread.
+W/libc    ( 8972): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 8972): type=1400 audit(0.0:682632): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c218,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0( 8972): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0( 8972): Build Date              : 08/23/22
+I/AdrenoVK-0( 8972): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0( 8972): Local Branch            : 
+I/AdrenoVK-0( 8972): Remote Branch           : 
+I/AdrenoVK-0( 8972): Remote Branch           : 
+I/AdrenoVK-0( 8972): Reconstruct Branch      : 
+I/AdrenoVK-0( 8972): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0( 8972): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer( 8972): Davey! duration=1004ms; Flags=1, FrameTimelineVsyncId=821540169, IntendedVsync=5736524850620254, Vsync=5736525783953550, InputEventId=0, HandleInputStart=5736525797363403, AnimationStart=5736525797364653, PerformTraversalsStart=5736525797400122, DrawStart=5736525810370122, FrameDeadline=5736524867286920, FrameInterval=5736525797037205, FrameStartTime=16666666, SyncQueued=5736525845238768, SyncStart=5736525845332258, IssueDrawCommandsStart=5736525846459966, SwapBuffers=5736525853888820, FrameCompleted=5736525855136841, DequeueBufferDuration=2389427, QueueBufferDuration=832708, GpuCompleted=5736525855136841, SwapBuffersCompleted=5736525855079028, DisplayPresentTime=0, CommandSubmissionCompleted=5736525853888820, 
+I/cr_CombinedPProvider( 8972): #onSettingsAvailable() 0
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+D/ProfileInstaller( 8972): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI( 8972): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+E/FrameEvents( 8972): updateAcquireFence: Did not find frame.
+W/o.room_manager2( 8972): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+W/o.room_manager2( 8972): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+W/WindowOnBackDispatcher( 8972): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 8972): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 8972): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=restore resultCount=0
+W/WindowOnBackDispatcher( 8972): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 8972): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 8972): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=save resultCount=0
+I/flutter ( 8972): [SEARCH_STATE_PERSIST] screen=productSearch event=restore resultCount=0
+I/flutter ( 8972): [INPUT_LIMIT_APPLIED] screen=detailSearch field=keyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateSearchKeyword
+I/flutter ( 8972): [INPUT_LIMIT_APPLIED] screen=detailSearch field=excludeKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateExcludeKeyword
+I/flutter ( 8972): [INPUT_LIMIT_APPLIED] screen=detailSearch field=genreAuxKeyword maxLength=50 keyboardType=text formatter=singleLineKeyword validator=validateOptionalSearchKeyword
+I/flutter ( 8972): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMinPriceField
+I/flutter ( 8972): [INPUT_LIMIT_APPLIED] screen=detailSearch field=maxPrice maxLength=7 keyboardType=number formatter=priceDigitsOnly validator=validateMaxPriceField
+I/flutter ( 8972): [INPUT_LIMIT_APPLIED] screen=detailSearch field=minCommentCount maxLength=3 keyboardType=number formatter=countDigits validator=validateOptionalCountField
+I/ImeTracker( 8972): com.stepbytestudio.room_manager2:5736a78a: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 8972): showSoftInput() view=io.flutter.embedding.android.FlutterView{e7046b4 VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/ImeTracker( 8972): com.stepbytestudio.room_manager2:9c8dab7c: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 8972): showSoftInput() view=io.flutter.embedding.android.FlutterView{e7046b4 VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 8972): The input method toggled cursor monitoring on
+D/InsetsController( 8972): show(ime(), fromIme=true)
+D/InsetsController( 8972): show(ime(), fromIme=true)
+I/ImeTracker( 8972): com.stepbytestudio.room_manager2:9c8dab7c: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker( 8972): com.stepbytestudio.room_manager2:5736a78a: onShown
+I/flutter ( 8972): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter ( 8972): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter ( 8972): [DETAIL_SEARCH_FIELD_VALIDATION] field=keyword valid=true reason=
+I/flutter ( 8972): [Rakuten] keyword search execute keyword="水筒" genreId=- genreName(lookup)=- shopCode=- shopName(saved lookup)=- hits=30 excludeRegistered=7 savedShopExcludeSet=3 
+I/flutter ( 8972): [SEARCH_EXECUTE_TRACE] sessionId=2 mode=product keyword="水筒" selectedShopCode=- genreId=- startedAt=2026-05-31T23:32:47.157761
+I/flutter ( 8972): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 expectedApiCalls=20
+I/flutter ( 8972): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 8972): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 8972): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/ImeTracker( 8972): com.stepbytestudio.room_manager2:4a87466: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 8972): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 8972): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@110191405 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@f4f3081
+I/ImeTracker( 8972): com.stepbytestudio.room_manager2:513cd0ce: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 8972): com.stepbytestudio.room_manager2:4a87466: onHidden
+I/flutter ( 8972): [Rakuten] response status=200 page=1 bytes=237760
+I/flutter ( 8972): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=1 statusCode=200 rawCount=30 durationMs=745 success=true
+I/flutter ( 8972): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=745 statusCode=200
+I/flutter ( 8972): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=28/100 dropReg=0 dropDup=0 dropAppFilter=2 dropSavedShop=0
+I/flutter ( 8972): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 8972): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 8972): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter ( 8972): [Rakuten] response status=200 page=2 bytes=214479
+I/flutter ( 8972): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=2 statusCode=200 rawCount=30 durationMs=790 success=true
+I/flutter ( 8972): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=true durationMs=790 statusCode=200
+I/flutter ( 8972): [Rakuten] keywordManagedExclusion page=2 raw=30 parsed=30 visible=58/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 8972): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 8972): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 8972): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter ( 8972): [Rakuten] response status=200 page=3 bytes=253014
+I/flutter ( 8972): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=3 statusCode=200 rawCount=30 durationMs=497 success=true
+I/flutter ( 8972): [SHOP_SEARCH_API_CALL] page=3 hits=30 success=true durationMs=497 statusCode=200
+I/flutter ( 8972): [Rakuten] keywordManagedExclusion page=3 raw=30 parsed=30 visible=88/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 8972): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 8972): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 8972): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E6%B0%B4%E7%AD%92&sort=-reviewCount
+I/flutter ( 8972): [Rakuten] response status=200 page=4 bytes=234728
+I/flutter ( 8972): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=product page=4 statusCode=200 rawCount=30 durationMs=634 success=true
+I/flutter ( 8972): [SHOP_SEARCH_API_CALL] page=4 hits=30 success=true durationMs=634 statusCode=200
+I/flutter ( 8972): [Rakuten] keywordManagedExclusion page=4 raw=30 parsed=12 visible=100/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 8972): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=4 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter ( 8972): [SEARCH_FETCH_100_AUDIT] mode=product keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=4 pagesSucceeded=4 pagesFailed=0 rawTotal=120 excludedCandidate=0 excludedDone=0 excludedSafety=2 excludedDuplicate=0 excludedNoImage=0 excludedNoPrice=0 excludedNoName=0 excludedNoUrl=0 excludedReviewThreshold=0 excludedOther=0 excludedSavedShop=0 displayCount=100 stopReason=reachedTarget
+I/flutter ( 8972): [SHOP_SEARCH_FETCH_RESULT] screen=product apiCalls=4 rawItems=true dedupedItems=100 safetyExcluded=2 duplicateExcluded=0 registeredExcluded=0 savedShopExcluded=0 displayItems=100 failedPages=0 reason=reachedTarget
+I/flutter ( 8972): [RakutenGenre][SUMMARY] total=102 resolved=102 unresolved=0 usedMaster=102 rawGenreNameEmpty=102
+I/flutter ( 8972): [SEARCH_REQUEST_RACE_GUARD] mode=product requestId=2 activeRequestId=2 accepted=true reason=currentSession
+I/flutter ( 8972): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=2
+I/flutter ( 8972): [SEARCH_API_RESULT_APPLY] sessionId=2 activeSessionId=2 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter ( 8972): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter ( 8972): [GenreMaster] search prefetch skip resolvedLocally=22
+I/flutter ( 8972): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter ( 8972): [SEARCH_STATE_PERSIST] screen=productSearch event=save resultCount=100
+I/flutter ( 8972): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=0 updated=100 skipped=0 evicted=0 total=165
+I/flutter ( 8972): [PRODUCT_CATALOG_SEARCH_UPSERT_SUMMARY] mode=productSearch items=100 upserted=100 skipped=0 qualityNg=0 source=search
+I/flutter ( 8972): [PRODUCT_CATALOG_ALIAS_MATCH] alias=hobinavi:10548340 canonicalId=hobinavi:10548340
+I/flutter ( 8972): [PRODUCT_CATALOG_ALIAS_MATCH] alias=https://hb.afl.rakuten.co.jp/hgc/g00qff7h.362kt446.g00qff7h.362kubb9/ canonicalId=hobinavi:10548340
+I/flutter ( 8972): [PRODUCT_CATALOG_SEARCH_VERIFY_SUMMARY] mode=productSearch count=165 savedBatch=100 canonicalId=hobinavi:10548340 getByCanonicalId=true findByProductId=true findByNormalizedUrl=true findByShopItem=false source=search sourceTrust=high qualitySafe=true hasImage=true hasPrice=true
+I/flutter ( 8972): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [PRODUCT_SAFETY_FILTER] source=productSearch totalItems=100 blockedCount=0 reasonBreakdown= firstBlockedExamples=-
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=118.0 titleMaxLines=2 priceReviewSameLine=true buttonHeight=48.0 cardHeight=auto overflowDetected=false
+I/flutter ( 8972): [SEARCH_STATE_PERSIST] screen=productSearch event=save resultCount=100
+I/flutter ( 8972): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 8972): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=0 alreadyAdded=0 skipped=0
+I/flutter ( 8972): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter ( 8972): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher( 8972): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 8972): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 8972): [GENRE_PREF_LOAD] favoriteGenreIds=100026,100227,100316 favoriteGenreNames=パソコン・周辺機器,食品,水・ソフトドリンク source=recommend
+I/flutter ( 8972): [GENRE_PREF_MISMATCH] savedGenreId=100026 usedGenreId=566732 savedName=パソコン・周辺機器 usedName=カタログギフト reason=historyGenreNotInFavorites source=recommend
+I/flutter ( 8972): [GENRE_PREF_MISMATCH] savedGenreId=100026 usedGenreId=201117 savedName=パソコン・周辺機器 usedName=バウムクーヘン reason=historyGenreNotInFavorites source=recommend
+I/flutter ( 8972): [GENRE_PREF_MISMATCH] savedGenreId=100026 usedGenreId=503020 savedName=パソコン・周辺機器 usedName=シートマスク・フェイスパック reason=historyGenreNotInFavorites source=recommend
+I/flutter ( 8972): [GENRE_PREF_MISMATCH] savedGenreId=100026 usedGenreId=503170 savedName=パソコン・周辺機器 usedName=超音波美顔器 reason=historyGenreNotInFavorites source=recommend
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=wis-shop:10000047 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=bungudo:10347992 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=yj-planning:10000019 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=farson:10007991 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=itigou:10000253 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=being:10000246 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=whatfun-pc:10001209 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=pixiogaming:10000125 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=pc-shinjyo:10000262 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=krdirect:10001460 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=pc-max-shop:10001987 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=magicraven:10000004 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=fpdvision:10000042 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=qifeng:10000120 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=xiaomiofficial:10000197 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=puchirabbit:10000027 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=motunabe:10000006 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=marukans:10000152 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=awajitamanegi:10000202 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=bokuseisya:10000085 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=toukoku:10000558 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=hoshisan:10001119 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=comvita:10000280 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=uosou:10000378 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=super-foods-japan:10000981 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=mame:10000169 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=rabbit:10006577 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=nori-ya:10000038 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=auc-garlic:10000523 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=kotake-farm:10000110 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=yamagoiida:10000115 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=o-ohsho:10000003 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=slc-123:10000001 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=gyouzakan:10000209 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=once-in:10000137 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=38kumate:10000168 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=donmai:10000466 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=kitanomachi:10000389 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=hakudai:10000383 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=foodshonpo:10000177 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=yuuzen:10000738 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=dining-shioso:10000211 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=kanohachi:10000152 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=kado-select:10000195 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=i-kappa:10000813 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=cocodecow:10087356 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=iryosyoku:10003808 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=matsukiyo:10039739 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=arianakosume:10002938 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=izmic-ec:10137328 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=ems-kankyo:10000004 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=soukaidrink:10013533 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=aburajin:10008522 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=charminglabo:10003070 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=sakai-coffee:10000130 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=paldo:10000356 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=mashimo:10001083 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=drinkshop:10439549 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=saison-f:10001280 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=alllife:10006996 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=nikkako:10000073 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=festival-plaza:10011639 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=kosakasyoten:10000162 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=mrk-09shop:10005574 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=takaocoffee:10002569 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=jafurusato:10000033 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=kurashikenkou:10198555 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=rakuten24:10418315 ageSeconds=118 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=shinka-shop:10000001 ageSeconds=77 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=2zest:10003306 ageSeconds=77 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=unplugged-cp:10000468 ageSeconds=77 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=auc-ulmax:10105264 ageSeconds=77 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=toolandmeal:10027275 ageSeconds=77 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=enetroom:10140351 ageSeconds=77 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=time2017:10000701 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=moccasin:10016510 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=mees-factory:10000019 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=auc-risecreation:10005026 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=brizel:10000010 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=yaostore:10001258 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=auc-prendre:10007668 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=rennkou-syouji:10018230 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=monopia:10000001 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=goodlifeshop:10014309 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=takeya-tea:10000490 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=expsjapan:10025575 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=tiger-online:10005028 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=rareleak:10004713 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=ra-must:10038319 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=namename:10000009 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=vastland:10000069 ageSeconds=69 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=naireseisakusho:10000000 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=1rezet:10000004 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=watermode:10010295 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=neoryshop:10000027 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=hobinavi:10548340 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=asukapainting:10000039 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=newwave2023:10000032 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=lafuture:10000393 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=yamayuu:10018976 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=mhpro:10000285 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=familiarshop:10000337 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=makinoharacha:10000040 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=premium-interior:10004476 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=snnm-shop:10000970 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=exception5251:10000580 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=alamode:10021120 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=bellevie-harima:10153209 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=e-kit:10042837 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=borderline:10001162 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=shimoyama-onlineshop:10000771 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=the-charme:10000079 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=lifebenri:10000203 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=let-ochanomise:10000187 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=anahaimu:10000434 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=k-kitchen:10096917 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=kurashinetkan:10000007 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=ario-ario-ario:10000015 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=ve-store:10000003 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=haru-sign:10000235 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=cubic-square:10000011 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=honestyshop:10000108 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=enn-shop:10000996 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=signwhite:10000095 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=sarasa-designstore:10000961 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=neo-lifestyle:10000257 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=smile-net001:10000574 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=wishsun:10000101 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=emiplus-kyowa:10000087 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=jies2024:10000000 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=fasao:10000106 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=auc-goldmen:10000270 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=depadepa:10000406 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=kawamotoya:10000868 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=roomy:10015991 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=dolemi-shop:10002310 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=atlas-online:10000940 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=outletruckruck:10043948 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=brita:10000023 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=marz-shop:10018447 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=liviewstore:10000211 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=juntakushop:10000045 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=ra-imu:10002861 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=assistone:10009330 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=jgp-store:10000097 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=sime-fabric:10004227 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=feijian-store:10000000 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=hotch-potch:10010784 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=shopmarna:10006598 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=hangyo:10001257 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=angers:10065341 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=nikonikowu:10002842 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=winds-million:10003464 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=eunicedress:10001961 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=stmeister:10000057 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=casmin:10049793 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=irodorikukan:10000120 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=mariness:10000034 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=lebenwood:10004237 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=e-kitchen:10097347 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=tokido:10000964 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=luckyqueen:10008491 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=cucina:10008914 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=livingut:10020902 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=kurashi-zakka:10002471 ageSeconds=6 ttl=86400 stale=false
+I/flutter ( 8972): [TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] plannedFavoriteGenres=3 executedFavoriteGenrePlans=0 skippedFavoriteGenrePlans=3 assistPlanExecuted=false apiCalls=0 earlyStopReason=catalogSufficient
+I/flutter ( 8972): [TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=10 zeroReviewItems=0 missingImageItems=0 missingPriceItems=0 genreDistribution=110105:4|100276:1|201402:1|567251:1|101785:2|563974:1 shopDistribution=Pixio公式ストア:1|淡路島たまねぎ工房:1|自家焙煎コーヒー豆 さかい珈琲店:1|WIS shop 楽天市場店:1|マヌカハニーのコンビタ 公式店:1|マツモトキヨシ楽天市場店:1|EVIディスプレイ工房:1|博多もつ鍋と餃子 マイニチトッカ:1|産直・奥州うまいもん屋:1|Xiaomi公式 楽天市場店:1
+I/flutter ( 8972): [TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=3 executedFavoriteGenrePlans=0 apiCalls=0 pagesUsed= rawItems=63 excludedManaged=0 excludedDismissed=0 excludedShownRecently=0 excludedNoImage=0 excludedNoPrice=0 excludedSafety=0 excludedZeroReview=0 finalItems=10 fallbackUsed=false assistPlanUsed=false
+I/flutter ( 8972): [TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution=100026:4|100227:3|100316:3 finalShopDistribution=Pixio公式ストア:1|淡路島たまねぎ工房:1|自家焙煎コーヒー豆 さかい珈琲店:1|WIS shop 楽天市場店:1|マヌカハニーのコンビタ 公式店:1|マツモトキヨシ楽天市場店:1|EVIディスプレイ工房:1|博多もつ鍋と餃子 マイニチトッカ:1|産直・奥州うまいもん屋:1|Xiaomi公式 楽天市場店:1
+I/flutter ( 8972): [TODAY_RECOMMEND_CATALOG_SUMMARY] enabled=true catalogCount=165 catalogCandidates=63 catalogAccepted=63 catalogRejectedStale=0 catalogRejectedQuality=0 catalogRejectedManaged=8 catalogRejectedGenre=94 catalogRejectedTrust=0 apiSkippedByCatalog=true apiCalls=0 finalItems=10
+I/flutter ( 8972): [PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=0 updated=63 skipped=0 evicted=0 total=165
+I/flutter ( 8972): [PRODUCT_CATALOG_RECOMMEND_UPSERT_SUMMARY] items=63 upserted=63 skipped=0 qualityNg=0 source=todayRecommendation
+I/flutter ( 8972): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=10 selected=0 alreadyAdded=0 skipped=0
+I/flutter ( 8972): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260531_233206.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260531_233206.mp4 (7029157 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260531_233206
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260531_233206\terminal_output_20260531_233206.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260531_233206.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260531_233206.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260531_233206.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260531_233206.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260531_233206.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
