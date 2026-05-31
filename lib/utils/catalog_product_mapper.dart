@@ -1,3 +1,4 @@
+import '../config/debug_log_flags.dart';
 import '../config/product_catalog_config.dart';
 import '../models/catalog_product.dart';
 import '../models/rakuten_search_item.dart';
@@ -182,6 +183,52 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromSearchItems(
       'skipped=${summary.skipped} qualityNg=${summary.qualityNg} '
       'source=${source.name}',
     );
+    _logProductCatalogSearchVerifySummary(
+      repository,
+      products,
+      catalogMode,
+    );
   }
   return summary;
+}
+
+/// 実機確認用: 保存直後のカタログ状態サマリ（[DebugLogFlags.kCatalogAuditLogsEnabled] 時のみ）。
+void _logProductCatalogSearchVerifySummary(
+  ProductCatalogRepository repository,
+  List<CatalogProduct> products,
+  String catalogMode,
+) {
+  if (!DebugLogFlags.kCatalogAuditLogsEnabled) return;
+  final count = repository.count();
+  if (products.isEmpty) {
+    catalogAuditLog(
+      '[PRODUCT_CATALOG_SEARCH_VERIFY_SUMMARY] mode=$catalogMode '
+      'count=$count savedBatch=0',
+    );
+    return;
+  }
+  final sample = products.first;
+  final stored = repository.getByCanonicalId(sample.canonicalId, touch: false);
+  final byProductId = sample.productId.trim().isNotEmpty
+      ? repository.findByAlias(sample.productId, touch: false)
+      : null;
+  final byNormUrl = sample.normalizedItemUrl.trim().isNotEmpty
+      ? repository.findByAlias(sample.normalizedItemUrl, touch: false)
+      : null;
+  final parsed = RakutenItemUrlParser.tryParse(sample.itemUrl);
+  final shopItemAlias = parsed != null
+      ? CatalogProductKeys.shopItemAlias(parsed.shopCode, parsed.itemPathSegment)
+      : null;
+  final byShopItem = shopItemAlias != null
+      ? repository.findByAlias(shopItemAlias, touch: false)
+      : null;
+  catalogAuditLog(
+    '[PRODUCT_CATALOG_SEARCH_VERIFY_SUMMARY] mode=$catalogMode count=$count '
+    'savedBatch=${products.length} canonicalId=${sample.canonicalId} '
+    'getByCanonicalId=${stored != null} findByProductId=${byProductId != null} '
+    'findByNormalizedUrl=${byNormUrl != null} findByShopItem=${byShopItem != null} '
+    'source=${stored?.source.name} sourceTrust=${stored?.sourceTrust.name} '
+    'qualitySafe=${stored?.qualityStatus.safe} '
+    'hasImage=${stored?.qualityStatus.hasImage} hasPrice=${stored?.qualityStatus.hasPrice}',
+  );
 }
