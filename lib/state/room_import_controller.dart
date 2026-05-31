@@ -7,6 +7,7 @@ import '../models/rakuten_managed_product.dart';
 import '../models/room_activity_event.dart';
 import '../models/room_reaction_sync_batch_result.dart';
 import '../models/room_sync_result.dart';
+import '../repository/product_catalog_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../services/room_import_collects_policy.dart';
@@ -226,9 +227,11 @@ class RoomImportController extends ChangeNotifier {
         final sw = Stopwatch()..start();
         final searchRepo = context.read<RakutenSearchRepository>();
         final productRepo = context.read<RakutenManagedProductRepository>();
+        final catalogRepo = context.read<ProductCatalogRepository>();
         final svc = RoomImportMetadataEnrichmentService(
           searchRepository: searchRepo,
           productRepository: productRepo,
+          productCatalogRepository: catalogRepo,
         );
         _setUiPhase(RoomImportUiPhase.checkingProductInfo);
         final er = await svc.enrichRoomImportedProducts(

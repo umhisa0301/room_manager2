@@ -8,6 +8,7 @@ import '../models/rakuten_managed_product.dart';
 import '../models/room_reaction_sync_batch_result.dart';
 import '../models/room_sync_result.dart';
 import '../navigation/app_shell_controller.dart';
+import '../repository/product_catalog_repository.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../repository/room_sync_cursor_repository.dart';
@@ -129,9 +130,11 @@ abstract final class RoomPostImportFlow {
       final searchRepo = context.read<RakutenSearchRepository>();
       final productRepo = context.read<RakutenManagedProductRepository>();
       final managedProv = context.read<RakutenManagedProductProvider>();
+      final catalogRepo = context.read<ProductCatalogRepository>();
       final svc = RoomImportMetadataEnrichmentService(
         searchRepository: searchRepo,
         productRepository: productRepo,
+        productCatalogRepository: catalogRepo,
       );
       messenger.showSnackBar(
         const SnackBar(content: Text('ショップ名・ジャンルを再確認しています…')),
@@ -311,9 +314,11 @@ abstract final class RoomPostImportFlow {
     final repo = context.read<RakutenManagedProductRepository>();
     final cursorRepo = context.read<RoomSyncCursorRepository>();
     final searchRepo = context.read<RakutenSearchRepository>();
+    final catalogRepo = context.read<ProductCatalogRepository>();
     final service = RoomSyncService(
       repository: repo,
       searchRepository: searchRepo,
+      productCatalogRepository: catalogRepo,
       roomSyncCursorRepository: cursorRepo,
     );
     final limit = RoomImportLimitPolicy.effectiveBatchLimit();
@@ -357,9 +362,11 @@ abstract final class RoomPostImportFlow {
     final repo = context.read<RakutenManagedProductRepository>();
     final cursorRepo = context.read<RoomSyncCursorRepository>();
     final searchRepo = context.read<RakutenSearchRepository>();
+    final catalogRepo = context.read<ProductCatalogRepository>();
     final service = RoomSyncService(
       repository: repo,
       searchRepository: searchRepo,
+      productCatalogRepository: catalogRepo,
       roomSyncCursorRepository: cursorRepo,
     );
     final limit = RoomImportLimitPolicy.effectiveBatchLimit();

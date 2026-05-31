@@ -1,6 +1,7 @@
 import '../config/debug_log_flags.dart';
 import '../config/product_catalog_config.dart';
 import '../models/catalog_product.dart';
+import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/product_catalog_repository.dart';
 import '../services/rakuten_item_url_parser.dart';
@@ -66,6 +67,36 @@ CatalogProduct catalogProductFromSearchItem(
     cacheTtlSeconds: ProductCatalogConfig.defaultProductCacheTtlSeconds,
   );
   return product.withRecomputedQuality();
+}
+
+/// [RakutenManagedProduct] から [CatalogProduct] を生成。
+CatalogProduct catalogProductFromManagedProduct(
+  RakutenManagedProduct row, {
+  CatalogProductSource source = CatalogProductSource.roomImport,
+  CatalogProductSourceTrust sourceTrust = CatalogProductSourceTrust.medium,
+  DateTime? now,
+}) {
+  return catalogProductFromSearchItem(
+    RakutenSearchItem(
+      productId: row.productId,
+      itemName: row.itemName,
+      itemPrice: row.itemPrice,
+      itemUrl: row.itemUrl,
+      affiliateUrl: row.affiliateUrl ?? '',
+      imageUrl: row.imageUrl,
+      shopName: row.shopName,
+      reviewCount: row.reviewCount,
+      reviewAverage: row.reviewAverage,
+      shopCode: row.shopCode,
+      shopUrl: row.shopUrl,
+      genreId: row.genreId,
+      genreName: row.genreName,
+    ),
+    source: source,
+    sourceTrust: sourceTrust,
+    now: now,
+    roomPageUrl: row.roomUrl,
+  );
 }
 
 /// [CatalogProduct] を既存 UI 互換の [RakutenSearchItem] に変換。
@@ -214,6 +245,108 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromRecommendItems(
     'qualityNg=${summary.qualityNg} source=todayRecommendation',
   );
   return summary;
+}
+
+/// ROOM 取り込み・補完結果をカタログへ upsert（失敗しても呼び出し元は継続）。
+Future<ProductCatalogUpsertSummary> upsertCatalogFromRoomManagedProducts(
+  ProductCatalogRepository? repository,
+  Iterable<RakutenManagedProduct> items, {
+  CatalogProductSource source = CatalogProductSource.roomImport,
+  CatalogProductSourceTrust sourceTrust = CatalogProductSourceTrust.medium,
+  DateTime? now,
+}) async {
+  if (repository == null || !ProductCatalogConfig.kProductCatalogEnabled) {
+    return const ProductCatalogUpsertSummary.skipped();
+  }
+  final list = items.toList(growable: false);
+  if (list.isEmpty) {
+    return const ProductCatalogUpsertSummary(
+      attempted: 0,
+      upserted: 0,
+      skipped: 0,
+      merged: 0,
+    );
+  }
+
+  var qualityNg = 0;
+  var trustHigh = 0;
+  var trustMedium = 0;
+  var trustLow = 0;
+  final products = <CatalogProduct>[];
+  for (final row in list) {
+    final product = catalogProductFromManagedProduct(
+      row,
+      source: source,
+      sourceTrust: sourceTrust,
+      now: now,
+    );
+    switch (product.sourceTrust) {
+      case CatalogProductSourceTrust.high:
+        trustHigh++;
+      case CatalogProductSourceTrust.medium:
+        trustMedium++;
+      case CatalogProductSourceTrust.low:
+        trustLow++;
+    }
+    if (!product.isSavable) continue;
+    if (!product.qualityStatus.safe) {
+      qualityNg++;
+      continue;
+    }
+    products.add(product);
+  }
+
+  try {
+    final skipped = list.length - products.length - qualityNg;
+    final result = await repository.upsertAll(products);
+    final summary = ProductCatalogUpsertSummary(
+      attempted: list.length,
+      upserted: result.inserted + result.updated,
+      skipped: skipped + result.skipped,
+      merged: result.updated,
+      qualityNg: qualityNg,
+    );
+    _logRoomCatalogUpsertSummary(
+      source: source,
+      summary: summary,
+      trustHigh: trustHigh,
+      trustMedium: trustMedium,
+      trustLow: trustLow,
+    );
+    return summary;
+  } catch (e) {
+    importantDebugLog('[ROOM_CATALOG_UPSERT] failed: $e');
+    return ProductCatalogUpsertSummary(
+      attempted: list.length,
+      upserted: 0,
+      skipped: list.length,
+      merged: 0,
+      qualityNg: qualityNg,
+    );
+  }
+}
+
+void _logRoomCatalogUpsertSummary({
+  required CatalogProductSource source,
+  required ProductCatalogUpsertSummary summary,
+  required int trustHigh,
+  required int trustMedium,
+  required int trustLow,
+}) {
+  if (!DebugLogFlags.kCatalogAuditLogsEnabled &&
+      !DebugLogFlags.kRoomAuditLogsEnabled) {
+    return;
+  }
+  final line =
+      '[ROOM_CATALOG_UPSERT_SUMMARY] source=${source.name} '
+      'items=${summary.attempted} upserted=${summary.upserted} '
+      'skipped=${summary.skipped} qualityNg=${summary.qualityNg} '
+      'trustHigh=$trustHigh trustMedium=$trustMedium trustLow=$trustLow';
+  if (DebugLogFlags.kCatalogAuditLogsEnabled) {
+    catalogAuditLog(line);
+  } else {
+    roomAuditLog(line);
+  }
 }
 
 /// 実機確認用: 保存直後のカタログ状態サマリ（[DebugLogFlags.kCatalogAuditLogsEnabled] 時のみ）。

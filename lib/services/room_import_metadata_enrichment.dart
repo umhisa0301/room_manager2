@@ -1,13 +1,18 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 
 import '../config/room_import_enrichment_verify_config.dart';
+import '../models/catalog_product.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
+import '../repository/product_catalog_repository.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
+import '../utils/catalog_product_mapper.dart';
+import '../utils/room_catalog_enrichment.dart';
 import '../services/rakuten_item_url_parser.dart';
 import '../services/room_url_resolver.dart';
 import '../utils/rakuten_product_genre_display.dart';
@@ -121,11 +126,14 @@ class RoomImportMetadataEnrichmentService {
   RoomImportMetadataEnrichmentService({
     required RakutenSearchRepository searchRepository,
     required RakutenManagedProductRepository productRepository,
+    ProductCatalogRepository? productCatalogRepository,
   }) : _searchRepository = searchRepository,
-       _productRepository = productRepository;
+       _productRepository = productRepository,
+       _productCatalogRepository = productCatalogRepository;
 
   final RakutenSearchRepository _searchRepository;
   final RakutenManagedProductRepository _productRepository;
+  final ProductCatalogRepository? _productCatalogRepository;
 
   static bool _singleFlight = false;
 
@@ -872,6 +880,7 @@ class RoomImportMetadataEnrichmentService {
     var pausedByRateLimit = false;
     final successIds = <String>[];
     var processedProducts = 0;
+    final catalogSummary = RoomCatalogLookupSummary();
 
     try {
       while (processedProducts < maxProductsPerRun && !pausedByRateLimit) {
@@ -1034,6 +1043,69 @@ class RoomImportMetadataEnrichmentService {
           'urlSlug=${codes.urlPathMatchSegment}',
         );
         roomImportEnrichMethodLog('method=${_methodLogName(chosenMethod)}');
+
+        var catalogApplied = false;
+        final catalogRepo = _productCatalogRepository;
+        if (catalogRepo != null && RoomCatalogEnrichment.enabled) {
+          final catalogHit = RoomCatalogEnrichment.lookupProduct(
+            repository: catalogRepo,
+            row: chosen,
+          );
+          catalogSummary.recordLookup(catalogHit);
+          final cat = catalogHit.product;
+          if (cat != null) {
+            final patch = RoomCatalogEnrichment.buildMetadataEnrichmentPatch(
+              row: chosen,
+              catalog: cat,
+              summary: catalogSummary,
+            );
+            if (patch != null &&
+                RoomCatalogEnrichment.patchCoversApiEnrichmentNeeds(
+                  chosen,
+                  patch,
+                )) {
+              try {
+                await _productRepository.mergeRoomImportMetadataFromSearchItem(
+                  productId: pid,
+                  api: patch,
+                );
+                final fresh = _productRepository.getByProductId(pid);
+                if (fresh != null) {
+                  unawaited(
+                    upsertCatalogFromRoomManagedProducts(
+                      catalogRepo,
+                      [fresh],
+                      source: CatalogProductSource.roomEnrich,
+                      sourceTrust:
+                          cat.sourceTrust == CatalogProductSourceTrust.high
+                          ? CatalogProductSourceTrust.high
+                          : CatalogProductSourceTrust.medium,
+                    ),
+                  );
+                }
+                okCount++;
+                successIds.add(pid);
+                catalogApplied = true;
+                roomImportEnrichSuccessLog(
+                  'productId=$pid source=catalog '
+                  'shopName=${patch.shopName.trim()} '
+                  'genreName=${patch.genreName.trim()}',
+                );
+              } catch (_) {
+                failCount++;
+              }
+              try {
+                await _productRepository.updateManagedProduct(pid, (e) {
+                  return e.copyWith(roomImportMetadataEnriching: false);
+                });
+              } catch (_) {}
+            }
+          }
+        }
+
+        if (catalogApplied) {
+          continue;
+        }
 
         var usedKeywordShopUrlFallback = false;
         RoomImportEnrichmentFetchEnvelope env;
@@ -1266,6 +1338,20 @@ class RoomImportMetadataEnrichmentService {
             api: env.item!,
             persistRoomApiCompositeItemCode: persistComposite,
           );
+          final catalogRepoAfterApi = _productCatalogRepository;
+          if (catalogRepoAfterApi != null && RoomCatalogEnrichment.enabled) {
+            final fresh = _productRepository.getByProductId(pid);
+            if (fresh != null) {
+              unawaited(
+                upsertCatalogFromRoomManagedProducts(
+                  catalogRepoAfterApi,
+                  [fresh],
+                  source: CatalogProductSource.roomEnrich,
+                  sourceTrust: CatalogProductSourceTrust.high,
+                ),
+              );
+            }
+          }
           okCount++;
           successIds.add(pid);
           if (usedKeywordShopUrlFallback) {
@@ -1301,6 +1387,7 @@ class RoomImportMetadataEnrichmentService {
         });
       }
     } finally {
+      catalogSummary.logSummary();
       final remainingPending = _pendingQueueRows().length;
       roomImportEnrichSummaryLog(
         'apiAttempts=$apiAttempts updated=$okCount failedProducts=$failCount '

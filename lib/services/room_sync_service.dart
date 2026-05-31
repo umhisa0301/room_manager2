@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import '../config/demo_mode.dart';
+import '../models/catalog_product.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/room_collected_persist_kind.dart';
 import '../models/room_import_cursor_state.dart';
@@ -8,9 +11,12 @@ import '../models/room_reaction_sync_batch_result.dart';
 import '../models/room_reaction_sync_top_product.dart';
 import '../models/room_sync_result.dart';
 import '../models/rakuten_search_item.dart';
+import '../repository/product_catalog_repository.dart';
 import '../repository/rakuten_managed_product_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../repository/room_sync_cursor_repository.dart';
+import '../utils/catalog_product_mapper.dart';
+import '../utils/room_catalog_enrichment.dart';
 import '../utils/room_import_product_image.dart';
 import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_reaction_sync_user_message.dart';
@@ -34,17 +40,20 @@ class RoomSyncService {
   RoomSyncService({
     required RakutenManagedProductRepository repository,
     RakutenSearchRepository? searchRepository,
+    ProductCatalogRepository? productCatalogRepository,
     RoomUrlResolver? roomUrlResolver,
     RoomUserPostedListingFetcher? listingFetcher,
     RoomSyncCursorRepository? roomSyncCursorRepository,
   }) : _repository = repository,
        _searchRepository = searchRepository,
+       _productCatalogRepository = productCatalogRepository,
        _resolver = roomUrlResolver ?? RoomUrlResolver(),
        _listingFetcher = listingFetcher ?? RoomUserPostedListingFetcher(),
        _cursorRepo = roomSyncCursorRepository;
 
   final RakutenManagedProductRepository _repository;
   final RakutenSearchRepository? _searchRepository;
+  final ProductCatalogRepository? _productCatalogRepository;
   final RoomUrlResolver _resolver;
   final RoomUserPostedListingFetcher _listingFetcher;
   final RoomSyncCursorRepository? _cursorRepo;
@@ -805,7 +814,7 @@ class RoomSyncService {
         onProcessingHint?.call('商品を保存しています');
         onProcessingHint?.call('0/${toProcess.length}件を取り込み中');
       }
-      roomImportUiLog('phase=processing current=0 total=${toProcess.length}');
+      final catalogLookupSummary = RoomCatalogLookupSummary();
 
       roomImportBatchStartLog(
         'mode=importWithInitialEnrichment limit=$maxItems '
@@ -1074,8 +1083,41 @@ class RoomSyncService {
         } else {
           final shop = verified.shopCode.trim();
           final item = verified.itemPathSegment.trim();
+          final compositeId = shop.isNotEmpty && item.isNotEmpty ? '$shop:$item' : '';
+          final catalogRepo = _productCatalogRepository;
+          if (catalogRepo != null && RoomCatalogEnrichment.enabled) {
+            final catalogHit = RoomCatalogEnrichment.lookupKeys(
+              repository: catalogRepo,
+              productId: compositeId,
+              roomApiCompositeItemCode: compositeId,
+              itemUrl: parsed.rakutenUrl,
+              affiliateUrl: rs.roomPageAffiliateUrl ?? '',
+              roomPageUrl: roomPageUrl,
+              shopCode: shop,
+              itemPathSegment: item,
+            );
+            catalogLookupSummary.recordLookup(catalogHit);
+            final cat = catalogHit.product;
+            if (cat != null) {
+              final patch =
+                  RoomCatalogEnrichment.buildImmediateImagePatchForNewImport(
+                catalog: cat,
+                productId: compositeId,
+              );
+              if (patch != null) {
+                apiEnriched = patch;
+                RoomImportDebugLogBuffer.incApiSkipped();
+                roomImportSkipApiLog(
+                  'reason=catalogImageHit shopCode=$shop itemCode=$item',
+                );
+              }
+            }
+          }
           final searchRepo = _searchRepository;
-          if (searchRepo != null && shop.isNotEmpty && item.isNotEmpty) {
+          if (apiEnriched == null &&
+              searchRepo != null &&
+              shop.isNotEmpty &&
+              item.isNotEmpty) {
             try {
               RoomImportDebugLogBuffer.incApiExecuted();
               final env = await searchRepo.fetchFirstItemForRoomImportEnrichmentEnvelope(
@@ -1101,7 +1143,7 @@ class RoomSyncService {
                 'reason=immediateApiFailed shopCode=$shop itemCode=$item',
               );
             }
-          } else {
+          } else if (apiEnriched == null) {
             rakutenApiPartialData = true;
             RoomImportDebugLogBuffer.incApiSkipped();
             roomImportSkipApiLog(
@@ -1323,22 +1365,56 @@ class RoomSyncService {
           final flushSw = Stopwatch()..start();
           await _repository.flushSharedWorkingMutableList(workingManagedList);
           final searchRepoForRecovery = _searchRepository;
-          if (newlyImportedProductIds.isNotEmpty && searchRepoForRecovery != null) {
-            await _repository.recoverSuspiciousImagesForProductIds(
-              productIds: newlyImportedProductIds,
-              fetchApi: (row) async {
-                final shop = row.shopCode.trim();
-                final item = row.productId.trim();
-                if (shop.isEmpty || item.isEmpty) return null;
-                final env =
-                    await searchRepoForRecovery.fetchFirstItemForRoomImportEnrichmentEnvelope(
-                  shopCode: shop,
-                  itemCode: item,
-                );
-                return env.item;
-              },
-            );
+          if (newlyImportedProductIds.isNotEmpty) {
+            final catalogRepo = _productCatalogRepository;
+            if (catalogRepo != null && RoomCatalogEnrichment.enabled) {
+              final importedRows = <RakutenManagedProduct>[];
+              for (final pid in newlyImportedProductIds) {
+                final row = _repository.getByProductId(pid);
+                if (row != null) importedRows.add(row);
+              }
+              unawaited(
+                upsertCatalogFromRoomManagedProducts(
+                  catalogRepo,
+                  importedRows,
+                  source: CatalogProductSource.roomImport,
+                  sourceTrust: CatalogProductSourceTrust.medium,
+                ),
+              );
+            }
+            if (searchRepoForRecovery != null) {
+              await _repository.recoverSuspiciousImagesForProductIds(
+                productIds: newlyImportedProductIds,
+                fetchApi: (row) async {
+                  final catalogRepo = _productCatalogRepository;
+                  if (catalogRepo != null && RoomCatalogEnrichment.enabled) {
+                    final hit = RoomCatalogEnrichment.lookupProduct(
+                      repository: catalogRepo,
+                      row: row,
+                    );
+                    final cat = hit.product;
+                    if (cat != null) {
+                      final patch = RoomCatalogEnrichment.buildImmediateImagePatch(
+                        row: row,
+                        catalog: cat,
+                      );
+                      if (patch != null) return patch;
+                    }
+                  }
+                  final shop = row.shopCode.trim();
+                  final item = row.productId.trim();
+                  if (shop.isEmpty || item.isEmpty) return null;
+                  final env = await searchRepoForRecovery
+                      .fetchFirstItemForRoomImportEnrichmentEnvelope(
+                    shopCode: shop,
+                    itemCode: item,
+                  );
+                  return env.item;
+                },
+              );
+            }
           }
+          catalogLookupSummary.logSummary();
           flushSw.stop();
           final skippedUnchangedSave = batchSize - batchSaveMutations - failed;
           roomBatchSaveResultLog(
