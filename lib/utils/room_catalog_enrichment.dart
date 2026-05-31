@@ -87,7 +87,30 @@ class RoomCatalogLookupSummary {
     }
   }
 
-  void logSummary() {
+  /// バッチ開始時の入口ログ（lookup 実行有無の切り分け用）。
+  static void logLookupEntry({
+    required bool enabled,
+    required bool repositoryPresent,
+    required int targetCount,
+    required String source,
+  }) {
+    if (!kDebugMode) return;
+    if (!DebugLogFlags.kCatalogAuditLogsEnabled &&
+        !DebugLogFlags.kRoomAuditLogsEnabled) {
+      return;
+    }
+    final line =
+        '[ROOM_CATALOG_LOOKUP_ENTRY] enabled=$enabled '
+        'repositoryPresent=$repositoryPresent targetCount=$targetCount '
+        'source=$source';
+    if (DebugLogFlags.kCatalogAuditLogsEnabled) {
+      catalogAuditLog(line);
+    } else {
+      roomAuditLog(line);
+    }
+  }
+
+  void logSummary({String reason = 'completed'}) {
     if (!kDebugMode) return;
     if (!DebugLogFlags.kCatalogAuditLogsEnabled &&
         !DebugLogFlags.kRoomAuditLogsEnabled) {
@@ -103,7 +126,7 @@ class RoomCatalogLookupSummary {
         'usedForPrice=$usedForPrice usedForImage=$usedForImage '
         'usedForShop=$usedForShop usedForGenre=$usedForGenre '
         'skippedStale=$skippedStale skippedLowTrust=$skippedLowTrust '
-        'skippedUnsafeImage=$skippedUnsafeImage';
+        'skippedUnsafeImage=$skippedUnsafeImage reason=$reason';
     if (DebugLogFlags.kCatalogAuditLogsEnabled) {
       catalogAuditLog(line);
     } else {

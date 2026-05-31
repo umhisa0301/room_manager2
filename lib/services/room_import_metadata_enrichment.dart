@@ -881,6 +881,17 @@ class RoomImportMetadataEnrichmentService {
     final successIds = <String>[];
     var processedProducts = 0;
     final catalogSummary = RoomCatalogLookupSummary();
+    final catalogRepoForEntry = _productCatalogRepository;
+    final restrictForEntry = restrictToProductIdsInOrder;
+    final entryTargetCount = restrictForEntry != null && restrictForEntry.isNotEmpty
+        ? restrictForEntry.length
+        : eligible;
+    RoomCatalogLookupSummary.logLookupEntry(
+      enabled: RoomCatalogEnrichment.enabled,
+      repositoryPresent: catalogRepoForEntry != null,
+      targetCount: entryTargetCount,
+      source: 'metadataEnrichment',
+    );
 
     try {
       while (processedProducts < maxProductsPerRun && !pausedByRateLimit) {

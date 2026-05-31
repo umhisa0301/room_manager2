@@ -815,6 +815,13 @@ class RoomSyncService {
         onProcessingHint?.call('0/${toProcess.length}件を取り込み中');
       }
       final catalogLookupSummary = RoomCatalogLookupSummary();
+      final catalogRepoForEntry = _productCatalogRepository;
+      RoomCatalogLookupSummary.logLookupEntry(
+        enabled: RoomCatalogEnrichment.enabled,
+        repositoryPresent: catalogRepoForEntry != null,
+        targetCount: toProcess.length,
+        source: 'roomSync',
+      );
 
       roomImportBatchStartLog(
         'mode=importWithInitialEnrichment limit=$maxItems '
@@ -823,6 +830,7 @@ class RoomSyncService {
       );
 
       if (toProcess.isEmpty) {
+        catalogLookupSummary.logSummary(reason: 'noImportTargets');
         roomSyncSummaryLog(
           '完了 · キューなし（一覧確認 $listingChecked件 · リスト側スキップ $listingSkip件）',
         );
