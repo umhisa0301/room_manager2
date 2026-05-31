@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 import '../config/rakuten_api_config.dart';
 import '../models/rakuten_product_search_condition.dart';
+import '../utils/app_debug_log.dart';
 
 /// 検証モード時のみ楽天レスポンス本文を成功時も全文ログする。
 const bool _kRoomImportEnrichVerify =
@@ -349,7 +350,7 @@ class RakutenApiService {
         '[Rakuten] response status=${response.statusCode} page=$page '
         'bytes=${response.bodyBytes.length}',
       );
-      debugPrint('[RECOMMEND_TRACE] apiStatus=${response.statusCode}');
+      recommendAuditLog('[RECOMMEND_TRACE] apiStatus=${response.statusCode}');
     }
 
     Map<String, dynamic>? bodyMap;
@@ -421,7 +422,7 @@ class RakutenApiService {
     if (kDebugMode) {
       final items = bodyMap['Items'];
       final rawCount = items is List ? items.length : 0;
-      debugPrint('[RECOMMEND_TRACE] rawCount=$rawCount');
+      recommendAuditLog('[RECOMMEND_TRACE] rawCount=$rawCount');
       if (_kRoomImportEnrichVerify) {
         debugPrint('[Rakuten] success response body (full): ${response.body}');
       }

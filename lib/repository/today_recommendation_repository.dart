@@ -8,6 +8,7 @@ import '../data/demo_mode_data.dart';
 import '../models/today_recommendation.dart';
 import '../utils/today_recommendation_exposure_policy.dart';
 import '../utils/today_recommendation_genre_page_store.dart';
+import '../utils/app_debug_log.dart';
 
 class TodayRecommendationRepository {
   TodayRecommendationRepository(this._prefs);
@@ -28,12 +29,12 @@ class TodayRecommendationRepository {
       if (decoded is! Map<String, dynamic>) return null;
       final bundle = TodayRecommendationBundle.fromJson(decoded);
       if (kDebugMode) {
-        debugPrint('[RECOMMEND_TRACE] savedBundle=${bundle != null}');
+        recommendAuditLog('[RECOMMEND_TRACE] savedBundle=${bundle != null}');
       }
       return bundle;
     } catch (_) {
       if (kDebugMode) {
-        debugPrint('[RECOMMEND_TRACE] savedBundle=false');
+        recommendAuditLog('[RECOMMEND_TRACE] savedBundle=false');
       }
       return null;
     }
@@ -45,7 +46,7 @@ class TodayRecommendationRepository {
     }
     await _prefs.setString(_key, jsonEncode(bundle.toJson()));
     if (kDebugMode) {
-      debugPrint('[RECOMMEND_TRACE] savedBundle=true');
+      recommendAuditLog('[RECOMMEND_TRACE] savedBundle=true');
     }
   }
 

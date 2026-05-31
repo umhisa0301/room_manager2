@@ -24,6 +24,16 @@ abstract final class DebugLogFlags {
     defaultValue: false,
   );
 
+  /// 今日のおすすめ生成の監査ログ（プラン/API/商品単位トレース等）。
+  static const bool kRecommendAuditLogsEnabled = bool.fromEnvironment(
+    'RECOMMEND_AUDIT_LOGS',
+    defaultValue: false,
+  );
+
+  /// おすすめ詳細ログ（監査 or 商品詳細）が有効か。
+  static bool get recommendVerboseLogsEnabled =>
+      kRecommendAuditLogsEnabled || kVerboseItemLogsEnabled;
+
   /// デバッグ時のサマリ1行ログ（開始/完了/件数）を出す。
   static const bool kDebugLogSummaryEnabled = bool.fromEnvironment(
     'DEBUG_LOG_SUMMARY',

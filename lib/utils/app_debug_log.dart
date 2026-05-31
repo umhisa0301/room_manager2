@@ -26,6 +26,12 @@ void verboseItemLog(String message) {
   debugPrint(message);
 }
 
+/// 今日のおすすめ生成の監査ログ（`RECOMMEND_AUDIT_LOGS=true` または `VERBOSE_ITEM_LOGS=true`）。
+void recommendAuditLog(String message) {
+  if (!kDebugMode || !DebugLogFlags.recommendVerboseLogsEnabled) return;
+  debugPrint(message);
+}
+
 /// デバッグビルド向けの重要ログ（失敗・例外・検索実行トレース等）。
 void importantDebugLog(String message) {
   if (!kDebugMode) return;

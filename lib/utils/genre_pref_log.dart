@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../services/genre_master_service.dart';
 import '../services/rakuten_genre_master_service.dart';
+import 'app_debug_log.dart';
 
 /// 好みジャンル ID の保存・参照・不一致をログする。
 abstract final class GenrePrefLog {
@@ -77,10 +78,14 @@ abstract final class GenrePrefLog {
     required String source,
   }) {
     if (!kDebugMode) return;
-    debugPrint(
-      '[GENRE_PREF_LOAD] favoriteGenreIds=${favoriteGenreIds.join(',')} '
-      'favoriteGenreNames=${favoriteGenreNames.join(',')} source=$source',
-    );
+    final message =
+        '[GENRE_PREF_LOAD] favoriteGenreIds=${favoriteGenreIds.join(',')} '
+        'favoriteGenreNames=${favoriteGenreNames.join(',')} source=$source';
+    if (source == 'recommend') {
+      debugSummaryLog(message);
+      return;
+    }
+    debugPrint(message);
   }
 
   static void logMismatch({
