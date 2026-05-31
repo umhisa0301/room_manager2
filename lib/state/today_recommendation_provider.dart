@@ -15,6 +15,10 @@ import '../utils/favorite_genre_selection_policy.dart';
 import '../utils/product_safety_filter.dart';
 import '../utils/search_result_quality_filter.dart';
 import '../utils/today_recommendation_policy.dart';
+import '../utils/today_recommendation_exposure_policy.dart';
+import '../utils/today_recommendation_genre_distribution.dart';
+import '../utils/today_recommendation_genre_page_store.dart';
+import '../utils/app_debug_log.dart';
 import '../utils/user_profile_preferred_genre_words.dart';
 import 'rakuten_managed_product_provider.dart';
 
@@ -261,6 +265,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
     _generationStatus = TodayRecommendationGenerationStatus.loading;
     notifyListeners();
     try {
+      final previousBundle = _bundle;
+      if (previousBundle != null && previousBundle.entries.isNotEmpty) {
+        await _repository.recordExposureShown(
+          previousBundle.entries,
+          shownAt: now,
+        );
+      }
       final generated = await _generate(
         profile: profile,
         managedItems: managedItems,
@@ -328,15 +339,24 @@ class TodayRecommendationProvider extends ChangeNotifier {
   Future<void> markSkipped(String productId) async {
     final b = _bundle;
     if (b == null) return;
+    TodayRecommendationEntry? skippedEntry;
     final nextEntries = b.entries
         .map((e) {
           if (e.item.productId != productId) return e;
           if (e.decision != TodayRecommendationDecision.pending) return e;
+          skippedEntry = e;
           return e.copyWith(decision: TodayRecommendationDecision.skipped);
         })
         .toList(growable: false);
     _bundle = b.copyWith(entries: nextEntries);
     await _repository.save(_bundle!);
+    if (skippedEntry != null) {
+      await _repository.recordExposureDismissed(
+        productId: skippedEntry!.item.productId,
+        itemUrl: skippedEntry!.item.itemUrl,
+        dismissedAt: DateTime.now(),
+      );
+    }
     notifyListeners();
   }
 
@@ -379,6 +399,12 @@ class TodayRecommendationProvider extends ChangeNotifier {
         .map((e) => e.productId.trim())
         .where((e) => e.isNotEmpty)
         .toSet();
+    final exposureRecords = _repository.loadExposureRecords();
+    var excludedDismissed = 0;
+    var excludedShownRecently = 0;
+    var excludedZeroReview = 0;
+    final pagesUsed = <int>[];
+    var genrePageCursors = _repository.loadGenrePageCursors();
     final savedShopIds = savedShops
         .map((e) => e.shopId.trim())
         .where((e) => e.isNotEmpty)
@@ -548,6 +574,20 @@ class TodayRecommendationProvider extends ChangeNotifier {
         relaxLevel: p.relaxLevel,
         sortOverride: p.sortOverride,
       );
+      final sortKey = condition.sort ?? TodayRecommendationPolicy.defaultApiSort;
+      var startPage = 1;
+      String? genrePageKey;
+      if (p.genreId != null && p.genreId!.trim().isNotEmpty) {
+        genrePageKey = TodayRecommendGenrePageStore.cursorKey(
+          p.genreId!.trim(),
+          sortKey,
+        );
+        startPage = TodayRecommendGenrePageStore.resolveNextPage(
+          cursor: genrePageCursors[genrePageKey],
+          sort: sortKey,
+          now: now,
+        );
+      }
       _planLogDetailed(
         index: idx,
         phase: p.phase,
@@ -564,7 +604,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         keyword: p.keyword,
         genreId: p.genreId,
         shopCode: p.shopCode,
-        page: 1,
+        page: startPage,
       );
 
       List<RakutenSearchItem> list;
@@ -575,6 +615,16 @@ class TodayRecommendationProvider extends ChangeNotifier {
           planIndex: idx,
           condition: condition,
           excludeIds: excludeIds,
+          exposureRecords: exposureRecords,
+          startPage: startPage,
+          onExposureExclude: (reason) {
+            if (reason.startsWith('dismissed')) {
+              excludedDismissed += 1;
+            } else if (reason.contains('shown')) {
+              excludedShownRecently += 1;
+            }
+          },
+          onZeroReviewExclude: () => excludedZeroReview += 1,
         );
       } catch (e) {
         if (_isRateLimitError(e)) {
@@ -584,6 +634,32 @@ class TodayRecommendationProvider extends ChangeNotifier {
         rethrow;
       }
       apiCalls += 1;
+      pagesUsed.add(startPage);
+      if (genrePageKey != null) {
+        var usable = 0;
+        for (final item in list) {
+          final exclusion = _excludeReason(
+            item: item,
+            excludeIds: excludeIds,
+            doneItems: doneItems,
+            candidateItems: candidateItems,
+            dedup: const {},
+            checkDedup: false,
+            condition: condition,
+            exposureRecords: exposureRecords,
+          );
+          if (exclusion == null) usable += 1;
+        }
+        genrePageCursors[genrePageKey] = TodayRecommendGenrePageStore.advance(
+          previous: genrePageCursors[genrePageKey],
+          sort: sortKey,
+          pageUsed: startPage,
+          rawCount: list.length,
+          usableCount: usable,
+          managedExcludedCount: list.length - usable,
+          now: now,
+        );
+      }
       if (p.genreId != null && p.genreId!.trim().isNotEmpty) {
         genreSearchCalls += 1;
       } else if (p.shopCode != null && p.shopCode!.trim().isNotEmpty) {
@@ -601,6 +677,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
           candidateItems: candidateItems,
           dedup: pool,
           condition: condition,
+          exposureRecords: exposureRecords,
         );
         if (exclusion != null) {
           excludedCount += 1;
@@ -617,7 +694,14 @@ class TodayRecommendationProvider extends ChangeNotifier {
               excludedNoName += 1;
             case 'lowReviewCount':
             case 'lowReviewAverage':
-              break;
+            case 'zeroReview':
+              excludedZeroReview += 1;
+            case 'dismissedRecently':
+            case 'dismissedUrlMatch':
+              excludedDismissed += 1;
+            case 'shownRecently':
+            case 'shownUrlMatch':
+              excludedShownRecently += 1;
             case 'duplicate':
             case 'alreadyCandidate':
             case 'alreadyDone':
@@ -632,6 +716,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
         final id = item.productId.trim();
         pool[id] = item;
         final m = metaById.putIfAbsent(id, () => _ItemPoolMeta());
+        if (p.genreId != null && p.genreId!.trim().isNotEmpty) {
+          m.sourceGenreId = p.genreId!.trim();
+        }
         if (p.phase == 'personal' || p.phase == 'fallback') {
           m.fromPersonalPhase = true;
         }
@@ -652,7 +739,6 @@ class TodayRecommendationProvider extends ChangeNotifier {
       final ok = await runPlan(mandatoryGenrePlans[i]);
       if (!ok) break;
       executedFavoriteGenrePlans += 1;
-      if (pool.length > 45) break;
     }
 
     skippedFavoriteGenrePlans =
@@ -662,6 +748,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       pool: pool,
       metaById: metaById,
       favoriteGenreIds: favoriteGenreIds,
+      favoriteGenreIdList: favoriteGenreIds.toList(growable: false),
       savedShopIds: savedShopIds,
       preferredGenreWords: genreWords,
       doneItems: doneItems,
@@ -708,6 +795,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       pool: pool,
       metaById: metaById,
       favoriteGenreIds: favoriteGenreIds,
+      favoriteGenreIdList: favoriteGenreIds.toList(growable: false),
       savedShopIds: savedShopIds,
       preferredGenreWords: genreWords,
       doneItems: doneItems,
@@ -724,6 +812,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (pool.isEmpty && allPlansNoItems) {
       _resultLog(status: 'failed', reason: 'allPlansNoItems', count: 0);
     }
+
+    await _repository.saveGenrePageCursors(genrePageCursors);
 
     final entries = finalized.entries;
 
@@ -782,6 +872,25 @@ class TodayRecommendationProvider extends ChangeNotifier {
       finalItems: entries.length,
     );
     _finalQualitySummaryLog(entries: entries);
+    _generationSummaryLog(
+      plannedFavoriteGenres: mandatoryGenrePlans.length,
+      executedFavoriteGenrePlans: executedFavoriteGenrePlans,
+      apiCalls: apiCalls,
+      pagesUsed: pagesUsed,
+      rawItems: pool.length,
+      excludedManaged: excludedByDuplicate,
+      excludedDismissed: excludedDismissed,
+      excludedShownRecently: excludedShownRecently,
+      excludedNoImage: excludedNoImage,
+      excludedNoPrice: excludedNoPrice,
+      excludedSafety: excludedBySafety,
+      excludedZeroReview: excludedZeroReview,
+      finalItems: entries.length,
+      finalGenreDistribution: finalized.sourceGenreDistribution,
+      finalShopDistribution: finalized.shopDistribution,
+      fallbackUsed: fallbackUsed,
+      assistPlanUsed: assistPlanUsed,
+    );
     _qualitySummaryLog(
       plans: plans.length,
       apiCalls: apiCalls,
@@ -841,11 +950,14 @@ class TodayRecommendationProvider extends ChangeNotifier {
     int personalCount,
     int relaxedCount,
     int discoveryCount,
+    Map<String, int> sourceGenreDistribution,
+    Map<String, int> shopDistribution,
   })
   _finalizeFromPool({
     required Map<String, RakutenSearchItem> pool,
     required Map<String, _ItemPoolMeta> metaById,
     required Set<String> favoriteGenreIds,
+    required List<String> favoriteGenreIdList,
     required Set<String> savedShopIds,
     required Set<String> preferredGenreWords,
     required List<RakutenManagedProduct> doneItems,
@@ -885,7 +997,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
       );
     }
 
-    final picked = _pickBalancedBySection(scored);
+    final picked = _pickBalancedBySection(
+      scored,
+      favoriteGenreIdList: favoriteGenreIdList,
+      metaById: metaById,
+    );
     if (kDebugMode) {
       debugPrint('[RECOMMEND_SELECT] strictSelected=${picked.length}');
     }
@@ -931,6 +1047,27 @@ class TodayRecommendationProvider extends ChangeNotifier {
         .where((e) => _passesRecommendFinalDisplayGate(e.item))
         .toList(growable: false);
 
+    final sourceGenreByProductId = <String, String>{};
+    for (final e in entries) {
+      final id = e.item.productId.trim();
+      if (id.isEmpty) continue;
+      sourceGenreByProductId[id] =
+          metaById[id]?.sourceGenreId.trim() ?? '';
+    }
+    final sourceGenreDistribution =
+        TodayRecommendationGenreDistribution.distributionBySourceGenre(
+      pickedProductIds: entries.map((e) => e.item.productId.trim()).toList(),
+      sourceGenreByProductId: sourceGenreByProductId,
+      favoriteGenreIds: favoriteGenreIdList,
+    );
+    final shopDistribution = <String, int>{};
+    for (final e in entries) {
+      final shop = e.item.shopName.trim().isEmpty
+          ? (e.item.shopCode.trim().isEmpty ? '-' : e.item.shopCode.trim())
+          : e.item.shopName.trim();
+      shopDistribution[shop] = (shopDistribution[shop] ?? 0) + 1;
+    }
+
     final personalCount = entries
         .where((e) => e.section == TodayRecommendationSection.popular)
         .length;
@@ -945,144 +1082,62 @@ class TodayRecommendationProvider extends ChangeNotifier {
       personalCount: personalCount,
       relaxedCount: relaxedCount,
       discoveryCount: discoveryCount,
+      sourceGenreDistribution: sourceGenreDistribution,
+      shopDistribution: shopDistribution,
     );
   }
 
   /// あなた向け〜7、保存ショップ枠〜3、発掘〜3 を優先しつつ最大10件。
+  /// 保存ジャンル（sourceGenreId）の分散を優先する。
   List<_ScoredRecommendation> _pickBalancedBySection(
-    List<_ScoredRecommendation> scored,
-  ) {
-    final popular = scored
-        .where((e) => e.section == TodayRecommendationSection.popular)
-        .toList(growable: false);
-    final sellable = scored
-        .where((e) => e.section == TodayRecommendationSection.sellable)
-        .toList(growable: false);
-    final fresh = scored
-        .where((e) => e.section == TodayRecommendationSection.fresh)
+    List<_ScoredRecommendation> scored, {
+    required List<String> favoriteGenreIdList,
+    required Map<String, _ItemPoolMeta> metaById,
+  }) {
+    if (scored.isEmpty) return const [];
+
+    final pickInputs = scored
+        .map(
+          (e) => TodayRecommendPickCandidate(
+            productId: e.item.productId.trim(),
+            score: e.score,
+            sourceGenreId:
+                metaById[e.item.productId.trim()]?.sourceGenreId ?? '',
+            itemGenreId: e.item.genreId.trim(),
+            shopCode: e.item.shopCode.trim(),
+            mainTopicKey: _mainTopicKey(e.item.itemName),
+            titleToken: _titleCoreToken(e.item.itemName),
+            priceBand: _priceBand(e.item.itemPrice),
+          ),
+        )
+        .where((e) => e.productId.isNotEmpty)
         .toList(growable: false);
 
+    final pickedIds = TodayRecommendationGenreDistribution.pickProductIds(
+      candidates: pickInputs,
+      favoriteGenreIds: favoriteGenreIdList,
+    );
+    final byId = {for (final e in scored) e.item.productId.trim(): e};
     final selected = <_ScoredRecommendation>[];
-    final selectedIds = <String>{};
-    final shopCounts = <String, int>{};
-    final genreCounts = <String, int>{};
-    final priceBandCounts = <String, int>{};
-    final tokenCounts = <String, int>{};
-    final mainTopicCounts = <String, int>{};
-
-    double adjustedScore(_ScoredRecommendation e) {
-      var score = e.score;
-      final shop = e.item.shopCode.trim();
-      final genre = e.item.genreId.trim();
-      final band = _priceBand(e.item.itemPrice);
-      final token = _titleCoreToken(e.item.itemName);
-      final mainTopic = _mainTopicKey(e.item.itemName);
-      if (mainTopic.isNotEmpty && (mainTopicCounts[mainTopic] ?? 0) >= 2) {
-        score -= 40;
-      }
-      if (token.isNotEmpty && (tokenCounts[token] ?? 0) >= 2) {
-        score -= 35;
-      }
-      if (genre.isNotEmpty &&
-          (genreCounts[genre] ?? 0) >=
-              TodayRecommendationPolicy.maxPerGenreInTop) {
-        score -= 80;
-      }
-      if (shop.isNotEmpty &&
-          (shopCounts[shop] ?? 0) >= TodayRecommendationPolicy.maxPerShopInTop) {
-        score -= 80;
-      }
-      if ((priceBandCounts[band] ?? 0) >= 4) {
-        score -= 18;
-      }
-      return score;
+    for (final id in pickedIds) {
+      final item = byId[id];
+      if (item != null) selected.add(item);
     }
-
-    void markDiversity(_ScoredRecommendation e) {
-      final shop = e.item.shopCode.trim();
-      final genre = e.item.genreId.trim();
-      final band = _priceBand(e.item.itemPrice);
-      final token = _titleCoreToken(e.item.itemName);
-      if (shop.isNotEmpty) shopCounts[shop] = (shopCounts[shop] ?? 0) + 1;
-      if (genre.isNotEmpty) genreCounts[genre] = (genreCounts[genre] ?? 0) + 1;
-      priceBandCounts[band] = (priceBandCounts[band] ?? 0) + 1;
-      if (token.isNotEmpty) tokenCounts[token] = (tokenCounts[token] ?? 0) + 1;
-      final mainTopic = _mainTopicKey(e.item.itemName);
-      if (mainTopic.isNotEmpty) {
-        mainTopicCounts[mainTopic] = (mainTopicCounts[mainTopic] ?? 0) + 1;
-      }
-    }
-
-    void takeFrom(List<_ScoredRecommendation> list, int max) {
-      for (var n = 0; n < max && selected.length < 10; n++) {
-        _ScoredRecommendation? best;
-        var bestScore = double.negativeInfinity;
-        for (final e in list) {
-          final id = e.item.productId.trim();
-          if (id.isEmpty || selectedIds.contains(id)) continue;
-          final shop = e.item.shopCode.trim();
-          final genre = e.item.genreId.trim();
-          if (shop.isNotEmpty &&
-              (shopCounts[shop] ?? 0) >=
-                  TodayRecommendationPolicy.maxPerShopInTop) {
-            continue;
-          }
-          if (genre.isNotEmpty &&
-              (genreCounts[genre] ?? 0) >=
-                  TodayRecommendationPolicy.maxPerGenreInTop) {
-            continue;
-          }
-          final s = adjustedScore(e);
-          if (s > bestScore) {
-            bestScore = s;
-            best = e;
-          }
-        }
-        if (best == null) return;
-        if (kDebugMode) {
-          final mainTopic = _mainTopicKey(best.item.itemName);
-          final genre = best.item.genreId.trim();
-          final token = _titleCoreToken(best.item.itemName);
-          final shop = best.item.shopCode.trim();
-          if (mainTopic.isNotEmpty && (mainTopicCounts[mainTopic] ?? 0) >= 2) {
-            debugPrint('[RECOMMEND_DIVERSITY] demotedBecause=sameMainTopic penalty=-40');
-          }
-          if (genre.isNotEmpty && (genreCounts[genre] ?? 0) >= 3) {
-            debugPrint('[RECOMMEND_DIVERSITY] demotedBecause=sameGenre penalty=-25');
-          }
-          if (token.isNotEmpty && (tokenCounts[token] ?? 0) >= 2) {
-            debugPrint('[RECOMMEND_DIVERSITY] demotedBecause=sameTitleToken penalty=-35');
-          }
-          if (shop.isNotEmpty && (shopCounts[shop] ?? 0) >= 2) {
-            debugPrint('[RECOMMEND_DIVERSITY] demotedBecause=sameShop penalty=-30');
-          }
-        }
-        selected.add(best);
-        selectedIds.add(best.item.productId.trim());
-        markDiversity(best);
-      }
-    }
-
-    takeFrom(popular, 6);
-    takeFrom(sellable, 3);
-    // 発掘枠は補完目的。初回は2件まで。
-    takeFrom(fresh, 2);
-
-    if (selected.length < 10) {
-      for (final e in scored) {
-        if (selected.length >= 10) break;
-        final id = e.item.productId.trim();
-        if (id.isEmpty || selectedIds.contains(id)) continue;
-        final freshCount = selected
-            .where((x) => x.section == TodayRecommendationSection.fresh)
-            .length;
-        if (e.section == TodayRecommendationSection.fresh && freshCount >= 3) {
-          continue;
-        }
-        selected.add(e);
-        selectedIds.add(id);
-        markDiversity(e);
-      }
+    if (kDebugMode) {
+      final dist =
+          TodayRecommendationGenreDistribution.distributionBySourceGenre(
+        pickedProductIds: pickedIds,
+        sourceGenreByProductId: {
+          for (final id in pickedIds)
+            id: metaById[id]?.sourceGenreId.trim() ?? '',
+        },
+        favoriteGenreIds: favoriteGenreIdList,
+      );
+      debugSummaryLog(
+        '[TODAY_RECOMMEND_FINAL_DISTRIBUTION] '
+        'finalItems=${selected.length} sourceGenreDistribution='
+        '${dist.entries.map((e) => '${e.key}:${e.value}').join('|')}',
+      );
     }
     return selected;
   }
@@ -1093,8 +1148,12 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required int planIndex,
     required RakutenProductSearchCondition condition,
     required Set<String> excludeIds,
+    required Map<String, TodayRecommendExposureRecord> exposureRecords,
+    required int startPage,
+    void Function(String reason)? onExposureExclude,
+    void Function()? onZeroReviewExclude,
   }) async {
-    _apiLogStart(index: planIndex, page: 1, phase: phase);
+    _apiLogStart(index: planIndex, page: startPage, phase: phase);
     if (ApiRequestCoordinator.manualSearchRunning) {
       final ready = await ApiRequestCoordinator.waitForManualSearchIdle();
       if (!ready) {
@@ -1113,6 +1172,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       final list = await _searchRepository.search(
         condition: condition,
         maxPages: 1,
+        startPage: startPage,
         searchPurpose: RakutenSearchPurpose.recommendation,
       );
       _apiLogStatus(phase: phase, status: 200, rawCount: list.length);
@@ -1126,9 +1186,16 @@ class TodayRecommendationProvider extends ChangeNotifier {
           dedup: const <String, RakutenSearchItem>{},
           checkDedup: false,
           condition: condition,
+          exposureRecords: exposureRecords,
         );
         if (reason == null) return true;
         reasonCounts[reason] = (reasonCounts[reason] ?? 0) + 1;
+        if (reason.startsWith('dismissed') || reason.contains('shown')) {
+          onExposureExclude?.call(reason);
+        }
+        if (reason == 'zeroReview') {
+          onZeroReviewExclude?.call();
+        }
         return false;
       }).length;
       _filterLog(
@@ -1171,9 +1238,14 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required Map<String, RakutenSearchItem> dedup,
     bool checkDedup = true,
     RakutenProductSearchCondition? condition,
+    Map<String, TodayRecommendExposureRecord> exposureRecords =
+        const {},
   }) {
     final id = item.productId.trim();
     if (id.isEmpty) return 'missingItemCode';
+    if (item.reviewCount <= 0 || item.reviewAverage <= 0) {
+      return 'zeroReview';
+    }
     final quality = SearchResultQualityFilter.exclusionReason(
       item,
       condition: condition,
@@ -1198,6 +1270,13 @@ class TodayRecommendationProvider extends ChangeNotifier {
       return 'other';
     }
     if (checkDedup && dedup.containsKey(id)) return 'duplicate';
+    final exposureReason = TodayRecommendExposurePolicy.exclusionReason(
+      productId: id,
+      itemUrl: item.itemUrl,
+      recordsById: exposureRecords,
+      now: DateTime.now(),
+    );
+    if (exposureReason != null) return exposureReason;
     if (ProductSafetyFilter.isBlockedProduct(
       itemName: item.itemName,
       shopName: item.shopName,
@@ -1357,6 +1436,47 @@ class TodayRecommendationProvider extends ChangeNotifier {
     );
   }
 
+  void _generationSummaryLog({
+    required int plannedFavoriteGenres,
+    required int executedFavoriteGenrePlans,
+    required int apiCalls,
+    required List<int> pagesUsed,
+    required int rawItems,
+    required int excludedManaged,
+    required int excludedDismissed,
+    required int excludedShownRecently,
+    required int excludedNoImage,
+    required int excludedNoPrice,
+    required int excludedSafety,
+    required int excludedZeroReview,
+    required int finalItems,
+    required Map<String, int> finalGenreDistribution,
+    required Map<String, int> finalShopDistribution,
+    required bool fallbackUsed,
+    required bool assistPlanUsed,
+  }) {
+    debugSummaryLog(
+      '[TODAY_RECOMMEND_GENERATION_SUMMARY] '
+      'plannedFavoriteGenres=$plannedFavoriteGenres '
+      'executedFavoriteGenrePlans=$executedFavoriteGenrePlans '
+      'apiCalls=$apiCalls pagesUsed=${pagesUsed.join(',')} '
+      'rawItems=$rawItems excludedManaged=$excludedManaged '
+      'excludedDismissed=$excludedDismissed '
+      'excludedShownRecently=$excludedShownRecently '
+      'excludedNoImage=$excludedNoImage excludedNoPrice=$excludedNoPrice '
+      'excludedSafety=$excludedSafety excludedZeroReview=$excludedZeroReview '
+      'finalItems=$finalItems fallbackUsed=$fallbackUsed '
+      'assistPlanUsed=$assistPlanUsed',
+    );
+    debugSummaryLog(
+      '[TODAY_RECOMMEND_FINAL_DISTRIBUTION] '
+      'finalGenreDistribution='
+      '${finalGenreDistribution.entries.map((e) => '${e.key}:${e.value}').join('|')} '
+      'finalShopDistribution='
+      '${finalShopDistribution.entries.map((e) => '${e.key}:${e.value}').join('|')}',
+    );
+  }
+
   void _planExecutionSummaryLog({
     required int plannedFavoriteGenres,
     required int executedFavoriteGenrePlans,
@@ -1387,7 +1507,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final shopDist = <String, int>{};
     for (final e in entries) {
       final item = e.item;
-      if (item.reviewCount <= 0 && item.reviewAverage <= 0) zeroReview += 1;
+      if (item.reviewCount <= 0 || item.reviewAverage <= 0) zeroReview += 1;
       if (!SearchResultQualityFilter.hasDisplayableImage(item)) {
         missingImage += 1;
       }
@@ -1450,7 +1570,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     )) {
       return false;
     }
-    if (item.reviewCount <= 0 && item.reviewAverage <= 0) {
+    if (item.reviewCount <= 0 || item.reviewAverage <= 0) {
       return false;
     }
     return true;
@@ -1896,6 +2016,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required Set<String> postStyles,
   }) {
     if (item.productId.trim().isEmpty) return 'missingItemCode';
+    if (item.reviewCount <= 0 || item.reviewAverage <= 0) {
+      return 'zeroReview';
+    }
     final quality = SearchResultQualityFilter.exclusionReason(
       item,
       checkSafety: true,
@@ -2439,6 +2562,7 @@ class _ItemPoolMeta {
   bool fromDiscoveryPhase = false;
   bool fromRelaxedPhase = false;
   bool fromPersonalPhase = false;
+  String sourceGenreId = '';
 }
 
 class _ReactionProfile {
