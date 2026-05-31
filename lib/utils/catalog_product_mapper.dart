@@ -192,6 +192,30 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromSearchItems(
   return summary;
 }
 
+/// おすすめコレ API 取得結果をカタログへ upsert。
+Future<ProductCatalogUpsertSummary> upsertCatalogFromRecommendItems(
+  ProductCatalogRepository repository,
+  Iterable<RakutenSearchItem> items, {
+  DateTime? now,
+}) async {
+  final summary = await upsertCatalogFromSearchItems(
+    repository,
+    items,
+    source: CatalogProductSource.todayRecommendation,
+    sourceTrust: CatalogProductSourceTrust.high,
+    now: now,
+  );
+  if (!ProductCatalogConfig.kProductCatalogEnabled) {
+    return summary;
+  }
+  catalogAuditLog(
+    '[PRODUCT_CATALOG_RECOMMEND_UPSERT_SUMMARY] items=${summary.attempted} '
+    'upserted=${summary.upserted} skipped=${summary.skipped} '
+    'qualityNg=${summary.qualityNg} source=todayRecommendation',
+  );
+  return summary;
+}
+
 /// 実機確認用: 保存直後のカタログ状態サマリ（[DebugLogFlags.kCatalogAuditLogsEnabled] 時のみ）。
 void _logProductCatalogSearchVerifySummary(
   ProductCatalogRepository repository,

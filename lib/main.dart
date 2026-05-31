@@ -224,6 +224,7 @@ class MyApp extends StatelessWidget {
           create: (_) => TodayRecommendationProvider(
             repository: todayRecommendationRepository,
             searchRepository: rakutenSearchRepository,
+            productCatalogRepository: productCatalogRepository,
           ),
         ),
       ],
