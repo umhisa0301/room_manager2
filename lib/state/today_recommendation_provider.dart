@@ -1,14 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
+import '../config/product_catalog_config.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../models/saved_shop.dart';
 import '../models/today_recommendation.dart';
 import '../models/user_profile.dart';
+import '../repository/product_catalog_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../utils/api_request_coordinator.dart';
 import '../repository/today_recommendation_repository.dart';
+import '../utils/catalog_product_mapper.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/recommend_cooldown_policy.dart';
 import '../utils/favorite_genre_selection_policy.dart';
@@ -18,6 +23,8 @@ import '../utils/today_recommendation_policy.dart';
 import '../utils/today_recommendation_exposure_policy.dart';
 import '../utils/today_recommendation_genre_distribution.dart';
 import '../utils/today_recommendation_genre_page_store.dart';
+import '../utils/today_recommendation_catalog.dart';
+import '../config/debug_log_flags.dart';
 import '../utils/app_debug_log.dart';
 import '../utils/user_profile_preferred_genre_words.dart';
 import 'rakuten_managed_product_provider.dart';
@@ -36,13 +43,16 @@ class TodayRecommendationProvider extends ChangeNotifier {
   TodayRecommendationProvider({
     required TodayRecommendationRepository repository,
     required RakutenSearchRepository searchRepository,
+    ProductCatalogRepository? productCatalogRepository,
   }) : _repository = repository,
-       _searchRepository = searchRepository {
+       _searchRepository = searchRepository,
+       _productCatalogRepository = productCatalogRepository {
     _bundle = _repository.load();
   }
 
   final TodayRecommendationRepository _repository;
   final RakutenSearchRepository _searchRepository;
+  final ProductCatalogRepository? _productCatalogRepository;
 
   TodayRecommendationBundle? _bundle;
   bool _isLoading = false;
@@ -553,6 +563,33 @@ class TodayRecommendationProvider extends ChangeNotifier {
     String? earlyStopReason;
     var assistPlanExecuted = false;
     var planIndex = 0;
+    var apiSkippedByCatalog = false;
+    var catalogCollect = const TodayRecommendCatalogCollectResult.empty();
+    if (_productCatalogRepository != null &&
+        ProductCatalogConfig.kProductCatalogEnabled) {
+      final catalogRepo = _productCatalogRepository;
+      catalogCollect = TodayRecommendationCatalog.collectIntoPool(
+        repository: catalogRepo,
+        pool: pool,
+        onAcceptMeta: (id, sourceGenreId) {
+          final m = metaById.putIfAbsent(id, () => _ItemPoolMeta());
+          m.sourceGenreId = sourceGenreId;
+        },
+        favoriteGenreIds: favoriteGenreIds,
+        excludeIds: excludeIds,
+        exposureRecords: exposureRecords,
+        doneItems: doneItems,
+        candidateItems: candidateItems,
+        now: now,
+      );
+      if (TodayRecommendationCatalogPolicy.shouldSkipAllApiPlans(
+        catalog: catalogCollect,
+        favoriteGenreIds: favoriteGenreIds,
+      )) {
+        apiSkippedByCatalog = true;
+        earlyStopReason = 'catalogSufficient';
+      }
+    }
 
     Future<bool> runPlan(_RecommendSearchPlan p) async {
       planIndex += 1;
@@ -729,16 +766,18 @@ class TodayRecommendationProvider extends ChangeNotifier {
       return true;
     }
 
-    for (var i = 0; i < mandatoryGenrePlans.length; i++) {
-      if (TodayRecommendationExecutionPolicy.shouldSkipMandatoryGenrePlan(
-        apiCallsSoFar: apiCalls,
-      )) {
-        earlyStopReason = 'apiCapReachedBeforeRemainingGenres';
-        break;
+    if (!apiSkippedByCatalog) {
+      for (var i = 0; i < mandatoryGenrePlans.length; i++) {
+        if (TodayRecommendationExecutionPolicy.shouldSkipMandatoryGenrePlan(
+          apiCallsSoFar: apiCalls,
+        )) {
+          earlyStopReason = 'apiCapReachedBeforeRemainingGenres';
+          break;
+        }
+        final ok = await runPlan(mandatoryGenrePlans[i]);
+        if (!ok) break;
+        executedFavoriteGenrePlans += 1;
       }
-      final ok = await runPlan(mandatoryGenrePlans[i]);
-      if (!ok) break;
-      executedFavoriteGenrePlans += 1;
     }
 
     skippedFavoriteGenrePlans =
@@ -762,7 +801,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
       reactionProfile: reactionProfile,
     );
 
-    if (assistPlan != null &&
+    if (!apiSkippedByCatalog &&
+        assistPlan != null &&
         TodayRecommendationExecutionPolicy.shouldRunAssistPlan(
           finalizedEntryCount: previewAfterGenres.entries.length,
           hasAssistPlan: true,
@@ -778,7 +818,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       earlyStopReason ??= 'assistSkippedSufficientFinalItems';
     }
 
-    if (fallbackPlan != null && apiCalls < maxApiHard) {
+    if (!apiSkippedByCatalog && fallbackPlan != null && apiCalls < maxApiHard) {
       await runPlan(fallbackPlan);
     }
 
@@ -909,6 +949,15 @@ class TodayRecommendationProvider extends ChangeNotifier {
       usedAssistPlan: assistPlanUsed,
       fallbackUsed: fallbackUsed,
     );
+    _todayRecommendCatalogSummaryLog(
+      enabled: ProductCatalogConfig.kProductCatalogEnabled &&
+          _productCatalogRepository != null,
+      catalog: catalogCollect,
+      apiSkippedByCatalog: apiSkippedByCatalog,
+      apiCalls: apiCalls,
+      finalItems: entries.length,
+    );
+    _scheduleRecommendCatalogUpsert(pool.values);
     return TodayRecommendationBundle(
       localDateKey: _localDateKey(DateTime.now()),
       generatedAt: DateTime.now(),
@@ -1564,6 +1613,52 @@ class TodayRecommendationProvider extends ChangeNotifier {
       return false;
     }
     return true;
+  }
+
+  void _todayRecommendCatalogSummaryLog({
+    required bool enabled,
+    required TodayRecommendCatalogCollectResult catalog,
+    required bool apiSkippedByCatalog,
+    required int apiCalls,
+    required int finalItems,
+  }) {
+    if (!enabled) return;
+    debugSummaryLog(
+      '[TODAY_RECOMMEND_CATALOG_SUMMARY] enabled=true '
+      'catalogCount=${catalog.catalogCount} '
+      'catalogCandidates=${catalog.catalogCandidates} '
+      'catalogAccepted=${catalog.catalogAccepted} '
+      'catalogRejectedStale=${catalog.catalogRejectedStale} '
+      'catalogRejectedQuality=${catalog.catalogRejectedQuality} '
+      'catalogRejectedManaged=${catalog.catalogRejectedManaged} '
+      'catalogRejectedGenre=${catalog.catalogRejectedGenre} '
+      'catalogRejectedTrust=${catalog.catalogRejectedTrust} '
+      'apiSkippedByCatalog=$apiSkippedByCatalog '
+      'apiCalls=$apiCalls '
+      'finalItems=$finalItems',
+    );
+    if (DebugLogFlags.kCatalogAuditLogsEnabled ||
+        DebugLogFlags.kRecommendAuditLogsEnabled) {
+      recommendAuditLog(
+        '[TODAY_RECOMMEND_CATALOG_DETAIL] '
+        'catalogRejectedDuplicate=${catalog.catalogRejectedDuplicate} '
+        'sourceGenreIds=${catalog.sourceGenreIds.join(',')}',
+      );
+    }
+  }
+
+  void _scheduleRecommendCatalogUpsert(Iterable<RakutenSearchItem> items) {
+    final repo = _productCatalogRepository;
+    if (repo == null || !ProductCatalogConfig.kProductCatalogEnabled) return;
+    final list = items.toList(growable: false);
+    if (list.isEmpty) return;
+    unawaited(() async {
+      try {
+        await upsertCatalogFromRecommendItems(repo, list);
+      } catch (e) {
+        importantDebugLog('[PRODUCT_CATALOG_RECOMMEND_UPSERT] failed: $e');
+      }
+    }());
   }
 
   void logTodayRecommendApiUsage({
