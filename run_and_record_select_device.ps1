@@ -6,7 +6,10 @@ param(
     [switch]$DemoMode,
     # 未指定時は起動時に 1=debug / 2=release を選択。Play 用スクショは release 推奨（DEBUG バナー非表示）。
     [ValidateSet("debug", "release", "")]
-    [string]$BuildMode = ""
+    [string]$BuildMode = "",
+    # 追加の --dart-define。KEY=VALUE または --dart-define=KEY=VALUE。既存キーは二重付与しない。
+    # 複数: -DartDefine "A=1","B=2" または -DartDefine A=1,B=2（PS 7.6 は同一パラメータの繰り返し不可）
+    [string[]]$DartDefine = @()
 )
 
 $ErrorActionPreference = "Stop"
@@ -360,6 +363,115 @@ function Show-Help {
     Write-Host ""
 }
 
+function Get-DartDefineKeyFromEntry {
+    param([string]$Entry)
+
+    $s = $Entry.Trim()
+    if ([string]::IsNullOrWhiteSpace($s)) {
+        return $null
+    }
+
+    if ($s -match '^--dart-define=(.+)$') {
+        $s = $matches[1]
+    }
+
+    $eqIdx = $s.IndexOf('=')
+    if ($eqIdx -lt 1) {
+        return $null
+    }
+
+    return $s.Substring(0, $eqIdx)
+}
+
+function ConvertTo-DartDefineArg {
+    param([string]$Entry)
+
+    $trimmed = $Entry.Trim()
+    if ([string]::IsNullOrWhiteSpace($trimmed)) {
+        return $null
+    }
+
+    if ($trimmed -match '^--dart-define=') {
+        return $trimmed
+    }
+
+    return "--dart-define=$trimmed"
+}
+
+function Expand-DartDefineInputs {
+    param([string[]]$Inputs)
+
+    $expanded = [System.Collections.Generic.List[string]]::new()
+    if (-not $Inputs) {
+        return $expanded
+    }
+
+    foreach ($item in $Inputs) {
+        if ([string]::IsNullOrWhiteSpace($item)) {
+            continue
+        }
+
+        $trimmed = $item.Trim()
+        # -File 起動時は -DartDefine A=1,B=2 が 1 要素になるためカンマで分割する
+        if ($trimmed -notmatch '^--dart-define=' -and $trimmed.Contains(',') -and $trimmed.Contains('=')) {
+            foreach ($part in $trimmed.Split(',')) {
+                $piece = $part.Trim()
+                if ($piece) {
+                    $expanded.Add($piece)
+                }
+            }
+            continue
+        }
+
+        $expanded.Add($trimmed)
+    }
+
+    return $expanded
+}
+
+function Add-ExtraDartDefinesToFlutterArgs {
+    param(
+        [Parameter(Mandatory = $true)]
+        [System.Collections.Generic.List[string]]$FlutterArgs,
+        [string[]]$ExtraDefines
+    )
+
+    $normalizedDefines = Expand-DartDefineInputs -Inputs $ExtraDefines
+    if ($normalizedDefines.Count -eq 0) {
+        return
+    }
+
+    $existingKeys = [System.Collections.Generic.HashSet[string]]::new(
+        [StringComparer]::OrdinalIgnoreCase)
+
+    foreach ($arg in $FlutterArgs) {
+        if ($arg -match '^--dart-define=') {
+            $key = Get-DartDefineKeyFromEntry -Entry $arg
+            if ($key) {
+                [void]$existingKeys.Add($key)
+            }
+        }
+    }
+
+    foreach ($entry in $normalizedDefines) {
+        $defineArg = ConvertTo-DartDefineArg -Entry $entry
+        if (-not $defineArg) {
+            continue
+        }
+
+        $key = Get-DartDefineKeyFromEntry -Entry $defineArg
+        if ($key -and $existingKeys.Contains($key)) {
+            Write-TerminalLog "Skipping duplicate dart-define: $key" -ForegroundColor DarkGray
+            continue
+        }
+
+        $FlutterArgs.Add($defineArg)
+        if ($key) {
+            [void]$existingKeys.Add($key)
+        }
+    }
+}
+
 function Get-ExternalCommand {
     param([string]$Path)
 
@@ -456,6 +568,7 @@ try {
         "DemoMode: $demoNote",
         "RakutenAppId: $(if ($RakutenAppId) { '(set)' } else { '(empty)' })",
         "RakutenAffiliateId: $(if ($RakutenAffiliateId) { '(set)' } else { '(empty)' })",
+        "Extra dart-defines: $(if ($DartDefine -and $DartDefine.Count -gt 0) { ($DartDefine -join '; ') } else { '(none)' })",
         "Selected device ID: $deviceId",
         "Device manufacturer: $($selectedDevice.Manufacturer)",
         "Device model: $($selectedDevice.Model)",
@@ -533,28 +646,31 @@ Write-TerminalLog "[CONTROLLER] Secondary controller window started (PID: $($con
 Write-Section "Start flutter"
 Write-TerminalLogSection "Start flutter"
 
-$flutterArgs = @(
+$flutterArgs = [System.Collections.Generic.List[string]]::new()
+$flutterArgs.AddRange([string[]]@(
     "run",
     "-d", $deviceId,
     "--dart-define=RAKUTEN_APP_ID=$RakutenAppId",
     "--dart-define=RAKUTEN_AFFILIATE_ID=$RakutenAffiliateId"
-)
+))
 
 if ($DemoMode) {
-    $flutterArgs += "--dart-define=DEMO_MODE=true"
+    $flutterArgs.Add("--dart-define=DEMO_MODE=true")
 }
 
 if ($script:IsReleaseMode) {
-    $flutterArgs += "--release"
+    $flutterArgs.Add("--release")
 }
+
+Add-ExtraDartDefinesToFlutterArgs -FlutterArgs $flutterArgs -ExtraDefines $DartDefine
 
 $flutterExe = Get-FlutterCommandPath
 $flutterStartFile = $flutterExe
-$flutterStartArgs = $flutterArgs
+$flutterStartArgs = [string[]]$flutterArgs
 $flutterExeLower = $flutterExe.ToLowerInvariant()
 if ($flutterExeLower.EndsWith(".cmd") -or $flutterExeLower.EndsWith(".bat")) {
     $flutterStartFile = "cmd.exe"
-    $flutterStartArgs = @("/c", $flutterExe) + $flutterArgs
+    $flutterStartArgs = @("/c", $flutterExe) + [string[]]$flutterArgs
 }
 
 $flutterStartInfo = New-Object System.Diagnostics.ProcessStartInfo
