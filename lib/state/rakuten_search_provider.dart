@@ -4,12 +4,16 @@ import 'package:flutter/foundation.dart';
 
 import '../config/debug_log_flags.dart';
 import '../config/rakuten_api_config.dart';
+import '../models/catalog_product.dart';
 import '../utils/api_request_coordinator.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/genre_master_repository.dart';
+import '../repository/product_catalog_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../services/rakuten_genre_master_service.dart';
+import '../utils/app_debug_log.dart';
+import '../utils/catalog_product_mapper.dart';
 import '../utils/rakuten_product_genre_display.dart';
 
 enum RakutenSearchStatus { idle, loading, success, error }
@@ -31,11 +35,14 @@ class RakutenSearchProvider extends ChangeNotifier {
   RakutenSearchProvider({
     required RakutenSearchRepository repository,
     GenreMasterRepository? genreMasterRepository,
+    ProductCatalogRepository? productCatalogRepository,
   }) : _repository = repository,
-       _genreMasterRepository = genreMasterRepository;
+       _genreMasterRepository = genreMasterRepository,
+       _productCatalogRepository = productCatalogRepository;
 
   final RakutenSearchRepository _repository;
   final GenreMasterRepository? _genreMasterRepository;
+  final ProductCatalogRepository? _productCatalogRepository;
 
   /// 検索結果に対応するジャンル表示名（API解決後）。キーは `genreId` 文字列。
   Map<String, String> _resolvedGenreLabels = const {};
@@ -346,6 +353,7 @@ class RakutenSearchProvider extends ChangeNotifier {
         'affiliateUrlあり: $withAff / ${fetched.length} 件',
       );
       unawaited(_prefetchGenreLabels(fetched));
+      _scheduleProductCatalogUpsert(fetched, modeTag: modeTag);
       if (kDebugMode) {
         debugPrint(
           '[SEARCH_FIRST_ATTEMPT_AUDIT] mode=$modeTag attempt=1 apiCalled=true '
@@ -479,6 +487,31 @@ class RakutenSearchProvider extends ChangeNotifier {
       );
     }
     return true;
+  }
+
+  void _scheduleProductCatalogUpsert(
+    List<RakutenSearchItem> items, {
+    required String modeTag,
+  }) {
+    final repo = _productCatalogRepository;
+    if (repo == null || items.isEmpty) return;
+    if (modeTag == 'shopDiscovery') return;
+    final catalogMode = catalogUpsertModeLabelForSearchModeTag(modeTag);
+    unawaited(() async {
+      try {
+        await upsertCatalogFromSearchItems(
+          repo,
+          items,
+          source: CatalogProductSource.search,
+          sourceTrust: CatalogProductSourceTrust.high,
+          catalogMode: catalogMode,
+        );
+      } catch (e) {
+        importantDebugLog(
+          '[PRODUCT_CATALOG_SEARCH_UPSERT] failed mode=$catalogMode: $e',
+        );
+      }
+    }());
   }
 
   Future<void> _prefetchGenreLabels(List<RakutenSearchItem> items) async {
