@@ -202,7 +202,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (ApiRequestCoordinator.manualSearchRunning) {
       _guard('skipReason=manualSearchActive');
       if (kDebugMode) {
-        debugPrint(
+        recommendAuditLog(
           '[SEARCH_BACKGROUND_CONFLICT_AUDIT] manualSearchRunning=true '
           'todayRecommendRunning=false roomImportRunning=false '
           'metadataEnrichRunning=false priority=manualSearch',
@@ -296,8 +296,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
                 : TodayRecommendationGenerationStatus.ready);
     } catch (e, st) {
       if (kDebugMode) {
-        debugPrint('[TodayRecommendation] regenerateToday failed: $e');
-        debugPrint('$st');
+        importantDebugLog('[TodayRecommendation] regenerateToday failed: $e');
+        importantDebugLog('$st');
       }
       final isRateLimit = _isRateLimitError(e);
       if (isRateLimit) {
@@ -417,8 +417,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final selectedStyle = profile.selectedSearchStyle;
     final postStyles = <String>{selectedStyle};
     if (kDebugMode) {
-      debugPrint('[RECOMMEND_STYLE] selected=$selectedStyle');
-      debugPrint('[SEARCH_STYLE_TRACE] selectedStyle=$selectedStyle');
+      recommendAuditLog('[RECOMMEND_STYLE] selected=$selectedStyle');
+      recommendAuditLog('[SEARCH_STYLE_TRACE] selectedStyle=$selectedStyle');
     }
     _trace('favoriteGenreIds=${favoriteGenreIds.join(',')}');
     GenrePrefLog.logLoad(
@@ -471,7 +471,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         })
         .toList(growable: false);
     if (kDebugMode) {
-      debugPrint(
+      recommendAuditLog(
         '[RECOMMEND_START] genreCount=${favoriteGenreIds.length} '
         'savedShopCount=${savedShops.length} doneCount=${doneItems.length} '
         'candidateCount=${candidateItems.length} selectedStyle=$selectedStyle',
@@ -818,17 +818,17 @@ class TodayRecommendationProvider extends ChangeNotifier {
     final entries = finalized.entries;
 
     if (kDebugMode) {
-      debugPrint('[RECOMMEND] apiCalls=$apiCalls poolSize=${pool.length}');
-      debugPrint('[RECOMMEND] final count: ${entries.length}');
-      debugPrint(
+      recommendAuditLog('[RECOMMEND] apiCalls=$apiCalls poolSize=${pool.length}');
+      recommendAuditLog('[RECOMMEND] final count: ${entries.length}');
+      recommendAuditLog(
         '[RECOMMEND_BUCKET] personal=${finalized.personalCount} '
         'relaxed=${finalized.relaxedCount} discovery=${finalized.discoveryCount} '
         'total=${entries.length}',
       );
       if (entries.isEmpty) {
-        debugPrint('[RECOMMEND_RESULT] status=failed count=0');
+        importantDebugLog('[RECOMMEND_RESULT] status=failed count=0');
       }
-      debugPrint(
+      recommendAuditLog(
         '[RECOMMEND_RESULT] style=$selectedStyle personalCount=${finalized.personalCount} '
         'discoveryCount=${finalized.discoveryCount} total=${entries.length}',
       );
@@ -992,7 +992,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     }
     scored.sort((a, b) => b.score.compareTo(a.score));
     if (kDebugMode) {
-      debugPrint(
+      recommendAuditLog(
         '[RECOMMEND_POOL] raw=${pool.length} valid=${scored.length} scored=${scored.length}',
       );
     }
@@ -1003,7 +1003,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       metaById: metaById,
     );
     if (kDebugMode) {
-      debugPrint('[RECOMMEND_SELECT] strictSelected=${picked.length}');
+      recommendAuditLog('[RECOMMEND_SELECT] strictSelected=${picked.length}');
     }
     final entryList = picked
         .map(
@@ -1038,9 +1038,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
         added += 1;
       }
       if (kDebugMode && added > 0) {
-        debugPrint('[RECOMMEND_BACKFILL] fromExistingPool=true added=$added');
-        debugPrint('[RECOMMEND_BACKFILL] reason=diversityRelaxed');
-        debugPrint('[RECOMMEND_BACKFILL] added=$added total=${entryList.length}');
+        recommendAuditLog('[RECOMMEND_BACKFILL] fromExistingPool=true added=$added');
+        recommendAuditLog('[RECOMMEND_BACKFILL] reason=diversityRelaxed');
+        recommendAuditLog('[RECOMMEND_BACKFILL] added=$added total=${entryList.length}');
       }
     }
     final entries = entryList
@@ -1133,7 +1133,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
         },
         favoriteGenreIds: favoriteGenreIdList,
       );
-      debugSummaryLog(
+      recommendAuditLog(
         '[TODAY_RECOMMEND_FINAL_DISTRIBUTION] '
         'finalItems=${selected.length} sourceGenreDistribution='
         '${dist.entries.map((e) => '${e.key}:${e.value}').join('|')}',
@@ -1158,7 +1158,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       final ready = await ApiRequestCoordinator.waitForManualSearchIdle();
       if (!ready) {
         if (kDebugMode) {
-          debugPrint(
+          recommendAuditLog(
             '[SEARCH_BACKGROUND_CONFLICT_AUDIT] manualSearchRunning=true '
             'todayRecommendRunning=true roomImportRunning=false '
             'metadataEnrichRunning=false priority=manualSearch '
@@ -1226,8 +1226,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
   }
 
   void _trace(String message) {
-    if (!kDebugMode) return;
-    debugPrint('[RECOMMEND_TRACE] $message');
+    recommendAuditLog('[RECOMMEND_TRACE] $message');
   }
 
   String? _excludeReason({
@@ -1304,13 +1303,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
   }
 
   void _planLogCount(int count) {
-    if (!kDebugMode) return;
-    debugPrint('[RECOMMEND_PLAN] count=$count');
+    recommendAuditLog('[RECOMMEND_PLAN] count=$count');
   }
 
   void _phaseLog(String phase) {
-    if (!kDebugMode) return;
-    debugPrint('[RECOMMEND_PHASE] phase=$phase');
+    recommendAuditLog('[RECOMMEND_PHASE] phase=$phase');
   }
 
   void _planLogDetailed({
@@ -1324,9 +1321,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required RakutenProductSearchCondition condition,
     required Set<String> postStyles,
   }) {
-    if (!kDebugMode) return;
     final styleKey = _resolvePrimaryStyle(postStyles);
-    debugPrint(
+    recommendAuditLog(
       '[RECOMMEND_PLAN] phase=$phase relax=$relaxLevel source=$source index=$index '
       'keyword=$keyword genreId=${genreId ?? ''} shopCode=${shopCode ?? ''} '
       'style=$styleKey minPrice=${condition.minPrice ?? ''} '
@@ -1339,8 +1335,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required int page,
     required String phase,
   }) {
-    if (!kDebugMode) return;
-    debugPrint('$_logTagApi phase=$phase start index=$index page=$page');
+    recommendAuditLog('$_logTagApi phase=$phase start index=$index page=$page');
   }
 
   void _apiLogStatus({
@@ -1348,8 +1343,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required Object status,
     required int rawCount,
   }) {
-    if (!kDebugMode) return;
-    debugPrint('$_logTagApi phase=$phase status=$status rawCount=$rawCount');
+    recommendAuditLog('$_logTagApi phase=$phase status=$status rawCount=$rawCount');
   }
 
   void _apiLogDetailed({
@@ -1359,8 +1353,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required String? shopCode,
     required int page,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    recommendAuditLog(
       '$_logTagApi planIndex=$planIndex keyword=$keyword '
       'genreId=${genreId ?? ''} shopCode=${shopCode ?? ''} page=$page',
     );
@@ -1371,25 +1364,26 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required int afterExclude,
     required Map<String, int> reasonCounts,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    recommendAuditLog(
       '[RECOMMEND_FILTER] raw=$raw afterExclude=$afterExclude reasonCounts=$reasonCounts',
     );
   }
 
   void _resultLog({required String status, String? reason, int? count}) {
-    if (!kDebugMode) return;
+    final isImportant =
+        status == 'failed' ||
+        status == 'partialSuccess' ||
+        (reason != null && reason.isNotEmpty);
+    final emit = isImportant ? importantDebugLog : recommendAuditLog;
     if (reason != null && count != null) {
-      debugPrint(
-        '[RECOMMEND_RESULT] status=$status count=$count reason=$reason',
-      );
+      emit('[RECOMMEND_RESULT] status=$status count=$count reason=$reason');
       return;
     }
     if (reason != null) {
-      debugPrint('[RECOMMEND_RESULT] status=$status reason=$reason');
+      emit('[RECOMMEND_RESULT] status=$status reason=$reason');
       return;
     }
-    debugPrint('[RECOMMEND_RESULT] status=$status count=${count ?? 0}');
+    emit('[RECOMMEND_RESULT] status=$status count=${count ?? 0}');
   }
 
   void _saveLog({
@@ -1398,18 +1392,19 @@ class TodayRecommendationProvider extends ChangeNotifier {
     String? reason,
     int? count,
   }) {
-    if (!kDebugMode) return;
     if (keepPreviousBundle) {
-      debugPrint('[RECOMMEND_SAVE] keepPreviousBundle=true reason=${reason ?? ''}');
+      importantDebugLog(
+        '[RECOMMEND_SAVE] keepPreviousBundle=true reason=${reason ?? ''}',
+      );
       return;
     }
     if (saved == true) {
-      debugPrint('[RECOMMEND_SAVE] savedBundle=true count=${count ?? 0}');
-    } else {
-      debugPrint(
-        '[RECOMMEND_SAVE] savedBundle=false reason=${reason ?? 'unknown'}',
-      );
+      recommendAuditLog('[RECOMMEND_SAVE] savedBundle=true count=${count ?? 0}');
+      return;
     }
+    importantDebugLog(
+      '[RECOMMEND_SAVE] savedBundle=false reason=${reason ?? 'unknown'}',
+    );
   }
 
   bool _isRateLimitError(Object e) {
@@ -1420,14 +1415,12 @@ class TodayRecommendationProvider extends ChangeNotifier {
 
   void _guard(String message) {
     _lastGuardReason = message.trim();
-    if (!kDebugMode) return;
-    debugPrint('$_logTagGuard $message');
+    importantDebugLog('$_logTagGuard $message');
   }
 
   void logTodayRecommendCooldown({required String trigger}) {
-    if (!kDebugMode) return;
     final status = manualRegenerateCooldownStatus();
-    debugPrint(
+    importantDebugLog(
       '[TODAY_RECOMMEND_COOLDOWN] canRegenerate=${status.canRegenerate} '
       'remainingSeconds=${status.remainingSeconds} '
       'remainingMinutes=${status.remainingMinutes} '
@@ -1485,8 +1478,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required int apiCalls,
     required String? earlyStopReason,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    debugSummaryLog(
       '[TODAY_RECOMMEND_PLAN_EXECUTION_SUMMARY] '
       'plannedFavoriteGenres=$plannedFavoriteGenres '
       'executedFavoriteGenrePlans=$executedFavoriteGenrePlans '
@@ -1499,7 +1491,6 @@ class TodayRecommendationProvider extends ChangeNotifier {
   void _finalQualitySummaryLog({
     required List<TodayRecommendationEntry> entries,
   }) {
-    if (!kDebugMode) return;
     var zeroReview = 0;
     var missingImage = 0;
     var missingPrice = 0;
@@ -1519,7 +1510,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
       final s = item.shopName.trim().isEmpty ? '-' : item.shopName.trim();
       shopDist[s] = (shopDist[s] ?? 0) + 1;
     }
-    debugPrint(
+    debugSummaryLog(
       '[TODAY_RECOMMEND_FINAL_QUALITY_SUMMARY] finalItems=${entries.length} '
       'zeroReviewItems=$zeroReview missingImageItems=$missingImage '
       'missingPriceItems=$missingPrice '
@@ -1546,9 +1537,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required bool usedAssistPlan,
     required bool fallbackUsed,
   }) {
-    if (!kDebugMode) return;
     final cooldown = manualRegenerateCooldownStatus();
-    debugPrint(
+    recommendAuditLog(
       '[TODAY_RECOMMEND_QUALITY_SUMMARY] plans=$plans apiCalls=$apiCalls '
       'rawItems=$rawItems excludedManaged=$excludedManaged '
       'excludedNoImage=$excludedNoImage excludedNoPrice=$excludedNoPrice '
@@ -1587,8 +1577,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required int excludedByDuplicate,
     required int finalItems,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    recommendAuditLog(
       '[TODAY_RECOMMEND_API_USAGE] sessionId=$sessionId phase=$phase '
       'apiCalls=$apiCalls genreSearchCalls=$genreSearchCalls '
       'shopSearchCalls=$shopSearchCalls keywordSearchCalls=$keywordSearchCalls '
@@ -1598,8 +1587,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
   }
 
   void _trigger({required String source}) {
-    if (!kDebugMode) return;
-    debugPrint('$_logTagTrigger source=$source');
+    recommendAuditLog('$_logTagTrigger source=$source');
   }
 
   void _generateLog({
@@ -1607,8 +1595,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required int requestCount,
     required int planCount,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    recommendAuditLog(
       '$_logTagGenerate $stage requestCount=$requestCount planCount=$planCount',
     );
   }
@@ -1620,8 +1607,7 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required int excludedCount,
     required int durationMs,
   }) {
-    if (!kDebugMode) return;
-    debugPrint(
+    recommendAuditLog(
       '$_logTagSummary totalApiRequests=$totalApiRequests totalPlans=$totalPlans '
       'selectedCount=$selectedCount excludedCount=$excludedCount durationMs=$durationMs',
     );
@@ -1779,16 +1765,15 @@ class TodayRecommendationProvider extends ChangeNotifier {
     required int? sanitizedMinPrice,
     required int? sanitizedMaxPrice,
   }) {
-    if (!kDebugMode) return;
-    debugPrint('[RECOMMEND] search keyword=$keyword');
-    debugPrint('[RECOMMEND] genreId=${genreId ?? ''}');
-    debugPrint('[RECOMMEND] searchPreference=${searchPreference ?? ''}');
-    debugPrint('[RECOMMEND] minPrice=${minPrice?.toString() ?? 'null'}');
-    debugPrint('[RECOMMEND] maxPrice=${maxPrice?.toString() ?? 'null'}');
-    debugPrint(
+    recommendAuditLog('[RECOMMEND] search keyword=$keyword');
+    recommendAuditLog('[RECOMMEND] genreId=${genreId ?? ''}');
+    recommendAuditLog('[RECOMMEND] searchPreference=${searchPreference ?? ''}');
+    recommendAuditLog('[RECOMMEND] minPrice=${minPrice?.toString() ?? 'null'}');
+    recommendAuditLog('[RECOMMEND] maxPrice=${maxPrice?.toString() ?? 'null'}');
+    recommendAuditLog(
       '[RECOMMEND] sanitizedMinPrice=${sanitizedMinPrice?.toString() ?? 'null'}',
     );
-    debugPrint(
+    recommendAuditLog(
       '[RECOMMEND] sanitizedMaxPrice=${sanitizedMaxPrice?.toString() ?? 'null'}',
     );
   }
@@ -1815,11 +1800,9 @@ class TodayRecommendationProvider extends ChangeNotifier {
   }) {
     final reject = _recommendRejectReason(item, postStyles: postStyles);
     if (reject != null) {
-      if (kDebugMode) {
-        debugPrint(
-          '[RECOMMEND_EXCLUDE] itemCode=${item.productId} price=${item.itemPrice} reason=$reject',
-        );
-      }
+      recommendAuditLog(
+        '[RECOMMEND_EXCLUDE] itemCode=${item.productId} price=${item.itemPrice} reason=$reject',
+      );
       return null;
     }
 
@@ -1973,20 +1956,18 @@ class TodayRecommendationProvider extends ChangeNotifier {
       section = TodayRecommendationSection.popular;
     }
 
-    if (kDebugMode) {
-      debugPrint(
-        '[RECOMMEND_SCORE] itemCode=${item.productId} '
-        'title=${item.itemName.trim()} '
-        'price=${item.itemPrice} '
-        'reviewAverage=${item.reviewAverage.toStringAsFixed(2)} '
-        'reviewCount=${item.reviewCount} roomFit=${roomFit.score.toStringAsFixed(1)} '
-        'reaction=${reaction.score.toStringAsFixed(1)} '
-        'reviewEvidence=${reviewEvidence.toStringAsFixed(1)} '
-        'postability=${postability.score.toStringAsFixed(1)} '
-        'score=${score.toStringAsFixed(1)} '
-        'reasons=${reasons.join('|')}',
-      );
-    }
+    recommendAuditLog(
+      '[RECOMMEND_SCORE] itemCode=${item.productId} '
+      'title=${item.itemName.trim()} '
+      'price=${item.itemPrice} '
+      'reviewAverage=${item.reviewAverage.toStringAsFixed(2)} '
+      'reviewCount=${item.reviewCount} roomFit=${roomFit.score.toStringAsFixed(1)} '
+      'reaction=${reaction.score.toStringAsFixed(1)} '
+      'reviewEvidence=${reviewEvidence.toStringAsFixed(1)} '
+      'postability=${postability.score.toStringAsFixed(1)} '
+      'score=${score.toStringAsFixed(1)} '
+      'reasons=${reasons.join('|')}',
+    );
 
     return _ScoredRecommendation(
       item: item,
@@ -2343,13 +2324,11 @@ class TodayRecommendationProvider extends ChangeNotifier {
         keywordTokens.addAll(_nameTokens(p.itemName).take(2));
       }
     }
-    if (kDebugMode) {
-      debugPrint(
-        '[RECOMMEND_REACTION] commentGenres=${commentGenres.length} '
-        'likeGenres=${likeGenres.length} commentShops=${commentShops.length} '
-        'likeShops=${likeShops.length} priceBands=${priceBands.join(",")}',
-      );
-    }
+    recommendAuditLog(
+      '[RECOMMEND_REACTION] commentGenres=${commentGenres.length} '
+      'likeGenres=${likeGenres.length} commentShops=${commentShops.length} '
+      'likeShops=${likeShops.length} priceBands=${priceBands.join(",")}',
+    );
     return _ReactionProfile(
       commentGenres: commentGenres,
       likeGenres: likeGenres,
@@ -2393,8 +2372,8 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (itemTokens.any(profile.keywordTokens.contains)) {
       score += 15;
     }
-    if (kDebugMode && score > 0) {
-      debugPrint(
+    if (score > 0) {
+      recommendAuditLog(
         '[RECOMMEND_REACTION_SCORE] itemCode=${item.productId} '
         'score=${score.toStringAsFixed(1)} reasons=${reasons.join("|")}',
       );
@@ -2431,12 +2410,10 @@ class TodayRecommendationProvider extends ChangeNotifier {
     if (_looksLikeModelOnly(title)) score -= 20;
     if (title.length >= 70) score -= 10;
 
-    if (kDebugMode) {
-      debugPrint(
-        '[RECOMMEND_POSTABILITY] itemCode=${item.productId} '
-        'score=${score.toStringAsFixed(1)} reasons=${reasons.join("|")}',
-      );
-    }
+    recommendAuditLog(
+      '[RECOMMEND_POSTABILITY] itemCode=${item.productId} '
+      'score=${score.toStringAsFixed(1)} reasons=${reasons.join("|")}',
+    );
     return (score: score, reasons: reasons);
   }
 
@@ -2483,16 +2460,14 @@ class TodayRecommendationProvider extends ChangeNotifier {
         unfitHit = true;
       }
     }
-    if (unfitHit && kDebugMode) {
-      debugPrint(
+    if (unfitHit) {
+      recommendAuditLog(
         '[RECOMMEND_ROOM_UNFIT] itemCode=${item.productId} title=${item.itemName}',
       );
     }
-    if (kDebugMode) {
-      debugPrint(
-        '[RECOMMEND_ROOM_FIT] itemCode=${item.productId} score=${score.toStringAsFixed(1)} reasons=${reasons.join("|")}',
-      );
-    }
+    recommendAuditLog(
+      '[RECOMMEND_ROOM_FIT] itemCode=${item.productId} score=${score.toStringAsFixed(1)} reasons=${reasons.join("|")}',
+    );
     return (score: score, reasons: reasons);
   }
 

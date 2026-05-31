@@ -12,6 +12,7 @@ import '../state/user_profile_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/recommend_cooldown_policy.dart';
 import '../utils/today_recommendation_ui_tags.dart';
+import '../utils/app_debug_log.dart';
 import '../utils/room_sync_log.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
@@ -41,10 +42,10 @@ class _TodayRecommendationsScreenState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.skipInitialEnsure) {
-        debugPrint('[RECOMMEND_GUARD] skipReason=recentEnsure');
+        importantDebugLog('[RECOMMEND_GUARD] skipReason=recentEnsure');
         return;
       }
-      debugPrint('[RECOMMEND_TRIGGER] source=screenOpen');
+      recommendAuditLog('[RECOMMEND_TRIGGER] source=screenOpen');
       _ensureToday();
     });
   }
