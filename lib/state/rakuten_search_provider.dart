@@ -15,6 +15,7 @@ import '../services/rakuten_genre_master_service.dart';
 import '../utils/app_debug_log.dart';
 import '../utils/catalog_product_mapper.dart';
 import '../utils/rakuten_product_genre_display.dart';
+import '../utils/shop_pool_audit.dart';
 
 enum RakutenSearchStatus { idle, loading, success, error }
 
@@ -354,6 +355,13 @@ class RakutenSearchProvider extends ChangeNotifier {
       );
       unawaited(_prefetchGenreLabels(fetched));
       _scheduleProductCatalogUpsert(fetched, modeTag: modeTag);
+      if (modeTag == 'savedShop' || modeTag == 'shopDiscovery') {
+        logShopPoolSummaryFromProductCatalog(
+          productCatalogRepository: _productCatalogRepository,
+          source: modeTag == 'savedShop' ? 'savedShopSearch' : 'shopDiscovery',
+          excludeSavedShopCodes: excludeSavedShopCodes ?? const {},
+        );
+      }
       if (kDebugMode) {
         debugPrint(
           '[SEARCH_FIRST_ATTEMPT_AUDIT] mode=$modeTag attempt=1 apiCalled=true '

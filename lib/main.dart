@@ -16,6 +16,7 @@ import 'repository/genre_master_repository.dart';
 import 'services/genre_master_service.dart';
 import 'services/rakuten_genre_master_service.dart';
 import 'repository/product_catalog_repository.dart';
+import 'repository/shop_catalog_repository.dart';
 import 'repository/rakuten_search_repository.dart';
 import 'repository/easy_initial_setup_repository.dart';
 import 'state/bulk_operation_state_controller.dart';
@@ -77,6 +78,7 @@ void main() async {
     apiService: RakutenApiService(),
   );
   final productCatalogRepository = ProductCatalogRepository(prefs);
+  final shopCatalogRepository = ShopCatalogRepository(prefs);
   final rakutenManagedProductRepository = RakutenManagedProductRepository(
     prefs,
   );
@@ -97,6 +99,7 @@ void main() async {
       activityRepository: activityRepository,
       rakutenSearchRepository: rakutenSearchRepository,
       productCatalogRepository: productCatalogRepository,
+      shopCatalogRepository: shopCatalogRepository,
       rakutenManagedProductRepository: rakutenManagedProductRepository,
       roomActivityEventRepository: roomActivityEventRepository,
       pendingCollectNoticeRepository: pendingCollectNoticeRepository,
@@ -119,6 +122,7 @@ class MyApp extends StatelessWidget {
     required this.activityRepository,
     required this.rakutenSearchRepository,
     required this.productCatalogRepository,
+    required this.shopCatalogRepository,
     required this.rakutenManagedProductRepository,
     required this.roomActivityEventRepository,
     required this.pendingCollectNoticeRepository,
@@ -136,6 +140,7 @@ class MyApp extends StatelessWidget {
   final ActivityLogRepository activityRepository;
   final RakutenSearchRepository rakutenSearchRepository;
   final ProductCatalogRepository productCatalogRepository;
+  final ShopCatalogRepository shopCatalogRepository;
   final RakutenManagedProductRepository rakutenManagedProductRepository;
   final RoomActivityEventRepository roomActivityEventRepository;
   final PendingCollectNoticeRepository pendingCollectNoticeRepository;
@@ -168,6 +173,7 @@ class MyApp extends StatelessWidget {
         Provider<ProductCatalogRepository>.value(
           value: productCatalogRepository,
         ),
+        Provider<ShopCatalogRepository>.value(value: shopCatalogRepository),
         Provider<RakutenManagedProductRepository>.value(
           value: rakutenManagedProductRepository,
         ),

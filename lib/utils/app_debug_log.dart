@@ -51,6 +51,16 @@ void catalogAuditLog(String message) {
   debugPrint(message);
 }
 
+/// 共通ショップカタログ監査ログ（`CATALOG_AUDIT_LOGS=true` のときのみ）。
+void shopCatalogAuditLog(String message) {
+  catalogAuditLog(message);
+}
+
+/// ProductCatalog 集計 ShopPool サマリ（`CATALOG_AUDIT_LOGS=true` のときのみ）。
+void shopPoolSummaryLog(String details) {
+  catalogAuditLog('[SHOP_POOL_SUMMARY] $details');
+}
+
 /// カタログ走査の stale 判定サマリ（`CATALOG_AUDIT_LOGS=true` で1行。
 /// 商品単位は `VERBOSE_ITEM_LOGS=true` のときのみ）。
 void productCatalogStaleBatchSummaryLog({

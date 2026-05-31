@@ -5,6 +5,7 @@ import '../models/rakuten_product_search_condition.dart';
 import '../models/shop_discovery_summary.dart';
 import '../models/user_profile.dart';
 import '../repository/easy_initial_setup_repository.dart';
+import '../repository/product_catalog_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../services/room_profile_url_validation_service.dart';
 import '../services/rakuten_genre_master_service.dart';
@@ -18,6 +19,7 @@ import '../utils/favorite_genre_selection_policy.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/onboarding_ui_log.dart';
 import '../utils/product_safety_filter.dart';
+import '../utils/shop_pool_audit.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
@@ -317,6 +319,14 @@ class _EasyInitialSetupScreenState extends State<EasyInitialSetupScreen> {
         profile.effectivePostStyleList,
         fallbackUsed: shopGenre.fallbackUsed,
         fallbackReason: shopGenre.fallbackReason,
+      );
+      logShopPoolSummaryFromProductCatalog(
+        productCatalogRepository: context.read<ProductCatalogRepository>(),
+        source: 'initialSetup',
+        excludeSavedShopCodes: savedShopProvider.shops
+            .map((e) => e.shopId.trim())
+            .where((e) => e.isNotEmpty)
+            .toSet(),
       );
       final rawItems = await searchRepository.search(condition: condition);
       final items = rawItems.where((item) {
