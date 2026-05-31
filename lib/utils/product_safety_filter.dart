@@ -416,11 +416,15 @@ abstract final class ProductSafetyFilter {
   static void endBatch() {
     if (!kDebugMode || _batchSource == null) return;
     final examples = _batchBlockedExamples.take(3).join(' | ');
-    debugSummaryLog(
-      '[PRODUCT_SAFETY_FILTER] source=$_batchSource totalItems=$_batchTotal '
-      'blockedCount=$_batchBlocked '
-      'reasonBreakdown=${_batchReasonBreakdown.entries.map((e) => '${e.key}:${e.value}').join(',')} '
-      'firstBlockedExamples=${examples.isEmpty ? '-' : examples}',
+    final message =
+        '[PRODUCT_SAFETY_FILTER] source=$_batchSource totalItems=$_batchTotal '
+        'blockedCount=$_batchBlocked '
+        'reasonBreakdown=${_batchReasonBreakdown.entries.map((e) => '${e.key}:${e.value}').join(',')} '
+        'firstBlockedExamples=${examples.isEmpty ? '-' : examples}';
+    AuditLogDeduper.logOnce(
+      'product_safety_filter:$_batchSource:$_batchTotal:$_batchBlocked',
+      message,
+      debugSummaryLog,
     );
     _batchSource = null;
   }

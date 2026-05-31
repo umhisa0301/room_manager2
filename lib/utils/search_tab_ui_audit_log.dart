@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+import '../config/debug_log_flags.dart';
 import 'app_debug_log.dart';
 
 void searchTabUiAuditLog(String message) {
@@ -74,4 +77,19 @@ void searchPhaseTransitionAuditLog(String message) {
 
 void searchResultWidgetTreeAuditLog(String message) {
   searchAuditLog('[SEARCH_RESULT_WIDGET_TREE_AUDIT] $message');
+}
+
+/// 検索結果カードのレイアウト監査（`SEARCH_AUDIT_LOGS` または `VERBOSE_ITEM_LOGS`）。
+void searchProductCardLayoutAuditLog(String detail) {
+  if (!kDebugMode) return;
+  if (!DebugLogFlags.kSearchAuditLogsEnabled &&
+      !DebugLogFlags.kVerboseItemLogsEnabled) {
+    return;
+  }
+  final message = '[SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] $detail';
+  if (DebugLogFlags.kSearchAuditLogsEnabled) {
+    searchAuditLog(message);
+  } else {
+    verboseItemLog(message);
+  }
 }

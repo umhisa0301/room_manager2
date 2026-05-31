@@ -181,7 +181,7 @@ class ProductCatalogRepository {
     if (canonicalId == null) {
       return null;
     }
-    catalogAuditLog(
+    verboseItemLog(
       '[PRODUCT_CATALOG_ALIAS_MATCH] alias=$key canonicalId=$canonicalId',
     );
     return getByCanonicalId(canonicalId, touch: touch);
@@ -217,12 +217,7 @@ class ProductCatalogRepository {
     final ref = product.lastValidatedAt;
     final t = now ?? DateTime.now();
     final ageSeconds = t.difference(ref).inSeconds;
-    final stale = ageSeconds > product.cacheTtlSeconds;
-    catalogAuditLog(
-      '[PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=${product.canonicalId} '
-      'ageSeconds=$ageSeconds ttl=${product.cacheTtlSeconds} stale=$stale',
-    );
-    return stale;
+    return ageSeconds > product.cacheTtlSeconds;
   }
 
   Future<ProductCatalogUpsertBatchResult> upsert(CatalogProduct incoming) async {

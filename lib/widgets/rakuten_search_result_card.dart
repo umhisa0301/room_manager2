@@ -117,12 +117,10 @@ class RakutenSearchResultCard extends StatelessWidget {
     final thumbW = compact ? _compactThumbWidth : _searchThumbWidth;
     final buttonH = 48.0;
 
-    if (kDebugMode) {
-      debugPrint(
-        '[SEARCH_PRODUCT_CARD_LAYOUT_AUDIT] imageSize=$thumbW titleMaxLines=$titleMaxLines '
-        'priceReviewSameLine=${!compact} buttonHeight=$buttonH cardHeight=auto overflowDetected=false',
-      );
-    }
+    searchProductCardLayoutAuditLog(
+      'imageSize=$thumbW titleMaxLines=$titleMaxLines '
+      'priceReviewSameLine=${!compact} buttonHeight=$buttonH cardHeight=auto overflowDetected=false',
+    );
 
     final theme = Theme.of(context);
     final titleStyle = RoomColleProductListCardLayout.titleTextStyle(theme);

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../config/debug_log_flags.dart';
+import '../models/catalog_product.dart';
 
 /// 検索画面 UI 監査ログ（`SEARCH_AUDIT_LOGS=true` のときのみ）。
 void searchAuditLog(String message) {
@@ -48,6 +49,65 @@ void debugSummaryLog(String message) {
 void catalogAuditLog(String message) {
   if (!kDebugMode || !DebugLogFlags.kCatalogAuditLogsEnabled) return;
   debugPrint(message);
+}
+
+/// カタログ走査の stale 判定サマリ（`CATALOG_AUDIT_LOGS=true` で1行。
+/// 商品単位は `VERBOSE_ITEM_LOGS=true` のときのみ）。
+void productCatalogStaleBatchSummaryLog({
+  required String source,
+  required Iterable<CatalogProduct> products,
+  DateTime? now,
+}) {
+  if (!kDebugMode || !DebugLogFlags.kCatalogAuditLogsEnabled) return;
+
+  final t = now ?? DateTime.now();
+  var total = 0;
+  var staleCount = 0;
+  var freshCount = 0;
+  int? minAgeSeconds;
+  int? maxAgeSeconds;
+  int? ttlSeconds;
+
+  for (final product in products) {
+    total++;
+    final ageSeconds = t.difference(product.lastValidatedAt).inSeconds;
+    final ttl = product.cacheTtlSeconds;
+    ttlSeconds ??= ttl;
+    final isProductStale = ageSeconds > ttl;
+    if (isProductStale) {
+      staleCount++;
+    } else {
+      freshCount++;
+    }
+    if (minAgeSeconds == null || ageSeconds < minAgeSeconds) {
+      minAgeSeconds = ageSeconds;
+    }
+    if (maxAgeSeconds == null || ageSeconds > maxAgeSeconds) {
+      maxAgeSeconds = ageSeconds;
+    }
+
+    if (DebugLogFlags.kVerboseItemLogsEnabled) {
+      verboseItemLog(
+        '[PRODUCT_CATALOG_STALE_SUMMARY] canonicalId=${product.canonicalId} '
+        'ageSeconds=$ageSeconds ttl=$ttl stale=$isProductStale',
+      );
+    }
+  }
+
+  if (total == 0) {
+    catalogAuditLog(
+      '[PRODUCT_CATALOG_STALE_SUMMARY] source=$source total=0 fresh=0 stale=0 '
+      'minAgeSeconds=- maxAgeSeconds=- ttlSeconds=-',
+    );
+    return;
+  }
+
+  catalogAuditLog(
+    '[PRODUCT_CATALOG_STALE_SUMMARY] source=$source total=$total '
+    'fresh=$freshCount stale=$staleCount '
+    'minAgeSeconds=$minAgeSeconds maxAgeSeconds=$maxAgeSeconds '
+    'ttlSeconds=$ttlSeconds',
+  );
 }
 
 /// 同一キー・同一内容の監査ログ重複を抑止（build 連打対策）。

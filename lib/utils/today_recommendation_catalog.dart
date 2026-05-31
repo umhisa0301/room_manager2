@@ -5,6 +5,7 @@ import '../models/rakuten_search_item.dart';
 import '../repository/product_catalog_repository.dart';
 import '../services/genre_master_service.dart';
 import '../utils/catalog_product_keys.dart';
+import '../utils/app_debug_log.dart';
 import '../utils/catalog_product_mapper.dart';
 import '../utils/product_safety_filter.dart';
 import '../utils/search_result_quality_filter.dart';
@@ -194,6 +195,12 @@ abstract final class TodayRecommendationCatalog {
       final normUrl = CatalogProductKeys.normalizeItemUrl(item.itemUrl);
       if (normUrl.isNotEmpty) seenUrls.add(normUrl);
     }
+
+    productCatalogStaleBatchSummaryLog(
+      source: 'todayRecommendation',
+      products: products,
+      now: now,
+    );
 
     return TodayRecommendCatalogCollectResult(
       catalogCount: catalogCount,
