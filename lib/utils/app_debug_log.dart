@@ -44,6 +44,12 @@ void debugSummaryLog(String message) {
   debugPrint(message);
 }
 
+/// 共通商品カタログ監査ログ（`CATALOG_AUDIT_LOGS=true` のときのみ）。
+void catalogAuditLog(String message) {
+  if (!kDebugMode || !DebugLogFlags.kCatalogAuditLogsEnabled) return;
+  debugPrint(message);
+}
+
 /// 同一キー・同一内容の監査ログ重複を抑止（build 連打対策）。
 final class AuditLogDeduper {
   AuditLogDeduper._();

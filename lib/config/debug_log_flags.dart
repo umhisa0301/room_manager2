@@ -34,6 +34,12 @@ abstract final class DebugLogFlags {
   static bool get recommendVerboseLogsEnabled =>
       kRecommendAuditLogsEnabled || kVerboseItemLogsEnabled;
 
+  /// 共通商品カタログの監査ログ（upsert/LRU/stale/alias サマリ）。
+  static const bool kCatalogAuditLogsEnabled = bool.fromEnvironment(
+    'CATALOG_AUDIT_LOGS',
+    defaultValue: false,
+  );
+
   /// デバッグ時のサマリ1行ログ（開始/完了/件数）を出す。
   static const bool kDebugLogSummaryEnabled = bool.fromEnvironment(
     'DEBUG_LOG_SUMMARY',

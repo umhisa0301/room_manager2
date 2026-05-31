@@ -427,11 +427,19 @@ Additional data:
 
 ```json
 {
-  "status": "loading",
-  "subagentComposerId": "8bca7fed-a2c9-46da-93d5-45ff1c9f2228"
+  "status": "success",
+  "subagentComposerId": "8bca7fed-a2c9-46da-93d5-45ff1c9f2228",
+  "terminationReason": "completed"
 }
 ```
-Status: **loading**
+Result:
+
+```json
+{
+  "agentId": "8bca7fed-a2c9-46da-93d5-45ff1c9f2228"
+}
+```
+Status: **completed**
 
 
 </details>
@@ -464,11 +472,19 @@ Additional data:
 
 ```json
 {
-  "status": "loading",
-  "subagentComposerId": "62bde678-04c6-4d7b-b1ac-01bcb7ae3908"
+  "status": "success",
+  "subagentComposerId": "62bde678-04c6-4d7b-b1ac-01bcb7ae3908",
+  "terminationReason": "completed"
 }
 ```
-Status: **loading**
+Result:
+
+```json
+{
+  "agentId": "62bde678-04c6-4d7b-b1ac-01bcb7ae3908"
+}
+```
+Status: **completed**
 
 
 </details>
@@ -707,3 +723,2336 @@ Directory: **c:\dev\app_project\room_manager2** (69 files)
 <summary>Tool use: **glob_file_search**</summary>
 
 </details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Good progress has been made by the subagents. Now I need to review the key files in more detail to verify information and fill in any gaps, particularly focusing on the first item.</details></think>
+
+_**Agent (default)**_
+
+主要ファイルを直接読み、詳細を補完します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\repository\rakuten_search_repository.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 3,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_buildProductCondition|_sanitizeConditionForActiveMode|_runSearch|_runGenreSearch|_runShopDiscovery"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_buildProductCondition|_sanitizeConditionForActiveMode|_runSearch|_runGenreSearch|_runShopDiscovery",
+  "topFiles": [
+    {
+      "matchCount": 114,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 29
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 5,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_buildPhasedSearchPlans|_finalizeFromPool|_excludeReason|_generate"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_buildPhasedSearchPlans|_finalizeFromPool|_excludeReason|_generate",
+  "topFiles": [
+    {
+      "matchCount": 90,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 15
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 15,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "_shopRecommendationCondition|_loadShopRecommendations|_rankShopRecommendations"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\easy_initial_setup_screen.dart",
+  "pattern": "_shopRecommendationCondition|_loadShopRecommendations|_rankShopRecommendations",
+  "topFiles": [
+    {
+      "matchCount": 96,
+      "uri": "lib\\screens\\easy_initial_setup_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 6
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+I need more details from key files. Let me read rakuten_search_screen.dart to sanitize conditions and apply preferred excludes.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\easy_initial_setup_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 80,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\repository\\rakuten_search_repository.dart",
+  "pattern": "Future\u003cRakutenKeywordSearchRepositoryResult\u003e searchKeywordWithManagedExclusion"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\repository\\rakuten_search_repository.dart",
+  "pattern": "Future\u003cRakutenKeywordSearchRepositoryResult\u003e searchKeywordWithManagedExclusion",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\utils\product_safety_filter.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "files_with_matches",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "room_reaction_analytics|analytics.*reaction|反応"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "files_with_matches",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib",
+  "pattern": "room_reaction_analytics|analytics.*reaction|反応",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib/services/room_kpi_calculator.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/services/room_sync_service.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/room_reaction_analytics.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/models/room_sync_result.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/repository/room_sync_cursor_repository.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/room_reaction_status_display.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/room_sync_log.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/models/room_reaction_sync_batch_result.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/room_sync_reaction_button.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/widgets/rakuten_managed_product_card.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/models/rakuten_managed_product.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/home_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/repository/rakuten_managed_product_repository.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/services/room_reaction_sync_history_store.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/models/room_reaction_sync_top_product.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/state/bulk_operation_state_controller.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/room_sync_card_copy.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/screens/products_placeholder_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/analytics_shop_search_launcher.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib/utils/analytics_unknown_label.dart"
+    }
+  ],
+  "totalFiles": 39,
+  "totalMatches": 39
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 100,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\repository\\rakuten_search_repository.dart",
+  "pattern": "searchKeywordWithManagedExclusion\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\repository\\rakuten_search_repository.dart",
+  "pattern": "searchKeywordWithManagedExclusion\\(",
+  "topFiles": [
+    {
+      "matchCount": 101,
+      "uri": "lib\\repository\\rakuten_search_repository.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\utils\rakuten_keyword_search_sort.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\services\shop_discovery_aggregator.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\utils\room_reaction_analytics.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 40,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_applyPreferredExcludes|_runShopDiscovery"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_applyPreferredExcludes|_runShopDiscovery",
+  "topFiles": [
+    {
+      "matchCount": 328,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 8
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 30,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\home_placeholder_screen.dart",
+  "pattern": "TodayRecommendation|ROOM運用|ensureToday"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\home_placeholder_screen.dart",
+  "pattern": "TodayRecommendation|ROOM運用|ensureToday",
+  "topFiles": [
+    {
+      "matchCount": 407,
+      "uri": "lib\\screens\\home_placeholder_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 26
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Let me get more details on how rakuten_search_provider calls the repository.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\repository\rakuten_search_repository.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 50,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_recommendRejectReason|_scoreRecommendationForBucket|_planToCondition"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_recommendRejectReason|_scoreRecommendationForBucket|_planToCondition",
+  "topFiles": [
+    {
+      "matchCount": 202,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 5
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 60,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\services\\room_sync_service.dart",
+  "pattern": "syncPostedRoomReactionsOnly"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\services\\room_sync_service.dart",
+  "pattern": "syncPostedRoomReactionsOnly",
+  "topFiles": [
+    {
+      "matchCount": 61,
+      "uri": "lib\\services\\room_sync_service.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 30,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\rakuten_search_provider.dart",
+  "pattern": "searchWithCondition|searchKeywordWithManagedExclusion"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\rakuten_search_provider.dart",
+  "pattern": "searchWithCondition|searchKeywordWithManagedExclusion",
+  "topFiles": [
+    {
+      "matchCount": 189,
+      "uri": "lib\\state\\rakuten_search_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 7
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1 | Select-Object -Last 30</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1 | Select-Object -Last 30
+```
+
+```
+Waiting for another flutter command to release the startup lock...
+Analyzing room_manager2...                                      
+
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:113:17 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:114:21 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:149:26 - use_build_context_synchronously
+
+3 issues found. (ran in 40.7s)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test 2>&1 | Select-Object -Last 40</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test 2>&1 | Select-Object -Last 40
+```
+
+```
+00:01 +24: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat httpは拒否する
+00:01 +25: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 楽天市場URLは拒否する
+00:01 +26: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMトップURLのみは拒否する
+00:01 +27: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOM啁E��URL相当�E褁E��パスは拒否する
+00:01 +28: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat roomIdなし�E /items は拒否する
+00:01 +29: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 短縮URLは拒否する
+00:01 +30: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers extractRoomId extracts roomId from profile child routes
+00:01 +31: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers normalizeProfileUrl always stores profile URL
+00:01 +32: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers buildItemsUrl builds posting list URL from saved profile URL
+00:01 +33: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 200系は保存可能な確認�E功にする
+00:01 +34: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 404は保存不可にする
+00:01 +35: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 403/429は形式OKなら確認保留で保存可能にする
+00:01 +36: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 通信失敗�E形式OKなら確認保留で保存可能にする
+00:02 +37: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:02 +38: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+00:02 +39: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからなぁE��合�E null
+00:02 +40: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: beginSearchSession increments active request id
+00:02 +41: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorForNewSearch clears error and retry banner
+[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=1 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+00:02 +42: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorIfModeMismatch clears error owned by another mode
+00:02 +43: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: isErrorVisibleForMode is true only for matching tag
+00:02 +44: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちめE�E通す
+00:02 +45: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除夁E00:02 +46: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちめE�E除夁E00:02 +47: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter BLCDコレクションは除夁E00:02 +48: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 濡れトロは除夁E00:02 +49: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おもちめE宮本真希[DVD]は adultKeyword がなければ通す
+00:02 +50: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ベビー おもちめE�E通す
+00:02 +51: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ビ�Eル10本セチE��は除夁E00:02 +52: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 名�Eれワインは除夁E00:02 +53: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter シャンパングラスは通す
+00:02 +54: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ワイングラスは通す
+00:02 +55: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 子供服は通す
+00:02 +56: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter アダルトグチE��は除夁E00:02 +57: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter グラビア写真雁E�E除夁E00:02 +58: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ジャンル名がビ�Eル・洋�Eなら除夁E00:03 +59: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+00:03 +60: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+00:03 +61: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop and url slug match accepts candidate
+00:03 +62: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch price match alone does not accept candidate
+00:03 +63: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop mismatch rejects candidate
+00:03 +64: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既孁Eprice=3980 に incoming price=-1 が来てめE3980 を維持E00:03 +65: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既孁EimageUrl 有効、incoming 空なら既存維持E00:03 +66: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既孁EshopCode 有効、incoming 空なら既存維持E00:03 +67: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既孁EgenreName 有効、incoming 空なら既存維持E00:03 +68: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge incoming api値が有効な場合だけ上書ぁE00:04 +69: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl extracts composite itemCode and slug from event+dest
+00:04 +70: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl supports rat-redirect host and drinkshop slug
+00:04 +71: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: roomImportEnrichSlugShouldSkipDirectItemCode flags slug-like segments
+00:04 +72: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:04 +73: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics reactionScore は like + comment*3
+00:04 +74: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genre 空は ジャンル未確誁E00:04 +75: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName 空なめEshopCode をUIに出さずショチE�E未確誁E00:04 +76: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName めEshopCode も空なめEショチE�E未確誁E00:04 +77: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics 未刁E��ジャンルは傾向集計対象夁E00:04 +78: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genreName空でもgenreIdからマスタ解決できれば雁E��対象
+00:04 +79: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopCodeのみのショチE�Eは傾向集計対象夁E00:04 +80: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 価格だけ未取得�Eとき強ぁE��確認文言は出さなぁE00:04 +81: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 啁E��名も画像も無ぁE��き�E売り�Eれ系を表示
+00:04 +82: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Let me gather additional information about the filters applied during API post-processing and the sorting parameters used in different modes.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 40,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\repository\\rakuten_search_repository.dart",
+  "pattern": "_applyAppSideFilters|classifyKeywordSearchUnder100Reason"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\repository\\rakuten_search_repository.dart",
+  "pattern": "_applyAppSideFilters|classifyKeywordSearchUnder100Reason",
+  "topFiles": [
+    {
+      "matchCount": 195,
+      "uri": "lib\\repository\\rakuten_search_repository.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 5
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 25,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_apiSortParamForMode|_genreExploreSort|sortedRakutenKeywordSearchItems"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_apiSortParamForMode|_genreExploreSort|sortedRakutenKeywordSearchItems",
+  "topFiles": [
+    {
+      "matchCount": 281,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 12
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 35,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_conditionForPlan|_RecommendSearchPlan"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_conditionForPlan|_RecommendSearchPlan",
+  "topFiles": [
+    {
+      "matchCount": 194,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 14
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 25,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\activity\\activity_analytics_tab.dart",
+  "pattern": "roomReactionAnalytics|反応"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\widgets\\activity\\activity_analytics_tab.dart",
+  "pattern": "roomReactionAnalytics|反応",
+  "topFiles": [
+    {
+      "matchCount": 576,
+      "uri": "lib\\widgets\\activity\\activity_analytics_tab.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 49
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 20,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\rakuten_search_provider.dart",
+  "pattern": "shopDiscovery|modeTag == 'shopDiscovery'"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\rakuten_search_provider.dart",
+  "pattern": "shopDiscovery|modeTag == 'shopDiscovery'",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Let me verify the provider path when `excludeRegisteredProductIds` is passed during shop discovery, as it uses `search()` instead of managed exclusion.
+
+Whether ProductSafetyFilter is applied in search repository or only UI.  
+_conditionFromPlan in today's recommendation.  
+User profile preferred genre words.  
+Sorted Rakuten keyword search items usage in screen.  
+
+Regarding shop discovery with excludeRegisteredProductIds, it uses `search()` instead of managed exclusion, passing excludeIds to rakuten_search_provider, which then calls `searchKeywordWithManagedExclusion` when excludeRegisteredProductIds is not null.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\rakuten_search_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 30,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "planToCondition|_buildCondition|relaxLevel"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "planToCondition|_buildCondition|relaxLevel",
+  "topFiles": [
+    {
+      "matchCount": 347,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 24
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "sortedRakutenKeywordSearchItems|ProductSafetyFilter"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "sortedRakutenKeywordSearchItems|ProductSafetyFilter",
+  "topFiles": [
+    {
+      "matchCount": 5,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 5
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 25,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\repository\\rakuten_search_repository.dart",
+  "pattern": "Future\u003cList\u003cRakutenSearchItem\u003e\u003e search\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\repository\\rakuten_search_repository.dart",
+  "pattern": "Future\u003cList\u003cRakutenSearchItem\u003e\u003e search\\(",
+  "topFiles": [
+    {
+      "matchCount": 26,
+      "uri": "lib\\repository\\rakuten_search_repository.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Important finding about shop discovery: _runShopDiscovery passes excludeRegisteredProductIds but not excludeCandidateProductIds or excludeDoneProductIds.
+
+Provider uses searchKeywordWithManagedExclusion when excludeRegisteredProductIds is provided, but the loop only checks excludeCandidate and excludeDone sets separately, not excludeRegisteredProductIds. Since excludeRegisteredProductIds is the union of candidate and done sets, the exclusion logic fails in the repository. For shop discovery, searchKeywordWithManagedExclusion runs with target 100 items across 20 pages, while excludeCandidate remains empty.
+
+No exclusion occurs in the repository loop for shop discovery because excludeDone and excludeSavedShopCodes are empty. The UI applies a safety filter only and filters saved shops at display, but does not apply _applyPreferredExcludes. This allows candidate and done products to appear in raw shop discovery results and affect aggregation. Additionally, ProductSafetyFilter is missing from the repository's _applyAppSideFilters, being handled only at the UI layer via _isSafetyBlockedForSearch. For product name searches like "" or "", the keyword is used as-is after normalization and trimming.
+
+Optional parameters include productDetailGenreId, sort order from _keywordSort, and excludeKeyword from user input. Price and review filters such as minPrice, maxPrice, minReviewCount, minReviewAverage, and minCommentCount are derived from the detail sheet.
+
+For genre-based searches with an additional keyword, the system uses genreId as required and keyword from _genreController as optional, while stripping the shopCode. When searching within a saved shop, the shopCode is selected and the keyword is optional, with genreId being removed.
+
+Regarding sortedRakutenKeywordSearchItems, it was not found in rakuten_search_screen upon grep search.
+
+Client-side sorting may only occur via _apiSortParamForMode and re-searching on change, not through direct client-side sorting. When _onKeywordSortChanged triggers, it re-runs the search with the new sort order sent to the API. For default ordering, a null sort value is sent to the API.
+
+A key issue is that ProductSafetyFilter is not applied in the repository during managed exclusion; instead, it's handled at the UI level through _applyPreferredExcludes and _isSafetyBlockedForSearch, while _applyAppSideFilters only manages review thresholds.
+
+Safety filtering occurs only in the UI layer for product, genre, and saved shop searches, while the repository only applies review thresholds during managed exclusion. The `excludedSafety` counter in the repository is misnamedit tracks review threshold drops, not safety filters. ProductSafetyFilter is applied later in the UI via `_applyPreferredExcludes`. 
+
+For fetching 100 items:
+1.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 20,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "userProfilePreferredGenreWords|keywords ="
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "userProfilePreferredGenreWords|keywords =",
+  "topFiles": [
+    {
+      "matchCount": 21,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 15,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_isSafetyBlockedForSearch|bulk.*candidate|一括"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "_isSafetyBlockedForSearch|bulk.*candidate|一括",
+  "topFiles": [
+    {
+      "matchCount": 67,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 5
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 40,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\services\\room_sync_service.dart",
+  "pattern": "syncPostedRoomProducts"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\services\\room_sync_service.dart",
+  "pattern": "syncPostedRoomProducts",
+  "topFiles": [
+    {
+      "matchCount": 41,
+      "uri": "lib\\services\\room_sync_service.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 35,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "List\u003cString\u003e _buildKeywords"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "List\u003cString\u003e _buildKeywords",
+  "topFiles": [
+    {
+      "matchCount": 36,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\utils\recommend_cooldown_policy.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "searchWithCondition\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\rakuten_search_screen.dart",
+  "pattern": "searchWithCondition\\(",
+  "topFiles": [
+    {
+      "matchCount": 3,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 3
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 25,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_runSearchPlan|searchPurpose"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_runSearchPlan|searchPurpose",
+  "topFiles": [
+    {
+      "matchCount": 104,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 4
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Today's recommendation provider utilizes `profile.selectedSearchStyle` for single-style recommendations, rather than `effectivePostStyleList`, which is crucial for distinguishing between recommendation logic and initial setup processes.
+
+Today's recommendation provider uses `profile.selectedSearchStyle` for single-style recommendations, distinct from `effectivePostStyleList` used in initial setup. The manual regenerate cooldown is 5 minutes, matching `RecommendCooldownPolicy.manualRegenerateCooldown`, while the recent generate cooldown is 15 minutes. The `search()` function with recommendation purpose bypasses `_applyAppSideFilters`.
+
+Recommendation searches skip the review filter at the repository level, applying filters only in the provider's `_excludeReason` method instead.
+
+Shop discovery uses `searchKeywordWithManagedExclusion` without candidate or done sets, allowing it to paginate up to 100 items. However, when `excludeRegisteredProductIds` is present, it activates the managed exclusion path with a default `targetVisibleCount=100`.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 15,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\models\\room_colle_list_filters.dart",
+  "pattern": "unconfirmed|reaction|反応"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\models\\room_colle_list_filters.dart",
+  "pattern": "unconfirmed|reaction|反応",
+  "topFiles": [
+    {
+      "matchCount": 16,
+      "uri": "lib\\models\\room_colle_list_filters.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\services\\rakuten_api_service.dart",
+  "pattern": "_buildCommonSearchParams|NGKeyword"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\services\\rakuten_api_service.dart",
+  "pattern": "_buildCommonSearchParams|NGKeyword",
+  "topFiles": [
+    {
+      "matchCount": 3,
+      "uri": "lib\\services\\rakuten_api_service.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 3
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+Shop discovery doesn't pass modeTag, defaulting to 'product' in searchWithCondition, which is acceptable for fetch mode logging.
+
+Also, shop discovery omits passing excludeCandidateProductIds, excludeDoneProductIds, and savedShopCodes, creating a critical gap.
+
+Regarding recommendation searchPurpose.recommendation, the search() function does not apply ProductSafetyFilteronly _applyAppSideFilters is used, which is skipped for recommendations. Product safety logic resides within _excludeReason in the provider.
+
+For the standard search() flow (initial setup), shop discovery utilizes managed exclusion rather than plain search. The initial setup employs plain search() with maxPages=4, followed by ProductSafetyFilter in easy_initial_setup_screen.
+
+The full report will now be structured accordingly.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\state\today_recommendation_provider.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 20,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_pickBalancedBySection|TodayRecommendationSection"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "_pickBalancedBySection|TodayRecommendationSection",
+  "topFiles": [
+    {
+      "matchCount": 143,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 15
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "45|pool\\.length"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\state\\today_recommendation_provider.dart",
+  "pattern": "45|pool\\.length",
+  "topFiles": [
+    {
+      "matchCount": 8,
+      "uri": "lib\\state\\today_recommendation_provider.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 8
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+comprehensive information is now available. The full audit report will be written in Japanese, adhering precisely to the user's requested format. The key architecture details will be included accordingly.
+
+The UI components include RakutenSearchScreen, TodayRecommendationsScreen, EasyInitialSetupScreen, HomePlaceholderScreen, and ActivityAnalyticsTab. The providers consist of RakutenSearchProvider, TodayRecommendationProvider, RakutenManagedProductProvider, SavedShopProvider, and RoomImportController. Repositories include RakutenSearchRepository, TodayRecommendationRepository, and RakutenManagedProductRepository. Services encompass RakutenApiService, RoomSyncService, RoomUrlResolver, ShopDiscoveryAggregator, and RoomImportMetadataEnrichmentService. Storage mechanisms involve RakutenSearchSessionCache for in-memory caching, TodayRecommendationRepository for persistent storage, and managed products local storage.</details></think>
+
+_**Agent (default)**_
+
+# ROOM manager 開発監査レポート（改善前棚卸し）
+
+コード調査のみ実施。修正・リファクタリングは行っていません。
+
+---
+
+## 1. 全体概要
+
+### アーキテクチャ
+
+```
+UI（Screen / Widget）
+  ↓ Provider（ChangeNotifier）
+  ↓ Repository
+  ↓ Service（RakutenApiService / RoomSyncService / RoomUrlResolver 等）
+  ↓ 外部：楽天 IchibaItem Search API / ROOM HTML・collects API / プロキシ
+  ↓ 永続化（ローカル DB / SharedPreferences 系）
+  ↓ 再表示
+```
+
+4つの柱は **探す（RakutenSearch）**、**おすすめコレ（TodayRecommendation）**、**ROOM同期（RoomSync）**、**反応更新（RoomReactionSync）** です。分析タブは `RakutenManagedProduct` の ROOM 反応数を集計します。
+
+### 主なデータモデル
+
+| モデル | 役割 |
+|--------|------|
+| `RakutenProductSearchCondition` | 検索条件（keyword, genreId, shopCode, sort, 価格・レビュー閾値） |
+| `RakutenSearchItem` | 検索結果1件 |
+| `SearchResultEnvelope` | モード・searchKey・結果スナップショット |
+| `RakutenManagedProduct` | 候補/コレ済商品（ROOM URL、反応数、補完メタ） |
+| `TodayRecommendationBundle` / `TodayRecommendationEntry` | 今日のおすすめ10件 |
+| `ShopDiscoverySummary` | ショップ発掘の集約結果 |
+| `RoomSyncResult` / `RoomReactionSyncBatchResult` | 同期・反応更新結果 |
+
+### 主な保存先
+
+| 保存先 | 内容 |
+|--------|------|
+| `RakutenSearchSessionCache` | 探すタブ4モードの UI 入力・Provider 結果（セッション内） |
+| `TodayRecommendationRepository` | `today_recommendation_bundle_v1`（日付キー付き） |
+| `RakutenManagedProductRepository` | 候補/コレ済・ROOM メタ |
+| `RoomSyncCursorRepository` | import / reaction カーソル |
+| `RoomReactionSyncHistoryStore` | 反応同期履歴・差分 Top3 |
+| `SavedShopProvider` | 保存ショップ |
+
+### 主なログタグ
+
+| フラグ | 用途 |
+|--------|------|
+| `SEARCH_AUDIT_LOGS` | 検索 UI 監査（`searchAuditLog()`） |
+| `ROOM_AUDIT_LOGS` | ROOM 同期 UI 監査（`roomAuditLog()`） |
+| `ANALYTICS_AUDIT_LOGS` | 分析監査（`analyticsAuditLog()`） |
+| `VERBOSE_ITEM_LOGS` | 商品単位詳細（`verboseItemLog()`） |
+| `DEBUG_LOG_SUMMARY` | 1行サマリ（既定 ON） |
+
+**常時 debug ビルド（kDebugMode）:** `[SEARCH_EXECUTE_TRACE]`, `[SEARCH_FETCH_100_AUDIT]`, `[SEARCH_RESULT_UNDER_100_REASON]`, `[SHOP_SEARCH_*]`, `[RECOMMEND_*]`, `[ROOM_SYNC]`, `[PRODUCT_SAFETY_FILTER]`
+
+---
+
+## 2. 機能別の処理フロー
+
+### 探す：商品名検索
+
+**関連:** `rakuten_search_screen.dart`, `rakuten_search_provider.dart`, `rakuten_search_repository.dart`, `rakuten_api_service.dart`
+
+| 項目 | 内容 |
+|------|------|
+| **入口** | `_runSearch()` → `RakutenSearchProvider.searchWithCondition(modeTag: 'product')` |
+| **入力** | `_keywordController`、詳細条件（価格、除外KW、レビュー、任意 `_productDetailGenreId`） |
+| **検索キー** | `keyword` = ユーザー入力そのまま（`normalized()` で trim）。補助ワード自動付与なし |
+| **API条件** | `shopCode=null`, `genreId=_productDetailGenreId`（詳細条件で指定時のみ）, `sort=_apiSortParamForMode(_keywordSort)`（既定 null＝おすすめ順） |
+| **API回数** | 最大 **20回**（30件/页 × 表示100件目標） |
+| **ページング** | `searchKeywordWithManagedExclusion()` — `maxFetchPages=20`, `targetVisibleCount=100`, ページ間 220ms |
+| **除外（Repository）** | 候補/コレ済 productId、重複、保存ショップ（scoped shop 除く）、レビュー閾値（`_applyAppSideFilters`） |
+| **除外（UI）** | `_applyPreferredExcludes()` — 候補/コレ済/保存ショップ/`ProductSafetyFilter` を再フィルタ |
+| **保存** | `SearchResultEnvelope` + `RakutenSearchSessionCache.modeProduct` |
+| **表示** | `RakutenSearchResultCard`、一括候補追加（`SearchBulkSelectionHeader`） |
+| **失敗** | 1页目失敗→例外。2页目以降→部分成功（`partialFetchFailure`） |
+
+**例「水筒」「アンパンマン」:** keyword は入力文字列そのまま。ジャンル名・ショップ名は自動合成されない。詳細条件で genreId を付けない限り API には keyword のみ。
+
+---
+
+### 探す：ジャンル検索
+
+**関連:** `_runGenreSearch()`, `_sanitizeConditionForActiveMode()`（genre 分岐）
+
+| 項目 | 内容 |
+|------|------|
+| **入力** | 必須 `_selectedGenreId`、任意 `_genreController`（補助キーワード） |
+| **検索キー** | `genreId=選択ジャンル`, `keyword=補助テキスト`, `shopCode=null`（sanitize で除去） |
+| **sort** | `_genreExploreSort` → API（`+itemPrice`, `-reviewAverage` 等） |
+| **API回数** | 商品名検索と同じ管理除外パス（最大20回） |
+| **除外** | 商品名検索と同一 |
+| **モード分離** | `_sanitizeConditionForActiveMode` が shopCode を除去。`searchKey` の `ownerMode=genreSearch` で ownership ガード |
+
+---
+
+### 探す：保存ショップ検索
+
+**関連:** `_runSearch()`（`_savedShopKeywordEntryEffective=true`）、`_effectiveShopCodeForApi()`
+
+| 項目 | 内容 |
+|------|------|
+| **入力** | 保存ショップ選択 + 任意キーワード |
+| **検索キー** | `shopCode=SavedShop.shopId`, `keyword=ユーザー入力`, **`genreId=null`（強制）** |
+| **除外** | 他の保存ショップ商品を Repository で除外。検索対象 shop は除外しない |
+| **API回数** | 最大20回（100件目標） |
+| **キャッシュ** | `RakutenSearchSessionCache.modeSavedShop`（他モードと独立） |
+
+---
+
+### 探す：ショップ発掘
+
+**関連:** `_runShopDiscovery()`, `ShopDiscoveryAggregator.aggregate()`
+
+| 項目 | 内容 |
+|------|------|
+| **入力** | キーワード **または** ジャンル（両方空は不可） |
+| **検索キー** | keyword 空時 → `ジャンル名` または `'楽天'` を fallback。`genreId` 任意 |
+| **API回数** | `searchKeywordWithManagedExclusion` 経路だが **候補/コレ済 Set が空**（後述の課題） |
+| **集約** | 最大100 raw → `ShopDiscoveryAggregator`（`discoveryScore = hit×18 + log(review)×12 + avgRating×22`） |
+| **除外（UI）** | `ProductSafetyFilter` のみ。`_applyPreferredExcludes` **未使用** |
+| **保存ショップ** | 表示時に保存済みショップを除外 |
+| **sort** | 未指定（API おすすめ順） |
+
+---
+
+### おすすめコレ
+
+**関連:** `today_recommendation_provider.dart`, `today_recommendations_screen.dart`, `home_placeholder_screen.dart`
+
+| 項目 | 内容 |
+|------|------|
+| **トリガー** | `ensureToday()`（同日バンドルあればスキップ）、`regenerateToday(manual: true)` |
+| **クールダウン** | 手動再生成 **5分**、自動連打防止 **15分**、429時 **12分** |
+| **検索プラン** | `_buildPhasedSearchPlans()` — 最大 **10 API**（各 `maxPages:1`, 30件） |
+| **キーワード** | `_buildKeywords()` = プロフィール好みジャンル語 + 管理商品名から2文字以上トークン（最大8語）。fallback: `人気/売れ筋/ランキング` |
+| **除外** | 候補+コレ済 productId、`_recommendRejectReason()`（価格500〜50000、安全フィルタ等） |
+| **スコア** | ジャンル一致+40、コレ済類似+30、保存ショップ+、ROOM反応プロファイル boost |
+| **確定** | `_pickBalancedBySection()` — popular〜7、sellable、fresh〜3、計10件 |
+| **永続化** | `TodayRecommendationRepository` |
+| **再生成で変わる点** | 新規 API 呼び出し・プール再構築。同日 `ensureToday` はスキップ |
+
+**注意:** おすすめは `profile.selectedSearchStyle`（単一）のみ使用。初期設定の `effectivePostStyleList`（複数）とは異なる。
+
+---
+
+### 初期設定おすすめショップ
+
+**関連:** `easy_initial_setup_screen.dart` — `_loadShopRecommendations()`
+
+| 項目 | 内容 |
+|------|------|
+| **データ源** | 固定リストではなく **楽天 API 検索 → ショップ集約** |
+| **条件** | `_shopRecommendationCondition(genreId, postStyles)` — ジャンル + postStyle 由来 keyword/価格/レビュー/sort |
+| **API** | `searchRepository.search()` — **maxPages=4**（最大120 raw） |
+| **除外** | `ProductSafetyFilter` |
+| **ランキング** | `ShopDiscoveryAggregator` → `_rankShopRecommendations()`（postStyle で再ソート）→ 上位5 |
+| **指標** | hitItemCount、maxReviewCount、avgReviewAverage、画像数（Social 時） |
+
+---
+
+### ROOM投稿取り込み
+
+**関連:** `room_sync_service.dart`, `room_user_posted_listing_fetcher.dart`, `room_url_resolver.dart`
+
+| 項目 | 内容 |
+|------|------|
+| **一覧取得** | プロフィール URL → `/items` → `__INITIAL_STATE__` から userId → **`/api/{userId}/collects`**（after_id ページング、limit=20） |
+| **フォールバック** | userId 未取得時 HTML href 抽出 |
+| **高速パス** | collects 行 / 一覧 HTML から ROOM ページ GET を省略 |
+| **1件処理** | `RoomUrlResolver.resolve()` → `persistRoomCollectedFromRoomPage()` |
+| **HTML解析** | `item.rakuten.co.jp` 直接、`hb.afl.rakuten.co.jp` の pc=、rat-redirect、OG タイトル/画像 |
+| **反応** | `RoomRoomPageReactionParse` — `__NEXT_DATA__` → 正規表現 fallback |
+| **即時 API 補完** | 新規1件目のみ画像（`fetchFirstItemForRoomImportEnrichmentEnvelope`） |
+| **失敗** | 二重起動防止、部分成功、デモモード拒否 |
+
+---
+
+### ROOM商品情報補完
+
+**関連:** `room_import_metadata_enrichment.dart`, `room_import_safe_merge.dart`, `rakuten_search_repository.dart`
+
+| 項目 | 内容 |
+|------|------|
+| **後段キュー** | shopName / genreName のみ（`willEnrich = needsShopName \|\| needsGenre`） |
+| **API 経路** | shopItem → shopTitleKeyword → productIdKeyword |
+| **SafeMerge** | 空文字・price≤0 は既存保持（`-1` も非正扱い） |
+| **未確認分類** | `RoomImportPendingUserCopy.classify()` — noExactMatch / priceMissing / metadataMissing 等 |
+| **UI 表示** | `RoomUnconfirmedDisplayCopy` — 「ジャンル未確認」「価格を確認できません」等 |
+
+---
+
+### 反応更新
+
+**関連:** `room_sync_service.syncPostedRoomReactionsOnly()`
+
+| 項目 | 内容 |
+|------|------|
+| **対象** | コレ済で ROOM URL 紐付け済み商品 |
+| **予算** | 最大 **15秒** / **40件チェック** / `defaultMaxBatch` 更新上限 |
+| **取得** | collects 最新页 + resume cursor。各商品 ROOM ページ GET → 反応パース |
+| **差分** | prevLike/prevComment vs 新値 → `deltaLike`, `deltaComment` |
+| **0 vs null** | null=未取得（「未確認」）、0=取得済みゼロ（「ROOM投稿済み」） |
+| **失敗** | 解決失敗は黙って skip。変更なしは `roomPageAlreadySynced` |
+| **履歴** | `RoomReactionSyncHistoryStore` → 分析タブ差分表示 |
+
+---
+
+### 分析画面への反映
+
+**関連:** `activity_analytics_tab.dart`, `room_reaction_analytics.dart`
+
+| 項目 | 内容 |
+|------|------|
+| **対象** | `roomReactionAnalyticsIsEligible()` — done + roomUrl + 反応数取得済み |
+| **商品ランキング** | reactionScore = like + comment×3 |
+| **ジャンル/ショップ** | reactionSum = like + comment。未確認は傾向集計から除外 |
+| **差分** | `roomReactionAnalyticsDeltaMap(latestHistory)` |
+| **次にやること** | 反応ショップ検索起動、おすすめコレ誘導等 |
+
+---
+
+### その他関連処理
+
+| 機能 | ファイル | 概要 |
+|------|----------|------|
+| ホーム「今日のROOM運用」 | `home_placeholder_screen.dart` | `ensureToday()`、24h投稿上限、おすすめ CTA |
+| URLから追加 | `room_collected_register_service.dart` | ROOM URL 単品登録（取り込みと resolver 共有） |
+| 分析→保存ショップ検索 | `analytics_shop_search_launcher.dart` | 反応ショップから探すタブへ |
+| 商品安全フィルタ | `product_safety_filter.dart` | 成人向け・酒・タバコ等。Repository ではなく主に UI/おすすめ側 |
+| API 競合制御 | `api_request_coordinator.dart` | 手動検索中はおすすめ生成 defer |
+| ROOMコレ未確認/反応フィルタ | `room_colle_list_filters.dart`, `room_reaction_status_display.dart` | 未確認・反応ありチップ |
+
+---
+
+## 3. 検索キー生成の詳細
+
+| モード | 入力元 | API keyword | genreId | shopCode | sort | page/hits | 除外条件 | 備考 |
+|--------|--------|-------------|---------|----------|------|-----------|----------|------|
+| 商品名 | `_keywordController` | 入力そのまま | 詳細条件の `_productDetailGenreId`（任意） | null | `_keywordSort`→API（null=おすすめ） | 1〜20 / 30 | 候補/コレ済/保存ショップ/レビュー閾値/安全(UI) | NGKeyword=除外KW |
+| ジャンル | `_genreController`（任意） | 補助テキスト | `_selectedGenreId`（必須） | null（sanitize） | `_genreExploreSort` | 1〜20 / 30 | 同上 | keyword 空でも genreId で検索可 |
+| 保存ショップ | `_keywordController` | 入力そのまま | **null（強制）** | 選択 SavedShop.shopId | `_keywordSort` | 1〜20 / 30 | 他保存ショップ除外 | genreId は混入防止で除去 |
+| ショップ発掘 | `_shopDiscoveryKeywordController` | 入力 or ジャンル名 or `楽天` | `_selectedDiscoveryGenreId` | null | null（おすすめ） | 1〜20 / 30 | 安全(UI)のみ※ | ※候補/コレ済は Repository 未除外 |
+| おすすめコレ | プラン生成 | `人気`/履歴語/ジャンル語等 | お気に入り/履歴 genreId | 保存ショップ | postStyle 由来 | 1 / 30 ×最大10 | Provider 側 `_excludeReason` | `searchPurpose=recommendation` |
+| 初期設定ショップ | プロフィール | 空 or postStyle fallback KW | お気に入りジャンル | null | postStyle 由来 | 1〜4 / 30 | ProductSafetyFilter | ショップ集約後5件 |
+
+---
+
+## 4. 複数回検索・ページングの詳細
+
+| 機能 | 最大API | 最大HTML | maxPages/target | stop条件 | 途中失敗 | ユーザー体感 |
+|------|---------|----------|-----------------|----------|----------|--------------|
+| 商品名/ジャンル/保存ショップ | **20** | 0 | 20页 / **100件** | reachedTarget, apiNoMoreResults, maxPagesReached, partialFetchFailure | 2页目以降失敗→確保分表示 | 100件未満時に理由表示（`keywordManagedVisibleShortfallNote`） |
+| ショップ発掘 | **20** | 0 | 20 / 100 raw | 同上 | 同上 | 集約後ショップ数は shopLimit（既定10） |
+| おすすめコレ | **10** | 0 | 各1页 / プール45打切 / 確定10 | 10件確定 or maxApiHard | 429→クールダウン | 生成中ローディング |
+| 初期設定ショップ | **4** | 0 | 4 / ~120 raw | 4页完了 | 1页目失敗→例外 | 5ショップ表示 |
+| ROOM取り込み | 0〜N（画像即時+後段補完） | collects + 商品页/件 | batchLimit | カーソル/上限 | failedUrls 収集 | 進捗コールバック |
+| 反応更新 | 0 | collects + 商品页/件（≤40） | 15秒予算 | maxDurationReached | 個別 skip | Top3 差分サマリ |
+
+**100件未満の分類（`classifyKeywordSearchUnder100Reason`）:** `tooManyExcludedCandidate`, `tooManyExcludedDone`, `tooManyDuplicates`, `safetyFiltered`（実態はレビュー閾値）、`reachedEnd`, `apiPartialFailure`, `maxPagesReached`
+
+---
+
+## 5. 結果が魅力的に見えない原因候補（優先度付き）
+
+### P1（ユーザー価値に直結）
+
+1. **API デフォルト sort=null（おすすめ順）の意味が弱い** — レビュー0・画像なしが上位に混ざりやすい。クライアント並び替え（`sortedRakutenKeywordSearchItems`）は定義されているが探す画面では **未使用**（sort 変更時は API 再検索のみ）。
+2. **商品名検索が keyword 単独** — 「水筒」等で文脈（用途・年代）がなく広い/general な結果になりやすい。保存ジャンル・反応履歴は検索に未反映。
+3. **おすすめの keyword が汎用語（人気/売れ筋）** — プロフィール語彙が薄い初期ユーザーほど差別化が弱い。
+4. **おすすめ API は各1页30件のみ** — プール45件打切で選択肢が狭い。
+5. **ショップ発掘で候補/コレ済が Repository 未除外** — 既知商品が raw に残り、ショップスコアを歪める可能性。
+
+### P2（精度・安定性）
+
+6. **二重除外（Repository + UI）** — 100件取得後 UI 安全フィルタでさらに減り、実表示が大幅に100未満になりうる。
+7. **`excludedSafety` 命名と実態のズレ** — Repository の `excludedSafety` はレビュー閾値のみ。ProductSafetyFilter は UI 層。
+8. **ROOM 補完は shop/genre 後段のみ** — 価格・画像は ROOM 由来優先で API 補完率低い場合、カードが貧弱に見える。
+9. **反応更新 15秒/40件上限** — コレ済が多いと古い投稿の反応が stale のまま。
+10. **おすすめは `selectedSearchStyle` 単一** — 初期設定の複数 postStyle と不一致。
+
+### P3（その他）
+
+11. **ジャンル検索で keyword 空** — genreId のみだと API おすすめ順の幅広い結果。
+12. **保存ショップ検索と商品名検索の体験差** — shop スコープ有無で結果の「新鮮さ」が大きく異なる。
+13. **分析の反応データが検索にフィードバックされない** — スコアリングはおすすめ内のみ。探すタブには未連動。
+
+---
+
+## 6. 改善余地の分類（実装案のみ）
+
+### 検索キー改善
+- **期待:** 「水筒」等で用途・年代文脈を付与し relevance 向上
+- **リスク:** キーワード過剰で 0 件化
+- **影響:** `rakuten_search_screen.dart`, 新規キーワードビルダー
+- **iOS:** 純 Dart。問題なし
+
+### 並び順改善
+- **期待:** レビュー0後方配置、画像あり優先でカード品質向上
+- **リスク:** API sort 変更で latency 増（再検索）
+- **影響:** `rakuten_search_screen.dart`, `rakuten_keyword_search_sort.dart`
+- **iOS:** 問題なし
+
+### 除外条件改善
+- **期待:** ショップ発掘でも候補/コレ済除外、100件の実効表示増
+- **リスク:** 発掘候補ショップ数減少
+- **影響:** `rakuten_search_screen.dart` `_runShopDiscovery`, `rakuten_search_provider.dart`
+- **iOS:** 問題なし
+
+### おすすめロジック改善
+- **期待:** 反応プロファイルを検索 keyword に反映、2页目取得でプール拡大
+- **リスク:** API 429 増
+- **影響:** `today_recommendation_provider.dart`
+- **iOS:** 問題なし
+
+### ROOM同期精度改善
+- **期待:** rat-redirect / itemCode 一致率向上
+- **リスク:** HTML 構造変更でパーサ破損
+- **影響:** `room_url_resolver.dart`, `room_rat_redirect_parse.dart`
+- **iOS:** HTTP/HTML 解析は共通。User-Agent 差に注意
+
+### 反応更新精度改善
+- **期待:** 予算拡大 or 優先度付きキュー
+- **リスク:** ROOM 側レート制限
+- **影響:** `room_sync_service.dart`
+- **iOS:** 問題なし
+
+### ログ/検証改善
+- **期待:** 1検索1行サマリで監査効率化（§7 参照）
+- **リスク:** 低
+- **影響:** `debug_log_flags.dart`, 各 audit log ラッパ
+- **iOS:** `--dart-define` を Xcode Scheme に設定
+
+---
+
+## 7. 追加ログ案
+
+既存方針に従い、**通常 debug では出さず**、監査時のみ有効化。
+
+```dart
+// SEARCH_AUDIT_LOGS=true 時のみ（1検索1行）
+[SEARCH_AUDIT_SUMMARY] mode=productSearch keyword=水筒 genreId=- shopCode=- 
+  apiCalls=8 rawTotal=240 visible=100 excludedCandidate=45 excludedDone=12 
+  excludedReview=18 excludedSavedShop=5 excludedSafetyUi=3 stopReason=reachedTarget 
+  sort=null clientSort=defaultOrder durationMs=4200
+
+// ROOM_AUDIT_LOGS=true 時のみ
+[ROOM_IMPORT_AUDIT_SUMMARY] batch=12 new=3 updated=2 skipped=5 failed=2 
+  fastPath=7 apiEnrich=2 metadataPending=4 priceMissing=1
+
+// ANALYTICS_AUDIT_LOGS=true 時のみ
+[ANALYTICS_AUDIT_SUMMARY] eligible=28 withReaction=15 unknownGenre=3 unknownShop=2 
+  topGenre=キッチン用品 topShop=○○商店
+
+// VERBOSE_ITEM_LOGS=true のみ（商品ごと）
+[SEARCH_ITEM_AUDIT] rank=3 productId=xxx reviewCount=0 image=missing safety=pass
+```
+
+---
+
+## 8. 実機確認シナリオ案
+
+| # | シナリオ | 確認点 |
+|---|----------|--------|
+| 1 | 商品名「水筒」 | keyword そのまま、100件到達/未満理由、レビュー0の順位 |
+| 2 | 商品名「アンパンマン」 | 広い結果か、安全フィルタ動作 |
+| 3 | 商品名「バッグ」+ 詳細 genreId | genre 混入なし、結果 relevance |
+| 4 | ジャンル検索（キーワード空/あり） | genreId 必須、補助 KW 効果 |
+| 5 | 保存ショップ検索 | shopCode 限定、他保存ショップ除外 |
+| 6 | ショップ発掘 | 集約スコア、保存済み除外、候補/コレ済が混ざるか |
+| 7 | おすすめ再生成 | 5分 CD、10件構成、再生成で商品変化 |
+| 8 | ROOM 取り込み | collects 経路、未確認/価格未取得件数 |
+| 9 | 反応更新 | 差分 Top3、null vs 0 表示 |
+| 10 | ROOMコレ 未確認/反応ありフィルタ | チップ・一覧件数 |
+| 11 | 分析タブ | ジャンル/ショップ Top、未確認除外 |
+| 12 | 100件/100未満/0件/API失敗 | `[SEARCH_RESULT_UNDER_100_REASON]`、エラー UI |
+| 13 | 条件変更・並び順変更 | searchKey 変化、再検索 |
+
+---
+
+## 9. 最終結論 — 着手優先順位
+
+| 優先 | 項目 | 理由 |
+|------|------|------|
+| **A** | 探すタブのデフォルト品質ゲート（レビュー/画像の下限 or クライアント再ソート） | 検索結果の第一印象改善に直結 |
+| **A** | ショップ発掘の候補/コレ済除外修正 | 既存バグに近く、発掘精度向上 |
+| **A** | おすすめ keyword のパーソナライズ強化（反応/保存ジャンル連動） | ホーム CTA の価値向上 |
+| **B** | おすすめ API 2页目 or プール上限拡大 | 選択肢不足の解消 |
+| **B** | ROOM 補完成功率（itemCode 解決） | コレ済カードの情報密度 |
+| **B** | 反応更新予算の見直し | 分析・おすすめの入力品質 |
+| **C** | 監査サマリログ（§7） | 改善効果の定量検証 |
+| **C** | `excludedSafety` 命名・ログ整理 | 100件未満原因の誤解防止 |
+| **D** | 探す↔分析の反応フィードバックループ | 中長期 UX |
+
+---
+
+# 最終出力まとめ
+
+## 1. 調査対象ファイル一覧
+
+**検索:** `rakuten_search_screen.dart`, `rakuten_search_provider.dart`, `rakuten_search_repository.dart`, `rakuten_api_service.dart`, `search_result_envelope.dart`, `rakuten_search_session_cache.dart`, `rakuten_keyword_search_sort.dart`, `product_safety_filter.dart`, `shop_discovery_aggregator.dart`
+
+**おすすめ:** `today_recommendation_provider.dart`, `today_recommendations_screen.dart`, `today_recommendation_repository.dart`, `recommend_cooldown_policy.dart`, `easy_initial_setup_screen.dart`
+
+**ROOM同期:** `room_sync_service.dart`, `room_url_resolver.dart`, `room_user_posted_listing_fetcher.dart`, `room_import_metadata_enrichment.dart`, `room_import_safe_merge.dart`, `rakuten_managed_product_repository.dart`
+
+**反応/分析:** `room_room_page_reaction_parse.dart`, `room_reaction_analytics.dart`, `activity_analytics_tab.dart`, `room_reaction_sync_history_store.dart`
+
+**ホーム/その他:** `home_placeholder_screen.dart`, `room_colle_list_filters.dart`, `debug_log_flags.dart`, `app_debug_log.dart`
+
+---
+
+## 2. 機能別ロジック要約
+
+- **探す4モード**は1 Screen + SessionCache で分離。商品名/ジャンル/保存ショップは100件目標・20 API。ショップ発掘は同パスだが除外 Set 不足。
+- **おすすめ**は最大10 API × 1页、スコアリング+セクション均衡で10件。同日再生成は CD 付き。
+- **初期設定ショップ**は API 4页 → 集約 → postStyle ソート → 5件。
+- **ROOM取り込み**は collects 中心、SafeMerge で空値上書き防止、shop/genre は後段補完。
+- **反応更新**は15秒/40件、差分履歴を分析に反映。
+
+---
+
+## 3. 検索キー生成一覧
+
+§3 の表を参照。要点: **商品名は入力そのまま**、ジャンルは genreId+補助KW、保存ショップは shopCode+KW（genre 除去）、発掘は KW fallback あり。
+
+---
+
+## 4. 複数回検索・ページング一覧
+
+§4 の表を参照。探す（3モード）最大20 API/100件、発掘同、おすすめ最大10 API/1页、初期設定4 API。
+
+---
+
+## 5. 補完・同期ロジック一覧
+
+collects/HTML → `RoomUrlResolver` → persist（SafeMerge）→ 後段 `RoomImportMetadataEnrichmentService`（shop/genre）。価格≤0は既存保持。未確認は `RoomImportPendingUserCopy` + `RoomUnconfirmedDisplayCopy`。
+
+---
+
+## 6. 反応更新ロジック一覧
+
+`syncPostedRoomReactionsOnly` → ROOM 页 GET → `RoomRoomPageReactionParse` → `_mergeParsedRoomReactions` → 差分 Top3 → `RoomReactionSyncHistoryStore` → `activity_analytics_tab` 集計。
+
+---
+
+## 7. 魅力的な結果になりにくい原因
+
+§5 参照。主因: **API おすすめ順依存**、**keyword 単純**、**おすすめプール狭小**、**ショップ発掘除外漏れ**、**ROOM 補完率**。
+
+---
+
+## 8. 改善優先順位
+
+§9 参照。A: 検索品質ゲート・発掘除外・おすすめパーソナライズ。
+
+---
+
+## 9. 追加ログ案
+
+§7 参照。`SEARCH_AUDIT_SUMMARY` / `ROOM_IMPORT_AUDIT_SUMMARY` 等。
+
+---
+
+## 10. 実機確認シナリオ
+
+§8 参照。13項目。
+
+---
+
+## 11. flutter analyze / test 結果
+
+**flutter analyze:** 3 info（`today_recommendations_screen.dart` の `use_build_context_synchronously` のみ）。error/warning なし。
+
+**flutter test:** **82 tests passed**（product_safety_filter, room_import_safe_merge, room_reaction_analytics, rakuten_search_provider 等）。
+
+---
+
+## 12. iOS移植監査メモ
+
+- 検索・おすすめ・ROOM 解析ロジックは **Flutter/Dart 共通**。Android 固有分岐なし。
+- ログフラグは `--dart-define=SEARCH_AUDIT_LOGS=true` 等 — **Xcode Scheme の Environment Variables** に同等設定可能。
+- ROOM 同期は `http` パッケージによる HTML 取得 — iOS ATS（HTTPS）下でも ROOM/楽天は HTTPS のため問題少。
+- 楽天 API はプロキシ設定（`RakutenApiConfig.useProxyForItemSearch`）に依存 — iOS でも同一 config。
+- ローカル永続化は Repository 経由 — sqflite/shared_preferences 等の iOS 対応は Flutter 標準。
+- **注意点:** User-Agent / 429 クールダウンはプラットフォーム非依存だが、実機ネットワーク（セルラー/プロキシ）差は iOS でも検証必要。
+
+---
+
+次のステップとして、優先度 A のいずれか（検索品質ゲート / ショップ発掘除外 / おすすめ keyword 強化）から改善設計に入れます。実装に進む場合は指示ください。
