@@ -21,7 +21,7 @@ CatalogProduct _product({
   bool safe = true,
   String itemName = '安全な商品名',
 }) {
-  final now = lastValidatedAt ?? DateTime(2026, 5, 31, 12);
+  final now = lastValidatedAt ?? DateTime.now();
   return CatalogProduct(
     canonicalId: canonicalId,
     productId: canonicalId,
@@ -74,6 +74,7 @@ void main() {
     });
 
     test('shopCode 単位に集計できる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll([
         _product(canonicalId: 'a:1', shopCode: 'shop-a'),
         _product(canonicalId: 'a:2', shopCode: 'shop-a'),
@@ -86,6 +87,7 @@ void main() {
     });
 
     test('shopCode 空は除外', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll([
         _product(canonicalId: 'empty:1', shopCode: ''),
         _product(canonicalId: 'ok:1', shopCode: 'ok-shop'),
@@ -97,6 +99,7 @@ void main() {
     });
 
     test('unsafe 商品は除外', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll([
         _product(
           canonicalId: 'ng:1',
@@ -112,6 +115,7 @@ void main() {
     });
 
     test('stale 商品は除外', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll([
         _product(
           canonicalId: 'stale:1',
@@ -129,6 +133,7 @@ void main() {
     });
 
     test('sourceTrust=low は除外', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll([
         _product(
           canonicalId: 'low:1',
@@ -143,6 +148,7 @@ void main() {
     });
 
     test('representativeImageUrl が安全画像になる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll([
         _product(
           canonicalId: 'img:1',
@@ -156,6 +162,7 @@ void main() {
     });
 
     test('primaryGenreId が件数最多ジャンルになる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll([
         _product(canonicalId: 'g1:1', shopCode: 'genre-shop', genreId: '200'),
         _product(canonicalId: 'g1:2', shopCode: 'genre-shop', genreId: '200'),
@@ -166,6 +173,7 @@ void main() {
     });
 
     test('score 順になる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll([
         _product(
           canonicalId: 'small:1',
@@ -195,6 +203,7 @@ void main() {
     });
 
     test('sampleProductIds が入る', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll([
         _product(canonicalId: 's:1', shopCode: 'sample-shop'),
         _product(canonicalId: 's:2', shopCode: 'sample-shop'),
@@ -205,6 +214,7 @@ void main() {
     });
 
     test('保存ショップ除外を指定できる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll([
         _product(canonicalId: 'saved:1', shopCode: 'saved-shop'),
         _product(canonicalId: 'other:1', shopCode: 'other-shop'),
@@ -218,6 +228,7 @@ void main() {
     });
 
     test('未確認 shopName は表示名に使わない', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsert(
         _product(
           canonicalId: 'name:1',

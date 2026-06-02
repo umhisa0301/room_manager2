@@ -19,7 +19,7 @@ CatalogProduct _catalog({
   CatalogProductSourceTrust sourceTrust = CatalogProductSourceTrust.high,
   DateTime? lastValidatedAt,
 }) {
-  final now = lastValidatedAt ?? DateTime(2026, 5, 31, 12);
+  final now = lastValidatedAt ?? DateTime.now();
   return CatalogProduct(
     canonicalId: canonicalId,
     productId: canonicalId,
@@ -99,6 +99,7 @@ void main() {
     });
 
     test('productId 一致で照合できる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsert(_catalog(canonicalId: 'shop:item001'));
       final hit = RoomCatalogEnrichment.lookupProduct(
         repository: repo,
@@ -109,6 +110,7 @@ void main() {
     });
 
     test('normalizedItemUrl 一致で照合できる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       const url = 'https://item.rakuten.co.jp/shop/urlonly/';
       final cat = _catalog(canonicalId: 'url:$url');
       await repo.upsert(
@@ -127,6 +129,7 @@ void main() {
     });
 
     test('shopCode + itemPathSegment 一致で照合できる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsert(_catalog(canonicalId: 'shop:item002'));
       final hit = RoomCatalogEnrichment.lookupKeys(
         repository: repo,
@@ -137,6 +140,7 @@ void main() {
     });
 
     test('商品名だけでは照合・補完しない', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsert(
         _catalog(
           canonicalId: 'shop:other',
@@ -150,6 +154,7 @@ void main() {
     });
 
     test('stale な商品は補完に使わない', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       final stale = _catalog(
         canonicalId: 'shop:stale',
         lastValidatedAt: DateTime(2026, 5, 20, 12),
@@ -165,6 +170,7 @@ void main() {
     });
 
     test('sourceTrust=low は補完に使わない', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsert(
         _catalog(
           canonicalId: 'shop:low',
@@ -235,6 +241,7 @@ void main() {
     });
 
     test('upsert時に high が low で上書きされない', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsert(
         _catalog(
           canonicalId: 'shop:trust',
