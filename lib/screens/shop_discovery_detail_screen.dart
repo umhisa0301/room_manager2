@@ -16,6 +16,7 @@ import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../utils/app_debug_log.dart';
 import '../widgets/app_button.dart';
 import '../widgets/rakuten_search_result_card.dart';
 import '../utils/search_tab_ui_audit_log.dart';
@@ -29,10 +30,12 @@ class ShopDiscoveryDetailScreen extends StatefulWidget {
     super.key,
     required this.summary,
     required this.items,
+    this.discoveryRank,
   });
 
   final ShopDiscoverySummary summary;
   final List<RakutenSearchItem> items;
+  final int? discoveryRank;
 
   @override
   State<ShopDiscoveryDetailScreen> createState() =>
@@ -90,10 +93,11 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
       if (_detailItemsScrollController.hasClients) {
         final pos = _detailItemsScrollController.position;
         listViewportHeight = pos.viewportDimension;
-        bottomSpaceEstimate = (pos.viewportDimension -
-                pos.maxScrollExtent -
-                bottomPadding)
-            .clamp(0.0, double.infinity);
+        bottomSpaceEstimate =
+            (pos.viewportDimension - pos.maxScrollExtent - bottomPadding).clamp(
+              0.0,
+              double.infinity,
+            );
         firstItemVisible = pos.pixels <= 1;
       }
       shopDetailResultViewportAuditLog(
@@ -116,10 +120,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
     try {
       final repo = context.read<RakutenSearchRepository>();
       final fetched = await repo.search(
-        condition: RakutenProductSearchCondition(
-          keyword: '',
-          shopCode: code,
-        ),
+        condition: RakutenProductSearchCondition(keyword: '', shopCode: code),
       );
       if (!mounted) return;
       setState(() {
@@ -202,8 +203,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
       appBar: AppBar(title: const Text('ショップ詳細')),
       body: SearchGroupScreenShell(
         backgroundColor: HomeScreenColors.canvas,
-        subtitle:
-            '探すグループ · 並べ替えたうえで各商品から「候補に追加」し、コレ登録まで進められます。',
+        subtitle: '探すグループ · 並べ替えたうえで各商品から「候補に追加」し、コレ登録まで進められます。',
         child: Column(
           children: [
             _ShopDetailHeader(
@@ -218,6 +218,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                     shopName: widget.summary.shopName,
                     shopUrl: widget.summary.shopUrl,
                   );
+                  _logFallbackAction(action: 'saveShop');
                 }
                 if (!context.mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -322,9 +323,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                                     height: 1.5,
                                   ),
                             ),
-                            SizedBox(
-                              height: RakutenSearchScreenUi.gapSection,
-                            ),
+                            SizedBox(height: RakutenSearchScreenUi.gapSection),
                             AppPrimaryButton(
                               label: '再読み込み',
                               expand: false,
@@ -440,8 +439,9 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                         localStatus: managed.statusForProduct(item.productId),
                         isRegistering: managed.isRegistering(item.productId),
                         genreDisplayLineOverride: _genreLineForItem(item),
-                        sourceContextLabel:
-                            _shouldLoadItemsFromShopCode ? '保存ショップ' : null,
+                        sourceContextLabel: _shouldLoadItemsFromShopCode
+                            ? '保存ショップ'
+                            : null,
                         compactListLayout: _shouldLoadItemsFromShopCode,
                         onRegisterCandidate: () async {
                           final err = await managed.registerCandidate(item);
@@ -450,6 +450,11 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
                             ScaffoldMessenger.of(
                               context,
                             ).showSnackBar(SnackBar(content: Text(err)));
+                          } else {
+                            _logFallbackAction(
+                              action: 'addProductsToCandidate',
+                              itemCount: 1,
+                            );
                           }
                         },
                       );
@@ -479,6 +484,22 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
       return;
     }
     await AppActionService.openUrl(context, url: url);
+  }
+
+  void _logFallbackAction({required String action, int? itemCount}) {
+    if (widget.summary.origin != 'shopPoolFallback') return;
+    final keyword = (widget.summary.discoveryKeyword ?? '').trim();
+    final keywordForLog = keyword.isEmpty ? '-' : keyword;
+    var message =
+        '[SHOP_DISCOVERY_FALLBACK_ACTION] action=$action '
+        'shopCode=${widget.summary.shopKey} '
+        'origin=shopPoolFallback '
+        'keyword=$keywordForLog '
+        'rank=${widget.summary.discoveryRank ?? widget.discoveryRank ?? -1}';
+    if (itemCount != null) {
+      message = '$message itemCount=$itemCount';
+    }
+    catalogOrRoomAuditLog(message);
   }
 }
 
@@ -675,9 +696,7 @@ class _SortMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: Theme.of(
-        context,
-      ).copyWith(visualDensity: VisualDensity.compact),
+      data: Theme.of(context).copyWith(visualDensity: VisualDensity.compact),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<_ShopDetailSort>(
           value: value,

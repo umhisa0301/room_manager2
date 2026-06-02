@@ -17,6 +17,7 @@ CatalogProduct _product({
   int reviewCount = 10,
   double reviewAverage = 4.2,
   String itemName = '安全な商品',
+  String genreName = 'ジャンルA',
   bool safe = true,
 }) {
   final now = DateTime.now();
@@ -33,7 +34,7 @@ CatalogProduct _product({
     shopName: shopName,
     shopUrl: shopUrl,
     genreId: '100',
-    genreName: 'ジャンルA',
+    genreName: genreName,
     reviewAverage: reviewAverage,
     reviewCount: reviewCount,
     affiliateUrl: '',
@@ -205,6 +206,9 @@ void main() {
       expect(result.usedFallback, isTrue);
       expect(result.isPartialFallback, isTrue);
       expect(result.summaries.length, 3);
+      expect(result.summaries.first.origin, 'shopPoolFallback');
+      expect(result.summaries.first.discoveryKeyword, '水筒');
+      expect(result.fallbackRankByShopCode[result.summaries.first.shopKey], 1);
     });
 
     test('pool 0〜2件では fallback しない', () async {
@@ -242,12 +246,27 @@ void main() {
       expect(result.summaries.length, 10);
     });
 
-    test('candidate の score 順を維持する', () async {
+    test('関連度が同じときは score 順を維持する', () async {
       if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll(<CatalogProduct>[
-        _product(canonicalId: 'f1', shopCode: 'high', reviewCount: 100),
-        _product(canonicalId: 'f2', shopCode: 'mid', reviewCount: 10),
-        _product(canonicalId: 'f3', shopCode: 'low', reviewCount: 1),
+        _product(
+          canonicalId: 'f1',
+          shopCode: 'high',
+          reviewCount: 100,
+          itemName: 'ステンレスボトル 高評価',
+        ),
+        _product(
+          canonicalId: 'f2',
+          shopCode: 'mid',
+          reviewCount: 10,
+          itemName: 'マグボトル 中評価',
+        ),
+        _product(
+          canonicalId: 'f3',
+          shopCode: 'low',
+          reviewCount: 1,
+          itemName: 'タンブラー 低評価',
+        ),
       ]);
       final result = ShopDiscoveryPoolFallback.buildFallbackSummaries(
         repository: repo,
@@ -258,6 +277,68 @@ void main() {
       );
       expect(result.usedFallback, isTrue);
       expect(result.summaries.first.shopKey, 'high');
+    });
+
+    test('水筒検索でお名前シールより関連ショップを優先する', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      await repo.upsertAll(<CatalogProduct>[
+        _product(
+          canonicalId: 'label-1',
+          shopCode: 'naireseisakusho',
+          shopName: 'レスタス お名前シール&スタンプ',
+          itemName: 'お名前シール',
+          reviewCount: 2000,
+        ),
+        _product(
+          canonicalId: 'bottle-1',
+          shopCode: 'bottle-shop',
+          shopName: 'ボトル専門店',
+          itemName: '子供用水筒',
+          reviewCount: 5,
+        ),
+        _product(
+          canonicalId: 'bottle-2',
+          shopCode: 'bottle-shop-2',
+          shopName: 'タンブラー屋',
+          itemName: '保温タンブラー',
+          reviewCount: 3,
+        ),
+        _product(
+          canonicalId: 'bottle-3',
+          shopCode: 'bottle-shop-3',
+          shopName: 'マグ専門',
+          itemName: 'マグボトル',
+          reviewCount: 2,
+        ),
+      ]);
+      final result = ShopDiscoveryPoolFallback.buildFallbackSummaries(
+        repository: repo,
+        keyword: '水筒',
+        apiSummaries: const <ShopDiscoverySummary>[],
+        apiSearchSucceeded: false,
+        savedShopCodes: const <String>{},
+      );
+      expect(result.usedFallback, isTrue);
+      expect(
+        result.summaries.any((e) => e.shopKey == 'naireseisakusho'),
+        isFalse,
+      );
+      expect(result.relevanceStats.strongCount, greaterThanOrEqualTo(1));
+    });
+
+    test('noimage URL は表示用画像に含めない', () {
+      expect(
+        ShopDiscoveryPoolFallback.hasDisplayableImageUrl(
+          'https://thumbnail.image.rakuten.co.jp/noimage.jpg',
+        ),
+        isFalse,
+      );
+      expect(
+        ShopDiscoveryPoolFallback.hasDisplayableImageUrl(
+          'https://thumbnail.image.rakuten.co.jp/@0_mall/test/cabinet/a.jpg',
+        ),
+        isTrue,
+      );
     });
   });
 }

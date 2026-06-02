@@ -9,6 +9,9 @@ class ShopDiscoverySummary {
     required this.avgReviewAverage,
     required this.discoveryScore,
     required this.representativeItems,
+    this.origin,
+    this.discoveryKeyword,
+    this.discoveryRank,
   });
 
   final String shopKey;
@@ -19,6 +22,9 @@ class ShopDiscoverySummary {
   final double avgReviewAverage;
   final double discoveryScore;
   final List<ShopRepresentativeItem> representativeItems;
+  final String? origin;
+  final String? discoveryKeyword;
+  final int? discoveryRank;
 }
 
 /// ショップを代表する商品（サムネ・タイトル・URL）。

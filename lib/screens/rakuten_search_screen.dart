@@ -21,6 +21,8 @@ import '../services/rakuten_genre_master_service.dart';
 import '../services/product_catalog_shop_aggregator.dart';
 import '../services/shop_discovery_pool_comparator.dart';
 import '../services/shop_discovery_pool_fallback.dart';
+import '../services/shop_discovery_pool_quality_report.dart';
+import '../services/shop_pool_keyword_relevance.dart';
 import '../services/shop_discovery_aggregator.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -5807,6 +5809,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         );
         if (fallback.usedFallback) {
           _logShopDiscoveryPoolFallbackApplied(fallback: fallback);
+          _logShopDiscoveryPoolFallbackRelevance(fallback: fallback);
+          _logShopDiscoveryPoolFallbackQuality(fallback: fallback);
+          _logShopDiscoveryPoolFallbackCompareBaseline(
+            fallback: fallback,
+            apiSummaryCount: 0,
+            apiSuccess: false,
+          );
           return _buildShopDiscoverySummaryList(
             context: context,
             search: search,
@@ -5901,7 +5910,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
               convertedCount: 0,
               savedExcludedCount: 0,
               skippedInvalidCount: 0,
+              unsafeExcludedCount: 0,
               keyword: _shopDiscoveryKeywordController.text.trim(),
+              fallbackRankByShopCode: const <String, int>{},
+              displayedCandidates: const <ShopPoolCandidate>[],
+              relevanceByShopCode:
+                  const <String, ShopPoolKeywordRelevanceResult>{},
+              relevanceStats: ShopPoolFallbackRelevanceStats.empty,
             ),
           );
           return _buildShopDiscoverySummaryList(
@@ -5932,6 +5947,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         );
         if (fallback.usedFallback) {
           _logShopDiscoveryPoolFallbackApplied(fallback: fallback);
+          _logShopDiscoveryPoolFallbackRelevance(fallback: fallback);
+          _logShopDiscoveryPoolFallbackQuality(fallback: fallback);
+          _logShopDiscoveryPoolFallbackCompareBaseline(
+            fallback: fallback,
+            apiSummaryCount: summaries.length,
+            apiSuccess: !forceApiFailureForTest,
+          );
           return _buildShopDiscoverySummaryList(
             context: context,
             search: search,
@@ -6123,6 +6145,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                 cardContext,
                                 summary,
                                 shopItems,
+                                index + 1,
                               ),
                               onSave: () => _saveDiscoveredShop(
                                 cardContext,
@@ -6209,11 +6232,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     BuildContext context,
     ShopDiscoverySummary summary,
     List<RakutenSearchItem> items,
+    int rank,
   ) async {
     await Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) =>
-            ShopDiscoveryDetailScreen(summary: summary, items: items),
+        builder: (_) => ShopDiscoveryDetailScreen(
+          summary: summary,
+          items: items,
+          discoveryRank: rank,
+        ),
       ),
     );
   }
@@ -6232,11 +6259,122 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         shopName: summary.shopName,
         shopUrl: summary.shopUrl,
       );
+      _logShopDiscoveryFallbackAction(action: 'saveShop', summary: summary);
     }
     if (!context.mounted) return;
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(isSaved ? '保存解除しました' : '保存しました')));
+  }
+
+  void _logShopDiscoveryPoolFallbackRelevance({
+    required ShopDiscoveryPoolFallbackResult fallback,
+  }) {
+    final stats = fallback.relevanceStats;
+    final keyword = fallback.keyword.isEmpty ? '-' : fallback.keyword;
+    final message =
+        'keyword=$keyword '
+        'fallbackCount=${fallback.summaries.length} '
+        'strong=${stats.strongCount} '
+        'medium=${stats.mediumCount} '
+        'weak=${stats.weakCount} '
+        'noMatch=${stats.noMatchCount} '
+        'unknownGenre=${stats.unknownGenreCount} '
+        'relevanceQuality=${stats.relevanceQuality.name} '
+        'excludedNoRelevance=${stats.excludedNoRelevance} '
+        'demotedWeak=${stats.demotedWeak}';
+    AuditLogDeduper.logOnce('shopDiscoveryPoolFallbackRelevance', message, (_) {
+      catalogAuditLog('[SHOP_DISCOVERY_POOL_FALLBACK_RELEVANCE_SUMMARY] $message');
+    });
+  }
+
+  void _logShopDiscoveryPoolFallbackQuality({
+    required ShopDiscoveryPoolFallbackResult fallback,
+  }) {
+    final report = ShopPoolFallbackQualityReport.fromFallback(fallback);
+    if (report == null) return;
+    final keyword = report.keyword.isEmpty ? '-' : report.keyword;
+    final summaryMessage =
+        'keyword=$keyword '
+        'fallbackCount=${report.fallbackCount} '
+        'poolCandidateCount=${report.poolCandidateCount} '
+        'avgScore=${report.avgScore.toStringAsFixed(1)} '
+        'maxScore=${report.maxScore.toStringAsFixed(1)} '
+        'minScore=${report.minScore.toStringAsFixed(1)} '
+        'avgReview=${report.avgReview.toStringAsFixed(2)} '
+        'maxReviewCount=${report.maxReviewCount} '
+        'avgHitItemCount=${report.avgHitItemCount.toStringAsFixed(1)} '
+        'withImageCount=${report.withImageCount} '
+        'withShopUrlCount=${report.withShopUrlCount} '
+        'genreCount=${report.genreCount} '
+        'topGenres=${report.topGenres.isEmpty ? '-' : report.topGenres.join(',')} '
+        'duplicateShopCount=${report.duplicateShopCount} '
+        'savedExcluded=${report.savedExcluded} '
+        'invalidExcluded=${report.invalidExcluded} '
+        'unsafeExcluded=${report.unsafeExcluded} '
+        'keywordMatchStrong=${report.keywordMatchStrong} '
+        'keywordMatchMedium=${report.keywordMatchMedium} '
+        'keywordMatchWeak=${report.keywordMatchWeak} '
+        'keywordNoMatch=${report.keywordNoMatch} '
+        'unknownGenreCount=${report.unknownGenreCount} '
+        'relevanceQuality=${report.relevanceQuality.name} '
+        'qualityLevel=${report.qualityLevel.name} '
+        'source=${report.source}';
+    catalogAuditLog(
+      '[SHOP_DISCOVERY_POOL_FALLBACK_QUALITY_SUMMARY] $summaryMessage',
+    );
+    if (report.topEntries.isNotEmpty) {
+      final topMessage =
+          'keyword=$keyword '
+          'top1=${report.topEntries.isNotEmpty ? report.topEntries[0].toLogString() : '-'} '
+          'top2=${report.topEntries.length >= 2 ? report.topEntries[1].toLogString() : '-'} '
+          'top3=${report.topEntries.length >= 3 ? report.topEntries[2].toLogString() : '-'}';
+      catalogAuditLog('[SHOP_DISCOVERY_POOL_FALLBACK_TOP] $topMessage');
+    }
+  }
+
+  void _logShopDiscoveryPoolFallbackCompareBaseline({
+    required ShopDiscoveryPoolFallbackResult fallback,
+    required int apiSummaryCount,
+    required bool apiSuccess,
+  }) {
+    final report = ShopPoolFallbackQualityReport.fromFallback(fallback);
+    if (report == null) return;
+    final canCompare = apiSuccess && apiSummaryCount > 0;
+    final reason = apiSuccess ? 'apiEmpty' : 'apiFailed';
+    final keyword = report.keyword.isEmpty ? '-' : report.keyword;
+    catalogAuditLog(
+      '[SHOP_DISCOVERY_POOL_FALLBACK_COMPARE_BASELINE] '
+      'keyword=$keyword '
+      'apiSummaryCount=$apiSummaryCount '
+      'fallbackCount=${report.fallbackCount} '
+      'poolCandidateCount=${report.poolCandidateCount} '
+      'reason=$reason '
+      'canCompareWithApi=$canCompare '
+      'fallbackAvgScore=${report.avgScore.toStringAsFixed(1)} '
+      'fallbackAvgReview=${report.avgReview.toStringAsFixed(2)} '
+      'fallbackMaxReviewCount=${report.maxReviewCount}',
+    );
+  }
+
+  void _logShopDiscoveryFallbackAction({
+    required String action,
+    required ShopDiscoverySummary summary,
+    int? itemCount,
+  }) {
+    if (summary.origin != 'shopPoolFallback') return;
+    final keyword = (summary.discoveryKeyword ?? '').trim();
+    final keywordForLog = keyword.isEmpty ? '-' : keyword;
+    var message =
+        '[SHOP_DISCOVERY_FALLBACK_ACTION] action=$action '
+        'shopCode=${summary.shopKey} '
+        'origin=shopPoolFallback '
+        'keyword=$keywordForLog '
+        'rank=${summary.discoveryRank ?? -1}';
+    if (itemCount != null) {
+      message = '$message itemCount=$itemCount';
+    }
+    catalogOrRoomAuditLog(message);
   }
 }
 

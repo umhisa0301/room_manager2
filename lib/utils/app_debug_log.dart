@@ -56,6 +56,16 @@ void shopCatalogAuditLog(String message) {
   catalogAuditLog(message);
 }
 
+/// CATALOG / ROOM のいずれか有効時に1回だけ出す監査ログ。
+void catalogOrRoomAuditLog(String message) {
+  if (!kDebugMode) return;
+  if (!DebugLogFlags.kCatalogAuditLogsEnabled &&
+      !DebugLogFlags.kRoomAuditLogsEnabled) {
+    return;
+  }
+  debugPrint(message);
+}
+
 /// ProductCatalog 集計 ShopPool サマリ（`CATALOG_AUDIT_LOGS=true` のときのみ）。
 void shopPoolSummaryLog(String details) {
   catalogAuditLog('[SHOP_POOL_SUMMARY] $details');
