@@ -379,11 +379,23 @@ void _logProductCatalogSearchVerifySummary(
   final byShopItem = shopItemAlias != null
       ? repository.findByAlias(shopItemAlias, touch: false)
       : null;
+  var batchWithGenreId = 0;
+  var batchWithGenreName = 0;
+  for (final p in products) {
+    if (p.genreId.trim().isNotEmpty) batchWithGenreId++;
+    if (p.genreName.trim().isNotEmpty) batchWithGenreName++;
+  }
   catalogAuditLog(
     '[PRODUCT_CATALOG_SEARCH_VERIFY_SUMMARY] mode=$catalogMode count=$count '
-    'savedBatch=${products.length} canonicalId=${sample.canonicalId} '
+    'savedBatch=${products.length} batchWithGenreId=$batchWithGenreId '
+    'batchWithGenreName=$batchWithGenreName '
+    'canonicalId=${sample.canonicalId} '
     'getByCanonicalId=${stored != null} findByProductId=${byProductId != null} '
     'findByNormalizedUrl=${byNormUrl != null} findByShopItem=${byShopItem != null} '
+    'sampleGenreId=${sample.genreId.isEmpty ? '-' : sample.genreId} '
+    'sampleGenreName=${sample.genreName.isEmpty ? '-' : sample.genreName} '
+    'storedGenreId=${stored == null || stored.genreId.isEmpty ? '-' : stored.genreId} '
+    'storedGenreName=${stored == null || stored.genreName.isEmpty ? '-' : stored.genreName} '
     'source=${stored?.source.name} sourceTrust=${stored?.sourceTrust.name} '
     'qualitySafe=${stored?.qualityStatus.safe} '
     'hasImage=${stored?.qualityStatus.hasImage} hasPrice=${stored?.qualityStatus.hasPrice}',

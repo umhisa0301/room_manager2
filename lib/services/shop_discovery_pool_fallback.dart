@@ -8,6 +8,7 @@ import '../services/product_catalog_shop_aggregator.dart';
 import '../services/shop_pool_keyword_relevance.dart';
 import '../utils/room_import_product_image.dart';
 import '../utils/shop_display_resolve.dart';
+import '../utils/shop_pool_fallback_audit.dart';
 
 class ShopPoolFallbackRelevanceStats {
   const ShopPoolFallbackRelevanceStats({
@@ -181,7 +182,9 @@ abstract final class ShopDiscoveryPoolFallback {
       demotedWeak: selection.demotedWeak,
     );
 
-    return ShopDiscoveryPoolFallbackResult(
+    logShopPoolDepthSummary(source: 'shopDiscovery', candidates: candidates);
+
+    final result = ShopDiscoveryPoolFallbackResult(
       summaries: canFallback ? converted : const <ShopDiscoverySummary>[],
       usedFallback: canFallback,
       reason: reason,
@@ -196,6 +199,16 @@ abstract final class ShopDiscoveryPoolFallback {
       relevanceByShopCode: relevanceByShopCode,
       relevanceStats: relevanceStats,
     );
+
+    if (canFallback) {
+      logShopPoolFallbackDiag(
+        repository: repository,
+        keyword: keyword,
+        fallback: result,
+      );
+    }
+
+    return result;
   }
 
   static ShopDiscoveryPoolFallbackResult _emptyResult({

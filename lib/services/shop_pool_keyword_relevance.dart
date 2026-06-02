@@ -113,10 +113,11 @@ abstract final class ShopPoolKeywordRelevance {
 
   static bool isUnknownGenre(ShopPoolCandidate candidate) {
     final name = candidate.primaryGenreName.trim();
-    if (name.isEmpty) return true;
-    final lower = name.toLowerCase();
-    if (lower == 'unknown' || lower == '不明') return true;
-    return false;
+    if (name.isNotEmpty) {
+      final lower = name.toLowerCase();
+      return lower == 'unknown' || lower == '不明';
+    }
+    return candidate.primaryGenreId.trim().isEmpty;
   }
 
   static ShopPoolFallbackRelevanceQuality evaluateRelevanceQuality({

@@ -41,6 +41,7 @@ ShopDiscoverySummary _summary({
 ShopPoolCandidate _candidate({
   required String code,
   required String genre,
+  String primaryGenreId = '',
   int itemCount = 5,
 }) {
   return ShopPoolCandidate(
@@ -49,7 +50,7 @@ ShopPoolCandidate _candidate({
     shopUrl: 'https://www.rakuten.co.jp/$code/',
     representativeImageUrl:
         'https://thumbnail.image.rakuten.co.jp/@0_mall/test/cabinet/$code.jpg',
-    primaryGenreId: '100',
+    primaryGenreId: primaryGenreId,
     primaryGenreName: genre,
     itemCount: itemCount,
     safeItemCount: itemCount,
@@ -136,7 +137,12 @@ void main() {
       );
       final candidates = List<ShopPoolCandidate>.generate(
         9,
-        (i) => _candidate(code: 'thin-$i', genre: '', itemCount: 1),
+        (i) => _candidate(
+          code: 'thin-$i',
+          genre: '',
+          primaryGenreId: '',
+          itemCount: 1,
+        ),
       );
       final report = ShopPoolFallbackQualityReport.fromFallback(
         _fallback(

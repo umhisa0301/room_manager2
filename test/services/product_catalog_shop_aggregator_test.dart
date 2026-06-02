@@ -3,6 +3,7 @@ import 'package:room_manager2/config/product_catalog_config.dart';
 import 'package:room_manager2/models/catalog_product.dart';
 import 'package:room_manager2/repository/product_catalog_repository.dart';
 import 'package:room_manager2/services/product_catalog_shop_aggregator.dart';
+import 'package:room_manager2/services/shop_pool_keyword_relevance.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 CatalogProduct _product({
@@ -159,6 +160,51 @@ void main() {
       ]);
       final result = ProductCatalogShopAggregator.aggregate(repository: repo);
       expect(result.candidates.single.representativeImageUrl, contains('img-shop'));
+    });
+
+    test('primaryGenreName が商品の genreName から入る', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      await repo.upsertAll([
+        _product(
+          canonicalId: 'gn:1',
+          shopCode: 'gn-shop',
+          genreId: '200',
+          genreName: '水筒・ボトル',
+        ),
+      ]);
+      final result = ProductCatalogShopAggregator.aggregate(repository: repo);
+      expect(result.candidates.single.primaryGenreName, '水筒・ボトル');
+      expect(
+        ShopPoolKeywordRelevance.isUnknownGenre(result.candidates.single),
+        isFalse,
+      );
+    });
+
+    test('genreId のみでも primaryGenreId は入る', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      await repo.upsertAll([
+        _product(
+          canonicalId: 'gid:1',
+          shopCode: 'gid-shop',
+          genreId: '200',
+          genreName: '',
+        ),
+      ]);
+      final result = ProductCatalogShopAggregator.aggregate(repository: repo);
+      expect(result.candidates.single.primaryGenreId, '200');
+    });
+
+    test('sourceProductIds は複数商品分保持する', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      await repo.upsertAll([
+        _product(canonicalId: 'm:1', shopCode: 'multi-shop'),
+        _product(canonicalId: 'm:2', shopCode: 'multi-shop'),
+        _product(canonicalId: 'm:3', shopCode: 'multi-shop'),
+      ]);
+      final result = ProductCatalogShopAggregator.aggregate(repository: repo);
+      expect(result.candidates.single.itemCount, 3);
+      expect(result.candidates.single.sourceProductIds.length, 3);
+      expect(result.candidates.single.sampleProductIds.length, 3);
     });
 
     test('primaryGenreId が件数最多ジャンルになる', () async {

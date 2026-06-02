@@ -3,6 +3,7 @@ import '../models/shop_pool_candidate.dart';
 import '../repository/product_catalog_repository.dart';
 import '../utils/product_safety_filter.dart';
 import '../utils/shop_display_resolve.dart';
+import '../services/genre_master_service.dart';
 import 'shop_pool_scoring.dart';
 
 /// ProductCatalog から shopCode 単位の ShopPool を集計する。
@@ -192,15 +193,10 @@ abstract final class ProductCatalogShopAggregator {
         primaryGenreId = e.key;
       }
     }
-    String primaryGenreName = '';
-    if (primaryGenreId.isNotEmpty) {
-      for (final p in products) {
-        if (p.genreId.trim() == primaryGenreId && p.genreName.trim().isNotEmpty) {
-          primaryGenreName = p.genreName.trim();
-          break;
-        }
-      }
-    }
+    final primaryGenreName = _resolvePrimaryGenreName(
+      primaryGenreId: primaryGenreId,
+      products: products,
+    );
 
     final itemCount = products.length;
     final averageReviewAverage =
@@ -237,6 +233,26 @@ abstract final class ProductCatalogShopAggregator {
       sourceGenres: sourceGenres.toList(growable: false),
       sourceProductIds: List<String>.from(sourceProductIds),
     );
+  }
+
+  static String _resolvePrimaryGenreName({
+    required String primaryGenreId,
+    required List<CatalogProduct> products,
+  }) {
+    if (primaryGenreId.isEmpty) return '';
+    for (final p in products) {
+      if (p.genreId.trim() == primaryGenreId && p.genreName.trim().isNotEmpty) {
+        return p.genreName.trim();
+      }
+    }
+    final fromMaster = GenreMasterService.instance.getGenreNameById(primaryGenreId);
+    if (fromMaster != null) {
+      final name = fromMaster.trim();
+      if (name.isNotEmpty && name != primaryGenreId) {
+        return name;
+      }
+    }
+    return '';
   }
 
   static bool _isUsableShopDisplayName(String rawName, String shopCode) {

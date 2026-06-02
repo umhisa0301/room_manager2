@@ -318,7 +318,10 @@ class ShopPoolFallbackQualityReport {
     if (summary.hitItemCount != 1) return false;
     if (relevance.level != ShopPoolKeywordMatchLevel.strong) return false;
     if (candidate == null) return true;
-    return ShopPoolKeywordRelevance.isUnknownGenre(candidate);
+    final genreName = candidate.primaryGenreName.trim();
+    if (genreName.isEmpty) return true;
+    final lower = genreName.toLowerCase();
+    return lower == 'unknown' || lower == '不明';
   }
 
   static ShopPoolFallbackDepthQuality evaluateDepthQuality({

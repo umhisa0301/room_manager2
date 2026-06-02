@@ -57,6 +57,7 @@ CatalogProduct _product({
 ShopPoolCandidate _candidate({
   required String shopCode,
   required String shopName,
+  String primaryGenreId = '',
   String primaryGenreName = '',
   List<String> sourceProductIds = const <String>[],
 }) {
@@ -65,7 +66,7 @@ ShopPoolCandidate _candidate({
     shopName: shopName,
     shopUrl: 'https://www.rakuten.co.jp/$shopCode/',
     representativeImageUrl: '',
-    primaryGenreId: '100',
+    primaryGenreId: primaryGenreId,
     primaryGenreName: primaryGenreName,
     itemCount: sourceProductIds.isEmpty ? 1 : sourceProductIds.length,
     safeItemCount: sourceProductIds.isEmpty ? 1 : sourceProductIds.length,
@@ -184,7 +185,19 @@ void main() {
           _candidate(
             shopCode: 'x',
             shopName: 'x',
+            primaryGenreId: '',
             primaryGenreName: 'キッチン用品',
+          ),
+        ),
+        isFalse,
+      );
+      expect(
+        ShopPoolKeywordRelevance.isUnknownGenre(
+          _candidate(
+            shopCode: 'x',
+            shopName: 'x',
+            primaryGenreId: '200',
+            primaryGenreName: '',
           ),
         ),
         isFalse,

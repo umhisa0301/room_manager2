@@ -5,6 +5,7 @@ import 'package:room_manager2/models/shop_discovery_summary.dart';
 import 'package:room_manager2/models/shop_pool_candidate.dart';
 import 'package:room_manager2/repository/product_catalog_repository.dart';
 import 'package:room_manager2/services/shop_discovery_pool_fallback.dart';
+import 'package:room_manager2/services/shop_pool_keyword_relevance.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 CatalogProduct _product({
@@ -324,6 +325,32 @@ void main() {
         isFalse,
       );
       expect(result.relevanceStats.strongCount, greaterThanOrEqualTo(1));
+    });
+
+    test('primaryGenreId ありで genreName 空は unknownGenre 扱いにしない', () {
+      final candidate = ShopPoolCandidate(
+        shopCode: 'x',
+        shopName: 'shop',
+        shopUrl: 'https://www.rakuten.co.jp/x/',
+        representativeImageUrl: '',
+        primaryGenreId: '200',
+        primaryGenreName: '水筒・ボトル',
+        itemCount: 1,
+        safeItemCount: 1,
+        itemsWithImage: 0,
+        itemsWithPrice: 1,
+        averageReviewAverage: 4,
+        maxReviewCount: 1,
+        averagePrice: 1000,
+        minPrice: 1000,
+        maxPrice: 1000,
+        score: 100,
+        sampleProductIds: const <String>['p1'],
+        sourceGenres: const <String>['200'],
+        sourceProductIds: const <String>['p1'],
+      );
+      expect(ShopPoolKeywordRelevance.isUnknownGenre(candidate), isFalse);
+      expect(candidate.primaryGenreId, '200');
     });
 
     test('fallback TOP で hitItemCount>=2 が hitItemCount=1 より優先される', () async {

@@ -37,6 +37,8 @@ void main() {
       expect(product.itemName, '木のおもちゃ');
       expect(product.itemPrice, 1980);
       expect(product.normalizedItemUrl, isNotEmpty);
+      expect(product.genreId, '100');
+      expect(product.genreName, 'おもちゃ');
     });
 
     test('source=search / sourceTrust=high になる', () {
