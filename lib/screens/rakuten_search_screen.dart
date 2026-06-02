@@ -6317,7 +6317,13 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         'keywordMatchWeak=${report.keywordMatchWeak} '
         'keywordNoMatch=${report.keywordNoMatch} '
         'unknownGenreCount=${report.unknownGenreCount} '
+        'unknownGenreRatio=${report.unknownGenreRatio.toStringAsFixed(2)} '
+        'hitItemCount1=${report.hitItemCount1} '
+        'hitItemCount2Plus=${report.hitItemCount2Plus} '
+        'thinCandidateCount=${report.thinCandidateCount} '
         'relevanceQuality=${report.relevanceQuality.name} '
+        'depthQuality=${report.depthQuality.name} '
+        'displayQuality=${report.displayQuality.name} '
         'qualityLevel=${report.qualityLevel.name} '
         'source=${report.source}';
     catalogAuditLog(

@@ -1,8 +1,13 @@
+import '../models/shop_discovery_summary.dart';
 import '../models/shop_pool_candidate.dart';
 import '../services/shop_discovery_pool_fallback.dart';
 import '../services/shop_pool_keyword_relevance.dart';
 
 enum ShopPoolFallbackQualityLevel { excellent, good, weak, insufficient }
+
+enum ShopPoolFallbackDepthQuality { excellent, good, weak, insufficient }
+
+enum ShopPoolFallbackDisplayQuality { excellent, good, weak, insufficient }
 
 class ShopPoolFallbackTopEntry {
   const ShopPoolFallbackTopEntry({
@@ -65,6 +70,12 @@ class ShopPoolFallbackQualityReport {
     required this.relevanceQuality,
     required this.excludedNoRelevance,
     required this.demotedWeak,
+    required this.hitItemCount1,
+    required this.hitItemCount2Plus,
+    required this.unknownGenreRatio,
+    required this.thinCandidateCount,
+    required this.depthQuality,
+    required this.displayQuality,
   });
 
   final String keyword;
@@ -95,6 +106,12 @@ class ShopPoolFallbackQualityReport {
   final ShopPoolFallbackRelevanceQuality relevanceQuality;
   final int excludedNoRelevance;
   final int demotedWeak;
+  final int hitItemCount1;
+  final int hitItemCount2Plus;
+  final double unknownGenreRatio;
+  final int thinCandidateCount;
+  final ShopPoolFallbackDepthQuality depthQuality;
+  final ShopPoolFallbackDisplayQuality displayQuality;
 
   static ShopPoolFallbackQualityReport? fromFallback(
     ShopDiscoveryPoolFallbackResult fallback,
@@ -103,36 +120,7 @@ class ShopPoolFallbackQualityReport {
     final summaries = fallback.summaries;
     final stats = fallback.relevanceStats;
     if (summaries.isEmpty) {
-      return ShopPoolFallbackQualityReport(
-        keyword: fallback.keyword,
-        fallbackCount: 0,
-        poolCandidateCount: fallback.poolCandidateCount,
-        avgScore: 0,
-        maxScore: 0,
-        minScore: 0,
-        avgReview: 0,
-        maxReviewCount: 0,
-        avgHitItemCount: 0,
-        withImageCount: 0,
-        withShopUrlCount: 0,
-        genreCount: 0,
-        topGenres: const <String>[],
-        duplicateShopCount: 0,
-        savedExcluded: fallback.savedExcludedCount,
-        invalidExcluded: fallback.skippedInvalidCount,
-        unsafeExcluded: fallback.unsafeExcludedCount,
-        source: fallback.source,
-        qualityLevel: ShopPoolFallbackQualityLevel.insufficient,
-        topEntries: const <ShopPoolFallbackTopEntry>[],
-        keywordMatchStrong: stats.strongCount,
-        keywordMatchMedium: stats.mediumCount,
-        keywordMatchWeak: stats.weakCount,
-        keywordNoMatch: stats.noMatchCount,
-        unknownGenreCount: stats.unknownGenreCount,
-        relevanceQuality: stats.relevanceQuality,
-        excludedNoRelevance: stats.excludedNoRelevance,
-        demotedWeak: stats.demotedWeak,
-      );
+      return _emptyReport(fallback, stats);
     }
 
     var scoreSum = 0.0;
@@ -143,6 +131,9 @@ class ShopPoolFallbackQualityReport {
     var maxReviewCount = 0;
     var withImageCount = 0;
     var withShopUrlCount = 0;
+    var hitItemCount1 = 0;
+    var hitItemCount2Plus = 0;
+    var thinCandidateCount = 0;
     final seen = <String>{};
     var duplicateShopCount = 0;
     final genreCounts = <String, int>{};
@@ -154,6 +145,11 @@ class ShopPoolFallbackQualityReport {
       scoreSum += summary.discoveryScore;
       reviewSum += summary.avgReviewAverage;
       hitItemSum += summary.hitItemCount;
+      if (summary.hitItemCount <= 1) {
+        hitItemCount1++;
+      } else {
+        hitItemCount2Plus++;
+      }
       if (summary.discoveryScore > maxScore) maxScore = summary.discoveryScore;
       if (summary.discoveryScore < minScore) minScore = summary.discoveryScore;
       if (summary.maxReviewCount > maxReviewCount) {
@@ -167,6 +163,12 @@ class ShopPoolFallbackQualityReport {
       }
       if (!seen.add(summary.shopKey)) duplicateShopCount++;
       final candidate = displayedByCode[summary.shopKey];
+      final relevance =
+          fallback.relevanceByShopCode[summary.shopKey] ??
+          ShopPoolKeywordRelevanceResult.none;
+      if (_isThinCandidate(summary, candidate, relevance)) {
+        thinCandidateCount++;
+      }
       final genre = (candidate?.primaryGenreName.trim().isNotEmpty ?? false)
           ? candidate!.primaryGenreName.trim()
           : 'unknown';
@@ -184,10 +186,29 @@ class ShopPoolFallbackQualityReport {
         .map((e) => '${e.key}:${e.value}')
         .toList(growable: false);
 
-    final strongMedium = stats.strongCount + stats.mediumCount;
-    final unknownGenreRatio = summaries.isEmpty
-        ? 1.0
-        : stats.unknownGenreCount / summaries.length;
+    final avgHitItemCount = hitItemSum / summaries.length;
+    final unknownGenreRatio = stats.unknownGenreCount / summaries.length;
+    final relevanceQuality = stats.relevanceQuality;
+    final depthQuality = evaluateDepthQuality(
+      fallbackCount: summaries.length,
+      avgHitItemCount: avgHitItemCount,
+      hitItemCount2Plus: hitItemCount2Plus,
+      unknownGenreRatio: unknownGenreRatio,
+      thinCandidateCount: thinCandidateCount,
+    );
+    final displayQuality = evaluateDisplayQuality(
+      fallbackCount: summaries.length,
+      avgReview: reviewSum / summaries.length,
+      withImageCount: withImageCount,
+      withShopUrlCount: withShopUrlCount,
+    );
+    final qualityLevel = evaluateOverallQualityLevel(
+      relevanceQuality: relevanceQuality,
+      depthQuality: depthQuality,
+      displayQuality: displayQuality,
+      unknownGenreRatio: unknownGenreRatio,
+      avgHitItemCount: avgHitItemCount,
+    );
 
     final topEntries = summaries
         .take(3)
@@ -218,7 +239,7 @@ class ShopPoolFallbackQualityReport {
       minScore: minScore,
       avgReview: reviewSum / summaries.length,
       maxReviewCount: maxReviewCount,
-      avgHitItemCount: hitItemSum / summaries.length,
+      avgHitItemCount: avgHitItemCount,
       withImageCount: withImageCount,
       withShopUrlCount: withShopUrlCount,
       genreCount: genreCounts.length,
@@ -228,15 +249,50 @@ class ShopPoolFallbackQualityReport {
       invalidExcluded: fallback.skippedInvalidCount,
       unsafeExcluded: fallback.unsafeExcludedCount,
       source: fallback.source,
-      qualityLevel: evaluateQualityLevel(
-        fallbackCount: summaries.length,
-        avgReview: reviewSum / summaries.length,
-        withImageCount: withImageCount,
-        keywordStrongOrMediumMatchCount: strongMedium,
-        unknownGenreRatio: unknownGenreRatio,
-        topGenres: topGenres,
-      ),
+      qualityLevel: qualityLevel,
       topEntries: topEntries,
+      keywordMatchStrong: stats.strongCount,
+      keywordMatchMedium: stats.mediumCount,
+      keywordMatchWeak: stats.weakCount,
+      keywordNoMatch: stats.noMatchCount,
+      unknownGenreCount: stats.unknownGenreCount,
+      relevanceQuality: relevanceQuality,
+      excludedNoRelevance: stats.excludedNoRelevance,
+      demotedWeak: stats.demotedWeak,
+      hitItemCount1: hitItemCount1,
+      hitItemCount2Plus: hitItemCount2Plus,
+      unknownGenreRatio: unknownGenreRatio,
+      thinCandidateCount: thinCandidateCount,
+      depthQuality: depthQuality,
+      displayQuality: displayQuality,
+    );
+  }
+
+  static ShopPoolFallbackQualityReport _emptyReport(
+    ShopDiscoveryPoolFallbackResult fallback,
+    ShopPoolFallbackRelevanceStats stats,
+  ) {
+    return ShopPoolFallbackQualityReport(
+      keyword: fallback.keyword,
+      fallbackCount: 0,
+      poolCandidateCount: fallback.poolCandidateCount,
+      avgScore: 0,
+      maxScore: 0,
+      minScore: 0,
+      avgReview: 0,
+      maxReviewCount: 0,
+      avgHitItemCount: 0,
+      withImageCount: 0,
+      withShopUrlCount: 0,
+      genreCount: 0,
+      topGenres: const <String>[],
+      duplicateShopCount: 0,
+      savedExcluded: fallback.savedExcludedCount,
+      invalidExcluded: fallback.skippedInvalidCount,
+      unsafeExcluded: fallback.unsafeExcludedCount,
+      source: fallback.source,
+      qualityLevel: ShopPoolFallbackQualityLevel.insufficient,
+      topEntries: const <ShopPoolFallbackTopEntry>[],
       keywordMatchStrong: stats.strongCount,
       keywordMatchMedium: stats.mediumCount,
       keywordMatchWeak: stats.weakCount,
@@ -245,37 +301,140 @@ class ShopPoolFallbackQualityReport {
       relevanceQuality: stats.relevanceQuality,
       excludedNoRelevance: stats.excludedNoRelevance,
       demotedWeak: stats.demotedWeak,
+      hitItemCount1: 0,
+      hitItemCount2Plus: 0,
+      unknownGenreRatio: 0,
+      thinCandidateCount: 0,
+      depthQuality: ShopPoolFallbackDepthQuality.insufficient,
+      displayQuality: ShopPoolFallbackDisplayQuality.insufficient,
     );
   }
 
-  static ShopPoolFallbackQualityLevel evaluateQualityLevel({
+  static bool _isThinCandidate(
+    ShopDiscoverySummary summary,
+    ShopPoolCandidate? candidate,
+    ShopPoolKeywordRelevanceResult relevance,
+  ) {
+    if (summary.hitItemCount != 1) return false;
+    if (relevance.level != ShopPoolKeywordMatchLevel.strong) return false;
+    if (candidate == null) return true;
+    return ShopPoolKeywordRelevance.isUnknownGenre(candidate);
+  }
+
+  static ShopPoolFallbackDepthQuality evaluateDepthQuality({
+    required int fallbackCount,
+    required double avgHitItemCount,
+    required int hitItemCount2Plus,
+    required double unknownGenreRatio,
+    required int thinCandidateCount,
+  }) {
+    if (fallbackCount <= 2) return ShopPoolFallbackDepthQuality.insufficient;
+
+    if (unknownGenreRatio >= 0.8 && avgHitItemCount < 2.0) {
+      return ShopPoolFallbackDepthQuality.weak;
+    }
+
+    if (thinCandidateCount >= fallbackCount && avgHitItemCount < 2.0) {
+      return ShopPoolFallbackDepthQuality.weak;
+    }
+
+    if (fallbackCount >= 10 &&
+        avgHitItemCount >= 2.0 &&
+        hitItemCount2Plus >= 5 &&
+        unknownGenreRatio < 0.5) {
+      return ShopPoolFallbackDepthQuality.excellent;
+    }
+
+    if (fallbackCount >= 5 &&
+        hitItemCount2Plus >= 2 &&
+        avgHitItemCount >= 1.5 &&
+        unknownGenreRatio < 0.8) {
+      return ShopPoolFallbackDepthQuality.good;
+    }
+
+    if (fallbackCount >= 3) return ShopPoolFallbackDepthQuality.weak;
+    return ShopPoolFallbackDepthQuality.insufficient;
+  }
+
+  static ShopPoolFallbackDisplayQuality evaluateDisplayQuality({
     required int fallbackCount,
     required double avgReview,
     required int withImageCount,
-    required int keywordStrongOrMediumMatchCount,
-    required double unknownGenreRatio,
-    List<String> topGenres = const <String>[],
+    required int withShopUrlCount,
   }) {
-    final allUnknownGenres = topGenres.length == 1 &&
-        topGenres.first.startsWith('unknown:') &&
-        topGenres.first.endsWith(':$fallbackCount');
+    if (fallbackCount <= 2) return ShopPoolFallbackDisplayQuality.insufficient;
 
-    if (fallbackCount >= 10 &&
-        avgReview >= 4.4 &&
-        withImageCount == fallbackCount &&
-        keywordStrongOrMediumMatchCount >= 7 &&
-        unknownGenreRatio < 0.5 &&
-        !allUnknownGenres) {
-      return ShopPoolFallbackQualityLevel.excellent;
-    }
     if (fallbackCount >= 5 &&
-        avgReview >= 4.0 &&
-        keywordStrongOrMediumMatchCount >= 3) {
-      return ShopPoolFallbackQualityLevel.good;
+        withImageCount == fallbackCount &&
+        withShopUrlCount == fallbackCount &&
+        avgReview >= 4.4) {
+      return ShopPoolFallbackDisplayQuality.excellent;
     }
-    if (fallbackCount >= 3) return ShopPoolFallbackQualityLevel.weak;
-    return ShopPoolFallbackQualityLevel.insufficient;
+
+    if (fallbackCount >= 3 &&
+        withImageCount >= (fallbackCount * 0.8).ceil() &&
+        withShopUrlCount == fallbackCount &&
+        avgReview >= 4.0) {
+      return ShopPoolFallbackDisplayQuality.good;
+    }
+
+    if (fallbackCount >= 3) return ShopPoolFallbackDisplayQuality.weak;
+    return ShopPoolFallbackDisplayQuality.insufficient;
   }
+
+  static ShopPoolFallbackQualityLevel evaluateOverallQualityLevel({
+    required ShopPoolFallbackRelevanceQuality relevanceQuality,
+    required ShopPoolFallbackDepthQuality depthQuality,
+    required ShopPoolFallbackDisplayQuality displayQuality,
+    required double unknownGenreRatio,
+    required double avgHitItemCount,
+  }) {
+    if (unknownGenreRatio >= 0.8 && avgHitItemCount < 2.0) {
+      return ShopPoolFallbackQualityLevel.weak;
+    }
+
+    final rank = _minQualityRank(<int>[
+      _relevanceRank(relevanceQuality),
+      _depthRank(depthQuality),
+      _displayRank(displayQuality),
+    ]);
+
+    return switch (rank) {
+      3 => ShopPoolFallbackQualityLevel.excellent,
+      2 => ShopPoolFallbackQualityLevel.good,
+      1 => ShopPoolFallbackQualityLevel.weak,
+      _ => ShopPoolFallbackQualityLevel.insufficient,
+    };
+  }
+
+  static int _minQualityRank(List<int> ranks) {
+    var min = ranks.first;
+    for (final r in ranks.skip(1)) {
+      if (r < min) min = r;
+    }
+    return min;
+  }
+
+  static int _relevanceRank(ShopPoolFallbackRelevanceQuality q) => switch (q) {
+    ShopPoolFallbackRelevanceQuality.excellent => 3,
+    ShopPoolFallbackRelevanceQuality.good => 2,
+    ShopPoolFallbackRelevanceQuality.weak => 1,
+    ShopPoolFallbackRelevanceQuality.insufficient => 0,
+  };
+
+  static int _depthRank(ShopPoolFallbackDepthQuality q) => switch (q) {
+    ShopPoolFallbackDepthQuality.excellent => 3,
+    ShopPoolFallbackDepthQuality.good => 2,
+    ShopPoolFallbackDepthQuality.weak => 1,
+    ShopPoolFallbackDepthQuality.insufficient => 0,
+  };
+
+  static int _displayRank(ShopPoolFallbackDisplayQuality q) => switch (q) {
+    ShopPoolFallbackDisplayQuality.excellent => 3,
+    ShopPoolFallbackDisplayQuality.good => 2,
+    ShopPoolFallbackDisplayQuality.weak => 1,
+    ShopPoolFallbackDisplayQuality.insufficient => 0,
+  };
 
   static String truncateShopName(String value, {int max = 24}) {
     final t = value.trim();

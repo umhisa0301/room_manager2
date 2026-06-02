@@ -38,7 +38,11 @@ ShopDiscoverySummary _summary({
   );
 }
 
-ShopPoolCandidate _candidate({required String code, required String genre}) {
+ShopPoolCandidate _candidate({
+  required String code,
+  required String genre,
+  int itemCount = 5,
+}) {
   return ShopPoolCandidate(
     shopCode: code,
     shopName: code,
@@ -47,10 +51,10 @@ ShopPoolCandidate _candidate({required String code, required String genre}) {
         'https://thumbnail.image.rakuten.co.jp/@0_mall/test/cabinet/$code.jpg',
     primaryGenreId: '100',
     primaryGenreName: genre,
-    itemCount: 5,
-    safeItemCount: 5,
-    itemsWithImage: 5,
-    itemsWithPrice: 5,
+    itemCount: itemCount,
+    safeItemCount: itemCount,
+    itemsWithImage: itemCount,
+    itemsWithPrice: itemCount,
     averageReviewAverage: 4.2,
     maxReviewCount: 100,
     averagePrice: 2000,
@@ -70,14 +74,19 @@ ShopDiscoveryPoolFallbackResult _fallback({
   ShopPoolFallbackRelevanceStats? relevanceStats,
   Map<String, ShopPoolKeywordRelevanceResult>? relevanceByShopCode,
 }) {
-  final byCode = relevanceByShopCode ??
+  final byCode =
+      relevanceByShopCode ??
       <String, ShopPoolKeywordRelevanceResult>{
         for (final s in summaries)
-          s.shopKey: const ShopPoolKeywordRelevanceResult(
+          s.shopKey: ShopPoolKeywordRelevanceResult(
             level: ShopPoolKeywordMatchLevel.strong,
             matchedBy: 'itemName',
             relevanceScore: 1,
-            isUnknownGenre: false,
+            isUnknownGenre: displayedCandidates
+                .firstWhere((c) => c.shopCode == s.shopKey)
+                .primaryGenreName
+                .trim()
+                .isEmpty,
           ),
       };
   return ShopDiscoveryPoolFallbackResult(
@@ -102,105 +111,187 @@ ShopDiscoveryPoolFallbackResult _fallback({
           mediumCount: 0,
           weakCount: 0,
           noMatchCount: 0,
-          unknownGenreCount: 0,
+          unknownGenreCount: summaries.length,
           excludedNoRelevance: 0,
           demotedWeak: 0,
-          relevanceQuality: ShopPoolFallbackRelevanceQuality.excellent,
+          relevanceQuality: ShopPoolFallbackRelevanceQuality.good,
         ),
   );
 }
 
 void main() {
   group('ShopDiscoveryPoolFallbackQualityReport', () {
-    test('fallback quality サマリを計算できる', () {
-      final summaries = <ShopDiscoverySummary>[
-        _summary(
-          code: 's1',
-          name: 'ショップ1',
-          score: 310.2,
-          avgReview: 4.7,
-          maxReviewCount: 2172,
-          hitItems: 5,
-          rank: 1,
+    test('strong=9 でも hitItemCount=1 だらけなら qualityLevel=weak', () {
+      final summaries = List<ShopDiscoverySummary>.generate(
+        9,
+        (i) => _summary(
+          code: 'thin-$i',
+          name: '薄いショップ$i',
+          score: 300 - i.toDouble(),
+          avgReview: 4.55,
+          maxReviewCount: 100,
+          hitItems: 1,
+          rank: i + 1,
         ),
-        _summary(
-          code: 's2',
-          name: 'ショップ2',
-          score: 220.0,
-          avgReview: 4.5,
-          maxReviewCount: 500,
-          hitItems: 4,
-          rank: 2,
-        ),
-        _summary(
-          code: 's3',
-          name: 'ショップ3',
-          score: 180.4,
-          avgReview: 4.2,
-          maxReviewCount: 300,
-          hitItems: 3,
-          rank: 3,
-        ),
-      ];
+      );
+      final candidates = List<ShopPoolCandidate>.generate(
+        9,
+        (i) => _candidate(code: 'thin-$i', genre: '', itemCount: 1),
+      );
       final report = ShopPoolFallbackQualityReport.fromFallback(
         _fallback(
           usedFallback: true,
           summaries: summaries,
-          displayedCandidates: <ShopPoolCandidate>[
-            _candidate(code: 's1', genre: '水・ソフトドリンク'),
-            _candidate(code: 's2', genre: '水・ソフトドリンク'),
-            _candidate(code: 's3', genre: 'キッチン用品'),
-          ],
+          displayedCandidates: candidates,
         ),
       );
       expect(report, isNotNull);
-      expect(report!.fallbackCount, 3);
-      expect(report.keywordMatchStrong, 3);
-      expect(report.withImageCount, 3);
+      expect(report!.hitItemCount1, 9);
+      expect(report.hitItemCount2Plus, 0);
+      expect(report.avgHitItemCount, 1.0);
+      expect(report.unknownGenreRatio, 1.0);
+      expect(report.thinCandidateCount, 9);
+      expect(report.depthQuality, ShopPoolFallbackDepthQuality.weak);
+      expect(report.qualityLevel, ShopPoolFallbackQualityLevel.weak);
+      expect(report.qualityLevel, isNot(ShopPoolFallbackQualityLevel.good));
     });
 
-    test('qualityLevel を relevance 込みで判定できる', () {
+    test('unknownGenreRatio=1.0 なら excellent/good にならない', () {
       expect(
-        ShopPoolFallbackQualityReport.evaluateQualityLevel(
-          fallbackCount: 10,
-          avgReview: 4.5,
-          withImageCount: 10,
-          keywordStrongOrMediumMatchCount: 7,
+        ShopPoolFallbackQualityReport.evaluateDepthQuality(
+          fallbackCount: 9,
+          avgHitItemCount: 1.0,
+          hitItemCount2Plus: 0,
+          unknownGenreRatio: 1.0,
+          thinCandidateCount: 9,
+        ),
+        ShopPoolFallbackDepthQuality.weak,
+      );
+      expect(
+        ShopPoolFallbackQualityReport.evaluateOverallQualityLevel(
+          relevanceQuality: ShopPoolFallbackRelevanceQuality.good,
+          depthQuality: ShopPoolFallbackDepthQuality.weak,
+          displayQuality: ShopPoolFallbackDisplayQuality.good,
+          unknownGenreRatio: 1.0,
+          avgHitItemCount: 1.0,
+        ),
+        ShopPoolFallbackQualityLevel.weak,
+      );
+    });
+
+    test('hitItemCount2Plus が多い場合は depthQuality good 以上になり得る', () {
+      expect(
+        ShopPoolFallbackQualityReport.evaluateDepthQuality(
+          fallbackCount: 6,
+          avgHitItemCount: 2.5,
+          hitItemCount2Plus: 6,
           unknownGenreRatio: 0.2,
-          topGenres: const <String>['水筒:5', 'ボトル:5'],
+          thinCandidateCount: 0,
+        ),
+        ShopPoolFallbackDepthQuality.good,
+      );
+    });
+
+    test('厚み・ジャンルが十分な場合のみ excellent に近づく', () {
+      expect(
+        ShopPoolFallbackQualityReport.evaluateDepthQuality(
+          fallbackCount: 10,
+          avgHitItemCount: 2.2,
+          hitItemCount2Plus: 8,
+          unknownGenreRatio: 0.3,
+          thinCandidateCount: 1,
+        ),
+        ShopPoolFallbackDepthQuality.excellent,
+      );
+      expect(
+        ShopPoolFallbackQualityReport.evaluateOverallQualityLevel(
+          relevanceQuality: ShopPoolFallbackRelevanceQuality.excellent,
+          depthQuality: ShopPoolFallbackDepthQuality.excellent,
+          displayQuality: ShopPoolFallbackDisplayQuality.excellent,
+          unknownGenreRatio: 0.3,
+          avgHitItemCount: 2.2,
         ),
         ShopPoolFallbackQualityLevel.excellent,
       );
+    });
+
+    test('hitItemCount1 / hitItemCount2Plus / thinCandidateCount が正しい', () {
+      final report = ShopPoolFallbackQualityReport.fromFallback(
+        _fallback(
+          usedFallback: true,
+          summaries: <ShopDiscoverySummary>[
+            _summary(
+              code: 'a',
+              name: 'A',
+              score: 100,
+              avgReview: 4.0,
+              maxReviewCount: 10,
+              hitItems: 1,
+              rank: 1,
+            ),
+            _summary(
+              code: 'b',
+              name: 'B',
+              score: 90,
+              avgReview: 4.0,
+              maxReviewCount: 10,
+              hitItems: 3,
+              rank: 2,
+            ),
+          ],
+          displayedCandidates: <ShopPoolCandidate>[
+            _candidate(code: 'a', genre: '', itemCount: 1),
+            _candidate(code: 'b', genre: 'キッチン', itemCount: 3),
+          ],
+          relevanceByShopCode: <String, ShopPoolKeywordRelevanceResult>{
+            'a': const ShopPoolKeywordRelevanceResult(
+              level: ShopPoolKeywordMatchLevel.strong,
+              matchedBy: 'itemName',
+              relevanceScore: 1,
+              isUnknownGenre: true,
+            ),
+            'b': const ShopPoolKeywordRelevanceResult(
+              level: ShopPoolKeywordMatchLevel.strong,
+              matchedBy: 'itemName',
+              relevanceScore: 1,
+              isUnknownGenre: false,
+            ),
+          },
+          relevanceStats: const ShopPoolFallbackRelevanceStats(
+            strongCount: 2,
+            mediumCount: 0,
+            weakCount: 0,
+            noMatchCount: 0,
+            unknownGenreCount: 1,
+            excludedNoRelevance: 0,
+            demotedWeak: 0,
+            relevanceQuality: ShopPoolFallbackRelevanceQuality.weak,
+          ),
+        ),
+      );
+      expect(report!.hitItemCount1, 1);
+      expect(report.hitItemCount2Plus, 1);
+      expect(report.thinCandidateCount, 1);
+    });
+
+    test('displayQuality は画像・URL・レビューから判定される', () {
       expect(
-        ShopPoolFallbackQualityReport.evaluateQualityLevel(
-          fallbackCount: 10,
+        ShopPoolFallbackQualityReport.evaluateDisplayQuality(
+          fallbackCount: 5,
           avgReview: 4.5,
-          withImageCount: 10,
-          keywordStrongOrMediumMatchCount: 2,
-          unknownGenreRatio: 1.0,
-          topGenres: const <String>['unknown:10'],
-        ),
-        isNot(ShopPoolFallbackQualityLevel.excellent),
-      );
-      expect(
-        ShopPoolFallbackQualityReport.evaluateQualityLevel(
-          fallbackCount: 6,
-          avgReview: 4.1,
           withImageCount: 5,
-          keywordStrongOrMediumMatchCount: 3,
-          unknownGenreRatio: 0.3,
+          withShopUrlCount: 5,
         ),
-        ShopPoolFallbackQualityLevel.good,
+        ShopPoolFallbackDisplayQuality.excellent,
       );
       expect(
-        ShopPoolFallbackQualityReport.evaluateQualityLevel(
-          fallbackCount: 3,
-          avgReview: 3.1,
-          withImageCount: 1,
-          keywordStrongOrMediumMatchCount: 0,
-          unknownGenreRatio: 1.0,
+        ShopPoolFallbackQualityReport.evaluateDisplayQuality(
+          fallbackCount: 5,
+          avgReview: 3.0,
+          withImageCount: 2,
+          withShopUrlCount: 5,
         ),
-        ShopPoolFallbackQualityLevel.weak,
+        ShopPoolFallbackDisplayQuality.weak,
       );
     });
 
@@ -221,43 +312,11 @@ void main() {
             ),
           ],
           displayedCandidates: <ShopPoolCandidate>[
-            _candidate(code: 's1', genre: 'ジャンル'),
+            _candidate(code: 's1', genre: 'ジャンル', itemCount: 2),
           ],
         ),
       );
       expect(report!.withImageCount, 0);
-    });
-
-    test('TOPログに relevance/matchedBy が入る', () {
-      final report = ShopPoolFallbackQualityReport.fromFallback(
-        _fallback(
-          usedFallback: true,
-          summaries: <ShopDiscoverySummary>[
-            _summary(
-              code: 's1',
-              name: 'ボトル店',
-              score: 200,
-              avgReview: 4.5,
-              maxReviewCount: 100,
-              hitItems: 3,
-              rank: 1,
-            ),
-          ],
-          displayedCandidates: <ShopPoolCandidate>[
-            _candidate(code: 's1', genre: 'キッチン'),
-          ],
-          relevanceByShopCode: <String, ShopPoolKeywordRelevanceResult>{
-            's1': const ShopPoolKeywordRelevanceResult(
-              level: ShopPoolKeywordMatchLevel.strong,
-              matchedBy: 'itemName',
-              relevanceScore: 2,
-              isUnknownGenre: false,
-            ),
-          },
-        ),
-      );
-      expect(report!.topEntries.first.toLogString(), contains('relevance:strong'));
-      expect(report.topEntries.first.toLogString(), contains('matchedBy:itemName'));
     });
 
     test('通常API成功時は fallback quality report を作らない', () {

@@ -326,6 +326,87 @@ void main() {
       expect(result.relevanceStats.strongCount, greaterThanOrEqualTo(1));
     });
 
+    test('fallback TOP で hitItemCount>=2 が hitItemCount=1 より優先される', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      await repo.upsertAll(<CatalogProduct>[
+        _product(
+          canonicalId: 'thin-1',
+          shopCode: 'thin-shop',
+          shopName: '薄いショップ',
+          itemName: '子供用水筒',
+          reviewCount: 5000,
+        ),
+        _product(
+          canonicalId: 'thick-1',
+          shopCode: 'thick-shop',
+          shopName: '厚いショップ',
+          itemName: 'ステンレス水筒A',
+          reviewCount: 1,
+        ),
+        _product(
+          canonicalId: 'thick-2',
+          shopCode: 'thick-shop',
+          shopName: '厚いショップ',
+          itemName: 'ステンレス水筒B',
+          reviewCount: 1,
+        ),
+        _product(
+          canonicalId: 'thick-3',
+          shopCode: 'thick-shop-2',
+          shopName: '厚いショップ2',
+          itemName: 'マグボトル',
+          reviewCount: 1,
+        ),
+        _product(
+          canonicalId: 'thick-4',
+          shopCode: 'thick-shop-2',
+          shopName: '厚いショップ2',
+          itemName: 'タンブラー',
+          reviewCount: 1,
+        ),
+      ]);
+      final result = ShopDiscoveryPoolFallback.buildFallbackSummaries(
+        repository: repo,
+        keyword: '水筒',
+        apiSummaries: const <ShopDiscoverySummary>[],
+        apiSearchSucceeded: false,
+        savedShopCodes: const <String>{},
+      );
+      expect(result.usedFallback, isTrue);
+      expect(result.summaries.first.hitItemCount, greaterThanOrEqualTo(2));
+      expect(result.summaries.first.shopKey, isNot('thin-shop'));
+    });
+
+    test('候補不足時は hitItemCount=1 でも fallback 表示できる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      await repo.upsertAll(<CatalogProduct>[
+        _product(
+          canonicalId: 'only-1',
+          shopCode: 'only-shop',
+          itemName: '水筒1本',
+        ),
+        _product(
+          canonicalId: 'only-2',
+          shopCode: 'only-shop-2',
+          itemName: 'ボトル',
+        ),
+        _product(
+          canonicalId: 'only-3',
+          shopCode: 'only-shop-3',
+          itemName: 'タンブラー',
+        ),
+      ]);
+      final result = ShopDiscoveryPoolFallback.buildFallbackSummaries(
+        repository: repo,
+        keyword: '水筒',
+        apiSummaries: const <ShopDiscoverySummary>[],
+        apiSearchSucceeded: false,
+        savedShopCodes: const <String>{},
+      );
+      expect(result.usedFallback, isTrue);
+      expect(result.summaries.length, 3);
+    });
+
     test('noimage URL は表示用画像に含めない', () {
       expect(
         ShopDiscoveryPoolFallback.hasDisplayableImageUrl(

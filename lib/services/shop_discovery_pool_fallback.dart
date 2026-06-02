@@ -244,7 +244,25 @@ abstract final class ShopDiscoveryPoolFallback {
     final tierA = _relevanceTier(a);
     final tierB = _relevanceTier(b);
     if (tierA != tierB) return tierA.compareTo(tierB);
+
+    final depthA = _depthSortKey(a);
+    final depthB = _depthSortKey(b);
+    if (depthA != depthB) return depthA.compareTo(depthB);
+
     return b.candidate.score.compareTo(a.candidate.score);
+  }
+
+  /// fallback 表示順: 厚み・ジャンル・画像をスコアより軽く優先。
+  static int _depthSortKey(_RankedPoolCandidate entry) {
+    var key = 0;
+    if (entry.candidate.itemCount < 2) key += 20;
+    if (ShopPoolKeywordRelevance.isUnknownGenre(entry.candidate)) {
+      key += 10;
+    }
+    if (!hasDisplayableImageUrl(entry.candidate.representativeImageUrl)) {
+      key += 5;
+    }
+    return key;
   }
 
   static int _relevanceTier(_RankedPoolCandidate entry) {
@@ -254,9 +272,8 @@ abstract final class ShopDiscoveryPoolFallback {
       ShopPoolKeywordMatchLevel.weak => 2,
       ShopPoolKeywordMatchLevel.none => 4,
     };
-    if (ShopPoolKeywordRelevance.isUnknownGenre(entry.candidate) &&
-        entry.relevance.level != ShopPoolKeywordMatchLevel.strong) {
-      tier += 1;
+    if (ShopPoolKeywordRelevance.isUnknownGenre(entry.candidate)) {
+      tier += entry.relevance.level == ShopPoolKeywordMatchLevel.strong ? 1 : 2;
     }
     if (entry.candidate.itemCount == 1) {
       if (entry.relevance.level == ShopPoolKeywordMatchLevel.strong) {
