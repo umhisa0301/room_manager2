@@ -12,6 +12,7 @@ import '../models/saved_shop.dart';
 import '../models/shop_discovery_summary.dart';
 import '../navigation/app_route_observer.dart';
 import '../navigation/app_shell_controller.dart';
+import '../repository/shop_catalog_repository.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../services/shop_discovery_aggregator.dart';
 import '../state/bulk_operation_state_controller.dart';
@@ -28,6 +29,7 @@ import '../utils/search_result_envelope.dart';
 import '../utils/product_safety_filter.dart';
 import '../utils/rakuten_keyword_search_sort.dart';
 import '../utils/room_sync_log.dart';
+import '../utils/shop_catalog_mapper.dart';
 import '../validation/rakuten_keyword_detail_conditions_validation.dart';
 import '../widgets/rakuten_search_condition_fields.dart';
 import '../widgets/rakuten_search_detail_condition_entry_chrome.dart';
@@ -135,6 +137,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       ScrollController();
 
   bool _shopDiscoveryHasSearched = false;
+  String _lastShopDiscoveryCatalogFingerprint = '';
   RakutenSearchStatus? _lastEnvelopeSyncStatus;
 
   /// 結果ありでは常にコンパクトヘッダー固定（リスト内デッキ再表示は廃止）。
@@ -4096,6 +4099,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     setState(() {
       _searchHeaderCollapsed = true;
       _shopDiscoveryHasSearched = true;
+      _lastShopDiscoveryCatalogFingerprint = '';
     });
     final fallbackKeyword = _labelForGenre(genreId) ?? '楽天';
     final condition = RakutenProductSearchCondition(
@@ -5559,6 +5563,32 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
+  void _scheduleShopCatalogDiscoveryUpsert(
+    BuildContext context,
+    List<ShopDiscoverySummary> summaries,
+  ) {
+    if (summaries.isEmpty) return;
+    final fingerprint = summaries
+        .map((e) => '${e.shopKey}:${e.hitItemCount}:${e.maxReviewCount}')
+        .join('|');
+    if (fingerprint == _lastShopDiscoveryCatalogFingerprint) return;
+    _lastShopDiscoveryCatalogFingerprint = fingerprint;
+
+    ShopCatalogRepository? shopCatalogRepository;
+    try {
+      shopCatalogRepository = context.read<ShopCatalogRepository>();
+    } catch (_) {
+      shopCatalogRepository = null;
+    }
+
+    unawaited(
+      upsertShopCatalogFromDiscoverySummaries(
+        repository: shopCatalogRepository,
+        summaries: summaries,
+      ),
+    );
+  }
+
   Widget _buildShopDiscoveryResultArea(
     BuildContext context,
     RakutenSearchProvider search,
@@ -5659,6 +5689,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           shopLimit: shopLimit,
           itemsPerShop: itemsPerShop,
         );
+        _scheduleShopCatalogDiscoveryUpsert(context, summaries);
         if (summaries.isEmpty) {
           _logShopDiscoveryEmptyReasonAudit(
             hasSearched: true,
