@@ -1516,7 +1516,7 @@ class RakutenSearchRepository {
     final fetchSw = Stopwatch()..start();
     RakutenKeywordSearchStopReason? explicitStop;
     shopSearchFetchPlanLog(
-      'screen=productSearch keyword=${normalized.keyword} '
+      'screen=$fetchMode keyword=${normalized.keyword} '
       'genreId=${normalized.genreId ?? '-'} shopCode=${normalized.shopCode ?? '-'} '
       'targetDisplayCount=$targetVisibleCount hitsPerRequest=$hitsPerPage '
       'maxPages=$maxFetchPages expectedApiCalls=$maxFetchPages',

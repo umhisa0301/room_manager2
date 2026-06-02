@@ -307,7 +307,17 @@ class RakutenSearchProvider extends ChangeNotifier {
           }
         }
       } else {
-        fetched = await _repository.search(condition: normalized);
+        final fetchScreen = modeTag == 'genre'
+            ? 'genreSearch'
+            : (modeTag == 'savedShop'
+                  ? 'savedShopSearch'
+                  : (modeTag == 'shopDiscovery'
+                        ? 'shopDiscovery'
+                        : 'productSearch'));
+        fetched = await _repository.search(
+          condition: normalized,
+          fetchScreen: fetchScreen,
+        );
         responseStatus = 200;
         _keywordManagedFetchSummary = null;
       }

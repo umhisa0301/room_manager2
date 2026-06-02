@@ -9,11 +9,16 @@ import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_search_item.dart';
 import '../models/saved_shop.dart';
+import '../models/shop_catalog_entry.dart';
 import '../models/shop_discovery_summary.dart';
+import '../models/shop_pool_candidate.dart';
 import '../navigation/app_route_observer.dart';
 import '../navigation/app_shell_controller.dart';
+import '../repository/product_catalog_repository.dart';
 import '../repository/shop_catalog_repository.dart';
 import '../services/rakuten_genre_master_service.dart';
+import '../services/product_catalog_shop_aggregator.dart';
+import '../services/shop_discovery_pool_comparator.dart';
 import '../services/shop_discovery_aggregator.dart';
 import '../state/bulk_operation_state_controller.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -5589,6 +5594,89 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
+  void _logShopDiscoveryPoolComparison(
+    BuildContext context, {
+    required List<ShopDiscoverySummary> apiSummaries,
+    required List<String> savedShopCodes,
+  }) {
+    ProductCatalogRepository? productCatalogRepository;
+    ShopCatalogRepository? shopCatalogRepository;
+    try {
+      productCatalogRepository = context.read<ProductCatalogRepository>();
+    } catch (_) {
+      productCatalogRepository = null;
+    }
+    try {
+      shopCatalogRepository = context.read<ShopCatalogRepository>();
+    } catch (_) {
+      shopCatalogRepository = null;
+    }
+
+    final savedSet = savedShopCodes
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toSet();
+
+    final poolResult = productCatalogRepository == null
+        ? const ShopPoolAggregateResult(
+            candidates: <ShopPoolCandidate>[],
+            stats: ShopPoolAggregateStats.empty,
+          )
+        : ProductCatalogShopAggregator.aggregate(
+            repository: productCatalogRepository,
+            excludeSavedShopCodes: savedSet,
+          );
+
+    final catalogEntries = shopCatalogRepository?.getAll() ?? const <ShopCatalogEntry>[];
+    final comparison = ShopDiscoveryPoolComparator.compare(
+      apiSummaries: apiSummaries,
+      poolCandidates: poolResult.candidates,
+      catalogEntries: catalogEntries,
+      savedShopCodes: savedSet,
+    );
+    final keyword = _shopDiscoveryKeywordController.text.trim();
+    final signature = ShopDiscoveryPoolComparator.buildDedupeSignature(
+      mode: 'shopDiscovery',
+      keyword: keyword,
+      apiSummaries: apiSummaries,
+      poolCandidateCount: comparison.poolCandidateCount,
+      catalogShopCount: comparison.catalogShopCount,
+    );
+
+    AuditLogDeduper.logOnce(
+      'shopDiscoveryPoolCompare',
+      signature,
+      (_) {
+        catalogAuditLog(
+          '[SHOP_DISCOVERY_POOL_COMPARE_SUMMARY] '
+          'keyword=${keyword.isEmpty ? '-' : keyword} '
+          'apiSummaryCount=${comparison.apiSummaryCount} '
+          'poolCandidateCount=${comparison.poolCandidateCount} '
+          'poolCandidateCountBeforeSavedExclude=${comparison.poolCandidateCountBeforeSavedExclude} '
+          'poolCandidateCountAfterSavedExclude=${comparison.poolCandidateCountAfterSavedExclude} '
+          'catalogShopCount=${comparison.catalogShopCount} '
+          'overlapByShopCode=${comparison.overlapByShopCodeCount} '
+          'apiOnly=${comparison.apiOnlyCount} poolOnly=${comparison.poolOnlyCount} '
+          'catalogOnly=${comparison.catalogOnlyCount} '
+          'savedExcluded=${comparison.savedExcludedCount} '
+          'poolTopScoreMax=${comparison.poolTopScoreMax.toStringAsFixed(1)} '
+          'poolTopScoreMin=${comparison.poolTopScoreMin.toStringAsFixed(1)} '
+          'apiTopScoreMax=${comparison.apiTopScoreMax.toStringAsFixed(1)} '
+          'catalogShopTotal=${comparison.catalogShopTotal} '
+          'poolHasEnoughCandidatesForDisplay=${comparison.poolHasEnoughCandidatesForDisplay} '
+          'overlapRate=${comparison.overlapRate.toStringAsFixed(3)} '
+          'willUsePoolForUi=false willSkipApi=false',
+        );
+        catalogAuditLog(
+          '[SHOP_DISCOVERY_POOL_COMPARE_TOP] '
+          'apiTop=${comparison.topApiShops.isEmpty ? '-' : comparison.topApiShops.join(',')} '
+          'poolTop=${comparison.topPoolShops.isEmpty ? '-' : comparison.topPoolShops.join(',')} '
+          'overlapTop=${comparison.topOverlapShops.isEmpty ? '-' : comparison.topOverlapShops.join(',')}',
+        );
+      },
+    );
+  }
+
   Widget _buildShopDiscoveryResultArea(
     BuildContext context,
     RakutenSearchProvider search,
@@ -5690,6 +5778,14 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           itemsPerShop: itemsPerShop,
         );
         _scheduleShopCatalogDiscoveryUpsert(context, summaries);
+        final savedForCompare = context.read<SavedShopProvider>();
+        _logShopDiscoveryPoolComparison(
+          context,
+          apiSummaries: summaries,
+          savedShopCodes: savedForCompare.shops
+              .map((e) => e.shopId)
+              .toList(growable: false),
+        );
         if (summaries.isEmpty) {
           _logShopDiscoveryEmptyReasonAudit(
             hasSearched: true,
