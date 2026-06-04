@@ -46,13 +46,13 @@
       "last_updated": "2026-05-31T14:57:57Z"
     },
     "114036ef-2ad5-4e8f-87d1-fd8dbd8b9b75": {
-      "user_message_count": 1,
-      "agent_message_count": 12,
+      "user_message_count": 2,
+      "agent_message_count": 94,
       "start_timestamp": "2026-06-04T22:18:02+09:00",
       "end_timestamp": "2026-06-04T22:18:02+09:00",
-      "markdown_size_bytes": 168700,
+      "markdown_size_bytes": 514451,
       "provider": "cursoride",
-      "last_updated": "2026-06-04T13:31:21Z"
+      "last_updated": "2026-06-04T13:50:57Z"
     },
     "11e71a2b-a379-46fb-afe9-52431853004b": {
       "user_message_count": 4,
