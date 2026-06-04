@@ -2,11 +2,39 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../config/debug_log_flags.dart';
 import '../config/demo_mode.dart';
 import '../config/product_catalog_config.dart';
 import '../models/catalog_product.dart';
 import '../utils/app_debug_log.dart';
 import '../utils/catalog_product_keys.dart';
+
+/// upsert 1件の監査結果（[CATALOG_AUDIT_LOGS] 時のみ収集）。
+class ProductCatalogUpsertItemResult {
+  const ProductCatalogUpsertItemResult({
+    required this.inputCanonicalId,
+    required this.resolvedCanonicalId,
+    required this.operation,
+    required this.mergeReason,
+    required this.inputShopCode,
+    required this.savedShopCode,
+    required this.aliasMatchedBy,
+    required this.saved,
+    required this.normalizedItemUrl,
+    required this.productId,
+  });
+
+  final String inputCanonicalId;
+  final String resolvedCanonicalId;
+  final String operation;
+  final String mergeReason;
+  final String inputShopCode;
+  final String savedShopCode;
+  final String aliasMatchedBy;
+  final bool saved;
+  final String normalizedItemUrl;
+  final String productId;
+}
 
 /// upsert バッチ結果。
 class ProductCatalogUpsertBatchResult {
@@ -15,12 +43,22 @@ class ProductCatalogUpsertBatchResult {
     required this.updated,
     required this.skipped,
     required this.evicted,
+    this.updatedByCanonicalId = 0,
+    this.updatedByAlias = 0,
+    this.aliasConflictPrevented = 0,
+    this.itemResults = const [],
   });
 
   final int inserted;
   final int updated;
   final int skipped;
   final int evicted;
+  final int updatedByCanonicalId;
+  final int updatedByAlias;
+
+  /// 別 canonicalId への alias 誤マージを防ぎ、別商品として insert した件数。
+  final int aliasConflictPrevented;
+  final List<ProductCatalogUpsertItemResult> itemResults;
 }
 
 /// ローカル共通商品カタログ（SharedPreferences 永続化）。
@@ -225,8 +263,9 @@ class ProductCatalogRepository {
   }
 
   Future<ProductCatalogUpsertBatchResult> upsertAll(
-    Iterable<CatalogProduct> incomingProducts,
-  ) async {
+    Iterable<CatalogProduct> incomingProducts, {
+    bool collectItemAuditResults = false,
+  }) async {
     _ensureLoaded();
     if (kDemoModeEnabled) {
       return const ProductCatalogUpsertBatchResult(
@@ -241,16 +280,34 @@ class ProductCatalogRepository {
     var updated = 0;
     var skipped = 0;
     var evicted = 0;
+    var updatedByCanonicalId = 0;
+    var updatedByAlias = 0;
+    var aliasConflictPrevented = 0;
+    final itemResults = <ProductCatalogUpsertItemResult>[];
+    final auditItems =
+        collectItemAuditResults && DebugLogFlags.kCatalogAuditLogsEnabled;
 
     for (final raw in incomingProducts) {
       if (!raw.isSavable) {
         skipped++;
+        if (auditItems && itemResults.length < 5) {
+          itemResults.add(_auditSkipped(raw, mergeReason: 'notSavable'));
+        }
         continue;
       }
 
       final incoming = raw.withRecomputedQuality();
+      if (!incoming.qualityStatus.safe) {
+        skipped++;
+        if (auditItems && itemResults.length < 5) {
+          itemResults.add(_auditSkipped(incoming, mergeReason: 'qualityNg'));
+        }
+        continue;
+      }
+
       final existingByCanonical = _products[incoming.canonicalId];
-      final existingByAlias = _findExistingForIncoming(incoming);
+      final aliasLookup = _findExistingForIncoming(incoming);
+      final existingByAlias = aliasLookup?.product;
 
       if (existingByCanonical != null) {
         _unregisterAliases(existingByCanonical);
@@ -259,17 +316,69 @@ class ProductCatalogRepository {
         _registerAliases(merged);
         _touchLru(incoming.canonicalId);
         updated++;
+        updatedByCanonicalId++;
+        if (auditItems && itemResults.length < 5) {
+          itemResults.add(
+            _auditResult(
+              incoming: incoming,
+              resolved: merged,
+              operation: 'update',
+              mergeReason: 'canonicalIdMatch',
+              aliasMatchedBy: aliasLookup?.matchedAlias ?? '',
+            ),
+          );
+        }
         continue;
       }
 
       if (existingByAlias != null &&
           existingByAlias.canonicalId != incoming.canonicalId) {
-        _unregisterAliases(existingByAlias);
-        final merged = existingByAlias.mergeFrom(incoming).withRecomputedQuality();
-        _products[existingByAlias.canonicalId] = merged;
-        _registerAliases(merged);
-        _touchLru(existingByAlias.canonicalId);
-        updated++;
+        final shareIdentity = CatalogProductKeys.catalogProductsShareIdentity(
+          existingCanonicalId: existingByAlias.canonicalId,
+          existingProductId: existingByAlias.productId,
+          existingNormalizedItemUrl: existingByAlias.normalizedItemUrl,
+          incomingCanonicalId: incoming.canonicalId,
+          incomingProductId: incoming.productId,
+          incomingNormalizedItemUrl: incoming.normalizedItemUrl,
+        );
+        if (shareIdentity) {
+          _unregisterAliases(existingByAlias);
+          final merged =
+              existingByAlias.mergeFrom(incoming).withRecomputedQuality();
+          _products[existingByAlias.canonicalId] = merged;
+          _registerAliases(merged);
+          _touchLru(existingByAlias.canonicalId);
+          updated++;
+          updatedByAlias++;
+          if (auditItems && itemResults.length < 5) {
+            itemResults.add(
+              _auditResult(
+                incoming: incoming,
+                resolved: merged,
+                operation: 'update',
+                mergeReason: _aliasMergeReason(incoming, existingByAlias),
+                aliasMatchedBy: aliasLookup?.matchedAlias ?? '',
+              ),
+            );
+          }
+          continue;
+        }
+        aliasConflictPrevented++;
+        _products[incoming.canonicalId] = incoming;
+        _registerAliases(incoming);
+        _touchLru(incoming.canonicalId);
+        inserted++;
+        if (auditItems && itemResults.length < 5) {
+          itemResults.add(
+            _auditResult(
+              incoming: incoming,
+              resolved: incoming,
+              operation: 'insert',
+              mergeReason: 'aliasConflictPrevented',
+              aliasMatchedBy: aliasLookup?.matchedAlias ?? '',
+            ),
+          );
+        }
         continue;
       }
 
@@ -277,6 +386,17 @@ class ProductCatalogRepository {
       _registerAliases(incoming);
       _touchLru(incoming.canonicalId);
       inserted++;
+      if (auditItems && itemResults.length < 5) {
+        itemResults.add(
+          _auditResult(
+            incoming: incoming,
+            resolved: incoming,
+            operation: 'insert',
+            mergeReason: 'insert',
+            aliasMatchedBy: '',
+          ),
+        );
+      }
     }
 
     evicted = _evictIfNeeded();
@@ -284,6 +404,8 @@ class ProductCatalogRepository {
 
     catalogAuditLog(
       '[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=$inserted updated=$updated '
+      'updatedByCanonicalId=$updatedByCanonicalId updatedByAlias=$updatedByAlias '
+      'aliasConflictPrevented=$aliasConflictPrevented '
       'skipped=$skipped evicted=$evicted total=${_products.length}',
     );
 
@@ -292,17 +414,78 @@ class ProductCatalogRepository {
       updated: updated,
       skipped: skipped,
       evicted: evicted,
+      updatedByCanonicalId: updatedByCanonicalId,
+      updatedByAlias: updatedByAlias,
+      aliasConflictPrevented: aliasConflictPrevented,
+      itemResults: itemResults,
     );
   }
 
-  CatalogProduct? _findExistingForIncoming(CatalogProduct incoming) {
+  ({CatalogProduct? product, String? matchedAlias})? _findExistingForIncoming(
+    CatalogProduct incoming,
+  ) {
     for (final alias in _allAliasesFor(incoming)) {
       final canonicalId = _aliasToCanonical[alias];
       if (canonicalId == null) continue;
       final existing = _products[canonicalId];
-      if (existing != null) return existing;
+      if (existing != null) {
+        return (product: existing, matchedAlias: alias);
+      }
     }
     return null;
+  }
+
+  String _aliasMergeReason(CatalogProduct incoming, CatalogProduct existing) {
+    final inUrl = incoming.normalizedItemUrl.trim();
+    final exUrl = existing.normalizedItemUrl.trim();
+    if (inUrl.isNotEmpty && exUrl.isNotEmpty && inUrl == exUrl) {
+      return 'urlMatch';
+    }
+    final inPid = CatalogProductKeys.normalizeProductId(incoming.productId);
+    final exPid = CatalogProductKeys.normalizeProductId(existing.productId);
+    if (inPid != null && exPid != null && inPid == exPid) {
+      return 'aliasMatch';
+    }
+    return 'aliasMatch';
+  }
+
+  ProductCatalogUpsertItemResult _auditResult({
+    required CatalogProduct incoming,
+    required CatalogProduct resolved,
+    required String operation,
+    required String mergeReason,
+    required String aliasMatchedBy,
+  }) {
+    return ProductCatalogUpsertItemResult(
+      inputCanonicalId: incoming.canonicalId,
+      resolvedCanonicalId: resolved.canonicalId,
+      operation: operation,
+      mergeReason: mergeReason,
+      inputShopCode: incoming.shopCode,
+      savedShopCode: resolved.shopCode,
+      aliasMatchedBy: aliasMatchedBy,
+      saved: true,
+      normalizedItemUrl: incoming.normalizedItemUrl,
+      productId: incoming.productId,
+    );
+  }
+
+  ProductCatalogUpsertItemResult _auditSkipped(
+    CatalogProduct incoming, {
+    required String mergeReason,
+  }) {
+    return ProductCatalogUpsertItemResult(
+      inputCanonicalId: incoming.canonicalId,
+      resolvedCanonicalId: '-',
+      operation: 'skip',
+      mergeReason: mergeReason,
+      inputShopCode: incoming.shopCode,
+      savedShopCode: '-',
+      aliasMatchedBy: '',
+      saved: false,
+      normalizedItemUrl: incoming.normalizedItemUrl,
+      productId: incoming.productId,
+    );
   }
 
   Future<void> clear() async {

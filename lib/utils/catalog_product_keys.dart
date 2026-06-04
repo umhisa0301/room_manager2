@@ -74,7 +74,60 @@ abstract final class CatalogProductKeys {
     return null;
   }
 
+  /// productId / URL 由来の alias が [canonicalId] と矛盾しないか。
+  static bool aliasConsistentWithCanonicalId({
+    required String alias,
+    required String canonicalId,
+    String? productId,
+    String? itemCode,
+  }) {
+    final cid = canonicalId.trim();
+    final a = alias.trim();
+    if (a.isEmpty) return false;
+    if (cid.isNotEmpty && a == cid) return true;
+    final pid = normalizeProductId(productId) ?? normalizeItemCode(itemCode);
+    if (pid != null && a == pid) return true;
+    if (cid.isEmpty && pid == null) return true;
+    return false;
+  }
+
+  /// 別 canonicalId 同士が同一商品としてマージ可能か（URL / productId 一致のみ）。
+  static bool catalogProductsShareIdentity({
+    required String existingCanonicalId,
+    required String existingProductId,
+    required String existingNormalizedItemUrl,
+    required String incomingCanonicalId,
+    required String incomingProductId,
+    required String incomingNormalizedItemUrl,
+  }) {
+    final inCid = incomingCanonicalId.trim();
+    final exCid = existingCanonicalId.trim();
+    if (inCid.isNotEmpty && inCid == exCid) return true;
+
+    final inPid = normalizeProductId(incomingProductId);
+    final exPid = normalizeProductId(existingProductId);
+    if (inPid != null && exPid != null) {
+      if (inPid == exPid) return true;
+      final inUrl = incomingNormalizedItemUrl.trim();
+      final exUrl = existingNormalizedItemUrl.trim();
+      if (inUrl.isNotEmpty && exUrl.isNotEmpty && inUrl == exUrl) {
+        return true;
+      }
+      return false;
+    }
+
+    final inUrl = incomingNormalizedItemUrl.trim();
+    final exUrl = existingNormalizedItemUrl.trim();
+    if (inUrl.isNotEmpty && exUrl.isNotEmpty && inUrl == exUrl) {
+      return true;
+    }
+    return false;
+  }
+
   /// ルックアップ用 alias 一覧（canonicalId 自身も含む）。
+  ///
+  /// URL パース由来の `shop:segment` は productId / canonicalId と一致するときだけ登録する
+  /// （別 itemCode への誤マージ防止）。
   static List<String> buildAliases({
     required String canonicalId,
     String? productId,
@@ -85,7 +138,9 @@ abstract final class CatalogProductKeys {
     String? itemPathSegment,
     String? roomPageUrl,
   }) {
-    final out = <String>{canonicalId};
+    final cid = canonicalId.trim();
+    final out = <String>{};
+    if (cid.isNotEmpty) out.add(cid);
 
     final normUrl = (normalizedItemUrl ?? '').trim().isNotEmpty
         ? normalizedItemUrl!.trim()
@@ -98,11 +153,29 @@ abstract final class CatalogProductKeys {
 
     if (shopCode != null && itemPathSegment != null) {
       final alias = shopItemAlias(shopCode, itemPathSegment);
-      if (alias != null) out.add(alias);
+      if (alias != null &&
+          aliasConsistentWithCanonicalId(
+            alias: alias,
+            canonicalId: cid,
+            productId: productId,
+            itemCode: itemCode,
+          )) {
+        out.add(alias);
+      }
     }
 
     final parsed = RakutenItemUrlParser.tryParse(itemUrl ?? '');
-    if (parsed != null) out.add(parsed.compositeProductId);
+    if (parsed != null) {
+      final composite = parsed.compositeProductId;
+      if (aliasConsistentWithCanonicalId(
+        alias: composite,
+        canonicalId: cid,
+        productId: productId,
+        itemCode: itemCode,
+      )) {
+        out.add(composite);
+      }
+    }
 
     if (roomPageUrl != null &&
         RoomRakutenUrlNormalize.isLikelyRoomProductPageUrl(roomPageUrl)) {

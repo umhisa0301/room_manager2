@@ -477,6 +477,49 @@ void main() {
       expect(traces[1].saved, isFalse);
     });
 
+    test('productIdとURLパス不一致2件は productCountForShop=2', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      await upsertCatalogFromShopDiscoveryDetailItems(
+        repo,
+        [
+          _searchItem(
+            productId: 'takeya-tea:10000490',
+            shopCode: 'takeya-tea',
+            itemUrl: 'https://item.rakuten.co.jp/takeya-tea/10000490/',
+          ),
+          _searchItem(
+            productId: 'takeya-tea:10000383',
+            shopCode: 'takeya-tea',
+            itemUrl: 'https://item.rakuten.co.jp/takeya-tea/10000383/',
+          ),
+        ],
+        shopCode: 'takeya-tea',
+        upsertSource: 'initialItems',
+      );
+      expect(
+        repo.getAll().where((p) => p.shopCode.trim() == 'takeya-tea').length,
+        2,
+      );
+      final traces = buildShopDiscoveryDetailCatalogItemTraces(
+        items: [
+          _searchItem(
+            productId: 'takeya-tea:10000490',
+            shopCode: 'takeya-tea',
+            itemUrl: 'https://item.rakuten.co.jp/takeya-tea/10000490/',
+          ),
+          _searchItem(
+            productId: 'takeya-tea:10000383',
+            shopCode: 'takeya-tea',
+            itemUrl: 'https://item.rakuten.co.jp/takeya-tea/10000383/',
+          ),
+        ],
+        shopCode: 'takeya-tea',
+        repository: repo,
+      );
+      expect(traces[1].getByCanonicalIdFound, isTrue);
+      expect(traces[1].reason, isNot('notInCatalog'));
+    });
+
     test('既存商品への同一 canonicalId 2件は inserted=0 updated=2', () async {
       if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       await repo.upsertAll([

@@ -61,8 +61,9 @@ class _ThrowingProductCatalogRepository extends ProductCatalogRepository {
 
   @override
   Future<ProductCatalogUpsertBatchResult> upsertAll(
-    Iterable<CatalogProduct> incomingProducts,
-  ) async {
+    Iterable<CatalogProduct> incomingProducts, {
+    bool collectItemAuditResults = false,
+  }) async {
     throw StateError('catalog upsert failed');
   }
 }

@@ -156,6 +156,9 @@ class ProductCatalogUpsertSummary {
     required this.merged,
     this.inserted = 0,
     this.updated = 0,
+    this.updatedByCanonicalId = 0,
+    this.updatedByAlias = 0,
+    this.aliasConflictPrevented = 0,
     this.qualityNg = 0,
   });
 
@@ -166,6 +169,9 @@ class ProductCatalogUpsertSummary {
       merged = 0,
       inserted = 0,
       updated = 0,
+      updatedByCanonicalId = 0,
+      updatedByAlias = 0,
+      aliasConflictPrevented = 0,
       qualityNg = 0;
 
   final int attempted;
@@ -178,6 +184,9 @@ class ProductCatalogUpsertSummary {
   final int merged;
   final int inserted;
   final int updated;
+  final int updatedByCanonicalId;
+  final int updatedByAlias;
+  final int aliasConflictPrevented;
 
   /// 安全判定 NG のため保存しなかった件数。
   final int qualityNg;
@@ -204,6 +213,7 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromSearchItems(
   CatalogProductSourceTrust sourceTrust = CatalogProductSourceTrust.high,
   DateTime? now,
   String? catalogMode,
+  bool collectUpsertItemAudit = false,
 }) async {
   if (!ProductCatalogConfig.kProductCatalogEnabled) {
     return const ProductCatalogUpsertSummary.skipped();
@@ -236,7 +246,10 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromSearchItems(
   }
 
   final skipped = list.length - products.length - qualityNg;
-  final result = await repository.upsertAll(products);
+  final result = await repository.upsertAll(
+    products,
+    collectItemAuditResults: collectUpsertItemAudit,
+  );
   final summary = ProductCatalogUpsertSummary(
     attempted: list.length,
     upserted: result.inserted + result.updated,
@@ -244,8 +257,14 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromSearchItems(
     merged: result.updated,
     inserted: result.inserted,
     updated: result.updated,
+    updatedByCanonicalId: result.updatedByCanonicalId,
+    updatedByAlias: result.updatedByAlias,
+    aliasConflictPrevented: result.aliasConflictPrevented,
     qualityNg: qualityNg,
   );
+  if (collectUpsertItemAudit && result.itemResults.isNotEmpty) {
+    logProductCatalogUpsertItemResults(result.itemResults);
+  }
   if (catalogMode != null && catalogMode.isNotEmpty) {
     catalogAuditLog(
       '[PRODUCT_CATALOG_SEARCH_UPSERT_SUMMARY] mode=$catalogMode '
@@ -344,6 +363,7 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromShopDiscoveryDetailItems(
     source: CatalogProductSource.shopDiscovery,
     sourceTrust: sourceTrust,
     now: now,
+    collectUpsertItemAudit: DebugLogFlags.kCatalogAuditLogsEnabled,
   );
   if (!ProductCatalogConfig.kProductCatalogEnabled) {
     return summary;
@@ -354,8 +374,11 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromShopDiscoveryDetailItems(
       '[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] '
       'shopCode=${code.isEmpty ? '-' : code} '
       'source=$upsertSource '
-      'items=${summary.attempted} upserted=${summary.upserted} '
+      'attempted=${summary.attempted} upserted=${summary.upserted} '
       'inserted=${summary.inserted} updated=${summary.updated} '
+      'updatedByCanonicalId=${summary.updatedByCanonicalId} '
+      'updatedByAlias=${summary.updatedByAlias} '
+      'aliasConflictPrevented=${summary.aliasConflictPrevented} '
       'skipped=${summary.skipped} qualityNg=${summary.qualityNg} '
       'catalogSource=shopDiscoveryDetail catalogTrust=${sourceTrust.name}',
     );
@@ -419,39 +442,90 @@ List<ShopDiscoveryDetailCatalogItemTraceLine>
       sourceTrust: sourceTrust,
       now: now,
     );
-    final canonicalId = product.canonicalId.trim();
+    final inputCanonicalId = product.canonicalId.trim();
     final itemCode = item.productId.trim();
     final itemShopCode = item.shopCode.trim();
+    final normUrl = product.normalizedItemUrl.trim();
 
     var saved = false;
     var reason = '-';
+    var getByCanonicalIdFound = false;
+    var findByAliasFound = false;
+    var resolvedCanonicalId = '-';
+    var resolvedShopCode = '-';
+    var sameShopCode = false;
+    var aliasMatchedBy = '';
 
     if (!product.isSavable) {
       reason = 'notSavable';
     } else if (!product.qualityStatus.safe) {
       reason = 'qualityUnsafe';
-    } else if (canonicalId.isNotEmpty && seenCanonical.contains(canonicalId)) {
+    } else if (inputCanonicalId.isNotEmpty &&
+        seenCanonical.contains(inputCanonicalId)) {
       reason = 'canonicalDuplicate';
     } else {
-      if (canonicalId.isNotEmpty) seenCanonical.add(canonicalId);
-      final stored = repository.getByCanonicalId(canonicalId);
-      if (stored == null) {
-        reason = 'notInCatalog';
-      } else if (code.isNotEmpty && stored.shopCode.trim() != code) {
-        reason = 'wrongShopCode';
+      if (inputCanonicalId.isNotEmpty) {
+        seenCanonical.add(inputCanonicalId);
+      }
+
+      final byCanonical = inputCanonicalId.isNotEmpty
+          ? repository.getByCanonicalId(inputCanonicalId, touch: false)
+          : null;
+      getByCanonicalIdFound = byCanonical != null;
+
+      CatalogProduct? byAlias;
+      for (final alias in product.aliases) {
+        final found = repository.findByAlias(alias, touch: false);
+        if (found != null) {
+          byAlias = found;
+          aliasMatchedBy = alias;
+          break;
+        }
+      }
+      findByAliasFound = byAlias != null;
+
+      final resolved = byCanonical ?? byAlias;
+      if (resolved != null) {
+        resolvedCanonicalId = resolved.canonicalId.trim().isEmpty
+            ? '-'
+            : resolved.canonicalId.trim();
+        resolvedShopCode =
+            resolved.shopCode.trim().isEmpty ? '-' : resolved.shopCode.trim();
+        final sameShop =
+            code.isEmpty || resolved.shopCode.trim() == code;
+        sameShopCode = sameShop;
+        if (!sameShop) {
+          reason = 'wrongShopCode';
+        } else if (byCanonical == null &&
+            inputCanonicalId.isNotEmpty &&
+            resolvedCanonicalId != inputCanonicalId) {
+          reason = 'aliasMerged';
+          saved = true;
+        } else {
+          saved = true;
+        }
       } else {
-        saved = true;
+        reason = 'notInCatalog';
       }
     }
 
     lines.add(
       ShopDiscoveryDetailCatalogItemTraceLine(
         itemCode: itemCode.isEmpty ? '-' : itemCode,
-        canonicalId: canonicalId.isEmpty ? '-' : canonicalId,
+        inputCanonicalId:
+            inputCanonicalId.isEmpty ? '-' : inputCanonicalId,
+        canonicalId: inputCanonicalId.isEmpty ? '-' : inputCanonicalId,
         shopCode: itemShopCode.isEmpty ? '-' : itemShopCode,
         itemName: item.itemName.trim().isEmpty ? '-' : item.itemName.trim(),
+        normalizedItemUrl: normUrl.isEmpty ? '-' : normUrl,
         saved: saved,
         reason: reason,
+        getByCanonicalIdFound: getByCanonicalIdFound,
+        findByAliasFound: findByAliasFound,
+        resolvedCanonicalId: resolvedCanonicalId,
+        resolvedShopCode: resolvedShopCode,
+        sameShopCode: code.isEmpty ? true : sameShopCode,
+        aliasMatchedBy: aliasMatchedBy,
       ),
     );
   }
@@ -559,6 +633,9 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromRoomManagedProducts(
       merged: result.updated,
       inserted: result.inserted,
       updated: result.updated,
+      updatedByCanonicalId: result.updatedByCanonicalId,
+      updatedByAlias: result.updatedByAlias,
+      aliasConflictPrevented: result.aliasConflictPrevented,
       qualityNg: qualityNg,
     );
     _logRoomCatalogUpsertSummary(

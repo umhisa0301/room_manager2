@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:room_manager2/config/product_catalog_config.dart';
 import 'package:room_manager2/models/catalog_product.dart';
+import 'package:room_manager2/models/rakuten_search_item.dart';
 import 'package:room_manager2/repository/product_catalog_repository.dart';
+import 'package:room_manager2/utils/catalog_product_mapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 CatalogProduct _product({
@@ -158,6 +160,178 @@ void main() {
       await repo.upsert(_product(canonicalId: 'shop:7'));
       await repo.clear();
       expect(repo.count(), 0);
+    });
+
+    test('別 canonicalId・別 URL は alias 誤マージせず2件保存される', () async {
+      final existing = catalogProductFromSearchItem(
+        RakutenSearchItem(
+          productId: 'takeya-tea:10000490',
+          itemName: '商品A',
+          itemPrice: 1000,
+          itemUrl: 'https://item.rakuten.co.jp/takeya-tea/10000490/',
+          affiliateUrl: '',
+          imageUrl:
+              'https://thumbnail.image.rakuten.co.jp/@0_mall/takeya-tea/cabinet/a.jpg',
+          shopName: 'TAKEYA',
+          shopCode: 'takeya-tea',
+        ),
+        source: CatalogProductSource.shopDiscovery,
+        sourceTrust: CatalogProductSourceTrust.medium,
+      );
+      final incoming = catalogProductFromSearchItem(
+        RakutenSearchItem(
+          productId: 'takeya-tea:10000383',
+          itemName: '商品B',
+          itemPrice: 2000,
+          itemUrl: 'https://item.rakuten.co.jp/takeya-tea/10000383/',
+          affiliateUrl: '',
+          imageUrl:
+              'https://thumbnail.image.rakuten.co.jp/@0_mall/takeya-tea/cabinet/b.jpg',
+          shopName: 'TAKEYA',
+          shopCode: 'takeya-tea',
+        ),
+        source: CatalogProductSource.shopDiscovery,
+        sourceTrust: CatalogProductSourceTrust.medium,
+      );
+      await repo.upsert(existing);
+      final result = await repo.upsertAll(
+        [incoming],
+        collectItemAuditResults: true,
+      );
+      expect(result.inserted, 1);
+      expect(result.updatedByAlias, 0);
+      expect(result.aliasConflictPrevented, 0);
+      expect(repo.getByCanonicalId('takeya-tea:10000490'), isNotNull);
+      expect(repo.getByCanonicalId('takeya-tea:10000383'), isNotNull);
+      expect(repo.count(), 2);
+    });
+
+    test('レガシー誤 alias があっても別 productId は別商品として insert', () async {
+      await repo.upsert(
+        CatalogProduct(
+          canonicalId: 'takeya-tea:10000490',
+          productId: 'takeya-tea:10000490',
+          itemCode: 'takeya-tea:10000490',
+          itemUrl: 'https://item.rakuten.co.jp/takeya-tea/10000490/',
+          normalizedItemUrl: 'https://item.rakuten.co.jp/takeya-tea/10000490/',
+          itemName: 'A',
+          itemPrice: 1000,
+          imageUrl:
+              'https://thumbnail.image.rakuten.co.jp/@0_mall/takeya-tea/cabinet/a.jpg',
+          shopCode: 'takeya-tea',
+          shopName: 'TAKEYA',
+          shopUrl: '',
+          genreId: '1',
+          genreName: 'g',
+          reviewAverage: 4,
+          reviewCount: 1,
+          affiliateUrl: '',
+          itemCaption: '',
+          source: CatalogProductSource.shopDiscovery,
+          sourceTrust: CatalogProductSourceTrust.medium,
+          fetchedAt: DateTime(2026, 6, 4),
+          lastValidatedAt: DateTime(2026, 6, 4),
+          lastAccessedAt: DateTime(2026, 6, 4),
+          qualityStatus: const CatalogProductQualityStatus(
+            hasImage: true,
+            hasPrice: true,
+            hasValidUrl: true,
+            safe: true,
+          ),
+          aliases: ['takeya-tea:10000490', 'takeya-tea:10000383'],
+          cacheTtlSeconds: ProductCatalogConfig.defaultProductCacheTtlSeconds,
+        ),
+      );
+      final incoming = catalogProductFromSearchItem(
+        RakutenSearchItem(
+          productId: 'takeya-tea:10000383',
+          itemName: 'B',
+          itemPrice: 2000,
+          itemUrl: 'https://item.rakuten.co.jp/takeya-tea/10000383/',
+          affiliateUrl: '',
+          imageUrl:
+              'https://thumbnail.image.rakuten.co.jp/@0_mall/takeya-tea/cabinet/b.jpg',
+          shopName: 'TAKEYA',
+          shopCode: 'takeya-tea',
+        ),
+      );
+      final result = await repo.upsertAll([incoming]);
+      expect(result.aliasConflictPrevented, 1);
+      expect(result.inserted, 1);
+      expect(repo.getByCanonicalId('takeya-tea:10000383'), isNotNull);
+      expect(repo.count(), 2);
+    });
+
+    test('同一 URL なら alias で merge される', () async {
+      const url = 'https://item.rakuten.co.jp/shop/same-item/';
+      await repo.upsert(
+        catalogProductFromSearchItem(
+          RakutenSearchItem(
+            productId: 'shop:aaa',
+            itemName: '既存',
+            itemPrice: 1000,
+            itemUrl: url,
+            affiliateUrl: '',
+            imageUrl:
+                'https://thumbnail.image.rakuten.co.jp/@0_mall/shop/cabinet/a.jpg',
+            shopName: 'ショップ',
+            shopCode: 'shop',
+          ),
+        ),
+      );
+      final incoming = catalogProductFromSearchItem(
+        RakutenSearchItem(
+          productId: 'shop:bbb',
+          itemName: '別ID同一URL',
+          itemPrice: 1000,
+          itemUrl: url,
+          affiliateUrl: '',
+          imageUrl:
+              'https://thumbnail.image.rakuten.co.jp/@0_mall/shop/cabinet/a.jpg',
+          shopName: 'ショップ',
+          shopCode: 'shop',
+        ),
+      );
+      final result = await repo.upsertAll([incoming]);
+      expect(result.inserted, 0);
+      expect(result.updatedByAlias, 1);
+      expect(repo.getByCanonicalId('shop:bbb'), isNull);
+      expect(repo.getByCanonicalId('shop:aaa'), isNotNull);
+    });
+
+    test('バッチ upsert で別商品2件は inserted=2', () async {
+      final items = [
+        catalogProductFromSearchItem(
+          RakutenSearchItem(
+            productId: 'batch:1',
+            itemName: '1',
+            itemPrice: 100,
+            itemUrl: 'https://item.rakuten.co.jp/batch/one/',
+            affiliateUrl: '',
+            imageUrl:
+                'https://thumbnail.image.rakuten.co.jp/@0_mall/batch/cabinet/a.jpg',
+            shopName: 'B',
+            shopCode: 'batch',
+          ),
+        ),
+        catalogProductFromSearchItem(
+          RakutenSearchItem(
+            productId: 'batch:2',
+            itemName: '2',
+            itemPrice: 200,
+            itemUrl: 'https://item.rakuten.co.jp/batch/two/',
+            affiliateUrl: '',
+            imageUrl:
+                'https://thumbnail.image.rakuten.co.jp/@0_mall/batch/cabinet/b.jpg',
+            shopName: 'B',
+            shopCode: 'batch',
+          ),
+        ),
+      ];
+      final result = await repo.upsertAll(items);
+      expect(result.inserted, 2);
+      expect(result.updatedByAlias, 0);
+      expect(repo.count(), 2);
     });
   });
 }

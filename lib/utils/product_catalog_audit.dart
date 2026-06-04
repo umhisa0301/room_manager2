@@ -1,7 +1,8 @@
 import '../config/debug_log_flags.dart';
 import '../models/catalog_product.dart';
 import '../models/shop_pool_candidate.dart';
-import '../repository/product_catalog_repository.dart';
+import '../repository/product_catalog_repository.dart'
+    show ProductCatalogRepository, ProductCatalogUpsertItemResult;
 import '../services/product_catalog_shop_aggregator.dart';
 import 'app_debug_log.dart';
 import 'product_safety_filter.dart';
@@ -10,19 +11,55 @@ import 'product_safety_filter.dart';
 class ShopDiscoveryDetailCatalogItemTraceLine {
   const ShopDiscoveryDetailCatalogItemTraceLine({
     required this.itemCode,
+    required this.inputCanonicalId,
     required this.canonicalId,
     required this.shopCode,
     required this.itemName,
+    required this.normalizedItemUrl,
     required this.saved,
     required this.reason,
+    required this.getByCanonicalIdFound,
+    required this.findByAliasFound,
+    required this.resolvedCanonicalId,
+    required this.resolvedShopCode,
+    required this.sameShopCode,
+    this.aliasMatchedBy = '',
   });
 
   final String itemCode;
+  final String inputCanonicalId;
   final String canonicalId;
   final String shopCode;
   final String itemName;
+  final String normalizedItemUrl;
   final bool saved;
   final String reason;
+  final bool getByCanonicalIdFound;
+  final bool findByAliasFound;
+  final String resolvedCanonicalId;
+  final String resolvedShopCode;
+  final bool sameShopCode;
+  final String aliasMatchedBy;
+}
+
+/// ProductCatalog upsert 1件ごとの merge 結果（最大5件・[CATALOG_AUDIT_LOGS] 時のみ）。
+void logProductCatalogUpsertItemResults(
+  List<ProductCatalogUpsertItemResult> results,
+) {
+  if (!DebugLogFlags.kCatalogAuditLogsEnabled) return;
+  for (final r in results.take(5)) {
+    catalogAuditLog(
+      '[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] '
+      'inputCanonicalId=${r.inputCanonicalId} '
+      'resolvedCanonicalId=${r.resolvedCanonicalId} '
+      'operation=${r.operation} mergeReason=${r.mergeReason} '
+      'inputShopCode=${r.inputShopCode} savedShopCode=${r.savedShopCode} '
+      'aliasMatchedBy=${r.aliasMatchedBy.isEmpty ? '-' : r.aliasMatchedBy} '
+      'productId=${r.productId.isEmpty ? '-' : r.productId} '
+      'normalizedItemUrl=${r.normalizedItemUrl.isEmpty ? '-' : r.normalizedItemUrl} '
+      'saved=${r.saved}',
+    );
+  }
 }
 
 /// ProductCatalog 集計と ShopPool 候補の差分診断（[CATALOG_AUDIT_LOGS] 時のみ）。
@@ -682,8 +719,16 @@ void logShopDiscoveryDetailCatalogItemTrace({
   for (var i = 0; i < traces.length; i++) {
     final t = traces[i];
     buf
-      ..write(' item${i + 1}=itemCode=${t.itemCode},canonicalId=${t.canonicalId},')
+      ..write(' item${i + 1}=itemCode=${t.itemCode},')
+      ..write('inputCanonicalId=${t.inputCanonicalId},canonicalId=${t.canonicalId},')
+      ..write('normalizedItemUrl=${t.normalizedItemUrl},')
       ..write('shopCode=${t.shopCode},itemName=${t.itemName},')
+      ..write('getByCanonicalIdFound=${t.getByCanonicalIdFound},')
+      ..write('findByAliasFound=${t.findByAliasFound},')
+      ..write('resolvedCanonicalId=${t.resolvedCanonicalId},')
+      ..write('resolvedShopCode=${t.resolvedShopCode},')
+      ..write('sameShopCode=${t.sameShopCode},')
+      ..write('aliasMatchedBy=${t.aliasMatchedBy.isEmpty ? '-' : t.aliasMatchedBy},')
       ..write('saved=${t.saved},reason=${t.reason}');
   }
   catalogAuditLog(buf.toString());
