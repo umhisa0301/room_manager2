@@ -1,12 +1,36 @@
+import 'package:flutter/foundation.dart';
+
 import '../config/debug_log_flags.dart';
 import '../config/product_catalog_config.dart';
 import '../models/catalog_product.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../repository/product_catalog_repository.dart';
+import '../services/genre_master_service.dart';
 import '../services/rakuten_item_url_parser.dart';
 import 'app_debug_log.dart';
 import 'catalog_product_keys.dart';
+import 'product_catalog_audit.dart';
+import 'product_catalog_upsert_timing.dart';
+
+/// 保存前に genreId から genreName を補完（API が genreName を返さない場合向け）。
+@visibleForTesting
+String resolveCatalogGenreName({
+  required String genreId,
+  required String genreName,
+}) {
+  final existing = genreName.trim();
+  if (existing.isNotEmpty && existing.toLowerCase() != 'unknown') {
+    return existing;
+  }
+  final gid = genreId.trim();
+  if (gid.isEmpty) return existing;
+  final fromMaster = GenreMasterService.instance.getGenreNameById(gid);
+  if (fromMaster == null) return existing;
+  final resolved = fromMaster.trim();
+  if (resolved.isEmpty || resolved == gid) return existing;
+  return resolved;
+}
 
 /// [RakutenSearchItem] から [CatalogProduct] を生成。
 CatalogProduct catalogProductFromSearchItem(
@@ -47,7 +71,10 @@ CatalogProduct catalogProductFromSearchItem(
     shopName: item.shopName,
     shopUrl: item.shopUrl,
     genreId: item.genreId,
-    genreName: item.genreName,
+    genreName: resolveCatalogGenreName(
+      genreId: item.genreId,
+      genreName: item.genreName,
+    ),
     reviewAverage: item.reviewAverage,
     reviewCount: item.reviewCount,
     affiliateUrl: item.affiliateUrl,
@@ -127,6 +154,8 @@ class ProductCatalogUpsertSummary {
     required this.upserted,
     required this.skipped,
     required this.merged,
+    this.inserted = 0,
+    this.updated = 0,
     this.qualityNg = 0,
   });
 
@@ -135,12 +164,20 @@ class ProductCatalogUpsertSummary {
       upserted = 0,
       skipped = 0,
       merged = 0,
+      inserted = 0,
+      updated = 0,
       qualityNg = 0;
 
   final int attempted;
+
+  /// [ProductCatalogRepository.upsertAll] の inserted + updated（操作件数。ユニーク商品数ではない）。
   final int upserted;
   final int skipped;
+
+  /// upsertAll の updated 件数（同一 canonicalId への merge 含む）。
   final int merged;
+  final int inserted;
+  final int updated;
 
   /// 安全判定 NG のため保存しなかった件数。
   final int qualityNg;
@@ -205,6 +242,8 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromSearchItems(
     upserted: result.inserted + result.updated,
     skipped: skipped + result.skipped,
     merged: result.updated,
+    inserted: result.inserted,
+    updated: result.updated,
     qualityNg: qualityNg,
   );
   if (catalogMode != null && catalogMode.isNotEmpty) {
@@ -245,6 +284,220 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromRecommendItems(
     'qualityNg=${summary.qualityNg} source=todayRecommendation',
   );
   return summary;
+}
+
+/// ショップ発掘で **既に取得済み** の商品を ProductCatalog に蓄積する。
+///
+/// - 追加 API 呼び出しは行わない（[RakutenSearchProvider] の検索結果を渡す）
+/// - [upsertCatalogFromSearchItems] と同様の isSavable / qualityStatus.safe で除外
+/// - source: [CatalogProductSource.shopDiscovery]、sourceTrust: medium
+Future<ProductCatalogUpsertSummary> upsertCatalogFromShopDiscoveryItems(
+  ProductCatalogRepository repository,
+  Iterable<RakutenSearchItem> items, {
+  DateTime? now,
+  String keyword = '',
+}) async {
+  final summary = await upsertCatalogFromSearchItems(
+    repository,
+    items,
+    source: CatalogProductSource.shopDiscovery,
+    sourceTrust: CatalogProductSourceTrust.medium,
+    now: now,
+  );
+  if (!ProductCatalogConfig.kProductCatalogEnabled) {
+    return summary;
+  }
+  ProductCatalogUpsertTimingRegistry.markShopDiscoveryCompleted(
+    catalogCountAfter: repository.count(),
+  );
+  if (DebugLogFlags.kCatalogAuditLogsEnabled) {
+    final kw = keyword.trim();
+    catalogAuditLog(
+      '[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] '
+      'keyword=${kw.isEmpty ? '-' : kw} '
+      'items=${summary.attempted} upserted=${summary.upserted} '
+      'skipped=${summary.skipped} qualityNg=${summary.qualityNg} '
+      'source=shopDiscovery sourceTrust=medium',
+    );
+    logProductCatalogDistributionSummary(repository);
+    ProductCatalogUpsertTimingRegistry.logUpsertTimingIfEnabled();
+  }
+  return summary;
+}
+
+/// ショップ発掘詳細画面で **既に取得済み** の商品を ProductCatalog に蓄積する。
+///
+/// - 追加 API 呼び出しは行わない（詳細画面の initial items / shopCode 検索結果を渡す）
+/// - source: [CatalogProductSource.shopDiscovery]
+/// - [upsertSource]: `initialItems` / `loadedByShopCode`（監査ログ用）
+Future<ProductCatalogUpsertSummary> upsertCatalogFromShopDiscoveryDetailItems(
+  ProductCatalogRepository repository,
+  Iterable<RakutenSearchItem> items, {
+  required String shopCode,
+  required String upsertSource,
+  CatalogProductSourceTrust sourceTrust = CatalogProductSourceTrust.medium,
+  DateTime? now,
+}) async {
+  final summary = await upsertCatalogFromSearchItems(
+    repository,
+    items,
+    source: CatalogProductSource.shopDiscovery,
+    sourceTrust: sourceTrust,
+    now: now,
+  );
+  if (!ProductCatalogConfig.kProductCatalogEnabled) {
+    return summary;
+  }
+  if (DebugLogFlags.kCatalogAuditLogsEnabled) {
+    final code = shopCode.trim();
+    catalogAuditLog(
+      '[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] '
+      'shopCode=${code.isEmpty ? '-' : code} '
+      'source=$upsertSource '
+      'items=${summary.attempted} upserted=${summary.upserted} '
+      'inserted=${summary.inserted} updated=${summary.updated} '
+      'skipped=${summary.skipped} qualityNg=${summary.qualityNg} '
+      'catalogSource=shopDiscoveryDetail catalogTrust=${sourceTrust.name}',
+    );
+    final itemTraces = buildShopDiscoveryDetailCatalogItemTraces(
+      items: items,
+      shopCode: code,
+      repository: repository,
+      source: CatalogProductSource.shopDiscovery,
+      sourceTrust: sourceTrust,
+      now: now,
+    );
+    final savedForShop = repository
+        .getAll()
+        .where((p) => p.shopCode.trim() == code)
+        .length;
+    logShopDiscoveryDetailCatalogItemTrace(
+      shopCode: code,
+      inputItems: summary.attempted,
+      savedForShop: savedForShop,
+      traces: itemTraces,
+    );
+    logShopDiscoveryDetailDepthTrace(
+      repository: repository,
+      shopCode: code,
+      now: now,
+    );
+    logShopDiscoveryDetailPoolTrace(
+      repository: repository,
+      shopCode: code,
+      now: now,
+    );
+    logSavedOrDiscoveryShopDepthAfterUpsert(
+      repository: repository,
+      shopCode: code,
+      now: now,
+    );
+  }
+  return summary;
+}
+
+/// 詳細画面 initialItems の保存結果を商品単位で診断（最大 [maxItems] 件）。
+@visibleForTesting
+List<ShopDiscoveryDetailCatalogItemTraceLine>
+    buildShopDiscoveryDetailCatalogItemTraces({
+  required Iterable<RakutenSearchItem> items,
+  required String shopCode,
+  required ProductCatalogRepository repository,
+  CatalogProductSource source = CatalogProductSource.shopDiscovery,
+  CatalogProductSourceTrust sourceTrust = CatalogProductSourceTrust.medium,
+  DateTime? now,
+  int maxItems = 5,
+}) {
+  final code = shopCode.trim();
+  final seenCanonical = <String>{};
+  final lines = <ShopDiscoveryDetailCatalogItemTraceLine>[];
+
+  for (final item in items.take(maxItems)) {
+    final product = catalogProductFromSearchItem(
+      item,
+      source: source,
+      sourceTrust: sourceTrust,
+      now: now,
+    );
+    final canonicalId = product.canonicalId.trim();
+    final itemCode = item.productId.trim();
+    final itemShopCode = item.shopCode.trim();
+
+    var saved = false;
+    var reason = '-';
+
+    if (!product.isSavable) {
+      reason = 'notSavable';
+    } else if (!product.qualityStatus.safe) {
+      reason = 'qualityUnsafe';
+    } else if (canonicalId.isNotEmpty && seenCanonical.contains(canonicalId)) {
+      reason = 'canonicalDuplicate';
+    } else {
+      if (canonicalId.isNotEmpty) seenCanonical.add(canonicalId);
+      final stored = repository.getByCanonicalId(canonicalId);
+      if (stored == null) {
+        reason = 'notInCatalog';
+      } else if (code.isNotEmpty && stored.shopCode.trim() != code) {
+        reason = 'wrongShopCode';
+      } else {
+        saved = true;
+      }
+    }
+
+    lines.add(
+      ShopDiscoveryDetailCatalogItemTraceLine(
+        itemCode: itemCode.isEmpty ? '-' : itemCode,
+        canonicalId: canonicalId.isEmpty ? '-' : canonicalId,
+        shopCode: itemShopCode.isEmpty ? '-' : itemShopCode,
+        itemName: item.itemName.trim().isEmpty ? '-' : item.itemName.trim(),
+        saved: saved,
+        reason: reason,
+      ),
+    );
+  }
+
+  return lines;
+}
+
+/// 詳細画面 upsert の重複実行防止用 signature（shopCode + productId 昇順）。
+@visibleForTesting
+String shopDiscoveryDetailCatalogItemSignature(
+  Iterable<RakutenSearchItem> items,
+) {
+  final ids = items
+      .map((e) => e.productId.trim())
+      .where((e) => e.isNotEmpty)
+      .toList()
+    ..sort();
+  return ids.join('|');
+}
+
+/// 詳細画面 upsert の重複実行防止（initial / loaded を別管理）。
+class ShopDiscoveryDetailCatalogUpsertGuard {
+  String? _initialSignature;
+  String? _loadedSignature;
+
+  bool shouldUpsertInitial(List<RakutenSearchItem> items) {
+    if (items.isEmpty) return false;
+    final sig = shopDiscoveryDetailCatalogItemSignature(items);
+    if (sig.isEmpty) return false;
+    return _initialSignature != sig;
+  }
+
+  bool shouldUpsertLoaded(List<RakutenSearchItem> items) {
+    if (items.isEmpty) return false;
+    final sig = shopDiscoveryDetailCatalogItemSignature(items);
+    if (sig.isEmpty) return false;
+    return _loadedSignature != sig;
+  }
+
+  void markInitialUpserted(List<RakutenSearchItem> items) {
+    _initialSignature = shopDiscoveryDetailCatalogItemSignature(items);
+  }
+
+  void markLoadedUpserted(List<RakutenSearchItem> items) {
+    _loadedSignature = shopDiscoveryDetailCatalogItemSignature(items);
+  }
 }
 
 /// ROOM 取り込み・補完結果をカタログへ upsert（失敗しても呼び出し元は継続）。
@@ -304,6 +557,8 @@ Future<ProductCatalogUpsertSummary> upsertCatalogFromRoomManagedProducts(
       upserted: result.inserted + result.updated,
       skipped: skipped + result.skipped,
       merged: result.updated,
+      inserted: result.inserted,
+      updated: result.updated,
       qualityNg: qualityNg,
     );
     _logRoomCatalogUpsertSummary(
