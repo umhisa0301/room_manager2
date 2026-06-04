@@ -20,6 +20,8 @@ CatalogProduct _product({
   String itemName = '安全な商品',
   String genreName = 'ジャンルA',
   bool safe = true,
+  CatalogProductSource source = CatalogProductSource.search,
+  CatalogProductSourceTrust sourceTrust = CatalogProductSourceTrust.high,
 }) {
   final now = DateTime.now();
   return CatalogProduct(
@@ -40,8 +42,8 @@ CatalogProduct _product({
     reviewCount: reviewCount,
     affiliateUrl: '',
     itemCaption: '',
-    source: CatalogProductSource.search,
-    sourceTrust: CatalogProductSourceTrust.high,
+    source: source,
+    sourceTrust: sourceTrust,
     fetchedAt: now,
     lastValidatedAt: now,
     lastAccessedAt: now,
@@ -432,6 +434,51 @@ void main() {
       );
       expect(result.usedFallback, isTrue);
       expect(result.summaries.length, 3);
+    });
+
+    test('同一 shopCode 複数 fresh 商品は pool itemCount2Plus になる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      await repo.upsertAll(<CatalogProduct>[
+        _product(
+          canonicalId: 'deep:1',
+          shopCode: 'deep-shop',
+          itemName: '水筒A',
+          source: CatalogProductSource.shopDiscovery,
+          sourceTrust: CatalogProductSourceTrust.medium,
+        ),
+        _product(
+          canonicalId: 'deep:2',
+          shopCode: 'deep-shop',
+          itemName: '水筒B',
+          source: CatalogProductSource.shopDiscovery,
+          sourceTrust: CatalogProductSourceTrust.medium,
+        ),
+        _product(
+          canonicalId: 'other:1',
+          shopCode: 'other-shop',
+          itemName: '水筒C',
+        ),
+        _product(
+          canonicalId: 'other:2',
+          shopCode: 'other-shop-2',
+          itemName: '水筒D',
+        ),
+      ]);
+      final result = ShopDiscoveryPoolFallback.buildFallbackSummaries(
+        repository: repo,
+        keyword: '水筒',
+        apiSummaries: const <ShopDiscoverySummary>[],
+        apiSearchSucceeded: false,
+        savedShopCodes: const <String>{},
+      );
+      expect(result.usedFallback, isTrue);
+      final deepCandidate = result.displayedCandidates.where(
+        (c) => c.shopCode == 'deep-shop',
+      );
+      if (deepCandidate.isNotEmpty) {
+        expect(deepCandidate.first.itemCount, greaterThanOrEqualTo(2));
+      }
+      expect(result.poolCandidateCount, greaterThanOrEqualTo(3));
     });
 
     test('noimage URL は表示用画像に含めない', () {

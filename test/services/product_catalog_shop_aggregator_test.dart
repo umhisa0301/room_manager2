@@ -18,6 +18,7 @@ CatalogProduct _product({
   double reviewAverage = 4.5,
   int reviewCount = 20,
   CatalogProductSourceTrust sourceTrust = CatalogProductSourceTrust.high,
+  CatalogProductSource source = CatalogProductSource.search,
   DateTime? lastValidatedAt,
   bool safe = true,
   String itemName = '安全な商品名',
@@ -41,7 +42,7 @@ CatalogProduct _product({
     reviewCount: reviewCount,
     affiliateUrl: '',
     itemCaption: '',
-    source: CatalogProductSource.search,
+    source: source,
     sourceTrust: sourceTrust,
     fetchedAt: now,
     lastValidatedAt: now,
@@ -85,6 +86,21 @@ void main() {
       expect(result.candidates.length, 2);
       final codes = result.candidates.map((e) => e.shopCode).toSet();
       expect(codes, containsAll(['shop-a', 'shop-b']));
+    });
+
+    test('同一 shopCode 複数商品で itemCount2Plus になる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      await repo.upsertAll([
+        _product(canonicalId: 'deep:1', shopCode: 'deep-shop'),
+        _product(canonicalId: 'deep:2', shopCode: 'deep-shop'),
+      ]);
+      final result = ProductCatalogShopAggregator.aggregate(repository: repo);
+      final candidate = result.candidates.singleWhere(
+        (e) => e.shopCode == 'deep-shop',
+      );
+      expect(candidate.itemCount, 2);
+      expect(candidate.safeItemCount, 2);
+      expect(candidate.sampleProductIds.length, greaterThanOrEqualTo(2));
     });
 
     test('shopCode 空は除外', () async {
@@ -271,6 +287,46 @@ void main() {
       );
       expect(result.candidates.map((e) => e.shopCode), ['other-shop']);
       expect(result.stats.savedExcluded, 1);
+    });
+
+    test('shopDiscovery 由来商品でも shopCode 単位に集計できる', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      await repo.upsertAll([
+        _product(
+          canonicalId: 'sd:1',
+          shopCode: 'discovery-shop',
+          source: CatalogProductSource.shopDiscovery,
+          sourceTrust: CatalogProductSourceTrust.medium,
+        ),
+        _product(
+          canonicalId: 'sd:2',
+          shopCode: 'discovery-shop',
+          source: CatalogProductSource.shopDiscovery,
+          sourceTrust: CatalogProductSourceTrust.medium,
+        ),
+      ]);
+      final result = ProductCatalogShopAggregator.aggregate(repository: repo);
+      final candidate = result.candidates.singleWhere(
+        (e) => e.shopCode == 'discovery-shop',
+      );
+      expect(candidate.itemCount, 2);
+      expect(candidate.sourceProductIds.length, 2);
+      expect(candidate.sampleProductIds.length, 2);
+    });
+
+    test('stale でない medium 商品は aggregator から除外されない', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      await repo.upsert(
+        _product(
+          canonicalId: 'med:1',
+          shopCode: 'medium-shop',
+          source: CatalogProductSource.shopDiscovery,
+          sourceTrust: CatalogProductSourceTrust.medium,
+        ),
+      );
+      final result = ProductCatalogShopAggregator.aggregate(repository: repo);
+      expect(result.candidates.map((e) => e.shopCode), ['medium-shop']);
+      expect(result.stats.lowTrustExcluded, 0);
     });
 
     test('未確認 shopName は表示名に使わない', () async {

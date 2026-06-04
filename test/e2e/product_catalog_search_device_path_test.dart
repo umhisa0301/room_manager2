@@ -148,7 +148,7 @@ void main() {
       );
     });
 
-    test('shopDiscovery はカタログ upsert しない', () async {
+    test('shopDiscovery でも ProductCatalog upsert が実行される', () async {
       if (!ProductCatalogConfig.kProductCatalogEnabled) return;
 
       provider = RakutenSearchProvider(
@@ -165,7 +165,11 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 100));
 
       expect(provider.status, RakutenSearchStatus.success);
-      expect(catalog.count(), 0);
+      expect(catalog.count(), 1);
+      expect(
+        catalog.getByCanonicalId('shop:item001')?.source,
+        CatalogProductSource.shopDiscovery,
+      );
     });
   });
 }

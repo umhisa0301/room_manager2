@@ -1,16 +1,22 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/catalog_product.dart';
 import '../models/rakuten_search_item.dart';
 import '../models/shop_discovery_summary.dart';
 import '../models/rakuten_product_search_condition.dart';
 import '../navigation/rakuten_search_navigator.dart';
 import '../repository/genre_master_repository.dart';
+import '../repository/product_catalog_repository.dart';
 import '../repository/rakuten_search_repository.dart';
 import '../services/app_action_service.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../utils/rakuten_product_genre_display.dart';
+import '../utils/catalog_product_mapper.dart';
+import '../utils/product_catalog_audit.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
@@ -55,6 +61,9 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
   /// ジャンルAPI解決後の表示名（キーは genreId 文字列）。
   Map<String, String> _genreLabels = const {};
 
+  final ShopDiscoveryDetailCatalogUpsertGuard _catalogUpsertGuard =
+      ShopDiscoveryDetailCatalogUpsertGuard();
+
   bool get _shouldLoadItemsFromShopCode =>
       widget.items.isEmpty && widget.summary.shopKey.trim().isNotEmpty;
 
@@ -66,11 +75,82 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
       if (!mounted) return;
       context.read<SavedShopProvider>().markViewed(widget.summary.shopKey);
       if (_shouldLoadItemsFromShopCode) {
-        _loadItemsFromShopCode();
+        unawaited(_loadItemsFromShopCode());
       } else {
-        _prefetchGenreLabelsFor(_items);
+        unawaited(_prepareInitialItems());
       }
     });
+  }
+
+  Future<void> _prepareInitialItems() async {
+    await _prefetchGenreLabelsFor(_items);
+    if (!mounted) return;
+    await _upsertItemsToProductCatalog(
+      _items,
+      upsertSource: 'initialItems',
+      sourceTrust: CatalogProductSourceTrust.medium,
+    );
+  }
+
+  ProductCatalogRepository? _readProductCatalogRepository() {
+    try {
+      return context.read<ProductCatalogRepository>();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> _upsertItemsToProductCatalog(
+    List<RakutenSearchItem> items, {
+    required String upsertSource,
+    required CatalogProductSourceTrust sourceTrust,
+  }) async {
+    if (items.isEmpty) {
+      logShopDiscoveryDetailCatalogAudit(
+        repository: _readProductCatalogRepository(),
+        shopCode: widget.summary.shopKey,
+        itemsFromSearch: 0,
+        wouldFetchFromApiIfEmpty: _shouldLoadItemsFromShopCode,
+        catalogUpsertOnOpen: false,
+      );
+      return;
+    }
+
+    final shouldUpsert = upsertSource == 'loadedByShopCode'
+        ? _catalogUpsertGuard.shouldUpsertLoaded(items)
+        : _catalogUpsertGuard.shouldUpsertInitial(items);
+    if (!shouldUpsert) return;
+
+    final repo = _readProductCatalogRepository();
+    if (repo == null) return;
+
+    var upserted = 0;
+    try {
+      final summary = await upsertCatalogFromShopDiscoveryDetailItems(
+        repo,
+        items,
+        shopCode: widget.summary.shopKey,
+        upsertSource: upsertSource,
+        sourceTrust: sourceTrust,
+      );
+      upserted = summary.upserted;
+      if (upsertSource == 'loadedByShopCode') {
+        _catalogUpsertGuard.markLoadedUpserted(items);
+      } else {
+        _catalogUpsertGuard.markInitialUpserted(items);
+      }
+    } catch (_) {
+      // upsert 失敗でも詳細画面は継続
+    }
+
+    if (!mounted) return;
+    logShopDiscoveryDetailCatalogAudit(
+      repository: repo,
+      shopCode: widget.summary.shopKey,
+      itemsFromSearch: items.length,
+      wouldFetchFromApiIfEmpty: _shouldLoadItemsFromShopCode,
+      catalogUpsertOnOpen: upserted > 0,
+    );
   }
 
   @override
@@ -128,6 +208,12 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
         _shopItemsLoading = false;
       });
       await _prefetchGenreLabelsFor(_items);
+      if (!mounted) return;
+      await _upsertItemsToProductCatalog(
+        _items,
+        upsertSource: 'loadedByShopCode',
+        sourceTrust: CatalogProductSourceTrust.high,
+      );
     } catch (e) {
       if (!mounted) return;
       setState(() {

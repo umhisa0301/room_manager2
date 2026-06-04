@@ -1,0 +1,126 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-04 11:14:42
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: PRODUCT_CATALOG_ENABLED=true; SHOP_CATALOG_ENABLED=true; CATALOG_AUDIT_LOGS=true; SHOP_DISCOVERY_FORCE_API_FAILURE_FOR_TEST=true
+Selected device ID: emulator-5554
+Device manufacturer: Google
+Device model: sdk_gphone64_x86_64
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : emulator-5554
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260604_111442.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260604_111442.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260604_111442.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260604_111442.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260604_111442.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260604_111442
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260604_111442\terminal_output_20260604_111442.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 45388).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d emulator-5554 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID= --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true --dart-define=SHOP_DISCOVERY_FORCE_API_FAILURE_FOR_TEST=true
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on sdk gphone64 x86 64 in debug mode...
+Running Gradle task 'assembleDebug'...                             59.8s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.5s
+D/FlutterJNI(14894): Beginning load of flutter...
+D/FlutterJNI(14894): flutter (null) was loaded normally!
+I/flutter (14894): [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).
+Syncing files to device sdk gphone64 x86 64...                     132ms
+I/flutter (14894): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (14894): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+h List all available interactive commands.
+q Quit (terminate the application on the device).
+
+A Dart VM Service on sdk gphone64 x86 64 is available at: http://127.0.0.1:55777/T9AlxGCDWGE=/
+D/ProfileInstaller(14894): Installing profile for com.stepbytestudio.room_manager2
+I/Choreographer(14894): Skipped 144 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on sdk gphone64 x86 64 is available at: http://127.0.0.1:9103?uri=http://127.0.0.1:55777/T9AlxGCDWGE=/
+I/WindowExtensionsImpl(14894): Initializing Window Extensions, vendor API level=6, activity embedding enabled=true
+W/HWUI    (14894): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    (14894): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4(14894): mapper 4.x is not supported
+I/flutter (14894): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/o.room_manager2(14894): Compiler allocated 5174KB to compile void android.view.ViewRootImpl.performTraversals()
+I/flutter (14894): [ONBOARDING_UI] route=legal termsAccepted=false initialSetupCompleted=false initialSetupSkipped=false missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=false roomUrlValidationResult=empty roomProfileExists=skipped
+I/Choreographer(14894): Skipped 426 frames!  The application may be doing too much work on its main thread.
+I/HWUI    (14894): Davey! duration=7282ms; Flags=1, FrameTimelineVsyncId=1533835, IntendedVsync=10977290773966, Vsync=10984390773682, InputEventId=0, HandleInputStart=10984403282400, AnimationStart=10984403318700, PerformTraversalsStart=10984403365100, DrawStart=10984434880600, FrameDeadline=10977307440632, FrameInterval=10984400916200, FrameStartTime=16666666, SyncQueued=10984446448700, SyncStart=10984447757800, IssueDrawCommandsStart=10984466687800, SwapBuffers=10984529052300, FrameCompleted=10984574352900, DequeueBufferDuration=33901700, QueueBufferDuration=722700, GpuCompleted=10984558560600, SwapBuffersCompleted=10984574352900, DisplayPresentTime=0, CommandSubmissionCompleted=10984529052300, 
+I/o.room_manager2(14894): Background concurrent mark compact GC freed 4943KB AllocSpace bytes, 3(60KB) LOS objects, 49% free, 2784KB/5568KB, paused 1.058ms,48.071ms total 323.425ms
+I/WebViewFactory(14894): Loading com.google.android.webview version 145.0.7632.159 (code 763215908)
+W/ResourcesManager(14894): Found a null ResourcesImpl, skipped.
+V/ResourcesManager(14894): The following library key has been added: ResourcesKey{ mHash=1ec83853 mResDir=null mSplitDirs=[] mOverlayDirs=[/product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk,/data/resource-cache/com.android.systemui-neutral-iTLv.frro,/data/resource-cache/com.android.systemui-accent-V4ZI.frro,/data/resource-cache/com.android.systemui-dynamic-0QeH.frro] mLibDirs=[/data/app/~~swhICQmtLf4WQFdIWFCOTA==/com.google.android.webview-CSHjUglb0EqCjZDVUmmVAg==/base.apk,/system/framework/android.test.base.jar,/system_ext/framework/androidx.window.extensions.jar] mDisplayId=0 mOverrideConfig=v35 mCompatInfo={480dpi always-compat} mLoaders=[]}
+D/ApplicationLoaders(14894): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+D/ApplicationLoaders(14894): Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+W/o.room_manager2(14894): Loading /data/app/~~swhICQmtLf4WQFdIWFCOTA==/com.google.android.webview-CSHjUglb0EqCjZDVUmmVAg==/oat/x86_64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(14894): Configuring clns-8 for other apk /data/app/~~swhICQmtLf4WQFdIWFCOTA==/com.google.android.webview-CSHjUglb0EqCjZDVUmmVAg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~swhICQmtLf4WQFdIWFCOTA==/com.google.android.webview-CSHjUglb0EqCjZDVUmmVAg==/lib/x86_64:/data/app/~~swhICQmtLf4WQFdIWFCOTA==/com.google.android.webview-CSHjUglb0EqCjZDVUmmVAg==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(14894): version=145.0.7632.159 (763215908) minSdkVersion=29 multiprocess=true packageId=2 splits=<none>
+D/nativeloader(14894): Load /data/app/~~swhICQmtLf4WQFdIWFCOTA==/com.google.android.webview-CSHjUglb0EqCjZDVUmmVAg==/base.apk!/lib/x86_64/libwebviewchromium.so using ns clns-8 from class loader (caller=/data/app/~~swhICQmtLf4WQFdIWFCOTA==/com.google.android.webview-CSHjUglb0EqCjZDVUmmVAg==/base.apk): ok
+D/nativeloader(14894): Load /system/lib64/libwebviewchromium_plat_support.so using ns clns-8 from class loader (caller=/data/app/~~swhICQmtLf4WQFdIWFCOTA==/com.google.android.webview-CSHjUglb0EqCjZDVUmmVAg==/base.apk): ok
+I/chromium(14894): [0604/021622.074758:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/chromium(14894): [0604/021622.091356:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(14894): Successfully loaded native library
+I/cr_CachingUmaRecorder(14894): Flushed 20 samples from 20 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(14894): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(14894): #registerProvider() provider:WV.qk@74a96b2 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(14894): #setManagerAndSource() 0
+I/cr_DisplayManager(14894): Is Display Topology available: false
+I/cr_CombinedPProvider(14894): #linkNativeInternal() 1
+I/cr_AppResProvider(14894): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(14894): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(14894): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(14894): #flushPolicies()
+W/chromium(14894): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(14894): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 20971520
+I/CameraManagerGlobal(14894): Connecting to camera service
+I/PlatformViewsController(14894): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(14894): PlatformView is using SurfaceProducer backend
+D/EGL_emulation(14894): app_time_stats: avg=2017.32ms min=92.10ms max=3942.53ms count=2
+E/platform(14894): Failed to open rendernode: No such file or directory
+D/vulkan  (14894): searching for layers in '/data/app/~~yJ4xlRjKCDpjGbnh6wzipw==/com.stepbytestudio.room_manager2-Ky2_nXRraUgYlCzoRvhPiw==/lib/x86_64'
+D/vulkan  (14894): searching for layers in '/data/app/~~yJ4xlRjKCDpjGbnh6wzipw==/com.stepbytestudio.room_manager2-Ky2_nXRraUgYlCzoRvhPiw==/base.apk!/lib/x86_64'
+I/Choreographer(14894): Skipped 32 frames!  The application may be doing too much work on its main thread.
+D/EGL_emulation(14894): app_time_stats: avg=296.03ms min=43.57ms max=557.52ms count=4
+D/EGL_emulation(14894): app_time_stats: avg=747.38ms min=29.26ms max=4070.58ms count=7
+E/cr_AwSupervisedUserDel(14894): Unable to determine if restricted content blocking is required. Exception: java.util.concurrent.TimeoutException
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.

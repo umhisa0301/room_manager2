@@ -5,6 +5,7 @@ import '../services/shop_discovery_pool_fallback.dart';
 import '../services/shop_pool_keyword_relevance.dart';
 import 'app_debug_log.dart';
 import 'product_catalog_audit.dart';
+import 'product_catalog_upsert_timing.dart';
 
 /// ShopPool 候補の厚み・ジャンル分布（[CATALOG_AUDIT_LOGS] 時のみ）。
 void logShopPoolDepthSummary({
@@ -81,6 +82,24 @@ void logShopPoolDepthSummary({
   );
 }
 
+/// ShopPool 候補集計後の厚み診断（repository 必須）。
+void logShopPoolDepthSummaryWithDiagnostics({
+  required String source,
+  required List<ShopPoolCandidate> candidates,
+  required ProductCatalogRepository repository,
+  Set<String> excludeSavedShopCodes = const {},
+}) {
+  logShopPoolDepthSummary(source: source, candidates: candidates);
+  logShopPoolAggregationDiagnostics(
+    repository: repository,
+    excludeSavedShopCodes: excludeSavedShopCodes,
+  );
+  ProductCatalogUpsertTimingRegistry.logReadTimingIfEnabled(
+    phase: 'fallbackAggregate',
+    catalogCountAtRead: repository.count(),
+  );
+}
+
 /// fallback 適用時の keyword / catalog 参照診断（[CATALOG_AUDIT_LOGS] 時のみ）。
 void logShopPoolFallbackDiag({
   required ProductCatalogRepository repository,
@@ -89,6 +108,11 @@ void logShopPoolFallbackDiag({
 }) {
   if (!DebugLogFlags.kCatalogAuditLogsEnabled) return;
   if (!fallback.usedFallback) return;
+
+  ProductCatalogUpsertTimingRegistry.logReadTimingIfEnabled(
+    phase: 'fallbackDiag',
+    catalogCountAtRead: repository.count(),
+  );
 
   logProductCatalogDistributionSummary(repository);
 

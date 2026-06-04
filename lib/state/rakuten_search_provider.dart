@@ -15,6 +15,8 @@ import '../services/rakuten_genre_master_service.dart';
 import '../utils/app_debug_log.dart';
 import '../utils/catalog_product_mapper.dart';
 import '../utils/rakuten_product_genre_display.dart';
+import '../utils/product_catalog_audit.dart';
+import '../utils/product_catalog_upsert_timing.dart';
 import '../utils/shop_pool_audit.dart';
 
 enum RakutenSearchStatus { idle, loading, success, error }
@@ -364,7 +366,12 @@ class RakutenSearchProvider extends ChangeNotifier {
         'affiliateUrlあり: $withAff / ${fetched.length} 件',
       );
       unawaited(_prefetchGenreLabels(fetched));
-      _scheduleProductCatalogUpsert(fetched, modeTag: modeTag);
+      _scheduleProductCatalogUpsert(
+        fetched,
+        modeTag: modeTag,
+        keyword: normalized.keyword,
+        shopCode: normalized.shopCode,
+      );
       if (modeTag == 'savedShop' || modeTag == 'shopDiscovery') {
         logShopPoolSummaryFromProductCatalog(
           productCatalogRepository: _productCatalogRepository,
@@ -510,20 +517,48 @@ class RakutenSearchProvider extends ChangeNotifier {
   void _scheduleProductCatalogUpsert(
     List<RakutenSearchItem> items, {
     required String modeTag,
+    String keyword = '',
+    String? shopCode,
   }) {
     final repo = _productCatalogRepository;
     if (repo == null || items.isEmpty) return;
-    if (modeTag == 'shopDiscovery') return;
+    if (modeTag == 'shopDiscovery') {
+      ProductCatalogUpsertTimingRegistry.markShopDiscoveryScheduled(
+        catalogCountBefore: repo.count(),
+      );
+      unawaited(() async {
+        try {
+          await upsertCatalogFromShopDiscoveryItems(
+            repo,
+            items,
+            keyword: keyword,
+          );
+        } catch (e) {
+          importantDebugLog(
+            '[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT] failed: $e',
+          );
+        }
+      }());
+      return;
+    }
     final catalogMode = catalogUpsertModeLabelForSearchModeTag(modeTag);
     unawaited(() async {
       try {
-        await upsertCatalogFromSearchItems(
+        final summary = await upsertCatalogFromSearchItems(
           repo,
           items,
           source: CatalogProductSource.search,
           sourceTrust: CatalogProductSourceTrust.high,
           catalogMode: catalogMode,
         );
+        if (modeTag == 'savedShop') {
+          logSavedShopCatalogDepthSummary(
+            shopCode: shopCode ?? '',
+            items: summary.attempted,
+            upserted: summary.upserted,
+            repository: repo,
+          );
+        }
       } catch (e) {
         importantDebugLog(
           '[PRODUCT_CATALOG_SEARCH_UPSERT] failed mode=$catalogMode: $e',

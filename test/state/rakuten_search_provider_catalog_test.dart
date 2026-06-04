@@ -122,7 +122,29 @@ void main() {
       expect(provider.results.length, 1);
     });
 
-    test('shopDiscovery 検索は成功しカタログ経路を使わない', () async {
+    test('shopDiscovery 検索成功後も結果件数・並び順は API リストのまま', () async {
+      final items = [_sampleItem(id: 'shop:a'), _sampleItem(id: 'shop:b')];
+      final catalog = await newCatalogRepo();
+      final provider = RakutenSearchProvider(
+        repository: _StubManagedSearchRepository(items),
+        productCatalogRepository: catalog,
+      );
+      final sessionId = provider.beginSearchSession(modeTag: 'shopDiscovery');
+      await provider.searchWithCondition(
+        const RakutenProductSearchCondition(keyword: '水筒').normalized(),
+        excludeRegisteredProductIds: const {},
+        sessionId: sessionId,
+        modeTag: 'shopDiscovery',
+      );
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(provider.status, RakutenSearchStatus.success);
+      expect(provider.results.length, 2);
+      expect(provider.results[0].productId, 'shop:a');
+      expect(provider.results[1].productId, 'shop:b');
+    });
+
+    test('shopDiscovery でも ProductCatalog upsert が実行される', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
       final catalog = await newCatalogRepo();
       final provider = RakutenSearchProvider(
         repository: _StubManagedSearchRepository([_sampleItem()]),
@@ -130,16 +152,38 @@ void main() {
       );
       final sessionId = provider.beginSearchSession(modeTag: 'shopDiscovery');
       await provider.searchWithCondition(
-        const RakutenProductSearchCondition(keyword: 'おもちゃ').normalized(),
+        const RakutenProductSearchCondition(keyword: '水筒').normalized(),
         excludeRegisteredProductIds: const {},
         sessionId: sessionId,
         modeTag: 'shopDiscovery',
       );
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(provider.status, RakutenSearchStatus.success);
+      expect(catalog.count(), 1);
+      final stored = catalog.getByCanonicalId('shop:item001');
+      expect(stored?.source, CatalogProductSource.shopDiscovery);
+      expect(stored?.sourceTrust, CatalogProductSourceTrust.medium);
+    });
+
+    test('shopDiscovery カタログ upsert 失敗でも検索は成功のまま', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final catalog = _ThrowingProductCatalogRepository(prefs);
+      final provider = RakutenSearchProvider(
+        repository: _StubManagedSearchRepository([_sampleItem()]),
+        productCatalogRepository: catalog,
+      );
+      final sessionId = provider.beginSearchSession(modeTag: 'shopDiscovery');
+      await provider.searchWithCondition(
+        const RakutenProductSearchCondition(keyword: '水筒').normalized(),
+        excludeRegisteredProductIds: const {},
+        sessionId: sessionId,
+        modeTag: 'shopDiscovery',
+      );
+      await Future<void>.delayed(const Duration(milliseconds: 50));
       expect(provider.status, RakutenSearchStatus.success);
       expect(provider.results.length, 1);
-      if (ProductCatalogConfig.kProductCatalogEnabled) {
-        expect(catalog.count(), 0);
-      }
     });
   });
 }

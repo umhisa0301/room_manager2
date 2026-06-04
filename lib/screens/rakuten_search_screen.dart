@@ -56,6 +56,7 @@ import '../widgets/shop_discovery_card.dart';
 import '../widgets/search_bulk_selection_header.dart';
 import '../widgets/search_mode_segment_bar.dart';
 import '../utils/app_debug_log.dart';
+import '../utils/product_catalog_audit.dart';
 import '../utils/search_tab_ui_audit_log.dart';
 import 'add_candidate_from_url_screen.dart';
 import 'saved_shops_screen.dart';
@@ -5894,6 +5895,20 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
             .map((e) => e.shopId.trim())
             .where((e) => e.isNotEmpty)
             .toSet();
+        ProductCatalogRepository? productCatalogForEnrich;
+        try {
+          productCatalogForEnrich = context.read<ProductCatalogRepository>();
+        } catch (_) {
+          productCatalogForEnrich = null;
+        }
+        if (productCatalogForEnrich != null) {
+          logShopDiscoveryEnrichmentOpportunity(
+            repository: productCatalogForEnrich,
+            displayedShopCodes: summaries.map((e) => e.shopKey),
+            keyword: _shopDiscoveryKeywordController.text.trim(),
+            excludeSavedShopCodes: savedCodes,
+          );
+        }
         final apiSucceededAndHasSummaries = summaries.isNotEmpty;
         if (apiSucceededAndHasSummaries) {
           _logShopDiscoveryPoolComparison(

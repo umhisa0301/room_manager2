@@ -182,7 +182,12 @@ abstract final class ShopDiscoveryPoolFallback {
       demotedWeak: selection.demotedWeak,
     );
 
-    logShopPoolDepthSummary(source: 'shopDiscovery', candidates: candidates);
+    logShopPoolDepthSummaryWithDiagnostics(
+      source: 'shopDiscovery',
+      candidates: candidates,
+      repository: repository,
+      excludeSavedShopCodes: savedShopCodes,
+    );
 
     final result = ShopDiscoveryPoolFallbackResult(
       summaries: canFallback ? converted : const <ShopDiscoverySummary>[],
