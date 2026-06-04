@@ -20,6 +20,7 @@ import '../repository/shop_catalog_repository.dart';
 import '../services/rakuten_genre_master_service.dart';
 import '../services/product_catalog_shop_aggregator.dart';
 import '../services/shop_discovery_pool_comparator.dart';
+import '../services/shop_discovery_pool_api_compare.dart';
 import '../services/shop_discovery_pool_fallback.dart';
 import '../services/shop_discovery_pool_quality_report.dart';
 import '../services/shop_pool_keyword_relevance.dart';
@@ -5702,13 +5703,18 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
     final catalogEntries =
         shopCatalogRepository?.getAll() ?? const <ShopCatalogEntry>[];
-    final comparison = ShopDiscoveryPoolComparator.compare(
+    final keyword = _shopDiscoveryKeywordController.text.trim();
+    final apiCompare = ShopDiscoveryPoolApiCompare.build(
+      keyword: keyword,
       apiSummaries: apiSummaries,
       poolCandidates: poolResult.candidates,
       catalogEntries: catalogEntries,
+      repository: productCatalogRepository,
       savedShopCodes: savedSet,
+      aggregateStatsSavedExcluded: poolResult.stats.savedExcluded,
+      aggregateStatsUnsafeExcluded: poolResult.stats.unsafeExcluded,
     );
-    final keyword = _shopDiscoveryKeywordController.text.trim();
+    final comparison = apiCompare.comparison;
     final signature = ShopDiscoveryPoolComparator.buildDedupeSignature(
       mode: 'shopDiscovery',
       keyword: keyword,
@@ -5744,6 +5750,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         'poolTop=${comparison.topPoolShops.isEmpty ? '-' : comparison.topPoolShops.join(',')} '
         'overlapTop=${comparison.topOverlapShops.isEmpty ? '-' : comparison.topOverlapShops.join(',')}',
       );
+      catalogAuditLog(apiCompare.buildQualityLogLine());
+      catalogAuditLog(apiCompare.buildTopLogLine());
     });
   }
 

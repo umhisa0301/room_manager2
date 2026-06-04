@@ -216,6 +216,67 @@ abstract final class ShopDiscoveryPoolFallback {
     return result;
   }
 
+  /// 通常 API 成功時の API vs ShopPool 比較監査用（fallback と同系の選定）。
+  static ShopDiscoveryPoolCompareAuditData? buildCompareAuditData({
+    required ProductCatalogRepository? repository,
+    required String keyword,
+    required List<ShopPoolCandidate> candidates,
+    int maxCount = 10,
+  }) {
+    if (repository == null) return null;
+
+    final ranked = _rankForKeyword(
+      repository: repository,
+      keyword: keyword,
+      candidates: candidates,
+    );
+    final selection = _selectForDisplay(
+      ranked: ranked,
+      maxDisplayCount: maxCount,
+    );
+
+    var skippedInvalidCount = 0;
+    final summaries = <ShopDiscoverySummary>[];
+    final displayedCandidates = <ShopPoolCandidate>[];
+    final relevanceByShopCode = <String, ShopPoolKeywordRelevanceResult>{};
+
+    for (var i = 0; i < selection.selected.length; i++) {
+      final entry = selection.selected[i];
+      final rank = i + 1;
+      final summary = _toSummary(
+        repository: repository,
+        candidate: entry.candidate,
+        keyword: keyword,
+        rank: rank,
+        relevance: entry.relevance,
+      );
+      if (summary == null) {
+        skippedInvalidCount++;
+        continue;
+      }
+      summaries.add(summary);
+      displayedCandidates.add(entry.candidate);
+      relevanceByShopCode[summary.shopKey] = entry.relevance;
+    }
+
+    final relevanceStats = _buildRelevanceStats(
+      relevanceByShopCode: relevanceByShopCode,
+      fallbackCount: summaries.length,
+      excludedNoRelevance: selection.excludedNoRelevance,
+      demotedWeak: selection.demotedWeak,
+    );
+
+    return ShopDiscoveryPoolCompareAuditData(
+      keyword: keyword,
+      poolTopSummaries: summaries,
+      displayedCandidates: displayedCandidates,
+      relevanceByShopCode: relevanceByShopCode,
+      relevanceStats: relevanceStats,
+      poolCandidateCount: candidates.length,
+      skippedInvalidCount: skippedInvalidCount,
+    );
+  }
+
   static ShopDiscoveryPoolFallbackResult _emptyResult({
     required String keyword,
     required String reason,
@@ -531,6 +592,27 @@ abstract final class ShopDiscoveryPoolFallback {
     if (RoomImportProductImage.isRejectedProductImageUrl(t)) return '';
     return t;
   }
+}
+
+/// 通常 API 成功時の監査用（UI 非表示）。keyword 適用後の上位候補。
+class ShopDiscoveryPoolCompareAuditData {
+  const ShopDiscoveryPoolCompareAuditData({
+    required this.keyword,
+    required this.poolTopSummaries,
+    required this.displayedCandidates,
+    required this.relevanceByShopCode,
+    required this.relevanceStats,
+    required this.poolCandidateCount,
+    required this.skippedInvalidCount,
+  });
+
+  final String keyword;
+  final List<ShopDiscoverySummary> poolTopSummaries;
+  final List<ShopPoolCandidate> displayedCandidates;
+  final Map<String, ShopPoolKeywordRelevanceResult> relevanceByShopCode;
+  final ShopPoolFallbackRelevanceStats relevanceStats;
+  final int poolCandidateCount;
+  final int skippedInvalidCount;
 }
 
 class _SelectionResult {

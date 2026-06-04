@@ -117,10 +117,41 @@ class ShopPoolFallbackQualityReport {
     ShopDiscoveryPoolFallbackResult fallback,
   ) {
     if (!fallback.usedFallback) return null;
-    final summaries = fallback.summaries;
-    final stats = fallback.relevanceStats;
+    return fromCompareAudit(
+      ShopDiscoveryPoolCompareAuditData(
+        keyword: fallback.keyword,
+        poolTopSummaries: fallback.summaries,
+        displayedCandidates: fallback.displayedCandidates,
+        relevanceByShopCode: fallback.relevanceByShopCode,
+        relevanceStats: fallback.relevanceStats,
+        poolCandidateCount: fallback.poolCandidateCount,
+        skippedInvalidCount: fallback.skippedInvalidCount,
+      ),
+      savedExcluded: fallback.savedExcludedCount,
+      invalidExcluded: fallback.skippedInvalidCount,
+      unsafeExcluded: fallback.unsafeExcludedCount,
+      source: fallback.source,
+    );
+  }
+
+  /// 通常 API 成功時の ShopPool 上位候補品質（監査のみ）。
+  static ShopPoolFallbackQualityReport? fromCompareAudit(
+    ShopDiscoveryPoolCompareAuditData data, {
+    int savedExcluded = 0,
+    int invalidExcluded = 0,
+    int unsafeExcluded = 0,
+    String source = 'shopPoolCompareAudit',
+  }) {
+    final summaries = data.poolTopSummaries;
+    final stats = data.relevanceStats;
     if (summaries.isEmpty) {
-      return _emptyReport(fallback, stats);
+      return _emptyCompareAuditReport(
+        data: data,
+        savedExcluded: savedExcluded,
+        invalidExcluded: invalidExcluded,
+        unsafeExcluded: unsafeExcluded,
+        source: source,
+      );
     }
 
     var scoreSum = 0.0;
@@ -138,7 +169,7 @@ class ShopPoolFallbackQualityReport {
     var duplicateShopCount = 0;
     final genreCounts = <String, int>{};
     final displayedByCode = <String, ShopPoolCandidate>{
-      for (final c in fallback.displayedCandidates) c.shopCode.trim(): c,
+      for (final c in data.displayedCandidates) c.shopCode.trim(): c,
     };
 
     for (final summary in summaries) {
@@ -164,7 +195,7 @@ class ShopPoolFallbackQualityReport {
       if (!seen.add(summary.shopKey)) duplicateShopCount++;
       final candidate = displayedByCode[summary.shopKey];
       final relevance =
-          fallback.relevanceByShopCode[summary.shopKey] ??
+          data.relevanceByShopCode[summary.shopKey] ??
           ShopPoolKeywordRelevanceResult.none;
       if (_isThinCandidate(summary, candidate, relevance)) {
         thinCandidateCount++;
@@ -214,7 +245,7 @@ class ShopPoolFallbackQualityReport {
         .take(3)
         .map((summary) {
           final relevance =
-              fallback.relevanceByShopCode[summary.shopKey] ??
+              data.relevanceByShopCode[summary.shopKey] ??
               ShopPoolKeywordRelevanceResult.none;
           return ShopPoolFallbackTopEntry(
             rank: summary.discoveryRank ?? 0,
@@ -231,9 +262,9 @@ class ShopPoolFallbackQualityReport {
         .toList(growable: false);
 
     return ShopPoolFallbackQualityReport(
-      keyword: fallback.keyword,
+      keyword: data.keyword,
       fallbackCount: summaries.length,
-      poolCandidateCount: fallback.poolCandidateCount,
+      poolCandidateCount: data.poolCandidateCount,
       avgScore: scoreSum / summaries.length,
       maxScore: maxScore,
       minScore: minScore,
@@ -245,10 +276,10 @@ class ShopPoolFallbackQualityReport {
       genreCount: genreCounts.length,
       topGenres: topGenres,
       duplicateShopCount: duplicateShopCount,
-      savedExcluded: fallback.savedExcludedCount,
-      invalidExcluded: fallback.skippedInvalidCount,
-      unsafeExcluded: fallback.unsafeExcludedCount,
-      source: fallback.source,
+      savedExcluded: savedExcluded,
+      invalidExcluded: invalidExcluded,
+      unsafeExcluded: unsafeExcluded,
+      source: source,
       qualityLevel: qualityLevel,
       topEntries: topEntries,
       keywordMatchStrong: stats.strongCount,
@@ -268,14 +299,17 @@ class ShopPoolFallbackQualityReport {
     );
   }
 
-  static ShopPoolFallbackQualityReport _emptyReport(
-    ShopDiscoveryPoolFallbackResult fallback,
-    ShopPoolFallbackRelevanceStats stats,
-  ) {
+  static ShopPoolFallbackQualityReport _emptyCompareAuditReport({
+    required ShopDiscoveryPoolCompareAuditData data,
+    required int savedExcluded,
+    required int invalidExcluded,
+    required int unsafeExcluded,
+    required String source,
+  }) {
     return ShopPoolFallbackQualityReport(
-      keyword: fallback.keyword,
+      keyword: data.keyword,
       fallbackCount: 0,
-      poolCandidateCount: fallback.poolCandidateCount,
+      poolCandidateCount: data.poolCandidateCount,
       avgScore: 0,
       maxScore: 0,
       minScore: 0,
@@ -287,20 +321,20 @@ class ShopPoolFallbackQualityReport {
       genreCount: 0,
       topGenres: const <String>[],
       duplicateShopCount: 0,
-      savedExcluded: fallback.savedExcludedCount,
-      invalidExcluded: fallback.skippedInvalidCount,
-      unsafeExcluded: fallback.unsafeExcludedCount,
-      source: fallback.source,
+      savedExcluded: savedExcluded,
+      invalidExcluded: invalidExcluded,
+      unsafeExcluded: unsafeExcluded,
+      source: source,
       qualityLevel: ShopPoolFallbackQualityLevel.insufficient,
       topEntries: const <ShopPoolFallbackTopEntry>[],
-      keywordMatchStrong: stats.strongCount,
-      keywordMatchMedium: stats.mediumCount,
-      keywordMatchWeak: stats.weakCount,
-      keywordNoMatch: stats.noMatchCount,
-      unknownGenreCount: stats.unknownGenreCount,
-      relevanceQuality: stats.relevanceQuality,
-      excludedNoRelevance: stats.excludedNoRelevance,
-      demotedWeak: stats.demotedWeak,
+      keywordMatchStrong: data.relevanceStats.strongCount,
+      keywordMatchMedium: data.relevanceStats.mediumCount,
+      keywordMatchWeak: data.relevanceStats.weakCount,
+      keywordNoMatch: data.relevanceStats.noMatchCount,
+      unknownGenreCount: data.relevanceStats.unknownGenreCount,
+      relevanceQuality: data.relevanceStats.relevanceQuality,
+      excludedNoRelevance: data.relevanceStats.excludedNoRelevance,
+      demotedWeak: data.relevanceStats.demotedWeak,
       hitItemCount1: 0,
       hitItemCount2Plus: 0,
       unknownGenreRatio: 0,
