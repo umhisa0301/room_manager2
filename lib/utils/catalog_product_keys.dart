@@ -91,6 +91,59 @@ abstract final class CatalogProductKeys {
     return false;
   }
 
+  /// 楽天アフィリエイト等のリダイレクト URL（商品固有性を保証できない）。
+  static bool isAffiliateRedirectUrl(String url) {
+    final u = Uri.tryParse(url.trim());
+    if (u == null || !u.hasAuthority) return false;
+    final host = u.host.toLowerCase();
+    if (host == 'hb.afl.rakuten.co.jp') return true;
+    if (host == 'afl.rakuten.co.jp') return true;
+    if (host == 'r10.to') return true;
+    return false;
+  }
+
+  /// 商品同一性の根拠に使える商品ページ URL か。
+  static bool isStrongProductIdentityUrl(String url) {
+    final t = url.trim();
+    if (t.isEmpty) return false;
+    if (isAffiliateRedirectUrl(t)) return false;
+    if (RakutenItemUrlParser.tryParse(t) != null) return true;
+    final u = Uri.tryParse(t);
+    if (u == null || !u.hasAuthority) return false;
+    return u.host.toLowerCase() == 'item.rakuten.co.jp';
+  }
+
+  /// URL 一致のみでの商品マージに使えるか。
+  static bool canUseUrlForProductIdentity(String url) {
+    return isStrongProductIdentityUrl(url);
+  }
+
+  /// URL は一致するが identity マージを拒否した理由（監査ログ用）。該当なしは null。
+  static String? describeUrlIdentityRejectReason({
+    required String existingProductId,
+    required String incomingProductId,
+    required String existingNormalizedItemUrl,
+    required String incomingNormalizedItemUrl,
+  }) {
+    final inUrl = incomingNormalizedItemUrl.trim();
+    final exUrl = existingNormalizedItemUrl.trim();
+    if (inUrl.isEmpty || exUrl.isEmpty || inUrl != exUrl) return null;
+
+    final inPid = normalizeProductId(incomingProductId);
+    final exPid = normalizeProductId(existingProductId);
+    if (inPid != null && exPid != null && inPid != exPid) {
+      if (isAffiliateRedirectUrl(inUrl)) return 'affiliateRedirectUrl';
+      if (!canUseUrlForProductIdentity(inUrl)) return 'weakProductUrl';
+      return 'distinctProductId';
+    }
+    if (!canUseUrlForProductIdentity(inUrl)) {
+      return isAffiliateRedirectUrl(inUrl)
+          ? 'affiliateRedirectUrl'
+          : 'weakProductUrl';
+    }
+    return null;
+  }
+
   /// 別 canonicalId 同士が同一商品としてマージ可能か（URL / productId 一致のみ）。
   static bool catalogProductsShareIdentity({
     required String existingCanonicalId,
@@ -108,17 +161,16 @@ abstract final class CatalogProductKeys {
     final exPid = normalizeProductId(existingProductId);
     if (inPid != null && exPid != null) {
       if (inPid == exPid) return true;
-      final inUrl = incomingNormalizedItemUrl.trim();
-      final exUrl = existingNormalizedItemUrl.trim();
-      if (inUrl.isNotEmpty && exUrl.isNotEmpty && inUrl == exUrl) {
-        return true;
-      }
       return false;
     }
 
     final inUrl = incomingNormalizedItemUrl.trim();
     final exUrl = existingNormalizedItemUrl.trim();
-    if (inUrl.isNotEmpty && exUrl.isNotEmpty && inUrl == exUrl) {
+    if (inUrl.isNotEmpty &&
+        exUrl.isNotEmpty &&
+        inUrl == exUrl &&
+        canUseUrlForProductIdentity(inUrl) &&
+        canUseUrlForProductIdentity(exUrl)) {
       return true;
     }
     return false;

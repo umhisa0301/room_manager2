@@ -48,6 +48,13 @@ void logProductCatalogUpsertItemResults(
 ) {
   if (!DebugLogFlags.kCatalogAuditLogsEnabled) return;
   for (final r in results.take(5)) {
+    final urlRejectFields = r.urlIdentityRejected
+        ? ' urlIdentityRejected=true '
+            'urlIdentityRejectReason=${r.urlIdentityRejectReason.isEmpty ? '-' : r.urlIdentityRejectReason} '
+            'inputProductId=${r.productId.isEmpty ? '-' : r.productId} '
+            'matchedCanonicalId=${r.matchedCanonicalId.isEmpty ? '-' : r.matchedCanonicalId} '
+            'matchedProductId=${r.matchedProductId.isEmpty ? '-' : r.matchedProductId}'
+        : '';
     catalogAuditLog(
       '[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] '
       'inputCanonicalId=${r.inputCanonicalId} '
@@ -57,7 +64,7 @@ void logProductCatalogUpsertItemResults(
       'aliasMatchedBy=${r.aliasMatchedBy.isEmpty ? '-' : r.aliasMatchedBy} '
       'productId=${r.productId.isEmpty ? '-' : r.productId} '
       'normalizedItemUrl=${r.normalizedItemUrl.isEmpty ? '-' : r.normalizedItemUrl} '
-      'saved=${r.saved}',
+      'saved=${r.saved}$urlRejectFields',
     );
   }
 }

@@ -79,7 +79,7 @@ void main() {
       );
     });
 
-    test('catalogProductsShareIdentity は同一 URL で true', () {
+    test('catalogProductsShareIdentity は別 productId では信頼 URL 同一でも false', () {
       const url = 'https://item.rakuten.co.jp/takeya-tea/same/';
       expect(
         CatalogProductKeys.catalogProductsShareIdentity(
@@ -89,6 +89,71 @@ void main() {
           incomingCanonicalId: 'takeya-tea:b',
           incomingProductId: 'takeya-tea:b',
           incomingNormalizedItemUrl: url,
+        ),
+        isFalse,
+      );
+      expect(
+        CatalogProductKeys.describeUrlIdentityRejectReason(
+          existingProductId: 'takeya-tea:a',
+          incomingProductId: 'takeya-tea:b',
+          existingNormalizedItemUrl: url,
+          incomingNormalizedItemUrl: url,
+        ),
+        'distinctProductId',
+      );
+    });
+
+    test('catalogProductsShareIdentity は別 productId + 同一 affiliate URL で false', () {
+      const aff =
+          'https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/';
+      expect(CatalogProductKeys.isAffiliateRedirectUrl(aff), isTrue);
+      expect(CatalogProductKeys.canUseUrlForProductIdentity(aff), isFalse);
+      expect(
+        CatalogProductKeys.catalogProductsShareIdentity(
+          existingCanonicalId: 'takeya-tea:10000490',
+          existingProductId: 'takeya-tea:10000490',
+          existingNormalizedItemUrl: aff,
+          incomingCanonicalId: 'takeya-tea:10000383',
+          incomingProductId: 'takeya-tea:10000383',
+          incomingNormalizedItemUrl: aff,
+        ),
+        isFalse,
+      );
+      expect(
+        CatalogProductKeys.describeUrlIdentityRejectReason(
+          existingProductId: 'takeya-tea:10000490',
+          incomingProductId: 'takeya-tea:10000383',
+          existingNormalizedItemUrl: aff,
+          incomingNormalizedItemUrl: aff,
+        ),
+        'affiliateRedirectUrl',
+      );
+    });
+
+    test('catalogProductsShareIdentity は productId 欠落時のみ URL で true', () {
+      const url = 'https://item.rakuten.co.jp/takeya-tea/shared/';
+      expect(
+        CatalogProductKeys.catalogProductsShareIdentity(
+          existingCanonicalId: 'url:$url',
+          existingProductId: '',
+          existingNormalizedItemUrl: url,
+          incomingCanonicalId: 'takeya-tea:10000383',
+          incomingProductId: 'takeya-tea:10000383',
+          incomingNormalizedItemUrl: url,
+        ),
+        isTrue,
+      );
+    });
+
+    test('catalogProductsShareIdentity は同一 productId なら true', () {
+      expect(
+        CatalogProductKeys.catalogProductsShareIdentity(
+          existingCanonicalId: 'takeya-tea:10000490',
+          existingProductId: 'takeya-tea:10000490',
+          existingNormalizedItemUrl: 'https://item.rakuten.co.jp/takeya-tea/a/',
+          incomingCanonicalId: 'takeya-tea:10000490',
+          incomingProductId: 'takeya-tea:10000490',
+          incomingNormalizedItemUrl: 'https://item.rakuten.co.jp/takeya-tea/b/',
         ),
         isTrue,
       );

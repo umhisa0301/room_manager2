@@ -22,6 +22,10 @@ class ProductCatalogUpsertItemResult {
     required this.saved,
     required this.normalizedItemUrl,
     required this.productId,
+    this.urlIdentityRejected = false,
+    this.urlIdentityRejectReason = '',
+    this.matchedCanonicalId = '',
+    this.matchedProductId = '',
   });
 
   final String inputCanonicalId;
@@ -34,6 +38,10 @@ class ProductCatalogUpsertItemResult {
   final bool saved;
   final String normalizedItemUrl;
   final String productId;
+  final bool urlIdentityRejected;
+  final String urlIdentityRejectReason;
+  final String matchedCanonicalId;
+  final String matchedProductId;
 }
 
 /// upsert バッチ結果。
@@ -369,6 +377,13 @@ class ProductCatalogRepository {
         _touchLru(incoming.canonicalId);
         inserted++;
         if (auditItems && itemResults.length < 5) {
+          final urlRejectReason =
+              CatalogProductKeys.describeUrlIdentityRejectReason(
+            existingProductId: existingByAlias.productId,
+            incomingProductId: incoming.productId,
+            existingNormalizedItemUrl: existingByAlias.normalizedItemUrl,
+            incomingNormalizedItemUrl: incoming.normalizedItemUrl,
+          );
           itemResults.add(
             _auditResult(
               incoming: incoming,
@@ -376,6 +391,10 @@ class ProductCatalogRepository {
               operation: 'insert',
               mergeReason: 'aliasConflictPrevented',
               aliasMatchedBy: aliasLookup?.matchedAlias ?? '',
+              urlIdentityRejected: urlRejectReason != null,
+              urlIdentityRejectReason: urlRejectReason ?? '',
+              matchedCanonicalId: existingByAlias.canonicalId,
+              matchedProductId: existingByAlias.productId,
             ),
           );
         }
@@ -455,6 +474,10 @@ class ProductCatalogRepository {
     required String operation,
     required String mergeReason,
     required String aliasMatchedBy,
+    bool urlIdentityRejected = false,
+    String urlIdentityRejectReason = '',
+    String matchedCanonicalId = '',
+    String matchedProductId = '',
   }) {
     return ProductCatalogUpsertItemResult(
       inputCanonicalId: incoming.canonicalId,
@@ -467,6 +490,10 @@ class ProductCatalogRepository {
       saved: true,
       normalizedItemUrl: incoming.normalizedItemUrl,
       productId: incoming.productId,
+      urlIdentityRejected: urlIdentityRejected,
+      urlIdentityRejectReason: urlIdentityRejectReason,
+      matchedCanonicalId: matchedCanonicalId,
+      matchedProductId: matchedProductId,
     );
   }
 

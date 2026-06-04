@@ -105,6 +105,28 @@ void main() {
       expect(product.sourceTrust, CatalogProductSourceTrust.high);
     });
 
+    test('affiliate URL は normalizedItemUrl に残るが identity URL ではない', () {
+      const aff =
+          'https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/';
+      final product = catalogProductFromSearchItem(
+        RakutenSearchItem(
+          productId: 'takeya-tea:10000383',
+          itemName: '水筒',
+          itemPrice: 2000,
+          itemUrl: aff,
+          affiliateUrl: aff,
+          imageUrl:
+              'https://thumbnail.image.rakuten.co.jp/@0_mall/takeya-tea/cabinet/b.jpg',
+          shopName: 'TAKEYA',
+          shopCode: 'takeya-tea',
+        ),
+      );
+      expect(product.normalizedItemUrl, contains('hb.afl.rakuten.co.jp'));
+      expect(CatalogProductKeys.canUseUrlForProductIdentity(product.normalizedItemUrl),
+          isFalse);
+      expect(product.aliases, contains(aff));
+    });
+
     test('alias が生成される', () {
       final product = catalogProductFromSearchItem(_searchItem());
       expect(product.aliases, contains('shop:item001'));

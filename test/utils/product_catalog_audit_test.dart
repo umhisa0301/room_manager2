@@ -392,6 +392,66 @@ void main() {
       expect(candidate.sourceProductIds.length, 2);
       expect(candidate.sampleProductIds.length, 2);
     });
+
+    test('takeya-tea 同一 affiliate URL・別 productId で poolItemCount=2', () async {
+      if (!ProductCatalogConfig.kProductCatalogEnabled) return;
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final repo = ProductCatalogRepository(prefs);
+      await repo.clear();
+      const aff =
+          'https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/';
+      final now = DateTime(2026, 6, 4, 12);
+      final batchResult = await upsertCatalogFromShopDiscoveryDetailItems(
+        repo,
+        [
+          RakutenSearchItem(
+            productId: 'takeya-tea:10000490',
+            itemName: '商品A',
+            itemPrice: 1000,
+            itemUrl: aff,
+            affiliateUrl: aff,
+            imageUrl:
+                'https://thumbnail.image.rakuten.co.jp/@0_mall/takeya-tea/cabinet/a.jpg',
+            shopName: 'TAKEYA',
+            shopCode: 'takeya-tea',
+          ),
+          RakutenSearchItem(
+            productId: 'takeya-tea:10000383',
+            itemName: '商品B',
+            itemPrice: 2000,
+            itemUrl: aff,
+            affiliateUrl: aff,
+            imageUrl:
+                'https://thumbnail.image.rakuten.co.jp/@0_mall/takeya-tea/cabinet/b.jpg',
+            shopName: 'TAKEYA',
+            shopCode: 'takeya-tea',
+          ),
+        ],
+        shopCode: 'takeya-tea',
+        upsertSource: 'initialItems',
+        now: now,
+      );
+      expect(batchResult.aliasConflictPrevented, 1);
+      expect(batchResult.inserted, greaterThanOrEqualTo(1));
+      final forShop = repo
+          .getAll()
+          .where((p) => p.shopCode == 'takeya-tea')
+          .length;
+      expect(forShop, 2);
+      final aggregate = ProductCatalogShopAggregator.aggregate(
+        repository: repo,
+        now: now,
+      );
+      final candidate = aggregate.candidates.singleWhere(
+        (e) => e.shopCode == 'takeya-tea',
+      );
+      expect(candidate.itemCount, 2);
+      expect(repo.findByAlias('takeya-tea:10000490')?.canonicalId,
+          'takeya-tea:10000490');
+      expect(repo.findByAlias('takeya-tea:10000383')?.canonicalId,
+          'takeya-tea:10000383');
+    });
   });
 
   group('ProductCatalogUpsertTimingRegistry', () {
