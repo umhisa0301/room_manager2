@@ -56,6 +56,15 @@ class ShopDiscoveryPoolSupplementUiBridgeResult {
         'shopCodes=${codes.isEmpty ? '-' : codes.join(',')} '
         'willUsePoolForUi=false willSkipApi=false';
   }
+
+  String buildUiCardLogLine() {
+    final keywordForLog = keyword.isEmpty ? '-' : keyword;
+    final codes = displayCandidates.map((e) => e.shopCode).toList();
+    return '[SHOP_DISCOVERY_POOL_SUPPLEMENT_UI_CARD] '
+        'keyword=$keywordForLog '
+        'visibleCards=$displayCandidateCount '
+        'shopCodes=${codes.isEmpty ? '-' : codes.join(',')}';
+  }
 }
 
 /// supplement 判定 → UI 表示候補の橋渡し（ログ・将来の補助枠 UI 用）。
@@ -111,6 +120,15 @@ abstract final class ShopDiscoveryPoolSupplementUiBridge {
   /// 抽出結果を監査ログ（`CATALOG_AUDIT_LOGS`）と debug ログへ出力する。
   static void logBridgeResult(ShopDiscoveryPoolSupplementUiBridgeResult result) {
     final line = result.buildUiBridgeLogLine();
+    catalogAuditLog(line);
+    if (kDebugMode) {
+      debugSummaryLog(line);
+    }
+  }
+
+  /// 補助枠カードの表示件数を監査ログ（`CATALOG_AUDIT_LOGS`）と debug ログへ出力する。
+  static void logCardResult(ShopDiscoveryPoolSupplementUiBridgeResult result) {
+    final line = result.buildUiCardLogLine();
     catalogAuditLog(line);
     if (kDebugMode) {
       debugSummaryLog(line);

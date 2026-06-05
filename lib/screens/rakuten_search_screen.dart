@@ -23,6 +23,7 @@ import '../services/shop_discovery_pool_comparator.dart';
 import '../services/shop_discovery_pool_api_compare.dart';
 import '../services/shop_discovery_pool_supplement.dart';
 import '../services/shop_discovery_pool_supplement_ui_bridge.dart';
+import '../widgets/shop_discovery_pool_supplement_cards.dart';
 import '../services/shop_discovery_pool_fallback.dart';
 import '../services/shop_discovery_pool_quality_report.dart';
 import '../services/shop_pool_keyword_relevance.dart';
@@ -5747,6 +5748,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       setState(() => _shopDiscoverySupplementUiBridge = uiBridge);
     }
     ShopDiscoveryPoolSupplementUiBridge.logBridgeResult(uiBridge);
+    ShopDiscoveryPoolSupplementUiBridge.logCardResult(uiBridge);
 
     AuditLogDeduper.logOnce('shopDiscoveryPoolCompare', signature, (_) {
       catalogAuditLog(
@@ -6171,27 +6173,15 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   ),
                   children: [
                     summaryHeader,
-                    if (DebugLogFlags.kCatalogAuditLogsEnabled &&
-                        !isFallback &&
+                    if (!isFallback)
+                      ShopDiscoveryPoolSupplementCardsSection(
+                        candidates:
+                            _shopDiscoverySupplementUiBridge.displayCandidates,
+                      ),
+                    if (!isFallback &&
                         _shopDiscoverySupplementUiBridge
                             .displayCandidates.isNotEmpty)
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          RakutenSearchScreenUi.screenPadH,
-                          0,
-                          RakutenSearchScreenUi.screenPadH,
-                          RakutenSearchScreenUi.gapFieldStack,
-                        ),
-                        child: Text(
-                          '補助候補（debug）: '
-                          '${_shopDiscoverySupplementUiBridge.displayCandidates.map((e) => e.shopCode).join(', ')}',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: HomeScreenColors.footnoteMuted,
-                            height: 1.32,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
+                      SizedBox(height: RakutenSearchScreenUi.listCardGap),
                     for (var index = 0; index < visible.length; index++) ...[
                       if (index > 0)
                         SizedBox(height: RakutenSearchScreenUi.listCardGap),

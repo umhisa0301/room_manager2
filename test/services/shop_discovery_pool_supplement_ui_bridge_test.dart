@@ -124,6 +124,10 @@ void main() {
       expect(bridge.buildUiBridgeLogLine(), contains('shopCodes=soukaidrink'));
       expect(bridge.buildUiBridgeLogLine(), contains('willUsePoolForUi=false'));
       expect(bridge.buildUiBridgeLogLine(), contains('willSkipApi=false'));
+      expect(bridge.buildUiCardLogLine(),
+          contains('[SHOP_DISCOVERY_POOL_SUPPLEMENT_UI_CARD]'));
+      expect(bridge.buildUiCardLogLine(), contains('visibleCards=1'));
+      expect(bridge.buildUiCardLogLine(), contains('shopCodes=soukaidrink'));
     });
 
     test('recommendedDisplayCount=0 なら displayCandidates=0（コーヒー相当）', () {
@@ -144,6 +148,7 @@ void main() {
 
       expect(bridge.displayCandidateCount, 0);
       expect(bridge.buildUiBridgeLogLine(), contains('displayCandidates=0'));
+      expect(bridge.buildUiCardLogLine(), contains('visibleCards=0'));
       expect(bridge.buildUiBridgeLogLine(), contains('shopCodes=-'));
     });
 
