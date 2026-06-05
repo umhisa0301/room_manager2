@@ -21,6 +21,7 @@ import '../services/rakuten_genre_master_service.dart';
 import '../services/product_catalog_shop_aggregator.dart';
 import '../services/shop_discovery_pool_comparator.dart';
 import '../services/shop_discovery_pool_api_compare.dart';
+import '../services/shop_discovery_pool_supplement.dart';
 import '../services/shop_discovery_pool_fallback.dart';
 import '../services/shop_discovery_pool_quality_report.dart';
 import '../services/shop_pool_keyword_relevance.dart';
@@ -5752,6 +5753,20 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       );
       catalogAuditLog(apiCompare.buildQualityLogLine());
       catalogAuditLog(apiCompare.buildTopLogLine());
+      final fetchMeta = context.read<RakutenSearchProvider>().keywordManagedFetchSummary;
+      final supplement = ShopDiscoveryPoolSupplement.build(
+        keyword: keyword,
+        apiSummaries: apiSummaries,
+        poolCandidates: poolResult.candidates,
+        comparison: comparison,
+        poolQuality: apiCompare.poolQuality,
+        repository: productCatalogRepository,
+        savedShopCodes: savedSet,
+        apiStopReason: fetchMeta?.stopReason,
+        apiPagesFailed: fetchMeta?.pagesFailed ?? 0,
+      );
+      catalogAuditLog(supplement.buildSummaryLogLine());
+      catalogAuditLog(supplement.buildTopLogLine());
     });
   }
 

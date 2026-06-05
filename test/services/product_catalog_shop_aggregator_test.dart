@@ -117,7 +117,7 @@ void main() {
 
     test('unsafe 商品は除外', () async {
       if (!ProductCatalogConfig.kProductCatalogEnabled) return;
-      await repo.upsertAll([
+      final upsert = await repo.upsertAll([
         _product(
           canonicalId: 'ng:1',
           shopCode: 'ng-shop',
@@ -128,7 +128,9 @@ void main() {
       ]);
       final result = ProductCatalogShopAggregator.aggregate(repository: repo);
       expect(result.candidates.map((e) => e.shopCode), ['ok-shop']);
-      expect(result.stats.unsafeExcluded, greaterThanOrEqualTo(1));
+      // unsafe は upsert 段階で保存されない（CATALOG_AUDIT_LOGS の有無は不問）
+      expect(upsert.skipped, greaterThanOrEqualTo(1));
+      expect(result.stats.unsafeExcluded, 0);
     });
 
     test('stale 商品は除外', () async {
