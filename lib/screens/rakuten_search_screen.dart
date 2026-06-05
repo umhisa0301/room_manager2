@@ -22,6 +22,7 @@ import '../services/product_catalog_shop_aggregator.dart';
 import '../services/shop_discovery_pool_comparator.dart';
 import '../services/shop_discovery_pool_api_compare.dart';
 import '../services/shop_discovery_pool_supplement.dart';
+import '../services/shop_discovery_pool_supplement_ui_bridge.dart';
 import '../services/shop_discovery_pool_fallback.dart';
 import '../services/shop_discovery_pool_quality_report.dart';
 import '../services/shop_pool_keyword_relevance.dart';
@@ -150,6 +151,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
 
   bool _shopDiscoveryHasSearched = false;
   String _lastShopDiscoveryCatalogFingerprint = '';
+  ShopDiscoveryPoolSupplementUiBridgeResult _shopDiscoverySupplementUiBridge =
+      ShopDiscoveryPoolSupplementUiBridgeResult.empty;
   RakutenSearchStatus? _lastEnvelopeSyncStatus;
 
   /// 結果ありでは常にコンパクトヘッダー固定（リスト内デッキ再表示は廃止）。
@@ -4176,6 +4179,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       _searchHeaderCollapsed = true;
       _shopDiscoveryHasSearched = true;
       _lastShopDiscoveryCatalogFingerprint = '';
+      _shopDiscoverySupplementUiBridge =
+          ShopDiscoveryPoolSupplementUiBridgeResult.empty;
     });
     final fallbackKeyword = _labelForGenre(genreId) ?? '楽天';
     final condition = RakutenProductSearchCondition(
@@ -5724,6 +5729,25 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       catalogShopCount: comparison.catalogShopCount,
     );
 
+    final fetchMeta = context.read<RakutenSearchProvider>().keywordManagedFetchSummary;
+    final supplement = ShopDiscoveryPoolSupplement.build(
+      keyword: keyword,
+      apiSummaries: apiSummaries,
+      poolCandidates: poolResult.candidates,
+      comparison: comparison,
+      poolQuality: apiCompare.poolQuality,
+      repository: productCatalogRepository,
+      savedShopCodes: savedSet,
+      apiStopReason: fetchMeta?.stopReason,
+      apiPagesFailed: fetchMeta?.pagesFailed ?? 0,
+    );
+    final uiBridge =
+        ShopDiscoveryPoolSupplementUiBridge.extractDisplayCandidates(supplement);
+    if (mounted) {
+      setState(() => _shopDiscoverySupplementUiBridge = uiBridge);
+    }
+    ShopDiscoveryPoolSupplementUiBridge.logBridgeResult(uiBridge);
+
     AuditLogDeduper.logOnce('shopDiscoveryPoolCompare', signature, (_) {
       catalogAuditLog(
         '[SHOP_DISCOVERY_POOL_COMPARE_SUMMARY] '
@@ -5753,18 +5777,6 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       );
       catalogAuditLog(apiCompare.buildQualityLogLine());
       catalogAuditLog(apiCompare.buildTopLogLine());
-      final fetchMeta = context.read<RakutenSearchProvider>().keywordManagedFetchSummary;
-      final supplement = ShopDiscoveryPoolSupplement.build(
-        keyword: keyword,
-        apiSummaries: apiSummaries,
-        poolCandidates: poolResult.candidates,
-        comparison: comparison,
-        poolQuality: apiCompare.poolQuality,
-        repository: productCatalogRepository,
-        savedShopCodes: savedSet,
-        apiStopReason: fetchMeta?.stopReason,
-        apiPagesFailed: fetchMeta?.pagesFailed ?? 0,
-      );
       catalogAuditLog(supplement.buildSummaryLogLine());
       catalogAuditLog(supplement.buildTopLogLine());
       catalogAuditLog(supplement.buildDecisionLogLine());
@@ -6159,6 +6171,27 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                   ),
                   children: [
                     summaryHeader,
+                    if (DebugLogFlags.kCatalogAuditLogsEnabled &&
+                        !isFallback &&
+                        _shopDiscoverySupplementUiBridge
+                            .displayCandidates.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          RakutenSearchScreenUi.screenPadH,
+                          0,
+                          RakutenSearchScreenUi.screenPadH,
+                          RakutenSearchScreenUi.gapFieldStack,
+                        ),
+                        child: Text(
+                          '補助候補（debug）: '
+                          '${_shopDiscoverySupplementUiBridge.displayCandidates.map((e) => e.shopCode).join(', ')}',
+                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: HomeScreenColors.footnoteMuted,
+                            height: 1.32,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
                     for (var index = 0; index < visible.length; index++) ...[
                       if (index > 0)
                         SizedBox(height: RakutenSearchScreenUi.listCardGap),
