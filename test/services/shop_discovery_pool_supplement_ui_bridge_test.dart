@@ -130,6 +130,33 @@ void main() {
       expect(bridge.buildUiCardLogLine(), contains('shopCodes=soukaidrink'));
     });
 
+    test('buildCardTapLogLine のログ形式', () {
+      final bridge = ShopDiscoveryPoolSupplementUiBridge.extractDisplayCandidates(
+        _supplementResultWithDecisions(
+          keyword: '水筒',
+          recommendedDisplayCount: 1,
+          selected: [_selectedCandidate(shopCode: 'soukaidrink', hitItemCount: 22)],
+          decisions: [
+            _decision(
+              shopCode: 'soukaidrink',
+              showEligible: true,
+              displayRank: 1,
+              strongItemEvidence: true,
+            ),
+          ],
+        ),
+      );
+      final line = ShopDiscoveryPoolSupplementUiBridge.buildCardTapLogLine(
+        keyword: '水筒',
+        candidate: bridge.displayCandidates.single,
+        action: 'shopSearch',
+      );
+      expect(line, contains('[SHOP_DISCOVERY_POOL_SUPPLEMENT_CARD_TAP]'));
+      expect(line, contains('keyword=水筒'));
+      expect(line, contains('shopCode=soukaidrink'));
+      expect(line, contains('action=shopSearch'));
+    });
+
     test('recommendedDisplayCount=0 なら displayCandidates=0（コーヒー相当）', () {
       final result = _supplementResultWithDecisions(
         keyword: 'コーヒー',

@@ -119,5 +119,35 @@ void main() {
       final betaOffset = tester.getTopLeft(find.text('Shop Beta'));
       expect(alphaOffset.dy, lessThan(betaOffset.dy));
     });
+
+    testWidgets('onCandidateTap が渡されていればタップで callback が呼ばれる', (
+      tester,
+    ) async {
+      ShopDiscoveryPoolSupplementUiDisplayCandidate? tapped;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: ShopDiscoveryPoolSupplementCardsSection(
+              candidates: [
+                _candidate(
+                  shopCode: 'soukaidrink',
+                  shopName: '楽天24 ドリンク館',
+                  strongItemEvidence: true,
+                ),
+              ],
+              onCandidateTap: (candidate) => tapped = candidate,
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('楽天24 ドリンク館'));
+      await tester.pump();
+
+      expect(tapped, isNotNull);
+      expect(tapped!.shopCode, 'soukaidrink');
+      expect(tapped!.shopName, '楽天24 ドリンク館');
+    });
   });
 }

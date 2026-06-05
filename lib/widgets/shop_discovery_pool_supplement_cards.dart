@@ -31,9 +31,12 @@ class ShopDiscoveryPoolSupplementCardsSection extends StatelessWidget {
   const ShopDiscoveryPoolSupplementCardsSection({
     super.key,
     required this.candidates,
+    this.onCandidateTap,
   });
 
   final List<ShopDiscoveryPoolSupplementUiDisplayCandidate> candidates;
+  final ValueChanged<ShopDiscoveryPoolSupplementUiDisplayCandidate>?
+      onCandidateTap;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +83,10 @@ class ShopDiscoveryPoolSupplementCardsSection extends StatelessWidget {
               const SizedBox(height: 8),
               for (var index = 0; index < candidates.length; index++) ...[
                 if (index > 0) const SizedBox(height: 6),
-                _ShopDiscoveryPoolSupplementCard(candidate: candidates[index]),
+                _ShopDiscoveryPoolSupplementCard(
+                  candidate: candidates[index],
+                  onTap: onCandidateTap,
+                ),
               ],
               const SizedBox(height: 4),
             ],
@@ -92,9 +98,13 @@ class ShopDiscoveryPoolSupplementCardsSection extends StatelessWidget {
 }
 
 class _ShopDiscoveryPoolSupplementCard extends StatelessWidget {
-  const _ShopDiscoveryPoolSupplementCard({required this.candidate});
+  const _ShopDiscoveryPoolSupplementCard({
+    required this.candidate,
+    this.onTap,
+  });
 
   final ShopDiscoveryPoolSupplementUiDisplayCandidate candidate;
+  final ValueChanged<ShopDiscoveryPoolSupplementUiDisplayCandidate>? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +116,7 @@ class _ShopDiscoveryPoolSupplementCard extends StatelessWidget {
       radius: 10,
       backgroundColor: HomeScreenColors.roomContentWellFill,
       borderColor: HomeScreenColors.deckOutline,
+      onTap: onTap == null ? null : () => onTap!(candidate),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

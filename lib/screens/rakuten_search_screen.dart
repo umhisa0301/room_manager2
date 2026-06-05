@@ -6226,6 +6226,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                       ShopDiscoveryPoolSupplementCardsSection(
                         candidates:
                             _shopDiscoverySupplementUiBridge.displayCandidates,
+                        onCandidateTap: (candidate) =>
+                            _onSupplementCardTap(context, candidate),
                       ),
                     if (!isFallback &&
                         _shopDiscoverySupplementUiBridge
@@ -6338,6 +6340,43 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     final name = item.shopName.trim();
     if (name.isNotEmpty) return name;
     return 'unknown';
+  }
+
+  void _onSupplementCardTap(
+    BuildContext context,
+    ShopDiscoveryPoolSupplementUiDisplayCandidate candidate,
+  ) {
+    final keyword = _shopDiscoveryKeywordController.text.trim();
+    ShopDiscoveryPoolSupplementUiBridge.logCardTap(
+      keyword: keyword,
+      candidate: candidate,
+      action: 'shopSearch',
+    );
+    final shopCode = candidate.shopCode.trim();
+    if (shopCode.isEmpty) {
+      return;
+    }
+    final summary = ShopDiscoverySummary(
+      shopKey: shopCode,
+      shopName: candidate.shopName,
+      shopUrl: 'https://www.rakuten.co.jp/$shopCode/',
+      hitItemCount: candidate.hitItemCount,
+      maxReviewCount: 0,
+      avgReviewAverage: 0,
+      discoveryScore: candidate.score,
+      representativeItems: const <ShopRepresentativeItem>[],
+      origin: 'shopPoolSupplement',
+      discoveryKeyword: keyword.isEmpty ? null : keyword,
+      discoveryRank: candidate.displayRank,
+    );
+    unawaited(
+      _openShopDetail(
+        context,
+        summary,
+        const <RakutenSearchItem>[],
+        candidate.displayRank,
+      ),
+    );
   }
 
   Future<void> _openShopDetail(

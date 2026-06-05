@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../config/debug_log_flags.dart';
 import '../services/shop_discovery_pool_supplement.dart';
 import '../utils/app_debug_log.dart';
 
@@ -135,21 +136,48 @@ abstract final class ShopDiscoveryPoolSupplementUiBridge {
     );
   }
 
-  /// 抽出結果を監査ログ（`CATALOG_AUDIT_LOGS`）と debug ログへ出力する。
-  static void logBridgeResult(ShopDiscoveryPoolSupplementUiBridgeResult result) {
-    final line = result.buildUiBridgeLogLine();
+  static void _emitSupplementUiLog(String line) {
     catalogAuditLog(line);
-    if (kDebugMode) {
+    if (kDebugMode && !DebugLogFlags.kCatalogAuditLogsEnabled) {
       debugSummaryLog(line);
     }
   }
 
+  /// 抽出結果を監査ログ（`CATALOG_AUDIT_LOGS`）と debug ログへ出力する。
+  static void logBridgeResult(ShopDiscoveryPoolSupplementUiBridgeResult result) {
+    _emitSupplementUiLog(result.buildUiBridgeLogLine());
+  }
+
   /// 補助枠カードの表示件数を監査ログ（`CATALOG_AUDIT_LOGS`）と debug ログへ出力する。
   static void logCardResult(ShopDiscoveryPoolSupplementUiBridgeResult result) {
-    final line = result.buildUiCardLogLine();
-    catalogAuditLog(line);
-    if (kDebugMode) {
-      debugSummaryLog(line);
-    }
+    _emitSupplementUiLog(result.buildUiCardLogLine());
+  }
+
+  static String buildCardTapLogLine({
+    required String keyword,
+    required ShopDiscoveryPoolSupplementUiDisplayCandidate candidate,
+    required String action,
+  }) {
+    final keywordForLog = keyword.isEmpty ? '-' : keyword;
+    return '[SHOP_DISCOVERY_POOL_SUPPLEMENT_CARD_TAP] '
+        'keyword=$keywordForLog '
+        'shopCode=${candidate.shopCode} '
+        'shopName=${candidate.shopName} '
+        'action=$action';
+  }
+
+  /// 補助枠カードタップを監査ログ（`CATALOG_AUDIT_LOGS`）と debug ログへ出力する。
+  static void logCardTap({
+    required String keyword,
+    required ShopDiscoveryPoolSupplementUiDisplayCandidate candidate,
+    required String action,
+  }) {
+    _emitSupplementUiLog(
+      buildCardTapLogLine(
+        keyword: keyword,
+        candidate: candidate,
+        action: action,
+      ),
+    );
   }
 }
