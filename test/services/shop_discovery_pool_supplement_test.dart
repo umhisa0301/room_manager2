@@ -35,6 +35,7 @@ ShopDiscoverySummary _apiSummary({
 
 ShopPoolCandidate _poolCandidate({
   required String shopCode,
+  String? shopName,
   String genre = '大人用水筒・マグボトル',
   int itemCount = 5,
   double score = 290,
@@ -43,7 +44,7 @@ ShopPoolCandidate _poolCandidate({
 }) {
   return ShopPoolCandidate(
     shopCode: shopCode,
-    shopName: 'Pool $shopCode',
+    shopName: shopName ?? 'Pool $shopCode',
     shopUrl: 'https://www.rakuten.co.jp/$shopCode/',
     representativeImageUrl: imageUrl,
     primaryGenreId: 'g1',
@@ -389,6 +390,415 @@ void main() {
         apiWeakSignal: weak.signal,
       );
       expect(couldCover, isTrue);
+    });
+  });
+
+  group('ShopDiscoveryPoolSupplement display decision', () {
+    test('overlapRate=1.0 では recommendedDisplayCount=0', () {
+      final codes = List<String>.generate(10, (i) => 'shop-$i');
+      final api = codes.map((c) => _apiSummary(shopCode: c)).toList();
+      final pool = <ShopPoolCandidate>[
+        ...codes.map((c) => _poolCandidate(shopCode: c)),
+        _poolCandidate(shopCode: 'extra-pool', score: 320),
+      ];
+      final comparison = ShopDiscoveryPoolComparator.compare(
+        apiSummaries: api,
+        poolCandidates: pool,
+        catalogEntries: const <ShopCatalogEntry>[],
+      );
+      expect(comparison.overlapRate, 1.0);
+      final result = ShopDiscoveryPoolSupplement.build(
+        keyword: 'コーヒー',
+        apiSummaries: api,
+        poolCandidates: pool,
+        comparison: comparison,
+        poolQuality: _goodPoolQuality(),
+      );
+      expect(result.displayDecision.recommendedDisplayCount, 0);
+      expect(result.displayDecision.decision, 'hide');
+      expect(result.displayDecision.reason, 'apiAlreadyCoversPoolTop');
+    });
+
+    test('overlapRate=0.9 かつ APIにない強候補で recommendedDisplayCount=1', () {
+      final api = List<ShopDiscoverySummary>.generate(
+        10,
+        (i) => _apiSummary(shopCode: 'api-$i'),
+      );
+      final pool = <ShopPoolCandidate>[
+        ...List<ShopPoolCandidate>.generate(
+          9,
+          (i) => _poolCandidate(shopCode: 'api-$i'),
+        ),
+        _poolCandidate(
+          shopCode: 'soukaidrink',
+          shopName: '楽天24 ドリンク館',
+          score: 310,
+          itemCount: 17,
+        ),
+      ];
+      final comparison = ShopDiscoveryPoolComparator.compare(
+        apiSummaries: api,
+        poolCandidates: pool,
+        catalogEntries: const <ShopCatalogEntry>[],
+      );
+      expect(comparison.overlapRate, closeTo(0.9, 0.01));
+      final result = ShopDiscoveryPoolSupplement.build(
+        keyword: '水筒',
+        apiSummaries: api,
+        poolCandidates: pool,
+        comparison: comparison,
+        poolQuality: _goodPoolQuality(),
+      );
+      expect(result.displayDecision.recommendedDisplayCount, 1);
+      expect(result.displayDecision.maxAllowedDisplayCount, 2);
+    });
+
+    test('apiWeakSignal=true では recommendedDisplayCount が増え得る', () {
+      final recommended = ShopDiscoveryPoolSupplement.evaluateRecommendedDisplayCount(
+        selectedCount: 3,
+        overlapRate: 0.7,
+        apiWeakSignal: true,
+        wouldShow: true,
+        poolQuality: _goodPoolQuality(),
+        selected: const <ShopDiscoveryPoolSupplementCandidate>[],
+        keyword: '水筒',
+        poolTopGenres: const <String>['大人用水筒・マグボトル'],
+      );
+      expect(recommended, greaterThanOrEqualTo(2));
+    });
+
+    test('genericShop / broadShop が判定できる', () {
+      expect(
+        ShopDiscoveryPoolSupplement.evaluateGenericShop('rakuten24', '楽天24'),
+        isTrue,
+      );
+      expect(
+        ShopDiscoveryPoolSupplement.evaluateGenericShop(
+          'soukaidrink',
+          '楽天24 ドリンク館',
+        ),
+        isFalse,
+      );
+      expect(
+        ShopDiscoveryPoolSupplement.evaluateBroadShop(
+          shopCode: 'f272132-izumisano',
+          shopName: '大阪府泉佐野市',
+          genre: 'コーヒー飲料',
+        ),
+        isTrue,
+      );
+    });
+
+    test('hitItemCount が低い候補は showEligible=false になり得る', () {
+      final selected = [
+        ShopDiscoveryPoolSupplementCandidate(
+          rank: 1,
+          shopCode: 'thin-shop',
+          shopName: 'Thin Shop',
+          score: 280,
+          relevance: ShopPoolKeywordMatchLevel.strong,
+          matchedBy: 'itemName',
+          hitItemCount: 2,
+          avgReview: 4.5,
+          maxReviewCount: 100,
+          primaryGenreName: '大人用水筒・マグボトル',
+          matchedGenreName: '大人用水筒・マグボトル',
+          hasImage: true,
+          hasShopUrl: true,
+          reason: ShopDiscoveryPoolSupplementReason.strongRelevance,
+        ),
+      ];
+      final decisions = ShopDiscoveryPoolSupplement.evaluateCandidateDecisions(
+        keyword: '水筒',
+        selected: selected,
+        recommendedDisplayCount: 1,
+        apiWeakSignal: false,
+        poolTopGenres: const <String>['大人用水筒・マグボトル'],
+        poolQuality: _goodPoolQuality(),
+        overlapRate: 0.9,
+      );
+      expect(decisions.single.showEligible, isFalse);
+      expect(decisions.single.strongItemEvidence, isFalse);
+      expect(decisions.single.reason, 'lowHitItemCountOrBroadShop');
+    });
+
+    test('ジャンル不整合なら showEligible=false になり得る', () {
+      final align = ShopDiscoveryPoolSupplement.evaluateGenreAlignment(
+        keyword: 'ベビー',
+        genre: '大人用水筒・マグボトル',
+        poolTopGenres: const <String>['大人用水筒・マグボトル'],
+      );
+      expect(align.aligned, isFalse);
+      expect(align.reason, 'genreMismatchForKeyword');
+    });
+
+    test('水筒 + strong itemName + hitItems>=5 で strongItemEvidence=true', () {
+      final candidate = ShopDiscoveryPoolSupplementCandidate(
+        rank: 1,
+        shopCode: 'soukaidrink',
+        shopName: '楽天24 ドリンク館',
+        score: 502,
+        relevance: ShopPoolKeywordMatchLevel.strong,
+        matchedBy: 'itemName',
+        hitItemCount: 22,
+        avgReview: 4.5,
+        maxReviewCount: 600,
+        primaryGenreName: '炭酸飲料',
+        matchedGenreName: '大人用水筒・マグボトル',
+        hasImage: true,
+        hasShopUrl: true,
+        reason: ShopDiscoveryPoolSupplementReason.strongRelevance,
+      );
+      expect(
+        ShopDiscoveryPoolSupplement.evaluateStrongItemEvidence(
+          keyword: '水筒',
+          candidate: candidate,
+          poolQuality: _goodPoolQuality(),
+          overlapRate: 0.9,
+          genericShop: false,
+          broadShop: false,
+        ),
+        isTrue,
+      );
+    });
+
+    test('strongItemEvidence=true なら genreAligned=false でも showEligible=true', () {
+      final selected = [
+        ShopDiscoveryPoolSupplementCandidate(
+          rank: 1,
+          shopCode: 'soukaidrink',
+          shopName: '楽天24 ドリンク館',
+          score: 502,
+          relevance: ShopPoolKeywordMatchLevel.strong,
+          matchedBy: 'itemName',
+          hitItemCount: 22,
+          avgReview: 4.5,
+          maxReviewCount: 600,
+          primaryGenreName: '炭酸飲料',
+          matchedGenreName: '大人用水筒・マグボトル',
+          hasImage: true,
+          hasShopUrl: true,
+          reason: ShopDiscoveryPoolSupplementReason.strongRelevance,
+        ),
+        ShopDiscoveryPoolSupplementCandidate(
+          rank: 2,
+          shopCode: 'rakuten24',
+          shopName: '楽天24',
+          score: 264,
+          relevance: ShopPoolKeywordMatchLevel.strong,
+          matchedBy: 'itemName',
+          hitItemCount: 6,
+          avgReview: 4.5,
+          maxReviewCount: 500,
+          primaryGenreName: '大人用水筒・マグボトル',
+          matchedGenreName: '大人用水筒・マグボトル',
+          hasImage: true,
+          hasShopUrl: true,
+          reason: ShopDiscoveryPoolSupplementReason.strongRelevance,
+        ),
+      ];
+      final decisions = ShopDiscoveryPoolSupplement.evaluateCandidateDecisions(
+        keyword: '水筒',
+        selected: selected,
+        recommendedDisplayCount: 1,
+        apiWeakSignal: false,
+        poolTopGenres: const <String>['大人用水筒・マグボトル'],
+        poolQuality: _goodPoolQuality(),
+        overlapRate: 0.9,
+      );
+      expect(decisions[0].showEligible, isTrue);
+      expect(decisions[0].shopCode, 'soukaidrink');
+      expect(decisions[0].genreAligned, isFalse);
+      expect(decisions[0].strongItemEvidence, isTrue);
+      expect(decisions[0].reason, 'strongItemEvidenceDespiteUnknownGenre');
+      expect(decisions[1].showEligible, isFalse);
+      expect(decisions[1].genericShop, isTrue);
+    });
+
+    test('genericShop=true は strongItemEvidence があっても showEligible=false', () {
+      final candidate = ShopDiscoveryPoolSupplementCandidate(
+        rank: 1,
+        shopCode: 'rakuten24',
+        shopName: '楽天24',
+        score: 264,
+        relevance: ShopPoolKeywordMatchLevel.strong,
+        matchedBy: 'itemName',
+        hitItemCount: 6,
+        avgReview: 4.5,
+        maxReviewCount: 500,
+        primaryGenreName: '大人用水筒・マグボトル',
+        matchedGenreName: '大人用水筒・マグボトル',
+        hasImage: true,
+        hasShopUrl: true,
+        reason: ShopDiscoveryPoolSupplementReason.strongRelevance,
+      );
+      expect(
+        ShopDiscoveryPoolSupplement.evaluateStrongItemEvidence(
+          keyword: '水筒',
+          candidate: candidate,
+          poolQuality: _goodPoolQuality(),
+          overlapRate: 0.9,
+          genericShop: true,
+          broadShop: false,
+        ),
+        isFalse,
+      );
+      final decisions = ShopDiscoveryPoolSupplement.evaluateCandidateDecisions(
+        keyword: '水筒',
+        selected: [candidate],
+        recommendedDisplayCount: 1,
+        apiWeakSignal: false,
+        poolTopGenres: const <String>['大人用水筒・マグボトル'],
+        poolQuality: _goodPoolQuality(),
+        overlapRate: 0.9,
+      );
+      expect(decisions.single.showEligible, isFalse);
+      expect(decisions.single.genericShop, isTrue);
+    });
+
+    test('broadShop=true は showEligible=false', () {
+      final decisions = ShopDiscoveryPoolSupplement.evaluateCandidateDecisions(
+        keyword: 'コーヒー',
+        selected: [
+          ShopDiscoveryPoolSupplementCandidate(
+            rank: 1,
+            shopCode: 'f272132-izumisano',
+            shopName: '大阪府泉佐野市',
+            score: 285,
+            relevance: ShopPoolKeywordMatchLevel.strong,
+            matchedBy: 'itemName',
+            hitItemCount: 8,
+            avgReview: 4.5,
+            maxReviewCount: 100,
+            primaryGenreName: 'コーヒー飲料',
+            matchedGenreName: 'コーヒー飲料',
+            hasImage: true,
+            hasShopUrl: true,
+            reason: ShopDiscoveryPoolSupplementReason.strongRelevance,
+          ),
+        ],
+        recommendedDisplayCount: 1,
+        apiWeakSignal: false,
+        poolTopGenres: const <String>['コーヒー飲料'],
+        poolQuality: _goodPoolQuality(),
+        overlapRate: 0.9,
+      );
+      expect(decisions.single.broadShop, isTrue);
+      expect(decisions.single.showEligible, isFalse);
+    });
+
+    test('candidate1 不適格なら candidate2 に displayRank=1', () {
+      final decisions = ShopDiscoveryPoolSupplement.evaluateCandidateDecisions(
+        keyword: '水筒',
+        selected: [
+          ShopDiscoveryPoolSupplementCandidate(
+            rank: 1,
+            shopCode: 'rakuten24',
+            shopName: '楽天24',
+            score: 293,
+            relevance: ShopPoolKeywordMatchLevel.strong,
+            matchedBy: 'itemName',
+            hitItemCount: 6,
+            avgReview: 4.5,
+            maxReviewCount: 500,
+            primaryGenreName: '大人用水筒・マグボトル',
+            matchedGenreName: '大人用水筒・マグボトル',
+            hasImage: true,
+            hasShopUrl: true,
+            reason: ShopDiscoveryPoolSupplementReason.strongRelevance,
+          ),
+          ShopDiscoveryPoolSupplementCandidate(
+            rank: 2,
+            shopCode: 'the-charme',
+            shopName: 'ピーコック魔法瓶 楽天市場店',
+            score: 323,
+            relevance: ShopPoolKeywordMatchLevel.strong,
+            matchedBy: 'itemName',
+            hitItemCount: 7,
+            avgReview: 4.5,
+            maxReviewCount: 500,
+            primaryGenreName: '大人用水筒・マグボトル',
+            matchedGenreName: '大人用水筒・マグボトル',
+            hasImage: true,
+            hasShopUrl: true,
+            reason: ShopDiscoveryPoolSupplementReason.strongRelevance,
+          ),
+        ],
+        recommendedDisplayCount: 1,
+        apiWeakSignal: false,
+        poolTopGenres: const <String>['大人用水筒・マグボトル'],
+        poolQuality: _goodPoolQuality(),
+        overlapRate: 0.9,
+      );
+      expect(decisions[0].showEligible, isFalse);
+      expect(decisions[1].showEligible, isTrue);
+      expect(decisions[1].displayRank, 1);
+    });
+
+    test('ベビー相当で水筒系のみの Pool では recommendedDisplayCount=0', () {
+      final recommended = ShopDiscoveryPoolSupplement.evaluateRecommendedDisplayCount(
+        selectedCount: 3,
+        overlapRate: 1.0,
+        apiWeakSignal: false,
+        wouldShow: false,
+        poolQuality: _goodPoolQuality(),
+        selected: [
+          ShopDiscoveryPoolSupplementCandidate(
+            rank: 1,
+            shopCode: 'tiger-online',
+            shopName: 'タイガー魔法瓶',
+            score: 295,
+            relevance: ShopPoolKeywordMatchLevel.strong,
+            matchedBy: 'genreName',
+            hitItemCount: 5,
+            avgReview: 4.5,
+            maxReviewCount: 500,
+            primaryGenreName: '大人用水筒・マグボトル',
+            matchedGenreName: '大人用水筒・マグボトル',
+            hasImage: true,
+            hasShopUrl: true,
+            reason: ShopDiscoveryPoolSupplementReason.strongRelevance,
+          ),
+        ],
+        keyword: 'ベビー',
+        poolTopGenres: const <String>[
+          '大人用水筒・マグボトル',
+          '子供用水筒・マグボトル',
+        ],
+      );
+      expect(recommended, 0);
+    });
+
+    test('decision / candidate ログと willUsePoolForUi / willSkipApi', () {
+      final api = List<ShopDiscoverySummary>.generate(
+        10,
+        (i) => _apiSummary(shopCode: 'api-$i'),
+      );
+      final pool = <ShopPoolCandidate>[
+        ...List<ShopPoolCandidate>.generate(
+          9,
+          (i) => _poolCandidate(shopCode: 'api-$i'),
+        ),
+        _poolCandidate(shopCode: 'bonus-shop', score: 310),
+      ];
+      final comparison = ShopDiscoveryPoolComparator.compare(
+        apiSummaries: api,
+        poolCandidates: pool,
+        catalogEntries: const <ShopCatalogEntry>[],
+      );
+      final result = ShopDiscoveryPoolSupplement.build(
+        keyword: '水筒',
+        apiSummaries: api,
+        poolCandidates: pool,
+        comparison: comparison,
+        poolQuality: _goodPoolQuality(),
+      );
+      expect(result.buildDecisionLogLine(),
+          contains('[SHOP_DISCOVERY_POOL_SUPPLEMENT_DECISION]'));
+      expect(result.buildCandidateDecisionLogLine(),
+          contains('[SHOP_DISCOVERY_POOL_SUPPLEMENT_CANDIDATE_DECISION]'));
+      expect(result.buildDecisionLogLine(), contains('willUsePoolForUi=false'));
+      expect(result.buildDecisionLogLine(), contains('willSkipApi=false'));
     });
   });
 

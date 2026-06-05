@@ -5767,6 +5767,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       );
       catalogAuditLog(supplement.buildSummaryLogLine());
       catalogAuditLog(supplement.buildTopLogLine());
+      catalogAuditLog(supplement.buildDecisionLogLine());
+      catalogAuditLog(supplement.buildCandidateDecisionLogLine());
     });
   }
 
