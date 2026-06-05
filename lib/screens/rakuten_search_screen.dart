@@ -154,6 +154,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
   String _lastShopDiscoveryCatalogFingerprint = '';
   ShopDiscoveryPoolSupplementUiBridgeResult _shopDiscoverySupplementUiBridge =
       ShopDiscoveryPoolSupplementUiBridgeResult.empty;
+  String _lastShopDiscoverySupplementUiBridgeSignature = '';
+  bool _shopDiscoverySupplementUiBridgeUpdateScheduled = false;
   RakutenSearchStatus? _lastEnvelopeSyncStatus;
 
   /// 結果ありでは常にコンパクトヘッダー固定（リスト内デッキ再表示は廃止）。
@@ -4182,6 +4184,8 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       _lastShopDiscoveryCatalogFingerprint = '';
       _shopDiscoverySupplementUiBridge =
           ShopDiscoveryPoolSupplementUiBridgeResult.empty;
+      _lastShopDiscoverySupplementUiBridgeSignature = '';
+      _shopDiscoverySupplementUiBridgeUpdateScheduled = false;
     });
     final fallbackKeyword = _labelForGenre(genreId) ?? '楽天';
     final condition = RakutenProductSearchCondition(
@@ -5675,7 +5679,29 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
   }
 
-  void _logShopDiscoveryPoolComparison(
+  void _scheduleShopDiscoverySupplementUiBridgeUpdate(
+    BuildContext context, {
+    required List<ShopDiscoverySummary> apiSummaries,
+    required List<String> savedShopCodes,
+  }) {
+    if (_shopDiscoverySupplementUiBridgeUpdateScheduled) {
+      return;
+    }
+    _shopDiscoverySupplementUiBridgeUpdateScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _shopDiscoverySupplementUiBridgeUpdateScheduled = false;
+      if (!mounted) {
+        return;
+      }
+      _updateShopDiscoverySupplementUiBridge(
+        context,
+        apiSummaries: apiSummaries,
+        savedShopCodes: savedShopCodes,
+      );
+    });
+  }
+
+  void _updateShopDiscoverySupplementUiBridge(
     BuildContext context, {
     required List<ShopDiscoverySummary> apiSummaries,
     required List<String> savedShopCodes,
@@ -5744,12 +5770,35 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     );
     final uiBridge =
         ShopDiscoveryPoolSupplementUiBridge.extractDisplayCandidates(supplement);
-    if (mounted) {
-      setState(() => _shopDiscoverySupplementUiBridge = uiBridge);
-    }
-    ShopDiscoveryPoolSupplementUiBridge.logBridgeResult(uiBridge);
-    ShopDiscoveryPoolSupplementUiBridge.logCardResult(uiBridge);
 
+    final signatureChanged =
+        signature != _lastShopDiscoverySupplementUiBridgeSignature;
+    final bridgeChanged =
+        !_shopDiscoverySupplementUiBridge.contentEquals(uiBridge);
+    if (signatureChanged || bridgeChanged) {
+      _lastShopDiscoverySupplementUiBridgeSignature = signature;
+      if (mounted && bridgeChanged) {
+        setState(() => _shopDiscoverySupplementUiBridge = uiBridge);
+      }
+      ShopDiscoveryPoolSupplementUiBridge.logBridgeResult(uiBridge);
+      ShopDiscoveryPoolSupplementUiBridge.logCardResult(uiBridge);
+      _logShopDiscoveryPoolComparison(
+        keyword: keyword,
+        comparison: comparison,
+        apiCompare: apiCompare,
+        supplement: supplement,
+        signature: signature,
+      );
+    }
+  }
+
+  void _logShopDiscoveryPoolComparison({
+    required String keyword,
+    required ShopDiscoveryPoolComparisonResult comparison,
+    required ShopDiscoveryPoolApiCompareResult apiCompare,
+    required ShopDiscoveryPoolSupplementResult supplement,
+    required String signature,
+  }) {
     AuditLogDeduper.logOnce('shopDiscoveryPoolCompare', signature, (_) {
       catalogAuditLog(
         '[SHOP_DISCOVERY_POOL_COMPARE_SUMMARY] '
@@ -5950,7 +5999,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         }
         final apiSucceededAndHasSummaries = summaries.isNotEmpty;
         if (apiSucceededAndHasSummaries) {
-          _logShopDiscoveryPoolComparison(
+          _scheduleShopDiscoverySupplementUiBridgeUpdate(
             context,
             apiSummaries: summaries,
             savedShopCodes: savedCodes.toList(growable: false),

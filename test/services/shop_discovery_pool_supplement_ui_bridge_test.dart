@@ -204,6 +204,50 @@ void main() {
       expect(bridge.displayCandidateCount, 0);
     });
 
+    test('contentEquals は表示候補の差分を検出する', () {
+      final left = ShopDiscoveryPoolSupplementUiBridge.extractDisplayCandidates(
+        _supplementResultWithDecisions(
+          keyword: '水筒',
+          recommendedDisplayCount: 1,
+          decisions: [
+            _decision(
+              shopCode: 'soukaidrink',
+              showEligible: true,
+              displayRank: 1,
+            ),
+          ],
+        ),
+      );
+      final same = ShopDiscoveryPoolSupplementUiBridge.extractDisplayCandidates(
+        _supplementResultWithDecisions(
+          keyword: '水筒',
+          recommendedDisplayCount: 1,
+          decisions: [
+            _decision(
+              shopCode: 'soukaidrink',
+              showEligible: true,
+              displayRank: 1,
+            ),
+          ],
+        ),
+      );
+      final different =
+          ShopDiscoveryPoolSupplementUiBridge.extractDisplayCandidates(
+        _supplementResultWithDecisions(
+          keyword: 'コーヒー',
+          recommendedDisplayCount: 0,
+          decisions: const [],
+        ),
+      );
+
+      expect(left.contentEquals(same), isTrue);
+      expect(left.contentEquals(different), isFalse);
+      expect(
+        ShopDiscoveryPoolSupplementUiBridgeResult.empty.contentEquals(left),
+        isFalse,
+      );
+    });
+
     test('candidate1 不適格でも candidate2 が displayRank=1 なら抽出する', () {
       final result = _supplementResultWithDecisions(
         keyword: '水筒',

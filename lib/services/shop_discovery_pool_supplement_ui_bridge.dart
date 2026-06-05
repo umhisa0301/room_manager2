@@ -46,6 +46,24 @@ class ShopDiscoveryPoolSupplementUiBridgeResult {
 
   int get displayCandidateCount => displayCandidates.length;
 
+  bool contentEquals(ShopDiscoveryPoolSupplementUiBridgeResult other) {
+    if (keyword != other.keyword) return false;
+    if (recommendedDisplayCount != other.recommendedDisplayCount) return false;
+    if (displayCandidates.length != other.displayCandidates.length) {
+      return false;
+    }
+    for (var i = 0; i < displayCandidates.length; i++) {
+      final left = displayCandidates[i];
+      final right = other.displayCandidates[i];
+      if (left.shopCode != right.shopCode ||
+          left.displayRank != right.displayRank ||
+          left.shopName != right.shopName) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   String buildUiBridgeLogLine() {
     final keywordForLog = keyword.isEmpty ? '-' : keyword;
     final codes = displayCandidates.map((e) => e.shopCode).toList();
