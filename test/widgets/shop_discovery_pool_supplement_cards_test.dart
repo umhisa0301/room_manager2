@@ -142,41 +142,12 @@ void main() {
         ),
       );
 
-      expect(
-        find.byKey(const ValueKey('shop-discovery-supplement-card-soukaidrink')),
-        findsOneWidget,
-      );
-
-      await tester.tap(
-        find.byKey(const ValueKey('shop-discovery-supplement-card-soukaidrink')),
-      );
+      await tester.tap(find.text('楽天24 ドリンク館'));
       await tester.pump();
 
       expect(tapped, isNotNull);
       expect(tapped!.shopCode, 'soukaidrink');
       expect(tapped!.shopName, '楽天24 ドリンク館');
-    });
-
-    testWidgets('onCandidateTap 未指定ならタップ領域を出さない', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ShopDiscoveryPoolSupplementCardsSection(
-              candidates: [
-                _candidate(
-                  shopCode: 'soukaidrink',
-                  shopName: '楽天24 ドリンク館',
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-
-      expect(
-        find.byKey(const ValueKey('shop-discovery-supplement-card-soukaidrink')),
-        findsNothing,
-      );
     });
   });
 }

@@ -1,0 +1,360 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-06 22:37:47
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: PRODUCT_CATALOG_ENABLED=true; SHOP_CATALOG_ENABLED=true; CATALOG_AUDIT_LOGS=true
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260606_223747.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260606_223747.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260606_223747.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260606_223747.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260606_223747.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260606_223747
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260606_223747\terminal_output_20260606_223747.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 1680).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID= --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                              7.1s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           5.1s
+D/FlutterJNI( 6797): Beginning load of flutter...
+D/FlutterJNI( 6797): flutter (null) was loaded normally!
+I/flutter ( 6797): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter ( 6797): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter ( 6797): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter ( 6797): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                
+I/flutter ( 6797): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100026,100227,100316 resolvedGenreNames=パソコン・周辺機器,食品,水・ソフトドリンク invalidGenreIds= corrected=false
+I/flutter ( 6797): [GENRE_PREF_LOAD] favoriteGenreIds=100026,100227,100316 favoriteGenreNames=パソコン・周辺機器,食品,水・ソフトドリンク source=repositoryLoad
+I/flutter ( 6797): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+Syncing files to device SHG08...                                   101ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:64296/2HQozcq30bY=/
+I/flutter ( 6797): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 6797): [ROOMコレ][surface] tab=done surface=ok_list
+I/Choreographer( 6797): Skipped 197 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9106?uri=http://127.0.0.1:64296/2HQozcq30bY=/
+I/flutter ( 6797): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=11→11 done=30→30
+I/flutter ( 6797): [MANAGED_PRODUCT_LOAD] source=provider pending=11 done=30 filter= tab=
+I/flutter ( 6797): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter ( 6797): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=11→11 done=30→30
+I/flutter ( 6797): [MANAGED_PRODUCT_LOAD] source=screen pending=11 done=30 filter= tab=done
+I/flutter ( 6797): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=11→11 done=30→30
+I/flutter ( 6797): [MANAGED_PRODUCT_LOAD] source=provider pending=11 done=30 filter= tab=
+I/flutter ( 6797): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/WebViewFactory( 6797): Loading com.google.android.webview version 148.0.7778.215 (code 777821503)
+D/ApplicationLoaders( 6797): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+W/o.room_manager2( 6797): Loading /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader( 6797): Configuring clns-5 for other apk /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/lib/arm64:/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider( 6797): version=148.0.7778.215 (777821503) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader( 6797): Load /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+D/nativeloader( 6797): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+I/chromium( 6797): [0606/223815.760504:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader( 6797): Successfully loaded native library
+I/cr_CachingUmaRecorder( 6797): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH( 6797): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider( 6797): #registerProvider() provider:WV.wk@19fb2a4 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider( 6797): #setManagerAndSource() 0
+I/cr_DisplayManager( 6797): Is Display Topology available: false
+I/cr_CombinedPProvider( 6797): #linkNativeInternal() 1
+D/CompatibilityChangeReporter( 6797): Compat change id reported: 183155436; UID 10474; state: ENABLED
+I/cr_AppResProvider( 6797): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider( 6797): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider( 6797): #onSettingsAvailable() 0
+I/cr_CombinedPProvider( 6797): #flushPolicies()
+W/chromium( 6797): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium( 6797): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 111966890
+D/CompatibilityChangeReporter( 6797): Compat change id reported: 214741472; UID 10474; state: ENABLED
+I/CameraManagerGlobal( 6797): Connecting to camera service
+D/CompatibilityChangeReporter( 6797): Compat change id reported: 171228096; UID 10474; state: ENABLED
+I/PlatformViewsController( 6797): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController( 6797): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter( 6797): Compat change id reported: 236825255; UID 10474; state: ENABLED
+W/libc    ( 6797): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6797): type=1400 audit(0.0:726287): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c218,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/CompatibilityChangeReporter( 6797): Compat change id reported: 193247900; UID 10474; state: ENABLED
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+I/Choreographer( 6797): Skipped 65 frames!  The application may be doing too much work on its main thread.
+W/libc    ( 6797): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2( 6797): type=1400 audit(0.0:726288): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=14364 scontext=u:r:untrusted_app:s0:c218,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0( 6797): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0( 6797): Build Date              : 08/23/22
+I/AdrenoVK-0( 6797): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0( 6797): Local Branch            : 
+I/AdrenoVK-0( 6797): Remote Branch           : 
+I/AdrenoVK-0( 6797): Remote Branch           : 
+I/AdrenoVK-0( 6797): Reconstruct Branch      : 
+I/AdrenoVK-0( 6797): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0( 6797): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer( 6797): Davey! duration=1146ms; Flags=1, FrameTimelineVsyncId=844825845, IntendedVsync=6251668863621268, Vsync=6251669946954558, InputEventId=0, HandleInputStart=6251669955181370, AnimationStart=6251669955182880, PerformTraversalsStart=6251669955206474, DrawStart=6251669964309287, FrameDeadline=6251668880287934, FrameInterval=6251669954752308, FrameStartTime=16666666, SyncQueued=6251669995011630, SyncStart=6251669995093922, IssueDrawCommandsStart=6251669996816943, SwapBuffers=6251670008580537, FrameCompleted=6251670009722672, DequeueBufferDuration=3888854, QueueBufferDuration=703177, GpuCompleted=6251670009643505, SwapBuffersCompleted=6251670009722672, DisplayPresentTime=0, CommandSubmissionCompleted=6251670008580537, 
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+D/ProfileInstaller( 6797): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI( 6797): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+E/FrameEvents( 6797): updateAcquireFence: Did not find frame.
+W/o.room_manager2( 6797): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+W/o.room_manager2( 6797): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+W/WindowOnBackDispatcher( 6797): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6797): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 6797): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=restore resultCount=0
+W/WindowOnBackDispatcher( 6797): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6797): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/ImeTracker( 6797): com.stepbytestudio.room_manager2:75a039a9: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6797): showSoftInput() view=io.flutter.embedding.android.FlutterView{e7046b4 VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/ImeTracker( 6797): com.stepbytestudio.room_manager2:1a424857: onRequestShow at ORIGIN_CLIENT_SHOW_SOFT_INPUT reason SHOW_SOFT_INPUT
+D/InputMethodManager( 6797): showSoftInput() view=io.flutter.embedding.android.FlutterView{e7046b4 VFE...... .F....ID 0,0-720,1478 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputConnectionAdaptor( 6797): The input method toggled cursor monitoring on
+D/InsetsController( 6797): show(ime(), fromIme=true)
+D/InsetsController( 6797): show(ime(), fromIme=true)
+I/ImeTracker( 6797): com.stepbytestudio.room_manager2:1a424857: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+I/ImeTracker( 6797): com.stepbytestudio.room_manager2:75a039a9: onShown
+I/flutter ( 6797): [SHOP_SEARCH_FETCH_PLAN] screen=shopDiscovery keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 expectedApiCalls=20
+I/flutter ( 6797): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6797): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6797): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&keyword=%E6%B0%B4%E7%AD%92
+I/ImeTracker( 6797): com.stepbytestudio.room_manager2:c0a335f0: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+D/InputConnectionAdaptor( 6797): The input method toggled cursor monitoring off
+W/WindowOnBackDispatcher( 6797): sendCancelIfRunning: isInProgress=falsecallback=ImeCallback=ImeOnBackInvokedCallback@110191405 Callback=android.window.IOnBackInvokedCallback$Stub$Proxy@ac57d4d
+I/ImeTracker( 6797): com.stepbytestudio.room_manager2:a294f8a0: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT_BY_INSETS_API
+I/ImeTracker( 6797): com.stepbytestudio.room_manager2:c0a335f0: onHidden
+I/flutter ( 6797): [Rakuten] response status=200 page=1 bytes=189907
+I/flutter ( 6797): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=shopDiscovery page=1 statusCode=200 rawCount=30 durationMs=685 success=true
+I/flutter ( 6797): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=685 statusCode=200
+I/flutter ( 6797): [Rakuten] keywordManagedExclusion page=1 raw=30 parsed=30 visible=30/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 6797): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6797): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6797): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&keyword=%E6%B0%B4%E7%AD%92
+I/flutter ( 6797): [Rakuten] response status=200 page=2 bytes=216447
+I/flutter ( 6797): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=shopDiscovery page=2 statusCode=200 rawCount=30 durationMs=653 success=true
+I/flutter ( 6797): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=true durationMs=653 statusCode=200
+I/flutter ( 6797): [Rakuten] keywordManagedExclusion page=2 raw=30 parsed=30 visible=59/100 dropReg=0 dropDup=1 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 6797): [Rakuten] request start mode=proxy page=3 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6797): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6797): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=3&hits=30&keyword=%E6%B0%B4%E7%AD%92
+I/flutter ( 6797): [Rakuten] response status=200 page=3 bytes=210276
+I/flutter ( 6797): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=shopDiscovery page=3 statusCode=200 rawCount=30 durationMs=499 success=true
+I/flutter ( 6797): [SHOP_SEARCH_API_CALL] page=3 hits=30 success=true durationMs=499 statusCode=200
+I/flutter ( 6797): [Rakuten] keywordManagedExclusion page=3 raw=30 parsed=30 visible=88/100 dropReg=0 dropDup=1 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 6797): [Rakuten] request start mode=proxy page=4 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6797): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6797): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=4&hits=30&keyword=%E6%B0%B4%E7%AD%92
+I/flutter ( 6797): [Rakuten] response status=200 page=4 bytes=222034
+I/flutter ( 6797): [SEARCH_PAGE_FETCH_AUDIT] sessionId=- mode=shopDiscovery page=4 statusCode=200 rawCount=30 durationMs=530 success=true
+I/flutter ( 6797): [SHOP_SEARCH_API_CALL] page=4 hits=30 success=true durationMs=530 statusCode=200
+I/flutter ( 6797): [Rakuten] keywordManagedExclusion page=4 raw=30 parsed=12 visible=100/100 dropReg=0 dropDup=0 dropAppFilter=0 dropSavedShop=0
+I/flutter ( 6797): [Rakuten] keywordManagedExclusion done visible=100 hadRaw=true pages=4 stop=RakutenKeywordSearchStopReason.reachedTarget
+I/flutter ( 6797): [SEARCH_FETCH_100_AUDIT] mode=shopDiscovery keyword=水筒 genreId=- shopCode=- targetDisplayCount=100 hitsPerRequest=30 maxPages=20 pagesRequested=4 pagesSucceeded=4 pagesFailed=0 rawTotal=120 excludedCandidate=0 excludedDone=0 excludedSafety=0 excludedDuplicate=2 excludedNoImage=0 excludedNoPrice=0 excludedNoName=0 excludedNoUrl=0 excludedReviewThreshold=0 excludedOther=0 excludedSavedShop=0 displayCount=100 stopReason=reachedTarget
+I/flutter ( 6797): [SHOP_SEARCH_FETCH_RESULT] screen=shopDiscovery apiCalls=4 rawItems=true dedupedItems=100 safetyExcluded=0 duplicateExcluded=2 registeredExcluded=0 savedShopExcluded=0 displayItems=100 failedPages=0 reason=reachedTarget
+I/flutter ( 6797): [RakutenGenre][SUMMARY] total=102 resolved=102 unresolved=0 usedMaster=102 rawGenreNameEmpty=102
+I/flutter ( 6797): [SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+I/flutter ( 6797): [Rakuten] searchWithCondition provider after repository rawItemsCount=100 parsedItemsCount=100 genreId=- keywordLen=2
+I/flutter ( 6797): [SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=100 displayCount=100 appliedToUi=true skipReason=-
+I/flutter ( 6797): [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 100 / 100 件
+I/flutter ( 6797): [GenreMaster] search prefetch skip resolvedLocally=4
+I/flutter ( 6797): [SHOP_POOL_READ_TIMING] phase=searchPostSchedule readAt=2026-06-06T22:39:28.303808 catalogCountAtRead=800 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+I/flutter ( 6797): [SHOP_POOL_SUMMARY] source=shopDiscovery catalogProducts=800 catalogShops=375 poolCandidates=262 savedExcluded=0 staleExcluded=220 lowTrustExcluded=0 unsafeExcluded=0 emptyShopCodeExcluded=0
+I/flutter ( 6797): [SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=262 avgItemCount=2.2 itemCount1=178 itemCount2Plus=84 withPrimaryGenre=262 unknownPrimaryGenre=0 withSourceProductIds=262 avgSourceProductIds=1.6 withSampleProductIds=262 avgSampleProductIds=1.6
+I/flutter ( 6797): [SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=125 includedInPool=5 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=soukaidrink:69/64/ok/inPool:true,the-charme:39/37/ok/inPool:true,atlas-online:20/18/ok/inPool:true,auc-risecreation:15/12/ok/inPool:true,dripcoffee:15/14/ok/inPool:true
+I/flutter ( 6797): [PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=soukaidrink productCount=69 sourceBreakdown=todayRecommendation:1,shopDiscovery:68 trustBreakdown=high:40,medium:29 freshCount=64 safeCount=64 staleCount=5 poolItemCount=64 inPool=true excludedReason=ok
+I/flutter ( 6797): [SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T22:39:28.796718 catalogCountAtRead=800 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+I/flutter ( 6797): [SHOP_POOL_STALE_REFERENCE_SUMMARY] candidateCount=262 freshItemCount=580 staleItemCount=220 staleUsableForDepth=220 currentItemCount2Plus=84 wouldItemCount2PlusIfStaleDepthAllowed=125
+I/flutter ( 6797): [PHASE3I_STRATEGY_AUDIT] current_poolCandidates=262 current_avgItemCount=2.21 current_itemCount2Plus=84 strategyA_searchMultiProductShops=0 strategyA_searchAvgProductsPerShop=1.00 strategyB_note=see_SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY strategyC_shopDiscoveryProductsInSinglePool=160 strategyD_staleUsableForDepth=220 strategyD_wouldItemCount2Plus=125 strategyE_staleLongLivedFields=220
+I/flutter ( 6797): [SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+I/flutter ( 6797): [PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=0 updated=98 updatedByCanonicalId=97 updatedByAlias=1 aliasConflictPrevented=0 skipped=0 evicted=0 total=800
+I/flutter ( 6797): [PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=水筒 items=100 upserted=98 skipped=0 qualityNg=2 source=shopDiscovery sourceTrust=medium
+I/flutter ( 6797): [PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=800 withGenreId=800 withGenreName=742 withShopCode=800 withShopName=800 withItemName=800 unknownGenreName=58 sourceBreakdown=search:20,todayRecommendation:157,shopDiscovery:623 trustBreakdown=high:318,medium:482
+I/flutter ( 6797): [PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=375 productCount1Shop=250 productCount2PlusShops=125 maxProductsPerShop=69 avgProductsPerShop=2.13
+I/flutter ( 6797): [PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=2026-06-06T22:39:27.609726 completedAt=2026-06-06T22:39:30.543560 durationMs=2933 catalogCountBefore=800 catalogCountAfter=800
+I/flutter ( 6797): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=save resultCount=100
+I/flutter ( 6797): [SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY] keyword=水筒 displayedShopCount=10 shopsWithOnlyOneFreshProduct=0 shopsEligibleForManualEnrich=0 estimatedApiCallsIfEnrichTop3=0
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_FALLBACK_SKIPPED] keyword=水筒 poolCandidateCount=0 convertedCount=0 savedExcluded=0 reason=apiResultAvailable willUsePoolForUi=false willSkipApi=false
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_UI_BRIDGE] keyword=水筒 displayCandidates=1 recommendedDisplayCount=1 shopCodes=ra-beans willUsePoolForUi=false willSkipApi=false
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_UI_CARD] keyword=水筒 visibleCards=1 shopCodes=ra-beans
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_COMPARE_SUMMARY] keyword=水筒 apiSummaryCount=10 poolCandidateCount=258 poolCandidateCountBeforeSavedExclude=258 poolCandidateCountAfterSavedExclude=258 catalogShopCount=54 overlapByShopCode=9 apiOnly=1 poolOnly=249 catalogOnly=1 savedExcluded=0 poolTopScoreMax=1344.5 poolTopScoreMin=43.0 apiTopScoreMax=324.0 catalogShopTotal=54 poolHasEnoughCandidatesForDisplay=true overlapRate=0.900 willUsePoolForUi=false willSkipApi=false
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_COMPARE_TOP] apiTop=atlas-online,tiger-online,irodorikukan poolTop=soukaidrink,the-charme,atlas-online overlapTop=atlas-online,tiger-online,irodorikukan
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_API_COMPARE_QUALITY] keyword=水筒 apiSummaryCount=10 poolCandidateCount=258 poolTopCount=9 overlapByShopCode=9 overlapRate=0.900 apiOnly=1 poolOnly=249 apiAvgScore=253.8 poolAvgScore=405.7 apiAvgReview=4.62 poolAvgReview=4.63 apiAvgHitItemCount=4.1 poolAvgHitItemCount=11.6 apiWithImageCount=10 poolWithImageCount=9 apiGenreCount=0 poolGenreCount=3 apiTopGenres=- poolTopGenres=大人用水筒・マグボトル:5,コーヒー飲料:2,子供用水筒・マグボトル:2 poolQualityLevel=good poolDepthQuality=good poolDisplayQuality=excellent poolRelevanceQuality=good wouldBeUsableAsSupplement=true wouldBeUsableAsReplacement=true willUsePoolForUi=false willSkipApi=false
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_API_COMPARE_TOP] keyword=水筒 apiTop1=shopCode:atlas-online,shopName:アトラス楽天市場店,score:324.0,hitItems:8 apiTop2=shopCode:tiger-online,shopName:タイガー魔法瓶 楽天市場店,score:304.5,hitItems:7 apiTop3=shopCode:irodorikukan,shopName:彩り空間,score:292.1,hitItems:6 poolTop1=shopCode:the-charme,shopName:ピーコック魔法瓶 楽天市場店,score:849.5,hitItems:37,relevance:strong poolTop2=shopCode:atlas-online,shopName:アトラス楽天市場店,score:526.4,hitItems:18,relevance:strong poolTop3=shopCode:irodorikukan,shopName:彩り空間,score:387.5,hitItems:10,relevance:strong overlapTop=atlas-online,tiger-online,irodorikukan
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_SUMMARY] keyword=水筒 apiSummaryCount=10 poolCandidateCount=258 eligibleSupplementCount=28 selectedSupplementCount=3 apiOverlapCount=9 apiOnly=1 poolOnly=249 poolQualityLevel=good poolDepthQuality=good wouldShowSupplementIfEnabled=true apiWeakSignal=false apiWeakReason=- poolCouldCoverApiWeakness=false willUsePoolForUi=false willSkipApi=false
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_DECISION] keyword=水筒 decision=showCandidate reason=apiMissingStrongPoolCandidate overlapRate=0.900 apiWeakSignal=false selectedSupplementCount=3 recommendedDisplayCount=1 maxAllowedDisplayCount=2 confidence=medium eligibleAfterStrongEvidence=1 willUsePoolForUi=false willSkipApi=false
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_CANDIDATE_DECISION] keyword=水筒 candidate1=shopCode:ra-beans,showEligible:true,reason:apiMissingStrongPoolCandidate,displayRank:1,genericShop:false,broadShop:false,genreAligned:true,genreAlignmentReason:matchesKeywordGenre,strongItemEvidence:true,matchedBy:itemName,hitItems:7,primaryGenreName:子供用水筒・マグボトル,matchedGenreName:子供用水筒・マグボトル,candidateDecisionReason:apiMissingStrongPoolCandidate candidate2=shopCode:rakuten24,showEligible:false,reason:similarToCandidate1OrTooGeneric,displayRank:-,genericShop:true,broadShop:false,genreAligned:false,genreAlignmentReason:unknown,strongItemEvidence:false,matchedBy:itemName,hitItems:7,primaryGenreName:コーヒー飲料,matchedGenreName:コーヒー飲料,candidateDecisionReason:similarToCandidate1OrTooGeneric candidate3=shopCode:liquor-boss,showEligible:false,reason:genreMismatchForKeyword,displayRank:-,genericShop:false,broadShop:false,genreAligned:false,genreAlignmentReason:unknown,strongItemE
+I/flutter ( 6797): [SHOP_CATALOG_UPSERT_SUMMARY] inserted=0 updated=10 skipped=0 evicted=0 total=54
+I/flutter ( 6797): [SHOP_CATALOG_DISCOVERY_UPSERT_SUMMARY] summaries=10 upserted=10 skippedNoShopCode=0 skippedInvalidShopName=0 skippedUnsafe=0 skippedInvalidShopUrl=0 source=shopDiscovery
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_TOP] keyword=水筒 supplement1=shopCode:ra-beans,shopName:びーんず キッチンと暮らしの道具,score:316.3,hitItems:7,relevance:strong,reason:strongRelevance supplement2=shopCode:rakuten24,shopName:楽天24,score:313.4,hitItems:7,relevance:strong,reason:strongRelevance supplement3=shopCode:liquor-boss,shopName:リカーBOSS 楽天市場店,score:271.9,hitItems:4,relevance:strong,reason:strongRelevance
+I/flutter ( 6797): [SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY] keyword=水筒 displayedShopCount=10 shopsWithOnlyOneFreshProduct=0 shopsEligibleForManualEnrich=0 estimatedApiCallsIfEnrichTop3=0
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_CARD_TAP] keyword=水筒 shopCode=ra-beans shopName=びーんず キッチンと暮らしの道具 action=shopSearch
+I/flutter ( 6797): [SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY] keyword=水筒 displayedShopCount=10 shopsWithOnlyOneFreshProduct=0 shopsEligibleForManualEnrich=0 estimatedApiCallsIfEnrichTop3=0
+I/flutter ( 6797): [SHOP_SEARCH_FETCH_PLAN] screen=productSearch keyword= genreId=- shopCode=ra-beans targetDisplayCount=100 hitsPerRequest=30 startPage=1 maxPages=4 expectedApiCalls=4
+I/flutter ( 6797): [Rakuten] request start mode=proxy page=1 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=separateOrShopOnly keyword=(omit) genreId=- shopCode=ra-beans itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6797): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6797): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=1&hits=30&shopCode=ra-beans
+I/flutter ( 6797): [Rakuten] response status=200 page=1 bytes=127393
+I/flutter ( 6797): [SHOP_SEARCH_API_CALL] page=1 hits=30 success=true durationMs=1008 statusCode=200
+I/flutter ( 6797): [Rakuten] page=1 parsedItems=30 / raw=30
+I/flutter ( 6797): [Rakuten] request start mode=proxy page=2 hits=30 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=separateOrShopOnly keyword=(omit) genreId=- shopCode=ra-beans itemCode=- shopName=未送信(APIはshopCodeのみ)
+I/flutter ( 6797): [Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+I/flutter ( 6797): [Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&page=2&hits=30&shopCode=ra-beans
+I/flutter ( 6797): [Rakuten] response status=429 page=2 bytes=128
+I/flutter ( 6797): [Rakuten] error response body (full, status=429): {"error":"rakuten_proxy_failed","detail":"{\"statusCode\":429,\"message\":\"Rate limit is exceeded. Try again in 1 seconds.\"}"}
+I/flutter ( 6797): [Rakuten] searchItems failed page=2 attempt=1: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter ( 6797): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:383:7)
+I/flutter ( 6797): <asynchronous suspension>
+I/flutter ( 6797): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:47:16)
+I/flutter ( 6797): <asynchronous suspension>
+I/flutter ( 6797): #2      RakutenSearchRepository.search (package:room_manager2/repository/rakuten_search_repository.dart:348:21)
+I/flutter ( 6797): <asynchronous suspension>
+I/flutter ( 6797): #3      _ShopDiscoveryDetailScreenState._loadItemsFromShopCode (package:room_manager2/screens/shop_discovery_detail_screen.dart:203:23)
+I/flutter ( 6797): <asynchronous suspension>
+I/flutter ( 6797): 
+I/flutter ( 6797): [SHOP_SEARCH_API_CALL] page=2 hits=30 success=false error=楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter ( 6797): [Rakuten] page fetch failed page=2: 楽天API呼び出しに失敗しました (429): rakuten_proxy_failed
+I/flutter ( 6797): #0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:383:7)
+I/flutter ( 6797): <asynchronous suspension>
+I/flutter ( 6797): #1      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:47:16)
+I/flutter ( 6797): <asynchronous suspension>
+I/flutter ( 6797): #2      RakutenSearchRepository.search (package:room_manager2/repository/rakuten_search_repository.dart:348:21)
+I/flutter ( 6797): <asynchronous suspension>
+I/flutter ( 6797): #3      _ShopDiscoveryDetailScreenState._loadItemsFromShopCode (package:room_manager2/screens/shop_discovery_detail_screen.dart:203:23)
+I/flutter ( 6797): <asynchronous suspension>
+I/flutter ( 6797): 
+I/flutter ( 6797): [SHOP_SEARCH_PARTIAL_FAILURE] page=2 keptItems=30 messageForUser=一部のページ取得に失敗しました
+I/flutter ( 6797): [Rakuten] repository search total mapped=30
+I/flutter ( 6797): [Rakuten] search mapped item count=30
+I/flutter ( 6797): [Rakuten] search before filter count=30
+I/flutter ( 6797): [Rakuten] search after filter count=30
+I/flutter ( 6797): [SEARCH_FETCH_100_AUDIT] mode=productSearch keyword= genreId=- shopCode=ra-beans targetDisplayCount=100 hitsPerRequest=30 maxPages=4 pagesRequested=2 pagesSucceeded=1 pagesFailed=1 rawTotal=30 excludedCandidate=0 excludedDone=0 excludedSafety=0 excludedDuplicate=0 excludedNoImage=0 excludedOther=0 excludedSavedShop=0 displayCount=30 stopReason=partialFailure
+I/flutter ( 6797): [SHOP_SEARCH_FETCH_RESULT] screen=productSearch apiCalls=2 rawItems=30 dedupedItems=30 safetyExcluded=0 duplicateExcluded=0 displayItems=30 failedPages=1 reason=partialFailure
+I/flutter ( 6797): [RakutenGenre][SUMMARY] total=30 resolved=30 unresolved=0 usedMaster=30 rawGenreNameEmpty=30
+I/flutter ( 6797): [PRODUCT_CATALOG_LRU_SUMMARY] evicted=30 remaining=800 max=800
+I/flutter ( 6797): [PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=30 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=30 skipped=0 evicted=30 total=800
+I/flutter ( 6797): [PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=ra-beans:10034750 resolvedCanonicalId=ra-beans:10034750 operation=insert mergeReason=aliasConflictPrevented inputShopCode=ra-beans savedShopCode=ra-beans aliasMatchedBy=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/ productId=ra-beans:10034750 normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/ saved=true urlIdentityRejected=true urlIdentityRejectReason=affiliateRedirectUrl inputProductId=ra-beans:10034750 matchedCanonicalId=ra-beans:10035072 matchedProductId=ra-beans:10035072
+I/flutter ( 6797): [PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=ra-beans:10032814 resolvedCanonicalId=ra-beans:10032814 operation=insert mergeReason=aliasConflictPrevented inputShopCode=ra-beans savedShopCode=ra-beans aliasMatchedBy=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/ productId=ra-beans:10032814 normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/ saved=true urlIdentityRejected=true urlIdentityRejectReason=affiliateRedirectUrl inputProductId=ra-beans:10032814 matchedCanonicalId=ra-beans:10034750 matchedProductId=ra-beans:10034750
+I/flutter ( 6797): [PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=ra-beans:10035258 resolvedCanonicalId=ra-beans:10035258 operation=insert mergeReason=aliasConflictPrevented inputShopCode=ra-beans savedShopCode=ra-beans aliasMatchedBy=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/ productId=ra-beans:10035258 normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/ saved=true urlIdentityRejected=true urlIdentityRejectReason=affiliateRedirectUrl inputProductId=ra-beans:10035258 matchedCanonicalId=ra-beans:10032814 matchedProductId=ra-beans:10032814
+I/flutter ( 6797): [PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=ra-beans:10027968 resolvedCanonicalId=ra-beans:10027968 operation=insert mergeReason=aliasConflictPrevented inputShopCode=ra-beans savedShopCode=ra-beans aliasMatchedBy=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/ productId=ra-beans:10027968 normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/ saved=true urlIdentityRejected=true urlIdentityRejectReason=affiliateRedirectUrl inputProductId=ra-beans:10027968 matchedCanonicalId=ra-beans:10035258 matchedProductId=ra-beans:10035258
+I/flutter ( 6797): [PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=ra-beans:10035519 resolvedCanonicalId=ra-beans:10035519 operation=insert mergeReason=aliasConflictPrevented inputShopCode=ra-beans savedShopCode=ra-beans aliasMatchedBy=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/ productId=ra-beans:10035519 normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/ saved=true urlIdentityRejected=true urlIdentityRejectReason=affiliateRedirectUrl inputProductId=ra-beans:10035519 matchedCanonicalId=ra-beans:10027968 matchedProductId=ra-beans:10027968
+I/flutter ( 6797): [SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=ra-beans source=loadedByShopCode attempted=30 upserted=30 inserted=30 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=30 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=high
+I/flutter ( 6797): [SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=ra-beans inputItems=30 savedForShop=37 item1=itemCode=ra-beans:10034750,inputCanonicalId=ra-beans:10034750,canonicalId=ra-beans:10034750,normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/,shopCode=ra-beans,itemName=貝印 蒸し器 Kai Kitchen 大型フリーサイズ蒸し器 18〜28cm用 DH-8070 ｜ 蒸し料理 ステンレス 食洗機対応 日本製 伸縮 鍋 フライパン 大きい 蒸しプレート 手軽 せいろ不要,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=ra-beans:10034750,resolvedShopCode=ra-beans,sameShopCode=true,aliasMatchedBy=ra-beans:10034750,saved=true,reason=- item2=itemCode=ra-beans:10032814,inputCanonicalId=ra-beans:10032814,canonicalId=ra-beans:10032814,normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00qf4ah.362kt32c.g00qf4ah.362ku126/,shopCode=ra-beans,itemName=洗濯かご Uバスケット 選べるカラー：ブルー/グリーン/アイボリー ｜ ラン
+I/flutter ( 6797): [SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=ra-beans allForShop=37 freshForShop=37 safeForShop=37 staleForShop=0 unsafeForShop=0 canonicalIds=ra-beans:10034311|ra-beans:10030954|ra-beans:10033562|ra-beans:10029798|ra-beans:10029800
+I/flutter ( 6797): [SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=ra-beans catalogProductsForShop=37 poolCandidateExists=true poolItemCount=37 poolSourceProductIds=5 poolSampleProductIds=5 excludedReason=-
+I/flutter ( 6797): [SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=ra-beans productCountForShop=37 freshCountForShop=37 sourceProductIds=5 sampleProductIds=5
+I/flutter ( 6797): [SHOP_DISCOVERY_DETAIL_CATALOG_AUDIT] shopCode=ra-beans itemsFromSearch=30 wouldFetchFromApiIfEmpty=true catalogProductsForShop=37 freshInPool=37 catalogUpsertOnOpen=true
+I/flutter ( 6797): [SHOP_DISCOVERY_SAVE_SHOP] source=detail shopCode=ra-beans shopName=びーんず キッチンと暮らしの道具 result=success
+I/flutter ( 6797): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter ( 6797): [SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY] keyword=水筒 displayedShopCount=10 shopsWithOnlyOneFreshProduct=0 shopsEligibleForManualEnrich=0 estimatedApiCallsIfEnrichTop3=0
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_UI_BRIDGE] keyword=水筒 displayCandidates=0 recommendedDisplayCount=1 shopCodes=- willUsePoolForUi=false willSkipApi=false
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_UI_CARD] keyword=水筒 visibleCards=0 shopCodes=-
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_COMPARE_SUMMARY] keyword=水筒 apiSummaryCount=10 poolCandidateCount=257 poolCandidateCountBeforeSavedExclude=257 poolCandidateCountAfterSavedExclude=257 catalogShopCount=54 overlapByShopCode=9 apiOnly=1 poolOnly=248 catalogOnly=2 savedExcluded=0 poolTopScoreMax=1344.5 poolTopScoreMin=43.0 apiTopScoreMax=324.0 catalogShopTotal=54 poolHasEnoughCandidatesForDisplay=true overlapRate=0.900 willUsePoolForUi=false willSkipApi=false
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_COMPARE_TOP] apiTop=atlas-online,tiger-online,irodorikukan poolTop=soukaidrink,the-charme,atlas-online overlapTop=atlas-online,tiger-online,irodorikukan
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_API_COMPARE_QUALITY] keyword=水筒 apiSummaryCount=10 poolCandidateCount=257 poolTopCount=9 overlapByShopCode=9 overlapRate=0.900 apiOnly=1 poolOnly=248 apiAvgScore=253.8 poolAvgScore=400.4 apiAvgReview=4.62 poolAvgReview=4.63 apiAvgHitItemCount=4.1 poolAvgHitItemCount=11.2 apiWithImageCount=10 poolWithImageCount=9 apiGenreCount=0 poolGenreCount=3 apiTopGenres=- poolTopGenres=大人用水筒・マグボトル:5,コーヒー飲料:3,子供用水筒・マグボトル:1 poolQualityLevel=good poolDepthQuality=good poolDisplayQuality=excellent poolRelevanceQuality=good wouldBeUsableAsSupplement=true wouldBeUsableAsReplacement=true willUsePoolForUi=false willSkipApi=false
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_API_COMPARE_TOP] keyword=水筒 apiTop1=shopCode:atlas-online,shopName:アトラス楽天市場店,score:324.0,hitItems:8 apiTop2=shopCode:tiger-online,shopName:タイガー魔法瓶 楽天市場店,score:304.5,hitItems:7 apiTop3=shopCode:irodorikukan,shopName:彩り空間,score:292.1,hitItems:6 poolTop1=shopCode:the-charme,shopName:ピーコック魔法瓶 楽天市場店,score:849.5,hitItems:37,relevance:strong poolTop2=shopCode:atlas-online,shopName:アトラス楽天市場店,score:526.4,hitItems:18,relevance:strong poolTop3=shopCode:irodorikukan,shopName:彩り空間,score:387.5,hitItems:10,relevance:strong overlapTop=atlas-online,tiger-online,irodorikukan
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_SUMMARY] keyword=水筒 apiSummaryCount=10 poolCandidateCount=257 eligibleSupplementCount=27 selectedSupplementCount=3 apiOverlapCount=9 apiOnly=1 poolOnly=248 poolQualityLevel=good poolDepthQuality=good wouldShowSupplementIfEnabled=true apiWeakSignal=false apiWeakReason=- poolCouldCoverApiWeakness=false willUsePoolForUi=false willSkipApi=false
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_TOP] keyword=水筒 supplement1=shopCode:rakuten24,shopName:楽天24,score:313.4,hitItems:7,relevance:strong,reason:strongRelevance supplement2=shopCode:liquor-boss,shopName:リカーBOSS 楽天市場店,score:271.9,hitItems:4,relevance:strong,reason:strongRelevance supplement3=shopCode:good-luckbin,shopName:Good Luck便 楽天市場店,score:267.9,hitItems:4,relevance:strong,reason:strongRelevance
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_DECISION] keyword=水筒 decision=hide reason=supplementCandidatesFiltered overlapRate=0.900 apiWeakSignal=false selectedSupplementCount=3 recommendedDisplayCount=1 maxAllowedDisplayCount=2 confidence=medium eligibleAfterStrongEvidence=0 willUsePoolForUi=false willSkipApi=false
+I/flutter ( 6797): [SHOP_DISCOVERY_POOL_SUPPLEMENT_CANDIDATE_DECISION] keyword=水筒 candidate1=shopCode:rakuten24,showEligible:false,reason:similarToCandidate1OrTooGeneric,displayRank:-,genericShop:true,broadShop:false,genreAligned:false,genreAlignmentReason:unknown,strongItemEvidence:false,matchedBy:itemName,hitItems:7,primaryGenreName:コーヒー飲料,matchedGenreName:コーヒー飲料,candidateDecisionReason:similarToCandidate1OrTooGeneric candidate2=shopCode:liquor-boss,showEligible:false,reason:genreMismatchForKeyword,displayRank:-,genericShop:false,broadShop:false,genreAligned:false,genreAlignmentReason:unknown,strongItemEvidence:false,matchedBy:itemName,hitItems:4,primaryGenreName:コーヒー飲料,matchedGenreName:コーヒー飲料,candidateDecisionReason:genreMismatchForKeyword candidate3=shopCode:good-luckbin,showEligible:false,reason:genreMismatchForKeyword,displayRank:-,genericShop:false,broadShop:false,genreAligned:false,genreAlignmentReason:unknown,strongItemEvidence:false,matchedBy:itemName,hitItems:4,pri
+I/flutter ( 6797): [SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY] keyword=水筒 displayedShopCount=10 shopsWithOnlyOneFreshProduct=0 shopsEligibleForManualEnrich=0 estimatedApiCallsIfEnrichTop3=0
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260606_223747.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260606_223747.mp4 (5299349 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260606_223747
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260606_223747\terminal_output_20260606_223747.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260606_223747.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260606_223747.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260606_223747.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260606_223747.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260606_223747.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.

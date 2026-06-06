@@ -22,6 +22,7 @@ import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
+import '../config/debug_log_flags.dart';
 import '../utils/app_debug_log.dart';
 import '../widgets/app_button.dart';
 import '../widgets/rakuten_search_result_card.dart';
@@ -295,22 +296,9 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
             _ShopDetailHeader(
               shopName: widget.summary.shopName,
               isSaved: isSaved,
-              onSaveToggle: () async {
-                if (isSaved) {
-                  await saved.removeShop(widget.summary.shopKey);
-                } else {
-                  await saved.upsertShop(
-                    shopId: widget.summary.shopKey,
-                    shopName: widget.summary.shopName,
-                    shopUrl: widget.summary.shopUrl,
-                  );
-                  _logFallbackAction(action: 'saveShop');
-                }
-                if (!context.mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(isSaved ? '保存解除しました' : '保存しました')),
-                );
-              },
+              canSave: widget.summary.shopKey.trim().isNotEmpty &&
+                  widget.summary.shopName.trim().isNotEmpty,
+              onSaveShop: () => _saveShop(context, saved),
               onBackToSearch: () => Navigator.of(context).maybePop(),
               onOpenExternal: () => _openShopUrl(context),
             ),
@@ -555,6 +543,81 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
     );
   }
 
+  Future<void> _saveShop(
+    BuildContext context,
+    SavedShopProvider saved,
+  ) async {
+    final shopCode = widget.summary.shopKey.trim();
+    final shopName = widget.summary.shopName.trim();
+    if (saved.isSaved(shopCode)) {
+      return;
+    }
+    if (shopCode.isEmpty || shopName.isEmpty) {
+      _logSaveShopResult(
+        shopCode: shopCode,
+        shopName: shopName,
+        result: 'failure',
+        reason: 'missingShopInfo',
+      );
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('ショップ情報が不足しているため保存できません')),
+      );
+      return;
+    }
+    try {
+      await saved.upsertShop(
+        shopId: shopCode,
+        shopName: shopName,
+        shopUrl: widget.summary.shopUrl,
+      );
+      if (!saved.isSaved(shopCode)) {
+        throw StateError('save verification failed');
+      }
+      _logSaveShopResult(
+        shopCode: shopCode,
+        shopName: shopName,
+        result: 'success',
+      );
+      _logFallbackAction(action: 'saveShop');
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('ショップを保存しました')),
+      );
+    } catch (e) {
+      _logSaveShopResult(
+        shopCode: shopCode,
+        shopName: shopName,
+        result: 'failure',
+        reason: e.toString(),
+      );
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('ショップの保存に失敗しました: $e')),
+      );
+    }
+  }
+
+  void _logSaveShopResult({
+    required String shopCode,
+    required String shopName,
+    required String result,
+    String? reason,
+  }) {
+    final codeForLog = shopCode.isEmpty ? '-' : shopCode;
+    final nameForLog = shopName.isEmpty ? '-' : shopName;
+    var message =
+        '[SHOP_DISCOVERY_SAVE_SHOP] source=detail '
+        'shopCode=$codeForLog shopName=$nameForLog result=$result';
+    if (reason != null && reason.trim().isNotEmpty) {
+      message = '$message reason=$reason';
+    }
+    catalogAuditLog(message);
+    if (kDebugMode && !DebugLogFlags.kCatalogAuditLogsEnabled) {
+      debugSummaryLog(message);
+    }
+  }
+
   Future<void> _openShopUrl(BuildContext context) async {
     final url = widget.summary.shopUrl.trim();
     if (kDebugMode) {
@@ -593,14 +656,16 @@ class _ShopDetailHeader extends StatelessWidget {
   const _ShopDetailHeader({
     required this.shopName,
     required this.isSaved,
-    required this.onSaveToggle,
+    required this.canSave,
+    required this.onSaveShop,
     required this.onBackToSearch,
     required this.onOpenExternal,
   });
 
   final String shopName;
   final bool isSaved;
-  final VoidCallback onSaveToggle;
+  final bool canSave;
+  final VoidCallback onSaveShop;
   final VoidCallback onBackToSearch;
   final VoidCallback onOpenExternal;
 
@@ -631,17 +696,19 @@ class _ShopDetailHeader extends StatelessWidget {
             runSpacing: 6,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              _HeaderMiniButton(
-                filled: isSaved,
-                label: isSaved ? '保存済み' : '保存',
-                icon: Icon(
-                  isSaved
-                      ? Icons.bookmark_added_rounded
-                      : Icons.bookmark_add_outlined,
-                  size: 18,
+              if (canSave)
+                _HeaderMiniButton(
+                  key: const Key('shop_discovery_detail_save_shop'),
+                  filled: isSaved,
+                  label: isSaved ? '保存済み' : 'このショップを保存',
+                  icon: Icon(
+                    isSaved
+                        ? Icons.bookmark_added_rounded
+                        : Icons.bookmark_add_outlined,
+                    size: 18,
+                  ),
+                  onPressed: isSaved ? null : onSaveShop,
                 ),
-                onPressed: onSaveToggle,
-              ),
               _HeaderMiniButton(
                 label: '条件変更',
                 icon: const Icon(Icons.tune_rounded, size: 18),
@@ -706,6 +773,7 @@ class _ShopDetailHeader extends StatelessWidget {
 
 class _HeaderMiniButton extends StatelessWidget {
   const _HeaderMiniButton({
+    super.key,
     required this.label,
     required this.icon,
     required this.onPressed,
@@ -714,7 +782,7 @@ class _HeaderMiniButton extends StatelessWidget {
 
   final String label;
   final Widget icon;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool filled;
 
   @override

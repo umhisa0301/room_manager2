@@ -75,6 +75,198 @@ Phase 3-M1 の実装に向け、ShopDiscoveryPoolSupplement と検索結果画�
 
 _**Agent (default)**_
 
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "files_with_matches",
+  "path": "c:/dev/app_project/room_manager2",
+  "pattern": "ShopDiscoveryPoolSupplement"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "files_with_matches",
+  "path": "c:/dev/app_project/room_manager2",
+  "pattern": "ShopDiscoveryPoolSupplement",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib\\services\\shop_discovery_pool_supplement_ui_bridge.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": ".specstory\\history\\2026-06-04_15-08-17Z-phase-3-j-completion-and-phase-3-k-objectives.md"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\services\\shop_discovery_pool_supplement.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test\\services\\shop_discovery_pool_supplement_ui_bridge_test.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": ".specstory\\history\\2026-06-05_01-50-30Z-phase-3-l-shoppool補助枠の表示条件.md"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test\\services\\shop_discovery_pool_supplement_test.dart"
+    }
+  ],
+  "totalFiles": 7,
+  "totalMatches": 7
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "content",
+  "path": "c:/dev/app_project/room_manager2",
+  "pattern": "CATALOG_AUDIT_LOGS"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:/dev/app_project/room_manager2",
+  "pattern": "CATALOG_AUDIT_LOGS",
+  "topFiles": [
+    {
+      "matchCount": 11,
+      "uri": "lib\\utils\\product_catalog_audit.dart"
+    },
+    {
+      "matchCount": 12,
+      "uri": ".specstory/history/2026-06-02_23-06-11Z-phase-3-h2-shopdiscovery-integration.md"
+    },
+    {
+      "matchCount": 2,
+      "uri": "recordings/screenshots_20260603_010440/terminal_output_20260603_010440.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "recordings/screenshots_20260603_000725/terminal_output_20260603_000725.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "recordings/screenshots_20260604_221205/terminal_output_20260604_221205.txt"
+    },
+    {
+      "matchCount": 30,
+      "uri": ".specstory\\history\\2026-06-05_01-50-30Z-phase-3-l-shoppool補助枠の表示条件.md"
+    },
+    {
+      "matchCount": 2,
+      "uri": "recordings/screenshots_20260602_223911/terminal_output_20260602_223911.txt"
+    },
+    {
+      "matchCount": 4,
+      "uri": ".specstory/history/2026-05-31_12-46-25Z-共通商品カタログの土台実装.md"
+    },
+    {
+      "matchCount": 1,
+      "uri": "recordings/screenshots_20260531_231251/terminal_output_20260531_231251.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "recordings/screenshots_20260531_232356/terminal_output_20260531_232356.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "recordings\\screenshots_20260604_225515\\terminal_output_20260604_225515.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": ".specstory/history/2026-05-30_20-27-34Z-今日のおすすめコレ候補の精度改善.md"
+    },
+    {
+      "matchCount": 1,
+      "uri": "test/e2e/product_catalog_search_device_path_test.dart"
+    },
+    {
+      "matchCount": 4,
+      "uri": "lib/utils/app_debug_log.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "recordings/screenshots_20260603_085844/terminal_output_20260603_085844.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "recordings/screenshots_20260601_002004/terminal_output_20260601_002004.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "recordings/screenshots_20260603_001151/terminal_output_20260603_001151.txt"
+    },
+    {
+      "matchCount": 2,
+      "uri": "recordings/screenshots_20260601_011650/terminal_output_20260601_011650.txt"
+    },
+    {
+      "matchCount": 10,
+      "uri": ".specstory\\history\\2026-06-04_15-08-17Z-phase-3-j-completion-and-phase-3-k-objectives.md"
+    },
+    {
+      "matchCount": 2,
+      "uri": "recordings/screenshots_20260602_234929/terminal_output_20260602_234929.txt"
+    }
+  ],
+  "totalFiles": 60,
+  "totalMatches": 454
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
 <tool-use data-tool-type="unknown" data-tool-name="semantic_search_full">
 <details>
 <summary>Tool use: **semantic_search_full**</summary>
@@ -5777,198 +5969,6 @@ Status: **completed**
 
 _**Agent (default)**_
 
-<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
-<details>
-<summary>Tool use: **ripgrep_raw_search**</summary>
-
-
-Parameters:
-
-```json
-{
-  "caseInsensitive": false,
-  "outputMode": "files_with_matches",
-  "path": "c:/dev/app_project/room_manager2",
-  "pattern": "ShopDiscoveryPoolSupplement"
-}
-```
-Additional data:
-
-```json
-{
-  "isPruned": true,
-  "outputMode": "files_with_matches",
-  "path": "c:/dev/app_project/room_manager2",
-  "pattern": "ShopDiscoveryPoolSupplement",
-  "topFiles": [
-    {
-      "matchCount": 1,
-      "uri": "lib\\services\\shop_discovery_pool_supplement_ui_bridge.dart"
-    },
-    {
-      "matchCount": 1,
-      "uri": ".specstory\\history\\2026-06-04_15-08-17Z-phase-3-j-completion-and-phase-3-k-objectives.md"
-    },
-    {
-      "matchCount": 1,
-      "uri": "lib\\services\\shop_discovery_pool_supplement.dart"
-    },
-    {
-      "matchCount": 1,
-      "uri": "test\\services\\shop_discovery_pool_supplement_ui_bridge_test.dart"
-    },
-    {
-      "matchCount": 1,
-      "uri": "lib\\screens\\rakuten_search_screen.dart"
-    },
-    {
-      "matchCount": 1,
-      "uri": ".specstory\\history\\2026-06-05_01-50-30Z-phase-3-l-shoppool補助枠の表示条件.md"
-    },
-    {
-      "matchCount": 1,
-      "uri": "test\\services\\shop_discovery_pool_supplement_test.dart"
-    }
-  ],
-  "totalFiles": 7,
-  "totalMatches": 7
-}
-```
-Status: **completed**
-
-
-</details>
-</tool-use>
-
-<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
-<summary>Tool use: **ripgrep_raw_search**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
-<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
-<details>
-<summary>Tool use: **ripgrep_raw_search**</summary>
-
-
-Parameters:
-
-```json
-{
-  "caseInsensitive": false,
-  "outputMode": "content",
-  "path": "c:/dev/app_project/room_manager2",
-  "pattern": "CATALOG_AUDIT_LOGS"
-}
-```
-Additional data:
-
-```json
-{
-  "isPruned": true,
-  "outputMode": "content",
-  "path": "c:/dev/app_project/room_manager2",
-  "pattern": "CATALOG_AUDIT_LOGS",
-  "topFiles": [
-    {
-      "matchCount": 11,
-      "uri": "lib\\utils\\product_catalog_audit.dart"
-    },
-    {
-      "matchCount": 12,
-      "uri": ".specstory/history/2026-06-02_23-06-11Z-phase-3-h2-shopdiscovery-integration.md"
-    },
-    {
-      "matchCount": 2,
-      "uri": "recordings/screenshots_20260603_010440/terminal_output_20260603_010440.txt"
-    },
-    {
-      "matchCount": 2,
-      "uri": "recordings/screenshots_20260603_000725/terminal_output_20260603_000725.txt"
-    },
-    {
-      "matchCount": 2,
-      "uri": "recordings/screenshots_20260604_221205/terminal_output_20260604_221205.txt"
-    },
-    {
-      "matchCount": 30,
-      "uri": ".specstory\\history\\2026-06-05_01-50-30Z-phase-3-l-shoppool補助枠の表示条件.md"
-    },
-    {
-      "matchCount": 2,
-      "uri": "recordings/screenshots_20260602_223911/terminal_output_20260602_223911.txt"
-    },
-    {
-      "matchCount": 4,
-      "uri": ".specstory/history/2026-05-31_12-46-25Z-共通商品カタログの土台実装.md"
-    },
-    {
-      "matchCount": 1,
-      "uri": "recordings/screenshots_20260531_231251/terminal_output_20260531_231251.txt"
-    },
-    {
-      "matchCount": 2,
-      "uri": "recordings/screenshots_20260531_232356/terminal_output_20260531_232356.txt"
-    },
-    {
-      "matchCount": 2,
-      "uri": "recordings\\screenshots_20260604_225515\\terminal_output_20260604_225515.txt"
-    },
-    {
-      "matchCount": 2,
-      "uri": ".specstory/history/2026-05-30_20-27-34Z-今日のおすすめコレ候補の精度改善.md"
-    },
-    {
-      "matchCount": 1,
-      "uri": "test/e2e/product_catalog_search_device_path_test.dart"
-    },
-    {
-      "matchCount": 4,
-      "uri": "lib/utils/app_debug_log.dart"
-    },
-    {
-      "matchCount": 2,
-      "uri": "recordings/screenshots_20260603_085844/terminal_output_20260603_085844.txt"
-    },
-    {
-      "matchCount": 2,
-      "uri": "recordings/screenshots_20260601_002004/terminal_output_20260601_002004.txt"
-    },
-    {
-      "matchCount": 2,
-      "uri": "recordings/screenshots_20260603_001151/terminal_output_20260603_001151.txt"
-    },
-    {
-      "matchCount": 2,
-      "uri": "recordings/screenshots_20260601_011650/terminal_output_20260601_011650.txt"
-    },
-    {
-      "matchCount": 10,
-      "uri": ".specstory\\history\\2026-06-04_15-08-17Z-phase-3-j-completion-and-phase-3-k-objectives.md"
-    },
-    {
-      "matchCount": 2,
-      "uri": "recordings/screenshots_20260602_234929/terminal_output_20260602_234929.txt"
-    }
-  ],
-  "totalFiles": 60,
-  "totalMatches": 454
-}
-```
-Status: **completed**
-
-
-</details>
-</tool-use>
-
-<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
-<summary>Tool use: **ripgrep_raw_search**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
 既存の UI bridge 実装の有無を確認しています。
 
 
@@ -6289,6 +6289,52 @@ Parameters:
 ```json
 {
   "caseInsensitive": false,
+  "outputMode": "content",
+  "path": "c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart",
+  "pattern": "_shopDiscoveryPoolCompareAudit|logShopDiscoveryPool"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart",
+  "pattern": "_shopDiscoveryPoolCompareAudit|logShopDiscoveryPool",
+  "topFiles": [
+    {
+      "matchCount": 21,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 21
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
   "contextAfter": 15,
   "outputMode": "content",
   "path": "c:/dev/app_project/room_manager2",
@@ -6339,52 +6385,6 @@ Additional data:
   ],
   "totalFiles": 8,
   "totalMatches": 22
-}
-```
-Status: **completed**
-
-
-</details>
-</tool-use>
-
-<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
-<summary>Tool use: **ripgrep_raw_search**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
-<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
-<details>
-<summary>Tool use: **ripgrep_raw_search**</summary>
-
-
-Parameters:
-
-```json
-{
-  "caseInsensitive": false,
-  "outputMode": "content",
-  "path": "c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart",
-  "pattern": "_shopDiscoveryPoolCompareAudit|logShopDiscoveryPool"
-}
-```
-Additional data:
-
-```json
-{
-  "isPruned": true,
-  "outputMode": "content",
-  "path": "c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart",
-  "pattern": "_shopDiscoveryPoolCompareAudit|logShopDiscoveryPool",
-  "topFiles": [
-    {
-      "matchCount": 21,
-      "uri": "lib/screens/rakuten_search_screen.dart"
-    }
-  ],
-  "totalFiles": 1,
-  "totalMatches": 21
 }
 ```
 Status: **completed**
@@ -6484,6 +6484,19 @@ Status: **completed**
 
 _**Agent (default)**_
 
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
 <tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
 <details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && git status --short && git diff --stat</summary>
 
@@ -6509,19 +6522,6 @@ cd c:\dev\app_project\room_manager2 && git status --short && git diff --stat
 
 <tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
 <summary>Tool use: **run_terminal_command_v2**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
-<tool-use data-tool-type="read" data-tool-name="read_file_v2">
-<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart</summary>
-
-</details>
-</tool-use>
-
-<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
-<summary>Tool use: **read_file_v2**</summary>
 
 </details></tool-use>
 
@@ -9130,6 +9130,19 @@ showEligible=true の判定条件を具体化した。strongItemEvidence かつ 
 
 _**Agent (default)**_
 
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/run_and_record_select_device.ps1</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
 <tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
 <details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
@@ -9171,19 +9184,6 @@ Status: **completed**
 
 <tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
-<tool-use data-tool-type="read" data-tool-name="read_file_v2">
-<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/run_and_record_select_device.ps1</summary>
-
-</details>
-</tool-use>
-
-<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
-<summary>Tool use: **read_file_v2**</summary>
 
 </details></tool-use>
 
@@ -9237,7 +9237,7 @@ _**Agent (default)**_
 
 <tool-use data-tool-type="write" data-tool-name="edit_file_v2">
 
-<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/services/shop_discovery_pool_supplement_ui_bridge.dart</summary>
 
 </details>
 
@@ -9252,7 +9252,7 @@ _**Agent (default)**_
 
 <tool-use data-tool-type="write" data-tool-name="edit_file_v2">
 
-<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/services/shop_discovery_pool_supplement_ui_bridge.dart</summary>
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
 
 </details>
 
@@ -9330,6 +9330,21 @@ _**Agent (default)**_
 
 _**Agent (default)**_
 
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
 <tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
 <details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1</summary>
 
@@ -9353,21 +9368,6 @@ warning - A value for optional parameter 'withImageCount' isn't ever given - tes
 
 <tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
 <summary>Tool use: **run_terminal_command_v2**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
-<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
-
-<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart</summary>
-
-</details>
-
-</tool-use>
-
-<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
-<summary>Tool use: **edit_file_v2**</summary>
 
 </details></tool-use>
 
@@ -11115,16 +11115,6 @@ _**Agent (default)**_
 ```bash
 cd c:\dev\app_project\room_manager2 && .\run_and_record_select_device.ps1 -BuildMode debug -DartDefine "PRODUCT_CATALOG_ENABLED=true,SHOP_CATALOG_ENABLED=true,CATALOG_AUDIT_LOGS=true" 2>&1
 ```
-
-```
-]633;CBuild mode (from parameter): Debug (hot reload)
-
-====================================================
-Check adb devices
-====================================================
-]633;D;1
-
-```
 </details>
 </tool-use>
 
@@ -11208,6 +11198,23 @@ _**Agent (default)**_
 
 _**Agent (default)**_
 
+<tool-use data-tool-type="unknown" data-tool-name="await">
+<details>
+<summary>Tool use: **await**</summary>
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="await"><details>
+<summary>Tool use: **await**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
 <tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
 <details><summary>Tool use: **run_terminal_command_v2** • Run command: adb devices 2>&1</summary>
 
@@ -11233,46 +11240,8 @@ emulator-5556	device
 
 _**Agent (default)**_
 
-<tool-use data-tool-type="unknown" data-tool-name="await">
-<details>
-<summary>Tool use: **await**</summary>
-
-Status: **completed**
-
-
-</details>
-</tool-use>
-
-<tool-use data-tool-type="unknown" data-tool-name="await"><details>
-<summary>Tool use: **await**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
 対話式デバイス選択で止まっているため、実機 ID を指定して直接起動します。
 
-
-_**Agent (default)**_
-
-<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
-<details><summary>Tool use: **run_terminal_command_v2** • Run command: taskkill /PID 46540 /F 2>&1</summary>
-
-```bash
-taskkill /PID 46540 /F 2>&1
-```
-
-```
-����: PID 46540 �̃v���Z�X�͋����I������܂����B
-
-```
-</details>
-</tool-use>
-
-<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
-<summary>Tool use: **run_terminal_command_v2**</summary>
-
-</details></tool-use>
 
 _**Agent (default)**_
 
@@ -11327,8 +11296,42 @@ Status: **completed**
 
 _**Agent (default)**_
 
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: taskkill /PID 46540 /F 2>&1</summary>
+
+```bash
+taskkill /PID 46540 /F 2>&1
+```
+
+```
+����: PID 46540 �̃v���Z�X�͋����I������܂����B
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
 <think><details><summary>Thought Process</summary>
 物理端末上で dart-defines を指定して Flutter を直接実行する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/run_and_record_select_device.ps1</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
 
 _**Agent (default)**_
 
@@ -11378,19 +11381,6 @@ Status: **completed**
 
 _**Agent (default)**_
 
-<tool-use data-tool-type="read" data-tool-name="read_file_v2">
-<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/run_and_record_select_device.ps1</summary>
-
-</details>
-</tool-use>
-
-<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
-<summary>Tool use: **read_file_v2**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
 <think><details><summary>Thought Process</summary>
 デバイスIDパラメータがないため、複数デバイスがある場合、対話的に選択する必要がある。</details></think>
 
@@ -11401,10 +11391,6 @@ _**Agent (default)**_
 
 ```bash
 cd c:\dev\app_project\room_manager2 && flutter run -d SXILHMB270711564 --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true 2>&1
-```
-
-```
-]633;C
 ```
 </details>
 </tool-use>
@@ -12189,6 +12175,32 @@ _**Agent (default)**_
 
 _**Agent (default)**_
 
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
 <tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
 <details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
@@ -12258,32 +12270,6 @@ Status: **completed**
 
 <tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
-<tool-use data-tool-type="read" data-tool-name="read_file_v2">
-<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
-
-</details>
-</tool-use>
-
-<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
-<summary>Tool use: **read_file_v2**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
-<tool-use data-tool-type="read" data-tool-name="read_file_v2">
-<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
-
-</details>
-</tool-use>
-
-<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
-<summary>Tool use: **read_file_v2**</summary>
 
 </details></tool-use>
 
@@ -14354,29 +14340,6 @@ Running Gradle task 'assembleDebug'...                             41.1s
 
 _**Agent (default)**_
 
-<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
-<details><summary>Tool use: **run_terminal_command_v2** • Run command: adb -s SXILHMB270711564 install -r "c:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-debug.apk" 2>&1; adb -s SXILHMB270711564 shell am start -n com.stepbytestudio.room_manager2/.MainActivity 2>&1</summary>
-
-```bash
-adb -s SXILHMB270711564 install -r "c:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-debug.apk" 2>&1; adb -s SXILHMB270711564 shell am start -n com.stepbytestudio.room_manager2/.MainActivity 2>&1
-```
-
-```
-Performing Streamed Install
-Success
-Starting: Intent { cmp=com.stepbytestudio.room_manager2/.MainActivity }
-
-```
-</details>
-</tool-use>
-
-<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
-<summary>Tool use: **run_terminal_command_v2**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
 <tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
 <details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
@@ -14422,6 +14385,29 @@ Status: **completed**
 
 <tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: adb -s SXILHMB270711564 install -r "c:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-debug.apk" 2>&1; adb -s SXILHMB270711564 shell am start -n com.stepbytestudio.room_manager2/.MainActivity 2>&1</summary>
+
+```bash
+adb -s SXILHMB270711564 install -r "c:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-debug.apk" 2>&1; adb -s SXILHMB270711564 shell am start -n com.stepbytestudio.room_manager2/.MainActivity 2>&1
+```
+
+```
+Performing Streamed Install
+Success
+Starting: Intent { cmp=com.stepbytestudio.room_manager2/.MainActivity }
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
 
 </details></tool-use>
 
@@ -14703,19 +14689,6 @@ Phase 3-M3 のタップ導線実装に向け、既存のショップ検索・詳
 
 _**Agent (default)**_
 
-<tool-use data-tool-type="read" data-tool-name="read_file_v2">
-<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/widgets/shop_discovery_pool_supplement_cards.dart</summary>
-
-</details>
-</tool-use>
-
-<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
-<summary>Tool use: **read_file_v2**</summary>
-
-</details></tool-use>
-
-_**Agent (default)**_
-
 <tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
 <details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
@@ -14803,6 +14776,19 @@ Status: **completed**
 
 <tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/widgets/shop_discovery_pool_supplement_cards.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
 
 </details></tool-use>
 
@@ -15089,6 +15075,19 @@ Status: **completed**
 
 _**Agent (default)**_
 
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/navigation/rakuten_search_navigator.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
 <tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
 <details>
 <summary>Tool use: **ripgrep_raw_search**</summary>
@@ -15168,7 +15167,7 @@ Status: **completed**
 _**Agent (default)**_
 
 <tool-use data-tool-type="read" data-tool-name="read_file_v2">
-<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/navigation/rakuten_search_navigator.dart</summary>
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
 
 </details>
 </tool-use>
@@ -15252,8 +15251,13 @@ _**Agent (default)**_
 
 _**Agent (default)**_
 
+<think><details><summary>Thought Process</summary>
+既存の `ShopDiscoveryDetailScreen`（空アイテム・shopCode）が、今回のタップ導線として採用されることを確認した。</details></think>
+
+_**Agent (default)**_
+
 <tool-use data-tool-type="read" data-tool-name="read_file_v2">
-<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/services/shop_discovery_pool_supplement_ui_bridge.dart</summary>
 
 </details>
 </tool-use>
@@ -15262,11 +15266,6 @@ _**Agent (default)**_
 <summary>Tool use: **read_file_v2**</summary>
 
 </details></tool-use>
-
-_**Agent (default)**_
-
-<think><details><summary>Thought Process</summary>
-既存の `ShopDiscoveryDetailScreen`（空アイテム・shopCode）が、今回のタップ導線として採用されることを確認した。</details></think>
 
 _**Agent (default)**_
 
@@ -15317,8 +15316,4463 @@ Status: **completed**
 
 _**Agent (default)**_
 
+<think><details><summary>Thought Process</summary>
+ログ重複防止のため、CATALOG_AUDIT_LOGS=true 時に debugSummaryLog の重複を抑制し、catalogAuditLog のみを出力する方針を確定した。</details></think>
+
+_**Agent (default)**_
+
+補助枠カードに `onTap` を追加し、既存の `ShopDiscoveryDetailScreen` 導線へ接続します。
+
+
+_**Agent (default)**_
+
 <tool-use data-tool-type="read" data-tool-name="read_file_v2">
-<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/services/shop_discovery_pool_supplement_ui_bridge.dart</summary>
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/services/shop_discovery_pool_supplement_ui_bridge.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/services/shop_discovery_pool_supplement_ui_bridge.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/widgets/shop_discovery_pool_supplement_cards.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/widgets/shop_discovery_pool_supplement_cards.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/widgets/shop_discovery_pool_supplement_cards.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/widgets/shop_discovery_pool_supplement_cards.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter analyze lib/screens/rakuten_search_screen.dart lib/widgets/shop_discovery_pool_supplement_cards.dart lib/services/shop_discovery_pool_supplement_ui_bridge.dart 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter analyze lib/screens/rakuten_search_screen.dart lib/widgets/shop_discovery_pool_supplement_cards.dart lib/services/shop_discovery_pool_supplement_ui_bridge.dart 2>&1
+```
+
+```
+Analyzing 3 items...                                            
+No issues found! (ran in 8.1s)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+logCardTap のテストを改善し、ログ行の形式をヘルパー関数や buildUiCardLogLine のパターンで検証する。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/services/shop_discovery_pool_supplement_ui_bridge.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path kProductCatalogEnabled=false では upsert skipped
+00:00 +1: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path 商品名検索 productSearch で upsert し永続化する
+00:00 +2: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct JSON 往復できる
+00:00 +3: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct JSON 往復できる
+00:00 +4: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct high trust が low trust の重要フィールドを上書きできる
+00:00 +5: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust は high trust の重要フィールドを上書きしない
+00:00 +6: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust でも空欄は補完できる
+00:05 +7: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: TodayRecommendationEntry の JSON 往復で imageUrl とレビューが欠落しない
+00:05 +8: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry JSON 往復できる
+00:05 +9: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される
+00:05 +10: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される
+00:05 +11: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される
+00:05 +12: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される
+00:05 +13: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される
+00:06 +14: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が最優先
+00:06 +15: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が無ければ itemUrl
+00:06 +16: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliate と item が空なら rakutenUrl
+00:10 +17: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:10 +18: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and keeps single value
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated,affordable new=premium
+00:10 +19: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles effectivePostStyleList uses balance without showing it as selected
+00:12 +20: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository upsert して canonicalId で取得できる
+00:13 +21: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository alias で検索できる
+00:13 +22: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository high trust が low trust を上書きできる
+00:13 +23: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository low trust は high trust の重要フィールドを上書きしない
+00:13 +24: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:15 +25: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:15 +26: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:15 +27: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:20 +28: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:20 +29: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:20 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:20 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:20 +32: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:20 +33: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:24 +34: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository stale 判定ができる
+00:24 +35: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository clear で空になる
+00:24 +36: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 別 canonicalId・別 URL は alias 誤マージせず2件保存される
+00:24 +37: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository レガシー誤 alias があっても別 productId は別商品として insert
+00:24 +38: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 同一 affiliate URL・別 productId は urlMatch せず2件保存
+00:24 +39: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository takeya-tea 2商品バッチで productCountForShop=2
+00:24 +40: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository productId 欠落時は同一 item URL で alias merge される
+00:24 +41: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository バッチ upsert で別商品2件は inserted=2
+00:24 +42: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator カタログ空なら空リスト
+00:25 +43: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 単位に集計できる
+00:25 +44: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 同一 shopCode 複数商品で itemCount2Plus になる
+00:25 +45: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 空は除外
+00:25 +46: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator unsafe 商品は除外
+00:25 +47: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +48: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +49: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +50: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +51: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +52: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +53: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +54: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +55: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +56: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +57: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +58: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +59: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:26 +60: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:28 +61: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:29 +62: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert build 再実行で重複 upsert しない
+00:30 +63: C:/dev/app_project/room_manager2/test/services/rakuten_genre_master_service_test.dart: genreId 100026 は簡易マスタでもパソコン・周辺機器として解決する
+00:31 +64: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 通常URL・クエリ付きで itemCode を抽出する
+00:31 +65: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 末尾スラッシュなしでも itemCode を抽出する
+00:31 +66: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 検索結果ホストは非商品ページエラーになる
+00:32 +67: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天以外のURLは商品ページURLエラーになる
+00:32 +68: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl item.rakuten で商品セグメントが不正なら確認できないエラー
+00:32 +69: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ済みがコレ候補より優先される
+00:33 +70: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ候補として分類される
+00:33 +71: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts 未登録
+00:33 +72: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser https の item.rakuten から shop / セグメント / 正規URL
+00:34 +73: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser http でも抽出できる
+00:34 +74: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser HTML 内の複数リンクから数値ID付きを優先
+00:34 +75: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RoomUrlResolver ROOM HTML から楽天商品URLを取得できる
+00:34 +76: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:35 +77: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathFromCollectsRow reads nested item URL
+[ROOM_COLLECTS_RESPONSE_SHAPE] itemKeys=id,meta productLikeKeys=- userLikeKeys=- imageLikeKeys=- hasProductImage=false hasUserIcon=false
+[ROOM_IMPORT_COLLECTS_IMAGE_KEYS] productId=17001234567890 keys=meta.link selectedKey=- rejectedKeys=meta.link
+00:39 +78: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMプロフィールURLを許可して正規化する
+00:40 +79: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /items 付きROOMプロフィールURLを許可して正規化する
+00:40 +80: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /collections と /likes もプロフィール導線として許可する
+00:40 +81: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 空は任意入力として許可する
+00:40 +82: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat httpは拒否する
+00:40 +83: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 楽天市場URLは拒否する
+00:40 +84: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMトップURLのみは拒否する
+00:40 +85: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOM商品URL相当の複数パスは拒否する
+00:40 +86: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat roomIdなしの /items は拒否する
+00:40 +87: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 短縮URLは拒否する
+00:40 +88: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers extractRoomId extracts roomId from profile child routes
+00:40 +89: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers normalizeProfileUrl always stores profile URL
+00:40 +90: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers buildItemsUrl builds posting list URL from saved profile URL
+00:41 +91: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 200系は保存可能な確認成功にする
+00:41 +92: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 404は保存不可にする
+00:41 +93: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 403/429は形式OKなら確認保留で保存可能にする
+00:41 +94: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 通信失敗は形式OKなら確認保留で保存可能にする
+00:47 +95: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:47 +96: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+00:48 +97: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからない場合は null
+00:48 +98: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:50 +99: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolComparator overlap overlapRate / apiOnly / poolOnly が計算できる
+00:50 +100: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:50 +101: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality weak なら supplement/replacement false
+00:50 +102: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags wouldBeUsableAsSupplement は overlap または厚みで true になり得る
+00:50 +103: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build repository なしでも比較結果と willUsePoolForUi=false を返す
+00:50 +104: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOP比較ログ用データが最大3件に制限される
+00:51 +105: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build 品質ログに keyword と poolQualityLevel が含まれる
+00:51 +106: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOPログは apiTop1 / poolTop1 形式
+00:52 +107: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode overlap を数えられる
+00:53 +108: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator apiOnly / poolOnly が正しく出る
+00:53 +109: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+00:53 +110: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode 空は比較対象外
+00:54 +111: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolCandidateCount が0でも落ちない
+00:54 +112: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalogShopCount が0でも落ちない
+00:55 +113: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator savedShopCodes を渡すと savedExcludedCount が出る
+00:55 +114: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator overlapRate が計算される
+00:55 +115: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolHasEnoughCandidatesForDisplay が10件以上で true
+00:55 +116: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator top*Shops が最大3件に制限される
+00:57 +117: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator API summaries の並び順と件数を変更しない
+00:57 +118: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が同一なら同じ値になる
+00:57 +119: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が違えば別値になる
+01:06 +120: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:08 +121: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:08 +122: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:08 +123: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:08 +124: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:08 +125: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:08 +126: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:08 +127: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:08 +128: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:08 +129: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:09 +130: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:09 +131: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=1.0 では recommendedDisplayCount=0
+01:09 +132: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopCode 空は除外される
+01:09 +133: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopCode 空は除外される
+01:09 +134: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision apiWeakSignal=true では recommendedDisplayCount が増え得る
+01:09 +135: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopName 不正は除外される
+01:09 +136: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop / broadShop が判定できる
+01:09 +137: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop / broadShop が判定できる
+01:09 +138: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:09 +139: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:09 +140: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:09 +141: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:09 +142: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:09 +143: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:10 +144: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:10 +145: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:10 +146: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:10 +147: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:10 +148: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:10 +149: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 3〜9件で partial fallback になる
+01:10 +150: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 0〜2件では fallback しない
+01:10 +151: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback時は最大10件に制限される
+01:10 +152: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 関連度が同じときは score 順を維持する
+01:10 +153: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 水筒検索でお名前シールより関連ショップを優先する
+01:10 +154: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback primaryGenreId ありで genreName 空は unknownGenre 扱いにしない
+01:10 +155: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback TOP で hitItemCount&gt;=2 が hitItemCount=1 より優先される
+01:10 +156: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 候補不足時は hitItemCount=1 でも fallback 表示できる
+01:10 +157: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 同一 shopCode 複数 fresh 商品は pool itemCount2Plus になる
+01:10 +158: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback noimage URL は表示用画像に含めない
+01:11 +159: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport strong=9 でも hitItemCount=1 だらけなら qualityLevel=weak
+01:13 +160: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport unknownGenreRatio=1.0 なら excellent/good にならない
+01:13 +160 -1: loading C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart [E]
+  Failed to load "C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart":
+  Compilation failed for testPath=C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: test/services/shop_discovery_pool_supplement_ui_bridge_test.dart:136:20: Error: The argument type 'ShopDiscoveryPoolSupplementCandidate' can't be assigned to the parameter type 'ShopDiscoveryPoolSupplementUiDisplayCandidate'.
+   - 'ShopDiscoveryPoolSupplementCandidate' is from 'package:room_manager2/services/shop_discovery_pool_supplement.dart' ('lib/services/shop_discovery_pool_supplement.dart').
+   - 'ShopDiscoveryPoolSupplementUiDisplayCandidate' is from 'package:room_manager2/services/shop_discovery_pool_supplement_ui_bridge.dart' ('lib/services/shop_discovery_pool_supplement_ui_bridge.dart').
+          candidate: _selectedCandidate(
+                     ^
+  .
+test/services/shop_discovery_pool_supplement_ui_bridge_test.dart:136:20: Error: The argument type 'ShopDiscoveryPoolSupplementCandidate' can't be assigned to the parameter type 'ShopDiscoveryPoolSupplementUiDisplayCandidate'.
+ - 'ShopDiscoveryPoolSupplementCandidate' is from 'package:room_manager2/services/shop_discovery_pool_supplement.dart' ('lib/services/shop_discovery_pool_supplement.dart').
+01:13 +161 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount2Plus が多い場合は depthQuality good 以上になり得る
+01:13 +162 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 厚み・ジャンルが十分な場合のみ excellent に近づく
+01:13 +163 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount1 / hitItemCount2Plus / thinCandidateCount が正しい
+01:13 +164 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport displayQuality は画像・URL・レビューから判定される
+ - 'ShopDiscoveryPoolSupplementUiDisplayCandidate' is from 'package:room_manager2/services/shop_discovery_pool_supplement_ui_bridge.dart' ('lib/services/shop_discovery_pool_supplement_ui_bridge.dart').
+        candidate: _selectedCandidate(
+                   ^
+01:15 +165 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport noimage は withImageCount に含めない
+01:15 +166 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 通常API成功時は fallback quality report を作らない
+01:29 +167 -1: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolFallbackKeywordSynonyms 水筒の同義語を返す
+01:29 +168 -1: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒で商品名マッチは strong
+01:30 +169 -1: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒でお名前シールは noMatch
+01:30 +170 -1: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance ジャンル名マッチは medium
+01:30 +171 -1: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance unknown genre を検出する
+01:31 +172 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=product displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=4
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+01:31 +173 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog カタログ upsert 失敗でも検索は成功のまま
+01:33 +174 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+01:33 +175 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+01:33 +175 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorForNewSearch clears error and retry banner
+[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=1 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+01:33 +176 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+01:33 +177 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+01:33 +178 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+01:33 +179 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery でも ProductCatalog upsert が実行される
+01:33 +180 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery カタログ upsert 失敗でも検索は成功のまま
+01:34 +181 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId / itemCode 優先で canonicalId が決まる
+01:34 +182 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId が無い場合 normalizedItemUrl から synthetic key が作られる
+01:34 +183 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys canonicalId が決められない場合は null
+01:34 +184 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys alias を生成できる
+01:34 +185 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys itemUrl を正規化できる
+01:34 +186 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId と URL パスが不一致のとき composite alias を付けない
+01:34 +187 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId・別 URL で false
+01:34 +188 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId では信頼 URL 同一でも false
+01:34 +189 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId + 同一 affiliate URL で false
+01:34 +190 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+01:34 +191 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は同一 productId なら true
+01:36 +192 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+01:36 +193 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+[GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+01:37 +193 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+01:37 +194 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+01:37 +195 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+01:37 +196 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+01:37 +197 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+01:37 +198 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+01:37 +199 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+01:37 +200 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+01:37 +201 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 安全 NG は qualityStatus.safe=false になる
+01:37 +202 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 安全 NG は qualityStatus.safe=false になる
+01:37 +203 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 安全 NG は qualityStatus.safe=false になる
+01:37 +204 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 安全 NG は qualityStatus.safe=false になる
+01:37 +205 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics medium shopDiscovery 商品2件の同一 shopCode が pool itemCount=2 になる
+01:37 +206 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 画像なし・価格なしは保存可能で qualityStatus に反映される
+01:37 +207 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 画像なし・価格なしは保存可能で qualityStatus に反映される
+01:37 +208 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 画像なし・価格なしは保存可能で qualityStatus に反映される
+01:37 +209 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 診断関数は例外なく実行できる
+01:37 +210 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 保存ショップ検索相当 search/high で同一 shopCode 複数商品が pool に蓄積
+01:37 +211 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 深さ投影で wouldItemCount2Plus を計算できる
+01:37 +212 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+01:37 +213 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics computeShopDiscoveryEnrichmentOpportunity は API を呼ばない
+01:37 +214 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailDepthTrace / PoolTrace は例外なく実行できる
+01:38 +215 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailCatalogItemTrace は duplicate reason を含める
+01:38 +216 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logSavedOrDiscoveryShopDepthAfterUpsert は例外なく実行できる
+01:38 +217 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration detail upsert 後 poolItemCount が2になる
+01:38 +218 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration takeya-tea 同一 affiliate URL・別 productId で poolItemCount=2
+01:38 +219 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: ProductCatalogUpsertTimingRegistry upsert 完了前の read は usesFreshCatalog=false
+01:38 +220 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=false のとき no-op
+01:38 +221 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=false のとき no-op
+01:38 +222 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 安全 NG は upsert 対象から除外される
+01:38 +223 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=true のとき upsertAll が永続化する
+01:38 +224 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 変換商品を upsert すると alias で検索できる
+01:39 +225 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems catalogUpsertModeLabelForSearchModeTag がモード別ラベルを返す
+01:39 +226 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems kProductCatalogEnabled=false のとき no-op
+01:39 +227 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems source=shopDiscovery / sourceTrust=medium になる
+01:40 +228 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+01:40 +229 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 安全 NG は upsert 対象から除外される
+01:40 +230 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 安全 NG は upsert 対象から除外される
+01:40 +231 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:41 +232 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:41 +233 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:41 +234 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:41 +235 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:41 +236 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:41 +237 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:41 +238 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:41 +239 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:41 +240 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:41 +241 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+01:41 +242 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems unsafe / canonicalId不可は保存されない
+01:41 +243 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 shopCode 複数商品で itemCount2Plus になる
+01:41 +244 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 別 canonicalId なら productCountForShop=2 / inserted+updated 内訳
+01:41 +245 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+01:41 +246 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+01:41 +247 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+01:41 +248 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+01:41 +249 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+01:41 +250 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+01:41 +251 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+01:42 +252 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter sex toy は除外
+01:43 +253 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter BLCDコレクションは除外
+01:43 +254 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 濡れトロは除外
+01:43 +255 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おもちゃ/宮本真希[DVD]は adultKeyword がなければ通す
+01:43 +256 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ベビー おもちゃは通す
+01:43 +257 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ビール10本セットは除外
+01:43 +258 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 名入れワインは除外
+01:43 +259 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter シャンパングラスは通す
+01:43 +260 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ワイングラスは通す
+01:43 +261 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 子供服は通す
+01:43 +262 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter アダルトグッズは除外
+01:43 +263 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter グラビア写真集は除外
+01:43 +264 -1: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ジャンル名がビール・洋酒なら除外
+01:46 +265 -1: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+01:46 +266 -1: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+01:47 +267 -1: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+01:47 +268 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment normalizedItemUrl 一致で照合できる
+01:47 +269 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopCode + itemPathSegment 一致で照合できる
+01:48 +270 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 商品名だけでは照合・補完しない
+01:48 +271 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment stale な商品は補完に使わない
+01:48 +272 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment stale な商品は補完に使わない
+01:48 +273 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment stale な商品は補完に使わない
+01:48 +274 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment stale な商品は補完に使わない
+01:48 +275 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment sourceTrust=low は補完に使わない
+01:48 +276 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が安全ならカタログ画像で上書きしない
+01:49 +277 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が疑わしくカタログ画像が安全なら補完できる
+01:49 +278 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が0ならカタログ価格で補完できる
+01:49 +279 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が有効なら上書きしない
+01:49 +280 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopName / genreName が空なら補完できる
+01:49 +281 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment upsert時に high が low で上書きされない
+01:49 +282 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment repository が null でも upsert は skipped
+01:50 +283 -1: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 price=3980 に incoming price=-1 が来ても 3980 を維持
+01:50 +284 -1: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 imageUrl 有効、incoming 空なら既存維持
+01:50 +285 -1: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 shopCode 有効、incoming 空なら既存維持
+01:50 +286 -1: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 genreName 有効、incoming 空なら既存維持
+01:50 +287 -1: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge incoming api値が有効な場合だけ上書き
+01:52 +288 -1: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl extracts composite itemCode and slug from event+dest
+01:52 +289 -1: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl supports rat-redirect host and drinkshop slug
+01:52 +290 -1: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: roomImportEnrichSlugShouldSkipDirectItemCode flags slug-like segments
+01:55 +291 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+01:55 +292 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics reactionScore は like + comment*3
+01:55 +293 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genre 空は ジャンル未確認
+01:55 +294 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName 空なら shopCode をUIに出さずショップ未確認
+01:55 +295 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName も shopCode も空なら ショップ未確認
+01:55 +296 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics 未分類ジャンルは傾向集計対象外
+01:55 +297 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genreName空でもgenreIdからマスタ解決できれば集計対象
+01:55 +298 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopCodeのみのショップは傾向集計対象外
+01:56 +299 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 有効な商品は通す
+01:56 +300 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+01:56 +301 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 価格なしは除外
+01:56 +302 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 商品URLなしは除外
+01:56 +303 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter プレースホルダ商品名は除外
+01:56 +304 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 大人のおもちゃは安全フィルタで除外
+01:56 +305 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 木のおもちゃは通す
+01:56 +306 -1: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 価格だけ未取得のとき強い未確認文言は出さない
+01:56 +307 -1: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 商品名も画像も無いときは売り切れ系を表示
+01:59 +308 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary ShopDiscoverySummary から ShopCatalogEntry に変換できる
+01:59 +309 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopCode 空は保存しない
+01:59 +310 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopName 不正は保存しない
+01:59 +311 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary safeItemCount=0 相当（hitItemCount=0）は保存しない
+01:59 +312 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary representativeImageUrl は安全画像のみ採用する
+01:59 +313 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=false では no-op
+01:59 +314 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=true で upsertAll 相当が動く
+01:59 +315 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries upsert失敗でも例外を投げない（検索成功扱いを阻害しない）
+01:59 +316 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries 入力 summaries の件数・順序を変えない
+01:59 +317 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ10件・保存ジャンル3系統で API 全スキップ可
+02:00 +318 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ不足では API 全スキップしない
+02:00 +319 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 10件そろっても保存ジャンル必須プランは件数では打ち切らない
+02:00 +320 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 補助プランは件数不足かつAPI余裕があるときのみ
+02:00 +321 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool PRODUCT_CATALOG_ENABLED=false では空結果
+02:01 +322 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 品質OKなカタログ商品がプールに入る
+02:01 +323 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool stale は除外される
+02:01 +324 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 候補済み productId は除外される
+02:01 +325 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool upsertCatalogFromRecommendItems は todayRecommendation になる
+02:01 +326 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 見送り済みは一定期間除外される
+02:02 +327 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 表示済みは一定期間除外される
+02:04 +328 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 古い表示済みは除外されない
+02:09 +329 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 保存ジャンル3件で最終10件が1ジャンルに偏りすぎない
+02:09 +330 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 他ジャンル候補がない場合は偏りを許容する
+02:09 +331 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution computeTargetQuotas は3ジャンル10件で4/3/3
+02:12 +332 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore page=1固定にならず次回は page を進める
+02:13 +333 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore 枯渇クールダウン中は page 1 に戻る
+02:13 +334 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore maxPage 超過後は 1 にラップ
+02:14 +335 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore rawCount が少ないと exhaustedUntil が設定される
+02:16 +336 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: FavoriteGenreSelectionPolicy 保存ジャンル上限は3件
+02:16 +337 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy 既定 sort はレビュー件数順で null ではない
+02:16 +338 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy API上限は10より小さい
+02:16 +339 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder buildPlanSet は保存ジャンル必須と補助を分割する
+02:16 +340 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル3件でジャンルプラン3＋補助最大1
+02:16 +341 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル5件指定でもジャンルプランは3件まで
+02:16 +342 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルなしのときフォールバック1件
+02:16 +343 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 補助プランは最大1件（反応ジャンル）
+02:16 +344 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルと同じ補助条件は追加しない
+02:16 +345 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder maxPlanCount は API 上限を超えない
+02:19 +346 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy strongItemEvidence=true かつ genreAligned=false は商品名理由文
+02:20 +347 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy genreAligned=true はジャンル理由文
+02:20 +348 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+02:27 +349 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が1件なら補助枠カードを表示する
+02:27 +350 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection 複数候補は displayRank 昇順の並びで表示する
+02:27 +351 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection onCandidateTap が渡されていればタップで callback が呼ばれる
+02:28 +352 -1: Some tests failed.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path kProductCatalogEnabled=false では upsert skipped
+00:00 +1: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path 商品名検索 productSearch で upsert し永続化する
+[SEARCH_RESULT_UNDER_100_REASON] mode=product displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_SEARCH_UPSERT_SUMMARY] mode=productSearch items=2 upserted=2 skipped=0 qualityNg=0 source=search
+[PRODUCT_CATALOG_SEARCH_VERIFY_SUMMARY] mode=productSearch count=2 savedBatch=2 batchWithGenreId=2 batchWithGenreName=2 canonicalId=shop:a getByCanonicalId=true findByProductId=true findByNormalizedUrl=true findByShopItem=false sampleGenreId=100227 sampleGenreName=水・ソフトドリンク storedGenreId=100227 storedGenreName=水・ソフトドリンク source=search sourceTrust=high qualitySafe=true hasImage=true hasPrice=true
+00:00 +2: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path shopDiscovery でも ProductCatalog upsert が実行される
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=1 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=1 parsedItemsCount=1 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=1 displayCount=1 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 1 件
+[SHOP_POOL_READ_TIMING] phase=searchPostSchedule readAt=2026-06-06T00:18:39.410966 catalogCountAtRead=1 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_SUMMARY] source=shopDiscovery catalogProducts=1 catalogShops=1 poolCandidates=1 savedExcluded=0 staleExcluded=0 lowTrustExcluded=0 unsafeExcluded=0 emptyShopCodeExcluded=0
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=1 avgItemCount=1.0 itemCount1=1 itemCount2Plus=0 withPrimaryGenre=1 unknownPrimaryGenre=0 withSourceProductIds=1 avgSourceProductIds=1.0 withSampleProductIds=1 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop productCount=1 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:18:39.496084 catalogCountAtRead=1 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_STALE_REFERENCE_SUMMARY] candidateCount=1 freshItemCount=1 staleItemCount=0 staleUsableForDepth=0 currentItemCount2Plus=0 wouldItemCount2PlusIfStaleDepthAllowed=0
+[PHASE3I_STRATEGY_AUDIT] current_poolCandidates=1 current_avgItemCount=1.00 current_itemCount2Plus=0 strategyA_searchMultiProductShops=0 strategyA_searchAvgProductsPerShop=0.00 strategyB_note=see_SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY strategyC_shopDiscoveryProductsInSinglePool=1 strategyD_staleUsableForDepth=0 strategyD_wouldItemCount2Plus=0 strategyE_staleLongLivedFields=0
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=水筒 items=1 upserted=1 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=2026-06-06T00:18:39.289196 completedAt=2026-06-06T00:18:39.568508 durationMs=279 catalogCountBefore=0 catalogCountAfter=1
+00:05 +3: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct JSON 往復できる
+00:05 +4: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct high trust が low trust の重要フィールドを上書きできる
+00:05 +5: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust は high trust の重要フィールドを上書きしない
+00:07 +6: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust でも空欄は補完できる
+00:10 +7: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が最優先
+00:10 +8: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が無ければ itemUrl
+00:10 +9: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliate と item が空なら rakutenUrl
+00:16 +10: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: TodayRecommendationEntry の JSON 往復で imageUrl とレビューが欠落しない
+00:16 +11: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される
+00:20 +12: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry JSON 往復できる
+00:20 +13: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry aliases を保持する
+00:21 +14: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry stale 判定用フィールドを保持する
+00:22 +15: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedStatus を持たない JSON は拒否する
+00:22 +16: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+00:23 +16: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository upsert して canonicalId で取得できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:23 +17: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+00:23 +18: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:24 +18: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository alias で検索できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:24 +18: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:24 +19: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:24 +20: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository high trust が low trust を上書きできる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=0 updated=1 updatedByCanonicalId=1 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:24 +20: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and keeps single value
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated,affordable new=premium
+00:24 +21: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and keeps single value
+00:24 +22: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository low trust は high trust の重要フィールドを上書きしない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=0 updated=1 updatedByCanonicalId=1 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:25 +23: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository low trust は high trust の重要フィールドを上書きしない
+00:26 +24: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:27 +25: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:27 +26: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:27 +27: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:31 +28: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:31 +28: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository SHOP_CATALOG_ENABLED=true では upsert / get
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+00:31 +29: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:31 +29: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository alias で検索できる
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+00:31 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:33 +30: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=2
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=3
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=4
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=5
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=6
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=7
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=8
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=9
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=10
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=11
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=12
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=13
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=14
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=15
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=16
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=17
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=18
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=19
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=20
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=21
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=22
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=23
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=24
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=25
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=26
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=27
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=28
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=29
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=30
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=31
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=32
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=33
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=34
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=35
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=36
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=37
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=38
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=39
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=40
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=41
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=42
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=43
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=44
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=45
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=46
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=47
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=48
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=49
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=50
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=51
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=52
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=53
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=54
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=55
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=56
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=57
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=58
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=59
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=60
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=61
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=62
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=63
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=64
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=65
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=66
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=67
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=68
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=69
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=70
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=71
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=72
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=73
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=74
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=75
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=76
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=77
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=78
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=79
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=80
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=81
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=82
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=83
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=84
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=85
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=86
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=87
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=88
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=89
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=90
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=91
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=92
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=93
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=94
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=95
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=96
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=97
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=98
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=99
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=100
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=101
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=102
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=103
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=104
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=105
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=106
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=107
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=108
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=109
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=110
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=111
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=112
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=113
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=114
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=115
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=116
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=117
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=118
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=119
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=120
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=121
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=122
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=123
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=124
+00:35 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:35 +30: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=125
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=126
+00:35 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:35 +30: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=127
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=128
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=129
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=130
+00:35 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+00:35 +30: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=131
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=132
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=133
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=134
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=135
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=136
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=137
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=138
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=139
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=140
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=141
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=142
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=143
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=144
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=145
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=146
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=147
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=148
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=149
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=150
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=151
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=152
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=153
+00:36 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:36 +31: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=154
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=155
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=156
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=157
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=158
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=159
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=160
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=161
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=162
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=163
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=164
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=165
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=166
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=167
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=168
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=169
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=170
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=171
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=172
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=173
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=174
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=175
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=176
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=177
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=178
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=179
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=180
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=181
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=182
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=183
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=184
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=185
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=186
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=187
+00:36 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=4
+00:36 +31: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=188
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=189
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=190
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=191
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=192
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=193
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=194
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=195
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=196
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=197
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=198
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=199
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=200
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=201
+00:37 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=5
+00:37 +31: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=202
+00:37 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=6
+00:37 +31: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=203
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=204
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=205
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=206
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=207
+00:37 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=7
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=8
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=9
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=10
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=11
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=12
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=13
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=14
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=15
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=16
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=17
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=18
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=19
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=20
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=21
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=22
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=23
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=24
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=25
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=26
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=27
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=28
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=29
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=30
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=31
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=32
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=33
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=34
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=35
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=36
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=37
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=38
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=39
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=40
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=41
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=42
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=43
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=44
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=45
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=46
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=47
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=48
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=49
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=50
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=51
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=52
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=53
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=54
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=55
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=56
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=57
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=58
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=59
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=60
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=61
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=62
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=63
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=64
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=65
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=66
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=67
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=68
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=69
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=70
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=71
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=72
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=73
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=74
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=75
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=76
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=77
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=78
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=79
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=80
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=81
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=82
+00:37 +32: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:37 +32: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=83
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=84
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=85
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=86
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=87
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=88
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=89
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=90
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=91
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=92
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=93
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=94
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=95
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=96
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=97
+00:37 +32: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=208
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=209
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=210
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=211
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=212
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=213
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=214
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=215
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=216
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=217
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=218
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=219
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=220
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=221
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=222
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=223
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=224
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=225
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=226
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=227
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=228
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=229
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=230
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=231
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=232
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=233
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=234
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=235
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=236
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=237
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=238
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=239
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=240
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=241
+00:38 +32: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=98
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=99
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=100
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=101
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=102
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=103
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=104
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=105
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=106
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=107
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=108
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=109
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=110
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=111
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=112
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=113
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=114
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=115
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=116
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=117
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=118
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=119
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=120
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=121
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=122
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=123
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=124
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=125
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=126
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=127
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=128
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=129
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=130
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=131
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=132
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=133
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=134
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=135
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=136
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=137
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=138
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=139
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=140
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=141
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=142
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=143
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=144
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=145
+00:39 +32: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=242
+00:39 +32: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=146
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=147
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=148
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=149
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=150
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=151
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=152
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=153
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=154
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=155
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=156
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=157
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=158
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=159
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=160
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=161
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=162
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=163
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=164
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=165
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=166
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=167
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=168
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=169
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=170
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=171
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=172
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=173
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=174
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=175
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=176
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=177
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=178
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=179
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=180
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=181
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=182
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=183
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=184
+00:39 +32: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=243
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=244
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=245
+00:39 +32: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=185
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=186
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=187
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=188
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=189
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=190
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=191
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=192
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=193
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=194
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=195
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=196
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=197
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=198
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=199
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=200
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=201
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=202
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=203
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=204
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=205
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=206
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=207
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=208
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=209
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=210
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=211
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=212
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=213
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=214
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=215
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=216
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=217
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=218
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=219
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=220
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=221
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=222
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=223
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=224
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=225
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=226
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=227
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=228
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=229
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=230
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=231
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=232
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=233
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=234
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=235
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=236
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=237
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=238
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=239
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=240
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=241
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=242
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=243
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=244
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=245
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=246
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=247
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=248
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=249
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=250
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=251
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=252
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=253
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=254
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=255
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=256
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=257
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=258
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=259
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=260
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=261
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=262
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=263
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=264
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=265
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=266
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=267
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=268
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=269
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=270
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=271
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=272
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=273
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=274
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=275
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=276
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=277
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=278
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=279
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=280
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=281
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=282
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=283
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=284
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=285
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=286
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=287
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=288
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=289
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=290
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=291
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=292
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=293
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=294
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=295
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=296
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=297
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=298
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=299
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=300
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=301
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=302
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=303
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=304
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=305
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=306
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=307
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=308
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=309
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=310
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=311
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=312
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=313
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=314
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=315
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=316
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=317
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=318
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=319
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=320
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=321
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=322
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=323
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=324
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=325
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=326
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=327
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=328
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=329
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=330
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=331
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=332
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=333
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=334
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=335
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=336
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=337
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=338
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=339
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=340
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=341
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=342
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=343
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=344
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=345
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=346
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=347
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=348
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=349
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=350
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=351
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=352
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=353
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=354
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=355
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=356
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=357
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=358
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=359
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=360
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=361
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=362
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=363
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=364
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=365
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=366
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=367
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=368
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=369
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=370
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=371
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=372
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=373
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=374
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=375
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=376
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=377
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=378
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=379
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=380
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=381
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=382
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=383
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=384
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=385
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=386
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=387
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=388
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=389
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=390
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=391
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=392
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=393
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=394
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=395
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=396
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=397
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=398
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=399
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=400
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=401
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=402
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=403
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=404
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=405
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=406
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=407
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=408
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=409
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=410
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=411
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=412
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=413
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=414
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=415
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=416
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=417
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=418
+00:39 +33: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:39 +33: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=246
+00:39 +34: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:39 +35: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:39 +36: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:39 +37: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:39 +38: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:39 +39: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:39 +39: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=247
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=248
+00:39 +40: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:39 +40: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=249
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=250
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=251
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=252
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=253
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=254
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=255
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=256
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=257
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=258
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=259
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=260
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=261
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=262
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=263
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=264
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=265
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=266
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=267
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=268
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=269
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=270
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=271
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=272
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=273
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=274
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=275
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=276
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=277
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=278
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=279
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=280
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=281
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=282
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=283
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=284
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=285
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=286
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=287
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=288
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=289
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=290
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=291
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=292
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=293
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=294
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=295
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=296
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=297
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=298
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=299
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=300
+[SHOP_CATALOG_LRU_SUMMARY] evicted=1 remaining=300 max=300
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=1 total=300
+[SHOP_CATALOG_LRU_SUMMARY] evicted=1 remaining=300 max=300
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=1 total=300
+[SHOP_CATALOG_LRU_SUMMARY] evicted=1 remaining=300 max=300
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=1 total=300
+[SHOP_CATALOG_LRU_SUMMARY] evicted=1 remaining=300 max=300
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=1 total=300
+[SHOP_CATALOG_LRU_SUMMARY] evicted=1 remaining=300 max=300
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=1 total=300
+00:42 +40: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+00:42 +41: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:43 +41: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository upsert は例外を外に投げない
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+00:43 +42: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:47 +43: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:47 +44: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:47 +44: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 単位に集計できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+00:47 +45: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:47 +45: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 同一 shopCode 複数商品で itemCount2Plus になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:47 +46: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:47 +46: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 空は除外
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:47 +47: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+00:48 +47: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator unsafe 商品は除外
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=1 evicted=0 total=1
+00:49 +48: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=deep-shop:item001 resolvedCanonicalId=deep-shop:item001 operation=insert mergeReason=insert inputShopCode=deep-shop savedShopCode=deep-shop aliasMatchedBy=- productId=deep-shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=deep-shop:item002 resolvedCanonicalId=deep-shop:item002 operation=insert mergeReason=insert inputShopCode=deep-shop savedShopCode=deep-shop aliasMatchedBy=- productId=deep-shop:item002 normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item002/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=deep-shop source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=deep-shop inputItems=2 savedForShop=2 item1=itemCode=deep-shop:item001,inputCanonicalId=deep-shop:item001,canonicalId=deep-shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/,shopCode=deep-shop,itemName=水筒 500ml,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=deep-shop:item001,resolvedShopCode=deep-shop,sameShopCode=true,aliasMatchedBy=deep-shop:item001,saved=true,reason=- item2=itemCode=deep-shop:item002,inputCanonicalId=deep-shop:item002,canonicalId=deep-shop:item002,normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item002/,shopCode=deep-shop,itemName=水筒 500ml,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=deep-shop:item002,resolvedShopCode=deep-shop,sameShopCode=true,aliasMatchedBy=deep-shop:item002,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=deep-shop allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=deep-shop:item001|deep-shop:item002
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=deep-shop catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=deep-shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+[SHOP_DISCOVERY_DETAIL_CATALOG_AUDIT] shopCode=deep-shop itemsFromSearch=2 wouldFetchFromApiIfEmpty=false catalogProductsForShop=2 freshInPool=2 catalogUpsertOnOpen=true
+00:49 +49: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator stale 商品は除外
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:49 +50: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:49 +50: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sourceTrust=low は除外
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:49 +51: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:49 +51: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator representativeImageUrl が安全画像になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:49 +52: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:49 +52: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator primaryGenreName が商品の genreName から入る
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:49 +53: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:49 +53: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator genreId のみでも primaryGenreId は入る
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:49 +54: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:49 +54: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sourceProductIds は複数商品分保持する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+00:49 +55: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:49 +55: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator primaryGenreId が件数最多ジャンルになる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+00:49 +56: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:49 +56: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator score 順になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+00:49 +57: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:49 +57: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sampleProductIds が入る
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:49 +58: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:49 +58: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 保存ショップ除外を指定できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:49 +59: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:49 +59: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopDiscovery 由来商品でも shopCode 単位に集計できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:49 +60: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:50 +60: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator stale でない medium 商品は aggregator から除外されない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:50 +61: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+00:50 +61: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 未確認 shopName は表示名に使わない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:50 +62: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=deep-shop:item001 resolvedCanonicalId=deep-shop:item001 operation=insert mergeReason=insert inputShopCode=deep-shop savedShopCode=deep-shop aliasMatchedBy=- productId=deep-shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=deep-shop:item002 resolvedCanonicalId=deep-shop:item002 operation=insert mergeReason=insert inputShopCode=deep-shop savedShopCode=deep-shop aliasMatchedBy=- productId=deep-shop:item002 normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item002/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=deep-shop source=loadedByShopCode attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=high
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=deep-shop inputItems=2 savedForShop=2 item1=itemCode=deep-shop:item001,inputCanonicalId=deep-shop:item001,canonicalId=deep-shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/,shopCode=deep-shop,itemName=水筒 500ml,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=deep-shop:item001,resolvedShopCode=deep-shop,sameShopCode=true,aliasMatchedBy=deep-shop:item001,saved=true,reason=- item2=itemCode=deep-shop:item002,inputCanonicalId=deep-shop:item002,canonicalId=deep-shop:item002,normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item002/,shopCode=deep-shop,itemName=水筒 500ml,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=deep-shop:item002,resolvedShopCode=deep-shop,sameShopCode=true,aliasMatchedBy=deep-shop:item002,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=deep-shop allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=deep-shop:item001|deep-shop:item002
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=deep-shop catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=deep-shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+[SHOP_DISCOVERY_DETAIL_CATALOG_AUDIT] shopCode=deep-shop itemsFromSearch=2 wouldFetchFromApiIfEmpty=true catalogProductsForShop=2 freshInPool=2 catalogUpsertOnOpen=true
+00:50 +63: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert build 再実行で重複 upsert しない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=deep-shop:item001 resolvedCanonicalId=deep-shop:item001 operation=insert mergeReason=insert inputShopCode=deep-shop savedShopCode=deep-shop aliasMatchedBy=- productId=deep-shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=deep-shop source=initialItems attempted=1 upserted=1 inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=deep-shop inputItems=1 savedForShop=1 item1=itemCode=deep-shop:item001,inputCanonicalId=deep-shop:item001,canonicalId=deep-shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/,shopCode=deep-shop,itemName=水筒 500ml,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=deep-shop:item001,resolvedShopCode=deep-shop,sameShopCode=true,aliasMatchedBy=deep-shop:item001,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=deep-shop allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=deep-shop:item001
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=deep-shop catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=deep-shop productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+[SHOP_DISCOVERY_DETAIL_CATALOG_AUDIT] shopCode=deep-shop itemsFromSearch=1 wouldFetchFromApiIfEmpty=false catalogProductsForShop=1 freshInPool=1 catalogUpsertOnOpen=true
+00:51 +64: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 通常URL・クエリ付きで itemCode を抽出する
+00:51 +65: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 末尾スラッシュなしでも itemCode を抽出する
+00:51 +66: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 検索結果ホストは非商品ページエラーになる
+00:51 +67: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天以外のURLは商品ページURLエラーになる
+00:51 +68: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl item.rakuten で商品セグメントが不正なら確認できないエラー
+00:51 +69: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ済みがコレ候補より優先される
+00:51 +70: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ候補として分類される
+00:51 +71: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts 未登録
+00:54 +72: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:54 +73: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:54 +74: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:54 +75: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +76: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +77: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +78: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +79: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +80: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +81: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +82: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +83: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +84: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +85: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +86: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +87: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +88: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +89: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:55 +90: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser https の item.rakuten から shop / セグメント / 正規URL
+00:55 +90: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathFromCollectsRow reads nested item URL
+[ROOM_COLLECTS_RESPONSE_SHAPE] itemKeys=id,meta productLikeKeys=- userLikeKeys=- imageLikeKeys=- hasProductImage=false hasUserIcon=false
+[ROOM_IMPORT_COLLECTS_IMAGE_KEYS] productId=17001234567890 keys=meta.link selectedKey=- rejectedKeys=meta.link
+00:55 +91: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser https の item.rakuten から shop / セグメント / 正規URL
+00:55 +92: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser http でも抽出できる
+00:56 +93: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser HTML 内の複数リンクから数値ID付きを優先
+00:56 +94: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RoomUrlResolver ROOM HTML から楽天商品URLを取得できる
+00:59 +95: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:59 +96: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+01:00 +97: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからない場合は null
+01:02 +98: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+01:02 +99: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolComparator overlap overlapRate / apiOnly / poolOnly が計算できる
+01:02 +100: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+01:02 +101: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality weak なら supplement/replacement false
+01:02 +102: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags wouldBeUsableAsSupplement は overlap または厚みで true になり得る
+01:03 +103: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build repository なしでも比較結果と willUsePoolForUi=false を返す
+01:03 +104: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOP比較ログ用データが最大3件に制限される
+01:03 +105: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build 品質ログに keyword と poolQualityLevel が含まれる
+01:03 +106: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOPログは apiTop1 / poolTop1 形式
+01:09 +107: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode overlap を数えられる
+01:10 +108: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator apiOnly / poolOnly が正しく出る
+01:11 +109: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+01:11 +110: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode 空は比較対象外
+01:11 +111: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolCandidateCount が0でも落ちない
+01:11 +112: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalogShopCount が0でも落ちない
+01:11 +113: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator savedShopCodes を渡すと savedExcludedCount が出る
+01:11 +114: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator overlapRate が計算される
+01:13 +115: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolHasEnoughCandidatesForDisplay が10件以上で true
+01:14 +116: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator top*Shops が最大3件に制限される
+01:14 +117: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator API summaries の並び順と件数を変更しない
+01:14 +118: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が同一なら同じ値になる
+01:14 +119: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が違えば別値になる
+01:19 +120: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+01:19 +121: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopCode 空は除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=1 avgItemCount=1.0 itemCount1=1 itemCount2Plus=0 withPrimaryGenre=1 unknownPrimaryGenre=0 withSourceProductIds=1 avgSourceProductIds=1.0 withSampleProductIds=1 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=ok-shop productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:19:58.113094 catalogCountAtRead=2 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+01:19 +122: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopName 不正は除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=4 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=4
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=4 avgItemCount=1.0 itemCount1=4 itemCount2Plus=0 withPrimaryGenre=4 unknownPrimaryGenre=0 withSourceProductIds=4 avgSourceProductIds=1.0 withSampleProductIds=4 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=girl-k productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:19:58.163442 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:19:58.164455 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=4 withGenreId=4 withGenreName=4 withShopCode=4 withShopName=4 withItemName=4 unknownGenreName=0 sourceBreakdown=search:4 trustBreakdown=high:4
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=4 productCount1Shop=4 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=0 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=3 unknownGenreInFallback=0 hitItemCount1=3 hitItemCount2Plus=0
+01:19 +123: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 保存済みショップは除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=4 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=4
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=3 avgItemCount=1.0 itemCount1=3 itemCount2Plus=0 withPrimaryGenre=3 unknownPrimaryGenre=0 withSourceProductIds=3 avgSourceProductIds=1.0 withSampleProductIds=3 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=saved-shop productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=0 inPool=false excludedReason=savedShop
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:19:58.273115 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:19:58.273115 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=4 withGenreId=4 withGenreName=4 withShopCode=4 withShopName=4 withItemName=4 unknownGenreName=0 sourceBreakdown=search:4 trustBreakdown=high:4
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=4 productCount1Shop=4 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=0 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=3 unknownGenreInFallback=0 hitItemCount1=3 hitItemCount2Plus=0
+01:19 +124: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+01:19 +125: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 3〜9件で partial fallback になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=3 avgItemCount=1.0 itemCount1=3 itemCount2Plus=0 withPrimaryGenre=3 unknownPrimaryGenre=0 withSourceProductIds=3 avgSourceProductIds=1.0 withSampleProductIds=3 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop-1 productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:19:58.329490 catalogCountAtRead=3 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:19:58.329490 catalogCountAtRead=3 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=3 withGenreId=3 withGenreName=3 withShopCode=3 withShopName=3 withItemName=3 unknownGenreName=0 sourceBreakdown=search:3 trustBreakdown=high:3
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=3 productCount1Shop=3 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=0 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=3 unknownGenreInFallback=0 hitItemCount1=3 hitItemCount2Plus=0
+01:19 +126: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 0〜2件では fallback しない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=2 avgItemCount=1.0 itemCount1=2 itemCount2Plus=0 withPrimaryGenre=2 unknownPrimaryGenre=0 withSourceProductIds=2 avgSourceProductIds=1.0 withSampleProductIds=2 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop-1 productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:19:58.445711 catalogCountAtRead=2 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+01:20 +127: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback時は最大10件に制限される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=12 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=12
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=12 avgItemCount=1.0 itemCount1=12 itemCount2Plus=0 withPrimaryGenre=12 unknownPrimaryGenre=0 withSourceProductIds=12 avgSourceProductIds=1.0 withSampleProductIds=12 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop-0 productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:19:59.796850 catalogCountAtRead=12 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:19:59.796850 catalogCountAtRead=12 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=12 withGenreId=12 withGenreName=12 withShopCode=12 withShopName=12 withItemName=12 unknownGenreName=0 sourceBreakdown=search:12 trustBreakdown=high:12
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=12 productCount1Shop=12 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=10 matchedByItemName=0 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=10 unknownGenreInFallback=0 hitItemCount1=10 hitItemCount2Plus=0
+01:22 +128: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 関連度が同じときは score 順を維持する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=3 avgItemCount=1.0 itemCount1=3 itemCount2Plus=0 withPrimaryGenre=3 unknownPrimaryGenre=0 withSourceProductIds=3 avgSourceProductIds=1.0 withSampleProductIds=3 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=high productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:20:00.693489 catalogCountAtRead=3 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:20:00.693489 catalogCountAtRead=3 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=3 withGenreId=3 withGenreName=3 withShopCode=3 withShopName=3 withItemName=3 unknownGenreName=0 sourceBreakdown=search:3 trustBreakdown=high:3
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=3 productCount1Shop=3 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=3 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=3 unknownGenreInFallback=0 hitItemCount1=3 hitItemCount2Plus=0
+01:22 +129: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 水筒検索でお名前シールより関連ショップを優先する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=4 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=4
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=4 avgItemCount=1.0 itemCount1=4 itemCount2Plus=0 withPrimaryGenre=4 unknownPrimaryGenre=0 withSourceProductIds=4 avgSourceProductIds=1.0 withSampleProductIds=4 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=naireseisakusho productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:20:00.885829 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:20:00.885829 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=4 withGenreId=4 withGenreName=4 withShopCode=4 withShopName=4 withItemName=4 unknownGenreName=0 sourceBreakdown=search:4 trustBreakdown=high:4
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=4 productCount1Shop=4 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=3 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=3 unknownGenreInFallback=0 hitItemCount1=3 hitItemCount2Plus=0
+01:23 +130: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback primaryGenreId ありで genreName 空は unknownGenre 扱いにしない
+01:24 +131: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback TOP で hitItemCount&gt;=2 が hitItemCount=1 より優先される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=5 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=5
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=3 avgItemCount=1.7 itemCount1=1 itemCount2Plus=2 withPrimaryGenre=3 unknownPrimaryGenre=0 withSourceProductIds=3 avgSourceProductIds=1.7 withSampleProductIds=3 avgSampleProductIds=1.7
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=2 includedInPool=2 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=thick-shop:2/2/ok/inPool:true,thick-shop-2:2/2/ok/inPool:true
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=thick-shop productCount=2 sourceBreakdown=search:2 trustBreakdown=high:2 freshCount=2 safeCount=2 staleCount=0 poolItemCount=2 inPool=true excludedReason=ok
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:20:03.169225 catalogCountAtRead=5 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:20:03.169225 catalogCountAtRead=5 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=5 withGenreId=5 withGenreName=5 withShopCode=5 withShopName=5 withItemName=5 unknownGenreName=0 sourceBreakdown=search:5 trustBreakdown=high:5
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=3 productCount1Shop=1 productCount2PlusShops=2 maxProductsPerShop=2 avgProductsPerShop=1.67
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=3 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=5 unknownGenreInFallback=0 hitItemCount1=1 hitItemCount2Plus=2
+01:24 +132: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 候補不足時は hitItemCount=1 でも fallback 表示できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=3 avgItemCount=1.0 itemCount1=3 itemCount2Plus=0 withPrimaryGenre=3 unknownPrimaryGenre=0 withSourceProductIds=3 avgSourceProductIds=1.0 withSampleProductIds=3 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=only-shop productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:20:03.195385 catalogCountAtRead=3 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:20:03.196387 catalogCountAtRead=3 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=3 withGenreId=3 withGenreName=3 withShopCode=3 withShopName=3 withItemName=3 unknownGenreName=0 sourceBreakdown=search:3 trustBreakdown=high:3
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=3 productCount1Shop=3 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=3 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=3 unknownGenreInFallback=0 hitItemCount1=3 hitItemCount2Plus=0
+01:24 +133: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 同一 shopCode 複数 fresh 商品は pool itemCount2Plus になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=4 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=4
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=3 avgItemCount=1.3 itemCount1=2 itemCount2Plus=1 withPrimaryGenre=3 unknownPrimaryGenre=0 withSourceProductIds=3 avgSourceProductIds=1.3 withSampleProductIds=3 avgSampleProductIds=1.3
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=1 includedInPool=1 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=deep-shop:2/2/ok/inPool:true
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=deep-shop productCount=2 sourceBreakdown=shopDiscovery:2 trustBreakdown=medium:2 freshCount=2 safeCount=2 staleCount=0 poolItemCount=2 inPool=true excludedReason=ok
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:20:03.236648 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:20:03.236648 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=4 withGenreId=4 withGenreName=4 withShopCode=4 withShopName=4 withItemName=4 unknownGenreName=0 sourceBreakdown=search:2,shopDiscovery:2 trustBreakdown=high:2,medium:2
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=3 productCount1Shop=2 productCount2PlusShops=1 maxProductsPerShop=2 avgProductsPerShop=1.33
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=3 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=4 unknownGenreInFallback=0 hitItemCount1=2 hitItemCount2Plus=1
+01:24 +134: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback noimage URL は表示用画像に含めない
+01:27 +135: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport strong=9 でも hitItemCount=1 だらけなら qualityLevel=weak
+01:28 +136: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport unknownGenreRatio=1.0 なら excellent/good にならない
+01:29 +137: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount2Plus が多い場合は depthQuality good 以上になり得る
+01:29 +138: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 厚み・ジャンルが十分な場合のみ excellent に近づく
+01:29 +138 -1: loading C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart [E]
+  Failed to load "C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart":
+  Compilation failed for testPath=C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: test/services/shop_discovery_pool_supplement_ui_bridge_test.dart:136:20: Error: The argument type 'ShopDiscoveryPoolSupplementCandidate' can't be assigned to the parameter type 'ShopDiscoveryPoolSupplementUiDisplayCandidate'.
+   - 'ShopDiscoveryPoolSupplementCandidate' is from 'package:room_manager2/services/shop_discovery_pool_supplement.dart' ('lib/services/shop_discovery_pool_supplement.dart').
+   - 'ShopDiscoveryPoolSupplementUiDisplayCandidate' is from 'package:room_manager2/services/shop_discovery_pool_supplement_ui_bridge.dart' ('lib/services/shop_discovery_pool_supplement_ui_bridge.dart').
+          candidate: _selectedCandidate(
+                     ^
+  .
+test/services/shop_discovery_pool_supplement_ui_bridge_test.dart:136:20: Error: The argument type 'ShopDiscoveryPoolSupplementCandidate' can't be assigned to the parameter type 'ShopDiscoveryPoolSupplementUiDisplayCandidate'.
+ - 'ShopDiscoveryPoolSupplementCandidate' is from 'package:room_manager2/services/shop_discovery_pool_supplement.dart' ('lib/services/shop_discovery_pool_supplement.dart').
+ - 'ShopDiscoveryPoolSupplementUiDisplayCandidate' is from 'package:room_manager2/services/shop_discovery_pool_supplement_ui_bridge.dart' ('lib/services/shop_discovery_pool_supplement_ui_bridge.dart').
+        candidate: _selectedCandidate(
+                   ^
+01:31 +139 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 厚み・ジャンルが十分な場合のみ excellent に近づく
+01:32 +140 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build API結果に含まれるshopCodeは supplement から除外される
+01:33 +141 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount1 / hitItemCount2Plus / thinCandidateCount が正しい
+01:33 +142 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build relevance weak は除外される
+01:33 +143 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport displayQuality は画像・URL・レビューから判定される
+01:33 +144 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport noimage は withImageCount に含めない
+01:35 +145 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build hitItemCount=1 は除外される
+01:36 +146 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 通常API成功時は fallback quality report を作らない
+01:37 +147 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build imageなし / shopUrlなし は除外される
+01:37 +148 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 最大3件までに制限される
+01:37 +149 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build overlapRate=1.0 で API が Pool 上位を覆う場合 supplement 0
+01:37 +150 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build wouldShowSupplementIfEnabled と willUsePoolForUi / willSkipApi
+01:38 +151 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 保存ショップは supplement から除外される
+01:38 +152 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement apiWeakSignal apiWeakSignal / poolCouldCoverApiWeakness が計算できる
+01:39 +153 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=1.0 では recommendedDisplayCount=0
+01:40 +154 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=0.9 かつ APIにない強候補で recommendedDisplayCount=1
+01:41 +155 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision apiWeakSignal=true では recommendedDisplayCount が増え得る
+01:41 +156 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop / broadShop が判定できる
+01:42 +157 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision hitItemCount が低い候補は showEligible=false になり得る
+01:42 +158 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ジャンル不整合なら showEligible=false になり得る
+01:42 +159 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision 水筒 + strong itemName + hitItems&gt;=5 で strongItemEvidence=true
+01:42 +160 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision strongItemEvidence=true なら genreAligned=false でも showEligible=true
+01:42 +161 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop=true は strongItemEvidence があっても showEligible=false
+01:42 +162 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision broadShop=true は showEligible=false
+01:42 +163 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision candidate1 不適格なら candidate2 に displayRank=1
+01:42 +164 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ベビー相当で水筒系のみの Pool では recommendedDisplayCount=0
+01:42 +165 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision decision / candidate ログと willUsePoolForUi / willSkipApi
+01:42 +166 -1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement logs summary / top ログ形式
+01:52 +167 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=product displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=4
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=1 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_SEARCH_UPSERT_SUMMARY] mode=productSearch items=2 upserted=2 skipped=0 qualityNg=0 source=search
+[PRODUCT_CATALOG_SEARCH_VERIFY_SUMMARY] mode=productSearch count=2 savedBatch=2 batchWithGenreId=2 batchWithGenreName=2 canonicalId=shop:a getByCanonicalId=true findByProductId=true findByNormalizedUrl=true findByShopItem=false sampleGenreId=100 sampleGenreName=おもちゃ storedGenreId=100 storedGenreName=おもちゃ source=search sourceTrust=high qualitySafe=true hasImage=true hasPrice=true
+01:52 +168 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog カタログ upsert 失敗でも検索は成功のまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=genre displayCount=1 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=genre requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] genreSearch provider after repository rawItemsCount=1 parsedItemsCount=1 genreId=100 keywordLen=4
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=1 displayCount=1 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 1 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=genre attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_SEARCH_UPSERT] failed mode=genreSearch: Bad state: catalog upsert failed
+01:53 +169 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SHOP_POOL_READ_TIMING] phase=searchPostSchedule readAt=2026-06-06T00:20:31.391077 catalogCountAtRead=2 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_SUMMARY] source=shopDiscovery catalogProducts=2 catalogShops=1 poolCandidates=1 savedExcluded=0 staleExcluded=0 lowTrustExcluded=0 unsafeExcluded=0 emptyShopCodeExcluded=0
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=1 avgItemCount=2.0 itemCount1=0 itemCount2Plus=1 withPrimaryGenre=1 unknownPrimaryGenre=0 withSourceProductIds=1 avgSourceProductIds=2.0 withSampleProductIds=1 avgSampleProductIds=2.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=1 includedInPool=1 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=shop:2/2/ok/inPool:true
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop productCount=2 sourceBreakdown=shopDiscovery:2 trustBreakdown=medium:2 freshCount=2 safeCount=2 staleCount=0 poolItemCount=2 inPool=true excludedReason=ok
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:20:31.407197 catalogCountAtRead=2 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_STALE_REFERENCE_SUMMARY] candidateCount=1 freshItemCount=2 staleItemCount=0 staleUsableForDepth=0 currentItemCount2Plus=1 wouldItemCount2PlusIfStaleDepthAllowed=1
+[PHASE3I_STRATEGY_AUDIT] current_poolCandidates=1 current_avgItemCount=2.00 current_itemCount2Plus=1 strategyA_searchMultiProductShops=0 strategyA_searchAvgProductsPerShop=0.00 strategyB_note=see_SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY strategyC_shopDiscoveryProductsInSinglePool=0 strategyD_staleUsableForDepth=0 strategyD_wouldItemCount2Plus=1 strategyE_staleLongLivedFields=0
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=1 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=水筒 items=2 upserted=2 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=2 withGenreId=2 withGenreName=2 withShopCode=2 withShopName=2 withItemName=2 unknownGenreName=0 sourceBreakdown=shopDiscovery:2 trustBreakdown=medium:2
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=0 productCount2PlusShops=1 maxProductsPerShop=2 avgProductsPerShop=2.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=2026-06-06T00:20:31.372485 completedAt=2026-06-06T00:20:31.417763 durationMs=45 catalogCountBefore=0 catalogCountAfter=2
+01:53 +170 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery でも ProductCatalog upsert が実行される
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=1 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=1 parsedItemsCount=1 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=1 displayCount=1 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 1 件
+[SHOP_POOL_READ_TIMING] phase=searchPostSchedule readAt=2026-06-06T00:20:31.478632 catalogCountAtRead=1 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_SUMMARY] source=shopDiscovery catalogProducts=1 catalogShops=1 poolCandidates=1 savedExcluded=0 staleExcluded=0 lowTrustExcluded=0 unsafeExcluded=0 emptyShopCodeExcluded=0
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=1 avgItemCount=1.0 itemCount1=1 itemCount2Plus=0 withPrimaryGenre=1 unknownPrimaryGenre=0 withSourceProductIds=1 avgSourceProductIds=1.0 withSampleProductIds=1 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop productCount=1 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:20:31.486157 catalogCountAtRead=1 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_STALE_REFERENCE_SUMMARY] candidateCount=1 freshItemCount=1 staleItemCount=0 staleUsableForDepth=0 currentItemCount2Plus=0 wouldItemCount2PlusIfStaleDepthAllowed=0
+[PHASE3I_STRATEGY_AUDIT] current_poolCandidates=1 current_avgItemCount=1.00 current_itemCount2Plus=0 strategyA_searchMultiProductShops=0 strategyA_searchAvgProductsPerShop=0.00 strategyB_note=see_SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY strategyC_shopDiscoveryProductsInSinglePool=1 strategyD_staleUsableForDepth=0 strategyD_wouldItemCount2Plus=0 strategyE_staleLongLivedFields=0
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=水筒 items=1 upserted=1 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=2026-06-06T00:20:31.475104 completedAt=2026-06-06T00:20:31.489155 durationMs=14 catalogCountBefore=0 catalogCountAfter=1
+01:53 +171 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery カタログ upsert 失敗でも検索は成功のまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=1 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=1 parsedItemsCount=1 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=1 displayCount=1 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 1 件
+[SHOP_POOL_READ_TIMING] phase=searchPostSchedule readAt=2026-06-06T00:20:31.558516 catalogCountAtRead=0 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_SUMMARY] source=shopDiscovery catalogProducts=0 catalogShops=0 poolCandidates=0 savedExcluded=0 staleExcluded=0 lowTrustExcluded=0 unsafeExcluded=0 emptyShopCodeExcluded=0
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=0 avgItemCount=0 itemCount1=0 itemCount2Plus=0 withPrimaryGenre=0 unknownPrimaryGenre=0 withSourceProductIds=0 avgSourceProductIds=0 withSampleProductIds=0 avgSampleProductIds=0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:20:31.558516 catalogCountAtRead=0 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_STALE_REFERENCE_SUMMARY] candidateCount=0 freshItemCount=0 staleItemCount=0 staleUsableForDepth=0 currentItemCount2Plus=0 wouldItemCount2PlusIfStaleDepthAllowed=0
+[PHASE3I_STRATEGY_AUDIT] current_poolCandidates=0 current_avgItemCount=0.00 current_itemCount2Plus=0 strategyA_searchMultiProductShops=0 strategyA_searchAvgProductsPerShop=0.00 strategyB_note=see_SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY strategyC_shopDiscoveryProductsInSinglePool=0 strategyD_staleUsableForDepth=0 strategyD_wouldItemCount2Plus=0 strategyE_staleLongLivedFields=0
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT] failed: Bad state: catalog upsert failed
+01:54 +172 -1: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolFallbackKeywordSynonyms 水筒の同義語を返す
+01:54 +173 -1: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒で商品名マッチは strong
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+01:54 +174 -1: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒でお名前シールは noMatch
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+01:55 +175 -1: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance ジャンル名マッチは medium
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+01:55 +176 -1: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance unknown genre を検出する
+01:56 +177 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: beginSearchSession increments active request id
+01:56 +178 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorForNewSearch clears error and retry banner
+[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=1 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+01:56 +179 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorIfModeMismatch clears error owned by another mode
+01:56 +180 -1: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: isErrorVisibleForMode is true only for matching tag
+01:58 +181 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId / itemCode 優先で canonicalId が決まる
+01:58 +182 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId が無い場合 normalizedItemUrl から synthetic key が作られる
+01:58 +183 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys canonicalId が決められない場合は null
+01:59 +184 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+01:59 +185 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+01:59 +186 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+[GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+01:59 +186 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreName があるときはそのまま
+01:59 +187 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId と URL パスが不一致のとき composite alias を付けない
+02:00 +188 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreId のみのとき GenreMaster で補完
+02:00 +189 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId・別 URL で false
+02:00 +190 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId・別 URL で false
+02:00 +191 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+02:00 +192 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+02:00 +193 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+02:00 +194 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+02:00 +195 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+02:00 +196 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:01 +197 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId + 同一 affiliate URL で false
+02:01 +198 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (tearDownAll)
+02:01 +198 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +199 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +200 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +201 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +202 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +203 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +204 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +205 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +205 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 安全 NG は upsert 対象から除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:01 +206 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +206 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=true のとき upsertAll が永続化する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SEARCH_UPSERT_SUMMARY] mode=productSearch items=1 upserted=1 skipped=0 qualityNg=0 source=search
+[PRODUCT_CATALOG_SEARCH_VERIFY_SUMMARY] mode=productSearch count=1 savedBatch=1 batchWithGenreId=1 batchWithGenreName=1 canonicalId=shop:item001 getByCanonicalId=true findByProductId=true findByNormalizedUrl=true findByShopItem=true sampleGenreId=100 sampleGenreName=おもちゃ storedGenreId=100 storedGenreName=おもちゃ source=search sourceTrust=high qualitySafe=true hasImage=true hasPrice=true
+02:01 +207 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +207 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 変換商品を upsert すると alias で検索できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:01 +208 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +209 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +210 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +210 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems source=shopDiscovery / sourceTrust=medium になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=- items=1 upserted=1 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=- completedAt=2026-06-06T00:20:40.249293 durationMs=- catalogCountBefore=- catalogCountAfter=1
+02:01 +211 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +211 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 安全 NG は upsert 対象から除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=- items=2 upserted=1 skipped=0 qualityNg=1 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=- completedAt=2026-06-06T00:20:40.262365 durationMs=- catalogCountBefore=- catalogCountAfter=1
+02:01 +212 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +212 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems canonicalId 不可商品は保存しない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=- items=2 upserted=1 skipped=1 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=- completedAt=2026-06-06T00:20:40.273452 durationMs=- catalogCountBefore=- catalogCountAfter=1
+02:01 +213 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +213 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems genreId のみのとき GenreMaster で genreName を補完して保存する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=- items=1 upserted=1 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=- completedAt=2026-06-06T00:20:40.280988 durationMs=- catalogCountBefore=- catalogCountAfter=1
+02:01 +214 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +214 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 同一 shopCode 複数商品を保存すると aggregator の itemCount が 2 以上になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=- items=2 upserted=2 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=2 withGenreId=2 withGenreName=2 withShopCode=2 withShopName=2 withItemName=2 unknownGenreName=0 sourceBreakdown=shopDiscovery:2 trustBreakdown=medium:2
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=0 productCount2PlusShops=1 maxProductsPerShop=2 avgProductsPerShop=2.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=- completedAt=2026-06-06T00:20:40.296103 durationMs=- catalogCountBefore=- catalogCountAfter=2
+02:01 +215 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:01 +215 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems initialItems / medium trust で upsert される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item001 resolvedCanonicalId=shop:item001 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=shop source=initialItems attempted=1 upserted=1 inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=shop inputItems=1 savedForShop=1 item1=itemCode=shop:item001,inputCanonicalId=shop:item001,canonicalId=shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item001,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item001,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=shop allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=shop:item001
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=shop catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=shop productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+02:01 +216 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:02 +216 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems loadedByShopCode / high trust で upsert される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item001 resolvedCanonicalId=shop:item001 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=shop source=loadedByShopCode attempted=1 upserted=1 inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=high
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=shop inputItems=1 savedForShop=1 item1=itemCode=shop:item001,inputCanonicalId=shop:item001,canonicalId=shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item001,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item001,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=shop allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=shop:item001
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=shop catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=shop productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+02:02 +217 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:02 +217 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems unsafe / canonicalId不可は保存されない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item001 resolvedCanonicalId=shop:item001 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=shop source=initialItems attempted=3 upserted=1 inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=1 qualityNg=1 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=shop inputItems=3 savedForShop=1 item1=itemCode=shop:item001,inputCanonicalId=shop:item001,canonicalId=shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item001,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item001,saved=true,reason=- item2=itemCode=shop:unsafe,inputCanonicalId=shop:unsafe,canonicalId=shop:unsafe,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=大人のおもちゃ 初心者向け,getByCanonicalIdFound=false,findByAliasFound=false,resolvedCanonicalId=-,resolvedShopCode=-,sameShopCode=false,aliasMatchedBy=-,saved=false,reason=qualityUnsafe item3=itemCode=-,inputCanonicalId=-,canonicalId=-,normalizedItemUrl=-,shopCode=shop,itemName=URL不正,getByCanonicalIdFound=false,findByAliasFound=false,resolvedCanonicalId=-,resolvedShopCode=-,sameShopCode=false,aliasMatchedBy=-,saved=false,reason=notSavable
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=shop allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=shop:item001
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=shop catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=shop productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+02:02 +218 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:02 +218 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 shopCode 複数商品で itemCount2Plus になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item001 resolvedCanonicalId=shop:item001 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item002 resolvedCanonicalId=shop:item002 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item002 normalizedItemUrl=https://item.rakuten.co.jp/shop/item002/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=shop source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=shop inputItems=2 savedForShop=2 item1=itemCode=shop:item001,inputCanonicalId=shop:item001,canonicalId=shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item001,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item001,saved=true,reason=- item2=itemCode=shop:item002,inputCanonicalId=shop:item002,canonicalId=shop:item002,normalizedItemUrl=https://item.rakuten.co.jp/shop/item002/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item002,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item002,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=shop allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=shop:item001|shop:item002
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=shop catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+02:02 +219 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:02 +219 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 別 canonicalId なら productCountForShop=2 / inserted+updated 内訳
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item001 resolvedCanonicalId=shop:item001 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item002 resolvedCanonicalId=shop:item002 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item002 normalizedItemUrl=https://item.rakuten.co.jp/shop/item002/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=shop source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=shop inputItems=2 savedForShop=2 item1=itemCode=shop:item001,inputCanonicalId=shop:item001,canonicalId=shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item001,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item001,saved=true,reason=- item2=itemCode=shop:item002,inputCanonicalId=shop:item002,canonicalId=shop:item002,normalizedItemUrl=https://item.rakuten.co.jp/shop/item002/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item002,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item002,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=shop allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=shop:item001|shop:item002
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=shop catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+02:02 +220 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:02 +220 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 canonicalId 2件は merge で productCountForShop=1
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=1 updatedByCanonicalId=1 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:item001 resolvedCanonicalId=takeya-tea:item001 operation=insert mergeReason=insert inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=- productId=takeya-tea:item001 normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:item001 resolvedCanonicalId=takeya-tea:item001 operation=update mergeReason=canonicalIdMatch inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=takeya-tea:item001 productId=takeya-tea:item001 normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=takeya-tea source=initialItems attempted=2 upserted=2 inserted=1 updated=1 updatedByCanonicalId=1 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=takeya-tea inputItems=2 savedForShop=1 item1=itemCode=takeya-tea:item001,inputCanonicalId=takeya-tea:item001,canonicalId=takeya-tea:item001,normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/item001/,shopCode=takeya-tea,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:item001,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:item001,saved=true,reason=- item2=itemCode=takeya-tea:item001,inputCanonicalId=takeya-tea:item001,canonicalId=takeya-tea:item001,normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/item001/,shopCode=takeya-tea,itemName=別名表示の同一商品,getByCanonicalIdFound=false,findByAliasFound=false,resolvedCanonicalId=-,resolvedShopCode=-,sameShopCode=false,aliasMatchedBy=-,saved=false,reason=canonicalDuplicate
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=takeya-tea allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=takeya-tea:item001
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=takeya-tea catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=takeya-tea productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+02:02 +221 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:02 +221 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems productIdとURLパス不一致2件は productCountForShop=2
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:10000490 resolvedCanonicalId=takeya-tea:10000490 operation=insert mergeReason=insert inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=- productId=takeya-tea:10000490 normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/10000490/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:10000383 resolvedCanonicalId=takeya-tea:10000383 operation=insert mergeReason=insert inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=- productId=takeya-tea:10000383 normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/10000383/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=takeya-tea source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=takeya-tea inputItems=2 savedForShop=2 item1=itemCode=takeya-tea:10000490,inputCanonicalId=takeya-tea:10000490,canonicalId=takeya-tea:10000490,normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/10000490/,shopCode=takeya-tea,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:10000490,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:10000490,saved=true,reason=- item2=itemCode=takeya-tea:10000383,inputCanonicalId=takeya-tea:10000383,canonicalId=takeya-tea:10000383,normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/10000383/,shopCode=takeya-tea,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:10000383,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:10000383,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=takeya-tea allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=takeya-tea:10000490|takeya-tea:10000383
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=takeya-tea catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=takeya-tea productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+02:02 +222 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:02 +222 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 既存商品への同一 canonicalId 2件は inserted=0 updated=2
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=0 updated=2 updatedByCanonicalId=2 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:existing resolvedCanonicalId=takeya-tea:existing operation=update mergeReason=canonicalIdMatch inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=takeya-tea:existing productId=takeya-tea:existing normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:existing resolvedCanonicalId=takeya-tea:existing operation=update mergeReason=canonicalIdMatch inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=takeya-tea:existing productId=takeya-tea:existing normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=takeya-tea source=initialItems attempted=2 upserted=2 inserted=0 updated=2 updatedByCanonicalId=2 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=takeya-tea inputItems=2 savedForShop=1 item1=itemCode=takeya-tea:existing,inputCanonicalId=takeya-tea:existing,canonicalId=takeya-tea:existing,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=takeya-tea,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:existing,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:existing,saved=true,reason=- item2=itemCode=takeya-tea:existing,inputCanonicalId=takeya-tea:existing,canonicalId=takeya-tea:existing,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=takeya-tea,itemName=更新2,getByCanonicalIdFound=false,findByAliasFound=false,resolvedCanonicalId=-,resolvedShopCode=-,sameShopCode=false,aliasMatchedBy=-,saved=false,reason=canonicalDuplicate
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=takeya-tea allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=takeya-tea:existing
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=takeya-tea catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=takeya-tea productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+02:02 +223 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:02 +223 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: buildShopDiscoveryDetailCatalogItemTraces 同一 productId 2件目は canonicalDuplicate
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:02 +224 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:02 +225 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:02 +226 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+02:02 +227 -1: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は同一 productId なら true
+02:06 +228 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics medium shopDiscovery 商品2件の同一 shopCode が pool itemCount=2 になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+02:07 +229 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 商品のみ残ると pool itemCount=1 になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+02:07 +230 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics maxProductsPerShop 相当でも fresh が複数あれば pool itemCount&gt;=2
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=21 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=21
+02:07 +231 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics maxProductsPerShop 相当でも fresh が複数あれば pool itemCount&gt;=2
+02:07 +232 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics maxProductsPerShop 相当でも fresh が複数あれば pool itemCount&gt;=2
+02:07 +233 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics maxProductsPerShop 相当でも fresh が複数あれば pool itemCount&gt;=2
+02:07 +234 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +235 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +235 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 診断関数は例外なく実行できる
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+02:08 +236 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +237 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +237 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 保存ショップ検索相当 search/high で同一 shopCode 複数商品が pool に蓄積
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+02:08 +238 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +239 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +239 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 深さ投影で wouldItemCount2Plus を計算できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+02:08 +240 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +241 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +242 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +243 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +244 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +245 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +246 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +247 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +248 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +249 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +250 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +251 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +251 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics computeShopDiscoveryEnrichmentOpportunity は API を呼ばない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:08 +252 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +253 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +253 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailDepthTrace / PoolTrace は例外なく実行できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=trace-shop allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=trace:1
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=trace-shop catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+02:08 +254 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+02:08 +255 -1: loading C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart
+02:08 +255 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailCatalogItemTrace は duplicate reason を含める
+02:09 +256 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailCatalogItemTrace は duplicate reason を含める
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=dup-shop inputItems=2 savedForShop=1 item1=itemCode=dup-shop:a,inputCanonicalId=dup-shop:a,canonicalId=dup-shop:a,normalizedItemUrl=-,shopCode=dup-shop,itemName=商品A,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=dup-shop:a,resolvedShopCode=dup-shop,sameShopCode=true,aliasMatchedBy=-,saved=true,reason=- item2=itemCode=dup-shop:a,inputCanonicalId=dup-shop:a,canonicalId=dup-shop:a,normalizedItemUrl=-,shopCode=dup-shop,itemName=商品Aコピー,getByCanonicalIdFound=false,findByAliasFound=false,resolvedCanonicalId=-,resolvedShopCode=-,sameShopCode=true,aliasMatchedBy=-,saved=false,reason=canonicalDuplicate
+02:09 +257 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort ユーザー選択肢に defaultOrder は含めない
+02:09 +258 -1: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 表示ラベルに「おすすめ」「デフォルト」は出さない
+02:09 +259 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logSavedOrDiscoveryShopDepthAfterUpsert は例外なく実行できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=depth-shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+02:09 +260 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logSavedOrDiscoveryShopDepthAfterUpsert は例外なく実行できる
+02:10 +261 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration detail upsert 後 poolItemCount が2になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=pool:1 resolvedCanonicalId=pool:1 operation=insert mergeReason=insert inputShopCode=pool-shop savedShopCode=pool-shop aliasMatchedBy=- productId=pool:1 normalizedItemUrl=https://item.rakuten.co.jp/pool-shop/one/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=pool:2 resolvedCanonicalId=pool:2 operation=insert mergeReason=insert inputShopCode=pool-shop savedShopCode=pool-shop aliasMatchedBy=- productId=pool:2 normalizedItemUrl=https://item.rakuten.co.jp/pool-shop/two/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=pool-shop source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=pool-shop inputItems=2 savedForShop=2 item1=itemCode=pool:1,inputCanonicalId=pool:1,canonicalId=pool:1,normalizedItemUrl=https://item.rakuten.co.jp/pool-shop/one/,shopCode=pool-shop,itemName=商品1,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=pool:1,resolvedShopCode=pool-shop,sameShopCode=true,aliasMatchedBy=pool:1,saved=true,reason=- item2=itemCode=pool:2,inputCanonicalId=pool:2,canonicalId=pool:2,normalizedItemUrl=https://item.rakuten.co.jp/pool-shop/two/,shopCode=pool-shop,itemName=商品2,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=pool:2,resolvedShopCode=pool-shop,sameShopCode=true,aliasMatchedBy=pool:2,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=pool-shop allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=pool:1|pool:2
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=pool-shop catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=pool-shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+02:11 +262 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration takeya-tea 同一 affiliate URL・別 productId で poolItemCount=2
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=1 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:10000490 resolvedCanonicalId=takeya-tea:10000490 operation=insert mergeReason=insert inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=- productId=takeya-tea:10000490 normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:10000383 resolvedCanonicalId=takeya-tea:10000383 operation=insert mergeReason=aliasConflictPrevented inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/ productId=takeya-tea:10000383 normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/ saved=true urlIdentityRejected=true urlIdentityRejectReason=affiliateRedirectUrl inputProductId=takeya-tea:10000383 matchedCanonicalId=takeya-tea:10000490 matchedProductId=takeya-tea:10000490
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=takeya-tea source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=1 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=takeya-tea inputItems=2 savedForShop=2 item1=itemCode=takeya-tea:10000490,inputCanonicalId=takeya-tea:10000490,canonicalId=takeya-tea:10000490,normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/,shopCode=takeya-tea,itemName=商品A,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:10000490,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:10000490,saved=true,reason=- item2=itemCode=takeya-tea:10000383,inputCanonicalId=takeya-tea:10000383,canonicalId=takeya-tea:10000383,normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/,shopCode=takeya-tea,itemName=商品B,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:10000383,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:10000383,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=takeya-tea allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=takeya-tea:10000490|takeya-tea:10000383
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=takeya-tea catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=takeya-tea productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+02:11 +263 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: ProductCatalogUpsertTimingRegistry upsert 完了前の read は usesFreshCatalog=false
+02:11 +264 -1: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: ProductCatalogUpsertTimingRegistry upsert 完了後の read は usesFreshCatalog=true
+02:12 +265 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment productId 一致で照合できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:12 +266 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment normalizedItemUrl 一致で照合できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:12 +267 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopCode + itemPathSegment 一致で照合できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:12 +268 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 商品名だけでは照合・補完しない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:12 +269 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment stale な商品は補完に使わない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:12 +270 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment sourceTrust=low は補完に使わない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:12 +271 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が安全ならカタログ画像で上書きしない
+02:12 +272 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が疑わしくカタログ画像が安全なら補完できる
+02:12 +273 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が0ならカタログ価格で補完できる
+02:12 +274 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が有効なら上書きしない
+02:12 +275 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopName / genreName が空なら補完できる
+02:12 +276 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment upsert時に high が low で上書きされない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=0 updated=1 updatedByCanonicalId=1 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+02:12 +277 -1: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment repository が null でも upsert は skipped
+02:14 +278 -1: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop and url slug match accepts candidate
+02:14 +279 -1: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch price match alone does not accept candidate
+02:14 +280 -1: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop mismatch rejects candidate
+02:15 +281 -1: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+02:16 +282 -1: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 price=3980 に incoming price=-1 が来ても 3980 を維持
+02:16 +283 -1: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+02:16 +284 -1: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+02:16 +285 -1: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+02:16 +286 -1: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+02:16 +287 -1: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+02:18 +288 -1: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl extracts composite itemCode and slug from event+dest
+02:18 +289 -1: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl supports rat-redirect host and drinkshop slug
+02:19 +290 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+02:19 +291 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics reactionScore は like + comment*3
+02:19 +292 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genre 空は ジャンル未確認
+02:19 +293 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName 空なら shopCode をUIに出さずショップ未確認
+02:19 +294 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName も shopCode も空なら ショップ未確認
+02:19 +295 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics 未分類ジャンルは傾向集計対象外
+02:19 +296 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genreName空でもgenreIdからマスタ解決できれば集計対象
+02:19 +297 -1: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopCodeのみのショップは傾向集計対象外
+02:19 +298 -1: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: roomImportEnrichSlugShouldSkipDirectItemCode flags slug-like segments
+02:20 +299 -1: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 価格だけ未取得のとき強い未確認文言は出さない
+02:20 +300 -1: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 商品名も画像も無いときは売り切れ系を表示
+02:21 +301 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 有効な商品は通す
+02:23 +302 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +303 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +304 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +305 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +306 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +306 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 品質OKなカタログ商品がプールに入る
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_STALE_SUMMARY] source=todayRecommendation total=1 fresh=1 stale=0 minAgeSeconds=0 maxAgeSeconds=0 ttlSeconds=86400
+02:24 +307 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +308 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +308 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool stale は除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_STALE_SUMMARY] source=todayRecommendation total=1 fresh=0 stale=1 minAgeSeconds=950400 maxAgeSeconds=950400 ttlSeconds=86400
+02:24 +309 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +310 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +311 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +312 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +312 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 候補済み productId は除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_STALE_SUMMARY] source=todayRecommendation total=1 fresh=1 stale=0 minAgeSeconds=0 maxAgeSeconds=0 ttlSeconds=86400
+02:24 +313 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +314 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +314 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool upsertCatalogFromRecommendItems は todayRecommendation になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_RECOMMEND_UPSERT_SUMMARY] items=1 upserted=1 skipped=0 qualityNg=0 source=todayRecommendation
+02:24 +315 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +315 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=true で upsertAll 相当が動く
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+[SHOP_CATALOG_DISCOVERY_UPSERT_SUMMARY] summaries=1 upserted=1 skippedNoShopCode=0 skippedInvalidShopName=0 skippedUnsafe=0 skippedInvalidShopUrl=0 source=shopDiscovery
+02:24 +316 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +316 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries upsert失敗でも例外を投げない（検索成功扱いを阻害しない）
+[SHOP_CATALOG_DISCOVERY_UPSERT] failed: Bad state: upsert failed
+[SHOP_CATALOG_DISCOVERY_UPSERT_SUMMARY] summaries=1 upserted=1 skippedNoShopCode=0 skippedInvalidShopName=0 skippedUnsafe=0 skippedInvalidShopUrl=0 source=shopDiscovery
+02:24 +317 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:24 +317 -1: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries 入力 summaries の件数・順序を変えない
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=1 skipped=0 evicted=0 total=1
+[SHOP_CATALOG_DISCOVERY_UPSERT_SUMMARY] summaries=2 upserted=2 skippedNoShopCode=0 skippedInvalidShopName=0 skippedUnsafe=0 skippedInvalidShopUrl=0 source=shopDiscovery
+02:24 +318 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+02:25 +319 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 価格なしは除外
+02:26 +320 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 商品URLなしは除外
+02:26 +321 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter プレースホルダ商品名は除外
+02:26 +322 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 大人のおもちゃは安全フィルタで除外
+02:26 +323 -1: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 木のおもちゃは通す
+02:31 +324 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 見送り済みは一定期間除外される
+02:31 +325 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 表示済みは一定期間除外される
+02:31 +326 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 古い表示済みは除外されない
+02:35 +327 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 保存ジャンル3件で最終10件が1ジャンルに偏りすぎない
+02:35 +328 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 他ジャンル候補がない場合は偏りを許容する
+02:35 +329 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution computeTargetQuotas は3ジャンル10件で4/3/3
+02:36 +330 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 10件そろっても保存ジャンル必須プランは件数では打ち切らない
+02:37 +331 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 補助プランは件数不足かつAPI余裕があるときのみ
+02:38 +332 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore page=1固定にならず次回は page を進める
+02:38 +333 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore 枯渇クールダウン中は page 1 に戻る
+02:38 +334 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore maxPage 超過後は 1 にラップ
+02:38 +335 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore rawCount が少ないと exhaustedUntil が設定される
+02:43 +336 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: FavoriteGenreSelectionPolicy 保存ジャンル上限は3件
+02:44 +337 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy 既定 sort はレビュー件数順で null ではない
+02:44 +338 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy API上限は10より小さい
+02:44 +339 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder buildPlanSet は保存ジャンル必須と補助を分割する
+02:44 +340 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル3件でジャンルプラン3＋補助最大1
+02:44 +341 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル5件指定でもジャンルプランは3件まで
+02:44 +342 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルなしのときフォールバック1件
+02:44 +343 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 補助プランは最大1件（反応ジャンル）
+02:44 +344 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルと同じ補助条件は追加しない
+02:44 +345 -1: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder maxPlanCount は API 上限を超えない
+02:46 +346 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy strongItemEvidence=true かつ genreAligned=false は商品名理由文
+02:47 +347 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy genreAligned=true はジャンル理由文
+02:47 +348 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+02:50 +349 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が1件なら補助枠カードを表示する
+02:50 +350 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection 複数候補は displayRank 昇順の並びで表示する
+02:50 +351 -1: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection onCandidateTap が渡されていればタップで callback が呼ばれる
+02:52 +352 -1: Some tests failed.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "content",
+  "path": "C:/Users/muram/.cursor/projects/c-dev-app-project-room-manager2/agent-tools/a1fe8b27-e6c4-43b8-8fed-1abb1f03de1a.txt",
+  "pattern": "FAILED|Error|Expected|buildCardTapLogLine|onCandidateTap"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "C:/Users/muram/.cursor/projects/c-dev-app-project-room-manager2/agent-tools/a1fe8b27-e6c4-43b8-8fed-1abb1f03de1a.txt",
+  "pattern": "FAILED|Error|Expected|buildCardTapLogLine|onCandidateTap",
+  "topFiles": [
+    {
+      "matchCount": 5,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\a1fe8b27-e6c4-43b8-8fed-1abb1f03de1a.txt"
+    },
+    {
+      "matchCount": 5,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\a1fe8b27-e6c4-43b8-8fed-1abb1f03de1a.txt"
+    }
+  ],
+  "totalFiles": 2,
+  "totalMatches": 10
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:/Users/muram/.cursor/projects/c-dev-app-project-room-manager2/agent-tools/a1fe8b27-e6c4-43b8-8fed-1abb1f03de1a.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test test/services/shop_discovery_pool_supplement_ui_bridge_test.dart test/widgets/shop_discovery_pool_supplement_cards_test.dart 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test test/services/shop_discovery_pool_supplement_ui_bridge_test.dart test/widgets/shop_discovery_pool_supplement_cards_test.dart 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible + displayRank&lt;=recommended の候補だけ抽出する
+00:00 +1: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge buildCardTapLogLine のログ形式
+00:00 +2: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge recommendedDisplayCount=0 なら displayCandidates=0（コーヒー相当）
+00:00 +3: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge ベビー相当で recommendedDisplayCount=0 なら displayCandidates=0
+00:00 +4: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible=false は displayRank があっても除外される
+00:00 +5: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge displayRank&gt;recommended は除外される
+00:00 +6: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge contentEquals は表示候補の差分を検出する
+00:00 +7: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge candidate1 不適格でも candidate2 が displayRank=1 なら抽出する
+00:00 +8: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy strongItemEvidence=true かつ genreAligned=false は商品名理由文
+00:01 +9: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy genreAligned=true はジャンル理由文
+00:01 +10: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+00:02 +11: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が1件なら補助枠カードを表示する
+00:02 +12: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection 複数候補は displayRank 昇順の並びで表示する
+00:02 +13: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection onCandidateTap が渡されていればタップで callback が呼ばれる
+00:02 +14: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter analyze 2>&1
+```
+
+```
+Analyzing room_manager2...                                      
+
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:114:17 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:115:21 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:150:26 - use_build_context_synchronously
+warning - A value for optional parameter 'withImageCount' isn't ever given - test\services\shop_discovery_pool_api_compare_test.dart:69:7 - unused_element_parameter
+
+4 issues found. (ran in 30.0s)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path kProductCatalogEnabled=false では upsert skipped
+00:00 +1: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path 商品名検索 productSearch で upsert し永続化する
+00:00 +2: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path shopDiscovery でも ProductCatalog upsert が実行される
+00:01 +3: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct JSON 往復できる
+00:01 +4: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct high trust が low trust の重要フィールドを上書きできる
+00:01 +5: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust は high trust の重要フィールドを上書きしない
+00:01 +6: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust でも空欄は補完できる
+00:02 +7: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が最優先
+00:02 +8: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が無ければ itemUrl
+00:02 +9: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliate と item が空なら rakutenUrl
+00:03 +10: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry JSON 往復できる
+00:03 +11: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry aliases を保持する
+00:03 +12: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry stale 判定用フィールドを保持する
+00:03 +13: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedStatus を持たない JSON は拒否する
+00:03 +14: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedAt を持たないこと（モデルにフィールドなし）
+00:05 +15: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:05 +16: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and keeps single value
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated,affordable new=premium
+00:05 +17: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles effectivePostStyleList uses balance without showing it as selected
+00:06 +18: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository upsert して canonicalId で取得できる
+00:06 +19: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository alias で検索できる
+00:06 +20: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository high trust が low trust を上書きできる
+00:06 +21: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository low trust は high trust の重要フィールドを上書きしない
+00:06 +22: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:08 +23: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:08 +24: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +25: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +26: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +27: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +28: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +29: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:11 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:12 +32: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:14 +33: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:15 +34: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:15 +35: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:15 +36: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:15 +37: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository stale 判定ができる
+00:15 +38: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository clear で空になる
+00:15 +39: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 別 canonicalId・別 URL は alias 誤マージせず2件保存される
+00:15 +40: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository レガシー誤 alias があっても別 productId は別商品として insert
+00:15 +41: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 同一 affiliate URL・別 productId は urlMatch せず2件保存
+00:15 +42: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository takeya-tea 2商品バッチで productCountForShop=2
+00:15 +43: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository productId 欠落時は同一 item URL で alias merge される
+00:15 +44: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository バッチ upsert で別商品2件は inserted=2
+00:18 +45: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator カタログ空なら空リスト
+00:18 +46: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 単位に集計できる
+00:18 +47: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 同一 shopCode 複数商品で itemCount2Plus になる
+00:18 +48: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 空は除外
+00:19 +49: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 通常URL・クエリ付きで itemCode を抽出する
+00:19 +50: C:/dev/app_project/room_manager2/test/services/rakuten_genre_master_service_test.dart: genreId 100026 は簡易マスタでもパソコン・周辺機器として解決する
+00:19 +51: C:/dev/app_project/room_manager2/test/services/rakuten_genre_master_service_test.dart: genreId 100026 は簡易マスタでもパソコン・周辺機器として解決する
+00:19 +52: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator unsafe 商品は除外
+00:19 +53: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator unsafe 商品は除外
+00:19 +54: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天以外のURLは商品ページURLエラーになる
+00:19 +55: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator stale 商品は除外
+00:19 +56: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl item.rakuten で商品セグメントが不正なら確認できないエラー
+00:19 +57: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sourceTrust=low は除外
+00:19 +58: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sourceTrust=low は除外
+00:19 +59: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ候補として分類される
+00:19 +60: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator representativeImageUrl が安全画像になる
+00:19 +61: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts 未登録
+00:19 +62: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator primaryGenreName が商品の genreName から入る
+00:19 +63: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator genreId のみでも primaryGenreId は入る
+00:19 +64: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sourceProductIds は複数商品分保持する
+00:19 +65: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator primaryGenreId が件数最多ジャンルになる
+00:19 +66: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator score 順になる
+00:19 +67: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sampleProductIds が入る
+00:19 +68: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 保存ショップ除外を指定できる
+00:19 +69: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopDiscovery 由来商品でも shopCode 単位に集計できる
+00:19 +70: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator stale でない medium 商品は aggregator から除外されない
+00:19 +71: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 未確認 shopName は表示名に使わない
+00:21 +72: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser https の item.rakuten から shop / セグメント / 正規URL
+00:21 +73: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser http でも抽出できる
+00:21 +74: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser HTML 内の複数リンクから数値ID付きを優先
+00:21 +75: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RoomUrlResolver ROOM HTML から楽天商品URLを取得できる
+00:22 +76: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:22 +77: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathFromCollectsRow reads nested item URL
+[ROOM_COLLECTS_RESPONSE_SHAPE] itemKeys=id,meta productLikeKeys=- userLikeKeys=- imageLikeKeys=- hasProductImage=false hasUserIcon=false
+[ROOM_IMPORT_COLLECTS_IMAGE_KEYS] productId=17001234567890 keys=meta.link selectedKey=- rejectedKeys=meta.link
+00:24 +78: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMプロフィールURLを許可して正規化する
+00:24 +79: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /items 付きROOMプロフィールURLを許可して正規化する
+00:24 +80: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /collections と /likes もプロフィール導線として許可する
+00:24 +81: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 空は任意入力として許可する
+00:24 +82: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat httpは拒否する
+00:24 +83: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 楽天市場URLは拒否する
+00:24 +84: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMトップURLのみは拒否する
+00:24 +85: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOM商品URL相当の複数パスは拒否する
+00:24 +86: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat roomIdなしの /items は拒否する
+00:24 +87: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 短縮URLは拒否する
+00:24 +88: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers extractRoomId extracts roomId from profile child routes
+00:24 +89: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers normalizeProfileUrl always stores profile URL
+00:24 +90: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers buildItemsUrl builds posting list URL from saved profile URL
+00:24 +91: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 200系は保存可能な確認成功にする
+00:24 +92: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 404は保存不可にする
+00:24 +93: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 403/429は形式OKなら確認保留で保存可能にする
+00:24 +94: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 通信失敗は形式OKなら確認保留で保存可能にする
+00:25 +95: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:25 +96: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:25 +97: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:25 +98: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:25 +99: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:25 +100: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:25 +101: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:25 +102: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:25 +103: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:25 +104: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:26 +105: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+00:26 +106: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからない場合は null
+00:27 +107: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode overlap を数えられる
+00:27 +108: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator apiOnly / poolOnly が正しく出る
+00:27 +109: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+00:27 +110: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode 空は比較対象外
+00:27 +111: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolCandidateCount が0でも落ちない
+00:27 +112: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalogShopCount が0でも落ちない
+00:27 +113: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator savedShopCodes を渡すと savedExcludedCount が出る
+00:27 +114: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator overlapRate が計算される
+00:27 +115: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolHasEnoughCandidatesForDisplay が10件以上で true
+00:28 +116: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport strong=9 でも hitItemCount=1 だらけなら qualityLevel=weak
+00:28 +117: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport strong=9 でも hitItemCount=1 だらけなら qualityLevel=weak
+00:28 +118: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator API summaries の並び順と件数を変更しない
+00:28 +119: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport unknownGenreRatio=1.0 なら excellent/good にならない
+00:28 +120: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が同一なら同じ値になる
+00:28 +121: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount2Plus が多い場合は depthQuality good 以上になり得る
+00:28 +122: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が違えば別値になる
+00:28 +123: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 厚み・ジャンルが十分な場合のみ excellent に近づく
+00:28 +124: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount1 / hitItemCount2Plus / thinCandidateCount が正しい
+00:29 +125: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport displayQuality は画像・URL・レビューから判定される
+00:29 +126: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport noimage は withImageCount に含めない
+00:29 +127: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport noimage は withImageCount に含めない
+00:29 +128: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport noimage は withImageCount に含めない
+00:29 +129: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport noimage は withImageCount に含めない
+00:29 +130: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 保存済みショップは除外される
+00:29 +131: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+00:29 +132: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 通常API成功時は fallback quality report を作らない
+00:29 +133: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 通常API成功時は fallback quality report を作らない
+00:29 +134: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 0〜2件では fallback しない
+00:29 +135: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback時は最大10件に制限される
+00:30 +136: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 関連度が同じときは score 順を維持する
+00:30 +137: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 水筒検索でお名前シールより関連ショップを優先する
+00:30 +138: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback primaryGenreId ありで genreName 空は unknownGenre 扱いにしない
+00:30 +139: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback TOP で hitItemCount&gt;=2 が hitItemCount=1 より優先される
+00:30 +140: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 候補不足時は hitItemCount=1 でも fallback 表示できる
+00:30 +141: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 同一 shopCode 複数 fresh 商品は pool itemCount2Plus になる
+00:30 +142: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback noimage URL は表示用画像に含めない
+00:32 +143: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build APIにない高品質Pool候補が supplement に選ばれる
+00:32 +144: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build API結果に含まれるshopCodeは supplement から除外される
+00:32 +145: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build relevance weak は除外される
+00:32 +146: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build hitItemCount=1 は除外される
+00:32 +147: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build imageなし / shopUrlなし は除外される
+00:32 +148: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 最大3件までに制限される
+00:32 +149: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build overlapRate=1.0 で API が Pool 上位を覆う場合 supplement 0
+00:32 +150: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build wouldShowSupplementIfEnabled と willUsePoolForUi / willSkipApi
+00:32 +151: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 保存ショップは supplement から除外される
+00:32 +152: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement apiWeakSignal apiWeakSignal / poolCouldCoverApiWeakness が計算できる
+00:32 +153: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=1.0 では recommendedDisplayCount=0
+00:32 +154: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=0.9 かつ APIにない強候補で recommendedDisplayCount=1
+00:32 +155: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision apiWeakSignal=true では recommendedDisplayCount が増え得る
+00:32 +156: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop / broadShop が判定できる
+00:32 +157: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision hitItemCount が低い候補は showEligible=false になり得る
+00:32 +158: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ジャンル不整合なら showEligible=false になり得る
+00:32 +159: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision 水筒 + strong itemName + hitItems&gt;=5 で strongItemEvidence=true
+00:32 +160: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision strongItemEvidence=true なら genreAligned=false でも showEligible=true
+00:32 +161: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop=true は strongItemEvidence があっても showEligible=false
+00:32 +162: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision broadShop=true は showEligible=false
+00:32 +163: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision candidate1 不適格なら candidate2 に displayRank=1
+00:32 +164: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ベビー相当で水筒系のみの Pool では recommendedDisplayCount=0
+00:32 +165: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision decision / candidate ログと willUsePoolForUi / willSkipApi
+00:32 +166: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement logs summary / top ログ形式
+00:33 +167: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolFallbackKeywordSynonyms 水筒の同義語を返す
+00:33 +168: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒で商品名マッチは strong
+00:33 +169: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒でお名前シールは noMatch
+00:33 +170: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance ジャンル名マッチは medium
+00:33 +171: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance unknown genre を検出する
+00:34 +172: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible + displayRank&lt;=recommended の候補だけ抽出する
+00:34 +173: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge buildCardTapLogLine のログ形式
+00:34 +174: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge recommendedDisplayCount=0 なら displayCandidates=0（コーヒー相当）
+00:34 +175: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge ベビー相当で recommendedDisplayCount=0 なら displayCandidates=0
+00:34 +176: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible=false は displayRank があっても除外される
+00:34 +177: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge displayRank&gt;recommended は除外される
+00:34 +178: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge contentEquals は表示候補の差分を検出する
+00:34 +179: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge candidate1 不適格でも candidate2 が displayRank=1 なら抽出する
+00:35 +180: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=product displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=4
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+00:35 +181: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog カタログ upsert 失敗でも検索は成功のまま
+00:35 +182: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+00:35 +183: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery でも ProductCatalog upsert が実行される
+00:35 +184: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery カタログ upsert 失敗でも検索は成功のまま
+00:35 +185: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: beginSearchSession increments active request id
+00:36 +186: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorForNewSearch clears error and retry banner
+[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=1 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+00:36 +187: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId / itemCode 優先で canonicalId が決まる
+00:36 +188: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorIfModeMismatch clears error owned by another mode
+00:36 +189: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorIfModeMismatch clears error owned by another mode
+00:36 +190: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys canonicalId が決められない場合は null
+00:36 +191: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: isErrorVisibleForMode is true only for matching tag
+00:36 +192: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys alias を生成できる
+00:36 +193: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys itemUrl を正規化できる
+00:36 +194: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId と URL パスが不一致のとき composite alias を付けない
+00:36 +195: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId・別 URL で false
+00:36 +196: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId では信頼 URL 同一でも false
+00:36 +197: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId + 同一 affiliate URL で false
+00:36 +198: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+00:36 +199: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は同一 productId なら true
+00:37 +200: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:38 +201: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:38 +202: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:38 +203: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:38 +204: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:38 +205: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+[GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+00:39 +205: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreName があるときはそのまま
+00:39 +206: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreId のみのとき GenreMaster で補完
+00:39 +207: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+00:39 +208: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (tearDownAll)
+00:39 +208: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:40 +209: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:40 +210: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:40 +211: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:40 +212: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:40 +213: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:40 +214: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:40 +215: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:40 +216: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:40 +217: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:40 +218: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:40 +219: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logSavedOrDiscoveryShopDepthAfterUpsert は例外なく実行できる
+00:40 +220: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem source=search / sourceTrust=high になる
+00:40 +221: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:40 +222: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:40 +223: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:40 +224: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:40 +225: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:40 +226: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:40 +227: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除外
+00:40 +228: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem alias が生成される
+00:40 +229: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem alias が生成される
+00:40 +230: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem alias が生成される
+00:40 +231: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter sex toy は除外
+00:40 +232: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 安全 NG は qualityStatus.safe=false になる
+00:40 +233: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter BLCDコレクションは除外
+00:40 +234: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 画像なし・価格なしは保存可能で qualityStatus に反映される
+00:40 +235: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 濡れトロは除外
+00:40 +236: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 濡れトロは除外
+00:40 +237: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 安全 NG は upsert 対象から除外される
+00:40 +238: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おもちゃ/宮本真希[DVD]は adultKeyword がなければ通す
+00:40 +239: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=true のとき upsertAll が永続化する
+00:40 +240: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ベビー おもちゃは通す
+00:40 +241: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ビール10本セットは除外
+00:40 +242: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 変換商品を upsert すると alias で検索できる
+00:40 +243: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 名入れワインは除外
+00:40 +244: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems catalogUpsertModeLabelForSearchModeTag がモード別ラベルを返す
+00:40 +245: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter シャンパングラスは通す
+00:40 +246: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter シャンパングラスは通す
+00:40 +247: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems source=shopDiscovery / sourceTrust=medium になる
+00:40 +248: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems source=shopDiscovery / sourceTrust=medium になる
+00:40 +249: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 子供服は通す
+00:40 +250: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 安全 NG は upsert 対象から除外される
+00:40 +251: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter アダルトグッズは除外
+00:40 +252: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems canonicalId 不可商品は保存しない
+00:40 +253: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter グラビア写真集は除外
+00:40 +254: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems genreId のみのとき GenreMaster で genreName を補完して保存する
+00:40 +255: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ジャンル名がビール・洋酒なら除外
+00:40 +256: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 同一 shopCode 複数商品を保存すると aggregator の itemCount が 2 以上になる
+00:40 +257: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems initialItems / medium trust で upsert される
+00:40 +258: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems loadedByShopCode / high trust で upsert される
+00:40 +259: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems unsafe / canonicalId不可は保存されない
+00:40 +260: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 shopCode 複数商品で itemCount2Plus になる
+00:40 +261: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 別 canonicalId なら productCountForShop=2 / inserted+updated 内訳
+00:40 +262: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 canonicalId 2件は merge で productCountForShop=1
+00:40 +263: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems productIdとURLパス不一致2件は productCountForShop=2
+00:40 +264: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 既存商品への同一 canonicalId 2件は inserted=0 updated=2
+00:40 +265: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: buildShopDiscoveryDetailCatalogItemTraces 同一 productId 2件目は canonicalDuplicate
+00:40 +266: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard 同一 signature では2回目 upsert しない
+00:40 +267: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard initial / loaded は別管理
+00:42 +268: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+00:43 +269: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort defaultOrder は API でもレビュー件数順
+00:43 +270: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort ユーザー選択肢に defaultOrder は含めない
+00:43 +271: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 表示ラベルに「おすすめ」「デフォルト」は出さない
+00:43 +272: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment productId 一致で照合できる
+00:43 +273: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort レビューが多い順の表示
+00:43 +274: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort レビューが多い順の表示
+00:43 +275: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort レビューが多い順の表示
+00:43 +276: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort レビューが多い順の表示
+00:43 +277: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort レビューが多い順の表示
+00:43 +278: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort レビューが多い順の表示
+00:43 +279: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が安全ならカタログ画像で上書きしない
+00:43 +280: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が疑わしくカタログ画像が安全なら補完できる
+00:43 +281: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が0ならカタログ価格で補完できる
+00:43 +282: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が有効なら上書きしない
+00:43 +283: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopName / genreName が空なら補完できる
+00:43 +284: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment upsert時に high が low で上書きされない
+00:43 +285: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment repository が null でも upsert は skipped
+00:44 +286: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+00:44 +287: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+00:45 +288: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop and url slug match accepts candidate
+00:45 +289: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch price match alone does not accept candidate
+00:45 +290: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop mismatch rejects candidate
+00:47 +291: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl extracts composite itemCode and slug from event+dest
+00:47 +292: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl supports rat-redirect host and drinkshop slug
+00:47 +293: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: roomImportEnrichSlugShouldSkipDirectItemCode flags slug-like segments
+00:47 +294: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 price=3980 に incoming price=-1 が来ても 3980 を維持
+00:47 +295: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 imageUrl 有効、incoming 空なら既存維持
+00:47 +296: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 shopCode 有効、incoming 空なら既存維持
+00:47 +297: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 genreName 有効、incoming 空なら既存維持
+00:47 +298: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge incoming api値が有効な場合だけ上書き
+00:49 +299: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 価格だけ未取得のとき強い未確認文言は出さない
+00:49 +300: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 商品名も画像も無いときは売り切れ系を表示
+00:49 +301: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:50 +302: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:50 +303: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:50 +304: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:50 +305: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:50 +306: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:50 +307: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:50 +308: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:50 +309: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics reactionScore は like + comment*3
+00:50 +310: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genre 空は ジャンル未確認
+00:50 +311: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName 空なら shopCode をUIに出さずショップ未確認
+00:50 +312: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName も shopCode も空なら ショップ未確認
+00:50 +313: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics 未分類ジャンルは傾向集計対象外
+00:50 +314: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genreName空でもgenreIdからマスタ解決できれば集計対象
+00:50 +315: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopCodeのみのショップは傾向集計対象外
+00:51 +316: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary ShopDiscoverySummary から ShopCatalogEntry に変換できる
+00:51 +317: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopCode 空は保存しない
+00:51 +318: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopName 不正は保存しない
+00:51 +319: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary safeItemCount=0 相当（hitItemCount=0）は保存しない
+00:51 +320: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary representativeImageUrl は安全画像のみ採用する
+00:51 +321: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=false では no-op
+00:51 +322: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=true で upsertAll 相当が動く
+00:51 +323: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries upsert失敗でも例外を投げない（検索成功扱いを阻害しない）
+00:51 +324: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries 入力 summaries の件数・順序を変えない
+00:52 +325: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ10件・保存ジャンル3系統で API 全スキップ可
+00:52 +326: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ不足では API 全スキップしない
+00:52 +327: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool PRODUCT_CATALOG_ENABLED=false では空結果
+00:52 +328: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 品質OKなカタログ商品がプールに入る
+00:52 +329: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool stale は除外される
+00:52 +330: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 候補済み productId は除外される
+00:52 +331: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool upsertCatalogFromRecommendItems は todayRecommendation になる
+00:52 +332: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 10件そろっても保存ジャンル必須プランは件数では打ち切らない
+00:52 +333: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 補助プランは件数不足かつAPI余裕があるときのみ
+00:54 +334: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore page=1固定にならず次回は page を進める
+00:54 +335: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 見送り済みは一定期間除外される
+00:54 +336: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 見送り済みは一定期間除外される
+00:54 +337: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 見送り済みは一定期間除外される
+00:54 +338: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore rawCount が少ないと exhaustedUntil が設定される
+00:54 +339: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore rawCount が少ないと exhaustedUntil が設定される
+00:54 +340: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore rawCount が少ないと exhaustedUntil が設定される
+00:54 +341: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 保存ジャンル3件で最終10件が1ジャンルに偏りすぎない
+00:55 +342: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 他ジャンル候補がない場合は偏りを許容する
+00:55 +343: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution computeTargetQuotas は3ジャンル10件で4/3/3
+00:56 +344: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: FavoriteGenreSelectionPolicy 保存ジャンル上限は3件
+00:56 +345: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy 既定 sort はレビュー件数順で null ではない
+00:56 +346: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy API上限は10より小さい
+00:56 +347: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder buildPlanSet は保存ジャンル必須と補助を分割する
+00:56 +348: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル3件でジャンルプラン3＋補助最大1
+00:56 +349: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル5件指定でもジャンルプランは3件まで
+00:56 +350: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルなしのときフォールバック1件
+00:56 +351: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 補助プランは最大1件（反応ジャンル）
+00:56 +352: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルと同じ補助条件は追加しない
+00:56 +353: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder maxPlanCount は API 上限を超えない
+00:57 +354: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy strongItemEvidence=true かつ genreAligned=false は商品名理由文
+00:57 +355: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy genreAligned=true はジャンル理由文
+00:57 +356: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+00:58 +357: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が1件なら補助枠カードを表示する
+00:58 +358: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection 複数候補は displayRank 昇順の並びで表示する
+00:58 +359: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection onCandidateTap が渡されていればタップで callback が呼ばれる
+00:59 +360: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path kProductCatalogEnabled=false では upsert skipped
+00:00 +1: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path 商品名検索 productSearch で upsert し永続化する
+[SEARCH_RESULT_UNDER_100_REASON] mode=product displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_SEARCH_UPSERT_SUMMARY] mode=productSearch items=2 upserted=2 skipped=0 qualityNg=0 source=search
+[PRODUCT_CATALOG_SEARCH_VERIFY_SUMMARY] mode=productSearch count=2 savedBatch=2 batchWithGenreId=2 batchWithGenreName=2 canonicalId=shop:a getByCanonicalId=true findByProductId=true findByNormalizedUrl=true findByShopItem=false sampleGenreId=100227 sampleGenreName=水・ソフトドリンク storedGenreId=100227 storedGenreName=水・ソフトドリンク source=search sourceTrust=high qualitySafe=true hasImage=true hasPrice=true
+00:00 +2: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path shopDiscovery でも ProductCatalog upsert が実行される
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=1 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=1 parsedItemsCount=1 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=1 displayCount=1 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 1 件
+[SHOP_POOL_READ_TIMING] phase=searchPostSchedule readAt=2026-06-06T00:24:13.844109 catalogCountAtRead=1 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_SUMMARY] source=shopDiscovery catalogProducts=1 catalogShops=1 poolCandidates=1 savedExcluded=0 staleExcluded=0 lowTrustExcluded=0 unsafeExcluded=0 emptyShopCodeExcluded=0
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=1 avgItemCount=1.0 itemCount1=1 itemCount2Plus=0 withPrimaryGenre=1 unknownPrimaryGenre=0 withSourceProductIds=1 avgSourceProductIds=1.0 withSampleProductIds=1 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop productCount=1 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:13.853211 catalogCountAtRead=1 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_STALE_REFERENCE_SUMMARY] candidateCount=1 freshItemCount=1 staleItemCount=0 staleUsableForDepth=0 currentItemCount2Plus=0 wouldItemCount2PlusIfStaleDepthAllowed=0
+[PHASE3I_STRATEGY_AUDIT] current_poolCandidates=1 current_avgItemCount=1.00 current_itemCount2Plus=0 strategyA_searchMultiProductShops=0 strategyA_searchAvgProductsPerShop=0.00 strategyB_note=see_SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY strategyC_shopDiscoveryProductsInSinglePool=1 strategyD_staleUsableForDepth=0 strategyD_wouldItemCount2Plus=0 strategyE_staleLongLivedFields=0
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=水筒 items=1 upserted=1 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=2026-06-06T00:24:13.826973 completedAt=2026-06-06T00:24:13.859239 durationMs=32 catalogCountBefore=0 catalogCountAfter=1
+00:00 +3: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path shopDiscovery でも ProductCatalog upsert が実行される
+00:00 +4: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path shopDiscovery でも ProductCatalog upsert が実行される
+00:00 +5: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path shopDiscovery でも ProductCatalog upsert が実行される
+00:00 +6: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust でも空欄は補完できる
+00:01 +7: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が最優先
+00:01 +8: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が無ければ itemUrl
+00:01 +9: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliate と item が空なら rakutenUrl
+00:02 +10: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry JSON 往復できる
+00:03 +11: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry aliases を保持する
+00:03 +12: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry stale 判定用フィールドを保持する
+00:03 +13: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedStatus を持たない JSON は拒否する
+00:03 +14: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedAt を持たないこと（モデルにフィールドなし）
+00:04 +15: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: TodayRecommendationEntry の JSON 往復で imageUrl とレビューが欠落しない
+00:04 +16: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される
+00:04 +17: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:04 +18: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and keeps single value
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated,affordable new=premium
+00:04 +19: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles effectivePostStyleList uses balance without showing it as selected
+00:05 +20: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository upsert して canonicalId で取得できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:05 +21: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository alias で検索できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:05 +22: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository high trust が low trust を上書きできる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=0 updated=1 updatedByCanonicalId=1 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:05 +23: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository low trust は high trust の重要フィールドを上書きしない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=0 updated=1 updatedByCanonicalId=1 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:05 +24: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:07 +25: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:07 +26: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:07 +27: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:08 +28: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:08 +28: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository SHOP_CATALOG_ENABLED=true では upsert / get
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+00:08 +29: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:08 +29: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository alias で検索できる
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+00:08 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +30: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=2
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=3
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=4
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=5
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=6
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=7
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=8
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=9
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=10
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=11
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=12
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=13
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=14
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=15
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=16
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=17
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=18
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=19
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=20
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=21
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=22
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=23
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=24
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=25
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=26
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=27
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=28
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=29
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=30
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=31
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=32
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=33
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=34
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=35
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=36
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=37
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=38
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=39
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=40
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=41
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=42
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=43
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=44
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=45
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=46
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=47
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=48
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=49
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=50
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=51
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=52
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=53
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=54
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=55
+00:12 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:13 +30: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=56
+00:13 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:13 +30: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=57
+00:13 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+00:13 +30: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=58
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=59
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=60
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=61
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=62
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=63
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=64
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=65
+00:13 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=4
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=5
+00:13 +30: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=66
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=67
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=68
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=69
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=70
+00:13 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=6
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=7
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=8
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=9
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=10
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=11
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=12
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=13
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=14
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=15
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=16
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=17
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=18
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=19
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=20
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=21
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=22
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=23
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=24
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=25
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=26
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=27
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=28
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=29
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=30
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=31
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=32
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=33
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=34
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=35
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=36
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=37
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=38
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=39
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=40
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=41
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=42
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=43
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=44
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=45
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=46
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=47
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=48
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=49
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=50
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=51
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=52
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=53
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=54
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=55
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=56
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=57
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=58
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=59
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=60
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=61
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=62
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=63
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=64
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=65
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=66
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=67
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=68
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=69
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=70
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=71
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=72
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=73
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=74
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=75
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=76
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=77
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=78
+00:13 +31: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=79
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=80
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=81
+00:13 +31: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=71
+00:13 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=82
+00:13 +31: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=72
+00:13 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=83
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=84
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=85
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=86
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=87
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=88
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=89
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=90
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=91
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=92
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=93
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=94
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=95
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=96
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=97
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=98
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=99
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=100
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=101
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=102
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=103
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=104
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=105
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=106
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=107
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=108
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=109
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=110
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=111
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=112
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=113
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=114
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=115
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=116
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=117
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=118
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=119
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=120
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=121
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=122
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=123
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=124
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=125
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=126
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=127
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=128
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=129
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=130
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=131
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=132
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=133
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=134
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=135
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=136
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=137
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=138
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=139
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=140
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=141
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=142
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=143
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=144
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=145
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=146
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=147
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=148
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=149
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=150
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=151
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=152
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=153
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=154
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=155
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=156
+00:13 +31: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:13 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=157
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=158
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=159
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=160
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=161
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=162
+00:13 +32: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +33: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +33: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=deep-shop:item001 resolvedCanonicalId=deep-shop:item001 operation=insert mergeReason=insert inputShopCode=deep-shop savedShopCode=deep-shop aliasMatchedBy=- productId=deep-shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=deep-shop:item002 resolvedCanonicalId=deep-shop:item002 operation=insert mergeReason=insert inputShopCode=deep-shop savedShopCode=deep-shop aliasMatchedBy=- productId=deep-shop:item002 normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item002/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=deep-shop source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=deep-shop inputItems=2 savedForShop=2 item1=itemCode=deep-shop:item001,inputCanonicalId=deep-shop:item001,canonicalId=deep-shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/,shopCode=deep-shop,itemName=水筒 500ml,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=deep-shop:item001,resolvedShopCode=deep-shop,sameShopCode=true,aliasMatchedBy=deep-shop:item001,saved=true,reason=- item2=itemCode=deep-shop:item002,inputCanonicalId=deep-shop:item002,canonicalId=deep-shop:item002,normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item002/,shopCode=deep-shop,itemName=水筒 500ml,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=deep-shop:item002,resolvedShopCode=deep-shop,sameShopCode=true,aliasMatchedBy=deep-shop:item002,saved=true,reason=-
+00:13 +34: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +34: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=deep-shop allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=deep-shop:item001|deep-shop:item002
+00:13 +35: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +36: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +37: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +38: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +39: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +39: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert initial items が ProductCatalog に upsert される
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=deep-shop catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=deep-shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+[SHOP_DISCOVERY_DETAIL_CATALOG_AUDIT] shopCode=deep-shop itemsFromSearch=2 wouldFetchFromApiIfEmpty=false catalogProductsForShop=2 freshInPool=2 catalogUpsertOnOpen=true
+00:13 +39: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=73
+00:13 +40: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=74
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=75
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=76
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=77
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=78
+00:14 +40: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert _loadItemsFromShopCode 結果が ProductCatalog に upsert される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=deep-shop:item001 resolvedCanonicalId=deep-shop:item001 operation=insert mergeReason=insert inputShopCode=deep-shop savedShopCode=deep-shop aliasMatchedBy=- productId=deep-shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=deep-shop:item002 resolvedCanonicalId=deep-shop:item002 operation=insert mergeReason=insert inputShopCode=deep-shop savedShopCode=deep-shop aliasMatchedBy=- productId=deep-shop:item002 normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item002/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=deep-shop source=loadedByShopCode attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=high
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=deep-shop inputItems=2 savedForShop=2 item1=itemCode=deep-shop:item001,inputCanonicalId=deep-shop:item001,canonicalId=deep-shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/,shopCode=deep-shop,itemName=水筒 500ml,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=deep-shop:item001,resolvedShopCode=deep-shop,sameShopCode=true,aliasMatchedBy=deep-shop:item001,saved=true,reason=- item2=itemCode=deep-shop:item002,inputCanonicalId=deep-shop:item002,canonicalId=deep-shop:item002,normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item002/,shopCode=deep-shop,itemName=水筒 500ml,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=deep-shop:item002,resolvedShopCode=deep-shop,sameShopCode=true,aliasMatchedBy=deep-shop:item002,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=deep-shop allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=deep-shop:item001|deep-shop:item002
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=deep-shop catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=deep-shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+[SHOP_DISCOVERY_DETAIL_CATALOG_AUDIT] shopCode=deep-shop itemsFromSearch=2 wouldFetchFromApiIfEmpty=true catalogProductsForShop=2 freshInPool=2 catalogUpsertOnOpen=true
+00:14 +41: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=79
+00:14 +41: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen catalog upsert build 再実行で重複 upsert しない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=deep-shop:item001 resolvedCanonicalId=deep-shop:item001 operation=insert mergeReason=insert inputShopCode=deep-shop savedShopCode=deep-shop aliasMatchedBy=- productId=deep-shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=deep-shop source=initialItems attempted=1 upserted=1 inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=deep-shop inputItems=1 savedForShop=1 item1=itemCode=deep-shop:item001,inputCanonicalId=deep-shop:item001,canonicalId=deep-shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/deep-shop/item001/,shopCode=deep-shop,itemName=水筒 500ml,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=deep-shop:item001,resolvedShopCode=deep-shop,sameShopCode=true,aliasMatchedBy=deep-shop:item001,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=deep-shop allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=deep-shop:item001
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=deep-shop catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=deep-shop productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+[SHOP_DISCOVERY_DETAIL_CATALOG_AUDIT] shopCode=deep-shop itemsFromSearch=1 wouldFetchFromApiIfEmpty=false catalogProductsForShop=1 freshInPool=1 catalogUpsertOnOpen=true
+00:14 +42: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=80
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=81
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=82
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=83
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=84
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=85
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=86
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=87
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=88
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=89
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=90
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=91
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=92
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=93
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=94
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=95
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=96
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=97
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=98
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=99
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=100
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=101
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=102
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=103
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=104
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=105
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=106
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=107
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=108
+00:16 +43: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=109
+00:16 +43: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 単位に集計できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+00:16 +44: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +44: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 同一 shopCode 複数商品で itemCount2Plus になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:16 +45: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +45: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 空は除外
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:16 +46: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +46: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator unsafe 商品は除外
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=1 evicted=0 total=1
+00:16 +47: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +47: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator stale 商品は除外
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:16 +48: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=110
+00:16 +48: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sourceTrust=low は除外
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:16 +49: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +49: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator representativeImageUrl が安全画像になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:16 +50: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +50: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator primaryGenreName が商品の genreName から入る
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:16 +51: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +51: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator genreId のみでも primaryGenreId は入る
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:16 +52: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +52: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sourceProductIds は複数商品分保持する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+00:16 +53: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +53: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator primaryGenreId が件数最多ジャンルになる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+00:16 +54: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +54: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator score 順になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+00:16 +55: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +55: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sampleProductIds が入る
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:16 +56: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +56: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 保存ショップ除外を指定できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:16 +57: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+00:17 +57: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopDiscovery 由来商品でも shopCode 単位に集計できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:17 +58: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=111
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=112
+00:17 +58: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator stale でない medium 商品は aggregator から除外されない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:17 +59: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=113
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=114
+00:17 +59: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 未確認 shopName は表示名に使わない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:17 +60: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=115
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=116
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=117
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=118
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=119
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=120
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=121
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=122
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=123
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=124
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=125
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=126
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=127
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=128
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=129
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=130
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=131
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=132
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=133
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=134
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=135
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=136
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=137
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=138
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=139
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=140
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=141
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=142
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=143
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=144
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=145
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=146
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=147
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=148
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=149
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=150
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=151
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=152
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=153
+00:17 +61: C:/dev/app_project/room_manager2/test/services/rakuten_genre_master_service_test.dart: genreId 100026 は簡易マスタでもパソコン・周辺機器として解決する
+00:17 +61: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=154
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=155
+00:17 +62: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:17 +62: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=156
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=157
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=158
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=159
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=160
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=161
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=162
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=163
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=164
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=165
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=166
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=167
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=168
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=169
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=170
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=171
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=172
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=173
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=174
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=175
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=176
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=177
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=178
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=179
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=180
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=181
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=182
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=183
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=184
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=185
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=186
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=187
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=188
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=189
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=190
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=191
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=192
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=193
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=194
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=195
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=196
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=197
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=198
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=199
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=200
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=201
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=202
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=203
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=204
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=205
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=206
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=207
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=208
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=209
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=210
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=211
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=212
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=213
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=214
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=215
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=216
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=217
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=218
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=219
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=220
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=221
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=222
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=223
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=224
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=225
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=226
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=227
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=228
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=229
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=230
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=231
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=232
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=233
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=234
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=235
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=236
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=237
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=238
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=239
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=240
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=241
+00:19 +63: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:19 +64: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:19 +65: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:19 +66: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:19 +67: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:19 +67: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=242
+00:19 +68: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:19 +69: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:19 +69: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=243
+00:19 +70: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:19 +70: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=244
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=245
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=246
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=247
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=248
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=249
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=250
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=251
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=252
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=253
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=254
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=255
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=256
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=257
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=258
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=259
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=260
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=261
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=262
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=263
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=264
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=265
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=266
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=267
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=268
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=269
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=270
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=271
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=272
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=273
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=274
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=275
+00:19 +71: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:19 +71: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=276
+00:19 +72: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:19 +73: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:20 +73: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=277
+00:20 +74: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+00:20 +74: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository 最大件数を超えたら古いものが削除される
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=278
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=279
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=280
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=281
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=282
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=283
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=284
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=285
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=286
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=287
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=288
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=289
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=290
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=291
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=292
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=293
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=294
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=295
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=296
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=297
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=298
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=299
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=300
+[SHOP_CATALOG_LRU_SUMMARY] evicted=1 remaining=300 max=300
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=1 total=300
+[SHOP_CATALOG_LRU_SUMMARY] evicted=1 remaining=300 max=300
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=1 total=300
+[SHOP_CATALOG_LRU_SUMMARY] evicted=1 remaining=300 max=300
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=1 total=300
+[SHOP_CATALOG_LRU_SUMMARY] evicted=1 remaining=300 max=300
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=1 total=300
+[SHOP_CATALOG_LRU_SUMMARY] evicted=1 remaining=300 max=300
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=1 total=300
+00:20 +74: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository clear で空になる
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+00:20 +75: C:/dev/app_project/room_manager2/test/repository/shop_catalog_repository_test.dart: ShopCatalogRepository upsert は例外を外に投げない
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+00:21 +76: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:21 +77: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathFromCollectsRow reads nested item URL
+[ROOM_COLLECTS_RESPONSE_SHAPE] itemKeys=id,meta productLikeKeys=- userLikeKeys=- imageLikeKeys=- hasProductImage=false hasUserIcon=false
+[ROOM_IMPORT_COLLECTS_IMAGE_KEYS] productId=17001234567890 keys=meta.link selectedKey=- rejectedKeys=meta.link
+00:22 +78: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMプロフィールURLを許可して正規化する
+00:22 +79: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /items 付きROOMプロフィールURLを許可して正規化する
+00:22 +80: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /collections と /likes もプロフィール導線として許可する
+00:22 +81: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 空は任意入力として許可する
+00:22 +82: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat httpは拒否する
+00:22 +83: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 楽天市場URLは拒否する
+00:22 +84: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMトップURLのみは拒否する
+00:22 +85: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOM商品URL相当の複数パスは拒否する
+00:22 +86: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat roomIdなしの /items は拒否する
+00:22 +87: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 短縮URLは拒否する
+00:22 +88: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers extractRoomId extracts roomId from profile child routes
+00:22 +89: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers normalizeProfileUrl always stores profile URL
+00:22 +90: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers buildItemsUrl builds posting list URL from saved profile URL
+00:22 +91: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 200系は保存可能な確認成功にする
+00:22 +92: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 404は保存不可にする
+00:22 +93: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 403/429は形式OKなら確認保留で保存可能にする
+00:22 +94: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 通信失敗は形式OKなら確認保留で保存可能にする
+00:23 +95: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:23 +96: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+00:23 +97: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからない場合は null
+00:24 +98: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:25 +99: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:25 +100: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:25 +101: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:25 +102: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:25 +103: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:26 +104: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:26 +105: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:26 +106: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:26 +107: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:26 +108: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:26 +109: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:26 +110: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:26 +111: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:26 +112: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolComparator overlap overlapRate / apiOnly / poolOnly が計算できる
+00:26 +113: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport strong=9 でも hitItemCount=1 だらけなら qualityLevel=weak
+00:26 +114: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:26 +115: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:26 +116: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:26 +117: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:26 +118: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:26 +119: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:26 +120: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:26 +121: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:26 +122: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality weak なら supplement/replacement false
+00:27 +123: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags wouldBeUsableAsSupplement は overlap または厚みで true になり得る
+00:27 +124: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build repository なしでも比較結果と willUsePoolForUi=false を返す
+00:27 +125: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOP比較ログ用データが最大3件に制限される
+00:27 +126: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build 品質ログに keyword と poolQualityLevel が含まれる
+00:27 +127: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOPログは apiTop1 / poolTop1 形式
+00:28 +128: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+00:28 +129: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopCode 空は除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=1 avgItemCount=1.0 itemCount1=1 itemCount2Plus=0 withPrimaryGenre=1 unknownPrimaryGenre=0 withSourceProductIds=1 avgSourceProductIds=1.0 withSampleProductIds=1 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=ok-shop productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:41.989512 catalogCountAtRead=2 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+00:28 +130: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopName 不正は除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=4 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=4
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=4 avgItemCount=1.0 itemCount1=4 itemCount2Plus=0 withPrimaryGenre=4 unknownPrimaryGenre=0 withSourceProductIds=4 avgSourceProductIds=1.0 withSampleProductIds=4 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=girl-k productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:42.038306 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:24:42.040308 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=4 withGenreId=4 withGenreName=4 withShopCode=4 withShopName=4 withItemName=4 unknownGenreName=0 sourceBreakdown=search:4 trustBreakdown=high:4
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=4 productCount1Shop=4 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=0 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=3 unknownGenreInFallback=0 hitItemCount1=3 hitItemCount2Plus=0
+00:28 +131: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 保存済みショップは除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=4 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=4
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=3 avgItemCount=1.0 itemCount1=3 itemCount2Plus=0 withPrimaryGenre=3 unknownPrimaryGenre=0 withSourceProductIds=3 avgSourceProductIds=1.0 withSampleProductIds=3 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=saved-shop productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=0 inPool=false excludedReason=savedShop
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:42.071537 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:24:42.071537 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=4 withGenreId=4 withGenreName=4 withShopCode=4 withShopName=4 withItemName=4 unknownGenreName=0 sourceBreakdown=search:4 trustBreakdown=high:4
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=4 productCount1Shop=4 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=0 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=3 unknownGenreInFallback=0 hitItemCount1=3 hitItemCount2Plus=0
+00:28 +132: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+00:28 +133: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 3〜9件で partial fallback になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=3 avgItemCount=1.0 itemCount1=3 itemCount2Plus=0 withPrimaryGenre=3 unknownPrimaryGenre=0 withSourceProductIds=3 avgSourceProductIds=1.0 withSampleProductIds=3 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop-1 productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:42.108803 catalogCountAtRead=3 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:24:42.108803 catalogCountAtRead=3 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=3 withGenreId=3 withGenreName=3 withShopCode=3 withShopName=3 withItemName=3 unknownGenreName=0 sourceBreakdown=search:3 trustBreakdown=high:3
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=3 productCount1Shop=3 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=0 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=3 unknownGenreInFallback=0 hitItemCount1=3 hitItemCount2Plus=0
+00:28 +134: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 0〜2件では fallback しない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=2 avgItemCount=1.0 itemCount1=2 itemCount2Plus=0 withPrimaryGenre=2 unknownPrimaryGenre=0 withSourceProductIds=2 avgSourceProductIds=1.0 withSampleProductIds=2 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop-1 productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:42.127975 catalogCountAtRead=2 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+00:28 +135: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback時は最大10件に制限される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=12 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=12
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=12 avgItemCount=1.0 itemCount1=12 itemCount2Plus=0 withPrimaryGenre=12 unknownPrimaryGenre=0 withSourceProductIds=12 avgSourceProductIds=1.0 withSampleProductIds=12 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop-0 productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:42.159172 catalogCountAtRead=12 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:24:42.159172 catalogCountAtRead=12 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=12 withGenreId=12 withGenreName=12 withShopCode=12 withShopName=12 withItemName=12 unknownGenreName=0 sourceBreakdown=search:12 trustBreakdown=high:12
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=12 productCount1Shop=12 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=10 matchedByItemName=0 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=10 unknownGenreInFallback=0 hitItemCount1=10 hitItemCount2Plus=0
+00:28 +136: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 関連度が同じときは score 順を維持する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=3 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=3
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=3 avgItemCount=1.0 itemCount1=3 itemCount2Plus=0 withPrimaryGenre=3 unknownPrimaryGenre=0 withSourceProductIds=3 avgSourceProductIds=1.0 withSampleProductIds=3 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=high productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:42.225940 catalogCountAtRead=3 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:24:42.225940 catalogCountAtRead=3 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=3 withGenreId=3 withGenreName=3 withShopCode=3 withShopName=3 withItemName=3 unknownGenreName=0 sourceBreakdown=search:3 trustBreakdown=high:3
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=3 productCount1Shop=3 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=3 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=3 unknownGenreInFallback=0 hitItemCount1=3 hitItemCount2Plus=0
+00:29 +137: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 水筒検索でお名前シールより関連ショップを優先する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=4 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=4
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=4 avgItemCount=1.0 itemCount1=4 itemCount2Plus=0 withPrimaryGenre=4 unknownPrimaryGenre=0 withSourceProductIds=4 avgSourceProductIds=1.0 withSampleProductIds=4 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=naireseisakusho productCount=1 sourceBreakdown=search:1 trustBreakdown=high:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:42.289546 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[SHOP_POOL_READ_TIMING] phase=fallbackDiag readAt=2026-06-06T00:24:42.289546 catalogCountAtRead=4 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=true
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=4 withGenreId=4 withGenreName=4 withShopCode=4 withShopName=4 withItemName=4 unknownGenreName=0 sourceBreakdown=search:4 trustBreakdown=high:4
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=4 productCount1Shop=4 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[SHOP_POOL_FALLBACK_DIAG] keyword=水筒 fallbackCount=3 matchedByItemName=3 matchedByGenre=0 matchedByShopName=0 missingCatalogProductRefs=0 catalogRefChecks=3 unknownGenreInFallback=0 hitItemCount1=3 hitItemCount2Plus=0
+00:29 +138: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback primaryGenreId ありで genreName 空は unknownGenre 扱いにしない
+00:29 +139: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback TOP で hitItemCount&gt;=2 が hitItemCount=1 より優先される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=5 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=5
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=3 avgItemCount=1.7 itemCount1=1 itemCount2Plus=2 withPrimaryGenre=3 unknownPrimaryGenre=0 withSourceProductIds=3 avgSourceProductIds=1.7 withSampleProductIds=3 avgSampleProductIds=1.7
+00:29 +140: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 候補不足時は hitItemCount=1 でも fallback 表示できる
+00:29 +141: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 同一 shopCode 複数 fresh 商品は pool itemCount2Plus になる
+00:29 +142: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback noimage URL は表示用画像に含めない
+00:29 +143: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build APIにない高品質Pool候補が supplement に選ばれる
+00:29 +144: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build APIにない高品質Pool候補が supplement に選ばれる
+00:29 +145: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build APIにない高品質Pool候補が supplement に選ばれる
+00:29 +146: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build APIにない高品質Pool候補が supplement に選ばれる
+00:29 +147: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build APIにない高品質Pool候補が supplement に選ばれる
+00:29 +148: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible=false は displayRank があっても除外される
+00:29 +149: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge displayRank&gt;recommended は除外される
+00:29 +150: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build API結果に含まれるshopCodeは supplement から除外される
+00:29 +151: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge contentEquals は表示候補の差分を検出する
+00:29 +152: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build relevance weak は除外される
+00:29 +153: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build relevance weak は除外される
+00:29 +154: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build hitItemCount=1 は除外される
+00:29 +155: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build imageなし / shopUrlなし は除外される
+00:29 +156: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 最大3件までに制限される
+00:29 +157: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build overlapRate=1.0 で API が Pool 上位を覆う場合 supplement 0
+00:29 +158: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build wouldShowSupplementIfEnabled と willUsePoolForUi / willSkipApi
+00:29 +159: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 保存ショップは supplement から除外される
+00:29 +160: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement apiWeakSignal apiWeakSignal / poolCouldCoverApiWeakness が計算できる
+00:29 +161: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=1.0 では recommendedDisplayCount=0
+00:29 +162: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=0.9 かつ APIにない強候補で recommendedDisplayCount=1
+00:29 +163: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision apiWeakSignal=true では recommendedDisplayCount が増え得る
+00:29 +164: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop / broadShop が判定できる
+00:29 +165: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision hitItemCount が低い候補は showEligible=false になり得る
+00:29 +166: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ジャンル不整合なら showEligible=false になり得る
+00:29 +167: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision 水筒 + strong itemName + hitItems&gt;=5 で strongItemEvidence=true
+00:29 +168: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision strongItemEvidence=true なら genreAligned=false でも showEligible=true
+00:29 +169: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop=true は strongItemEvidence があっても showEligible=false
+00:29 +170: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision broadShop=true は showEligible=false
+00:29 +171: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision candidate1 不適格なら candidate2 に displayRank=1
+00:29 +172: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ベビー相当で水筒系のみの Pool では recommendedDisplayCount=0
+00:29 +173: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision decision / candidate ログと willUsePoolForUi / willSkipApi
+00:30 +174: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement logs summary / top ログ形式
+00:31 +175: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolFallbackKeywordSynonyms 水筒の同義語を返す
+00:31 +176: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒で商品名マッチは strong
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:31 +177: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒でお名前シールは noMatch
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:31 +178: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance ジャンル名マッチは medium
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:31 +179: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance unknown genre を検出する
+00:32 +180: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=product displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=4
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=1 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_SEARCH_UPSERT_SUMMARY] mode=productSearch items=2 upserted=2 skipped=0 qualityNg=0 source=search
+[PRODUCT_CATALOG_SEARCH_VERIFY_SUMMARY] mode=productSearch count=2 savedBatch=2 batchWithGenreId=2 batchWithGenreName=2 canonicalId=shop:a getByCanonicalId=true findByProductId=true findByNormalizedUrl=true findByShopItem=false sampleGenreId=100 sampleGenreName=おもちゃ storedGenreId=100 storedGenreName=おもちゃ source=search sourceTrust=high qualitySafe=true hasImage=true hasPrice=true
+00:32 +181: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog カタログ upsert 失敗でも検索は成功のまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=genre displayCount=1 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=genre requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] genreSearch provider after repository rawItemsCount=1 parsedItemsCount=1 genreId=100 keywordLen=4
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=1 displayCount=1 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 1 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=genre attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_SEARCH_UPSERT] failed mode=genreSearch: Bad state: catalog upsert failed
+00:32 +182: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SHOP_POOL_READ_TIMING] phase=searchPostSchedule readAt=2026-06-06T00:24:45.629128 catalogCountAtRead=2 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_SUMMARY] source=shopDiscovery catalogProducts=2 catalogShops=1 poolCandidates=1 savedExcluded=0 staleExcluded=0 lowTrustExcluded=0 unsafeExcluded=0 emptyShopCodeExcluded=0
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=1 avgItemCount=2.0 itemCount1=0 itemCount2Plus=1 withPrimaryGenre=1 unknownPrimaryGenre=0 withSourceProductIds=1 avgSourceProductIds=2.0 withSampleProductIds=1 avgSampleProductIds=2.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=1 includedInPool=1 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=shop:2/2/ok/inPool:true
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop productCount=2 sourceBreakdown=shopDiscovery:2 trustBreakdown=medium:2 freshCount=2 safeCount=2 staleCount=0 poolItemCount=2 inPool=true excludedReason=ok
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:45.639204 catalogCountAtRead=2 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_STALE_REFERENCE_SUMMARY] candidateCount=1 freshItemCount=2 staleItemCount=0 staleUsableForDepth=0 currentItemCount2Plus=1 wouldItemCount2PlusIfStaleDepthAllowed=1
+00:33 +183: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +183: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorForNewSearch clears error and retry banner
+[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=1 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+00:33 +184: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +185: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +186: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+[PHASE3I_STRATEGY_AUDIT] current_poolCandidates=1 current_avgItemCount=2.00 current_itemCount2Plus=1 strategyA_searchMultiProductShops=0 strategyA_searchAvgProductsPerShop=0.00 strategyB_note=see_SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY strategyC_shopDiscoveryProductsInSinglePool=0 strategyD_staleUsableForDepth=0 strategyD_wouldItemCount2Plus=1 strategyE_staleLongLivedFields=0
+00:33 +187: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+00:33 +188: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +189: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +190: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +191: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +192: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +193: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +194: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +195: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +196: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+00:33 +197: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=1 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=水筒 items=2 upserted=2 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=2 withGenreId=2 withGenreName=2 withShopCode=2 withShopName=2 withItemName=2 unknownGenreName=0 sourceBreakdown=shopDiscovery:2 trustBreakdown=medium:2
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=0 productCount2PlusShops=1 maxProductsPerShop=2 avgProductsPerShop=2.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=2026-06-06T00:24:45.607506 completedAt=2026-06-06T00:24:45.649767 durationMs=42 catalogCountBefore=0 catalogCountAfter=2
+00:33 +198: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery でも ProductCatalog upsert が実行される
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=1 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=1 parsedItemsCount=1 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=1 displayCount=1 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 1 件
+[SHOP_POOL_READ_TIMING] phase=searchPostSchedule readAt=2026-06-06T00:24:46.730078 catalogCountAtRead=1 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_SUMMARY] source=shopDiscovery catalogProducts=1 catalogShops=1 poolCandidates=1 savedExcluded=0 staleExcluded=0 lowTrustExcluded=0 unsafeExcluded=0 emptyShopCodeExcluded=0
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=1 avgItemCount=1.0 itemCount1=1 itemCount2Plus=0 withPrimaryGenre=1 unknownPrimaryGenre=0 withSourceProductIds=1 avgSourceProductIds=1.0 withSampleProductIds=1 avgSampleProductIds=1.0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[PRODUCT_CATALOG_MAX_SHOP_TRACE] shopCode=shop productCount=1 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1 freshCount=1 safeCount=1 staleCount=0 poolItemCount=1 inPool=true excludedReason=singleEligible
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:46.732593 catalogCountAtRead=1 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_STALE_REFERENCE_SUMMARY] candidateCount=1 freshItemCount=1 staleItemCount=0 staleUsableForDepth=0 currentItemCount2Plus=0 wouldItemCount2PlusIfStaleDepthAllowed=0
+[PHASE3I_STRATEGY_AUDIT] current_poolCandidates=1 current_avgItemCount=1.00 current_itemCount2Plus=0 strategyA_searchMultiProductShops=0 strategyA_searchAvgProductsPerShop=0.00 strategyB_note=see_SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY strategyC_shopDiscoveryProductsInSinglePool=1 strategyD_staleUsableForDepth=0 strategyD_wouldItemCount2Plus=0 strategyE_staleLongLivedFields=0
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=水筒 items=1 upserted=1 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=2026-06-06T00:24:46.726074 completedAt=2026-06-06T00:24:46.736147 durationMs=10 catalogCountBefore=0 catalogCountAfter=1
+00:33 +199: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery カタログ upsert 失敗でも検索は成功のまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=1 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=1 parsedItemsCount=1 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=1 displayCount=1 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 1 件
+[SHOP_POOL_READ_TIMING] phase=searchPostSchedule readAt=2026-06-06T00:24:46.814200 catalogCountAtRead=0 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_SUMMARY] source=shopDiscovery catalogProducts=0 catalogShops=0 poolCandidates=0 savedExcluded=0 staleExcluded=0 lowTrustExcluded=0 unsafeExcluded=0 emptyShopCodeExcluded=0
+[SHOP_POOL_DEPTH_SUMMARY] source=shopDiscovery candidateCount=0 avgItemCount=0 itemCount1=0 itemCount2Plus=0 withPrimaryGenre=0 unknownPrimaryGenre=0 withSourceProductIds=0 avgSourceProductIds=0 withSampleProductIds=0 avgSampleProductIds=0
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+[SHOP_POOL_READ_TIMING] phase=fallbackAggregate readAt=2026-06-06T00:24:46.814200 catalogCountAtRead=0 lastShopDiscoveryUpsertCompleted=- usesFreshCatalog=false
+[SHOP_POOL_STALE_REFERENCE_SUMMARY] candidateCount=0 freshItemCount=0 staleItemCount=0 staleUsableForDepth=0 currentItemCount2Plus=0 wouldItemCount2PlusIfStaleDepthAllowed=0
+[PHASE3I_STRATEGY_AUDIT] current_poolCandidates=0 current_avgItemCount=0.00 current_itemCount2Plus=0 strategyA_searchMultiProductShops=0 strategyA_searchAvgProductsPerShop=0.00 strategyB_note=see_SHOP_DISCOVERY_ENRICHMENT_OPPORTUNITY strategyC_shopDiscoveryProductsInSinglePool=0 strategyD_staleUsableForDepth=0 strategyD_wouldItemCount2Plus=0 strategyE_staleLongLivedFields=0
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT] failed: Bad state: catalog upsert failed
+00:35 +200: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 正常商品の qualityStatus が生成できる
+00:35 +201: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+00:35 +202: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 画像なしを判定できる
+00:35 +203: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 価格なしを判定できる
+00:35 +204: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 安全 NG を判定できる
+00:35 +205: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics medium shopDiscovery 商品2件の同一 shopCode が pool itemCount=2 になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:36 +206: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 商品のみ残ると pool itemCount=1 になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:36 +207: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +207: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics maxProductsPerShop 相当でも fresh が複数あれば pool itemCount&gt;=2
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=21 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=21
+00:36 +208: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +208: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 診断関数は例外なく実行できる
+[SHOP_POOL_MULTI_SHOP_TRACE] totalMultiProductShops=0 includedInPool=0 excludedStale=0 excludedLowTrust=0 excludedUnsafe=0 excludedMissingShopCode=0 excludedNoValidProducts=0 excludedSavedShop=0 topMultiShops=-
+00:36 +209: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +209: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 保存ショップ検索相当 search/high で同一 shopCode 複数商品が pool に蓄積
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:36 +210: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +210: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 深さ投影で wouldItemCount2Plus を計算できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+00:36 +211: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +212: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +212: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics computeShopDiscoveryEnrichmentOpportunity は API を呼ばない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:36 +213: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +213: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailDepthTrace / PoolTrace は例外なく実行できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=trace-shop allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=trace:1
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=trace-shop catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+00:36 +214: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +214: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailCatalogItemTrace は duplicate reason を含める
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=dup-shop inputItems=2 savedForShop=1 item1=itemCode=dup-shop:a,inputCanonicalId=dup-shop:a,canonicalId=dup-shop:a,normalizedItemUrl=-,shopCode=dup-shop,itemName=商品A,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=dup-shop:a,resolvedShopCode=dup-shop,sameShopCode=true,aliasMatchedBy=-,saved=true,reason=- item2=itemCode=dup-shop:a,inputCanonicalId=dup-shop:a,canonicalId=dup-shop:a,normalizedItemUrl=-,shopCode=dup-shop,itemName=商品Aコピー,getByCanonicalIdFound=false,findByAliasFound=false,resolvedCanonicalId=-,resolvedShopCode=-,sameShopCode=true,aliasMatchedBy=-,saved=false,reason=canonicalDuplicate
+00:36 +215: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +215: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logSavedOrDiscoveryShopDepthAfterUpsert は例外なく実行できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=depth-shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+00:36 +216: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +216: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration detail upsert 後 poolItemCount が2になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=pool:1 resolvedCanonicalId=pool:1 operation=insert mergeReason=insert inputShopCode=pool-shop savedShopCode=pool-shop aliasMatchedBy=- productId=pool:1 normalizedItemUrl=https://item.rakuten.co.jp/pool-shop/one/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=pool:2 resolvedCanonicalId=pool:2 operation=insert mergeReason=insert inputShopCode=pool-shop savedShopCode=pool-shop aliasMatchedBy=- productId=pool:2 normalizedItemUrl=https://item.rakuten.co.jp/pool-shop/two/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=pool-shop source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=pool-shop inputItems=2 savedForShop=2 item1=itemCode=pool:1,inputCanonicalId=pool:1,canonicalId=pool:1,normalizedItemUrl=https://item.rakuten.co.jp/pool-shop/one/,shopCode=pool-shop,itemName=商品1,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=pool:1,resolvedShopCode=pool-shop,sameShopCode=true,aliasMatchedBy=pool:1,saved=true,reason=- item2=itemCode=pool:2,inputCanonicalId=pool:2,canonicalId=pool:2,normalizedItemUrl=https://item.rakuten.co.jp/pool-shop/two/,shopCode=pool-shop,itemName=商品2,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=pool:2,resolvedShopCode=pool-shop,sameShopCode=true,aliasMatchedBy=pool:2,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=pool-shop allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=pool:1|pool:2
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=pool-shop catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=pool-shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+00:36 +217: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +217: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration takeya-tea 同一 affiliate URL・別 productId で poolItemCount=2
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=1 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:10000490 resolvedCanonicalId=takeya-tea:10000490 operation=insert mergeReason=insert inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=- productId=takeya-tea:10000490 normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:10000383 resolvedCanonicalId=takeya-tea:10000383 operation=insert mergeReason=aliasConflictPrevented inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/ productId=takeya-tea:10000383 normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/ saved=true urlIdentityRejected=true urlIdentityRejectReason=affiliateRedirectUrl inputProductId=takeya-tea:10000383 matchedCanonicalId=takeya-tea:10000490 matchedProductId=takeya-tea:10000490
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=takeya-tea source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=1 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=takeya-tea inputItems=2 savedForShop=2 item1=itemCode=takeya-tea:10000490,inputCanonicalId=takeya-tea:10000490,canonicalId=takeya-tea:10000490,normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/,shopCode=takeya-tea,itemName=商品A,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:10000490,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:10000490,saved=true,reason=- item2=itemCode=takeya-tea:10000383,inputCanonicalId=takeya-tea:10000383,canonicalId=takeya-tea:10000383,normalizedItemUrl=https://hb.afl.rakuten.co.jp/hgc/g00rfqqh.362kta6e.g00rfqqh.362ku4a9/,shopCode=takeya-tea,itemName=商品B,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:10000383,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:10000383,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=takeya-tea allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=takeya-tea:10000490|takeya-tea:10000383
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=takeya-tea catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=takeya-tea productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+00:36 +218: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +219: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+00:36 +220: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+[GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+00:36 +220: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreName があるときはそのまま
+00:36 +221: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreId のみのとき GenreMaster で補完
+00:37 +222: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:37 +223: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +224: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +225: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +226: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +227: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +228: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +229: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +230: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +230: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 安全 NG は upsert 対象から除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:37 +231: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +231: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=true のとき upsertAll が永続化する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SEARCH_UPSERT_SUMMARY] mode=productSearch items=1 upserted=1 skipped=0 qualityNg=0 source=search
+[PRODUCT_CATALOG_SEARCH_VERIFY_SUMMARY] mode=productSearch count=1 savedBatch=1 batchWithGenreId=1 batchWithGenreName=1 canonicalId=shop:item001 getByCanonicalId=true findByProductId=true findByNormalizedUrl=true findByShopItem=true sampleGenreId=100 sampleGenreName=おもちゃ storedGenreId=100 storedGenreName=おもちゃ source=search sourceTrust=high qualitySafe=true hasImage=true hasPrice=true
+00:37 +232: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +232: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 変換商品を upsert すると alias で検索できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:37 +233: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +234: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +235: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +235: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems source=shopDiscovery / sourceTrust=medium になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=- items=1 upserted=1 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=- completedAt=2026-06-06T00:24:51.148419 durationMs=- catalogCountBefore=- catalogCountAfter=1
+00:37 +236: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +236: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 安全 NG は upsert 対象から除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=- items=2 upserted=1 skipped=0 qualityNg=1 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=- completedAt=2026-06-06T00:24:51.160017 durationMs=- catalogCountBefore=- catalogCountAfter=1
+00:37 +237: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +237: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems canonicalId 不可商品は保存しない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=- items=2 upserted=1 skipped=1 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=- completedAt=2026-06-06T00:24:51.170585 durationMs=- catalogCountBefore=- catalogCountAfter=1
+00:37 +238: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +238: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems genreId のみのとき GenreMaster で genreName を補完して保存する
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=- items=1 upserted=1 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=1 withGenreId=1 withGenreName=1 withShopCode=1 withShopName=1 withItemName=1 unknownGenreName=0 sourceBreakdown=shopDiscovery:1 trustBreakdown=medium:1
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=1 productCount2PlusShops=0 maxProductsPerShop=1 avgProductsPerShop=1.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=- completedAt=2026-06-06T00:24:51.186186 durationMs=- catalogCountBefore=- catalogCountAfter=1
+00:37 +239: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +239: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 同一 shopCode 複数商品を保存すると aggregator の itemCount が 2 以上になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_SHOP_DISCOVERY_UPSERT_SUMMARY] keyword=- items=2 upserted=2 skipped=0 qualityNg=0 source=shopDiscovery sourceTrust=medium
+[PRODUCT_CATALOG_DISTRIBUTION_SUMMARY] total=2 withGenreId=2 withGenreName=2 withShopCode=2 withShopName=2 withItemName=2 unknownGenreName=0 sourceBreakdown=shopDiscovery:2 trustBreakdown=medium:2
+[PRODUCT_CATALOG_SHOP_ACCUMULATION_SUMMARY] uniqueShops=1 productCount1Shop=0 productCount2PlusShops=1 maxProductsPerShop=2 avgProductsPerShop=2.00
+[PRODUCT_CATALOG_UPSERT_TIMING] phase=shopDiscovery scheduledAt=- completedAt=2026-06-06T00:24:51.196252 durationMs=- catalogCountBefore=- catalogCountAfter=2
+00:37 +240: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +240: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems initialItems / medium trust で upsert される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item001 resolvedCanonicalId=shop:item001 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=shop source=initialItems attempted=1 upserted=1 inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=shop inputItems=1 savedForShop=1 item1=itemCode=shop:item001,inputCanonicalId=shop:item001,canonicalId=shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item001,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item001,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=shop allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=shop:item001
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=shop catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=shop productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+00:38 +241: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:38 +241: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems loadedByShopCode / high trust で upsert される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item001 resolvedCanonicalId=shop:item001 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=shop source=loadedByShopCode attempted=1 upserted=1 inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=high
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=shop inputItems=1 savedForShop=1 item1=itemCode=shop:item001,inputCanonicalId=shop:item001,canonicalId=shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item001,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item001,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=shop allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=shop:item001
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=shop catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=shop productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+00:38 +242: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:38 +243: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems unsafe / canonicalId不可は保存されない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item001 resolvedCanonicalId=shop:item001 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=shop source=initialItems attempted=3 upserted=1 inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=1 qualityNg=1 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=shop inputItems=3 savedForShop=1 item1=itemCode=shop:item001,inputCanonicalId=shop:item001,canonicalId=shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item001,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item001,saved=true,reason=- item2=itemCode=shop:unsafe,inputCanonicalId=shop:unsafe,canonicalId=shop:unsafe,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=大人のおもちゃ 初心者向け,getByCanonicalIdFound=false,findByAliasFound=false,resolvedCanonicalId=-,resolvedShopCode=-,sameShopCode=false,aliasMatchedBy=-,saved=false,reason=qualityUnsafe item3=itemCode=-,inputCanonicalId=-,canonicalId=-,normalizedItemUrl=-,shopCode=shop,itemName=URL不正,getByCanonicalIdFound=false,findByAliasFound=false,resolvedCanonicalId=-,resolvedShopCode=-,sameShopCode=false,aliasMatchedBy=-,saved=false,reason=notSavable
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=shop allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=shop:item001
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=shop catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=shop productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+00:38 +244: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 shopCode 複数商品で itemCount2Plus になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item001 resolvedCanonicalId=shop:item001 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item002 resolvedCanonicalId=shop:item002 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item002 normalizedItemUrl=https://item.rakuten.co.jp/shop/item002/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=shop source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=shop inputItems=2 savedForShop=2 item1=itemCode=shop:item001,inputCanonicalId=shop:item001,canonicalId=shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item001,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item001,saved=true,reason=- item2=itemCode=shop:item002,inputCanonicalId=shop:item002,canonicalId=shop:item002,normalizedItemUrl=https://item.rakuten.co.jp/shop/item002/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item002,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item002,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=shop allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=shop:item001|shop:item002
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=shop catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+00:38 +245: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除外
+00:38 +245: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 別 canonicalId なら productCountForShop=2 / inserted+updated 内訳
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item001 resolvedCanonicalId=shop:item001 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item001 normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=shop:item002 resolvedCanonicalId=shop:item002 operation=insert mergeReason=insert inputShopCode=shop savedShopCode=shop aliasMatchedBy=- productId=shop:item002 normalizedItemUrl=https://item.rakuten.co.jp/shop/item002/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=shop source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=shop inputItems=2 savedForShop=2 item1=itemCode=shop:item001,inputCanonicalId=shop:item001,canonicalId=shop:item001,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item001,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item001,saved=true,reason=- item2=itemCode=shop:item002,inputCanonicalId=shop:item002,canonicalId=shop:item002,normalizedItemUrl=https://item.rakuten.co.jp/shop/item002/,shopCode=shop,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=shop:item002,resolvedShopCode=shop,sameShopCode=true,aliasMatchedBy=shop:item002,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=shop allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=shop:item001|shop:item002
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=shop catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=shop productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+00:38 +246: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除外
+00:38 +246: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 canonicalId 2件は merge で productCountForShop=1
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=1 updatedByCanonicalId=1 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:item001 resolvedCanonicalId=takeya-tea:item001 operation=insert mergeReason=insert inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=- productId=takeya-tea:item001 normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:item001 resolvedCanonicalId=takeya-tea:item001 operation=update mergeReason=canonicalIdMatch inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=takeya-tea:item001 productId=takeya-tea:item001 normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=takeya-tea source=initialItems attempted=2 upserted=2 inserted=1 updated=1 updatedByCanonicalId=1 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=takeya-tea inputItems=2 savedForShop=1 item1=itemCode=takeya-tea:item001,inputCanonicalId=takeya-tea:item001,canonicalId=takeya-tea:item001,normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/item001/,shopCode=takeya-tea,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:item001,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:item001,saved=true,reason=- item2=itemCode=takeya-tea:item001,inputCanonicalId=takeya-tea:item001,canonicalId=takeya-tea:item001,normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/item001/,shopCode=takeya-tea,itemName=別名表示の同一商品,getByCanonicalIdFound=false,findByAliasFound=false,resolvedCanonicalId=-,resolvedShopCode=-,sameShopCode=false,aliasMatchedBy=-,saved=false,reason=canonicalDuplicate
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=takeya-tea allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=takeya-tea:item001
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=takeya-tea catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=takeya-tea productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+00:38 +247: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除外
+00:38 +247: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems productIdとURLパス不一致2件は productCountForShop=2
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=2
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:10000490 resolvedCanonicalId=takeya-tea:10000490 operation=insert mergeReason=insert inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=- productId=takeya-tea:10000490 normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/10000490/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:10000383 resolvedCanonicalId=takeya-tea:10000383 operation=insert mergeReason=insert inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=- productId=takeya-tea:10000383 normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/10000383/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=takeya-tea source=initialItems attempted=2 upserted=2 inserted=2 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=takeya-tea inputItems=2 savedForShop=2 item1=itemCode=takeya-tea:10000490,inputCanonicalId=takeya-tea:10000490,canonicalId=takeya-tea:10000490,normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/10000490/,shopCode=takeya-tea,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:10000490,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:10000490,saved=true,reason=- item2=itemCode=takeya-tea:10000383,inputCanonicalId=takeya-tea:10000383,canonicalId=takeya-tea:10000383,normalizedItemUrl=https://item.rakuten.co.jp/takeya-tea/10000383/,shopCode=takeya-tea,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:10000383,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:10000383,saved=true,reason=-
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=takeya-tea allForShop=2 freshForShop=2 safeForShop=2 staleForShop=0 unsafeForShop=0 canonicalIds=takeya-tea:10000490|takeya-tea:10000383
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=takeya-tea catalogProductsForShop=2 poolCandidateExists=true poolItemCount=2 poolSourceProductIds=2 poolSampleProductIds=2 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=takeya-tea productCountForShop=2 freshCountForShop=2 sourceProductIds=2 sampleProductIds=2
+00:38 +248: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除外
+00:38 +248: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 既存商品への同一 canonicalId 2件は inserted=0 updated=2
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=0 updated=2 updatedByCanonicalId=2 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:existing resolvedCanonicalId=takeya-tea:existing operation=update mergeReason=canonicalIdMatch inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=takeya-tea:existing productId=takeya-tea:existing normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[PRODUCT_CATALOG_UPSERT_ITEM_RESULT] inputCanonicalId=takeya-tea:existing resolvedCanonicalId=takeya-tea:existing operation=update mergeReason=canonicalIdMatch inputShopCode=takeya-tea savedShopCode=takeya-tea aliasMatchedBy=takeya-tea:existing productId=takeya-tea:existing normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/ saved=true
+[SHOP_DISCOVERY_DETAIL_CATALOG_UPSERT_SUMMARY] shopCode=takeya-tea source=initialItems attempted=2 upserted=2 inserted=0 updated=2 updatedByCanonicalId=2 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 qualityNg=0 catalogSource=shopDiscoveryDetail catalogTrust=medium
+[SHOP_DISCOVERY_DETAIL_CATALOG_ITEM_TRACE] shopCode=takeya-tea inputItems=2 savedForShop=1 item1=itemCode=takeya-tea:existing,inputCanonicalId=takeya-tea:existing,canonicalId=takeya-tea:existing,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=takeya-tea,itemName=木のおもちゃ,getByCanonicalIdFound=true,findByAliasFound=true,resolvedCanonicalId=takeya-tea:existing,resolvedShopCode=takeya-tea,sameShopCode=true,aliasMatchedBy=takeya-tea:existing,saved=true,reason=- item2=itemCode=takeya-tea:existing,inputCanonicalId=takeya-tea:existing,canonicalId=takeya-tea:existing,normalizedItemUrl=https://item.rakuten.co.jp/shop/item001/,shopCode=takeya-tea,itemName=更新2,getByCanonicalIdFound=false,findByAliasFound=false,resolvedCanonicalId=-,resolvedShopCode=-,sameShopCode=false,aliasMatchedBy=-,saved=false,reason=canonicalDuplicate
+[SHOP_DISCOVERY_DETAIL_DEPTH_TRACE] shopCode=takeya-tea allForShop=1 freshForShop=1 safeForShop=1 staleForShop=0 unsafeForShop=0 canonicalIds=takeya-tea:existing
+[SHOP_DISCOVERY_DETAIL_POOL_TRACE] shopCode=takeya-tea catalogProductsForShop=1 poolCandidateExists=true poolItemCount=1 poolSourceProductIds=1 poolSampleProductIds=1 excludedReason=-
+[SAVED_OR_DISCOVERY_SHOP_DEPTH_AFTER_UPSERT] shopCode=takeya-tea productCountForShop=1 freshCountForShop=1 sourceProductIds=1 sampleProductIds=1
+00:38 +249: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除外
+00:38 +250: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: buildShopDiscoveryDetailCatalogItemTraces 同一 productId 2件目は canonicalDuplicate
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:38 +251: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard 同一 signature では2回目 upsert しない
+00:38 +252: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+00:38 +253: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard initial / loaded は別管理
+00:38 +254: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+00:38 +255: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter sex toy は除外
+00:38 +256: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter BLCDコレクションは除外
+00:38 +257: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 濡れトロは除外
+00:38 +258: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おもちゃ/宮本真希[DVD]は adultKeyword がなければ通す
+00:38 +259: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ベビー おもちゃは通す
+00:38 +260: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ビール10本セットは除外
+00:38 +261: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 名入れワインは除外
+00:38 +262: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter シャンパングラスは通す
+00:38 +263: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ワイングラスは通す
+00:38 +264: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 子供服は通す
+00:38 +265: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter アダルトグッズは除外
+00:38 +266: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter グラビア写真集は除外
+00:38 +267: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ジャンル名がビール・洋酒なら除外
+00:38 +268: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+00:38 +269: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort defaultOrder は API でもレビュー件数順
+00:38 +270: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort ユーザー選択肢に defaultOrder は含めない
+00:38 +271: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 表示ラベルに「おすすめ」「デフォルト」は出さない
+00:38 +272: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort レビューが多い順の表示
+00:39 +273: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment productId 一致で照合できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:40 +274: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment normalizedItemUrl 一致で照合できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:40 +275: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+00:40 +276: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopCode + itemPathSegment 一致で照合できる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:40 +277: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+00:40 +278: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 商品名だけでは照合・補完しない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:40 +279: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment stale な商品は補完に使わない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:40 +280: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment sourceTrust=low は補完に使わない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:40 +281: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が安全ならカタログ画像で上書きしない
+00:40 +282: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が疑わしくカタログ画像が安全なら補完できる
+00:40 +283: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が0ならカタログ価格で補完できる
+00:40 +284: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が有効なら上書きしない
+00:40 +285: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopName / genreName が空なら補完できる
+00:40 +286: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment upsert時に high が low で上書きされない
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=0 updated=1 updatedByCanonicalId=1 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+00:40 +287: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment repository が null でも upsert は skipped
+00:40 +288: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop and url slug match accepts candidate
+00:41 +289: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch price match alone does not accept candidate
+00:41 +290: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop mismatch rejects candidate
+00:42 +291: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 price=3980 に incoming price=-1 が来ても 3980 を維持
+00:42 +292: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 imageUrl 有効、incoming 空なら既存維持
+00:42 +293: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 shopCode 有効、incoming 空なら既存維持
+00:42 +294: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 genreName 有効、incoming 空なら既存維持
+00:42 +295: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge incoming api値が有効な場合だけ上書き
+00:43 +296: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl extracts composite itemCode and slug from event+dest
+00:43 +297: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl supports rat-redirect host and drinkshop slug
+00:43 +298: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: roomImportEnrichSlugShouldSkipDirectItemCode flags slug-like segments
+00:43 +299: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:43 +300: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics reactionScore は like + comment*3
+00:44 +301: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genre 空は ジャンル未確認
+00:44 +302: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName 空なら shopCode をUIに出さずショップ未確認
+00:44 +303: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName も shopCode も空なら ショップ未確認
+00:44 +304: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics 未分類ジャンルは傾向集計対象外
+00:44 +305: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genreName空でもgenreIdからマスタ解決できれば集計対象
+00:44 +306: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopCodeのみのショップは傾向集計対象外
+00:45 +307: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 価格だけ未取得のとき強い未確認文言は出さない
+00:45 +308: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 商品名も画像も無いときは売り切れ系を表示
+00:45 +309: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary ShopDiscoverySummary から ShopCatalogEntry に変換できる
+00:46 +310: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopCode 空は保存しない
+00:46 +311: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopName 不正は保存しない
+00:46 +312: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary safeItemCount=0 相当（hitItemCount=0）は保存しない
+00:46 +313: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary representativeImageUrl は安全画像のみ採用する
+00:46 +314: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=false では no-op
+00:46 +315: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=true で upsertAll 相当が動く
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 skipped=0 evicted=0 total=1
+[SHOP_CATALOG_DISCOVERY_UPSERT_SUMMARY] summaries=1 upserted=1 skippedNoShopCode=0 skippedInvalidShopName=0 skippedUnsafe=0 skippedInvalidShopUrl=0 source=shopDiscovery
+00:46 +316: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries upsert失敗でも例外を投げない（検索成功扱いを阻害しない）
+[SHOP_CATALOG_DISCOVERY_UPSERT] failed: Bad state: upsert failed
+[SHOP_CATALOG_DISCOVERY_UPSERT_SUMMARY] summaries=1 upserted=1 skippedNoShopCode=0 skippedInvalidShopName=0 skippedUnsafe=0 skippedInvalidShopUrl=0 source=shopDiscovery
+00:46 +317: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries 入力 summaries の件数・順序を変えない
+[SHOP_CATALOG_UPSERT_SUMMARY] inserted=1 updated=1 skipped=0 evicted=0 total=1
+[SHOP_CATALOG_DISCOVERY_UPSERT_SUMMARY] summaries=2 upserted=2 skippedNoShopCode=0 skippedInvalidShopName=0 skippedUnsafe=0 skippedInvalidShopUrl=0 source=shopDiscovery
+00:46 +318: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 有効な商品は通す
+00:46 +319: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+00:46 +320: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 価格なしは除外
+00:46 +321: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 商品URLなしは除外
+00:46 +322: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter プレースホルダ商品名は除外
+00:46 +323: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 大人のおもちゃは安全フィルタで除外
+00:46 +324: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 木のおもちゃは通す
+00:46 +325: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ10件・保存ジャンル3系統で API 全スキップ可
+00:47 +326: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ不足では API 全スキップしない
+00:47 +327: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool PRODUCT_CATALOG_ENABLED=false では空結果
+00:47 +328: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 品質OKなカタログ商品がプールに入る
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_STALE_SUMMARY] source=todayRecommendation total=1 fresh=1 stale=0 minAgeSeconds=0 maxAgeSeconds=0 ttlSeconds=86400
+00:47 +329: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool stale は除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_STALE_SUMMARY] source=todayRecommendation total=1 fresh=0 stale=1 minAgeSeconds=950400 maxAgeSeconds=950400 ttlSeconds=86400
+00:47 +330: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 候補済み productId は除外される
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_STALE_SUMMARY] source=todayRecommendation total=1 fresh=1 stale=0 minAgeSeconds=0 maxAgeSeconds=0 ttlSeconds=86400
+00:47 +331: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool upsertCatalogFromRecommendItems は todayRecommendation になる
+[PRODUCT_CATALOG_UPSERT_SUMMARY] inserted=1 updated=0 updatedByCanonicalId=0 updatedByAlias=0 aliasConflictPrevented=0 skipped=0 evicted=0 total=1
+[PRODUCT_CATALOG_RECOMMEND_UPSERT_SUMMARY] items=1 upserted=1 skipped=0 qualityNg=0 source=todayRecommendation
+00:48 +332: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 10件そろっても保存ジャンル必須プランは件数では打ち切らない
+00:48 +333: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 補助プランは件数不足かつAPI余裕があるときのみ
+00:49 +334: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 見送り済みは一定期間除外される
+00:49 +335: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 表示済みは一定期間除外される
+00:49 +336: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 古い表示済みは除外されない
+00:50 +337: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 保存ジャンル3件で最終10件が1ジャンルに偏りすぎない
+00:50 +338: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 他ジャンル候補がない場合は偏りを許容する
+00:50 +339: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution computeTargetQuotas は3ジャンル10件で4/3/3
+00:51 +340: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore page=1固定にならず次回は page を進める
+00:51 +341: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: FavoriteGenreSelectionPolicy 保存ジャンル上限は3件
+00:51 +342: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: FavoriteGenreSelectionPolicy 保存ジャンル上限は3件
+00:51 +343: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: FavoriteGenreSelectionPolicy 保存ジャンル上限は3件
+00:51 +344: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: FavoriteGenreSelectionPolicy 保存ジャンル上限は3件
+00:51 +345: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy 既定 sort はレビュー件数順で null ではない
+00:51 +346: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy API上限は10より小さい
+00:51 +347: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder buildPlanSet は保存ジャンル必須と補助を分割する
+00:51 +348: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル3件でジャンルプラン3＋補助最大1
+00:51 +349: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル5件指定でもジャンルプランは3件まで
+00:51 +350: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルなしのときフォールバック1件
+00:51 +351: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 補助プランは最大1件（反応ジャンル）
+00:51 +352: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルと同じ補助条件は追加しない
+00:51 +353: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder maxPlanCount は API 上限を超えない
+00:52 +354: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy strongItemEvidence=true かつ genreAligned=false は商品名理由文
+00:52 +355: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy genreAligned=true はジャンル理由文
+00:52 +356: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+00:53 +357: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が1件なら補助枠カードを表示する
+00:53 +358: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection 複数候補は displayRank 昇順の並びで表示する
+00:53 +359: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection onCandidateTap が渡されていればタップで callback が呼ばれる
+00:53 +360: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter build apk --debug --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter build apk --debug --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true 2>&1
+```
+
+```
+Running Gradle task 'assembleDebug'...                             77.4s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "content",
+  "path": "C:/Users/muram/.cursor/projects/c-dev-app-project-room-manager2/agent-tools/f824a4af-df36-4f54-83a6-b05184bb093c.txt",
+  "pattern": "All tests passed"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "C:/Users/muram/.cursor/projects/c-dev-app-project-room-manager2/agent-tools/f824a4af-df36-4f54-83a6-b05184bb093c.txt",
+  "pattern": "All tests passed",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\f824a4af-df36-4f54-83a6-b05184bb093c.txt"
+    },
+    {
+      "matchCount": 1,
+      "uri": "..\\..\\..\\Users\\muram\\.cursor\\projects\\c-dev-app-project-room-manager2\\agent-tools\\f824a4af-df36-4f54-83a6-b05184bb093c.txt"
+    }
+  ],
+  "totalFiles": 2,
+  "totalMatches": 2
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: adb -s SXILHMB270711564 install -r "c:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-debug.apk" 2>&1; adb -s SXILHMB270711564 shell am start -n com.stepbytestudio.room_manager2/.MainActivity 2>&1</summary>
+
+```bash
+adb -s SXILHMB270711564 install -r "c:\dev\app_project\room_manager2\build\app\outputs\flutter-apk\app-debug.apk" 2>&1; adb -s SXILHMB270711564 shell am start -n com.stepbytestudio.room_manager2/.MainActivity 2>&1
+```
+
+```
+Performing Streamed Install
+adb: failed to run abb_exec. Error: closed
+adb: retrieving the default device installation mode failed: closed
+adb: failed to run abb_exec. Error: device 'SXILHMB270711564' not found
+adb.exe: connect error for write: device 'SXILHMB270711564' not found
+adb.exe: device 'SXILHMB270711564' not found
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+Phase 3-M3 の補助枠カードタップ導線を実装しました。
+
+---
+
+## 1. 調査結論
+
+既存の `ShopDiscoveryDetailScreen` は `items` が空かつ `shopKey` がある場合、`shopCode` で API 検索して商品一覧を表示する仕組み（`_loadItemsFromShopCode`）を持っています。補助枠カードのタップはこの導線を再利用し、新規画面は作っていません。
+
+---
+
+## 2. 採用したタップ導線
+
+```
+補助枠カード tap
+  → _onSupplementCardTap
+  → logCardTap (action=shopSearch)
+  → ShopDiscoverySummary を candidate から組み立て
+  → _openShopDetail (items=空)
+  → ShopDiscoveryDetailScreen
+  → _loadItemsFromShopCode (shopCode API 検索)
+```
+
+---
+
+## 3. 既存導線の再利用箇所
+
+| 既存処理 | 再利用内容 |
+|---|---|
+| `_openShopDetail` | `Navigator.push` → `ShopDiscoveryDetailScreen` |
+| `ShopDiscoveryDetailScreen._loadItemsFromShopCode` | `RakutenProductSearchCondition(shopCode: code)` で商品取得 |
+| 通常 API 結果カードの `onOpenShop` | 同じ `_openShopDetail` パターン |
+
+---
+
+## 4. 補助枠カード UI の変更内容
+
+- `ShopDiscoveryPoolSupplementCardsSection` に `onCandidateTap` を追加
+- 各カードの `AppCard` に `onTap` を設定（タップ可能な見た目）
+- `rakuten_search_screen.dart` から `_onSupplementCardTap` を接続
+
+表示条件・文言・配置は変更していません。
+
+---
+
+## 5. 保存ショップ連携を今回見送った理由
+
+ユーザー指示どおり M4 に分離。今回はショップ商品一覧への遷移のみ実装し、保存ボタン・`SavedShopProvider` 連携は含めていません。
+
+---
+
+## 6. 通常 API 結果への影響有無
+
+**なし** — 通常結果リスト・件数・順序は未変更です。
+
+---
+
+## 7. ログ重複改善の有無
+
+**あり**
+
+`CATALOG_AUDIT_LOGS=true` 時は `catalogAuditLog` のみ出力し、`debugSummaryLog` の同一行出力を抑制しました（`_emitSupplementUiLog`）。UI 更新・判定ロジックへの影響はありません。
+
+---
+
+## 8. 追加ログ
+
+```
+[SHOP_DISCOVERY_POOL_SUPPLEMENT_CARD_TAP] keyword=水筒 shopCode=soukaidrink shopName=楽天24 ドリンク館 action=shopSearch
+```
+
+`ShopDiscoveryPoolSupplementUiBridge.logCardTap` / `buildCardTapLogLine` で出力します。
+
+---
+
+## 9. 水筒・コーヒー・ベビーの期待結果
+
+| キーワード | 補助枠 | タップ |
+|---|---|---|
+| 水筒 | 1件表示 | タップ → ショップ詳細（shopCode 検索） |
+| コーヒー | 非表示 | — |
+| ベビー | 非表示 | — |
+
+---
+
+## 10. 修正ファイル一覧
+
+| ファイル | 変更 |
+|---|---|
+| `lib/widgets/shop_discovery_pool_supplement_cards.dart` | `onCandidateTap` / `onTap` 追加 |
+| `lib/screens/rakuten_search_screen.dart` | `_onSupplementCardTap` 追加・接続 |
+| `lib/services/shop_discovery_pool_supplement_ui_bridge.dart` | `logCardTap`、ログ重複抑制 |
+| `test/widgets/shop_discovery_pool_supplement_cards_test.dart` | タップ callback テスト |
+| `test/services/shop_discovery_pool_supplement_ui_bridge_test.dart` | `buildCardTapLogLine` テスト |
+
+---
+
+## 11. 追加・更新テスト
+
+- widget test: `onCandidateTap` タップで callback 呼び出し確認
+- unit test: `buildCardTapLogLine` 形式確認
+- 既存テスト（空候補非表示・表示件数等）維持
+
+---
+
+## 12. flutter analyze 結果
+
+```
+4 issues（既存 info/warning のみ）
+```
+
+---
+
+## 13. flutter test 結果
+
+```
+All tests passed! (+360 tests)
+```
+
+---
+
+## 14. dart-define 付き test 結果
+
+```
+All tests passed! (+360 tests)
+```
+
+---
+
+## 15. 実機確認結果
+
+| 項目 | 結果 |
+|---|---|
+| debug APK ビルド | 成功 |
+| 実機インストール | `SXILHMB270711564` が未接続のため失敗 |
+
+手動確認手順:
+
+```powershell
+.\run_and_record_select_device.ps1 -BuildMode debug `
+  -DartDefine PRODUCT_CATALOG_ENABLED=true,SHOP_CATALOG_ENABLED=true,CATALOG_AUDIT_LOGS=true
+```
+
+水筒検索 → 補助枠タップ → ショップ詳細遷移、`CARD_TAP` ログ、赤画面なしを確認してください。
+
+---
+
+## 16. iOS 移植監査メモ
+
+- `Navigator.push` + `MaterialPageRoute`（Flutter 標準）
+- `AppCard.onTap` + `InkWell`（Material）
+- ログは `debugPrint` ベースで Xcode Console でも追跡可能
+
+---
+
+## 17. 次に M4 保存ショップ連携へ進めるかの判断
+
+**進めて問題ありません。**
+
+タップ導線が既存 `ShopDiscoveryDetailScreen` に接続され、ログ・テストも揃っています。M4 では補助枠カードへの「ショップを保存」ボタン追加、または詳細画面からの保存連携を実装できます。
+
+---
+
+_**User**_
+
+Phase 3-M3 の実機確認で、補助枠カード表示までは確認できましたが、カードタップ時のログ [SHOP_DISCOVERY_POOL_SUPPLEMENT_CARD_TAP] が確認できませんでした。
+
+現状:
+- 水筒検索で [SHOP_DISCOVERY_POOL_SUPPLEMENT_UI_BRIDGE] displayCandidates=1 shopCodes=soukaidrink は出ています
+- [SHOP_DISCOVERY_POOL_SUPPLEMENT_UI_CARD] visibleCards=1 shopCodes=soukaidrink も出ています
+- 赤画面は出ていません
+- UI_BRIDGE / UI_CARD のログ重複は改善されています
+- しかし CARD_TAP ログが出ていません
+
+確認・修正してください:
+1. ShopDiscoveryPoolSupplementCardsSection に onCandidateTap が正しく渡っているか
+2. 各カードの AppCard / InkWell / GestureDetector が実際にタップを受け取れる構造になっているか
+3. カード上の子Widgetがタップを吸収していないか
+4. rakuten_search_screen.dart 側の _onSupplementCardTap が呼ばれているか
+5. ShopDiscoveryPoolSupplementUiBridge.logCardTap が呼ばれているか
+6. _openShopDetail に items=空、shopCode=soukaidrink 相当の ShopDiscoverySummary が渡っているか
+7. ShopDiscoveryDetailScreen._loadItemsFromShopCode が起動しているか
+
+重要:
+- 判定ロジックは変更しないでください
+- 補助枠の表示条件は変更しないでください
+- 通常API結果には混在させないでください
+- 保存ショップ連携はまだ実装しないでください
+- 最小差分で修正してください
+
+期待ログ:
+[SHOP_DISCOVERY_POOL_SUPPLEMENT_CARD_TAP] keyword=水筒 shopCode=soukaidrink shopName=楽天24 ドリンク館 action=shopSearch
+
+テスト:
+- onCandidateTap の widget test を維持・強化してください
+- 実機で水筒検索後に補助枠カードをタップし、CARD_TAP ログが出ることを確認してください
+
+---
+
+_**Agent (default)**_
+
+CARD_TAP ログが出ない原因を、タップ経路と `AppCard` の実装から確認します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "content",
+  "path": "c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart",
+  "pattern": "_onSupplementCardTap|onCandidateTap|ShopDiscoveryPoolSupplementCardsSection"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart",
+  "pattern": "_onSupplementCardTap|onCandidateTap|ShopDiscoveryPoolSupplementCardsSection",
+  "topFiles": [
+    {
+      "matchCount": 4,
+      "uri": "lib/screens/rakuten_search_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 4
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/widgets/app_card.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/widgets/shop_discovery_pool_supplement_cards.dart</summary>
 
 </details>
 </tool-use>
@@ -15331,4 +19785,824 @@ _**Agent (default)**_
 _**Agent (default)**_
 
 <think><details><summary>Thought Process</summary>
-ログ重複防止のため、CATALOG_AUDIT_LOGS=true</details></think>
+AppCard の InkWell 構造に潜在的な問題がある。
+
+InkWell 内の Container デコレーションがタップ判定に影響する可能性を確認した。タップ自体は動作するはずだが、別の原因を探している。
+
+InkWell と Container の配置はタップ可能のはず。ListView のジェスチャー吸収も考えにくい。logCardTap は _emitSupplementUiLog 経由で catalogAuditLog を呼び出し、UI_BRIDGE/UI_CARD と同じログ出力パスを使っている。ユーザーが CATALOG_AUDIT_LOGS=true でログを確認しているため、ログフィルタリングによる漏れはないと判断した。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "content",
+  "path": "c:/dev/app_project/room_manager2",
+  "pattern": "ShopDiscoveryPoolSupplementCardsSection"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:/dev/app_project/room_manager2",
+  "pattern": "ShopDiscoveryPoolSupplementCardsSection",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": "lib\\screens\\rakuten_search_screen.dart"
+    },
+    {
+      "matchCount": 16,
+      "uri": ".specstory\\history\\2026-06-05_13-50-35Z-shopdiscoverypoolsupplement-ui-integration.md"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\shop_discovery_pool_supplement_cards.dart"
+    },
+    {
+      "matchCount": 5,
+      "uri": "test\\widgets\\shop_discovery_pool_supplement_cards_test.dart"
+    }
+  ],
+  "totalFiles": 4,
+  "totalMatches": 24
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/screens/rakuten_search_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+接続自体は正しい。問題は AppCard の InkWell 構造にある可能性が高い。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:/dev/app_project/room_manager2/lib/widgets/shop_discovery_card.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "outputMode": "content",
+  "path": "c:/dev/app_project/room_manager2/lib/widgets",
+  "pattern": "AppCard.*onTap|onTap:"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:/dev/app_project/room_manager2/lib/widgets",
+  "pattern": "AppCard.*onTap|onTap:",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\shop_discovery_pool_supplement_cards.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\rakuten_search_result_card.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\rakuten_managed_product_card.dart"
+    },
+    {
+      "matchCount": 3,
+      "uri": "lib\\widgets\\activity\\activity_analytics_tab.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\search_mode_segment_bar.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\genre_drilldown_picker_sheet.dart"
+    },
+    {
+      "matchCount": 2,
+      "uri": "lib\\widgets\\favorite_genre_picker_sheet.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\activity\\activity_achievement_tab.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\search_bulk_selection_header.dart"
+    },
+    {
+      "matchCount": 6,
+      "uri": "lib\\widgets\\add_candidate_entry_sheet.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\app_text_field.dart"
+    },
+    {
+      "matchCount": 1,
+      "uri": "lib\\widgets\\post_style_picker_sheet.dart"
+    }
+  ],
+  "totalFiles": 12,
+  "totalMatches": 38
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+ShopDiscoveryCard は AppCard の onTap を使用せず、明示的なボタンでタップを処理している。
+
+補助カードのみがこのフローで AppCard の onTap を使用している。InkWell のタップ判定に問題がありそうだ。子 Widget にサイズ制約がないと Material がタップ領域を正しく拡張しない可能性がある。リストや親 Widget に AbsorbPointer や IgnorePointer が存在しないか確認する必要がある。
+
+Widget test は Text ウィジェットを直接タップするため通るが、実機では別の原因が考えられる。InkWell 内の Text タップは onTap に伝播するはずなので、タップ漏れの原因は他にある。
+
+AppCard のタップ判定に問題がある。現在の構造では、デコレーション付きの Container を InkWell で包む方式になっている。Material が透明なため、タップヒットテストが正しく機能しない可能性がある。正しい修正は、Material（type: canvas）で囲み、その内部に InkWell を配置することだ。
+
+補助カードのみを対象に最小差分で修正する。AppCard の onTap を削除し、GestureDetector(behavior: HitTestBehavior.opaque) で AppCard 内容全体をラップする。AppCard 自体は変更せず、補助カード専用のタップ判定を確保する。
+
+Semantics/button を追加してアクセシビリティを整備する。
+
+ナビゲーション自体は発生している可能性がある。ログが先頭にあり、実行されれば必ず出るはずだが、ユーザーはログのみを指摘している。タップが完全に無視されている可能性もある。
+
+catalogAuditLog は kDebugMode と DebugLogFlags の両方が有効な場合のみ動作する。リリース/プロファイルモードではログが出ない可能性がある。
+
+古い APK で実機確認が行われている可能性がある。タップハンドラーが未実装の旧コードを流用しているかもしれない。タップ検出を確実に修正し、デバッグ時にログが必ず出るよう保証する。</details></think>
+
+_**Agent (default)**_
+
+`AppCard` の `InkWell` が不透明な子でタップを拾えていない可能性があるため、補助枠カード側を `GestureDetector` で確実にタップ可能にします。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/widgets/shop_discovery_pool_supplement_cards.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+テストを実行する。デバイスがインストール可能か確認する。</details></think>
+
+_**Agent (default)**_
+
+`InkWell` だけでは不十分な可能性があるため、`GestureDetector` に切り替えます。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:/dev/app_project/room_manager2/lib/widgets/shop_discovery_pool_supplement_cards.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: adb devices 2>&1</summary>
+
+```bash
+adb devices 2>&1
+```
+
+```
+List of devices attached
+SXILHMB270711564	device
+
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test test/widgets/shop_discovery_pool_supplement_cards_test.dart 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test test/widgets/shop_discovery_pool_supplement_cards_test.dart 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart
+00:00 +0: ShopDiscoveryPoolSupplementCardCopy strongItemEvidence=true かつ genreAligned=false は商品名理由文
+00:00 +1: ShopDiscoveryPoolSupplementCardCopy genreAligned=true はジャンル理由文
+00:00 +2: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+00:01 +3: ShopDiscoveryPoolSupplementCardsSection displayCandidates が1件なら補助枠カードを表示する
+00:01 +4: ShopDiscoveryPoolSupplementCardsSection 複数候補は displayRank 昇順の並びで表示する
+00:01 +5: ShopDiscoveryPoolSupplementCardsSection onCandidateTap が渡されていればタップで callback が呼ばれる
+00:01 +6: ShopDiscoveryPoolSupplementCardsSection onCandidateTap 未指定ならタップ領域を出さない
+00:01 +7: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+デバイス接続が完了した。APKをビルドしてインストールし、実機確認を進める。</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test 2>&1
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path kProductCatalogEnabled=false では upsert skipped
+00:00 +1: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path 商品名検索 productSearch で upsert し永続化する
+00:00 +2: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path shopDiscovery でも ProductCatalog upsert が実行される
+00:00 +3: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct JSON 往復できる
+00:00 +4: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct high trust が low trust の重要フィールドを上書きできる
+00:00 +5: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust は high trust の重要フィールドを上書きしない
+00:00 +6: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust でも空欄は補完できる
+00:00 +7: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が最優先
+00:01 +8: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が無ければ itemUrl
+00:01 +9: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliate と item が空なら rakutenUrl
+00:01 +10: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry JSON 往復できる
+00:01 +11: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry aliases を保持する
+00:01 +12: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry stale 判定用フィールドを保持する
+00:01 +13: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedStatus を持たない JSON は拒否する
+00:01 +14: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedAt を持たないこと（モデルにフィールドなし）
+00:02 +15: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: TodayRecommendationEntry の JSON 往復で imageUrl とレビューが欠落しない
+00:02 +16: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される
+00:02 +17: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:02 +18: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and keeps single value
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated,affordable new=premium
+00:02 +19: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles effectivePostStyleList uses balance without showing it as selected
+00:03 +20: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository upsert して canonicalId で取得できる
+00:03 +21: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository alias で検索できる
+00:03 +22: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository high trust が low trust を上書きできる
+00:03 +23: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository low trust は high trust の重要フィールドを上書きしない
+00:03 +24: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:03 +25: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:03 +26: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:03 +27: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:04 +28: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:05 +29: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:05 +30: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:05 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:05 +32: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:05 +33: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +34: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +35: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +36: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +37: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +38: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +39: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +40: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +41: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +42: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +43: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +44: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +45: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +46: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +47: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +48: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +49: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +50: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +51: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +52: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +53: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +54: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +55: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository stale 判定ができる
+00:10 +56: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository clear で空になる
+00:10 +57: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 別 canonicalId・別 URL は alias 誤マージせず2件保存される
+00:10 +58: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository レガシー誤 alias があっても別 productId は別商品として insert
+00:10 +59: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 同一 affiliate URL・別 productId は urlMatch せず2件保存
+00:10 +60: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository takeya-tea 2商品バッチで productCountForShop=2
+00:10 +61: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository productId 欠落時は同一 item URL で alias merge される
+00:10 +62: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository バッチ upsert で別商品2件は inserted=2
+00:11 +63: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 通常URL・クエリ付きで itemCode を抽出する
+00:12 +64: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser https の item.rakuten から shop / セグメント / 正規URL
+00:12 +65: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser http でも抽出できる
+00:12 +66: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 末尾スラッシュなしでも itemCode を抽出する
+00:12 +67: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 末尾スラッシュなしでも itemCode を抽出する
+00:12 +68: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 末尾スラッシュなしでも itemCode を抽出する
+00:12 +69: C:/dev/app_project/room_manager2/test/services/rakuten_genre_master_service_test.dart: genreId 100026 は簡易マスタでもパソコン・周辺機器として解決する
+00:12 +70: C:/dev/app_project/room_manager2/test/services/rakuten_genre_master_service_test.dart: genreId 100026 は簡易マスタでもパソコン・周辺機器として解決する
+00:12 +71: C:/dev/app_project/room_manager2/test/services/rakuten_genre_master_service_test.dart: genreId 100026 は簡易マスタでもパソコン・周辺機器として解決する
+00:12 +72: C:/dev/app_project/room_manager2/test/services/rakuten_genre_master_service_test.dart: genreId 100026 は簡易マスタでもパソコン・周辺機器として解決する
+00:12 +73: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ済みがコレ候補より優先される
+00:12 +74: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ候補として分類される
+00:12 +75: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts 未登録
+00:13 +76: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:14 +77: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathFromCollectsRow reads nested item URL
+[ROOM_COLLECTS_RESPONSE_SHAPE] itemKeys=id,meta productLikeKeys=- userLikeKeys=- imageLikeKeys=- hasProductImage=false hasUserIcon=false
+[ROOM_IMPORT_COLLECTS_IMAGE_KEYS] productId=17001234567890 keys=meta.link selectedKey=- rejectedKeys=meta.link
+00:14 +78: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMプロフィールURLを許可して正規化する
+00:14 +79: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /items 付きROOMプロフィールURLを許可して正規化する
+00:14 +80: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /collections と /likes もプロフィール導線として許可する
+00:14 +81: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 空は任意入力として許可する
+00:14 +82: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat httpは拒否する
+00:14 +83: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 楽天市場URLは拒否する
+00:14 +84: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMトップURLのみは拒否する
+00:14 +85: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOM商品URL相当の複数パスは拒否する
+00:14 +86: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat roomIdなしの /items は拒否する
+00:14 +87: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 短縮URLは拒否する
+00:14 +88: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers extractRoomId extracts roomId from profile child routes
+00:14 +89: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers normalizeProfileUrl always stores profile URL
+00:14 +90: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService URL helpers buildItemsUrl builds posting list URL from saved profile URL
+00:14 +91: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 200系は保存可能な確認成功にする
+00:14 +92: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 404は保存不可にする
+00:14 +93: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 403/429は形式OKなら確認保留で保存可能にする
+00:14 +94: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.verifyExists 通信失敗は形式OKなら確認保留で保存可能にする
+00:14 +95: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:15 +96: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+00:15 +97: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからない場合は null
+00:15 +98: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:15 +99: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolComparator overlap overlapRate / apiOnly / poolOnly が計算できる
+00:15 +100: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:15 +101: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality weak なら supplement/replacement false
+00:15 +102: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags wouldBeUsableAsSupplement は overlap または厚みで true になり得る
+00:15 +103: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build repository なしでも比較結果と willUsePoolForUi=false を返す
+00:15 +104: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOP比較ログ用データが最大3件に制限される
+00:15 +105: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build 品質ログに keyword と poolQualityLevel が含まれる
+00:15 +106: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOPログは apiTop1 / poolTop1 形式
+00:16 +107: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode overlap を数えられる
+00:17 +108: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport strong=9 でも hitItemCount=1 だらけなら qualityLevel=weak
+00:17 +109: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator apiOnly / poolOnly が正しく出る
+00:17 +110: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator apiOnly / poolOnly が正しく出る
+00:17 +111: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount2Plus が多い場合は depthQuality good 以上になり得る
+00:17 +112: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 厚み・ジャンルが十分な場合のみ excellent に近づく
+00:17 +113: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+00:17 +114: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+00:17 +115: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+00:17 +116: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+00:17 +117: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+00:17 +118: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode 空は比較対象外
+00:17 +119: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolCandidateCount が0でも落ちない
+00:17 +120: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalogShopCount が0でも落ちない
+00:17 +121: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator savedShopCodes を渡すと savedExcludedCount が出る
+00:17 +122: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator overlapRate が計算される
+00:17 +123: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolHasEnoughCandidatesForDisplay が10件以上で true
+00:17 +124: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator top*Shops が最大3件に制限される
+00:17 +125: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator API summaries の並び順と件数を変更しない
+00:17 +126: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が同一なら同じ値になる
+00:17 +127: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が違えば別値になる
+00:17 +128: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+00:17 +129: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopCode 空は除外される
+00:17 +130: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopName 不正は除外される
+00:17 +131: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 保存済みショップは除外される
+00:17 +132: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+00:17 +133: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 3〜9件で partial fallback になる
+00:17 +134: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 0〜2件では fallback しない
+00:17 +135: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback時は最大10件に制限される
+00:17 +136: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 関連度が同じときは score 順を維持する
+00:17 +137: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 水筒検索でお名前シールより関連ショップを優先する
+00:17 +138: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback primaryGenreId ありで genreName 空は unknownGenre 扱いにしない
+00:17 +139: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback TOP で hitItemCount&gt;=2 が hitItemCount=1 より優先される
+00:17 +140: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 候補不足時は hitItemCount=1 でも fallback 表示できる
+00:18 +141: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 同一 shopCode 複数 fresh 商品は pool itemCount2Plus になる
+00:18 +142: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback noimage URL は表示用画像に含めない
+00:19 +143: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build APIにない高品質Pool候補が supplement に選ばれる
+00:19 +144: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build API結果に含まれるshopCodeは supplement から除外される
+00:19 +145: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build relevance weak は除外される
+00:19 +146: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build hitItemCount=1 は除外される
+00:19 +147: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build imageなし / shopUrlなし は除外される
+00:19 +148: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 最大3件までに制限される
+00:19 +149: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build overlapRate=1.0 で API が Pool 上位を覆う場合 supplement 0
+00:19 +150: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build wouldShowSupplementIfEnabled と willUsePoolForUi / willSkipApi
+00:19 +151: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 保存ショップは supplement から除外される
+00:19 +152: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement apiWeakSignal apiWeakSignal / poolCouldCoverApiWeakness が計算できる
+00:19 +153: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=1.0 では recommendedDisplayCount=0
+00:19 +154: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=0.9 かつ APIにない強候補で recommendedDisplayCount=1
+00:19 +155: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision apiWeakSignal=true では recommendedDisplayCount が増え得る
+00:19 +156: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop / broadShop が判定できる
+00:19 +157: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision hitItemCount が低い候補は showEligible=false になり得る
+00:19 +158: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ジャンル不整合なら showEligible=false になり得る
+00:19 +159: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision 水筒 + strong itemName + hitItems&gt;=5 で strongItemEvidence=true
+00:19 +160: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision strongItemEvidence=true なら genreAligned=false でも showEligible=true
+00:19 +161: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop=true は strongItemEvidence があっても showEligible=false
+00:19 +162: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision broadShop=true は showEligible=false
+00:19 +163: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision candidate1 不適格なら candidate2 に displayRank=1
+00:19 +164: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ベビー相当で水筒系のみの Pool では recommendedDisplayCount=0
+00:19 +165: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision decision / candidate ログと willUsePoolForUi / willSkipApi
+00:19 +166: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement logs summary / top ログ形式
+00:19 +167: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible + displayRank&lt;=recommended の候補だけ抽出する
+00:19 +168: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge buildCardTapLogLine のログ形式
+00:19 +169: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge recommendedDisplayCount=0 なら displayCandidates=0（コーヒー相当）
+00:19 +170: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge ベビー相当で recommendedDisplayCount=0 なら displayCandidates=0
+00:19 +171: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible=false は displayRank があっても除外される
+00:19 +172: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge displayRank&gt;recommended は除外される
+00:19 +173: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge contentEquals は表示候補の差分を検出する
+00:19 +174: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge candidate1 不適格でも candidate2 が displayRank=1 なら抽出する
+00:19 +175: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolFallbackKeywordSynonyms 水筒の同義語を返す
+00:19 +176: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒で商品名マッチは strong
+00:19 +177: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒でお名前シールは noMatch
+00:20 +178: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance ジャンル名マッチは medium
+00:20 +179: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance unknown genre を検出する
+00:21 +180: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=product displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=4
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+00:21 +181: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog カタログ upsert 失敗でも検索は成功のまま
+00:21 +182: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+00:21 +183: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery でも ProductCatalog upsert が実行される
+00:21 +184: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery カタログ upsert 失敗でも検索は成功のまま
+00:21 +185: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: beginSearchSession increments active request id
+00:21 +186: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorForNewSearch clears error and retry banner
+[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=1 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+00:21 +187: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorIfModeMismatch clears error owned by another mode
+00:21 +188: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: isErrorVisibleForMode is true only for matching tag
+00:22 +189: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId / itemCode 優先で canonicalId が決まる
+00:22 +190: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId が無い場合 normalizedItemUrl から synthetic key が作られる
+00:22 +191: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys canonicalId が決められない場合は null
+00:22 +192: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys alias を生成できる
+00:22 +193: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys itemUrl を正規化できる
+00:22 +194: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId と URL パスが不一致のとき composite alias を付けない
+00:22 +195: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId・別 URL で false
+00:22 +196: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId では信頼 URL 同一でも false
+00:22 +197: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId + 同一 affiliate URL で false
+00:22 +198: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+00:22 +199: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は同一 productId なら true
+00:23 +200: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+[GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+00:24 +200: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 正常商品の qualityStatus が生成できる
+00:24 +201: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+00:24 +202: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 画像なしを判定できる
+00:24 +203: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 価格なしを判定できる
+00:24 +204: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 安全 NG を判定できる
+00:24 +205: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreName があるときはそのまま
+00:24 +206: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreId のみのとき GenreMaster で補完
+00:24 +207: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+00:24 +208: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (tearDownAll)
+00:24 +208: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:24 +209: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:24 +210: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:24 +211: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:24 +212: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:24 +213: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:24 +214: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:24 +215: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:24 +216: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics computeShopDiscoveryEnrichmentOpportunity は API を呼ばない
+00:24 +217: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailDepthTrace / PoolTrace は例外なく実行できる
+00:24 +218: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailCatalogItemTrace は duplicate reason を含める
+00:25 +219: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem source=search / sourceTrust=high になる
+00:25 +220: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logSavedOrDiscoveryShopDepthAfterUpsert は例外なく実行できる
+00:25 +221: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem affiliate URL は normalizedItemUrl に残るが identity URL ではない
+00:25 +222: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration detail upsert 後 poolItemCount が2になる
+00:25 +223: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem alias が生成される
+00:25 +224: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem alias が生成される
+00:25 +225: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem alias が生成される
+00:25 +226: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: ProductCatalogUpsertTimingRegistry upsert 完了後の read は usesFreshCatalog=true
+00:25 +227: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 安全 NG は qualityStatus.safe=false になる
+00:26 +228: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 安全 NG は qualityStatus.safe=false になる
+00:26 +229: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 安全 NG は qualityStatus.safe=false になる
+00:26 +230: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 安全 NG は qualityStatus.safe=false になる
+00:26 +231: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+00:26 +232: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter sex toy は除外
+00:26 +233: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 画像なし・価格なしは保存可能で qualityStatus に反映される
+00:26 +234: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 画像なし・価格なしは保存可能で qualityStatus に反映される
+00:26 +235: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 画像なし・価格なしは保存可能で qualityStatus に反映される
+00:26 +236: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おもちゃ/宮本真希[DVD]は adultKeyword がなければ通す
+00:26 +237: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ベビー おもちゃは通す
+00:26 +238: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=false のとき no-op
+00:26 +239: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ビール10本セットは除外
+00:26 +240: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 安全 NG は upsert 対象から除外される
+00:26 +241: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 安全 NG は upsert 対象から除外される
+00:26 +242: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter シャンパングラスは通す
+00:26 +243: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter シャンパングラスは通す
+00:26 +244: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 変換商品を upsert すると alias で検索できる
+00:26 +245: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ワイングラスは通す
+00:26 +246: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems catalogUpsertModeLabelForSearchModeTag がモード別ラベルを返す
+00:26 +247: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 子供服は通す
+00:26 +248: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems kProductCatalogEnabled=false のとき no-op
+00:26 +249: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter アダルトグッズは除外
+00:26 +250: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems source=shopDiscovery / sourceTrust=medium になる
+00:26 +251: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter グラビア写真集は除外
+00:26 +252: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ジャンル名がビール・洋酒なら除外
+00:26 +253: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 安全 NG は upsert 対象から除外される
+00:26 +254: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems canonicalId 不可商品は保存しない
+00:26 +255: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems genreId のみのとき GenreMaster で genreName を補完して保存する
+00:26 +256: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems 同一 shopCode 複数商品を保存すると aggregator の itemCount が 2 以上になる
+00:26 +257: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems initialItems / medium trust で upsert される
+00:26 +258: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems loadedByShopCode / high trust で upsert される
+00:26 +259: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems unsafe / canonicalId不可は保存されない
+00:26 +260: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 shopCode 複数商品で itemCount2Plus になる
+00:26 +261: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 別 canonicalId なら productCountForShop=2 / inserted+updated 内訳
+00:26 +262: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 canonicalId 2件は merge で productCountForShop=1
+00:26 +263: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems productIdとURLパス不一致2件は productCountForShop=2
+00:26 +264: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 既存商品への同一 canonicalId 2件は inserted=0 updated=2
+00:26 +265: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: buildShopDiscoveryDetailCatalogItemTraces 同一 productId 2件目は canonicalDuplicate
+00:26 +266: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard 同一 signature では2回目 upsert しない
+00:26 +267: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard initial / loaded は別管理
+00:28 +268: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+00:28 +269: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort defaultOrder は API でもレビュー件数順
+00:28 +270: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort ユーザー選択肢に defaultOrder は含めない
+00:28 +271: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort ユーザー選択肢に defaultOrder は含めない
+00:28 +272: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment normalizedItemUrl 一致で照合できる
+00:29 +273: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 表示ラベルに「おすすめ」「デフォルト」は出さない
+00:29 +274: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopCode + itemPathSegment 一致で照合できる
+00:29 +275: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort レビューが多い順の表示
+00:29 +276: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 商品名だけでは照合・補完しない
+00:29 +277: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment stale な商品は補完に使わない
+00:29 +278: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment sourceTrust=low は補完に使わない
+00:29 +279: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が安全ならカタログ画像で上書きしない
+00:29 +280: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+00:30 +281: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が疑わしくカタログ画像が安全なら補完できる
+00:30 +282: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+00:30 +283: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が0ならカタログ価格で補完できる
+00:30 +284: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が有効なら上書きしない
+00:30 +285: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopName / genreName が空なら補完できる
+00:30 +286: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment upsert時に high が low で上書きされない
+00:30 +287: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment repository が null でも upsert は skipped
+00:31 +288: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop and url slug match accepts candidate
+00:31 +289: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch price match alone does not accept candidate
+00:31 +290: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop mismatch rejects candidate
+00:31 +291: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 price=3980 に incoming price=-1 が来ても 3980 を維持
+00:31 +292: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 imageUrl 有効、incoming 空なら既存維持
+00:31 +293: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 shopCode 有効、incoming 空なら既存維持
+00:31 +294: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 genreName 有効、incoming 空なら既存維持
+00:31 +295: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge incoming api値が有効な場合だけ上書き
+00:32 +296: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl extracts composite itemCode and slug from event+dest
+00:32 +297: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl supports rat-redirect host and drinkshop slug
+00:32 +298: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: roomImportEnrichSlugShouldSkipDirectItemCode flags slug-like segments
+00:33 +299: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:33 +300: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics reactionScore は like + comment*3
+00:33 +301: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genre 空は ジャンル未確認
+00:33 +302: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName 空なら shopCode をUIに出さずショップ未確認
+00:33 +303: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName も shopCode も空なら ショップ未確認
+00:33 +304: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics 未分類ジャンルは傾向集計対象外
+00:33 +305: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genreName空でもgenreIdからマスタ解決できれば集計対象
+00:33 +306: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopCodeのみのショップは傾向集計対象外
+00:34 +307: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 価格だけ未取得のとき強い未確認文言は出さない
+00:34 +308: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 商品名も画像も無いときは売り切れ系を表示
+00:35 +309: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 有効な商品は通す
+00:35 +310: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary ShopDiscoverySummary から ShopCatalogEntry に変換できる
+00:35 +311: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+00:35 +312: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+00:35 +313: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+00:35 +314: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary safeItemCount=0 相当（hitItemCount=0）は保存しない
+00:35 +315: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 価格なしは除外
+00:35 +316: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 価格なしは除外
+00:35 +317: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=false では no-op
+00:35 +318: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 商品URLなしは除外
+00:35 +319: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=true で upsertAll 相当が動く
+00:35 +320: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter プレースホルダ商品名は除外
+00:35 +321: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter プレースホルダ商品名は除外
+00:35 +322: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries 入力 summaries の件数・順序を変えない
+00:35 +323: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 大人のおもちゃは安全フィルタで除外
+00:35 +324: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 木のおもちゃは通す
+00:35 +325: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ10件・保存ジャンル3系統で API 全スキップ可
+00:35 +326: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ不足では API 全スキップしない
+00:35 +327: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool PRODUCT_CATALOG_ENABLED=false では空結果
+00:35 +328: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 品質OKなカタログ商品がプールに入る
+00:35 +329: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool stale は除外される
+00:35 +330: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 候補済み productId は除外される
+00:35 +331: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool upsertCatalogFromRecommendItems は todayRecommendation になる
+00:36 +332: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 10件そろっても保存ジャンル必須プランは件数では打ち切らない
+00:37 +333: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 補助プランは件数不足かつAPI余裕があるときのみ
+00:37 +334: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 見送り済みは一定期間除外される
+00:37 +335: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 表示済みは一定期間除外される
+00:37 +336: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 古い表示済みは除外されない
+00:38 +337: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 保存ジャンル3件で最終10件が1ジャンルに偏りすぎない
+00:38 +338: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 他ジャンル候補がない場合は偏りを許容する
+00:38 +339: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution computeTargetQuotas は3ジャンル10件で4/3/3
+00:38 +340: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore page=1固定にならず次回は page を進める
+00:38 +341: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore 枯渇クールダウン中は page 1 に戻る
+00:38 +342: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore maxPage 超過後は 1 にラップ
+00:38 +343: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore rawCount が少ないと exhaustedUntil が設定される
+00:39 +344: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: FavoriteGenreSelectionPolicy 保存ジャンル上限は3件
+00:39 +345: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy 既定 sort はレビュー件数順で null ではない
+00:39 +346: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy API上限は10より小さい
+00:39 +347: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder buildPlanSet は保存ジャンル必須と補助を分割する
+00:39 +348: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル3件でジャンルプラン3＋補助最大1
+00:39 +349: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル5件指定でもジャンルプランは3件まで
+00:39 +350: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルなしのときフォールバック1件
+00:39 +351: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 補助プランは最大1件（反応ジャンル）
+00:39 +352: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルと同じ補助条件は追加しない
+00:39 +353: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder maxPlanCount は API 上限を超えない
+00:39 +354: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy strongItemEvidence=true かつ genreAligned=false は商品名理由文
+00:39 +355: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardCopy genreAligned=true はジャンル理由文
+00:39 +356: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+00:40 +357: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が1件なら補助枠カードを表示する
+00:40 +358: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection 複数候補は displayRank 昇順の並びで表示する
+00:40 +359: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection onCandidateTap が渡されていればタップで callback が呼ばれる
+00:41 +360: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection onCandidateTap 未指定ならタップ領域を出さない
+00:41 +361: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter build apk --debug --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true 2>&1</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter build apk --debug --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=true 2>&1
+```
+
+```
+Running Gradle task 'assembleDebug'...                             51.5s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+## 調査結論
+
+`onCandidateTap` の配線と `_onSupplementCardTap` → `logCardTap` の呼び出し自体は正しく実装されていました。原因は **`AppCard` の `onTap` 実装**です。
+
+`AppCard` は `InkWell` の子に **不透明な `Container`（背景色付き）** を置いているため、実機ではタップイベントが `onTap` まで届かないケースがあります。widget test では `find.text(...)` でタップしており、この問題が表面化しにくい状態でした。
+
+---
+
+## 修正内容
+
+`lib/widgets/shop_discovery_pool_supplement_cards.dart` の補助枠カードのみ変更:
+
+1. **`AppCard.onTap` を使わない**（不透明子 + InkWell の組み合わせを回避）
+2. カード全体を **`GestureDetector(behavior: HitTestBehavior.opaque)`** でラップ
+3. テスト用に `ValueKey('shop-discovery-supplement-card-${shopCode}')` を付与
+
+`rakuten_search_screen.dart` の `_onSupplementCardTap` / `logCardTap` / `_openShopDetail` は変更していません。
+
+---
+
+## 確認結果（コード上）
+
+| 項目 | 状態 |
+|---|---|
+| `onCandidateTap` 渡し | OK（`_buildShopDiscoverySummaryList` 内） |
+| `_onSupplementCardTap` | OK（先頭で `logCardTap`） |
+| `_openShopDetail(items=空)` | OK（`shopCode=soukaidrink` 相当の summary） |
+| `ShopDiscoveryDetailScreen._loadItemsFromShopCode` | OK（items 空時に post-frame で起動） |
+
+---
+
+## テスト
+
+- widget test を **InkWell キータップ**ベースに強化
+- `onCandidateTap` 未指定時は `GestureDetector` が出ないことを追加
+- `flutter test` 全件成功（+361 tests）
+
+---
+
+## 実機確認
+
+修正 APK のビルドは成功しています。端末へのインストールはこの環境では実行できませんでした。以下で再確認してください。
+
+```powershell
+.\run_and_record_select_device.ps1 -BuildMode debug `
+  -DartDefine PRODUCT_CATALOG_ENABLED=true,SHOP_CATALOG_ENABLED=true,CATALOG_AUDIT_LOGS=true
+```
+
+**手順:** 水筒検索 → 補助枠カードタップ
+
+**期待ログ:**
+```
+[SHOP_DISCOVERY_POOL_SUPPLEMENT_CARD_TAP] keyword=水筒 shopCode=soukaidrink shopName=... action=shopSearch
+```
+
+タップ後はショップ詳細画面へ遷移し、shopCode による商品一覧 API が走るはずです。

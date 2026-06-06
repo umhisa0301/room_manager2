@@ -111,11 +111,12 @@ class _ShopDiscoveryPoolSupplementCard extends StatelessWidget {
     final theme = Theme.of(context);
     final reason = ShopDiscoveryPoolSupplementCardCopy.reasonText(candidate);
 
-    final card = AppCard(
+    return AppCard(
       padding: const EdgeInsets.all(10),
       radius: 10,
       backgroundColor: HomeScreenColors.roomContentWellFill,
       borderColor: HomeScreenColors.deckOutline,
+      onTap: onTap == null ? null : () => onTap!(candidate),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -167,17 +168,6 @@ class _ShopDiscoveryPoolSupplementCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-
-    if (onTap == null) {
-      return card;
-    }
-
-    return GestureDetector(
-      key: ValueKey('shop-discovery-supplement-card-${candidate.shopCode}'),
-      behavior: HitTestBehavior.opaque,
-      onTap: () => onTap!(candidate),
-      child: card,
     );
   }
 }

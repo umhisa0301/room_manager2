@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -191,6 +193,86 @@ void main() {
       await tester.pump();
       await tester.pumpAndSettle();
       expect(catalog.count(), 1);
+    });
+  });
+
+  group('ShopDiscoveryDetailScreen save shop', () {
+    testWidgets('未保存時に「このショップを保存」が表示されタップで保存される', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final catalog = ProductCatalogRepository(prefs);
+      await catalog.clear();
+
+      await tester.pumpWidget(
+        _wrap(
+          prefs: prefs,
+          catalog: catalog,
+          searchRepository: _StubSearchRepository(const []),
+          child: ShopDiscoveryDetailScreen(
+            summary: _summary(shopCode: 'the-charme'),
+            items: [_detailItem(shopCode: 'the-charme')],
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final savedProvider = tester
+          .element(find.byType(ShopDiscoveryDetailScreen))
+          .read<SavedShopProvider>();
+
+      expect(find.text('このショップを保存'), findsOneWidget);
+      expect(savedProvider.isSaved('the-charme'), isFalse);
+
+      await tester.tap(find.byKey(const Key('shop_discovery_detail_save_shop')));
+      await tester.pumpAndSettle();
+
+      expect(savedProvider.isSaved('the-charme'), isTrue);
+      expect(find.text('保存済み'), findsOneWidget);
+      expect(find.text('このショップを保存'), findsNothing);
+      expect(savedProvider.shops.where((e) => e.shopId == 'the-charme').length, 1);
+    });
+
+    testWidgets('保存済みの場合は「保存済み」表示で重複保存しない', (tester) async {
+      SharedPreferences.setMockInitialValues({
+        'saved_shops_v1': jsonEncode([
+          {
+            'shopId': 'the-charme',
+            'shopName': '水筒ショップ',
+            'shopUrl': 'https://www.rakuten.co.jp/the-charme/',
+            'savedAt': '2026-06-06T00:00:00.000',
+          },
+        ]),
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final catalog = ProductCatalogRepository(prefs);
+      await catalog.clear();
+
+      await tester.pumpWidget(
+        _wrap(
+          prefs: prefs,
+          catalog: catalog,
+          searchRepository: _StubSearchRepository(const []),
+          child: ShopDiscoveryDetailScreen(
+            summary: _summary(shopCode: 'the-charme'),
+            items: [_detailItem(shopCode: 'the-charme')],
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final savedProvider = tester
+          .element(find.byType(ShopDiscoveryDetailScreen))
+          .read<SavedShopProvider>();
+
+      expect(find.text('保存済み'), findsOneWidget);
+      expect(find.text('このショップを保存'), findsNothing);
+      expect(savedProvider.isSaved('the-charme'), isTrue);
+      expect(savedProvider.shops.where((e) => e.shopId == 'the-charme').length, 1);
+      await tester.tap(find.byKey(const Key('shop_discovery_detail_save_shop')));
+      await tester.pumpAndSettle();
+      expect(savedProvider.shops.where((e) => e.shopId == 'the-charme').length, 1);
     });
   });
 }
