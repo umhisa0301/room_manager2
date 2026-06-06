@@ -197,3 +197,8 @@ I/flutter (16472): [TODAY_RECOMMEND_GENERATION_SUMMARY] plannedFavoriteGenres=3 
 I/flutter (16472): [TODAY_RECOMMEND_FINAL_DISTRIBUTION] finalGenreDistribution=100026:4|100227:3|100316:3 finalShopDistribution=アリージェム:1|水郷のとりやさん:1|リカーBOSS 楽天市場店:1|MSL FORCE公式楽天市場店:1|大阪王将 公式通販 楽天市場店:1|バレビレ2号店:1|インテリアショップ roomy:1|港ダイニングしおそう:1|海鮮蟹工房:1|ディスプレイといいものこだわり屋:1
 I/flutter (16472): [TODAY_RECOMMEND_CATALOG_SUMMARY] enabled=true catalogCount=800 catalogCandidates=58 catalogAccepted=58 catalogRejectedStale=38 catalogRejectedQuality=200 catalogRejectedManaged=1 catalogRejectedGenre=422 catalogRejectedTrust=0 apiSkippedByCatalog=false apiCalls=3 finalItems=10
 W/o.room_manager2(16472): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
