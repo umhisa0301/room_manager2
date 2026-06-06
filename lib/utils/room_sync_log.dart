@@ -800,6 +800,30 @@ void roomBatchSaveResultLog(String message) {
   _emitRoomImportDetailLine(line);
 }
 
+/// URL検索の入口〜API 戦略トレース（kDebugMode のみ）。
+void urlSearchTraceLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[URL_SEARCH_TRACE] $message');
+}
+
+/// URL検索の成否サマリー（kDebugMode のみ）。
+void urlSearchResultLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[URL_SEARCH_RESULT] $message');
+}
+
+/// ROOM 取り込み補完の戦略トレース（kDebugMode のみ）。
+void roomImportEnrichTraceLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[ROOM_IMPORT_ENRICH_TRACE] $message');
+}
+
+/// ROOM 取り込み補完の1件結果（kDebugMode のみ）。
+void roomImportEnrichResultLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[ROOM_IMPORT_ENRICH_RESULT] $message');
+}
+
 void roomSyncUiGuardLog(String message) {
   final line = '[ROOM_SYNC_UI_GUARD] $message';
   _emitRoomImportDetailLine(line);

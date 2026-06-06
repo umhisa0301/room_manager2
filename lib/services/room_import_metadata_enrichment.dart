@@ -1054,6 +1054,10 @@ class RoomImportMetadataEnrichmentService {
           'urlSlug=${codes.urlPathMatchSegment}',
         );
         roomImportEnrichMethodLog('method=${_methodLogName(chosenMethod)}');
+        roomImportEnrichTraceLog(
+          'source=${codes.source} strategy=${_methodLogName(chosenMethod)} '
+          'productId=$pid shopCode=${shopCodeLog.isEmpty ? codes.keywordShopCode : shopCodeLog}',
+        );
 
         var catalogApplied = false;
         final catalogRepo = _productCatalogRepository;
@@ -1101,6 +1105,10 @@ class RoomImportMetadataEnrichmentService {
                   'productId=$pid source=catalog '
                   'shopName=${patch.shopName.trim()} '
                   'genreName=${patch.genreName.trim()}',
+                );
+                roomImportEnrichResultLog(
+                  'success=true productId=$pid shopCode=${patch.shopCode.trim()} '
+                  'result=catalog',
                 );
               } catch (_) {
                 failCount++;
@@ -1215,6 +1223,9 @@ class RoomImportMetadataEnrichmentService {
           roomImportEnrichFailLog(
             'productId=$pid method=${_methodLogName(chosenMethod)} reason=429',
           );
+          roomImportEnrichResultLog(
+            'success=false productId=$pid shopCode=$shopCodeLog result=429',
+          );
           failCount++;
           pausedByRateLimit = true;
           stopReasonTag = 'rateLimited';
@@ -1230,6 +1241,9 @@ class RoomImportMetadataEnrichmentService {
           }
           roomImportEnrichFailLog(
             'productId=$pid method=${_methodLogName(chosenMethod)} reason=400',
+          );
+          roomImportEnrichResultLog(
+            'success=false productId=$pid shopCode=$shopCodeLog result=400',
           );
           failCount++;
           continue;
@@ -1391,6 +1405,9 @@ class RoomImportMetadataEnrichmentService {
         roomImportEnrichSuccessLog(
           'productId=$pid price=${api.itemPrice} image=$imgLog '
           'shopName=${api.shopName.trim()} genreName=${api.genreName.trim()}',
+        );
+        roomImportEnrichResultLog(
+          'success=true productId=$pid shopCode=${api.shopCode.trim()} result=api',
         );
 
         await _productRepository.updateManagedProduct(pid, (e) {

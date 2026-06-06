@@ -25,6 +25,34 @@ void main() {
           )
           as RakutenItemPageUrlParseSuccess;
       expect(s.itemCode, 'soukaidrink:4901085161999');
+      expect(s.isApiStyleItemCode, isTrue);
+    });
+
+    test('スラッグ URL でも shopCode と itemCode を抽出する', () {
+      const url = 'https://item.rakuten.co.jp/oiwaizen/sanrio-001-s/';
+      final r = RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl(
+        url,
+      );
+      expect(r, isA<RakutenItemPageUrlParseSuccess>());
+      final s = r as RakutenItemPageUrlParseSuccess;
+      expect(s.shopCode, 'oiwaizen');
+      expect(s.itemId, 'sanrio-001-s');
+      expect(s.itemCode, 'oiwaizen:sanrio-001-s');
+      expect(s.isApiStyleItemCode, isFalse);
+    });
+
+    test('affiliateUrl から itemCode を抽出する', () {
+      const itemUrl =
+          'https://item.rakuten.co.jp/soukaidrink/4901085161999/?scid=share';
+      final affiliate =
+          'https://hb.afl.rakuten.co.jp/hgc/test/?pc=${Uri.encodeComponent(itemUrl)}&link_type=pcpath';
+      final r = RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl(
+        affiliate,
+      );
+      expect(r, isA<RakutenItemPageUrlParseSuccess>());
+      final s = r as RakutenItemPageUrlParseSuccess;
+      expect(s.itemCode, 'soukaidrink:4901085161999');
+      expect(s.isApiStyleItemCode, isTrue);
     });
 
     test('検索結果ホストは非商品ページエラーになる', () {
@@ -101,6 +129,30 @@ void main() {
         itemCode: 'c:3',
       );
       expect(k, RakutenUrlRegistryClassification.unregistered);
+    });
+
+    test('ROOM 取り込み slug productId と shopCode でコレ済み判定', () {
+      final items = [
+        RakutenManagedProduct.fromSearchItem(
+          RakutenSearchItem(
+            productId: 'sanrio-001-s',
+            itemName: 'n',
+            itemPrice: 100,
+            itemUrl: 'https://item.rakuten.co.jp/oiwaizen/sanrio-001-s/',
+            affiliateUrl: '',
+            imageUrl: '',
+            shopName: 's',
+            shopCode: 'oiwaizen',
+          ),
+          status: RakutenManagedProductStatus.done,
+          now: DateTime.parse('2024-01-01T12:00:00.000Z'),
+        ),
+      ];
+      final k = RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts(
+        items: items,
+        itemCode: 'oiwaizen:sanrio-001-s',
+      );
+      expect(k, RakutenUrlRegistryClassification.collectedDone);
     });
   });
 }

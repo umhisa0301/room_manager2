@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 import '../models/rakuten_managed_product.dart';
+import '../utils/rakuten_ichiba_url_parse.dart';
+import '../utils/room_rakuten_url_normalize.dart';
 
 /// 楽天市場 **商品ページ** URL から [RakutenManagedProduct.productId] 形式の itemCode を取り出す。
 ///
@@ -28,6 +30,15 @@ abstract final class RakutenItemPageUrlItemCodeService {
       return RakutenItemPageUrlParseFailure(messageNeedIchibaProductPageUrl);
     }
 
+    final normalizedUrl =
+        RoomRakutenUrlNormalize.resolveToCanonicalItemRakutenUrl(trimmed);
+    if (normalizedUrl != null && normalizedUrl.trim().isNotEmpty) {
+      final normUri = Uri.tryParse(normalizedUrl.trim());
+      if (normUri != null && normUri.hasAuthority) {
+        return _parseItemHost(normUri, normalizedUrl: normalizedUrl.trim());
+      }
+    }
+
     final uri = Uri.tryParse(trimmed);
     if (uri == null || !uri.hasAuthority) {
       return RakutenItemPageUrlParseFailure(messageNeedIchibaProductPageUrl);
@@ -51,6 +62,26 @@ abstract final class RakutenItemPageUrlItemCodeService {
     return RakutenItemPageUrlParseFailure(messageNeedIchibaProductPageUrl);
   }
 
+  /// [items] から URL 解析結果に一致する行を返す（ROOM 取り込みの slug productId も照合）。
+  static RakutenManagedProduct? findManagedProductForParsedUrl({
+    required List<RakutenManagedProduct> items,
+    required RakutenItemPageUrlParseSuccess parsed,
+  }) {
+    final composite = parsed.itemCode.trim();
+    final slug = parsed.itemId.trim();
+    final shop = parsed.shopCode.trim();
+    if (composite.isEmpty) return null;
+    for (final e in items) {
+      final pid = e.productId.trim();
+      if (pid.isEmpty) continue;
+      if (pid == composite) return e;
+      if (slug.isNotEmpty && shop.isNotEmpty && pid == slug) {
+        if (e.shopCode.trim() == shop) return e;
+      }
+    }
+    return null;
+  }
+
   /// [items]（通常は管理 Provider の一覧）と照合し、UI 表示優先順位:
   /// コレ済 → コレ候補 → 未登録。
   static RakutenUrlRegistryClassification classifyAgainstManagedProducts({
@@ -59,22 +90,37 @@ abstract final class RakutenItemPageUrlItemCodeService {
   }) {
     final id = itemCode.trim();
     if (id.isEmpty) return RakutenUrlRegistryClassification.unregistered;
-    RakutenManagedProduct? found;
-    for (final e in items) {
-      if (e.productId.trim() == id) {
-        found = e;
-        break;
+    final colon = id.indexOf(':');
+    RakutenItemPageUrlParseSuccess? synthetic;
+    if (colon > 0 && colon < id.length - 1) {
+      synthetic = RakutenItemPageUrlParseSuccess(
+        shopCode: id.substring(0, colon).trim(),
+        itemId: id.substring(colon + 1).trim(),
+        itemCode: id,
+        isApiStyleItemCode: rakutenIchibaUrlLooksLikeApiItemCode(id),
+      );
+    }
+    final found = synthetic != null
+        ? findManagedProductForParsedUrl(items: items, parsed: synthetic)
+        : null;
+    RakutenManagedProduct? resolved = found;
+    if (resolved == null) {
+      for (final e in items) {
+        if (e.productId.trim() == id) {
+          resolved = e;
+          break;
+        }
       }
     }
-    if (found == null) return RakutenUrlRegistryClassification.unregistered;
+    if (resolved == null) return RakutenUrlRegistryClassification.unregistered;
     if (RakutenManagedProduct.isMemberForStatusTab(
-      found,
+      resolved,
       RakutenManagedProductStatus.done,
     )) {
       return RakutenUrlRegistryClassification.collectedDone;
     }
     if (RakutenManagedProduct.isMemberForStatusTab(
-      found,
+      resolved,
       RakutenManagedProductStatus.candidate,
     )) {
       return RakutenUrlRegistryClassification.candidate;
@@ -82,24 +128,30 @@ abstract final class RakutenItemPageUrlItemCodeService {
     return RakutenUrlRegistryClassification.unregistered;
   }
 
-  static RakutenItemPageUrlParseResult _parseItemHost(Uri uri) {
+  static RakutenItemPageUrlParseResult _parseItemHost(
+    Uri uri, {
+    String? normalizedUrl,
+  }) {
     final segments = uri.pathSegments.where((s) => s.isNotEmpty).toList();
     if (segments.length < 2) {
       return RakutenItemPageUrlParseFailure(messageNonProductPagesNotSupported);
     }
     final shop = segments[0].trim();
     final itemSeg = segments[1].trim();
-    if (!_isValidShopCodeSegment(shop) || !_isNumericItemId(itemSeg)) {
+    if (!_isValidShopCodeSegment(shop) || !_isValidItemPathSegment(itemSeg)) {
       return RakutenItemPageUrlParseFailure(messageCouldNotConfirmProductUrl);
     }
     final itemCode = '$shop:$itemSeg';
-    if (!kRakutenIchibaApiItemCodePattern.hasMatch(itemCode)) {
-      return RakutenItemPageUrlParseFailure(messageCouldNotConfirmProductUrl);
-    }
     return RakutenItemPageUrlParseSuccess(
       shopCode: shop,
       itemId: itemSeg,
       itemCode: itemCode,
+      isApiStyleItemCode: rakutenIchibaUrlLooksLikeApiItemCode(itemCode),
+      normalizedUrl: normalizedUrl ??
+          RoomRakutenUrlNormalize.canonicalItemRakutenUrl(
+            shopCode: shop,
+            itemPathSegment: itemSeg,
+          ),
     );
   }
 
@@ -142,7 +194,11 @@ abstract final class RakutenItemPageUrlItemCodeService {
     return RegExp(r'^[0-9A-Za-z\-_%]+$').hasMatch(t);
   }
 
-  static bool _isNumericItemId(String s) => RegExp(r'^[0-9]+$').hasMatch(s);
+  static bool _isValidItemPathSegment(String s) {
+    final t = s.trim();
+    if (t.isEmpty || t.length > 160) return false;
+    return RegExp(r'^[0-9A-Za-z\-_%]+$').hasMatch(t);
+  }
 }
 
 /// [RakutenProductSearchCondition.itemCode] / 保存 [RakutenManagedProduct.productId] と同型か。
@@ -165,13 +221,21 @@ final class RakutenItemPageUrlParseSuccess extends RakutenItemPageUrlParseResult
     required this.shopCode,
     required this.itemId,
     required this.itemCode,
+    this.isApiStyleItemCode = false,
+    this.normalizedUrl = '',
   });
 
   final String shopCode;
   final String itemId;
 
-  /// `shopCode:itemId`（API itemCode）。
+  /// `shopCode:itemId`（API itemCode または URL スラッグ composite）。
   final String itemCode;
+
+  /// 楽天 Item Search の direct itemCode 形式（`shop:数字`）か。
+  final bool isApiStyleItemCode;
+
+  /// 正規化済み item.rakuten URL（ログ・API 照合用）。
+  final String normalizedUrl;
 }
 
 final class RakutenItemPageUrlParseFailure extends RakutenItemPageUrlParseResult {

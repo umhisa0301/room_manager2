@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../app_messenger.dart';
-import '../models/rakuten_product_search_condition.dart';
 import '../models/rakuten_managed_product.dart';
 import '../navigation/app_shell_controller.dart';
 import '../repository/rakuten_search_repository.dart';
@@ -240,15 +239,12 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
     RakutenItemPageUrlParseSuccess s,
   ) async {
     final managed = context.read<RakutenManagedProductProvider>();
-    RakutenManagedProduct? found;
-    for (final e in managed.items) {
-      if (e.productId.trim() == s.itemCode) {
-        found = e;
-        break;
-      }
-    }
+    final found = RakutenItemPageUrlItemCodeService.findManagedProductForParsedUrl(
+      items: managed.items,
+      parsed: s,
+    );
     if (found != null) {
-      final err = await managed.openRakutenItemPage(context, s.itemCode);
+      final err = await managed.openRakutenItemPage(context, found.productId);
       if (!context.mounted) return;
       if (err != null) {
         setState(() => _actionError = err);
@@ -262,17 +258,22 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
 
   Future<String?> _registerFromApi(
     BuildContext context,
-    String itemCode,
+    RakutenItemPageUrlParseSuccess parsed,
   ) async {
     final repo = context.read<RakutenSearchRepository>();
     final managed = context.read<RakutenManagedProductProvider>();
-    final list = await repo.search(
-      condition: RakutenProductSearchCondition(keyword: '', itemCode: itemCode),
+    final outcome = await repo.resolveProductForUrlSearch(
+      inputUrl: _urlController.text,
+      shopCode: parsed.shopCode,
+      pureItemCode: parsed.itemId,
+      isApiStyleItemCode: parsed.isApiStyleItemCode,
+      normalizedUrl: parsed.normalizedUrl,
     );
-    if (list.isEmpty) {
-      return '商品情報を取得できませんでした。itemCode を確認するか、しばらくしてからお試しください。';
+    if (outcome.item == null) {
+      return outcome.userMessage ??
+          '商品情報を取得できませんでした。itemCode を確認するか、しばらくしてからお試しください。';
     }
-    return managed.registerCandidate(list.first);
+    return managed.registerCandidate(outcome.item!);
   }
 
   void _closeSheetAndPopScreenAndOpenRoomCollect({
@@ -333,12 +334,10 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
   }) {
     RakutenManagedProduct? product;
     final managed = context.read<RakutenManagedProductProvider>();
-    for (final e in managed.items) {
-      if (e.productId.trim() == parsed.itemCode) {
-        product = e;
-        break;
-      }
-    }
+    product = RakutenItemPageUrlItemCodeService.findManagedProductForParsedUrl(
+      items: managed.items,
+      parsed: parsed,
+    );
     final title = product?.itemName.trim().isNotEmpty == true
         ? product!.itemName.trim()
         : parsed.itemCode;
@@ -400,6 +399,14 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
                   items: managed.items,
                   itemCode: _parsed!.itemCode,
                 );
+          final matchedProduct = _parsed == null
+              ? null
+              : RakutenItemPageUrlItemCodeService.findManagedProductForParsedUrl(
+                  items: managed.items,
+                  parsed: _parsed!,
+                );
+          final actionProductId =
+              matchedProduct?.productId.trim() ?? _parsed?.itemCode ?? '';
 
           return SafeArea(
             child: SingleChildScrollView(
@@ -444,7 +451,7 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'item.rakuten.co.jp の商品ページを対象にしています（クエリは無視されます）。',
+                    'item.rakuten.co.jp の商品ページ、または affiliateUrl（hb.afl.rakuten.co.jp）を対象にしています（クエリは無視されます）。',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                       height: 1.45,
@@ -508,12 +515,12 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
                       onClearActionError: () => setState(() => _actionError = null),
                       onActionError: (msg) => setState(() => _actionError = msg),
                       onOpenRakuten: () => _openRakutenForParsed(context, _parsed!),
-                      onRegisterFromApi: () => _registerFromApi(context, _parsed!.itemCode),
+                      onRegisterFromApi: () => _registerFromApi(context, _parsed!),
                       onCollectToDone: () async {
                         final managed = context.read<RakutenManagedProductProvider>();
                         return managed.collectRoomAndLaunch(
                           context,
-                          _parsed!.itemCode,
+                          actionProductId,
                           notifyInsteadOfDialogs: (msg) {
                             if (context.mounted) {
                               setState(() => _actionError = msg);
@@ -529,7 +536,7 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
                       onGoCandidateList: () =>
                           _closeSheetAndPopScreenAndOpenRoomCollect(
                             initialTabIndex: 0,
-                            focusCandidateProductId: _parsed!.itemCode,
+                            focusCandidateProductId: actionProductId,
                           ),
                       afterRegistration: () {
                         if (context.mounted) {
@@ -786,9 +793,16 @@ class _ActionButtonsForClassification extends StatelessWidget {
                         return;
                       }
                       final managed = context.read<RakutenManagedProductProvider>();
+                      final registered =
+                          RakutenItemPageUrlItemCodeService.findManagedProductForParsedUrl(
+                            items: managed.items,
+                            parsed: parsed,
+                          );
+                      final collectId =
+                          registered?.productId.trim() ?? parsed.itemCode;
                       final ok = await managed.collectRoomAndLaunch(
                         context,
-                        parsed.itemCode,
+                        collectId,
                         notifyInsteadOfDialogs: onActionError,
                       );
                       if (!context.mounted) return;

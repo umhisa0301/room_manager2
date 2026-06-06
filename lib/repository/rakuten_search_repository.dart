@@ -13,6 +13,7 @@ import '../utils/app_debug_log.dart';
 import '../utils/product_safety_filter.dart';
 import '../utils/rakuten_product_genre_display.dart';
 import '../utils/room_import_product_url_match.dart';
+import '../utils/room_rakuten_url_normalize.dart';
 import '../utils/room_sync_log.dart';
 import '../utils/search_result_quality_filter.dart';
 import '../utils/shop_search_fetch_log.dart';
@@ -159,6 +160,23 @@ class RoomImportEnrichmentFetchEnvelope {
 
   /// 通信エラー時のレスポンス本文先頭（診断用）。
   final String? responseBodyPreview;
+}
+
+/// 「URLから追加」の API 解決結果。
+class RakutenUrlSearchResolveResult {
+  const RakutenUrlSearchResolveResult({
+    this.item,
+    this.rateLimited = false,
+    this.httpStatus,
+    this.userMessage,
+    this.strategy = '',
+  });
+
+  final RakutenSearchItem? item;
+  final bool rateLimited;
+  final int? httpStatus;
+  final String? userMessage;
+  final String strategy;
 }
 
 /// [RakutenSearchRepository.runRoomImportVerifySequence] の結果。
@@ -752,6 +770,88 @@ class RakutenSearchRepository {
       itemCode: itemCode,
     );
     return env.item;
+  }
+
+  /// 「URLから追加」向け: 解析済み shop/item から1件取得（ROOM 補完と同系統の fallback）。
+  Future<RakutenUrlSearchResolveResult> resolveProductForUrlSearch({
+    required String inputUrl,
+    required String shopCode,
+    required String pureItemCode,
+    required bool isApiStyleItemCode,
+    String normalizedUrl = '',
+  }) async {
+    final sc = shopCode.trim();
+    final ic = pureItemCode.trim();
+    final norm = normalizedUrl.trim().isNotEmpty
+        ? normalizedUrl.trim()
+        : (RoomRakutenUrlNormalize.resolveToCanonicalItemRakutenUrl(inputUrl) ??
+              inputUrl.trim());
+    final strategy = isApiStyleItemCode ? 'shopItemDirect' : 'shopItemKeywordFallback';
+    urlSearchTraceLog(
+      'inputUrl=${_urlSearchLogTrim(inputUrl)} '
+      'normalizedUrl=${_urlSearchLogTrim(norm)} '
+      'extractedShopCode=$sc extractedItemCode=$ic strategy=$strategy',
+    );
+
+    if (sc.isEmpty || ic.isEmpty) {
+      urlSearchResultLog(
+        'success=false itemCode= shopCode= reason=missingCodes',
+      );
+      return const RakutenUrlSearchResolveResult(
+        userMessage: '商品URLを確認できませんでした',
+        strategy: 'invalidCodes',
+      );
+    }
+
+    final env = await fetchFirstItemForRoomImportEnrichmentEnvelope(
+      shopCode: sc,
+      itemCode: ic,
+    );
+
+    if (env.rateLimited || env.httpStatus == 429) {
+      urlSearchResultLog(
+        'success=false itemCode=$ic shopCode=$sc reason=429 strategy=$strategy',
+      );
+      return RakutenUrlSearchResolveResult(
+        rateLimited: true,
+        httpStatus: env.httpStatus ?? 429,
+        strategy: strategy,
+        userMessage: '楽天APIの利用制限に達しました。しばらく待ってからお試しください。',
+      );
+    }
+
+    if (env.item != null) {
+      final api = env.item!;
+      urlSearchResultLog(
+        'success=true itemCode=${api.productId.trim()} shopCode=${api.shopCode.trim()} '
+        'strategy=$strategy',
+      );
+      return RakutenUrlSearchResolveResult(
+        item: api,
+        httpStatus: env.httpStatus,
+        strategy: strategy,
+      );
+    }
+
+    final reason = env.httpStatus == 400
+        ? 'api400'
+        : (env.exceptionMessage?.trim().isNotEmpty == true
+              ? 'exception'
+              : 'noItems');
+    urlSearchResultLog(
+      'success=false itemCode=$ic shopCode=$sc reason=$reason strategy=$strategy',
+    );
+    return RakutenUrlSearchResolveResult(
+      httpStatus: env.httpStatus,
+      strategy: strategy,
+      userMessage: '商品情報を取得できませんでした。URLを確認するか、しばらくしてからお試しください。',
+    );
+  }
+
+  static String _urlSearchLogTrim(String s, {int max = 180}) {
+    final t = s.trim();
+    if (t.length <= max) return t;
+    return '${t.substring(0, max)}…';
   }
 
   RakutenSearchItem? _pickRoomImportEnrichmentItem(
