@@ -1,6 +1,7 @@
 import '../models/genre_master.dart';
 import '../models/rakuten_genre_master_entry.dart';
 import '../repository/rakuten_genre_master_repository.dart';
+import '../utils/genre_display_order.dart';
 import 'genre_master_service.dart';
 
 /// ジャンルマスタ参照の窓口（UI や画面ロジックはここ経由に寄せる）。
@@ -102,7 +103,7 @@ class RakutenGenreMasterService {
     return genreNameIfKnown(id) ?? unknownGenreDisplayLabel;
   }
 
-  /// 選択肢としての「マスタ一覧」（ジャンル名昇順）。
+  /// 選択肢としての「マスタ一覧」（[GenreDisplayOrder] のルート表示順）。
   ///
   /// [GenreMasterService] が読み込めているときは JSON の `roots`（最上位ジャンルのみ）を返し、
   /// 件数が膨大にならないようにする。未ロード時は従来どおりローカル定数リスト。
@@ -116,7 +117,7 @@ class RakutenGenreMasterService {
     } else {
       list = List<RakutenGenreMasterEntry>.from(_repository.fetchAll());
     }
-    list.sort((a, b) => a.genreName.compareTo(b.genreName));
+    GenreDisplayOrder.sortRakutenGenreMasterEntries(list);
     _cachedSortedAllGenres = List<RakutenGenreMasterEntry>.unmodifiable(list);
     return _cachedSortedAllGenres!;
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../services/genre_master_service.dart';
 import '../theme/app_theme.dart';
+import '../utils/genre_display_order.dart';
 import '../utils/genre_pref_log.dart';
 import '../utils/favorite_genre_selection_policy.dart';
 import '../utils/genre_tree_builder.dart';
@@ -107,9 +108,15 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
         }
       }
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        final roots = GenreTreeBuilder.rootNodes();
         GenreTreeBuilder.logOpen(
           source: widget.source,
-          rootCount: GenreTreeBuilder.rootNodes().length,
+          rootCount: roots.length,
+        );
+        GenreDisplayOrder.logRootOrder(
+          source: widget.source,
+          count: roots.length,
+          genreNames: roots.map((n) => n.genreName),
         );
         GenrePrefLog.logInitialSetupGenreTreeOpen(
           selectedCount: _selectedMulti.length,
@@ -126,9 +133,15 @@ class _GenreDrilldownPickerSheetState extends State<GenreDrilldownPickerSheet> {
         }
       }
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        final roots = GenreTreeBuilder.rootNodes();
         GenreTreeBuilder.logOpen(
           source: widget.source,
-          rootCount: GenreTreeBuilder.rootNodes().length,
+          rootCount: roots.length,
+        );
+        GenreDisplayOrder.logRootOrder(
+          source: widget.source,
+          count: roots.length,
+          genreNames: roots.map((n) => n.genreName),
         );
       });
     }

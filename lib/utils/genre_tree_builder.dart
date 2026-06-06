@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../services/genre_master_service.dart';
+import 'genre_display_order.dart';
 
 /// ジャンルマスタから親子ツリーを辿るためのノード。
 class GenreTreeNode {
@@ -20,10 +21,19 @@ abstract final class GenreTreeBuilder {
   static List<GenreTreeNode> rootNodes() {
     final svc = GenreMasterService.instance;
     if (!svc.isLoaded) return const [];
-    return svc.rootGenreIds
+    final nodes = svc.rootGenreIds
         .map((id) => nodeForId(id))
         .whereType<GenreTreeNode>()
-        .toList(growable: false);
+        .toList();
+    nodes.sort(
+      (a, b) => GenreDisplayOrder.compareGenreIds(
+        a.genreId,
+        b.genreId,
+        nameA: a.genreName,
+        nameB: b.genreName,
+      ),
+    );
+    return List<GenreTreeNode>.unmodifiable(nodes);
   }
 
   static GenreTreeNode? nodeForId(String genreId) {
