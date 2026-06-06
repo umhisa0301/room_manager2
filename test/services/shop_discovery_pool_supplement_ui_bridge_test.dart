@@ -299,5 +299,96 @@ void main() {
       expect(bridge.displayCandidates.single.shopCode, 'the-charme');
       expect(bridge.displayCandidates.single.displayRank, 1);
     });
+
+    test('保存済みショップは displayCandidates から除外される', () {
+      final result = _supplementResultWithDecisions(
+        keyword: '水筒',
+        recommendedDisplayCount: 1,
+        selected: [_selectedCandidate(shopCode: 'ra-beans', hitItemCount: 7)],
+        decisions: [
+          _decision(
+            shopCode: 'ra-beans',
+            showEligible: true,
+            displayRank: 1,
+            strongItemEvidence: true,
+          ),
+        ],
+      );
+
+      final extracted =
+          ShopDiscoveryPoolSupplementUiBridge.extractDisplayCandidates(result);
+      expect(extracted.displayCandidateCount, 1);
+      expect(extracted.displayCandidates.single.shopCode, 'ra-beans');
+
+      final excluded =
+          ShopDiscoveryPoolSupplementUiBridge.excludeSavedFromDisplayCandidates(
+        extracted,
+        savedShopCodes: {'ra-beans'},
+      );
+
+      expect(excluded.before, 1);
+      expect(excluded.after, 0);
+      expect(excluded.savedExcluded, 1);
+      expect(excluded.excludedShopCodes, ['ra-beans']);
+      expect(excluded.bridge.displayCandidateCount, 0);
+      expect(excluded.bridge.recommendedDisplayCount, 1);
+      expect(excluded.buildLogLine(),
+          contains('[SHOP_DISCOVERY_POOL_SUPPLEMENT_SAVED_EXCLUDE]'));
+      expect(excluded.buildLogLine(), contains('keyword=水筒'));
+      expect(excluded.buildLogLine(), contains('before=1'));
+      expect(excluded.buildLogLine(), contains('after=0'));
+      expect(excluded.buildLogLine(), contains('savedExcluded=1'));
+      expect(excluded.buildLogLine(), contains('shopCodes=ra-beans'));
+      expect(excluded.bridge.buildUiCardLogLine(), contains('visibleCards=0'));
+      expect(excluded.bridge.buildUiCardLogLine(), contains('shopCodes=-'));
+    });
+
+    test('保存済みでないショップは従来通り displayCandidates に残る', () {
+      final result = _supplementResultWithDecisions(
+        keyword: '水筒',
+        recommendedDisplayCount: 1,
+        selected: [_selectedCandidate(shopCode: 'the-charme')],
+        decisions: [
+          _decision(
+            shopCode: 'the-charme',
+            showEligible: true,
+            displayRank: 1,
+          ),
+        ],
+      );
+
+      final extracted =
+          ShopDiscoveryPoolSupplementUiBridge.extractDisplayCandidates(result);
+      final excluded =
+          ShopDiscoveryPoolSupplementUiBridge.excludeSavedFromDisplayCandidates(
+        extracted,
+        savedShopCodes: {'ra-beans'},
+      );
+
+      expect(excluded.savedExcluded, 0);
+      expect(excluded.bridge.displayCandidateCount, 1);
+      expect(excluded.bridge.displayCandidates.single.shopCode, 'the-charme');
+    });
+
+    test('extractDisplayCandidates 単体では保存済み判定を行わない', () {
+      final result = _supplementResultWithDecisions(
+        keyword: '水筒',
+        recommendedDisplayCount: 1,
+        selected: [_selectedCandidate(shopCode: 'ra-beans')],
+        decisions: [
+          _decision(
+            shopCode: 'ra-beans',
+            showEligible: true,
+            displayRank: 1,
+          ),
+        ],
+      );
+
+      final bridge =
+          ShopDiscoveryPoolSupplementUiBridge.extractDisplayCandidates(result);
+
+      expect(bridge.displayCandidateCount, 1);
+      expect(bridge.displayCandidates.single.shopCode, 'ra-beans');
+    });
   });
 }

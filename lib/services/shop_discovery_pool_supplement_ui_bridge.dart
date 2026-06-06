@@ -86,9 +86,84 @@ class ShopDiscoveryPoolSupplementUiBridgeResult {
   }
 }
 
+/// 補助枠 displayCandidates から保存済みショップを除外した結果（ログ用メタ付き）。
+class ShopDiscoveryPoolSupplementSavedExcludeResult {
+  const ShopDiscoveryPoolSupplementSavedExcludeResult({
+    required this.bridge,
+    required this.before,
+    required this.after,
+    required this.savedExcluded,
+    required this.excludedShopCodes,
+  });
+
+  final ShopDiscoveryPoolSupplementUiBridgeResult bridge;
+  final int before;
+  final int after;
+  final int savedExcluded;
+  final List<String> excludedShopCodes;
+
+  String buildLogLine() {
+    final keywordForLog =
+        bridge.keyword.isEmpty ? '-' : bridge.keyword;
+    final codes = excludedShopCodes;
+    return '[SHOP_DISCOVERY_POOL_SUPPLEMENT_SAVED_EXCLUDE] '
+        'keyword=$keywordForLog '
+        'before=$before '
+        'after=$after '
+        'savedExcluded=$savedExcluded '
+        'shopCodes=${codes.isEmpty ? '-' : codes.join(',')}';
+  }
+}
+
 /// supplement 判定 → UI 表示候補の橋渡し（ログ・将来の補助枠 UI 用）。
 abstract final class ShopDiscoveryPoolSupplementUiBridge {
   ShopDiscoveryPoolSupplementUiBridge._();
+
+  static bool _isSavedShopCode(String shopCode, Set<String> savedShopCodes) {
+    final code = shopCode.trim();
+    if (code.isEmpty) return false;
+    return savedShopCodes.contains(code);
+  }
+
+  /// 補助枠表示候補から保存済みショップを除外する（通常 API 結果には影響しない）。
+  static ShopDiscoveryPoolSupplementSavedExcludeResult excludeSavedFromDisplayCandidates(
+    ShopDiscoveryPoolSupplementUiBridgeResult bridge, {
+    Set<String> savedShopCodes = const {},
+  }) {
+    if (savedShopCodes.isEmpty || bridge.displayCandidates.isEmpty) {
+      return ShopDiscoveryPoolSupplementSavedExcludeResult(
+        bridge: bridge,
+        before: bridge.displayCandidateCount,
+        after: bridge.displayCandidateCount,
+        savedExcluded: 0,
+        excludedShopCodes: const [],
+      );
+    }
+
+    final before = bridge.displayCandidateCount;
+    final excludedShopCodes = <String>[];
+    final filtered = <ShopDiscoveryPoolSupplementUiDisplayCandidate>[];
+    for (final candidate in bridge.displayCandidates) {
+      if (_isSavedShopCode(candidate.shopCode, savedShopCodes)) {
+        excludedShopCodes.add(candidate.shopCode.trim());
+        continue;
+      }
+      filtered.add(candidate);
+    }
+
+    final afterBridge = ShopDiscoveryPoolSupplementUiBridgeResult(
+      keyword: bridge.keyword,
+      recommendedDisplayCount: bridge.recommendedDisplayCount,
+      displayCandidates: filtered,
+    );
+    return ShopDiscoveryPoolSupplementSavedExcludeResult(
+      bridge: afterBridge,
+      before: before,
+      after: filtered.length,
+      savedExcluded: excludedShopCodes.length,
+      excludedShopCodes: excludedShopCodes,
+    );
+  }
 
   static ShopDiscoveryPoolSupplementUiBridgeResult extractDisplayCandidates(
     ShopDiscoveryPoolSupplementResult supplement,
@@ -151,6 +226,16 @@ abstract final class ShopDiscoveryPoolSupplementUiBridge {
   /// 補助枠カードの表示件数を監査ログ（`CATALOG_AUDIT_LOGS`）と debug ログへ出力する。
   static void logCardResult(ShopDiscoveryPoolSupplementUiBridgeResult result) {
     _emitSupplementUiLog(result.buildUiCardLogLine());
+  }
+
+  /// 補助枠 displayCandidates からの保存済み除外を監査ログへ出力する。
+  static void logSavedExclude(
+    ShopDiscoveryPoolSupplementSavedExcludeResult result,
+  ) {
+    if (result.savedExcluded <= 0) {
+      return;
+    }
+    _emitSupplementUiLog(result.buildLogLine());
   }
 
   static String buildCardTapLogLine({

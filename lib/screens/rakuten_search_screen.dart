@@ -5768,8 +5768,26 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       apiStopReason: fetchMeta?.stopReason,
       apiPagesFailed: fetchMeta?.pagesFailed ?? 0,
     );
-    final uiBridge =
+    final extracted =
         ShopDiscoveryPoolSupplementUiBridge.extractDisplayCandidates(supplement);
+    var savedExcludeResult =
+        ShopDiscoveryPoolSupplementUiBridge.excludeSavedFromDisplayCandidates(
+      extracted,
+      savedShopCodes: savedSet,
+    );
+    if (savedExcludeResult.savedExcluded == 0 &&
+        _shopDiscoverySupplementUiBridge.displayCandidates.isNotEmpty &&
+        _shopDiscoverySupplementUiBridge.keyword == keyword) {
+      final fromPrevious =
+          ShopDiscoveryPoolSupplementUiBridge.excludeSavedFromDisplayCandidates(
+        _shopDiscoverySupplementUiBridge,
+        savedShopCodes: savedSet,
+      );
+      if (fromPrevious.savedExcluded > 0) {
+        savedExcludeResult = fromPrevious;
+      }
+    }
+    final uiBridge = savedExcludeResult.bridge;
 
     final signatureChanged =
         signature != _lastShopDiscoverySupplementUiBridgeSignature;
@@ -5780,6 +5798,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
       if (mounted && bridgeChanged) {
         setState(() => _shopDiscoverySupplementUiBridge = uiBridge);
       }
+      ShopDiscoveryPoolSupplementUiBridge.logSavedExclude(savedExcludeResult);
       ShopDiscoveryPoolSupplementUiBridge.logBridgeResult(uiBridge);
       ShopDiscoveryPoolSupplementUiBridge.logCardResult(uiBridge);
       _logShopDiscoveryPoolComparison(
