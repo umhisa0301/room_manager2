@@ -162,3 +162,97 @@ E/FrameEvents(32204): updateAcquireFence: Did not find frame.
 E/FrameEvents(32204): updateAcquireFence: Did not find frame.
 E/FrameEvents(32204): updateAcquireFence: Did not find frame.
 E/FrameEvents(32204): updateAcquireFence: Did not find frame.
+I/flutter (32204): [ACHIEVEMENT_PROGRESS_CLAMP] metric=candidate rawValue=200 goal=50 displayValue=50 progress=1.0
+I/flutter (32204): [MYPAGE_GENRE_TREE_OPEN] source=mypage initialCount=3
+I/flutter (32204): [GENRE_PICKER_MODE] screen=mypage selectionMode=multi usesCheckbox=true usesRadio=false
+I/flutter (32204): [GENRE_SELECTION_WIDGET_AUDIT] screen=mypage multiSelect=true widget=checkbox valid=true
+I/flutter (32204): [GENRE_TREE_OPEN] rootCount=39 source=mypage
+I/flutter (32204): [INITIAL_SETUP_GENRE_TREE_OPEN] selectedCount=3 maxSelectable=3
+W/WindowOnBackDispatcher(32204): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(32204): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260607_024616\room_manager2_shot_001.png
+I/flutter (32204): [ACHIEVEMENT_PROGRESS_CLAMP] metric=candidate rawValue=200 goal=50 displayValue=50 progress=1.0
+W/WindowOnBackDispatcher(32204): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(32204): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (32204): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=211→211 done=30→30
+I/flutter (32204): [MANAGED_PRODUCT_LOAD] source=screen pending=211 done=30 filter= tab=candidate
+I/flutter (32204): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (32204): [ACHIEVEMENT_PROGRESS_CLAMP] metric=candidate rawValue=200 goal=50 displayValue=50 progress=1.0
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cocomarket:10000009 reviewAverage=4.77 reviewCount=382 displayText=評価 ★4.8（382件）
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=linofle:10000362 reviewAverage=4.52 reviewCount=382 displayText=評価 ★4.5（382件）
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=plywood:10014944 reviewAverage=4.71 reviewCount=383 displayText=評価 ★4.7（383件）
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=yamayuu:10021118 reviewAverage=4.4 reviewCount=388 displayText=評価 ★4.4（388件）
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ccstyle:10055023 reviewAverage=4.59 reviewCount=388 displayText=評価 ★4.6（388件）
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=brita:10000184 reviewAverage=4.42 reviewCount=390 displayText=評価 ★4.4（390件）
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=e-kitchen:10103128 reviewAverage=4.09 reviewCount=391 displayText=評価 ★4.1（391件）
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=replay:10004282 reviewAverage=4.17 reviewCount=392 displayText=評価 ★4.2（392件）
+I/flutter (32204): [ACHIEVEMENT_PROGRESS_CLAMP] metric=candidate rawValue=200 goal=50 displayValue=50 progress=1.0
+I/flutter (32204): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (32204): [ACHIEVEMENT_PROGRESS_CLAMP] metric=candidate rawValue=200 goal=50 displayValue=50 progress=1.0
+I/flutter (32204): [ROOMコレ][surface] tab=candidate surface=loading
+I/flutter (32204): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=211→211 done=30→30
+I/flutter (32204): [MANAGED_PRODUCT_LOAD] source=provider pending=211 done=30 filter= tab=
+I/flutter (32204): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (32204): [ACHIEVEMENT_PROGRESS_CLAMP] metric=candidate rawValue=200 goal=50 displayValue=50 progress=1.0
+I/flutter (32204): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=cocomarket:10000009 reviewAverage=4.77 reviewCount=382 displayText=評価 ★4.8（382件）
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=linofle:10000362 reviewAverage=4.52 reviewCount=382 displayText=評価 ★4.5（382件）
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=plywood:10014944 reviewAverage=4.71 reviewCount=383 displayText=評価 ★4.7（383件）
+I/flutter (32204): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=yamayuu:10021118 reviewAverage=4.4 reviewCount=388 displayText=評価 ★4.4（388件）
+I/flutter (32204): [ROOM_REACTION_ANALYTICS_NO_SIDE_EFFECT] candidateCount=211 doneCount=30 todayAppCollectCount=0 todayRoomImportCount=0 importedFromRoomCount=30 message=noMutation
+I/flutter (32204): [ROOM_REACTION_TREND_RENDER] target=reactionOnly itemsWithReaction=28 genreRows=5 shopRows=5 unknownGenreCount=3 unknownShopCount=3
+I/flutter (32204): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=28 itemsWithComment=2 topGenres=ドレス,コーヒー飲料,お茶飲料,コート・ジャケット,シャツ・ブラウス topShops=パーティードレス通販 GIRL,静岡県牧之原市,ドリンク屋【水・ソフトドリンク】,リカーBOSS 楽天市場店,ミニストップネットショップ飲料店 historyLoaded=false
+I/flutter (32204): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (32204): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (32204): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (32204): [ROOM_REACTION_ANALYTICS_HISTORY] loaded=true topReactedProducts=0 deltaLikeItems=0 deltaCommentItems=0
+I/flutter (32204): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=28 itemsWithComment=2 topGenres=ドレス,コーヒー飲料,お茶飲料,コート・ジャケット,シャツ・ブラウス topShops=パーティードレス通販 GIRL,静岡県牧之原市,ドリンク屋【水・ソフトドリンク】,リカーBOSS 楽天市場店,ミニストップネットショップ飲料店 historyLoaded=true
+I/flutter (32204): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (32204): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (32204): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260607_024616.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260607_024616.mp4 (1833245 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260607_024616
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260607_024616\terminal_output_20260607_024616.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260607_024616.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260607_024616.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260607_024616.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260607_024616.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260607_024616.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
