@@ -21,6 +21,16 @@ enum _RakutenApiMode { openapi, legacy }
 /// - **legacy**: `app.rakuten.co.jp` の 2022-06-01。accessKey なし・OpenAPI 専用ヘッダーなし。
 /// - **openapi**: `openapi.rakuten.co.jp` の 2026-04-01。applicationId + accessKey + 必要ヘッダー。
 class RakutenApiService {
+  RakutenApiService({
+    http.Client? httpClient,
+    @visibleForTesting Duration? rateLimitRetryDelay,
+  }) : _client = httpClient ?? http.Client(),
+       _rateLimitRetryDelay =
+           rateLimitRetryDelay ?? const Duration(milliseconds: 1000);
+
+  final http.Client _client;
+  final Duration _rateLimitRetryDelay;
+
   static const String _proxyPath = '/rakuten';
   static const String _baseUrlOpenApi =
       'https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260401';
@@ -44,7 +54,7 @@ class RakutenApiService {
     Object? lastError;
     for (var attempt = 0; attempt < 2; attempt++) {
       try {
-        return await _searchItemsOnce(
+        return await _searchItemsOnceWithRateLimitRetry(
           condition: condition,
           page: page,
           hits: hits,
@@ -69,6 +79,64 @@ class RakutenApiService {
       }
     }
     throw lastError!;
+  }
+
+  /// 429 のときだけ同じ page を最大1回再試行する（それ以外はそのまま伝播）。
+  Future<Map<String, dynamic>> _searchItemsOnceWithRateLimitRetry({
+    required RakutenProductSearchCondition condition,
+    required int page,
+    required int hits,
+  }) async {
+    try {
+      return await _searchItemsOnce(
+        condition: condition,
+        page: page,
+        hits: hits,
+      );
+    } on RakutenApiTransportException catch (e) {
+      if (e.statusCode != 429) rethrow;
+      final waitMs = _rateLimitRetryWaitMs(e);
+      importantDebugLog(
+        '[RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 '
+        'waitMs=$waitMs page=$page',
+      );
+      await Future<void>.delayed(Duration(milliseconds: waitMs));
+      try {
+        final result = await _searchItemsOnce(
+          condition: condition,
+          page: page,
+          hits: hits,
+        );
+        importantDebugLog(
+          '[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=$page '
+          'success=true statusCode=200',
+        );
+        return result;
+      } on RakutenApiTransportException catch (retryError) {
+        importantDebugLog(
+          '[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=$page '
+          'success=false statusCode=${retryError.statusCode}',
+        );
+        rethrow;
+      } catch (_) {
+        importantDebugLog(
+          '[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=$page '
+          'success=false statusCode=unknown',
+        );
+        rethrow;
+      }
+    }
+  }
+
+  int _rateLimitRetryWaitMs(RakutenApiTransportException e) {
+    final fromMessage = _parseRateLimitWaitMsFromText(e.message);
+    if (fromMessage != null) return fromMessage;
+    final preview = e.responseBodyPreview;
+    if (preview != null) {
+      final fromBody = _parseRateLimitWaitMsFromText(preview);
+      if (fromBody != null) return fromBody;
+    }
+    return _rateLimitRetryDelay.inMilliseconds;
   }
 
   /// モードに応じたベース URL（ねじれないようここだけを参照する）。
@@ -451,8 +519,32 @@ class RakutenApiService {
         '[Rakuten] fullRequestUri=${_redactSearchUriForLog(uri, usesProxy)}',
       );
     }
-    return http.get(uri, headers: headers).timeout(_requestTimeout);
+    return _client.get(uri, headers: headers).timeout(_requestTimeout);
   }
+}
+
+int? _parseRateLimitWaitMsFromText(String text) {
+  final tryAgain = RegExp(
+    r'try again in (\d+)\s*seconds?',
+    caseSensitive: false,
+  ).firstMatch(text);
+  if (tryAgain != null) {
+    final seconds = int.tryParse(tryAgain.group(1)!);
+    if (seconds != null && seconds > 0) {
+      return seconds * 1000;
+    }
+  }
+  final retryAfter = RegExp(
+    r'retry-after:\s*(\d+)',
+    caseSensitive: false,
+  ).firstMatch(text);
+  if (retryAfter != null) {
+    final seconds = int.tryParse(retryAfter.group(1)!);
+    if (seconds != null && seconds > 0) {
+      return seconds * 1000;
+    }
+  }
+  return null;
 }
 
 /// 診断ログ用: `applicationId` / `accessKey` のみマスク（プロキシ URL に含まれる場合も同様）。
