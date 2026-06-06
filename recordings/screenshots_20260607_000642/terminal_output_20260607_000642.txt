@@ -1,0 +1,70 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-07 00:06:42
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: PRODUCT_CATALOG_ENABLED=true; SHOP_CATALOG_ENABLED=true; CATALOG_AUDIT_LOGS=false
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260607_000642.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260607_000642.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260607_000642.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260607_000642.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260607_000642.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260607_000642
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260607_000642\terminal_output_20260607_000642.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 42608).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID= --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=false
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
