@@ -35,7 +35,7 @@ void recommendAuditLog(String message) {
 
 /// デバッグビルド向けの重要ログ（失敗・例外・検索実行トレース等）。
 void importantDebugLog(String message) {
-  if (!kDebugMode) return;
+  if (!shouldEmitImportantDebugLog()) return;
   debugPrint(message);
 }
 
@@ -47,7 +47,22 @@ void debugSummaryLog(String message) {
 
 /// 共通商品カタログ監査ログ（`CATALOG_AUDIT_LOGS=true` のときのみ）。
 void catalogAuditLog(String message) {
-  if (!kDebugMode || !DebugLogFlags.kCatalogAuditLogsEnabled) return;
+  if (!shouldEmitCatalogAuditLog()) return;
+  debugPrint(message);
+}
+
+/// カタログ監査ログを出すか（compile-time `CATALOG_AUDIT_LOGS` + debug ビルド）。
+@visibleForTesting
+bool shouldEmitCatalogAuditLog() =>
+    kDebugMode && DebugLogFlags.kCatalogAuditLogsEnabled;
+
+/// デバッグビルド向けの重要ログを出すか（release では常に false）。
+@visibleForTesting
+bool shouldEmitImportantDebugLog() => kDebugMode;
+
+/// ショップ発掘のユーザー操作ログ（保存・タップ等）。debug ビルドでのみ1行出力。
+void shopDiscoveryUserActionLog(String message) {
+  if (!shouldEmitImportantDebugLog()) return;
   debugPrint(message);
 }
 

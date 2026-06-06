@@ -1,6 +1,3 @@
-import 'package:flutter/foundation.dart';
-
-import '../config/debug_log_flags.dart';
 import '../services/shop_discovery_pool_supplement.dart';
 import '../utils/app_debug_log.dart';
 
@@ -211,21 +208,14 @@ abstract final class ShopDiscoveryPoolSupplementUiBridge {
     );
   }
 
-  static void _emitSupplementUiLog(String line) {
-    catalogAuditLog(line);
-    if (kDebugMode && !DebugLogFlags.kCatalogAuditLogsEnabled) {
-      debugSummaryLog(line);
-    }
-  }
-
-  /// 抽出結果を監査ログ（`CATALOG_AUDIT_LOGS`）と debug ログへ出力する。
+  /// 補助枠判定の詳細監査ログ（`CATALOG_AUDIT_LOGS=true` のときのみ）。
   static void logBridgeResult(ShopDiscoveryPoolSupplementUiBridgeResult result) {
-    _emitSupplementUiLog(result.buildUiBridgeLogLine());
+    catalogAuditLog(result.buildUiBridgeLogLine());
   }
 
-  /// 補助枠カードの表示件数を監査ログ（`CATALOG_AUDIT_LOGS`）と debug ログへ出力する。
+  /// 補助枠カード表示の詳細監査ログ（`CATALOG_AUDIT_LOGS=true` のときのみ）。
   static void logCardResult(ShopDiscoveryPoolSupplementUiBridgeResult result) {
-    _emitSupplementUiLog(result.buildUiCardLogLine());
+    catalogAuditLog(result.buildUiCardLogLine());
   }
 
   /// 補助枠 displayCandidates からの保存済み除外を監査ログへ出力する。
@@ -235,7 +225,7 @@ abstract final class ShopDiscoveryPoolSupplementUiBridge {
     if (result.savedExcluded <= 0) {
       return;
     }
-    _emitSupplementUiLog(result.buildLogLine());
+    catalogAuditLog(result.buildLogLine());
   }
 
   static String buildCardTapLogLine({
@@ -251,13 +241,13 @@ abstract final class ShopDiscoveryPoolSupplementUiBridge {
         'action=$action';
   }
 
-  /// 補助枠カードタップを監査ログ（`CATALOG_AUDIT_LOGS`）と debug ログへ出力する。
+  /// 補助枠カードタップを debug ビルド向けユーザー操作ログへ出力する。
   static void logCardTap({
     required String keyword,
     required ShopDiscoveryPoolSupplementUiDisplayCandidate candidate,
     required String action,
   }) {
-    _emitSupplementUiLog(
+    shopDiscoveryUserActionLog(
       buildCardTapLogLine(
         keyword: keyword,
         candidate: candidate,

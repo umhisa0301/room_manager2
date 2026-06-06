@@ -22,7 +22,6 @@ import '../state/saved_shop_provider.dart';
 import '../theme/app_theme.dart';
 import '../theme/home_screen_colors.dart';
 import '../theme/rakuten_search_screen_tokens.dart';
-import '../config/debug_log_flags.dart';
 import '../utils/app_debug_log.dart';
 import '../widgets/app_button.dart';
 import '../widgets/rakuten_search_result_card.dart';
@@ -612,10 +611,7 @@ class _ShopDiscoveryDetailScreenState extends State<ShopDiscoveryDetailScreen> {
     if (reason != null && reason.trim().isNotEmpty) {
       message = '$message reason=$reason';
     }
-    catalogAuditLog(message);
-    if (kDebugMode && !DebugLogFlags.kCatalogAuditLogsEnabled) {
-      debugSummaryLog(message);
-    }
+    shopDiscoveryUserActionLog(message);
   }
 
   Future<void> _openShopUrl(BuildContext context) async {
