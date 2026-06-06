@@ -812,6 +812,12 @@ void urlSearchResultLog(String message) {
   debugPrint('[URL_SEARCH_RESULT] $message');
 }
 
+/// URL検索の対象外 URL 検知（kDebugMode のみ）。
+void urlSearchUnsupportedLog(String message) {
+  if (!kDebugMode) return;
+  debugPrint('[URL_SEARCH_UNSUPPORTED] $message');
+}
+
 /// ROOM 取り込み補完の戦略トレース（kDebugMode のみ）。
 void roomImportEnrichTraceLog(String message) {
   if (!kDebugMode) return;

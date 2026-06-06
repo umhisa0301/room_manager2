@@ -55,6 +55,27 @@ void main() {
       expect(s.isApiStyleItemCode, isTrue);
     });
 
+    test('楽天BOOKS URL は対象外 URL として扱う', () {
+      final r = RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl(
+        'https://books.rakuten.co.jp/rb/1234567890/',
+      );
+      expect(r, isA<RakutenItemPageUrlParseFailure>());
+      final f = r as RakutenItemPageUrlParseFailure;
+      expect(f.isUnsupportedUrlType, isTrue);
+      expect(
+        f.userMessage,
+        RakutenItemPageUrlItemCodeService.messageUnsupportedRakutenServiceUrl,
+      );
+    });
+
+    test('楽天ファッション URL は対象外 URL として扱う', () {
+      final r = RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl(
+        'https://brandavenue.rakuten.co.jp/item/foo/',
+      );
+      expect(r, isA<RakutenItemPageUrlParseFailure>());
+      expect((r as RakutenItemPageUrlParseFailure).isUnsupportedUrlType, isTrue);
+    });
+
     test('検索結果ホストは非商品ページエラーになる', () {
       const url = 'https://search.rakuten.co.jp/search/mall?keyword=test';
       final r = RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl(

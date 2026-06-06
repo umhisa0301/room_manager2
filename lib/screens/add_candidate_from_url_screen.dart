@@ -451,7 +451,8 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'item.rakuten.co.jp の商品ページ、または affiliateUrl（hb.afl.rakuten.co.jp）を対象にしています（クエリは無視されます）。',
+                    'item.rakuten.co.jp の商品ページ、affiliateUrl、または slug URL を対象にしています。'
+                    '楽天BOOKS・ファッション等は対象外です。',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                       height: 1.45,

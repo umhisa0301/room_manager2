@@ -14,6 +14,7 @@ import '../theme/app_theme.dart';
 import '../theme/room_colle_list_accent.dart';
 import '../utils/display_text_utils.dart';
 import '../utils/product_card_rakuten_open.dart';
+import '../utils/rakuten_product_rating_display.dart';
 import '../utils/shop_display_resolve.dart';
 import '../utils/room_colle_card_time_format.dart';
 import 'app_button.dart';
@@ -147,11 +148,36 @@ class RakutenManagedProductCard extends StatelessWidget {
   }
 
   static String _ratingLabel(RakutenManagedProduct product) {
+    if (product.reviewAverage > 0 || product.reviewCount > 0) {
+      final label = RakutenProductRatingDisplay.formatProductCardLabel(
+        reviewAverage: product.reviewAverage,
+        reviewCount: product.reviewCount,
+      );
+      RakutenProductRatingDisplay.traceLog(
+        source: 'rakutenManagedProductCard',
+        productId: product.productId,
+        reviewAverage: product.reviewAverage,
+        reviewCount: product.reviewCount,
+        displayText: label,
+      );
+      return label;
+    }
     final hasPositiveSignal =
         product.feedbackSoldAt != null || product.feedbackLikedAt != null;
     if (hasPositiveSignal) return '評価 反応あり';
     if (product.feedbackWeakAt != null) return '評価 微妙';
-    return '評価 楽天で確認';
+    final label = RakutenProductRatingDisplay.formatProductCardLabel(
+      reviewAverage: 0,
+      reviewCount: 0,
+    );
+    RakutenProductRatingDisplay.traceLog(
+      source: 'rakutenManagedProductCard',
+      productId: product.productId,
+      reviewAverage: 0,
+      reviewCount: 0,
+      displayText: label,
+    );
+    return label;
   }
 
   static const Color _roomReactionPink = Color(0xFFE91E63);

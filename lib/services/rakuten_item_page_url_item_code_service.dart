@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 
 import '../models/rakuten_managed_product.dart';
 import '../utils/rakuten_ichiba_url_parse.dart';
+import '../utils/rakuten_product_url_support.dart';
 import '../utils/room_rakuten_url_normalize.dart';
+import '../utils/room_sync_log.dart';
 
 /// 楽天市場 **商品ページ** URL から [RakutenManagedProduct.productId] 形式の itemCode を取り出す。
 ///
@@ -24,10 +26,29 @@ abstract final class RakutenItemPageUrlItemCodeService {
   static const String messageNonProductPagesNotSupported =
       '検索結果・ショップトップ・カテゴリページは登録できません';
 
+  static const String messageUnsupportedRakutenServiceUrl =
+      RakutenProductUrlSupport.messageUnsupportedRakutenServiceUrl;
+
   static RakutenItemPageUrlParseResult tryParseItemRakutenPageUrl(String raw) {
     final trimmed = raw.trim();
     if (trimmed.isEmpty) {
       return RakutenItemPageUrlParseFailure(messageNeedIchibaProductPageUrl);
+    }
+
+    final unsupported = RakutenProductUrlSupport.detectUnsupported(trimmed);
+    if (unsupported != null) {
+      urlSearchUnsupportedLog(
+        'inputUrl=${_logTrimUrl(trimmed)} reason=${unsupported.reason} '
+        'host=${unsupported.host} service=${unsupported.serviceTag}',
+      );
+      urlSearchResultLog(
+        'success=false reason=unsupportedUrlType host=${unsupported.host}',
+      );
+      return RakutenItemPageUrlParseFailure(
+        unsupported.userMessage,
+        unsupportedReason: unsupported.reason,
+        host: unsupported.host,
+      );
     }
 
     final normalizedUrl =
@@ -199,6 +220,12 @@ abstract final class RakutenItemPageUrlItemCodeService {
     if (t.isEmpty || t.length > 160) return false;
     return RegExp(r'^[0-9A-Za-z\-_%]+$').hasMatch(t);
   }
+
+  static String _logTrimUrl(String s, {int max = 180}) {
+    final t = s.trim();
+    if (t.length <= max) return t;
+    return '${t.substring(0, max)}…';
+  }
 }
 
 /// [RakutenProductSearchCondition.itemCode] / 保存 [RakutenManagedProduct.productId] と同型か。
@@ -239,7 +266,18 @@ final class RakutenItemPageUrlParseSuccess extends RakutenItemPageUrlParseResult
 }
 
 final class RakutenItemPageUrlParseFailure extends RakutenItemPageUrlParseResult {
-  const RakutenItemPageUrlParseFailure(this.userMessage);
+  const RakutenItemPageUrlParseFailure(
+    this.userMessage, {
+    this.unsupportedReason = '',
+    this.host = '',
+  });
 
   final String userMessage;
+
+  /// 対象外 URL のとき `unsupportedRakutenService` 等。
+  final String unsupportedReason;
+
+  final String host;
+
+  bool get isUnsupportedUrlType => unsupportedReason.isNotEmpty;
 }
