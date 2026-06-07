@@ -193,19 +193,25 @@ class _TodayRecommendationsScreenState
         child: Consumer<TodayRecommendationProvider>(
           builder: (context, rec, _) {
             if (rec.isLoading) {
-              return const AppScreenLoadingCenter(
-                title: '今日のおすすめを準備しています',
-                subtitle:
-                    '保存ジャンルを中心に、画像・価格が確認できる商品を集めています。',
+              return const KeyedSubtree(
+                key: Key('today_recommendation_status_area'),
+                child: AppScreenLoadingCenter(
+                  title: '今日のおすすめを準備しています',
+                  subtitle:
+                      '保存ジャンルを中心に、画像・価格が確認できる商品を集めています。',
+                ),
               );
             }
             if (rec.errorMessage != null &&
                 (rec.bundle == null || rec.bundle!.entries.isEmpty)) {
-              return AppScreenErrorCenter(
-                title: 'おすすめを表示できませんでした',
-                message: rec.errorMessage!,
-                onRetry: _regenerate,
-                retryLabel: 'もう一度生成する',
+              return KeyedSubtree(
+                key: const Key('today_recommendation_error_message'),
+                child: AppScreenErrorCenter(
+                  title: 'おすすめを表示できませんでした',
+                  message: rec.errorMessage!,
+                  onRetry: _regenerate,
+                  retryLabel: 'もう一度生成する',
+                ),
               );
             }
 
@@ -215,19 +221,23 @@ class _TodayRecommendationsScreenState
                   .read<UserProfileProvider>()
                   .profile
                   .favoriteGenreIdList;
-              return AppScreenEmptyCenter(
-                icon: Icons.auto_awesome_outlined,
-                title: 'まだ今日のおすすめがありません',
-                body: favoriteGenres.isEmpty
-                    ? 'まずはジャンルを設定すると精度が上がります。登録後に生成すると、好きなジャンルや候補履歴に近い商品を優先します。'
-                    : '下のボタンで最大10件のコレ候補を提案します。候補・コレ済は除外し、レビューが多い商品を優先します。',
-                actions: [
-                  AppPrimaryButton(
-                    label: '今日のおすすめを作る',
-                    onPressed: _regenerate,
-                    icon: const Icon(Icons.auto_awesome_rounded),
-                  ),
-                ],
+              return KeyedSubtree(
+                key: const Key('today_recommendation_empty_message'),
+                child: AppScreenEmptyCenter(
+                  icon: Icons.auto_awesome_outlined,
+                  title: 'まだ今日のおすすめがありません',
+                  body: favoriteGenres.isEmpty
+                      ? 'まずはジャンルを設定すると精度が上がります。登録後に生成すると、好きなジャンルや候補履歴に近い商品を優先します。'
+                      : '下のボタンで最大10件のコレ候補を提案します。候補・コレ済は除外し、レビューが多い商品を優先します。',
+                  actions: [
+                    AppPrimaryButton(
+                      key: const Key('today_recommendation_generate_button'),
+                      label: '今日のおすすめを作る',
+                      onPressed: _regenerate,
+                      icon: const Icon(Icons.auto_awesome_rounded),
+                    ),
+                  ],
+                ),
               );
             }
 
@@ -260,7 +270,9 @@ class _TodayRecommendationsScreenState
                 'bulkButtonVisible=${_selectedProductIds.isNotEmpty}',
               );
             }
-            return Column(
+            return KeyedSubtree(
+              key: const Key('today_recommendation_result_area'),
+              child: Column(
               children: [
                 _SummaryCard(
                   total: bundle.entries.length,
@@ -356,6 +368,7 @@ class _TodayRecommendationsScreenState
                     ),
                   ),
               ],
+            ),
             );
           },
         ),
@@ -491,6 +504,7 @@ class _SummaryCard extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               cooldown.userFacingWaitLabel,
+              key: const Key('today_recommendation_skip_message'),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                     fontWeight: FontWeight.w700,

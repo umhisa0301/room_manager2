@@ -1592,6 +1592,7 @@ class _HomeHeroCtaButton extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 52),
         child: FilledButton.icon(
+          key: const Key('today_recommendation_entry_button'),
           onPressed: onPressed,
           style: FilledButton.styleFrom(
             foregroundColor: AppColors.textOnAccent,
