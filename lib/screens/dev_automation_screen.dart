@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../config/dev_automation_config.dart';
 import '../services/dev_automation_runner.dart';
 import '../theme/app_theme.dart';
-import '../utils/dev_automation_log_buffer.dart';
 import '../widgets/app_card.dart';
 
 /// 開発者向け自動検証モードの入口画面（検証ビルド専用）。
@@ -23,8 +22,6 @@ class _DevAutomationScreenState extends State<DevAutomationScreen> {
 
   static bool _screenOpenLogged = false;
 
-  late final DevAutomationLogBuffer _logBuffer;
-  DevAutomationRunner? _runner;
   final TextEditingController _iterationController = TextEditingController(
     text: '${DevAutomationRunner.defaultIterations}',
   );
@@ -33,7 +30,6 @@ class _DevAutomationScreenState extends State<DevAutomationScreen> {
   @override
   void initState() {
     super.initState();
-    _logBuffer = DevAutomationLogBuffer();
     if (!DevAutomationFlags.isEnabled) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
@@ -45,33 +41,12 @@ class _DevAutomationScreenState extends State<DevAutomationScreen> {
       _screenOpenLogged = true;
       debugPrint('[DEV_AUTOMATION_SCREEN_OPEN] enabled=true');
     }
-    _logBuffer.addListener(_onLogChanged);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!DevAutomationFlags.isEnabled || _runner != null) return;
-    _runner = DevAutomationRunner(
-      dependencies: DevAutomationDependencies.fromContext(context),
-      logBuffer: _logBuffer,
-    )..addListener(_onRunnerChanged);
   }
 
   @override
   void dispose() {
-    _runner?.removeListener(_onRunnerChanged);
-    _logBuffer.removeListener(_onLogChanged);
     _iterationController.dispose();
     super.dispose();
-  }
-
-  void _onRunnerChanged() {
-    if (mounted) setState(() {});
-  }
-
-  void _onLogChanged() {
-    if (mounted) setState(() {});
   }
 
   int? _parseIterations() {
@@ -81,19 +56,20 @@ class _DevAutomationScreenState extends State<DevAutomationScreen> {
     return validation.value;
   }
 
-  Future<void> _startScenario() async {
+  void _startScenario() {
     if (!DevAutomationFlags.isEnabled) return;
-    final runner = _runner;
-    if (runner == null || runner.isRunning) return;
 
     final iterations = _parseIterations();
     if (iterations == null) return;
 
-    await runner.runTabTourProductSearch(iterations: iterations);
-  }
-
-  void _requestStop() {
-    _runner?.requestStop();
+    if (kDebugMode) {
+      debugPrint(
+        '[DEV_AUTOMATION_VISIBLE_RUN_REQUEST] '
+        'scenario=${DevAutomationScenario.tabTourProductSearch} '
+        'source=devAutomationScreen',
+      );
+    }
+    Navigator.of(context).pop(iterations);
   }
 
   void _setPresetIterations(int value) {
@@ -106,10 +82,6 @@ class _DevAutomationScreenState extends State<DevAutomationScreen> {
     if (!DevAutomationFlags.isEnabled) {
       return const SizedBox.shrink();
     }
-
-    final runner = _runner;
-    final isRunning = runner?.isRunning ?? false;
-    final logs = _logBuffer.entries;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -180,7 +152,6 @@ class _DevAutomationScreenState extends State<DevAutomationScreen> {
                   const SizedBox(height: 12),
                   TextField(
                     controller: _iterationController,
-                    enabled: !isRunning,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: '実行回数',
@@ -201,9 +172,7 @@ class _DevAutomationScreenState extends State<DevAutomationScreen> {
                       for (final preset in _iterationPresets)
                         ActionChip(
                           label: Text('$preset 回'),
-                          onPressed: isRunning
-                              ? null
-                              : () => _setPresetIterations(preset),
+                          onPressed: () => _setPresetIterations(preset),
                         ),
                     ],
                   ),
@@ -212,19 +181,27 @@ class _DevAutomationScreenState extends State<DevAutomationScreen> {
                     children: [
                       Expanded(
                         child: FilledButton(
-                          onPressed: isRunning ? null : _startScenario,
+                          onPressed: _startScenario,
                           child: const Text('開始'),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: OutlinedButton(
-                          onPressed: isRunning ? _requestStop : null,
+                          onPressed: null,
                           child: const Text('停止'),
                         ),
                       ),
                     ],
                   ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '開始後は本画面を閉じ、AppShell 上でタブ遷移を可視実行します。'
+                    '実行中は画面が閉じるため停止ボタンは利用できません。',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -235,57 +212,16 @@ class _DevAutomationScreenState extends State<DevAutomationScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Text(
-                    '実行状態',
+                    'ログ',
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    isRunning
-                        ? '実行中${runner?.stopRequested == true ? '（停止待ち）' : ''}'
-                        : '待機中',
-                    style: TextStyle(
-                      color: isRunning
-                          ? AppColors.accentPrimary
-                          : AppColors.textSecondary,
-                      fontWeight: FontWeight.w600,
+                    '実行ログは debugPrint / logcat で確認してください。',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text('成功回数: ${runner?.successCount ?? 0}'),
-                  Text('失敗回数: ${runner?.failureCount ?? 0}'),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            AppCard(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text(
-                    '最新ログ',
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 8),
-                  if (logs.isEmpty)
-                    Text(
-                      'ログはまだありません',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                    )
-                  else
-                    for (final line in logs.reversed)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 4),
-                        child: Text(
-                          line,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontFamily: 'monospace',
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ),
                 ],
               ),
             ),

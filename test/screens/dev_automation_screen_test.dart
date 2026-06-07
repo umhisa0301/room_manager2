@@ -112,5 +112,47 @@ void main() {
 
       expect(find.textContaining('実行回数は'), findsOneWidget);
     });
+
+    testWidgets('pops with iteration count when start is pressed', (
+      WidgetTester tester,
+    ) async {
+      if (!DevAutomationFlags.isEnabled) return;
+
+      int? poppedIterations;
+
+      await tester.pumpWidget(
+        _wrap(
+          prefs: prefs,
+          child: Builder(
+            builder: (context) {
+              return Scaffold(
+                body: ElevatedButton(
+                  onPressed: () async {
+                    poppedIterations = await Navigator.of(context).push<int>(
+                      MaterialPageRoute<int>(
+                        builder: (_) => const DevAutomationScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text('open'),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('開始'), findsOneWidget);
+
+      await tester.tap(find.text('開始'));
+      await tester.pumpAndSettle();
+
+      expect(poppedIterations, DevAutomationRunner.defaultIterations);
+      expect(find.text(DevAutomationScreen.title), findsNothing);
+    });
   });
 }
