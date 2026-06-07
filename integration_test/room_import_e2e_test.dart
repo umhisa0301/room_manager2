@@ -61,6 +61,12 @@ Future<String> _runRoomImportFlow(WidgetTester tester) async {
   );
   debugPrint('[E2E_ROOM_IMPORT_STEP] step=openImportEntry success=true');
 
+  await tester.scrollUntilVisible(
+    entry,
+    120,
+    scrollable: find.byType(Scrollable).first,
+  );
+  await _pumpUiSettle(tester);
   await tester.tap(entry);
   await _pumpUiSettle(tester);
 
@@ -174,12 +180,15 @@ String? _detectImportOutcome(WidgetTester tester) {
 Future<void> _dismissResultUiIfPresent(WidgetTester tester) async {
   final closeButtons = find.text('閉じる');
   if (closeButtons.evaluate().isNotEmpty) {
-    await tester.tap(closeButtons.first);
+    try {
+      await tester.scrollUntilVisible(
+        closeButtons.first,
+        120,
+        scrollable: find.byType(Scrollable).first,
+      );
+    } catch (_) {}
     await _pumpUiSettle(tester);
-  }
-
-  if (find.byKey(const Key('room_import_result_area')).evaluate().isNotEmpty) {
-    await tester.pageBack();
+    await tester.tap(closeButtons.first, warnIfMissed: false);
     await _pumpUiSettle(tester);
   }
 }
