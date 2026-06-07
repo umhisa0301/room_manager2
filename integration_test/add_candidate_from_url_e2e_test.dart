@@ -1,6 +1,14 @@
+// 開発用: 非公開「URLから追加」機能の回帰 E2E。
+//
+// クローズドテスト主要導線の必須項目ではない。
+// debug かつ `--dart-define=SHOW_URL_ADD_ENTRY_POINT=true` が必要。
+//
+// 実行例:
+// `flutter test integration_test/add_candidate_from_url_e2e_test.dart -d <device> --dart-define=SHOW_URL_ADD_ENTRY_POINT=true`
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:room_manager2/config/demo_mode.dart';
 import 'package:room_manager2/main.dart' as app;
 import 'package:room_manager2/services/rakuten_item_page_url_item_code_service.dart';
 import 'package:room_manager2/utils/rakuten_product_url_support.dart';
@@ -23,6 +31,14 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('add_candidate_from_url_e2e', (tester) async {
+    if (!showUrlAddEntryPoint) {
+      debugPrint(
+        '[E2E_URL_ADD_TEST_SKIP] requires kDebugMode and '
+        '--dart-define=SHOW_URL_ADD_ENTRY_POINT=true',
+      );
+      return;
+    }
+
     debugPrint('[E2E_URL_ADD_TEST_START]');
 
     app.main();

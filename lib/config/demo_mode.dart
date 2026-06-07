@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
+
 /// クローズドテスト専用デモモードのビルド時フラグ。
 ///
 /// 有効化例:
@@ -16,14 +18,23 @@ const bool kDemoModeEnabled = bool.fromEnvironment(
 /// - クローズドテストビルド: true（`--dart-define=DEMO_MODE=true` の時のみ）
 const bool kClosedTestDemoAvailable = kDemoModeEnabled;
 
-/// URLから追加のユーザー向け入口を表示するか（処理コードは残す）。
+/// URLから追加の dart-define フラグ（処理コードは残す）。
 ///
-/// E2E 等の検証ビルドのみ有効化:
+/// 開発用回帰テスト等でのみ有効化:
 /// `--dart-define=SHOW_URL_ADD_ENTRY_POINT=true`
-const bool showUrlAddEntryPoint = bool.fromEnvironment(
+const bool kShowUrlAddEntryPointDartDefineEnabled = bool.fromEnvironment(
   'SHOW_URL_ADD_ENTRY_POINT',
   defaultValue: false,
 );
+
+/// URLから追加のユーザー向け入口を表示するか。
+///
+/// - 本番 / profile ビルド: false（[kDebugMode] が false）
+/// - debug かつ `--dart-define=SHOW_URL_ADD_ENTRY_POINT=true` のみ true
+///
+/// クローズドテスト主要導線の対象外（非公開機能の開発用回帰テスト向け）。
+const bool showUrlAddEntryPoint =
+    kDebugMode && kShowUrlAddEntryPointDartDefineEnabled;
 
 /// デモ専用画面・処理の入口で呼び出す保護関数。
 /// 本番で誤って到達した場合は例外で即座に停止させる。
