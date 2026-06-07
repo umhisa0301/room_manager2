@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../config/demo_mode.dart';
+import '../config/dev_automation_config.dart';
 import '../constants/legal_urls.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/user_profile.dart';
@@ -46,6 +47,7 @@ import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
 import 'activity_placeholder_screen.dart';
 import 'closed_test_demo_screen.dart';
+import 'dev_automation_screen.dart';
 import 'easy_initial_setup_screen.dart';
 import 'saved_shops_screen.dart';
 
@@ -179,6 +181,14 @@ class MypagePlaceholderScreen extends StatelessWidget {
     ensureClosedTestDemoAvailable();
     Navigator.of(context).push(
       MaterialPageRoute<void>(builder: (_) => const ClosedTestDemoScreen()),
+    );
+  }
+
+  void _openDevAutomation(BuildContext context) {
+    if (!DevAutomationFlags.isEnabled) return;
+    ensureDevAutomationAvailable();
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => const DevAutomationScreen()),
     );
   }
 
@@ -343,6 +353,9 @@ class MypagePlaceholderScreen extends StatelessWidget {
                         MyPageSettingsSection(
                           onOpenDemo: kClosedTestDemoAvailable
                               ? () => _openClosedTestDemo(context)
+                              : null,
+                          onOpenDevAutomation: DevAutomationFlags.isEnabled
+                              ? () => _openDevAutomation(context)
                               : null,
                           onOpenInitialSetup: () =>
                               _openEasyInitialSetup(context),
@@ -1691,14 +1704,24 @@ class MyPageSettingsSection extends StatelessWidget {
   const MyPageSettingsSection({
     super.key,
     this.onOpenDemo,
+    this.onOpenDevAutomation,
     required this.onOpenInitialSetup,
   });
 
   final VoidCallback? onOpenDemo;
+  final VoidCallback? onOpenDevAutomation;
   final VoidCallback onOpenInitialSetup;
+
+  static bool _devAutomationEntryVisibilityLogged = false;
 
   @override
   Widget build(BuildContext context) {
+    if (onOpenDevAutomation != null &&
+        kDebugMode &&
+        !_devAutomationEntryVisibilityLogged) {
+      _devAutomationEntryVisibilityLogged = true;
+      debugPrint('[DEV_AUTOMATION_ENTRY_VISIBLE] enabled=true');
+    }
     return AppCard(
       padding: const EdgeInsets.all(12),
       child: Column(
@@ -1715,6 +1738,16 @@ class MyPageSettingsSection extends StatelessWidget {
               label: 'クローズドテスト用デモを見る',
               onPressed: onOpenDemo,
               icon: const Icon(Icons.rocket_launch_outlined),
+              expand: true,
+              height: 42,
+            ),
+            const SizedBox(height: 8),
+          ],
+          if (onOpenDevAutomation != null) ...[
+            AppSecondaryButton(
+              label: '開発者向け自動検証',
+              onPressed: onOpenDevAutomation,
+              icon: const Icon(Icons.bug_report_outlined),
               expand: true,
               height: 42,
             ),
