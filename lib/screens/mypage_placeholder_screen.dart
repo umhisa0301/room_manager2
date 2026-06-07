@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../config/demo_mode.dart';
 import '../config/dev_automation_config.dart';
+import '../services/dev_automation_visible_run.dart';
 import '../constants/legal_urls.dart';
 import '../models/rakuten_managed_product.dart';
 import '../models/user_profile.dart';
@@ -184,11 +185,16 @@ class MypagePlaceholderScreen extends StatelessWidget {
     );
   }
 
-  void _openDevAutomation(BuildContext context) {
+  Future<void> _openDevAutomation(BuildContext context) async {
     if (!DevAutomationFlags.isEnabled) return;
     ensureDevAutomationAvailable();
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const DevAutomationScreen()),
+    final iterations = await Navigator.of(context).push<int>(
+      MaterialPageRoute<int>(builder: (_) => const DevAutomationScreen()),
+    );
+    if (iterations == null || !context.mounted) return;
+    await DevAutomationVisibleRun.startTabTourProductSearch(
+      context: context,
+      iterations: iterations,
     );
   }
 
