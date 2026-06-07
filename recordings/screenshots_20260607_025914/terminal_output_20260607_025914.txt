@@ -162,3 +162,67 @@ E/FrameEvents( 1524): updateAcquireFence: Did not find frame.
 E/FrameEvents( 1524): updateAcquireFence: Did not find frame.
 E/FrameEvents( 1524): updateAcquireFence: Did not find frame.
 E/FrameEvents( 1524): updateAcquireFence: Did not find frame.
+I/flutter ( 1524): [ACHIEVEMENT_PROGRESS_CLAMP] metric=candidate rawValue=200 goal=50 displayValue=50 progress=1.0
+I/flutter ( 1524): [MYPAGE_GENRE_TREE_OPEN] source=mypage initialCount=3
+I/flutter ( 1524): [GENRE_PICKER_MODE] screen=mypage selectionMode=multi usesCheckbox=true usesRadio=false
+I/flutter ( 1524): [GENRE_SELECTION_WIDGET_AUDIT] screen=mypage multiSelect=true widget=checkbox valid=true
+I/flutter ( 1524): [GENRE_TREE_OPEN] rootCount=39 source=mypage
+I/flutter ( 1524): [GENRE_DISPLAY_ORDER] source=mypage count=39 first=レディースファッション,メンズファッション,キッズ・ベビー・マタニティ,バッグ・小物・ブランド雑貨,靴
+I/flutter ( 1524): [INITIAL_SETUP_GENRE_TREE_OPEN] selectedCount=3 maxSelectable=3
+W/WindowOnBackDispatcher( 1524): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+W/WindowOnBackDispatcher( 1524): OnBackInvokedCallback is not enabled for the application.
+I/flutter ( 1524): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+W/WindowOnBackDispatcher( 1524): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 1524): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter ( 1524): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter ( 1524): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter ( 1524): [ONBOARDING_UI] route=easySetup termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=notChecked roomProfileExists=unknown
+I/flutter ( 1524): [INITIAL_SETUP_GENRE_UI_UNIFIED] oldPickerVisible=false treePickerVisible=true reason=avoidDuplicateGenreSelectionArea
+I/flutter ( 1524): [GENRE_SELECTION_WIDGET_AUDIT] screen=initialSetup multiSelect=true widget=checkbox valid=true
+I/flutter ( 1524): [GENRE_PICKER_MODE] screen=initialSetup selectionMode=multi usesCheckbox=true usesRadio=false
+I/flutter ( 1524): [GENRE_TREE_OPEN] rootCount=39 source=initialSetup
+I/flutter ( 1524): [GENRE_DISPLAY_ORDER] source=initialSetup count=39 first=レディースファッション,メンズファッション,キッズ・ベビー・マタニティ,バッグ・小物・ブランド雑貨,靴
+I/flutter ( 1524): [INITIAL_SETUP_GENRE_TREE_OPEN] selectedCount=3 maxSelectable=3
+Lost connection to device.
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=False
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260607_025914.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260607_025914.mp4 (3302517 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260607_025914
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260607_025914\terminal_output_20260607_025914.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260607_025914.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260607_025914.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260607_025914.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260607_025914.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260607_025914.log
+
+Done.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
