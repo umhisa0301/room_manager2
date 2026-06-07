@@ -49,6 +49,7 @@ Future<void> showAddCandidateEntryBottomSheet({
         child: SafeArea(
           top: false,
           child: SingleChildScrollView(
+            key: const Key('add_candidate_sheet'),
             padding: RakutenSearchScreenUi.addCandidateSheetContentPadding,
             child: Consumer<BulkOperationStateController>(
               builder: (context, bulk, _) {
@@ -145,6 +146,7 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
         Opacity(
           opacity: roomTourSearchBlocked ? 0.45 : 1,
           child: AddCandidateEntrySheetMenuItem(
+            key: const Key('add_candidate_rakuten_product'),
             icon: Icons.travel_explore_rounded,
             title: '楽天で商品を探す',
             description: 'キーワード検索から候補を追加します',

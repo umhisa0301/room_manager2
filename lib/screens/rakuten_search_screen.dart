@@ -1539,6 +1539,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
     return KeyedSubtree(
       key: _listViewportLayoutKey,
       child: ListView.separated(
+        key: const Key('product_search_result_list'),
         controller: scrollController,
         padding: EdgeInsets.fromLTRB(
           RakutenSearchScreenUi.screenPadH,
@@ -1553,6 +1554,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           final item = orderedResults[index];
           final isSelectable = _isSelectableForBulk(item, managed);
           return RakutenSearchResultCard(
+            key: index == 0
+                ? const Key('product_search_result_item')
+                : ValueKey('product_search_result_item_$index'),
             item: item,
             localStatus: managed.statusForProduct(item.productId),
             isRegistering: managed.isRegistering(item.productId),
@@ -3057,6 +3061,7 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         _buildUnifiedSearchControls(
           context,
           detailEntry: RakutenSearchPseudoSearchFieldEntry(
+            key: const Key('product_search_keyword_entry'),
             controller: _keywordController,
             onTap: () => _openProductConditionsSheet(context),
             labelText: 'キーワード',
@@ -3627,6 +3632,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                             _productDetailSheetKeywordFocus,
                                         child: _sheetPrimaryAttentionShell(
                                           child: AppTextField(
+                                            key: const Key(
+                                              'product_search_keyword_field',
+                                            ),
                                             // 共通AppTextFieldへ置換: 商品検索の主キーワード入力。
                                             controller: _keywordController,
                                             focusNode:
@@ -3831,6 +3839,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
                                         ),
                                       ),
                                     AppPrimaryButton(
+                                      key: const Key(
+                                        'product_search_detail_submit',
+                                      ),
                                       label: '検索する',
                                       icon: const Icon(
                                         Icons.search_rounded,

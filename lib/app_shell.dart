@@ -186,6 +186,7 @@ class _AppShellState extends State<AppShell> {
               children: [
                 Expanded(
                   child: _NavItem(
+                    key: const Key('app_shell_nav_home'),
                     icon: Icons.dashboard_outlined,
                     selectedIcon: Icons.dashboard,
                     label: 'ホーム',
@@ -197,6 +198,7 @@ class _AppShellState extends State<AppShell> {
                 ),
                 Expanded(
                   child: _NavItem(
+                    key: const Key('app_shell_nav_search'),
                     icon: Icons.add_circle_outline_rounded,
                     selectedIcon: Icons.add_circle_rounded,
                     label: '探す',
@@ -207,6 +209,7 @@ class _AppShellState extends State<AppShell> {
                 ),
                 Expanded(
                   child: _NavItem(
+                    key: const Key('app_shell_nav_managed'),
                     icon: Icons.collections_bookmark_outlined,
                     selectedIcon: Icons.collections_bookmark,
                     label: 'ROOMコレ',
@@ -218,6 +221,7 @@ class _AppShellState extends State<AppShell> {
                 ),
                 Expanded(
                   child: _NavItem(
+                    key: const Key('app_shell_nav_analytics'),
                     icon: Icons.insights_outlined,
                     selectedIcon: Icons.insights_rounded,
                     label: '分析',
@@ -229,6 +233,7 @@ class _AppShellState extends State<AppShell> {
                 ),
                 Expanded(
                   child: _NavItem(
+                    key: const Key('app_shell_nav_mypage'),
                     icon: Icons.person_outline,
                     selectedIcon: Icons.person,
                     label: 'マイページ',
@@ -249,6 +254,7 @@ class _AppShellState extends State<AppShell> {
 
 class _NavItem extends StatelessWidget {
   const _NavItem({
+    super.key,
     required this.icon,
     required this.selectedIcon,
     required this.label,
