@@ -460,6 +460,7 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
                   ),
                   const SizedBox(height: 14),
                   TextField(
+                    key: const Key('add_candidate_url_field'),
                     controller: _urlController,
                     focusNode: _urlFocus,
                     keyboardType: TextInputType.url,
@@ -479,6 +480,7 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
                   ),
                   const SizedBox(height: 12),
                   AppPrimaryButton(
+                    key: const Key('add_candidate_url_judge_button'),
                     label: '判定する',
                     isLoading: _judging,
                     onPressed: (_judging || _actionBusy) ? null : _judge,
@@ -487,6 +489,11 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
                   if (_parseOrJudgeError != null) ...[
                     const SizedBox(height: 14),
                     _InlineMessagePanel(
+                      key: _parseOrJudgeError ==
+                              RakutenItemPageUrlItemCodeService
+                                  .messageUnsupportedRakutenServiceUrl
+                          ? const Key('add_candidate_url_unsupported_message')
+                          : null,
                       icon: Icons.warning_amber_rounded,
                       color: Theme.of(context).colorScheme.error,
                       text: _parseOrJudgeError!,
@@ -502,13 +509,18 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
                   ],
                   if (!_judging && _parsed != null && klass != null) ...[
                     const SizedBox(height: 16),
-                    _resultCard(
-                      context,
-                      parsed: _parsed!,
-                      klass: klass,
-                    ),
-                    const SizedBox(height: 14),
-                    _ActionButtonsForClassification(
+                    KeyedSubtree(
+                      key: const Key('add_candidate_url_result_area'),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _resultCard(
+                            context,
+                            parsed: _parsed!,
+                            klass: klass,
+                          ),
+                          const SizedBox(height: 14),
+                          _ActionButtonsForClassification(
                       klass: klass,
                       parsed: _parsed!,
                       actionBusy: _actionBusy,
@@ -544,6 +556,9 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
                           setState(() => _actionError = null);
                         }
                       },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                   ] else ...[
@@ -605,6 +620,7 @@ class _AddCandidateUrlBottomSheetState extends State<_AddCandidateUrlBottomSheet
 
 class _InlineMessagePanel extends StatelessWidget {
   const _InlineMessagePanel({
+    super.key,
     required this.icon,
     required this.color,
     required this.text,
@@ -762,6 +778,7 @@ class _ActionButtonsForClassification extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             AppPrimaryButton(
+              key: const Key('add_candidate_url_register_button'),
               label: 'コレ候補に追加',
               isLoading: actionBusy,
               onPressed: actionBusy

@@ -187,6 +187,7 @@ class AddCandidateEntrySheetBody extends StatelessWidget {
           Opacity(
             opacity: roomTourSearchBlocked ? 0.45 : 1,
             child: AddCandidateEntrySheetMenuItem(
+              key: const Key('add_candidate_from_url'),
               icon: Icons.link_rounded,
               title: 'URLから追加',
               description: '商品ページのURLから検索します',
