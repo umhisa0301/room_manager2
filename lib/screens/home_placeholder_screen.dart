@@ -681,6 +681,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
+        key: const Key('room_import_confirm_dialog'),
         title: const Text('ROOM投稿を取り込む'),
         content: const Text(
           'ROOM投稿を取り込みます。\n処理中は検索や登録操作を一時停止します。\nよろしいですか？',
@@ -691,6 +692,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
             child: const Text('キャンセル'),
           ),
           FilledButton(
+            key: const Key('room_import_start_button'),
             onPressed: () => Navigator.pop(ctx, true),
             child: const Text('開始する'),
           ),
@@ -1023,6 +1025,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
               const SizedBox(height: 14),
               if (!hasRoomProfileUrl) ...[
                 Text(
+                  key: const Key('room_import_not_configured_message'),
                   'ROOMプロフィールURLを登録すると同期できます',
                   style: _HomeUi.bodyEmphasis(context).copyWith(
                     fontSize: 14,
@@ -1037,6 +1040,11 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                 ),
               ] else ...[
                 if (syncBusy) ...[
+                  KeyedSubtree(
+                    key: const Key('room_import_status_area'),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
                   Text(
                     'ROOMデータを更新中です',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -1070,6 +1078,9 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 14),
+                      ],
+                    ),
+                  ),
                 ] else ...[
                   if (actionLocked &&
                       !syncBusy) ...[
@@ -1190,6 +1201,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                         ],
                       ),
                       child: FilledButton(
+                        key: const Key('room_import_entry_button'),
                         onPressed: () {
                           RoomSyncButtonVisibility.logIdleVisible(
                             screen: 'home',

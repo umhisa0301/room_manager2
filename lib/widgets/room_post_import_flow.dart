@@ -242,6 +242,7 @@ abstract final class RoomPostImportFlow {
         builder: (ctx) => AlertDialog(
           title: const Text('ROOM同期'),
           content: SingleChildScrollView(
+            key: const Key('room_import_error_message'),
             child: Text(result.fatalErrorMessage!.trim()),
           ),
           actions: [
@@ -578,6 +579,7 @@ abstract final class RoomPostImportFlow {
               height: 1.45,
             );
         return SafeArea(
+          key: const Key('room_import_result_area'),
           child: SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(24, 12, 24, 28),
             child: Column(
