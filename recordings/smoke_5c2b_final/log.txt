@@ -1,0 +1,7 @@
+--------- beginning of main
+06-08 01:04:31.608  9303  9384 I flutter : The Dart VM service is listening on http://127.0.0.1:41559/pfOJvFTKa-M=/
+06-08 01:04:31.667  9303  9375 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+06-08 01:04:32.103  9303  9303 I flutter : [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+06-08 01:04:32.110  9303  9303 I flutter : [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+06-08 01:04:32.130  9303  9303 I flutter : [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+06-08 01:04:32.494  9303  9303 I flutter : [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped

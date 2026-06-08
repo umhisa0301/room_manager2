@@ -1,0 +1,8 @@
+--------- beginning of main
+06-08 01:00:19.989  8463  8499 I flutter : The Dart VM service is listening on http://127.0.0.1:42551/TdfCjZ3HdDs=/
+06-08 01:00:20.095  8463  8486 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+06-08 01:00:20.411  8463  8463 I flutter : [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+06-08 01:00:20.418  8463  8463 I flutter : [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+06-08 01:00:20.429  8463  8463 I flutter : [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+06-08 01:00:20.823  8463  8463 I flutter : [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=false initialSetupSkipped=true missingRoomUrl=true missingGenre=true missingSavedShop=true showMyPageSetupCard=true roomUrlValidationResult=empty roomProfileExists=skipped
+06-08 01:00:44.824  8463  8463 I flutter : [Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 0 件
