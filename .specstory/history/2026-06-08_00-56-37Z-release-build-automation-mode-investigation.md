@@ -7872,6 +7872,8 @@ cd c:\dev\app_project\room_manager2 && flutter analyze lib/config/dev_automation
 
 ```
 Analyzing 2 items...                                            
+No issues found! (ran in 32.6s)
+
 ```
 </details>
 </tool-use>
@@ -7889,6 +7891,19 @@ _**Agent (default)**_
 ```bash
 cd c:\dev\app_project\room_manager2 && flutter test test/config/dev_automation_config_test.dart
 ```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart
+00:00 +0: DevAutomationFlags isEnabled combines debug path and internal release path
+00:00 +1: DevAutomationFlags debug path requires kDebugMode and DEV_AUTOMATION_ENABLED
+00:00 +2: DevAutomationFlags internal release path requires kReleaseMode
+00:00 +3: DevAutomationFlags internal release path is false when only INTERNAL_RELEASE_AUTOMATION_ENABLED is set
+00:00 +4: DevAutomationFlags internal release path is false when only INTERNAL_RELEASE_AUTOMATION_TOKEN is set
+00:00 +5: DevAutomationFlags ensureDevAutomationAvailable throws when disabled
+00:00 +6: DevAutomationFlags ensureDevAutomationAvailable succeeds when enabled
+00:00 +7: All tests passed!
+
+```
 </details>
 </tool-use>
 
@@ -7896,3 +7911,411 @@ cd c:\dev\app_project\room_manager2 && flutter test test/config/dev_automation_c
 <summary>Tool use: **run_terminal_command_v2**</summary>
 
 </details></tool-use>
+
+_**Agent (default)**_
+
+実装を完了しました。変更は `dev_automation_config.dart` とそのテストのみです。
+
+---
+
+## 1. 変更ファイル一覧
+
+| ファイル | 変更内容 |
+| ---- | ---- |
+| `lib/config/dev_automation_config.dart` | 内部検証用 release フラグ・判定ロジック追加 |
+| `test/config/dev_automation_config_test.dart` | 新判定条件に合わせてテスト更新 |
+
+---
+
+## 2. 変更内容の要約
+
+- `DevAutomationConfig` に以下を追加：
+  - `kInternalReleaseAutomationDartDefineEnabled`（`INTERNAL_RELEASE_AUTOMATION_ENABLED`）
+  - `kInternalReleaseAutomationToken`（`INTERNAL_RELEASE_AUTOMATION_TOKEN`）
+  - `expectedInternalReleaseAutomationToken`（固定値 `room-internal-release-automation`）
+  - `kInternalReleaseAutomationEnabled`（release + 両 define 正しいときのみ true）
+- `DevAutomationFlags.isEnabled` を **debug 経路 OR 内部 release 経路** に拡張
+- `ensureDevAutomationAvailable()` のエラーメッセージを両経路に対応
+- 既存の `DEV_AUTOMATION_ENABLED` の意味（debug 専用）は **変更なし**
+
+---
+
+## 3. `DevAutomationFlags.isEnabled` の最終条件
+
+```dart
+static const bool isEnabled =
+    (kDebugMode && DevAutomationConfig.kDevAutomationDartDefineEnabled)
+    || DevAutomationConfig.kInternalReleaseAutomationEnabled;
+
+// kInternalReleaseAutomationEnabled は:
+static const bool kInternalReleaseAutomationEnabled =
+    kReleaseMode &&
+    kInternalReleaseAutomationDartDefineEnabled &&
+    kInternalReleaseAutomationToken == expectedInternalReleaseAutomationToken;
+```
+
+---
+
+## 4. debug / profile / release の ON/OFF 判定表
+
+| ビルド | define 指定 | 自動実行モード |
+| ---- | ---- | ---- |
+| debug | なし | **OFF** |
+| debug | `DEV_AUTOMATION_ENABLED=true` | **ON** |
+| debug | `INTERNAL_RELEASE_*` のみ | **OFF**（`kReleaseMode` が false） |
+| profile | なし | **OFF** |
+| profile | `DEV_AUTOMATION_ENABLED=true` | **OFF**（`kDebugMode` が false） |
+| profile | `INTERNAL_RELEASE_*` | **OFF**（`kReleaseMode` が false） |
+| release | なし | **OFF** |
+| release | `DEV_AUTOMATION_ENABLED=true` のみ | **OFF** |
+| release | `INTERNAL_RELEASE_AUTOMATION_ENABLED=true` のみ | **OFF** |
+| release | `INTERNAL_RELEASE_AUTOMATION_TOKEN=room-internal-release-automation` のみ | **OFF** |
+| release | 両方正しく指定 | **ON** |
+| release | トークン不一致 | **OFF** |
+
+---
+
+## 5. 内部検証用 release `.aab` ビルドコマンド
+
+**Windows PowerShell**
+```powershell
+flutter build appbundle --release `
+  --dart-define=INTERNAL_RELEASE_AUTOMATION_ENABLED=true `
+  --dart-define=INTERNAL_RELEASE_AUTOMATION_TOKEN=room-internal-release-automation `
+  --dart-define=RAKUTEN_APP_ID=<your_app_id> `
+  --dart-define=RAKUTEN_AFFILIATE_ID=<your_affiliate_id>
+```
+
+**Git Bash / macOS / Linux**
+```bash
+flutter build appbundle --release \
+  --dart-define=INTERNAL_RELEASE_AUTOMATION_ENABLED=true \
+  --dart-define=INTERNAL_RELEASE_AUTOMATION_TOKEN=room-internal-release-automation \
+  --dart-define=RAKUTEN_APP_ID=<your_app_id> \
+  --dart-define=RAKUTEN_AFFILIATE_ID=<your_affiliate_id>
+```
+
+---
+
+## 6. Google Play 申請用 release `.aab` ビルドコマンド
+
+**Windows PowerShell**
+```powershell
+flutter build appbundle --release `
+  --dart-define=RAKUTEN_APP_ID=<your_app_id> `
+  --dart-define=RAKUTEN_AFFILIATE_ID=<your_affiliate_id>
+```
+
+**Git Bash / macOS / Linux**
+```bash
+flutter build appbundle --release \
+  --dart-define=RAKUTEN_APP_ID=<your_app_id> \
+  --dart-define=RAKUTEN_AFFILIATE_ID=<your_affiliate_id>
+```
+
+（自動実行関連の `--dart-define` は **付けない**）
+
+---
+
+## 7. release に `DEV_AUTOMATION_ENABLED=true` を付けても ON にならない理由
+
+`DevAutomationFlags.isEnabled` の debug 経路は `kDebugMode && DEV_AUTOMATION_ENABLED` です。release では `kDebugMode == false` のため、この経路は常に false です。内部 release 経路は `INTERNAL_RELEASE_*` のみを見るため、`DEV_AUTOMATION_ENABLED` 単独では ON になりません。
+
+---
+
+## 8. `INTERNAL_RELEASE_AUTOMATION_ENABLED=true` だけでは ON にならない理由
+
+`kInternalReleaseAutomationEnabled` は次の **3 条件すべて** が必要です。
+
+1. `kReleaseMode == true`
+2. `INTERNAL_RELEASE_AUTOMATION_ENABLED == true`
+3. `INTERNAL_RELEASE_AUTOMATION_TOKEN == 'room-internal-release-automation'`（完全一致）
+
+enabled だけではトークン不一致のため false です。
+
+---
+
+## 9. テスト観点
+
+### 自動実行（今回の変更対象）
+
+| 確認 | 方法 |
+| ---- | ---- |
+| debug ON | `flutter run --dart-define=DEV_AUTOMATION_ENABLED=true` → マイページに「開発者向け自動検証」 |
+| release OFF（通常） | `flutter build appbundle --release` → ボタン非表示 |
+| release ON（内部） | 両 define 付き release → ボタン表示・実行可能 |
+| 誤 define | release + `DEV_AUTOMATION_ENABLED=true` のみ → OFF |
+| 片方 define | release + enabled のみ / token のみ → OFF |
+| ログ | ON 時: `[DEV_AUTOMATION_ENTRY_VISIBLE]`, `[DEV_AUTOMATION_RUN_START]` 等 |
+
+### 触っていない機能（回帰確認）
+
+- `DEMO_MODE` / `SHOW_URL_ADD_ENTRY_POINT` は従来どおり（release 自動実行とは無関係）
+
+### 実行済み
+
+- `flutter analyze` → **No issues found**
+- `flutter test test/config/dev_automation_config_test.dart` → **7 tests passed**
+
+---
+
+## 10. Android / iOS 移植監査
+
+| 観点 | 内容 |
+| ---- | ---- |
+| 制御方式 | `bool.fromEnvironment` / `String.fromEnvironment`（Android/iOS 共通） |
+| Android release `.aab` | `flutter build appbundle --release --dart-define=...` で有効 |
+| iOS release | `flutter build ios --release --dart-define=...` で同等。Xcode 直ビルド時は `DART_DEFINES` 設定が必要 |
+| プラットフォーム分岐 | 自動実行コードに Android/iOS 固有分岐なし |
+| Play / App Store 提出 | 内部検証 define を **付けない** ビルドでは常に OFF |
+| 安全性 | 二重 define + 固定トークン一致が必要。誤指定リスクを低減 |
+
+---
+
+**UI 導線：** マイページ →「設定・その他」→「開発者向け自動検証」（`DevAutomationFlags.isEnabled == true` のときのみ表示。既存コードのまま動作します）
+
+---
+
+_**User**_
+
+質問です。この「開発者向け自動検証」ボタンを押すと動く動作を改めて教えて。
+
+各タブの遷移だけ？検索や、ROOMとの同期、コレ候補の追加、オススメコレの表示などもできるようになっている？
+
+---
+
+_**Agent (default)**_
+
+「開発者向け自動検証」ボタンの実際の処理フローをコードから確認します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\services\dev_automation_runner.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\dev_automation_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\services\dev_automation_visible_run.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "lib/app_shell.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "selectTab|currentIndex|BottomNavigationBar"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "selectTab|currentIndex|BottomNavigationBar",
+  "topFiles": [
+    {
+      "matchCount": 6,
+      "uri": ".\\lib\\app_shell.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 6
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "lib/navigation/app_shell_controller.dart",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "selectTab\\("
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2",
+  "pattern": "selectTab\\(",
+  "topFiles": [
+    {
+      "matchCount": 1,
+      "uri": ".\\lib\\navigation\\app_shell_controller.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\app_shell.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+`tabTourProductSearch` の自動化シナリオの動作内容を整理し始めた。</details></think>
+
+_**Agent (default)**_
+
+「開発者向け自動検証」ボタンを押したあとに動くのは、**1種類のシナリオだけ**です。画面名は「主要タブ巡回 + 水筒検索」で、実装名は `tabTourProductSearch` です。
+
+## 操作の流れ
+
+1. マイページ →「開発者向け自動検証」をタップ
+2. 実行回数を入力（既定 3 回、1〜20）
+3. 「開始」をタップ → 設定画面を閉じる
+4. AppShell 上で自動実行（SnackBar「自動検証を実行中…」が出る）
+5. 完了後「成功N / 失敗M」と表示
+
+## 1回の反復でやること（5ステップ）
+
+```186:192:lib/services/dev_automation_runner.dart
+    final steps = <DevAutomationStep>[
+      DevAutomationStep.managedTab,
+      DevAutomationStep.analyticsTab,
+      DevAutomationStep.myPageTab,
+      DevAutomationStep.returnToHome,
+      DevAutomationStep.productSearch,
+    ];
+```
+
+| 順番 | ステップ | 実際の動作 |
+| ---- | ---- | ---- |
+| 1 | `managedTab` | **ROOMコレ**タブ（index 1）へ遷移 |
+| 2 | `analyticsTab` | **分析**タブ（index 3）へ遷移 |
+| 3 | `myPageTab` | **マイページ**タブ（index 4）へ遷移 |
+| 4 | `returnToHome` | **ホーム**タブ（index 0）へ戻る |
+| 5 | `productSearch` | キーワード **「水筒」** で通常商品検索 API を実行 |
+
+タブ遷移は `AppShellController.selectTab()` で行い、各遷移後に約 200ms 待ってインデックスが合っているか確認します。
+
+## 検索について
+
+**タブ遷移だけではありません。** 最後のステップで検索も実行します。
+
+ただし、検索画面の UI を操作しているわけではなく、`RakutenSearchProvider.searchWithCondition()` を**プログラムから直接呼び出し**ます。ユーザーが検索ボタンを押すのと同じ経路に近い処理です。
+
+```300:312:lib/services/dev_automation_runner.dart
+    await searchProv.searchWithCondition(
+      condition,
+      excludeRegisteredProductIds: excludeIds,
+      excludeCandidateProductIds: excludeCandidateIds,
+      excludeDoneProductIds: excludeDoneIds,
+      excludeSavedShopCodes: savedShopCodes,
+      sessionId: sessionId,
+      modeTag: modeTag,
+    );
+
+    final displayCount = _resolveDisplayCount(searchProv);
+    final success =
+        searchProv.status == RakutenSearchStatus.success && displayCount > 0;
+```
+
+成功条件は「API 検索が成功し、表示件数が 1 件以上」です。検索結果画面への遷移や、結果カードのタップはしません。
+
+## やっていないこと
+
+現状の自動実行モードでは、以下は**含まれていません**。
+
+| 機能 | 自動実行されるか |
+| ---- | ---- |
+| ROOM との同期（取り込みボタン等） | **しない** |
+| コレ候補の追加（候補登録ボタン押下） | **しない** |
+| 「探す」シートの表示・操作 | **しない**（index 2 はタブではなくシート） |
+| ショップ発掘検索 | **しない** |
+| 今日のおすすめコレの生成・表示確認 | **明示的にはしない** |
+| URL から追加 | **しない** |
+| 投稿・コメント等の操作 | **しない** |
+
+ホームタブに戻ったとき、通常のホーム画面としておすすめが表示されることはありますが、**おすすめ生成を起動したり、表示を検証したりするステップはありません**。分析タブを開いたときに画面が描画される副作用はありますが、それも自動検証の意図したステップではありません。
+
+## まとめ
+
+- **タブ遷移 + 商品検索 API（「水筒」）** が中心
+- **ROOM 同期・候補追加・おすすめ表示の自動検証は未実装**
+- シナリオは現時点で `tabTourProductSearch` の 1 種類のみ（`DevAutomationScenario` に他のシナリオ定義なし）
+
+別途、「ROOM同期まで含めた検証」や「候補追加までの E2E」を自動化したい場合は、新しい `DevAutomationStep` / シナリオの追加が必要です。
