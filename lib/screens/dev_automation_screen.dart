@@ -17,7 +17,11 @@ class DevAutomationScreen extends StatefulWidget {
 }
 
 class _DevAutomationScreenState extends State<DevAutomationScreen> {
-  static const String _scenarioTitle = '主要タブ巡回 + 水筒検索';
+  static const String _scenarioTitle = '主要タブ巡回 + 主要操作検証';
+  static const String _scenarioDescription =
+      '1反復あたり: 主要タブ巡回 → 「水筒」検索 → 検索結果からコレ候補追加 → '
+      'おすすめコレ表示 → おすすめからコレ候補追加 → ROOM投稿済商品取り込み → 反応確認。'
+      '実行回数はこの一連の流れの反復回数です。';
   static const List<int> _iterationPresets = <int>[1, 3, 5, 10];
 
   static bool _screenOpenLogged = false;
@@ -148,6 +152,13 @@ class _DevAutomationScreenState extends State<DevAutomationScreen> {
                   Text(
                     _scenarioTitle,
                     style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _scenarioDescription,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   TextField(

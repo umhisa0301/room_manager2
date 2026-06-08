@@ -42,9 +42,8 @@ Widget _wrap({required SharedPreferences prefs, required Widget child}) {
         ),
       ),
       ChangeNotifierProvider(
-        create: (_) => SavedShopProvider(
-          repository: SavedShopRepository(prefs),
-        ),
+        create: (_) =>
+            SavedShopProvider(repository: SavedShopRepository(prefs)),
       ),
     ],
     child: MaterialApp(home: child),
@@ -67,13 +66,11 @@ void main() {
     ) async {
       if (DevAutomationFlags.isEnabled) return;
 
-      await tester.pumpWidget(
-        const MaterialApp(home: DevAutomationScreen()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DevAutomationScreen()));
       await tester.pumpAndSettle();
 
       expect(find.text(DevAutomationScreen.title), findsNothing);
-      expect(find.text('主要タブ巡回 + 水筒検索'), findsNothing);
+      expect(find.text('主要タブ巡回 + 主要操作検証'), findsNothing);
     });
 
     testWidgets('shows scenario UI when automation is enabled', (
@@ -88,7 +85,11 @@ void main() {
 
       expect(find.text(DevAutomationScreen.title), findsWidgets);
       expect(find.text('この機能は検証ビルド専用です'), findsOneWidget);
-      expect(find.text('主要タブ巡回 + 水筒検索'), findsOneWidget);
+      expect(find.text('主要タブ巡回 + 主要操作検証'), findsOneWidget);
+      expect(
+        find.textContaining('おすすめコレ表示'),
+        findsOneWidget,
+      );
       expect(find.text('開始'), findsOneWidget);
       expect(find.text('停止'), findsOneWidget);
       expect(

@@ -6,11 +6,19 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../config/dev_automation_config.dart';
+import '../models/rakuten_managed_product.dart';
 import '../models/rakuten_product_search_condition.dart';
+import '../models/room_reaction_sync_batch_result.dart';
+import '../models/room_sync_result.dart';
+import '../models/today_recommendation.dart';
 import '../navigation/app_shell_controller.dart';
+import '../services/room_profile_url_validation_service.dart';
 import '../state/rakuten_managed_product_provider.dart';
 import '../state/rakuten_search_provider.dart';
+import '../state/room_import_controller.dart';
 import '../state/saved_shop_provider.dart';
+import '../state/today_recommendation_provider.dart';
+import '../state/user_profile_provider.dart';
 import '../utils/dev_automation_log_buffer.dart';
 
 /// 主要タブ巡回 + 通常商品検索シナリオの識別子。
@@ -25,6 +33,20 @@ enum DevAutomationStep {
   myPageTab,
   returnToHome,
   productSearch,
+  addCandidateFromSearch,
+  openRecommendation,
+  addCandidateFromRecommendation,
+  roomImport,
+  reactionCheck,
+}
+
+/// コレ候補追加ステップの outcome ラベル（ログ・テスト用）。
+abstract final class DevAutomationCandidateAddResult {
+  static const String added = 'added';
+  static const String alreadyCandidate = 'alreadyCandidate';
+  static const String alreadyManaged = 'alreadyManaged';
+  static const String skippedDuplicate = 'skippedDuplicate';
+  static const String userVisibleError = 'userVisibleError';
 }
 
 /// ランナーが利用する外部依存（テスト時に差し替え可能）。
@@ -34,6 +56,10 @@ class DevAutomationDependencies {
     required this.searchProvider,
     required this.managedProductProvider,
     required this.savedShopProvider,
+    this.todayRecommendationProvider,
+    this.userProfileProvider,
+    this.roomImportController,
+    this.context,
     this.delay = _defaultDelay,
     this.waitForFrame = _defaultWaitForFrame,
   });
@@ -42,6 +68,10 @@ class DevAutomationDependencies {
   final RakutenSearchProvider searchProvider;
   final RakutenManagedProductProvider managedProductProvider;
   final SavedShopProvider savedShopProvider;
+  final TodayRecommendationProvider? todayRecommendationProvider;
+  final UserProfileProvider? userProfileProvider;
+  final RoomImportController? roomImportController;
+  final BuildContext? context;
   final Future<void> Function(Duration duration) delay;
   final Future<void> Function() waitForFrame;
 
@@ -58,6 +88,10 @@ class DevAutomationDependencies {
       searchProvider: context.read<RakutenSearchProvider>(),
       managedProductProvider: context.read<RakutenManagedProductProvider>(),
       savedShopProvider: context.read<SavedShopProvider>(),
+      todayRecommendationProvider: context.read<TodayRecommendationProvider>(),
+      userProfileProvider: context.read<UserProfileProvider>(),
+      roomImportController: context.read<RoomImportController>(),
+      context: context,
     );
   }
 }
@@ -65,10 +99,10 @@ class DevAutomationDependencies {
 /// 実行回数の検証結果。
 class DevAutomationIterationValidation {
   const DevAutomationIterationValidation.valid(this.value)
-      : errorMessage = null;
+    : errorMessage = null;
 
   const DevAutomationIterationValidation.invalid(this.errorMessage)
-      : value = null;
+    : value = null;
 
   final int? value;
   final String? errorMessage;
@@ -105,6 +139,27 @@ class DevAutomationRunner extends ChangeNotifier {
   bool get stopRequested => _stopRequested;
   int get successCount => _successCount;
   int get failureCount => _failureCount;
+
+  /// コレ候補追加の outcome を分類する（UI 経路と同じ判定基準）。
+  static String classifyCandidateAddOutcome({
+    required RakutenManagedProductStatus before,
+    required RakutenManagedProductStatus after,
+    required String? error,
+  }) {
+    if (error != null && error.trim().isNotEmpty) {
+      return DevAutomationCandidateAddResult.userVisibleError;
+    }
+    if (before == RakutenManagedProductStatus.done) {
+      return DevAutomationCandidateAddResult.alreadyManaged;
+    }
+    if (before == RakutenManagedProductStatus.candidate) {
+      return DevAutomationCandidateAddResult.alreadyCandidate;
+    }
+    if (after == RakutenManagedProductStatus.candidate) {
+      return DevAutomationCandidateAddResult.added;
+    }
+    return DevAutomationCandidateAddResult.skippedDuplicate;
+  }
 
   /// 実行回数を検証する（UI・テスト共用）。
   static DevAutomationIterationValidation validateIterations(int? raw) {
@@ -189,6 +244,11 @@ class DevAutomationRunner extends ChangeNotifier {
       DevAutomationStep.myPageTab,
       DevAutomationStep.returnToHome,
       DevAutomationStep.productSearch,
+      DevAutomationStep.addCandidateFromSearch,
+      DevAutomationStep.openRecommendation,
+      DevAutomationStep.addCandidateFromRecommendation,
+      DevAutomationStep.roomImport,
+      DevAutomationStep.reactionCheck,
     ];
 
     for (final step in steps) {
@@ -211,6 +271,8 @@ class DevAutomationRunner extends ChangeNotifier {
         step: step,
         success: result.success,
         displayCount: result.displayCount,
+        result: result.result,
+        added: result.added,
         durationMs: result.durationMs,
         error: result.error,
       );
@@ -245,6 +307,16 @@ class DevAutomationRunner extends ChangeNotifier {
           return const _StepResult(success: true);
         case DevAutomationStep.productSearch:
           return _executeProductSearch(keyword);
+        case DevAutomationStep.addCandidateFromSearch:
+          return _executeAddCandidateFromSearch();
+        case DevAutomationStep.openRecommendation:
+          return _executeOpenRecommendation();
+        case DevAutomationStep.addCandidateFromRecommendation:
+          return _executeAddCandidateFromRecommendation();
+        case DevAutomationStep.roomImport:
+          return _executeRoomImport();
+        case DevAutomationStep.reactionCheck:
+          return _executeReactionCheck();
       }
     } catch (e, st) {
       if (kDebugMode) {
@@ -324,6 +396,340 @@ class DevAutomationRunner extends ChangeNotifier {
     );
   }
 
+  Future<_StepResult> _executeAddCandidateFromSearch() async {
+    final stopwatch = Stopwatch()..start();
+    final results = _deps.searchProvider.results;
+    if (results.isEmpty) {
+      return _StepResult(
+        success: false,
+        durationMs: stopwatch.elapsedMilliseconds,
+        error: StateError('no search results to add'),
+      );
+    }
+
+    final managed = _deps.managedProductProvider;
+    var target = results.first;
+    for (final item in results) {
+      if (managed.statusForProduct(item.productId) ==
+          RakutenManagedProductStatus.none) {
+        target = item;
+        break;
+      }
+    }
+
+    final before = managed.statusForProduct(target.productId);
+    final err = await managed.registerCandidate(target);
+    final after = managed.statusForProduct(target.productId);
+    final outcome = classifyCandidateAddOutcome(
+      before: before,
+      after: after,
+      error: err,
+    );
+
+    return _StepResult(
+      success: true,
+      result: outcome,
+      durationMs: stopwatch.elapsedMilliseconds,
+    );
+  }
+
+  Future<_StepResult> _executeOpenRecommendation() async {
+    final stopwatch = Stopwatch()..start();
+    final recommender = _deps.todayRecommendationProvider;
+    if (recommender == null) {
+      return _StepResult(
+        success: true,
+        result: 'skippedNotImplemented',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    _deps.appShell.selectTab(0);
+    await _waitAfterTabSwitch(expectedIndex: 0);
+
+    final profileProvider = _deps.userProfileProvider;
+    if (profileProvider == null) {
+      return _StepResult(
+        success: true,
+        result: 'insufficientData',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    final todayKey = _localDateKey(DateTime.now());
+    final beforeBundle = recommender.bundle;
+    final sameDayBefore =
+        beforeBundle != null && beforeBundle.localDateKey == todayKey;
+
+    await recommender.ensureToday(
+      profile: profileProvider.profile,
+      managedItems: _deps.managedProductProvider.items,
+      savedShops: _deps.savedShopProvider.shops,
+      trigger: 'devAutomation',
+    );
+
+    if (sameDayBefore) {
+      return _StepResult(
+        success: true,
+        result: 'sameDaySkip',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    final bundle = recommender.bundle;
+    if (bundle != null && bundle.entries.isNotEmpty) {
+      return _StepResult(
+        success: true,
+        result: 'success',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    if (recommender.errorMessage != null &&
+        recommender.errorMessage!.trim().isNotEmpty) {
+      return _StepResult(
+        success: true,
+        result: 'insufficientData',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    return _StepResult(
+      success: true,
+      result: 'insufficientData',
+      durationMs: stopwatch.elapsedMilliseconds,
+    );
+  }
+
+  Future<_StepResult> _executeAddCandidateFromRecommendation() async {
+    final stopwatch = Stopwatch()..start();
+    final recommender = _deps.todayRecommendationProvider;
+    if (recommender == null) {
+      return _StepResult(
+        success: true,
+        result: 'skippedNotImplemented',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    final bundle = recommender.bundle;
+    if (bundle == null || bundle.entries.isEmpty) {
+      return _StepResult(
+        success: true,
+        result: 'insufficientData',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    TodayRecommendationEntry? target;
+    for (final entry in bundle.entries) {
+      if (entry.decision == TodayRecommendationDecision.pending) {
+        target = entry;
+        break;
+      }
+    }
+    target ??= bundle.entries.first;
+
+    final managed = _deps.managedProductProvider;
+    final before = managed.statusForProduct(target.item.productId);
+    final err = await recommender.markAddedCandidate(
+      managedProvider: managed,
+      item: target.item,
+    );
+    final after = managed.statusForProduct(target.item.productId);
+    final outcome = classifyCandidateAddOutcome(
+      before: before,
+      after: after,
+      error: err,
+    );
+
+    return _StepResult(
+      success: true,
+      result: outcome,
+      durationMs: stopwatch.elapsedMilliseconds,
+    );
+  }
+
+  Future<_StepResult> _executeRoomImport() async {
+    final stopwatch = Stopwatch()..start();
+    final controller = _deps.roomImportController;
+    final context = _deps.context;
+    if (controller == null || context == null) {
+      return _StepResult(
+        success: true,
+        result: 'skippedNotImplemented',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    _deps.appShell.selectTab(4);
+    await _waitAfterTabSwitch(expectedIndex: 4);
+
+    final profileUrl = _normalizedRoomProfileUrl();
+    if (profileUrl.isEmpty) {
+      return _StepResult(
+        success: true,
+        result: 'notConfigured',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    if (!context.mounted) {
+      return _StepResult(
+        success: true,
+        result: 'skip',
+        added: 0,
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    final result = await controller.runImport(context);
+    return _classifyRoomImportResult(
+      result: result,
+      durationMs: stopwatch.elapsedMilliseconds,
+    );
+  }
+
+  Future<_StepResult> _executeReactionCheck() async {
+    final stopwatch = Stopwatch()..start();
+    final controller = _deps.roomImportController;
+    final context = _deps.context;
+    if (controller == null || context == null) {
+      return _StepResult(
+        success: true,
+        result: 'skippedNotImplemented',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    final profileUrl = _normalizedRoomProfileUrl();
+    if (profileUrl.isEmpty) {
+      return _StepResult(
+        success: true,
+        result: 'insufficientData',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    final importedDoneCount = _deps.managedProductProvider.items
+        .where((e) => e.status == RakutenManagedProductStatus.done)
+        .length;
+    if (importedDoneCount == 0) {
+      return _StepResult(
+        success: true,
+        result: 'insufficientData',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    if (!context.mounted) {
+      return _StepResult(
+        success: true,
+        result: 'userVisibleError',
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    }
+
+    final out = await controller.runReactionSync(context);
+    return _classifyReactionCheckResult(
+      result: out,
+      durationMs: stopwatch.elapsedMilliseconds,
+    );
+  }
+
+  _StepResult _classifyRoomImportResult({
+    required RoomSyncResult? result,
+    required int durationMs,
+  }) {
+    if (result == null) {
+      return _StepResult(
+        success: true,
+        result: 'skip',
+        added: 0,
+        durationMs: durationMs,
+      );
+    }
+    if (result.hasFatalError) {
+      return _StepResult(
+        success: true,
+        result: 'userVisibleError',
+        added: result.newlyCollectedCount,
+        durationMs: durationMs,
+      );
+    }
+    if (result.newlyCollectedCount > 0) {
+      return _StepResult(
+        success: true,
+        result: 'added',
+        added: result.newlyCollectedCount,
+        durationMs: durationMs,
+      );
+    }
+    if (result.skippedCount > 0 && result.processedCount > 0) {
+      return _StepResult(
+        success: true,
+        result: 'skip',
+        added: 0,
+        durationMs: durationMs,
+      );
+    }
+    return _StepResult(
+      success: true,
+      result: 'empty',
+      added: 0,
+      durationMs: durationMs,
+    );
+  }
+
+  _StepResult _classifyReactionCheckResult({
+    required RoomReactionSyncBatchResult? result,
+    required int durationMs,
+  }) {
+    if (result == null) {
+      return _StepResult(
+        success: true,
+        result: 'userVisibleError',
+        durationMs: durationMs,
+      );
+    }
+    if (result.hasFatalError) {
+      return _StepResult(
+        success: true,
+        result: 'userVisibleError',
+        durationMs: durationMs,
+      );
+    }
+    if (result.updated > 0) {
+      return _StepResult(
+        success: true,
+        result: 'success',
+        durationMs: durationMs,
+      );
+    }
+    if (result.itemsChecked > 0) {
+      return _StepResult(
+        success: true,
+        result: 'noNewReaction',
+        durationMs: durationMs,
+      );
+    }
+    return _StepResult(
+      success: true,
+      result: 'alreadyChecked',
+      durationMs: durationMs,
+    );
+  }
+
+  String _normalizedRoomProfileUrl() {
+    final profile = _deps.userProfileProvider?.profile.roomUrl ?? '';
+    return RoomProfileUrlValidationService.normalizeProfileUrl(profile);
+  }
+
+  String _localDateKey(DateTime dateTime) {
+    String two(int n) => n.toString().padLeft(2, '0');
+    return '${dateTime.year}-${two(dateTime.month)}-${two(dateTime.day)}';
+  }
+
   int _resolveDisplayCount(RakutenSearchProvider searchProv) {
     final summary = searchProv.keywordManagedFetchSummary;
     if (summary != null && summary.displayCount > 0) {
@@ -337,6 +743,8 @@ class DevAutomationRunner extends ChangeNotifier {
     required DevAutomationStep step,
     required bool success,
     int? displayCount,
+    String? result,
+    int? added,
     int? durationMs,
     Object? error,
   }) {
@@ -348,6 +756,12 @@ class DevAutomationRunner extends ChangeNotifier {
       ..write('iteration=$iteration step=${step.name} success=$success');
     if (displayCount != null) {
       buffer.write(' displayCount=$displayCount');
+    }
+    if (result != null) {
+      buffer.write(' result=$result');
+    }
+    if (added != null) {
+      buffer.write(' added=$added');
     }
     if (durationMs != null) {
       buffer.write(' durationMs=$durationMs');
@@ -367,12 +781,16 @@ class _StepResult {
   const _StepResult({
     required this.success,
     this.displayCount,
+    this.result,
+    this.added,
     this.durationMs,
     this.error,
   });
 
   final bool success;
   final int? displayCount;
+  final String? result;
+  final int? added;
   final int? durationMs;
   final Object? error;
 }

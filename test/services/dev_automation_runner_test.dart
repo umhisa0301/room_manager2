@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:room_manager2/config/dev_automation_config.dart';
+import 'package:room_manager2/models/rakuten_managed_product.dart';
 import 'package:room_manager2/models/rakuten_product_search_condition.dart';
 import 'package:room_manager2/models/rakuten_search_item.dart';
 import 'package:room_manager2/navigation/app_shell_controller.dart';
@@ -78,6 +79,63 @@ DevAutomationDependencies _newDependencies({
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  group('DevAutomationRunner.classifyCandidateAddOutcome', () {
+    test('classifies added', () {
+      expect(
+        DevAutomationRunner.classifyCandidateAddOutcome(
+          before: RakutenManagedProductStatus.none,
+          after: RakutenManagedProductStatus.candidate,
+          error: null,
+        ),
+        DevAutomationCandidateAddResult.added,
+      );
+    });
+
+    test('classifies alreadyCandidate', () {
+      expect(
+        DevAutomationRunner.classifyCandidateAddOutcome(
+          before: RakutenManagedProductStatus.candidate,
+          after: RakutenManagedProductStatus.candidate,
+          error: null,
+        ),
+        DevAutomationCandidateAddResult.alreadyCandidate,
+      );
+    });
+
+    test('classifies alreadyManaged', () {
+      expect(
+        DevAutomationRunner.classifyCandidateAddOutcome(
+          before: RakutenManagedProductStatus.done,
+          after: RakutenManagedProductStatus.done,
+          error: null,
+        ),
+        DevAutomationCandidateAddResult.alreadyManaged,
+      );
+    });
+
+    test('classifies skippedDuplicate', () {
+      expect(
+        DevAutomationRunner.classifyCandidateAddOutcome(
+          before: RakutenManagedProductStatus.none,
+          after: RakutenManagedProductStatus.none,
+          error: null,
+        ),
+        DevAutomationCandidateAddResult.skippedDuplicate,
+      );
+    });
+
+    test('classifies userVisibleError', () {
+      expect(
+        DevAutomationRunner.classifyCandidateAddOutcome(
+          before: RakutenManagedProductStatus.none,
+          after: RakutenManagedProductStatus.none,
+          error: 'ROOM同期中です',
+        ),
+        DevAutomationCandidateAddResult.userVisibleError,
+      );
+    });
+  });
+
   group('DevAutomationRunner.validateIterations', () {
     test('accepts values within range', () {
       final result = DevAutomationRunner.validateIterations(3);
@@ -92,10 +150,7 @@ void main() {
     });
 
     test('rejects out of range values', () {
-      expect(
-        DevAutomationRunner.validateIterations(0).isValid,
-        isFalse,
-      );
+      expect(DevAutomationRunner.validateIterations(0).isValid, isFalse);
       expect(
         DevAutomationRunner.validateIterations(
           DevAutomationRunner.maxIterations + 1,
@@ -155,6 +210,39 @@ void main() {
       expect(
         logBuffer.entries.any(
           (line) => line.contains('[DEV_AUTOMATION_RUN_STOP]'),
+        ),
+        isTrue,
+      );
+    });
+
+    test('logs addCandidateFromSearch step result on full run', () async {
+      if (!DevAutomationFlags.isEnabled) return;
+
+      final logBuffer = DevAutomationLogBuffer();
+      final runner = DevAutomationRunner(
+        dependencies: _newDependencies(
+          prefs: prefs,
+          appShell: AppShellController(),
+          delay: (_) async {},
+        ),
+        logBuffer: logBuffer,
+      );
+
+      await runner.runTabTourProductSearch(iterations: 1);
+
+      expect(
+        logBuffer.entries.any(
+          (line) =>
+              line.contains('step=addCandidateFromSearch') &&
+              line.contains('result='),
+        ),
+        isTrue,
+      );
+      expect(
+        logBuffer.entries.any(
+          (line) =>
+              line.contains('step=openRecommendation') &&
+              line.contains('result=skippedNotImplemented'),
         ),
         isTrue,
       );
