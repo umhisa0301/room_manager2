@@ -382,34 +382,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
     );
   }
 
-  Future<void> _regenerateTodayRecommendationsFromHome(
-    BuildContext context,
-  ) async {
-    if (!mounted) return;
-    final recommender = context.read<TodayRecommendationProvider>();
-    final profile = context.read<UserProfileProvider>().profile;
-    final managed = context.read<RakutenManagedProductProvider>().items;
-    final saved = context.read<SavedShopProvider>().shops;
-    await recommender.regenerateToday(
-      profile: profile,
-      managedItems: managed,
-      savedShops: saved,
-      trigger: 'manual',
-      manual: true,
-    );
-    if (!context.mounted) return;
-    final guard = recommender.lastGuardReason ?? '';
-    if (guard.contains('manualCooldown') ||
-        guard.contains('rateLimitCooldown') ||
-        guard.contains('recentlyGenerated')) {
-      final status = recommender.manualRegenerateCooldownStatus();
-      final msg = status.userFacingWaitLabel.isEmpty
-          ? 'あと約5分後に再生成できます'
-          : status.userFacingWaitLabel;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-    }
-  }
-
   Future<void> _regenerateRecommendationsIfNeeded({
     required TodayRecommendationProvider recommender,
     required RakutenManagedProductProvider roomProvider,
@@ -606,9 +578,6 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                                           .empty)
                                         ? 'おすすめを準備できませんでした'
                                         : null,
-                                    canRegenerateRecommendations: recProvider
-                                        .manualRegenerateCooldownStatus()
-                                        .canRegenerate,
                                     onOpenSearch: () {
                                       _trace('trigger=cta');
                                       _trace('action=openSearch');
@@ -620,15 +589,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                     ),
                                     onOpenActivity: () =>
                                         _openActivity(context),
-                                    regenerateCooldownHint: recProvider
-                                        .manualRegenerateCooldownStatus()
-                                        .userFacingWaitLabel,
                                     onPrimaryRecommendations: () =>
                                         _openTodayRecommendations(context),
-                                    onRegenerateRecommendations: () =>
-                                        _regenerateTodayRecommendationsFromHome(
-                                          context,
-                                        ),
                                   ),
                                   HomeInAppNoticeSlot(
                                     milestonePostCount: milestonePostCount,
@@ -1415,13 +1377,10 @@ class _HomeTodayProgressCard extends StatelessWidget {
     required this.recTotalCount,
     required this.recommendationHintLine,
     required this.recommendationStatusMessage,
-    required this.canRegenerateRecommendations,
-    required this.regenerateCooldownHint,
     required this.onOpenSearch,
     required this.onOpenCandidates,
     required this.onOpenActivity,
     required this.onPrimaryRecommendations,
-    required this.onRegenerateRecommendations,
   });
 
   final RoomKpiSummary kpi;
@@ -1438,13 +1397,10 @@ class _HomeTodayProgressCard extends StatelessWidget {
   final int recTotalCount;
   final String? recommendationHintLine;
   final String? recommendationStatusMessage;
-  final bool canRegenerateRecommendations;
-  final String regenerateCooldownHint;
   final VoidCallback onOpenSearch;
   final VoidCallback onOpenCandidates;
   final VoidCallback onOpenActivity;
   final VoidCallback onPrimaryRecommendations;
-  final VoidCallback onRegenerateRecommendations;
 
   String _todayStatusMessage() {
     if (isLoading ||
@@ -1458,7 +1414,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
             TodayRecommendationGenerationStatus.failedRateLimit ||
         generationStatus ==
             TodayRecommendationGenerationStatus.failedApiError) {
-      return '別の候補をお試しできます';
+      return 'おすすめを準備できませんでした';
     }
     if (generationStatus == TodayRecommendationGenerationStatus.empty) {
       return '今日の小さな目標から始めましょう';
@@ -1467,15 +1423,6 @@ class _HomeTodayProgressCard extends StatelessWidget {
       return 'まずは今日の1件から、無理なく進めましょう';
     }
     return '無理なくROOM運用を続けましょう';
-  }
-
-  bool _shouldShowSecondaryRegenerate() {
-    if (isLoading ||
-        generationStatus == TodayRecommendationGenerationStatus.loading) {
-      return false;
-    }
-    if (pendingCount > 0) return false;
-    return totalCount > 0;
   }
 
   String? _titleRowChipLabel() {
@@ -1522,11 +1469,6 @@ class _HomeTodayProgressCard extends StatelessWidget {
     );
 
     final primary = _primaryAction();
-    final showSecondaryRegenerate = _shouldShowSecondaryRegenerate();
-    final showRegenerateCooldown =
-        showSecondaryRegenerate &&
-        !canRegenerateRecommendations &&
-        regenerateCooldownHint.trim().isNotEmpty;
     final titleRowChipLabel = _titleRowChipLabel();
     final compactInfoLine = _compactInfoLine();
 
@@ -1584,62 +1526,6 @@ class _HomeTodayProgressCard extends StatelessWidget {
                 height: 1.3,
                 color: HomeScreenColors.footnoteMuted,
                 fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-          if (showSecondaryRegenerate) ...[
-            const SizedBox(height: 6),
-            Align(
-              alignment: Alignment.center,
-              child: OutlinedButton.icon(
-                onPressed: canRegenerateRecommendations
-                    ? onRegenerateRecommendations
-                    : null,
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: HomeScreenColors.bodyOnSection,
-                  side: BorderSide(
-                    color: HomeScreenColors.sectionOutlineNeutral.withValues(
-                      alpha: 0.75,
-                    ),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
-                  ),
-                  minimumSize: const Size(0, 36),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                icon: Icon(
-                  Icons.refresh_rounded,
-                  size: 16,
-                  color: canRegenerateRecommendations
-                      ? HomeScreenColors.bodyOnSection
-                      : HomeScreenColors.footnoteMuted,
-                ),
-                label: Text(
-                  '別の候補を出す',
-                  style: _HomeUi.tapHint(context).copyWith(
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w700,
-                    color: canRegenerateRecommendations
-                        ? HomeScreenColors.bodyOnSection
-                        : HomeScreenColors.footnoteMuted,
-                  ),
-                ),
-              ),
-            ),
-          ],
-          if (showRegenerateCooldown) ...[
-            const SizedBox(height: 4),
-            Text(
-              regenerateCooldownHint.trim(),
-              maxLines: 2,
-              softWrap: true,
-              textAlign: TextAlign.center,
-              style: _HomeUi.tapHint(context).copyWith(
-                fontSize: 10.5,
-                fontWeight: FontWeight.w600,
-                color: HomeScreenColors.footnoteMuted,
               ),
             ),
           ],
