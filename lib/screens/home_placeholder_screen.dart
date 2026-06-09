@@ -255,6 +255,7 @@ class HomePlaceholderScreen extends StatefulWidget {
 
 class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
   DateTime? _lastAutoRegenerateTriedAt;
+  int _reactionNoticeRefreshNonce = 0;
   static const Duration _autoRegenerateCooldown = Duration(minutes: 5);
 
   @override
@@ -601,6 +602,8 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                         recProvider.generationStatus ==
                                             TodayRecommendationGenerationStatus
                                                 .loading,
+                                    reactionHistoryRefreshNonce:
+                                        _reactionNoticeRefreshNonce,
                                   ),
                                 ],
                               ),
@@ -627,6 +630,9 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 importedDoneCount: roomImportedDoneCount,
                                 onOpenRoomUrl: () =>
                                     _openRoomUrlEditSheet(context),
+                                onReactionSyncCompleted: () => setState(
+                                  () => _reactionNoticeRefreshNonce++,
+                                ),
                                 onOpenReactionAnalytics: () {
                                   logRoomReactionAnalyticsNavigation(
                                     from: 'homeRoomSyncCard',
@@ -694,12 +700,14 @@ class _HomeRoomPostImportSection extends StatelessWidget {
     required this.importedDoneCount,
     required this.onOpenRoomUrl,
     required this.onOpenReactionAnalytics,
+    this.onReactionSyncCompleted,
   });
 
   final bool hasRoomProfileUrl;
   final int importedDoneCount;
   final VoidCallback onOpenRoomUrl;
   final VoidCallback onOpenReactionAnalytics;
+  final VoidCallback? onReactionSyncCompleted;
 
   Future<void> _handleImport(BuildContext context) async {
     if (!hasRoomProfileUrl) return;
@@ -844,6 +852,7 @@ class _HomeRoomPostImportSection extends StatelessWidget {
         ),
       ),
     );
+    onReactionSyncCompleted?.call();
   }
 
   @override

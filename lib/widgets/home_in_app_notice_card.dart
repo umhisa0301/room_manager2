@@ -3,8 +3,10 @@ import 'dart:async' show unawaited;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/room_reaction_sync_history_entry.dart';
 import '../navigation/app_shell_controller.dart';
 import '../services/home_in_app_notice_dismiss_store.dart';
+import '../services/room_reaction_sync_history_store.dart';
 import '../theme/home_screen_colors.dart';
 import '../utils/home_in_app_notice.dart';
 
@@ -16,12 +18,14 @@ class HomeInAppNoticeSlot extends StatefulWidget {
     required this.recPendingCount,
     required this.recTotalCount,
     required this.recIsLoading,
+    this.reactionHistoryRefreshNonce = 0,
   });
 
   final int milestonePostCount;
   final int recPendingCount;
   final int recTotalCount;
   final bool recIsLoading;
+  final int reactionHistoryRefreshNonce;
 
   @override
   State<HomeInAppNoticeSlot> createState() => _HomeInAppNoticeSlotState();
@@ -30,19 +34,37 @@ class HomeInAppNoticeSlot extends StatefulWidget {
 class _HomeInAppNoticeSlotState extends State<HomeInAppNoticeSlot> {
   final Set<String> _sessionDismissedKeys = {};
   Set<String> _persistedDismissedKeys = {};
+  RoomReactionSyncHistoryEntry? _latestReactionSyncHistory;
+  int _reactionSyncHistoryCount = 0;
   bool _storeLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    unawaited(_loadDismissedKeys());
+    unawaited(_loadNoticeContext());
   }
 
-  Future<void> _loadDismissedKeys() async {
-    final keys = await HomeInAppNoticeDismissStore.loadDismissedKeysForToday();
+  @override
+  void didUpdateWidget(covariant HomeInAppNoticeSlot oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.reactionHistoryRefreshNonce !=
+        widget.reactionHistoryRefreshNonce) {
+      unawaited(_loadNoticeContext());
+    }
+  }
+
+  Future<void> _loadNoticeContext() async {
+    final results = await Future.wait([
+      HomeInAppNoticeDismissStore.loadDismissedKeysForToday(),
+      RoomReactionSyncHistoryStore.loadEntries(),
+    ]);
     if (!mounted) return;
+    final entries = results[1] as List<RoomReactionSyncHistoryEntry>;
     setState(() {
-      _persistedDismissedKeys = keys;
+      _persistedDismissedKeys = results[0] as Set<String>;
+      _latestReactionSyncHistory =
+          entries.isEmpty ? null : entries.first;
+      _reactionSyncHistoryCount = entries.length;
       _storeLoaded = true;
     });
   }
@@ -61,6 +83,8 @@ class _HomeInAppNoticeSlotState extends State<HomeInAppNoticeSlot> {
       recIsLoading: widget.recIsLoading,
       dismissedKeys: _allDismissedKeys,
       todayDateKey: HomeInAppNoticeDismissStore.todayDateKey(),
+      latestReactionSyncHistory: _latestReactionSyncHistory,
+      reactionSyncHistoryCount: _reactionSyncHistoryCount,
     );
   }
 

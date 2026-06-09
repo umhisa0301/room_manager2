@@ -1,3 +1,4 @@
+import '../models/room_reaction_sync_history_entry.dart';
 import 'home_post_milestone.dart';
 
 /// ホームお知らせカードのアクション種別（既存タブ導線のみ）。
@@ -33,7 +34,7 @@ abstract final class HomeInAppNoticeSelector {
     return 0;
   }
 
-  /// 優先順位: 投稿マイルストーン → おすすめ確認済み。1件のみ返す。
+  /// 優先順位: 投稿マイルストーン → 反応増加 → おすすめ確認済み。1件のみ返す。
   static HomeInAppNotice? select({
     required int milestonePostCount,
     required int recPendingCount,
@@ -41,6 +42,8 @@ abstract final class HomeInAppNoticeSelector {
     required bool recIsLoading,
     required Set<String> dismissedKeys,
     required String todayDateKey,
+    RoomReactionSyncHistoryEntry? latestReactionSyncHistory,
+    int reactionSyncHistoryCount = 0,
   }) {
     final postNotice = _selectPostMilestoneNotice(
       milestonePostCount: milestonePostCount,
@@ -49,6 +52,14 @@ abstract final class HomeInAppNoticeSelector {
     );
     if (postNotice != null) return postNotice;
 
+    final reactionNotice = _selectReactionIncreasedNotice(
+      latestReactionSyncHistory: latestReactionSyncHistory,
+      reactionSyncHistoryCount: reactionSyncHistoryCount,
+      dismissedKeys: dismissedKeys,
+      todayDateKey: todayDateKey,
+    );
+    if (reactionNotice != null) return reactionNotice;
+
     return _selectRecCompletedNotice(
       recPendingCount: recPendingCount,
       recTotalCount: recTotalCount,
@@ -56,6 +67,14 @@ abstract final class HomeInAppNoticeSelector {
       dismissedKeys: dismissedKeys,
       todayDateKey: todayDateKey,
     );
+  }
+
+  /// 反応増加通知の [noticeKey]（同期日時ベース・記号なし）。
+  static String reactionIncreasedNoticeKey({
+    required String todayDateKey,
+    required String syncedAtIso,
+  }) {
+    return 'reaction_increased_${todayDateKey}_${_syncedAtCompactForNoticeKey(syncedAtIso)}';
   }
 
   static HomeInAppNotice? _selectPostMilestoneNotice({
@@ -129,6 +148,69 @@ abstract final class HomeInAppNoticeSelector {
           body:
               '今日は$postCount件投稿できています。${snap.hintMessage}',
         );
+    }
+  }
+
+  static HomeInAppNotice? _selectReactionIncreasedNotice({
+    required RoomReactionSyncHistoryEntry? latestReactionSyncHistory,
+    required int reactionSyncHistoryCount,
+    required Set<String> dismissedKeys,
+    required String todayDateKey,
+  }) {
+    if (latestReactionSyncHistory == null) return null;
+    if (reactionSyncHistoryCount < 2) return null;
+
+    final likeIncreased = latestReactionSyncHistory.likeIncreasedItems;
+    final commentIncreased = latestReactionSyncHistory.commentIncreasedItems;
+    if (likeIncreased <= 0 && commentIncreased <= 0) return null;
+
+    final noticeKey = reactionIncreasedNoticeKey(
+      todayDateKey: todayDateKey,
+      syncedAtIso: latestReactionSyncHistory.syncedAtIso,
+    );
+    if (dismissedKeys.contains(noticeKey)) return null;
+
+    return HomeInAppNotice(
+      noticeKey: noticeKey,
+      title: '反応がありました',
+      body: _reactionIncreasedBody(
+        likeIncreased: likeIncreased,
+        commentIncreased: commentIncreased,
+      ),
+      actionLabel: '分析で見る',
+      action: HomeInAppNoticeAction.openActivity,
+    );
+  }
+
+  static String _reactionIncreasedBody({
+    required int likeIncreased,
+    required int commentIncreased,
+  }) {
+    final hasLike = likeIncreased > 0;
+    final hasComment = commentIncreased > 0;
+    if (hasLike && hasComment) {
+      return 'いいね・コメントが増えた商品があります。分析で詳しく見られます。';
+    }
+    if (hasLike) {
+      return 'いいねが増えた商品が$likeIncreased件あります。分析で詳しく見られます。';
+    }
+    if (hasComment) {
+      return 'コメントが増えた商品が$commentIncreased件あります。分析で詳しく見られます。';
+    }
+    return 'いいねやコメントが増えた商品があります。分析で詳しく見られます。';
+  }
+
+  static String _syncedAtCompactForNoticeKey(String syncedAtIso) {
+    try {
+      final dt = DateTime.parse(syncedAtIso).toUtc();
+      final h = dt.hour.toString().padLeft(2, '0');
+      final m = dt.minute.toString().padLeft(2, '0');
+      final s = dt.second.toString().padLeft(2, '0');
+      return '$h$m$s';
+    } catch (_) {
+      final digits = syncedAtIso.replaceAll(RegExp(r'[^0-9]'), '');
+      if (digits.length >= 6) return digits.substring(digits.length - 6);
+      return digits.padRight(6, '0');
     }
   }
 

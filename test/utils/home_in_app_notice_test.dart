@@ -1,5 +1,26 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:room_manager2/models/room_reaction_sync_history_entry.dart';
 import 'package:room_manager2/utils/home_in_app_notice.dart';
+
+RoomReactionSyncHistoryEntry _historyEntry({
+  String syncedAtIso = '2026-06-09T20:30:15.000Z',
+  int likeIncreasedItems = 0,
+  int commentIncreasedItems = 0,
+}) {
+  return RoomReactionSyncHistoryEntry(
+    syncedAtIso: syncedAtIso,
+    checkedItems: 10,
+    updatedItems: 2,
+    likeIncreasedItems: likeIncreasedItems,
+    commentIncreasedItems: commentIncreasedItems,
+    unchangedItems: 8,
+    hasReactionItems: 5,
+    commentedItems: 1,
+    stopReason: '',
+    hasNextCursor: false,
+    topReactedProducts: const [],
+  );
+}
 
 void main() {
   const today = '2026-06-09';
@@ -161,6 +182,157 @@ void main() {
         todayDateKey: today,
       );
       expect(notice!.noticeKey, startsWith('post_milestone_'));
+    });
+
+    test('post milestone wins over reaction increased', () {
+      final notice = HomeInAppNoticeSelector.select(
+        milestonePostCount: 2,
+        recPendingCount: 0,
+        recTotalCount: 5,
+        recIsLoading: false,
+        dismissedKeys: const {},
+        todayDateKey: today,
+        latestReactionSyncHistory: _historyEntry(likeIncreasedItems: 3),
+        reactionSyncHistoryCount: 2,
+      );
+      expect(notice!.noticeKey, startsWith('post_milestone_'));
+    });
+
+    test('reaction increased wins over rec completed', () {
+      final notice = HomeInAppNoticeSelector.select(
+        milestonePostCount: 0,
+        recPendingCount: 0,
+        recTotalCount: 5,
+        recIsLoading: false,
+        dismissedKeys: const {},
+        todayDateKey: today,
+        latestReactionSyncHistory: _historyEntry(commentIncreasedItems: 2),
+        reactionSyncHistoryCount: 2,
+      );
+      expect(notice!.noticeKey, startsWith('reaction_increased_'));
+      expect(notice.title, '反応がありました');
+    });
+  });
+
+  group('HomeInAppNoticeSelector.select reaction increased', () {
+    test('no history → no reaction notice', () {
+      final notice = HomeInAppNoticeSelector.select(
+        milestonePostCount: 0,
+        recPendingCount: 0,
+        recTotalCount: 0,
+        recIsLoading: false,
+        dismissedKeys: const {},
+        todayDateKey: today,
+        latestReactionSyncHistory: null,
+        reactionSyncHistoryCount: 0,
+      );
+      expect(notice, isNull);
+    });
+
+    test('single history entry → no reaction notice (baseline guard)', () {
+      final notice = HomeInAppNoticeSelector.select(
+        milestonePostCount: 0,
+        recPendingCount: 0,
+        recTotalCount: 0,
+        recIsLoading: false,
+        dismissedKeys: const {},
+        todayDateKey: today,
+        latestReactionSyncHistory: _historyEntry(likeIncreasedItems: 5),
+        reactionSyncHistoryCount: 1,
+      );
+      expect(notice, isNull);
+    });
+
+    test('2+ history + likeIncreasedItems > 0 → reaction notice', () {
+      final latest = _historyEntry(likeIncreasedItems: 3);
+      final notice = HomeInAppNoticeSelector.select(
+        milestonePostCount: 0,
+        recPendingCount: 0,
+        recTotalCount: 0,
+        recIsLoading: false,
+        dismissedKeys: const {},
+        todayDateKey: today,
+        latestReactionSyncHistory: latest,
+        reactionSyncHistoryCount: 2,
+      );
+      expect(notice, isNotNull);
+      expect(notice!.title, '反応がありました');
+      expect(notice.body, contains('いいねが増えた商品が3件あります'));
+      expect(notice.actionLabel, '分析で見る');
+      expect(notice.action, HomeInAppNoticeAction.openActivity);
+      expect(
+        notice.noticeKey,
+        HomeInAppNoticeSelector.reactionIncreasedNoticeKey(
+          todayDateKey: today,
+          syncedAtIso: latest.syncedAtIso,
+        ),
+      );
+    });
+
+    test('2+ history + commentIncreasedItems > 0 → reaction notice', () {
+      final notice = HomeInAppNoticeSelector.select(
+        milestonePostCount: 0,
+        recPendingCount: 0,
+        recTotalCount: 0,
+        recIsLoading: false,
+        dismissedKeys: const {},
+        todayDateKey: today,
+        latestReactionSyncHistory: _historyEntry(commentIncreasedItems: 2),
+        reactionSyncHistoryCount: 3,
+      );
+      expect(notice, isNotNull);
+      expect(notice!.body, contains('コメントが増えた商品が2件あります'));
+      expect(notice.action, HomeInAppNoticeAction.openActivity);
+    });
+
+    test('both like and comment increased → combined body', () {
+      final notice = HomeInAppNoticeSelector.select(
+        milestonePostCount: 0,
+        recPendingCount: 0,
+        recTotalCount: 0,
+        recIsLoading: false,
+        dismissedKeys: const {},
+        todayDateKey: today,
+        latestReactionSyncHistory: _historyEntry(
+          likeIncreasedItems: 1,
+          commentIncreasedItems: 1,
+        ),
+        reactionSyncHistoryCount: 2,
+      );
+      expect(notice!.body, contains('いいね・コメントが増えた商品があります'));
+    });
+
+    test('dismissed reaction notice key → no notice', () {
+      final latest = _historyEntry(likeIncreasedItems: 1);
+      final noticeKey = HomeInAppNoticeSelector.reactionIncreasedNoticeKey(
+        todayDateKey: today,
+        syncedAtIso: latest.syncedAtIso,
+      );
+      final notice = HomeInAppNoticeSelector.select(
+        milestonePostCount: 0,
+        recPendingCount: 0,
+        recTotalCount: 0,
+        recIsLoading: false,
+        dismissedKeys: {noticeKey},
+        todayDateKey: today,
+        latestReactionSyncHistory: latest,
+        reactionSyncHistoryCount: 2,
+      );
+      expect(notice, isNull);
+    });
+
+    test('no increase counts → no reaction notice', () {
+      final notice = HomeInAppNoticeSelector.select(
+        milestonePostCount: 0,
+        recPendingCount: 0,
+        recTotalCount: 0,
+        recIsLoading: false,
+        dismissedKeys: const {},
+        todayDateKey: today,
+        latestReactionSyncHistory: _historyEntry(),
+        reactionSyncHistoryCount: 2,
+      );
+      expect(notice, isNull);
     });
   });
 }
