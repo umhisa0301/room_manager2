@@ -512,7 +512,7 @@ class _ActivityAnalyticsTabState extends State<ActivityAnalyticsTab> {
         _NextStepAction(
           title: '「$shopLabel」で商品を探す',
           basis: '最多ショップは「$shopLabel」の${topShop.count}件です',
-          buttonLabel: '反応が良かったショップで検索する',
+          buttonLabel: '「$shopLabel」の商品を探す',
           onPressed: () => AnalyticsShopSearchLauncher.launchShopSearch(
             navCtx,
             shopCode: topShop.shopCode!,
@@ -658,25 +658,12 @@ class _DecisionInsightCard extends StatelessWidget {
               ),
             ],
           ),
-          if (brief.conclusion.trim().isNotEmpty) ...[
-            const SizedBox(height: 6),
-            Text(
-              brief.conclusion,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.35,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           for (var i = 0; i < brief.nextSteps.length; i++) ...[
-            if (i > 0) const SizedBox(height: 10),
+            if (i > 0) const SizedBox(height: 12),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
               decoration: BoxDecoration(
                 color: AppColors.surfaceVariant.withValues(alpha: 0.35),
                 borderRadius: BorderRadius.circular(12),
@@ -688,28 +675,28 @@ class _DecisionInsightCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    '${i + 1}. ${brief.nextSteps[i].title}',
+                    brief.nextSteps[i].title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w800,
                       height: 1.3,
-                      fontSize: 14.5,
+                      fontSize: 15,
                     ),
                   ),
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 6),
                   Text(
                     _compactInsightLine(brief.nextSteps[i].basis),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
-                      height: 1.32,
-                      fontSize: 12,
+                      height: 1.35,
+                      fontSize: 12.5,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   FilledButton.icon(
                     onPressed: brief.nextSteps[i].onPressed,
                     icon: const Icon(Icons.arrow_forward_rounded, size: 18),
@@ -731,20 +718,6 @@ class _DecisionInsightCard extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ],
-          if (brief.rationale.trim().isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Text(
-              _compactInsightLine(brief.rationale, maxChars: 96),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: AppColors.textTertiary,
-                height: 1.3,
-                fontSize: 11.5,
-                fontWeight: FontWeight.w600,
               ),
             ),
           ],
@@ -1356,15 +1329,35 @@ class _RoomReactionAnalyticsSectionState
                 ),
               ],
             if (shopRows.isNotEmpty) ...[
-              const SizedBox(height: 12),
-              AppSecondaryButton(
-                label: '反応が良かったショップで検索する',
-                icon: const Icon(Icons.storefront_outlined, size: 18),
-                onPressed: () => AnalyticsShopSearchLauncher.launchTopShopSearch(
-                  context,
-                  items: widget.allItems,
-                  screen: 'activityReactionTrend',
-                ),
+              const SizedBox(height: 14),
+              Builder(
+                builder: (context) {
+                  final topShop = AnalyticsShopSearchLauncher.topReactedShop(
+                    widget.allItems,
+                  );
+                  final rawShopName = topShop != null &&
+                          topShop.shopName.trim().isNotEmpty
+                      ? topShop.shopName.trim()
+                      : shopRowsShown.isNotEmpty
+                      ? shopRowsShown.first.value.label.trim()
+                      : '';
+                  final shopLabel = rawShopName.isEmpty
+                      ? null
+                      : _ActivityAnalyticsTabState._shortShopLabel(rawShopName);
+                  final ctaLabel = shopLabel != null
+                      ? '「$shopLabel」の商品を探す'
+                      : '反応が良かったショップで検索する';
+                  return AppPrimaryButton(
+                    label: ctaLabel,
+                    icon: const Icon(Icons.storefront_outlined, size: 18),
+                    onPressed: () =>
+                        AnalyticsShopSearchLauncher.launchTopShopSearch(
+                      context,
+                      items: widget.allItems,
+                      screen: 'activityReactionTrend',
+                    ),
+                  );
+                },
               ),
             ],
           ],

@@ -1397,6 +1397,26 @@ class _HomeTodayProgressCard extends StatelessWidget {
   final VoidCallback onOpenActivity;
   final VoidCallback onPrimaryRecommendations;
 
+  String _todayStatusMessage() {
+    if (isLoading ||
+        generationStatus == TodayRecommendationGenerationStatus.loading) {
+      return 'おすすめを準備しています';
+    }
+    if (pendingCount > 0) {
+      return '未確認の候補を確認しましょう';
+    }
+    if (generationStatus ==
+            TodayRecommendationGenerationStatus.failedRateLimit ||
+        generationStatus ==
+            TodayRecommendationGenerationStatus.failedApiError) {
+      return 'おすすめを再生成できます';
+    }
+    if (generationStatus == TodayRecommendationGenerationStatus.empty) {
+      return 'おすすめを再生成して候補を探しましょう';
+    }
+    return '今日の候補は整理済みです';
+  }
+
   @override
   Widget build(BuildContext context) {
     // 親から渡る集計・KPIは画面導線の安定のため保持（表示は上限・おすすめ未処理に集約）。
@@ -1412,15 +1432,28 @@ class _HomeTodayProgressCard extends StatelessWidget {
     final showRegenerateCooldown =
         primary.label == 'おすすめを再生成' &&
         regenerateCooldownHint.trim().isNotEmpty;
-    final pendingLine =
-        generationStatus == TodayRecommendationGenerationStatus.loading
+    final hasPending = pendingCount > 0;
+    final heroTitle = hasPending ? '未確認候補' : '今日のおすすめ';
+    final heroValue = generationStatus ==
+            TodayRecommendationGenerationStatus.loading
+        ? '準備中'
+        : hasPending
+        ? '$pendingCount件'
+        : totalCount > 0
+        ? '確認済み'
+        : '—';
+    final heroSubtitle = generationStatus ==
+            TodayRecommendationGenerationStatus.loading
         ? 'おすすめを準備中です'
-        : 'おすすめ未処理：$pendingCount件';
+        : hasPending
+        ? '今日のおすすめから未確認の候補があります'
+        : recommendationStatusMessage ??
+            (totalCount > 0 ? '今日の候補は整理済みです' : null);
 
     return Container(
       width: double.infinity,
       decoration: _HomeUi.searchEntrySectionDecoration(),
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+      padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -1432,104 +1465,157 @@ class _HomeTodayProgressCard extends StatelessWidget {
               fontWeight: FontWeight.w900,
             ),
           ),
-          if (recommendationHintLine != null &&
-              recommendationHintLine!.trim().isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Text(
-              recommendationHintLine!.trim(),
-              maxLines: 3,
-              softWrap: true,
-              style: _HomeUi.tapHint(context).copyWith(
-                fontSize: 13,
-                height: 1.38,
-                color: HomeScreenColors.bodyOnSection,
-              ),
-            ),
-          ],
-          const SizedBox(height: 12),
-          _CollectLimitProgressLine(
-            title: '直近24時間の投稿数',
-            usedCount: collectLimit.todayCount,
-            limit: RoomCollectPostLimitSnapshot.dailyLimit,
-            state: collectLimit.dailyBarState,
-            rightLabel: 'あと${collectLimit.dailyRemaining}件',
-          ),
-          const SizedBox(height: 12),
-          _CollectLimitProgressLine(
-            title: 'この1時間の投稿数',
-            usedCount: collectLimit.hourCount,
-            limit: RoomCollectPostLimitSnapshot.hourlyLimit,
-            state: collectLimit.hourlyBarState,
-            rightLabel: 'この1時間あと${collectLimit.hourlyRemaining}件',
-            footnote: collectLimit.isHourlyReached
-                ? collectLimit.recoveryFootnote(DateTime.now())
-                : null,
-          ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
-            '楽天ROOMの投稿上限に対する目安です。投稿しすぎ防止のための参考値で、無理に上限を目指す必要はありません。',
-            maxLines: 3,
-            softWrap: true,
-            style: _HomeUi.tapHint(context).copyWith(
-              fontSize: 11.5,
-              height: 1.35,
-              color: HomeScreenColors.footnoteMuted,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            '今日のおすすめ',
+            _todayStatusMessage(),
             maxLines: 2,
             softWrap: true,
             style: _HomeUi.bodyEmphasis(context).copyWith(
               fontSize: 15,
-              height: 1.35,
+              height: 1.32,
+              fontWeight: FontWeight.w800,
               color: HomeScreenColors.titlePrimary,
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            generationStatus == TodayRecommendationGenerationStatus.loading
-                ? pendingLine
-                : pendingLine.replaceFirst('おすすめ未処理', '未確認候補'),
-            maxLines: 2,
-            softWrap: true,
-            style: _HomeUi.tapHint(context).copyWith(
-              fontSize: 13,
-              height: 1.3,
-              color: HomeScreenColors.bodyOnSection,
+          const SizedBox(height: 12),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(
+              color: HomeScreenColors.subActionRowFill.withValues(alpha: 0.72),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: HomeScreenColors.sectionOutlineNeutral.withValues(
+                  alpha: 0.55,
+                ),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  heroTitle,
+                  style: _HomeUi.tapHint(context).copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800,
+                    color: HomeScreenColors.footnoteMuted,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  heroValue,
+                  style: _HomeUi.sectionTitle(context).copyWith(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w900,
+                    height: 1.1,
+                    color: HomeScreenColors.titlePrimary,
+                  ),
+                ),
+                if (heroSubtitle != null && heroSubtitle.trim().isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    heroSubtitle.trim(),
+                    maxLines: 2,
+                    softWrap: true,
+                    style: _HomeUi.tapHint(context).copyWith(
+                      fontSize: 12.5,
+                      height: 1.32,
+                      color: HomeScreenColors.bodyOnSection,
+                    ),
+                  ),
+                ],
+              ],
             ),
           ),
-          if (recommendationStatusMessage != null) ...[
-            const SizedBox(height: 6),
-            Text(
-              recommendationStatusMessage!,
-              maxLines: 3,
-              softWrap: true,
-              style: _HomeUi.tapHint(
-                context,
-              ).copyWith(fontSize: 12, color: HomeScreenColors.footnoteMuted),
-            ),
-          ],
           if (showRegenerateCooldown) ...[
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
             Text(
               regenerateCooldownHint.trim(),
               maxLines: 2,
               softWrap: true,
               style: _HomeUi.tapHint(context).copyWith(
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: FontWeight.w700,
                 color: HomeScreenColors.bodyOnSection,
               ),
             ),
           ],
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           _HomeHeroCtaButton(
             icon: primary.icon,
             label: primary.label,
             onPressed: primary.onPressed,
+          ),
+          if (recommendationHintLine != null &&
+              recommendationHintLine!.trim().isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              recommendationHintLine!.trim(),
+              maxLines: 2,
+              softWrap: true,
+              style: _HomeUi.tapHint(context).copyWith(
+                fontSize: 11.5,
+                height: 1.32,
+                color: HomeScreenColors.footnoteMuted,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+          const SizedBox(height: 12),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+            decoration: BoxDecoration(
+              color: HomeScreenColors.subActionRowFill.withValues(alpha: 0.45),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  '投稿上限（目安）',
+                  style: _HomeUi.tapHint(context).copyWith(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w800,
+                    color: HomeScreenColors.footnoteMuted,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                _CollectLimitProgressLine(
+                  title: '直近24時間',
+                  usedCount: collectLimit.todayCount,
+                  limit: RoomCollectPostLimitSnapshot.dailyLimit,
+                  state: collectLimit.dailyBarState,
+                  rightLabel: 'あと${collectLimit.dailyRemaining}',
+                  compact: true,
+                ),
+                const SizedBox(height: 8),
+                _CollectLimitProgressLine(
+                  title: 'この1時間',
+                  usedCount: collectLimit.hourCount,
+                  limit: RoomCollectPostLimitSnapshot.hourlyLimit,
+                  state: collectLimit.hourlyBarState,
+                  rightLabel: 'あと${collectLimit.hourlyRemaining}',
+                  footnote: collectLimit.isHourlyReached
+                      ? collectLimit.recoveryFootnote(DateTime.now())
+                      : null,
+                  compact: true,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '投稿しすぎ防止の目安です。無理に上限を目指す必要はありません。',
+                  maxLines: 2,
+                  softWrap: true,
+                  style: _HomeUi.tapHint(context).copyWith(
+                    fontSize: 10.5,
+                    height: 1.32,
+                    color: HomeScreenColors.footnoteMuted,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -1698,6 +1784,7 @@ class _CollectLimitProgressLine extends StatelessWidget {
     required this.state,
     required this.rightLabel,
     this.footnote,
+    this.compact = false,
   });
 
   final String title;
@@ -1706,6 +1793,7 @@ class _CollectLimitProgressLine extends StatelessWidget {
   final RoomCollectPostLimitBarState state;
   final String rightLabel;
   final String? footnote;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -1718,10 +1806,12 @@ class _CollectLimitProgressLine extends StatelessWidget {
     final foot = footnote?.trim();
 
     final metricStyle = _HomeUi.sectionBody(context).copyWith(
-      fontSize: 15,
-      fontWeight: FontWeight.w900,
-      height: 1.32,
-      color: HomeScreenColors.titlePrimary,
+      fontSize: compact ? 12 : 15,
+      fontWeight: compact ? FontWeight.w700 : FontWeight.w900,
+      height: 1.28,
+      color: compact
+          ? HomeScreenColors.bodyOnSection
+          : HomeScreenColors.titlePrimary,
     );
 
     return Column(
@@ -1734,29 +1824,29 @@ class _CollectLimitProgressLine extends StatelessWidget {
               child: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 spacing: 0,
-                runSpacing: 4,
+                runSpacing: 2,
                 children: [
-                  Text('$title：', style: metricStyle),
+                  Text('$title ', style: metricStyle),
                   _HomeAnimatedPostedCount(
                     value: usedCount,
                     style: metricStyle,
                   ),
-                  Text(' / $limit件', style: metricStyle),
+                  Text(' / $limit', style: metricStyle),
                 ],
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 160),
+              constraints: BoxConstraints(maxWidth: compact ? 88 : 160),
               child: Text(
                 rightLabel,
                 textAlign: TextAlign.end,
                 maxLines: 2,
                 softWrap: true,
                 style: _HomeUi.sectionBody(context).copyWith(
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w800,
-                  height: 1.28,
+                  fontSize: compact ? 10.5 : 12.5,
+                  fontWeight: FontWeight.w700,
+                  height: 1.25,
                   color: state == RoomCollectPostLimitBarState.normal
                       ? HomeScreenColors.footnoteMuted
                       : color,
@@ -1765,25 +1855,27 @@ class _CollectLimitProgressLine extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: compact ? 4 : 6),
         ClipRRect(
           borderRadius: BorderRadius.circular(999),
           child: LinearProgressIndicator(
             value: progress,
-            minHeight: 10,
+            minHeight: compact ? 6 : 10,
             backgroundColor: HomeScreenColors.progressTrack,
-            color: color,
+            color: color.withValues(alpha: compact ? 0.72 : 1.0),
           ),
         ),
         if (foot != null && foot.isNotEmpty) ...[
-          const SizedBox(height: 5),
+          SizedBox(height: compact ? 3 : 5),
           Text(
             foot,
             maxLines: 2,
             softWrap: true,
-            style: _HomeUi.tapHint(
-              context,
-            ).copyWith(fontSize: 12, fontWeight: FontWeight.w600),
+            style: _HomeUi.tapHint(context).copyWith(
+              fontSize: compact ? 10.5 : 12,
+              fontWeight: FontWeight.w600,
+              color: HomeScreenColors.footnoteMuted,
+            ),
           ),
         ],
       ],

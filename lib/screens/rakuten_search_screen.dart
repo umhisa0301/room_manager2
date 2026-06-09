@@ -5375,9 +5375,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
         }
         return const RakutenSearchIdleView(
           icon: Icons.manage_search_outlined,
-          title: '検索結果がここに並びます',
-          subtitle: 'キーワードを入れて「検索」。気に入った商品は「候補に追加」でROOMコレへ。',
-          stateFootnote: '候補・コレ済・画像/価格未確認は除外（最大100件）。',
+          title: 'キーワードを入れて検索しましょう',
+          subtitle: '検索すると、候補にできる商品がここに表示されます。気に入った商品は「候補に追加」できます。',
+          stateFootnote: '※ 候補・コレ済などは除外されます（最大100件）',
           compactLayout: true,
         );
       case RakutenSearchStatus.loading:
@@ -5430,9 +5430,9 @@ class _RakutenSearchScreenState extends State<RakutenSearchScreen>
           }
           return const RakutenSearchIdleView(
             icon: Icons.manage_search_outlined,
-            title: '検索結果がここに並びます',
-            subtitle: 'キーワードを入れて「検索」。気に入った商品は「候補に追加」でROOMコレへ。',
-            stateFootnote: '候補・コレ済・画像/価格未確認は除外（最大100件）。',
+            title: 'キーワードを入れて検索しましょう',
+            subtitle: '検索すると、候補にできる商品がここに表示されます。気に入った商品は「候補に追加」できます。',
+            stateFootnote: '※ 候補・コレ済などは除外されます（最大100件）',
             compactLayout: true,
           );
         }
