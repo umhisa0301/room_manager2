@@ -1,0 +1,457 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-09 16:14:16
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: PRODUCT_CATALOG_ENABLED=true; SHOP_CATALOG_ENABLED=true; CATALOG_AUDIT_LOGS=false; DEV_AUTOMATION_ENABLED=true
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_161416.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260609_161416.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260609_161416.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260609_161416.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260609_161416.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\terminal_output_20260609_161416.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 66712).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID= --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=false --dart-define=DEV_AUTOMATION_ENABLED=true
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             53.1s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.3s
+D/FlutterJNI(15222): Beginning load of flutter...
+D/FlutterJNI(15222): flutter (null) was loaded normally!
+I/flutter (15222): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (15222): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (15222): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter (15222): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                
+I/flutter (15222): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=レディースファッション invalidGenreIds= corrected=false
+I/flutter (15222): [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=repositoryLoad
+I/flutter (15222): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+Syncing files to device SHG08...                                   105ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:53481/sONpzD8GxsU=/
+I/flutter (15222): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15222): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/Choreographer(15222): Skipped 202 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:61367?uri=http://127.0.0.1:53481/sONpzD8GxsU=/
+I/flutter (15222): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=13→13 done=30→30
+I/flutter (15222): [MANAGED_PRODUCT_LOAD] source=provider pending=13 done=30 filter= tab=
+I/flutter (15222): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (15222): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=13→13 done=30→30
+I/flutter (15222): [MANAGED_PRODUCT_LOAD] source=screen pending=13 done=30 filter= tab=candidate
+I/flutter (15222): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=13→13 done=30→30
+I/flutter (15222): [MANAGED_PRODUCT_LOAD] source=provider pending=13 done=30 filter= tab=
+I/flutter (15222): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/WebViewFactory(15222): Loading com.google.android.webview version 148.0.7778.215 (code 777821503)
+D/ApplicationLoaders(15222): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+D/nativeloader(15222): Configuring clns-5 for other apk /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/lib/arm64:/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(15222): version=148.0.7778.215 (777821503) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(15222): Load /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+D/nativeloader(15222): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+I/chromium(15222): [0609/161534.276623:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(15222): Successfully loaded native library
+I/cr_CachingUmaRecorder(15222): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(15222): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(15222): #registerProvider() provider:WV.wk@1f041f2 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(15222): #setManagerAndSource() 0
+I/cr_DisplayManager(15222): Is Display Topology available: false
+I/cr_CombinedPProvider(15222): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(15222): Compat change id reported: 183155436; UID 10495; state: ENABLED
+I/cr_AppResProvider(15222): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(15222): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(15222): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(15222): #flushPolicies()
+W/chromium(15222): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 103712643
+W/chromium(15222): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+D/CompatibilityChangeReporter(15222): Compat change id reported: 214741472; UID 10495; state: ENABLED
+I/CameraManagerGlobal(15222): Connecting to camera service
+D/CompatibilityChangeReporter(15222): Compat change id reported: 171228096; UID 10495; state: ENABLED
+I/PlatformViewsController(15222): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(15222): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(15222): Compat change id reported: 236825255; UID 10495; state: ENABLED
+W/libc    (15222): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(15222): type=1400 audit(0.0:5119): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+D/CompatibilityChangeReporter(15222): Compat change id reported: 193247900; UID 10495; state: ENABLED
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+I/Choreographer(15222): Skipped 70 frames!  The application may be doing too much work on its main thread.
+W/libc    (15222): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(15222): type=1400 audit(0.0:5120): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(15222): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(15222): Build Date              : 08/23/22
+I/AdrenoVK-0(15222): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(15222): Local Branch            : 
+I/AdrenoVK-0(15222): Remote Branch           : 
+I/AdrenoVK-0(15222): Remote Branch           : 
+I/AdrenoVK-0(15222): Reconstruct Branch      : 
+I/AdrenoVK-0(15222): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(15222): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(15222): Davey! duration=1249ms; Flags=1, FrameTimelineVsyncId=201965, IntendedVsync=1078414181405, Vsync=1079580848025, InputEventId=0, HandleInputStart=1079587072086, AnimationStart=1079587073389, PerformTraversalsStart=1079587096305, DrawStart=1079605024430, FrameDeadline=1078430848071, FrameInterval=1079586790003, FrameStartTime=16666666, SyncQueued=1079645290107, SyncStart=1079646046461, IssueDrawCommandsStart=1079646679118, SwapBuffers=1079662201566, FrameCompleted=1079664367555, DequeueBufferDuration=4357291, QueueBufferDuration=1778593, GpuCompleted=1079663267920, SwapBuffersCompleted=1079664367555, DisplayPresentTime=0, CommandSubmissionCompleted=1079662201566, 
+D/ProfileInstaller(15222): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(15222): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+W/o.room_manager2(15222): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+W/o.room_manager2(15222): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (15222): [DEV_AUTOMATION_ENTRY_VISIBLE] enabled=true
+I/flutter (15222): [ROOM_REACTION_ANALYTICS_NO_SIDE_EFFECT] candidateCount=13 doneCount=30 todayAppCollectCount=0 todayRoomImportCount=30 importedFromRoomCount=30 message=noMutation
+I/flutter (15222): [ROOM_REACTION_TREND_RENDER] target=reactionOnly itemsWithReaction=28 genreRows=5 shopRows=5 unknownGenreCount=3 unknownShopCount=3
+I/flutter (15222): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=28 itemsWithComment=1 topGenres=ワンピース,ハンディマッサージ,ハット,シャツ・ブラウス,タオルハンガー topShops=レンフォジャパン,ケアぼうしのQ研楽天市場店,SELECT MOCA,健幸館,Angeling(エンジェリング) historyLoaded=false
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ROOM_REACTION_ANALYTICS_HISTORY] loaded=true topReactedProducts=0 deltaLikeItems=0 deltaCommentItems=0
+I/flutter (15222): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=28 itemsWithComment=1 topGenres=ワンピース,ハンディマッサージ,ハット,シャツ・ブラウス,タオルハンガー topShops=レンフォジャパン,ケアぼうしのQ研楽天市場店,SELECT MOCA,健幸館,Angeling(エンジェリング) historyLoaded=true
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=28 itemsWithComment=1 topGenres=ワンピース,ハンディマッサージ,ハット,シャツ・ブラウス,タオルハンガー topShops=レンフォジャパン,ケアぼうしのQ研楽天市場店,SELECT MOCA,健幸館,Angeling(エンジェリング) historyLoaded=false
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ROOM_REACTION_ANALYTICS_SECTION_RENDER] itemsWithReaction=28 itemsWithComment=1 topGenres=ワンピース,ハンディマッサージ,ハット,シャツ・ブラウス,タオルハンガー topShops=レンフォジャパン,ケアぼうしのQ研楽天市場店,SELECT MOCA,健幸館,Angeling(エンジェリング) historyLoaded=true
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [SEARCH_STATE_PERSIST] screen=genreSearch event=restore resultCount=0
+W/WindowOnBackDispatcher(15222): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(15222): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (15222): [SEARCH_STATE_PERSIST] screen=genreSearch event=save resultCount=0
+I/flutter (15222): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ROOMコレ][surface] tab=candidate surface=loading
+I/flutter (15222): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=13→13 done=30→30
+I/flutter (15222): [MANAGED_PRODUCT_LOAD] source=provider pending=13 done=30 filter= tab=
+I/flutter (15222): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_001.png
+I/flutter (15222): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ROOMコレ][surface] tab=candidate surface=loading
+I/flutter (15222): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=13→13 done=30→30
+I/flutter (15222): [MANAGED_PRODUCT_LOAD] source=provider pending=13 done=30 filter= tab=
+I/flutter (15222): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (15222): [MYPAGE_GENRE_TREE_OPEN] source=mypage initialCount=1
+I/flutter (15222): [GENRE_PICKER_MODE] screen=mypage selectionMode=multi usesCheckbox=true usesRadio=false
+I/flutter (15222): [GENRE_SELECTION_WIDGET_AUDIT] screen=mypage multiSelect=true widget=checkbox valid=true
+I/flutter (15222): [GENRE_TREE_OPEN] rootCount=39 source=mypage
+I/flutter (15222): [GENRE_DISPLAY_ORDER] source=mypage count=39 first=レディースファッション,メンズファッション,キッズ・ベビー・マタニティ,バッグ・小物・ブランド雑貨,靴
+I/flutter (15222): [INITIAL_SETUP_GENRE_TREE_OPEN] selectedCount=1 maxSelectable=3
+W/WindowOnBackDispatcher(15222): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(15222): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+D/FlutterJNI(16764): Beginning load of flutter...
+D/FlutterJNI(16764): flutter (null) was loaded normally!
+D/FlutterGeolocator(16764): Attaching Geolocator to activity
+W/libc    (15222): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/OpenGLRenderer(15222): Unable to match the desired swap behavior.
+W/libc    (15222): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/qdgralloc(15222): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(15222): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(15222): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(15222): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(15222): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(15222): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(15222): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(15222): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(15222): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(15222): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(15222): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(15222): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(15222): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(15222): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(15222): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(15222): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(15222): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(15222): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(15222): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(15222): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(15222): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(15222): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(15222): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(15222): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(15222): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(15222): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(15222): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(15222): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    (15222): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+I/flutter (16764): [Ads] useTestAdIds=true (kDebugMode=true)
+D/FlutterGeolocator(16764): Creating service.
+D/FlutterGeolocator(16764): Binding to location service.
+D/FlutterGeolocator(16764): Geolocator foreground service connected
+D/FlutterGeolocator(16764): Initializing Geolocator services
+D/FlutterGeolocator(16764): Flutter engine connected. Connected engine count 1
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+I/flutter (16764): [Ads] MobileAds initialized
+W/libc    (15222): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/OpenGLRenderer(15222): Unable to match the desired swap behavior.
+W/libc    (15222): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/qdgralloc(15222): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(15222): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(15222): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(15222): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(15222): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(15222): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(15222): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(15222): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(15222): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(15222): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(15222): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(15222): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(15222): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(15222): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(15222): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(15222): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(15222): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/AdrenoUtils(15222): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/Gralloc4(15222): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(15222): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(15222): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(15222): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(15222): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(15222): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(15222): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(15222): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(15222): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(15222): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    (15222): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(15222): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+E/FrameEvents(15222): updateAcquireFence: Did not find frame.
+I/flutter (15222): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=13→13 done=30→30
+I/flutter (15222): [MANAGED_PRODUCT_LOAD] source=provider pending=13 done=30 filter= tab=
+I/flutter (15222): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (15222): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_002.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_003.png
+W/WindowOnBackDispatcher(15222): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(15222): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_004.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_005.png
+W/WindowOnBackDispatcher(15222): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(15222): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (15222): [SEARCH_STATE_PERSIST] screen=productSearch event=restore resultCount=0
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_006.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_007.png
+I/flutter (15222): [SEARCH_STATE_PERSIST] screen=productSearch event=save resultCount=0
+I/flutter (15222): [SEARCH_STATE_PERSIST] screen=genreSearch event=restore resultCount=0
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_008.png
+I/flutter (15222): [SEARCH_STATE_PERSIST] screen=genreSearch event=save resultCount=0
+I/flutter (15222): [SEARCH_STATE_PERSIST] screen=savedShopSearch event=restore resultCount=0
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_009.png
+I/flutter (15222): [SEARCH_STATE_PERSIST] screen=savedShopSearch event=save resultCount=0
+I/flutter (15222): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=restore resultCount=0
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_010.png
+I/flutter (15222): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=13→13 done=30→30
+I/flutter (15222): [MANAGED_PRODUCT_LOAD] source=screen pending=13 done=30 filter= tab=candidate
+I/flutter (15222): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [ANALYTICS_REACTION_PRODUCT_BUTTON_STYLE] screen=activityReactionProduct compact=true usesOutlineButton=true height=36
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (15222): [SEARCH_STATE_PERSIST] screen=shopDiscovery event=save resultCount=0
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_011.png
+I/flutter (15222): [ROOMコレ][surface] tab=done surface=ok_list
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_012.png
+I/flutter (15222): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+I/flutter (15222): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=tabletpckoubou:10001261 reviewAverage=4.19 reviewCount=17044 displayText=評価 ★4.2（17044件）
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_013.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_014.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_015.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_016.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_017.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_018.png
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\room_manager2_shot_019.png
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_161416.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_161416.mp4 (15461093 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_161416\terminal_output_20260609_161416.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_161416.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260609_161416.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260609_161416.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260609_161416.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260609_161416.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.
