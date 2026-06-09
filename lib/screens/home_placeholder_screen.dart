@@ -38,6 +38,7 @@ import '../widgets/room_post_import_flow.dart';
 import '../widgets/room_sync_reaction_button.dart';
 import '../models/room_reaction_sync_history_entry.dart';
 import '../services/room_reaction_sync_history_store.dart';
+import '../widgets/home_auto_reaction_sync_coordinator.dart';
 import '../widgets/home_in_app_notice_card.dart';
 
 // --- ホーム画面：レイアウト・タイポ・装飾の統一（画面ロジックとは分離）---
@@ -537,6 +538,11 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
+                              HomeAutoReactionSyncCoordinator(
+                                onSyncCompleted: () => setState(
+                                  () => _reactionNoticeRefreshNonce++,
+                                ),
+                              ),
                               _HomeMomentumHeader(displayName: displayName),
                               SizedBox(height: _HomeUi.gapSection),
                               Column(

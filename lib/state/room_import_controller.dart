@@ -436,16 +436,19 @@ class RoomImportController extends ChangeNotifier {
   }
 
   /// 反応数のみ同期（最大10件）。他ジョブ実行中は null。
+  ///
+  /// [silent] が true のときはブロック時の SnackBar を出さない（自動実行向け）。
   Future<RoomReactionSyncBatchResult?> runReactionSync(
-    BuildContext context,
-  ) async {
+    BuildContext context, {
+    bool silent = false,
+  }) async {
     final bulk = _bulkOperationState;
     if (bulk != null) {
       if (bulk.isRoomImportRunning) {
         roomSyncJobLockLog(
           'action=blocked job=syncingReactions currentJob=importingCollectedItems',
         );
-        if (context.mounted) {
+        if (!silent && context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(bulk.blockingRoomTourUserMessage ?? '')),
           );
@@ -456,7 +459,7 @@ class RoomImportController extends ChangeNotifier {
         roomSyncJobLockLog(
           'action=blocked job=syncingReactions currentJob=enrichingMetadata',
         );
-        if (context.mounted) {
+        if (!silent && context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(bulk.blockingRoomTourUserMessage ?? '')),
           );
