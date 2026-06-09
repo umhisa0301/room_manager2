@@ -1,0 +1,483 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-09 18:35:37
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: PRODUCT_CATALOG_ENABLED=true; SHOP_CATALOG_ENABLED=true; CATALOG_AUDIT_LOGS=false; DEV_AUTOMATION_ENABLED=true
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_183537.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260609_183537.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260609_183537.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260609_183537.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260609_183537.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_183537
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_183537\terminal_output_20260609_183537.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 39568).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID= --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=false --dart-define=DEV_AUTOMATION_ENABLED=true
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             36.0s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.8s
+D/FlutterJNI(26677): Beginning load of flutter...
+D/FlutterJNI(26677): flutter (null) was loaded normally!
+I/flutter (26677): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (26677): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (26677): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter (26677): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+I/flutter (26677): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=レディースファッション invalidGenreIds= corrected=false
+I/flutter (26677): [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=repositoryLoad
+I/flutter (26677): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+Syncing files to device SHG08...                                
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+Syncing files to device SHG08...                                   282ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:56494/QyTSpva7CMU=/
+I/flutter (26677): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=tabletpckoubou:10001261 reviewAverage=4.19 reviewCount=17044 displayText=評価 ★4.2（17044件）
+I/Choreographer(26677): Skipped 196 frames!  The application may be doing too much work on its main thread.
+I/flutter (26677): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=11→11 done=46→46
+I/flutter (26677): [MANAGED_PRODUCT_LOAD] source=provider pending=11 done=46 filter= tab=
+I/flutter (26677): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (26677): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=11→11 done=46→46
+I/flutter (26677): [MANAGED_PRODUCT_LOAD] source=screen pending=11 done=46 filter= tab=candidate
+I/flutter (26677): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=11→11 done=46→46
+I/flutter (26677): [MANAGED_PRODUCT_LOAD] source=provider pending=11 done=46 filter= tab=
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9109?uri=http://127.0.0.1:56494/QyTSpva7CMU=/
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=tabletpckoubou:10001261 reviewAverage=4.19 reviewCount=17044 displayText=評価 ★4.2（17044件）
+I/WebViewFactory(26677): Loading com.google.android.webview version 148.0.7778.215 (code 777821503)
+D/ApplicationLoaders(26677): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+D/nativeloader(26677): Configuring clns-5 for other apk /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/lib/arm64:/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(26677): version=148.0.7778.215 (777821503) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(26677): Load /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+D/nativeloader(26677): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+E/chromium(26677): [ERROR:android_webview/browser/variations/variations_seed_loader.cc:39] Seed missing signature.
+I/cr_LibraryLoader(26677): Successfully loaded native library
+I/cr_CachingUmaRecorder(26677): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(26677): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(26677): #registerProvider() provider:WV.wk@acd0fd isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(26677): #setManagerAndSource() 0
+I/cr_DisplayManager(26677): Is Display Topology available: false
+I/cr_CombinedPProvider(26677): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(26677): Compat change id reported: 183155436; UID 10495; state: ENABLED
+I/cr_AppResProvider(26677): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(26677): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(26677): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(26677): #flushPolicies()
+W/chromium(26677): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+W/chromium(26677): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 101706533
+D/CompatibilityChangeReporter(26677): Compat change id reported: 214741472; UID 10495; state: ENABLED
+I/CameraManagerGlobal(26677): Connecting to camera service
+D/CompatibilityChangeReporter(26677): Compat change id reported: 171228096; UID 10495; state: ENABLED
+I/PlatformViewsController(26677): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(26677): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(26677): Compat change id reported: 236825255; UID 10495; state: ENABLED
+W/libc    (26677): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(26677): type=1400 audit(0.0:8395): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(26677): Compat change id reported: 193247900; UID 10495; state: ENABLED
+I/Choreographer(26677): Skipped 72 frames!  The application may be doing too much work on its main thread.
+W/libc    (26677): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(26677): type=1400 audit(0.0:8396): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(26677): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(26677): Build Date              : 08/23/22
+I/AdrenoVK-0(26677): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(26677): Local Branch            : 
+I/AdrenoVK-0(26677): Remote Branch           : 
+I/AdrenoVK-0(26677): Remote Branch           : 
+I/AdrenoVK-0(26677): Reconstruct Branch      : 
+I/AdrenoVK-0(26677): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(26677): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(26677): Davey! duration=1269ms; Flags=1, FrameTimelineVsyncId=392335, IntendedVsync=9545865382026, Vsync=9547065381978, InputEventId=0, HandleInputStart=9547075157086, AnimationStart=9547075158648, PerformTraversalsStart=9547075182815, DrawStart=9547090361825, FrameDeadline=9545882048692, FrameInterval=9547074836669, FrameStartTime=16666666, SyncQueued=9547126475992, SyncStart=9547126555419, IssueDrawCommandsStart=9547127071981, SwapBuffers=9547133454117, FrameCompleted=9547134746981, DequeueBufferDuration=2149583, QueueBufferDuration=915781, GpuCompleted=9547134454429, SwapBuffersCompleted=9547134746981, DisplayPresentTime=0, CommandSubmissionCompleted=9547133454117, 
+D/ProfileInstaller(26677): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(26677): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+W/o.room_manager2(26677): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+W/o.room_manager2(26677): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+I/flutter (26677): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (26677): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=6 selected=0 alreadyAdded=4 skipped=0
+I/flutter (26677): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (26677): [RECOMMEND_GUARD] skipReason=recentEnsure
+W/WindowOnBackDispatcher(26677): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(26677): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/flutter (26677): [TODAY_RECOMMEND_SELECT_ALL] checked=true selected=6
+I/flutter (26677): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=6 selected=6 alreadyAdded=4 skipped=0
+I/flutter (26677): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=6 bulkButtonVisible=true
+I/flutter (26677): [TODAY_RECOMMEND_BULK_ADD_START] selected=6
+I/flutter (26677): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=6 selected=6 alreadyAdded=4 skipped=0
+I/flutter (26677): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=6 bulkButtonVisible=true
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=tabletpckoubou:10001261 reviewAverage=4.19 reviewCount=17044 displayText=評価 ★4.2（17044件）
+I/flutter (26677): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=akuse-one:10020969 pending=11→12 done=46→46
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+I/flutter (26677): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/akuse-one/f21-f303-l/
+I/flutter (26677): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/akuse-one/f21-f303-l/
+W/cr_media(26677): BLUETOOTH_CONNECT permission is missing.
+W/cr_media(26677): getBluetoothAdapter() requires BLUETOOTH permission
+W/cr_media(26677): registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+I/flutter (26677): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=5 selected=6 alreadyAdded=5 skipped=0
+I/flutter (26677): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=6 bulkButtonVisible=true
+W/VideoCapabilities(26677): Unsupported mime image/vnd.android.heic
+W/VideoCapabilities(26677): Unsupported mime image/vnd.android.heic
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+I/flutter (26677): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=akuse-one:10020359 pending=12→13 done=46→46
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (26677): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/akuse-one/f610-f625-l/
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (26677): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=4 selected=6 alreadyAdded=6 skipped=0
+I/flutter (26677): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=6 bulkButtonVisible=true
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (26677): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=marblemarket:10000664 pending=13→14 done=46→46
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/marblemarket/980576/
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=3 selected=6 alreadyAdded=7 skipped=0
+I/flutter (26677): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=6 bulkButtonVisible=true
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (26677): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=nissen-r:10960760 pending=14→15 done=46→46
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/nissen-r/zzy4320b7925/
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=2 selected=6 alreadyAdded=8 skipped=0
+I/flutter (26677): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=6 bulkButtonVisible=true
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020969 reviewAverage=4.26 reviewCount=2298 displayText=評価 ★4.3（2298件）
+I/flutter (26677): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=nissen-r:10960755 pending=15→16 done=46→46
+I/chromium(26677): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/nissen-r/zzy4319d6235/
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=true checkboxShape=square selectedCount=6 bulkButtonVisible=true
+I/flutter (26677): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=1 selected=6 alreadyAdded=9 skipped=0
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=akuse-one:10020359 reviewAverage=4.28 reviewCount=913 displayText=評価 ★4.3（913件）
+I/flutter (26677): [MANAGED_PRODUCT_SAVE] action=addCandidate productId=bagsaifufavori:10005192 pending=16→17 done=46→46
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RoomUrlExtraction] URL正規化（アフィリエイト中間→商品ページ）: https://item.rakuten.co.jp/bagsaifufavori/5-happy09mic/
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [TODAY_RECOMMEND_BULK_ADD_RESULT] success=6 alreadyAdded=0 failed=0
+I/flutter (26677): [TODAY_RECOMMEND_SELECTION_RENDER] total=10 selectable=0 selected=0 alreadyAdded=10 skipped=0
+I/flutter (26677): [TODAY_RECOMMEND_BULK_SELECT_AUDIT] selectAllVisible=false checkboxShape=square selectedCount=0 bulkButtonVisible=false
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/Choreographer(26677): Skipped 161 frames!  The application may be doing too much work on its main thread.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/flutter (26677): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/flutter (26677): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=akuse-one%3A10020969&scid=we_room_upc60
+I/flutter (26677): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/akuse-one/f610-f625-l/
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/chromium(26677): [INFO:CONSOLE:7] "Products array: [object Object]", source:  (7)
+W/chromium(26677): [WARNING:net/spdy/spdy_session.cc:3154] Received HEADERS for invalid stream 39
+I/flutter (26677): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:1352] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/akuse-one/f610-f625-l/ (1352)
+I/chromium(26677): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:1354] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/akuse-one/f610-f625-l/ (1354)
+I/chromium(26677): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/flutter (26677): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=akuse-one%3A10020359&scid=we_room_upc60
+I/flutter (26677): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/marblemarket/980576/
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:1439] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/marblemarket/980576/ (1439)
+I/chromium(26677): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/flutter (26677): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=marblemarket%3A10000664&scid=we_room_upc60
+I/flutter (26677): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/nissen-r/zzy4320b7925/
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+I/flutter (26677): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:1331] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/nissen-r/zzy4320b7925/ (1331)
+I/chromium(26677): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:0] "Refused to execute script from 'https://www.rakuten.ne.jp/gold/nissen-r/js/Untitled-21.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.", source: https://www.rakuten.ne.jp/gold/nissen-r/iframe/header2019.html (0)
+I/chromium(26677): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:25] "Uncaught ReferenceError: list is not defined", source: https://www.rakuten.ne.jp/gold/nissen-r/iframe/header2019.html (25)
+I/chromium(26677): [INFO:CONSOLE:1] "isSp:", source: https://data.ogaria-tool.com/js/tools/image_switch.js?1775464454 (1)
+I/chromium(26677): [INFO:CONSOLE:1] "false", source: https://data.ogaria-tool.com/js/tools/image_switch.js?1775464454 (1)
+I/flutter (26677): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=nissen-r%3A10960760&scid=we_room_upc60
+I/flutter (26677): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/nissen-r/zzy4319d6235/
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/flutter (26677): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:1341] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/nissen-r/zzy4319d6235/ (1341)
+I/chromium(26677): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:0] "Refused to execute script from 'https://www.rakuten.ne.jp/gold/nissen-r/js/Untitled-21.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.", source: https://www.rakuten.ne.jp/gold/nissen-r/iframe/header2019.html (0)
+I/chromium(26677): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:25] "Uncaught ReferenceError: list is not defined", source: https://www.rakuten.ne.jp/gold/nissen-r/iframe/header2019.html (25)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:1] "isSp:", source: https://data.ogaria-tool.com/js/tools/image_switch.js?1775464454 (1)
+I/chromium(26677): [INFO:CONSOLE:1] "false", source: https://data.ogaria-tool.com/js/tools/image_switch.js?1775464454 (1)
+I/flutter (26677): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=nissen-r%3A10960755&scid=we_room_upc60
+I/flutter (26677): [RoomUrlExtraction] 読み込み開始: https://item.rakuten.co.jp/bagsaifufavori/5-happy09mic/
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+W/chromium(26677): [WARNING:net/spdy/spdy_session.cc:3154] Received HEADERS for invalid stream 63
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/flutter (26677): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:1462] "ResizeObserver loop completed with undelivered notifications.", source: https://item.rakuten.co.jp/bagsaifufavori/5-happy09mic/ (1462)
+I/chromium(26677): [INFO:CONSOLE:6] "Uncaught TypeError: Cannot read properties of null (reading 'stack')", source: https://r.r10s.jp/com/js/d/shisa/shisa-1.0.2.min.js (6)
+I/chromium(26677): [INFO:CONSOLE:15] "Uncaught TypeError: b.config is not a function", source: https://r.r10s.jp/com/js/d/Rmodules/1.27/Rmodules-sp-1.27.0.min.js (15)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/chromium(26677): [INFO:CONSOLE:365] "[object Object]", source: https://www.rakuten.ne.jp/gold/fly555/tj/dp/live/ (365)
+I/chromium(26677): [INFO:CONSOLE:0] "Refused to apply style from 'https://www.rakuten.ne.jp/gold/bagsaifufavori/marathon-FAVORI/parts/css/style.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.", source: https://www.rakuten.ne.jp/gold/bagsaifufavori/marathon-FAVORI/parts/header.html (0)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/flutter (26677): [RoomUrlExtraction] 取得結果: https://room.rakuten.co.jp/mix?itemcode=bagsaifufavori%3A10005192&scid=we_room_upc60
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/flutter (26677): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+I/flutter (26677): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+I/flutter (26677): [RoomUrlExtraction] 副リソース読込エラー(無視): net::ERR_BLOCKED_BY_ORB
+I/chromium(26677): [INFO:CONSOLE:7] "Products array: [object Object]", source:  (7)
+I/chromium(26677): [INFO:CONSOLE:1] "[TikTok Pixel] - Missing 'content_id' paramter
+I/chromium(26677): Issue: The 'content_id' parameter isn't being received. This is required for Video Shopping Ads (VSA).
+I/chromium(26677): Suggestion: Include the 'content_id' parameter in your source code. This is required for Video Shopping Ads (VSA). See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTc5ZjUxNDU4MA.js (1)
+I/chromium(26677): [INFO:CONSOLE:1] "[TikTok Pixel] - Invalid value parameter
+I/chromium(26677): Issue: The 'value' parameter for one or more of your events is invalid. This is used calculate ROAS for people and the bid for your highest value customers. Parameters must be an integer or in the decimal format (e.g. 9.99). Also, they can't contain currency symbols, special characters, letters, or commas.
+I/chromium(26677): Suggestion: Go to your source code and update the 'value' parameter. It can only include numbers greater than or equal to zero (e.g. 9.99). Do not include currency symbols, special characters, letters, or commas. See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information.", source: https://analytics.tiktok.com/i18n/pixel/static/main.MTc5ZjUxNDU4OQ.js (1)
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+E/FrameEvents(26677): updateAcquireFence: Did not find frame.
+Lost connection to device.
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=False
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_183537.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_183537.mp4 (12585109 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_183537
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_183537\terminal_output_20260609_183537.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_183537.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260609_183537.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260609_183537.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260609_183537.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260609_183537.log
+
+Done.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.

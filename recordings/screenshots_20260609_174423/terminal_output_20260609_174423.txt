@@ -1,0 +1,597 @@
+=== room_manager2 session log (ChatGPT bundle; UTF-8, no BOM) ===
+Started (local): 2026-06-09 17:44:23
+Project directory: C:\dev\app_project\room_manager2
+App name (safe folder token): room_manager2
+Build mode: debug
+DemoMode: no
+RakutenAppId: (empty)
+RakutenAffiliateId: (empty)
+Extra dart-defines: PRODUCT_CATALOG_ENABLED=true; SHOP_CATALOG_ENABLED=true; CATALOG_AUDIT_LOGS=false; DEV_AUTOMATION_ENABLED=true
+Selected device ID: SXILHMB270711564
+Device manufacturer: SHARP
+Device model: SHG08
+
+--- Session events ---
+
+====================================================
+Check adb devices
+====================================================
+
+====================================================
+Remove old remote video
+====================================================
+
+====================================================
+Start screen recording
+====================================================
+Device ID              : SXILHMB270711564
+Remote video path      : /sdcard/Movies/play_demo.mp4
+Local video path       : C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_174423.mp4
+Flutter stdout log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260609_174423.log
+Flutter stderr log     : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260609_174423.log
+Recorder stdout log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260609_174423.log
+Recorder stderr log    : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260609_174423.log
+Screenshot dir         : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_174423
+Terminal output log    : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_174423\terminal_output_20260609_174423.txt
+Command file           : C:\dev\app_project\room_manager2\recordings\recording_command.txt
+
+[SCREENRECORD] adb screenrecord started (remote: /sdcard/Movies/play_demo.mp4, bitrate: 8000000). Details: recorder logs under recordings\.
+
+====================================================
+Start controller window
+====================================================
+[CONTROLLER] Secondary controller window started (PID: 33156).
+
+====================================================
+Start flutter
+====================================================
+[FLUTTER] Launch command: cmd.exe /c C:\flutter\bin\flutter.bat run -d SXILHMB270711564 --dart-define=RAKUTEN_APP_ID= --dart-define=RAKUTEN_AFFILIATE_ID= --dart-define=PRODUCT_CATALOG_ENABLED=true --dart-define=SHOP_CATALOG_ENABLED=true --dart-define=CATALOG_AUDIT_LOGS=false --dart-define=DEV_AUTOMATION_ENABLED=true
+
+Flutter started (debug). Use the separate controller window.
+Streaming flutter logs below...
+
+Launching lib\main.dart on SHG08 in debug mode...
+Running Gradle task 'assembleDebug'...                             17.3s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           4.4s
+D/FlutterJNI(24578): Beginning load of flutter...
+D/FlutterJNI(24578): flutter (null) was loaded normally!
+I/flutter (24578): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+I/flutter (24578): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+I/flutter (24578): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+I/flutter (24578): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+Syncing files to device SHG08...                                   108ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on SHG08 is available at: http://127.0.0.1:60706/5q30fdvetp0=/
+I/flutter (24578): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=レディースファッション invalidGenreIds= corrected=false
+I/flutter (24578): [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=repositoryLoad
+I/flutter (24578): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (24578): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (24578): [ROOMコレ][surface] tab=done surface=ok_list
+I/Choreographer(24578): Skipped 198 frames!  The application may be doing too much work on its main thread.
+The Flutter DevTools debugger and profiler on SHG08 is available at: http://127.0.0.1:9109?uri=http://127.0.0.1:60706/5q30fdvetp0=/
+I/flutter (24578): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=40→40
+I/flutter (24578): [MANAGED_PRODUCT_LOAD] source=provider pending=17 done=40 filter= tab=
+I/flutter (24578): [RECOMMEND_GUARD] skipReason=sameDay
+I/flutter (24578): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=40→40
+I/flutter (24578): [MANAGED_PRODUCT_LOAD] source=screen pending=17 done=40 filter= tab=done
+I/flutter (24578): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=40→40
+I/flutter (24578): [MANAGED_PRODUCT_LOAD] source=provider pending=17 done=40 filter= tab=
+I/flutter (24578): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/WebViewFactory(24578): Loading com.google.android.webview version 148.0.7778.215 (code 777821503)
+D/ApplicationLoaders(24578): Returning zygote-cached class loader: /system/framework/android.test.base.jar
+D/nativeloader(24578): Configuring clns-5 for other apk /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/lib/arm64:/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(24578): version=148.0.7778.215 (777821503) minSdkVersion=29 multiprocess=true packageId=127 splits=<none>
+D/nativeloader(24578): Load /data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk!/lib/arm64-v8a/libwebviewchromium.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+D/nativeloader(24578): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-5 (caller=/data/app/~~YMhmZlguNX7zV5XoGM6myA==/com.google.android.webview-WHiOAIDc7XiTd3VwhrWmqg==/base.apk): ok
+E/chromium(24578): [0609/174501.404696:ERROR:android_webview/browser/variations/variations_seed_loader.cc:39] Seed missing signature.
+I/cr_LibraryLoader(24578): Successfully loaded native library
+I/cr_CachingUmaRecorder(24578): Flushed 18 samples from 18 histograms, 0 samples were dropped.
+I/cr_ChildProcLH(24578): ScopedServiceBindingBatch.tryActivate: false
+I/cr_CombinedPProvider(24578): #registerProvider() provider:WV.wk@1f041f2 isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(24578): #setManagerAndSource() 0
+I/cr_DisplayManager(24578): Is Display Topology available: false
+I/cr_CombinedPProvider(24578): #linkNativeInternal() 1
+D/CompatibilityChangeReporter(24578): Compat change id reported: 183155436; UID 10495; state: ENABLED
+I/cr_AppResProvider(24578): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(24578): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(24578): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(24578): #flushPolicies()
+W/chromium(24578): [WARNING:android_webview/browser/network_service/net_helpers.cc:137] HTTP Cache size is: 101706533
+W/chromium(24578): [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+D/CompatibilityChangeReporter(24578): Compat change id reported: 214741472; UID 10495; state: ENABLED
+I/CameraManagerGlobal(24578): Connecting to camera service
+D/CompatibilityChangeReporter(24578): Compat change id reported: 171228096; UID 10495; state: ENABLED
+I/PlatformViewsController(24578): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(24578): PlatformView is using SurfaceProducer backend
+D/CompatibilityChangeReporter(24578): Compat change id reported: 236825255; UID 10495; state: ENABLED
+W/o.room_manager2(24578): type=1400 audit(0.0:6752): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+D/CompatibilityChangeReporter(24578): Compat change id reported: 193247900; UID 10495; state: ENABLED
+I/Choreographer(24578): Skipped 64 frames!  The application may be doing too much work on its main thread.
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(24578): type=1400 audit(0.0:6753): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+I/AdrenoVK-0(24578): QUALCOMM build          : a3cdec2236, Ief33eea0db
+I/AdrenoVK-0(24578): Build Date              : 08/23/22
+I/AdrenoVK-0(24578): Shader Compiler Version : EV031.35.01.12
+I/AdrenoVK-0(24578): Local Branch            : 
+I/AdrenoVK-0(24578): Remote Branch           : 
+I/AdrenoVK-0(24578): Remote Branch           : 
+I/AdrenoVK-0(24578): Reconstruct Branch      : 
+I/AdrenoVK-0(24578): Build Config            : S P 10.0.7 AArch64
+I/AdrenoVK-0(24578): Driver Path             : /vendor/lib64/hw/vulkan.adreno.so
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+I/OpenGLRenderer(24578): Davey! duration=1125ms; Flags=1, FrameTimelineVsyncId=355654, IntendedVsync=6445567713634, Vsync=6446634380258, InputEventId=0, HandleInputStart=6446643412018, AnimationStart=6446643413216, PerformTraversalsStart=6446643458633, DrawStart=6446656198789, FrameDeadline=6445584380300, FrameInterval=6446643108529, FrameStartTime=16666666, SyncQueued=6446683563893, SyncStart=6446684399050, IssueDrawCommandsStart=6446685619206, SwapBuffers=6446692324779, FrameCompleted=6446693656758, DequeueBufferDuration=2723906, QueueBufferDuration=1003698, GpuCompleted=6446693389154, SwapBuffersCompleted=6446693656758, DisplayPresentTime=0, CommandSubmissionCompleted=6446692324779, 
+D/ProfileInstaller(24578): Installing profile for com.stepbytestudio.room_manager2
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(24578): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(24578): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+W/o.room_manager2(24578): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/base.apk' with 1 weak references
+W/o.room_manager2(24578): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~TF5JHXS7RLJXCokJlSSkTA==/com.google.android.marvin.talkback-Tw1O_Wy_s6BKbtH8MJ63bA==/split_config.arm64_v8a.apk' with 1 weak references
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_174423\room_manager2_shot_001.png
+I/flutter (24578): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=40→40
+I/flutter (24578): [MANAGED_PRODUCT_LOAD] source=screen pending=17 done=40 filter= tab=done
+I/flutter (24578): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (24578): [ROOMコレ][surface] tab=candidate surface=ok_list
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10004464 reviewAverage=4.5 reviewCount=1176 displayText=評価 ★4.5（1176件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10008165 reviewAverage=4.46 reviewCount=1215 displayText=評価 ★4.5（1215件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10018839 reviewAverage=4.31 reviewCount=2024 displayText=評価 ★4.3（2024件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10004464 reviewAverage=4.5 reviewCount=1176 displayText=評価 ★4.5（1176件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10008165 reviewAverage=4.46 reviewCount=1215 displayText=評価 ★4.5（1215件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10018839 reviewAverage=4.31 reviewCount=2024 displayText=評価 ★4.3（2024件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10004464 reviewAverage=4.5 reviewCount=1176 displayText=評価 ★4.5（1176件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10008165 reviewAverage=4.46 reviewCount=1215 displayText=評価 ★4.5（1215件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10018839 reviewAverage=4.31 reviewCount=2024 displayText=評価 ★4.3（2024件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [MANAGED_PRODUCT_SAVE] action=addDone productId=clairmode:10004464 pending=17→16 done=40→41
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10004464 reviewAverage=4.5 reviewCount=1176 displayText=評価 ★4.5（1176件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10008165 reviewAverage=4.46 reviewCount=1215 displayText=評価 ★4.5（1215件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10018839 reviewAverage=4.31 reviewCount=2024 displayText=評価 ★4.3（2024件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10008165 reviewAverage=4.46 reviewCount=1215 displayText=評価 ★4.5（1215件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10018839 reviewAverage=4.31 reviewCount=2024 displayText=評価 ★4.3（2024件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10008165 reviewAverage=4.46 reviewCount=1215 displayText=評価 ★4.5（1215件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10018839 reviewAverage=4.31 reviewCount=2024 displayText=評価 ★4.3（2024件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+W/o.room_manager2(24578): type=1400 audit(0.0:7099): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/OpenGLRenderer(24578): Unable to match the desired swap behavior.
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+W/o.room_manager2(24578): type=1400 audit(0.0:7100): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(24578): type=1400 audit(0.0:7101): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_174423\room_manager2_shot_002.png
+I/flutter (24578): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=16→16 done=41→41
+I/flutter (24578): [MANAGED_PRODUCT_LOAD] source=screen pending=16 done=41 filter= tab=candidate
+I/flutter (24578): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10008165 reviewAverage=4.46 reviewCount=1215 displayText=評価 ★4.5（1215件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10018839 reviewAverage=4.31 reviewCount=2024 displayText=評価 ★4.3（2024件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [MANAGED_PRODUCT_SAVE] action=addDone productId=clairmode:10008165 pending=16→15 done=41→42
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=clairmode:10008165 reviewAverage=4.46 reviewCount=1215 displayText=評価 ★4.5（1215件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10018839 reviewAverage=4.31 reviewCount=2024 displayText=評価 ★4.3（2024件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10018839 reviewAverage=4.31 reviewCount=2024 displayText=評価 ★4.3（2024件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10018839 reviewAverage=4.31 reviewCount=2024 displayText=評価 ★4.3（2024件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+W/o.room_manager2(24578): type=1400 audit(0.0:7337): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/OpenGLRenderer(24578): Unable to match the desired swap behavior.
+W/o.room_manager2(24578): type=1400 audit(0.0:7338): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/o.room_manager2(24578): type=1400 audit(0.0:7339): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+I/flutter (24578): [MANAGED_PRODUCT_SAVE] action=addDone productId=antiqua-a:10018839 pending=15→14 done=42→43
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10018839 reviewAverage=4.31 reviewCount=2024 displayText=評価 ★4.3（2024件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (24578): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/OpenGLRenderer(24578): Unable to match the desired swap behavior.
+W/o.room_manager2(24578): type=1400 audit(0.0:7498): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(24578): type=1400 audit(0.0:7499): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+I/flutter (24578): [MANAGED_PRODUCT_SAVE] action=addDone productId=antiqua-a:10022303 pending=14→13 done=43→44
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=antiqua-a:10022303 reviewAverage=4.37 reviewCount=2182 displayText=評価 ★4.4（2182件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+I/flutter (24578): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/OpenGLRenderer(24578): Unable to match the desired swap behavior.
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+I/flutter (24578): [MANAGED_PRODUCT_SAVE] action=addDone productId=k-kitchen:10096917 pending=13→12 done=44→45
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=k-kitchen:10096917 reviewAverage=4.67 reviewCount=2183 displayText=評価 ★4.7（2183件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+I/flutter (24578): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/OpenGLRenderer(24578): Unable to match the desired swap behavior.
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+I/flutter (24578): [MANAGED_PRODUCT_SAVE] action=addDone productId=hanaro:10000896 pending=12→11 done=45→46
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=hanaro:10000896 reviewAverage=4.58 reviewCount=15854 displayText=評価 ★4.6（15854件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+I/flutter (24578): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=tabletpckoubou:10001261 reviewAverage=4.19 reviewCount=17044 displayText=評価 ★4.2（17044件）
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=showatsusho:10000504 reviewAverage=5.0 reviewCount=1 displayText=評価 ★5.0（1件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=niccou-store:10000179 reviewAverage=4.64 reviewCount=16638 displayText=評価 ★4.6（16638件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=ra-beans:10017910 reviewAverage=4.71 reviewCount=231 displayText=評価 ★4.7（231件）
+I/flutter (24578): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=tabletpckoubou:10001261 reviewAverage=4.19 reviewCount=17044 displayText=評価 ★4.2（17044件）
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(24578): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(24578): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(24578): type=1400 audit(0.0:8112): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/OpenGLRenderer(24578): Unable to match the desired swap behavior.
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(24578): type=1400 audit(0.0:8113): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x38
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 56, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 56 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+E/qdgralloc(24578): GetGpuPixelFormat: No map for format: 0x3b
+E/AdrenoUtils(24578): <validate_memory_layout_input_parmas:1970>: Unknown Format 0
+E/AdrenoUtils(24578): <adreno_init_memory_layout:4720>: Memory Layout input parameter validation failed!
+E/qdgralloc(24578): GetGpuResourceSizeAndDimensions Graphics metadata init failed
+E/Gralloc4(24578): isSupported(1, 1, 59, 1, ...) failed with 1
+E/GraphicBufferAllocator(24578): Failed to allocate (4 x 4) layerCount 1 format 59 usage b00: 1
+E/AHardwareBuffer(24578): GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -1), handle=0x0
+W/libc    (24578): Access denied finding property "vendor.display.enable_optimal_refresh_rate"
+W/o.room_manager2(24578): type=1400 audit(0.0:8114): avc:  denied  { read } for  name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=2924 scontext=u:r:untrusted_app:s0:c239,c257,c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0 app=com.stepbytestudio.room_manager2
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+E/FrameEvents(24578): updateAcquireFence: Did not find frame.
+W/ImageReader_JNI(24578): Unable to acquire a buffer item, very likely client tried to acquire more than maxImages buffers
+[SCREENSHOT] saved: C:\dev\app_project\room_manager2\recordings\screenshots_20260609_174423\room_manager2_shot_003.png
+
+[QUIT] Q received; stopping Flutter and controller.
+Stop command received. Stopping flutter...
+
+====================================================
+Flutter process ended
+====================================================
+[FLUTTER] Process ended. stopRequestedByQ=True
+
+====================================================
+Flutter cleanup (streams/controller)
+====================================================
+[SESSION] Closing Flutter output streams and stopping controller if still running.
+
+====================================================
+Stopping screenrecord
+====================================================
+[SCREENRECORD] Stop/signaling sequence finished (see recorder stdout/stderr logs under recordings\ for adb details).
+
+====================================================
+Pull recorded video
+====================================================
+[VIDEO] adb pull (remote -> local): /sdcard/Movies/play_demo.mp4 -> C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_174423.mp4
+[VIDEO] Pulled OK. Local file: C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_174423.mp4 (23003136 bytes)
+
+====================================================
+Delete remote video
+====================================================
+
+====================================================
+Open screenshot folder
+====================================================
+
+--- Final artifact paths (ChatGPT bundle) ---
+Screenshot folder        : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_174423
+Unified terminal log     : C:\dev\app_project\room_manager2\recordings\screenshots_20260609_174423\terminal_output_20260609_174423.txt
+Video (recordings\)      : C:\dev\app_project\room_manager2\recordings\room_manager2_20260609_174423.mp4
+Flutter stdout log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stdout_20260609_174423.log
+Flutter stderr log       : C:\dev\app_project\room_manager2\recordings\room_manager2_flutter_stderr_20260609_174423.log
+Recorder stdout log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stdout_20260609_174423.log
+Recorder stderr log      : C:\dev\app_project\room_manager2\recordings\room_manager2_screenrecord_stderr_20260609_174423.log
+
+Done.
+Stopped by Q command.
+
+ChatGPT: Open the screenshot folder in Explorer, select all PNG screenshots and terminal_output_*.txt together, then attach.

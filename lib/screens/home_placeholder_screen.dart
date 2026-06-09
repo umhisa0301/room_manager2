@@ -38,6 +38,7 @@ import '../widgets/room_post_import_flow.dart';
 import '../widgets/room_sync_reaction_button.dart';
 import '../models/room_reaction_sync_history_entry.dart';
 import '../services/room_reaction_sync_history_store.dart';
+import '../widgets/home_in_app_notice_card.dart';
 
 // --- ホーム画面：レイアウト・タイポ・装飾の統一（画面ロジックとは分離）---
 
@@ -565,62 +566,81 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                             children: [
                               _HomeMomentumHeader(displayName: displayName),
                               SizedBox(height: _HomeUi.gapSection),
-                              _HomeTodayProgressCard(
-                                kpi: kpi,
-                                collectLimit: collectLimit,
-                                candidateCount: nCandidate,
-                                totalCount: recProvider.totalCount,
-                                pendingCount: recProvider.pendingCount,
-                                isCompleted: recProvider.isCompleted,
-                                isLoading: recProvider.isLoading,
-                                generationStatus: recProvider.generationStatus,
-                                hasTodaySuggestions: hasTodaySuggestions,
-                                todayDoneCountForRec: todayDoneCountForRec,
-                                milestonePostCount: milestonePostCount,
-                                recTotalCount: recProvider.totalCount,
-                                recommendationHintLine:
-                                    todayRecommendationHomeHintLine(
-                                      bundle: recProvider.bundle,
-                                      isLoading: recProvider.isLoading,
-                                      postStyleKeys: userProfileProvider
-                                          .profile
-                                          .postStyleList,
-                                    ),
-                                recommendationStatusMessage:
-                                    recProvider.totalCount > 0
-                                    ? '今日は${recProvider.totalCount}件のおすすめを用意しました'
-                                    : recProvider.totalCount == 0 &&
-                                          (recProvider.generationStatus ==
-                                                  TodayRecommendationGenerationStatus
-                                                      .failedRateLimit ||
-                                              recProvider.generationStatus ==
-                                                  TodayRecommendationGenerationStatus
-                                                      .failedApiError ||
-                                              recProvider.generationStatus ==
-                                                  TodayRecommendationGenerationStatus
-                                                      .empty)
-                                    ? 'おすすめを準備できませんでした'
-                                    : null,
-                                canRegenerateRecommendations: recProvider
-                                    .manualRegenerateCooldownStatus()
-                                    .canRegenerate,
-                                onOpenSearch: () {
-                                  _trace('trigger=cta');
-                                  _trace('action=openSearch');
-                                  openRakutenSearchScreen(context);
-                                },
-                                onOpenCandidates: () =>
-                                    _openRoomList(context, initialTabIndex: 0),
-                                onOpenActivity: () => _openActivity(context),
-                                regenerateCooldownHint: recProvider
-                                    .manualRegenerateCooldownStatus()
-                                    .userFacingWaitLabel,
-                                onPrimaryRecommendations: () =>
-                                    _openTodayRecommendations(context),
-                                onRegenerateRecommendations: () =>
-                                    _regenerateTodayRecommendationsFromHome(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  _HomeTodayProgressCard(
+                                    kpi: kpi,
+                                    collectLimit: collectLimit,
+                                    candidateCount: nCandidate,
+                                    totalCount: recProvider.totalCount,
+                                    pendingCount: recProvider.pendingCount,
+                                    isCompleted: recProvider.isCompleted,
+                                    isLoading: recProvider.isLoading,
+                                    generationStatus:
+                                        recProvider.generationStatus,
+                                    hasTodaySuggestions: hasTodaySuggestions,
+                                    todayDoneCountForRec: todayDoneCountForRec,
+                                    milestonePostCount: milestonePostCount,
+                                    recTotalCount: recProvider.totalCount,
+                                    recommendationHintLine:
+                                        todayRecommendationHomeHintLine(
+                                          bundle: recProvider.bundle,
+                                          isLoading: recProvider.isLoading,
+                                          postStyleKeys: userProfileProvider
+                                              .profile
+                                              .postStyleList,
+                                        ),
+                                    recommendationStatusMessage:
+                                        recProvider.totalCount > 0
+                                        ? '今日は${recProvider.totalCount}件のおすすめを用意しました'
+                                        : recProvider.totalCount == 0 &&
+                                              (recProvider.generationStatus ==
+                                                      TodayRecommendationGenerationStatus
+                                                          .failedRateLimit ||
+                                                  recProvider.generationStatus ==
+                                                      TodayRecommendationGenerationStatus
+                                                          .failedApiError ||
+                                                  recProvider.generationStatus ==
+                                                      TodayRecommendationGenerationStatus
+                                                          .empty)
+                                        ? 'おすすめを準備できませんでした'
+                                        : null,
+                                    canRegenerateRecommendations: recProvider
+                                        .manualRegenerateCooldownStatus()
+                                        .canRegenerate,
+                                    onOpenSearch: () {
+                                      _trace('trigger=cta');
+                                      _trace('action=openSearch');
+                                      openRakutenSearchScreen(context);
+                                    },
+                                    onOpenCandidates: () => _openRoomList(
                                       context,
+                                      initialTabIndex: 0,
                                     ),
+                                    onOpenActivity: () =>
+                                        _openActivity(context),
+                                    regenerateCooldownHint: recProvider
+                                        .manualRegenerateCooldownStatus()
+                                        .userFacingWaitLabel,
+                                    onPrimaryRecommendations: () =>
+                                        _openTodayRecommendations(context),
+                                    onRegenerateRecommendations: () =>
+                                        _regenerateTodayRecommendationsFromHome(
+                                          context,
+                                        ),
+                                  ),
+                                  HomeInAppNoticeSlot(
+                                    milestonePostCount: milestonePostCount,
+                                    recPendingCount: recProvider.pendingCount,
+                                    recTotalCount: recProvider.totalCount,
+                                    recIsLoading:
+                                        recProvider.isLoading ||
+                                        recProvider.generationStatus ==
+                                            TodayRecommendationGenerationStatus
+                                                .loading,
+                                  ),
+                                ],
                               ),
                               SizedBox(height: _HomeUi.gapSection),
                               _RoomManagementSection(
@@ -1432,7 +1452,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
       return 'おすすめを準備しています';
     }
     if (pendingCount > 0) {
-      return '気になる商品を確認してみましょう';
+      return '今日のおすすめを見てみましょう';
     }
     if (generationStatus ==
             TodayRecommendationGenerationStatus.failedRateLimit ||
@@ -1458,13 +1478,29 @@ class _HomeTodayProgressCard extends StatelessWidget {
     return totalCount > 0;
   }
 
-  String? _heroStatusChipLabel() {
+  String? _titleRowChipLabel() {
     if (isLoading ||
         generationStatus == TodayRecommendationGenerationStatus.loading) {
       return null;
     }
-    if (pendingCount > 0) return null;
+    if (pendingCount > 0) return '未確認 $pendingCount件';
     if (totalCount > 0) return '整理済み';
+    return null;
+  }
+
+  String? _compactInfoLine() {
+    if (isLoading ||
+        generationStatus == TodayRecommendationGenerationStatus.loading) {
+      return 'おすすめを準備中です';
+    }
+    if (pendingCount > 0) return null;
+    final statusMsg = recommendationStatusMessage?.trim();
+    if (totalCount > 0) {
+      return statusMsg?.isNotEmpty == true
+          ? statusMsg
+          : 'おすすめ候補 $totalCount件';
+    }
+    if (statusMsg?.isNotEmpty == true) return statusMsg;
     return null;
   }
 
@@ -1479,6 +1515,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
       milestonePostCount,
       recTotalCount,
       candidateCount,
+      recommendationHintLine,
       onOpenSearch,
       onOpenCandidates,
       onOpenActivity,
@@ -1490,146 +1527,68 @@ class _HomeTodayProgressCard extends StatelessWidget {
         showSecondaryRegenerate &&
         !canRegenerateRecommendations &&
         regenerateCooldownHint.trim().isNotEmpty;
-    final hasPending = pendingCount > 0;
-    final isHeroLoading =
-        generationStatus == TodayRecommendationGenerationStatus.loading;
-    final heroTitle = hasPending ? '未確認候補' : '今日のおすすめ';
-    final heroValue = isHeroLoading
-        ? '準備中…'
-        : hasPending
-        ? '$pendingCount件'
-        : totalCount > 0
-        ? 'おすすめ候補 $totalCount件'
-        : '—';
-    final heroSubtitle = isHeroLoading
-        ? 'おすすめを準備中です'
-        : hasPending
-        ? '今日のおすすめから未確認の候補があります'
-        : totalCount > 0
-        ? (recommendationStatusMessage?.trim().isNotEmpty == true
-              ? recommendationStatusMessage!.trim()
-              : '気になる商品を確認して、投稿候補にしてみましょう。')
-        : generationStatus ==
-                  TodayRecommendationGenerationStatus.failedRateLimit ||
-              generationStatus ==
-                  TodayRecommendationGenerationStatus.failedApiError ||
-              generationStatus == TodayRecommendationGenerationStatus.empty
-        ? (recommendationStatusMessage?.trim().isNotEmpty == true
-              ? recommendationStatusMessage!.trim()
-              : 'おすすめを用意して、今日の候補を見てみましょう。')
-        : null;
-    final statusChipLabel = _heroStatusChipLabel();
+    final titleRowChipLabel = _titleRowChipLabel();
+    final compactInfoLine = _compactInfoLine();
 
     return Container(
       width: double.infinity,
       decoration: _HomeUi.searchEntrySectionDecoration(),
-      padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            '今日のROOM運用',
-            style: _HomeUi.sectionTitle(context).copyWith(
-              color: HomeScreenColors.accentSectionHeading,
-              fontSize: 18,
-              fontWeight: FontWeight.w900,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  '今日のROOM運用',
+                  style: _HomeUi.sectionTitle(context).copyWith(
+                    color: HomeScreenColors.accentSectionHeading,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+              if (titleRowChipLabel != null)
+                _HomeTodayStatusChip(label: titleRowChipLabel),
+            ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Text(
             _todayStatusMessage(),
             maxLines: 2,
             softWrap: true,
             style: _HomeUi.bodyEmphasis(context).copyWith(
-              fontSize: 15,
-              height: 1.32,
+              fontSize: 14.5,
+              height: 1.3,
               fontWeight: FontWeight.w700,
               color: HomeScreenColors.titlePrimary,
             ),
           ),
-          const SizedBox(height: 12),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: BoxDecoration(
-              color: HomeScreenColors.subActionRowFill.withValues(alpha: 0.72),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: HomeScreenColors.sectionOutlineNeutral.withValues(
-                  alpha: 0.55,
-                ),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        heroTitle,
-                        style: _HomeUi.tapHint(context).copyWith(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          color: HomeScreenColors.footnoteMuted,
-                          letterSpacing: 0.2,
-                        ),
-                      ),
-                    ),
-                    if (statusChipLabel != null)
-                      _HomeTodayStatusChip(label: statusChipLabel),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  heroValue,
-                  style: _HomeUi.sectionTitle(context).copyWith(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w800,
-                    height: 1.15,
-                    color: HomeScreenColors.titlePrimary,
-                  ),
-                ),
-                if (heroSubtitle != null && heroSubtitle.trim().isNotEmpty) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    heroSubtitle.trim(),
-                    maxLines: 2,
-                    softWrap: true,
-                    style: _HomeUi.tapHint(context).copyWith(
-                      fontSize: 12.5,
-                      height: 1.32,
-                      color: HomeScreenColors.bodyOnSection,
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
           _HomeHeroCtaButton(
             icon: primary.icon,
             label: primary.label,
             onPressed: primary.onPressed,
           ),
-          if (recommendationHintLine != null &&
-              recommendationHintLine!.trim().isNotEmpty) ...[
-            const SizedBox(height: 8),
+          if (compactInfoLine != null && compactInfoLine.trim().isNotEmpty) ...[
+            const SizedBox(height: 6),
             Text(
-              recommendationHintLine!.trim(),
+              compactInfoLine.trim(),
               maxLines: 2,
               softWrap: true,
+              textAlign: TextAlign.center,
               style: _HomeUi.tapHint(context).copyWith(
                 fontSize: 11.5,
-                height: 1.32,
+                height: 1.3,
                 color: HomeScreenColors.footnoteMuted,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ],
           if (showSecondaryRegenerate) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Align(
               alignment: Alignment.center,
               child: OutlinedButton.icon(
@@ -1671,36 +1630,36 @@ class _HomeTodayProgressCard extends StatelessWidget {
             ),
           ],
           if (showRegenerateCooldown) ...[
-            const SizedBox(height: 6),
+            const SizedBox(height: 4),
             Text(
               regenerateCooldownHint.trim(),
               maxLines: 2,
               softWrap: true,
               textAlign: TextAlign.center,
               style: _HomeUi.tapHint(context).copyWith(
-                fontSize: 11,
+                fontSize: 10.5,
                 fontWeight: FontWeight.w600,
                 color: HomeScreenColors.footnoteMuted,
               ),
             ),
           ],
-          const SizedBox(height: 10),
-          _HomePostMilestoneSection(postCount: milestonePostCount),
           const SizedBox(height: 8),
+          _HomePostMilestoneSection(postCount: milestonePostCount),
+          const SizedBox(height: 6),
           Divider(
             height: 1,
             thickness: 1,
             color: HomeScreenColors.sectionOutlineNeutral.withValues(
-              alpha: 0.28,
+              alpha: 0.22,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+            padding: const EdgeInsets.fromLTRB(6, 3, 6, 3),
             decoration: BoxDecoration(
-              color: HomeScreenColors.subActionRowFill.withValues(alpha: 0.28),
-              borderRadius: BorderRadius.circular(10),
+              color: HomeScreenColors.subActionRowFill.withValues(alpha: 0.22),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1708,12 +1667,12 @@ class _HomeTodayProgressCard extends StatelessWidget {
                 Text(
                   '投稿しすぎ防止の目安',
                   style: _HomeUi.tapHint(context).copyWith(
-                    fontSize: 10,
+                    fontSize: 9.5,
                     fontWeight: FontWeight.w700,
                     color: HomeScreenColors.footnoteMuted,
                   ),
                 ),
-                const SizedBox(height: 3),
+                const SizedBox(height: 2),
                 _CollectLimitProgressLine(
                   title: '直近24時間',
                   usedCount: collectLimit.todayCount,
@@ -1723,7 +1682,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
                   compact: true,
                   subtle: true,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 _CollectLimitProgressLine(
                   title: 'この1時間',
                   usedCount: collectLimit.hourCount,
@@ -1736,14 +1695,13 @@ class _HomeTodayProgressCard extends StatelessWidget {
                   compact: true,
                   subtle: true,
                 ),
-                const SizedBox(height: 2),
                 Text(
-                  '投稿しすぎ防止の参考値です。無理に上限を目指す必要はありません。',
-                  maxLines: 2,
-                  softWrap: true,
+                  '参考値です。無理に上限を目指す必要はありません。',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: _HomeUi.tapHint(context).copyWith(
-                    fontSize: 10,
-                    height: 1.3,
+                    fontSize: 9.5,
+                    height: 1.25,
                     color: HomeScreenColors.footnoteMuted,
                     fontWeight: FontWeight.w500,
                   ),
@@ -1802,62 +1760,69 @@ class _HomePostMilestoneSection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+      padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
       decoration: BoxDecoration(
-        color: HomeScreenColors.todayDoneFill.withValues(alpha: 0.72),
-        borderRadius: BorderRadius.circular(12),
+        color: HomeScreenColors.todayDoneFill.withValues(alpha: 0.65),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: HomeScreenColors.todayActiveBorder.withValues(alpha: 0.45),
+          color: HomeScreenColors.todayActiveBorder.withValues(alpha: 0.38),
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            snapshot.sectionTitle,
-            style: _HomeUi.tapHint(context).copyWith(
-              fontSize: 11.5,
-              fontWeight: FontWeight.w800,
-              color: HomeScreenColors.accentSectionHeading,
-              letterSpacing: 0.15,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  snapshot.sectionTitle,
+                  style: _HomeUi.tapHint(context).copyWith(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    color: HomeScreenColors.accentSectionHeading,
+                    letterSpacing: 0.1,
+                  ),
+                ),
+              ),
+              if (countSummary != null)
+                Text(
+                  countSummary,
+                  style: _HomeUi.tapHint(context).copyWith(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                    color: HomeScreenColors.bodyOnSection,
+                  ),
+                ),
+            ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             snapshot.hintMessage,
-            maxLines: 2,
-            softWrap: true,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: _HomeUi.bodyEmphasis(context).copyWith(
-              fontSize: 13,
-              height: 1.3,
+              fontSize: 12,
+              height: 1.25,
               fontWeight: FontWeight.w700,
               color: HomeScreenColors.titlePrimary,
             ),
           ),
-          if (countSummary != null) ...[
-            const SizedBox(height: 2),
-            Text(
-              countSummary,
-              style: _HomeUi.tapHint(context).copyWith(
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-                color: HomeScreenColors.bodyOnSection,
-              ),
-            ),
-          ],
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           LayoutBuilder(
             builder: (context, constraints) {
+              const chipGap = 4.0;
               final chipWidth =
                   (constraints.maxWidth -
-                      (HomePostMilestoneSnapshot.milestones.length - 1) * 6) /
+                      (HomePostMilestoneSnapshot.milestones.length - 1) *
+                          chipGap) /
                   HomePostMilestoneSnapshot.milestones.length;
               return Row(
                 children: [
                   for (var i = 0;
                       i < HomePostMilestoneSnapshot.milestones.length;
                       i++) ...[
-                    if (i > 0) const SizedBox(width: 6),
+                    if (i > 0) const SizedBox(width: chipGap),
                     _HomeMilestoneChip(
                       label:
                           '${HomePostMilestoneSnapshot.milestones[i]}件',
@@ -1871,16 +1836,16 @@ class _HomePostMilestoneSection extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           ClipRRect(
             borderRadius: BorderRadius.circular(999),
             child: LinearProgressIndicator(
               value: snapshot.segmentProgress,
-              minHeight: 4,
+              minHeight: 3,
               backgroundColor: HomeScreenColors.sectionOutlineNeutral.withValues(
-                alpha: 0.22,
+                alpha: 0.2,
               ),
-              color: AppColors.accentPrimary.withValues(alpha: 0.82),
+              color: AppColors.accentPrimary.withValues(alpha: 0.78),
             ),
           ),
         ],
@@ -1914,7 +1879,7 @@ class _HomeMilestoneChip extends StatelessWidget {
 
     return Container(
       width: width,
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: fill,
@@ -1926,7 +1891,7 @@ class _HomeMilestoneChip extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: _HomeUi.tapHint(context).copyWith(
-          fontSize: 10.5,
+          fontSize: 10,
           fontWeight: FontWeight.w800,
           color: textColor,
         ),
