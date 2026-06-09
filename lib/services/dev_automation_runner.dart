@@ -115,8 +115,10 @@ class DevAutomationRunner extends ChangeNotifier {
   DevAutomationRunner({
     required DevAutomationDependencies dependencies,
     DevAutomationLogBuffer? logBuffer,
+    int? stepDelayMs,
   }) : _deps = dependencies,
-       _logBuffer = logBuffer ?? DevAutomationLogBuffer();
+       _logBuffer = logBuffer ?? DevAutomationLogBuffer(),
+       _stepDelayMs = stepDelayMs ?? DevAutomationConfig.stepDelayMs;
 
   static const int defaultIterations = 3;
   static const int minIterations = 1;
@@ -128,6 +130,7 @@ class DevAutomationRunner extends ChangeNotifier {
 
   final DevAutomationDependencies _deps;
   final DevAutomationLogBuffer _logBuffer;
+  final int _stepDelayMs;
 
   bool _isRunning = false;
   bool _stopRequested = false;
@@ -277,6 +280,9 @@ class DevAutomationRunner extends ChangeNotifier {
         error: result.error,
       );
 
+      await _waitAfterStep(iteration: iteration, step: step);
+      if (_stopRequested) return false;
+
       if (!result.success) return false;
     }
     return true;
@@ -337,6 +343,21 @@ class DevAutomationRunner extends ChangeNotifier {
         'Tab index mismatch: expected=$expectedIndex actual=${_deps.appShell.currentIndex}',
       );
     }
+  }
+
+  /// ステップ完了後の目視確認用待機（自動検証モード専用）。
+  Future<void> _waitAfterStep({
+    required int iteration,
+    required DevAutomationStep step,
+  }) async {
+    if (_stepDelayMs <= 0) return;
+
+    _log(
+      '[DEV_AUTOMATION_STEP_DELAY] '
+      'scenario=${DevAutomationScenario.tabTourProductSearch} '
+      'iteration=$iteration step=${step.name} delayMs=$_stepDelayMs',
+    );
+    await _deps.delay(Duration(milliseconds: _stepDelayMs));
   }
 
   /// [RakutenSearchScreen._runSearch] の通常商品検索経路に合わせる。

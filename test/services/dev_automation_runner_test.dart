@@ -199,6 +199,7 @@ void main() {
           delay: (_) async {},
         ),
         logBuffer: logBuffer,
+        stepDelayMs: 0,
       );
 
       final future = runner.runTabTourProductSearch(iterations: 5);
@@ -226,6 +227,7 @@ void main() {
           delay: (_) async {},
         ),
         logBuffer: logBuffer,
+        stepDelayMs: 0,
       );
 
       await runner.runTabTourProductSearch(iterations: 1);
@@ -245,6 +247,91 @@ void main() {
               line.contains('result=skippedNotImplemented'),
         ),
         isTrue,
+      );
+      expect(
+        logBuffer.entries.any(
+          (line) => line.contains('[DEV_AUTOMATION_STEP_DELAY]'),
+        ),
+        isFalse,
+      );
+    });
+  });
+
+  group('DevAutomationRunner step delay', () {
+    late SharedPreferences prefs;
+
+    setUp(() async {
+      SharedPreferences.setMockInitialValues(<String, Object>{});
+      prefs = await SharedPreferences.getInstance();
+    });
+
+    test('logs and waits after each step when stepDelayMs > 0', () async {
+      if (!DevAutomationFlags.isEnabled) return;
+
+      final logBuffer = DevAutomationLogBuffer();
+      final delayCalls = <Duration>[];
+      final runner = DevAutomationRunner(
+        dependencies: _newDependencies(
+          prefs: prefs,
+          appShell: AppShellController(),
+          delay: (duration) async {
+            delayCalls.add(duration);
+          },
+        ),
+        logBuffer: logBuffer,
+        stepDelayMs: 100,
+      );
+
+      await runner.runTabTourProductSearch(iterations: 1);
+
+      expect(
+        logBuffer.entries.where(
+          (line) => line.contains('[DEV_AUTOMATION_STEP_DELAY]'),
+        ).length,
+        10,
+      );
+      expect(
+        logBuffer.entries.any(
+          (line) =>
+              line.contains('step=managedTab') &&
+              line.contains('delayMs=100'),
+        ),
+        isTrue,
+      );
+      expect(
+        delayCalls.where((d) => d == const Duration(milliseconds: 100)).length,
+        10,
+      );
+    });
+
+    test('skips delay and log when stepDelayMs is 0', () async {
+      if (!DevAutomationFlags.isEnabled) return;
+
+      final logBuffer = DevAutomationLogBuffer();
+      final delayCalls = <Duration>[];
+      final runner = DevAutomationRunner(
+        dependencies: _newDependencies(
+          prefs: prefs,
+          appShell: AppShellController(),
+          delay: (duration) async {
+            delayCalls.add(duration);
+          },
+        ),
+        logBuffer: logBuffer,
+        stepDelayMs: 0,
+      );
+
+      await runner.runTabTourProductSearch(iterations: 1);
+
+      expect(
+        logBuffer.entries.any(
+          (line) => line.contains('[DEV_AUTOMATION_STEP_DELAY]'),
+        ),
+        isFalse,
+      );
+      expect(
+        delayCalls.where((d) => d == Duration.zero).length,
+        0,
       );
     });
   });

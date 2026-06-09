@@ -78,4 +78,15 @@ void main() {
       expect(ensureDevAutomationAvailable, returnsNormally);
     });
   });
+
+  group('DevAutomationConfig.stepDelayMs', () {
+    test('is non-negative', () {
+      expect(DevAutomationConfig.stepDelayMs, greaterThanOrEqualTo(0));
+    });
+
+    test('defaults to 5000 when define omitted at compile time', () {
+      // dart-define はコンパイル時定数のため、テスト実行時は未指定ビルド想定。
+      expect(DevAutomationConfig.stepDelayMs, 5000);
+    });
+  });
 }

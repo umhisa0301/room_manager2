@@ -6,6 +6,10 @@ import 'package:flutter/foundation.dart' show kDebugMode, kReleaseMode;
 /// `flutter run --dart-define=DEV_AUTOMATION_ENABLED=true`
 /// `flutter build apk --debug --dart-define=DEV_AUTOMATION_ENABLED=true`
 ///
+/// ステップ間待機（目視確認用、ミリ秒）:
+/// `--dart-define=DEV_AUTOMATION_STEP_DELAY_MS=5000`（省略時 5000）
+/// `--dart-define=DEV_AUTOMATION_STEP_DELAY_MS=0`（待機なし）
+///
 /// 内部検証用 release 有効化例（両方必須）:
 /// `flutter build appbundle --release --dart-define=INTERNAL_RELEASE_AUTOMATION_ENABLED=true --dart-define=INTERNAL_RELEASE_AUTOMATION_TOKEN=room-internal-release-automation`
 ///
@@ -38,6 +42,17 @@ abstract final class DevAutomationConfig {
       kInternalReleaseAutomationDartDefineEnabled &&
       kInternalReleaseAutomationToken ==
           expectedInternalReleaseAutomationToken;
+
+  /// 各ステップ完了後の目視確認用待機（ミリ秒）。
+  ///
+  /// 未指定時 5000。`--dart-define=DEV_AUTOMATION_STEP_DELAY_MS=0` で待機なし。
+  static const int _kDevAutomationStepDelayMsRaw = int.fromEnvironment(
+    'DEV_AUTOMATION_STEP_DELAY_MS',
+    defaultValue: 5000,
+  );
+
+  static int get stepDelayMs =>
+      _kDevAutomationStepDelayMsRaw < 0 ? 0 : _kDevAutomationStepDelayMsRaw;
 }
 
 /// 開発者向け自動検証モードを公開してよいかどうか。
