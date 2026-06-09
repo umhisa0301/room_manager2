@@ -15,6 +15,7 @@ import '../services/room_collect_post_limit.dart';
 import '../services/room_import_collects_policy.dart';
 import '../services/room_import_limit_policy.dart';
 import '../services/room_kpi_calculator.dart';
+import '../utils/home_post_milestone.dart';
 import '../utils/today_recommendation_ui_tags.dart';
 import '../state/room_activity_event_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
@@ -531,6 +532,11 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                     final todayDoneCountForRec =
                         (recProvider.totalCount - recProvider.pendingCount)
                             .clamp(0, recProvider.totalCount);
+                    final milestonePostCount =
+                        RakutenRoomHomeStats.countDoneOnLocalCalendarDay(
+                          items,
+                          todayLocalDay,
+                        );
                     final profileRoomUrl = userProfileProvider.profile.roomUrl
                         .trim();
                     final roomImportedDoneCount = items
@@ -570,6 +576,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen> {
                                 generationStatus: recProvider.generationStatus,
                                 hasTodaySuggestions: hasTodaySuggestions,
                                 todayDoneCountForRec: todayDoneCountForRec,
+                                milestonePostCount: milestonePostCount,
                                 recTotalCount: recProvider.totalCount,
                                 recommendationHintLine:
                                     todayRecommendationHomeHintLine(
@@ -1384,6 +1391,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
     required this.generationStatus,
     required this.hasTodaySuggestions,
     required this.todayDoneCountForRec,
+    required this.milestonePostCount,
     required this.recTotalCount,
     required this.recommendationHintLine,
     required this.recommendationStatusMessage,
@@ -1406,6 +1414,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
   final TodayRecommendationGenerationStatus generationStatus;
   final bool hasTodaySuggestions;
   final int todayDoneCountForRec;
+  final int milestonePostCount;
   final int recTotalCount;
   final String? recommendationHintLine;
   final String? recommendationStatusMessage;
@@ -1467,6 +1476,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
       isCompleted,
       hasTodaySuggestions,
       todayDoneCountForRec,
+      milestonePostCount,
       recTotalCount,
       candidateCount,
       onOpenSearch,
@@ -1674,18 +1684,20 @@ class _HomeTodayProgressCard extends StatelessWidget {
               ),
             ),
           ],
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
+          _HomePostMilestoneSection(postCount: milestonePostCount),
+          const SizedBox(height: 8),
           Divider(
             height: 1,
             thickness: 1,
             color: HomeScreenColors.sectionOutlineNeutral.withValues(
-              alpha: 0.35,
+              alpha: 0.28,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
             decoration: BoxDecoration(
               color: HomeScreenColors.subActionRowFill.withValues(alpha: 0.28),
               borderRadius: BorderRadius.circular(10),
@@ -1701,7 +1713,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
                     color: HomeScreenColors.footnoteMuted,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 3),
                 _CollectLimitProgressLine(
                   title: '直近24時間',
                   usedCount: collectLimit.todayCount,
@@ -1711,7 +1723,7 @@ class _HomeTodayProgressCard extends StatelessWidget {
                   compact: true,
                   subtle: true,
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 4),
                 _CollectLimitProgressLine(
                   title: 'この1時間',
                   usedCount: collectLimit.hourCount,
@@ -1771,6 +1783,154 @@ class _HomeTodayProgressCard extends StatelessWidget {
       label: 'おすすめを用意する',
       icon: Icons.auto_awesome_rounded,
       onPressed: onPrimaryRecommendations,
+    );
+  }
+}
+
+class _HomePostMilestoneSection extends StatelessWidget {
+  const _HomePostMilestoneSection({required this.postCount});
+
+  final int postCount;
+
+  @override
+  Widget build(BuildContext context) {
+    final snapshot = HomePostMilestoneSnapshot.fromPostCount(
+      postCount,
+      useCalendarDayLabel: true,
+    );
+    final countSummary = snapshot.countSummaryLine;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+      decoration: BoxDecoration(
+        color: HomeScreenColors.todayDoneFill.withValues(alpha: 0.72),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: HomeScreenColors.todayActiveBorder.withValues(alpha: 0.45),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            snapshot.sectionTitle,
+            style: _HomeUi.tapHint(context).copyWith(
+              fontSize: 11.5,
+              fontWeight: FontWeight.w800,
+              color: HomeScreenColors.accentSectionHeading,
+              letterSpacing: 0.15,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            snapshot.hintMessage,
+            maxLines: 2,
+            softWrap: true,
+            style: _HomeUi.bodyEmphasis(context).copyWith(
+              fontSize: 13,
+              height: 1.3,
+              fontWeight: FontWeight.w700,
+              color: HomeScreenColors.titlePrimary,
+            ),
+          ),
+          if (countSummary != null) ...[
+            const SizedBox(height: 2),
+            Text(
+              countSummary,
+              style: _HomeUi.tapHint(context).copyWith(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: HomeScreenColors.bodyOnSection,
+              ),
+            ),
+          ],
+          const SizedBox(height: 8),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final chipWidth =
+                  (constraints.maxWidth -
+                      (HomePostMilestoneSnapshot.milestones.length - 1) * 6) /
+                  HomePostMilestoneSnapshot.milestones.length;
+              return Row(
+                children: [
+                  for (var i = 0;
+                      i < HomePostMilestoneSnapshot.milestones.length;
+                      i++) ...[
+                    if (i > 0) const SizedBox(width: 6),
+                    _HomeMilestoneChip(
+                      label:
+                          '${HomePostMilestoneSnapshot.milestones[i]}件',
+                      reached: snapshot.isMilestoneReached(
+                        HomePostMilestoneSnapshot.milestones[i],
+                      ),
+                      width: chipWidth,
+                    ),
+                  ],
+                ],
+              );
+            },
+          ),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              value: snapshot.segmentProgress,
+              minHeight: 4,
+              backgroundColor: HomeScreenColors.sectionOutlineNeutral.withValues(
+                alpha: 0.22,
+              ),
+              color: AppColors.accentPrimary.withValues(alpha: 0.82),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HomeMilestoneChip extends StatelessWidget {
+  const _HomeMilestoneChip({
+    required this.label,
+    required this.reached,
+    required this.width,
+  });
+
+  final String label;
+  final bool reached;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    final fill = reached
+        ? AppColors.accentLight.withValues(alpha: 0.95)
+        : HomeScreenColors.subActionRowFill.withValues(alpha: 0.55);
+    final border = reached
+        ? AppColors.accentPrimary.withValues(alpha: 0.42)
+        : HomeScreenColors.sectionOutlineNeutral.withValues(alpha: 0.35);
+    final textColor = reached
+        ? AppColors.accentPrimary
+        : HomeScreenColors.footnoteMuted;
+
+    return Container(
+      width: width,
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: fill,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: border),
+      ),
+      child: Text(
+        label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: _HomeUi.tapHint(context).copyWith(
+          fontSize: 10.5,
+          fontWeight: FontWeight.w800,
+          color: textColor,
+        ),
+      ),
     );
   }
 }
