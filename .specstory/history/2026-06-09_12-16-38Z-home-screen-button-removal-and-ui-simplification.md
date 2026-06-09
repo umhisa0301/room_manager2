@@ -598,3 +598,1137 @@ Status: **completed**
 <summary>Tool use: **ripgrep_raw_search**</summary>
 
 </details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\today_recommendations_screen.dart",
+  "pattern": "別の候補|regenerate|manualRegenerate"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\today_recommendations_screen.dart",
+  "pattern": "別の候補|regenerate|manualRegenerate",
+  "topFiles": [
+    {
+      "matchCount": 7,
+      "uri": "lib\\screens\\today_recommendations_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 7
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "home_placeholder|HomeTodayProgress|TodayProgress"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\test",
+  "pattern": "home_placeholder|HomeTodayProgress|TodayProgress",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+ホーム画面に直接のテストがないことを確認した。`_regenerateTodayRecommendationsFromHome` メソッドを削除する実装を開始した。</details></think>
+
+_**Agent (default)**_
+
+ホーム側の再生成導線と関連UIを削除します。
+
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\home_placeholder_screen.dart",
+  "pattern": "別の候補|_regenerateTodayRecommendationsFromHome|canRegenerateRecommendations|onRegenerateRecommendations|regenerateCooldownHint|showSecondaryRegenerate"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\home_placeholder_screen.dart",
+  "pattern": "別の候補|_regenerateTodayRecommendationsFromHome|canRegenerateRecommendations|onRegenerateRecommendations|regenerateCooldownHint|showSecondaryRegenerate",
+  "topFiles": [],
+  "totalFiles": 0,
+  "totalMatches": 0
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter analyze</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter analyze
+```
+
+```
+Analyzing room_manager2...                                      
+
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:114:17 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:115:21 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\screens\today_recommendations_screen.dart:150:26 - use_build_context_synchronously
+warning - A value for optional parameter 'withImageCount' isn't ever given - test\services\shop_discovery_pool_api_compare_test.dart:69:7 - unused_element_parameter
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/widgets.dart' - tool\phase4_p2_device_verify.dart:1:8 - unnecessary_import
+   info - Can't use a relative path to import a library in 'lib' - tool\phase4_p2_device_verify.dart:4:8 - avoid_relative_lib_imports
+   info - Can't use a relative path to import a library in 'lib' - tool\phase4_p2_device_verify.dart:5:8 - avoid_relative_lib_imports
+   info - Can't use a relative path to import a library in 'lib' - tool\phase4_p2_device_verify.dart:6:8 - avoid_relative_lib_imports
+   info - Can't use a relative path to import a library in 'lib' - tool\phase4_p2_device_verify.dart:7:8 - avoid_relative_lib_imports
+   info - Angle brackets will be interpreted as HTML - tool\phase4_p2_device_verify.dart:11:20 - unintended_html_in_doc_comment
+
+10 issues found. (ran in 12.7s)
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: cd c:\dev\app_project\room_manager2 && flutter test</summary>
+
+```bash
+cd c:\dev\app_project\room_manager2 && flutter test
+```
+
+```
+00:00 +0: loading C:/dev/app_project/room_manager2/test/config/demo_mode_test.dart
+00:00 +0: C:/dev/app_project/room_manager2/test/config/demo_mode_test.dart: showUrlAddEntryPoint requires kDebugMode and dart-define
+00:00 +1: C:/dev/app_project/room_manager2/test/config/demo_mode_test.dart: showUrlAddEntryPoint is false when dart-define is not set (default test run)
+00:01 +2: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path kProductCatalogEnabled=false では upsert skipped
+00:01 +3: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path kProductCatalogEnabled=false では upsert skipped
+00:01 +4: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct high trust が low trust の重要フィールドを上書きできる
+00:01 +5: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust は high trust の重要フィールドを上書きしない
+00:01 +6: C:/dev/app_project/room_manager2/test/models/catalog_product_test.dart: CatalogProduct low trust でも空欄は補完できる
+00:01 +7: C:/dev/app_project/room_manager2/test/e2e/product_catalog_search_device_path_test.dart: Product catalog search device path 商品名検索 productSearch で upsert し永続化する
+00:01 +8: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags isEnabled combines debug path and internal release path
+00:01 +9: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags isEnabled combines debug path and internal release path
+00:01 +10: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags debug path requires kDebugMode and DEV_AUTOMATION_ENABLED
+00:01 +11: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags internal release path requires kReleaseMode
+00:01 +12: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags internal release path is false when only INTERNAL_RELEASE_AUTOMATION_ENABLED is set
+00:02 +13: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags internal release path is false when only INTERNAL_RELEASE_AUTOMATION_TOKEN is set
+00:02 +14: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable throws when disabled
+00:02 +15: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationFlags ensureDevAutomationAvailable succeeds when enabled
+00:02 +16: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationConfig.stepDelayMs is non-negative
+00:02 +17: C:/dev/app_project/room_manager2/test/config/dev_automation_config_test.dart: DevAutomationConfig.stepDelayMs defaults to 5000 when define omitted at compile time
+00:03 +18: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が最優先
+00:03 +19: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliateUrl が無ければ itemUrl
+00:03 +20: C:/dev/app_project/room_manager2/test/models/product_url_resolver_test.dart: ProductUrlResolver.resolveRakutenOpenUrl affiliate と item が空なら rakutenUrl
+00:03 +21: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry JSON 往復できる
+00:03 +22: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry aliases を保持する
+00:03 +23: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry stale 判定用フィールドを保持する
+00:03 +24: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedStatus を持たない JSON は拒否する
+00:03 +25: C:/dev/app_project/room_manager2/test/models/shop_catalog_entry_test.dart: ShopCatalogEntry savedAt を持たないこと（モデルにフィールドなし）
+00:04 +26: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: TodayRecommendationEntry の JSON 往復で imageUrl とレビューが欠落しない
+00:04 +27: C:/dev/app_project/room_manager2/test/models/today_recommendation_entry_test.dart: reviewCount 0 / reviewAverage 0 は最終品質ゲートで除外される
+00:04 +28: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles fromJson keeps existing data and reads first postStyle
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated new=premium
+00:04 +29: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles postStyleList ignores unknown values and keeps single value
+[SEARCH_STYLE_MIGRATE] old=premium,social,highly_rated,affordable new=premium
+00:04 +30: C:/dev/app_project/room_manager2/test/models/user_profile_test.dart: UserProfile postStyles effectivePostStyleList uses balance without showing it as selected
+00:07 +31: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository upsert して canonicalId で取得できる
+00:07 +32: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository alias で検索できる
+00:08 +33: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository high trust が low trust を上書きできる
+00:08 +34: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository low trust は high trust の重要フィールドを上書きしない
+00:08 +35: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:08 +36: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:08 +37: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:08 +38: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:08 +39: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:08 +40: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:08 +41: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:09 +42: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +43: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:10 +44: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +45: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +45: C:/dev/app_project/room_manager2/test/screens/mypage_settings_section_dev_automation_test.dart: MyPageSettingsSection dev automation entry shows entry button when dev automation callback is provided
+[DEV_AUTOMATION_ENTRY_VISIBLE] enabled=true
+00:13 +46: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:13 +47: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +48: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +49: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +50: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +51: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +52: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +53: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:16 +54: C:/dev/app_project/room_manager2/test/repository/product_catalog_repository_test.dart: ProductCatalogRepository 最大件数を超えたら古いものが削除される
+00:17 +55: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:17 +56: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:17 +57: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:17 +58: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:17 +59: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:17 +60: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:17 +61: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:17 +62: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:17 +63: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:18 +64: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:18 +65: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:18 +66: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:18 +67: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:18 +68: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:18 +69: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:18 +70: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+[SHOP_DISCOVERY_SAVE_SHOP] source=detail shopCode=the-charme shopName=水筒ショップ result=success
+00:18 +71: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 未保存時に「このショップを保存」が表示されタップで保存される
+00:18 +72: C:/dev/app_project/room_manager2/test/services/dev_automation_runner_test.dart: DevAutomationRunner.validateIterations default iterations constant is 3
+00:18 +73: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:18 +74: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:18 +75: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:18 +76: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:18 +77: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:18 +78: C:/dev/app_project/room_manager2/test/screens/shop_discovery_detail_screen_test.dart: ShopDiscoveryDetailScreen save shop 保存済みの場合は「保存済み」表示で重複保存しない
+00:19 +79: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:19 +80: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:20 +81: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:20 +82: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:20 +83: C:/dev/app_project/room_manager2/test/services/dev_automation_visible_run_test.dart: DevAutomationVisibleRun startTabTourProductSearch is no-op when automation disabled
+00:20 +84: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator カタログ空なら空リスト
+00:20 +85: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 単位に集計できる
+00:20 +86: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 同一 shopCode 複数商品で itemCount2Plus になる
+00:20 +87: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopCode 空は除外
+00:20 +88: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator unsafe 商品は除外
+00:20 +89: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator stale 商品は除外
+00:20 +90: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sourceTrust=low は除外
+00:20 +91: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator representativeImageUrl が安全画像になる
+00:20 +92: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator primaryGenreName が商品の genreName から入る
+00:20 +93: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator genreId のみでも primaryGenreId は入る
+00:20 +94: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sourceProductIds は複数商品分保持する
+00:20 +95: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator primaryGenreId が件数最多ジャンルになる
+00:20 +96: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator score 順になる
+00:20 +97: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator sampleProductIds が入る
+00:20 +98: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 保存ショップ除外を指定できる
+00:20 +99: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator shopDiscovery 由来商品でも shopCode 単位に集計できる
+00:20 +100: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator stale でない medium 商品は aggregator から除外されない
+00:20 +101: C:/dev/app_project/room_manager2/test/services/product_catalog_shop_aggregator_test.dart: ProductCatalogShopAggregator 未確認 shopName は表示名に使わない
+00:21 +102: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry 429 のときだけ1回リトライして成功すれば通常レスポンスを返す
+00:21 +103: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry 429 のときだけ1回リトライして成功すれば通常レスポンスを返す
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=429 page=2 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=0 page=2
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=200 page=2 bytes=31
+[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=2 success=true statusCode=200
+00:21 +104: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry 429 が2回続くときは失敗扱いになる
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=429 page=2 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=0 page=2
+[Rakuten] request start mode=proxy page=2 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=2&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=429 page=2 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=2 success=false statusCode=429
+[Rakuten] searchItems failed page=2 attempt=1: 楽天API呼び出しに失敗しました (429): Rate limit is exceeded.
+#0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:451:7)
+&lt;asynchronous suspension&gt;
+#1      RakutenApiService._searchItemsOnceWithRateLimitRetry (package:room_manager2/services/rakuten_api_service.dart:105:24)
+&lt;asynchronous suspension&gt;
+#2      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:57:16)
+&lt;asynchronous suspension&gt;
+#3      Throws._matchFuture (package:matcher/src/expect/throws_matcher.dart:102:19)
+&lt;asynchronous suspension&gt;
+#4      _expect.&lt;anonymous closure&gt; (package:matcher/src/expect/expect.dart:123:26)
+&lt;asynchronous suspension&gt;
+#5      StackZoneSpecification._registerCallback.&lt;anonymous closure&gt; (package:stack_trace/src/stack_zone_specification.dart:114:42)
+&lt;asynchronous suspension&gt;
+#6      expectLater.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:508:19)
+&lt;asynchronous suspension&gt;
+#7      main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart:47:7)
+&lt;asynchronous suspension&gt;
+#8      Declarer.test.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:242:9)
+&lt;asynchronous suspension&gt;
+#9      Declarer.test.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:240:7)
+&lt;asynchronous suspension&gt;
+#10     Invoker._waitForOutstandingCallbacks.&lt;anonymous closure&gt; (package:test_api/src/backend/invoker.dart:282:9)
+&lt;asynchronous suspension&gt;
+
+00:21 +105: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry 429 以外の HTTP エラーではリトライしない
+[Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=mixedOrKeyword keyword=水筒 genreId=- shopCode=- itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=1&amp;hits=20&amp;keyword=%E6%B0%B4%E7%AD%92
+[Rakuten] response status=400 page=1 bytes=23
+[Rakuten] error response body (full, status=400): {"error":"bad_request"}
+[Rakuten] searchItems failed page=1 attempt=1: 楽天API呼び出しに失敗しました (400): bad_request
+#0      RakutenApiService._searchItemsOnce (package:room_manager2/services/rakuten_api_service.dart:451:7)
+&lt;asynchronous suspension&gt;
+#1      RakutenApiService._searchItemsOnceWithRateLimitRetry (package:room_manager2/services/rakuten_api_service.dart:91:14)
+&lt;asynchronous suspension&gt;
+#2      RakutenApiService.searchItems (package:room_manager2/services/rakuten_api_service.dart:57:16)
+&lt;asynchronous suspension&gt;
+#3      Throws._matchFuture (package:matcher/src/expect/throws_matcher.dart:102:19)
+&lt;asynchronous suspension&gt;
+#4      _expect.&lt;anonymous closure&gt; (package:matcher/src/expect/expect.dart:123:26)
+&lt;asynchronous suspension&gt;
+#5      StackZoneSpecification._registerCallback.&lt;anonymous closure&gt; (package:stack_trace/src/stack_zone_specification.dart:114:42)
+&lt;asynchronous suspension&gt;
+#6      expectLater.&lt;anonymous closure&gt; (package:flutter_test/src/widget_tester.dart:508:19)
+&lt;asynchronous suspension&gt;
+#7      main.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (file:///C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart:74:7)
+&lt;asynchronous suspension&gt;
+#8      Declarer.test.&lt;anonymous closure&gt;.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:242:9)
+&lt;asynchronous suspension&gt;
+#9      Declarer.test.&lt;anonymous closure&gt; (package:test_api/src/backend/declarer.dart:240:7)
+&lt;asynchronous suspension&gt;
+#10     Invoker._waitForOutstandingCallbacks.&lt;anonymous closure&gt; (package:test_api/src/backend/invoker.dart:282:9)
+&lt;asynchronous suspension&gt;
+
+00:21 +106: C:/dev/app_project/room_manager2/test/services/rakuten_api_service_test.dart: RakutenApiService.searchItems rate limit retry shopCode 検索でも 429 のときだけ1回リトライする
+[Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=separateOrShopOnly keyword=(omit) genreId=- shopCode=k-kitchen itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=1&amp;hits=20&amp;shopCode=k-kitchen
+[Rakuten] response status=429 page=1 bytes=75
+[Rakuten] error response body (full, status=429): {"error":"too_many_requests","error_description":"Rate limit is exceeded."}
+[RAKUTEN_API_RETRY] reason=rateLimit statusCode=429 attempt=1 waitMs=0 page=1
+[Rakuten] request start mode=proxy page=1 hits=20 url=https://api.stepbytestudio.com/api/rakuten useProxy=true forceLegacy=true accessKeySent=false openapiHeaders=false queryMode=separateOrShopOnly keyword=(omit) genreId=- shopCode=k-kitchen itemCode=- shopName=未送信(APIはshopCodeのみ)
+[Rakuten] GET /api/rakuten … proxy=yes headers: User-Agent=set Origin=omit Referer=omit
+[Rakuten] fullRequestUri=https://api.stepbytestudio.com/api/rakuten?format=json&amp;page=1&amp;hits=20&amp;shopCode=k-kitchen
+[Rakuten] response status=200 page=1 bytes=31
+[RAKUTEN_API_RETRY_RESULT] reason=rateLimit page=1 success=true statusCode=200
+00:21 +107: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 通常URL・クエリ付きで itemCode を抽出する
+00:21 +108: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 末尾スラッシュなしでも itemCode を抽出する
+00:21 +109: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl スラッグ URL でも shopCode と itemCode を抽出する
+00:21 +110: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl affiliateUrl から itemCode を抽出する
+00:21 +111: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天BOOKS URL は対象外 URL として扱う
+[URL_SEARCH_UNSUPPORTED] inputUrl=https://books.rakuten.co.jp/rb/1234567890/ reason=unsupportedRakutenService host=books.rakuten.co.jp service=books
+[URL_SEARCH_RESULT] success=false reason=unsupportedUrlType host=books.rakuten.co.jp
+00:22 +112: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天ファッション URL は対象外 URL として扱う
+[URL_SEARCH_UNSUPPORTED] inputUrl=https://brandavenue.rakuten.co.jp/item/foo/ reason=unsupportedRakutenService host=brandavenue.rakuten.co.jp service=fashion
+[URL_SEARCH_RESULT] success=false reason=unsupportedUrlType host=brandavenue.rakuten.co.jp
+00:22 +113: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 検索結果ホストは非商品ページエラーになる
+00:22 +114: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl 楽天以外のURLは商品ページURLエラーになる
+00:22 +115: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.tryParseItemRakutenPageUrl item.rakuten で商品セグメントが不正なら確認できないエラー
+00:22 +116: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ済みがコレ候補より優先される
+00:22 +117: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts コレ候補として分類される
+00:22 +118: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts 未登録
+00:22 +119: C:/dev/app_project/room_manager2/test/services/rakuten_item_page_url_item_code_service_test.dart: RakutenItemPageUrlItemCodeService.classifyAgainstManagedProducts ROOM 取り込み slug productId と shopCode でコレ済み判定
+00:22 +120: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser https の item.rakuten から shop / セグメント / 正規URL
+00:22 +121: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser http でも抽出できる
+00:22 +122: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RakutenItemUrlParser HTML 内の複数リンクから数値ID付きを優先
+00:22 +123: C:/dev/app_project/room_manager2/test/services/room_collected_sync_parse_test.dart: RoomUrlResolver ROOM HTML から楽天商品URLを取得できる
+00:23 +124: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMプロフィールURLを許可して正規化する
+00:23 +125: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /items 付きROOMプロフィールURLを許可して正規化する
+00:23 +126: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat /collections と /likes もプロフィール導線として許可する
+00:23 +127: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 空は任意入力として許可する
+00:23 +128: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat httpは拒否する
+00:23 +129: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat 楽天市場URLは拒否する
+00:23 +130: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOMトップURLのみは拒否する
+00:23 +131: C:/dev/app_project/room_manager2/test/services/room_profile_url_validation_service_test.dart: RoomProfileUrlValidationService.validateFormat ROOM商品URL相当の複数パスは拒否する
+00:23 +132: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:23 +133: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:23 +134: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:23 +135: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:23 +136: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:23 +137: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:23 +138: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:23 +139: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:23 +140: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:23 +141: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathHintsFromHtml picks item.rakuten near room post URL
+00:24 +142: C:/dev/app_project/room_manager2/test/services/room_listing_fast_path_test.dart: mergeListingFastPathFromCollectsRow reads nested item URL
+[ROOM_COLLECTS_RESPONSE_SHAPE] itemKeys=id,meta productLikeKeys=- userLikeKeys=- imageLikeKeys=- hasProductImage=false hasUserIcon=false
+[ROOM_IMPORT_COLLECTS_IMAGE_KEYS] productId=17001234567890 keys=meta.link selectedKey=- rejectedKeys=meta.link
+00:24 +143: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse __NEXT_DATA__ から like / comment を抽出できる
+00:24 +144: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 正規表現フォールバックで抽出できる
+00:24 +145: C:/dev/app_project/room_manager2/test/services/room_room_page_reaction_parse_test.dart: RoomRoomPageReactionParse 見つからない場合は null
+00:25 +146: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryApiQualitySummary API summaries から品質サマリを計算できる
+00:25 +147: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolComparator overlap overlapRate / apiOnly / poolOnly が計算できる
+00:25 +148: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality good + overlap高なら replacement候補
+00:25 +149: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags poolQuality weak なら supplement/replacement false
+00:25 +150: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare usability flags wouldBeUsableAsSupplement は overlap または厚みで true になり得る
+00:25 +151: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build repository なしでも比較結果と willUsePoolForUi=false を返す
+00:25 +152: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOP比較ログ用データが最大3件に制限される
+00:25 +153: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build 品質ログに keyword と poolQualityLevel が含まれる
+00:25 +154: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_api_compare_test.dart: ShopDiscoveryPoolApiCompare.build TOPログは apiTop1 / poolTop1 形式
+00:26 +155: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode overlap を数えられる
+00:26 +156: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport strong=9 でも hitItemCount=1 だらけなら qualityLevel=weak
+00:26 +157: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport strong=9 でも hitItemCount=1 だらけなら qualityLevel=weak
+00:26 +158: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+00:26 +159: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalog entries も比較できる
+00:26 +160: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount2Plus が多い場合は depthQuality good 以上になり得る
+00:26 +161: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 厚み・ジャンルが十分な場合のみ excellent に近づく
+00:26 +162: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator shopCode 空は比較対象外
+00:26 +163: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport hitItemCount1 / hitItemCount2Plus / thinCandidateCount が正しい
+00:26 +164: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolCandidateCount が0でも落ちない
+00:26 +165: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport displayQuality は画像・URL・レビューから判定される
+00:26 +166: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator catalogShopCount が0でも落ちない
+00:26 +167: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport noimage は withImageCount に含めない
+00:26 +168: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator savedShopCodes を渡すと savedExcludedCount が出る
+00:26 +169: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_quality_test.dart: ShopDiscoveryPoolFallbackQualityReport 通常API成功時は fallback quality report を作らない
+00:26 +170: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator overlapRate が計算される
+00:26 +171: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator poolHasEnoughCandidatesForDisplay が10件以上で true
+00:26 +172: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator top*Shops が最大3件に制限される
+00:26 +173: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator API summaries の並び順と件数を変更しない
+00:26 +174: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が同一なら同じ値になる
+00:26 +175: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_comparator_test.dart: ShopDiscoveryPoolComparator dedupe signature が違えば別値になる
+00:27 +176: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback API results がある場合は fallback しない
+00:27 +177: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopCode 空は除外される
+00:27 +178: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback shopName 不正は除外される
+00:27 +179: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 保存済みショップは除外される
+00:27 +180: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback safeItemCount=0 相当は fallback しない
+00:27 +181: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 3〜9件で partial fallback になる
+00:27 +182: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback pool 0〜2件では fallback しない
+00:27 +183: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback時は最大10件に制限される
+00:27 +184: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 関連度が同じときは score 順を維持する
+00:27 +185: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 水筒検索でお名前シールより関連ショップを優先する
+00:27 +186: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback primaryGenreId ありで genreName 空は unknownGenre 扱いにしない
+00:27 +187: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback fallback TOP で hitItemCount&gt;=2 が hitItemCount=1 より優先される
+00:27 +188: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 候補不足時は hitItemCount=1 でも fallback 表示できる
+00:27 +189: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback 同一 shopCode 複数 fresh 商品は pool itemCount2Plus になる
+00:27 +190: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_fallback_test.dart: ShopDiscoveryPoolFallback noimage URL は表示用画像に含めない
+00:27 +191: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build APIにない高品質Pool候補が supplement に選ばれる
+00:28 +192: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build API結果に含まれるshopCodeは supplement から除外される
+00:28 +193: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build relevance weak は除外される
+00:28 +194: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build hitItemCount=1 は除外される
+00:28 +195: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build imageなし / shopUrlなし は除外される
+00:28 +196: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 最大3件までに制限される
+00:28 +197: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build overlapRate=1.0 で API が Pool 上位を覆う場合 supplement 0
+00:28 +198: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build wouldShowSupplementIfEnabled と willUsePoolForUi / willSkipApi
+00:28 +199: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement.build 保存ショップは supplement から除外される
+00:28 +200: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement apiWeakSignal apiWeakSignal / poolCouldCoverApiWeakness が計算できる
+00:28 +201: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=1.0 では recommendedDisplayCount=0
+00:28 +202: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision overlapRate=0.9 かつ APIにない強候補で recommendedDisplayCount=1
+00:28 +203: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision apiWeakSignal=true では recommendedDisplayCount が増え得る
+00:28 +204: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop / broadShop が判定できる
+00:28 +205: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision hitItemCount が低い候補は showEligible=false になり得る
+00:28 +206: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ジャンル不整合なら showEligible=false になり得る
+00:28 +207: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision 水筒 + strong itemName + hitItems&gt;=5 で strongItemEvidence=true
+00:28 +208: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision strongItemEvidence=true なら genreAligned=false でも showEligible=true
+00:28 +209: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision genericShop=true は strongItemEvidence があっても showEligible=false
+00:28 +210: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision broadShop=true は showEligible=false
+00:28 +211: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision candidate1 不適格なら candidate2 に displayRank=1
+00:28 +212: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision ベビー相当で水筒系のみの Pool では recommendedDisplayCount=0
+00:28 +213: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_test.dart: ShopDiscoveryPoolSupplement display decision decision / candidate ログと willUsePoolForUi / willSkipApi
+00:28 +214: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible + displayRank&lt;=recommended の候補だけ抽出する
+00:28 +215: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible + displayRank&lt;=recommended の候補だけ抽出する
+00:28 +216: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge buildCardTapLogLine のログ形式
+00:28 +217: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge recommendedDisplayCount=0 なら displayCandidates=0（コーヒー相当）
+00:28 +218: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge ベビー相当で recommendedDisplayCount=0 なら displayCandidates=0
+00:28 +219: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge showEligible=false は displayRank があっても除外される
+00:28 +220: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge displayRank&gt;recommended は除外される
+00:28 +221: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge contentEquals は表示候補の差分を検出する
+00:28 +222: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge candidate1 不適格でも candidate2 が displayRank=1 なら抽出する
+00:28 +223: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge 保存済みショップは displayCandidates から除外される
+00:28 +224: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge 保存済みでないショップは従来通り displayCandidates に残る
+00:29 +225: C:/dev/app_project/room_manager2/test/services/shop_discovery_pool_supplement_ui_bridge_test.dart: ShopDiscoveryPoolSupplementUiBridge extractDisplayCandidates 単体では保存済み判定を行わない
+00:29 +226: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolFallbackKeywordSynonyms 水筒の同義語を返す
+00:29 +227: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒で商品名マッチは strong
+00:29 +228: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance 水筒でお名前シールは noMatch
+00:29 +229: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance ジャンル名マッチは medium
+00:29 +230: C:/dev/app_project/room_manager2/test/services/shop_pool_keyword_relevance_test.dart: ShopPoolKeywordRelevance unknown genre を検出する
+00:30 +231: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=product displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=product requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=4
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=product attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+00:30 +232: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog カタログ upsert 失敗でも検索は成功のまま
+00:30 +233: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery 検索成功後も結果件数・並び順は API リストのまま
+[SEARCH_RESULT_UNDER_100_REASON] mode=shopDiscovery displayCount=2 target=100 reason=reachedTarget
+[SEARCH_REQUEST_RACE_GUARD] mode=shopDiscovery requestId=1 activeRequestId=1 accepted=true reason=currentSession
+[Rakuten] searchWithCondition provider after repository rawItemsCount=2 parsedItemsCount=2 genreId=- keywordLen=2
+[SEARCH_API_RESULT_APPLY] sessionId=1 activeSessionId=1 matched=true statusCode=200 rawCount=2 displayCount=2 appliedToUi=true skipReason=-
+[Rakuten] affiliateIdをリクエストに付与: false / affiliateUrlあり: 0 / 2 件
+[SEARCH_FIRST_ATTEMPT_AUDIT] mode=shopDiscovery attempt=1 apiCalled=true responseStatus=200 uiApplied=true failureReason=-
+00:30 +234: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery でも ProductCatalog upsert が実行される
+00:30 +235: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_catalog_test.dart: RakutenSearchProvider product catalog shopDiscovery カタログ upsert 失敗でも検索は成功のまま
+00:30 +236: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: beginSearchSession increments active request id
+00:30 +237: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: clearErrorForNewSearch clears error and retry banner
+[SAVED_SHOP_SEARCH_LIFECYCLE] requestId=1 event=clearError shopCode=- keyword=- genreId=- resultCount=- errorType=- errorMessage=-
+00:31 +238: C:/dev/app_project/room_manager2/test/utils/app_debug_log_test.dart: app_debug_log emission gates shouldEmitImportantDebugLog は debug ビルドでのみ true
+00:31 +239: C:/dev/app_project/room_manager2/test/utils/app_debug_log_test.dart: app_debug_log emission gates shouldEmitImportantDebugLog は debug ビルドでのみ true
+00:31 +240: C:/dev/app_project/room_manager2/test/state/rakuten_search_provider_test.dart: isErrorVisibleForMode is true only for matching tag
+00:31 +241: C:/dev/app_project/room_manager2/test/utils/app_debug_log_test.dart: app_debug_log emission gates shouldEmitCatalogAuditLog は CATALOG_AUDIT_LOGS と debug の両方が必要
+00:31 +242: C:/dev/app_project/room_manager2/test/utils/app_debug_log_test.dart: app_debug_log emission gates catalogAuditLog はフラグ無効時に no-op（例外なし）
+00:31 +243: C:/dev/app_project/room_manager2/test/utils/app_debug_log_test.dart: app_debug_log emission gates shopDiscoveryUserActionLog は debug ビルドで no-op 例外なし
+[TEST_USER_ACTION] noop
+00:31 +244: C:/dev/app_project/room_manager2/test/utils/app_debug_log_test.dart: app_debug_log emission gates importantDebugLog は debug ビルドで no-op 例外なし
+[TEST_IMPORTANT] noop
+00:32 +245: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId / itemCode 優先で canonicalId が決まる
+00:32 +246: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId が無い場合 normalizedItemUrl から synthetic key が作られる
+00:32 +247: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys canonicalId が決められない場合は null
+00:32 +248: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys alias を生成できる
+00:32 +249: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys itemUrl を正規化できる
+00:32 +250: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys productId と URL パスが不一致のとき composite alias を付けない
+00:32 +251: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId・別 URL で false
+00:32 +252: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId では信頼 URL 同一でも false
+00:32 +253: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は別 productId + 同一 affiliate URL で false
+00:32 +254: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は productId 欠落時のみ URL で true
+00:32 +255: C:/dev/app_project/room_manager2/test/utils/catalog_product_keys_test.dart: CatalogProductKeys catalogProductsShareIdentity は同一 productId なら true
+00:33 +256: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 正常商品の qualityStatus が生成できる
+00:33 +257: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 無効 URL を判定できる
+00:33 +258: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 画像なしを判定できる
+00:33 +259: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 価格なしを判定できる
+00:33 +260: C:/dev/app_project/room_manager2/test/utils/catalog_product_quality_test.dart: CatalogProductQuality 安全 NG を判定できる
+00:33 +261: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (setUpAll)
+[GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+00:34 +261: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreName があるときはそのまま
+00:34 +262: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName genreId のみのとき GenreMaster で補完
+00:34 +263: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName catalogProductFromSearchItem が genreName を補完して保存する
+00:34 +264: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: resolveCatalogGenreName (tearDownAll)
+00:34 +264: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem RakutenSearchItem から CatalogProduct に変換できる
+00:34 +265: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem source=search / sourceTrust=high になる
+00:34 +266: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem affiliate URL は normalizedItemUrl に残るが identity URL ではない
+00:34 +267: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem alias が生成される
+00:34 +268: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 安全 NG は qualityStatus.safe=false になる
+00:34 +269: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: catalogProductFromSearchItem 画像なし・価格なしは保存可能で qualityStatus に反映される
+00:34 +270: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=false のとき no-op
+00:34 +271: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 安全 NG は upsert 対象から除外される
+00:34 +272: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems kProductCatalogEnabled=true のとき upsertAll が永続化する
+00:34 +273: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems 変換商品を upsert すると alias で検索できる
+00:34 +274: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromSearchItems catalogUpsertModeLabelForSearchModeTag がモード別ラベルを返す
+00:34 +275: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems kProductCatalogEnabled=false のとき no-op
+00:34 +276: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryItems source=shopDiscovery / sourceTrust=medium になる
+00:34 +277: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer keeps only the latest maxEntries lines
+00:34 +278: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer keeps only the latest maxEntries lines
+00:34 +279: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer keeps only the latest maxEntries lines
+00:34 +280: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer keeps only the latest maxEntries lines
+00:34 +281: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer keeps only the latest maxEntries lines
+00:34 +282: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer keeps only the latest maxEntries lines
+00:34 +283: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer keeps only the latest maxEntries lines
+00:34 +284: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer keeps only the latest maxEntries lines
+line-1
+line-2
+line-3
+00:34 +285: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer keeps only the latest maxEntries lines
+line-4
+00:34 +286: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 別 canonicalId なら productCountForShop=2 / inserted+updated 内訳
+00:34 +287: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer ignores empty messages
+00:34 +288: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 同一 canonicalId 2件は merge で productCountForShop=1
+00:34 +289: C:/dev/app_project/room_manager2/test/utils/dev_automation_log_buffer_test.dart: DevAutomationLogBuffer notifies listeners when a line is added
+[DEV_AUTOMATION_TEST] ok
+00:34 +290: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems productIdとURLパス不一致2件は productCountForShop=2
+00:34 +291: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: upsertCatalogFromShopDiscoveryDetailItems 既存商品への同一 canonicalId 2件は inserted=0 updated=2
+00:34 +292: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: buildShopDiscoveryDetailCatalogItemTraces 同一 productId 2件目は canonicalDuplicate
+00:34 +293: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard 同一 signature では2回目 upsert しない
+00:34 +294: C:/dev/app_project/room_manager2/test/utils/catalog_product_mapper_test.dart: ShopDiscoveryDetailCatalogUpsertGuard initial / loaded は別管理
+00:35 +295: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder 推奨順に含まれる genreId は指定順で並ぶ
+00:35 +296: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder 推奨順に含まれない genreId は末尾で名称昇順
+00:35 +297: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder RakutenGenreMasterEntry 一覧を表示順でソート
+00:35 +298: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder ソートは ID 集合を変えない
+00:35 +299: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (setUpAll)
+[GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+00:35 +299: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration rootNodes の先頭はレディースファッション
+00:35 +300: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration getAllGenres も同じ先頭順
+00:35 +301: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration 百貨店・総合通販・ギフトは推奨順の最後付近
+00:35 +302: C:/dev/app_project/room_manager2/test/utils/genre_display_order_test.dart: GenreDisplayOrder integration (tearDownAll)
+00:35 +302: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.highestMilestoneTier maps post counts to milestone tiers
+00:35 +303: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=0 and no rec → no notice
+00:35 +304: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=1 → milestone praise
+00:35 +305: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=5 → 5件達成 copy
+00:35 +306: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=10 → 10件達成 copy
+00:35 +307: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=20 → high progress copy
+00:35 +308: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone count=3 → generic progress copy
+00:35 +309: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select post milestone dismissed post milestone is skipped
+00:35 +310: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select rec completed shows when all recommendations are processed
+00:35 +311: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select rec completed hidden while recommendations are pending
+00:35 +312: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector.select rec completed hidden while loading
+00:35 +313: C:/dev/app_project/room_manager2/test/utils/home_in_app_notice_test.dart: HomeInAppNoticeSelector priority post milestone wins over rec completed
+00:35 +314: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=0 → next=1
+00:36 +315: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=1 → next=5
+00:36 +316: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=5 → next=10
+00:36 +317: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=10 → next=20
+00:36 +318: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount count=20 → completed/highProgress
+00:36 +319: C:/dev/app_project/room_manager2/test/utils/home_post_milestone_test.dart: HomePostMilestoneSnapshot.fromPostCount uses rolling-24h label when calendar day is unavailable
+00:36 +320: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics medium shopDiscovery 商品2件の同一 shopCode が pool itemCount=2 になる
+00:37 +321: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 商品のみ残ると pool itemCount=1 になる
+00:37 +322: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics maxProductsPerShop 相当でも fresh が複数あれば pool itemCount&gt;=2
+00:37 +323: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 診断関数は例外なく実行できる
+00:37 +324: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics 保存ショップ検索相当 search/high で同一 shopCode 複数商品が pool に蓄積
+00:37 +325: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics stale 深さ投影で wouldItemCount2Plus を計算できる
+00:37 +326: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics isStaleUsableForDepthOnly は shopCode/itemName/genreId を要求
+00:37 +327: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics computeShopDiscoveryEnrichmentOpportunity は API を呼ばない
+00:37 +328: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailDepthTrace / PoolTrace は例外なく実行できる
+00:37 +329: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logShopDiscoveryDetailCatalogItemTrace は duplicate reason を含める
+00:37 +330: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: logShopPoolAggregationDiagnostics logSavedOrDiscoveryShopDepthAfterUpsert は例外なく実行できる
+00:37 +331: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration detail upsert 後 poolItemCount が2になる
+00:37 +332: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: buildShopDiscoveryDetailCatalogItemTraces integration takeya-tea 同一 affiliate URL・別 productId で poolItemCount=2
+00:37 +333: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: ProductCatalogUpsertTimingRegistry upsert 完了前の read は usesFreshCatalog=false
+00:37 +334: C:/dev/app_project/room_manager2/test/utils/product_catalog_audit_test.dart: ProductCatalogUpsertTimingRegistry upsert 完了後の read は usesFreshCatalog=true
+00:37 +335: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 木のおもちゃは通す
+00:37 +336: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 大人のオモチャは除外
+00:37 +337: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter オトナのおもちゃは除外
+00:37 +338: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おとなのおもちゃは除外
+00:37 +339: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter sex toy は除外
+00:37 +340: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter BLCDコレクションは除外
+00:37 +341: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 濡れトロは除外
+00:37 +342: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter おもちゃ/宮本真希[DVD]は adultKeyword がなければ通す
+00:37 +343: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ベビー おもちゃは通す
+00:37 +344: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ビール10本セットは除外
+00:37 +345: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 名入れワインは除外
+00:37 +346: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter シャンパングラスは通す
+00:37 +347: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ワイングラスは通す
+00:37 +348: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter 子供服は通す
+00:37 +349: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter アダルトグッズは除外
+00:37 +350: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter グラビア写真集は除外
+00:37 +351: C:/dev/app_project/room_manager2/test/utils/product_safety_filter_test.dart: ProductSafetyFilter ジャンル名がビール・洋酒なら除外
+00:37 +352: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 既定並び順はレビュー件数が多い順
+00:37 +353: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort defaultOrder は API でもレビュー件数順
+00:37 +354: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort ユーザー選択肢に defaultOrder は含めない
+00:37 +355: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort 表示ラベルに「おすすめ」「デフォルト」は出さない
+00:37 +356: C:/dev/app_project/room_manager2/test/utils/rakuten_keyword_search_sort_test.dart: rakutenKeywordSearchSort レビューが多い順の表示
+00:38 +357: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel reviewAverage と reviewCount 両方あり
+00:38 +358: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel reviewAverage のみ
+00:38 +359: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel reviewCount のみ
+00:38 +360: C:/dev/app_project/room_manager2/test/utils/rakuten_product_rating_display_test.dart: RakutenProductRatingDisplay.formatProductCardLabel どちらもない
+00:38 +361: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported item.rakuten.co.jp は対象外にならない
+00:38 +362: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported 楽天BOOKS URL は unsupportedRakutenService
+00:38 +363: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported 楽天ファッション brandavenue は unsupportedRakutenService
+00:38 +364: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported fashion.rakuten.co.jp は unsupportedRakutenService
+00:38 +365: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported affiliate の pc= が BOOKS を指す場合も対象外
+00:38 +366: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported affiliate の pc= が item.rakuten の場合は対象外にならない
+00:38 +367: C:/dev/app_project/room_manager2/test/utils/rakuten_product_url_support_test.dart: RakutenProductUrlSupport.detectUnsupported 楽天以外の URL は null
+00:39 +368: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment productId 一致で照合できる
+00:39 +369: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment normalizedItemUrl 一致で照合できる
+00:39 +370: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopCode + itemPathSegment 一致で照合できる
+00:39 +371: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 商品名だけでは照合・補完しない
+00:39 +372: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment stale な商品は補完に使わない
+00:39 +373: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment sourceTrust=low は補完に使わない
+00:39 +374: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が安全ならカタログ画像で上書きしない
+00:39 +375: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存画像が疑わしくカタログ画像が安全なら補完できる
+00:39 +376: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が0ならカタログ価格で補完できる
+00:39 +377: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment 既存価格が有効なら上書きしない
+00:39 +378: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment shopName / genreName が空なら補完できる
+00:39 +379: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment upsert時に high が low で上書きされない
+00:39 +380: C:/dev/app_project/room_manager2/test/utils/room_catalog_enrichment_test.dart: RoomCatalogEnrichment repository が null でも upsert は skipped
+00:40 +381: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize strips bracket promos and shortens
+00:40 +382: C:/dev/app_project/room_manager2/test/utils/room_import_enrich_keyword_normalize_test.dart: RoomImportEnrichKeywordNormalize collapses whitespace
+00:40 +383: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop and url slug match accepts candidate
+00:40 +384: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch price match alone does not accept candidate
+00:40 +385: C:/dev/app_project/room_manager2/test/utils/room_import_product_url_match_test.dart: roomImportEvaluateApiCandidateMatch shop mismatch rejects candidate
+00:41 +386: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 price=3980 に incoming price=-1 が来ても 3980 を維持
+00:41 +387: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 imageUrl 有効、incoming 空なら既存維持
+00:41 +388: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 shopCode 有効、incoming 空なら既存維持
+00:41 +389: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge 既存 genreName 有効、incoming 空なら既存維持
+00:41 +390: C:/dev/app_project/room_manager2/test/utils/room_import_safe_merge_test.dart: RoomImportSafeMerge incoming api値が有効な場合だけ上書き
+00:42 +391: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.resolveToCanonicalItemRakutenUrl 通常 item.rakuten URL を正規化する
+00:42 +392: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.resolveToCanonicalItemRakutenUrl スラッグ URL を正規化する
+00:42 +393: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.resolveToCanonicalItemRakutenUrl affiliateUrl の pc= から item URL を復元する
+00:42 +394: C:/dev/app_project/room_manager2/test/utils/room_rakuten_url_normalize_test.dart: RoomRakutenUrlNormalize.decodeAffiliatePcTargetUrl affiliate 以外は null
+00:43 +395: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics eligible は done かつ roomUrl かつ カウント取得済み
+00:43 +396: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics reactionScore は like + comment*3
+00:43 +397: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genre 空は ジャンル未確認
+00:43 +398: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName 空なら shopCode をUIに出さずショップ未確認
+00:43 +399: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopName も shopCode も空なら ショップ未確認
+00:43 +400: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics 未分類ジャンルは傾向集計対象外
+00:43 +401: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics genreName空でもgenreIdからマスタ解決できれば集計対象
+00:43 +402: C:/dev/app_project/room_manager2/test/utils/room_reaction_analytics_test.dart: roomReactionAnalytics shopCodeのみのショップは傾向集計対象外
+00:43 +403: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl extracts composite itemCode and slug from event+dest
+00:43 +404: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: tryParseRedirectUrl supports rat-redirect host and drinkshop slug
+00:43 +405: C:/dev/app_project/room_manager2/test/utils/room_rat_redirect_parse_test.dart: roomImportEnrichSlugShouldSkipDirectItemCode flags slug-like segments
+00:44 +406: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 価格だけ未取得のとき強い未確認文言は出さない
+00:44 +407: C:/dev/app_project/room_manager2/test/utils/room_unconfirmed_display_copy_test.dart: RoomUnconfirmedDisplayCopy 商品名も画像も無いときは売り切れ系を表示
+00:45 +408: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary ShopDiscoverySummary から ShopCatalogEntry に変換できる
+00:45 +409: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopCode 空は保存しない
+00:45 +410: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary shopName 不正は保存しない
+00:45 +411: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 有効な商品は通す
+00:45 +412: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary safeItemCount=0 相当（hitItemCount=0）は保存しない
+00:45 +413: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 画像なしは除外
+00:45 +414: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 価格なしは除外
+00:45 +415: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary representativeImageUrl は安全画像のみ採用する
+00:45 +416: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: shopCatalogEntryFromDiscoverySummary representativeImageUrl は安全画像のみ採用する
+00:45 +417: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter プレースホルダ商品名は除外
+00:45 +418: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries SHOP_CATALOG_ENABLED=false では no-op
+00:45 +419: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 大人のおもちゃは安全フィルタで除外
+00:45 +420: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 木のおもちゃは通す
+00:45 +421: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 木のおもちゃは通す
+00:45 +422: C:/dev/app_project/room_manager2/test/utils/search_result_quality_filter_test.dart: SearchResultQualityFilter 木のおもちゃは通す
+00:45 +423: C:/dev/app_project/room_manager2/test/utils/shop_catalog_mapper_test.dart: upsertShopCatalogFromDiscoverySummaries 入力 summaries の件数・順序を変えない
+00:46 +424: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ10件・保存ジャンル3系統で API 全スキップ可
+00:46 +425: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalogPolicy カタログ不足では API 全スキップしない
+00:46 +426: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool PRODUCT_CATALOG_ENABLED=false では空結果
+00:46 +427: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 品質OKなカタログ商品がプールに入る
+00:46 +428: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool stale は除外される
+00:46 +429: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool 候補済み productId は除外される
+00:46 +430: C:/dev/app_project/room_manager2/test/utils/today_recommendation_catalog_test.dart: TodayRecommendationCatalog.collectIntoPool upsertCatalogFromRecommendItems は todayRecommendation になる
+00:47 +431: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 10件そろっても保存ジャンル必須プランは件数では打ち切らない
+00:47 +432: C:/dev/app_project/room_manager2/test/utils/today_recommendation_execution_policy_test.dart: TodayRecommendationExecutionPolicy 補助プランは件数不足かつAPI余裕があるときのみ
+00:47 +433: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 見送り済みは一定期間除外される
+00:47 +434: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 表示済みは一定期間除外される
+00:47 +435: C:/dev/app_project/room_manager2/test/utils/today_recommendation_exposure_policy_test.dart: TodayRecommendExposurePolicy 古い表示済みは除外されない
+00:48 +436: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 保存ジャンル3件で最終10件が1ジャンルに偏りすぎない
+00:48 +437: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution 他ジャンル候補がない場合は偏りを許容する
+00:48 +438: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_distribution_test.dart: TodayRecommendationGenreDistribution computeTargetQuotas は3ジャンル10件で4/3/3
+00:49 +439: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore page=1固定にならず次回は page を進める
+00:49 +440: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore 枯渇クールダウン中は page 1 に戻る
+00:49 +441: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore maxPage 超過後は 1 にラップ
+00:49 +442: C:/dev/app_project/room_manager2/test/utils/today_recommendation_genre_page_store_test.dart: TodayRecommendGenrePageStore rawCount が少ないと exhaustedUntil が設定される
+00:50 +443: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: FavoriteGenreSelectionPolicy 保存ジャンル上限は3件
+00:50 +444: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy 既定 sort はレビュー件数順で null ではない
+00:50 +445: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPolicy API上限は10より小さい
+00:50 +446: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder buildPlanSet は保存ジャンル必須と補助を分割する
+00:50 +447: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル3件でジャンルプラン3＋補助最大1
+00:50 +448: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンル5件指定でもジャンルプランは3件まで
+00:50 +449: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルなしのときフォールバック1件
+00:50 +450: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 補助プランは最大1件（反応ジャンル）
+00:50 +451: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder 保存ジャンルと同じ補助条件は追加しない
+00:50 +452: C:/dev/app_project/room_manager2/test/utils/today_recommendation_plan_builder_test.dart: TodayRecommendationPlanBuilder maxPlanCount は API 上限を超えない
+00:50 +453: C:/dev/app_project/room_manager2/test/widgets/add_candidate_entry_sheet_url_visibility_test.dart: URLから追加入口は showUrlAddEntryPoint=false では非表示
+00:51 +454: C:/dev/app_project/room_manager2/test/widgets/add_candidate_entry_sheet_url_visibility_test.dart: URLから追加入口は showUrlAddEntryPoint=false では非表示
+00:51 +455: C:/dev/app_project/room_manager2/test/widgets/add_candidate_entry_sheet_url_visibility_test.dart: URLから追加入口は showUrlAddEntryPoint=false では非表示
+00:52 +456: C:/dev/app_project/room_manager2/test/widgets/home_in_app_notice_card_test.dart: HomeInAppNoticeSlot shows post milestone notice when data matches
+00:52 +457: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+00:52 +458: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+00:52 +459: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection displayCandidates が空なら補助枠を表示しない
+00:52 +460: C:/dev/app_project/room_manager2/test/widgets/home_in_app_notice_card_test.dart: HomeInAppNoticeSlot dismissed notice stays hidden after rebuild
+00:53 +461: C:/dev/app_project/room_manager2/test/widgets/home_in_app_notice_card_test.dart: HomeInAppNoticeSlot dismissed notice stays hidden after rebuild
+00:53 +462: C:/dev/app_project/room_manager2/test/widgets/home_in_app_notice_card_test.dart: HomeInAppNoticeSlot dismissed notice stays hidden after rebuild
+00:53 +463: C:/dev/app_project/room_manager2/test/widgets/shop_discovery_pool_supplement_cards_test.dart: ShopDiscoveryPoolSupplementCardsSection onCandidateTap が渡されていればタップで callback が呼ばれる
+00:53 +464: All tests passed!
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\muram\.cursor\projects\c-dev-app-project-room-manager2\agent-tools\3839d4d2-9169-4f91-a0db-d5c9f94ee1b6.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\today_recommendations_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "contextAfter": 15,
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\home_placeholder_screen.dart",
+  "pattern": "HomeInAppNoticeSlot"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "c:\\dev\\app_project\\room_manager2\\lib\\screens\\home_placeholder_screen.dart",
+  "pattern": "HomeInAppNoticeSlot",
+  "topFiles": [
+    {
+      "matchCount": 16,
+      "uri": "lib\\screens\\home_placeholder_screen.dart"
+    }
+  ],
+  "totalFiles": 1,
+  "totalMatches": 1
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\dev\app_project\room_manager2\lib\screens\home_placeholder_screen.dart</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+ホーム画面の「今日のROOM運用」カード構成を整理している。タイトル、ステータスメッセージ、主CTA、コンパクト情報、マイルストーン、投稿目安のレイアウトを確認している。</details></think>
+
+_**Agent (default)**_
+
+## Phase UX-5b 実装報告
+
+### 1. 調査結論
+
+「別の候補を出す」は `lib/screens/home_placeholder_screen.dart` の `_HomeTodayProgressCard` 内に、主CTAの直下に `OutlinedButton.icon` として実装されていました。ホームから `regenerateToday(..., manual: true)` を呼ぶ専用メソッド `_regenerateTodayRecommendationsFromHome` が存在し、クールダウン表示・失敗時文言「別の候補をお試しできます」もホーム専用の再生成UXに紐づいていました。
+
+一方、`TodayRecommendationsScreen` 側の `_regenerate()` と再生成UIは独立しており、今回の変更対象外です。
+
+### 2. 実装方針
+
+- ホームカードから再生成ボタンと関連状態・パラメータのみ削除
+- 主CTA（`おすすめを見る` / `おすすめコレを見る`）は `_primaryAction()` のまま維持
+- Provider / Repository / Service / API には一切触れない
+- 失敗時のホーム文言を、再生成を示唆しない表現に修正
+
+### 3. 「別の候補を出す」削除内容
+
+- `_HomeTodayProgressCard` 内の `OutlinedButton.icon`（ラベル「別の候補を出す」）を削除
+- クールダウン待ち表示（`showRegenerateCooldown` ブロック）を削除
+- 親から渡していた `onRegenerateRecommendations` コールバックを削除
+
+### 4. ホーム側の不要メソッド・状態削除内容
+
+| 削除対象 | 内容 |
+|---|---|
+| `_regenerateTodayRecommendationsFromHome` | ホームから手動再生成するメソッド全体 |
+| `_shouldShowSecondaryRegenerate` | 補助ボタン表示判定 |
+| `canRegenerateRecommendations` | ウィジェット引数・フィールド |
+| `regenerateCooldownHint` | ウィジェット引数・フィールド |
+| `onRegenerateRecommendations` | ウィジェット引数・フィールド |
+| 失敗時文言 | 「別の候補をお試しできます」→「おすすめを準備できませんでした」 |
+
+**維持したもの:** `_regenerateRecommendationsIfNeeded`（Pull-to-refresh 等の自動再生成）、`_openTodayRecommendations`（主CTA導線）
+
+### 5. おすすめ画面側の再生成導線維持確認
+
+`lib/screens/today_recommendations_screen.dart` の `_regenerate()` は未変更です。エラー画面の「もう一度生成する」、一覧内の再生成UI（`onRegenerate: _regenerate`）はそのまま動作します。
+
+### 6. お知らせカードとの表示バランス確認
+
+ホーム上部の構成は次のとおりです。
+
+1. **今日のROOM運用カード** — タイトル + 未確認チップ → ステータス文 → 主CTA → 補足行 → 今日の小さな目標 → 投稿しすぎ防止の目安
+2. **HomeInAppNoticeSlot** — お知らせカード（カード直下の兄弟要素）
+
+補助ボタン削除後も、主CTAがカード上部に残り、お知らせはその下に独立表示されるため、主導線が埋もれにくい構成です。カード内に不自然な空白も生じません。
+
+### 7. 変更ファイル一覧
+
+- `lib/screens/home_placeholder_screen.dart`（唯一の変更ファイル）
+
+### 8. ロジック変更の有無
+
+**なし。** UI整理とホーム専用コールバック削除のみ。`TodayRecommendationProvider.regenerateToday` や API 層は未変更です。
+
+### 9. 主要導線への影響
+
+| 導線 | 影響 |
+|---|---|
+| ホーム「おすすめを見る」 | 変更なし（主導線として一本化） |
+| ホーム「別の候補を出す」 | **削除** |
+| おすすめ画面での再生成 | 変更なし |
+| Pull-to-refresh 自動再生成 | 変更なし |
+| お知らせカード | 変更なし |
+
+### 10. flutter analyze 結果
+
+```
+10 issues found（すべて既存の info/warning）
+エラー: 0
+今回の変更による新規 issue: 0
+```
+
+### 11. flutter test 結果
+
+```
+All tests passed!（464 tests）
+```
+
+テスト更新は不要でした（ホーム再生成ボタン専用のテストは存在しませんでした）。
+
+### 12. iOS移植監査メモ
+
+- 変更は Flutter Widget の削除・文言修正のみ
+- Android 固有 API の追加なし
+- Platform Channel / ネイティブコードへの影響なし
+- iOS 移植リスク: **低**
+
+### 13. 次に反応確認自動化へ進めるかの判断
+
+**進めて問題ありません。**
+
+理由:
+- 変更は UI 整理のみで、ビジネスロジック・API・Provider 層に影響なし
+- analyze / test ともにパス
+- 主導線が「おすすめを見る」に一本化され、ホーム画面の情報量が減った
+- 再生成はおすすめ画面に集約され、UX-5 の意図（ホームは状態通知、詳細操作は専用画面）と整合
+
+反応確認自動化では、ホーム画面で「別の候補を出す」が表示されないこと、および主CTA「おすすめを見る」が表示されることを確認するステップに更新するとよいです。

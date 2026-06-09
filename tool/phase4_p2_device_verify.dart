@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-import '../lib/repository/rakuten_search_repository.dart';
-import '../lib/services/rakuten_api_service.dart';
-import '../lib/services/rakuten_item_page_url_item_code_service.dart';
-import '../lib/utils/rakuten_product_rating_display.dart';
+import 'package:room_manager2/repository/rakuten_search_repository.dart';
+import 'package:room_manager2/services/rakuten_api_service.dart';
+import 'package:room_manager2/services/rakuten_item_page_url_item_code_service.dart';
+import 'package:room_manager2/utils/rakuten_product_rating_display.dart';
 
 /// Phase 4-P2 実機ログ確認用（一度だけ実行）。
 ///
@@ -27,21 +27,13 @@ Future<void> _verifyUrlParseCases() async {
   final affiliateUrl =
       'https://hb.afl.rakuten.co.jp/hgc/test/?pc=${Uri.encodeComponent(itemUrl)}';
   final cases = <({String label, String url, bool expectSuccess})>[
-    (
-      label: 'normal',
-      url: itemUrl,
-      expectSuccess: true,
-    ),
+    (label: 'normal', url: itemUrl, expectSuccess: true),
     (
       label: 'slug',
       url: 'https://item.rakuten.co.jp/expsjapan/cim-silicone-cover-001-/',
       expectSuccess: true,
     ),
-    (
-      label: 'affiliate',
-      url: affiliateUrl,
-      expectSuccess: true,
-    ),
+    (label: 'affiliate', url: affiliateUrl, expectSuccess: true),
     (
       label: 'books',
       url: 'https://books.rakuten.co.jp/rb/1234567890/',
@@ -85,22 +77,23 @@ Future<void> _verifyUrlParseCases() async {
 
 Future<void> _verifyUrlSearchApiCases() async {
   final repo = RakutenSearchRepository(apiService: RakutenApiService());
-  const apiCases = <({String label, String url, String shop, String item, bool apiStyle})>[
-    (
-      label: 'normalApi',
-      url: 'https://item.rakuten.co.jp/soukaidrink/4901085161999/',
-      shop: 'soukaidrink',
-      item: '4901085161999',
-      apiStyle: true,
-    ),
-    (
-      label: 'slugApi',
-      url: 'https://item.rakuten.co.jp/expsjapan/cim-silicone-cover-001-/',
-      shop: 'expsjapan',
-      item: 'cim-silicone-cover-001-',
-      apiStyle: false,
-    ),
-  ];
+  const apiCases =
+      <({String label, String url, String shop, String item, bool apiStyle})>[
+        (
+          label: 'normalApi',
+          url: 'https://item.rakuten.co.jp/soukaidrink/4901085161999/',
+          shop: 'soukaidrink',
+          item: '4901085161999',
+          apiStyle: true,
+        ),
+        (
+          label: 'slugApi',
+          url: 'https://item.rakuten.co.jp/expsjapan/cim-silicone-cover-001-/',
+          shop: 'expsjapan',
+          item: 'cim-silicone-cover-001-',
+          apiStyle: false,
+        ),
+      ];
 
   for (final c in apiCases) {
     debugPrint('[PHASE4_P2_DEVICE_VERIFY] apiCase=${c.label} start');

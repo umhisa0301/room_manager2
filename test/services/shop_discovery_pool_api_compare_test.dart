@@ -66,7 +66,6 @@ ShopPoolCandidate _poolCandidate({
 ShopPoolFallbackQualityReport _strongPoolQuality({
   int poolTopCount = 10,
   double avgHitItemCount = 4.0,
-  int withImageCount = 10,
 }) {
   final summaries = List<ShopDiscoverySummary>.generate(
     poolTopCount,
@@ -126,12 +125,11 @@ ShopPoolFallbackQualityReport _strongPoolQuality({
 void main() {
   group('ShopDiscoveryApiQualitySummary', () {
     test('API summaries から品質サマリを計算できる', () {
-      final q = ShopDiscoveryApiQualitySummary.fromSummaries(
-        <ShopDiscoverySummary>[
-          _apiSummary(shopCode: 'a', score: 300, hitItems: 5),
-          _apiSummary(shopCode: 'b', score: 200, hitItems: 3),
-        ],
-      );
+      final q =
+          ShopDiscoveryApiQualitySummary.fromSummaries(<ShopDiscoverySummary>[
+            _apiSummary(shopCode: 'a', score: 300, hitItems: 5),
+            _apiSummary(shopCode: 'b', score: 200, hitItems: 3),
+          ]);
       expect(q.count, 2);
       expect(q.avgScore, 250);
       expect(q.avgHitItemCount, 4);
@@ -284,10 +282,7 @@ void main() {
       expect(result.poolQuality, isNull);
       expect(result.wouldBeUsableAsSupplement, isFalse);
       expect(result.wouldBeUsableAsReplacement, isFalse);
-      expect(
-        result.buildQualityLogLine(),
-        contains('willUsePoolForUi=false'),
-      );
+      expect(result.buildQualityLogLine(), contains('willUsePoolForUi=false'));
       expect(result.buildQualityLogLine(), contains('willSkipApi=false'));
     });
 
@@ -346,8 +341,7 @@ extension _ComparisonOverlap on ShopDiscoveryPoolComparisonResult {
       poolCandidateCount: poolCandidateCount,
       poolCandidateCountBeforeSavedExclude:
           poolCandidateCountBeforeSavedExclude,
-      poolCandidateCountAfterSavedExclude:
-          poolCandidateCountAfterSavedExclude,
+      poolCandidateCountAfterSavedExclude: poolCandidateCountAfterSavedExclude,
       catalogShopCount: catalogShopCount,
       overlapByShopCodeCount: overlapCount,
       apiOnlyCount: apiCount - overlapCount,
