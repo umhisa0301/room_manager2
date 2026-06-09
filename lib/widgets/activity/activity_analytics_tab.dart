@@ -624,6 +624,12 @@ class _DecisionInsightCard extends StatelessWidget {
 
   final _DecisionBrief brief;
 
+  static String _compactInsightLine(String raw, {int maxChars = 44}) {
+    final t = raw.trim();
+    if (t.length <= maxChars) return t;
+    return '${t.substring(0, maxChars - 1)}…';
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -638,8 +644,8 @@ class _DecisionInsightCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.bolt_rounded, size: 28, color: AppColors.accentPrimary),
-              const SizedBox(width: 12),
+              Icon(Icons.bolt_rounded, size: 26, color: AppColors.accentPrimary),
+              const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   '次にやること',
@@ -653,51 +659,91 @@ class _DecisionInsightCard extends StatelessWidget {
             ],
           ),
           if (brief.conclusion.trim().isNotEmpty) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Text(
               brief.conclusion,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
-                height: 1.4,
+                height: 1.35,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ],
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           for (var i = 0; i < brief.nextSteps.length; i++) ...[
-            if (i > 0) const SizedBox(height: 14),
-            Text(
-              '${i + 1}. ${brief.nextSteps[i].title}',
-              style: theme.textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w800,
-                height: 1.35,
-                fontSize: 15,
+            if (i > 0) const SizedBox(height: 10),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceVariant.withValues(alpha: 0.35),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppColors.divider.withValues(alpha: 0.45),
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              brief.nextSteps[i].basis,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.4,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    '${i + 1}. ${brief.nextSteps[i].title}',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      height: 1.3,
+                      fontSize: 14.5,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    _compactInsightLine(brief.nextSteps[i].basis),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.32,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  FilledButton.icon(
+                    onPressed: brief.nextSteps[i].onPressed,
+                    icon: const Icon(Icons.arrow_forward_rounded, size: 18),
+                    label: Text(brief.nextSteps[i].buttonLabel),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: AppColors.accentPrimary,
+                      foregroundColor: AppColors.textOnAccent,
+                      minimumSize: const Size(double.infinity, 44),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      textStyle: theme.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 8),
-            AppSecondaryButton(
-              label: brief.nextSteps[i].buttonLabel,
-              onPressed: brief.nextSteps[i].onPressed,
-              icon: const Icon(Icons.arrow_forward_rounded, size: 17),
             ),
           ],
           if (brief.rationale.trim().isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(
-              brief.rationale,
+              _compactInsightLine(brief.rationale, maxChars: 96),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: AppColors.textTertiary,
-                height: 1.35,
+                height: 1.3,
+                fontSize: 11.5,
                 fontWeight: FontWeight.w600,
               ),
             ),

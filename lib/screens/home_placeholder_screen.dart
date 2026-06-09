@@ -1465,6 +1465,18 @@ class _HomeTodayProgressCard extends StatelessWidget {
                 ? collectLimit.recoveryFootnote(DateTime.now())
                 : null,
           ),
+          const SizedBox(height: 8),
+          Text(
+            '楽天ROOMの投稿上限に対する目安です。投稿しすぎ防止のための参考値で、無理に上限を目指す必要はありません。',
+            maxLines: 3,
+            softWrap: true,
+            style: _HomeUi.tapHint(context).copyWith(
+              fontSize: 11.5,
+              height: 1.35,
+              color: HomeScreenColors.footnoteMuted,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           const SizedBox(height: 12),
           Text(
             '今日のおすすめ',
@@ -2423,9 +2435,9 @@ class _RoomStatsCardGrid extends StatelessWidget {
               Expanded(
                 child: _RoomMetricTile(
                   role: _RoomMetricTileRole.today,
-                  title: '今日のコレ',
+                  title: '直近24時間のコレ',
                   valueMain: '$todayDoneCount件',
-                  caption: '今日分のコレ済へ',
+                  caption: '直近24時間のコレ済へ',
                   icon: Icons.today_rounded,
                   valueProminent: true,
                   compactDeck: deck,

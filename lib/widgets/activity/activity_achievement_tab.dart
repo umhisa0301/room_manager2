@@ -5,14 +5,11 @@ import 'package:provider/provider.dart';
 import '../../models/rakuten_managed_product.dart';
 import '../../models/room_activity_event.dart';
 import '../../navigation/app_shell_controller.dart';
-import '../../navigation/rakuten_search_navigator.dart';
-import '../../screens/today_recommendations_screen.dart';
 import '../../services/rakuten_room_home_stats.dart';
 import '../../services/room_collect_post_limit.dart';
 import '../../services/room_kpi_calculator.dart';
 import '../../state/rakuten_managed_product_provider.dart';
 import '../../state/room_activity_event_provider.dart';
-import '../../state/today_recommendation_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/app_debug_log.dart';
 import '../../utils/room_sync_log.dart';
@@ -44,13 +41,12 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer4<
+    return Consumer3<
       RakutenManagedProductProvider,
       RoomActivityEventProvider,
-      AppShellController,
-      TodayRecommendationProvider
+      AppShellController
     >(
-      builder: (context, room, act, shell, recProv, _) {
+      builder: (context, room, act, shell, _) {
         final items = room.items;
         final events = act.events;
         final now = DateTime.now();
@@ -111,7 +107,6 @@ class _ActivityAchievementTabState extends State<ActivityAchievementTab> {
                 todayCalendarPosts: todayCalendarPosts,
                 todayCandidates: todayCandidates,
                 streakDays: streak,
-                recPendingCount: recProv.pendingCount,
                 collectLimit: collectLimit,
               ),
               const SizedBox(height: ActivityScreenLayout.sectionGap),
@@ -307,7 +302,6 @@ class _AchievementHeroCard extends StatelessWidget {
     required this.todayCalendarPosts,
     required this.todayCandidates,
     required this.streakDays,
-    required this.recPendingCount,
     required this.collectLimit,
   });
 
@@ -315,7 +309,6 @@ class _AchievementHeroCard extends StatelessWidget {
   final int todayCalendarPosts;
   final int todayCandidates;
   final int streakDays;
-  final int recPendingCount;
   final RoomCollectPostLimitSnapshot collectLimit;
 
   @override
@@ -327,11 +320,6 @@ class _AchievementHeroCard extends StatelessWidget {
     final statusLine = emptyDay
         ? '今日0時〜 まだ動きがありません'
         : '今日0時〜現在の集計（上限の詳細はホーム）';
-
-    final candStock = items
-        .where((e) => e.status == RakutenManagedProductStatus.candidate)
-        .length;
-    final lowCandidates = todayCandidates < 3;
 
     final postDisplay = postGoal <= 0
         ? todayCalendarPosts
@@ -404,8 +392,8 @@ class _AchievementHeroCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '24h ${collectLimit.todayCount}/${RoomCollectPostLimitSnapshot.dailyLimit}件　'
-                  '1h ${collectLimit.hourCount}/${RoomCollectPostLimitSnapshot.hourlyLimit}件',
+                  '直近24時間 ${collectLimit.todayCount}/${RoomCollectPostLimitSnapshot.dailyLimit}件　'
+                  'この1時間 ${collectLimit.hourCount}/${RoomCollectPostLimitSnapshot.hourlyLimit}件',
                   style: theme.textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w800,
                     height: 1.25,
@@ -472,70 +460,6 @@ class _AchievementHeroCard extends StatelessWidget {
               fontWeight: FontWeight.w600,
               fontSize: 11,
             ),
-          ),
-          const SizedBox(height: 14),
-          Text(
-            'すぐできること',
-            style: theme.textTheme.labelLarge?.copyWith(
-              fontWeight: FontWeight.w800,
-              color: AppColors.textSecondary,
-              fontSize: 12,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Semantics(
-                button: true,
-                child: FilledButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).push<void>(
-                      MaterialPageRoute<void>(
-                        builder: (_) => const TodayRecommendationsScreen(),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.auto_awesome_rounded, size: 22),
-                  label: const Text('おすすめコレ'),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.accentPrimary,
-                    foregroundColor: AppColors.textOnAccent,
-                    minimumSize: const Size(double.infinity, 48),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                ),
-              ),
-              if (lowCandidates &&
-                  (candStock == 0 || recPendingCount == 0)) ...[
-                const SizedBox(height: 8),
-                Semantics(
-                  button: true,
-                  child: OutlinedButton.icon(
-                    onPressed: () => openRakutenSearchScreen(context),
-                    icon: const Icon(Icons.travel_explore_rounded, size: 22),
-                    label: const Text('候補を探す'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.textPrimary,
-                      minimumSize: const Size(double.infinity, 48),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ],
           ),
         ],
       ),

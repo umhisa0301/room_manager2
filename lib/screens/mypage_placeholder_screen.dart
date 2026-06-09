@@ -30,10 +30,7 @@ import '../widgets/room_sync_reaction_button.dart';
 import '../models/room_reaction_sync_history_entry.dart';
 import '../services/room_reaction_sync_history_store.dart';
 import '../utils/room_reaction_analytics.dart';
-import '../services/room_collect_post_limit.dart';
-import '../state/activity_log_provider.dart';
 import '../state/rakuten_managed_product_provider.dart';
-import '../state/room_activity_event_provider.dart';
 import '../state/saved_shop_provider.dart';
 import '../state/user_profile_provider.dart';
 import '../state/bulk_operation_state_controller.dart';
@@ -46,7 +43,6 @@ import '../widgets/post_style_picker_sheet.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_text_field.dart';
-import 'activity_placeholder_screen.dart';
 import 'closed_test_demo_screen.dart';
 import 'dev_automation_screen.dart';
 import 'easy_initial_setup_screen.dart';
@@ -216,12 +212,10 @@ class MypagePlaceholderScreen extends StatelessWidget {
       body: SafeArea(
         top: false,
         child:
-            Consumer6<
+            Consumer4<
               UserProfileProvider,
               SavedShopProvider,
               RakutenManagedProductProvider,
-              RoomActivityEventProvider,
-              ActivityLogProvider,
               EasyInitialSetupRepository
             >(
               builder:
@@ -230,8 +224,6 @@ class MypagePlaceholderScreen extends StatelessWidget {
                     profileProvider,
                     saved,
                     managed,
-                    activityEvents,
-                    activityLog,
                     setup,
                     _,
                   ) {
@@ -269,15 +261,6 @@ class MypagePlaceholderScreen extends StatelessWidget {
                           (e) => e.status == RakutenManagedProductStatus.done,
                         )
                         .length;
-                    final now = DateTime.now();
-                    final todayPostCount = RoomCollectPostLimitSnapshot.compute(
-                      items: managed.items,
-                      events: activityEvents.events,
-                      now: now,
-                    ).todayCount;
-                    final todayCommentCount =
-                        activityLog.getTodayLog()?.commentCount ?? 0;
-
                     return ListView(
                       padding: EdgeInsets.fromLTRB(
                         _screenPadH,
@@ -327,8 +310,6 @@ class MypagePlaceholderScreen extends StatelessWidget {
                           candidateCount: candidateCount,
                           doneCount: doneCount,
                           savedShopCount: saved.shops.length,
-                          todayCommentCount: todayCommentCount,
-                          todayPostCount: todayPostCount,
                           onTapCandidates: () => context
                               .read<AppShellController>()
                               .openRoomCollect(initialTabIndex: 0),
@@ -342,14 +323,9 @@ class MypagePlaceholderScreen extends StatelessWidget {
                               ),
                             );
                           },
-                          onTapTodayActivity: () {
-                            Navigator.of(context).push<void>(
-                              MaterialPageRoute<void>(
-                                builder: (_) =>
-                                    const ActivityPlaceholderScreen(),
-                              ),
-                            );
-                          },
+                          onTapTodayActivity: () => context
+                              .read<AppShellController>()
+                              .openActivityTab(),
                         ),
                         const SizedBox(height: _gap),
                         MyPageRoomSyncSection(
@@ -763,8 +739,6 @@ class MyPageQuickSummaryCard extends StatelessWidget {
     required this.savedShopCount,
     required this.candidateCount,
     required this.doneCount,
-    required this.todayCommentCount,
-    required this.todayPostCount,
     required this.onTapCandidates,
     required this.onTapDone,
     required this.onTapSavedShops,
@@ -774,8 +748,6 @@ class MyPageQuickSummaryCard extends StatelessWidget {
   final int savedShopCount;
   final int candidateCount;
   final int doneCount;
-  final int todayCommentCount;
-  final int todayPostCount;
   final VoidCallback onTapCandidates;
   final VoidCallback onTapDone;
   final VoidCallback onTapSavedShops;
@@ -783,9 +755,6 @@ class MyPageQuickSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activityLine =
-        '直近24時間のROOM投稿 $todayPostCount件 / コメントコピー $todayCommentCount回';
-
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -808,12 +777,12 @@ class MyPageQuickSummaryCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const AppSectionHeader(
-              title: '状態サマリー',
-              subtitle: 'タップで資産の詳細または活動ダッシュボードへ',
+              title: '現在の登録状況',
+              subtitle: 'タップで各一覧を開けます',
               icon: Icons.list_alt_outlined,
             ),
             const SizedBox(height: 10),
-            _MyPageSummarySectionTitle(title: '資産（ストック）', dense: true),
+            _MyPageSummarySectionTitle(title: '保存済みデータ', dense: true),
             const SizedBox(height: 6),
             _SummaryListTile(
               icon: Icons.bookmark_add_outlined,
@@ -841,13 +810,31 @@ class MyPageQuickSummaryCard extends StatelessWidget {
               color: AppColors.divider.withValues(alpha: 0.35),
             ),
             const SizedBox(height: 12),
-            _MyPageSummarySectionTitle(title: '今日の活動', dense: true),
-            const SizedBox(height: 6),
-            _MyPageTodayActivityListTile(
-              title: '',
-              detailLine: activityLine,
-              subtitle: '活動タブで詳しく見られます',
-              onTap: onTapTodayActivity,
+            Text(
+              '活動の詳細は分析タブで確認できます',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.35,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: onTapTodayActivity,
+                icon: const Icon(Icons.insights_outlined, size: 18),
+                label: const Text('分析タブを開く'),
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  foregroundColor: AppColors.accentPrimary,
+                  textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -870,96 +857,6 @@ class _MyPageSummarySectionTitle extends StatelessWidget {
       letterSpacing: dense ? 0.2 : 0.4,
     );
     return Text(title, style: style);
-  }
-}
-
-class _MyPageTodayActivityListTile extends StatelessWidget {
-  const _MyPageTodayActivityListTile({
-    required this.title,
-    required this.detailLine,
-    required this.subtitle,
-    required this.onTap,
-  });
-
-  final String title;
-  final String detailLine;
-  final String subtitle;
-  final VoidCallback onTap;
-
-  static const Color _boltColor = Color(0xFFE65100);
-
-  @override
-  Widget build(BuildContext context) {
-    final accent = AppColors.accentPrimary;
-
-    final content = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 54),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(Icons.bolt_rounded, size: 22, color: _boltColor),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (title.isNotEmpty) ...[
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                  ],
-                  Text(
-                    detailLine,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w900,
-                      height: 1.22,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.35,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 2),
-              child: Icon(
-                Icons.chevron_right_rounded,
-                color: AppColors.textSecondary,
-                size: 22,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-
-    return Material(
-      color: AppColors.surfaceVariant.withValues(alpha: 0.22),
-      borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-        splashFactory: InkRipple.splashFactory,
-        splashColor: accent.withValues(alpha: 0.34),
-        highlightColor: accent.withValues(alpha: 0.14),
-        child: content,
-      ),
-    );
   }
 }
 
