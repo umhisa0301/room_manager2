@@ -22,6 +22,16 @@ abstract final class RoomSyncCardCopy {
 
   static const analysisTabHint = '反応があった商品は分析タブで確認できます';
 
+  /// 手動反応確認（補助導線・自動確認と区別しやすい文言）。
+  static const manualReactionCheckLabel = '今すぐ反応を確認';
+
+  /// 同期中（自動／手動いずれも）の反応ボタン表示。
+  static const reactionCheckBusyLabel = '反応を確認中…';
+
+  /// ROOMデータ更新セクション内の自動確認説明（1行）。
+  static const autoReactionCheckHint =
+      '反応は一定時間ごとに自動で確認します。必要なときは手動でも確認できます。';
+
   static String importPhaseLabel(RoomImportUiPhase phase) {
     switch (phase) {
       case RoomImportUiPhase.checkingTargets:

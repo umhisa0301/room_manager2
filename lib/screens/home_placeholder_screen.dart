@@ -948,14 +948,22 @@ class _HomeRoomPostImportSection extends StatelessWidget {
 
         final canRunPrimary = hasRoomProfileUrl && !actionLocked;
         final showImportButton = canRunPrimary && !syncBusy;
-        final showReactionButton = showImportButton && importedDoneCount > 0;
+        final showReactionButtonSlot =
+            hasRoomProfileUrl && importedDoneCount > 0 && (syncBusy || canRunPrimary);
+        final reactionButtonEnabled = canRunPrimary && !syncBusy;
+        final reactionButtonLabel = syncBusy && reactionOnly
+            ? RoomSyncCardCopy.reactionCheckBusyLabel
+            : RoomSyncCardCopy.manualReactionCheckLabel;
+        final showReactionButton = showReactionButtonSlot;
         final showAnalysisLink = !syncBusy && hasRoomProfileUrl;
         roomSyncCardUxRenderLog(
           state: syncCardState,
           showImportButton: showImportButton,
           showReactionButton: showReactionButton,
           showAnalysisCta: false,
-          hiddenDisabledButtons: syncBusy ? 'allHiddenWhileBusy' : 'none',
+          hiddenDisabledButtons: syncBusy && showReactionButtonSlot
+              ? 'reactionDisabledWhileBusy'
+              : (syncBusy ? 'allHiddenWhileBusy' : 'none'),
         );
         roomSyncButtonRenderDecisionLog(
           'screen=home button=import visible=$showImportButton '
@@ -965,8 +973,8 @@ class _HomeRoomPostImportSection extends StatelessWidget {
         );
         roomSyncButtonRenderDecisionLog(
           'screen=home button=reaction visible=$showReactionButton '
-          'enabled=$showReactionButton label=反応を確認する '
-          'reason=${syncBusy ? 'busy' : (importedDoneCount <= 0 ? 'notImportedYet' : (!hasRoomProfileUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready')))}',
+          'enabled=$reactionButtonEnabled label=$reactionButtonLabel '
+          'reason=${syncBusy ? 'busyDisabled' : (importedDoneCount <= 0 ? 'notImportedYet' : (!hasRoomProfileUrl ? 'missingRoomUrl' : (actionLocked ? 'guarded' : 'ready')))}',
         );
         roomSyncEmptyButtonAuditLog(
           screen: 'home',
@@ -980,9 +988,11 @@ class _HomeRoomPostImportSection extends StatelessWidget {
           screen: 'home',
           button: 'reaction',
           visible: showReactionButton,
-          enabled: showReactionButton,
-          label: '反応を確認する',
-          reason: showReactionButton ? 'rendered' : 'notImportedYetOrBusy',
+          enabled: reactionButtonEnabled,
+          label: reactionButtonLabel,
+          reason: showReactionButton
+              ? (reactionButtonEnabled ? 'rendered' : 'disabledWhileBusy')
+              : 'notImportedYetOrHidden',
         );
 
         final showPrimaryButtons = showImportButton;
@@ -1007,8 +1017,10 @@ class _HomeRoomPostImportSection extends StatelessWidget {
             screen: 'home',
             button: 'reaction',
             canRun: canRunPrimary,
-            visible: showPrimaryButtons,
-            reason: baseReason,
+            visible: showReactionButton,
+            reason: importedDoneCount <= 0
+                ? 'notImportedYet'
+                : (syncBusy ? 'busyDisabled' : baseReason),
           );
           RoomSyncButtonVisibility.logRenderDecision(
             screen: 'home',
@@ -1113,6 +1125,15 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                       ],
                     ),
                   ),
+                  if (showReactionButtonSlot) ...[
+                    const SizedBox(height: 4),
+                    RoomSyncReactionButton(
+                      screen: 'home',
+                      enabled: false,
+                      label: reactionButtonLabel,
+                      onPressed: null,
+                    ),
+                  ],
                 ] else ...[
                   if (actionLocked && !syncBusy) ...[
                     Text(
@@ -1259,21 +1280,25 @@ class _HomeRoomPostImportSection extends StatelessWidget {
                       style: _HomeUi.tapHint(context),
                     ),
                   ],
-                  if (showReactionButton) ...[
+                  if (showReactionButtonSlot) ...[
                     const SizedBox(height: 10),
                     RoomSyncReactionButton(
                       screen: 'home',
-                      onPressed: () {
-                        RoomSyncButtonVisibility.logIdleVisible(
-                          screen: 'home',
-                          button: 'reaction',
-                        );
-                        _handleReactionSync(context);
-                      },
+                      enabled: reactionButtonEnabled,
+                      label: RoomSyncCardCopy.manualReactionCheckLabel,
+                      onPressed: reactionButtonEnabled
+                          ? () {
+                              RoomSyncButtonVisibility.logIdleVisible(
+                                screen: 'home',
+                                button: 'reaction',
+                              );
+                              _handleReactionSync(context);
+                            }
+                          : null,
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      '取り込み済み商品のいいね・コメント数を確認します。',
+                      RoomSyncCardCopy.autoReactionCheckHint,
                       style: _HomeUi.tapHint(context),
                     ),
                   ] else if (showImportButton) ...[
