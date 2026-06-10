@@ -1,0 +1,29 @@
+--------- beginning of main
+06-10 00:33:36.967 I/flutter (18755): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+06-10 00:33:37.320 I/flutter (18755): The Dart VM service is listening on http://127.0.0.1:43303/eJySPuY6AO0=/
+06-10 00:33:37.415 I/flutter (18755): [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+06-10 00:33:37.416 I/flutter (18755): [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+06-10 00:33:38.051 I/flutter (18755): [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+06-10 00:33:38.653 I/flutter (18755): [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=レディースファッション invalidGenreIds= corrected=false
+06-10 00:33:38.653 I/flutter (18755): [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=レディースファッション source=repositoryLoad
+06-10 00:33:38.678 I/flutter (18755): [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 00:33:39.698 I/flutter (18755): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 00:33:40.175 I/flutter (18755): [ROOMコレ][surface] tab=candidate surface=ok_list
+06-10 00:33:40.198 I/flutter (18755): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+06-10 00:33:40.252 I/flutter (18755): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+06-10 00:33:40.282 I/flutter (18755): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+06-10 00:33:40.313 I/flutter (18755): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+06-10 00:33:40.832 I/flutter (18755): [AUTO_REACTION_SYNC] scheduled
+06-10 00:33:40.881 I/flutter (18755): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=46→46
+06-10 00:33:40.882 I/flutter (18755): [MANAGED_PRODUCT_LOAD] source=provider pending=17 done=46 filter= tab=
+06-10 00:33:40.886 I/flutter (18755): [RECOMMEND_GUARD] skipReason=sameDay
+06-10 00:33:40.895 I/flutter (18755): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=46→46
+06-10 00:33:40.895 I/flutter (18755): [MANAGED_PRODUCT_LOAD] source=screen pending=17 done=46 filter= tab=candidate
+06-10 00:33:40.904 I/flutter (18755): [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17→17 done=46→46
+06-10 00:33:40.904 I/flutter (18755): [MANAGED_PRODUCT_LOAD] source=provider pending=17 done=46 filter= tab=
+06-10 00:33:41.050 I/flutter (18755): [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 00:33:41.124 I/flutter (18755): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=評価 ★3.7（1407件）
+06-10 00:33:41.128 I/flutter (18755): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=評価 ★4.2（714件）
+06-10 00:33:41.132 I/flutter (18755): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=評価 ★4.4（896件）
+06-10 00:33:41.136 I/flutter (18755): [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=評価 ★4.5（1310件）
+06-10 00:33:44.841 I/flutter (18755): [AUTO_REACTION_SYNC] skipped reason=recentSync

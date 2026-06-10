@@ -1,0 +1,40 @@
+06-10 00:32:57.191 16269 16269 I adbd    : adbd service requested 'shell,v2,TERM=dumb:export ANDROID_LOG_TAGS=''; exec logcat '-v' 'time' 'flutter:I' '*:S''
+06-10 00:32:57.378 18381 18405 D FlutterJNI: Beginning load of flutter...
+06-10 00:32:57.407 18381 18405 D nativeloader: Load /data/app/~~m3w_HemzWq94RQIO9MZ6TA==/com.stepbytestudio.room_manager2-v5VPJpIC1lQD1R55skeFzQ==/base.apk!/lib/arm64-v8a/libflutter.so using class loader ns clns-4 (caller=/data/app/~~m3w_HemzWq94RQIO9MZ6TA==/com.stepbytestudio.room_manager2-v5VPJpIC1lQD1R55skeFzQ==/base.apk): ok
+06-10 00:32:57.409 18381 18405 D FlutterJNI: flutter (null) was loaded normally!
+06-10 00:32:57.524 18381 18408 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+06-10 00:32:57.621 18381 18424 I flutter : The Dart VM service is listening on http://127.0.0.1:39955/SfmvGRT7hdE=/
+06-10 00:32:57.740 18381 18381 I o.room_manager2: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported,test-api) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 00:32:57.740 18381 18381 I o.room_manager2: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 00:32:57.740 18381 18381 I o.room_manager2: hiddenapi: Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 00:32:57.740 18381 18381 I o.room_manager2: hiddenapi: Accessing hidden method Landroid/util/LongArray;->get(I)J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+06-10 00:32:57.927 18381 18381 I flutter : [DEBUG_LOG_VOLUME] searchAudit=false roomAudit=false analyticsAudit=false verboseItem=false summary=true
+06-10 00:32:57.929 18381 18381 I flutter : [ROOM_IMPORT_ENRICH_MODE] verifyMode=false
+06-10 00:32:58.516 18381 18381 I flutter : [GenreMasterService] load ok path=assets/genre_master_flutter.json entries=16009 jsonCount=16009
+06-10 00:32:59.135 18381 18381 I flutter : [GENRE_PREF_LOAD_NORMALIZED] favoriteGenreIds=100371 resolvedGenreNames=繝ｬ繝・ぅ繝ｼ繧ｹ繝輔ぃ繝・す繝ｧ繝ｳ invalidGenreIds= corrected=false
+06-10 00:32:59.135 18381 18381 I flutter : [GENRE_PREF_LOAD] favoriteGenreIds=100371 favoriteGenreNames=繝ｬ繝・ぅ繝ｼ繧ｹ繝輔ぃ繝・す繝ｧ繝ｳ source=repositoryLoad
+06-10 00:32:59.162 18381 18381 I flutter : [ONBOARDING_UI] route=home termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 00:33:00.197 18381 18381 I flutter : [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 00:33:00.644 18381 18381 I flutter : [ROOM繧ｳ繝ｬ][surface] tab=candidate surface=ok_list
+06-10 00:33:00.669 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=隧穂ｾ｡ 笘・.7・・407莉ｶ・・
+06-10 00:33:00.724 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=隧穂ｾ｡ 笘・.2・・14莉ｶ・・
+06-10 00:33:00.756 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=隧穂ｾ｡ 笘・.4・・96莉ｶ・・
+06-10 00:33:00.790 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=隧穂ｾ｡ 笘・.5・・310莉ｶ・・
+06-10 00:33:01.332 18381 18381 I flutter : [AUTO_REACTION_SYNC] scheduled
+06-10 00:33:01.384 18381 18381 I flutter : [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17竊・7 done=46竊・6
+06-10 00:33:01.384 18381 18381 I flutter : [MANAGED_PRODUCT_LOAD] source=provider pending=17 done=46 filter= tab=
+06-10 00:33:01.388 18381 18381 I flutter : [RECOMMEND_GUARD] skipReason=sameDay
+06-10 00:33:01.397 18381 18381 I flutter : [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17竊・7 done=46竊・6
+06-10 00:33:01.397 18381 18381 I flutter : [MANAGED_PRODUCT_LOAD] source=screen pending=17 done=46 filter= tab=candidate
+06-10 00:33:01.406 18381 18381 I flutter : [MANAGED_PRODUCT_SAVE] action=refresh productId= pending=17竊・7 done=46竊・6
+06-10 00:33:01.406 18381 18381 I flutter : [MANAGED_PRODUCT_LOAD] source=provider pending=17 done=46 filter= tab=
+06-10 00:33:01.454 18381 18381 I flutter : [ONBOARDING_UI] route=myPage termsAccepted=true initialSetupCompleted=true initialSetupSkipped=false missingRoomUrl=false missingGenre=false missingSavedShop=false showMyPageSetupCard=false roomUrlValidationResult=valid roomProfileExists=unknown
+06-10 00:33:01.614 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=隧穂ｾ｡ 笘・.7・・407莉ｶ・・
+06-10 00:33:01.618 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=隧穂ｾ｡ 笘・.2・・14莉ｶ・・
+06-10 00:33:01.621 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=隧穂ｾ｡ 笘・.4・・96莉ｶ・・
+06-10 00:33:01.625 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=隧穂ｾ｡ 笘・.5・・310莉ｶ・・
+06-10 00:33:05.344 18381 18381 I flutter : [AUTO_REACTION_SYNC] started
+06-10 00:33:05.429 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=bagsaifufavori:10005192 reviewAverage=3.7 reviewCount=1407 displayText=隧穂ｾ｡ 笘・.7・・407莉ｶ・・
+06-10 00:33:05.436 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960755 reviewAverage=4.2 reviewCount=714 displayText=隧穂ｾ｡ 笘・.2・・14莉ｶ・・
+06-10 00:33:05.440 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=nissen-r:10960760 reviewAverage=4.41 reviewCount=896 displayText=隧穂ｾ｡ 笘・.4・・96莉ｶ・・
+06-10 00:33:05.445 18381 18381 I flutter : [RATING_DISPLAY_TRACE] source=rakutenManagedProductCard productId=marblemarket:10000664 reviewAverage=4.51 reviewCount=1310 displayText=隧穂ｾ｡ 笘・.5・・310莉ｶ・・
